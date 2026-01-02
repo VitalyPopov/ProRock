@@ -456,12 +456,15 @@ begin
         attributeValue := TReaderXmlite.ReadQuotedValueInPlace(aXmlCursor);
 
         var uri: string;
-        if attributePrefix.IsEmpty then // for unprefixed attributes parent's URI is used, as attributes do not inherit the default xmlns
+        if attributePrefix.IsEmpty and Assigned(Meta.Xmlite.Namespace) then
+          // for unprefixed attributes parent's URI is used, as attributes do not inherit the default xmlns
           uri := Meta.Xmlite.Namespace.Uri
         else
           uri := xmlns[attributePrefix];
 
         var propertyData: TPropertyData := Meta.Xmlite.Attributes[TUriedName.Create(uri, attributeName)];
+        if propertyData = nil then
+          propertyData := Meta.Xmlite.Attributes[TUriedName.Create('', attributeName)];
         if propertyData <> nil then
           propertyData.Value[Self] := attributeValue
         else if Meta.Xmlite.IsTXmlite then
@@ -538,6 +541,8 @@ begin
         Exit;
 
     var propertyElement: TProperty := Meta.Xmlite.Elements[TUriedName.Create(aXmlns[tagPrefix], tagName)];
+    if propertyElement = nil then
+      propertyElement := Meta.Xmlite.Elements[TUriedName.Create('', tagName)];
     if propertyElement = nil then // no such name in elements list of the object - skip the whole node till it's end
     begin
       Inc(aCursor);
