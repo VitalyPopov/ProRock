@@ -112,12 +112,21 @@ Feedback and contributions are especially welcome here.
 
 ---
 
-## Platform and compiler support
+## Platform
 
 Development and active testing focus on recent Delphi releases and **64-bit** Windows targets.  
 **Win32** is supported, but not the main focus of development.
 
-ProRock relies on standard Delphi language features and the RTL. It should work with any Delphi version that supports **inline variable declarations**.
+## Compatibility
+
+ProRock is developed and tested with fresh Delphi versions, primarily:
+
+- **Delphi 13 Florence**
+- **Delphi 12 Athens**
+
+The codebase actively uses modern language features (for example, **inline variable declarations**), so **older compilers are not officially supported**.
+
+If there is sufficient demand and available time, compatibility layers for older Delphi versions may be added in the future. However, versions **prior to Delphi 10.3** are not planned to be supported at all.
 
 ## Installation
 
