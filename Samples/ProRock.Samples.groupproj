@@ -1,0 +1,36 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{3AD531DE-70D2-4549-B199-67095C31E36C}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="ProRock.Xmlite.Basic\ProRock.Xmlite.Basic.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="ProRock_Xmlite_Basic">
+        <MSBuild Projects="ProRock.Xmlite.Basic\ProRock.Xmlite.Basic.dproj"/>
+    </Target>
+    <Target Name="ProRock_Xmlite_Basic:Clean">
+        <MSBuild Projects="ProRock.Xmlite.Basic\ProRock.Xmlite.Basic.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ProRock_Xmlite_Basic:Make">
+        <MSBuild Projects="ProRock.Xmlite.Basic\ProRock.Xmlite.Basic.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="ProRock_Xmlite_Basic"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="ProRock_Xmlite_Basic:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="ProRock_Xmlite_Basic:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
