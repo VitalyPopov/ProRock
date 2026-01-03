@@ -711,7 +711,7 @@ procedure TBasiteHelper.ToXml(aStream: TStream; const aName: string; aXmlHeader:
 begin
   var writer: TWriterXmlite := TWriterXmlite.Create(aStream);
   try
-    ToXml(writer, aName, True);
+    ToXml(writer, aName, aXmlHeader);
   finally
     writer.Free;
   end;
@@ -721,7 +721,7 @@ function TBasiteHelper.ToXml(const aName: string; aXmlHeader: boolean): string;
 begin
   var writer: TWriterXmlite := TWriterXmlite.Create;
   try
-    ToXml(writer, aName, True);
+    ToXml(writer, aName, True, aXmlHeader);
     Result := writer.Text;
   finally
     writer.Free;
