@@ -5,7 +5,7 @@ object FormMain: TFormMain
   BorderStyle = bsSingle
   Caption = 'Basic sample of ProRock Xmlite usage'
   ClientHeight = 312
-  ClientWidth = 571
+  ClientWidth = 700
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -15,29 +15,15 @@ object FormMain: TFormMain
   Position = poScreenCenter
   OnShow = FormShow
   TextHeight = 15
-  object Label3: TLabel
-    Left = 192
-    Top = 92
-    Width = 52
-    Height = 15
-    Caption = 'Customer'
-  end
   object Label2: TLabel
-    Left = 192
-    Top = 63
+    Left = 241
+    Top = 65
     Width = 32
     Height = 15
     Caption = 'Status'
   end
-  object Label1: TLabel
-    Left = 192
-    Top = 34
-    Width = 11
-    Height = 15
-    Caption = 'ID'
-  end
   object Label4: TLabel
-    Left = 192
+    Left = 416
     Top = 268
     Width = 26
     Height = 15
@@ -60,12 +46,56 @@ object FormMain: TFormMain
     Height = 120
     ColCount = 3
     FixedCols = 0
+    RowCount = 20
     FixedRows = 0
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing, goAlwaysShowEditor, goFixedRowDefAlign]
     ScrollBars = ssVertical
-    TabOrder = 1
+    TabOrder = 4
     ColWidths = (
       163
       63
       64)
+  end
+  object LabeledEdit1: TLabeledEdit
+    Left = 279
+    Top = 33
+    Width = 145
+    Height = 23
+    EditLabel.Width = 11
+    EditLabel.Height = 23
+    EditLabel.Caption = 'ID'
+    LabelPosition = lpLeft
+    TabOrder = 1
+    Text = ''
+  end
+  object LabeledEdit2: TLabeledEdit
+    Left = 279
+    Top = 91
+    Width = 145
+    Height = 23
+    EditLabel.Width = 52
+    EditLabel.Height = 23
+    EditLabel.Caption = 'Customer'
+    LabelPosition = lpLeft
+    TabOrder = 3
+    Text = ''
+  end
+  object ComboBox1: TComboBox
+    Left = 279
+    Top = 62
+    Width = 145
+    Height = 23
+    Style = csDropDownList
+    TabOrder = 2
+  end
+  object SerializeButton: TButton
+    Left = 592
+    Top = 24
+    Width = 81
+    Height = 41
+    Caption = 'Serialize to order.xml'
+    TabOrder = 5
+    WordWrap = True
+    OnClick = SerializeButtonClick
   end
 end
