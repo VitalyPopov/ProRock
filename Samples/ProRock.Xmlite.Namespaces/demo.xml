@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<order
+  xmlns="urn:demo:order"
+  id="ORD-1001"
+  date="2026-01-04T09:30:00">
+
+  <customer
+    id="CUST-42"
+    name="John Doe"
+    email="john.doe@example.com"/>
+
+  <items>
+    <item
+      sku="SKU-001"
+      quantity="2"
+      title="Wireless Mouse"
+      price="25.50"
+      currency="USD"/>
+
+    <item
+      sku="SKU-002"
+      quantity="1"
+      title="Mechanical Keyboard"
+      price="120.00"
+      currency="USD"/>
+  </items>
+
+  <total
+    amount="171.00"
+    currency="USD"/>
+
+</order>

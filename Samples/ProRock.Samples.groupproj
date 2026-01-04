@@ -6,6 +6,9 @@
         <Projects Include="ProRock.Xmlite.Basic\ProRock.Xmlite.Basic.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="ProRock.Xmlite.Namespaces\ProRock.Xmlite.Namespaces.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -23,14 +26,23 @@
     <Target Name="ProRock_Xmlite_Basic:Make">
         <MSBuild Projects="ProRock.Xmlite.Basic\ProRock.Xmlite.Basic.dproj" Targets="Make"/>
     </Target>
+    <Target Name="ProRock_Xmlite_Namespaces">
+        <MSBuild Projects="ProRock.Xmlite.Namespaces\ProRock.Xmlite.Namespaces.dproj"/>
+    </Target>
+    <Target Name="ProRock_Xmlite_Namespaces:Clean">
+        <MSBuild Projects="ProRock.Xmlite.Namespaces\ProRock.Xmlite.Namespaces.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ProRock_Xmlite_Namespaces:Make">
+        <MSBuild Projects="ProRock.Xmlite.Namespaces\ProRock.Xmlite.Namespaces.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="ProRock_Xmlite_Basic"/>
+        <CallTarget Targets="ProRock_Xmlite_Basic;ProRock_Xmlite_Namespaces"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="ProRock_Xmlite_Basic:Clean"/>
+        <CallTarget Targets="ProRock_Xmlite_Basic:Clean;ProRock_Xmlite_Namespaces:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="ProRock_Xmlite_Basic:Make"/>
+        <CallTarget Targets="ProRock_Xmlite_Basic:Make;ProRock_Xmlite_Namespaces:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
