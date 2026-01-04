@@ -528,6 +528,11 @@ begin
     if not TReaderXmlite.MoveToChar(aCursor, '<') then
       Exit;
 
+    // pass DTD/comments
+    while aCursor[1] = '!' do
+      if not TReaderXmlite.PassDtd(aCursor) or not TReaderXmlite.MoveToChar(aCursor, '<') then
+        Exit;
+
     var cursorStart: PChar := aCursor;
     var isEndTag: boolean;
     var tagFullName, tagName, tagPrefix: string;
