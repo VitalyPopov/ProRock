@@ -1,32 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<order
-  xmlns="urn:demo:order"
-  id="ORD-1001"
-  date="2026-01-04T09:30:00">
+<order xmlns="urn:demo:order">
+  <id>ORD-1001</id>
+  <date>2026-01-05T09:30:00</date>
+  <status>processing</status>
 
-  <customer
-    id="CUST-42"
-    name="John Doe"
-    email="john.doe@example.com"/>
+  <customer>
+    <id>CUST-42</id>
+    <name>John Doe</name>
+    <email>john.doe@example.com</email>
+  </customer>
 
   <items>
-    <item
-      sku="SKU-001"
-      quantity="2"
-      title="Wireless Mouse"
-      price="25.50"
-      currency="USD"/>
+    <item>
+      <sku>SKU-001</sku>
+      <title>Wireless Mouse</title>
+      <quantity>2</quantity>
+      <price>25.50</price>
+      <currency>USD</currency>
+    </item>
 
-    <item
-      sku="SKU-002"
-      quantity="1"
-      title="Mechanical Keyboard"
-      price="120.00"
-      currency="USD"/>
+    <item>
+      <sku>SKU-002</sku>
+      <title>Mechanical Keyboard</title>
+      <quantity>1</quantity>
+      <price>120.00</price>
+      <currency>USD</currency>
+    </item>
   </items>
 
-  <total
-    amount="171.00"
-    currency="USD"/>
-
+  <total>
+    <amount>171.00</amount>
+    <currency>USD</currency>
+  </total>
 </order>
