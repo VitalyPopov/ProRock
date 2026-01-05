@@ -3,18 +3,11 @@
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   targetNamespace="urn:demo:order"
   xmlns="urn:demo:order"
-  elementFormDefault="qualified"
-  attributeFormDefault="unqualified">
+  elementFormDefault="qualified">
 
-  <xs:import
-    namespace="http://www.w3.org/2001/XMLSchema"
-    schemaLocation="https://www.w3.org/2001/XMLSchema.xsd"/>
-
-  <xs:simpleType name="CurrencyCode">
-    <xs:restriction base="xs:string">
-      <xs:length value="3"/>
-    </xs:restriction>
-  </xs:simpleType>
+  <!-- ================= -->
+  <!-- Simple types -->
+  <!-- ================= -->
 
   <xs:simpleType name="OrderStatus">
     <xs:restriction base="xs:string">
@@ -26,23 +19,49 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:complexType name="MoneyType">
-    <xs:attribute name="amount" type="xs:decimal" use="required"/>
-    <xs:attribute name="currency" type="CurrencyCode" use="required"/>
-  </xs:complexType>
+  <xs:simpleType name="CurrencyCode">
+    <xs:restriction base="xs:string">
+      <xs:length value="3"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- ================= -->
+  <!-- Complex types -->
+  <!-- ================= -->
 
   <xs:complexType name="CustomerType">
-    <xs:attribute name="id" type="xs:string" use="required"/>
-    <xs:attribute name="name" type="xs:string" use="required"/>
-    <xs:attribute name="email" type="xs:string" use="required"/>
+    <xs:sequence>
+      <xs:element name="id" type="xs:string"/>
+      <xs:element name="name" type="xs:string"/>
+      <xs:element name="email" type="xs:string"/>
+    </xs:sequence>
   </xs:complexType>
 
   <xs:complexType name="ItemType">
-    <xs:attribute name="sku" type="xs:string" use="required"/>
-    <xs:attribute name="quantity" type="xs:int" use="required"/>
-    <xs:attribute name="title" type="xs:string" use="required"/>
-    <xs:attribute name="price" type="xs:decimal" use="required"/>
-    <xs:attribute name="currency" type="CurrencyCode" use="required"/>
+    <xs:sequence>
+      <xs:element name="sku" type="xs:string"/>
+      <xs:element name="title" type="xs:string"/>
+
+      <!-- inline simpleType element -->
+      <xs:element name="quantity">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+
+      <!-- inline simpleType element -->
+      <xs:element name="price">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+
+      <xs:element name="currency" type="CurrencyCode"/>
+    </xs:sequence>
   </xs:complexType>
 
   <xs:complexType name="ItemsType">
@@ -51,17 +70,28 @@
     </xs:sequence>
   </xs:complexType>
 
+  <xs:complexType name="MoneyType">
+    <xs:sequence>
+      <xs:element name="amount" type="xs:decimal"/>
+      <xs:element name="currency" type="CurrencyCode"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- ================= -->
+  <!-- Root element -->
+  <!-- ================= -->
+
   <xs:element name="order">
     <xs:complexType>
       <xs:sequence>
+        <xs:element name="id" type="xs:string"/>
+        <xs:element name="date" type="xs:dateTime"/>
+        <xs:element name="status" type="OrderStatus"/>
+
         <xs:element name="customer" type="CustomerType"/>
         <xs:element name="items" type="ItemsType"/>
         <xs:element name="total" type="MoneyType"/>
       </xs:sequence>
-
-      <xs:attribute name="id" type="xs:string" use="required"/>
-      <xs:attribute name="date" type="xs:dateTime" use="required"/>
-      <xs:attribute name="status" type="OrderStatus" use="required"/>
     </xs:complexType>
   </xs:element>
 
