@@ -1,8 +1,8 @@
 ﻿unit ProRock.Xmlite.Schema.Base;
 
 (*
-    This unit was automatically generated using ProRocket 1.0.0 Lite (ProRock 1.0.0)
-    Generated (UTC): 2026-01-01T11:38:37.709Z
+    This unit was automatically generated using ProRocket 1.0.1 Lite (ProRock 1.0.0)
+    Generated (UTC): 2026-01-05T04:50:50.428Z
     Namespace: http://www.w3.org/2001/XMLSchema
     
     ProRock is a free and open-source Delphi library. Feedback and contributions are welcome.
@@ -46,7 +46,7 @@ type
   TDateTimeST = type TAnySimpleTypeST;
   TDerivationSetST = type TAnySimpleTypeST;
   TDurationST = type TAnySimpleTypeST;
-  [TNamingAttribute(TNaming.nUpperCase)]
+  [TNaming(TNaming.nUpperCase)]
   TEntitiesST = type TAnySimpleTypeST;
   TFullDerivationSetST = type TAnySimpleTypeST;
   TGDayST = type TAnySimpleTypeST;
@@ -54,23 +54,23 @@ type
   TGMonthST = type TAnySimpleTypeST;
   TGYearMonthST = type TAnySimpleTypeST;
   TGYearST = type TAnySimpleTypeST;
-  [TNamingAttribute(TNaming.nUpperCase)]
+  [TNaming(TNaming.nUpperCase)]
   TIdrefsST = type TAnySimpleTypeST;
   TLongST = type TIntegerST;
   TNamespaceListST = type TAnySimpleTypeST;
-  [TNamingAttribute(TNaming.nUpperCase)]
+  [TNaming(TNaming.nUpperCase)]
   TNmtokensST = type TAnySimpleTypeST;
   TNonNegativeIntegerST = type TIntegerST;
   TNonPositiveIntegerST = type TIntegerST;
   TNormalizedStringST = type TStringST;
-  [TNamingAttribute(TNaming.nUpperCase)]
+  [TNaming(TNaming.nUpperCase)]
   TNotationST = type TAnySimpleTypeST;
-  [TNamingAttribute(TNaming.nPascalCase)]
+  [TNaming(TNaming.nPascalCase)]
   TQNameST = type TAnySimpleTypeST;
   TSimpleDerivationSetST = type TAnySimpleTypeST;
   TTimeST = type TAnySimpleTypeST;
   TUnionMemberTypesST = type TAnySimpleTypeST;
-  [TValueAliasAttribute(High(TNonNegativeIntegerST), 'unbounded')]
+  [TValueAlias(High(TNonNegativeIntegerST), 'unbounded')]
   TAllNNIST = type TNonNegativeIntegerST;
   TIntST = type TLongST;
   TNegativeIntegerST = type TNonPositiveIntegerST;
@@ -79,23 +79,23 @@ type
   TUnsignedLongST = type TNonNegativeIntegerST;
   TFieldXpathST = type TTokenST;
   TLanguageST = type TTokenST;
-  [TNamingAttribute(TNaming.nPascalCase)]
+  [TNaming(TNaming.nPascalCase)]
   TNameST = type TTokenST;
-  [TNamingAttribute(TNaming.nUpperCase)]
+  [TNaming(TNaming.nUpperCase)]
   TNmtokenST = type TTokenST;
   TPublicST = type TTokenST;
   TSelectorXpathST = type TTokenST;
   TShortST = type TIntST;
   TUnsignedIntST = type TUnsignedLongST;
   TByteST = type TShortST;
-  [TNamingAttribute(TNaming.nPascalCase)]
+  [TNaming(TNaming.nPascalCase)]
   TNCNameST = type TNameST;
   TUnsignedShortST = type TUnsignedIntST;
-  [TNamingAttribute(TNaming.nUpperCase)]
+  [TNaming(TNaming.nUpperCase)]
   TEntityST = type TNCNameST;
-  [TNamingAttribute(TNaming.nUpperCase)]
+  [TNaming(TNaming.nUpperCase)]
   TIdST = type TNCNameST;
-  [TNamingAttribute(TNaming.nUpperCase)]
+  [TNaming(TNaming.nUpperCase)]
   TIdrefST = type TNCNameST;
   TUnsignedByteST = type TUnsignedShortST;
 
@@ -292,7 +292,7 @@ type
     fSimpleType: TLocalSimpleTypeCT;
   published
     property &Type: TQNameST read fType write fType;
-    [TDefaultAttribute(Ord(auOptional))]
+    [TDefault(Ord(auOptional))]
     property Use: TAttributeUseST read fUse write fUse;
     property Default: TStringST read fDefault write fDefault;
     property Fixed: TStringST read fFixed write fFixed;
@@ -339,9 +339,9 @@ type
     fAttributeGroup: TAttributeGroupRefCTList;
   published
     property Name: TNCNameST read fName write fName;
-    [TDefaultAttribute(False)]
+    [TDefault(False)]
     property Mixed: TBooleanST read fMixed write fMixed;
-    [TDefaultAttribute(False)]
+    [TDefault(False)]
     property Abstract: TBooleanST read fAbstract write fAbstract;
     property Final: TDerivationSetST read fFinal write fFinal;
     property Block: TDerivationSetST read fBlock write fBlock;
@@ -377,9 +377,9 @@ type
   published
     property Id: TIdST read fId write fId;
     property Name: TNCNameST read fName write fName;
-    [TDefaultAttribute(False)]
+    [TDefault(False)]
     property Mixed: TBooleanST read fMixed write fMixed;
-    [TDefaultAttribute(False)]
+    [TDefault(False)]
     property Abstract: TBooleanST read fAbstract write fAbstract;
     property Final: TDerivationSetST read fFinal write fFinal;
     property Block: TDerivationSetST read fBlock write fBlock;
@@ -411,7 +411,7 @@ type
     fAnnotation: TAnnotationE;
   published
     property Id: TIdST read fId write fId;
-    [TDefaultAttribute(False)]
+    [TDefault(False)]
     property Mixed: TBooleanST read fMixed write fMixed;
     property SimpleContent: TSimpleContentE read fSimpleContent;
     property ComplexContent: TComplexContentE read fComplexContent;
@@ -603,18 +603,18 @@ type
     property SubstitutionGroup: TQNameST read fSubstitutionGroup write fSubstitutionGroup;
     property Default: TStringST read fDefault write fDefault;
     property Fixed: TStringST read fFixed write fFixed;
-    [TDefaultAttribute(False)]
+    [TDefault(False)]
     property Nillable: TBooleanST read fNillable write fNillable;
-    [TDefaultAttribute(False)]
+    [TDefault(False)]
     property Abstract: TBooleanST read fAbstract write fAbstract;
     property Final: TDerivationSetST read fFinal write fFinal;
     property Block: TBlockSetST read fBlock write fBlock;
     property Form: TFormChoiceST read fForm write fForm;
     property Name: TNCNameST read fName write fName;
     property Ref: TQNameST read fRef write fRef;
-    [TDefaultAttribute(1)]
+    [TDefault(1)]
     property MinOccurs: TNonNegativeIntegerST read fMinOccurs write fMinOccurs;
-    [TDefaultAttribute(1)]
+    [TDefault(1)]
     property MaxOccurs: TAllNNIST read fMaxOccurs write fMaxOccurs;
     property Unique: TUniqueEList read fUnique;
     property Key: TKeyEList read fKey;
@@ -647,9 +647,9 @@ type
     property SubstitutionGroup: TQNameST read fSubstitutionGroup write fSubstitutionGroup;
     property Default: TStringST read fDefault write fDefault;
     property Fixed: TStringST read fFixed write fFixed;
-    [TDefaultAttribute(False)]
+    [TDefault(False)]
     property Nillable: TBooleanST read fNillable write fNillable;
-    [TDefaultAttribute(False)]
+    [TDefault(False)]
     property Abstract: TBooleanST read fAbstract write fAbstract;
     property Final: TDerivationSetST read fFinal write fFinal;
     property Block: TBlockSetST read fBlock write fBlock;
@@ -686,15 +686,15 @@ type
     property &Type: TQNameST read fType write fType;
     property Default: TStringST read fDefault write fDefault;
     property Fixed: TStringST read fFixed write fFixed;
-    [TDefaultAttribute(False)]
+    [TDefault(False)]
     property Nillable: TBooleanST read fNillable write fNillable;
     property Block: TBlockSetST read fBlock write fBlock;
     property Form: TFormChoiceST read fForm write fForm;
     property Name: TNCNameST read fName write fName;
     property Ref: TQNameST read fRef write fRef;
-    [TDefaultAttribute(1)]
+    [TDefault(1)]
     property MinOccurs: TNonNegativeIntegerST read fMinOccurs write fMinOccurs;
-    [TDefaultAttribute(1)]
+    [TDefault(1)]
     property MaxOccurs: TAllNNIST read fMaxOccurs write fMaxOccurs;
     property Unique: TUniqueEList read fUnique;
     property Key: TKeyEList read fKey;
@@ -719,9 +719,9 @@ type
   published
     property Name: TNCNameST read fName write fName;
     property Ref: TQNameST read fRef write fRef;
-    [TDefaultAttribute(1)]
+    [TDefault(1)]
     property MinOccurs: TNonNegativeIntegerST read fMinOccurs write fMinOccurs;
-    [TDefaultAttribute(1)]
+    [TDefault(1)]
     property MaxOccurs: TAllNNIST read fMaxOccurs write fMaxOccurs;
     property Element: TLocalElementCTList read fElement;
     property Group: TGroupRefCTList read fGroup;
@@ -746,9 +746,9 @@ type
     property Id: TIdST read fId write fId;
     property Name: TNCNameST read fName write fName;
     property Ref: TQNameST read fRef write fRef;
-    [TDefaultAttribute(1)]
+    [TDefault(1)]
     property MinOccurs: TNonNegativeIntegerST read fMinOccurs write fMinOccurs;
-    [TDefaultAttribute(1)]
+    [TDefault(1)]
     property MaxOccurs: TAllNNIST read fMaxOccurs write fMaxOccurs;
     property Annotation: TAnnotationE read fAnnotation;
     property All: TAllE read fAll;
@@ -794,9 +794,9 @@ type
   published
     property Id: TIdST read fId write fId;
     property Ref: TQNameST read fRef write fRef;
-    [TDefaultAttribute(1)]
+    [TDefault(1)]
     property MinOccurs: TNonNegativeIntegerST read fMinOccurs write fMinOccurs;
-    [TDefaultAttribute(1)]
+    [TDefault(1)]
     property MaxOccurs: TAllNNIST read fMaxOccurs write fMaxOccurs;
     property Annotation: TAnnotationE read fAnnotation;
   end;
@@ -814,9 +814,9 @@ type
     fAnnotation: TAnnotationE;
   published
     property Id: TIdST read fId write fId;
-    [TDefaultAttribute(1)]
+    [TDefault(1)]
     property MinOccurs: TNonNegativeIntegerST read fMinOccurs write fMinOccurs;
-    [TDefaultAttribute(1)]
+    [TDefault(1)]
     property MaxOccurs: TAllNNIST read fMaxOccurs write fMaxOccurs;
     property Element: TLocalElementCTList read fElement;
     property Group: TGroupRefCTList read fGroup;
@@ -869,15 +869,15 @@ type
     property &Type: TQNameST read fType write fType;
     property Default: TStringST read fDefault write fDefault;
     property Fixed: TStringST read fFixed write fFixed;
-    [TDefaultAttribute(False)]
+    [TDefault(False)]
     property Nillable: TBooleanST read fNillable write fNillable;
     property Block: TBlockSetST read fBlock write fBlock;
     property Form: TFormChoiceST read fForm write fForm;
     property Name: TNCNameST read fName write fName;
     property Ref: TQNameST read fRef write fRef;
-    [TDefaultAttribute(1)]
+    [TDefault(1)]
     property MinOccurs: TNonNegativeIntegerST read fMinOccurs write fMinOccurs;
-    [TDefaultAttribute(1)]
+    [TDefault(1)]
     property MaxOccurs: TAllNNIST read fMaxOccurs write fMaxOccurs;
     property Unique: TUniqueEList read fUnique;
     property Key: TKeyEList read fKey;
@@ -896,9 +896,9 @@ type
     fElement: TNarrowMaxMinCTList;
   published
     property Id: TIdST read fId write fId;
-    [TDefaultAttribute(1)]
+    [TDefault(1)]
     property MinOccurs: TNonNegativeIntegerST read fMinOccurs write fMinOccurs;
-    [TDefaultAttribute(1)]
+    [TDefault(1)]
     property MaxOccurs: TAllNNIST read fMaxOccurs write fMaxOccurs;
     property Annotation: TAnnotationE read fAnnotation;
     property Element: TNarrowMaxMinCTList read fElement;
@@ -909,9 +909,9 @@ type
     fNamespace: TNamespaceListST;
     fProcessContents: TWildcardProcessContentsST;
   published
-    [TDefaultAttribute('##any')]
+    [TDefault('##any')]
     property Namespace: TNamespaceListST read fNamespace write fNamespace;
-    [TDefaultAttribute(Ord(wpcStrict))]
+    [TDefault(Ord(wpcStrict))]
     property ProcessContents: TWildcardProcessContentsST read fProcessContents write fProcessContents;
   end;
 
@@ -1026,7 +1026,7 @@ type
     fFixed: TBooleanST;
   published
     property Value: TAnySimpleTypeST read fValue write fValue;
-    [TDefaultAttribute(False)]
+    [TDefault(False)]
     property Fixed: TBooleanST read fFixed write fFixed;
   end;
 
@@ -1050,7 +1050,7 @@ type
   published
     property Id: TIdST read fId write fId;
     property Value: TAnySimpleTypeST read fValue write fValue;
-    [TDefaultAttribute(False)]
+    [TDefault(False)]
     property Fixed: TBooleanST read fFixed write fFixed;
     property Annotation: TAnnotationE read fAnnotation;
   end;
@@ -1060,9 +1060,9 @@ type
     fMinOccurs: TNonNegativeIntegerST;
     fMaxOccurs: TAllNNIST;
   published
-    [TDefaultAttribute(1)]
+    [TDefault(1)]
     property MinOccurs: TNonNegativeIntegerST read fMinOccurs write fMinOccurs;
-    [TDefaultAttribute(1)]
+    [TDefault(1)]
     property MaxOccurs: TAllNNIST read fMaxOccurs write fMaxOccurs;
   end;
 
@@ -1101,9 +1101,9 @@ type
     property Version: TTokenST read fVersion write fVersion;
     property FinalDefault: TFullDerivationSetST read fFinalDefault write fFinalDefault;
     property BlockDefault: TBlockSetST read fBlockDefault write fBlockDefault;
-    [TDefaultAttribute(Ord(fcUnqualified))]
+    [TDefault(Ord(fcUnqualified))]
     property AttributeFormDefault: TFormChoiceST read fAttributeFormDefault write fAttributeFormDefault;
-    [TDefaultAttribute(Ord(fcUnqualified))]
+    [TDefault(Ord(fcUnqualified))]
     property ElementFormDefault: TFormChoiceST read fElementFormDefault write fElementFormDefault;
     property Id: TIdST read fId write fId;
     property Lang: ProRock.Xmlite.Schema.Xml.TLangA read fLang write fLang;
@@ -1159,9 +1159,9 @@ type
     fMinOccurs: TNonNegativeIntegerST;
     fMaxOccurs: TAllNNIST;
   published
-    [TDefaultAttribute(1)]
+    [TDefault(1)]
     property MinOccurs: TNonNegativeIntegerST read fMinOccurs write fMinOccurs;
-    [TDefaultAttribute(1)]
+    [TDefault(1)]
     property MaxOccurs: TAllNNIST read fMaxOccurs write fMaxOccurs;
   end;
 
@@ -1337,7 +1337,7 @@ type
   published
     property Id: TIdST read fId write fId;
     property Value: TAnySimpleTypeST read fValue write fValue;
-    [TDefaultAttribute(False)]
+    [TDefault(False)]
     property Fixed: TBooleanST read fFixed write fFixed;
     property Annotation: TAnnotationE read fAnnotation;
   end;
@@ -1361,7 +1361,7 @@ type
   published
     property Id: TIdST read fId write fId;
     property Value: TAnySimpleTypeST read fValue write fValue;
-    [TDefaultAttribute(False)]
+    [TDefault(False)]
     property Fixed: TBooleanST read fFixed write fFixed;
     property Annotation: TAnnotationE read fAnnotation;
   end;
