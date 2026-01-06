@@ -105,6 +105,7 @@ type
   public
     constructor Create; reintroduce; virtual;
 
+    function IsEmpty: boolean; inline;
     procedure Clear; reintroduce; virtual;
   end;
 
@@ -607,6 +608,11 @@ end;
 constructor TBasiteList<T>.Create;
 begin
   inherited;
+end;
+
+function TBasiteList<T>.IsEmpty: boolean;
+begin
+  Result := Count = 0;
 end;
 
 class function TBasiteList<T>.Meta: TMetaBasiteList;

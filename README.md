@@ -9,7 +9,9 @@ ProRock focuses on clarity, explicit structure, and maintainability, while keepi
   - [Basite](#basite-core)
   - [Extensions](#extensions)
   - [Xmlite](#xmlite)
-- [Platform and compiler support](#platform-and-compiler-support)
+- [ProRocket (Code Generator)](#prorocket-code-generator)
+- [Platform](#platform)
+- [Compatibility](#compatibility)
 - [Installation](#installation)
 
 ---
@@ -112,6 +114,15 @@ Feedback and contributions are especially welcome here.
 
 ---
 
+## ProRocket (Code Generator)
+
+**ProRocket** is a companion tool for ProRock that provides schema analysis and automatic code generation from XSD schema.
+
+ProRocket Lite is distributed as a prebuilt binary as a token of gratitude to active [Early ProRocker Sponsors](https://github.com/sponsors/VitalyPopov).
+_It is not required to use ProRock as a runtime library_.
+
+---
+
 ## Platform
 
 Development and active testing focus on recent Delphi releases and **64-bit** Windows targets.  
@@ -119,14 +130,18 @@ Development and active testing focus on recent Delphi releases and **64-bit** Wi
 
 ## Compatibility
 
-ProRock is developed and tested with fresh Delphi versions, primarily:
+ProRock is developed and tested mainly with the freshest Delphi versions, currently:
 
 - **Delphi 13 Florence**
-- **Delphi 12 Athens**
 
-The codebase actively uses modern language features (for example, **inline variable declarations**), so **older compilers are not officially supported**.
+At the same time, periodically the core library is verified to compile and work correctly with:
 
-If there is sufficient demand and available time, compatibility layers for older Delphi versions may be added in the future. However, versions **prior to Delphi 10.3** are not planned to be supported at all.
+- Delphi 12 Athens
+- Delphi 11 Alexandria
+- Delphi 10.4 Sydney
+- Delphi 10.3 Rio
+
+The codebase actively uses modern language features (for example, **inline variable declarations**), therefore **Delphi versions prior to 10.3 are not supported**.
 
 ## Installation
 

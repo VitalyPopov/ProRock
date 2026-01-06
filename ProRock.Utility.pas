@@ -14,6 +14,8 @@ type
   // camelCase, PascalCase, snake_case, CAPS_CASE, Title_Case, kebab-case, COBOL-CASE, Train-Case, flatcase, UPPERCASE
   TNaming = (nAsIs, nCamelCase, nPascalCase, nSnakeCase, nCapsCase, nTitleCase, nKebabCase, nCobolCase, nTrainCase, nFlatCase, nUpperCase);
 
+  TCustomAttributeClass = class of TCustomAttribute;
+
   TNamingAttribute = class(TCustomAttribute)
   private
     fNaming: TNaming;
@@ -21,6 +23,26 @@ type
     constructor Create(aNaming: TNaming);
     property Naming: TNaming read fNaming;
   end;
+
+  // Internal ProRock hash set (RTL-backed on D12+, fallback otherwise)
+{$IF CompilerVersion >= 36.0} // Delphi 12
+  THashSet<T> = class(System.Generics.Collections.THashSet<T>);
+{$ELSE}
+  THashSet<T> = class
+  private
+    fDictionary: TDictionary<T, Byte>;
+  public
+    constructor Create; overload;
+    constructor Create(const AItems: array of T; const AComparer: IEqualityComparer<T>); overload;
+    destructor Destroy; override;
+
+    function GetEnumerator: TDictionary<T, Byte>.TKeyEnumerator;
+
+    procedure Clear;
+    function Add(const Value: T): Boolean;
+    function Contains(const Value: T): Boolean;
+  end;
+{$ENDIF}
 
   THashedObjectList<T: class> = class
   private
@@ -883,5 +905,49 @@ begin
 
   fDictionary.AddOrSetValue(aItem, Result);
 end;
+
+{$IF CompilerVersion < 36.0} // Delphi < 12
+
+{ THashSet<T> }
+
+constructor THashSet<T>.Create;
+begin
+  fDictionary := TDictionary<T, Byte>.Create;
+end;
+
+constructor THashSet<T>.Create(const AItems: array of T; const AComparer: IEqualityComparer<T>);
+begin
+  fDictionary := TDictionary<T, Byte>.Create(AComparer);
+  for var item: T in AItems do
+    fDictionary.TryAdd(item, 0);
+end;
+
+destructor THashSet<T>.Destroy;
+begin
+  fDictionary.Free;
+  inherited;
+end;
+
+function THashSet<T>.GetEnumerator: TDictionary<T, Byte>.TKeyEnumerator;
+begin
+  Result := fDictionary.Keys.GetEnumerator;
+end;
+
+procedure THashSet<T>.Clear;
+begin
+  fDictionary.Clear;
+end;
+
+function THashSet<T>.Add(const Value: T): Boolean;
+begin
+  Result := fDictionary.TryAdd(Value, 0);
+end;
+
+function THashSet<T>.Contains(const Value: T): Boolean;
+begin
+  Result := fDictionary.ContainsKey(Value);
+end;
+
+{$ENDIF}
 
 end.

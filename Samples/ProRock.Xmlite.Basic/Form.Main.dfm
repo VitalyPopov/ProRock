@@ -48,7 +48,7 @@ object FormMain: TFormMain
     FixedCols = 0
     RowCount = 20
     FixedRows = 0
-    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing, goAlwaysShowEditor, goFixedRowDefAlign]
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing, goAlwaysShowEditor]
     ScrollBars = ssVertical
     TabOrder = 4
     ColWidths = (
