@@ -8,7 +8,7 @@ uses System.Classes, System.Rtti, Generics.Collections, System.SysUtils, System.
   ProRock.Utility;
 
 const
-  cProRockVersion = '1.0.0';
+  cProRockVersion = '1.0.1';
 
   // Maximum depth for automatic initialization of self-nested TBasite properties.
   // Higher values allow deeper nesting but may slow down initialization.
