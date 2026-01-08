@@ -1,8 +1,8 @@
 ﻿unit ProRock.Xmlite.Schema.Base;
 
 (*
-    This unit was automatically generated using ProRocket 1.0.2 Lite (ProRock 1.0.1)
-    Generated (UTC): 2026-01-07T13:22:43.077Z
+    This unit was automatically generated using ProRocket 1.0.3 Lite (ProRock 1.0.1)
+    Generated (UTC): 2026-01-08T09:13:51.803Z
     Namespace: http://www.w3.org/2001/XMLSchema
     
     ProRock is a free and open-source Delphi library. Feedback and contributions are welcome.
@@ -350,11 +350,11 @@ type
   TTopLevelComplexTypeCT = class(TXmliteComplexTypeRestricted)
   private
     fId: TIdST;
-    fName: TNCNameST;
     fMixed: TBooleanST;
     fAbstract: TBooleanST;
     fFinal: TDerivationSetST;
     fBlock: TDerivationSetST;
+    fName: TNCNameST;
     fSimpleContent: TSimpleContentE;
     fComplexContent: TComplexContentE;
     fGroup: TGroupRefCT;
@@ -367,13 +367,13 @@ type
     fAnnotation: TAnnotationE;
   published
     property Id: TIdST read fId write fId;
-    property Name: TNCNameST read fName write fName;
     [TDefault(False)]
     property Mixed: TBooleanST read fMixed write fMixed;
     [TDefault(False)]
     property Abstract: TBooleanST read fAbstract write fAbstract;
     property Final: TDerivationSetST read fFinal write fFinal;
     property Block: TDerivationSetST read fBlock write fBlock;
+    property Name: TNCNameST read fName write fName;
     property SimpleContent: TSimpleContentE read fSimpleContent;
     property ComplexContent: TComplexContentE read fComplexContent;
     property Group: TGroupRefCT read fGroup;
@@ -781,17 +781,17 @@ type
   TGroupRefCT = class(TXmliteComplexTypeRestricted)
   private
     fId: TIdST;
-    fRef: TQNameST;
     fMinOccurs: TNonNegativeIntegerST;
     fMaxOccurs: TAllNNIST;
+    fRef: TQNameST;
     fAnnotation: TAnnotationE;
   published
     property Id: TIdST read fId write fId;
-    property Ref: TQNameST read fRef write fRef;
     [TDefault(1)]
     property MinOccurs: TNonNegativeIntegerST read fMinOccurs write fMinOccurs;
     [TDefault(1)]
     property MaxOccurs: TAllNNIST read fMaxOccurs write fMaxOccurs;
+    property Ref: TQNameST read fRef write fRef;
     property Annotation: TAnnotationE read fAnnotation;
   end;
 
@@ -853,8 +853,8 @@ type
     fForm: TFormChoiceST;
     fName: TNCNameST;
     fRef: TQNameST;
-    fMinOccurs: TNonNegativeIntegerST;
-    fMaxOccurs: TAllNNIST;
+    fMinOccurs: TMinOccursST;
+    fMaxOccurs: TMaxOccursST;
     fUnique: TUniqueEList;
     fKey: TKeyEList;
     fKeyref: TKeyrefEList;
@@ -872,10 +872,10 @@ type
     property Form: TFormChoiceST read fForm write fForm;
     property Name: TNCNameST read fName write fName;
     property Ref: TQNameST read fRef write fRef;
-    [TDefault(1)]
-    property MinOccurs: TNonNegativeIntegerST read fMinOccurs write fMinOccurs;
-    [TDefault(1)]
-    property MaxOccurs: TAllNNIST read fMaxOccurs write fMaxOccurs;
+    [TDefault(Ord(mob1))]
+    property MinOccurs: TMinOccursST read fMinOccurs write fMinOccurs;
+    [TDefault(Ord(moc1))]
+    property MaxOccurs: TMaxOccursST read fMaxOccurs write fMaxOccurs;
     property Unique: TUniqueEList read fUnique;
     property Key: TKeyEList read fKey;
     property Keyref: TKeyrefEList read fKeyref;
@@ -890,16 +890,16 @@ type
     TMaxOccursST = (moe1);
   private
     fId: TIdST;
-    fMinOccurs: TNonNegativeIntegerST;
-    fMaxOccurs: TAllNNIST;
+    fMinOccurs: TMinOccursST;
+    fMaxOccurs: TMaxOccursST;
     fAnnotation: TAnnotationE;
     fElement: TNarrowMaxMinCTList;
   published
     property Id: TIdST read fId write fId;
-    [TDefault(1)]
-    property MinOccurs: TNonNegativeIntegerST read fMinOccurs write fMinOccurs;
-    [TDefault(1)]
-    property MaxOccurs: TAllNNIST read fMaxOccurs write fMaxOccurs;
+    [TDefault(Ord(mod1))]
+    property MinOccurs: TMinOccursST read fMinOccurs write fMinOccurs;
+    [TDefault(Ord(moe1))]
+    property MaxOccurs: TMaxOccursST read fMaxOccurs write fMaxOccurs;
     property Annotation: TAnnotationE read fAnnotation;
     property Element: TNarrowMaxMinCTList read fElement;
   end;
@@ -1046,14 +1046,14 @@ type
   TNumFacetCT = class(TXmliteComplexTypeRestricted)
   private
     fId: TIdST;
-    fValue: TAnySimpleTypeST;
     fFixed: TBooleanST;
+    fValue: TNonNegativeIntegerST;
     fAnnotation: TAnnotationE;
   published
     property Id: TIdST read fId write fId;
-    property Value: TAnySimpleTypeST read fValue write fValue;
     [TDefault(False)]
     property Fixed: TBooleanST read fFixed write fFixed;
+    property Value: TNonNegativeIntegerST read fValue write fValue;
     property Annotation: TAnnotationE read fAnnotation;
   end;
 
@@ -1339,14 +1339,14 @@ type
   TTotalDigitsE = class(TXmliteComplexTypeRestricted)
   private
     fId: TIdST;
-    fValue: TAnySimpleTypeST;
     fFixed: TBooleanST;
+    fValue: TPositiveIntegerST;
     fAnnotation: TAnnotationE;
   published
     property Id: TIdST read fId write fId;
-    property Value: TAnySimpleTypeST read fValue write fValue;
     [TDefault(False)]
     property Fixed: TBooleanST read fFixed write fFixed;
+    property Value: TPositiveIntegerST read fValue write fValue;
     property Annotation: TAnnotationE read fAnnotation;
   end;
 
@@ -1365,25 +1365,25 @@ type
     TValueST = (vPreserve, vReplace, vCollapse);
   private
     fId: TIdST;
-    fValue: TAnySimpleTypeST;
     fFixed: TBooleanST;
+    fValue: TValueST;
     fAnnotation: TAnnotationE;
   published
     property Id: TIdST read fId write fId;
-    property Value: TAnySimpleTypeST read fValue write fValue;
     [TDefault(False)]
     property Fixed: TBooleanST read fFixed write fFixed;
+    property Value: TValueST read fValue write fValue;
     property Annotation: TAnnotationE read fAnnotation;
   end;
 
   TPatternE = class(TXmliteComplexTypeRestricted)
   private
     fId: TIdST;
-    fValue: TAnySimpleTypeST;
+    fValue: TStringST;
     fAnnotation: TAnnotationE;
   published
     property Id: TIdST read fId write fId;
-    property Value: TAnySimpleTypeST read fValue write fValue;
+    property Value: TStringST read fValue write fValue;
     property Annotation: TAnnotationE read fAnnotation;
   end;
 
