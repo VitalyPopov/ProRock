@@ -1138,7 +1138,7 @@ begin
     xctAttributeGroup:
       Result := namespace.AttributeGroups[aXmlName];
     xctElement:
-      Result := namespace.ElementGroups[aXmlName];
+      Result := namespace.Elements[aXmlName];
     xctElementGroup:
       Result := namespace.ElementGroups[aXmlName];
   end;
