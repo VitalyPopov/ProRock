@@ -243,10 +243,10 @@ class function TReaderXmlite.PassNode(var aCursor: PChar; const aNodeName: strin
 begin
   Result := False;
 
-  while MoveToChars(aCursor, ['"', '<', '/', '>']) do
+  while MoveToChars(aCursor, ['"', '''', '<', '/', '>']) do
     case aCursor^ of
-      '"': // attribute value
-        PassQuotes(aCursor);
+      '"', '''': // attribute value
+        PassQuotes(aCursor, aCursor^);
       '<': // next tag
         if (aCursor[1] = '!') then // DTD or comments
         begin
@@ -358,17 +358,19 @@ class function TReaderXmlite.ReadQuotedValueInPlace(var aCursor: PChar): string;
 begin
   Result := '';
 
-  if not TReaderXmlite.MoveToChar(aCursor, '"') then
+  if not TReaderXmlite.MoveToChars(aCursor, ['"', '''']) then
     Exit; // no opening quote found
+  var quoteChar: Char := aCursor^; // remember which quote
+
   Inc(aCursor);
   var valueStart: PChar := aCursor;
 
-  if not TReaderXmlite.MoveToChar(aCursor, '"') then
+  if not TReaderXmlite.MoveToChar(aCursor, quoteChar) then
     Exit; // no closing quote found
 
   aCursor^ := #0; // temporarily terminate the string
   Result := ReadUnescapeInPlace(valueStart); // process the value
-  aCursor^ := '"'; // restore the closing quote
+  aCursor^ := quoteChar; // restore the closing quote
 
   Inc(aCursor); // move past the closing quote
 end;
