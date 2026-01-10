@@ -1,8 +1,8 @@
 ﻿unit ProRock.Xmlite.Schema.Base;
 
 (*
-    This unit was automatically generated using ProRocket 1.0.3 Lite (ProRock 1.0.1)
-    Generated (UTC): 2026-01-08T09:13:51.803Z
+    This unit was automatically generated using ProRocket 1.0.4 Lite (ProRock 1.0.2)
+    Generated (UTC): 2026-01-10T19:23:25.388Z
     Namespace: http://www.w3.org/2001/XMLSchema
     
     ProRock is a free and open-source Delphi library. Feedback and contributions are welcome.
@@ -971,6 +971,7 @@ type
     property Field: TFieldEList read fField;
   end;
 
+  [TXmliteAnyElement]
   TAnyTypeCT = class(TXmliteComplexType);
 
   TSimpleTypeCT = class(TAnnotatedCT)
@@ -1246,6 +1247,7 @@ type
     property System: TAnyURIST read fSystem write fSystem;
   end;
 
+  [TXmliteAnyElement]
   TAppinfoE = class(TXmliteElement)
   private
     fSource: TAnyURIST;
@@ -1253,6 +1255,7 @@ type
     property Source: TAnyURIST read fSource write fSource;
   end;
 
+  [TXmliteAnyElement]
   TDocumentationE = class(TXmliteElement)
   private
     fSource: TAnyURIST;
