@@ -234,7 +234,7 @@ type
     destructor Destroy; override;
 
     function Add(aProperty: TProperty): integer; reintroduce;
-    function Get(const aName: string; out aProperty: TProperty): boolean; inline;
+    function Get(const aName: string; var aProperty: TProperty): boolean; inline;
   end;
 
   TMetaExtension = class;
@@ -1109,7 +1109,7 @@ begin
   inherited;
 end;
 
-function TPropertyList.Get(const aName: string; out aProperty: TProperty): boolean;
+function TPropertyList.Get(const aName: string; var aProperty: TProperty): boolean;
 begin
   Result := fHashedList.TryGetValue(aName, aProperty);
 end;
