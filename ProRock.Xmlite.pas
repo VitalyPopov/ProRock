@@ -46,7 +46,7 @@ type
   TMetaBank = ProRock.Basite.TMetaBank;
   {$ENDREGION}
 
-  TWriterXmlite = class(TWriterBase)
+  TWriterXmlite = class(TWriterBase) // todo: should be moved to ProRock.Xmlite.Utility
   private
     fPretty: boolean;
 
@@ -73,9 +73,9 @@ type
   private
     fXmlPrefix, fXmlName: string;
     fXmlAttributes: TDictionary<string, string>;
-    fXmlElements: TObjectList<TXmlite>;
     fXmlns: TXmlns;
     fXmlText: string;
+    fXmlAny: TBasiteList<TBasite>;
   protected
     procedure Initialize; override;
     procedure Deinitialize; override;
@@ -89,8 +89,8 @@ type
 
     property XmlPrefix: string read fXmlPrefix write fXmlPrefix;
     property XmlName: string read fXmlName write fXmlName;
-    property XmlAttributes: TDictionary<string, string> read fXmlAttributes;
-    property XmlElements: TObjectList<TXmlite> read fXmlElements;
+    property XmlAny: TBasiteList<TBasite> read fXmlAny;
+    property XmlAttributes: TDictionary<string, string> read fXmlAttributes; // todo: remove when XmlAnyAttribute will be ready
     property XmlText: string read fXmlText write fXmlText;
 
     function IsEmptyOrDefault: boolean; override;
@@ -168,8 +168,8 @@ type
     function ReadTagContents(var aCursor: PChar; const aName: string; aXmlns: TXmlns): boolean;
 
     function FromXml(var aXmlCursor: PChar; aXmlns: TXmlns = nil): boolean; overload;
-    procedure ToXml(aWriter: TWriterXmlite; const aName: string = ''; aNamespaces: boolean = False; aXmlHeader: boolean = False);
-      overload;
+    procedure ToXml(aWriter: TWriterXmlite; const aName: string = ''; aStrictlyPrefixed: boolean = False; aNamespaces: boolean = False;
+      aXmlHeader: boolean = False); overload;
   public
     constructor CreateFromXml(const aXml: string);
 
@@ -181,6 +181,8 @@ type
   end;
 
   TXmliteElementAttribute = class(TCustomAttribute);
+  TXmliteAnyElementAttribute = class(TCustomAttribute);
+  TXmliteAnyAttributeAttribute = class(TCustomAttribute); // todo: realize through TXmlite.ProcessAnyAttribute
 
   TNamespaceAttribute = class(TCustomAttribute)
   private
@@ -254,12 +256,14 @@ type
 
   TMetaBasiteXmlite = class(TMetaXmlite)
   private
-    fIsTXmlite: boolean;
+    fIsTXmlite, fProcessAnyElement, fProcessAnyAttribute: boolean;
     fAttributes: TDictObjectList<TUriedName, TPropertyData>;
     fElements: TDictObjectList<TUriedName, TProperty>;
 
     function FieldIsElement(aField: TProperty): boolean; inline;
     function GetMeta: TMetaBasite;
+    function GetProcessAnyAttribute: boolean;
+    function GetProcessAnyElement: boolean;
   protected
     procedure NamespaceUnregister; override;
     procedure NamespaceRegister(aNamespace: TNamespace; aType: TXmliteComponentType); override;
@@ -270,7 +274,10 @@ type
     property Meta: TMetaBasite read GetMeta;
     property Attributes: TDictObjectList<TUriedName, TPropertyData> read fAttributes;
     property Elements: TDictObjectList<TUriedName, TProperty> read fElements;
-    property IsTXmlite: boolean read fIsTXmlite; // should be removed
+    property IsTXmlite: boolean read fIsTXmlite;
+
+    property ProcessAnyElement: boolean read GetProcessAnyElement write fProcessAnyElement;
+    property ProcessAnyAttribute: boolean read GetProcessAnyAttribute write fProcessAnyAttribute; // todo: realize it
   end;
 
   TMetaBasiteXmliteText = class(TMetaBasiteXmlite)
@@ -545,11 +552,31 @@ begin
       else // closing tag with wrong name
         Exit;
 
+    // get a property for property defined name, following prefix/uri
     var propertyElement: TProperty := Meta.Xmlite.Elements[TUriedName.Create(aXmlns[tagPrefix], tagName)];
-    if propertyElement = nil then
+
+    if (propertyElement = nil) and Meta.Xmlite.ProcessAnyElement then
+    begin // for xs:any - try to find Namespace-registered element and parse it
+      var metaElement: TMetaBasite := TMetaBank.Xmlite.Namespaces.GetMetaBasite(aXmlns[tagPrefix], xctElement, tagName);
+      if Assigned(metaElement) then
+      begin
+        var element: TBasite := metaElement.ClassItself.Create;
+        aCursor := cursorStart;
+        if element.FromXml(aCursor, aXmlns) then
+        begin
+          TXmlite(Self).XmlAny.Add(element);
+          Continue;
+        end
+        else
+          element.Free;
+      end;
+    end;
+
+    if propertyElement = nil then // as a fallback - try to find such property without tag
       propertyElement := Meta.Xmlite.Elements[TUriedName.Create('', tagName)];
-    if propertyElement = nil then // no such name in elements list of the object - skip the whole node till it's end
-    begin
+
+    if propertyElement = nil then
+    begin // no such name in elements list of the object - skip the whole node till it's end
       Inc(aCursor);
       if not TReaderXmlite.PassNode(aCursor, tagFullName) then
         Exit;
@@ -604,6 +631,9 @@ function TBasiteHelper.TagType: TTagType;
 begin
   Result := xttNone;
 
+  if Meta.Xmlite.ProcessAnyElement and (TXmlite(Self).XmlAny.Count > 0) then
+    Exit(xttOpenClose);
+
   for var propertyInfo: TProperty in Meta.Xmlite.Elements.Values do
     case propertyInfo.PropertyType of
       ptData:
@@ -624,14 +654,22 @@ begin
       Exit(xttEmpty);
 end;
 
-procedure TBasiteHelper.ToXml(aWriter: TWriterXmlite; const aName: string; aNamespaces, aXmlHeader: boolean);
+procedure TBasiteHelper.ToXml(aWriter: TWriterXmlite; const aName: string; aStrictlyPrefixed, aNamespaces, aXmlHeader: boolean);
 
-  function elementName(aProperty: TProperty; aStrictlyPrefixed: boolean = False): string; inline;
+  function elementName(aProperty: TProperty; aStrictlyPrefixed: boolean = False): string; overload;
   begin
-    if aStrictlyPrefixed or (aProperty.Xmlite.Namespace = aProperty.ParentMeta.Xmlite.Namespace) then
-      Result := aProperty.Xmlite.Name
+    if aStrictlyPrefixed or (aProperty.Xmlite.Namespace <> aProperty.ParentMeta.Xmlite.Namespace) then
+      Result := aProperty.Xmlite.NamePrefixed
     else
-      Result := aProperty.Xmlite.NamePrefixed;
+      Result := aProperty.Xmlite.Name;
+  end;
+
+  function elementName(aBasite: TBasite; aStrictlyPrefixed: boolean = False): string; overload;
+  begin
+    if aStrictlyPrefixed or (aBasite.Meta.Xmlite.Namespace <> Meta.Xmlite.Namespace) then
+      Result := aBasite.Meta.Xmlite.NamePrefixed
+    else
+      Result := aBasite.Meta.Xmlite.Name;
   end;
 
 begin
@@ -648,7 +686,10 @@ begin
 
   var objectName: string := aName;
   if objectName.IsEmpty then
-    objectName := Meta.Xmlite.Name;
+    if aStrictlyPrefixed then
+      objectName := Meta.Xmlite.NamePrefixed
+    else
+      objectName := Meta.Xmlite.Name;
 
   case TagType of
     xttEmpty:
@@ -660,49 +701,51 @@ begin
         if Meta.Xmlite.IsTXmlite and not TXmlite(Self).XmlText.IsEmpty then
           aWriter.AddXmlEscape(TXmlite(Self).XmlText);
 
+        aWriter.IncLevel;
+
         for var propertyElement in Meta.Xmlite.Elements.Values do
-        begin
-          aWriter.IncLevel;
-          try
-            case propertyElement.PropertyType of
-              ptData:
-                begin
-                  var propertyData: TPropertyData := TPropertyData(propertyElement);
-                  if not propertyData.ValueIsDefault(Self) then
-                    aWriter.AddTextNode(elementName(propertyElement), propertyData.Value[Self], propertyData);
-                end;
-              ptBasite:
-                begin
-                  var propertyBasite: TPropertyBasite := TPropertyBasite(propertyElement);
-                  var fieldObject: TBasite := propertyBasite.ObjectPointer(Self)^;
-                  if fieldObject = nil then
-                    Continue;
-                  if propertyBasite.Meta.ClassItself.InheritsFrom(TXmliteTextElement) and not TXmliteTextElement(fieldObject).IsEmptyOrDefault
-                  then
-                    aWriter.AddTextNode(elementName(propertyElement), TXmliteTextElement(fieldObject).xmlText,
-                      TMetaBasiteXmliteText(fieldObject.Meta.Xmlite).xmlTextProperty, fieldObject)
+          case propertyElement.PropertyType of
+            ptData:
+              begin
+                var propertyData: TPropertyData := TPropertyData(propertyElement);
+                if not propertyData.ValueIsDefault(Self) then
+                  aWriter.AddTextNode(elementName(propertyElement), propertyData.Value[Self], propertyData);
+              end;
+            ptBasite:
+              begin
+                var propertyBasite: TPropertyBasite := TPropertyBasite(propertyElement);
+                var fieldObject: TBasite := propertyBasite.ObjectPointer(Self)^;
+                if fieldObject = nil then
+                  Continue;
+                if propertyBasite.Meta.ClassItself.InheritsFrom(TXmliteTextElement) and
+                  not TXmliteTextElement(fieldObject).IsEmptyOrDefault then
+                  aWriter.AddTextNode(elementName(propertyElement), TXmliteTextElement(fieldObject).xmlText,
+                    TMetaBasiteXmliteText(fieldObject.Meta.Xmlite).xmlTextProperty, fieldObject)
+                else
+                  fieldObject.ToXml(aWriter, elementName(propertyElement, aStrictlyPrefixed), aStrictlyPrefixed);
+              end;
+            ptBasiteList:
+              begin
+                var propertyBasiteList: TPropertyBasiteList := TPropertyBasiteList(propertyElement);
+                var list: TBasiteList := propertyBasiteList.ObjectPointer(Self)^;
+                if list = nil then
+                  Continue;
+                for var i := 0 to list.Count - 1 do
+                  if propertyBasiteList.Meta.ItemMeta.ClassItself.InheritsFrom(TXmliteTextElement) and
+                    not TXmliteTextElement(list[i]).IsEmptyOrDefault then
+                    aWriter.AddTextNode(elementName(propertyElement), TXmliteTextElement(list[i]).xmlText,
+                      TMetaBasiteXmliteText(list[i].Meta.Xmlite).xmlTextProperty, list[i])
                   else
-                    fieldObject.ToXml(aWriter, elementName(propertyElement));
-                end;
-              ptBasiteList:
-                begin
-                  var propertyBasiteList: TPropertyBasiteList := TPropertyBasiteList(propertyElement);
-                  var list: TBasiteList := propertyBasiteList.ObjectPointer(Self)^;
-                  if list = nil then
-                    Continue;
-                  for var i := 0 to list.Count - 1 do
-                    if propertyBasiteList.Meta.ItemMeta.ClassItself.InheritsFrom(TXmliteTextElement) and not TXmliteTextElement(list[i]).IsEmptyOrDefault
-                    then
-                      aWriter.AddTextNode(elementName(propertyElement), TXmliteTextElement(list[i]).xmlText,
-                        TMetaBasiteXmliteText(list[i].Meta.Xmlite).xmlTextProperty, list[i])
-                    else
-                      list[i].ToXml(aWriter, elementName(propertyElement));
-                end;
-            end;
-          finally
-            aWriter.DecLevel;
+                    list[i].ToXml(aWriter, elementName(propertyElement, aStrictlyPrefixed), aStrictlyPrefixed);
+              end;
           end;
-        end;
+
+        if Meta.Xmlite.IsTXmlite and Meta.Xmlite.ProcessAnyElement then
+          for var anyElement: TBasite in TXmlite(Self).XmlAny do
+            anyElement.ToXml(aWriter, elementName(anyElement, True), True);
+
+        aWriter.DecLevel;
+
         aWriter.AddIndent;
         aWriter.AddTagClose(objectName);
       end;
@@ -716,7 +759,7 @@ procedure TBasiteHelper.ToXml(aStream: TStream; const aName: string; aXmlHeader:
 begin
   var writer: TWriterXmlite := TWriterXmlite.Create(aStream);
   try
-    ToXml(writer, aName, aXmlHeader);
+    ToXml(writer, aName, False, True, aXmlHeader);
   finally
     writer.Free;
   end;
@@ -726,7 +769,7 @@ function TBasiteHelper.ToXml(const aName: string; aXmlHeader: boolean): string;
 begin
   var writer: TWriterXmlite := TWriterXmlite.Create;
   try
-    ToXml(writer, aName, True, aXmlHeader);
+    ToXml(writer, aName, False, True, aXmlHeader);
     Result := writer.Text;
   finally
     writer.Free;
@@ -939,8 +982,8 @@ end;
 
 procedure TXmlite.Deinitialize;
 begin
+  fXmlAny.Free;
   fXmlns.Free;
-  fXmlElements.Free;
   fXmlAttributes.Free;
   inherited;
 end;
@@ -965,8 +1008,8 @@ procedure TXmlite.Initialize;
 begin
   inherited;
   fXmlAttributes := TDictionary<string, string>.Create;
-  fXmlElements := TObjectList<TXmlite>.Create;
   fXmlns := TXmlns.Create;
+  fXmlAny := TBasiteList<TBasite>.Create;
 end;
 
 function TXmlite.IsEmptyOrDefault: boolean;
@@ -1311,6 +1354,17 @@ begin
   end;
 
   fIsTXmlite := Meta.ClassItself.InheritsFrom(TXmlite);
+  if not fIsTXmlite then
+    Exit;
+
+  fProcessAnyElement := aMeta.ClassItself.ClassParent.Meta.Xmlite.ProcessAnyElement;
+  if not fProcessAnyElement then
+    for var attribute: TCustomAttribute in aMeta.RttiType.GetAttributes do
+      if attribute.ClassType = TXmliteAnyElementAttribute then
+      begin
+        fProcessAnyElement := True;
+        break;
+      end;
 end;
 
 destructor TMetaBasiteXmlite.Destroy;
@@ -1331,6 +1385,16 @@ end;
 function TMetaBasiteXmlite.GetMeta: TMetaBasite;
 begin
   Result := TMetaBasite(inherited Meta);
+end;
+
+function TMetaBasiteXmlite.GetProcessAnyAttribute: boolean;
+begin
+  Result := fIsTXmlite and fProcessAnyAttribute;
+end;
+
+function TMetaBasiteXmlite.GetProcessAnyElement: boolean;
+begin
+  Result := fIsTXmlite and fProcessAnyElement;
 end;
 
 procedure TMetaBasiteXmlite.NamespaceRegister(aNamespace: TNamespace; aType: TXmliteComponentType);
