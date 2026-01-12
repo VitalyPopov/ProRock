@@ -332,17 +332,23 @@ type
     procedure Add(aMeta: TMeta; aType: TXmliteComponentType);
   end;
 
-  TNamespaceList = class(TDictObjectList<string, TNamespace>)
+  TNamespaceList = class
+  type
+    TNamespaceIterate = reference to procedure (aNamespace: TNamespace);
   private
+    fData: TDictObjectList<string, TNamespace>;
     fLocker: TCriticalSection;
   public
-    property Locker: TCriticalSection read fLocker;
+    constructor Create; reintroduce;
+    destructor Destroy; override;
 
+    procedure Add(aNamespace: TNamespace);
+
+    function GetNamespace(const aUri: string): TNamespace;
     function GetTypeName(const aUri: string; aType: TXmliteComponentType; const aXmlName: string; aFullName: boolean = False): string;
     function GetMetaBasite(const aUri: string; aType: TXmliteComponentType; const aXmlName: string): TMetaBasite;
 
-    constructor Create; reintroduce;
-    destructor Destroy; override;
+    procedure IterateLocked(aNamespaceIterate: TNamespaceIterate);
   end;
 
   TMetaBankXmlite = class sealed(TMetaBankExtension)
@@ -351,7 +357,6 @@ type
 
     class constructor Create;
   public
-    // currently RegisterNamespace is hardly safe, so it should be used only in the Initialization section of a unit
     class function RegisterNamespace(const aUri: string; const aSimpleTypes: TArray<PTypeInfo>; const aComplexTypes: TArray<TBasiteClass>;
       const aAttributes: TArray<PTypeInfo>; const aAttributeGroups, aElements, aGroups: TArray<TBasiteClass>; const aPrefix: string;
       aNaming: TNaming = cDefaultNaming; const aPostfixSimpleType: string = cDefaultPostfixSimpleType;
@@ -365,11 +370,10 @@ type
     constructor Create; override;
     destructor Destroy; override;
 
-    property Namespaces: TNamespaceList read fNamespaces;
-
     function ItemCreate(aMeta: TMeta): TMetaExtension; override;
     function PropertyCreate(aProperty: TProperty): TPropertyExtension; override;
 
+    property Namespaces: TNamespaceList read fNamespaces;
     function TryGetNamespace(const aUri: string; var aNamespace: TNamespace): boolean;
   end;
 
@@ -1153,15 +1157,26 @@ end;
 
 { TNamespaceList }
 
+procedure TNamespaceList.Add(aNamespace: TNamespace);
+begin
+  fLocker.Enter;
+  try
+    fData.Add(aNamespace.Uri, aNamespace);
+  finally
+    fLocker.Leave;
+  end;
+end;
+
 constructor TNamespaceList.Create;
 begin
-  inherited Create;
+  fData := TDictObjectList<string, TNamespace>.Create;
   fLocker := TCriticalSection.Create;
 end;
 
 destructor TNamespaceList.Destroy;
 begin
   fLocker.Free;
+  fData.Free;
   inherited;
 end;
 
@@ -1171,9 +1186,9 @@ begin
   if aUri.IsEmpty then
     Exit;
 
-  var namespace: TNamespace := Value[aUri];
+  var namespace: TNamespace := GetNamespace(aUri);
   if namespace = nil then
-    Exit;
+     Exit;
 
   case aType of
     xctComplexType:
@@ -1187,13 +1202,23 @@ begin
   end;
 end;
 
+function TNamespaceList.GetNamespace(const aUri: string): TNamespace;
+begin
+  fLocker.Enter;
+  try
+    Result := fData[aUri];
+  finally
+    fLocker.Leave;
+  end;
+end;
+
 function TNamespaceList.GetTypeName(const aUri: string; aType: TXmliteComponentType; const aXmlName: string; aFullName: boolean): string;
 begin
   Result := '';
   if aUri.IsEmpty then
     Exit;
 
-  var namespace: TNamespace := Value[aUri];
+  var namespace: TNamespace := GetNamespace(aUri);
   if namespace = nil then
     Exit;
 
@@ -1215,6 +1240,17 @@ begin
 
   if component <> nil then
     Result := IfThen(aFullName and not component.IsSystem, component.FullName, component.SimplifiedName);
+end;
+
+procedure TNamespaceList.IterateLocked(aNamespaceIterate: TNamespaceIterate);
+begin
+  fLocker.Enter;
+  try
+    for var namespace: TNamespace in fData.Values do
+      aNamespaceIterate(namespace);
+  finally
+    fLocker.Leave;
+  end;
 end;
 
 { TMetaBankXmlite }
@@ -1262,6 +1298,9 @@ class function TMetaBankXmlite.RegisterNamespace(const aUri: string; const aSimp
   const aPostfixSimpleType, aPostfixComplexType, aPostfixAttribute, aPostfixAttributeGroup, aPostfixElement, aPostfixElementGroup: string)
   : TNamespace;
 begin
+  if Instance.TryGetNamespace(aUri, Result) then // already registered
+    Exit;
+
   Result := TNamespace.Create(aUri, aPrefix, aNaming, aPostfixSimpleType, aPostfixComplexType, aPostfixAttribute, aPostfixAttributeGroup,
     aPostfixElement, aPostfixElementGroup);
 
@@ -1283,25 +1322,13 @@ begin
   for var elementGroup: TBasiteClass in aGroups do
     Result.Add(elementGroup.Meta, xctElementGroup);
 
-  Instance.NameSpaces.fLocker.Enter;
-  try
-    Instance.fNamespaces.Remove(aUri);
-    Instance.fNamespaces.Add(aUri, Result);
-  finally
-    Instance.NameSpaces.fLocker.Leave;
-  end;
+  Instance.fNamespaces.Add(Result);
 end;
 
 function TMetaBankXmlite.TryGetNamespace(const aUri: string; var aNamespace: TNamespace): boolean;
 begin
-  aNamespace := nil;
-  fNamespaces.Locker.Enter;
-  try
-    aNamespace := fNamespaces[aUri];
-  finally
-    Result := aNamespace <> nil;
-    fNamespaces.Locker.Leave;
-  end;
+  aNamespace := fNamespaces.GetNamespace(aUri);
+  Result := Assigned(aNamespace);
 end;
 
 { TMetaHelper }
