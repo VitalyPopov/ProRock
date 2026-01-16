@@ -6,6 +6,7 @@ uses System.Classes, System.SysUtils, System.StrUtils, System.Generics.Collectio
   ProRock.Utility;
 
 type
+  TXmliteComponentType = (xctUndefined, xctSimpleType, xctComplexType, xctAttribute, xctAttributeGroup, xctElement, xctElementGroup);
   TTagType = (xttNone, xttOpenClose, xttEmpty, xttText);
 
   { todo: inverstigate if it is a proper approach. Some info:

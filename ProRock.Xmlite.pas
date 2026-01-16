@@ -12,12 +12,15 @@ const
   cXmliteTextNodeFieldName = 'xmlText';
   cXmlDeclaration = '<?xml version="1.0" encoding="UTF-8"?>'; // todo: make it somehow better
 
-  cDefaultPostfixSimpleType = 'ST';
-  cDefaultPostfixComplexType = 'CT';
-  cDefaultPostfixAttribute = 'A';
-  cDefaultPostfixAttributeGroup = 'AG';
-  cDefaultPostfixElement = 'E';
-  cDefaultPostfixElementGroup = 'EG';
+  cDefaultSuffixSimpleType = 'ST';
+  cDefaultSuffixComplexType = 'CT';
+  cDefaultSuffixAttribute = 'A';
+  cDefaultSuffixAttributeGroup = 'AG';
+  cDefaultSuffixElement = 'E';
+  cDefaultSuffixElementGroup = 'EG';
+
+  cDefaultSuffix: array [TXmliteComponentType] of string = ('', cDefaultSuffixSimpleType, cDefaultSuffixComplexType,
+    cDefaultSuffixAttribute, cDefaultSuffixAttributeGroup, cDefaultSuffixElement, cDefaultSuffixElementGroup);
 
   cDefaultNaming = TNaming.nCamelCase;
 
@@ -192,8 +195,6 @@ type
     property Uri: string read fUri;
   end;
 
-  TXmliteComponentType = (xctUndefined, xctSimpleType, xctComplexType, xctAttribute, xctAttributeGroup, xctElement, xctElementGroup);
-
   TNamespace = class;
 
   TPropertyXmlite = class(TPropertyExtension)
@@ -298,16 +299,16 @@ type
   private
     fUnitQualifiedName: string;
     fPrefix: string;
-    fPostfixSimpleType, fPostfixComplexType, fPostfixAttribute, fPostfixAttributeGroup, fPostfixElement, fPostfixElementGroup: string;
-    fPostfixLengthSimpleType, fPostfixLengthComplexType, fPostfixLengthAttribute, fPostfixLengthAttributeGroup, fPostfixLengthElement,
-      fPostfixLengthElementGroup: integer;
+    fSuffixSimpleType, fSuffixComplexType, fSuffixAttribute, fSuffixAttributeGroup, fSuffixElement, fSuffixElementGroup: string;
+    fSuffixLengthSimpleType, fSuffixLengthComplexType, fSuffixLengthAttribute, fSuffixLengthAttributeGroup, fSuffixLengthElement,
+      fSuffixLengthElementGroup: integer;
     fUri: string;
     fNaming: TNaming;
     fSimpleTypes, fAttributes: TDictObjectList<string, TMetaType>;
     fComplexTypes, fAttributeGroups, fElements, fElementGroups: TDictObjectList<string, TMetaBasite>;
   public
-    constructor Create(const aUri, aPrefix: string; aNaming: TNaming; const aPostfixSimpleType, aPostfixComplexType, aPostfixAttribute,
-      aPostfixAttributeGroup, aPostfixElement, aPostfixElementGroup: string);
+    constructor Create(const aUri, aPrefix: string; aNaming: TNaming; const aSuffixSimpleType, aSuffixComplexType, aSuffixAttribute,
+      aSuffixAttributeGroup, aSuffixElement, aSuffixElementGroup: string);
     destructor Destroy; override;
 
     property UnitQualifiedName: string read fUnitQualifiedName;
@@ -315,12 +316,12 @@ type
     property Prefix: string read fPrefix;
     property Naming: TNaming read fNaming;
 
-    property PostfixSimpleType: string read fPostfixSimpleType;
-    property PostfixComplexType: string read fPostfixComplexType;
-    property PostfixAttribute: string read fPostfixAttribute;
-    property PostfixAttributeGroup: string read fPostfixAttributeGroup;
-    property PostfixElement: string read fPostfixElement;
-    property PostfixElementGroup: string read fPostfixElementGroup;
+    property SuffixSimpleType: string read fSuffixSimpleType;
+    property SuffixComplexType: string read fSuffixComplexType;
+    property SuffixAttribute: string read fSuffixAttribute;
+    property SuffixAttributeGroup: string read fSuffixAttributeGroup;
+    property SuffixElement: string read fSuffixElement;
+    property SuffixElementGroup: string read fSuffixElementGroup;
 
     property SimpleTypes: TDictObjectList<string, TMetaType> read fSimpleTypes;
     property ComplexTypes: TDictObjectList<string, TMetaBasite> read fComplexTypes;
@@ -359,10 +360,10 @@ type
   public
     class function RegisterNamespace(const aUri: string; const aSimpleTypes: TArray<PTypeInfo>; const aComplexTypes: TArray<TBasiteClass>;
       const aAttributes: TArray<PTypeInfo>; const aAttributeGroups, aElements, aGroups: TArray<TBasiteClass>; const aPrefix: string;
-      aNaming: TNaming = cDefaultNaming; const aPostfixSimpleType: string = cDefaultPostfixSimpleType;
-      const aPostfixComplexType: string = cDefaultPostfixComplexType; const aPostfixAttribute: string = cDefaultPostfixAttribute;
-      const aPostfixAttributeGroup: string = cDefaultPostfixAttributeGroup; const aPostfixElement: string = cDefaultPostfixElement;
-      const aPostfixElementGroup: string = cDefaultPostfixElementGroup): TNamespace;
+      aNaming: TNaming = cDefaultNaming; const aSuffixSimpleType: string = cDefaultSuffixSimpleType;
+      const aSuffixComplexType: string = cDefaultSuffixComplexType; const aSuffixAttribute: string = cDefaultSuffixAttribute;
+      const aSuffixAttributeGroup: string = cDefaultSuffixAttributeGroup; const aSuffixElement: string = cDefaultSuffixElement;
+      const aSuffixElementGroup: string = cDefaultSuffixElementGroup): TNamespace;
 
   private
     fNamespaces: TNamespaceList;
@@ -1116,25 +1117,25 @@ begin
     fUnitQualifiedName := aMeta.UnitQualifiedName;
 end;
 
-constructor TNamespace.Create(const aUri, aPrefix: string; aNaming: TNaming; const aPostfixSimpleType, aPostfixComplexType,
-  aPostfixAttribute, aPostfixAttributeGroup, aPostfixElement, aPostfixElementGroup: string);
+constructor TNamespace.Create(const aUri, aPrefix: string; aNaming: TNaming; const aSuffixSimpleType, aSuffixComplexType,
+  aSuffixAttribute, aSuffixAttributeGroup, aSuffixElement, aSuffixElementGroup: string);
 begin
   fUri := aUri;
   fPrefix := aPrefix;
   fNaming := aNaming;
 
-  fPostfixSimpleType := aPostfixSimpleType;
-  fPostfixLengthSimpleType := Length(fPostfixSimpleType);
-  fPostfixComplexType := aPostfixComplexType;
-  fPostfixLengthComplexType := Length(fPostfixComplexType);
-  fPostfixAttributeGroup := aPostfixAttributeGroup;
-  fPostfixLengthAttributeGroup := Length(fPostfixAttributeGroup);
-  fPostfixAttribute := aPostfixAttribute;
-  fPostfixLengthAttribute := Length(fPostfixAttribute);
-  fPostfixElement := aPostfixElement;
-  fPostfixLengthElement := Length(fPostfixElement);
-  fPostfixElementGroup := aPostfixElementGroup;
-  fPostfixLengthElementGroup := Length(fPostfixElementGroup);
+  fSuffixSimpleType := aSuffixSimpleType;
+  fSuffixLengthSimpleType := Length(fSuffixSimpleType);
+  fSuffixComplexType := aSuffixComplexType;
+  fSuffixLengthComplexType := Length(fSuffixComplexType);
+  fSuffixAttributeGroup := aSuffixAttributeGroup;
+  fSuffixLengthAttributeGroup := Length(fSuffixAttributeGroup);
+  fSuffixAttribute := aSuffixAttribute;
+  fSuffixLengthAttribute := Length(fSuffixAttribute);
+  fSuffixElement := aSuffixElement;
+  fSuffixLengthElement := Length(fSuffixElement);
+  fSuffixElementGroup := aSuffixElementGroup;
+  fSuffixLengthElementGroup := Length(fSuffixElementGroup);
 
   fAttributes := TDictObjectList<string, TMetaType>.Create(False);
   fAttributeGroups := TDictObjectList<string, TMetaBasite>.Create(False);
@@ -1295,14 +1296,14 @@ end;
 class function TMetaBankXmlite.RegisterNamespace(const aUri: string; const aSimpleTypes: TArray<PTypeInfo>;
   const aComplexTypes: TArray<TBasiteClass>; const aAttributes: TArray<PTypeInfo>;
   const aAttributeGroups, aElements, aGroups: TArray<TBasiteClass>; const aPrefix: string; aNaming: TNaming;
-  const aPostfixSimpleType, aPostfixComplexType, aPostfixAttribute, aPostfixAttributeGroup, aPostfixElement, aPostfixElementGroup: string)
+  const aSuffixSimpleType, aSuffixComplexType, aSuffixAttribute, aSuffixAttributeGroup, aSuffixElement, aSuffixElementGroup: string)
   : TNamespace;
 begin
   if Instance.TryGetNamespace(aUri, Result) then // already registered
     Exit;
 
-  Result := TNamespace.Create(aUri, aPrefix, aNaming, aPostfixSimpleType, aPostfixComplexType, aPostfixAttribute, aPostfixAttributeGroup,
-    aPostfixElement, aPostfixElementGroup);
+  Result := TNamespace.Create(aUri, aPrefix, aNaming, aSuffixSimpleType, aSuffixComplexType, aSuffixAttribute, aSuffixAttributeGroup,
+    aSuffixElement, aSuffixElementGroup);
 
   for var simpleType: PTypeInfo in aSimpleTypes do
     Result.Add(TMetaBank.RegisterType(simpleType), xctSimpleType);
@@ -1498,23 +1499,23 @@ begin
 
   case aType of
     xctSimpleType:
-      if (fNamespace.fPostfixLengthSimpleType > 0) and fName.EndsWith(fNamespace.fPostfixSimpleType) then
-        SetLength(fName, Length(fName) - fNamespace.fPostfixLengthSimpleType);
+      if (fNamespace.fSuffixLengthSimpleType > 0) and fName.EndsWith(fNamespace.fSuffixSimpleType) then
+        SetLength(fName, Length(fName) - fNamespace.fSuffixLengthSimpleType);
     xctComplexType:
-      if (fNamespace.fPostfixLengthComplexType > 0) and fName.EndsWith(fNamespace.fPostfixComplexType) then
-        SetLength(fName, Length(fName) - fNamespace.fPostfixLengthComplexType);
+      if (fNamespace.fSuffixLengthComplexType > 0) and fName.EndsWith(fNamespace.fSuffixComplexType) then
+        SetLength(fName, Length(fName) - fNamespace.fSuffixLengthComplexType);
     xctAttribute:
-      if (fNamespace.fPostfixLengthAttribute > 0) and fName.EndsWith(fNamespace.fPostfixAttribute) then
-        SetLength(fName, Length(fName) - fNamespace.fPostfixLengthAttribute);
+      if (fNamespace.fSuffixLengthAttribute > 0) and fName.EndsWith(fNamespace.fSuffixAttribute) then
+        SetLength(fName, Length(fName) - fNamespace.fSuffixLengthAttribute);
     xctAttributeGroup:
-      if (fNamespace.fPostfixLengthAttributeGroup > 0) and fName.EndsWith(fNamespace.fPostfixAttributeGroup) then
-        SetLength(fName, Length(fName) - fNamespace.fPostfixLengthAttributeGroup);
+      if (fNamespace.fSuffixLengthAttributeGroup > 0) and fName.EndsWith(fNamespace.fSuffixAttributeGroup) then
+        SetLength(fName, Length(fName) - fNamespace.fSuffixLengthAttributeGroup);
     xctElement:
-      if (fNamespace.fPostfixLengthElement > 0) and fName.EndsWith(fNamespace.fPostfixElement) then
-        SetLength(fName, Length(fName) - fNamespace.fPostfixLengthElement);
+      if (fNamespace.fSuffixLengthElement > 0) and fName.EndsWith(fNamespace.fSuffixElement) then
+        SetLength(fName, Length(fName) - fNamespace.fSuffixLengthElement);
     xctElementGroup:
-      if (fNamespace.fPostfixLengthElementGroup > 0) and fName.EndsWith(fNamespace.fPostfixElementGroup) then
-        SetLength(fName, Length(fName) - fNamespace.fPostfixLengthElementGroup);
+      if (fNamespace.fSuffixLengthElementGroup > 0) and fName.EndsWith(fNamespace.fSuffixElementGroup) then
+        SetLength(fName, Length(fName) - fNamespace.fSuffixLengthElementGroup);
   end;
 
   fName := TUtility.FromPascalCase(fName, fNamespace.Naming);
