@@ -168,6 +168,7 @@ type
     class function GuessNaming(const aName: string): TNaming; static; inline;
     class function Prefix(const aName: string; aSeparator: Char = ':'): string; static; inline;
     class function NameAndPrefix(const aFullName: string; out aPrefix, aName: string; aSeparator: Char = ':'): boolean; static; inline;
+    class function NameWithoutPrefix(const aName: string; aSeparator: Char = ':'): string; static; inline;
     class function Acronym(const aName: string; aAcronyms: THashSet<string> = nil): string; static; inline;
     class function ToPascalCase(const aName: string): string; static; inline;
     class function FromPascalCase(const aName: string; aNaming: TNaming): string; inline;
@@ -796,6 +797,20 @@ begin
 
   aPrefix := Prefix(aFullName, aSeparator);
   aName := PChar(aFullName) + Length(aPrefix) + 1 {separator};
+end;
+
+class function TUtility.NameWithoutPrefix(const aName: string; aSeparator: Char): string;
+begin
+  var cursor: PChar := PChar(aName);
+  while cursor^ <> #0 do
+  begin
+    if cursor^ = aSeparator then
+      Exit(cursor + 1);
+
+    Inc(cursor);
+  end;
+
+  Result := aName;
 end;
 
 class function TUtility.Prefix(const aName: string; aSeparator: Char): string;
