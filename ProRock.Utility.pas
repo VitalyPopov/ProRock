@@ -73,16 +73,14 @@ type
 
     function GetCount: integer;
     function GetValue(const aKey: K): V;
-    function GetValues: TEnumerable<V>;
-    function GetKeys: TEnumerable<K>;
   public
     constructor Create(aOwnsValues: boolean = True); overload;
     constructor Create(aComparer: IComparer<K>; aEqualityComparer: IEqualityComparer<K>; aOwnsValues: boolean = True); overload;
     destructor Destroy; override;
 
     property Count: integer read GetCount;
-    property Keys: TEnumerable<K> read GetKeys;
-    property Values: TEnumerable<V> read GetValues;
+    property Keys: TList<K> read fKeys;
+    property Values: TObjectList<V> read fValues;
     property Value[const aKey: K]: V read GetValue; default;
 
     procedure Add(const aKey: K; const aValue: V);
@@ -328,20 +326,10 @@ begin
   Result := fKeys.Count;
 end;
 
-function TDictObjectList<K, V>.GetKeys: TEnumerable<K>;
-begin
-  Result := fKeys;
-end;
-
 function TDictObjectList<K, V>.GetValue(const aKey: K): V;
 begin
   if not fDictionary.TryGetValue(aKey, Result) then
     Result := nil;
-end;
-
-function TDictObjectList<K, V>.GetValues: TEnumerable<V>;
-begin
-  Result := fValues;
 end;
 
 procedure TDictObjectList<K, V>.Remove(const aIndex: integer);
