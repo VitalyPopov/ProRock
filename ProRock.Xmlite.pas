@@ -1518,7 +1518,15 @@ begin
         SetLength(fName, Length(fName) - fNamespace.fSuffixLengthElementGroup);
   end;
 
-  fName := TUtility.FromPascalCase(fName, fNamespace.Naming);
+  var fNaming: TNaming := fNamespace.Naming;
+  for var attribute: TCustomAttribute in Self.Meta.RttiType.GetAttributes do
+    if attribute.ClassType.InheritsFrom(TNamingAttribute) then
+    begin
+      fNaming := TNamingAttribute(attribute).Naming;
+      break;
+    end;
+
+  fName := TUtility.FromPascalCase(fName, fNaming);
 
   if not fNamespace.Prefix.IsEmpty then
     fNamePrefixed := fNamespace.Prefix + ':' + fName;
