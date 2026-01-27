@@ -784,7 +784,10 @@ begin
     Exit(False);
 
   aPrefix := Prefix(aFullName, aSeparator);
-  aName := PChar(aFullName) + Length(aPrefix) + 1 {separator};
+  if aPrefix.IsEmpty then
+    aName := aFullName
+  else
+    aName := PChar(aFullName) + Length(aPrefix) + 1 {separator};
 end;
 
 class function TUtility.NameWithoutPrefix(const aName: string; aSeparator: Char): string;
