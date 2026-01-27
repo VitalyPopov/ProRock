@@ -1,8 +1,8 @@
 ﻿unit ProRock.Xmlite.Schema.urndemoorder;
 
 (*
-    This unit was automatically generated using ProRocket 1.0.1 Lite (ProRock 1.0.0)
-    Generated (UTC): 2026-01-05T09:26:24.322Z
+    This unit was automatically generated using ProRocket Lite 1.0.5 (ProRock 1.0.3)
+    Generated (UTC): 2026-01-27T00:55:36.901Z
     Namespace: urn:demo:order
     
     ProRock is a free and open-source Delphi library. Feedback and contributions are welcome.
@@ -19,8 +19,6 @@ type
   TOrderStatusST = (osNew, osProcessing, osShipped, osCompleted, osCancelled);
 
   TCurrencyCodeST = type ProRock.Xmlite.Schema.Base.TStringST;
-  TPriceST = type ProRock.Xmlite.Schema.Base.TDecimalST;
-  TQuantityST = type ProRock.Xmlite.Schema.Base.TIntST;
 
   TCustomerTypeCT = class;
   TItemTypeCT = class;
@@ -49,11 +47,14 @@ type
   end;
 
   TItemTypeCT = class(TXmliteComplexType)
+  type
+    TQuantity = type ProRock.Xmlite.Schema.Base.TIntST;
+    TPrice = type ProRock.Xmlite.Schema.Base.TDecimalST;
   private
     fSku: ProRock.Xmlite.Schema.Base.TStringST;
     fTitle: ProRock.Xmlite.Schema.Base.TStringST;
-    fQuantity: TQuantityST;
-    fPrice: TPriceST;
+    fQuantity: TQuantity;
+    fPrice: TPrice;
     fCurrency: TCurrencyCodeST;
   published
     [TXmliteElement]
@@ -61,9 +62,9 @@ type
     [TXmliteElement]
     property Title: ProRock.Xmlite.Schema.Base.TStringST read fTitle write fTitle;
     [TXmliteElement]
-    property Quantity: TQuantityST read fQuantity write fQuantity;
+    property Quantity: TQuantity read fQuantity write fQuantity;
     [TXmliteElement]
-    property Price: TPriceST read fPrice write fPrice;
+    property Price: TPrice read fPrice write fPrice;
     [TXmliteElement]
     property Currency: TCurrencyCodeST read fCurrency write fCurrency;
   end;
@@ -117,7 +118,19 @@ implementation
 
 initialization
 
-TMetaBankXmlite.RegisterNamespace('urn:demo:order', [TypeInfo(TOrderStatusST), TypeInfo(TCurrencyCodeST), TypeInfo(TQuantityST),
-  TypeInfo(TPriceST)], [TCustomerTypeCT, TItemTypeCT, TItemsTypeCT, TMoneyTypeCT], [], [], [TOrderE], [], 'o', TNaming.nPascalCase);
+TMetaBankXmlite.RegisterNamespace('urn:demo:order',
+  { simpleTypes }
+  [TypeInfo(TOrderStatusST), TypeInfo(TCurrencyCodeST)],
+  { complexTypes }
+  [TCustomerTypeCT, TItemTypeCT, TItemsTypeCT, TMoneyTypeCT],
+  { attributes }
+  [],
+  { attributeGroups }
+  [],
+  { elements }
+  [TOrderE],
+  { groups }
+  [],
+  'o', TNaming.nPascalCase);
 
 end.

@@ -44,7 +44,7 @@ begin
   ComboBox1.ItemIndex := 0;
   Label4.Caption := '';
 
-  TBasite.Pretty := True;
+  TBasite.Pretty := True; // just to make all serialization results human readable
 end;
 
 procedure TFormMain.ParseButtonClick(Sender: TObject);
@@ -52,7 +52,7 @@ begin
   var xml := TFile.ReadAllText('demo.xml', TEncoding.UTF8);
   var order := TOrderE.Create;
   try
-    if not order.FromXml(xml) then
+    if not order.FromXml(xml) then // <-- parsing
     begin
       LabeledEdit1.Text := 'Error parsing demo.xml';
       LabeledEdit2.Text := '';
@@ -94,6 +94,7 @@ begin
     ComboBox1.ItemIndex := ord(order.status);
     order.customer.name := LabeledEdit2.Text;
     order.total.Amount := StrToFloatDef(StringReplace(Label4.Caption, 'total: ', '', []), 0);
+    order.total.Currency := 'AED';
 
     for var i := 0 to StringGrid1.RowCount - 1 do
       if not StringGrid1.Cells[0, i].Trim.IsEmpty then
@@ -102,10 +103,11 @@ begin
         item.title := StringGrid1.Cells[0, i];
         item.quantity := StrToIntDef(StringGrid1.Cells[1, i], 0);
         item.price := StrToFloatDef(StringGrid1.Cells[2, i], 0);
+        item.currency := 'AED';
         order.items.item.Add(item);
       end;
 
-    TFile.WriteAllText('order.xml', order.ToXml('order'), TEncoding.UTF8);
+    TFile.WriteAllText('order.xml', order.ToXml('order') { <-- serialization }, TEncoding.UTF8);
   finally
     order.Free;
   end;
