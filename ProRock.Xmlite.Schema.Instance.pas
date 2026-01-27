@@ -1,8 +1,8 @@
 ﻿unit ProRock.Xmlite.Schema.Instance;
 
 (*
-    This unit was automatically generated using ProRocket 1.0.4 Lite (ProRock 1.0.2)
-    Generated (UTC): 2026-01-10T19:23:25.430Z
+    This unit was automatically generated using ProRocket Lite 1.0.5 (ProRock 1.0.3)
+    Generated (UTC): 2026-01-27T00:28:43.754Z
     Namespace: http://www.w3.org/2001/XMLSchema-instance
     
     ProRock is a free and open-source Delphi library. Feedback and contributions are welcome.
@@ -29,7 +29,19 @@ implementation
 
 initialization
 
-TMetaBankXmlite.RegisterNamespace('http://www.w3.org/2001/XMLSchema-instance', [], [], [TypeInfo(TNilA), TypeInfo(TTypeA),
-  TypeInfo(TSchemaLocationA), TypeInfo(TNoNamespaceSchemaLocationA)], [], [], [], 'xsi');
+TMetaBankXmlite.RegisterNamespace('http://www.w3.org/2001/XMLSchema-instance',
+  { simpleTypes }
+  [],
+  { complexTypes }
+  [],
+  { attributes }
+  [TypeInfo(TNilA), TypeInfo(TTypeA), TypeInfo(TSchemaLocationA), TypeInfo(TNoNamespaceSchemaLocationA)],
+  { attributeGroups }
+  [],
+  { elements }
+  [],
+  { groups }
+  [],
+  'xsi');
 
 end.

@@ -1,8 +1,8 @@
 ﻿unit ProRock.Xmlite.Schema.Base;
 
 (*
-    This unit was automatically generated using ProRocket 1.0.4 Lite (ProRock 1.0.2)
-    Generated (UTC): 2026-01-10T19:23:25.388Z
+    This unit was automatically generated using ProRocket Lite 1.0.5 (ProRock 1.0.3)
+    Generated (UTC): 2026-01-27T00:28:43.749Z
     Namespace: http://www.w3.org/2001/XMLSchema
     
     ProRock is a free and open-source Delphi library. Feedback and contributions are welcome.
@@ -103,7 +103,7 @@ type
   TLocalElementCT = class;
   TGroupCT = class;
   TRealGroupCT = class;
-  TNamedGroupAllCT = class;
+  TNamedGroupCTAll = class;
   TNamedGroupCT = class;
   TGroupRefCT = class;
   TExplicitGroupCT = class;
@@ -195,7 +195,7 @@ type
   TLocalElementCTList = class;
   TGroupCTList = class;
   TRealGroupCTList = class;
-  TNamedGroupAllCTList = class;
+  TNamedGroupCTAllList = class;
   TNamedGroupCTList = class;
   TGroupRefCTList = class;
   TExplicitGroupCTList = class;
@@ -269,10 +269,10 @@ type
 
   TAttributeCT = class(TAnnotatedCT)
   type
-    TUseST = (uProhibited, uOptional, uRequired);
+    TUse = (uProhibited, uOptional, uRequired);
   private
     fType: TQNameST;
-    fUse: TUseST;
+    fUse: TUse;
     fDefault: TStringST;
     fFixed: TStringST;
     fForm: TFormChoiceST;
@@ -282,7 +282,7 @@ type
   published
     property &Type: TQNameST read fType write fType;
     [TDefault(Ord(uOptional))]
-    property Use: TUseST read fUse write fUse;
+    property Use: TUse read fUse write fUse;
     property Default: TStringST read fDefault write fDefault;
     property Fixed: TStringST read fFixed write fFixed;
     property Form: TFormChoiceST read fForm write fForm;
@@ -292,8 +292,6 @@ type
   end;
 
   TTopLevelAttributeCT = class(TXmliteComplexTypeRestricted)
-  type
-    TUseST = (uaProhibited, uaOptional, uaRequired);
   private
     fId: TIdST;
     fType: TQNameST;
@@ -656,16 +654,16 @@ type
   TLocalElementCT = class(TXmliteComplexTypeRestricted)
   private
     fId: TIdST;
+    fName: TNCNameST;
+    fRef: TQNameST;
+    fMinOccurs: TNonNegativeIntegerST;
+    fMaxOccurs: TAllNNIST;
     fType: TQNameST;
     fDefault: TStringST;
     fFixed: TStringST;
     fNillable: TBooleanST;
     fBlock: TBlockSetST;
     fForm: TFormChoiceST;
-    fName: TNCNameST;
-    fRef: TQNameST;
-    fMinOccurs: TNonNegativeIntegerST;
-    fMaxOccurs: TAllNNIST;
     fUnique: TUniqueEList;
     fKey: TKeyEList;
     fKeyref: TKeyrefEList;
@@ -674,6 +672,12 @@ type
     fComplexType: TLocalComplexTypeCT;
   published
     property Id: TIdST read fId write fId;
+    property Name: TNCNameST read fName write fName;
+    property Ref: TQNameST read fRef write fRef;
+    [TDefault(1)]
+    property MinOccurs: TNonNegativeIntegerST read fMinOccurs write fMinOccurs;
+    [TDefault(1)]
+    property MaxOccurs: TAllNNIST read fMaxOccurs write fMaxOccurs;
     property &Type: TQNameST read fType write fType;
     property Default: TStringST read fDefault write fDefault;
     property Fixed: TStringST read fFixed write fFixed;
@@ -681,12 +685,6 @@ type
     property Nillable: TBooleanST read fNillable write fNillable;
     property Block: TBlockSetST read fBlock write fBlock;
     property Form: TFormChoiceST read fForm write fForm;
-    property Name: TNCNameST read fName write fName;
-    property Ref: TQNameST read fRef write fRef;
-    [TDefault(1)]
-    property MinOccurs: TNonNegativeIntegerST read fMinOccurs write fMinOccurs;
-    [TDefault(1)]
-    property MaxOccurs: TAllNNIST read fMaxOccurs write fMaxOccurs;
     property Unique: TUniqueEList read fUnique;
     property Key: TKeyEList read fKey;
     property Keyref: TKeyrefEList read fKeyref;
@@ -747,10 +745,7 @@ type
     property Sequence: TSequenceE read fSequence;
   end;
 
-  TNamedGroupAllCT = class(TXmliteComplexTypeRestricted)
-  type
-    TMinOccursST = (mo0, mo1);
-    TMaxOccursST = (moa1);
+  TNamedGroupCTAll = class(TXmliteComplexTypeRestricted)
   private
     fId: TIdST;
     fAnnotation: TAnnotationE;
@@ -766,14 +761,14 @@ type
     fId: TIdST;
     fName: TNCNameST;
     fAnnotation: TAnnotationE;
-    fAll: TNamedGroupAllCT;
+    fAll: TNamedGroupCTAll;
     fChoice: TSimpleExplicitGroupCT;
     fSequence: TSimpleExplicitGroupCT;
   published
     property Id: TIdST read fId write fId;
     property Name: TNCNameST read fName write fName;
     property Annotation: TAnnotationE read fAnnotation;
-    property All: TNamedGroupAllCT read fAll;
+    property All: TNamedGroupCTAll read fAll;
     property Choice: TSimpleExplicitGroupCT read fChoice;
     property Sequence: TSimpleExplicitGroupCT read fSequence;
   end;
@@ -841,20 +836,20 @@ type
 
   TNarrowMaxMinCT = class(TXmliteComplexTypeRestricted)
   type
-    TMinOccursST = (mob0, mob1);
-    TMaxOccursST = (moc0, moc1);
+    TMinOccurs = (mob0, mob1);
+    TMaxOccurs = (moc0, moc1);
   private
     fId: TIdST;
+    fName: TNCNameST;
+    fRef: TQNameST;
     fType: TQNameST;
     fDefault: TStringST;
     fFixed: TStringST;
     fNillable: TBooleanST;
     fBlock: TBlockSetST;
     fForm: TFormChoiceST;
-    fName: TNCNameST;
-    fRef: TQNameST;
-    fMinOccurs: TMinOccursST;
-    fMaxOccurs: TMaxOccursST;
+    fMinOccurs: TMinOccurs;
+    fMaxOccurs: TMaxOccurs;
     fUnique: TUniqueEList;
     fKey: TKeyEList;
     fKeyref: TKeyrefEList;
@@ -863,6 +858,8 @@ type
     fComplexType: TLocalComplexTypeCT;
   published
     property Id: TIdST read fId write fId;
+    property Name: TNCNameST read fName write fName;
+    property Ref: TQNameST read fRef write fRef;
     property &Type: TQNameST read fType write fType;
     property Default: TStringST read fDefault write fDefault;
     property Fixed: TStringST read fFixed write fFixed;
@@ -870,12 +867,10 @@ type
     property Nillable: TBooleanST read fNillable write fNillable;
     property Block: TBlockSetST read fBlock write fBlock;
     property Form: TFormChoiceST read fForm write fForm;
-    property Name: TNCNameST read fName write fName;
-    property Ref: TQNameST read fRef write fRef;
     [TDefault(Ord(mob1))]
-    property MinOccurs: TMinOccursST read fMinOccurs write fMinOccurs;
+    property MinOccurs: TMinOccurs read fMinOccurs write fMinOccurs;
     [TDefault(Ord(moc1))]
-    property MaxOccurs: TMaxOccursST read fMaxOccurs write fMaxOccurs;
+    property MaxOccurs: TMaxOccurs read fMaxOccurs write fMaxOccurs;
     property Unique: TUniqueEList read fUnique;
     property Key: TKeyEList read fKey;
     property Keyref: TKeyrefEList read fKeyref;
@@ -886,35 +881,35 @@ type
 
   TAllCT = class(TXmliteComplexTypeRestricted)
   type
-    TMinOccursST = (mod0, mod1);
-    TMaxOccursST = (moe1);
+    TMinOccurs = (mod0, mod1);
+    TMaxOccurs = (moe1);
   private
     fId: TIdST;
-    fMinOccurs: TMinOccursST;
-    fMaxOccurs: TMaxOccursST;
+    fMinOccurs: TMinOccurs;
+    fMaxOccurs: TMaxOccurs;
     fAnnotation: TAnnotationE;
     fElement: TNarrowMaxMinCTList;
   published
     property Id: TIdST read fId write fId;
     [TDefault(Ord(mod1))]
-    property MinOccurs: TMinOccursST read fMinOccurs write fMinOccurs;
+    property MinOccurs: TMinOccurs read fMinOccurs write fMinOccurs;
     [TDefault(Ord(moe1))]
-    property MaxOccurs: TMaxOccursST read fMaxOccurs write fMaxOccurs;
+    property MaxOccurs: TMaxOccurs read fMaxOccurs write fMaxOccurs;
     property Annotation: TAnnotationE read fAnnotation;
     property Element: TNarrowMaxMinCTList read fElement;
   end;
 
   TWildcardCT = class(TAnnotatedCT)
   type
-    TProcessContentsST = (pcSkip, pcLax, pcStrict);
+    TProcessContents = (pcSkip, pcLax, pcStrict);
   private
     fNamespace: TNamespaceListST;
-    fProcessContents: TProcessContentsST;
+    fProcessContents: TProcessContents;
   published
     [TDefault('##any')]
     property Namespace: TNamespaceListST read fNamespace write fNamespace;
     [TDefault(Ord(pcStrict))]
-    property ProcessContents: TProcessContentsST read fProcessContents write fProcessContents;
+    property ProcessContents: TProcessContents read fProcessContents write fProcessContents;
   end;
 
   TAttributeGroupCT = class(TAnnotatedCT)
@@ -1209,20 +1204,20 @@ type
 
   TSelectorE = class(TAnnotatedCT)
   type
-    TXpathST = type TTokenST;
+    TXpath = type TTokenST;
   private
-    fXpath: TXpathST;
+    fXpath: TXpath;
   published
-    property Xpath: TXpathST read fXpath write fXpath;
+    property Xpath: TXpath read fXpath write fXpath;
   end;
 
   TFieldE = class(TAnnotatedCT)
   type
-    TXpathST = type TTokenST;
+    TXpath = type TTokenST;
   private
-    fXpath: TXpathST;
+    fXpath: TXpath;
   published
-    property Xpath: TXpathST read fXpath write fXpath;
+    property Xpath: TXpath read fXpath write fXpath;
   end;
 
   TUniqueE = class(TKeybaseCT);
@@ -1322,12 +1317,12 @@ type
 
   TUnionE = class(TAnnotatedCT)
   type
-    TMemberTypesST = type TAnySimpleTypeST;
+    TMemberTypes = type TAnySimpleTypeST;
   private
-    fMemberTypes: TMemberTypesST;
+    fMemberTypes: TMemberTypes;
     fSimpleType: TLocalSimpleTypeCTList;
   published
-    property MemberTypes: TMemberTypesST read fMemberTypes write fMemberTypes;
+    property MemberTypes: TMemberTypes read fMemberTypes write fMemberTypes;
     property SimpleType: TLocalSimpleTypeCTList read fSimpleType;
   end;
 
@@ -1365,17 +1360,17 @@ type
 
   TWhiteSpaceE = class(TXmliteComplexTypeRestricted)
   type
-    TValueST = (vPreserve, vReplace, vCollapse);
+    TValue = (vPreserve, vReplace, vCollapse);
   private
     fId: TIdST;
     fFixed: TBooleanST;
-    fValue: TValueST;
+    fValue: TValue;
     fAnnotation: TAnnotationE;
   published
     property Id: TIdST read fId write fId;
     [TDefault(False)]
     property Fixed: TBooleanST read fFixed write fFixed;
-    property Value: TValueST read fValue write fValue;
+    property Value: TValue read fValue write fValue;
     property Annotation: TAnnotationE read fAnnotation;
   end;
 
@@ -1557,7 +1552,7 @@ type
   TLocalElementCTList = class(TXmliteList<TLocalElementCT>);
   TGroupCTList = class(TXmliteList<TGroupCT>);
   TRealGroupCTList = class(TXmliteList<TRealGroupCT>);
-  TNamedGroupAllCTList = class(TXmliteList<TNamedGroupAllCT>);
+  TNamedGroupCTAllList = class(TXmliteList<TNamedGroupCTAll>);
   TNamedGroupCTList = class(TXmliteList<TNamedGroupCT>);
   TGroupRefCTList = class(TXmliteList<TGroupRefCT>);
   TExplicitGroupCTList = class(TXmliteList<TExplicitGroupCT>);
@@ -1622,28 +1617,37 @@ implementation
 
 initialization
 
-TMetaBankXmlite.RegisterNamespace('http://www.w3.org/2001/XMLSchema', [TypeInfo(TFormChoiceST), TypeInfo(TReducedDerivationControlST),
-  TypeInfo(TTypeDerivationControlST), TypeInfo(TDerivationControlST), TypeInfo(TDerivationSetST), TypeInfo(TFullDerivationSetST),
-  TypeInfo(TAllNNIST), TypeInfo(TBlockSetST), TypeInfo(TNamespaceListST), TypeInfo(TPublicST), TypeInfo(TStringST), TypeInfo(TBooleanST),
-  TypeInfo(TFloatST), TypeInfo(TDoubleST), TypeInfo(TDecimalST), TypeInfo(TDurationST), TypeInfo(TDateTimeST), TypeInfo(TTimeST),
-  TypeInfo(TDateST), TypeInfo(TGYearMonthST), TypeInfo(TGYearST), TypeInfo(TGMonthDayST), TypeInfo(TGDayST), TypeInfo(TGMonthST),
-  TypeInfo(THexBinaryST), TypeInfo(TBase64BinaryST), TypeInfo(TAnyURIST), TypeInfo(TQNameST), TypeInfo(TNotationST),
-  TypeInfo(TNormalizedStringST), TypeInfo(TTokenST), TypeInfo(TLanguageST), TypeInfo(TIdrefsST), TypeInfo(TEntitiesST),
-  TypeInfo(TNmtokenST), TypeInfo(TNmtokensST), TypeInfo(TNameST), TypeInfo(TNCNameST), TypeInfo(TIdST), TypeInfo(TIdrefST),
-  TypeInfo(TEntityST), TypeInfo(TIntegerST), TypeInfo(TNonPositiveIntegerST), TypeInfo(TNegativeIntegerST), TypeInfo(TLongST),
-  TypeInfo(TIntST), TypeInfo(TShortST), TypeInfo(TByteST), TypeInfo(TNonNegativeIntegerST), TypeInfo(TUnsignedLongST),
+TMetaBankXmlite.RegisterNamespace('http://www.w3.org/2001/XMLSchema',
+  { simpleTypes }
+  [TypeInfo(TFormChoiceST), TypeInfo(TReducedDerivationControlST), TypeInfo(TDerivationSetST), TypeInfo(TTypeDerivationControlST),
+  TypeInfo(TFullDerivationSetST), TypeInfo(TAllNNIST), TypeInfo(TBlockSetST), TypeInfo(TNamespaceListST), TypeInfo(TPublicST),
+  TypeInfo(TStringST), TypeInfo(TBooleanST), TypeInfo(TFloatST), TypeInfo(TDoubleST), TypeInfo(TDecimalST), TypeInfo(TDurationST),
+  TypeInfo(TDateTimeST), TypeInfo(TTimeST), TypeInfo(TDateST), TypeInfo(TGYearMonthST), TypeInfo(TGYearST), TypeInfo(TGMonthDayST),
+  TypeInfo(TGDayST), TypeInfo(TGMonthST), TypeInfo(THexBinaryST), TypeInfo(TBase64BinaryST), TypeInfo(TAnyURIST), TypeInfo(TQNameST),
+  TypeInfo(TNotationST), TypeInfo(TNormalizedStringST), TypeInfo(TTokenST), TypeInfo(TLanguageST), TypeInfo(TIdrefsST),
+  TypeInfo(TEntitiesST), TypeInfo(TNmtokenST), TypeInfo(TNmtokensST), TypeInfo(TNameST), TypeInfo(TNCNameST), TypeInfo(TIdST),
+  TypeInfo(TIdrefST), TypeInfo(TEntityST), TypeInfo(TIntegerST), TypeInfo(TNonPositiveIntegerST), TypeInfo(TNegativeIntegerST),
+  TypeInfo(TLongST), TypeInfo(TIntST), TypeInfo(TShortST), TypeInfo(TByteST), TypeInfo(TNonNegativeIntegerST), TypeInfo(TUnsignedLongST),
   TypeInfo(TUnsignedIntST), TypeInfo(TUnsignedShortST), TypeInfo(TUnsignedByteST), TypeInfo(TPositiveIntegerST),
-  TypeInfo(TSimpleDerivationSetST), TypeInfo(TAnySimpleTypeST)], [TOpenAttrsCT, TAnnotatedCT, TAttributeCT, TTopLevelAttributeCT,
-  TComplexTypeCT, TTopLevelComplexTypeCT, TLocalComplexTypeCT, TRestrictionTypeCT, TComplexRestrictionTypeCT, TExtensionTypeCT,
-  TSimpleRestrictionTypeCT, TSimpleExtensionTypeCT, TElementCT, TTopLevelElementCT, TLocalElementCT, TGroupCT, TRealGroupCT,
-  TNamedGroupAllCT, TNamedGroupCT, TGroupRefCT, TExplicitGroupCT, TSimpleExplicitGroupCT, TNarrowMaxMinCT, TAllCT, TWildcardCT,
-  TAttributeGroupCT, TNamedAttributeGroupCT, TAttributeGroupRefCT, TKeybaseCT, TAnyTypeCT, TSimpleTypeCT, TTopLevelSimpleTypeCT,
-  TLocalSimpleTypeCT, TFacetCT, TNoFixedFacetCT, TNumFacetCT], [], [TOccursAG, TDefRefAG], [TSchemaE, TAnyAttributeE, TComplexContentE,
-  TSimpleContentE, TComplexTypeE, TElementE, TAllE, TChoiceE, TSequenceE, TGroupE, TAnyE, TAttributeE, TAttributeGroupE, TIncludeE,
-  TRedefineE, TImportE, TSelectorE, TFieldE, TUniqueE, TKeyE, TKeyrefE, TNotationE, TAppinfoE, TDocumentationE, TAnnotationE, TSimpleTypeE,
-  TRestrictionE, TListE, TUnionE, TMinExclusiveE, TMinInclusiveE, TMaxExclusiveE, TMaxInclusiveE, TTotalDigitsE, TFractionDigitsE, TLengthE,
-  TMinLengthE, TMaxLengthE, TEnumerationE, TWhiteSpaceE, TPatternE], [TSchemaTopEG, TRedefinableEG, TTypeDefParticleEG, TNestedParticleEG,
-  TParticleEG, TAttrDeclsEG, TComplexTypeModelEG, TAllModelEG, TIdentityConstraintEG, TSimpleDerivationEG, TFacetsEG,
-  TSimpleRestrictionModelEG], 'xs');
+  TypeInfo(TDerivationControlST), TypeInfo(TSimpleDerivationSetST), TypeInfo(TAnySimpleTypeST)],
+  { complexTypes }
+  [TOpenAttrsCT, TAnnotatedCT, TAttributeCT, TTopLevelAttributeCT, TComplexTypeCT, TTopLevelComplexTypeCT, TLocalComplexTypeCT,
+  TRestrictionTypeCT, TComplexRestrictionTypeCT, TExtensionTypeCT, TSimpleRestrictionTypeCT, TSimpleExtensionTypeCT, TElementCT,
+  TTopLevelElementCT, TLocalElementCT, TGroupCT, TRealGroupCT, TNamedGroupCT, TGroupRefCT, TExplicitGroupCT, TSimpleExplicitGroupCT,
+  TNarrowMaxMinCT, TAllCT, TWildcardCT, TAttributeGroupCT, TNamedAttributeGroupCT, TAttributeGroupRefCT, TKeybaseCT, TAnyTypeCT,
+  TSimpleTypeCT, TTopLevelSimpleTypeCT, TLocalSimpleTypeCT, TFacetCT, TNoFixedFacetCT, TNumFacetCT],
+  { attributes }
+  [],
+  { attributeGroups }
+  [TOccursAG, TDefRefAG],
+  { elements }
+  [TSchemaE, TAnyAttributeE, TComplexContentE, TSimpleContentE, TComplexTypeE, TElementE, TAllE, TChoiceE, TSequenceE, TGroupE, TAnyE,
+  TAttributeE, TAttributeGroupE, TIncludeE, TRedefineE, TImportE, TSelectorE, TFieldE, TUniqueE, TKeyE, TKeyrefE, TNotationE, TAppinfoE,
+  TDocumentationE, TAnnotationE, TSimpleTypeE, TRestrictionE, TListE, TUnionE, TMinExclusiveE, TMinInclusiveE, TMaxExclusiveE,
+  TMaxInclusiveE, TTotalDigitsE, TFractionDigitsE, TLengthE, TMinLengthE, TMaxLengthE, TEnumerationE, TWhiteSpaceE, TPatternE],
+  { groups }
+  [TSchemaTopEG, TRedefinableEG, TTypeDefParticleEG, TNestedParticleEG, TParticleEG, TAttrDeclsEG, TComplexTypeModelEG, TAllModelEG,
+  TIdentityConstraintEG, TSimpleDerivationEG, TFacetsEG, TSimpleRestrictionModelEG],
+  'xs');
 
 end.

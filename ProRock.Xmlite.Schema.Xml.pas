@@ -1,8 +1,8 @@
 ﻿unit ProRock.Xmlite.Schema.Xml;
 
 (*
-    This unit was automatically generated using ProRocket 1.0.4 Lite (ProRock 1.0.2)
-    Generated (UTC): 2026-01-10T19:23:25.431Z
+    This unit was automatically generated using ProRocket Lite 1.0.5 (ProRock 1.0.3)
+    Generated (UTC): 2026-01-27T00:28:43.748Z
     Namespace: http://www.w3.org/XML/1998/namespace
     
     ProRock is a free and open-source Delphi library. Feedback and contributions are welcome.
@@ -43,7 +43,19 @@ implementation
 
 initialization
 
-TMetaBankXmlite.RegisterNamespace('http://www.w3.org/XML/1998/namespace', [], [], [TypeInfo(TSpaceA), TypeInfo(TLangA), TypeInfo(TBaseA),
-  TypeInfo(TIdA)], [TSpecialAttrsAG], [], [], 'xml');
+TMetaBankXmlite.RegisterNamespace('http://www.w3.org/XML/1998/namespace',
+  { simpleTypes }
+  [],
+  { complexTypes }
+  [],
+  { attributes }
+  [TypeInfo(TLangA), TypeInfo(TSpaceA), TypeInfo(TBaseA), TypeInfo(TIdA)],
+  { attributeGroups }
+  [TSpecialAttrsAG],
+  { elements }
+  [],
+  { groups }
+  [],
+  'xml');
 
 end.
