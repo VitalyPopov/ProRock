@@ -47,6 +47,9 @@ type
     property DefaultValue: variant read fDefaultValue;
   end;
 
+  // value is serialized even when it equals the default one
+  TRequiredAttribute = class(TCustomAttribute);
+
   TEnumCaptionAttribute = class(TCustomAttribute)
   private
     fCaption, fCustomCaption: string;
@@ -160,6 +163,7 @@ type
     TSetterEnum = procedure(const aValue: integer) of object;
   private
     fDefault: variant;
+    fRequired: boolean;
 
     function MethodAddress(aObject: TBasite; aMethod: Pointer): Pointer; inline;
     function GetterMethod(aObject: TBasite): TMethod; inline;
@@ -174,6 +178,7 @@ type
 
     property Meta: TMetaType read GetMeta;
     property Value[aObject: TBasite]: string read GetValue write SetValue;
+    property Required: boolean read fRequired;
 
     procedure SetDefaultValue(aObject: TBasite); inline;
     function ValueIsDefault(aObject: TBasite): boolean; inline;
@@ -584,8 +589,8 @@ begin
   for var propertyInfo in Meta.Properties do
   begin
     case propertyInfo.PropertyType of
-      ptData:
-        Result := TPropertyData(propertyInfo).ValueIsDefault(Self);
+      ptData: // required value is never "empty" - it must be serialized
+        Result := not TPropertyData(propertyInfo).Required and TPropertyData(propertyInfo).ValueIsDefault(Self);
       ptBasite:
         if TPropertyBasite(propertyInfo).ObjectPointer(Self)^ <> nil then
           Result := TPropertyBasite(propertyInfo).ObjectPointer(Self).IsEmptyOrDefault;
@@ -687,8 +692,9 @@ begin
         fDefault := defaultAttribute.DefaultValue;
 
       defaultIsDefined := True;
-      break;
-    end;
+    end
+    else if attribute.ClassType = TRequiredAttribute then
+      fRequired := True;
 
   if not defaultIsDefined then
     case fRttiProperty.PropertyType.TypeKind of

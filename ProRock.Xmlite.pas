@@ -31,6 +31,7 @@ type
   TBaseTypeAttribute = ProRock.Basite.TBaseTypeAttribute;
   TNameAttribute = ProRock.Basite.TNameAttribute;
   TDefaultAttribute = ProRock.Basite.TDefaultAttribute;
+  TRequiredAttribute = ProRock.Basite.TRequiredAttribute;
   TEnumCaptionAttribute = ProRock.Basite.TEnumCaptionAttribute;
   TValueAliasAttribute = ProRock.Basite.TValueAliasAttribute;
   TBasite = ProRock.Basite.TBasite;
@@ -642,7 +643,7 @@ begin
   for var propertyInfo: TProperty in Meta.Xmlite.Elements.Values do
     case propertyInfo.PropertyType of
       ptData:
-        if not TPropertyData(propertyInfo).Value[Self].IsEmpty then
+        if TPropertyData(propertyInfo).Required or not TPropertyData(propertyInfo).Value[Self].IsEmpty then
           Exit(xttOpenClose);
       ptBasite:
         if (TPropertyBasite(propertyInfo).ObjectPointer(Self)^ <> nil) and
@@ -655,7 +656,8 @@ begin
     end;
 
   for var attribute: TProperty in Meta.Xmlite.Attributes.Values do
-    if (attribute.ClassType = TPropertyData) and not TPropertyData(attribute).ValueIsDefault(Self) then
+    if (attribute.ClassType = TPropertyData) and
+      (TPropertyData(attribute).Required or not TPropertyData(attribute).ValueIsDefault(Self)) then
       Exit(xttEmpty);
 end;
 
@@ -713,7 +715,7 @@ begin
             ptData:
               begin
                 var propertyData: TPropertyData := TPropertyData(propertyElement);
-                if not propertyData.ValueIsDefault(Self) then
+                if propertyData.Required or not propertyData.ValueIsDefault(Self) then
                   aWriter.AddTextNode(elementName(propertyElement), propertyData.Value[Self], propertyData);
               end;
             ptBasite:
@@ -787,7 +789,7 @@ function TBasiteHelper.GetXmlns: string;
 
     procedure AddPropertyDataXmlns(aXmlnsList: THashedObjectList<TNamespace>; aPropertyData: TPropertyData; aObject: TBasite); inline;
     begin
-      if aPropertyData.ValueIsDefault(aObject) then
+      if not aPropertyData.Required and aPropertyData.ValueIsDefault(aObject) then
         Exit;
 
       aXmlnsList.Add(aPropertyData.Xmlite.Namespace);
@@ -886,7 +888,7 @@ begin
   Write(aName);
   if aObject <> nil then
     WriteAttributes(aObject);
-  if (aFieldInfo.RttiProperty.PropertyType.TypeKind in [tkString, tkLString, tkWString, tkUString]) and
+  if (aFieldInfo.RttiProperty.PropertyType.TypeKind in [tkString, tkLString, tkWString, tkUString]) and not aValue.IsEmpty and
     ((aValue.Chars[0] <= ' ') or (aValue.Chars[aValue.Length - 1] <= ' ')) then
     WriteAttribute('xml:space', 'preserve');
   Write('>');
@@ -972,7 +974,7 @@ begin
     Write(aObject.GetXmlns); // todo: optimize
 
   for var attribute: TPropertyData in aObject.Meta.Xmlite.Attributes.Values do
-    if not attribute.ValueIsDefault(aObject) then
+    if attribute.Required or not attribute.ValueIsDefault(aObject) then
       if attribute.Xmlite.Namespace = attribute.ParentMeta.Xmlite.Namespace then
         WriteAttribute(attribute.Xmlite.Name, attribute.Value[aObject])
       else
