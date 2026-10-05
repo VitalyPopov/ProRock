@@ -208,6 +208,9 @@ type
   public
     constructor Create(aProperty: TProperty); override;
 
+    // XML name of a property, the most precise rule first: [TName] (exact), property [TNaming], class [TNaming], default naming
+    class function XmlName(aProperty: TProperty): string; static;
+
     property Name: string read fName;
     property NamePrefixed: string read fNamePrefixed;
     property NameUried: string read fNameUried;
@@ -398,7 +401,18 @@ end;
 
 function TBasiteHelper.FromXml(const aXml: string): boolean;
 begin
-  var xmlCursor: PChar := PChar(aXml);
+  // parsing works in place (unescaping, temporary terminators): the caller's own string is parsed with no copy,
+  // but a literal (read-only memory) or a string shared with other owners must not be changed - they are copied
+  var xmlCopy: string;
+  var xmlCursor: PChar;
+  if StringRefCount(aXml) = 1 then
+    xmlCursor := PChar(aXml)
+  else
+  begin
+    xmlCopy := aXml;
+    UniqueString(xmlCopy);
+    xmlCursor := PChar(xmlCopy);
+  end;
   if not TReaderXmlite.MoveToChar(xmlCursor, '<') then
     Exit(False);
 
@@ -516,9 +530,58 @@ begin
     TXmlite(Self).DoAfterParsing;
 end;
 
+// URI of a tag name: the tag's own xmlns declarations first, then the ones of its context
+function TagUri(aTagStart: PChar; const aPrefix: string; aXmlns: TXmlns): string;
+
+  function TagDeclaresXmlns(aCursor: PChar): boolean; inline;
+  begin // quick check before reading declarations; a false positive costs only the full read below
+    var quote: Char := #0;
+    while aCursor^ <> #0 do
+    begin
+      if quote <> #0 then
+      begin
+        if aCursor^ = quote then
+          quote := #0;
+      end
+      else
+        case aCursor^ of
+          '"', '''':
+            quote := aCursor^;
+          '>':
+            Exit(False);
+          'x':
+            if StrLComp(aCursor, 'xmlns', 5) = 0 then
+              Exit(True);
+        end;
+      Inc(aCursor);
+    end;
+    Result := False;
+  end;
+
+begin
+  if TagDeclaresXmlns(aTagStart) then
+  begin
+    var tagXmlns: TXmlns := TXmlns.Create;
+    try
+      TReaderXmlite.ReadXmlns(aTagStart, tagXmlns);
+      if aPrefix.IsEmpty then
+      begin
+        if not tagXmlns.DefaultUri.IsEmpty then
+          Exit(tagXmlns.DefaultUri);
+      end
+      else if tagXmlns.TryGetValue(aPrefix, Result) then
+        Exit;
+    finally
+      tagXmlns.Free;
+    end;
+  end;
+
+  Result := aXmlns[aPrefix];
+end;
+
 function TBasiteHelper.ReadTagContents(var aCursor: PChar; const aName: string; aXmlns: TXmlns): boolean;
 
-  procedure ReadTextNode(var aCursor: PChar; aTextNode: TXmliteTextElement); inline;
+  procedure ReadTextNode(var aCursor: PChar; aTextNode: TXmliteTextElement; aXmlns: TXmlns); inline;
   begin
     if aCursor^ = ' ' then // attributes
       while TReaderXmlite.MoveToVisualChar(aCursor) and (aCursor^ <> '>') do
@@ -527,7 +590,20 @@ function TBasiteHelper.ReadTagContents(var aCursor: PChar; const aName: string; 
         if not TReaderXmlite.ReadAttributeName(aCursor, attributePrefix, attributeName, attributeNameWithPrefix) then
           Exit;
 
-        aTextNode.AssignProperty(attributeName, TReaderXmlite.ReadQuotedValueInPlace(aCursor));
+        attributeValue := TReaderXmlite.ReadQuotedValueInPlace(aCursor);
+
+        // the same lookup as for attributes of ordinary objects - by XML (Xmlite) name, not by Basite one
+        var uri: string;
+        if attributePrefix.IsEmpty and Assigned(aTextNode.Meta.Xmlite.Namespace) then
+          uri := aTextNode.Meta.Xmlite.Namespace.Uri
+        else
+          uri := aXmlns[attributePrefix];
+
+        var propertyData: TPropertyData := aTextNode.Meta.Xmlite.Attributes[TUriedName.Create(uri, attributeName)];
+        if propertyData = nil then
+          propertyData := aTextNode.Meta.Xmlite.Attributes[TUriedName.Create('', attributeName)];
+        if propertyData <> nil then
+          propertyData.Value[aTextNode] := attributeValue;
       end;
 
     aTextNode.xmlText := TReaderXmlite.ReadTextNodeContents(aCursor);
@@ -558,12 +634,15 @@ begin
       else // closing tag with wrong name
         Exit;
 
+    // xmlns declared on the tag itself applies to the tag's own name too (e.g. <AddResponse xmlns="http://tempuri.org/">)
+    var tagUri: string := TagUri(cursorStart, tagPrefix, aXmlns);
+
     // get a property for property defined name, following prefix/uri
-    var propertyElement: TProperty := Meta.Xmlite.Elements[TUriedName.Create(aXmlns[tagPrefix], tagName)];
+    var propertyElement: TProperty := Meta.Xmlite.Elements[TUriedName.Create(tagUri, tagName)];
 
     if (propertyElement = nil) and Meta.Xmlite.ProcessAnyElement then
     begin // for xs:any - try to find Namespace-registered element and parse it
-      var metaElement: TMetaBasite := TMetaBank.Xmlite.Namespaces.GetMetaBasite(aXmlns[tagPrefix], xctElement, tagName);
+      var metaElement: TMetaBasite := TMetaBank.Xmlite.Namespaces.GetMetaBasite(tagUri, xctElement, tagName);
       if Assigned(metaElement) then
       begin
         var element: TBasite := metaElement.ClassItself.Create;
@@ -602,7 +681,7 @@ begin
               Exit;
             if propertyBasite.Meta.ClassItself.InheritsFrom(TXmliteTextElement) then
             begin
-              ReadTextNode(aCursor, TXmliteTextElement(fieldObject));
+              ReadTextNode(aCursor, TXmliteTextElement(fieldObject), aXmlns);
               TReaderXmlite.PassNode(aCursor, tagFullName);
             end
             else
@@ -619,7 +698,7 @@ begin
             var objectListItem: TBasite := propertyObjectList.Meta.ItemMeta.ClassItself.Create;
             if propertyObjectList.Meta.ItemMeta.ClassItself.InheritsFrom(TXmliteTextElement) then
             begin
-              ReadTextNode(aCursor, TXmliteTextElement(objectListItem));
+              ReadTextNode(aCursor, TXmliteTextElement(objectListItem), aXmlns);
               TReaderXmlite.PassNode(aCursor, tagFullName);
             end
             else
@@ -1368,7 +1447,7 @@ begin
   fElements := TDictObjectList<TUriedName, TProperty>.Create(TUriedName.TComparer.Create, TUriedName.TEqualityComparer.Create, False);
   for var propertyInfo in Meta.Properties do
   begin
-    var uriedName: TUriedName := TUriedName.Create(propertyInfo.Name);;
+    var uriedName: TUriedName := TUriedName.Create(TPropertyXmlite.XmlName(propertyInfo));
     case propertyInfo.PropertyType of
       ptData:
         begin
@@ -1581,8 +1660,19 @@ end;
 constructor TPropertyXmlite.Create(aProperty: TProperty);
 begin
   inherited;
-  fName := PropertyInfo.Name;
+  fName := XmlName(PropertyInfo);
   NamespaceUnregister;
+end;
+
+class function TPropertyXmlite.XmlName(aProperty: TProperty): string;
+begin
+  // Basite name already follows [TName] or class [TNaming] (or the default naming); property [TNaming] is Xmlite-level
+  Result := aProperty.Name;
+  for var attribute: TCustomAttribute in aProperty.RttiProperty.GetAttributes do
+    if attribute.ClassType = TNameAttribute then
+      Exit(aProperty.Name)
+    else if attribute.ClassType.InheritsFrom(TNamingAttribute) then
+      Result := TUtility.FromPascalCase(aProperty.RttiProperty.Name, TNamingAttribute(attribute).Naming);
 end;
 
 procedure TPropertyXmlite.NamespaceRegister(aNamespace: TNamespace);
