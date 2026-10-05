@@ -6,7 +6,7 @@
     ProRock is a free and open-source Delphi library. Feedback and contributions are welcome.
     https://github.com/VitalyPopov/ProRock
     
-    Generated (UTC): 2026-10-05T13:58:04.415Z
+    Generated (UTC): 2026-10-05T19:04:30.843Z
     Namespace: http://schemas.xmlsoap.org/soap/envelope/
 *)
 
@@ -73,12 +73,16 @@ type
   published
     [TXmliteElement]
     [TRequired]
+    [TNaming(TNaming.nFlatCase)]
     property Faultcode: ProRock.Xmlite.Schema.Base.TQNameST read fFaultcode write fFaultcode;
     [TXmliteElement]
     [TRequired]
+    [TNaming(TNaming.nFlatCase)]
     property Faultstring: ProRock.Xmlite.Schema.Base.TStringST read fFaultstring write fFaultstring;
     [TXmliteElement]
+    [TNaming(TNaming.nFlatCase)]
     property Faultactor: ProRock.Xmlite.Schema.Base.TAnyURIST read fFaultactor write fFaultactor;
+    [TNaming(TNaming.nFlatCase)]
     property Detail: TDetailCT read fDetail;
   end;
 
@@ -91,6 +95,7 @@ type
   private
     fEncodingStyle: TEncodingStyleA;
   published
+    [TNaming(TNaming.nCamelCase)]
     property EncodingStyle: TEncodingStyleA read fEncodingStyle write fEncodingStyle;
   end;
 

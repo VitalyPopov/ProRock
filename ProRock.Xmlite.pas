@@ -208,7 +208,8 @@ type
   public
     constructor Create(aProperty: TProperty); override;
 
-    // XML name of a property, the most precise rule first: [TName] (exact), property [TNaming], class [TNaming], default naming
+    // XML name of a property out of any namespace: [TName] (exact), property [TNaming], class [TNaming], default naming;
+    // once registered in a namespace: [TName], property [TNaming], the namespace naming
     class function XmlName(aProperty: TProperty): string; static;
 
     property Name: string read fName;
@@ -640,6 +641,11 @@ begin
     // get a property for property defined name, following prefix/uri
     var propertyElement: TProperty := Meta.Xmlite.Elements[TUriedName.Create(tagUri, tagName)];
 
+    // unqualified local element (elementFormDefault="unqualified", e.g. faultcode of SOAP 1.1 Fault) belongs to its parent type,
+    // the same way as unprefixed attributes
+    if (propertyElement = nil) and tagUri.IsEmpty and Assigned(Meta.Xmlite.Namespace) then
+      propertyElement := Meta.Xmlite.Elements[TUriedName.Create(Meta.Xmlite.Namespace.Uri, tagName)];
+
     if (propertyElement = nil) and Meta.Xmlite.ProcessAnyElement then
     begin // for xs:any - try to find Namespace-registered element and parse it
       var metaElement: TMetaBasite := TMetaBank.Xmlite.Namespaces.GetMetaBasite(tagUri, xctElement, tagName);
@@ -828,7 +834,12 @@ begin
 
         if Meta.Xmlite.IsTXmlite and Meta.Xmlite.ProcessAnyElement then
           for var anyElement: TBasite in TXmlite(Self).XmlAny do
-            anyElement.ToXml(aWriter, elementName(anyElement, True), True);
+            if anyElement.Meta.Xmlite.Namespace <> Meta.Xmlite.Namespace then
+              // an element of another namespace declares it as its default one - its unprefixed members then belong to it
+              // (e.g. <Add xmlns="http://tempuri.org/"><intA>... inside soap:Body)
+              anyElement.ToXml(aWriter, anyElement.Meta.Xmlite.Name, False, True)
+            else
+              anyElement.ToXml(aWriter, elementName(anyElement, True), True);
 
         aWriter.DecLevel;
 
@@ -1100,7 +1111,8 @@ end;
 
 function TXmlite.IsEmptyOrDefault: boolean;
 begin
-  Result := inherited and fXmlText.IsEmpty;
+  // content kept in xs:any or as not described attributes is content as well
+  Result := inherited and fXmlText.IsEmpty and (fXmlAny.Count = 0) and (fXmlAttributes.Count = 0);
 end;
 
 class function TXmlite.ObjectToXml(aObject: TBasite): string;
@@ -1660,7 +1672,6 @@ end;
 constructor TPropertyXmlite.Create(aProperty: TProperty);
 begin
   inherited;
-  fName := XmlName(PropertyInfo);
   NamespaceUnregister;
 end;
 
@@ -1682,15 +1693,20 @@ begin
 
   NamespaceUnregister;
 
+  var hasOwnName: boolean := False;
   for var attribute: TCustomAttribute in PropertyInfo.RttiProperty.GetAttributes do
     if attribute.ClassType.InheritsFrom(TNamespaceAttribute) then
-    begin
-      TMetaBankXmlite.Instance.TryGetNamespace(TNamespaceAttribute(attribute).Uri, fNamespace);
-      break;
-    end;
+      TMetaBankXmlite.Instance.TryGetNamespace(TNamespaceAttribute(attribute).Uri, fNamespace)
+    else if (attribute.ClassType = TNameAttribute) or attribute.ClassType.InheritsFrom(TNamingAttribute) then
+      hasOwnName := True;
 
   if fNamespace = nil then
     fNamespace := aNamespace;
+
+  // a member follows its namespace naming (as components do), unless the property defines its own [TName] or [TNaming]
+  if not hasOwnName then
+    fName := TUtility.FromPascalCase(PropertyInfo.RttiProperty.Name, fNamespace.Naming);
+
   if not fNamespace.Prefix.IsEmpty then
     fNamePrefixed := fNamespace.Prefix + ':' + fName;
   fNameUried := fNamespace.Uri + ':' + fName;
@@ -1702,6 +1718,7 @@ begin
     Exit;
 
   fNamespace := nil;
+  fName := XmlName(PropertyInfo); // the name out of any namespace
   fNamePrefixed := fName;
   fNameUried := fName;
 end;

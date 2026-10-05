@@ -6,7 +6,7 @@
     ProRock is a free and open-source Delphi library. Feedback and contributions are welcome.
     https://github.com/VitalyPopov/ProRock
     
-    Generated (UTC): 2026-10-05T13:58:04.415Z
+    Generated (UTC): 2026-10-05T19:04:30.843Z
     Namespace: http://www.w3.org/XML/1998/namespace
 *)
 

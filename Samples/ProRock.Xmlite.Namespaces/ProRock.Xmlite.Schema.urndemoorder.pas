@@ -1,12 +1,13 @@
 ﻿unit ProRock.Xmlite.Schema.urndemoorder;
 
 (*
-    This unit was automatically generated using ProRocket Lite 1.0.5 (ProRock 1.0.3)
-    Generated (UTC): 2026-01-27T00:55:36.901Z
-    Namespace: urn:demo:order
+    This unit was automatically generated using ProRocket Lite 1.0.6 (ProRock 1.0.3)
     
     ProRock is a free and open-source Delphi library. Feedback and contributions are welcome.
     https://github.com/VitalyPopov/ProRock
+    
+    Generated (UTC): 2026-10-05T19:16:09.738Z
+    Namespace: urn:demo:order
 *)
 
 
@@ -39,10 +40,16 @@ type
     fEmail: ProRock.Xmlite.Schema.Base.TStringST;
   published
     [TXmliteElement]
+    [TRequired]
+    [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Base.TStringST read fId write fId;
     [TXmliteElement]
+    [TRequired]
+    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Base.TStringST read fName write fName;
     [TXmliteElement]
+    [TRequired]
+    [TNaming(TNaming.nFlatCase)]
     property Email: ProRock.Xmlite.Schema.Base.TStringST read fEmail write fEmail;
   end;
 
@@ -58,14 +65,24 @@ type
     fCurrency: TCurrencyCodeST;
   published
     [TXmliteElement]
+    [TRequired]
+    [TNaming(TNaming.nFlatCase)]
     property Sku: ProRock.Xmlite.Schema.Base.TStringST read fSku write fSku;
     [TXmliteElement]
+    [TRequired]
+    [TNaming(TNaming.nFlatCase)]
     property Title: ProRock.Xmlite.Schema.Base.TStringST read fTitle write fTitle;
     [TXmliteElement]
+    [TRequired]
+    [TNaming(TNaming.nFlatCase)]
     property Quantity: TQuantity read fQuantity write fQuantity;
     [TXmliteElement]
+    [TRequired]
+    [TNaming(TNaming.nFlatCase)]
     property Price: TPrice read fPrice write fPrice;
     [TXmliteElement]
+    [TRequired]
+    [TNaming(TNaming.nFlatCase)]
     property Currency: TCurrencyCodeST read fCurrency write fCurrency;
   end;
 
@@ -73,6 +90,7 @@ type
   private
     fItem: TItemTypeCTList;
   published
+    [TNaming(TNaming.nFlatCase)]
     property Item: TItemTypeCTList read fItem;
   end;
 
@@ -82,8 +100,12 @@ type
     fCurrency: TCurrencyCodeST;
   published
     [TXmliteElement]
+    [TRequired]
+    [TNaming(TNaming.nFlatCase)]
     property Amount: ProRock.Xmlite.Schema.Base.TDecimalST read fAmount write fAmount;
     [TXmliteElement]
+    [TRequired]
+    [TNaming(TNaming.nFlatCase)]
     property Currency: TCurrencyCodeST read fCurrency write fCurrency;
   end;
 
@@ -98,13 +120,22 @@ type
     fTotal: TMoneyTypeCT;
   published
     [TXmliteElement]
+    [TRequired]
+    [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Base.TStringST read fId write fId;
     [TXmliteElement]
+    [TRequired]
+    [TNaming(TNaming.nFlatCase)]
     property Date: ProRock.Xmlite.Schema.Base.TDateTimeST read fDate write fDate;
     [TXmliteElement]
+    [TRequired]
+    [TNaming(TNaming.nFlatCase)]
     property Status: TOrderStatusST read fStatus write fStatus;
+    [TNaming(TNaming.nFlatCase)]
     property Customer: TCustomerTypeCT read fCustomer;
+    [TNaming(TNaming.nFlatCase)]
     property Items: TItemsTypeCT read fItems;
+    [TNaming(TNaming.nFlatCase)]
     property Total: TMoneyTypeCT read fTotal;
   end;
 
