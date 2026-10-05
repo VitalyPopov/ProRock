@@ -9,6 +9,9 @@
         <Projects Include="ProRock.Xmlite.Namespaces\ProRock.Xmlite.Namespaces.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="ProRock.Soapite.Calculator\ProRock.Soapite.CalculatorSample.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -35,14 +38,23 @@
     <Target Name="ProRock_Xmlite_Namespaces:Make">
         <MSBuild Projects="ProRock.Xmlite.Namespaces\ProRock.Xmlite.Namespaces.dproj" Targets="Make"/>
     </Target>
+    <Target Name="ProRock_Soapite_CalculatorSample">
+        <MSBuild Projects="ProRock.Soapite.Calculator\ProRock.Soapite.CalculatorSample.dproj"/>
+    </Target>
+    <Target Name="ProRock_Soapite_CalculatorSample:Clean">
+        <MSBuild Projects="ProRock.Soapite.Calculator\ProRock.Soapite.CalculatorSample.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ProRock_Soapite_CalculatorSample:Make">
+        <MSBuild Projects="ProRock.Soapite.Calculator\ProRock.Soapite.CalculatorSample.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="ProRock_Xmlite_Basic;ProRock_Xmlite_Namespaces"/>
+        <CallTarget Targets="ProRock_Xmlite_Basic;ProRock_Xmlite_Namespaces;ProRock_Soapite_CalculatorSample"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="ProRock_Xmlite_Basic:Clean;ProRock_Xmlite_Namespaces:Clean"/>
+        <CallTarget Targets="ProRock_Xmlite_Basic:Clean;ProRock_Xmlite_Namespaces:Clean;ProRock_Soapite_CalculatorSample:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="ProRock_Xmlite_Basic:Make;ProRock_Xmlite_Namespaces:Make"/>
+        <CallTarget Targets="ProRock_Xmlite_Basic:Make;ProRock_Xmlite_Namespaces:Make;ProRock_Soapite_CalculatorSample:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
