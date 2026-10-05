@@ -6,7 +6,7 @@
     ProRock is a free and open-source Delphi library. Feedback and contributions are welcome.
     https://github.com/VitalyPopov/ProRock
     
-    Generated (UTC): 2026-10-05T19:04:30.843Z
+    Generated (UTC): 2026-10-05T20:48:57.370Z
     Namespace: http://www.w3.org/XML/1998/namespace
 *)
 
@@ -23,9 +23,6 @@ type
   TIdA = type string;
   TLangA = type string;
 
-  TSpecialAttrsAG = class;
-
-
   TSpecialAttrsAG = class(TXmliteAttributeGroup)
   private
     fBase: TBaseA;
@@ -38,7 +35,6 @@ type
     property Space: TSpaceA read fSpace write fSpace;
     property Id: TIdA read fId write fId;
   end;
-
 
 implementation
 
