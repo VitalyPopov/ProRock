@@ -589,8 +589,8 @@ begin
   for var propertyInfo in Meta.Properties do
   begin
     case propertyInfo.PropertyType of
-      ptData: // required value is never "empty" - it must be serialized
-        Result := not TPropertyData(propertyInfo).Required and TPropertyData(propertyInfo).ValueIsDefault(Self);
+      ptData:
+        Result := TPropertyData(propertyInfo).ValueIsDefault(Self);
       ptBasite:
         if TPropertyBasite(propertyInfo).ObjectPointer(Self)^ <> nil then
           Result := TPropertyBasite(propertyInfo).ObjectPointer(Self).IsEmptyOrDefault;
