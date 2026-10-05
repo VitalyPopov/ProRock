@@ -1,12 +1,13 @@
 ﻿unit ProRock.Xmlite.Schema.Xml;
 
 (*
-    This unit was automatically generated using ProRocket Lite 1.0.5 (ProRock 1.0.3)
-    Generated (UTC): 2026-01-27T00:28:43.748Z
-    Namespace: http://www.w3.org/XML/1998/namespace
+    This unit was automatically generated using ProRocket Lite 1.0.6 (ProRock 1.0.3)
     
     ProRock is a free and open-source Delphi library. Feedback and contributions are welcome.
     https://github.com/VitalyPopov/ProRock
+    
+    Generated (UTC): 2026-10-05T13:58:04.415Z
+    Namespace: http://www.w3.org/XML/1998/namespace
 *)
 
 

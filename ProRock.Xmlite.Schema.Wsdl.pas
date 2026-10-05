@@ -2,11 +2,12 @@
 
 (*
     This unit was automatically generated using ProRocket Lite 1.0.6 (ProRock 1.0.3)
-    Generated (UTC): 2026-01-27T23:07:24.674Z
-    Namespace: http://schemas.xmlsoap.org/wsdl/
     
     ProRock is a free and open-source Delphi library. Feedback and contributions are welcome.
     https://github.com/VitalyPopov/ProRock
+    
+    Generated (UTC): 2026-10-05T13:58:04.417Z
+    Namespace: http://schemas.xmlsoap.org/wsdl/
 *)
 
 
@@ -108,7 +109,9 @@ type
     fNamespace: ProRock.Xmlite.Schema.Base.TAnyURIST;
     fLocation: ProRock.Xmlite.Schema.Base.TAnyURIST;
   published
+    [TRequired]
     property Namespace: ProRock.Xmlite.Schema.Base.TAnyURIST read fNamespace write fNamespace;
+    [TRequired]
     property Location: ProRock.Xmlite.Schema.Base.TAnyURIST read fLocation write fLocation;
   end;
 
@@ -119,6 +122,7 @@ type
     fName: ProRock.Xmlite.Schema.Base.TNCNameST;
     fPart: TTPartCTList;
   published
+    [TRequired]
     property Name: ProRock.Xmlite.Schema.Base.TNCNameST read fName write fName;
     property Part: TTPartCTList read fPart;
   end;
@@ -129,6 +133,7 @@ type
     fElement: ProRock.Xmlite.Schema.Base.TQNameST;
     fType: ProRock.Xmlite.Schema.Base.TQNameST;
   published
+    [TRequired]
     property Name: ProRock.Xmlite.Schema.Base.TNCNameST read fName write fName;
     property Element: ProRock.Xmlite.Schema.Base.TQNameST read fElement write fElement;
     property &Type: ProRock.Xmlite.Schema.Base.TQNameST read fType write fType;
@@ -139,6 +144,7 @@ type
     fName: ProRock.Xmlite.Schema.Base.TNCNameST;
     fOperation: TTOperationCTList;
   published
+    [TRequired]
     property Name: ProRock.Xmlite.Schema.Base.TNCNameST read fName write fName;
     property Operation: TTOperationCTList read fOperation;
   end;
@@ -151,6 +157,7 @@ type
     fOutput: TTParamCT;
     fFault: TTFaultCTList;
   published
+    [TRequired]
     property Name: ProRock.Xmlite.Schema.Base.TNCNameST read fName write fName;
     property ParameterOrder: ProRock.Xmlite.Schema.Base.TNmtokensST read fParameterOrder write fParameterOrder;
     property Input: TTParamCT read fInput;
@@ -164,6 +171,7 @@ type
     fMessage: ProRock.Xmlite.Schema.Base.TQNameST;
   published
     property Name: ProRock.Xmlite.Schema.Base.TNCNameST read fName write fName;
+    [TRequired]
     property Message: ProRock.Xmlite.Schema.Base.TQNameST read fMessage write fMessage;
   end;
 
@@ -172,7 +180,9 @@ type
     fName: ProRock.Xmlite.Schema.Base.TNCNameST;
     fMessage: ProRock.Xmlite.Schema.Base.TQNameST;
   published
+    [TRequired]
     property Name: ProRock.Xmlite.Schema.Base.TNCNameST read fName write fName;
+    [TRequired]
     property Message: ProRock.Xmlite.Schema.Base.TQNameST read fMessage write fMessage;
   end;
 
@@ -182,7 +192,9 @@ type
     fType: ProRock.Xmlite.Schema.Base.TQNameST;
     fOperation: TTBindingOperationCTList;
   published
+    [TRequired]
     property Name: ProRock.Xmlite.Schema.Base.TNCNameST read fName write fName;
+    [TRequired]
     property &Type: ProRock.Xmlite.Schema.Base.TQNameST read fType write fType;
     property Operation: TTBindingOperationCTList read fOperation;
   end;
@@ -198,6 +210,7 @@ type
   private
     fName: ProRock.Xmlite.Schema.Base.TNCNameST;
   published
+    [TRequired]
     property Name: ProRock.Xmlite.Schema.Base.TNCNameST read fName write fName;
   end;
 
@@ -208,6 +221,7 @@ type
     fOutput: TTBindingOperationMessageCT;
     fFault: TTBindingOperationFaultCTList;
   published
+    [TRequired]
     property Name: ProRock.Xmlite.Schema.Base.TNCNameST read fName write fName;
     property Input: TTBindingOperationMessageCT read fInput;
     property Output: TTBindingOperationMessageCT read fOutput;
@@ -219,6 +233,7 @@ type
     fName: ProRock.Xmlite.Schema.Base.TNCNameST;
     fPort: TTPortCTList;
   published
+    [TRequired]
     property Name: ProRock.Xmlite.Schema.Base.TNCNameST read fName write fName;
     property Port: TTPortCTList read fPort;
   end;
@@ -228,7 +243,9 @@ type
     fName: ProRock.Xmlite.Schema.Base.TNCNameST;
     fBinding: ProRock.Xmlite.Schema.Base.TQNameST;
   published
+    [TRequired]
     property Name: ProRock.Xmlite.Schema.Base.TNCNameST read fName write fName;
+    [TRequired]
     property Binding: ProRock.Xmlite.Schema.Base.TQNameST read fBinding write fBinding;
   end;
 

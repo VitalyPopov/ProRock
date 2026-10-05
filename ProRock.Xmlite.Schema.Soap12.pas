@@ -2,11 +2,12 @@
 
 (*
     This unit was automatically generated using ProRocket Lite 1.0.6 (ProRock 1.0.3)
-    Generated (UTC): 2026-01-27T23:07:24.673Z
-    Namespace: http://schemas.xmlsoap.org/wsdl/soap12/
     
     ProRock is a free and open-source Delphi library. Feedback and contributions are welcome.
     https://github.com/VitalyPopov/ProRock
+    
+    Generated (UTC): 2026-10-05T13:58:04.417Z
+    Namespace: http://schemas.xmlsoap.org/wsdl/soap12/
 *)
 
 
@@ -64,6 +65,7 @@ type
     fTransport: ProRock.Xmlite.Schema.Base.TAnyURIST;
     fStyle: TTStyleChoiceST;
   published
+    [TRequired]
     property Transport: ProRock.Xmlite.Schema.Base.TAnyURIST read fTransport write fTransport;
     property Style: TTStyleChoiceST read fStyle write fStyle;
   end;
@@ -109,6 +111,7 @@ type
   private
     fName: ProRock.Xmlite.Schema.Base.TNCNameST;
   published
+    [TRequired]
     property Name: ProRock.Xmlite.Schema.Base.TNCNameST read fName write fName;
   end;
 
@@ -121,8 +124,11 @@ type
     fNamespace: ProRock.Xmlite.Schema.Base.TAnyURIST;
     fHeaderfault: THeaderfaultEList;
   published
+    [TRequired]
     property Message: ProRock.Xmlite.Schema.Base.TQNameST read fMessage write fMessage;
+    [TRequired]
     property Part: ProRock.Xmlite.Schema.Base.TNmtokenST read fPart write fPart;
+    [TRequired]
     property Use: TUseChoiceST read fUse write fUse;
     property EncodingStyle: ProRock.Xmlite.Schema.Base.TAnyURIST read fEncodingStyle write fEncodingStyle;
     property Namespace: ProRock.Xmlite.Schema.Base.TAnyURIST read fNamespace write fNamespace;
@@ -137,8 +143,11 @@ type
     fEncodingStyle: ProRock.Xmlite.Schema.Base.TAnyURIST;
     fNamespace: ProRock.Xmlite.Schema.Base.TAnyURIST;
   published
+    [TRequired]
     property Message: ProRock.Xmlite.Schema.Base.TQNameST read fMessage write fMessage;
+    [TRequired]
     property Part: ProRock.Xmlite.Schema.Base.TNmtokenST read fPart write fPart;
+    [TRequired]
     property Use: TUseChoiceST read fUse write fUse;
     property EncodingStyle: ProRock.Xmlite.Schema.Base.TAnyURIST read fEncodingStyle write fEncodingStyle;
     property Namespace: ProRock.Xmlite.Schema.Base.TAnyURIST read fNamespace write fNamespace;
@@ -148,6 +157,7 @@ type
   private
     fLocation: ProRock.Xmlite.Schema.Base.TAnyURIST;
   published
+    [TRequired]
     property Location: ProRock.Xmlite.Schema.Base.TAnyURIST read fLocation write fLocation;
   end;
 
@@ -170,8 +180,11 @@ type
     fEncodingStyle: ProRock.Xmlite.Schema.Base.TAnyURIST;
     fNamespace: ProRock.Xmlite.Schema.Base.TAnyURIST;
   published
+    [TRequired]
     property Message: ProRock.Xmlite.Schema.Base.TQNameST read fMessage write fMessage;
+    [TRequired]
     property Part: ProRock.Xmlite.Schema.Base.TNmtokenST read fPart write fPart;
+    [TRequired]
     property Use: TUseChoiceST read fUse write fUse;
     property EncodingStyle: ProRock.Xmlite.Schema.Base.TAnyURIST read fEncodingStyle write fEncodingStyle;
     property Namespace: ProRock.Xmlite.Schema.Base.TAnyURIST read fNamespace write fNamespace;

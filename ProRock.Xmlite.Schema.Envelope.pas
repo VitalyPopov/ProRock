@@ -2,11 +2,12 @@
 
 (*
     This unit was automatically generated using ProRocket Lite 1.0.6 (ProRock 1.0.3)
-    Generated (UTC): 2026-01-27T23:07:24.675Z
-    Namespace: http://schemas.xmlsoap.org/soap/envelope/
     
     ProRock is a free and open-source Delphi library. Feedback and contributions are welcome.
     https://github.com/VitalyPopov/ProRock
+    
+    Generated (UTC): 2026-10-05T13:58:04.415Z
+    Namespace: http://schemas.xmlsoap.org/soap/envelope/
 *)
 
 
@@ -71,8 +72,10 @@ type
     fDetail: TDetailCT;
   published
     [TXmliteElement]
+    [TRequired]
     property Faultcode: ProRock.Xmlite.Schema.Base.TQNameST read fFaultcode write fFaultcode;
     [TXmliteElement]
+    [TRequired]
     property Faultstring: ProRock.Xmlite.Schema.Base.TStringST read fFaultstring write fFaultstring;
     [TXmliteElement]
     property Faultactor: ProRock.Xmlite.Schema.Base.TAnyURIST read fFaultactor write fFaultactor;

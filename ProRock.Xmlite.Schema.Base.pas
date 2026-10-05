@@ -1,12 +1,13 @@
 ﻿unit ProRock.Xmlite.Schema.Base;
 
 (*
-    This unit was automatically generated using ProRocket Lite 1.0.5 (ProRock 1.0.3)
-    Generated (UTC): 2026-01-27T00:28:43.749Z
-    Namespace: http://www.w3.org/2001/XMLSchema
+    This unit was automatically generated using ProRocket Lite 1.0.6 (ProRock 1.0.3)
     
     ProRock is a free and open-source Delphi library. Feedback and contributions are welcome.
     https://github.com/VitalyPopov/ProRock
+    
+    Generated (UTC): 2026-10-05T13:58:04.397Z
+    Namespace: http://www.w3.org/2001/XMLSchema
 *)
 
 
@@ -305,6 +306,7 @@ type
     property &Type: TQNameST read fType write fType;
     property Default: TStringST read fDefault write fDefault;
     property Fixed: TStringST read fFixed write fFixed;
+    [TRequired]
     property Name: TNCNameST read fName write fName;
     property Annotation: TAnnotationE read fAnnotation;
     property SimpleType: TLocalSimpleTypeCT read fSimpleType;
@@ -371,6 +373,7 @@ type
     property Abstract: TBooleanST read fAbstract write fAbstract;
     property Final: TDerivationSetST read fFinal write fFinal;
     property Block: TDerivationSetST read fBlock write fBlock;
+    [TRequired]
     property Name: TNCNameST read fName write fName;
     property SimpleContent: TSimpleContentE read fSimpleContent;
     property ComplexContent: TComplexContentE read fComplexContent;
@@ -438,6 +441,7 @@ type
     fPattern: TPatternEList;
     fSimpleType: TLocalSimpleTypeCT;
   published
+    [TRequired]
     property Base: TQNameST read fBase write fBase;
     property AnyAttribute: TAnyAttributeE read fAnyAttribute;
     property Attribute: TAttributeCTList read fAttribute;
@@ -475,6 +479,7 @@ type
     fSequence: TSequenceE;
   published
     property Id: TIdST read fId write fId;
+    [TRequired]
     property Base: TQNameST read fBase write fBase;
     property AnyAttribute: TAnyAttributeE read fAnyAttribute;
     property Attribute: TAttributeCTList read fAttribute;
@@ -497,6 +502,7 @@ type
     fAttribute: TAttributeCTList;
     fAttributeGroup: TAttributeGroupRefCTList;
   published
+    [TRequired]
     property Base: TQNameST read fBase write fBase;
     property Group: TGroupRefCT read fGroup;
     property All: TAllE read fAll;
@@ -530,6 +536,7 @@ type
     fSimpleType: TLocalSimpleTypeCT;
   published
     property Id: TIdST read fId write fId;
+    [TRequired]
     property Base: TQNameST read fBase write fBase;
     property AnyAttribute: TAnyAttributeE read fAnyAttribute;
     property Attribute: TAttributeCTList read fAttribute;
@@ -560,6 +567,7 @@ type
     fAnnotation: TAnnotationE;
   published
     property Id: TIdST read fId write fId;
+    [TRequired]
     property Base: TQNameST read fBase write fBase;
     property AnyAttribute: TAnyAttributeE read fAnyAttribute;
     property Attribute: TAttributeCTList read fAttribute;
@@ -642,6 +650,7 @@ type
     property Abstract: TBooleanST read fAbstract write fAbstract;
     property Final: TDerivationSetST read fFinal write fFinal;
     property Block: TBlockSetST read fBlock write fBlock;
+    [TRequired]
     property Name: TNCNameST read fName write fName;
     property Unique: TUniqueEList read fUnique;
     property Key: TKeyEList read fKey;
@@ -766,6 +775,7 @@ type
     fSequence: TSimpleExplicitGroupCT;
   published
     property Id: TIdST read fId write fId;
+    [TRequired]
     property Name: TNCNameST read fName write fName;
     property Annotation: TAnnotationE read fAnnotation;
     property All: TNamedGroupCTAll read fAll;
@@ -786,6 +796,7 @@ type
     property MinOccurs: TNonNegativeIntegerST read fMinOccurs write fMinOccurs;
     [TDefault(1)]
     property MaxOccurs: TAllNNIST read fMaxOccurs write fMaxOccurs;
+    [TRequired]
     property Ref: TQNameST read fRef write fRef;
     property Annotation: TAnnotationE read fAnnotation;
   end;
@@ -937,6 +948,7 @@ type
     fAnnotation: TAnnotationE;
   published
     property Id: TIdST read fId write fId;
+    [TRequired]
     property Name: TNCNameST read fName write fName;
     property AnyAttribute: TAnyAttributeE read fAnyAttribute;
     property Attribute: TAttributeCTList read fAttribute;
@@ -951,6 +963,7 @@ type
     fAnnotation: TAnnotationE;
   published
     property Id: TIdST read fId write fId;
+    [TRequired]
     property Ref: TQNameST read fRef write fRef;
     property Annotation: TAnnotationE read fAnnotation;
   end;
@@ -961,6 +974,7 @@ type
     fSelector: TSelectorE;
     fField: TFieldEList;
   published
+    [TRequired]
     property Name: TNCNameST read fName write fName;
     property Selector: TSelectorE read fSelector;
     property Field: TFieldEList read fField;
@@ -996,6 +1010,7 @@ type
   published
     property Id: TIdST read fId write fId;
     property Final: TSimpleDerivationSetST read fFinal write fFinal;
+    [TRequired]
     property Name: TNCNameST read fName write fName;
     property Restriction: TRestrictionE read fRestriction;
     property List: TListE read fList;
@@ -1023,6 +1038,7 @@ type
     fValue: TAnySimpleTypeST;
     fFixed: TBooleanST;
   published
+    [TRequired]
     property Value: TAnySimpleTypeST read fValue write fValue;
     [TDefault(False)]
     property Fixed: TBooleanST read fFixed write fFixed;
@@ -1035,6 +1051,7 @@ type
     fAnnotation: TAnnotationE;
   published
     property Id: TIdST read fId write fId;
+    [TRequired]
     property Value: TAnySimpleTypeST read fValue write fValue;
     property Annotation: TAnnotationE read fAnnotation;
   end;
@@ -1049,6 +1066,7 @@ type
     property Id: TIdST read fId write fId;
     [TDefault(False)]
     property Fixed: TBooleanST read fFixed write fFixed;
+    [TRequired]
     property Value: TNonNegativeIntegerST read fValue write fValue;
     property Annotation: TAnnotationE read fAnnotation;
   end;
@@ -1171,6 +1189,7 @@ type
   private
     fSchemaLocation: TAnyURIST;
   published
+    [TRequired]
     property SchemaLocation: TAnyURIST read fSchemaLocation write fSchemaLocation;
   end;
 
@@ -1184,6 +1203,7 @@ type
     fAttributeGroup: TAttributeGroupEList;
     fAnnotation: TAnnotationEList;
   published
+    [TRequired]
     property SchemaLocation: TAnyURIST read fSchemaLocation write fSchemaLocation;
     property Id: TIdST read fId write fId;
     property SimpleType: TSimpleTypeEList read fSimpleType;
@@ -1208,6 +1228,7 @@ type
   private
     fXpath: TXpath;
   published
+    [TRequired]
     property Xpath: TXpath read fXpath write fXpath;
   end;
 
@@ -1217,6 +1238,7 @@ type
   private
     fXpath: TXpath;
   published
+    [TRequired]
     property Xpath: TXpath read fXpath write fXpath;
   end;
 
@@ -1228,6 +1250,7 @@ type
   private
     fRefer: TQNameST;
   published
+    [TRequired]
     property Refer: TQNameST read fRefer write fRefer;
   end;
 
@@ -1237,6 +1260,7 @@ type
     fPublic: TPublicST;
     fSystem: TAnyURIST;
   published
+    [TRequired]
     property Name: TNCNameST read fName write fName;
     property Public: TPublicST read fPublic write fPublic;
     property System: TAnyURIST read fSystem write fSystem;
@@ -1344,6 +1368,7 @@ type
     property Id: TIdST read fId write fId;
     [TDefault(False)]
     property Fixed: TBooleanST read fFixed write fFixed;
+    [TRequired]
     property Value: TPositiveIntegerST read fValue write fValue;
     property Annotation: TAnnotationE read fAnnotation;
   end;
@@ -1370,6 +1395,7 @@ type
     property Id: TIdST read fId write fId;
     [TDefault(False)]
     property Fixed: TBooleanST read fFixed write fFixed;
+    [TRequired]
     property Value: TValue read fValue write fValue;
     property Annotation: TAnnotationE read fAnnotation;
   end;
@@ -1381,6 +1407,7 @@ type
     fAnnotation: TAnnotationE;
   published
     property Id: TIdST read fId write fId;
+    [TRequired]
     property Value: TStringST read fValue write fValue;
     property Annotation: TAnnotationE read fAnnotation;
   end;
