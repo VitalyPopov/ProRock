@@ -36,7 +36,7 @@ type
   end;
 
   ESoapite = class(Exception)
-  private
+  protected
     fError: TSoapiteError;
   public
     constructor Create(const aError: TSoapiteError);
