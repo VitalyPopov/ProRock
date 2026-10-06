@@ -3,7 +3,7 @@
 interface
 
 uses System.Classes, System.SysUtils,
-  ProRock.Basite, ProRock.Xmlite, ProRock.Http, ProRock.Xmlite.Schema.Envelope;
+  ProRock.Basite, ProRock.Xmlite, ProRock.Http;
 
 type
   TSoapVersion = (sv11, sv12);
@@ -11,9 +11,10 @@ type
 
 const
   cSoapiteContentType11 = 'text/xml; charset=utf-8';
+  cSoapiteContentType12 = 'application/soap+xml; charset=utf-8';
 
-  // versions the runtime can speak (SOAP 1.2 is to come)
-  cSoapiteVersionsImplemented: TSoapVersions = [sv11];
+  // versions the runtime can speak
+  cSoapiteVersionsImplemented: TSoapVersions = [sv11, sv12];
 
 type
   TSoapiteXmlEvent = procedure(aSender: TObject; const aXml: string) of object;
@@ -28,8 +29,9 @@ type
   TSoapiteError = record
     Kind: TSoapiteErrorKind;
     Message: string;
-    Code: string;       // SOAP Fault code, e.g. soap:Server
-    Actor: string;      // SOAP Fault actor
+    Code: string;       // SOAP Fault code, e.g. soap:Server (1.1), env:Receiver (1.2)
+    Subcode: string;    // SOAP 1.2 only: the innermost (most specific) fault subcode, usually the service's own
+    Actor: string;      // SOAP Fault actor (1.1), Node (1.2)
     Detail: string;     // raw xml of the SOAP Fault detail (registered elements only)
     HttpStatus: integer;
     Response: string;   // raw response body - for diagnostics
@@ -55,6 +57,7 @@ type
   ESoapiteFault = class(ESoapite)
   public
     property Code: string read fError.Code;
+    property Subcode: string read fError.Subcode;
     property Actor: string read fError.Actor;
     property Detail: string read fError.Detail;
   end;
@@ -98,7 +101,57 @@ type
 
 implementation
 
-uses System.StrUtils;
+uses System.StrUtils,
+  ProRock.Xmlite.Schema.Envelope, ProRock.Xmlite.Schema.Envelope12;
+
+const
+  cSoapVersionOther: array [TSoapVersion] of TSoapVersion = (sv12, sv11);
+
+// an envelope of the given SOAP version and its Body - both metamodels are TXmlite, so the rest of a call is version-neutral
+function CreateEnvelope(aSoapVersion: TSoapVersion; out aBody: TXmlite): TXmlite;
+begin
+  if aSoapVersion = sv12 then
+  begin
+    var envelope12: ProRock.Xmlite.Schema.Envelope12.TEnvelopeE := ProRock.Xmlite.Schema.Envelope12.TEnvelopeE.Create;
+    aBody := envelope12.Body;
+    Result := envelope12;
+  end
+  else
+  begin
+    var envelope11: ProRock.Xmlite.Schema.Envelope.TEnvelopeE := ProRock.Xmlite.Schema.Envelope.TEnvelopeE.Create;
+    aBody := envelope11.Body;
+    Result := envelope11;
+  end;
+end;
+
+procedure ReadFault11(aFault: ProRock.Xmlite.Schema.Envelope.TFaultCT; var aError: TSoapiteError);
+begin
+  aError.Kind := sekFault;
+  aError.Message := aFault.Faultstring;
+  aError.Code := aFault.Faultcode;
+  aError.Actor := aFault.Faultactor;
+  if (aFault.Detail.XmlAny.Count > 0) or not aFault.Detail.XmlText.IsEmpty then
+    aError.Detail := aFault.Detail.ToXml('', False);
+end;
+
+procedure ReadFault12(aFault: ProRock.Xmlite.Schema.Envelope12.TFaultCT; var aError: TSoapiteError);
+begin
+  aError.Kind := sekFault;
+  if aFault.Reason.Text.Count > 0 then
+    aError.Message := aFault.Reason.Text[0].XmlText; // todo: pick by xml:lang once reasontext (simpleContent) is generated
+  aError.Code := aFault.Code.Value;
+
+  var subcode: ProRock.Xmlite.Schema.Envelope12.TSubcodeCT := aFault.Code.Subcode;
+  while Assigned(subcode) and (subcode.Value <> '') do
+  begin
+    aError.Subcode := subcode.Value;
+    subcode := subcode.Subcode;
+  end;
+
+  aError.Actor := aFault.Node;
+  if (aFault.Detail.XmlAny.Count > 0) or not aFault.Detail.XmlText.IsEmpty then
+    aError.Detail := aFault.Detail.ToXml('', False);
+end;
 
 { ESoapite }
 
@@ -127,23 +180,29 @@ begin
   aError := Default(TSoapiteError);
   Result := False;
 
-  // settings are read once - the whole call uses one consistent endpoint (and version: todo for SOAP 1.2 envelope, content type
-  // and fault - only 1.1 can be set so far)
+  // settings are read once - the whole call uses one consistent endpoint and version
   var endpoint: string := fEndpoint;
+  var soapVersion: TSoapVersion := fSoapVersion;
 
   var request: THttpRequest;
   request.Method := 'POST';
   request.Url := endpoint;
-  request.AddHeader('Content-Type', cSoapiteContentType11);
-  request.AddHeader('SOAPAction', '"' + aSoapAction + '"');
+  if soapVersion = sv12 then
+    request.AddHeader('Content-Type', cSoapiteContentType12 + IfThen(not aSoapAction.IsEmpty, '; action="' + aSoapAction + '"'))
+  else
+  begin
+    request.AddHeader('Content-Type', cSoapiteContentType11);
+    request.AddHeader('SOAPAction', '"' + aSoapAction + '"');
+  end;
 
-  var envelope: TEnvelopeE := TEnvelopeE.Create;
+  var body: TXmlite;
+  var envelope: TXmlite := CreateEnvelope(soapVersion, body);
   try
-    envelope.Body.XmlAny.Add(aRequest);
+    body.XmlAny.Add(aRequest);
     try
       request.Body := envelope.ToXml;
     finally
-      envelope.Body.XmlAny.Extract(aRequest); // the envelope must not free the caller's request
+      body.XmlAny.Extract(aRequest); // the envelope must not free the caller's request
     end;
   finally
     envelope.Free;
@@ -173,18 +232,39 @@ begin
   // the raw body stays intact for the error: being shared, it is parsed from a copy (see FromXml)
   var responseBody: string := response.Body;
 
-  // SOAP faults normally come with HTTP 500, so the body is examined before the status
-  envelope := TEnvelopeE.Create;
+  // SOAP faults normally come with HTTP 500, so the body is examined before the status.
+  // The requested version first; a service not speaking it answers in the other one (e.g. a 1.1 VersionMismatch Fault). The root
+  // element is not checked by parsing, so a version fits when its Body gets content; otherwise the first parsed envelope is kept
+  envelope := nil;
+  body := nil;
   try
-    var parsed: boolean := False;
     if not responseBody.IsEmpty then
-      try
-        parsed := envelope.FromXml(responseBody);
-      except
-        parsed := False;
+      for var version: TSoapVersion in TArray<TSoapVersion>.Create(soapVersion, cSoapVersionOther[soapVersion]) do
+      begin
+        var candidateBody: TXmlite;
+        var candidate: TXmlite := CreateEnvelope(version, candidateBody);
+
+        var parsed: boolean;
+        try
+          parsed := candidate.FromXml(responseBody);
+        except
+          parsed := False;
+        end;
+
+        if parsed and ((envelope = nil) or (candidateBody.XmlAny.Count > 0)) then
+        begin
+          envelope.Free;
+          envelope := candidate;
+          body := candidateBody;
+        end
+        else
+          candidate.Free;
+
+        if Assigned(body) and (body.XmlAny.Count > 0) then
+          break;
       end;
 
-    if not parsed then
+    if envelope = nil then
     begin
       aError.Kind := sekHttp;
       aError.Message := Format('No SOAP response (HTTP %d)', [response.Status]);
@@ -192,16 +272,15 @@ begin
     end;
 
     var responseObject: TBasite := nil;
-    for var item: TBasite in envelope.Body.XmlAny do
-      if item.InheritsFrom(TFaultCT) then
+    for var item: TBasite in body.XmlAny do
+      if item.InheritsFrom(ProRock.Xmlite.Schema.Envelope.TFaultCT) then
       begin
-        var fault: TFaultCT := TFaultCT(item);
-        aError.Kind := sekFault;
-        aError.Message := fault.Faultstring;
-        aError.Code := fault.Faultcode;
-        aError.Actor := fault.Faultactor;
-        if (fault.Detail.XmlAny.Count > 0) or not fault.Detail.XmlText.IsEmpty then
-          aError.Detail := fault.Detail.ToXml('', False);
+        ReadFault11(ProRock.Xmlite.Schema.Envelope.TFaultCT(item), aError);
+        Exit;
+      end
+      else if item.InheritsFrom(ProRock.Xmlite.Schema.Envelope12.TFaultCT) then
+      begin
+        ReadFault12(ProRock.Xmlite.Schema.Envelope12.TFaultCT(item), aError);
         Exit;
       end
       else if item.InheritsFrom(aResponseClass) then
@@ -213,7 +292,7 @@ begin
     if responseObject = nil then
     begin
       var found: string := '';
-      for var item: TBasite in envelope.Body.XmlAny do
+      for var item: TBasite in body.XmlAny do
         found := found + IfThen(not found.IsEmpty, ', ') + item.ClassName;
       for var item: TBasite in envelope.XmlAny do
         found := found + IfThen(not found.IsEmpty, ', ') + 'Envelope:' + item.ClassName;
@@ -224,7 +303,7 @@ begin
       Exit;
     end;
 
-    aResponse := envelope.Body.XmlAny.Extract(responseObject); // ownership goes to the caller
+    aResponse := body.XmlAny.Extract(responseObject); // ownership goes to the caller
     aError := Default(TSoapiteError);
     Result := True;
   finally
