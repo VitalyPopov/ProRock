@@ -6,7 +6,7 @@
     ProRock is a free and open-source Delphi library. Feedback and contributions are welcome.
     https://github.com/VitalyPopov/ProRock
     
-    Generated (UTC): 2026-10-06T12:13:17.190Z
+    Generated (UTC): 2026-10-06T13:20:35.168Z
     Namespace: http://www.w3.org/2003/05/soap-envelope
 *)
 
@@ -14,7 +14,7 @@
 interface
 
 uses
-  ProRock.Xmlite, ProRock.Xmlite.Schema.Base;
+  ProRock.Xmlite, ProRock.Xmlite.Schema.Base, ProRock.Xmlite.Schema.Xml;
 
 type
   [TNaming(TNaming.nCamelCase)]
@@ -107,7 +107,18 @@ type
   end;
 
   [TNaming(TNaming.nFlatCase)]
-  TReasontextCT = class(TXmliteComplexType);
+  TReasontextCT = class(TXmliteComplexType)
+  private
+    fXmlValue: ProRock.Xmlite.Schema.Base.TStringST;
+    fLang: ProRock.Xmlite.Schema.Xml.TLangA;
+  published
+    [TXmliteText]
+    property XmlValue: ProRock.Xmlite.Schema.Base.TStringST read fXmlValue write fXmlValue;
+    [TNamespace('http://www.w3.org/XML/1998/namespace')]
+    [TRequired]
+    [TNaming(TNaming.nFlatCase)]
+    property Lang: ProRock.Xmlite.Schema.Xml.TLangA read fLang write fLang;
+  end;
 
   [TNaming(TNaming.nFlatCase)]
   TFaultcodeCT = class(TXmliteComplexType)

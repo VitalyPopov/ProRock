@@ -6,7 +6,7 @@
     ProRock is a free and open-source Delphi library. Feedback and contributions are welcome.
     https://github.com/VitalyPopov/ProRock
     
-    Generated (UTC): 2026-10-05T20:48:57.370Z
+    Generated (UTC): 2026-10-06T13:20:35.168Z
     Namespace: http://www.w3.org/2001/XMLSchema
 *)
 
@@ -1122,6 +1122,7 @@ type
     [TDefault(Ord(fcUnqualified))]
     property ElementFormDefault: TFormChoiceST read fElementFormDefault write fElementFormDefault;
     property Id: TIdST read fId write fId;
+    [TNamespace('http://www.w3.org/XML/1998/namespace')]
     property Lang: ProRock.Xmlite.Schema.Xml.TLangA read fLang write fLang;
     property SimpleType: TSimpleTypeEList read fSimpleType;
     property ComplexType: TComplexTypeEList read fComplexType;
@@ -1281,6 +1282,7 @@ type
     fLang: ProRock.Xmlite.Schema.Xml.TLangA;
   published
     property Source: TAnyURIST read fSource write fSource;
+    [TNamespace('http://www.w3.org/XML/1998/namespace')]
     property Lang: ProRock.Xmlite.Schema.Xml.TLangA read fLang write fLang;
   end;
 

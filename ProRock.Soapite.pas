@@ -138,7 +138,7 @@ procedure ReadFault12(aFault: ProRock.Xmlite.Schema.Envelope12.TFaultCT; var aEr
 begin
   aError.Kind := sekFault;
   if aFault.Reason.Text.Count > 0 then
-    aError.Message := aFault.Reason.Text[0].XmlText; // todo: pick by xml:lang once reasontext (simpleContent) is generated
+    aError.Message := aFault.Reason.Text[0].XmlValue; // the first one - services put their primary language first
   aError.Code := aFault.Code.Value;
 
   var subcode: ProRock.Xmlite.Schema.Envelope12.TSubcodeCT := aFault.Code.Subcode;

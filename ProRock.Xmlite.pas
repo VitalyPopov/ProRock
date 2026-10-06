@@ -65,6 +65,8 @@ type
     procedure AddTagOpen(const aName: string; aObject: TBasite; aNamespaces: boolean); inline;
     procedure AddTagEmpty(const aName: string; aObject: TBasite; aNamespaces: boolean); inline;
     procedure AddTagClose(const aName: string); inline;
+    // a tag with attributes and text content in one line - indentation would become a part of the text
+    procedure AddTagText(const aName: string; aObject: TBasite; aNamespaces: boolean; const aText: string); inline;
     procedure AddTextNode(const aName, aValue: string; aFieldInfo: TProperty; aObject: TBasite = nil); inline;
     procedure AddXmlEscape(const aString: string); inline;
   end;
@@ -185,6 +187,8 @@ type
   end;
 
   TXmliteElementAttribute = class(TCustomAttribute);
+  // the property holds the element's text content (XSD simpleContent: text and attributes, no child elements)
+  TXmliteTextAttribute = class(TCustomAttribute);
   TXmliteAnyElementAttribute = class(TCustomAttribute);
   TXmliteAnyAttributeAttribute = class(TCustomAttribute); // todo: realize through TXmlite.ProcessAnyAttribute
 
@@ -265,8 +269,10 @@ type
     fIsTXmlite, fProcessAnyElement, fProcessAnyAttribute: boolean;
     fAttributes: TDictObjectList<TUriedName, TPropertyData>;
     fElements: TDictObjectList<TUriedName, TProperty>;
+    fTextProperty: TPropertyData;
 
     function FieldIsElement(aField: TProperty): boolean; inline;
+    function FieldIsText(aField: TProperty): boolean; inline;
     function GetMeta: TMetaBasite;
     function GetProcessAnyAttribute: boolean;
     function GetProcessAnyElement: boolean;
@@ -280,6 +286,8 @@ type
     property Meta: TMetaBasite read GetMeta;
     property Attributes: TDictObjectList<TUriedName, TPropertyData> read fAttributes;
     property Elements: TDictObjectList<TUriedName, TProperty> read fElements;
+    // the [TXmliteText] property - the element's text content; nil when the element has no simpleContent
+    property TextProperty: TPropertyData read fTextProperty;
     property IsTXmlite: boolean read fIsTXmlite;
 
     property ProcessAnyElement: boolean read GetProcessAnyElement write fProcessAnyElement;
@@ -511,11 +519,22 @@ begin
     begin // start tag
       Inc(aXmlCursor);
 
-      if not TReaderXmlite.MoveToVisualChar(aXmlCursor) then
-        Exit;
+      var textProperty: TPropertyData := Meta.Xmlite.TextProperty;
+      if Assigned(textProperty) then
+      begin // simpleContent: the text is the value - whitespace included
+        if aXmlCursor^ <> '<' then
+          textProperty.Value[Self] := TReaderXmlite.ReadUnescapeInPlace(aXmlCursor, '<');
+        if aXmlCursor^ = #0 then
+          Exit;
+      end
+      else
+      begin
+        if not TReaderXmlite.MoveToVisualChar(aXmlCursor) then
+          Exit;
 
-      if Meta.Xmlite.IsTXmlite and (aXmlCursor^ <> '<') then
-        TXmlite(Self).xmlText := TReaderXmlite.ReadUnescapeInPlace(aXmlCursor, '<');
+        if Meta.Xmlite.IsTXmlite and (aXmlCursor^ <> '<') then
+          TXmlite(Self).xmlText := TReaderXmlite.ReadUnescapeInPlace(aXmlCursor, '<');
+      end;
 
       ReadTagContents(aXmlCursor, objectName, xmlns);
 
@@ -722,6 +741,11 @@ function TBasiteHelper.TagType: TTagType;
 begin
   Result := xttNone;
 
+  // simpleContent: text is written whenever the element is (<amount currency="EUR">0</amount>, never <amount currency="EUR"/>)
+  var textProperty: TPropertyData := Meta.Xmlite.TextProperty;
+  if Assigned(textProperty) and (textProperty.Required or not textProperty.ValueIsDefault(Self)) then
+    Exit(xttOpenClose);
+
   if Meta.Xmlite.ProcessAnyElement and (TXmlite(Self).XmlAny.Count > 0) then
     Exit(xttOpenClose);
 
@@ -743,7 +767,10 @@ begin
   for var attribute: TProperty in Meta.Xmlite.Attributes.Values do
     if (attribute.ClassType = TPropertyData) and
       (TPropertyData(attribute).Required or not TPropertyData(attribute).ValueIsDefault(Self)) then
-      Exit(xttEmpty);
+      if Assigned(textProperty) then
+        Exit(xttOpenClose)
+      else
+        Exit(xttEmpty);
 end;
 
 procedure TBasiteHelper.ToXml(aWriter: TWriterXmlite; const aName: string; aStrictlyPrefixed, aNamespaces, aXmlHeader: boolean);
@@ -787,6 +814,9 @@ begin
     xttEmpty:
       aWriter.AddTagEmpty(objectName, Self, aNamespaces);
     xttOpenClose:
+      if Assigned(Meta.Xmlite.TextProperty) then
+        aWriter.AddTagText(objectName, Self, aNamespaces, Meta.Xmlite.TextProperty.Value[Self])
+      else
       begin
         aWriter.AddTagOpen(objectName, Self, aNamespaces);
 
@@ -919,7 +949,7 @@ begin
     FillXmlnsList(xmlnsList, Self);
 
     for var namespace: TNamespace in xmlnsList.Values do
-      if namespace <> nil then
+      if (namespace <> nil) and (namespace.Uri <> cXmlPrefixUri) then // the xml prefix is bound by definition, never declared
         if namespace = Meta.Xmlite.Namespace then
           Result := Result + Format(' xmlns="%s"', [namespace.Uri])
         else
@@ -969,6 +999,17 @@ begin
   WriteAttributes(aObject, aNamespaces);
   Write('>');
   FinishLine;
+end;
+
+procedure TWriterXmlite.AddTagText(const aName: string; aObject: TBasite; aNamespaces: boolean; const aText: string);
+begin
+  AddIndent;
+  Write('<');
+  Write(aName);
+  WriteAttributes(aObject, aNamespaces);
+  Write('>');
+  AddXmlEscape(aText);
+  AddTagClose(aName);
 end;
 
 procedure TWriterXmlite.AddTextNode(const aName, aValue: string; aFieldInfo: TProperty; aObject: TBasite);
@@ -1464,7 +1505,9 @@ begin
       ptData:
         begin
           var propertyData: TPropertyData := TPropertyData(propertyInfo);
-          if FieldIsElement(propertyData) then
+          if FieldIsText(propertyData) then
+            fTextProperty := propertyData
+          else if FieldIsElement(propertyData) then
             fElements.Add(uriedName, propertyData)
           else
             fAttributes.Add(uriedName, propertyData);
@@ -1503,6 +1546,14 @@ begin
       Exit(True);
 end;
 
+function TMetaBasiteXmlite.FieldIsText(aField: TProperty): boolean;
+begin
+  Result := False;
+  for var attribute: TCustomAttribute in aField.RttiProperty.GetAttributes do
+    if attribute.ClassType = TXmliteTextAttribute then
+      Exit(True);
+end;
+
 function TMetaBasiteXmlite.GetMeta: TMetaBasite;
 begin
   Result := TMetaBasite(inherited Meta);
@@ -1536,7 +1587,9 @@ begin
           if (Meta.ClassItself.InheritsFrom(TXmliteTextElement) and (propertyData.Name = cXmliteTextNodeFieldName)) then
             Continue; // pass xmlText property
 
-          if FieldIsElement(propertyData) then
+          if FieldIsText(propertyData) then
+            fTextProperty := propertyData
+          else if FieldIsElement(propertyData) then
             fElements.Add(uriedName, propertyData)
           else
             fAttributes.Add(uriedName, propertyData);

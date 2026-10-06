@@ -5,6 +5,11 @@ interface
 uses System.Classes, System.SysUtils, System.StrUtils, System.Generics.Collections, System.Generics.Defaults,
   ProRock.Utility;
 
+const
+  // the "xml" prefix is bound to it by definition - documents never declare it (xml:lang, xml:space)
+  cXmlPrefix = 'xml';
+  cXmlPrefixUri = 'http://www.w3.org/XML/1998/namespace';
+
 type
   TXmliteComponentType = (xctUndefined, xctSimpleType, xctComplexType, xctAttribute, xctAttributeGroup, xctElement, xctElementGroup);
   TTagType = (xttNone, xttOpenClose, xttEmpty, xttText);
@@ -137,7 +142,10 @@ end;
 function TXmlns.GetUri(const aPrefix: string): string;
 begin
   if aPrefix.IsEmpty or not TryGetValue(aPrefix, Result) then
-    Result := fDefaultUri;
+    if aPrefix = cXmlPrefix then
+      Result := cXmlPrefixUri
+    else
+      Result := fDefaultUri;
 end;
 
 constructor TXmlns.Create;
