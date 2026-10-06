@@ -12,6 +12,9 @@
         <Projects Include="ProRock.Soapite.Calculator\ProRock.Soapite.CalculatorSample.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="ProRock.Soapite.CheckVatService\ProRock.Soapite.CheckVatServiceSample.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -47,14 +50,23 @@
     <Target Name="ProRock_Soapite_CalculatorSample:Make">
         <MSBuild Projects="ProRock.Soapite.Calculator\ProRock.Soapite.CalculatorSample.dproj" Targets="Make"/>
     </Target>
+    <Target Name="ProRock_Soapite_CheckVatServiceSample">
+        <MSBuild Projects="ProRock.Soapite.CheckVatService\ProRock.Soapite.CheckVatServiceSample.dproj"/>
+    </Target>
+    <Target Name="ProRock_Soapite_CheckVatServiceSample:Clean">
+        <MSBuild Projects="ProRock.Soapite.CheckVatService\ProRock.Soapite.CheckVatServiceSample.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ProRock_Soapite_CheckVatServiceSample:Make">
+        <MSBuild Projects="ProRock.Soapite.CheckVatService\ProRock.Soapite.CheckVatServiceSample.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="ProRock_Xmlite_Basic;ProRock_Xmlite_Namespaces;ProRock_Soapite_CalculatorSample"/>
+        <CallTarget Targets="ProRock_Xmlite_Basic;ProRock_Xmlite_Namespaces;ProRock_Soapite_CalculatorSample;ProRock_Soapite_CheckVatServiceSample"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="ProRock_Xmlite_Basic:Clean;ProRock_Xmlite_Namespaces:Clean;ProRock_Soapite_CalculatorSample:Clean"/>
+        <CallTarget Targets="ProRock_Xmlite_Basic:Clean;ProRock_Xmlite_Namespaces:Clean;ProRock_Soapite_CalculatorSample:Clean;ProRock_Soapite_CheckVatServiceSample:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="ProRock_Xmlite_Basic:Make;ProRock_Xmlite_Namespaces:Make;ProRock_Soapite_CalculatorSample:Make"/>
+        <CallTarget Targets="ProRock_Xmlite_Basic:Make;ProRock_Xmlite_Namespaces:Make;ProRock_Soapite_CalculatorSample:Make;ProRock_Soapite_CheckVatServiceSample:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
