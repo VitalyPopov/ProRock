@@ -5,7 +5,7 @@ number since 1.1.0.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versions follow [Semantic Versioning](https://semver.org/).
 
-## [1.1.0] - Unreleased
+## [1.1.0] - 2026-10-08
 
 The SOAP release: WSDL in, a typed client out, verified against live services. Development of this release was assisted by
 Claude Code (Anthropic).
@@ -47,6 +47,13 @@ Claude Code (Anthropic).
 
 ### Changed
 
+- **ProRocket Lite is free** for any use, including commercial (closed source, its own license; previously a sponsor reward). It is
+  distributed with every ProRock release as `ProRocket-Lite.zip`; the generated code belongs to the user
+- compatibility verified for this release: tests, samples and every unit built and run on Delphi 10.3, 10.4, 11, 12 and 13.1,
+  Win64 and Win32; the Soapite samples now target Win64 as well
+- documentation: new README (quick starts for SOAP and XSD), `CONTRIBUTING.md`, issue templates, `SECURITY.md` with private
+  vulnerability reporting, `NOTICE` and `THIRD-PARTY-NOTICES.md` (notices of the W3C, IBM and Microsoft schemas behind the
+  generated metamodels)
 - ProRocket Lite: URN namespaces give their last segment as the unit name (`urn:demo:order` → `ProRock.Xmlite.Schema.Order`,
   previously `...Schema.urndemoorder`). Regenerating such a schema renames the unit
 - ProRocket Lite: reserved words in unit names are escaped (`ProRock.Xmlite.Schema.&Inline`)
@@ -90,7 +97,7 @@ Claude Code (Anthropic).
 
 - First public release: Basite (metadata-driven object model core) and Xmlite (XML parsing and serialization to and from PODOs)
 
-[1.1.0]: https://github.com/VitalyPopov/ProRock/compare/1.0.3...HEAD
+[1.1.0]: https://github.com/VitalyPopov/ProRock/compare/1.0.3...1.1.0
 [1.0.3]: https://github.com/VitalyPopov/ProRock/compare/1.0.2...1.0.3
 [1.0.2]: https://github.com/VitalyPopov/ProRock/compare/1.0.1...1.0.2
 [1.0.1]: https://github.com/VitalyPopov/ProRock/compare/1.0.0...1.0.1

@@ -1,12 +1,12 @@
 ﻿unit ProRock.Xmlite.Schema.Instance;
 
 (*
-    This unit was automatically generated using ProRocket Lite 1.0.6 (ProRock 1.0.3)
+    This unit was automatically generated using ProRocket Lite 1.1.0 (ProRock 1.1.0)
     
     ProRock is a free and open-source Delphi library. Feedback and contributions are welcome.
     https://github.com/VitalyPopov/ProRock
     
-    Generated (UTC): 2026-10-05T20:48:57.370Z
+    Generated (UTC): 2026-10-07T21:13:19.882Z
     Namespace: http://www.w3.org/2001/XMLSchema-instance
 *)
 

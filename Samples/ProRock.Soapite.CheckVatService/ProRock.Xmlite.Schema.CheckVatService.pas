@@ -1,12 +1,12 @@
 ﻿unit ProRock.Xmlite.Schema.CheckVatService;
 
 (*
-    This unit was automatically generated using ProRocket Lite 1.0.6 (ProRock 1.0.3)
+    This unit was automatically generated using ProRocket Lite 1.1.0 (ProRock 1.1.0)
     
     ProRock is a free and open-source Delphi library. Feedback and contributions are welcome.
     https://github.com/VitalyPopov/ProRock
     
-    Generated (UTC): 2026-10-06T11:59:32.829Z
+    Generated (UTC): 2026-10-07T21:14:49.574Z
     Namespace: urn:ec.europa.eu:taxud:vies:services:checkVat:types
 *)
 
