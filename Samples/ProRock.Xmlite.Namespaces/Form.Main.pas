@@ -32,7 +32,7 @@ implementation
 
 uses System.IOUtils, System.TypInfo, System.StrUtils, System.Math,
   ProRock.Xmlite, ProRock.Basite,
-  ProRock.Xmlite.Schema.urndemoorder;
+  ProRock.Xmlite.Schema.Order;
 
 {$R *.dfm}
 

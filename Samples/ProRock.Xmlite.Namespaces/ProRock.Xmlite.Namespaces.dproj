@@ -132,7 +132,7 @@
             <Form>FormMain</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="ProRock.Xmlite.Schema.urndemoorder.pas"/>
+        <DCCReference Include="ProRock.Xmlite.Schema.Order.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

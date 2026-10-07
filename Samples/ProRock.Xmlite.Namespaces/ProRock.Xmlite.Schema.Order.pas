@@ -1,4 +1,4 @@
-﻿unit ProRock.Xmlite.Schema.urndemoorder;
+﻿unit ProRock.Xmlite.Schema.Order;
 
 (*
     This unit was automatically generated using ProRocket Lite 1.0.6 (ProRock 1.0.3)
@@ -6,7 +6,7 @@
     ProRock is a free and open-source Delphi library. Feedback and contributions are welcome.
     https://github.com/VitalyPopov/ProRock
     
-    Generated (UTC): 2026-10-05T19:16:09.738Z
+    Generated (UTC): 2026-10-07T12:16:32.614Z
     Namespace: urn:demo:order
 *)
 
