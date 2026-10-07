@@ -655,19 +655,19 @@ begin
         Exit;
 
     // xmlns declared on the tag itself applies to the tag's own name too (e.g. <AddResponse xmlns="http://tempuri.org/">)
-    var tagUri: string := TagUri(cursorStart, tagPrefix, aXmlns);
+    var elementUri: string := TagUri(cursorStart, tagPrefix, aXmlns);
 
     // get a property for property defined name, following prefix/uri
-    var propertyElement: TProperty := Meta.Xmlite.Elements[TUriedName.Create(tagUri, tagName)];
+    var propertyElement: TProperty := Meta.Xmlite.Elements[TUriedName.Create(elementUri, tagName)];
 
     // unqualified local element (elementFormDefault="unqualified", e.g. faultcode of SOAP 1.1 Fault) belongs to its parent type,
     // the same way as unprefixed attributes
-    if (propertyElement = nil) and tagUri.IsEmpty and Assigned(Meta.Xmlite.Namespace) then
+    if (propertyElement = nil) and elementUri.IsEmpty and Assigned(Meta.Xmlite.Namespace) then
       propertyElement := Meta.Xmlite.Elements[TUriedName.Create(Meta.Xmlite.Namespace.Uri, tagName)];
 
     if (propertyElement = nil) and Meta.Xmlite.ProcessAnyElement then
     begin // for xs:any - try to find Namespace-registered element and parse it
-      var metaElement: TMetaBasite := TMetaBank.Xmlite.Namespaces.GetMetaBasite(tagUri, xctElement, tagName);
+      var metaElement: TMetaBasite := TMetaBank.Xmlite.Namespaces.GetMetaBasite(elementUri, xctElement, tagName);
       if Assigned(metaElement) then
       begin
         var element: TBasite := metaElement.ClassItself.Create;

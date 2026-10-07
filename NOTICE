@@ -1,0 +1,8 @@
+ProRock
+Copyright 2026 Vitaly Popov
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+The generated metamodel units ProRock.Xmlite.Schema.* are derived from XML schemas published by the World Wide Web Consortium
+(W3C), and by International Business Machines Corporation and Microsoft Corporation. The samples include WSDL files of public web
+services. Their copyright notices and license terms are reproduced in THIRD-PARTY-NOTICES.md.
