@@ -1,0 +1,25 @@
+name: Bug report
+description: Something in ProRock or ProRocket Lite doesn't work as it should
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What you did, what you expected, what happened instead (error message, exception, wrong output)
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Minimal repro
+      description: A few lines of code and the XML involved - the smaller, the faster the fix
+      render: pascal
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: Delphi version, platform, ProRock and ProRocket Lite versions
+      placeholder: Delphi 13.1, Win64, ProRock 1.1.0, ProRocket Lite 1.1.0
+    validations:
+      required: true

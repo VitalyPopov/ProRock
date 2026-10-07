@@ -1,0 +1,45 @@
+name: Schema / WSDL support
+description: A schema or WSDL that ProRocket Lite or ProRock doesn't handle correctly
+labels: ["schema support"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you! Real-world schemas are how ProRock's coverage grows. Strip confidential data from samples - the structure is
+        what matters.
+  - type: input
+    id: schema
+    attributes:
+      label: Schema or WSDL
+      description: A public link, or attach the files below (including the files it imports)
+      placeholder: e.g. https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Invoice-2.1.xsd
+    validations:
+      required: true
+  - type: dropdown
+    id: stage
+    attributes:
+      label: Where does it fail?
+      options:
+        - Generation (ProRocket Lite errors or skips something)
+        - The generated units don't compile
+        - Reading XML (FromXml) gives wrong or missing values
+        - Writing XML (ToXml) gives wrong output
+        - Calling a SOAP service
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: What happened, and what did you expect?
+      description: Error messages, the wrong output, the part of the schema involved. Attach a sample XML if reading or writing fails.
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: Delphi version, platform, ProRock and ProRocket Lite versions
+      placeholder: Delphi 13.1, Win64, ProRock 1.1.0, ProRocket Lite 1.1.0
+    validations:
+      required: true

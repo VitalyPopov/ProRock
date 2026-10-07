@@ -202,7 +202,7 @@ Changes are listed in the [CHANGELOG](CHANGELOG.md). Security issues: see [SECUR
 Since October 2026, development is assisted by [Claude Code](https://claude.com/claude-code) (Anthropic): it helps with
 implementation, tests and generator fixes. Design, decisions and verification remain the author's.
 
-Feedback, real-world schemas that do not work yet, and contributions are welcome. If ProRock is useful to you, you can
+Feedback, real-world schemas that do not work yet, and contributions are welcome - see [CONTRIBUTING.md](CONTRIBUTING.md). If ProRock is useful to you, you can
 [support the project](https://github.com/sponsors/VitalyPopov).
 
 ## License
