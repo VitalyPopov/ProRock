@@ -16,12 +16,24 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 
 - `AutoInitMaxDepth` defaults to 1 (was 2): a self-nested object (e.g. SOAP 1.2 `Subcode` inside `Subcode`) is no longer
   pre-created, it is `nil` until set or read. Set `TBasite.AutoInitMaxDepth := 2` for the old behavior
+- **Breaking:** `xs:decimal`, `xs:float` and `xs:double` are generated as `Double` (was `Extended`, which is 10 bytes on Win32
+  only): the same values on every platform. Regenerate your units; code relying on `Extended` precision on Win32 changes
+- **Breaking:** `xs:unsignedLong` (and `unsignedInt`/`unsignedShort`/`unsignedByte`, derived from it) is generated as `UInt64`
+  (was `Int64`): values above `High(Int64)` are read and written. Regenerate your units
+- Number text that does not fit a property's type (e.g. `300` for a `Byte`) gives the default value, as invalid text did
 
 ### Fixed
 
 - Reading self-nested data deeper than the pre-created objects failed (`FromXml` returned `False`), e.g. a SOAP 1.2 fault with
   `Subcode` nested 3 levels deep. The reader now creates the missing objects
 - `Clear` raised an access violation on a self-nested object that was not pre-created
+- Data properties of hand-written classes: `Byte`, `ShortInt`, `Word`, `SmallInt`, `Cardinal`, `Single`, `Double` (Win32),
+  `Currency` and `Comp` values were read and written as `Integer`/`Extended`, giving wrong values and overwriting the
+  neighbouring fields; getter/setter methods of these types were called with the wrong type. Each type now uses its own size
+  (generated code was not affected: it uses `Int64` and `Extended` only). `Single` is written with its own digits (`0.1`),
+  `Currency` without passing through a float
+- ProRocket Lite: decimal default values were written into the generated unit in the locale's format (`1,5` on a German
+  system, which does not compile)
 
 ## [1.1.0] - 2026-10-08
 

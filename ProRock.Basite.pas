@@ -163,17 +163,25 @@ type
 
   TPropertyData = class(TProperty)
   private type
+    // a getter/setter is called with its own declared type: the result/parameter registers differ per float type, and an
+    // ordinal getter of a smaller type leaves the upper bits of the result undefined (cut by the ordinal type after the call)
     TGetterInteger = function: integer of object;
     TGetterInt64 = function: Int64 of object;
-    TGetterFloat = function: Extended of object;
+    TGetterSingle = function: Single of object;
+    TGetterDouble = function: Double of object;
+    TGetterExtended = function: Extended of object;
+    TGetterComp = function: Comp of object;
+    TGetterCurrency = function: Currency of object;
     TGetterString = function: string of object;
-    TGetterEnum = function: integer of object;
 
     TSetterInteger = procedure(const aValue: integer) of object;
     TSetterInt64 = procedure(const aValue: Int64) of object;
-    TSetterFloat = procedure(const aValue: Extended) of object;
+    TSetterSingle = procedure(const aValue: Single) of object;
+    TSetterDouble = procedure(const aValue: Double) of object;
+    TSetterExtended = procedure(const aValue: Extended) of object;
+    TSetterComp = procedure(const aValue: Comp) of object;
+    TSetterCurrency = procedure(const aValue: Currency) of object;
     TSetterString = procedure(const aValue: string) of object;
-    TSetterEnum = procedure(const aValue: integer) of object;
   private
     fDefault: variant;
     fRequired: boolean;
@@ -181,6 +189,15 @@ type
     function MethodAddress(aObject: TBasite; aMethod: Pointer): Pointer; inline;
     function GetterMethod(aObject: TBasite): TMethod; inline;
     function SetterMethod(aObject: TBasite): TMethod; inline;
+
+    // tkInteger and tkEnumeration by their ordinal type, tkInt64 (UInt64 as its bits)
+    function ReadOrdinal(aObject: TBasite; aFieldData: Pointer): Int64;
+    procedure WriteOrdinal(aObject: TBasite; aFieldData: Pointer; aValue: Int64);
+    // tkFloat by its float type, except Currency (Extended is only a Double on Win64 and would lose Currency's digits)
+    function ReadFloat(aObject: TBasite; aFieldData: Pointer): Extended;
+    procedure WriteFloat(aObject: TBasite; aFieldData: Pointer; const aValue: Extended);
+    function ReadCurrency(aObject: TBasite; aFieldData: Pointer): Currency;
+    procedure WriteCurrency(aObject: TBasite; aFieldData: Pointer; const aValue: Currency);
 
     function GetValue(aObject: TBasite): string;
     procedure SetValue(aObject: TBasite; const aValue: string);
@@ -193,8 +210,8 @@ type
     property Value[aObject: TBasite]: string read GetValue write SetValue;
     property Required: boolean read fRequired;
 
-    procedure SetDefaultValue(aObject: TBasite); inline;
-    function ValueIsDefault(aObject: TBasite): boolean; inline;
+    procedure SetDefaultValue(aObject: TBasite);
+    function ValueIsDefault(aObject: TBasite): boolean;
   end;
 
   TPropertyClass = class abstract(TProperty)
@@ -280,7 +297,9 @@ type
   TMetaType = class(TMeta)
   private
     fValuesAliases: TDualDictionary<variant, string>;
-    fEnumOrdType: TOrdType;
+    fOrdType: TOrdType;      // tkInteger, tkEnumeration
+    fFloatType: TFloatType;  // tkFloat
+    fUnsigned: boolean;      // tkInt64: UInt64
     fEnumNames: THashedStringList;
     fBaseType: TMetaType;
     function GetEnumName(aEnumValue: integer): string;
@@ -400,7 +419,7 @@ begin
     Result := GetBasiteListClass(aClass.ClassParent);
 end;
 
-function ReadEnumFieldValue(aFieldData: Pointer; aOrdType: TOrdType): integer; inline;
+function ReadOrdinalFieldValue(aFieldData: Pointer; aOrdType: TOrdType): Int64; inline;
 begin
   case aOrdType of
     otUByte:
@@ -413,24 +432,67 @@ begin
       Result := System.PSmallInt(aFieldData)^;
     otSLong:
       Result := System.PInteger(aFieldData)^;
+    otULong:
+      Result := System.PCardinal(aFieldData)^;
   else
     Result := 0;
   end;
 end;
 
-procedure WriteEnumFieldValue(aFieldData: Pointer; aOrdType: TOrdType; aValue: Integer); inline;
+procedure WriteOrdinalFieldValue(aFieldData: Pointer; aOrdType: TOrdType; aValue: Int64); inline;
 begin
   case aOrdType of
     otUByte:
-      System.Types.PByte(aFieldData)^ := aValue;
+      System.Types.PByte(aFieldData)^ := Byte(aValue);
     otSByte:
-      System.PShortInt(aFieldData)^ := aValue;
+      System.PShortInt(aFieldData)^ := ShortInt(aValue);
     otUWord:
-      System.PWord(aFieldData)^ := aValue;
+      System.PWord(aFieldData)^ := Word(aValue);
     otSWord:
-      System.PSmallInt(aFieldData)^ := aValue;
+      System.PSmallInt(aFieldData)^ := SmallInt(aValue);
     otSLong:
-      System.PInteger(aFieldData)^ := aValue;
+      System.PInteger(aFieldData)^ := Integer(aValue);
+    otULong:
+      System.PCardinal(aFieldData)^ := Cardinal(aValue);
+  end;
+end;
+
+// a getter of a smaller ordinal type leaves the upper bits of the integer result undefined
+function OrdinalOfType(aValue: integer; aOrdType: TOrdType): Int64; inline;
+begin
+  case aOrdType of
+    otUByte:
+      Result := Byte(aValue);
+    otSByte:
+      Result := ShortInt(aValue);
+    otUWord:
+      Result := Word(aValue);
+    otSWord:
+      Result := SmallInt(aValue);
+    otULong:
+      Result := Cardinal(aValue);
+  else
+    Result := aValue;
+  end;
+end;
+
+function OrdinalFitsType(aValue: Int64; aOrdType: TOrdType): boolean; inline;
+begin
+  case aOrdType of
+    otUByte:
+      Result := (aValue >= 0) and (aValue <= High(Byte));
+    otSByte:
+      Result := (aValue >= Low(ShortInt)) and (aValue <= High(ShortInt));
+    otUWord:
+      Result := (aValue >= 0) and (aValue <= High(Word));
+    otSWord:
+      Result := (aValue >= Low(SmallInt)) and (aValue <= High(SmallInt));
+    otSLong:
+      Result := (aValue >= Low(Integer)) and (aValue <= High(Integer));
+    otULong:
+      Result := (aValue >= 0) and (aValue <= High(Cardinal));
+  else
+    Result := False;
   end;
 end;
 
@@ -767,38 +829,32 @@ begin
     Exit;
 
   case fRttiProperty.PropertyType.TypeKind of
-    tkInteger:
+    tkInteger, tkInt64:
       begin
-        var integerValue: integer;
-        if fGetterIsField then
-          integerValue := PInteger(fieldData)^
-        else
-          integerValue := TGetterInteger(GetterMethod(aObject));
-
-        if not TryGetAliasForValue(Meta.ValuesAliases, integerValue, Result) then
-          Result := integerValue.ToString;
-      end;
-    tkInt64:
-      begin
-        var int64Value: Int64;
-        if fGetterIsField then
-          int64Value := PInt64(fieldData)^
-        else
-          int64Value := TGetterInt64(GetterMethod(aObject));
-
-        if not TryGetAliasForValue(Meta.ValuesAliases, int64Value, Result) then
-          Result := int64Value.ToString;
+        var ordinalValue: Int64 := ReadOrdinal(aObject, fieldData);
+        if Meta.fUnsigned then
+        begin
+          if not TryGetAliasForValue(Meta.ValuesAliases, UInt64(ordinalValue), Result) then
+            Result := UIntToStr(UInt64(ordinalValue));
+        end
+        else if not TryGetAliasForValue(Meta.ValuesAliases, ordinalValue, Result) then
+          Result := IntToStr(ordinalValue);
       end;
     tkFloat:
+      if Meta.fFloatType = ftCurr then
       begin
-        var floatValue: Extended;
-        if fGetterIsField then
-          floatValue := PExtended(fieldData)^
-        else
-          floatValue := TGetterFloat(GetterMethod(aObject));
-
+        var currencyValue: Currency := ReadCurrency(aObject, fieldData);
+        if not TryGetAliasForValue(Meta.ValuesAliases, currencyValue, Result) then
+          Result := CurrToStr(currencyValue, FormatSettings.Invariant);
+      end
+      else
+      begin
+        var floatValue: Extended := ReadFloat(aObject, fieldData);
         if not TryGetAliasForValue(Meta.ValuesAliases, floatValue, Result) then
-          Result := FloatToStr(floatValue, FormatSettings.Invariant);
+          if Meta.fFloatType = ftSingle then // Single digits only: 0.1 stays 0.1, not 0.100000001490116
+            Result := FloatToStrF(floatValue, ffGeneral, 7, 0, FormatSettings.Invariant)
+          else
+            Result := FloatToStr(floatValue, FormatSettings.Invariant);
       end;
     tkUString:
       begin
@@ -816,12 +872,7 @@ begin
       end;
     tkEnumeration:
       begin
-        var enumValue: integer;
-        if fGetterIsField then
-          enumValue := ReadEnumFieldValue(fieldData, Meta.fEnumOrdType)
-        else
-          enumValue := TGetterEnum(GetterMethod(aObject));
-
+        var enumValue: integer := ReadOrdinal(aObject, fieldData);
         if not TryGetAliasForValue(Meta.ValuesAliases, enumValue, Result) then
           Result := Meta.EnumName[enumValue];
       end;
@@ -837,6 +888,55 @@ begin
     Result := Pointer(aMethod);
 end;
 
+function TPropertyData.ReadCurrency(aObject: TBasite; aFieldData: Pointer): Currency;
+begin
+  if fGetterIsField then
+    Result := PCurrency(aFieldData)^
+  else
+    Result := TGetterCurrency(GetterMethod(aObject));
+end;
+
+function TPropertyData.ReadFloat(aObject: TBasite; aFieldData: Pointer): Extended;
+begin
+  if fGetterIsField then
+    case Meta.fFloatType of
+      ftSingle:
+        Result := PSingle(aFieldData)^;
+      ftDouble:
+        Result := PDouble(aFieldData)^;
+      ftComp:
+        Result := PComp(aFieldData)^;
+    else
+      Result := PExtended(aFieldData)^;
+    end
+  else
+    case Meta.fFloatType of
+      ftSingle:
+        Result := TGetterSingle(GetterMethod(aObject));
+      ftDouble:
+        Result := TGetterDouble(GetterMethod(aObject));
+      ftComp:
+        Result := TGetterComp(GetterMethod(aObject));
+    else
+      Result := TGetterExtended(GetterMethod(aObject));
+    end;
+end;
+
+function TPropertyData.ReadOrdinal(aObject: TBasite; aFieldData: Pointer): Int64;
+begin
+  if fRttiProperty.PropertyType.TypeKind = tkInt64 then
+  begin
+    if fGetterIsField then
+      Result := PInt64(aFieldData)^
+    else
+      Result := TGetterInt64(GetterMethod(aObject));
+  end
+  else if fGetterIsField then
+    Result := ReadOrdinalFieldValue(aFieldData, Meta.fOrdType)
+  else
+    Result := OrdinalOfType(TGetterInteger(GetterMethod(aObject)), Meta.fOrdType);
+end;
+
 procedure TPropertyData.SetDefaultValue(aObject: TBasite);
 begin
   if (aObject = nil) or (fPropertyType <> ptData) or not fRttiProperty.IsWritable then
@@ -847,40 +947,19 @@ begin
     Exit;
 
   case fRttiProperty.PropertyType.TypeKind of
-    tkInteger:
-      begin
-        if fSetterIsField then
-          PInteger(fieldData)^ := fDefault
-        else
-          TSetterInteger(SetterMethod(aObject))(fDefault);
-      end;
-    tkInt64:
-      begin
-        if fSetterIsField then
-          PInt64(fieldData)^ := fDefault
-        else
-          TSetterInt64(SetterMethod(aObject))(fDefault);
-      end;
+    tkInteger, tkInt64, tkEnumeration:
+      WriteOrdinal(aObject, fieldData, fDefault);
     tkFloat:
-      begin
-        if fSetterIsField then
-          PExtended(fieldData)^ := fDefault
-        else
-          TSetterFloat(SetterMethod(aObject))(fDefault);
-      end;
+      if Meta.fFloatType = ftCurr then
+        WriteCurrency(aObject, fieldData, fDefault)
+      else
+        WriteFloat(aObject, fieldData, fDefault);
     tkUString:
       begin
         if fSetterIsField then
           PUnicodeString(fieldData)^ := string(fDefault)
         else
           TSetterString(SetterMethod(aObject))(string(fDefault));
-      end;
-    tkEnumeration:
-      begin
-        if fSetterIsField then
-          WriteEnumFieldValue(fieldData, Meta.fEnumOrdType, fDefault)
-        else
-          TSetterEnum(SetterMethod(aObject))(fDefault);
       end;
   end;
 end;
@@ -909,30 +988,51 @@ begin
       value := VarToStr(aliasValue);
   end;
 
+  // text that does not fit the type (not a number, out of its range) gives the default, as invalid text did before
   case fRttiProperty.PropertyType.TypeKind of
     tkInteger:
       begin
-        var integerValue: integer := StrToIntDef(value, fDefault);
-        if fSetterIsField then
-          PInteger(fieldData)^ := integerValue
-        else
-          TSetterInteger(SetterMethod(aObject))(integerValue);
+        var ordinalValue: Int64;
+        if not TryStrToInt64(value, ordinalValue) or not OrdinalFitsType(ordinalValue, Meta.fOrdType) then
+          ordinalValue := fDefault;
+        WriteOrdinal(aObject, fieldData, ordinalValue);
       end;
     tkInt64:
+      if Meta.fUnsigned then
       begin
-        var int64Value: Int64 := StrToInt64Def(value, fDefault);
-        if fSetterIsField then
-          PInt64(fieldData)^ := int64Value
-        else
-          TSetterInt64(SetterMethod(aObject))(int64Value);
-      end;
+        var unsignedValue: UInt64;
+        if not TryStrToUInt64(value, unsignedValue) then
+          unsignedValue := fDefault;
+        WriteOrdinal(aObject, fieldData, Int64(unsignedValue));
+      end
+      else
+        WriteOrdinal(aObject, fieldData, StrToInt64Def(value, fDefault));
     tkFloat:
-      begin
-        var floatValue: Extended := StrToFloatDef(value, fDefault, FormatSettings.Invariant);
-        if fSetterIsField then
-          PExtended(fieldData)^ := floatValue
-        else
-          TSetterFloat(SetterMethod(aObject))(floatValue);
+      // parsed into the property's own type: a value out of its range fails here instead of overflowing on assignment
+      case Meta.fFloatType of
+        ftSingle:
+          begin
+            var singleValue: Single;
+            if not TryStrToFloat(value, singleValue, FormatSettings.Invariant) then
+              singleValue := fDefault;
+            WriteFloat(aObject, fieldData, singleValue);
+          end;
+        ftDouble:
+          begin
+            var doubleValue: Double;
+            if not TryStrToFloat(value, doubleValue, FormatSettings.Invariant) then
+              doubleValue := fDefault;
+            WriteFloat(aObject, fieldData, doubleValue);
+          end;
+        ftCurr:
+          begin
+            var currencyValue: Currency;
+            if not TryStrToCurr(value, currencyValue, FormatSettings.Invariant) then
+              currencyValue := fDefault;
+            WriteCurrency(aObject, fieldData, currencyValue);
+          end;
+      else
+        WriteFloat(aObject, fieldData, StrToFloatDef(value, fDefault, FormatSettings.Invariant));
       end;
     tkUString:
       begin
@@ -942,13 +1042,7 @@ begin
           TSetterString(SetterMethod(aObject))(value);
       end;
     tkEnumeration:
-      begin
-        var enumValue: integer := Meta.EnumValueDef(value, fDefault);
-        if fSetterIsField then
-          WriteEnumFieldValue(fieldData, Meta.fEnumOrdType, enumValue)
-        else
-          TSetterEnum(SetterMethod(aObject))(enumValue);
-      end;
+      WriteOrdinal(aObject, fieldData, Meta.EnumValueDef(value, fDefault));
   end;
 end;
 
@@ -964,33 +1058,13 @@ begin
     Exit;
 
   case fRttiProperty.PropertyType.TypeKind of
-    tkInteger:
-      begin
-        var integerValue: integer;
-        if fGetterIsField then
-          integerValue := PInteger(fieldData)^
-        else
-          integerValue := TGetterInteger(GetterMethod(aObject));
-        Result := integerValue = fDefault;
-      end;
-    tkInt64:
-      begin
-        var int64Value: Int64;
-        if fGetterIsField then
-          int64Value := PInt64(fieldData)^
-        else
-          int64Value := TGetterInt64(GetterMethod(aObject));
-        Result := int64Value = fDefault;
-      end;
+    tkInteger, tkInt64, tkEnumeration:
+      Result := ReadOrdinal(aObject, fieldData) = fDefault;
     tkFloat:
-      begin
-        var floatValue: Extended;
-        if fGetterIsField then
-          floatValue := PExtended(fieldData)^
-        else
-          floatValue := TGetterFloat(GetterMethod(aObject));
-        Result := SameValue(floatValue, fDefault);
-      end;
+      if Meta.fFloatType = ftCurr then
+        Result := ReadCurrency(aObject, fieldData) = Currency(fDefault)
+      else
+        Result := SameValue(ReadFloat(aObject, fieldData), Extended(fDefault));
     tkUString:
       begin
         var stringValue: string;
@@ -1000,16 +1074,56 @@ begin
           stringValue := TGetterString(GetterMethod(aObject));
         Result := stringValue = string(fDefault);
       end;
-    tkEnumeration:
-      begin
-        var enumValue: integer;
-        if fGetterIsField then
-          enumValue := ReadEnumFieldValue(fieldData, Meta.fEnumOrdType)
-        else
-          enumValue := TGetterEnum(GetterMethod(aObject));
-        Result := enumValue = fDefault;
-      end;
   end;
+end;
+
+procedure TPropertyData.WriteCurrency(aObject: TBasite; aFieldData: Pointer; const aValue: Currency);
+begin
+  if fSetterIsField then
+    PCurrency(aFieldData)^ := aValue
+  else
+    TSetterCurrency(SetterMethod(aObject))(aValue);
+end;
+
+procedure TPropertyData.WriteFloat(aObject: TBasite; aFieldData: Pointer; const aValue: Extended);
+begin
+  if fSetterIsField then
+    case Meta.fFloatType of
+      ftSingle:
+        PSingle(aFieldData)^ := aValue;
+      ftDouble:
+        PDouble(aFieldData)^ := aValue;
+      ftComp:
+        PComp(aFieldData)^ := aValue;
+    else
+      PExtended(aFieldData)^ := aValue;
+    end
+  else
+    case Meta.fFloatType of
+      ftSingle:
+        TSetterSingle(SetterMethod(aObject))(aValue);
+      ftDouble:
+        TSetterDouble(SetterMethod(aObject))(aValue);
+      ftComp:
+        TSetterComp(SetterMethod(aObject))(aValue);
+    else
+      TSetterExtended(SetterMethod(aObject))(aValue);
+    end;
+end;
+
+procedure TPropertyData.WriteOrdinal(aObject: TBasite; aFieldData: Pointer; aValue: Int64);
+begin
+  if fRttiProperty.PropertyType.TypeKind = tkInt64 then
+  begin
+    if fSetterIsField then
+      PInt64(aFieldData)^ := aValue
+    else
+      TSetterInt64(SetterMethod(aObject))(aValue);
+  end
+  else if fSetterIsField then
+    WriteOrdinalFieldValue(aFieldData, Meta.fOrdType, aValue)
+  else // a smaller ordinal parameter takes the low bits of the register
+    TSetterInteger(SetterMethod(aObject))(Integer(aValue));
 end;
 
 { TPropertyClass }
@@ -1095,7 +1209,7 @@ constructor TPropertyList.Create(aParentMeta: TMetaBasite);
       if (aProperty.Visibility <> mvPublished) or not aProperty.IsReadable then
         Exit;
 
-      if aProperty.PropertyType.TypeKind in [tkInteger, tkInt64, tkChar, tkFloat, tkUString, tkEnumeration]
+      if aProperty.PropertyType.TypeKind in [tkInteger, tkInt64, tkFloat, tkUString, tkEnumeration]
       then
         Exit(ptData);
 
@@ -1272,9 +1386,18 @@ begin
         fBaseType := TMetaBank.RegisterType(TypeInfo(integer));
     end;
 
+  case RttiType.TypeKind of
+    tkInteger:
+      fOrdType := RttiType.AsOrdinal.OrdType;
+    tkInt64: // the RTL's own test for an unsigned 64-bit type (System.TypInfo)
+      fUnsigned := GetTypeData(aType).MinInt64Value > GetTypeData(aType).MaxInt64Value;
+    tkFloat:
+      fFloatType := GetTypeData(aType).FloatType;
+  end;
+
   if RttiType.TypeKind = tkEnumeration then
   begin
-    fEnumOrdType := RttiType.AsOrdinal.OrdType;
+    fOrdType := RttiType.AsOrdinal.OrdType;
 
     fEnumNames := THashedStringList.Create;
 

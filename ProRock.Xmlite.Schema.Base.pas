@@ -6,7 +6,7 @@
     ProRock is a free and open-source Delphi library. Feedback and contributions are welcome.
     https://github.com/VitalyPopov/ProRock
     
-    Generated (UTC): 2026-10-07T21:13:19.879Z
+    Generated (UTC): 2026-10-11T21:18:26.812Z
     Namespace: http://www.w3.org/2001/XMLSchema
 *)
 
@@ -25,12 +25,13 @@ type
   TAnySimpleTypeST = type string;
   TBase64BinaryST = type string;
   TBooleanST = type boolean;
-  TDecimalST = type extended;
-  TDoubleST = type extended;
-  TFloatST = type extended;
+  TDecimalST = type double;
+  TDoubleST = type double;
+  TFloatST = type double;
   THexBinaryST = type string;
   TIntegerST = type int64;
   TStringST = type string;
+  TUnsignedLongST = type uint64;
   TAnyURIST = type TAnySimpleTypeST;
   TBlockSetST = type TAnySimpleTypeST;
   TDateST = type TAnySimpleTypeST;
@@ -60,13 +61,14 @@ type
   TQNameST = type TAnySimpleTypeST;
   TSimpleDerivationSetST = type TAnySimpleTypeST;
   TTimeST = type TAnySimpleTypeST;
+  TUnsignedIntST = type TUnsignedLongST;
   [TValueAlias(High(TNonNegativeIntegerST), 'unbounded')]
   TAllNNIST = type TNonNegativeIntegerST;
   TIntST = type TLongST;
   TNegativeIntegerST = type TNonPositiveIntegerST;
   TPositiveIntegerST = type TNonNegativeIntegerST;
   TTokenST = type TNormalizedStringST;
-  TUnsignedLongST = type TNonNegativeIntegerST;
+  TUnsignedShortST = type TUnsignedIntST;
   TLanguageST = type TTokenST;
   [TNaming(TNaming.nPascalCase)]
   TNameST = type TTokenST;
@@ -74,18 +76,16 @@ type
   TNmtokenST = type TTokenST;
   TPublicST = type TTokenST;
   TShortST = type TIntST;
-  TUnsignedIntST = type TUnsignedLongST;
+  TUnsignedByteST = type TUnsignedShortST;
   TByteST = type TShortST;
   [TNaming(TNaming.nPascalCase)]
   TNCNameST = type TNameST;
-  TUnsignedShortST = type TUnsignedIntST;
   [TNaming(TNaming.nUpperCase)]
   TEntityST = type TNCNameST;
   [TNaming(TNaming.nUpperCase)]
   TIdST = type TNCNameST;
   [TNaming(TNaming.nUpperCase)]
   TIdrefST = type TNCNameST;
-  TUnsignedByteST = type TUnsignedShortST;
 
   TOpenAttrsCT = class;
   TAnnotatedCT = class;
