@@ -703,7 +703,10 @@ begin
             var propertyBasite: TPropertyBasite := TPropertyBasite(propertyElement);
             var fieldObject: TBasite := propertyBasite.ObjectPointer(Self)^;
             if fieldObject = nil then
-              Exit;
+            begin // not pre-created (a self-nested type beyond TBasite.AutoInitMaxDepth) - the data has it, so create it
+              fieldObject := propertyBasite.Meta.ClassItself.Create;
+              propertyBasite.ObjectPointer(Self)^ := fieldObject;
+            end;
             if propertyBasite.Meta.ClassItself.InheritsFrom(TXmliteTextElement) then
             begin
               ReadTextNode(aCursor, TXmliteTextElement(fieldObject), aXmlns);
@@ -719,7 +722,12 @@ begin
           begin
             var propertyObjectList: TPropertyBasiteList := TPropertyBasiteList(propertyElement);
             if propertyObjectList.ObjectPointer(Self)^ = nil then
-              Exit;
+            begin
+              if not Assigned(propertyObjectList.Meta.CreateMethod) then
+                Exit;
+              propertyObjectList.ObjectPointer(Self)^ :=
+                TBasiteList(propertyObjectList.Meta.CreateMethod.Invoke(propertyObjectList.Meta.ClassItself, []).AsObject);
+            end;
             var objectListItem: TBasite := propertyObjectList.Meta.ItemMeta.ClassItself.Create;
             if propertyObjectList.Meta.ItemMeta.ClassItself.InheritsFrom(TXmliteTextElement) then
             begin

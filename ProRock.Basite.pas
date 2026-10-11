@@ -10,9 +10,10 @@ uses System.Classes, System.Rtti, Generics.Collections, System.SysUtils, System.
 const
   cProRockVersion = '1.1.0';
 
-  // Maximum depth for automatic initialization of self-nested TBasite properties.
-  // Higher values allow deeper nesting but may slow down initialization.
-  cAutoInitMaxDepth = 2;  // todo: recheck - probably something was changed, I don't remember the exact idea of how it should work
+  // TBasite.AutoInitMaxDepth range: 1 - library code relies on non-recursive paths (e.g. Envelope.Body); 5 - pre-created objects
+  // grow as (self-references per type) ^ depth, so higher values only eat memory
+  cAutoInitMaxDepthMin = 1;
+  cAutoInitMaxDepthMax = 5;
 
   cBasiteDefaultNaming = TNaming.nCamelCase;
   cBasiteListPattern = 'TBasiteList<[A-Za-z0-9_.]+>';
@@ -80,9 +81,21 @@ type
   TBasiteClass = class of TBasite;
 
   TBasite = class abstract(TPersistent)
+  private
+    class var fAutoInitMaxDepth: cardinal;
+
+    class constructor Create;
+    class procedure SetAutoInitMaxDepth(aValue: cardinal); static;
   public
     class function ClassParent: TBasiteClass; inline;
     class function Meta: TMetaBasite;
+
+    // How often one type may occur on a path when nested objects are created with their parent (auto-init); a self-nested
+    // type is cut there (nil), so the init ends. Only for init: reading creates whatever the data contains.
+    // 1 (default) - each type once per path, recursion is never pre-created; 2 - one self-nested level pre-created, and so on.
+    // Values outside cAutoInitMaxDepthMin..cAutoInitMaxDepthMax are clamped. One global value for all descendants (also
+    // reached as TXmlite.AutoInitMaxDepth); set it once at startup, not while other threads create objects
+    class property AutoInitMaxDepth: cardinal read fAutoInitMaxDepth write SetAutoInitMaxDepth;
 
   private
     constructor CreateNested(aBreadcrumbs: TSummaryDictionary<TMetaBasite>);
@@ -510,9 +523,11 @@ begin
   for var propertyInfo: TProperty in Meta.Properties do
     case propertyInfo.PropertyType of
       ptBasiteList:
-        TPropertyBasiteList(propertyInfo).ObjectPointer(Self).Clear;
-      ptBasite:
-        TPropertyBasite(propertyInfo).ObjectPointer(Self).Clear;
+        if TPropertyBasiteList(propertyInfo).ObjectPointer(Self)^ <> nil then
+          TPropertyBasiteList(propertyInfo).ObjectPointer(Self).Clear;
+      ptBasite: // nil - not pre-created (AutoInitMaxDepth) and not read
+        if TPropertyBasite(propertyInfo).ObjectPointer(Self)^ <> nil then
+          TPropertyBasite(propertyInfo).ObjectPointer(Self).Clear;
       ptData:
         TPropertyData(propertyInfo).SetDefaultValue(Self);
     end;
@@ -532,7 +547,7 @@ begin
       ptBasite:
         begin
           var propertyBasite: TPropertyBasite := TPropertyBasite(propertyInfo);
-          if aBreadcrumbs.Increase(propertyBasite.Meta) <= cAutoInitMaxDepth then
+          if aBreadcrumbs.Increase(propertyBasite.Meta) <= fAutoInitMaxDepth then
             propertyBasite.ObjectPointer(Self)^ := propertyBasite.Meta.ClassItself.CreateNested(aBreadcrumbs);
           aBreadcrumbs.Decrease(propertyBasite.Meta);
         end;
@@ -546,6 +561,11 @@ begin
       ptData:
         TPropertyData(propertyInfo).SetDefaultValue(Self);
     end;
+end;
+
+class constructor TBasite.Create;
+begin
+  fAutoInitMaxDepth := cAutoInitMaxDepthMin;
 end;
 
 constructor TBasite.Create;
@@ -569,6 +589,16 @@ begin
     if propertyInfo.PropertyType in [ptBasite, ptBasiteList] then
       TPropertyClass(propertyInfo).ObjectPointer(Self).Free;
   inherited;
+end;
+
+class procedure TBasite.SetAutoInitMaxDepth(aValue: cardinal);
+begin
+  if aValue < cAutoInitMaxDepthMin then
+    fAutoInitMaxDepth := cAutoInitMaxDepthMin
+  else if aValue > cAutoInitMaxDepthMax then
+    fAutoInitMaxDepth := cAutoInitMaxDepthMax
+  else
+    fAutoInitMaxDepth := aValue;
 end;
 
 class function TBasite.Meta: TMetaBasite;

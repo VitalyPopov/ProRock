@@ -5,6 +5,24 @@ number since 1.1.0.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versions follow [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- `TBasite.AutoInitMaxDepth`: how often one type may occur on a path when nested objects are created with their parent; replaces
+  the `cAutoInitMaxDepth` constant. One global value, set it once at startup; clamped to 1..5
+
+### Changed
+
+- `AutoInitMaxDepth` defaults to 1 (was 2): a self-nested object (e.g. SOAP 1.2 `Subcode` inside `Subcode`) is no longer
+  pre-created, it is `nil` until set or read. Set `TBasite.AutoInitMaxDepth := 2` for the old behavior
+
+### Fixed
+
+- Reading self-nested data deeper than the pre-created objects failed (`FromXml` returned `False`), e.g. a SOAP 1.2 fault with
+  `Subcode` nested 3 levels deep. The reader now creates the missing objects
+- `Clear` raised an access violation on a self-nested object that was not pre-created
+
 ## [1.1.0] - 2026-10-08
 
 The SOAP release: WSDL in, a typed client out, verified against live services. Development of this release was assisted by
