@@ -9,6 +9,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 
 ### Added
 
+- **Non-Windows platforms**: ProRock no longer depends on `Winapi.Windows`. The class meta cache (a pointer in the class's
+  VMT) uses `mprotect` on POSIX; where the OS refuses it, the meta is found through the registry instead (correct, slower).
+  All ProRock units compile for Android 32/64-bit; running on a device is not verified yet
 - `TBasite.AutoInitMaxDepth`: how often one type may occur on a path when nested objects are created with their parent; replaces
   the `cAutoInitMaxDepth` constant. One global value, set it once at startup; clamped to 1..5
 

@@ -407,7 +407,8 @@ type
 
 implementation
 
-uses System.Types, Winapi.Windows, System.RegularExpressions, System.StrUtils, System.Variants;
+uses System.Types, System.RegularExpressions, System.StrUtils, System.Variants,
+  {$IFDEF MSWINDOWS}Winapi.Windows{$ENDIF}{$IFDEF POSIX}Posix.SysMman, Posix.Unistd{$ENDIF};
 
 function GetBasiteListClass(aClass: TClass): TClass;
 begin
@@ -1316,10 +1317,14 @@ begin
   SaveMetaClass(aClass, Self);
 end;
 
+// The meta is cached in the class's own VMT slot (vmtAutoTable), so TBasite.Meta is one pointer read. The VMT is read-only
+// memory; if the OS refuses to make it writable, nothing is stored and Meta finds the class through TMetaBank.RegisterClass
+// (the registry under a lock) - correct, only slower
 procedure TMetaClass.SaveMetaClass(aClass: TClass; aMeta: TMetaClass);
 begin
   var slot: PNativeUInt := PNativeUInt(NativeInt(aClass) + vmtAutoTable); // Address of vmtAutoTable slot
 
+  {$IFDEF MSWINDOWS}
   var oldProtect: DWORD;
   if not VirtualProtect(slot, SizeOf(NativeUInt), PAGE_EXECUTE_READWRITE, oldProtect) then // Make the slot writable
     Exit;
@@ -1330,6 +1335,17 @@ begin
     var dummy: DWORD;
     VirtualProtect(slot, SizeOf(NativeUInt), oldProtect, dummy); // Restore original protection
   end;
+  {$ENDIF}
+  {$IFDEF POSIX}
+  // mprotect works on whole pages. The page stays writable: POSIX cannot tell its original protection, and guessing read-only
+  // could break other data on the page; code and data never share a page (ELF segments are page-aligned), so no code is touched
+  var pageSize: NativeUInt := sysconf(_SC_PAGESIZE);
+  var page: Pointer := Pointer(NativeUInt(slot) and not (pageSize - 1));
+  if mprotect(page, NativeUInt(slot) - NativeUInt(page) + SizeOf(NativeUInt), PROT_READ or PROT_WRITE) <> 0 then
+    Exit;
+
+  slot^ := NativeUInt(aMeta); // Store meta pointer atomically
+  {$ENDIF}
 end;
 
 { TMetaBasite }
