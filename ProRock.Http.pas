@@ -31,10 +31,27 @@ type
     function Header(const aName: string): string;
   end;
 
-  // protocol-agnostic HTTP exchange - protocol layers (SOAP, REST, ...) build requests and read responses on top of it
+  // protocol-agnostic HTTP exchange - protocol layers (SOAP, REST, ...) build requests and read responses on top of it.
+  // Default headers (authentication, API keys, ...) are added to every request; the protocol layers never see them, so they
+  // never reach their events or error texts. Configure them before concurrent use, like the rest of the transport
   THttpTransport = class abstract
+  private
+    fHeaders: THttpHeaders;
+  protected
+    // the real exchange of a request that already carries the default headers; raises on network failures
+    function Send(const aRequest: THttpRequest): THttpResponse; virtual; abstract;
   public
-    function Execute(const aRequest: THttpRequest): THttpResponse; virtual; abstract;
+    // sent with every request; a header the request already has wins over a default one
+    property Headers: THttpHeaders read fHeaders;
+
+    function Execute(const aRequest: THttpRequest): THttpResponse;
+
+    // adds or replaces a default header (names are case-insensitive); an empty value removes it
+    procedure SetHeader(const aName, aValue: string);
+    // HTTP Basic authentication (RFC 7617): user and password as UTF-8, sent with every request - use https
+    procedure SetBasicAuth(const aUserName, aPassword: string);
+    // OAuth 2.0 bearer token (RFC 6750), sent with every request; an empty token removes it
+    procedure SetBearerToken(const aToken: string);
   end;
 
   // System.Net based transport; a new THTTPClient per request, so one instance may be used from several threads
@@ -42,16 +59,26 @@ type
   private
     fConnectionTimeout: integer;
     fResponseTimeout: integer;
+    fUserName: string;
+    fPassword: string;
+  protected
+    function Send(const aRequest: THttpRequest): THttpResponse; override;
   public
     property ConnectionTimeout: integer read fConnectionTimeout write fConnectionTimeout; // ms, 0 - System.Net default
     property ResponseTimeout: integer read fResponseTimeout write fResponseTimeout; // ms, 0 - System.Net default
 
-    function Execute(const aRequest: THttpRequest): THttpResponse; override;
+    // credentials for a server that asks for them (HTTP 401 challenge): Basic, Digest, NTLM, Negotiate - the scheme is agreed by
+    // System.Net and the operating system; 'DOMAIN\user' for a Windows domain account
+    property UserName: string read fUserName write fUserName;
+    property Password: string read fPassword write fPassword;
   end;
 
 implementation
 
-uses System.Net.HttpClient, System.Net.URLClient;
+uses System.Net.HttpClient, System.Net.URLClient, System.NetEncoding;
+
+const
+  cHeaderAuthorization = 'Authorization';
 
 function HeaderValue(const aHeaders: THttpHeaders; const aName: string): string;
 begin
@@ -89,9 +116,50 @@ begin
   Result := HeaderValue(Headers, aName);
 end;
 
+{ THttpTransport }
+
+function THttpTransport.Execute(const aRequest: THttpRequest): THttpResponse;
+begin
+  var request: THttpRequest := aRequest;
+  for var header: THttpHeader in fHeaders do
+    if request.Header(header.Name).IsEmpty then
+      request.AddHeader(header.Name, header.Value);
+
+  Result := Send(request);
+end;
+
+procedure THttpTransport.SetBasicAuth(const aUserName, aPassword: string);
+begin
+  // no line breaks: the default Base64 encoder wraps at 76 characters, which would break the header
+  var base64: TBase64Encoding := TBase64Encoding.Create(0);
+  try
+    SetHeader(cHeaderAuthorization, 'Basic ' + base64.EncodeBytesToString(TEncoding.UTF8.GetBytes(aUserName + ':' + aPassword)));
+  finally
+    base64.Free;
+  end;
+end;
+
+procedure THttpTransport.SetBearerToken(const aToken: string);
+begin
+  if aToken.IsEmpty then
+    SetHeader(cHeaderAuthorization, '')
+  else
+    SetHeader(cHeaderAuthorization, 'Bearer ' + aToken);
+end;
+
+procedure THttpTransport.SetHeader(const aName, aValue: string);
+begin
+  for var i: integer := High(fHeaders) downto 0 do
+    if SameText(fHeaders[i].Name, aName) then
+      Delete(fHeaders, i, 1);
+
+  if not aValue.IsEmpty then
+    fHeaders := fHeaders + [THttpHeader.Create(aName, aValue)];
+end;
+
 { THttpTransportNative }
 
-function THttpTransportNative.Execute(const aRequest: THttpRequest): THttpResponse;
+function THttpTransportNative.Send(const aRequest: THttpRequest): THttpResponse;
 begin
   var client: THTTPClient := THTTPClient.Create;
   var source: TStringStream := TStringStream.Create(aRequest.Body, TEncoding.UTF8);
@@ -100,6 +168,9 @@ begin
       client.ConnectionTimeout := fConnectionTimeout;
     if fResponseTimeout > 0 then
       client.ResponseTimeout := fResponseTimeout;
+    if not fUserName.IsEmpty then // used only when the server answers with a challenge
+      client.CredentialsStorage.AddCredential(TCredentialsStorage.TCredential.Create(TAuthTargetType.Server, '', '', fUserName,
+        fPassword));
 
     var headers: TNetHeaders := [];
     for var header: THttpHeader in aRequest.Headers do

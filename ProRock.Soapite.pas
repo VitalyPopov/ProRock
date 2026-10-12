@@ -18,6 +18,8 @@ const
 
 type
   TSoapiteXmlEvent = procedure(aSender: TObject; const aXml: string) of object;
+  // the SOAP Header of a call's envelope: header blocks are Xmlite objects in aHeader.XmlAny
+  TSoapiteHeaderEvent = procedure(aSender: TObject; aHeader: TXmlite) of object;
 
   TSoapiteErrorKind = (sekNone,
     sekNetwork, // no HTTP response at all (connection, timeout, ...)
@@ -72,6 +74,8 @@ type
     fTransport: THttpTransport;
     fOnRequest: TSoapiteXmlEvent;
     fOnResponse: TSoapiteXmlEvent;
+    fOnRequestHeader: TSoapiteHeaderEvent;
+    fOnResponseHeader: TSoapiteHeaderEvent;
 
     procedure SetSoapVersion(aValue: TSoapVersion);
     procedure SetTransport(aValue: THttpTransport);
@@ -97,6 +101,12 @@ type
     // raw xml - for logging and debugging
     property OnRequest: TSoapiteXmlEvent read fOnRequest write fOnRequest;
     property OnResponse: TSoapiteXmlEvent read fOnResponse write fOnResponse;
+
+    // SOAP header blocks (WS-Addressing, WS-Security tokens, ebMS/AS4 messaging, a service's own headers, ...), called during
+    // each call. Request: add objects to aHeader.XmlAny - the envelope frees them after writing; nothing added - no Header
+    // element. Response: every parsed response, faults included, before the body is handled - Extract the objects to keep
+    property OnRequestHeader: TSoapiteHeaderEvent read fOnRequestHeader write fOnRequestHeader;
+    property OnResponseHeader: TSoapiteHeaderEvent read fOnResponseHeader write fOnResponseHeader;
   end;
 
 implementation
@@ -107,18 +117,21 @@ uses System.StrUtils,
 const
   cSoapVersionOther: array [TSoapVersion] of TSoapVersion = (sv12, sv11);
 
-// an envelope of the given SOAP version and its Body - both metamodels are TXmlite, so the rest of a call is version-neutral
-function CreateEnvelope(aSoapVersion: TSoapVersion; out aBody: TXmlite): TXmlite;
+// an envelope of the given SOAP version with its Header and Body - both metamodels are TXmlite, so the rest of a call is
+// version-neutral
+function CreateEnvelope(aSoapVersion: TSoapVersion; out aHeader, aBody: TXmlite): TXmlite;
 begin
   if aSoapVersion = sv12 then
   begin
     var envelope12: ProRock.Xmlite.Schema.Envelope12.TEnvelopeE := ProRock.Xmlite.Schema.Envelope12.TEnvelopeE.Create;
+    aHeader := envelope12.Header;
     aBody := envelope12.Body;
     Result := envelope12;
   end
   else
   begin
     var envelope11: ProRock.Xmlite.Schema.Envelope.TEnvelopeE := ProRock.Xmlite.Schema.Envelope.TEnvelopeE.Create;
+    aHeader := envelope11.Header;
     aBody := envelope11.Body;
     Result := envelope11;
   end;
@@ -195,9 +208,12 @@ begin
     request.AddHeader('SOAPAction', '"' + aSoapAction + '"');
   end;
 
-  var body: TXmlite;
-  var envelope: TXmlite := CreateEnvelope(soapVersion, body);
+  var header, body: TXmlite;
+  var envelope: TXmlite := CreateEnvelope(soapVersion, header, body);
   try
+    if Assigned(fOnRequestHeader) then
+      fOnRequestHeader(Self, header);
+
     body.XmlAny.Add(aRequest);
     try
       request.Body := envelope.ToXml;
@@ -236,13 +252,14 @@ begin
   // The requested version first; a service not speaking it answers in the other one (e.g. a 1.1 VersionMismatch Fault). The root
   // element is not checked by parsing, so a version fits when its Body gets content; otherwise the first parsed envelope is kept
   envelope := nil;
+  header := nil;
   body := nil;
   try
     if not responseBody.IsEmpty then
       for var version: TSoapVersion in TArray<TSoapVersion>.Create(soapVersion, cSoapVersionOther[soapVersion]) do
       begin
-        var candidateBody: TXmlite;
-        var candidate: TXmlite := CreateEnvelope(version, candidateBody);
+        var candidateHeader, candidateBody: TXmlite;
+        var candidate: TXmlite := CreateEnvelope(version, candidateHeader, candidateBody);
 
         var parsed: boolean;
         try
@@ -255,6 +272,7 @@ begin
         begin
           envelope.Free;
           envelope := candidate;
+          header := candidateHeader;
           body := candidateBody;
         end
         else
@@ -270,6 +288,9 @@ begin
       aError.Message := Format('No SOAP response (HTTP %d)', [response.Status]);
       Exit;
     end;
+
+    if Assigned(fOnResponseHeader) then
+      fOnResponseHeader(Self, header);
 
     var responseObject: TBasite := nil;
     for var item: TBasite in body.XmlAny do

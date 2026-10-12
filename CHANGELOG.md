@@ -9,6 +9,13 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 
 ### Added
 
+- **HTTP authentication** (`ProRock.Http`, for Soapite and future protocol layers)
+  - default headers on the transport, sent with every request: `SetHeader` (API keys, ...), `SetBasicAuth` (RFC 7617, UTF-8),
+    `SetBearerToken` (OAuth 2.0); a header the request already has wins
+  - `THttpTransportNative.UserName`/`Password` answer a server's 401 challenge: Basic, Digest, NTLM, Negotiate
+  - credentials never reach `OnRequest`/`OnResponse` or error texts (they only see the XML body)
+- **SOAP headers** (`ProRock.Soapite`): `OnRequestHeader` adds header blocks to the request envelope (WS-Addressing,
+  WS-Security tokens, ebMS, a service's own headers), `OnResponseHeader` reads the response's header, faults included
 - **Non-Windows platforms**: ProRock no longer depends on `Winapi.Windows`. The class meta cache (a pointer in the class's
   VMT) uses `mprotect` on POSIX; where the OS refuses it, the meta is found through the registry instead (correct, slower).
   All ProRock units compile for Android 32/64-bit; running on a device is not verified yet
@@ -17,6 +24,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 
 ### Changed
 
+- **Breaking:** a custom `THttpTransport` overrides `Send` instead of `Execute` (`Execute` adds the default headers, then calls
+  `Send`); the compiler reports the old override
 - `AutoInitMaxDepth` defaults to 1 (was 2): a self-nested object (e.g. SOAP 1.2 `Subcode` inside `Subcode`) is no longer
   pre-created, it is `nil` until set or read. Set `TBasite.AutoInitMaxDepth := 2` for the old behavior
 - **Breaking:** `xs:decimal`, `xs:float` and `xs:double` are generated as `Double` (was `Extended`, which is 10 bytes on Win32
