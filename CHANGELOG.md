@@ -5,6 +5,20 @@ number since 1.1.0.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versions follow [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+- ProRocket CLI (`ProRocketCli.exe`, in the ProRocket Lite zip): the generator from the command line, for scripts, build
+  steps and AI coding assistants, with `CLI.md`. Problems are reported instead of passing silently - missing imported
+  schemas and includes, names that resolve to nothing, `xs:redefine` - as machine-readable lines (exit code 2), also in
+  the GUI; `--strict` writes nothing when there are problems
+
+### Fixed
+- ProRocket Lite: two versioned namespaces of one vendor (`urn:acme:orders:2`, `urn:acme:common:2`) got the same unit name,
+  and one unit overwrote the other; a version-only last segment now takes the segment before it (`Orders2`), and two units
+  with one name are reported and nothing is written
+- README: the XSD quick start did not compile - `FromXml`/`ToXml` need `ProRock.Xmlite` in `uses` (a class helper)
+
 ## [1.2.0] - 2026-10-12
 
 Authentication, SOAP headers and solid foundations: HTTP auth and header blocks for Soapite, correct number sizes in Basite,

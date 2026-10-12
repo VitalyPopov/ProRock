@@ -69,7 +69,9 @@ supported.
 Generate the units from the XSD the same way, then parse and write documents through the typed classes:
 
 ```pascal
-uses ProRock.Xmlite.Schema.Order;
+uses System.SysUtils, System.IOUtils,
+  ProRock.Xmlite, // FromXml and ToXml (a class helper: visible only where ProRock.Xmlite is in uses)
+  ProRock.Xmlite.Schema.Order;
 
 var order := TOrderE.Create;
 try
