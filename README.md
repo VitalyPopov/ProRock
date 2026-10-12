@@ -29,8 +29,9 @@ Contents:
 
 1. Open ProRocket Lite, add the WSDL (here `checkVatService.wsdl`, the EU VIES VAT number service), click **Generate**.
 2. You get two units: the types (`ProRock.Xmlite.Schema.CheckVatService`) and the client (`ProRock.Soapite.CheckVatService`).
-   The client unit re-exports every type its calls need, so it is the only unit to use.
-3. Call the service:
+   The client unit re-exports the request and response types, `TSoapiteError` and the exceptions, so for plain calls it
+   is the only unit to use.
+3. Call the service. Pass the endpoint: the default is the WSDL's `soap:address`, and VIES still declares `http://` there.
 
 ```pascal
 uses ProRock.Soapite.CheckVatService;
@@ -63,6 +64,20 @@ end;
 Every operation comes in two forms: `TryCheckVat` returns `False` with the reason in `TSoapiteError` (SOAP Fault or transport
 failure), `CheckVat` returns the response and raises `ESoapiteFault` / `ESoapiteTransport` instead. SOAP 1.1 and 1.2 are both
 supported.
+
+Transport settings and error kinds need two more units: `ProRock.Http` for the transport (timeouts, `SetBasicAuth`,
+`SetBearerToken`, headers) and `ProRock.Soapite` for `TSoapiteErrorKind` (`sekNetwork`, `sekHttp`, `sekContent`,
+`sekFault`):
+
+```pascal
+uses ProRock.Http, ProRock.Soapite, ProRock.Soapite.CheckVatService;
+
+THttpTransportNative(service.Transport).ConnectionTimeout := 10000; // ms
+THttpTransportNative(service.Transport).ResponseTimeout := 30000;
+...
+if not service.TryCheckVat(request, response, error) and (error.Kind = sekFault) then
+  Writeln('the service refused: ', error.Code);
+```
 
 ## Quick start: XML from an XSD
 

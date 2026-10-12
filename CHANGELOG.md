@@ -12,13 +12,15 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   steps and AI coding assistants, with `CLI.md`. Problems are reported instead of passing silently - missing imported
   schemas and includes, names that resolve to nothing, `xs:redefine` - as machine-readable lines (exit code 2), also in
   the GUI; `--strict` writes nothing when there are problems; `--no-timestamp` leaves out the `Generated (UTC)` line, so
-  an unchanged schema gives a byte-identical unit
+  an unchanged schema gives a byte-identical unit; `--version`
 
 ### Fixed
 - ProRocket Lite: two versioned namespaces of one vendor (`urn:acme:orders:2`, `urn:acme:common:2`) got the same unit name,
   and one unit overwrote the other; a version-only last segment now takes the segment before it (`Orders2`), and two units
   with one name are reported and nothing is written
 - README: the XSD quick start did not compile - `FromXml`/`ToXml` need `ProRock.Xmlite` in `uses` (a class helper)
+- README: the SOAP client unit is not the only unit for everything - transport settings need `ProRock.Http`, error kinds
+  `ProRock.Soapite`; the default endpoint is the WSDL's `soap:address` (VIES still declares `http://`)
 
 ## [1.2.0] - 2026-10-12
 
