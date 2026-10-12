@@ -8,7 +8,7 @@ uses System.Classes, System.Rtti, Generics.Collections, System.SysUtils, System.
   ProRock.Utility;
 
 const
-  cProRockVersion = '1.1.0';
+  cProRockVersion = '1.2.0';
 
   // TBasite.AutoInitMaxDepth range: 1 - library code relies on non-recursive paths (e.g. Envelope.Body); 5 - pre-created objects
   // grow as (self-references per type) ^ depth, so higher values only eat memory

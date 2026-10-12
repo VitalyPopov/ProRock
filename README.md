@@ -139,6 +139,24 @@ DOM-style models and opt into namespace- and schema-aware processing when needed
 based by default). SOAP Faults of both versions are mapped to `TSoapiteError` (code, subcode, reason, actor/node, detail), also when
 a service answers a fault with HTTP 200. `OnRequest` / `OnResponse` events give the raw XML for logging.
 
+HTTPS works out of the box (the operating system's TLS, no extra DLLs). Authentication is set on the transport and sent with
+every call; it never appears in `OnRequest` / `OnResponse` or in error texts:
+
+```pascal
+uses ProRock.Http; // THttpTransportNative
+
+var transport := service.Transport as THttpTransportNative;
+transport.SetBasicAuth('user', 'password');   // HTTP Basic (use https)
+transport.SetBearerToken(token);              // OAuth 2.0 bearer token
+transport.SetHeader('X-API-Key', key);        // any header, e.g. an API key
+transport.UserName := 'DOMAIN\user';          // or answer the server's challenge: Basic, Digest, NTLM, Negotiate
+transport.Password := 'password';
+```
+
+SOAP header blocks (WS-Addressing, WS-Security tokens, a service's own headers) are added in `OnRequestHeader` and read in
+`OnResponseHeader`: header blocks are Xmlite objects, so generate them from their schema like any other type. A custom transport
+(client certificates, a different HTTP library, a test fake) is a `THttpTransport` descendant that implements `Send`.
+
 ---
 
 ## ProRocket Lite (code generator)
@@ -172,6 +190,10 @@ Notes:
   paths). Log them, and show your own message to end users.
 - Generated string types (`TStringST = type string`) need a cast before string-helper methods:
   `string(response.Address).Replace(...)`.
+- `xs:decimal`, `xs:float` and `xs:double` are `Double`: values up to about 15 significant digits read and write back unchanged,
+  but arithmetic is binary floating point. For money arithmetic, convert to `Currency` before calculating:
+  `var price: Currency := line.Price; var total := price * line.Quantity;`. `xs:integer` is `Int64`, `xs:unsignedLong` is
+  `UInt64`.
 
 ---
 
@@ -186,6 +208,9 @@ The library is also verified to compile and work with:
 - Delphi 10.3 Rio
 
 The code uses inline variable declarations, so Delphi versions before 10.3 are not supported.
+
+ProRock has no Windows-only dependencies: all units compile for **Android** 32/64-bit (Delphi 13). Running on a device is not
+verified yet.
 
 ## Installation
 
