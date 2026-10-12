@@ -11,7 +11,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 - ProRocket CLI (`ProRocketCli.exe`, in the ProRocket Lite zip): the generator from the command line, for scripts, build
   steps and AI coding assistants, with `CLI.md`. Problems are reported instead of passing silently - missing imported
   schemas and includes, names that resolve to nothing, `xs:redefine` - as machine-readable lines (exit code 2), also in
-  the GUI; `--strict` writes nothing when there are problems
+  the GUI; `--strict` writes nothing when there are problems; `--no-timestamp` leaves out the `Generated (UTC)` line, so
+  an unchanged schema gives a byte-identical unit
 
 ### Fixed
 - ProRocket Lite: two versioned namespaces of one vendor (`urn:acme:orders:2`, `urn:acme:common:2`) got the same unit name,
