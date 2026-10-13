@@ -11,6 +11,13 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 - Soapite / HTTP: client certificates (mutual TLS) on `THttpTransportNative` - `ClientCertificate` (a PFX/P12 file; on
   Android the name or fingerprint of an installed certificate) and `ClientCertificatePassword`. A missing file or a wrong
   password fails the call (`sekNetwork` in Soapite) with the System.Net message, never with the password
+- Xmlite: `[TQualified]` - an attribute written with its namespace prefix also in an element of its own namespace (XSD:
+  a global attribute referenced within its schema, e.g. `wsu:Id` in `wsu:Timestamp`). ProRocket Lite generates it for
+  same-namespace attribute references; `ProRock.Xmlite.Schema.Xml`, `.Envelope` (`encodingStyle`) and `.Wsdl`
+  (`required`) are regenerated with it
+- ProRocket Lite: known names for OASIS WS-Security 1.0 (`ProRock.Xmlite.Schema.WsSecurity`, `.WsSecurityUtility`,
+  prefixes `wsse`, `wsu`); a namespace ending in a file name gets a readable unit name
+  (`.../oasis-200401-wss-wssecurity-secext-1.0.xsd` -> `Oasis200401WssWssecuritySecext10`)
 - ProRocket CLI (`ProRocketCli.exe`, in the ProRocket Lite zip): the generator from the command line, for scripts, build
   steps and AI coding assistants, with `CLI.md`. Problems are reported instead of passing silently - missing imported
   schemas and includes, names that resolve to nothing, `xs:redefine` - as machine-readable lines (exit code 2), also in
@@ -21,6 +28,12 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 - ProRocket Lite: two versioned namespaces of one vendor (`urn:acme:orders:2`, `urn:acme:common:2`) got the same unit name,
   and one unit overwrote the other; a version-only last segment now takes the segment before it (`Orders2`), and two units
   with one name are reported and nothing is written
+- Xmlite writer: `xs:any` content of the parent's namespace was written with a prefix that was never declared, and the
+  prefixes it used inside were not declared either (e.g. `<wsse:UsernameToken wsu:Id=...>` in `wsse:Security`) - not
+  well-formed XML. Such content is now written unprefixed below an unprefixed parent, and every prefix it uses is declared;
+  found with the OASIS WS-Security schemas, the result validates against them
+- ProRocket CLI: a long problem line could be split by a `generated:` line when stdout and stderr were read together;
+  every line is now written and flushed in one piece
 - README: the XSD quick start did not compile - `FromXml`/`ToXml` need `ProRock.Xmlite` in `uses` (a class helper)
 - README: the SOAP client unit is not the only unit for everything - transport settings need `ProRock.Http`, error kinds
   `ProRock.Soapite`; the default endpoint is the WSDL's `soap:address` (VIES still declares `http://`)
