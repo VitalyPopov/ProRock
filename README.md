@@ -9,8 +9,8 @@ A schema changes: a new e-invoicing version, an ISO 20022 release, a service add
 then have to be found and fixed one by one. With ProRock you regenerate the units, and the compiler shows exactly what changed.
 
 - **ProRock** - the runtime library: open source (Apache 2.0), pure Delphi source, no dependencies beyond the RTL
-- **ProRocket Lite** - the code generator: XSD/WSDL in, Delphi units out. Free for any use, including commercial
-  ([download](#prorocket-lite-code-generator))
+- **ProRocket Lite** - the code generator: XSD/WSDL in, Delphi units out, in a GUI and from the command line - friendly to
+  scripts and AI coding assistants. Free for any use, including commercial ([download](#prorocket-lite-code-generator))
 
 Contents:
 - [Quick start: a SOAP client from a WSDL](#quick-start-a-soap-client-from-a-wsdl)
@@ -27,7 +27,8 @@ Contents:
 
 ## Quick start: a SOAP client from a WSDL
 
-1. Open ProRocket Lite, add the WSDL (here `checkVatService.wsdl`, the EU VIES VAT number service), click **Generate**.
+1. Open ProRocket Lite, add the WSDL (here `checkVatService.wsdl`, the EU VIES VAT number service), click **Generate** -
+   or from the command line: `ProRocketCli.exe checkVatService.wsdl`.
 2. You get two units: the types (`ProRock.Xmlite.Schema.CheckVatService`) and the client (`ProRock.Soapite.CheckVatService`).
    The client unit re-exports the request and response types, `TSoapiteError` and the exceptions, so for plain calls it
    is the only unit to use.
@@ -190,7 +191,22 @@ SOAP header blocks (WS-Addressing, WS-Security tokens, a service's own headers) 
 - free for any use, including commercial; the generated code is yours and is not covered by the ProRocket Lite license
 - closed source, with its own license (`LICENSE.txt` in the zip); ProRock itself is Apache 2.0
 
-The executable is not code-signed yet, so Windows SmartScreen may warn on the first start: **More info → Run anyway**.
+### Command line
+
+`ProRocketCli.exe` in the zip is the same generator for scripts, build steps and AI coding assistants:
+
+```
+ProRocketCli.exe [-o <output folder>] [--strict] [--no-timestamp] <file.xsd|file.wsdl> ...
+```
+
+- problems are reported, not passed over silently: a missing imported schema or include, a name that resolves to nothing - one
+  machine-readable line each (`problem: missing-schema namespace="..." location="..."`), exit code 2; the GUI lists the same
+- `--no-timestamp`: an unchanged schema gives a byte-identical unit; `--strict`: nothing is written when there are problems
+- `CLI.md` in the zip describes the workflow for people and for AI assistants (what to add when a schema is missing, which
+  units to use, the project layout). In a blind test an AI agent built a working VIES client app from the zip and the
+  documentation alone
+
+The executables are not code-signed yet, so Windows SmartScreen may warn on the first start: **More info → Run anyway**.
 
 ProRocket Lite is not needed to use ProRock: models can be written by hand as well.
 
