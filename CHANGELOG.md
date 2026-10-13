@@ -32,6 +32,13 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   prefixes it used inside were not declared either (e.g. `<wsse:UsernameToken wsu:Id=...>` in `wsse:Security`) - not
   well-formed XML. Such content is now written unprefixed below an unprefixed parent, and every prefix it uses is declared;
   found with the OASIS WS-Security schemas, the result validates against them
+- Xmlite writer: element namespaces follow the default namespace in scope - a child is prefixed exactly when its namespace is
+  another one. Before, content of another namespace's type was written in the parent's one (`ord:Buyer` of type
+  `cmn:PartyType` wrote `<Buyer><Name>` instead of `<Buyer><cmn:Name>`), and so was the content below a prefixed element.
+  A property typed with a global declaration (an element class: `xs:element ref`, an attribute type: `xs:attribute ref`)
+  now belongs to that declaration's namespace (`<b:BElem>`, was `<BElem>` in the parent's namespace); such attributes are
+  qualified. Documents written by earlier versions still read (an element is matched by name when no namespace fits).
+  Behavior change for hand-written classes: an element class used as the type of a member puts it in its own namespace
 - ProRocket CLI: a long problem line could be split by a `generated:` line when stdout and stderr were read together;
   every line is now written and flushed in one piece
 - README: the XSD quick start did not compile - `FromXml`/`ToXml` need `ProRock.Xmlite` in `uses` (a class helper)

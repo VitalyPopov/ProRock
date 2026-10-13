@@ -162,6 +162,8 @@ type
     property Value: cardinal read fValue write fValue;
   end;
 
+  TNamespace = class;
+
   TBasiteHelper = class helper for TBasite
   private
     class var fPretty: boolean;
@@ -174,7 +176,9 @@ type
     function ReadTagContents(var aCursor: PChar; const aName: string; aXmlns: TXmlns): boolean;
 
     function FromXml(var aXmlCursor: PChar; aXmlns: TXmlns = nil): boolean; overload;
-    procedure ToXml(aWriter: TWriterXmlite; const aName: string = ''; aStrictlyPrefixed: boolean = False; aNamespaces: boolean = False;
+    // aScope: the default namespace in scope (xmlns="...") - a child element is prefixed exactly when its namespace is another
+    // one; aNamespaces: the element declares its namespaces (its own one becomes the default in scope)
+    procedure ToXml(aWriter: TWriterXmlite; const aName: string; aScope: TNamespace; aNamespaces: boolean;
       aXmlHeader: boolean = False); overload;
   public
     constructor CreateFromXml(const aXml: string);
@@ -203,8 +207,6 @@ type
   // XSD form="qualified": the attribute is written with its namespace prefix also in elements of its own namespace - a global
   // attribute referenced within its schema (wsu:Id in wsu:Timestamp); an attribute of another namespace is prefixed anyway
   TQualifiedAttribute = class(TCustomAttribute);
-
-  TNamespace = class;
 
   TPropertyXmlite = class(TPropertyExtension)
   private
@@ -672,6 +674,7 @@ begin
     if (propertyElement = nil) and elementUri.IsEmpty and Assigned(Meta.Xmlite.Namespace) then
       propertyElement := Meta.Xmlite.Elements[TUriedName.Create(Meta.Xmlite.Namespace.Uri, tagName)];
 
+
     if (propertyElement = nil) and Meta.Xmlite.ProcessAnyElement then
     begin // for xs:any - try to find Namespace-registered element and parse it
       var metaElement: TMetaBasite := TMetaBank.Xmlite.Namespaces.GetMetaBasite(elementUri, xctElement, tagName);
@@ -691,6 +694,16 @@ begin
 
     if propertyElement = nil then // as a fallback - try to find such property without tag
       propertyElement := Meta.Xmlite.Elements[TUriedName.Create('', tagName)];
+
+    // ProRock before 1.3.0 wrote some elements in the wrong namespace (a reference or the content of another namespace's type in
+    // the parent's one: <ScopeItem><Code> instead of <b:ScopeItem><b:Code>): matched by name, so older documents still read
+    if propertyElement = nil then
+      for var candidate: TProperty in Meta.Xmlite.Elements.Values do
+        if candidate.Xmlite.Name = tagName then
+        begin
+          propertyElement := candidate;
+          break;
+        end;
 
     if propertyElement = nil then
     begin // no such name in elements list of the object - skip the whole node till it's end
@@ -788,22 +801,15 @@ begin
         Exit(xttEmpty);
 end;
 
-procedure TBasiteHelper.ToXml(aWriter: TWriterXmlite; const aName: string; aStrictlyPrefixed, aNamespaces, aXmlHeader: boolean);
+procedure TBasiteHelper.ToXml(aWriter: TWriterXmlite; const aName: string; aScope: TNamespace; aNamespaces, aXmlHeader: boolean);
 
-  function elementName(aProperty: TProperty; aStrictlyPrefixed: boolean = False): string; overload;
+  // the namespace in scope is the default one: no prefix; any other namespace: prefixed (declared by GetXmlns)
+  function elementName(aProperty: TProperty; aScope: TNamespace): string;
   begin
-    if aStrictlyPrefixed or (aProperty.Xmlite.Namespace <> aProperty.ParentMeta.Xmlite.Namespace) then
-      Result := aProperty.Xmlite.NamePrefixed
+    if (aProperty.Xmlite.Namespace = nil) or (aProperty.Xmlite.Namespace = aScope) then
+      Result := aProperty.Xmlite.Name
     else
-      Result := aProperty.Xmlite.Name;
-  end;
-
-  function elementName(aBasite: TBasite; aStrictlyPrefixed: boolean = False): string; overload;
-  begin
-    if aStrictlyPrefixed or (aBasite.Meta.Xmlite.Namespace <> Meta.Xmlite.Namespace) then
-      Result := aBasite.Meta.Xmlite.NamePrefixed
-    else
-      Result := aBasite.Meta.Xmlite.Name;
+      Result := aProperty.Xmlite.NamePrefixed;
   end;
 
 begin
@@ -820,10 +826,12 @@ begin
 
   var objectName: string := aName;
   if objectName.IsEmpty then
-    if aStrictlyPrefixed then
-      objectName := Meta.Xmlite.NamePrefixed
-    else
-      objectName := Meta.Xmlite.Name;
+    objectName := Meta.Xmlite.Name;
+
+  // an element declaring its namespaces makes its own one the default for its content
+  var scope: TNamespace := aScope;
+  if aNamespaces then
+    scope := Meta.Xmlite.Namespace;
 
   case TagType of
     xttEmpty:
@@ -846,7 +854,7 @@ begin
               begin
                 var propertyData: TPropertyData := TPropertyData(propertyElement);
                 if propertyData.Required or not propertyData.ValueIsDefault(Self) then
-                  aWriter.AddTextNode(elementName(propertyElement), propertyData.Value[Self], propertyData);
+                  aWriter.AddTextNode(elementName(propertyElement, scope), propertyData.Value[Self], propertyData);
               end;
             ptBasite:
               begin
@@ -856,10 +864,10 @@ begin
                   Continue;
                 if propertyBasite.Meta.ClassItself.InheritsFrom(TXmliteTextElement) and
                   not TXmliteTextElement(fieldObject).IsEmptyOrDefault then
-                  aWriter.AddTextNode(elementName(propertyElement), TXmliteTextElement(fieldObject).xmlText,
+                  aWriter.AddTextNode(elementName(propertyElement, scope), TXmliteTextElement(fieldObject).xmlText,
                     TMetaBasiteXmliteText(fieldObject.Meta.Xmlite).xmlTextProperty, fieldObject)
                 else
-                  fieldObject.ToXml(aWriter, elementName(propertyElement, aStrictlyPrefixed), aStrictlyPrefixed);
+                  fieldObject.ToXml(aWriter, elementName(propertyElement, scope), scope, False);
               end;
             ptBasiteList:
               begin
@@ -870,24 +878,22 @@ begin
                 for var i := 0 to list.Count - 1 do
                   if propertyBasiteList.Meta.ItemMeta.ClassItself.InheritsFrom(TXmliteTextElement) and
                     not TXmliteTextElement(list[i]).IsEmptyOrDefault then
-                    aWriter.AddTextNode(elementName(propertyElement), TXmliteTextElement(list[i]).xmlText,
+                    aWriter.AddTextNode(elementName(propertyElement, scope), TXmliteTextElement(list[i]).xmlText,
                       TMetaBasiteXmliteText(list[i].Meta.Xmlite).xmlTextProperty, list[i])
                   else
-                    list[i].ToXml(aWriter, elementName(propertyElement, aStrictlyPrefixed), aStrictlyPrefixed);
+                    list[i].ToXml(aWriter, elementName(propertyElement, scope), scope, False);
               end;
           end;
 
         if Meta.Xmlite.IsTXmlite and Meta.Xmlite.ProcessAnyElement then
           for var anyElement: TBasite in TXmlite(Self).XmlAny do
-            if anyElement.Meta.Xmlite.Namespace <> Meta.Xmlite.Namespace then
-              // an element of another namespace declares it as its default one - its unprefixed members then belong to it
+            if anyElement.Meta.Xmlite.Namespace = scope then
+              // the namespace in scope (wsse:UsernameToken in wsse:Security): unprefixed, declared by an ancestor
+              anyElement.ToXml(aWriter, anyElement.Meta.Xmlite.Name, scope, False)
+            else
+              // another namespace: declares it as its default one - its unprefixed members then belong to it
               // (e.g. <Add xmlns="http://tempuri.org/"><intA>... inside soap:Body)
-              anyElement.ToXml(aWriter, anyElement.Meta.Xmlite.Name, False, True)
-            else if not aStrictlyPrefixed and not objectName.Contains(':') then
-              // the same namespace as this unprefixed element: the default one in scope (wsse:UsernameToken in wsse:Security)
-              anyElement.ToXml(aWriter, anyElement.Meta.Xmlite.Name)
-            else // this element is prefixed, so is the child (GetXmlns declares the prefix)
-              anyElement.ToXml(aWriter, elementName(anyElement, True), True);
+              anyElement.ToXml(aWriter, anyElement.Meta.Xmlite.Name, nil, True);
 
         aWriter.DecLevel;
 
@@ -904,7 +910,7 @@ procedure TBasiteHelper.ToXml(aStream: TStream; const aName: string; aXmlHeader:
 begin
   var writer: TWriterXmlite := TWriterXmlite.Create(aStream);
   try
-    ToXml(writer, aName, False, True, aXmlHeader);
+    ToXml(writer, aName, nil, True, aXmlHeader);
   finally
     writer.Free;
   end;
@@ -914,7 +920,7 @@ function TBasiteHelper.ToXml(const aName: string; aXmlHeader: boolean): string;
 begin
   var writer: TWriterXmlite := TWriterXmlite.Create;
   try
-    ToXml(writer, aName, False, True, aXmlHeader);
+    ToXml(writer, aName, nil, True, aXmlHeader);
     Result := writer.Text;
   finally
     writer.Free;
@@ -923,9 +929,9 @@ end;
 
 function TBasiteHelper.GetXmlns: string;
 
-  // aPrefixed: namespaces that may be written with a prefix in this subtree - the own one is then declared with a prefix too
-  // (a qualified attribute, a same-namespace xs:any element below a prefixed one)
-  procedure FillXmlnsList(aXmlnsList, aPrefixed: THashedObjectList<TNamespace>; aObject: TBasite);
+  // aPrefixed: namespaces used with a prefix in this subtree - the own one is then declared with a prefix too (a qualified
+  // attribute); aScope: the default namespace in scope - xs:any content of another one declares its namespaces itself
+  procedure FillXmlnsList(aXmlnsList, aPrefixed: THashedObjectList<TNamespace>; aObject: TBasite; aScope: TNamespace);
 
     procedure AddPropertyDataXmlns(aXmlnsList: THashedObjectList<TNamespace>; aPropertyData: TPropertyData; aObject: TBasite); inline;
     begin
@@ -946,6 +952,9 @@ function TBasiteHelper.GetXmlns: string;
     end;
 
     for var element: TProperty in aObject.Meta.Xmlite.Elements.Values do
+    begin
+      if element.PropertyType in [ptBasite, ptBasiteList] then
+        aXmlnsList.Add(element.Xmlite.Namespace); // the element's own namespace (its type may be another one's)
       case element.PropertyType of
         ptData:
           AddPropertyDataXmlns(aXmlnsList, TPropertyData(element), aObject);
@@ -953,25 +962,24 @@ function TBasiteHelper.GetXmlns: string;
           begin
             var propertyObject: TBasite := TPropertyBasite(element).ObjectPointer(aObject)^;
             if (propertyObject <> nil) and not propertyObject.IsEmptyOrDefault then
-              FillXmlnsList(aXmlnsList, aPrefixed, propertyObject);
+              FillXmlnsList(aXmlnsList, aPrefixed, propertyObject, aScope);
           end;
         ptBasiteList:
           begin
             var propertyList: TBasiteList := TPropertyBasiteList(element).ObjectPointer(aObject)^;;
             if (propertyList <> nil) and (propertyList.Count > 0) then
               for var listObject: TBasite in propertyList do
-                FillXmlnsList(aXmlnsList, aPrefixed, listObject);
+                FillXmlnsList(aXmlnsList, aPrefixed, listObject, aScope);
           end;
       end;
+    end;
 
-    // xs:any content of the same namespace is written by this element; content of another namespace declares its own (ToXml)
+    // xs:any content in the scope is written as it is (its namespaces are declared here); content of another namespace declares
+    // its own (ToXml)
     if aObject.Meta.Xmlite.IsTXmlite and aObject.Meta.Xmlite.ProcessAnyElement then
       for var anyElement: TBasite in TXmlite(aObject).XmlAny do
-        if anyElement.Meta.Xmlite.Namespace = aObject.Meta.Xmlite.Namespace then
-        begin
-          aPrefixed.Add(anyElement.Meta.Xmlite.Namespace); // prefixed when its parent is (ToXml)
-          FillXmlnsList(aXmlnsList, aPrefixed, anyElement);
-        end;
+        if anyElement.Meta.Xmlite.Namespace = aScope then
+          FillXmlnsList(aXmlnsList, aPrefixed, anyElement, aScope);
   end;
 
 begin
@@ -980,7 +988,7 @@ begin
   var xmlnsList: THashedObjectList<TNamespace> := THashedObjectList<TNamespace>.Create(False);
   var prefixed: THashedObjectList<TNamespace> := THashedObjectList<TNamespace>.Create(False);
   try
-    FillXmlnsList(xmlnsList, prefixed, Self);
+    FillXmlnsList(xmlnsList, prefixed, Self, Meta.Xmlite.Namespace);
 
     for var namespace: TNamespace in xmlnsList.Values do
       if (namespace <> nil) and (namespace.Uri <> cXmlPrefixUri) then // the xml prefix is bound by definition, never declared
@@ -1794,6 +1802,29 @@ begin
       fQualified := True
     else if (attribute.ClassType = TNameAttribute) or attribute.ClassType.InheritsFrom(TNamingAttribute) then
       hasOwnName := True;
+
+  // a reference to a global declaration (xs:element ref, xs:attribute ref): an element class or an attribute type IS that
+  // declaration, so the member belongs to its namespace, and such an attribute is always qualified (XSD) - unlike a local
+  // member, which belongs to its owner whatever its type (ord:ShipTo of type cmn:AddressType)
+  if fNamespace = nil then
+  begin
+    var typeMeta: TMeta := PropertyInfo.Meta;
+    if PropertyInfo.PropertyType = ptBasiteList then
+      typeMeta := TPropertyBasiteList(PropertyInfo).Meta.ItemMeta;
+    var typeXmlite: TMetaXmlite := nil;
+    if typeMeta <> nil then
+      typeXmlite := typeMeta.Xmlite;
+    if (typeXmlite <> nil) and (typeXmlite.Namespace <> nil) then
+      case typeXmlite.ComponentType of
+        xctElement:
+          fNamespace := typeXmlite.Namespace;
+        xctAttribute:
+          begin
+            fNamespace := typeXmlite.Namespace;
+            fQualified := True;
+          end;
+      end;
+  end;
 
   if fNamespace = nil then
     fNamespace := aNamespace;
