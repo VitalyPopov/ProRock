@@ -6,6 +6,7 @@
 // (service.Transport). https://client.badssl.com is a public test server that requires a client certificate: HTTP 400
 // without one, 200 with its published test certificate. It is not a SOAP service, so this sample calls it through the
 // transport directly; for a SOAP service, set the same two properties on THttpTransportNative(service.Transport).
+// Needs Delphi 12 or later (System.Net's client certificate support).
 // Usage: ProRock.Http.ClientCertificateSample [<certificate.p12> <password>]
 // Without arguments: badssl.com-client.p12 next to the exe, password badssl.com - download it from
 // https://badssl.com/certs/badssl.com-client.p12 (badssl.com's public test certificate, not included here)

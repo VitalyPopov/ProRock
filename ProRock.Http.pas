@@ -76,7 +76,9 @@ type
 
     // mutual TLS: a PFX/P12 file with the client certificate and its private key (Windows, Linux, iOS); on Android the
     // fingerprint or name of a certificate installed on the device. The file is opened by every call, before connecting: a
-    // missing file or a wrong password fails the call (Soapite: sekNetwork with the System.Net message, never the password)
+    // missing file or a wrong password fails the call (Soapite: sekNetwork with the System.Net message, never the password).
+    // Delphi 12 or later: System.Net of 10.3 ignores the file silently, of 10.4 and 11 cannot open it - there a call with a
+    // certificate fails with ENotSupportedException instead of going out without it
     property ClientCertificate: string read fClientCertificate write fClientCertificate;
     property ClientCertificatePassword: string read fClientCertificatePassword write fClientCertificatePassword;
   end;
@@ -188,7 +190,11 @@ begin
     var httpRequest: IHTTPRequest := client.GetRequest(aRequest.Method, aRequest.Url);
     httpRequest.SourceStream := source;
     if not fClientCertificate.IsEmpty then
+      {$IF CompilerVersion >= 36} // Delphi 12
       httpRequest.SetClientCertificate(fClientCertificate, fClientCertificatePassword);
+      {$ELSE}
+      raise ENotSupportedException.Create('Client certificates need Delphi 12 or later (System.Net of this version cannot use them)');
+      {$IFEND}
     var response: IHTTPResponse := client.Execute(httpRequest, nil, headers);
 
     Result.Status := response.StatusCode;

@@ -5,19 +5,26 @@ number since 1.1.0.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versions follow [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [1.3.0] - 2026-10-14
+
+The command line and correct namespaces: ProRocket CLI for scripts, build steps and AI coding assistants, with problem
+reporting in CLI and GUI; client certificates; the Xmlite writer puts every element and attribute in its namespace (found
+with the OASIS WS-Security and ebMS 3.0 schemas, validated against them). Verified on Delphi 10.3 to 13, Win32 and Win64.
+Development of this release was assisted by Claude Code (Anthropic).
 
 ### Added
 - Soapite / HTTP: client certificates (mutual TLS) on `THttpTransportNative` - `ClientCertificate` (a PFX/P12 file; on
   Android the name or fingerprint of an installed certificate) and `ClientCertificatePassword`. A missing file or a wrong
-  password fails the call (`sekNetwork` in Soapite) with the System.Net message, never with the password
+  password fails the call (`sekNetwork` in Soapite) with the System.Net message, never with the password. Needs Delphi 12 or later
+  (System.Net of 10.3 ignores the file, of 10.4 and 11 cannot open it): there a call with a certificate raises
+  `ENotSupportedException` instead of going out without it. Sample `ProRock.Http.ClientCertificate` (the public test server
+  client.badssl.com)
 - Sample `ProRock.Soapite.WsSecurity`: a WS-Security UsernameToken with PasswordDigest, Nonce and Timestamp in the
   SOAP header (through `OnRequestHeader`), from units generated from the official OASIS schemas; offline by default
   (prints the request), `-live` against the public Calculator service
 - Xmlite: `[TQualified]` - an attribute written with its namespace prefix also in an element of its own namespace (XSD:
-  a global attribute referenced within its schema, e.g. `wsu:Id` in `wsu:Timestamp`). ProRocket Lite generates it for
-  same-namespace attribute references; `ProRock.Xmlite.Schema.Xml`, `.Envelope` (`encodingStyle`) and `.Wsdl`
-  (`required`) are regenerated with it
+  form="qualified", e.g. `wsu:Id` in `wsu:Timestamp`). For hand-written classes; in generated units a reference to a global
+  attribute is qualified by its type (see Fixed)
 - ProRocket Lite: known names for OASIS WS-Security 1.0 (`ProRock.Xmlite.Schema.WsSecurity`, `.WsSecurityUtility`,
   prefixes `wsse`, `wsu`) and ebMS 3.0, the AS4 message header (`ProRock.Xmlite.Schema.Ebms3`, prefix `eb`); a namespace ending in a file name gets a readable unit name
   (`.../oasis-200401-wss-wssecurity-secext-1.0.xsd` -> `Oasis200401WssWssecuritySecext10`)

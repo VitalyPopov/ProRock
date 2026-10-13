@@ -170,7 +170,7 @@ transport.SetBearerToken(token);              // OAuth 2.0 bearer token
 transport.SetHeader('X-API-Key', key);        // any header, e.g. an API key
 transport.UserName := 'DOMAIN\user';          // or answer the server's challenge: Basic, Digest, NTLM, Negotiate
 transport.Password := 'password';
-transport.ClientCertificate := 'client.pfx';  // mutual TLS: a PFX/P12 file (Android: an installed certificate's name)
+transport.ClientCertificate := 'client.pfx';  // mutual TLS (Delphi 12+): a PFX/P12 file (Android: a certificate's name)
 transport.ClientCertificatePassword := 'pfx password';
 ```
 
@@ -228,7 +228,8 @@ The library is also verified to compile and work with:
 - Delphi 10.4 Sydney
 - Delphi 10.3 Rio
 
-The code uses inline variable declarations, so Delphi versions before 10.3 are not supported.
+The code uses inline variable declarations, so Delphi versions before 10.3 are not supported. Client certificates use
+System.Net's support for them, which works from Delphi 12 on.
 
 ProRock has no Windows-only dependencies: all units compile for **Android** 32/64-bit (Delphi 13). Running on a device is not
 verified yet.
