@@ -61,6 +61,8 @@ type
     fResponseTimeout: integer;
     fUserName: string;
     fPassword: string;
+    fClientCertificate: string;
+    fClientCertificatePassword: string;
   protected
     function Send(const aRequest: THttpRequest): THttpResponse; override;
   public
@@ -71,6 +73,12 @@ type
     // System.Net and the operating system; 'DOMAIN\user' for a Windows domain account
     property UserName: string read fUserName write fUserName;
     property Password: string read fPassword write fPassword;
+
+    // mutual TLS: a PFX/P12 file with the client certificate and its private key (Windows, Linux, iOS); on Android the
+    // fingerprint or name of a certificate installed on the device. The file is opened by every call, before connecting: a
+    // missing file or a wrong password fails the call (Soapite: sekNetwork with the System.Net message, never the password)
+    property ClientCertificate: string read fClientCertificate write fClientCertificate;
+    property ClientCertificatePassword: string read fClientCertificatePassword write fClientCertificatePassword;
   end;
 
 implementation
@@ -179,6 +187,8 @@ begin
     // THTTPClient.Execute(method, url, ...) is inherited from TURLClient and gives IURLResponse only - IHTTPRequest is needed
     var httpRequest: IHTTPRequest := client.GetRequest(aRequest.Method, aRequest.Url);
     httpRequest.SourceStream := source;
+    if not fClientCertificate.IsEmpty then
+      httpRequest.SetClientCertificate(fClientCertificate, fClientCertificatePassword);
     var response: IHTTPResponse := client.Execute(httpRequest, nil, headers);
 
     Result.Status := response.StatusCode;

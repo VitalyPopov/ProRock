@@ -67,3 +67,6 @@ __recovery/
 
 # Boss dependency manager vendor folder https://github.com/HashLoad/boss
 modules/
+# certificates downloaded for samples (badssl.com-client.p12) - not ours to ship
+Samples/**/*.p12
+Samples/**/*.pfx

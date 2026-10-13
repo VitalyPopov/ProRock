@@ -110,6 +110,7 @@ In [`Samples`](Samples) (one group project, `ProRock.Samples.groupproj`):
 |   |   |
 |---|---|
 | `ProRock.Soapite.CheckVatService` | EU VIES VAT number validation through the generated `TCheckVatService`, with live SOAP Fault handling |
+| `ProRock.Http.ClientCertificate` | client certificates (mutual TLS) against the public test server client.badssl.com: HTTP 400 without, 200 with |
 | `ProRock.Soapite.Calculator` | a generated client calling a public calculator service (`-soap12` and `-xml` switches) |
 | `ProRock.Xmlite.Namespaces` | a generated metamodel from `order.xsd`: parsing, enums, serialization, round trip |
 | `ProRock.Xmlite.Basic` | hand-written models, basic parsing and serialization |
@@ -156,7 +157,7 @@ DOM-style models and opt into namespace- and schema-aware processing when needed
 based by default). SOAP Faults of both versions are mapped to `TSoapiteError` (code, subcode, reason, actor/node, detail), also when
 a service answers a fault with HTTP 200. `OnRequest` / `OnResponse` events give the raw XML for logging.
 
-HTTPS works out of the box (the operating system's TLS, no extra DLLs). Authentication is set on the transport and sent with
+HTTPS works out of the box (the operating system's TLS, no extra DLLs). Authentication is set on the transport and used for
 every call; it never appears in `OnRequest` / `OnResponse` or in error texts:
 
 ```pascal
@@ -168,11 +169,13 @@ transport.SetBearerToken(token);              // OAuth 2.0 bearer token
 transport.SetHeader('X-API-Key', key);        // any header, e.g. an API key
 transport.UserName := 'DOMAIN\user';          // or answer the server's challenge: Basic, Digest, NTLM, Negotiate
 transport.Password := 'password';
+transport.ClientCertificate := 'client.pfx';  // mutual TLS: a PFX/P12 file (Android: an installed certificate's name)
+transport.ClientCertificatePassword := 'pfx password';
 ```
 
 SOAP header blocks (WS-Addressing, WS-Security tokens, a service's own headers) are added in `OnRequestHeader` and read in
 `OnResponseHeader`: header blocks are Xmlite objects, so generate them from their schema like any other type. A custom transport
-(client certificates, a different HTTP library, a test fake) is a `THttpTransport` descendant that implements `Send`.
+(a different HTTP library, request signing, a test fake) is a `THttpTransport` descendant that implements `Send`.
 
 ---
 
