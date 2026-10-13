@@ -110,6 +110,7 @@ In [`Samples`](Samples) (one group project, `ProRock.Samples.groupproj`):
 |   |   |
 |---|---|
 | `ProRock.Soapite.CheckVatService` | EU VIES VAT number validation through the generated `TCheckVatService`, with live SOAP Fault handling |
+| `ProRock.Soapite.WsSecurity` | a WS-Security UsernameToken (PasswordDigest, Nonce, Timestamp) in the SOAP header, from units generated from the OASIS schemas; offline, or `-live` |
 | `ProRock.Http.ClientCertificate` | client certificates (mutual TLS) against the public test server client.badssl.com: HTTP 400 without, 200 with |
 | `ProRock.Soapite.Calculator` | a generated client calling a public calculator service (`-soap12` and `-xml` switches) |
 | `ProRock.Xmlite.Namespaces` | a generated metamodel from `order.xsd`: parsing, enums, serialization, round trip |

@@ -11,6 +11,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 - Soapite / HTTP: client certificates (mutual TLS) on `THttpTransportNative` - `ClientCertificate` (a PFX/P12 file; on
   Android the name or fingerprint of an installed certificate) and `ClientCertificatePassword`. A missing file or a wrong
   password fails the call (`sekNetwork` in Soapite) with the System.Net message, never with the password
+- Sample `ProRock.Soapite.WsSecurity`: a WS-Security UsernameToken with PasswordDigest, Nonce and Timestamp in the
+  SOAP header (through `OnRequestHeader`), from units generated from the official OASIS schemas; offline by default
+  (prints the request), `-live` against the public Calculator service
 - Xmlite: `[TQualified]` - an attribute written with its namespace prefix also in an element of its own namespace (XSD:
   a global attribute referenced within its schema, e.g. `wsu:Id` in `wsu:Timestamp`). ProRocket Lite generates it for
   same-namespace attribute references; `ProRock.Xmlite.Schema.Xml`, `.Envelope` (`encodingStyle`) and `.Wsdl`
