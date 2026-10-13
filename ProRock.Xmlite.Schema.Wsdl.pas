@@ -6,7 +6,7 @@
     ProRock is a free and open-source Delphi library. Feedback and contributions are welcome.
     https://github.com/VitalyPopov/ProRock
     
-    Generated (UTC): 2026-10-13T10:32:43.222Z
+    Generated (UTC): 2026-10-13T11:32:32.073Z
     Namespace: http://schemas.xmlsoap.org/wsdl/
 *)
 
@@ -252,7 +252,6 @@ type
   private
     fRequired: TRequiredA;
   published
-    [TQualified]
     property Required: TRequiredA read fRequired write fRequired;
   end;
 

@@ -6,7 +6,7 @@
     ProRock is a free and open-source Delphi library. Feedback and contributions are welcome.
     https://github.com/VitalyPopov/ProRock
     
-    Generated (UTC): 2026-10-12T09:16:43.758Z
+    Generated (UTC): 2026-10-13T11:32:32.073Z
     Namespace: http://schemas.xmlsoap.org/wsdl/soap/
 *)
 
@@ -95,7 +95,6 @@ type
     fUse: TUseChoiceST;
     fNamespace: ProRock.Xmlite.Schema.Base.TAnyURIST;
   published
-    [TNamespace('http://schemas.xmlsoap.org/wsdl/')]
     property Required: ProRock.Xmlite.Schema.Wsdl.TRequiredA read fRequired write fRequired;
     property EncodingStyle: TEncodingStyleST read fEncodingStyle write fEncodingStyle;
     property Use: TUseChoiceST read fUse write fUse;

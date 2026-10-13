@@ -695,8 +695,9 @@ begin
     if propertyElement = nil then // as a fallback - try to find such property without tag
       propertyElement := Meta.Xmlite.Elements[TUriedName.Create('', tagName)];
 
-    // ProRock before 1.3.0 wrote some elements in the wrong namespace (a reference or the content of another namespace's type in
-    // the parent's one: <ScopeItem><Code> instead of <b:ScopeItem><b:Code>): matched by name, so older documents still read
+    // compat 1.3.0, drop in 2.0 (BACKLOG, compatibility shims): ProRock before 1.3.0 wrote some elements in the wrong namespace
+    // (a reference or the content of another namespace's type in the parent's one: <ScopeItem><Code> instead of
+    // <b:ScopeItem><b:Code>) - matched by name, so older documents still read; it also makes the reader lenient
     if propertyElement = nil then
       for var candidate: TProperty in Meta.Xmlite.Elements.Values do
         if candidate.Xmlite.Name = tagName then
@@ -1489,11 +1490,13 @@ begin
   for var simpleType: PTypeInfo in aSimpleTypes do
     Result.Add(TMetaBank.RegisterType(simpleType), xctSimpleType);
 
-  for var complexType: TBasiteClass in aComplexTypes do
-    Result.Add(complexType.Meta, xctComplexType);
-
+  // global attributes before the classes: a member typed with one belongs to its namespace and is qualified (derived when the
+  // member registers - also within this namespace, e.g. wsu:Id in wsu:Timestamp)
   for var attribute: PTypeInfo in aAttributes do
     Result.Add(TMetaBank.RegisterType(attribute), xctAttribute);
+
+  for var complexType: TBasiteClass in aComplexTypes do
+    Result.Add(complexType.Meta, xctComplexType);
 
   for var attributeGroup: TBasiteClass in aAttributeGroups do
     Result.Add(attributeGroup.Meta, xctAttributeGroup);

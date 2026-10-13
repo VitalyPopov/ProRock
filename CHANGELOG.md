@@ -38,7 +38,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   A property typed with a global declaration (an element class: `xs:element ref`, an attribute type: `xs:attribute ref`)
   now belongs to that declaration's namespace (`<b:BElem>`, was `<BElem>` in the parent's namespace); such attributes are
   qualified. Documents written by earlier versions still read (an element is matched by name when no namespace fits).
-  Behavior change for hand-written classes: an element class used as the type of a member puts it in its own namespace
+  Behavior change for hand-written classes: an element class used as the type of a member puts it in its own namespace.
+  Generated units no longer carry `[TNamespace]`/`[TQualified]` on references (derived from the type); global attributes
+  are registered before the classes of their namespace
 - ProRocket CLI: a long problem line could be split by a `generated:` line when stdout and stderr were read together;
   every line is now written and flushed in one piece
 - README: the XSD quick start did not compile - `FromXml`/`ToXml` need `ProRock.Xmlite` in `uses` (a class helper)

@@ -6,7 +6,7 @@
     ProRock is a free and open-source Delphi library. Feedback and contributions are welcome.
     https://github.com/VitalyPopov/ProRock
     
-    Generated (UTC): 2026-10-13T10:32:42.045Z
+    Generated (UTC): 2026-10-13T11:32:30.926Z
     Namespace: http://www.w3.org/XML/1998/namespace
 *)
 
@@ -30,13 +30,9 @@ type
     fSpace: TSpaceA;
     fId: TIdA;
   published
-    [TQualified]
     property Base: TBaseA read fBase write fBase;
-    [TQualified]
     property Lang: TLangA read fLang write fLang;
-    [TQualified]
     property Space: TSpaceA read fSpace write fSpace;
-    [TQualified]
     property Id: TIdA read fId write fId;
   end;
 
