@@ -19,7 +19,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   same-namespace attribute references; `ProRock.Xmlite.Schema.Xml`, `.Envelope` (`encodingStyle`) and `.Wsdl`
   (`required`) are regenerated with it
 - ProRocket Lite: known names for OASIS WS-Security 1.0 (`ProRock.Xmlite.Schema.WsSecurity`, `.WsSecurityUtility`,
-  prefixes `wsse`, `wsu`); a namespace ending in a file name gets a readable unit name
+  prefixes `wsse`, `wsu`) and ebMS 3.0, the AS4 message header (`ProRock.Xmlite.Schema.Ebms3`, prefix `eb`); a namespace ending in a file name gets a readable unit name
   (`.../oasis-200401-wss-wssecurity-secext-1.0.xsd` -> `Oasis200401WssWssecuritySecext10`)
 - ProRocket CLI (`ProRocketCli.exe`, in the ProRocket Lite zip): the generator from the command line, for scripts, build
   steps and AI coding assistants, with `CLI.md`. Problems are reported instead of passing silently - missing imported
@@ -44,6 +44,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   Behavior change for hand-written classes: an element class used as the type of a member puts it in its own namespace.
   Generated units no longer carry `[TNamespace]`/`[TQualified]` on references (derived from the type); global attributes
   are registered before the classes of their namespace
+- ProRocket Lite: two attribute references with the same name from different namespaces (ebMS `eb:Messaging`:
+  `S11:mustUnderstand` and `S12:mustUnderstand`) became one property - the second replaced the first; now two
+  (`MustUnderstandEnvelope`, `MustUnderstandEnvelope12`, both `[TName('mustUnderstand')]`)
 - ProRocket CLI: a long problem line could be split by a `generated:` line when stdout and stderr were read together;
   every line is now written and flushed in one piece
 - README: the XSD quick start did not compile - `FromXml`/`ToXml` need `ProRock.Xmlite` in `uses` (a class helper)
