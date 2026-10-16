@@ -778,6 +778,10 @@ begin
   if Meta.Xmlite.ProcessAnyElement and (TXmlite(Self).XmlAny.Count > 0) then
     Exit(xttOpenClose);
 
+  // text of mixed content (OOXML cp:keywords: "q3, plan"): read into XmlText, so written back too
+  if Meta.Xmlite.IsTXmlite and not TXmlite(Self).XmlText.IsEmpty then
+    Exit(xttOpenClose);
+
   for var propertyInfo: TProperty in Meta.Xmlite.Elements.Values do
     case propertyInfo.PropertyType of
       ptData:

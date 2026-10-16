@@ -16,6 +16,11 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 - ProRocket Lite: a hint for every problem line - what it means and what to do, in plain words, with the full path of the
   file (hover a line); "Copy all", Ctrl+C / Ctrl+A in the messages panel
 - ProRocket Lite: the Del key deletes the selected project file
+- ProRocket Lite: Dublin Core and OOXML core properties (`docProps/core.xml`) generate clean. A substitution group member
+  without a type of its own gets its head's type (`<xs:element name="title" substitutionGroup="dc:any"/>` ->
+  `TTitleE = class(TAnyE)`, so `dcterms:created` is a `dc:date` is a `dc:any`); mixed content where no child element can
+  occur is text (`XmlValue`, like simpleContent - Dublin Core's SimpleLiteral). Mixed content with child elements and
+  elements standing in for their head (a property of the head's type holding any member) are not supported yet
 
 ### Changed
 - ProRocket Lite / CLI: `duplicate-unit` names the clashing namespaces and files
@@ -24,6 +29,12 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   (`a-part.xsd - urn:a`), so files sharing a namespace can be told apart. Virtual-TreeView 8.5
 
 ### Fixed
+- Xmlite / Soapite: on Windows, non-ASCII text written to a string came out garbled (`Ё` as `РЃ`) - `ToXml`,
+  `TXmlite.ObjectToXml` and so **every Soapite request body**: the UTF-8 bytes were read back with the ANSI code page.
+  Writing to a stream or a file was not affected, nor were other platforms. Also the text of generated units (ProRocket)
+- Xmlite: the text of mixed content (`XmlText`, e.g. OOXML `cp:keywords`) was read but not written back
+- ProRocket Lite: `<xs:any maxOccurs="0"/>` marked a type as accepting any element, and a group (`xs:sequence`, `xs:choice`,
+  a group reference) with `maxOccurs="0"` still brought its elements
 - ProRocket Lite: adding or deleting a file dropped the `unresolved-ref` lines of the other files until the next Generate
 - ProRocket Lite: with a `duplicate-unit` problem Generate wrote both units into one file (the last one won); it writes
   nothing now, like the CLI
