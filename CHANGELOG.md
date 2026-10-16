@@ -5,6 +5,29 @@ number since 1.1.0.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versions follow [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+- Soapite / HTTP: the client certificate from memory - `THttpTransportNative.ClientCertificateData` (the bytes of a
+  PFX/P12 or PEM file: from a database, a resource, a key vault), next to `ClientCertificate` (a file). Either one, not both
+  (the call fails with `EInvalidOpException`). Delphi 12 or later, like the file; not on Android, where System.Net uses
+  only certificates installed on the device (`ENotSupportedException`). On Linux System.Net hands curl a temporary copy.
+  The sample `ProRock.Http.ClientCertificate` makes the call both ways. Requested in issue #1
+- ProRocket Lite: a hint for every problem line - what it means and what to do, in plain words, with the full path of the
+  file (hover a line); "Copy all", Ctrl+C / Ctrl+A in the messages panel
+- ProRocket Lite: the Del key deletes the selected project file
+
+### Changed
+- ProRocket Lite / CLI: `duplicate-unit` names the clashing namespaces and files
+  (`sources="<uri> <uri>" from="a.xsd b.xsd"`) - every problem line has a `from` now
+- ProRocket Lite: the messages panel spans the window width under the preview; project files show their file name
+  (`a-part.xsd - urn:a`), so files sharing a namespace can be told apart. Virtual-TreeView 8.5
+
+### Fixed
+- ProRocket Lite: adding or deleting a file dropped the `unresolved-ref` lines of the other files until the next Generate
+- ProRocket Lite: with a `duplicate-unit` problem Generate wrote both units into one file (the last one won); it writes
+  nothing now, like the CLI
+
 ## [1.3.0] - 2026-10-14
 
 The command line and correct namespaces: ProRocket CLI for scripts, build steps and AI coding assistants, with problem

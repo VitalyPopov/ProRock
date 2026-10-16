@@ -5,14 +5,16 @@
 // Client certificates (mutual TLS) on THttpTransportNative - the same transport a generated Soapite client uses
 // (service.Transport). https://client.badssl.com is a public test server that requires a client certificate: HTTP 400
 // without one, 200 with its published test certificate. It is not a SOAP service, so this sample calls it through the
-// transport directly; for a SOAP service, set the same two properties on THttpTransportNative(service.Transport).
+// transport directly; for a SOAP service, set the same properties on THttpTransportNative(service.Transport).
+// The certificate may come from a file (ClientCertificate) or from memory (ClientCertificateData - bytes from a database,
+// a resource, a key vault).
 // Needs Delphi 12 or later (System.Net's client certificate support).
 // Usage: ProRock.Http.ClientCertificateSample [<certificate.p12> <password>]
 // Without arguments: badssl.com-client.p12 next to the exe, password badssl.com - download it from
 // https://badssl.com/certs/badssl.com-client.p12 (badssl.com's public test certificate, not included here)
 
 uses
-  System.SysUtils,
+  System.SysUtils, System.IOUtils,
   ProRock.Http;
 
 const
@@ -20,11 +22,12 @@ const
   cBadsslCertificate = 'badssl.com-client.p12';
   cBadsslPassword = 'badssl.com';
 
-procedure Call(const aTitle, aCertificate, aPassword: string);
+procedure Call(const aTitle, aCertificate: string; const aCertificateData: TBytes; const aPassword: string);
 begin
   var transport: THttpTransportNative := THttpTransportNative.Create;
   try
-    transport.ClientCertificate := aCertificate;
+    transport.ClientCertificate := aCertificate;         // a file
+    transport.ClientCertificateData := aCertificateData; // or its bytes - one of them
     transport.ClientCertificatePassword := aPassword;
 
     var request: THttpRequest;
@@ -54,8 +57,9 @@ begin
   if FileExists(certificate) then
   begin
     Writeln(cUrl);
-    Call('without certificate', '', '');  // 400: "No required SSL certificate was sent"
-    Call('with certificate', certificate, password); // 200
+    Call('without certificate', '', [], '');  // 400: "No required SSL certificate was sent"
+    Call('with certificate', certificate, [], password); // 200
+    Call('from memory', '', TFile.ReadAllBytes(certificate), password); // 200
   end
   else
   begin

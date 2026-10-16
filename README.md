@@ -172,6 +172,7 @@ transport.SetHeader('X-API-Key', key);        // any header, e.g. an API key
 transport.UserName := 'DOMAIN\user';          // or answer the server's challenge: Basic, Digest, NTLM, Negotiate
 transport.Password := 'password';
 transport.ClientCertificate := 'client.pfx';  // mutual TLS (Delphi 12+): a PFX/P12 file (Android: a certificate's name)
+transport.ClientCertificateData := bytes;     // or the same file's bytes from memory (not on Android) - one of the two
 transport.ClientCertificatePassword := 'pfx password';
 ```
 

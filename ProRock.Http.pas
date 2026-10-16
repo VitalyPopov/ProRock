@@ -62,6 +62,7 @@ type
     fUserName: string;
     fPassword: string;
     fClientCertificate: string;
+    fClientCertificateData: TBytes;
     fClientCertificatePassword: string;
   protected
     function Send(const aRequest: THttpRequest): THttpResponse; override;
@@ -80,6 +81,12 @@ type
     // Delphi 12 or later: System.Net of 10.3 ignores the file silently, of 10.4 and 11 cannot open it - there a call with a
     // certificate fails with ENotSupportedException instead of going out without it
     property ClientCertificate: string read fClientCertificate write fClientCertificate;
+    // the same certificate from memory: the bytes of a PFX/P12 (or PEM) file - from a database, a resource, a key vault.
+    // Kept as they are and read by every call; empty - not set. Either this or ClientCertificate, not both (the call fails
+    // with EInvalidOpException). Windows reads PFX bytes in memory; on Linux System.Net hands curl a temporary copy (curl
+    // takes files only). Not on Android (System.Net uses only certificates installed on the device there - set
+    // ClientCertificate to its name): ENotSupportedException, like before Delphi 12
+    property ClientCertificateData: TBytes read fClientCertificateData write fClientCertificateData;
     property ClientCertificatePassword: string read fClientCertificatePassword write fClientCertificatePassword;
   end;
 
@@ -171,8 +178,12 @@ end;
 
 function THttpTransportNative.Send(const aRequest: THttpRequest): THttpResponse;
 begin
+  if not fClientCertificate.IsEmpty and (Length(fClientCertificateData) > 0) then
+    raise EInvalidOpException.Create('Set either ClientCertificate or ClientCertificateData, not both');
+
   var client: THTTPClient := THTTPClient.Create;
   var source: TStringStream := TStringStream.Create(aRequest.Body, TEncoding.UTF8);
+  var certificate: TBytesStream := nil; // System.Net keeps only a weak reference: it must live until the call ends
   try
     if fConnectionTimeout > 0 then
       client.ConnectionTimeout := fConnectionTimeout;
@@ -195,6 +206,18 @@ begin
       {$ELSE}
       raise ENotSupportedException.Create('Client certificates need Delphi 12 or later (System.Net of this version cannot use them)');
       {$IFEND}
+    if Length(fClientCertificateData) > 0 then
+    begin
+      {$IF CompilerVersion < 36}
+      raise ENotSupportedException.Create('Client certificates need Delphi 12 or later (System.Net of this version cannot use them)');
+      {$ELSEIF Defined(ANDROID)}
+      raise ENotSupportedException.Create('Client certificates from memory are not supported on Android (System.Net uses ' +
+        'certificates installed on the device - set ClientCertificate to its name)');
+      {$ELSE}
+      certificate := TBytesStream.Create(fClientCertificateData);
+      httpRequest.SetClientCertificate(certificate, fClientCertificatePassword);
+      {$IFEND}
+    end;
     var response: IHTTPResponse := client.Execute(httpRequest, nil, headers);
 
     Result.Status := response.StatusCode;
@@ -203,6 +226,7 @@ begin
       Result.Headers := Result.Headers + [THttpHeader.Create(header.Name, header.Value)];
     Result.Body := response.ContentAsString(TEncoding.UTF8);
   finally
+    certificate.Free;
     source.Free;
     client.Free;
   end;
