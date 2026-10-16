@@ -1,9 +1,12 @@
-﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
         <ProjectGuid>{3AD531DE-70D2-4549-B199-67095C31E36C}</ProjectGuid>
     </PropertyGroup>
     <ItemGroup>
         <Projects Include="ProRock.Xmlite.Basic\ProRock.Xmlite.Basic.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="ProRock.Xmlite.DocumentProperties\ProRock.Xmlite.DocumentPropertiesSample.dproj">
             <Dependencies/>
         </Projects>
         <Projects Include="ProRock.Xmlite.Namespaces\ProRock.Xmlite.Namespaces.dproj">
@@ -83,14 +86,23 @@
     <Target Name="ProRock_Soapite_WsSecuritySample:Make">
         <MSBuild Projects="ProRock.Soapite.WsSecurity\ProRock.Soapite.WsSecuritySample.dproj" Targets="Make"/>
     </Target>
+    <Target Name="ProRock_Xmlite_DocumentPropertiesSample">
+        <MSBuild Projects="ProRock.Xmlite.DocumentProperties\ProRock.Xmlite.DocumentPropertiesSample.dproj"/>
+    </Target>
+    <Target Name="ProRock_Xmlite_DocumentPropertiesSample:Clean">
+        <MSBuild Projects="ProRock.Xmlite.DocumentProperties\ProRock.Xmlite.DocumentPropertiesSample.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ProRock_Xmlite_DocumentPropertiesSample:Make">
+        <MSBuild Projects="ProRock.Xmlite.DocumentProperties\ProRock.Xmlite.DocumentPropertiesSample.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="ProRock_Xmlite_Basic;ProRock_Xmlite_Namespaces;ProRock_Soapite_CalculatorSample;ProRock_Soapite_CheckVatServiceSample;ProRock_Http_ClientCertificateSample;ProRock_Soapite_WsSecuritySample"/>
+        <CallTarget Targets="ProRock_Xmlite_Basic;ProRock_Xmlite_Namespaces;ProRock_Soapite_CalculatorSample;ProRock_Soapite_CheckVatServiceSample;ProRock_Http_ClientCertificateSample;ProRock_Soapite_WsSecuritySample;ProRock_Xmlite_DocumentPropertiesSample"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="ProRock_Xmlite_Basic:Clean;ProRock_Xmlite_Namespaces:Clean;ProRock_Soapite_CalculatorSample:Clean;ProRock_Soapite_CheckVatServiceSample:Clean;ProRock_Http_ClientCertificateSample:Clean;ProRock_Soapite_WsSecuritySample:Clean"/>
+        <CallTarget Targets="ProRock_Xmlite_Basic:Clean;ProRock_Xmlite_Namespaces:Clean;ProRock_Soapite_CalculatorSample:Clean;ProRock_Soapite_CheckVatServiceSample:Clean;ProRock_Http_ClientCertificateSample:Clean;ProRock_Soapite_WsSecuritySample:Clean;ProRock_Xmlite_DocumentPropertiesSample:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="ProRock_Xmlite_Basic:Make;ProRock_Xmlite_Namespaces:Make;ProRock_Soapite_CalculatorSample:Make;ProRock_Soapite_CheckVatServiceSample:Make;ProRock_Http_ClientCertificateSample:Make;ProRock_Soapite_WsSecuritySample:Make"/>
+        <CallTarget Targets="ProRock_Xmlite_Basic:Make;ProRock_Xmlite_Namespaces:Make;ProRock_Soapite_CalculatorSample:Make;ProRock_Soapite_CheckVatServiceSample:Make;ProRock_Http_ClientCertificateSample:Make;ProRock_Soapite_WsSecuritySample:Make;ProRock_Xmlite_DocumentPropertiesSample:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

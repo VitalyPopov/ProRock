@@ -21,6 +21,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   `TTitleE = class(TAnyE)`, so `dcterms:created` is a `dc:date` is a `dc:any`); mixed content where no child element can
   occur is text (`XmlValue`, like simpleContent - Dublin Core's SimpleLiteral). Mixed content with child elements and
   elements standing in for their head (a property of the head's type holding any member) are not supported yet
+- Sample `ProRock.Xmlite.DocumentProperties`: the core properties of an Office document (.docx, .xlsx, .pptx) opened,
+  edited and saved - units generated from the official OPC schemas, the core properties found through the package
+  relationships, every other part kept byte for byte; warns before breaking a digital signature
 - Xmlite: `TXmlite.SetXsiType(aType)` - an element holds a value of a derived type (`xsi:type`), from a generated class:
   `props.Created.SetXsiType(TW3cdtfCT)` writes `<dcterms:created xsi:type="dcterms:W3CDTF">` (OPC requires it on
   `created` / `modified`). Refuses a class that is not a complex type derived from the element's type

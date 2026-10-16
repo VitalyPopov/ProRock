@@ -110,6 +110,7 @@ In [`Samples`](Samples) (one group project, `ProRock.Samples.groupproj`):
 
 |   |   |
 |---|---|
+| `ProRock.Xmlite.DocumentProperties` | the properties of any Office document (.docx, .xlsx, .pptx - title, author, keywords... as in File > Info): open, edit, save. Units generated from the official Ecma-376 schemas (OPC core properties on Dublin Core, package relationships); every other part of the file is kept as it is |
 | `ProRock.Soapite.CheckVatService` | EU VIES VAT number validation through the generated `TCheckVatService`, with live SOAP Fault handling |
 | `ProRock.Soapite.WsSecurity` | a WS-Security UsernameToken (PasswordDigest, Nonce, Timestamp) in the SOAP header, from units generated from the OASIS schemas; offline, or `-live`. Other header blocks work the same way, e.g. the ebMS 3.0 `eb:Messaging` of AS4 |
 | `ProRock.Http.ClientCertificate` | client certificates (mutual TLS) against the public test server client.badssl.com: HTTP 400 without, 200 with |
