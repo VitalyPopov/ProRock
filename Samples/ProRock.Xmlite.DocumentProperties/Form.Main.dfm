@@ -15,6 +15,38 @@ object MainForm: TMainForm
   Position = poScreenCenter
   OnCreate = FormCreate
   TextHeight = 15
+  object FileLabel: TLabel
+    AlignWithMargins = True
+    Left = 8
+    Top = 47
+    Width = 568
+    Height = 15
+    Margins.Left = 8
+    Margins.Right = 8
+    Align = alTop
+    AutoSize = False
+    Caption = 'Open a .docx, .xlsx or .pptx file - or drop it here'
+    EllipsisPosition = epPathEllipsis
+  end
+  object SignedLabel: TLabel
+    AlignWithMargins = True
+    Left = 8
+    Top = 68
+    Width = 568
+    Height = 15
+    Margins.Left = 8
+    Margins.Right = 8
+    Align = alTop
+    Caption = 'The document is digitally signed: saving it breaks the signature'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clRed
+    Font.Height = -12
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+    Visible = False
+    ExplicitWidth = 331
+  end
   object ButtonsPanel: TPanel
     Left = 0
     Top = 0
@@ -73,36 +105,6 @@ object MainForm: TMainForm
       OnClick = SaveAsButtonClick
     end
   end
-  object FileLabel: TLabel
-    AlignWithMargins = True
-    Left = 8
-    Top = 47
-    Width = 568
-    Height = 15
-    Margins.Left = 8
-    Margins.Right = 8
-    Align = alTop
-    Caption = 'Open a .docx, .xlsx or .pptx file - or drop it here'
-    EllipsisPosition = epPathEllipsis
-  end
-  object SignedLabel: TLabel
-    AlignWithMargins = True
-    Left = 8
-    Top = 68
-    Width = 568
-    Height = 15
-    Margins.Left = 8
-    Margins.Right = 8
-    Align = alTop
-    Caption = 'The document is digitally signed: saving it breaks the signature'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clRed
-    Font.Height = -12
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    ParentFont = False
-    Visible = False
-  end
   object FieldsPanel: TPanel
     AlignWithMargins = True
     Left = 12
@@ -145,6 +147,7 @@ object MainForm: TMainForm
         Height = 26
         Align = alClient
         TabOrder = 0
+        ExplicitHeight = 23
       end
     end
     object SubjectPanel: TPanel
@@ -175,6 +178,7 @@ object MainForm: TMainForm
         Height = 26
         Align = alClient
         TabOrder = 0
+        ExplicitHeight = 23
       end
     end
     object CreatorPanel: TPanel
@@ -205,6 +209,7 @@ object MainForm: TMainForm
         Height = 26
         Align = alClient
         TabOrder = 0
+        ExplicitHeight = 23
       end
     end
     object KeywordsPanel: TPanel
@@ -235,6 +240,7 @@ object MainForm: TMainForm
         Height = 26
         Align = alClient
         TabOrder = 0
+        ExplicitHeight = 23
       end
     end
     object DescriptionPanel: TPanel
@@ -255,7 +261,6 @@ object MainForm: TMainForm
         Align = alLeft
         AutoSize = False
         Caption = 'Comments'
-        Layout = tlTop
       end
       object DescriptionMemo: TMemo
         AlignWithMargins = True
@@ -264,8 +269,8 @@ object MainForm: TMainForm
         Width = 418
         Height = 66
         Align = alClient
-        TabOrder = 0
         ScrollBars = ssVertical
+        TabOrder = 0
       end
     end
     object CategoryPanel: TPanel
@@ -296,6 +301,7 @@ object MainForm: TMainForm
         Height = 26
         Align = alClient
         TabOrder = 0
+        ExplicitHeight = 23
       end
     end
     object ContentStatusPanel: TPanel
@@ -326,6 +332,7 @@ object MainForm: TMainForm
         Height = 26
         Align = alClient
         TabOrder = 0
+        ExplicitHeight = 23
       end
     end
     object LastModifiedByPanel: TPanel
@@ -356,6 +363,7 @@ object MainForm: TMainForm
         Height = 26
         Align = alClient
         TabOrder = 0
+        ExplicitHeight = 23
       end
     end
     object RevisionPanel: TPanel
@@ -386,6 +394,7 @@ object MainForm: TMainForm
         Height = 26
         Align = alClient
         TabOrder = 0
+        ExplicitHeight = 23
       end
     end
     object CreatedPanel: TPanel
@@ -414,11 +423,12 @@ object MainForm: TMainForm
         Top = 3
         Width = 418
         Height = 26
+        TabStop = False
         Align = alClient
-        TabOrder = 0
         ParentColor = True
         ReadOnly = True
-        TabStop = False
+        TabOrder = 0
+        ExplicitHeight = 23
       end
     end
     object ModifiedPanel: TPanel
@@ -447,17 +457,19 @@ object MainForm: TMainForm
         Top = 3
         Width = 418
         Height = 26
+        TabStop = False
         Align = alClient
-        TabOrder = 0
         ParentColor = True
         ReadOnly = True
-        TabStop = False
+        TabOrder = 0
+        ExplicitHeight = 23
       end
     end
   end
   object OpenDialog: TOpenDialog
-    Filter =
-      'Office documents (*.docx, *.xlsx, *.pptx)|*.docx;*.docm;*.xlsx;*.xlsm;*.pptx;*.pptm|All files (*.*)|*.*'
+    Filter = 
+      'Office documents (*.docx, *.xlsx, *.pptx)|*.docx;*.docm;*.xlsx;*' +
+      '.xlsm;*.pptx;*.pptm|All files (*.*)|*.*'
     Options = [ofHideReadOnly, ofFileMustExist, ofEnableSizing]
     Left = 496
     Top = 8
