@@ -79,6 +79,7 @@ type
   private
     fXmlPrefix, fXmlName: string;
     fXmlAttributes: TDictionary<string, string>;
+    fXmlAttributeNamespaces: TDictionary<string, string>;
     fXmlns: TXmlns;
     fXmlText: string;
     fXmlAny: TBasiteList<TBasite>;
@@ -98,6 +99,14 @@ type
     property XmlAny: TBasiteList<TBasite> read fXmlAny;
     property XmlAttributes: TDictionary<string, string> read fXmlAttributes; // todo: remove when XmlAnyAttribute will be ready
     property XmlText: string read fXmlText write fXmlText;
+    // prefix -> URI for the prefixed names (and xsi:type values) in XmlAttributes - read from the document, set by
+    // SetXsiType; the writer declares them, so a document read and written back stays valid XML
+    property XmlAttributeNamespaces: TDictionary<string, string> read fXmlAttributeNamespaces;
+
+    // xsi:type: this element holds a value of aType, a complex type derived from its declared one (XSD) - e.g. OPC requires
+    // <dcterms:created xsi:type="dcterms:W3CDTF">: Created.SetXsiType(TW3cdtfCT). Raises EArgumentException for a class
+    // that is not a registered complex type derived from the element's type
+    procedure SetXsiType(aType: TClass);
 
     function IsEmptyOrDefault: boolean; override;
   end;
@@ -514,7 +523,18 @@ begin
           propertyData.Value[Self] := attributeValue
         else if Meta.Xmlite.IsTXmlite then
           if (attributePrefix <> 'xmlns') and (not attributePrefix.IsEmpty or (attributeName <> 'xmlns')) then // pass xmlns stuff
-            TXmlite(Self).XmlAttributes.Add(attributeFullName, attributeValue);
+          begin
+            TXmlite(Self).XmlAttributes.AddOrSetValue(attributeFullName, attributeValue);
+            // its prefix (xsi), and for xsi:type the prefix of the value (dcterms:W3CDTF) - declared again on write
+            if not attributePrefix.IsEmpty and not uri.IsEmpty then
+              TXmlite(Self).XmlAttributeNamespaces.AddOrSetValue(attributePrefix, uri);
+            if (uri = cXsiUri) and (attributeName = 'type') and (attributeValue.IndexOf(':') > 0) then
+            begin
+              var valuePrefix: string := attributeValue.Substring(0, attributeValue.IndexOf(':'));
+              if not xmlns[valuePrefix].IsEmpty then
+                TXmlite(Self).XmlAttributeNamespaces.AddOrSetValue(valuePrefix, xmlns[valuePrefix]);
+            end;
+          end;
       end
     else if not TReaderXmlite.MoveToVisualChar(aXmlCursor) then
       Exit;
@@ -936,7 +956,9 @@ function TBasiteHelper.GetXmlns: string;
 
   // aPrefixed: namespaces used with a prefix in this subtree - the own one is then declared with a prefix too (a qualified
   // attribute); aScope: the default namespace in scope - xs:any content of another one declares its namespaces itself
-  procedure FillXmlnsList(aXmlnsList, aPrefixed: THashedObjectList<TNamespace>; aObject: TBasite; aScope: TNamespace);
+  // aKept: prefix -> URI of kept attributes (TXmlite.XmlAttributeNamespaces)
+  procedure FillXmlnsList(aXmlnsList, aPrefixed: THashedObjectList<TNamespace>; aKept: TDictionary<string, string>; aObject: TBasite;
+    aScope: TNamespace);
 
     procedure AddPropertyDataXmlns(aXmlnsList: THashedObjectList<TNamespace>; aPropertyData: TPropertyData; aObject: TBasite); inline;
     begin
@@ -949,6 +971,9 @@ function TBasiteHelper.GetXmlns: string;
 
   begin
     aXmlnsList.Add(aObject.Meta.Xmlite.Namespace);
+    if aObject.Meta.Xmlite.IsTXmlite then
+      for var attributeNamespace: TPair<string, string> in TXmlite(aObject).XmlAttributeNamespaces do
+        aKept.AddOrSetValue(attributeNamespace.Key, attributeNamespace.Value);
     for var attribute: TPropertyData in aObject.Meta.Xmlite.Attributes.Values do
     begin
       AddPropertyDataXmlns(aXmlnsList, attribute, aObject);
@@ -967,14 +992,14 @@ function TBasiteHelper.GetXmlns: string;
           begin
             var propertyObject: TBasite := TPropertyBasite(element).ObjectPointer(aObject)^;
             if (propertyObject <> nil) and not propertyObject.IsEmptyOrDefault then
-              FillXmlnsList(aXmlnsList, aPrefixed, propertyObject, aScope);
+              FillXmlnsList(aXmlnsList, aPrefixed, aKept, propertyObject, aScope);
           end;
         ptBasiteList:
           begin
             var propertyList: TBasiteList := TPropertyBasiteList(element).ObjectPointer(aObject)^;;
             if (propertyList <> nil) and (propertyList.Count > 0) then
               for var listObject: TBasite in propertyList do
-                FillXmlnsList(aXmlnsList, aPrefixed, listObject, aScope);
+                FillXmlnsList(aXmlnsList, aPrefixed, aKept, listObject, aScope);
           end;
       end;
     end;
@@ -984,7 +1009,7 @@ function TBasiteHelper.GetXmlns: string;
     if aObject.Meta.Xmlite.IsTXmlite and aObject.Meta.Xmlite.ProcessAnyElement then
       for var anyElement: TBasite in TXmlite(aObject).XmlAny do
         if anyElement.Meta.Xmlite.Namespace = aScope then
-          FillXmlnsList(aXmlnsList, aPrefixed, anyElement, aScope);
+          FillXmlnsList(aXmlnsList, aPrefixed, aKept, anyElement, aScope);
   end;
 
 begin
@@ -992,8 +1017,10 @@ begin
 
   var xmlnsList: THashedObjectList<TNamespace> := THashedObjectList<TNamespace>.Create(False);
   var prefixed: THashedObjectList<TNamespace> := THashedObjectList<TNamespace>.Create(False);
+  var kept: TDictionary<string, string> := TDictionary<string, string>.Create;
+  var declared: TDictionary<string, string> := TDictionary<string, string>.Create; // prefix -> URI
   try
-    FillXmlnsList(xmlnsList, prefixed, Self, Meta.Xmlite.Namespace);
+    FillXmlnsList(xmlnsList, prefixed, kept, Self, Meta.Xmlite.Namespace);
 
     for var namespace: TNamespace in xmlnsList.Values do
       if (namespace <> nil) and (namespace.Uri <> cXmlPrefixUri) then // the xml prefix is bound by definition, never declared
@@ -1001,11 +1028,28 @@ begin
         begin
           Result := Result + Format(' xmlns="%s"', [namespace.Uri]);
           if prefixed.Contains(namespace) and not namespace.Prefix.IsEmpty then // a default namespace is not for attributes
+          begin
             Result := Result + Format(' xmlns:%s="%s"', [namespace.Prefix, namespace.Uri]);
+            declared.AddOrSetValue(namespace.Prefix, namespace.Uri);
+          end;
         end
         else
+        begin
           Result := Result + Format(' xmlns:%s="%s"', [namespace.Prefix, namespace.Uri]);
+          declared.AddOrSetValue(namespace.Prefix, namespace.Uri);
+        end;
+
+    // the prefixes of kept attributes, as the document had them (xsi of xsi:type) - unless the prefix is declared already
+    // (for another URI too: the attribute would change meaning either way, the element's own names win)
+    for var keptPrefix: TPair<string, string> in kept do
+      if not declared.ContainsKey(keptPrefix.Key) and (keptPrefix.Key <> cXmlPrefix) then
+      begin
+        Result := Result + Format(' xmlns:%s="%s"', [keptPrefix.Key, keptPrefix.Value]);
+        declared.Add(keptPrefix.Key, keptPrefix.Value);
+      end;
   finally
+    declared.Free;
+    kept.Free;
     prefixed.Free;
     xmlnsList.Free;
   end;
@@ -1174,6 +1218,7 @@ procedure TXmlite.Deinitialize;
 begin
   fXmlAny.Free;
   fXmlns.Free;
+  fXmlAttributeNamespaces.Free;
   fXmlAttributes.Free;
   inherited;
 end;
@@ -1198,6 +1243,7 @@ procedure TXmlite.Initialize;
 begin
   inherited;
   fXmlAttributes := TDictionary<string, string>.Create;
+  fXmlAttributeNamespaces := TDictionary<string, string>.Create;
   fXmlns := TXmlns.Create;
   fXmlAny := TBasiteList<TBasite>.Create;
 end;
@@ -1206,6 +1252,28 @@ function TXmlite.IsEmptyOrDefault: boolean;
 begin
   // content kept in xs:any or as not described attributes is content as well
   Result := inherited and fXmlText.IsEmpty and (fXmlAny.Count = 0) and (fXmlAttributes.Count = 0);
+end;
+
+procedure TXmlite.SetXsiType(aType: TClass);
+begin
+  if (aType = nil) or not aType.InheritsFrom(TBasite) then
+    raise EArgumentException.Create('SetXsiType: a generated complex type class is expected');
+
+  var typeMeta: TMetaBasite := TBasiteClass(aType).Meta;
+  if (typeMeta.Xmlite.ComponentType <> xctComplexType) or (typeMeta.Xmlite.Namespace = nil) then
+    raise EArgumentException.CreateFmt('SetXsiType: %s is not a complex type registered in a namespace', [aType.ClassName]);
+
+  // XSD: the type must derive from the element's own one - the nearest complex type among the element's ancestors
+  var declared: TClass := ClassType;
+  while (declared <> nil) and declared.InheritsFrom(TBasite) and
+    (TBasiteClass(declared).Meta.Xmlite.ComponentType <> xctComplexType) do
+    declared := declared.ClassParent;
+  if (declared = nil) or not declared.InheritsFrom(TBasite) or not aType.InheritsFrom(declared) then
+    raise EArgumentException.CreateFmt('SetXsiType: %s is not derived from the type of %s', [aType.ClassName, ClassName]);
+
+  fXmlAttributes.AddOrSetValue(cXsiPrefix + ':type', typeMeta.Xmlite.Namespace.Prefix + ':' + typeMeta.Xmlite.Name);
+  fXmlAttributeNamespaces.AddOrSetValue(cXsiPrefix, cXsiUri);
+  fXmlAttributeNamespaces.AddOrSetValue(typeMeta.Xmlite.Namespace.Prefix, typeMeta.Xmlite.Namespace.Uri);
 end;
 
 class function TXmlite.ObjectToXml(aObject: TBasite): string;

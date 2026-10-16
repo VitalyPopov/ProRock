@@ -21,6 +21,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   `TTitleE = class(TAnyE)`, so `dcterms:created` is a `dc:date` is a `dc:any`); mixed content where no child element can
   occur is text (`XmlValue`, like simpleContent - Dublin Core's SimpleLiteral). Mixed content with child elements and
   elements standing in for their head (a property of the head's type holding any member) are not supported yet
+- Xmlite: `TXmlite.SetXsiType(aType)` - an element holds a value of a derived type (`xsi:type`), from a generated class:
+  `props.Created.SetXsiType(TW3cdtfCT)` writes `<dcterms:created xsi:type="dcterms:W3CDTF">` (OPC requires it on
+  `created` / `modified`). Refuses a class that is not a complex type derived from the element's type
 
 ### Changed
 - ProRocket Lite / CLI: `duplicate-unit` names the clashing namespaces and files
@@ -33,6 +36,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   `TXmlite.ObjectToXml` and so **every Soapite request body**: the UTF-8 bytes were read back with the ANSI code page.
   Writing to a stream or a file was not affected, nor were other platforms. Also the text of generated units (ProRocket)
 - Xmlite: the text of mixed content (`XmlText`, e.g. OOXML `cp:keywords`) was read but not written back
+- Xmlite: an attribute kept from the document (not in the schema, e.g. `xsi:type`) was written back without its prefix
+  declared - invalid XML after a read-modify-write. Its prefix (and an `xsi:type` value's) is declared now, as the
+  document had it (`XmlAttributeNamespaces`)
 - ProRocket Lite: `<xs:any maxOccurs="0"/>` marked a type as accepting any element, and a group (`xs:sequence`, `xs:choice`,
   a group reference) with `maxOccurs="0"` still brought its elements
 - ProRocket Lite: adding or deleting a file dropped the `unresolved-ref` lines of the other files until the next Generate

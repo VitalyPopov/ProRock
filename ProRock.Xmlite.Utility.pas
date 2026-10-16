@@ -9,6 +9,9 @@ const
   // the "xml" prefix is bound to it by definition - documents never declare it (xml:lang, xml:space)
   cXmlPrefix = 'xml';
   cXmlPrefixUri = 'http://www.w3.org/XML/1998/namespace';
+  // xsi:type, xsi:nil - the prefix is usual, not fixed: it is declared like any other
+  cXsiPrefix = 'xsi';
+  cXsiUri = 'http://www.w3.org/2001/XMLSchema-instance';
 
 type
   TXmliteComponentType = (xctUndefined, xctSimpleType, xctComplexType, xctAttribute, xctAttributeGroup, xctElement, xctElementGroup);
