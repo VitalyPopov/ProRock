@@ -5,7 +5,13 @@ number since 1.1.0.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versions follow [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [1.4.0] - 2026-10-16
+
+Office documents and a Windows encoding fix: non-ASCII text written to a string on Windows - so every Soapite request
+body - came out garbled; fixed. Dublin Core and the OOXML core properties generate clean (substitution group members take
+their head's type, text-only mixed content is text, `xsi:type`), shown by a sample that edits the properties of any Office
+file; the client certificate from memory; plain-words hints for every problem line in ProRocket Lite. Verified on Delphi
+10.3 to 13, Win32 and Win64. Development of this release was assisted by Claude Code (Anthropic).
 
 ### Added
 - Soapite / HTTP: the client certificate from memory - `THttpTransportNative.ClientCertificateData` (the bytes of a

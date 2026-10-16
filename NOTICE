@@ -5,4 +5,9 @@ This product is licensed under the Apache License, Version 2.0 (see LICENSE).
 
 The generated metamodel units ProRock.Xmlite.Schema.* are derived from XML schemas published by the World Wide Web Consortium
 (W3C), and by International Business Machines Corporation and Microsoft Corporation. The samples include WSDL files of public web
-services. Their copyright notices and license terms are reproduced in THIRD-PARTY-NOTICES.md.
+services, and units derived from schemas of OASIS, Ecma International (ECMA-376) and DCMI (Dublin Core). Their copyright notices
+and license terms are reproduced in THIRD-PARTY-NOTICES.md.
+
+Portions of this software may use XML schemas Copyright © 2011 DCMI, the Dublin Core™ Metadata Initiative.
+These are licensed under the Creative Commons 4.0 Attribution license.
+DCMI: http://dublincore.org/ - License: https://creativecommons.org/licenses/by/4.0/

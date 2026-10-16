@@ -25,6 +25,11 @@ Samples:
 - `Samples/ProRock.Soapite.WsSecurity/oasis-200401-wss-wssecurity-secext-1.0.xsd` and `...-utility-1.0.xsd` - the OASIS Web
   Services Security 1.0 schemas, https://docs.oasis-open.org/wss/2004/01/, unmodified, with the units ProRocket generates from
   them (`ProRock.Xmlite.Schema.WsSecurity`, `.WsSecurityUtility`) - [OASIS](#oasis)
+- `Samples/ProRock.Xmlite.DocumentProperties` - units ProRocket generates from the OPC schemas of ECMA-376 Part 2, 5th edition
+  (December 2021: `opc-coreProperties.xsd`, `opc-relationships.xsd`; `ProRock.Xmlite.Schema.CoreProperties`,
+  `.Relationships`) - [Ecma International](#ecma-international) - and from the Dublin Core schemas of DCMI
+  (http://dublincore.org/schemas/xmls/qdc/2003/04/02/ `dc.xsd`, `dcterms.xsd`, `dcmitype.xsd`;
+  `ProRock.Xmlite.Schema.Dc.Elements`, `.Terms`, `.Types`) - [DCMI](#dcmi). The schemas themselves are not included
 
 ---
 
@@ -130,3 +135,58 @@ These schemas are governed by the W3C Software License, http://www.w3.org/Consor
 > remain with the Authors.
 >
 > No other rights are granted by implication, estoppel or otherwise.
+
+---
+
+## Ecma International
+
+ECMA-376 Office Open XML File Formats, Part 2: Open Packaging Conventions, 5th edition (December 2021), © Ecma International,
+https://ecma-international.org/publications-and-standards/standards/ecma-376/. The published package of this part (its PDF and
+schema files) carries no copyright page. Ecma's text copyright policy
+(https://www.ecma-international.org/policies/by-ipr/ecma-text-copyright-policy) gives the default notice of Ecma standards,
+reproduced here as it appears in ECMA-376 Part 3, 5th edition (verbatim but the year). The generated units are works of kind
+(iv): they implement the functionality of the specification (reading and writing its core properties and relationships).
+
+> COPYRIGHT NOTICE
+>
+> © Ecma International
+>
+> This document may be copied, published and distributed to others, and certain derivative works of it may be prepared, copied,
+> published, and distributed, in whole or in part, provided that the above copyright notice and this Copyright License and
+> Disclaimer are included on all such copies and derivative works. The only derivative works that are permissible under this
+> Copyright License and Disclaimer are:
+>
+> (i) works which incorporate all or portion of this document for the purpose of providing commentary or explanation (such as an
+> annotated version of the document),
+>
+> (ii) works which incorporate all or portion of this document for the purpose of incorporating features that provide
+> accessibility,
+>
+> (iii) translations of this document into languages other than English and into different formats and
+>
+> (iv) works by making use of this specification in standard conformant products by implementing (e.g. by copy and paste wholly
+> or partly) the functionality therein.
+>
+> However, the content of this document itself may not be modified in any way, including by removing the copyright notice or
+> references to Ecma International, except as required to translate it into languages other than English or into a different
+> format.
+>
+> The official version of an Ecma International document is the English language version on the Ecma International website. In
+> the event of discrepancies between a translated version and the official version, the official version shall govern.
+>
+> The limited permissions granted above are perpetual and will not be revoked by Ecma International or its successors or assigns.
+>
+> This document and the information contained herein is provided on an "AS IS" basis and ECMA INTERNATIONAL DISCLAIMS ALL
+> WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION HEREIN WILL NOT
+> INFRINGE ANY OWNERSHIP RIGHTS OR ANY IMPLIED WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+---
+
+## DCMI
+
+The Dublin Core schemas are licensed under a Creative Commons Attribution 4.0 International License (DCMI schema use notice,
+https://www.dublincore.org/about/copyright/). The notice DCMI asks for, in the software and its documentation:
+
+> Portions of this software may use XML schemas Copyright © 2011 DCMI, the Dublin Core™ Metadata Initiative. These are licensed under the Creative Commons 4.0 Attribution license.
+
+DCMI: http://dublincore.org/ - License: https://creativecommons.org/licenses/by/4.0/
