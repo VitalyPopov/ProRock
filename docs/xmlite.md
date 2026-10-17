@@ -130,9 +130,14 @@ props.Modified.SetXsiType(TW3cdtfCT); // <dcterms:modified xsi:type="dcterms:W3C
 
 ## Under the hood
 
-`TXmlite` and `TXmliteList` inherit from `TBasite` and `TBasiteList`. **Basite** is the core: a metadata-driven object model,
-independent of any data format. It keeps the metadata of each class in one place (no repeated RTTI scanning), creates and
-frees nested objects, and lets a format attach its own metadata. Xmlite is one such format; Soapite builds on Xmlite.
+`TXmlite` and `TXmliteList` inherit from `TBasite` and `TBasiteList`. Three parts fit together:
+
+- **Basite** defines how objects live: plain Delphi objects (PODOs), nested objects created and freed with their parent,
+  independent of any data format
+- **MetaBank** defines how they are described: the metadata of every registered class and property, built once and reused
+  for every parse and write, so there is no repeated RTTI scanning. The classes of one schema registered there form its
+  **metamodel**
+- **Xmlite** defines how XML maps to them: elements, attributes and namespaces as metadata on top. Soapite builds on Xmlite
 
 The metamodels that ship with ProRock - XML Schema itself, WSDL, the SOAP envelopes and bindings
 (`ProRock.Xmlite.Schema.*`) - are ordinary generated units: ProRocket Lite generates them from their official schemas with
