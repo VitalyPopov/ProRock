@@ -19,14 +19,15 @@ then have to be found and fixed one by one. With ProRock you regenerate the unit
 
 ## Documentation
 
-**[vitalypopov.github.io/ProRock](https://vitalypopov.github.io/ProRock/)**:
-[getting started in 5 minutes](https://vitalypopov.github.io/ProRock/getting-started/) ·
-[Xmlite](https://vitalypopov.github.io/ProRock/xmlite/) ·
-[Soapite](https://vitalypopov.github.io/ProRock/soapite/) ·
-[ProRocket Lite](https://vitalypopov.github.io/ProRock/prorocket-lite/) ·
-[command line](https://vitalypopov.github.io/ProRock/cli/) ·
-[samples](https://vitalypopov.github.io/ProRock/samples/) ·
-[XML concepts for Delphi developers](https://vitalypopov.github.io/ProRock/xml-concepts/)
+The full documentation is at **[vitalypopov.github.io/ProRock](https://vitalypopov.github.io/ProRock/)** (searchable):
+
+|   |   |
+|---|---|
+| [Getting started](https://vitalypopov.github.io/ProRock/getting-started/) | from a WSDL to a working SOAP call in 5 minutes |
+| [Xmlite](https://vitalypopov.github.io/ProRock/xmlite/) · [Soapite](https://vitalypopov.github.io/ProRock/soapite/) | XML through typed classes · SOAP clients, transport, authentication |
+| [ProRocket Lite](https://vitalypopov.github.io/ProRock/prorocket-lite/) | the generator: GUI and command line |
+| [Samples](https://vitalypopov.github.io/ProRock/samples/) | seven samples, from Office document properties to WS-Security |
+| [XML concepts](https://vitalypopov.github.io/ProRock/xml-concepts/) | namespaces, XSD types, substitution groups - explained for Delphi developers |
 
 ## Quick start: a SOAP client from a WSDL
 
