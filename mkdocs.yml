@@ -1,0 +1,56 @@
+site_name: ProRock 🤟
+site_description: "Schema-typed XML for Delphi: generate exact classes from XSD and WSDL. When the schema changes, regenerate, don't re-patch."
+site_url: https://vitalypopov.github.io/ProRock/
+repo_url: https://github.com/VitalyPopov/ProRock
+repo_name: VitalyPopov/ProRock
+edit_uri: edit/main/docs/
+copyright: ProRock is licensed under the Apache License 2.0. ProRocket Lite is a free closed-source tool with its own license.
+
+theme:
+  name: material
+  favicon: assets/favicon.svg
+  palette: # dark first: the default for a first visit; the button switches, and the browser remembers the choice
+    - scheme: slate
+      toggle:
+        icon: material/weather-sunny
+        name: Light mode
+    - scheme: default
+      toggle:
+        icon: material/weather-night
+        name: Dark mode
+  features:
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+    - search.highlight
+
+extra_css:
+  - assets/extra.css
+
+extra_javascript:
+  - assets/extra.js
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - tables
+  - toc:
+      permalink: "#"
+  - pymdownx.highlight
+  - pymdownx.superfences
+
+nav:
+  - Home: index.md
+  - Getting started: getting-started.md
+  - Library:
+      - Xmlite (XML): xmlite.md
+      - Soapite (SOAP): soapite.md
+      - Limitations and notes: limitations.md
+  - Generator:
+      - ProRocket Lite: prorocket-lite.md
+      - Command line: cli.md
+  - Samples: samples.md
+  - XML concepts for Delphi developers: xml-concepts.md
+  - Project:
+      - Roadmap: roadmap.md
+      - Changelog: changelog.md

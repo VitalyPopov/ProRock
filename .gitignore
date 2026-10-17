@@ -70,3 +70,6 @@ modules/
 # certificates downloaded for samples (badssl.com-client.p12) - not ours to ship
 Samples/**/*.p12
 Samples/**/*.pfx
+
+# The docs site build (zensical build), and its copies of ROADMAP.md / CHANGELOG.md
+/site/

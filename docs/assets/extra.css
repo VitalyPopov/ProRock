@@ -1,0 +1,56 @@
+/* no image logo: the emoji in the site name is the mark */
+.md-header__button.md-logo,
+.md-nav__title .md-nav__button.md-logo {
+  display: none;
+}
+
+/* the ProRocket icon inside the download buttons */
+.md-button .button-icon {
+  height: 1.4em;
+  margin-right: 0.4em;
+  vertical-align: middle;
+}
+
+/* the header title is the home link (extra.js) */
+.md-header__title {
+  cursor: pointer;
+}
+
+/* the heading the address points to (#section) shows its link only on hover, like every other heading */
+.md-typeset :target > .headerlink {
+  opacity: 0;
+}
+.md-typeset :target:hover > .headerlink,
+.md-typeset :target > .headerlink:focus {
+  opacity: 1;
+}
+
+/* a link around inline code: the underline crossed the code box - the blue code marks it as a link, underlined on hover */
+.md-typeset a:has(> code) {
+  text-decoration: none;
+}
+.md-typeset a:hover > code {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+/* the positioning line in the header (extra.js), from tablet width on */
+.prorock-tagline {
+  margin-left: 1.4em;
+  font-size: 0.7em;
+  font-style: italic;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  opacity: 0.55;
+}
+@media screen and (max-width: 76.1875em) {
+  .prorock-tagline {
+    display: none;
+  }
+}
+
+/* sample and unit names in table cells stay on one line instead of breaking mid-word */
+.md-typeset td > a > code,
+.md-typeset td:first-child > code {
+  white-space: nowrap;
+}

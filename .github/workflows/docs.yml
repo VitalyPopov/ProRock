@@ -1,0 +1,41 @@
+# The site (docs/ + mkdocs.yml), built with Zensical and published on GitHub Pages
+name: Docs
+
+on:
+  push:
+    branches: [main]
+    paths: [docs/**, mkdocs.yml, ROADMAP.md, CHANGELOG.md, .github/workflows/docs.yml]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: 3.x
+      - run: pip install zensical==0.0.71
+      # ROADMAP.md and CHANGELOG.md stay in the repository root; the site gets copies
+      - run: |
+          sed 's/(CHANGELOG\.md)/(changelog.md)/g' ROADMAP.md > docs/roadmap.md
+          cp CHANGELOG.md docs/changelog.md
+      - run: zensical build --clean
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: site
+      - uses: actions/configure-pages@v5
+      - uses: actions/deploy-pages@v4
+        id: deployment

@@ -262,13 +262,16 @@ ProRock is a pure source library: no installation, no design-time packages, no c
 
 ## Development
 
-Changes are listed in the [CHANGELOG](CHANGELOG.md). Security issues: see [SECURITY.md](SECURITY.md).
+Changes are listed in the [CHANGELOG](CHANGELOG.md), plans in the [ROADMAP](ROADMAP.md). Security issues: see
+[SECURITY.md](SECURITY.md).
 
 Since October 2026, development is assisted by [Claude Code](https://claude.com/claude-code) (Anthropic): it helps with
 implementation, tests and generator fixes. Design, decisions and verification remain the author's.
 
-Feedback, real-world schemas that do not work yet, and contributions are welcome - see [CONTRIBUTING.md](CONTRIBUTING.md). If ProRock is useful to you, you can
-[support the project](https://github.com/sponsors/VitalyPopov).
+Feedback, real-world schemas that do not work yet, and contributions are welcome - see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+If ProRock is useful to you, at least smash the ⭐ Star - it costs nothing and helps other Delphi developers find it. And if
+you'd like to do more, you can [support the project](https://github.com/sponsors/VitalyPopov). Thank you! 🤟
 
 ## License
 
