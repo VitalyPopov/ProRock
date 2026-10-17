@@ -1612,6 +1612,23 @@ begin
   Result := TMetaBasiteXmlite(TMeta(Self).Xmlite);
 end;
 
+// [TXmliteAnyElement] on the class, or on one of its ancestors
+function HasAnyElementAttribute(aClass: TClass; aWithAncestors: boolean = True): boolean;
+begin
+  Result := False;
+  var someClass: TClass := aClass;
+  while (someClass <> nil) and someClass.InheritsFrom(TXmlite) do
+  begin
+    for var attribute: TCustomAttribute in TMetaBank.RttiContext.GetType(someClass.ClassInfo).GetAttributes do
+      if attribute.ClassType = TXmliteAnyElementAttribute then
+        Exit(True);
+
+    if not aWithAncestors then
+      Exit;
+    someClass := someClass.ClassParent;
+  end;
+end;
+
 { TMetaBasiteXmlite }
 
 constructor TMetaBasiteXmlite.Create(aMeta: TMetaBasite);
@@ -1643,14 +1660,16 @@ begin
   if not fIsTXmlite then
     Exit;
 
-  fProcessAnyElement := aMeta.ClassItself.ClassParent.Meta.Xmlite.ProcessAnyElement;
+  // inherited from the parent class. The parent's meta may exist without its extension yet: a class whose content holds
+  // its own descendants (XHTML: span in span) registers them while being registered itself - then the attributes of the
+  // ancestors give it (reading the missing extension was an access violation)
+  var parentXmlite: TMetaBasiteXmlite := aMeta.ClassItself.ClassParent.Meta.Xmlite;
+  if parentXmlite <> nil then
+    fProcessAnyElement := parentXmlite.ProcessAnyElement
+  else
+    fProcessAnyElement := HasAnyElementAttribute(aMeta.ClassItself.ClassParent);
   if not fProcessAnyElement then
-    for var attribute: TCustomAttribute in aMeta.RttiType.GetAttributes do
-      if attribute.ClassType = TXmliteAnyElementAttribute then
-      begin
-        fProcessAnyElement := True;
-        break;
-      end;
+    fProcessAnyElement := HasAnyElementAttribute(aMeta.ClassItself, False);
 end;
 
 destructor TMetaBasiteXmlite.Destroy;

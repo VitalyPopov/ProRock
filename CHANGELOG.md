@@ -7,8 +7,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 
 ## [Unreleased] - 1.4.1
 
-Fixes found by generating the OOXML schemas (SpreadsheetML, DrawingML): default values that made every `ToXml` of a class
-fail, `xs:boolean` values `1` and `0`, and unions that crashed ProRocket Lite or came out wrong.
+Fixes found by generating the OOXML schemas (SpreadsheetML, DrawingML) and FHIR R4: default values that made every `ToXml`
+of a class fail, `xs:boolean` values `1` and `0`, unions that crashed ProRocket Lite or came out wrong, and a crash at
+program start with XHTML and FHIR.
 
 ### Fixed
 - Xmlite: a class with a default value on a type of another unit - in generated units every `xs:boolean`, `xs:int`,
@@ -18,6 +19,8 @@ fail, `xs:boolean` values `1` and `0`, and unions that crashed ProRocket Lite or
   regenerating; ProRocket Lite writes it in its type (`[TDefault(False)]`)
 - Xmlite: `xs:boolean` text `1` and `0` (valid XML Schema, written by Excel and in SOAP headers) was read as the default
   value; now `True` and `False` like `true` and `false`
+- Xmlite: registering a type whose content holds elements derived from itself - XHTML, where a `span` holds a `span`,
+  and with it every FHIR resource (its narrative is XHTML) - raised an access violation at program start
 - Xmlite: an `xs:unsignedLong` default above `High(Int64)` lost its digits (`18446744073709551615` became
   `9223372036854775808`)
 - ProRocket Lite: unions (`xs:union`) - a simple type holding a value of any of several types. Members named only in
