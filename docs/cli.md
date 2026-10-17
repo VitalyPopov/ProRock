@@ -37,7 +37,7 @@ In PowerShell, give the path to the exe: `.\ProRocketCli.exe ...` in its folder,
 | `-o <folder>` | where the units are written; created if missing. Default: the current folder |
 | `--strict` | write nothing if there are problems (see below); exit code 1 |
 | `--no-timestamp` | leave out the `Generated (UTC)` header line: an unchanged schema gives a byte-identical unit |
-| `--version` | the version, e.g. `ProRocket Lite CLI 1.4.0` - the generated units need the ProRock release with that number |
+| `--version` | the version, e.g. `ProRocket Lite CLI 1.4.1` - the generated units need the ProRock release with that number |
 | `-h`, `--help` | usage |
 
 Give every schema file that belongs together in one run: the main XSD or WSDL and the files it imports and includes.
@@ -175,4 +175,4 @@ Quick starts for both: [Getting started](getting-started.md)
 - ProRocketCli runs on Windows 64-bit; the generated units need Delphi 10.3 or later.
 - Schemas without `targetNamespace` (including "chameleon" includes) cannot be loaded yet: exit code 1, "cannot load".
 - WSDL problems (skipped operations, `wsdl:import`) are not problem lines yet; they are written in the unit header.
-- Known XSD limitations of ProRock: [Limitations and notes](limitations.md)
+- Known limitations of ProRock: [Limitations and notes](limitations.md)

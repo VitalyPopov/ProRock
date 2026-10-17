@@ -5,7 +5,7 @@ number since 1.1.0.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versions follow [Semantic Versioning](https://semver.org/).
 
-## [Unreleased] - 1.4.1
+## [1.4.1] - 2026-10-18
 
 Fixes found by generating the OOXML schemas (SpreadsheetML, DrawingML) and FHIR R4: default values that made every `ToXml`
 of a class fail, `xs:boolean` values `1` and `0`, unions that crashed ProRocket Lite or came out wrong, and a crash at
