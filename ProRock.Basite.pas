@@ -202,6 +202,7 @@ type
     function GetValue(aObject: TBasite): string;
     procedure SetValue(aObject: TBasite; const aValue: string);
     function GetMeta: TMetaType;
+    function DefaultFromText(const aText: string): variant;
   public
     constructor Create(aParentMeta: TMetaBasite; aProperty: TRttiProperty; aIsInherited: boolean = False;
       aNaming: TNaming = cBasiteDefaultNaming); override;
@@ -300,6 +301,7 @@ type
     fOrdType: TOrdType;      // tkInteger, tkEnumeration
     fFloatType: TFloatType;  // tkFloat
     fUnsigned: boolean;      // tkInt64: UInt64
+    fIsBoolean: boolean;     // tkEnumeration based on Boolean (xs:boolean): also "1" and "0"
     fEnumNames: THashedStringList;
     fBaseType: TMetaType;
     function GetEnumName(aEnumValue: integer): string;
@@ -795,7 +797,61 @@ begin
         fDefault := 0;
       tkUString:
         fDefault := '';
-    end;
+    end
+  // a default given as text ([TDefault('false')] - generated units write it so for types of other units, xs:boolean
+  // included) into the property's own type, once: compared with text, every write raised EVariantTypeCastError, and
+  // the conversion of a number depended on the locale
+  else if VarIsStr(fDefault) and (fRttiProperty.PropertyType.TypeKind <> tkUString) then
+    fDefault := DefaultFromText(string(fDefault));
+end;
+
+function TPropertyData.DefaultFromText(const aText: string): variant;
+begin
+  if Meta.fValuesAliases.Count > 0 then
+  begin
+    var aliasValue: variant;
+    if Meta.fValuesAliases.TryGetKeyByValue(aText, aliasValue) then
+      Exit(aliasValue);
+  end;
+
+  // text that does not fit the type gives the type's own default, like a property without one
+  Result := 0;
+  case fRttiProperty.PropertyType.TypeKind of
+    tkInteger:
+      begin
+        var ordinalValue: Int64;
+        if TryStrToInt64(aText, ordinalValue) and OrdinalFitsType(ordinalValue, Meta.fOrdType) then
+          Result := ordinalValue;
+      end;
+    tkInt64:
+      if Meta.fUnsigned then
+      begin
+        var unsignedValue: UInt64;
+        if TryStrToUInt64(aText, unsignedValue) then
+          Result := Int64(unsignedValue); // as its bits, like ReadOrdinal/WriteOrdinal
+      end
+      else
+      begin
+        var ordinalValue: Int64;
+        if TryStrToInt64(aText, ordinalValue) then
+          Result := ordinalValue;
+      end;
+    tkFloat:
+      if Meta.fFloatType = ftCurr then
+      begin
+        var currencyValue: Currency;
+        if TryStrToCurr(aText, currencyValue, FormatSettings.Invariant) then
+          Result := currencyValue;
+      end
+      else
+      begin
+        var floatValue: Extended;
+        if TryStrToFloat(aText, floatValue, FormatSettings.Invariant) then
+          Result := floatValue;
+      end;
+    tkEnumeration:
+      Result := Meta.EnumValueDef(aText, 0);
+  end;
 end;
 
 function TPropertyData.GetMeta: TMetaType;
@@ -1003,7 +1059,7 @@ begin
       begin
         var unsignedValue: UInt64;
         if not TryStrToUInt64(value, unsignedValue) then
-          unsignedValue := fDefault;
+          unsignedValue := UInt64(Int64(fDefault)); // the default holds the bits
         WriteOrdinal(aObject, fieldData, Int64(unsignedValue));
       end
       else
@@ -1414,6 +1470,7 @@ begin
   if RttiType.TypeKind = tkEnumeration then
   begin
     fOrdType := RttiType.AsOrdinal.OrdType;
+    fIsBoolean := GetTypeData(aType).BaseType^ = TypeInfo(boolean); // also through type copies (TBooleanST = type boolean)
 
     fEnumNames := THashedStringList.Create;
 
@@ -1452,6 +1509,11 @@ end;
 function TMetaType.EnumValueDef(const aEnumName: string; aDefault: integer): integer;
 begin
   var enumIndex: integer := fEnumNames.IndexOf(aEnumName);
+  if (enumIndex < 0) and fIsBoolean then // xs:boolean: true, false, 1, 0 (Excel and SOAP headers write 1)
+    if aEnumName = '1' then
+      enumIndex := Ord(True)
+    else if aEnumName = '0' then
+      enumIndex := Ord(False);
   Result := IfThen(enumIndex < 0, aDefault, enumIndex);
 end;
 
