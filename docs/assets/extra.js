@@ -14,3 +14,26 @@ document.addEventListener("DOMContentLoaded", function () {
   tagline.textContent = "When the schema changes, regenerate, don't re-patch.";
   topic.appendChild(tagline);
 });
+
+// a screenshot linked to itself opens enlarged over the page; a click anywhere or Esc closes it
+document.addEventListener("click", function (event) {
+  var link = event.target.closest(".md-typeset a");
+  if (!link || !link.querySelector("img") || !/\.(png|jpe?g|webp)$/i.test(link.getAttribute("href"))) return;
+  event.preventDefault();
+  var overlay = document.createElement("div");
+  overlay.className = "prorock-lightbox";
+  var image = document.createElement("img");
+  image.src = link.href;
+  image.alt = link.querySelector("img").alt;
+  overlay.appendChild(image);
+  function close() {
+    overlay.remove();
+    document.removeEventListener("keydown", onKey);
+  }
+  function onKey(e) {
+    if (e.key === "Escape") close();
+  }
+  overlay.addEventListener("click", close);
+  document.addEventListener("keydown", onKey);
+  document.body.appendChild(overlay);
+});

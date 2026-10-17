@@ -54,3 +54,24 @@
 .md-typeset td:first-child > code {
   white-space: nowrap;
 }
+
+/* the enlarged screenshot (extra.js) */
+.md-typeset a:has(> img) {
+  cursor: zoom-in;
+}
+.prorock-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2vmin;
+  background: rgba(0, 0, 0, 0.85);
+  cursor: zoom-out;
+}
+.prorock-lightbox img {
+  max-width: 100%;
+  max-height: 100%;
+  box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.6);
+}
