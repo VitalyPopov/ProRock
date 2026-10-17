@@ -1,6 +1,6 @@
 site_name: ProRock 🤟
 site_description: "Schema-typed XML for Delphi: generate exact classes from XSD and WSDL. When the schema changes, regenerate, don't re-patch."
-site_url: https://vitalypopov.github.io/ProRock/
+site_url: https://prorock.rocks/
 repo_url: https://github.com/VitalyPopov/ProRock
 repo_name: VitalyPopov/ProRock
 edit_uri: edit/main/docs/

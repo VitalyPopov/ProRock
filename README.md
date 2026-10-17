@@ -19,15 +19,15 @@ then have to be found and fixed one by one. With ProRock you regenerate the unit
 
 ## Documentation
 
-The full documentation is at **[vitalypopov.github.io/ProRock](https://vitalypopov.github.io/ProRock/)** (searchable):
+The full documentation is at **[prorock.rocks](https://prorock.rocks/)** (searchable):
 
 |   |   |
 |---|---|
-| [Getting started](https://vitalypopov.github.io/ProRock/getting-started/) | from a WSDL to a working SOAP call in 5 minutes |
-| [Xmlite](https://vitalypopov.github.io/ProRock/xmlite/) · [Soapite](https://vitalypopov.github.io/ProRock/soapite/) | XML through typed classes · SOAP clients, transport, authentication |
-| [ProRocket Lite](https://vitalypopov.github.io/ProRock/prorocket-lite/) | the generator: GUI and command line |
-| [Samples](https://vitalypopov.github.io/ProRock/samples/) | seven samples, from Office document properties to WS-Security |
-| [XML concepts](https://vitalypopov.github.io/ProRock/xml-concepts/) | namespaces, XSD types, substitution groups - explained for Delphi developers |
+| [Getting started](https://prorock.rocks/getting-started/) | from a WSDL to a working SOAP call in 5 minutes |
+| [Xmlite](https://prorock.rocks/xmlite/) · [Soapite](https://prorock.rocks/soapite/) | XML through typed classes · SOAP clients, transport, authentication |
+| [ProRocket Lite](https://prorock.rocks/prorocket-lite/) | the generator: GUI and command line |
+| [Samples](https://prorock.rocks/samples/) | seven samples, from Office document properties to WS-Security |
+| [XML concepts](https://prorock.rocks/xml-concepts/) | namespaces, XSD types, substitution groups - explained for Delphi developers |
 
 ## Quick start: a SOAP client from a WSDL
 
@@ -65,8 +65,8 @@ end;
 ```
 
 The same from an XSD, the project setup, timeouts, authentication and faults:
-[getting started](https://vitalypopov.github.io/ProRock/getting-started/) and
-[Soapite](https://vitalypopov.github.io/ProRock/soapite/).
+[getting started](https://prorock.rocks/getting-started/) and
+[Soapite](https://prorock.rocks/soapite/).
 
 ## Installation
 
@@ -81,7 +81,7 @@ client certificates and more.
 
 Coverage grows through real-world schemas. Not covered yet: mixed content with child elements, absent vs default values,
 elements standing in for their substitution group head; facets are not validated. The full list, with notes on decimals, string
-types and server error texts: [Limitations and notes](https://vitalypopov.github.io/ProRock/limitations/). What comes next:
+types and server error texts: [Limitations and notes](https://prorock.rocks/limitations/). What comes next:
 [ROADMAP](ROADMAP.md).
 
 ## Development
