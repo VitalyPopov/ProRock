@@ -47,6 +47,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   kept attribute read with entities) gave invalid XML
 
 ### Changed
+- **The units moved to `Source\`** - the one setup change of this release: point the search path at `ProRock\Source`
+  instead of `ProRock` (`ThirdParty\ProRock\Source;Generated`). No unit is renamed, no `uses` changes; without the new
+  path Delphi reports the units as not found. The folder keeps the repository root for the docs, samples and licence files,
+  and leaves room for optional pre-generated schemas later
 - Xmlite: an optional object created with its parent but absent from the data is no longer written - its required
   attributes made it appear (`<drawing r:id=""/>`); one with only default values, read from the data, no longer vanishes;
   list items and the root are always written (`<fill/>`); a required object element (`[TRequired]`, now generated for

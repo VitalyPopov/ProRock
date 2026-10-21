@@ -51,8 +51,9 @@ MyApp  MyApp.dproj
   ThirdParty\ProRock\ the ProRock release named in the unit header
 ```
 
-Add `ThirdParty\ProRock;Generated` to the project's search path in the **Base** configuration
-(**Project Options > Delphi Compiler > Search path**). Relative paths keep the project portable.
+Add `ThirdParty\ProRock\Source;Generated` to the project's search path in the **Base** configuration
+(**Project Options > Delphi Compiler > Search path**). Relative paths keep the project portable. ProRock 1.4 and earlier
+have their units in the repository folder itself: `ThirdParty\ProRock;Generated`.
 
 ## 5. Call the service
 

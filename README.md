@@ -71,7 +71,8 @@ The same from an XSD, the project setup, timeouts, authentication and faults:
 ## Installation
 
 ProRock is a pure source library: no installation, no design-time packages, no component registration. Clone or download the
-repository, add the ProRock directory to your project's search path, use the units you need.
+repository, add its `Source` folder to your project's search path (ProRock 1.4 and earlier: the repository folder itself), use
+the units you need.
 
 Delphi 10.3 Rio to 13 Florence, Win64 and Win32; all units compile for Android (Delphi 13), running on a device is not verified
 yet. The [Samples](Samples) folder has one group project with seven samples - Office document properties, EU VIES, WS-Security,
