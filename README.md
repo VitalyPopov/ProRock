@@ -80,11 +80,11 @@ client certificates and more.
 
 ## Known limitations and notes
 
-Coverage grows through real-world schemas. Reading works well, also for large schemas like OOXML and FHIR; writing a
-document back is not yet exact (an optional value equal to its default is not written, unknown elements are dropped), and
-some large schemas generate code that needs changes before it compiles - both are the first items on the
-[ROADMAP](ROADMAP.md). Not covered yet: mixed content with child elements, elements standing in for their substitution group
-head; facets are not validated. The full list, with notes on decimals, string types and server error texts:
+Coverage grows through real-world schemas. Reading and writing back are exact for what a schema describes, also for large
+schemas: FHIR R4 and the OOXML SpreadsheetML/DrawingML schemas generate units that compile and round-trip. Not covered yet:
+unknown elements (Office's own extensions) are dropped, lists of plain values (a repeating string element) do not generate,
+mixed content with child elements is kept only partly, elements standing in for their substitution group head; facets are not
+validated - the next items on the [ROADMAP](ROADMAP.md). The full list, with notes on decimals, string types and server error texts:
 [Limitations and notes](https://prorock.rocks/limitations/).
 
 ## Development

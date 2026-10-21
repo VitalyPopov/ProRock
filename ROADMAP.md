@@ -8,19 +8,13 @@ goes into the [known limitations](https://prorock.rocks/limitations/) and decide
 
 ## Now
 
-- **Exact round trips**: read a document, change it, write it back - and get exactly your data. Today an optional value
-  equal to its default is not written, and an optional element not in the document can be written anyway. In FHIR that
-  drops a patient's `gender value="male"`, in Excel the first fill and cell format. ProRock will track what is present
-- **Exact XML names**: enumeration values as the schema writes them (`s`, `<=`, `text/cql`, `true` next to `True`), type
-  names with dots and hyphens (`a.content`, `QuantityComparator-list`)
-- **Large schemas compile**: OOXML and FHIR R4 already generate; a few generator fixes (class order, clashing field names,
-  very long enumerations) make them compile without changes
+- **Unknown content kept**: elements a schema does not know - Office's own extensions in every real file - kept as they
+  were instead of dropped. With it, an Office document read and written back stays complete
+- **Lists of plain values**: a repeating element of a simple type (several `<given>` strings) - the last thing between the
+  OOXML schemas and units that compile unchanged
 
 ## Next
 
-- **Unknown content kept**: elements a schema does not know - Office's own extensions in every real file - kept as they
-  were instead of dropped
-- **Lists of plain values**: a repeating element of a simple type (several `<given>` strings)
 - **Polymorphic content**: substitution groups and full `xsi:type` - a property typed with a base element or type holds any
   of its derived ones
 - **OOXML end to end**: the base for Calcite (xlsx and ods, one object model)

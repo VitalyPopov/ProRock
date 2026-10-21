@@ -31,6 +31,34 @@ end;
 - Enumerations are Delphi enums, `maxOccurs > 1` gives a typed list (`...List`).
 - `TXmlite.ObjectToXml(obj)` writes any object, also one that is not a root element.
 
+## Absent or default: presence
+
+An optional value can be missing from a document, or there with any value - also its default:
+
+```xml
+<sheet count="0"/>   <!-- count is there, and it is 0 -->
+<sheet/>             <!-- count is absent -->
+```
+
+Both read as `Count = 0`. Xmlite remembers which values the document had, and writes exactly those back - also when they equal
+their default (`count="0"`, FHIR `gender value="male"`, an Excel fill with only defaults). You can ask, mark and remove:
+
+```pascal
+if response.Present[@response.TraderNameMatch] then // VIES: in the response, not just the first enum value
+  ...
+sheet.Count := 0;               // set in code and equal to the default: not written...
+sheet.SetPresent(@sheet.Count); // ...unless marked present: count="0"
+sheet.Clear(@sheet.Drawing);    // removes a value or an object: back to its default, and absent
+```
+
+- `Present[@Obj.X]` tells exactly what the writer does: present when read, marked, not the default, or (an object) with any
+  content. `[TRequired]` values and objects are written always.
+- An assignment in code is not seen (properties write their fields), so a value equal to its default set in code needs
+  `SetPresent`. A value that was read stays present when code assigns it the default (`Title.XmlValue := ''` writes an empty
+  element); to remove it, use `Clear`.
+- `@Obj.X` works for properties that read a field - every generated one. For a hand-written property with a getter, pass its
+  name: `SetPresent('count')`. A wrong one is skipped, nothing raises: the functions return `False`.
+
 ## What the generator makes of a schema
 
 From this part of an XSD:

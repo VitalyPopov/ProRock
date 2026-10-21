@@ -5,35 +5,25 @@ Coverage grows through real-world schemas. If yours doesn't generate or doesn't 
 
 ## Writing a document back
 
-Reading works well, also for large schemas. Writing a document you have read back is **not yet exact** - the first
-items on the [roadmap](roadmap.md):
+A document read and written back keeps what its schema describes: values equal to their default, objects with only
+defaults, absent values stay absent, enumeration texts and element order as in the schema
+([presence](xmlite.md#absent-or-default-presence)). Not yet:
 
-- **Absent vs default**: an optional value equal to its default is not written, and an object whose values are all
-  defaults is not written at all. An enumeration's first value is its default - FHIR's `gender value="male"`,
-  `use value="usual"` - so such values are lost; in an Excel style sheet the first fill and cell format disappear from
-  their lists. The other way round, an absent optional value reads as its default (an absent enumeration reads as its
-  first value)
-- **Elements that were not there**: an optional child element whose type has a required attribute can be written with an
-  empty value although the document did not have it (OOXML `<drawing r:id=""/>`)
-- **Enumeration values** are written back from the Delphi names: a one-letter value comes back in upper case (OOXML
-  `t="s"` as `t="S"`)
 - **Unknown elements** are dropped: elements not in the schema, like Office's own extensions (`mc:AlternateContent`, the
   content of `extLst`). Unknown attributes are kept
 - **Mixed content** (text interleaved with child elements) is kept only partially (`XmlText`): text after an inline
   element is lost (XHTML `<p>Peter <b>James</b>, born 1974</p>`). Mixed content where no child element can occur is plain
   text (`XmlValue`)
+- a value set in code that equals its default is written only when marked present (`SetPresent`) - see
+  [presence](xmlite.md#absent-or-default-presence)
 
 ## Generated code that does not compile yet
 
-Large schemas generate, but some of their units need changes before Delphi compiles them (found with OOXML and FHIR R4):
+FHIR R4 and the OOXML SpreadsheetML/DrawingML schemas generate units that compile, except:
 
-- names with dots (XHTML `a.content`, FHIR `Account.Coverage`)
-- enumeration values that are no identifiers (`<`, `text/cql`, `0.0.80`) or differ only in case (`true` and `True`)
-- a class declared before its parent class; field names clashing with another property (attributes `c` and `fc`)
-- an enumeration with very many values (more than 1023 characters on one line)
-- a repeating element of a simple type (a list of strings) - generated as a list type that does not exist
+- a repeating element of a simple type (a list of strings, OOXML `<header>`) - generated as a list type that does not exist
 
-Very large units compile slowly: all of FHIR R4 is one unit of 35,000 lines, about 50 seconds for Delphi.
+Very large units compile slowly: all of FHIR R4 is one unit of about 37,000 lines, about 50 seconds for Delphi.
 
 ## Not covered yet
 
