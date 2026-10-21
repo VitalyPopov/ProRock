@@ -16,6 +16,16 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   getter; a wrong one is skipped (`False`), no exception. Every object keeps one 64-bit word of presence bits (more only
   for classes with more than 64 properties)
 
+- Xmlite: `[TName('Account.Coverage')]` on a type or class: its exact XML name, for a name no naming style gives back
+
+### Fixed
+- ProRocket Lite: type names with dots (XHTML `a.content`, FHIR `Account.Coverage`, hundreds in FHIR) gave Delphi names
+  that do not compile (`Ta.contentCT`); a dot now separates words (`TAContentCT`) and the type gets `[TName]` with its
+  XML name. Also every type whose name came back wrong from its Delphi name - OPC `CT_CoreProperties` was registered as
+  `CTCoreProperties`, Dublin Core `ISO639-2` as `ISO6392`, FHIR `QuantityComparator-list` as `Quantity-Comparator-List`
+  (`xsi:type` values and lookups by type name) - gets `[TName]`. Two XML names that give one Delphi name
+  (`Account.Coverage` and `AccountCoverage`, or names differing in case only) no longer clash: the second one gets a number
+
 ### Changed
 - Xmlite: an optional object created with its parent but absent from the data is no longer written - its required
   attributes made it appear (`<drawing r:id=""/>`); one with only default values, read from the data, no longer vanishes;

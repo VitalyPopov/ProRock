@@ -1811,15 +1811,20 @@ begin
         SetLength(fName, Length(fName) - fNamespace.fSuffixLengthElementGroup);
   end;
 
+  // [TName('Account.Coverage')]: the exact XML name, for one no naming style gives back from the Delphi name (dots, a
+  // hyphen in a PascalCase name, a name made unique); otherwise the name follows the type's [TNaming] or the namespace's
   var fNaming: TNaming := fNamespace.Naming;
+  var customName: string := '';
   for var attribute: TCustomAttribute in Self.Meta.RttiType.GetAttributes do
-    if attribute.ClassType.InheritsFrom(TNamingAttribute) then
-    begin
+    if attribute.ClassType = TNameAttribute then
+      customName := TNameAttribute(attribute).CustomName
+    else if attribute.ClassType.InheritsFrom(TNamingAttribute) then
       fNaming := TNamingAttribute(attribute).Naming;
-      break;
-    end;
 
-  fName := TUtility.FromPascalCase(fName, fNaming);
+  if customName.IsEmpty then
+    fName := TUtility.FromPascalCase(fName, fNaming)
+  else
+    fName := customName;
 
   if not fNamespace.Prefix.IsEmpty then
     fNamePrefixed := fNamespace.Prefix + ':' + fName;

@@ -153,6 +153,7 @@ type
   TUriCT = class(ProRock.Xmlite.Schema.Dc.Elements.TSimpleLiteralCT);
 
   [TNaming(TNaming.nCobolCase)]
+  [TName('ISO639-2')]
   TIso6392CT = class(ProRock.Xmlite.Schema.Dc.Elements.TSimpleLiteralCT);
 
   [TNaming(TNaming.nUpperCase)]

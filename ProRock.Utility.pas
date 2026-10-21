@@ -831,6 +831,16 @@ begin
   if Result.IsEmpty then
     Exit;
 
+  // a dot separates words (XHTML a.content, FHIR Account.Coverage) - never part of a Delphi name; each word in its own style
+  if Result.IndexOf('.') >= 0 then
+  begin
+    var dotWords: TArray<string> := Result.Split(['.']);
+    Result := '';
+    for var dotWord: string in dotWords do
+      Result := Result + ToPascalCase(dotWord);
+    Exit;
+  end;
+
   var originalNaming: TNaming := GuessNaming(Result);;
   case originalNaming of
     nSnakeCase, nCapsCase, nTitleCase, nKebabCase, nCobolCase, nTrainCase:

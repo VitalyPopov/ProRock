@@ -17,6 +17,7 @@ uses
   ProRock.Xmlite, ProRock.Xmlite.Schema.Base;
 
 type
+  [TName('ST_TargetMode')]
   TSTTargetModeST = (sttmExternal, sttmInternal);
 
   TCTRelationshipsCT = class;
@@ -29,6 +30,7 @@ type
   TRelationshipsEList = class;
   TRelationshipEList = class;
 
+  [TName('CT_Relationships')]
   TCTRelationshipsCT = class(TXmliteComplexType)
   private
     fRelationship: TRelationshipEList;
@@ -36,6 +38,7 @@ type
     property Relationship: TRelationshipEList read fRelationship;
   end;
 
+  [TName('CT_Relationship')]
   TCTRelationshipCT = class(TXmliteComplexType)
   private
     fXmlValue: ProRock.Xmlite.Schema.Base.TStringST;

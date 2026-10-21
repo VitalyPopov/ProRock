@@ -27,6 +27,7 @@ type
   TCTKeywordCTList = class;
   TCorePropertiesEList = class;
 
+  [TName('CT_CoreProperties')]
   TCTCorePropertiesCT = class(TXmliteComplexType)
   private
     fCategory: ProRock.Xmlite.Schema.Base.TStringST;
@@ -83,6 +84,7 @@ type
     property Version: ProRock.Xmlite.Schema.Base.TStringST read fVersion write fVersion;
   end;
 
+  [TName('CT_Keywords')]
   TCTKeywordsCT = class(TXmliteComplexType)
   private
     fLang: ProRock.Xmlite.Schema.Xml.TLangA;
@@ -94,6 +96,7 @@ type
     property Value: TCTKeywordCTList read fValue;
   end;
 
+  [TName('CT_Keyword')]
   TCTKeywordCT = class(TXmliteComplexType)
   private
     fXmlValue: ProRock.Xmlite.Schema.Base.TStringST;
