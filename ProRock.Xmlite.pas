@@ -83,6 +83,7 @@ type
     fXmlns: TXmlns;
     fXmlText: string;
     fXmlAny: TBasiteList<TBasite>;
+    fXmlPosition: cardinal;
   protected
     procedure Initialize; override;
     procedure Deinitialize; override;
@@ -97,6 +98,9 @@ type
     property XmlPrefix: string read fXmlPrefix write fXmlPrefix;
     property XmlName: string read fXmlName write fXmlName;
     property XmlAny: TBasiteList<TBasite> read fXmlAny;
+    // when the element was read: increasing in document order (0 - not read). Objects of different kinds keep their
+    // document order through it - in XSD a sequence's elements, choices and group refs, held in one list per kind
+    property XmlPosition: cardinal read fXmlPosition;
     property XmlAttributes: TDictionary<string, string> read fXmlAttributes; // todo: remove when XmlAnyAttribute will be ready
     property XmlText: string read fXmlText write fXmlText;
     // prefix -> URI for the prefixed names (and xsi:type values) in XmlAttributes - read from the document, set by
@@ -420,6 +424,10 @@ implementation
 
 uses System.IniFiles, System.Variants, System.Hash;
 
+// the read order of elements (TXmlite.XmlPosition): one counter per thread, so parsing in several threads needs no lock
+threadvar
+  gXmlReadPosition: cardinal;
+
 { TBasiteHelper }
 
 constructor TBasiteHelper.CreateFromXml(const aXml: string);
@@ -490,6 +498,8 @@ begin
   begin
     TXmlite(Self).fXmlns.Free;
     TXmlite(Self).fXmlns := xmlns;
+    Inc(gXmlReadPosition);
+    TXmlite(Self).fXmlPosition := gXmlReadPosition;
   end;
 
   try
@@ -1247,6 +1257,7 @@ procedure TXmlite.Clear;
 begin
   inherited;
   fXmlText := '';
+  fXmlPosition := 0;
   fXmlAny.Clear;
   fXmlAttributes.Clear;
   fXmlAttributeNamespaces.Clear;

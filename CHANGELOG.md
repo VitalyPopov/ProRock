@@ -17,6 +17,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   for classes with more than 64 properties)
 
 - Xmlite: `[TName('Account.Coverage')]` on a type or class: its exact XML name, for a name no naming style gives back
+- Xmlite: `TXmlite.XmlPosition` - when an element was read, increasing in document order (0: not read)
 
 ### Fixed
 - ProRocket Lite: type names with dots (XHTML `a.content`, FHIR `Account.Coverage`, hundreds in FHIR) gave Delphi names
@@ -36,6 +37,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   the property `FScore` of `fScore`: now `fScore_`); a member named like one ProRock relies on (OOXML `assign`: now
   `Assign_`, its XML name kept; `Assign`, `Free`, `Create`, `Destroy`, `Clear`, `ToXml`, `FromXml`). FHIR R4 and the
   SpreadsheetML/DrawingML schemas generate units that compile (SpreadsheetML except its lists of simple values)
+- ProRocket Lite: the members of a sequence are generated in the schema's order, so documents are written in it - a choice
+  or a group reference between elements came after them (FHIR `deceasedBoolean` after `address`; DrawingML shape
+  properties: the fill after the line), which validators and Office reject. The XSD classes in
+  `ProRock.Xmlite.Schema.Base` follow their schema's order too
 - Xmlite: an attribute value with entities (`title="A &amp; B"`) was read with trailing spaces (`'A & B    '`): a start
   tag is read twice and the value was decoded in place
 - Xmlite: attribute values were written without escaping - a `<`, `&` or `"` in a value (FHIR `comparator="&lt;="`, a

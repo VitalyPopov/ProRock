@@ -325,9 +325,9 @@ type
     fAll: TAllE;
     fChoice: TChoiceE;
     fSequence: TSequenceE;
-    fAnyAttribute: TAnyAttributeE;
     fAttribute: TAttributeCTList;
     fAttributeGroup: TAttributeGroupRefCTList;
+    fAnyAttribute: TAnyAttributeE;
   published
     property Name: TNCNameST read fName write fName;
     [TDefault(False)]
@@ -342,9 +342,9 @@ type
     property All: TAllE read fAll;
     property Choice: TChoiceE read fChoice;
     property Sequence: TSequenceE read fSequence;
-    property AnyAttribute: TAnyAttributeE read fAnyAttribute;
     property Attribute: TAttributeCTList read fAttribute;
     property AttributeGroup: TAttributeGroupRefCTList read fAttributeGroup;
+    property AnyAttribute: TAnyAttributeE read fAnyAttribute;
   end;
 
   TTopLevelComplexTypeCT = class(TXmliteComplexTypeRestricted)
@@ -355,16 +355,16 @@ type
     fFinal: TDerivationSetST;
     fBlock: TDerivationSetST;
     fName: TNCNameST;
+    fAnnotation: TAnnotationE;
     fSimpleContent: TSimpleContentE;
     fComplexContent: TComplexContentE;
     fGroup: TGroupRefCT;
     fAll: TAllE;
     fChoice: TChoiceE;
     fSequence: TSequenceE;
-    fAnyAttribute: TAnyAttributeE;
     fAttribute: TAttributeCTList;
     fAttributeGroup: TAttributeGroupRefCTList;
-    fAnnotation: TAnnotationE;
+    fAnyAttribute: TAnyAttributeE;
   published
     property Id: TIdST read fId write fId;
     [TDefault(False)]
@@ -375,58 +375,56 @@ type
     property Block: TDerivationSetST read fBlock write fBlock;
     [TRequired]
     property Name: TNCNameST read fName write fName;
+    property Annotation: TAnnotationE read fAnnotation;
     property SimpleContent: TSimpleContentE read fSimpleContent;
     property ComplexContent: TComplexContentE read fComplexContent;
     property Group: TGroupRefCT read fGroup;
     property All: TAllE read fAll;
     property Choice: TChoiceE read fChoice;
     property Sequence: TSequenceE read fSequence;
-    property AnyAttribute: TAnyAttributeE read fAnyAttribute;
     property Attribute: TAttributeCTList read fAttribute;
     property AttributeGroup: TAttributeGroupRefCTList read fAttributeGroup;
-    property Annotation: TAnnotationE read fAnnotation;
+    property AnyAttribute: TAnyAttributeE read fAnyAttribute;
   end;
 
   TLocalComplexTypeCT = class(TXmliteComplexTypeRestricted)
   private
     fId: TIdST;
     fMixed: TBooleanST;
+    fAnnotation: TAnnotationE;
     fSimpleContent: TSimpleContentE;
     fComplexContent: TComplexContentE;
     fGroup: TGroupRefCT;
     fAll: TAllE;
     fChoice: TChoiceE;
     fSequence: TSequenceE;
-    fAnyAttribute: TAnyAttributeE;
     fAttribute: TAttributeCTList;
     fAttributeGroup: TAttributeGroupRefCTList;
-    fAnnotation: TAnnotationE;
+    fAnyAttribute: TAnyAttributeE;
   published
     property Id: TIdST read fId write fId;
     [TDefault(False)]
     property Mixed: TBooleanST read fMixed write fMixed;
+    property Annotation: TAnnotationE read fAnnotation;
     property SimpleContent: TSimpleContentE read fSimpleContent;
     property ComplexContent: TComplexContentE read fComplexContent;
     property Group: TGroupRefCT read fGroup;
     property All: TAllE read fAll;
     property Choice: TChoiceE read fChoice;
     property Sequence: TSequenceE read fSequence;
-    property AnyAttribute: TAnyAttributeE read fAnyAttribute;
     property Attribute: TAttributeCTList read fAttribute;
     property AttributeGroup: TAttributeGroupRefCTList read fAttributeGroup;
-    property Annotation: TAnnotationE read fAnnotation;
+    property AnyAttribute: TAnyAttributeE read fAnyAttribute;
   end;
 
   TRestrictionTypeCT = class(TAnnotatedCT)
   private
     fBase: TQNameST;
-    fAnyAttribute: TAnyAttributeE;
-    fAttribute: TAttributeCTList;
-    fAttributeGroup: TAttributeGroupRefCTList;
     fGroup: TGroupRefCT;
     fAll: TAllE;
     fChoice: TChoiceE;
     fSequence: TSequenceE;
+    fSimpleType: TLocalSimpleTypeCT;
     fMinExclusive: TMinExclusiveEList;
     fMinInclusive: TMinInclusiveEList;
     fMaxExclusive: TMaxExclusiveEList;
@@ -439,17 +437,17 @@ type
     fEnumeration: TEnumerationEList;
     fWhiteSpace: TWhiteSpaceEList;
     fPattern: TPatternEList;
-    fSimpleType: TLocalSimpleTypeCT;
+    fAttribute: TAttributeCTList;
+    fAttributeGroup: TAttributeGroupRefCTList;
+    fAnyAttribute: TAnyAttributeE;
   published
     [TRequired]
     property Base: TQNameST read fBase write fBase;
-    property AnyAttribute: TAnyAttributeE read fAnyAttribute;
-    property Attribute: TAttributeCTList read fAttribute;
-    property AttributeGroup: TAttributeGroupRefCTList read fAttributeGroup;
     property Group: TGroupRefCT read fGroup;
     property All: TAllE read fAll;
     property Choice: TChoiceE read fChoice;
     property Sequence: TSequenceE read fSequence;
+    property SimpleType: TLocalSimpleTypeCT read fSimpleType;
     property MinExclusive: TMinExclusiveEList read fMinExclusive;
     property MinInclusive: TMinInclusiveEList read fMinInclusive;
     property MaxExclusive: TMaxExclusiveEList read fMaxExclusive;
@@ -462,33 +460,35 @@ type
     property Enumeration: TEnumerationEList read fEnumeration;
     property WhiteSpace: TWhiteSpaceEList read fWhiteSpace;
     property Pattern: TPatternEList read fPattern;
-    property SimpleType: TLocalSimpleTypeCT read fSimpleType;
+    property Attribute: TAttributeCTList read fAttribute;
+    property AttributeGroup: TAttributeGroupRefCTList read fAttributeGroup;
+    property AnyAttribute: TAnyAttributeE read fAnyAttribute;
   end;
 
   TComplexRestrictionTypeCT = class(TXmliteComplexTypeRestricted)
   private
     fId: TIdST;
     fBase: TQNameST;
-    fAnyAttribute: TAnyAttributeE;
-    fAttribute: TAttributeCTList;
-    fAttributeGroup: TAttributeGroupRefCTList;
     fAnnotation: TAnnotationE;
     fGroup: TGroupRefCT;
     fAll: TAllE;
     fChoice: TChoiceE;
     fSequence: TSequenceE;
+    fAttribute: TAttributeCTList;
+    fAttributeGroup: TAttributeGroupRefCTList;
+    fAnyAttribute: TAnyAttributeE;
   published
     property Id: TIdST read fId write fId;
     [TRequired]
     property Base: TQNameST read fBase write fBase;
-    property AnyAttribute: TAnyAttributeE read fAnyAttribute;
-    property Attribute: TAttributeCTList read fAttribute;
-    property AttributeGroup: TAttributeGroupRefCTList read fAttributeGroup;
     property Annotation: TAnnotationE read fAnnotation;
     property Group: TGroupRefCT read fGroup;
     property All: TAllE read fAll;
     property Choice: TChoiceE read fChoice;
     property Sequence: TSequenceE read fSequence;
+    property Attribute: TAttributeCTList read fAttribute;
+    property AttributeGroup: TAttributeGroupRefCTList read fAttributeGroup;
+    property AnyAttribute: TAnyAttributeE read fAnyAttribute;
   end;
 
   TExtensionTypeCT = class(TAnnotatedCT)
@@ -498,9 +498,9 @@ type
     fAll: TAllE;
     fChoice: TChoiceE;
     fSequence: TSequenceE;
-    fAnyAttribute: TAnyAttributeE;
     fAttribute: TAttributeCTList;
     fAttributeGroup: TAttributeGroupRefCTList;
+    fAnyAttribute: TAnyAttributeE;
   published
     [TRequired]
     property Base: TQNameST read fBase write fBase;
@@ -508,19 +508,17 @@ type
     property All: TAllE read fAll;
     property Choice: TChoiceE read fChoice;
     property Sequence: TSequenceE read fSequence;
-    property AnyAttribute: TAnyAttributeE read fAnyAttribute;
     property Attribute: TAttributeCTList read fAttribute;
     property AttributeGroup: TAttributeGroupRefCTList read fAttributeGroup;
+    property AnyAttribute: TAnyAttributeE read fAnyAttribute;
   end;
 
   TSimpleRestrictionTypeCT = class(TXmliteComplexTypeRestricted)
   private
     fId: TIdST;
     fBase: TQNameST;
-    fAnyAttribute: TAnyAttributeE;
-    fAttribute: TAttributeCTList;
-    fAttributeGroup: TAttributeGroupRefCTList;
     fAnnotation: TAnnotationE;
+    fSimpleType: TLocalSimpleTypeCT;
     fMinExclusive: TMinExclusiveEList;
     fMinInclusive: TMinInclusiveEList;
     fMaxExclusive: TMaxExclusiveEList;
@@ -533,15 +531,15 @@ type
     fEnumeration: TEnumerationEList;
     fWhiteSpace: TWhiteSpaceEList;
     fPattern: TPatternEList;
-    fSimpleType: TLocalSimpleTypeCT;
+    fAttribute: TAttributeCTList;
+    fAttributeGroup: TAttributeGroupRefCTList;
+    fAnyAttribute: TAnyAttributeE;
   published
     property Id: TIdST read fId write fId;
     [TRequired]
     property Base: TQNameST read fBase write fBase;
-    property AnyAttribute: TAnyAttributeE read fAnyAttribute;
-    property Attribute: TAttributeCTList read fAttribute;
-    property AttributeGroup: TAttributeGroupRefCTList read fAttributeGroup;
     property Annotation: TAnnotationE read fAnnotation;
+    property SimpleType: TLocalSimpleTypeCT read fSimpleType;
     property MinExclusive: TMinExclusiveEList read fMinExclusive;
     property MinInclusive: TMinInclusiveEList read fMinInclusive;
     property MaxExclusive: TMaxExclusiveEList read fMaxExclusive;
@@ -554,25 +552,27 @@ type
     property Enumeration: TEnumerationEList read fEnumeration;
     property WhiteSpace: TWhiteSpaceEList read fWhiteSpace;
     property Pattern: TPatternEList read fPattern;
-    property SimpleType: TLocalSimpleTypeCT read fSimpleType;
+    property Attribute: TAttributeCTList read fAttribute;
+    property AttributeGroup: TAttributeGroupRefCTList read fAttributeGroup;
+    property AnyAttribute: TAnyAttributeE read fAnyAttribute;
   end;
 
   TSimpleExtensionTypeCT = class(TXmliteComplexTypeRestricted)
   private
     fId: TIdST;
     fBase: TQNameST;
-    fAnyAttribute: TAnyAttributeE;
+    fAnnotation: TAnnotationE;
     fAttribute: TAttributeCTList;
     fAttributeGroup: TAttributeGroupRefCTList;
-    fAnnotation: TAnnotationE;
+    fAnyAttribute: TAnyAttributeE;
   published
     property Id: TIdST read fId write fId;
     [TRequired]
     property Base: TQNameST read fBase write fBase;
-    property AnyAttribute: TAnyAttributeE read fAnyAttribute;
+    property Annotation: TAnnotationE read fAnnotation;
     property Attribute: TAttributeCTList read fAttribute;
     property AttributeGroup: TAttributeGroupRefCTList read fAttributeGroup;
-    property Annotation: TAnnotationE read fAnnotation;
+    property AnyAttribute: TAnyAttributeE read fAnyAttribute;
   end;
 
   TElementCT = class(TAnnotatedCT)
@@ -590,11 +590,11 @@ type
     fRef: TQNameST;
     fMinOccurs: TNonNegativeIntegerST;
     fMaxOccurs: TAllNNIST;
+    fSimpleType: TLocalSimpleTypeCT;
+    fComplexType: TLocalComplexTypeCT;
     fUnique: TUniqueEList;
     fKey: TKeyEList;
     fKeyref: TKeyrefEList;
-    fSimpleType: TLocalSimpleTypeCT;
-    fComplexType: TLocalComplexTypeCT;
   published
     property &Type: TQNameST read fType write fType;
     property SubstitutionGroup: TQNameST read fSubstitutionGroup write fSubstitutionGroup;
@@ -613,11 +613,11 @@ type
     property MinOccurs: TNonNegativeIntegerST read fMinOccurs write fMinOccurs;
     [TDefault(1)]
     property MaxOccurs: TAllNNIST read fMaxOccurs write fMaxOccurs;
+    property SimpleType: TLocalSimpleTypeCT read fSimpleType;
+    property ComplexType: TLocalComplexTypeCT read fComplexType;
     property Unique: TUniqueEList read fUnique;
     property Key: TKeyEList read fKey;
     property Keyref: TKeyrefEList read fKeyref;
-    property SimpleType: TLocalSimpleTypeCT read fSimpleType;
-    property ComplexType: TLocalComplexTypeCT read fComplexType;
   end;
 
   TTopLevelElementCT = class(TXmliteComplexTypeRestricted)
@@ -632,12 +632,12 @@ type
     fFinal: TDerivationSetST;
     fBlock: TBlockSetST;
     fName: TNCNameST;
-    fUnique: TUniqueEList;
-    fKey: TKeyEList;
-    fKeyref: TKeyrefEList;
     fAnnotation: TAnnotationE;
     fSimpleType: TLocalSimpleTypeCT;
     fComplexType: TLocalComplexTypeCT;
+    fUnique: TUniqueEList;
+    fKey: TKeyEList;
+    fKeyref: TKeyrefEList;
   published
     property Id: TIdST read fId write fId;
     property &Type: TQNameST read fType write fType;
@@ -652,12 +652,12 @@ type
     property Block: TBlockSetST read fBlock write fBlock;
     [TRequired]
     property Name: TNCNameST read fName write fName;
-    property Unique: TUniqueEList read fUnique;
-    property Key: TKeyEList read fKey;
-    property Keyref: TKeyrefEList read fKeyref;
     property Annotation: TAnnotationE read fAnnotation;
     property SimpleType: TLocalSimpleTypeCT read fSimpleType;
     property ComplexType: TLocalComplexTypeCT read fComplexType;
+    property Unique: TUniqueEList read fUnique;
+    property Key: TKeyEList read fKey;
+    property Keyref: TKeyrefEList read fKeyref;
   end;
 
   TLocalElementCT = class(TXmliteComplexTypeRestricted)
@@ -673,12 +673,12 @@ type
     fNillable: TBooleanST;
     fBlock: TBlockSetST;
     fForm: TFormChoiceST;
-    fUnique: TUniqueEList;
-    fKey: TKeyEList;
-    fKeyref: TKeyrefEList;
     fAnnotation: TAnnotationE;
     fSimpleType: TLocalSimpleTypeCT;
     fComplexType: TLocalComplexTypeCT;
+    fUnique: TUniqueEList;
+    fKey: TKeyEList;
+    fKeyref: TKeyrefEList;
   published
     property Id: TIdST read fId write fId;
     property Name: TNCNameST read fName write fName;
@@ -694,12 +694,12 @@ type
     property Nillable: TBooleanST read fNillable write fNillable;
     property Block: TBlockSetST read fBlock write fBlock;
     property Form: TFormChoiceST read fForm write fForm;
-    property Unique: TUniqueEList read fUnique;
-    property Key: TKeyEList read fKey;
-    property Keyref: TKeyrefEList read fKeyref;
     property Annotation: TAnnotationE read fAnnotation;
     property SimpleType: TLocalSimpleTypeCT read fSimpleType;
     property ComplexType: TLocalComplexTypeCT read fComplexType;
+    property Unique: TUniqueEList read fUnique;
+    property Key: TKeyEList read fKey;
+    property Keyref: TKeyrefEList read fKeyref;
   end;
 
   TGroupCT = class(TAnnotatedCT)
@@ -806,43 +806,43 @@ type
     fId: TIdST;
     fMinOccurs: TNonNegativeIntegerST;
     fMaxOccurs: TAllNNIST;
+    fAnnotation: TAnnotationE;
     fElement: TLocalElementCTList;
     fGroup: TGroupRefCTList;
     fChoice: TChoiceEList;
     fSequence: TSequenceEList;
     fAny: TAnyEList;
-    fAnnotation: TAnnotationE;
   published
     property Id: TIdST read fId write fId;
     [TDefault(1)]
     property MinOccurs: TNonNegativeIntegerST read fMinOccurs write fMinOccurs;
     [TDefault(1)]
     property MaxOccurs: TAllNNIST read fMaxOccurs write fMaxOccurs;
+    property Annotation: TAnnotationE read fAnnotation;
     property Element: TLocalElementCTList read fElement;
     property Group: TGroupRefCTList read fGroup;
     property Choice: TChoiceEList read fChoice;
     property Sequence: TSequenceEList read fSequence;
     property Any: TAnyEList read fAny;
-    property Annotation: TAnnotationE read fAnnotation;
   end;
 
   TSimpleExplicitGroupCT = class(TXmliteComplexTypeRestricted)
   private
     fId: TIdST;
+    fAnnotation: TAnnotationE;
     fElement: TLocalElementCTList;
     fGroup: TGroupRefCTList;
     fChoice: TChoiceEList;
     fSequence: TSequenceEList;
     fAny: TAnyEList;
-    fAnnotation: TAnnotationE;
   published
     property Id: TIdST read fId write fId;
+    property Annotation: TAnnotationE read fAnnotation;
     property Element: TLocalElementCTList read fElement;
     property Group: TGroupRefCTList read fGroup;
     property Choice: TChoiceEList read fChoice;
     property Sequence: TSequenceEList read fSequence;
     property Any: TAnyEList read fAny;
-    property Annotation: TAnnotationE read fAnnotation;
   end;
 
   TNarrowMaxMinCT = class(TXmliteComplexTypeRestricted)
@@ -861,12 +861,12 @@ type
     fForm: TFormChoiceST;
     fMinOccurs: TMinOccurs;
     fMaxOccurs: TMaxOccurs;
-    fUnique: TUniqueEList;
-    fKey: TKeyEList;
-    fKeyref: TKeyrefEList;
     fAnnotation: TAnnotationE;
     fSimpleType: TLocalSimpleTypeCT;
     fComplexType: TLocalComplexTypeCT;
+    fUnique: TUniqueEList;
+    fKey: TKeyEList;
+    fKeyref: TKeyrefEList;
   published
     property Id: TIdST read fId write fId;
     property Name: TNCNameST read fName write fName;
@@ -882,12 +882,12 @@ type
     property MinOccurs: TMinOccurs read fMinOccurs write fMinOccurs;
     [TDefault(Ord(moc1))]
     property MaxOccurs: TMaxOccurs read fMaxOccurs write fMaxOccurs;
-    property Unique: TUniqueEList read fUnique;
-    property Key: TKeyEList read fKey;
-    property Keyref: TKeyrefEList read fKeyref;
     property Annotation: TAnnotationE read fAnnotation;
     property SimpleType: TLocalSimpleTypeCT read fSimpleType;
     property ComplexType: TLocalComplexTypeCT read fComplexType;
+    property Unique: TUniqueEList read fUnique;
+    property Key: TKeyEList read fKey;
+    property Keyref: TKeyrefEList read fKeyref;
   end;
 
   TAllCT = class(TXmliteComplexTypeRestricted)
@@ -927,33 +927,33 @@ type
   private
     fName: TNCNameST;
     fRef: TQNameST;
-    fAnyAttribute: TAnyAttributeE;
     fAttribute: TAttributeCTList;
     fAttributeGroup: TAttributeGroupRefCTList;
+    fAnyAttribute: TAnyAttributeE;
   published
     property Name: TNCNameST read fName write fName;
     property Ref: TQNameST read fRef write fRef;
-    property AnyAttribute: TAnyAttributeE read fAnyAttribute;
     property Attribute: TAttributeCTList read fAttribute;
     property AttributeGroup: TAttributeGroupRefCTList read fAttributeGroup;
+    property AnyAttribute: TAnyAttributeE read fAnyAttribute;
   end;
 
   TNamedAttributeGroupCT = class(TXmliteComplexTypeRestricted)
   private
     fId: TIdST;
     fName: TNCNameST;
-    fAnyAttribute: TAnyAttributeE;
+    fAnnotation: TAnnotationE;
     fAttribute: TAttributeCTList;
     fAttributeGroup: TAttributeGroupRefCTList;
-    fAnnotation: TAnnotationE;
+    fAnyAttribute: TAnyAttributeE;
   published
     property Id: TIdST read fId write fId;
     [TRequired]
     property Name: TNCNameST read fName write fName;
-    property AnyAttribute: TAnyAttributeE read fAnyAttribute;
+    property Annotation: TAnnotationE read fAnnotation;
     property Attribute: TAttributeCTList read fAttribute;
     property AttributeGroup: TAttributeGroupRefCTList read fAttributeGroup;
-    property Annotation: TAnnotationE read fAnnotation;
+    property AnyAttribute: TAnyAttributeE read fAnyAttribute;
   end;
 
   TAttributeGroupRefCT = class(TXmliteComplexTypeRestricted)
@@ -1004,34 +1004,34 @@ type
     fId: TIdST;
     fFinal: TSimpleDerivationSetST;
     fName: TNCNameST;
+    fAnnotation: TAnnotationE;
     fRestriction: TRestrictionE;
     fList: TListE;
     fUnion: TUnionE;
-    fAnnotation: TAnnotationE;
   published
     property Id: TIdST read fId write fId;
     property Final: TSimpleDerivationSetST read fFinal write fFinal;
     [TRequired]
     property Name: TNCNameST read fName write fName;
+    property Annotation: TAnnotationE read fAnnotation;
     property Restriction: TRestrictionE read fRestriction;
     property List: TListE read fList;
     property Union: TUnionE read fUnion;
-    property Annotation: TAnnotationE read fAnnotation;
   end;
 
   TLocalSimpleTypeCT = class(TXmliteComplexTypeRestricted)
   private
     fId: TIdST;
+    fAnnotation: TAnnotationE;
     fRestriction: TRestrictionE;
     fList: TListE;
     fUnion: TUnionE;
-    fAnnotation: TAnnotationE;
   published
     property Id: TIdST read fId write fId;
+    property Annotation: TAnnotationE read fAnnotation;
     property Restriction: TRestrictionE read fRestriction;
     property List: TListE read fList;
     property Union: TUnionE read fUnion;
-    property Annotation: TAnnotationE read fAnnotation;
   end;
 
   TFacetCT = class(TAnnotatedCT)
@@ -1102,6 +1102,10 @@ type
     fElementFormDefault: TFormChoiceST;
     fId: TIdST;
     fLang: ProRock.Xmlite.Schema.Xml.TLangA;
+    fInclude: TIncludeEList;
+    fImport: TImportEList;
+    fRedefine: TRedefineEList;
+    fAnnotation: TAnnotationEList;
     fSimpleType: TSimpleTypeEList;
     fComplexType: TComplexTypeEList;
     fGroup: TGroupEList;
@@ -1109,10 +1113,6 @@ type
     fElement: TElementEList;
     fAttribute: TAttributeEList;
     fNotation: TNotationEList;
-    fAnnotation: TAnnotationEList;
-    fInclude: TIncludeEList;
-    fImport: TImportEList;
-    fRedefine: TRedefineEList;
   published
     property TargetNamespace: TAnyURIST read fTargetNamespace write fTargetNamespace;
     property Version: TTokenST read fVersion write fVersion;
@@ -1124,6 +1124,10 @@ type
     property ElementFormDefault: TFormChoiceST read fElementFormDefault write fElementFormDefault;
     property Id: TIdST read fId write fId;
     property Lang: ProRock.Xmlite.Schema.Xml.TLangA read fLang write fLang;
+    property Include: TIncludeEList read fInclude;
+    property Import: TImportEList read fImport;
+    property Redefine: TRedefineEList read fRedefine;
+    property Annotation: TAnnotationEList read fAnnotation;
     property SimpleType: TSimpleTypeEList read fSimpleType;
     property ComplexType: TComplexTypeEList read fComplexType;
     property Group: TGroupEList read fGroup;
@@ -1131,10 +1135,6 @@ type
     property Element: TElementEList read fElement;
     property Attribute: TAttributeEList read fAttribute;
     property Notation: TNotationEList read fNotation;
-    property Annotation: TAnnotationEList read fAnnotation;
-    property Include: TIncludeEList read fInclude;
-    property Import: TImportEList read fImport;
-    property Redefine: TRedefineEList read fRedefine;
   end;
 
   TAnyAttributeE = class(TWildcardCT);
@@ -1198,20 +1198,20 @@ type
   private
     fSchemaLocation: TAnyURIST;
     fId: TIdST;
+    fAnnotation: TAnnotationEList;
     fSimpleType: TSimpleTypeEList;
     fComplexType: TComplexTypeEList;
     fGroup: TGroupEList;
     fAttributeGroup: TAttributeGroupEList;
-    fAnnotation: TAnnotationEList;
   published
     [TRequired]
     property SchemaLocation: TAnyURIST read fSchemaLocation write fSchemaLocation;
     property Id: TIdST read fId write fId;
+    property Annotation: TAnnotationEList read fAnnotation;
     property SimpleType: TSimpleTypeEList read fSimpleType;
     property ComplexType: TComplexTypeEList read fComplexType;
     property Group: TGroupEList read fGroup;
     property AttributeGroup: TAttributeGroupEList read fAttributeGroup;
-    property Annotation: TAnnotationEList read fAnnotation;
   end;
 
   TImportE = class(TAnnotatedCT)
@@ -1301,6 +1301,7 @@ type
   TRestrictionE = class(TAnnotatedCT)
   private
     fBase: TQNameST;
+    fSimpleType: TLocalSimpleTypeCT;
     fMinExclusive: TMinExclusiveEList;
     fMinInclusive: TMinInclusiveEList;
     fMaxExclusive: TMaxExclusiveEList;
@@ -1313,9 +1314,9 @@ type
     fEnumeration: TEnumerationEList;
     fWhiteSpace: TWhiteSpaceEList;
     fPattern: TPatternEList;
-    fSimpleType: TLocalSimpleTypeCT;
   published
     property Base: TQNameST read fBase write fBase;
+    property SimpleType: TLocalSimpleTypeCT read fSimpleType;
     property MinExclusive: TMinExclusiveEList read fMinExclusive;
     property MinInclusive: TMinInclusiveEList read fMinInclusive;
     property MaxExclusive: TMaxExclusiveEList read fMaxExclusive;
@@ -1328,7 +1329,6 @@ type
     property Enumeration: TEnumerationEList read fEnumeration;
     property WhiteSpace: TWhiteSpaceEList read fWhiteSpace;
     property Pattern: TPatternEList read fPattern;
-    property SimpleType: TLocalSimpleTypeCT read fSimpleType;
   end;
 
   TListE = class(TAnnotatedCT)
