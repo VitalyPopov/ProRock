@@ -16,7 +16,7 @@ ProRock is a pure source library: no installation, no design-time packages, no c
 tag (tags have no `v`) next to your project:
 
 ```
-git clone --branch 1.4.0 https://github.com/VitalyPopov/ProRock ThirdParty\ProRock
+git clone --branch 1.5.0 https://github.com/VitalyPopov/ProRock ThirdParty\ProRock
 ```
 
 or download the source zip of the [latest release](https://github.com/VitalyPopov/ProRock/releases/latest).
