@@ -17,6 +17,8 @@ uses
   ProRock.Xmlite, ProRock.Xmlite.Schema.Base;
 
 type
+  [TEnumCaption('external', 'External')]
+  [TEnumCaption('internal', 'Internal')]
   [TName('ST_TargetMode')]
   TSTTargetModeST = (sttmExternal, sttmInternal);
 

@@ -25,6 +25,15 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   `CTCoreProperties`, Dublin Core `ISO639-2` as `ISO6392`, FHIR `QuantityComparator-list` as `Quantity-Comparator-List`
   (`xsi:type` values and lookups by type name) - gets `[TName]`. Two XML names that give one Delphi name
   (`Account.Coverage` and `AccountCoverage`, or names differing in case only) no longer clash: the second one gets a number
+- ProRocket Lite and Xmlite: enumeration values are written with their exact text. One-letter values came out in upper
+  case (OOXML `t="s"` written `t="S"`, which Excel rejects), OPC `TargetMode="External"` as `external`; values with
+  symbols gave items that do not compile (FHIR `<`, `>=`, `text/cql`), `true` next to `True` an identifier redeclared.
+  Items now get a valid name (`cLessEqual`, `mtTextCql`, `tfbTrue2`, `tfbEmpty` for `""`) and `[TEnumCaption]` with the
+  exact text where the name does not give it; reading takes the exact text first, then ignoring case
+- Xmlite: an attribute value with entities (`title="A &amp; B"`) was read with trailing spaces (`'A & B    '`): a start
+  tag is read twice and the value was decoded in place
+- Xmlite: attribute values were written without escaping - a `<`, `&` or `"` in a value (FHIR `comparator="&lt;="`, a
+  kept attribute read with entities) gave invalid XML
 
 ### Changed
 - Xmlite: an optional object created with its parent but absent from the data is no longer written - its required

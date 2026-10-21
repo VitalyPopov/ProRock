@@ -337,6 +337,7 @@ type
     fUnsigned: boolean;      // tkInt64: UInt64
     fIsBoolean: boolean;     // tkEnumeration based on Boolean (xs:boolean): also "1" and "0"
     fEnumNames: THashedStringList;
+    fEnumExact: TDictionary<string, integer>; // text -> value, case-sensitive: true and True are two values (OOXML)
     fBaseType: TMetaType;
     function GetEnumName(aEnumValue: integer): string;
   public
@@ -1666,18 +1667,37 @@ begin
     for var i := enums.MinValue to enums.MaxValue do
       fEnumNames.Add(GetEnumerationName(aType, i));
 
-    // custom captions
+    // custom captions - the exact XML text of an item its name does not give (t="s", "<", "text/cql", "True" next to "true",
+    // ""): found by its default caption, exactly first (generated units), else ignoring case (hand-written ones)
+    var defaultNames: TArray<string> := fEnumNames.ToStringArray;
     for var attribute: TCustomAttribute in RttiType.GetAttributes do
       if attribute.ClassType.InheritsFrom(TEnumCaptionAttribute) then
       begin
         var attrubuteEnumCaption: TEnumCaptionAttribute := TEnumCaptionAttribute(attribute);
-        if attrubuteEnumCaption.Caption.IsEmpty or attrubuteEnumCaption.CustomCaption.IsEmpty then
+        if attrubuteEnumCaption.Caption.IsEmpty then
           Continue;
 
-        var elementIndex: integer := fEnumNames.IndexOf(attrubuteEnumCaption.Caption);
-        if (elementIndex >= 0) and (fEnumNames.IndexOf(attrubuteEnumCaption.CustomCaption) < 0) then
+        var elementIndex: integer := -1;
+        for var i := 0 to High(defaultNames) do
+          if defaultNames[i] = attrubuteEnumCaption.Caption then
+          begin
+            elementIndex := i;
+            break;
+          end;
+        if elementIndex < 0 then
+          for var i := 0 to High(defaultNames) do
+            if SameText(defaultNames[i], attrubuteEnumCaption.Caption) then
+            begin
+              elementIndex := i;
+              break;
+            end;
+        if elementIndex >= 0 then
           fEnumNames[elementIndex] := attrubuteEnumCaption.CustomCaption;
       end;
+
+    fEnumExact := TDictionary<string, integer>.Create;
+    for var i := 0 to fEnumNames.Count - 1 do
+      fEnumExact.TryAdd(fEnumNames[i], i); // the first one wins
   end;
 
   fValuesAliases := TDualDictionary<variant, string>.Create;
@@ -1689,13 +1709,17 @@ end;
 destructor TMetaType.Destroy;
 begin
   fValuesAliases.Free;
+  fEnumExact.Free;
   fEnumNames.Free;
   inherited;
 end;
 
 function TMetaType.EnumValueDef(const aEnumName: string; aDefault: integer): integer;
 begin
-  var enumIndex: integer := fEnumNames.IndexOf(aEnumName);
+  // the exact text first (true and True are two values), then ignoring case - lenient for data written by hand
+  var enumIndex: integer;
+  if (fEnumExact = nil) or not fEnumExact.TryGetValue(aEnumName, enumIndex) then
+    enumIndex := fEnumNames.IndexOf(aEnumName);
   if (enumIndex < 0) and fIsBoolean then // xs:boolean: true, false, 1, 0 (Excel and SOAP headers write 1)
     if aEnumName = '1' then
       enumIndex := Ord(True)

@@ -1179,12 +1179,15 @@ begin
   end;
 end;
 
+// the value escaped like text (<, &, " and line breaks): FHIR comparator="&lt;=", a kept attribute read with entities
 procedure TWriterXmlite.WriteAttribute(const aName, aValue, aPrefix: string);
 begin
   if aPrefix.IsEmpty then
-    Write(' %s="%s"', [aName, aValue])
+    Write(' %s="', [aName])
   else
-    Write(' %s:%s="%s"', [aPrefix, aName, aValue]);
+    Write(' %s:%s="', [aPrefix, aName]);
+  AddXmlEscape(aValue);
+  Write('"');
 end;
 
 procedure TWriterXmlite.WriteAttributes(aObject: TBasite; aNamespaces: boolean);

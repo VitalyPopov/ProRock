@@ -380,9 +380,15 @@ begin
   if not TReaderXmlite.MoveToChar(aCursor, quoteChar) then
     Exit; // no closing quote found
 
-  aCursor^ := #0; // temporarily terminate the string
-  Result := ReadUnescapeInPlace(valueStart); // process the value
-  aCursor^ := quoteChar; // restore the closing quote
+  // a start tag is read more than once (its xmlns declarations first, then its attributes): a value with entities is
+  // decoded from a copy - decoding in place left the shortened value padded with spaces for the next read ("&lt;" was
+  // read as "<   " the second time)
+  SetString(Result, valueStart, aCursor - valueStart);
+  if Result.IndexOf('&') >= 0 then
+  begin
+    var copyCursor: PChar := PChar(Result);
+    Result := ReadUnescapeInPlace(copyCursor);
+  end;
 
   Inc(aCursor); // move past the closing quote
 end;
