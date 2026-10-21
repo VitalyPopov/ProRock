@@ -30,6 +30,12 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   symbols gave items that do not compile (FHIR `<`, `>=`, `text/cql`), `true` next to `True` an identifier redeclared.
   Items now get a valid name (`cLessEqual`, `mtTextCql`, `tfbTrue2`, `tfbEmpty` for `""`) and `[TEnumCaption]` with the
   exact text where the name does not give it; reading takes the exact text first, then ignoring case
+- ProRocket Lite: generated units that did not compile - a class declared before the class it derives from (FHIR:
+  `Element`, used by most types); an enumeration longer than Delphi's line limit of 1023 characters (OOXML
+  `ST_PresetColorVal`, now wrapped at the unit width); a field with the name of another member (`fScore` for `score` and
+  the property `FScore` of `fScore`: now `fScore_`); a member named like one ProRock relies on (OOXML `assign`: now
+  `Assign_`, its XML name kept; `Assign`, `Free`, `Create`, `Destroy`, `Clear`, `ToXml`, `FromXml`). FHIR R4 and the
+  SpreadsheetML/DrawingML schemas generate units that compile (SpreadsheetML except its lists of simple values)
 - Xmlite: an attribute value with entities (`title="A &amp; B"`) was read with trailing spaces (`'A & B    '`): a start
   tag is read twice and the value was decoded in place
 - Xmlite: attribute values were written without escaping - a `<`, `&` or `"` in a value (FHIR `comparator="&lt;="`, a

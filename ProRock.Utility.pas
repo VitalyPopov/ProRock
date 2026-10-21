@@ -134,6 +134,8 @@ type
     constructor Create(aIndent: cardinal = cBasiteWriterDefaultIndent; aWidth: cardinal = 0; aLevel: cardinal = 0); overload;
 
     property Indent: cardinal read fIndent write fIndent;
+    property Level: cardinal read fLevel;
+    property Width: cardinal read fWidth; // 0: no limit
     property Text: string read GetText; // not empty only if BaseStream is TStringStream
 
     procedure IncLevel; inline;
