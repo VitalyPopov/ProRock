@@ -279,6 +279,7 @@ type
   private
     fInput: TTParamCT;
   published
+    [TRequired]
     property Input: TTParamCT read fInput;
   end;
 
@@ -287,6 +288,7 @@ type
   private
     fOutput: TTParamCT;
   published
+    [TRequired]
     property Output: TTParamCT read fOutput;
   end;
 

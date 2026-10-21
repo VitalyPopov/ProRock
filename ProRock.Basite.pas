@@ -80,12 +80,25 @@ type
   TMetaBasiteList = class;
   TBasiteClass = class of TBasite;
 
+  TProperty = class;
+
   TBasite = class abstract(TPersistent)
   private
     class var fAutoInitMaxDepth: cardinal;
 
     class constructor Create;
     class procedure SetAutoInitMaxDepth(aValue: cardinal); static;
+  private
+    // presence: a property read from the data or marked by SetPresent, also when its value equals the default (count="0") -
+    // one bit per TProperty.Index: properties 0..63 inline, 64 and above in fPresentMore (created when one of them is marked)
+    fPresent: UInt64;
+    fPresentMore: TArray<UInt64>;
+
+    function GetPresentBit(aIndex: integer): boolean; inline;
+    procedure SetPresentBit(aIndex: integer; aPresent: boolean);
+    function FindProperty(aField: Pointer; out aProperty: TProperty): boolean; overload;
+    function FindProperty(const aName: string; out aProperty: TProperty): boolean; overload;
+    function GetPresent(aField: Pointer): boolean;
   public
     class function ClassParent: TBasiteClass; inline;
     class function Meta: TMetaBasite;
@@ -108,9 +121,28 @@ type
     destructor Destroy; override;
 
     function ClassType: TBasiteClass;
-    procedure Clear; virtual;
+    procedure Clear; overload; virtual;
     function IsEmptyOrDefault: boolean; virtual;
     function AssignProperty(const aName, aValue: string): boolean; inline;
+
+    // Presence - absent vs default. A property is present when it was read from the data, marked by SetPresent, its value
+    // is not the default, or (an object) it has content: exactly what a writer writes (besides required ones). Assignments
+    // in code are not seen (properties write their fields), so a value equal to its default set in code needs SetPresent.
+    // A property is given by its field-backed property's address (@Patient.Gender) or by its Basite name; a wrong one (not
+    // a property of this very object, an unknown name) is skipped: the functions return False
+    property Present[aField: Pointer]: boolean read GetPresent;
+    function IsPresent(const aName: string): boolean; overload;
+    function IsPresent(aProperty: TProperty): boolean; overload;
+    // marks a property present - its value stays as it is: Patient.Count := 0; Patient.SetPresent(@Patient.Count)
+    function SetPresent(aField: Pointer): boolean; overload;
+    function SetPresent(const aName: string): boolean; overload;
+    function SetPresent(aProperty: TProperty): boolean; overload;
+    // removes a property: its default value (an object cleared, a list emptied) and absent
+    function Clear(aField: Pointer): boolean; overload;
+    function Clear(const aName: string): boolean; overload;
+    function Clear(aProperty: TProperty): boolean; overload;
+    // anything present in the object: what makes an optional object written
+    function HasContent: boolean; virtual;
   end;
 
   PBasite = ^TBasite;
@@ -136,10 +168,12 @@ type
   private
     fParentMeta: TMetaBasite;
     fName: string;
+    fIndex: integer;
     fMeta: TMeta;
     fRttiProperty: TRttiProperty;
     fPropertyType: TPropertyType;
     fIsInherited: boolean;
+    fRequired: boolean;
     fExtensions: TObjectList<TPropertyExtension>;
 
     fFieldOffset: cardinal;
@@ -152,10 +186,12 @@ type
 
     property ParentMeta: TMetaBasite read fParentMeta;
     property Name: string read fName;
+    property Index: integer read fIndex; // position in the class's Meta.Properties (its presence bit)
     property RttiProperty: TRttiProperty read fRttiProperty;
     property Meta: TMeta read fMeta;
     property PropertyType: TPropertyType read fPropertyType;
     property IsInherited: boolean read fIsInherited;
+    property Required: boolean read fRequired; // [TRequired]: written even when absent
     property Extensions: TObjectList<TPropertyExtension> read fExtensions; // todo: needs protection
 
     function DataPointer(aObject: TBasite): Pointer; inline;
@@ -184,7 +220,6 @@ type
     TSetterString = procedure(const aValue: string) of object;
   private
     fDefault: variant;
-    fRequired: boolean;
 
     function MethodAddress(aObject: TBasite; aMethod: Pointer): Pointer; inline;
     function GetterMethod(aObject: TBasite): TMethod; inline;
@@ -208,8 +243,7 @@ type
       aNaming: TNaming = cBasiteDefaultNaming); override;
 
     property Meta: TMetaType read GetMeta;
-    property Value[aObject: TBasite]: string read GetValue write SetValue;
-    property Required: boolean read fRequired;
+    property Value[aObject: TBasite]: string read GetValue write SetValue; // a value set here is present
 
     procedure SetDefaultValue(aObject: TBasite);
     function ValueIsDefault(aObject: TBasite): boolean;
@@ -585,6 +619,9 @@ end;
 
 procedure TBasite.Clear;
 begin
+  fPresent := 0;
+  fPresentMore := nil;
+
   for var propertyInfo: TProperty in Meta.Properties do
     case propertyInfo.PropertyType of
       ptBasiteList:
@@ -677,6 +714,156 @@ procedure TBasite.Initialize;
 begin
 end;
 
+function TBasite.GetPresentBit(aIndex: integer): boolean;
+begin
+  if aIndex < 64 then
+    Result := fPresent and (UInt64(1) shl aIndex) <> 0
+  else if (aIndex shr 6) - 1 < Length(fPresentMore) then
+    Result := fPresentMore[(aIndex shr 6) - 1] and (UInt64(1) shl (aIndex and 63)) <> 0
+  else
+    Result := False;
+end;
+
+procedure TBasite.SetPresentBit(aIndex: integer; aPresent: boolean);
+begin
+  if aIndex < 64 then
+  begin
+    if aPresent then
+      fPresent := fPresent or (UInt64(1) shl aIndex)
+    else
+      fPresent := fPresent and not (UInt64(1) shl aIndex);
+    Exit;
+  end;
+
+  var word: integer := (aIndex shr 6) - 1;
+  if word >= Length(fPresentMore) then
+  begin
+    if not aPresent then
+      Exit;
+    SetLength(fPresentMore, word + 1); // new words are zero
+  end;
+
+  if aPresent then
+    fPresentMore[word] := fPresentMore[word] or (UInt64(1) shl (aIndex and 63))
+  else
+    fPresentMore[word] := fPresentMore[word] and not (UInt64(1) shl (aIndex and 63));
+end;
+
+// the field of a field-backed property (@Patient.Gender): its offset in this object - a field of another object (even a nested
+// one, @Patient.Gender.Value) is never inside this object's memory, so it is not found
+function TBasite.FindProperty(aField: Pointer; out aProperty: TProperty): boolean;
+begin
+  var offset: NativeInt := NativeInt(aField) - NativeInt(Self);
+  if (offset <= 0) or (offset >= InstanceSize) then
+    Exit(False);
+
+  for var propertyInfo: TProperty in Meta.Properties do
+    if (NativeInt(propertyInfo.fFieldOffset) = offset) and (propertyInfo.PropertyType <> ptNotSupported) then
+    begin
+      aProperty := propertyInfo;
+      Exit(True);
+    end;
+  Result := False;
+end;
+
+function TBasite.FindProperty(const aName: string; out aProperty: TProperty): boolean;
+begin
+  Result := Meta.Properties.Get(aName, aProperty);
+end;
+
+function TBasite.GetPresent(aField: Pointer): boolean;
+begin
+  var propertyInfo: TProperty;
+  Result := FindProperty(aField, propertyInfo) and IsPresent(propertyInfo);
+end;
+
+function TBasite.IsPresent(const aName: string): boolean;
+begin
+  var propertyInfo: TProperty;
+  Result := FindProperty(aName, propertyInfo) and IsPresent(propertyInfo);
+end;
+
+function TBasite.IsPresent(aProperty: TProperty): boolean;
+begin
+  if GetPresentBit(aProperty.fIndex) then
+    Exit(True);
+
+  case aProperty.PropertyType of
+    ptData:
+      Result := not TPropertyData(aProperty).ValueIsDefault(Self);
+    ptBasite:
+      begin
+        var propertyObject: TBasite := TPropertyBasite(aProperty).ObjectPointer(Self)^;
+        Result := (propertyObject <> nil) and propertyObject.HasContent;
+      end;
+    ptBasiteList:
+      begin
+        var propertyList: TBasiteList := TPropertyBasiteList(aProperty).ObjectPointer(Self)^;
+        Result := (propertyList <> nil) and (propertyList.Count > 0);
+      end;
+  else
+    Result := False;
+  end;
+end;
+
+function TBasite.SetPresent(aField: Pointer): boolean;
+begin
+  var propertyInfo: TProperty;
+  Result := FindProperty(aField, propertyInfo) and SetPresent(propertyInfo);
+end;
+
+function TBasite.SetPresent(const aName: string): boolean;
+begin
+  var propertyInfo: TProperty;
+  Result := FindProperty(aName, propertyInfo) and SetPresent(propertyInfo);
+end;
+
+function TBasite.SetPresent(aProperty: TProperty): boolean;
+begin
+  Result := aProperty <> nil;
+  if Result then
+    SetPresentBit(aProperty.fIndex, True);
+end;
+
+function TBasite.Clear(aField: Pointer): boolean;
+begin
+  var propertyInfo: TProperty;
+  Result := FindProperty(aField, propertyInfo) and Clear(propertyInfo);
+end;
+
+function TBasite.Clear(const aName: string): boolean;
+begin
+  var propertyInfo: TProperty;
+  Result := FindProperty(aName, propertyInfo) and Clear(propertyInfo);
+end;
+
+function TBasite.Clear(aProperty: TProperty): boolean;
+begin
+  Result := aProperty <> nil;
+  if not Result then
+    Exit;
+
+  case aProperty.PropertyType of
+    ptData:
+      TPropertyData(aProperty).SetDefaultValue(Self);
+    ptBasite:
+      if TPropertyBasite(aProperty).ObjectPointer(Self)^ <> nil then
+        TPropertyBasite(aProperty).ObjectPointer(Self).Clear;
+    ptBasiteList:
+      if TPropertyBasiteList(aProperty).ObjectPointer(Self)^ <> nil then
+        TPropertyBasiteList(aProperty).ObjectPointer(Self).Clear;
+  end;
+  SetPresentBit(aProperty.fIndex, False);
+end;
+
+function TBasite.HasContent: boolean;
+begin
+  for var propertyInfo: TProperty in Meta.Properties do
+    if IsPresent(propertyInfo) then
+      Exit(True);
+  Result := False;
+end;
+
 function TBasite.IsEmptyOrDefault: boolean;
 begin
   Result := True;
@@ -727,11 +914,10 @@ end;
 constructor TProperty.Create(aParentMeta: TMetaBasite; aProperty: TRttiProperty; aIsInherited: boolean; aNaming: TNaming);
 begin
   for var attribute: TCustomAttribute in aProperty.GetAttributes do
-    if attribute.ClassType = TNameAttribute then
-    begin
-      fName := TNameAttribute(attribute).CustomName;
-      break;
-    end;
+    if (attribute.ClassType = TNameAttribute) and fName.IsEmpty then
+      fName := TNameAttribute(attribute).CustomName
+    else if attribute.ClassType = TRequiredAttribute then
+      fRequired := True;
   if fName.IsEmpty then
     fName := TUtility.FromPascalCase(aProperty.Name, aNaming);
 
@@ -787,9 +973,7 @@ begin
         fDefault := defaultAttribute.DefaultValue;
 
       defaultIsDefined := True;
-    end
-    else if attribute.ClassType = TRequiredAttribute then
-      fRequired := True;
+    end;
 
   if not defaultIsDefined then
     case fRttiProperty.PropertyType.TypeKind of
@@ -1101,6 +1285,8 @@ begin
     tkEnumeration:
       WriteOrdinal(aObject, fieldData, Meta.EnumValueDef(value, fDefault));
   end;
+
+  aObject.SetPresentBit(fIndex, True);
 end;
 
 function TPropertyData.ValueIsDefault(aObject: TBasite): boolean;
@@ -1251,6 +1437,7 @@ end;
 
 function TPropertyList.Add(aProperty: TProperty): integer;
 begin
+  aProperty.fIndex := Count;
   fHashedList.AddOrSetValue(aProperty.Name, aProperty);
   Result := inherited Add(aProperty)
 end;

@@ -5,6 +5,29 @@ number since 1.1.0.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versions follow [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+- Presence - absent vs default. A value read from a document is written back also when it equals its default
+  (`count="0"`, `<gender value="male"/>`, an Excel fill with only defaults), and you can tell an absent value from a
+  default one: `Patient.Present[@Patient.Gender]`. `SetPresent(@Obj.X)` marks a value set in code as present
+  (`Count := 0` alone stays "not set": assignments are not seen), `Clear(@Obj.X)` removes a value - its default and absent.
+  A property is given by the address of its field-backed property, or by name (`SetPresent('count')`) for one with a
+  getter; a wrong one is skipped (`False`), no exception. Every object keeps one 64-bit word of presence bits (more only
+  for classes with more than 64 properties)
+
+### Changed
+- Xmlite: an optional object created with its parent but absent from the data is no longer written - its required
+  attributes made it appear (`<drawing r:id=""/>`); one with only default values, read from the data, no longer vanishes;
+  list items and the root are always written (`<fill/>`); a required object element (`[TRequired]`, now generated for
+  object elements too) is written also when empty. A child element with a default value no longer makes its absent
+  parent appear as an empty `<a></a>`
+- Xmlite: a value read from a document stays present when code assigns its default: `Title.XmlValue := ''` writes an
+  empty `<dc:title></dc:title>`, 1.4 removed the element. To remove a value, `Clear(@Properties.Title)` (the
+  DocumentProperties sample does so for empty fields)
+- Xmlite: `Clear` of an Xmlite object also clears its kept content (`XmlText`, `XmlAny`, unknown attributes) - a document
+  read into a used object no longer keeps any of the previous one
+
 ## [1.4.1] - 2026-10-18
 
 Fixes found by generating the OOXML schemas (SpreadsheetML, DrawingML) and FHIR R4: default values that made every `ToXml`

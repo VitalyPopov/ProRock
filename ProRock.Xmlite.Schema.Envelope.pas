@@ -54,6 +54,7 @@ type
     fBody: TBodyE;
   published
     property Header: THeaderE read fHeader;
+    [TRequired]
     property Body: TBodyE read fBody;
   end;
 

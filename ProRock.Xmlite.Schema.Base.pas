@@ -976,6 +976,7 @@ type
   published
     [TRequired]
     property Name: TNCNameST read fName write fName;
+    [TRequired]
     property Selector: TSelectorE read fSelector;
     property Field: TFieldEList read fField;
   end;

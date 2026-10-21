@@ -72,6 +72,7 @@ type
     fBody: TBodyE;
   published
     property Header: THeaderE read fHeader;
+    [TRequired]
     property Body: TBodyE read fBody;
   end;
 
@@ -89,7 +90,9 @@ type
     fRole: ProRock.Xmlite.Schema.Base.TAnyURIST;
     fDetail: TDetailCT;
   published
+    [TRequired]
     property Code: TFaultcodeCT read fCode;
+    [TRequired]
     property Reason: TFaultreasonCT read fReason;
     [TXmliteElement]
     property Node: ProRock.Xmlite.Schema.Base.TAnyURIST read fNode write fNode;

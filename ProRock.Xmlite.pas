@@ -108,7 +108,9 @@ type
     // that is not a registered complex type derived from the element's type
     procedure SetXsiType(aType: TClass);
 
+    procedure Clear; overload; override;
     function IsEmptyOrDefault: boolean; override;
+    function HasContent: boolean; override;
   end;
 
   TXmliteList<T: TXmlite, constructor> = class(TBasiteList<T>);
@@ -758,6 +760,7 @@ begin
               aCursor := cursorStart;
               fieldObject.FromXml(aCursor, aXmlns);
             end;
+            SetPresent(propertyElement); // also when all its values are defaults (<fill/>)
           end;
         ptBasiteList:
           begin
@@ -781,18 +784,20 @@ begin
               objectListItem.FromXml(aCursor, aXmlns);
             end;
             propertyObjectList.ObjectPointer(Self).Add(objectListItem);
+            SetPresent(propertyElement);
           end;
       end;
   end;
 end;
 
+// the tag of an element that is written (its parent decided it is present): with content, or empty
 function TBasiteHelper.TagType: TTagType;
 begin
-  Result := xttNone;
+  Result := xttEmpty;
 
   // simpleContent: text is written whenever the element is (<amount currency="EUR">0</amount>, never <amount currency="EUR"/>)
   var textProperty: TPropertyData := Meta.Xmlite.TextProperty;
-  if Assigned(textProperty) and (textProperty.Required or not textProperty.ValueIsDefault(Self)) then
+  if Assigned(textProperty) and (textProperty.Required or IsPresent(textProperty)) then
     Exit(xttOpenClose);
 
   if Meta.Xmlite.ProcessAnyElement and (TXmlite(Self).XmlAny.Count > 0) then
@@ -802,28 +807,14 @@ begin
   if Meta.Xmlite.IsTXmlite and not TXmlite(Self).XmlText.IsEmpty then
     Exit(xttOpenClose);
 
+  // the same test as ToXml makes for each child element
   for var propertyInfo: TProperty in Meta.Xmlite.Elements.Values do
-    case propertyInfo.PropertyType of
-      ptData:
-        if TPropertyData(propertyInfo).Required or not TPropertyData(propertyInfo).Value[Self].IsEmpty then
-          Exit(xttOpenClose);
-      ptBasite:
-        if (TPropertyBasite(propertyInfo).ObjectPointer(Self)^ <> nil) and
-          (not TPropertyBasite(propertyInfo).ObjectPointer(Self).IsEmptyOrDefault) then
-          Exit(xttOpenClose);
-      ptBasiteList:
-        if (TPropertyBasiteList(propertyInfo).ObjectPointer(Self)^ <> nil) and
-          (TPropertyBasiteList(propertyInfo).ObjectPointer(Self).Count > 0) then
-          Exit(xttOpenClose);
-    end;
+    if ((propertyInfo.PropertyType <> ptBasite) or (TPropertyBasite(propertyInfo).ObjectPointer(Self)^ <> nil)) and
+      (propertyInfo.Required or IsPresent(propertyInfo)) then
+      Exit(xttOpenClose);
 
-  for var attribute: TProperty in Meta.Xmlite.Attributes.Values do
-    if (attribute.ClassType = TPropertyData) and
-      (TPropertyData(attribute).Required or not TPropertyData(attribute).ValueIsDefault(Self)) then
-      if Assigned(textProperty) then
-        Exit(xttOpenClose)
-      else
-        Exit(xttEmpty);
+  if Assigned(textProperty) then
+    Exit(xttOpenClose);
 end;
 
 procedure TBasiteHelper.ToXml(aWriter: TWriterXmlite; const aName: string; aScope: TNamespace; aNamespaces, aXmlHeader: boolean);
@@ -878,17 +869,18 @@ begin
             ptData:
               begin
                 var propertyData: TPropertyData := TPropertyData(propertyElement);
-                if propertyData.Required or not propertyData.ValueIsDefault(Self) then
+                if propertyData.Required or IsPresent(propertyData) then
                   aWriter.AddTextNode(elementName(propertyElement, scope), propertyData.Value[Self], propertyData);
               end;
             ptBasite:
               begin
+                // a pre-created object is written only when present (read, marked, or with content) or required - its own
+                // required values do not make it present (<drawing r:id=""/> was written though absent)
                 var propertyBasite: TPropertyBasite := TPropertyBasite(propertyElement);
                 var fieldObject: TBasite := propertyBasite.ObjectPointer(Self)^;
-                if fieldObject = nil then
+                if (fieldObject = nil) or not (propertyBasite.Required or IsPresent(propertyBasite)) then
                   Continue;
-                if propertyBasite.Meta.ClassItself.InheritsFrom(TXmliteTextElement) and
-                  not TXmliteTextElement(fieldObject).IsEmptyOrDefault then
+                if propertyBasite.Meta.ClassItself.InheritsFrom(TXmliteTextElement) then
                   aWriter.AddTextNode(elementName(propertyElement, scope), TXmliteTextElement(fieldObject).xmlText,
                     TMetaBasiteXmliteText(fieldObject.Meta.Xmlite).xmlTextProperty, fieldObject)
                 else
@@ -896,13 +888,13 @@ begin
               end;
             ptBasiteList:
               begin
+                // list items are always written - an item with only defaults too (<fill/>: Excel refers to it by index)
                 var propertyBasiteList: TPropertyBasiteList := TPropertyBasiteList(propertyElement);
                 var list: TBasiteList := propertyBasiteList.ObjectPointer(Self)^;
                 if list = nil then
                   Continue;
                 for var i := 0 to list.Count - 1 do
-                  if propertyBasiteList.Meta.ItemMeta.ClassItself.InheritsFrom(TXmliteTextElement) and
-                    not TXmliteTextElement(list[i]).IsEmptyOrDefault then
+                  if propertyBasiteList.Meta.ItemMeta.ClassItself.InheritsFrom(TXmliteTextElement) then
                     aWriter.AddTextNode(elementName(propertyElement, scope), TXmliteTextElement(list[i]).xmlText,
                       TMetaBasiteXmliteText(list[i].Meta.Xmlite).xmlTextProperty, list[i])
                   else
@@ -962,7 +954,7 @@ function TBasiteHelper.GetXmlns: string;
 
     procedure AddPropertyDataXmlns(aXmlnsList: THashedObjectList<TNamespace>; aPropertyData: TPropertyData; aObject: TBasite); inline;
     begin
-      if not aPropertyData.Required and aPropertyData.ValueIsDefault(aObject) then
+      if not aPropertyData.Required and not aObject.IsPresent(aPropertyData) then
         Exit;
 
       aXmlnsList.Add(aPropertyData.Xmlite.Namespace);
@@ -977,7 +969,7 @@ function TBasiteHelper.GetXmlns: string;
     for var attribute: TPropertyData in aObject.Meta.Xmlite.Attributes.Values do
     begin
       AddPropertyDataXmlns(aXmlnsList, attribute, aObject);
-      if attribute.Xmlite.Qualified and (attribute.Required or not attribute.ValueIsDefault(aObject)) then
+      if attribute.Xmlite.Qualified and (attribute.Required or aObject.IsPresent(attribute)) then
         aPrefixed.Add(attribute.Xmlite.Namespace);
     end;
 
@@ -991,7 +983,7 @@ function TBasiteHelper.GetXmlns: string;
         ptBasite:
           begin
             var propertyObject: TBasite := TPropertyBasite(element).ObjectPointer(aObject)^;
-            if (propertyObject <> nil) and not propertyObject.IsEmptyOrDefault then
+            if (propertyObject <> nil) and (element.Required or aObject.IsPresent(element)) then
               FillXmlnsList(aXmlnsList, aPrefixed, aKept, propertyObject, aScope);
           end;
         ptBasiteList:
@@ -1201,7 +1193,7 @@ begin
     Write(aObject.GetXmlns); // todo: optimize
 
   for var attribute: TPropertyData in aObject.Meta.Xmlite.Attributes.Values do
-    if attribute.Required or not attribute.ValueIsDefault(aObject) then
+    if attribute.Required or aObject.IsPresent(attribute) then
       if (attribute.Xmlite.Namespace = attribute.ParentMeta.Xmlite.Namespace) and not attribute.Xmlite.Qualified then
         WriteAttribute(attribute.Xmlite.Name, attribute.Value[aObject])
       else
@@ -1248,10 +1240,24 @@ begin
   fXmlAny := TBasiteList<TBasite>.Create;
 end;
 
+procedure TXmlite.Clear;
+begin
+  inherited;
+  fXmlText := '';
+  fXmlAny.Clear;
+  fXmlAttributes.Clear;
+  fXmlAttributeNamespaces.Clear;
+end;
+
 function TXmlite.IsEmptyOrDefault: boolean;
 begin
   // content kept in xs:any or as not described attributes is content as well
   Result := inherited and fXmlText.IsEmpty and (fXmlAny.Count = 0) and (fXmlAttributes.Count = 0);
+end;
+
+function TXmlite.HasContent: boolean;
+begin
+  Result := not fXmlText.IsEmpty or (fXmlAny.Count > 0) or (fXmlAttributes.Count > 0) or inherited;
 end;
 
 procedure TXmlite.SetXsiType(aType: TClass);

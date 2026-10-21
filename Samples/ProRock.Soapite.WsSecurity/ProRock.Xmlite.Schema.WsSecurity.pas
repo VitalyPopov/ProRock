@@ -97,6 +97,7 @@ type
     fUsername: TAttributedStringCT;
   published
     property Id: ProRock.Xmlite.Schema.WsSecurityUtility.TIdA read fId write fId;
+    [TRequired]
     property Username: TAttributedStringCT read fUsername;
   end;
 
