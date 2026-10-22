@@ -48,7 +48,7 @@ You get two units:
 ```
 MyApp  MyApp.dproj
   Generated\          the generated units - regenerate them, never edit by hand
-  ThirdParty\ProRock\ the ProRock release named in the unit header
+  ThirdParty\ProRock\ the ProRock release named in the unit header (its units in Source\)
 ```
 
 Add `ThirdParty\ProRock\Source;Generated` to the project's search path in the **Base** configuration
