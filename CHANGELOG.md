@@ -5,6 +5,13 @@ number since 1.1.0.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versions follow [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Fixed
+- Delphi 10.3: lists did not own their items, so every list item - read from a document or added in code - was never freed.
+  `TBasiteList<T>` called a plain `inherited`, which on 10.3 reached `TList<T>.Create` (10.3's `TObjectList<T>` has no
+  parameterless constructor). Delphi 10.4 and later were not affected
+
 ## [1.5.0] - 2026-10-22
 
 Exact round trips: a document read and written back keeps what its schema describes - values equal to their default, enumeration texts, type

@@ -895,7 +895,9 @@ end;
 
 constructor TBasiteList<T>.Create;
 begin
-  inherited;
+  // explicitly owning: Delphi 10.3's TObjectList<T> has no parameterless constructor, a plain inherited reached
+  // TList<T>.Create there - the items were never freed
+  inherited Create(True);
 end;
 
 function TBasiteList<T>.IsEmpty: boolean;
