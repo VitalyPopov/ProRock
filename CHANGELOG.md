@@ -7,11 +7,11 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 
 ## [1.5.0] - 2026-10-22
 
-Exact round trips: a document read and written back keeps what its schema describes - values equal to their default,
-enumeration texts, type names, the schema's element order - and you can tell an absent value from a default one
-(`Present`, `SetPresent`, `Clear`). FHIR R4 and the OOXML SpreadsheetML/DrawingML schemas generate units that compile (OOXML
-except lists of plain values); unknown elements, such as Office's own extensions, are still dropped. The units moved to `Source\` - the one setup change. Verified on Delphi
-10.3 to 13, Win32 and Win64. Development of this release was assisted by Claude Code (Anthropic).
+Exact round trips: a document read and written back keeps what its schema describes - values equal to their default, enumeration texts, type
+names, the schema's element order - and you can tell an absent value from a default one (`Present`, `SetPresent`, `Clear`). FHIR R4 and the
+OOXML SpreadsheetML/DrawingML schemas generate units that compile (OOXML except lists of plain values); unknown elements, such as Office's
+own extensions, are still dropped. The units moved to `Source\` - the one setup change. Verified on Delphi 10.3 to 13, Win32 and Win64.
+Development of this release was assisted by Claude Code (Anthropic).
 
 ### Added
 - Presence - absent vs default. A value read from a document is written back also when it equals its default
