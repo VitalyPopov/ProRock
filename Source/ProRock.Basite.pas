@@ -8,7 +8,7 @@ uses System.Classes, System.Rtti, Generics.Collections, System.SysUtils, System.
   ProRock.Utility;
 
 const
-  cProRockVersion = '1.5.0';
+  cProRockVersion = '1.5.1';
 
   // TBasite.AutoInitMaxDepth range: 1 - library code relies on non-recursive paths (e.g. Envelope.Body); 5 - pre-created objects
   // grow as (self-references per type) ^ depth, so higher values only eat memory
@@ -1617,8 +1617,7 @@ end;
 
 function TMetaBasiteList.CreateList: TBasiteList;
 begin
-  // a constructor call without RTTI (its Invoke is several times slower): `class of TBasiteList<T>` is refused (E2021), so the virtual
-  // Create is called on a new instance - the list class's own Create, its slot is the same in every TBasiteList<T>
+  // class of TBasiteList<T> is refused (E2021): the virtual Create runs on a new instance
   Result := TBasiteList(ClassItself.NewInstance);
   try
     Result.Create;

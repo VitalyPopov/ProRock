@@ -5,7 +5,10 @@ number since 1.1.0.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versions follow [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [1.5.1] - 2026-10-24
+
+A fix for Delphi 10.3 - lists never freed their items - and faster object creation. Units generated with 1.5.0 work
+unchanged, there is nothing to regenerate. Verified on Delphi 10.3 to 13, Win32 and Win64.
 
 ### Changed
 - Faster object creation: the lists of an object are created without RTTI method calls - about 3x faster for an object
