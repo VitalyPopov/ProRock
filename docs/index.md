@@ -16,6 +16,9 @@ then have to be found and fixed one by one. With ProRock you regenerate the unit
 **ProRock** - the runtime library. Open source (Apache 2.0), pure Delphi source, no dependencies beyond the RTL, no packages
 to install.
 
+- [Basite](xmlite.md#under-the-hood): the core - plain Delphi objects described once by their metadata (MetaBank): nested
+  objects created and freed with their parent, presence of every value. Independent of any data format, the base for Xmlite
+  and later Jsonite
 - [Xmlite](xmlite.md): XML parsing and serialization to and from plain Delphi objects, namespace- and schema-aware. Parsing works
   in place on the text, without building a DOM
 - [Soapite](soapite.md): SOAP 1.1 / 1.2 clients on top of Xmlite, generated from WSDL, with typed requests, responses and faults

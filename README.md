@@ -9,6 +9,8 @@ A schema changes: a new e-invoicing version, an ISO 20022 release, a service add
 then have to be found and fixed one by one. With ProRock you regenerate the units, and the compiler shows exactly what changed.
 
 - **ProRock** - the runtime library: open source (Apache 2.0), pure Delphi source, no dependencies beyond the RTL
+  - **Basite** - the core: plain Delphi objects described once by their metadata (MetaBank) - nested objects created and
+    freed with their parent, presence of every value; independent of any data format, the base for Xmlite and later Jsonite
   - **Xmlite** - XML parsing and serialization to and from plain Delphi objects, namespace- and schema-aware, without a DOM
   - **Soapite** - SOAP 1.1 / 1.2 clients on top of Xmlite, generated from WSDL
 - **ProRocket Lite** - the code generator: XSD/WSDL in, Delphi units out, in a GUI and from the command line - friendly to

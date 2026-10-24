@@ -724,7 +724,7 @@ begin
     if propertyElement = nil then // as a fallback - try to find such property without tag
       propertyElement := Meta.Xmlite.Elements[TUriedName.Create('', tagName)];
 
-    // compat 1.3.0, drop in 2.0 (BACKLOG, compatibility shims): ProRock before 1.3.0 wrote some elements in the wrong namespace
+    // compat 1.3.0, drop in 2.0: ProRock before 1.3.0 wrote some elements in the wrong namespace
     // (a reference or the content of another namespace's type in the parent's one: <ScopeItem><Code> instead of
     // <b:ScopeItem><b:Code>) - matched by name, so older documents still read; it also makes the reader lenient
     if propertyElement = nil then
