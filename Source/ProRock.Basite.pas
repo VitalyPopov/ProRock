@@ -383,6 +383,9 @@ type
   private
     fItemMeta: TMetaBasite;
   public
+    // a new empty list of this class
+    function CreateList: TBasiteList;
+
     property ItemMeta: TMetaBasite read fItemMeta;
   end;
 
@@ -656,9 +659,7 @@ begin
       ptBasiteList:
         begin
           var propertyBasiteList: TPropertyBasiteList := TPropertyBasiteList(propertyInfo);
-          if Assigned(propertyBasiteList.Meta.CreateMethod) then
-            propertyBasiteList.ObjectPointer(Self)^ :=
-              TBasiteList(propertyBasiteList.Meta.CreateMethod.Invoke(propertyBasiteList.Meta.ClassItself, []).AsObject);
+          propertyBasiteList.ObjectPointer(Self)^ := propertyBasiteList.Meta.CreateList;
         end;
       ptData:
         TPropertyData(propertyInfo).SetDefaultValue(Self);
@@ -1610,6 +1611,22 @@ end;
 function TMetaBasite.GetClassItself: TBasiteClass;
 begin
   Result := TBasiteClass(inherited ClassItself);
+end;
+
+{ TMetaBasiteList }
+
+function TMetaBasiteList.CreateList: TBasiteList;
+begin
+  // a constructor call without RTTI (its Invoke is several times slower): `class of TBasiteList<T>` is refused (E2021), so the virtual
+  // Create is called on a new instance - the list class's own Create, its slot is the same in every TBasiteList<T>
+  Result := TBasiteList(ClassItself.NewInstance);
+  try
+    Result.Create;
+    Result.AfterConstruction;
+  except
+    Result.Free;
+    raise;
+  end;
 end;
 
 { TMetaType }

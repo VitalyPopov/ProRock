@@ -773,12 +773,7 @@ begin
           begin
             var propertyObjectList: TPropertyBasiteList := TPropertyBasiteList(propertyElement);
             if propertyObjectList.ObjectPointer(Self)^ = nil then
-            begin
-              if not Assigned(propertyObjectList.Meta.CreateMethod) then
-                Exit;
-              propertyObjectList.ObjectPointer(Self)^ :=
-                TBasiteList(propertyObjectList.Meta.CreateMethod.Invoke(propertyObjectList.Meta.ClassItself, []).AsObject);
-            end;
+              propertyObjectList.ObjectPointer(Self)^ := propertyObjectList.Meta.CreateList;
             var objectListItem: TBasite := propertyObjectList.Meta.ItemMeta.ClassItself.Create;
             if propertyObjectList.Meta.ItemMeta.ClassItself.InheritsFrom(TXmliteTextElement) then
             begin

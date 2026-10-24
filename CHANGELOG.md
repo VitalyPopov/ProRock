@@ -7,6 +7,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 
 ## [Unreleased]
 
+### Changed
+- Faster object creation: the lists of an object are created without RTTI method calls - about 3x faster for an object
+  with lists (create and free), on every Delphi version. New `TMetaBasiteList.CreateList`
+
 ### Fixed
 - Delphi 10.3: lists did not own their items, so every list item - read from a document or added in code - was never freed.
   `TBasiteList<T>` called a plain `inherited`, which on 10.3 reached `TList<T>.Create` (10.3's `TObjectList<T>` has no
