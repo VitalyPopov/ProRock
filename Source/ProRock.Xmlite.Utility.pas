@@ -17,9 +17,7 @@ type
   TXmliteComponentType = (xctUndefined, xctSimpleType, xctComplexType, xctAttribute, xctAttributeGroup, xctElement, xctElementGroup);
   TTagType = (xttNone, xttOpenClose, xttEmpty, xttText);
 
-  { todo: inverstigate if it is a proper approach. Some info:
-    https://stackoverflow.com/questions/27820171/delphi-using-records-as-key-in-tdictionary
-    https://en.delphipraxis.net/topic/11770-records-as-tdictionary-keys/ }
+  // a dictionary key with its own comparers: the RTL's default ones compare a record's memory - string pointers, not text
   TUriedName = record
     Uri, Name: string;
   public
@@ -64,8 +62,6 @@ type
     class function ReadUnescapeInPlace(var aCursor: PChar; aStringEndsAt: Char = #0): string; static; inline;
     class function ReadQuotedValueInPlace(var aCursor: PChar): string; static; inline;
     class function PassDtd(var aCursor: PChar): boolean; static; inline;
-
-    { todo: refinement and tests for all functions below }
 
     class function PassNode(var aCursor: PChar; const aNodeName: string): boolean; static; inline;
 

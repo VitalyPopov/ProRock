@@ -358,7 +358,7 @@ begin
   if aValue in fSupportedVersions * cSoapiteVersionsImplemented then
     fSoapVersion := aValue
   else
-    fSoapVersion := sv11; // todo: log the fallback once logging exists
+    fSoapVersion := sv11;
 end;
 
 procedure TSoapiteClient.SetTransport(aValue: THttpTransport);

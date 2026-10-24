@@ -192,7 +192,7 @@ type
     property PropertyType: TPropertyType read fPropertyType;
     property IsInherited: boolean read fIsInherited;
     property Required: boolean read fRequired; // [TRequired]: written even when absent
-    property Extensions: TObjectList<TPropertyExtension> read fExtensions; // todo: needs protection
+    property Extensions: TObjectList<TPropertyExtension> read fExtensions;
 
     function DataPointer(aObject: TBasite): Pointer; inline;
   end;
@@ -326,7 +326,7 @@ type
     property SimplifiedName: string read fSimplifiedName;
     property FullName: string read fFullName;
     property UnitQualifiedName: string read fUnitQualifiedName;
-    property Extensions: TObjectList<TMetaExtension> read fExtensions; // todo: needs protection
+    property Extensions: TObjectList<TMetaExtension> read fExtensions;
   end;
 
   TMetaType = class(TMeta)
@@ -347,7 +347,6 @@ type
     property BaseType: TMetaType read fBaseType;
     property ValuesAliases: TDualDictionary<variant, string> read fValuesAliases;
 
-    // todo: consider moving that to a separate Enum-info class
     property EnumName[aEnumValue: integer]: string read GetEnumName;
     function EnumValueDef(const aEnumName: string; aDefault: integer = 0): integer;
 

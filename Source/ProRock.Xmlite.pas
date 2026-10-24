@@ -6,11 +6,9 @@ uses System.Classes, System.SysUtils, System.StrUtils, System.Generics.Collectio
   System.SyncObjs, System.TypInfo,
   ProRock.Basite, ProRock.Utility, ProRock.Xmlite.Utility;
 
-// todo: realize Choice stuff somehow properly and useful
-
 const
   cXmliteTextNodeFieldName = 'xmlText';
-  cXmlDeclaration = '<?xml version="1.0" encoding="UTF-8"?>'; // todo: make it somehow better
+  cXmlDeclaration = '<?xml version="1.0" encoding="UTF-8"?>';
 
   cDefaultSuffixSimpleType = 'ST';
   cDefaultSuffixComplexType = 'CT';
@@ -50,7 +48,7 @@ type
   TMetaBank = ProRock.Basite.TMetaBank;
   {$ENDREGION}
 
-  TWriterXmlite = class(TWriterBase) // todo: should be moved to ProRock.Xmlite.Utility
+  TWriterXmlite = class(TWriterBase)
   private
     fPretty: boolean;
 
@@ -101,7 +99,7 @@ type
     // when the element was read: increasing in document order (0 - not read). Objects of different kinds keep their
     // document order through it - in XSD a sequence's elements, choices and group refs, held in one list per kind
     property XmlPosition: cardinal read fXmlPosition;
-    property XmlAttributes: TDictionary<string, string> read fXmlAttributes; // todo: remove when XmlAnyAttribute will be ready
+    property XmlAttributes: TDictionary<string, string> read fXmlAttributes; // attributes without a property, kept for the round trip
     property XmlText: string read fXmlText write fXmlText;
     // prefix -> URI for the prefixed names (and xsi:type values) in XmlAttributes - read from the document, set by
     // SetXsiType; the writer declares them, so a document read and written back stays valid XML
@@ -126,8 +124,7 @@ type
   TXmliteElement = class(TXmlite); // so far just to mark Elements
   TXmliteElementGroup = class(TXmlite); // so far just to mark Groups
 
-  // todo: consider realizing it through generics, like TXmliteTextElement<TSomeType>
-  TXmliteTextElement = class abstract(TXmlite) // todo: redesign parsing/serialization - it shouldn't present in general ToXml/FromXml
+  TXmliteTextElement = class abstract(TXmlite) // not generated so far
   protected
     function GetXmlText: string; virtual; abstract;
     procedure SetXmlText(const aValue: string); virtual; abstract;
@@ -209,7 +206,7 @@ type
   // the property holds the element's text content (XSD simpleContent: text and attributes, no child elements)
   TXmliteTextAttribute = class(TCustomAttribute);
   TXmliteAnyElementAttribute = class(TCustomAttribute);
-  TXmliteAnyAttributeAttribute = class(TCustomAttribute); // todo: realize through TXmlite.ProcessAnyAttribute
+  TXmliteAnyAttributeAttribute = class(TCustomAttribute); // not realized yet - unknown attributes are kept in XmlAttributes anyway
 
   TNamespaceAttribute = class(TCustomAttribute)
   private
@@ -315,7 +312,7 @@ type
     property IsTXmlite: boolean read fIsTXmlite;
 
     property ProcessAnyElement: boolean read GetProcessAnyElement write fProcessAnyElement;
-    property ProcessAnyAttribute: boolean read GetProcessAnyAttribute write fProcessAnyAttribute; // todo: realize it
+    property ProcessAnyAttribute: boolean read GetProcessAnyAttribute write fProcessAnyAttribute; // not realized yet
   end;
 
   TMetaBasiteXmliteText = class(TMetaBasiteXmlite)
@@ -1160,9 +1157,9 @@ begin
         Write(';');
         Inc(cursor); // skip the low surrogate
       end
-      { else // Invalid: high surrogate without a matching low surrogate. Possibly todo: logging. }
+      { else - a high surrogate without its low one: invalid in XML, dropped }
     end
-    { else if IsLowSurrogate(cursor) then // Invalid: low surrogate without a preceding high surrogate. Possibly todo: logging. }
+    { a low surrogate without its high one: invalid too, but written by the default branch below }
     else
       case cursor^ of
         #9, #10, #13: // tab and lineend
@@ -1203,7 +1200,7 @@ end;
 procedure TWriterXmlite.WriteAttributes(aObject: TBasite; aNamespaces: boolean);
 begin
   if aNamespaces then
-    Write(aObject.GetXmlns); // todo: optimize
+    Write(aObject.GetXmlns);
 
   for var attribute: TPropertyData in aObject.Meta.Xmlite.Attributes.Values do
     if attribute.Required or aObject.IsPresent(attribute) then
@@ -1386,7 +1383,6 @@ begin
       fElementGroups.Add(aMeta.Xmlite.Name, metaBasite);
   end;
 
-  // todo: make an ability to point out filename directly
   if fUnitQualifiedName.IsEmpty then
     fUnitQualifiedName := aMeta.UnitQualifiedName;
 end;
