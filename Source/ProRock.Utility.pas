@@ -5,8 +5,8 @@ interface
 uses System.Classes, System.SysUtils, System.Generics.Collections, System.Generics.Defaults, System.Math, System.TypInfo;
 
 const
-  cIntegerMaxDiv: array [boolean] of integer = (integer.MaxValue div 10, integer.MaxValue div 16); // Max integer division based on base
-  cIntegerMaxMod: array [boolean] of integer = (integer.MaxValue mod 10, integer.MaxValue mod 16); // Max integer modulus based on base
+  cIntegerMaxDiv: array [boolean] of integer = (integer.MaxValue div 10, integer.MaxValue div 16);
+  cIntegerMaxMod: array [boolean] of integer = (integer.MaxValue mod 10, integer.MaxValue mod 16);
 
   cBasiteWriterDefaultIndent = 2;
 
@@ -159,8 +159,8 @@ type
 
   TUtility = class abstract
   public const
-    cNameStartChars = ['A' .. 'Z', 'a' .. 'z']; // Valid starting characters
-    cNameChars = cNameStartChars + ['0' .. '9', '-', '_']; // Valid subsequent characters
+    cNameStartChars = ['A' .. 'Z', 'a' .. 'z'];
+    cNameChars = cNameStartChars + ['0' .. '9', '-', '_'];
   public
     class function IsDebugging: boolean; static; inline;
     class function ExePath: string; static; inline;
@@ -445,7 +445,7 @@ begin
       stringLength := Length(start);
 
       if not increasedLevel then
-      begin // increse indent for further lines
+      begin // increase indent for further lines
         IncLevel;
         increasedLevel := True;
       end;
@@ -588,11 +588,11 @@ begin
 
   if not MoveToChar(aCursor, aQuoteChar) then
     Exit;
-  Inc(aCursor); // move past the opening quote
+  Inc(aCursor);
 
   if not MoveToChar(aCursor, aQuoteChar) then
     Exit;
-  Inc(aCursor); // move past the closing quote
+  Inc(aCursor);
 
   Result := True;
 end;
@@ -653,18 +653,15 @@ class function TUtility.FromPascalCase(const aName: string; aNaming: TNaming): s
     var currentWord: string;
     while cursor^ <> #0 do
     begin
-      // Check if current character is uppercase and not the first character
       if CharInSet(cursor^, ['A' .. 'Z']) and (cursor > wordStart) then
       begin
-        // Extract the word
         SetString(currentWord, wordStart, cursor - wordStart);
         Result := Result + [currentWord];
-        wordStart := cursor; // Start new word
+        wordStart := cursor;
       end;
       Inc(cursor);
     end;
 
-    // Add the last word
     if wordStart <> cursor then
     begin
       SetString(currentWord, wordStart, cursor - wordStart);

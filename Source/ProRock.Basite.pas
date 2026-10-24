@@ -160,7 +160,7 @@ type
   TBasiteList = TBasiteList<TBasite>;
   PBasiteList = ^TBasiteList;
 
-  TPropertyType = (ptNotSupported, ptData, ptBasite, ptBasiteList { , ptDataList, ptDataArray, ptBasiteArray } );
+  TPropertyType = (ptNotSupported, ptData, ptBasite, ptBasiteList);
 
   TPropertyExtension = class;
 
@@ -1231,7 +1231,7 @@ begin
       value := VarToStr(aliasValue);
   end;
 
-  // text that does not fit the type (not a number, out of its range) gives the default, as invalid text did before
+  // text that does not fit the type (not a number, out of its range) gives the default
   case fRttiProperty.PropertyType.TypeKind of
     tkInteger:
       begin
@@ -1567,18 +1567,18 @@ end;
 // (the registry under a lock) - correct, only slower
 procedure TMetaClass.SaveMetaClass(aClass: TClass; aMeta: TMetaClass);
 begin
-  var slot: PNativeUInt := PNativeUInt(NativeInt(aClass) + vmtAutoTable); // Address of vmtAutoTable slot
+  var slot: PNativeUInt := PNativeUInt(NativeInt(aClass) + vmtAutoTable);
 
   {$IFDEF MSWINDOWS}
   var oldProtect: DWORD;
-  if not VirtualProtect(slot, SizeOf(NativeUInt), PAGE_EXECUTE_READWRITE, oldProtect) then // Make the slot writable
+  if not VirtualProtect(slot, SizeOf(NativeUInt), PAGE_EXECUTE_READWRITE, oldProtect) then
     Exit;
 
   try
     slot^ := NativeUInt(aMeta); // Store meta pointer atomically
   finally
     var dummy: DWORD;
-    VirtualProtect(slot, SizeOf(NativeUInt), oldProtect, dummy); // Restore original protection
+    VirtualProtect(slot, SizeOf(NativeUInt), oldProtect, dummy);
   end;
   {$ENDIF}
   {$IFDEF POSIX}
@@ -1865,7 +1865,7 @@ begin
         Exit;
 
       Result := TMetaBasiteList.Create(aListClass);
-      // for supporting self-nested lists TMetaBasiteList should be stored in vmtAutoTable first, only then Itema-Meta is read/initialized
+      // self-nested lists: the TMetaBasiteList is stored in vmtAutoTable first, only then the item meta is read/initialized
       Result.fItemMeta := TBasiteClass(rttiItemType.Handle.TypeData.ClassType).Meta;
 
       Instance.Items.AddOrSetValue(aListClass.ClassInfo, metaClass);

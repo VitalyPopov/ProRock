@@ -882,7 +882,7 @@ begin
             ptBasite:
               begin
                 // a pre-created object is written only when present (read, marked, or with content) or required - its own
-                // required values do not make it present (<drawing r:id=""/> was written though absent)
+                // required values do not make it present (else <drawing r:id=""/> would be written though absent)
                 var propertyBasite: TPropertyBasite := TPropertyBasite(propertyElement);
                 var fieldObject: TBasite := propertyBasite.ObjectPointer(Self)^;
                 if (fieldObject = nil) or not (propertyBasite.Required or IsPresent(propertyBasite)) then
@@ -1124,19 +1124,16 @@ end;
 
 procedure TWriterXmlite.AddXmlEscape(const aString: string);
 
-  // Check if the character is a high surrogate
   function IsHighSurrogate(aChar: PChar): boolean; inline;
   begin
     Result := (Ord(aChar^) >= $D800) and (Ord(aChar^) <= $DBFF);
   end;
 
-  // Check if the character is a low surrogate
   function IsLowSurrogate(aChar: PChar): boolean; inline;
   begin
     Result := (Ord(aChar^) >= $DC00) and (Ord(aChar^) <= $DFFF);
   end;
 
-  // Combine high and low surrogates into a single Unicode code point
   function CombineSurrogates(aHighSurrogate, aLowSurrogate: PChar): cardinal; inline;
   begin
     Result := (Ord(aHighSurrogate^) - $D800) * $400 + (Ord(aLowSurrogate^) - $DC00) + $10000;
@@ -1678,7 +1675,7 @@ begin
 
   // inherited from the parent class. The parent's meta may exist without its extension yet: a class whose content holds
   // its own descendants (XHTML: span in span) registers them while being registered itself - then the attributes of the
-  // ancestors give it (reading the missing extension was an access violation)
+  // ancestors give it (reading the missing extension would be an access violation)
   var parentXmlite: TMetaBasiteXmlite := aMeta.ClassItself.ClassParent.Meta.Xmlite;
   if parentXmlite <> nil then
     fProcessAnyElement := parentXmlite.ProcessAnyElement

@@ -228,7 +228,7 @@ begin
 
   if not MoveToVisualChar(aCursor) or (aCursor^ <> '<') then
     Exit;
-  Inc(aCursor); // Skip the initial '<'
+  Inc(aCursor);
 
   var bracketsCount: cardinal := 1;
   while bracketsCount > 0 do
@@ -340,13 +340,13 @@ begin
   var ending: Char := aCursor^;
   aCursor^ := #0;
 
-  aFullName := nameStart; // define Full Name, including Prefix if it is there
+  aFullName := nameStart;
   if separatorPosition <> nil then
   begin
     var prefixStart: PChar := nameStart;
     nameStart := separatorPosition + 1;
     separatorPosition^ := #0;
-    aPrefix := prefixStart; // define Prefix
+    aPrefix := prefixStart;
     separatorPosition^ := ':';
 
     if nameStart = #0 then
@@ -355,7 +355,7 @@ begin
       Exit; // goal Name turned out to be empty - inform invoker about that through False Result (Prefix/FullName remain defined)
     end;
   end;
-  aName := nameStart; // define Name without Prefix (equal to Full Name in no-prefix case)
+  aName := nameStart;
 
   aCursor^ := ending;
 
@@ -368,7 +368,7 @@ begin
 
   if not TReaderXmlite.MoveToChars(aCursor, ['"', '''']) then
     Exit; // no opening quote found
-  var quoteChar: Char := aCursor^; // remember which quote
+  var quoteChar: Char := aCursor^;
 
   Inc(aCursor);
   var valueStart: PChar := aCursor;
@@ -377,7 +377,7 @@ begin
     Exit; // no closing quote found
 
   // a start tag is read more than once (its xmlns declarations first, then its attributes): a value with entities is
-  // decoded from a copy - decoding in place left the shortened value padded with spaces for the next read ("&lt;" was
+  // decoded from a copy - decoding in place would leave the shortened value padded with spaces for the next read ("&lt;"
   // read as "<   " the second time)
   SetString(Result, valueStart, aCursor - valueStart);
   if Result.IndexOf('&') >= 0 then
@@ -386,7 +386,7 @@ begin
     Result := ReadUnescapeInPlace(copyCursor);
   end;
 
-  Inc(aCursor); // move past the closing quote
+  Inc(aCursor);
 end;
 
 class function TReaderXmlite.ReadTagName(var aCursor: PChar; var aIsEndTag: boolean; out aPrefix, aName, aFullName: string): boolean;
@@ -425,7 +425,7 @@ class function TReaderXmlite.ReadTextNodeContents(var aCursor: PChar): string;
 begin
   Result := '';
 
-  // it is likely the contents of openning tag were already read and passed, but the start position of Text still needs to be defined
+  // it is likely the contents of opening tag were already read and passed, but the start position of Text still needs to be defined
   if not TReaderXmlite.MoveToChar(aCursor, '>') then
     Exit;
   Inc(aCursor);
