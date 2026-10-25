@@ -2,7 +2,7 @@
 
 ## Supported versions
 
-Security fixes go into the latest release (currently 1.1.x) of ProRock and ProRocket Lite.
+Security fixes go into the latest release of ProRock and ProRocket Lite ([Releases](https://github.com/VitalyPopov/ProRock/releases)).
 
 ## Reporting a vulnerability
 
