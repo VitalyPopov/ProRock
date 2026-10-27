@@ -22,6 +22,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 ### Added
 - `[TChoice('Group')]` marks the members of a choice; `Chosen('Group')` returns the present member's object,
   `ChosenProperty('Group')` its property, without creating any member. `Chosen` without a name - the class's only choice
+- A typed shortcut per choice group named by its members' common prefix: `Obs.ValueChosen` for FHIR's `value[x]`
+  (`valueQuantity`, `valueString`...) instead of `Obs.Chosen('Value')`
 - Hand-written classes: an object property with a getter is not pre-created; its field (`f` + the property name) is
   used by the reader and writer, and `TBasite.Lazy` creates it in the getter
 
