@@ -45,6 +45,7 @@ nav:
   - Library:
       - Xmlite (XML): xmlite.md
       - Soapite (SOAP): soapite.md
+      - Large documents: large-documents.md
       - Limitations and notes: limitations.md
   - Generator:
       - ProRocket Lite: prorocket-lite.md

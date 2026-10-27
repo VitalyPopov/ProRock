@@ -27,7 +27,8 @@ finally
 end;
 ```
 
-- Nested objects and lists are created and freed with their parent (read-only properties); just use them.
+- Nested objects and lists are created and freed with their parent (read-only properties); just use them. The members of a
+  choice are created on first access - see [Large documents](large-documents.md).
 - Enumerations are Delphi enums, `maxOccurs > 1` gives a typed list (`...List`).
 - `TXmlite.ObjectToXml(obj)` writes any object, also one that is not a root element.
 
@@ -56,8 +57,8 @@ sheet.Clear(@sheet.Drawing);    // removes a value or an object: back to its def
 - An assignment in code is not seen (properties write their fields), so a value equal to its default set in code needs
   `SetPresent`. A value that was read stays present when code assigns it the default (`Title.XmlValue := ''` writes an empty
   element); to remove it, use `Clear`.
-- `@Obj.X` works for properties that read a field - every generated one. For a hand-written property with a getter, pass its
-  name: `SetPresent('count')`. A wrong one is skipped, nothing raises: the functions return `False`.
+- `@Obj.X` works for properties that read a field - every generated one except choice members. For a property with a getter,
+  pass its name: `SetPresent('count')`. A wrong one is skipped, nothing raises: the functions return `False`.
 
 ## What the generator makes of a schema
 
