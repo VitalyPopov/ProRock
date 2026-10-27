@@ -30,6 +30,7 @@ type
   TNameAttribute = ProRock.Basite.TNameAttribute;
   TDefaultAttribute = ProRock.Basite.TDefaultAttribute;
   TRequiredAttribute = ProRock.Basite.TRequiredAttribute;
+  TChoiceAttribute = ProRock.Basite.TChoiceAttribute;
   TEnumCaptionAttribute = ProRock.Basite.TEnumCaptionAttribute;
   TValueAliasAttribute = ProRock.Basite.TValueAliasAttribute;
   TBasite = ProRock.Basite.TBasite;

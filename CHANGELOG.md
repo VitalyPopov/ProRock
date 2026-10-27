@@ -5,6 +5,26 @@ number since 1.1.0.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versions follow [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Changed
+- Choice members are created on first access, not with their parent. A property that is one alternative of an `xs:choice`
+  is now read through a getter: touching it (`Entry.Resource.Patient.Name...`) creates it as before, untouched ones cost
+  nothing. A FHIR Bundle of 1,000 Patients: read 11.9 s -> 0.10 s, write 6.7 s -> 0.08 s, free 10.0 s -> 0.05 s - every
+  entry pre-created two containers of 146 resources each (18,109 objects) before. Regenerate your units to get it
+- Code that walks generated objects recursively and stops at `nil` must stop at empty objects instead (`HasContent`): a
+  choice member's getter always returns an object, so a walk through a recursive type would not end
+- `@Obj.Member` (`Present`, `SetPresent`, `Clear` by address) does not compile for choice members - a property with a
+  getter has no address; use the name forms (`IsPresent('patient')`)
+- The first access to a choice member creates it: reading one object from several threads at once is not safe for
+  untouched choice members
+
+### Added
+- `[TChoice('Group')]` marks the members of a choice; `Chosen('Group')` returns the present member's object,
+  `ChosenProperty('Group')` its property, without creating any member. `Chosen` without a name - the class's only choice
+- Hand-written classes: an object property with a getter is not pre-created; its field (`f` + the property name) is
+  used by the reader and writer, and `TBasite.Lazy` creates it in the getter
+
 ## [1.5.1] - 2026-10-24
 
 A fix for Delphi 10.3 - lists never freed their items - and faster object creation. Units generated with 1.5.0 work

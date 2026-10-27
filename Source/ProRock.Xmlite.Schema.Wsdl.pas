@@ -6,7 +6,7 @@
     ProRock is a free and open-source Delphi library. Feedback and contributions are welcome.
     https://github.com/VitalyPopov/ProRock
     
-    Generated (UTC): 2026-10-24T05:06:31.000Z
+    Generated (UTC): 2026-10-27T04:48:45.850Z
     Namespace: http://schemas.xmlsoap.org/wsdl/
 *)
 
@@ -155,12 +155,18 @@ type
     fInput: TTParamCT;
     fOutput: TTParamCT;
     fFault: TTFaultCTList;
+
+    function GetInput: TTParamCT;
+    function GetOutput: TTParamCT;
   published
     [TRequired]
     property Name: ProRock.Xmlite.Schema.Base.TNCNameST read fName write fName;
     property ParameterOrder: ProRock.Xmlite.Schema.Base.TNmtokensST read fParameterOrder write fParameterOrder;
-    property Input: TTParamCT read fInput;
-    property Output: TTParamCT read fOutput;
+    [TChoice('Input')]
+    property Input: TTParamCT read GetInput;
+    [TChoice('Input')]
+    property Output: TTParamCT read GetOutput;
+    [TChoice('Input')]
     property Fault: TTFaultCTList read fFault;
   end;
 
@@ -265,13 +271,26 @@ type
     fPortType: TTPortTypeCT;
     fBinding: TTBindingCT;
     fService: TTServiceCT;
+
+    function GetImport: TTImportCT;
+    function GetTypes: TTTypesCT;
+    function GetMessage: TTMessageCT;
+    function GetPortType: TTPortTypeCT;
+    function GetBinding: TTBindingCT;
+    function GetService: TTServiceCT;
   published
-    property Import: TTImportCT read fImport;
-    property Types: TTTypesCT read fTypes;
-    property Message: TTMessageCT read fMessage;
-    property PortType: TTPortTypeCT read fPortType;
-    property Binding: TTBindingCT read fBinding;
-    property Service: TTServiceCT read fService;
+    [TChoice('Import')]
+    property Import: TTImportCT read GetImport;
+    [TChoice('Import')]
+    property Types: TTTypesCT read GetTypes;
+    [TChoice('Import')]
+    property Message: TTMessageCT read GetMessage;
+    [TChoice('Import')]
+    property PortType: TTPortTypeCT read GetPortType;
+    [TChoice('Import')]
+    property Binding: TTBindingCT read GetBinding;
+    [TChoice('Import')]
+    property Service: TTServiceCT read GetService;
   end;
 
   [TNaming(TNaming.nKebabCase)]
@@ -315,6 +334,50 @@ type
   TDefinitionsEList = class(TXmliteList<TDefinitionsE>);
 
 implementation
+
+{ TTOperationCT }
+
+function TTOperationCT.GetInput: TTParamCT;
+begin
+  Result := TTParamCT(Lazy(fInput, TTParamCT));
+end;
+
+function TTOperationCT.GetOutput: TTParamCT;
+begin
+  Result := TTParamCT(Lazy(fOutput, TTParamCT));
+end;
+
+{ TAnyTopLevelOptionalElementEG }
+
+function TAnyTopLevelOptionalElementEG.GetImport: TTImportCT;
+begin
+  Result := TTImportCT(Lazy(fImport, TTImportCT));
+end;
+
+function TAnyTopLevelOptionalElementEG.GetTypes: TTTypesCT;
+begin
+  Result := TTTypesCT(Lazy(fTypes, TTTypesCT));
+end;
+
+function TAnyTopLevelOptionalElementEG.GetMessage: TTMessageCT;
+begin
+  Result := TTMessageCT(Lazy(fMessage, TTMessageCT));
+end;
+
+function TAnyTopLevelOptionalElementEG.GetPortType: TTPortTypeCT;
+begin
+  Result := TTPortTypeCT(Lazy(fPortType, TTPortTypeCT));
+end;
+
+function TAnyTopLevelOptionalElementEG.GetBinding: TTBindingCT;
+begin
+  Result := TTBindingCT(Lazy(fBinding, TTBindingCT));
+end;
+
+function TAnyTopLevelOptionalElementEG.GetService: TTServiceCT;
+begin
+  Result := TTServiceCT(Lazy(fService, TTServiceCT));
+end;
 
 initialization
 

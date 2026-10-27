@@ -51,6 +51,15 @@ type
   // value is serialized even when it equals the default one
   TRequiredAttribute = class(TCustomAttribute);
 
+  // a member of a choice (xs:choice): one of its members is present; members share the group name
+  TChoiceAttribute = class(TCustomAttribute)
+  private
+    fGroup: string;
+  public
+    constructor Create(const aGroup: string);
+    property Group: string read fGroup;
+  end;
+
   TEnumCaptionAttribute = class(TCustomAttribute)
   private
     fCaption, fCustomCaption: string;
@@ -116,6 +125,9 @@ type
   protected
     procedure Initialize; virtual;
     procedure Deinitialize; virtual;
+    // the getter of a lazy object property (not pre-created): creates the object on first access -
+    // property Patient: TPatientE read GetPatient; GetPatient: Result := TPatientE(Lazy(fPatient, TPatientE))
+    function Lazy(var aField; aClass: TBasiteClass): TBasite;
   public
     constructor Create; virtual;
     destructor Destroy; override;
@@ -143,6 +155,12 @@ type
     function Clear(aProperty: TProperty): boolean; overload;
     // anything present in the object: what makes an optional object written
     function HasContent: boolean; virtual;
+
+    // Choice - the present member of a choice group ([TChoice]), found without creating lazy members: its property, or
+    // the object of an object member (nil for a data member). '' - the class's only choice (nil when it has several).
+    // Nil when no member is present; with several present (filled in code) - the first, all of them are written
+    function ChosenProperty(const aGroup: string = ''): TProperty;
+    function Chosen(const aGroup: string = ''): TBasite;
   end;
 
   PBasite = ^TBasite;
@@ -174,6 +192,8 @@ type
     fPropertyType: TPropertyType;
     fIsInherited: boolean;
     fRequired: boolean;
+    fChoice: string;
+    fLazy: boolean;
     fExtensions: TObjectList<TPropertyExtension>;
 
     fFieldOffset: cardinal;
@@ -192,6 +212,9 @@ type
     property PropertyType: TPropertyType read fPropertyType;
     property IsInherited: boolean read fIsInherited;
     property Required: boolean read fRequired; // [TRequired]: written even when absent
+    property Choice: string read fChoice; // [TChoice] group, '' - not a choice member
+    // an object property with a getter: not pre-created, its getter creates it (TBasite.Lazy); the runtime uses its field
+    property Lazy: boolean read fLazy;
     property Extensions: TObjectList<TPropertyExtension> read fExtensions;
 
     function DataPointer(aObject: TBasite): Pointer; inline;
@@ -536,6 +559,13 @@ begin
   end;
 end;
 
+{ TChoiceAttribute }
+
+constructor TChoiceAttribute.Create(const aGroup: string);
+begin
+  fGroup := aGroup;
+end;
+
 { TNameAttribute }
 
 constructor TNameAttribute.Create(const aCustomName: string);
@@ -652,6 +682,8 @@ begin
       ptBasite:
         begin
           var propertyBasite: TPropertyBasite := TPropertyBasite(propertyInfo);
+          if propertyBasite.fLazy then
+            Continue;
           if aBreadcrumbs.Increase(propertyBasite.Meta) <= fAutoInitMaxDepth then
             propertyBasite.ObjectPointer(Self)^ := propertyBasite.Meta.ClassItself.CreateNested(aBreadcrumbs);
           aBreadcrumbs.Decrease(propertyBasite.Meta);
@@ -659,7 +691,8 @@ begin
       ptBasiteList:
         begin
           var propertyBasiteList: TPropertyBasiteList := TPropertyBasiteList(propertyInfo);
-          propertyBasiteList.ObjectPointer(Self)^ := propertyBasiteList.Meta.CreateList;
+          if not propertyBasiteList.fLazy then
+            propertyBasiteList.ObjectPointer(Self)^ := propertyBasiteList.Meta.CreateList;
         end;
       ptData:
         TPropertyData(propertyInfo).SetDefaultValue(Self);
@@ -857,6 +890,46 @@ begin
   SetPresentBit(aProperty.fIndex, False);
 end;
 
+function TBasite.ChosenProperty(const aGroup: string): TProperty;
+begin
+  Result := nil;
+  var group: string := aGroup;
+  for var propertyInfo: TProperty in Meta.Properties do
+  begin
+    if propertyInfo.fChoice.IsEmpty then
+      Continue;
+    if group.IsEmpty then
+      group := propertyInfo.fChoice
+    else if propertyInfo.fChoice <> group then
+      if aGroup.IsEmpty then
+        Exit(nil) // several choices - which one is not said
+      else
+        Continue;
+    if (Result = nil) and IsPresent(propertyInfo) then
+    begin
+      Result := propertyInfo;
+      if not aGroup.IsEmpty then
+        Exit;
+    end;
+  end;
+end;
+
+function TBasite.Chosen(const aGroup: string): TBasite;
+begin
+  var propertyInfo: TProperty := ChosenProperty(aGroup);
+  if (propertyInfo <> nil) and (propertyInfo.PropertyType = ptBasite) then
+    Result := TPropertyBasite(propertyInfo).ObjectPointer(Self)^
+  else
+    Result := nil;
+end;
+
+function TBasite.Lazy(var aField; aClass: TBasiteClass): TBasite;
+begin
+  if TBasite(aField) = nil then
+    TBasite(aField) := aClass.Create;
+  Result := TBasite(aField);
+end;
+
 function TBasite.HasContent: boolean;
 begin
   for var propertyInfo: TProperty in Meta.Properties do
@@ -920,7 +993,9 @@ begin
     if (attribute.ClassType = TNameAttribute) and fName.IsEmpty then
       fName := TNameAttribute(attribute).CustomName
     else if attribute.ClassType = TRequiredAttribute then
-      fRequired := True;
+      fRequired := True
+    else if attribute.ClassType = TChoiceAttribute then
+      fChoice := TChoiceAttribute(attribute).Group;
   if fName.IsEmpty then
     fName := TUtility.FromPascalCase(aProperty.Name, aNaming);
 
@@ -936,7 +1011,17 @@ begin
   fSetterAddress := TRttiInstanceProperty(fRttiProperty).PropInfo.SetProc;
   fSetterIsField := (fSetterAddress <> nil) and ((IntPtr(fSetterAddress) and PROPSLOT_MASK) = PROPSLOT_FIELD);
 
-  if (fPropertyType in [ptBasite, ptBasiteList]) or ((fPropertyType = ptData) and fGetterIsField) then
+  if (fPropertyType in [ptBasite, ptBasiteList]) and not fGetterIsField then
+  begin
+    // a lazy object: the runtime reads and writes its field (f + the property name), never the getter that would create it
+    fLazy := True;
+    var field: TRttiField := aProperty.Parent.GetField('f' + aProperty.Name);
+    if (field = nil) or (field.FieldType = nil) or (field.FieldType.Handle <> aProperty.PropertyType.Handle) then
+      raise ENotSupportedException.CreateFmt('%s.%s: a property with a getter needs the field f%s of its type',
+        [aProperty.Parent.Name, aProperty.Name, aProperty.Name]);
+    fFieldOffset := field.Offset;
+  end
+  else if (fPropertyType in [ptBasite, ptBasiteList]) or ((fPropertyType = ptData) and fGetterIsField) then
     fFieldOffset := NativeInt(fGetterAddress) and $00FFFFFF
   else if (fPropertyType = ptData) and fSetterIsField then
     fFieldOffset := NativeInt(fSetterAddress) and $00FFFFFF;

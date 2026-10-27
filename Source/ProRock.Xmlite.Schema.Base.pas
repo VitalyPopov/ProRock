@@ -6,7 +6,7 @@
     ProRock is a free and open-source Delphi library. Feedback and contributions are welcome.
     https://github.com/VitalyPopov/ProRock
     
-    Generated (UTC): 2026-10-24T05:06:31.000Z
+    Generated (UTC): 2026-10-27T04:48:45.750Z
     Namespace: http://www.w3.org/2001/XMLSchema
 *)
 
@@ -328,6 +328,14 @@ type
     fAttribute: TAttributeCTList;
     fAttributeGroup: TAttributeGroupRefCTList;
     fAnyAttribute: TAnyAttributeE;
+
+    function GetSimpleContent: TSimpleContentE;
+    function GetComplexContent: TComplexContentE;
+    function GetGroup: TGroupRefCT;
+    function GetAll: TAllE;
+    function GetChoice: TChoiceE;
+    function GetSequence: TSequenceE;
+    function GetAnyAttribute: TAnyAttributeE;
   published
     property Name: TNCNameST read fName write fName;
     [TDefault(False)]
@@ -336,15 +344,24 @@ type
     property Abstract: TBooleanST read fAbstract write fAbstract;
     property Final: TDerivationSetST read fFinal write fFinal;
     property Block: TDerivationSetST read fBlock write fBlock;
-    property SimpleContent: TSimpleContentE read fSimpleContent;
-    property ComplexContent: TComplexContentE read fComplexContent;
-    property Group: TGroupRefCT read fGroup;
-    property All: TAllE read fAll;
-    property Choice: TChoiceE read fChoice;
-    property Sequence: TSequenceE read fSequence;
+    [TChoice('SimpleContent')]
+    property SimpleContent: TSimpleContentE read GetSimpleContent;
+    [TChoice('SimpleContent')]
+    property ComplexContent: TComplexContentE read GetComplexContent;
+    [TChoice('SimpleContent')]
+    property Group: TGroupRefCT read GetGroup;
+    [TChoice('SimpleContent')]
+    property All: TAllE read GetAll;
+    [TChoice('SimpleContent')]
+    property Choice: TChoiceE read GetChoice;
+    [TChoice('SimpleContent')]
+    property Sequence: TSequenceE read GetSequence;
+    [TChoice('SimpleContent')]
     property Attribute: TAttributeCTList read fAttribute;
+    [TChoice('SimpleContent')]
     property AttributeGroup: TAttributeGroupRefCTList read fAttributeGroup;
-    property AnyAttribute: TAnyAttributeE read fAnyAttribute;
+    [TChoice('SimpleContent')]
+    property AnyAttribute: TAnyAttributeE read GetAnyAttribute;
   end;
 
   TTopLevelComplexTypeCT = class(TXmliteComplexTypeRestricted)
@@ -365,6 +382,14 @@ type
     fAttribute: TAttributeCTList;
     fAttributeGroup: TAttributeGroupRefCTList;
     fAnyAttribute: TAnyAttributeE;
+
+    function GetSimpleContent: TSimpleContentE;
+    function GetComplexContent: TComplexContentE;
+    function GetGroup: TGroupRefCT;
+    function GetAll: TAllE;
+    function GetChoice: TChoiceE;
+    function GetSequence: TSequenceE;
+    function GetAnyAttribute: TAnyAttributeE;
   published
     property Id: TIdST read fId write fId;
     [TDefault(False)]
@@ -376,15 +401,24 @@ type
     [TRequired]
     property Name: TNCNameST read fName write fName;
     property Annotation: TAnnotationE read fAnnotation;
-    property SimpleContent: TSimpleContentE read fSimpleContent;
-    property ComplexContent: TComplexContentE read fComplexContent;
-    property Group: TGroupRefCT read fGroup;
-    property All: TAllE read fAll;
-    property Choice: TChoiceE read fChoice;
-    property Sequence: TSequenceE read fSequence;
+    [TChoice('SimpleContent')]
+    property SimpleContent: TSimpleContentE read GetSimpleContent;
+    [TChoice('SimpleContent')]
+    property ComplexContent: TComplexContentE read GetComplexContent;
+    [TChoice('SimpleContent')]
+    property Group: TGroupRefCT read GetGroup;
+    [TChoice('SimpleContent')]
+    property All: TAllE read GetAll;
+    [TChoice('SimpleContent')]
+    property Choice: TChoiceE read GetChoice;
+    [TChoice('SimpleContent')]
+    property Sequence: TSequenceE read GetSequence;
+    [TChoice('SimpleContent')]
     property Attribute: TAttributeCTList read fAttribute;
+    [TChoice('SimpleContent')]
     property AttributeGroup: TAttributeGroupRefCTList read fAttributeGroup;
-    property AnyAttribute: TAnyAttributeE read fAnyAttribute;
+    [TChoice('SimpleContent')]
+    property AnyAttribute: TAnyAttributeE read GetAnyAttribute;
   end;
 
   TLocalComplexTypeCT = class(TXmliteComplexTypeRestricted)
@@ -401,20 +435,37 @@ type
     fAttribute: TAttributeCTList;
     fAttributeGroup: TAttributeGroupRefCTList;
     fAnyAttribute: TAnyAttributeE;
+
+    function GetSimpleContent: TSimpleContentE;
+    function GetComplexContent: TComplexContentE;
+    function GetGroup: TGroupRefCT;
+    function GetAll: TAllE;
+    function GetChoice: TChoiceE;
+    function GetSequence: TSequenceE;
+    function GetAnyAttribute: TAnyAttributeE;
   published
     property Id: TIdST read fId write fId;
     [TDefault(False)]
     property Mixed: TBooleanST read fMixed write fMixed;
     property Annotation: TAnnotationE read fAnnotation;
-    property SimpleContent: TSimpleContentE read fSimpleContent;
-    property ComplexContent: TComplexContentE read fComplexContent;
-    property Group: TGroupRefCT read fGroup;
-    property All: TAllE read fAll;
-    property Choice: TChoiceE read fChoice;
-    property Sequence: TSequenceE read fSequence;
+    [TChoice('SimpleContent')]
+    property SimpleContent: TSimpleContentE read GetSimpleContent;
+    [TChoice('SimpleContent')]
+    property ComplexContent: TComplexContentE read GetComplexContent;
+    [TChoice('SimpleContent')]
+    property Group: TGroupRefCT read GetGroup;
+    [TChoice('SimpleContent')]
+    property All: TAllE read GetAll;
+    [TChoice('SimpleContent')]
+    property Choice: TChoiceE read GetChoice;
+    [TChoice('SimpleContent')]
+    property Sequence: TSequenceE read GetSequence;
+    [TChoice('SimpleContent')]
     property Attribute: TAttributeCTList read fAttribute;
+    [TChoice('SimpleContent')]
     property AttributeGroup: TAttributeGroupRefCTList read fAttributeGroup;
-    property AnyAttribute: TAnyAttributeE read fAnyAttribute;
+    [TChoice('SimpleContent')]
+    property AnyAttribute: TAnyAttributeE read GetAnyAttribute;
   end;
 
   TRestrictionTypeCT = class(TAnnotatedCT)
@@ -440,25 +491,48 @@ type
     fAttribute: TAttributeCTList;
     fAttributeGroup: TAttributeGroupRefCTList;
     fAnyAttribute: TAnyAttributeE;
+
+    function GetGroup: TGroupRefCT;
+    function GetAll: TAllE;
+    function GetChoice: TChoiceE;
+    function GetSequence: TSequenceE;
+    function GetSimpleType: TLocalSimpleTypeCT;
   published
     [TRequired]
     property Base: TQNameST read fBase write fBase;
-    property Group: TGroupRefCT read fGroup;
-    property All: TAllE read fAll;
-    property Choice: TChoiceE read fChoice;
-    property Sequence: TSequenceE read fSequence;
-    property SimpleType: TLocalSimpleTypeCT read fSimpleType;
+    [TChoice('Group')]
+    property Group: TGroupRefCT read GetGroup;
+    [TChoice('Group')]
+    property All: TAllE read GetAll;
+    [TChoice('Group')]
+    property Choice: TChoiceE read GetChoice;
+    [TChoice('Group')]
+    property Sequence: TSequenceE read GetSequence;
+    [TChoice('Group')]
+    property SimpleType: TLocalSimpleTypeCT read GetSimpleType;
+    [TChoice('Group')]
     property MinExclusive: TMinExclusiveEList read fMinExclusive;
+    [TChoice('Group')]
     property MinInclusive: TMinInclusiveEList read fMinInclusive;
+    [TChoice('Group')]
     property MaxExclusive: TMaxExclusiveEList read fMaxExclusive;
+    [TChoice('Group')]
     property MaxInclusive: TMaxInclusiveEList read fMaxInclusive;
+    [TChoice('Group')]
     property TotalDigits: TTotalDigitsEList read fTotalDigits;
+    [TChoice('Group')]
     property FractionDigits: TFractionDigitsEList read fFractionDigits;
+    [TChoice('Group')]
     property Length: TLengthEList read fLength;
+    [TChoice('Group')]
     property MinLength: TMinLengthEList read fMinLength;
+    [TChoice('Group')]
     property MaxLength: TMaxLengthEList read fMaxLength;
+    [TChoice('Group')]
     property Enumeration: TEnumerationEList read fEnumeration;
+    [TChoice('Group')]
     property WhiteSpace: TWhiteSpaceEList read fWhiteSpace;
+    [TChoice('Group')]
     property Pattern: TPatternEList read fPattern;
     property Attribute: TAttributeCTList read fAttribute;
     property AttributeGroup: TAttributeGroupRefCTList read fAttributeGroup;
@@ -477,15 +551,24 @@ type
     fAttribute: TAttributeCTList;
     fAttributeGroup: TAttributeGroupRefCTList;
     fAnyAttribute: TAnyAttributeE;
+
+    function GetGroup: TGroupRefCT;
+    function GetAll: TAllE;
+    function GetChoice: TChoiceE;
+    function GetSequence: TSequenceE;
   published
     property Id: TIdST read fId write fId;
     [TRequired]
     property Base: TQNameST read fBase write fBase;
     property Annotation: TAnnotationE read fAnnotation;
-    property Group: TGroupRefCT read fGroup;
-    property All: TAllE read fAll;
-    property Choice: TChoiceE read fChoice;
-    property Sequence: TSequenceE read fSequence;
+    [TChoice('Group')]
+    property Group: TGroupRefCT read GetGroup;
+    [TChoice('Group')]
+    property All: TAllE read GetAll;
+    [TChoice('Group')]
+    property Choice: TChoiceE read GetChoice;
+    [TChoice('Group')]
+    property Sequence: TSequenceE read GetSequence;
     property Attribute: TAttributeCTList read fAttribute;
     property AttributeGroup: TAttributeGroupRefCTList read fAttributeGroup;
     property AnyAttribute: TAnyAttributeE read fAnyAttribute;
@@ -501,13 +584,22 @@ type
     fAttribute: TAttributeCTList;
     fAttributeGroup: TAttributeGroupRefCTList;
     fAnyAttribute: TAnyAttributeE;
+
+    function GetGroup: TGroupRefCT;
+    function GetAll: TAllE;
+    function GetChoice: TChoiceE;
+    function GetSequence: TSequenceE;
   published
     [TRequired]
     property Base: TQNameST read fBase write fBase;
-    property Group: TGroupRefCT read fGroup;
-    property All: TAllE read fAll;
-    property Choice: TChoiceE read fChoice;
-    property Sequence: TSequenceE read fSequence;
+    [TChoice('Group')]
+    property Group: TGroupRefCT read GetGroup;
+    [TChoice('Group')]
+    property All: TAllE read GetAll;
+    [TChoice('Group')]
+    property Choice: TChoiceE read GetChoice;
+    [TChoice('Group')]
+    property Sequence: TSequenceE read GetSequence;
     property Attribute: TAttributeCTList read fAttribute;
     property AttributeGroup: TAttributeGroupRefCTList read fAttributeGroup;
     property AnyAttribute: TAnyAttributeE read fAnyAttribute;
@@ -534,23 +626,38 @@ type
     fAttribute: TAttributeCTList;
     fAttributeGroup: TAttributeGroupRefCTList;
     fAnyAttribute: TAnyAttributeE;
+
+    function GetSimpleType: TLocalSimpleTypeCT;
   published
     property Id: TIdST read fId write fId;
     [TRequired]
     property Base: TQNameST read fBase write fBase;
     property Annotation: TAnnotationE read fAnnotation;
-    property SimpleType: TLocalSimpleTypeCT read fSimpleType;
+    [TChoice('SimpleType')]
+    property SimpleType: TLocalSimpleTypeCT read GetSimpleType;
+    [TChoice('SimpleType')]
     property MinExclusive: TMinExclusiveEList read fMinExclusive;
+    [TChoice('SimpleType')]
     property MinInclusive: TMinInclusiveEList read fMinInclusive;
+    [TChoice('SimpleType')]
     property MaxExclusive: TMaxExclusiveEList read fMaxExclusive;
+    [TChoice('SimpleType')]
     property MaxInclusive: TMaxInclusiveEList read fMaxInclusive;
+    [TChoice('SimpleType')]
     property TotalDigits: TTotalDigitsEList read fTotalDigits;
+    [TChoice('SimpleType')]
     property FractionDigits: TFractionDigitsEList read fFractionDigits;
+    [TChoice('SimpleType')]
     property Length: TLengthEList read fLength;
+    [TChoice('SimpleType')]
     property MinLength: TMinLengthEList read fMinLength;
+    [TChoice('SimpleType')]
     property MaxLength: TMaxLengthEList read fMaxLength;
+    [TChoice('SimpleType')]
     property Enumeration: TEnumerationEList read fEnumeration;
+    [TChoice('SimpleType')]
     property WhiteSpace: TWhiteSpaceEList read fWhiteSpace;
+    [TChoice('SimpleType')]
     property Pattern: TPatternEList read fPattern;
     property Attribute: TAttributeCTList read fAttribute;
     property AttributeGroup: TAttributeGroupRefCTList read fAttributeGroup;
@@ -595,6 +702,9 @@ type
     fUnique: TUniqueEList;
     fKey: TKeyEList;
     fKeyref: TKeyrefEList;
+
+    function GetSimpleType: TLocalSimpleTypeCT;
+    function GetComplexType: TLocalComplexTypeCT;
   published
     property &Type: TQNameST read fType write fType;
     property SubstitutionGroup: TQNameST read fSubstitutionGroup write fSubstitutionGroup;
@@ -613,8 +723,10 @@ type
     property MinOccurs: TNonNegativeIntegerST read fMinOccurs write fMinOccurs;
     [TDefault(1)]
     property MaxOccurs: TAllNNIST read fMaxOccurs write fMaxOccurs;
-    property SimpleType: TLocalSimpleTypeCT read fSimpleType;
-    property ComplexType: TLocalComplexTypeCT read fComplexType;
+    [TChoice('SimpleType')]
+    property SimpleType: TLocalSimpleTypeCT read GetSimpleType;
+    [TChoice('SimpleType')]
+    property ComplexType: TLocalComplexTypeCT read GetComplexType;
     property Unique: TUniqueEList read fUnique;
     property Key: TKeyEList read fKey;
     property Keyref: TKeyrefEList read fKeyref;
@@ -638,6 +750,9 @@ type
     fUnique: TUniqueEList;
     fKey: TKeyEList;
     fKeyref: TKeyrefEList;
+
+    function GetSimpleType: TLocalSimpleTypeCT;
+    function GetComplexType: TLocalComplexTypeCT;
   published
     property Id: TIdST read fId write fId;
     property &Type: TQNameST read fType write fType;
@@ -653,8 +768,10 @@ type
     [TRequired]
     property Name: TNCNameST read fName write fName;
     property Annotation: TAnnotationE read fAnnotation;
-    property SimpleType: TLocalSimpleTypeCT read fSimpleType;
-    property ComplexType: TLocalComplexTypeCT read fComplexType;
+    [TChoice('SimpleType')]
+    property SimpleType: TLocalSimpleTypeCT read GetSimpleType;
+    [TChoice('SimpleType')]
+    property ComplexType: TLocalComplexTypeCT read GetComplexType;
     property Unique: TUniqueEList read fUnique;
     property Key: TKeyEList read fKey;
     property Keyref: TKeyrefEList read fKeyref;
@@ -679,6 +796,9 @@ type
     fUnique: TUniqueEList;
     fKey: TKeyEList;
     fKeyref: TKeyrefEList;
+
+    function GetSimpleType: TLocalSimpleTypeCT;
+    function GetComplexType: TLocalComplexTypeCT;
   published
     property Id: TIdST read fId write fId;
     property Name: TNCNameST read fName write fName;
@@ -695,8 +815,10 @@ type
     property Block: TBlockSetST read fBlock write fBlock;
     property Form: TFormChoiceST read fForm write fForm;
     property Annotation: TAnnotationE read fAnnotation;
-    property SimpleType: TLocalSimpleTypeCT read fSimpleType;
-    property ComplexType: TLocalComplexTypeCT read fComplexType;
+    [TChoice('SimpleType')]
+    property SimpleType: TLocalSimpleTypeCT read GetSimpleType;
+    [TChoice('SimpleType')]
+    property ComplexType: TLocalComplexTypeCT read GetComplexType;
     property Unique: TUniqueEList read fUnique;
     property Key: TKeyEList read fKey;
     property Keyref: TKeyrefEList read fKeyref;
@@ -740,6 +862,10 @@ type
     fAll: TAllE;
     fChoice: TChoiceE;
     fSequence: TSequenceE;
+
+    function GetAll: TAllE;
+    function GetChoice: TChoiceE;
+    function GetSequence: TSequenceE;
   published
     property Id: TIdST read fId write fId;
     property Name: TNCNameST read fName write fName;
@@ -749,9 +875,12 @@ type
     [TDefault(1)]
     property MaxOccurs: TAllNNIST read fMaxOccurs write fMaxOccurs;
     property Annotation: TAnnotationE read fAnnotation;
-    property All: TAllE read fAll;
-    property Choice: TChoiceE read fChoice;
-    property Sequence: TSequenceE read fSequence;
+    [TChoice('All')]
+    property All: TAllE read GetAll;
+    [TChoice('All')]
+    property Choice: TChoiceE read GetChoice;
+    [TChoice('All')]
+    property Sequence: TSequenceE read GetSequence;
   end;
 
   TNamedGroupCTAll = class(TXmliteComplexTypeRestricted)
@@ -773,14 +902,21 @@ type
     fAll: TNamedGroupCTAll;
     fChoice: TSimpleExplicitGroupCT;
     fSequence: TSimpleExplicitGroupCT;
+
+    function GetAll: TNamedGroupCTAll;
+    function GetChoice: TSimpleExplicitGroupCT;
+    function GetSequence: TSimpleExplicitGroupCT;
   published
     property Id: TIdST read fId write fId;
     [TRequired]
     property Name: TNCNameST read fName write fName;
     property Annotation: TAnnotationE read fAnnotation;
-    property All: TNamedGroupCTAll read fAll;
-    property Choice: TSimpleExplicitGroupCT read fChoice;
-    property Sequence: TSimpleExplicitGroupCT read fSequence;
+    [TChoice('All')]
+    property All: TNamedGroupCTAll read GetAll;
+    [TChoice('All')]
+    property Choice: TSimpleExplicitGroupCT read GetChoice;
+    [TChoice('All')]
+    property Sequence: TSimpleExplicitGroupCT read GetSequence;
   end;
 
   TGroupRefCT = class(TXmliteComplexTypeRestricted)
@@ -867,6 +1003,9 @@ type
     fUnique: TUniqueEList;
     fKey: TKeyEList;
     fKeyref: TKeyrefEList;
+
+    function GetSimpleType: TLocalSimpleTypeCT;
+    function GetComplexType: TLocalComplexTypeCT;
   published
     property Id: TIdST read fId write fId;
     property Name: TNCNameST read fName write fName;
@@ -883,8 +1022,10 @@ type
     [TDefault(Ord(moc1))]
     property MaxOccurs: TMaxOccurs read fMaxOccurs write fMaxOccurs;
     property Annotation: TAnnotationE read fAnnotation;
-    property SimpleType: TLocalSimpleTypeCT read fSimpleType;
-    property ComplexType: TLocalComplexTypeCT read fComplexType;
+    [TChoice('SimpleType')]
+    property SimpleType: TLocalSimpleTypeCT read GetSimpleType;
+    [TChoice('SimpleType')]
+    property ComplexType: TLocalComplexTypeCT read GetComplexType;
     property Unique: TUniqueEList read fUnique;
     property Key: TKeyEList read fKey;
     property Keyref: TKeyrefEList read fKeyref;
@@ -991,12 +1132,19 @@ type
     fRestriction: TRestrictionE;
     fList: TListE;
     fUnion: TUnionE;
+
+    function GetRestriction: TRestrictionE;
+    function GetList: TListE;
+    function GetUnion: TUnionE;
   published
     property Final: TSimpleDerivationSetST read fFinal write fFinal;
     property Name: TNCNameST read fName write fName;
-    property Restriction: TRestrictionE read fRestriction;
-    property List: TListE read fList;
-    property Union: TUnionE read fUnion;
+    [TChoice('Restriction')]
+    property Restriction: TRestrictionE read GetRestriction;
+    [TChoice('Restriction')]
+    property List: TListE read GetList;
+    [TChoice('Restriction')]
+    property Union: TUnionE read GetUnion;
   end;
 
   TTopLevelSimpleTypeCT = class(TXmliteComplexTypeRestricted)
@@ -1008,15 +1156,22 @@ type
     fRestriction: TRestrictionE;
     fList: TListE;
     fUnion: TUnionE;
+
+    function GetRestriction: TRestrictionE;
+    function GetList: TListE;
+    function GetUnion: TUnionE;
   published
     property Id: TIdST read fId write fId;
     property Final: TSimpleDerivationSetST read fFinal write fFinal;
     [TRequired]
     property Name: TNCNameST read fName write fName;
     property Annotation: TAnnotationE read fAnnotation;
-    property Restriction: TRestrictionE read fRestriction;
-    property List: TListE read fList;
-    property Union: TUnionE read fUnion;
+    [TChoice('Restriction')]
+    property Restriction: TRestrictionE read GetRestriction;
+    [TChoice('Restriction')]
+    property List: TListE read GetList;
+    [TChoice('Restriction')]
+    property Union: TUnionE read GetUnion;
   end;
 
   TLocalSimpleTypeCT = class(TXmliteComplexTypeRestricted)
@@ -1026,12 +1181,19 @@ type
     fRestriction: TRestrictionE;
     fList: TListE;
     fUnion: TUnionE;
+
+    function GetRestriction: TRestrictionE;
+    function GetList: TListE;
+    function GetUnion: TUnionE;
   published
     property Id: TIdST read fId write fId;
     property Annotation: TAnnotationE read fAnnotation;
-    property Restriction: TRestrictionE read fRestriction;
-    property List: TListE read fList;
-    property Union: TUnionE read fUnion;
+    [TChoice('Restriction')]
+    property Restriction: TRestrictionE read GetRestriction;
+    [TChoice('Restriction')]
+    property List: TListE read GetList;
+    [TChoice('Restriction')]
+    property Union: TUnionE read GetUnion;
   end;
 
   TFacetCT = class(TAnnotatedCT)
@@ -1144,19 +1306,29 @@ type
     fMixed: TBooleanST;
     fRestriction: TComplexRestrictionTypeCT;
     fExtension: TExtensionTypeCT;
+
+    function GetRestriction: TComplexRestrictionTypeCT;
+    function GetExtension: TExtensionTypeCT;
   published
     property Mixed: TBooleanST read fMixed write fMixed;
-    property Restriction: TComplexRestrictionTypeCT read fRestriction;
-    property Extension: TExtensionTypeCT read fExtension;
+    [TChoice('Restriction')]
+    property Restriction: TComplexRestrictionTypeCT read GetRestriction;
+    [TChoice('Restriction')]
+    property Extension: TExtensionTypeCT read GetExtension;
   end;
 
   TSimpleContentE = class(TAnnotatedCT)
   private
     fRestriction: TSimpleRestrictionTypeCT;
     fExtension: TSimpleExtensionTypeCT;
+
+    function GetRestriction: TSimpleRestrictionTypeCT;
+    function GetExtension: TSimpleExtensionTypeCT;
   published
-    property Restriction: TSimpleRestrictionTypeCT read fRestriction;
-    property Extension: TSimpleExtensionTypeCT read fExtension;
+    [TChoice('Restriction')]
+    property Restriction: TSimpleRestrictionTypeCT read GetRestriction;
+    [TChoice('Restriction')]
+    property Extension: TSimpleExtensionTypeCT read GetExtension;
   end;
 
   TComplexTypeE = class(TTopLevelComplexTypeCT);
@@ -1418,10 +1590,17 @@ type
     fElement: TElementE;
     fAttribute: TAttributeE;
     fNotation: TNotationE;
+
+    function GetElement: TElementE;
+    function GetAttribute: TAttributeE;
+    function GetNotation: TNotationE;
   published
-    property Element: TElementE read fElement;
-    property Attribute: TAttributeE read fAttribute;
-    property Notation: TNotationE read fNotation;
+    [TChoice('Element')]
+    property Element: TElementE read GetElement;
+    [TChoice('Element')]
+    property Attribute: TAttributeE read GetAttribute;
+    [TChoice('Element')]
+    property Notation: TNotationE read GetNotation;
   end;
 
   TRedefinableEG = class(TXmliteElementGroup)
@@ -1430,11 +1609,20 @@ type
     fComplexType: TComplexTypeE;
     fGroup: TGroupE;
     fAttributeGroup: TAttributeGroupE;
+
+    function GetSimpleType: TSimpleTypeE;
+    function GetComplexType: TComplexTypeE;
+    function GetGroup: TGroupE;
+    function GetAttributeGroup: TAttributeGroupE;
   published
-    property SimpleType: TSimpleTypeE read fSimpleType;
-    property ComplexType: TComplexTypeE read fComplexType;
-    property Group: TGroupE read fGroup;
-    property AttributeGroup: TAttributeGroupE read fAttributeGroup;
+    [TChoice('SimpleType')]
+    property SimpleType: TSimpleTypeE read GetSimpleType;
+    [TChoice('SimpleType')]
+    property ComplexType: TComplexTypeE read GetComplexType;
+    [TChoice('SimpleType')]
+    property Group: TGroupE read GetGroup;
+    [TChoice('SimpleType')]
+    property AttributeGroup: TAttributeGroupE read GetAttributeGroup;
   end;
 
   TTypeDefParticleEG = class(TXmliteElementGroup)
@@ -1443,11 +1631,20 @@ type
     fAll: TAllE;
     fChoice: TChoiceE;
     fSequence: TSequenceE;
+
+    function GetGroup: TGroupRefCT;
+    function GetAll: TAllE;
+    function GetChoice: TChoiceE;
+    function GetSequence: TSequenceE;
   published
-    property Group: TGroupRefCT read fGroup;
-    property All: TAllE read fAll;
-    property Choice: TChoiceE read fChoice;
-    property Sequence: TSequenceE read fSequence;
+    [TChoice('Group')]
+    property Group: TGroupRefCT read GetGroup;
+    [TChoice('Group')]
+    property All: TAllE read GetAll;
+    [TChoice('Group')]
+    property Choice: TChoiceE read GetChoice;
+    [TChoice('Group')]
+    property Sequence: TSequenceE read GetSequence;
   end;
 
   TNestedParticleEG = class(TXmliteElementGroup)
@@ -1457,12 +1654,23 @@ type
     fChoice: TChoiceE;
     fSequence: TSequenceE;
     fAny: TAnyE;
+
+    function GetElement: TLocalElementCT;
+    function GetGroup: TGroupRefCT;
+    function GetChoice: TChoiceE;
+    function GetSequence: TSequenceE;
+    function GetAny: TAnyE;
   published
-    property Element: TLocalElementCT read fElement;
-    property Group: TGroupRefCT read fGroup;
-    property Choice: TChoiceE read fChoice;
-    property Sequence: TSequenceE read fSequence;
-    property Any: TAnyE read fAny;
+    [TChoice('Element')]
+    property Element: TLocalElementCT read GetElement;
+    [TChoice('Element')]
+    property Group: TGroupRefCT read GetGroup;
+    [TChoice('Element')]
+    property Choice: TChoiceE read GetChoice;
+    [TChoice('Element')]
+    property Sequence: TSequenceE read GetSequence;
+    [TChoice('Element')]
+    property Any: TAnyE read GetAny;
   end;
 
   TParticleEG = class(TXmliteElementGroup)
@@ -1473,13 +1681,26 @@ type
     fChoice: TChoiceE;
     fSequence: TSequenceE;
     fAny: TAnyE;
+
+    function GetElement: TLocalElementCT;
+    function GetGroup: TGroupRefCT;
+    function GetAll: TAllE;
+    function GetChoice: TChoiceE;
+    function GetSequence: TSequenceE;
+    function GetAny: TAnyE;
   published
-    property Element: TLocalElementCT read fElement;
-    property Group: TGroupRefCT read fGroup;
-    property All: TAllE read fAll;
-    property Choice: TChoiceE read fChoice;
-    property Sequence: TSequenceE read fSequence;
-    property Any: TAnyE read fAny;
+    [TChoice('Element')]
+    property Element: TLocalElementCT read GetElement;
+    [TChoice('Element')]
+    property Group: TGroupRefCT read GetGroup;
+    [TChoice('Element')]
+    property All: TAllE read GetAll;
+    [TChoice('Element')]
+    property Choice: TChoiceE read GetChoice;
+    [TChoice('Element')]
+    property Sequence: TSequenceE read GetSequence;
+    [TChoice('Element')]
+    property Any: TAnyE read GetAny;
   end;
 
   TAttrDeclsEG = class(TXmliteElementGroup)
@@ -1493,9 +1714,14 @@ type
   private
     fSimpleContent: TSimpleContentE;
     fComplexContent: TComplexContentE;
+
+    function GetSimpleContent: TSimpleContentE;
+    function GetComplexContent: TComplexContentE;
   published
-    property SimpleContent: TSimpleContentE read fSimpleContent;
-    property ComplexContent: TComplexContentE read fComplexContent;
+    [TChoice('SimpleContent')]
+    property SimpleContent: TSimpleContentE read GetSimpleContent;
+    [TChoice('SimpleContent')]
+    property ComplexContent: TComplexContentE read GetComplexContent;
   end;
 
   TAllModelEG = class(TXmliteElementGroup)
@@ -1510,10 +1736,17 @@ type
     fUnique: TUniqueE;
     fKey: TKeyE;
     fKeyref: TKeyrefE;
+
+    function GetUnique: TUniqueE;
+    function GetKey: TKeyE;
+    function GetKeyref: TKeyrefE;
   published
-    property Unique: TUniqueE read fUnique;
-    property Key: TKeyE read fKey;
-    property Keyref: TKeyrefE read fKeyref;
+    [TChoice('Unique')]
+    property Unique: TUniqueE read GetUnique;
+    [TChoice('Unique')]
+    property Key: TKeyE read GetKey;
+    [TChoice('Unique')]
+    property Keyref: TKeyrefE read GetKeyref;
   end;
 
   TSimpleDerivationEG = class(TXmliteElementGroup)
@@ -1521,10 +1754,17 @@ type
     fRestriction: TRestrictionE;
     fList: TListE;
     fUnion: TUnionE;
+
+    function GetRestriction: TRestrictionE;
+    function GetList: TListE;
+    function GetUnion: TUnionE;
   published
-    property Restriction: TRestrictionE read fRestriction;
-    property List: TListE read fList;
-    property Union: TUnionE read fUnion;
+    [TChoice('Restriction')]
+    property Restriction: TRestrictionE read GetRestriction;
+    [TChoice('Restriction')]
+    property List: TListE read GetList;
+    [TChoice('Restriction')]
+    property Union: TUnionE read GetUnion;
   end;
 
   TFacetsEG = class(TXmliteElementGroup)
@@ -1541,19 +1781,44 @@ type
     fEnumeration: TEnumerationE;
     fWhiteSpace: TWhiteSpaceE;
     fPattern: TPatternE;
+
+    function GetMinExclusive: TMinExclusiveE;
+    function GetMinInclusive: TMinInclusiveE;
+    function GetMaxExclusive: TMaxExclusiveE;
+    function GetMaxInclusive: TMaxInclusiveE;
+    function GetTotalDigits: TTotalDigitsE;
+    function GetFractionDigits: TFractionDigitsE;
+    function GetLength: TLengthE;
+    function GetMinLength: TMinLengthE;
+    function GetMaxLength: TMaxLengthE;
+    function GetEnumeration: TEnumerationE;
+    function GetWhiteSpace: TWhiteSpaceE;
+    function GetPattern: TPatternE;
   published
-    property MinExclusive: TMinExclusiveE read fMinExclusive;
-    property MinInclusive: TMinInclusiveE read fMinInclusive;
-    property MaxExclusive: TMaxExclusiveE read fMaxExclusive;
-    property MaxInclusive: TMaxInclusiveE read fMaxInclusive;
-    property TotalDigits: TTotalDigitsE read fTotalDigits;
-    property FractionDigits: TFractionDigitsE read fFractionDigits;
-    property Length: TLengthE read fLength;
-    property MinLength: TMinLengthE read fMinLength;
-    property MaxLength: TMaxLengthE read fMaxLength;
-    property Enumeration: TEnumerationE read fEnumeration;
-    property WhiteSpace: TWhiteSpaceE read fWhiteSpace;
-    property Pattern: TPatternE read fPattern;
+    [TChoice('MinExclusive')]
+    property MinExclusive: TMinExclusiveE read GetMinExclusive;
+    [TChoice('MinExclusive')]
+    property MinInclusive: TMinInclusiveE read GetMinInclusive;
+    [TChoice('MinExclusive')]
+    property MaxExclusive: TMaxExclusiveE read GetMaxExclusive;
+    [TChoice('MinExclusive')]
+    property MaxInclusive: TMaxInclusiveE read GetMaxInclusive;
+    [TChoice('MinExclusive')]
+    property TotalDigits: TTotalDigitsE read GetTotalDigits;
+    [TChoice('MinExclusive')]
+    property FractionDigits: TFractionDigitsE read GetFractionDigits;
+    [TChoice('MinExclusive')]
+    property Length: TLengthE read GetLength;
+    [TChoice('MinExclusive')]
+    property MinLength: TMinLengthE read GetMinLength;
+    [TChoice('MinExclusive')]
+    property MaxLength: TMaxLengthE read GetMaxLength;
+    [TChoice('MinExclusive')]
+    property Enumeration: TEnumerationE read GetEnumeration;
+    [TChoice('MinExclusive')]
+    property WhiteSpace: TWhiteSpaceE read GetWhiteSpace;
+    [TChoice('MinExclusive')]
+    property Pattern: TPatternE read GetPattern;
   end;
 
   TSimpleRestrictionModelEG = class(TXmliteElementGroup)
@@ -1642,6 +1907,580 @@ type
   TPatternEList = class(TXmliteList<TPatternE>);
 
 implementation
+
+{ TComplexTypeCT }
+
+function TComplexTypeCT.GetSimpleContent: TSimpleContentE;
+begin
+  Result := TSimpleContentE(Lazy(fSimpleContent, TSimpleContentE));
+end;
+
+function TComplexTypeCT.GetComplexContent: TComplexContentE;
+begin
+  Result := TComplexContentE(Lazy(fComplexContent, TComplexContentE));
+end;
+
+function TComplexTypeCT.GetGroup: TGroupRefCT;
+begin
+  Result := TGroupRefCT(Lazy(fGroup, TGroupRefCT));
+end;
+
+function TComplexTypeCT.GetAll: TAllE;
+begin
+  Result := TAllE(Lazy(fAll, TAllE));
+end;
+
+function TComplexTypeCT.GetChoice: TChoiceE;
+begin
+  Result := TChoiceE(Lazy(fChoice, TChoiceE));
+end;
+
+function TComplexTypeCT.GetSequence: TSequenceE;
+begin
+  Result := TSequenceE(Lazy(fSequence, TSequenceE));
+end;
+
+function TComplexTypeCT.GetAnyAttribute: TAnyAttributeE;
+begin
+  Result := TAnyAttributeE(Lazy(fAnyAttribute, TAnyAttributeE));
+end;
+
+{ TTopLevelComplexTypeCT }
+
+function TTopLevelComplexTypeCT.GetSimpleContent: TSimpleContentE;
+begin
+  Result := TSimpleContentE(Lazy(fSimpleContent, TSimpleContentE));
+end;
+
+function TTopLevelComplexTypeCT.GetComplexContent: TComplexContentE;
+begin
+  Result := TComplexContentE(Lazy(fComplexContent, TComplexContentE));
+end;
+
+function TTopLevelComplexTypeCT.GetGroup: TGroupRefCT;
+begin
+  Result := TGroupRefCT(Lazy(fGroup, TGroupRefCT));
+end;
+
+function TTopLevelComplexTypeCT.GetAll: TAllE;
+begin
+  Result := TAllE(Lazy(fAll, TAllE));
+end;
+
+function TTopLevelComplexTypeCT.GetChoice: TChoiceE;
+begin
+  Result := TChoiceE(Lazy(fChoice, TChoiceE));
+end;
+
+function TTopLevelComplexTypeCT.GetSequence: TSequenceE;
+begin
+  Result := TSequenceE(Lazy(fSequence, TSequenceE));
+end;
+
+function TTopLevelComplexTypeCT.GetAnyAttribute: TAnyAttributeE;
+begin
+  Result := TAnyAttributeE(Lazy(fAnyAttribute, TAnyAttributeE));
+end;
+
+{ TLocalComplexTypeCT }
+
+function TLocalComplexTypeCT.GetSimpleContent: TSimpleContentE;
+begin
+  Result := TSimpleContentE(Lazy(fSimpleContent, TSimpleContentE));
+end;
+
+function TLocalComplexTypeCT.GetComplexContent: TComplexContentE;
+begin
+  Result := TComplexContentE(Lazy(fComplexContent, TComplexContentE));
+end;
+
+function TLocalComplexTypeCT.GetGroup: TGroupRefCT;
+begin
+  Result := TGroupRefCT(Lazy(fGroup, TGroupRefCT));
+end;
+
+function TLocalComplexTypeCT.GetAll: TAllE;
+begin
+  Result := TAllE(Lazy(fAll, TAllE));
+end;
+
+function TLocalComplexTypeCT.GetChoice: TChoiceE;
+begin
+  Result := TChoiceE(Lazy(fChoice, TChoiceE));
+end;
+
+function TLocalComplexTypeCT.GetSequence: TSequenceE;
+begin
+  Result := TSequenceE(Lazy(fSequence, TSequenceE));
+end;
+
+function TLocalComplexTypeCT.GetAnyAttribute: TAnyAttributeE;
+begin
+  Result := TAnyAttributeE(Lazy(fAnyAttribute, TAnyAttributeE));
+end;
+
+{ TRestrictionTypeCT }
+
+function TRestrictionTypeCT.GetGroup: TGroupRefCT;
+begin
+  Result := TGroupRefCT(Lazy(fGroup, TGroupRefCT));
+end;
+
+function TRestrictionTypeCT.GetAll: TAllE;
+begin
+  Result := TAllE(Lazy(fAll, TAllE));
+end;
+
+function TRestrictionTypeCT.GetChoice: TChoiceE;
+begin
+  Result := TChoiceE(Lazy(fChoice, TChoiceE));
+end;
+
+function TRestrictionTypeCT.GetSequence: TSequenceE;
+begin
+  Result := TSequenceE(Lazy(fSequence, TSequenceE));
+end;
+
+function TRestrictionTypeCT.GetSimpleType: TLocalSimpleTypeCT;
+begin
+  Result := TLocalSimpleTypeCT(Lazy(fSimpleType, TLocalSimpleTypeCT));
+end;
+
+{ TComplexRestrictionTypeCT }
+
+function TComplexRestrictionTypeCT.GetGroup: TGroupRefCT;
+begin
+  Result := TGroupRefCT(Lazy(fGroup, TGroupRefCT));
+end;
+
+function TComplexRestrictionTypeCT.GetAll: TAllE;
+begin
+  Result := TAllE(Lazy(fAll, TAllE));
+end;
+
+function TComplexRestrictionTypeCT.GetChoice: TChoiceE;
+begin
+  Result := TChoiceE(Lazy(fChoice, TChoiceE));
+end;
+
+function TComplexRestrictionTypeCT.GetSequence: TSequenceE;
+begin
+  Result := TSequenceE(Lazy(fSequence, TSequenceE));
+end;
+
+{ TExtensionTypeCT }
+
+function TExtensionTypeCT.GetGroup: TGroupRefCT;
+begin
+  Result := TGroupRefCT(Lazy(fGroup, TGroupRefCT));
+end;
+
+function TExtensionTypeCT.GetAll: TAllE;
+begin
+  Result := TAllE(Lazy(fAll, TAllE));
+end;
+
+function TExtensionTypeCT.GetChoice: TChoiceE;
+begin
+  Result := TChoiceE(Lazy(fChoice, TChoiceE));
+end;
+
+function TExtensionTypeCT.GetSequence: TSequenceE;
+begin
+  Result := TSequenceE(Lazy(fSequence, TSequenceE));
+end;
+
+{ TSimpleRestrictionTypeCT }
+
+function TSimpleRestrictionTypeCT.GetSimpleType: TLocalSimpleTypeCT;
+begin
+  Result := TLocalSimpleTypeCT(Lazy(fSimpleType, TLocalSimpleTypeCT));
+end;
+
+{ TElementCT }
+
+function TElementCT.GetSimpleType: TLocalSimpleTypeCT;
+begin
+  Result := TLocalSimpleTypeCT(Lazy(fSimpleType, TLocalSimpleTypeCT));
+end;
+
+function TElementCT.GetComplexType: TLocalComplexTypeCT;
+begin
+  Result := TLocalComplexTypeCT(Lazy(fComplexType, TLocalComplexTypeCT));
+end;
+
+{ TTopLevelElementCT }
+
+function TTopLevelElementCT.GetSimpleType: TLocalSimpleTypeCT;
+begin
+  Result := TLocalSimpleTypeCT(Lazy(fSimpleType, TLocalSimpleTypeCT));
+end;
+
+function TTopLevelElementCT.GetComplexType: TLocalComplexTypeCT;
+begin
+  Result := TLocalComplexTypeCT(Lazy(fComplexType, TLocalComplexTypeCT));
+end;
+
+{ TLocalElementCT }
+
+function TLocalElementCT.GetSimpleType: TLocalSimpleTypeCT;
+begin
+  Result := TLocalSimpleTypeCT(Lazy(fSimpleType, TLocalSimpleTypeCT));
+end;
+
+function TLocalElementCT.GetComplexType: TLocalComplexTypeCT;
+begin
+  Result := TLocalComplexTypeCT(Lazy(fComplexType, TLocalComplexTypeCT));
+end;
+
+{ TRealGroupCT }
+
+function TRealGroupCT.GetAll: TAllE;
+begin
+  Result := TAllE(Lazy(fAll, TAllE));
+end;
+
+function TRealGroupCT.GetChoice: TChoiceE;
+begin
+  Result := TChoiceE(Lazy(fChoice, TChoiceE));
+end;
+
+function TRealGroupCT.GetSequence: TSequenceE;
+begin
+  Result := TSequenceE(Lazy(fSequence, TSequenceE));
+end;
+
+{ TNamedGroupCT }
+
+function TNamedGroupCT.GetAll: TNamedGroupCTAll;
+begin
+  Result := TNamedGroupCTAll(Lazy(fAll, TNamedGroupCTAll));
+end;
+
+function TNamedGroupCT.GetChoice: TSimpleExplicitGroupCT;
+begin
+  Result := TSimpleExplicitGroupCT(Lazy(fChoice, TSimpleExplicitGroupCT));
+end;
+
+function TNamedGroupCT.GetSequence: TSimpleExplicitGroupCT;
+begin
+  Result := TSimpleExplicitGroupCT(Lazy(fSequence, TSimpleExplicitGroupCT));
+end;
+
+{ TNarrowMaxMinCT }
+
+function TNarrowMaxMinCT.GetSimpleType: TLocalSimpleTypeCT;
+begin
+  Result := TLocalSimpleTypeCT(Lazy(fSimpleType, TLocalSimpleTypeCT));
+end;
+
+function TNarrowMaxMinCT.GetComplexType: TLocalComplexTypeCT;
+begin
+  Result := TLocalComplexTypeCT(Lazy(fComplexType, TLocalComplexTypeCT));
+end;
+
+{ TSimpleTypeCT }
+
+function TSimpleTypeCT.GetRestriction: TRestrictionE;
+begin
+  Result := TRestrictionE(Lazy(fRestriction, TRestrictionE));
+end;
+
+function TSimpleTypeCT.GetList: TListE;
+begin
+  Result := TListE(Lazy(fList, TListE));
+end;
+
+function TSimpleTypeCT.GetUnion: TUnionE;
+begin
+  Result := TUnionE(Lazy(fUnion, TUnionE));
+end;
+
+{ TTopLevelSimpleTypeCT }
+
+function TTopLevelSimpleTypeCT.GetRestriction: TRestrictionE;
+begin
+  Result := TRestrictionE(Lazy(fRestriction, TRestrictionE));
+end;
+
+function TTopLevelSimpleTypeCT.GetList: TListE;
+begin
+  Result := TListE(Lazy(fList, TListE));
+end;
+
+function TTopLevelSimpleTypeCT.GetUnion: TUnionE;
+begin
+  Result := TUnionE(Lazy(fUnion, TUnionE));
+end;
+
+{ TLocalSimpleTypeCT }
+
+function TLocalSimpleTypeCT.GetRestriction: TRestrictionE;
+begin
+  Result := TRestrictionE(Lazy(fRestriction, TRestrictionE));
+end;
+
+function TLocalSimpleTypeCT.GetList: TListE;
+begin
+  Result := TListE(Lazy(fList, TListE));
+end;
+
+function TLocalSimpleTypeCT.GetUnion: TUnionE;
+begin
+  Result := TUnionE(Lazy(fUnion, TUnionE));
+end;
+
+{ TComplexContentE }
+
+function TComplexContentE.GetRestriction: TComplexRestrictionTypeCT;
+begin
+  Result := TComplexRestrictionTypeCT(Lazy(fRestriction, TComplexRestrictionTypeCT));
+end;
+
+function TComplexContentE.GetExtension: TExtensionTypeCT;
+begin
+  Result := TExtensionTypeCT(Lazy(fExtension, TExtensionTypeCT));
+end;
+
+{ TSimpleContentE }
+
+function TSimpleContentE.GetRestriction: TSimpleRestrictionTypeCT;
+begin
+  Result := TSimpleRestrictionTypeCT(Lazy(fRestriction, TSimpleRestrictionTypeCT));
+end;
+
+function TSimpleContentE.GetExtension: TSimpleExtensionTypeCT;
+begin
+  Result := TSimpleExtensionTypeCT(Lazy(fExtension, TSimpleExtensionTypeCT));
+end;
+
+{ TSchemaTopEG }
+
+function TSchemaTopEG.GetElement: TElementE;
+begin
+  Result := TElementE(Lazy(fElement, TElementE));
+end;
+
+function TSchemaTopEG.GetAttribute: TAttributeE;
+begin
+  Result := TAttributeE(Lazy(fAttribute, TAttributeE));
+end;
+
+function TSchemaTopEG.GetNotation: TNotationE;
+begin
+  Result := TNotationE(Lazy(fNotation, TNotationE));
+end;
+
+{ TRedefinableEG }
+
+function TRedefinableEG.GetSimpleType: TSimpleTypeE;
+begin
+  Result := TSimpleTypeE(Lazy(fSimpleType, TSimpleTypeE));
+end;
+
+function TRedefinableEG.GetComplexType: TComplexTypeE;
+begin
+  Result := TComplexTypeE(Lazy(fComplexType, TComplexTypeE));
+end;
+
+function TRedefinableEG.GetGroup: TGroupE;
+begin
+  Result := TGroupE(Lazy(fGroup, TGroupE));
+end;
+
+function TRedefinableEG.GetAttributeGroup: TAttributeGroupE;
+begin
+  Result := TAttributeGroupE(Lazy(fAttributeGroup, TAttributeGroupE));
+end;
+
+{ TTypeDefParticleEG }
+
+function TTypeDefParticleEG.GetGroup: TGroupRefCT;
+begin
+  Result := TGroupRefCT(Lazy(fGroup, TGroupRefCT));
+end;
+
+function TTypeDefParticleEG.GetAll: TAllE;
+begin
+  Result := TAllE(Lazy(fAll, TAllE));
+end;
+
+function TTypeDefParticleEG.GetChoice: TChoiceE;
+begin
+  Result := TChoiceE(Lazy(fChoice, TChoiceE));
+end;
+
+function TTypeDefParticleEG.GetSequence: TSequenceE;
+begin
+  Result := TSequenceE(Lazy(fSequence, TSequenceE));
+end;
+
+{ TNestedParticleEG }
+
+function TNestedParticleEG.GetElement: TLocalElementCT;
+begin
+  Result := TLocalElementCT(Lazy(fElement, TLocalElementCT));
+end;
+
+function TNestedParticleEG.GetGroup: TGroupRefCT;
+begin
+  Result := TGroupRefCT(Lazy(fGroup, TGroupRefCT));
+end;
+
+function TNestedParticleEG.GetChoice: TChoiceE;
+begin
+  Result := TChoiceE(Lazy(fChoice, TChoiceE));
+end;
+
+function TNestedParticleEG.GetSequence: TSequenceE;
+begin
+  Result := TSequenceE(Lazy(fSequence, TSequenceE));
+end;
+
+function TNestedParticleEG.GetAny: TAnyE;
+begin
+  Result := TAnyE(Lazy(fAny, TAnyE));
+end;
+
+{ TParticleEG }
+
+function TParticleEG.GetElement: TLocalElementCT;
+begin
+  Result := TLocalElementCT(Lazy(fElement, TLocalElementCT));
+end;
+
+function TParticleEG.GetGroup: TGroupRefCT;
+begin
+  Result := TGroupRefCT(Lazy(fGroup, TGroupRefCT));
+end;
+
+function TParticleEG.GetAll: TAllE;
+begin
+  Result := TAllE(Lazy(fAll, TAllE));
+end;
+
+function TParticleEG.GetChoice: TChoiceE;
+begin
+  Result := TChoiceE(Lazy(fChoice, TChoiceE));
+end;
+
+function TParticleEG.GetSequence: TSequenceE;
+begin
+  Result := TSequenceE(Lazy(fSequence, TSequenceE));
+end;
+
+function TParticleEG.GetAny: TAnyE;
+begin
+  Result := TAnyE(Lazy(fAny, TAnyE));
+end;
+
+{ TComplexTypeModelEG }
+
+function TComplexTypeModelEG.GetSimpleContent: TSimpleContentE;
+begin
+  Result := TSimpleContentE(Lazy(fSimpleContent, TSimpleContentE));
+end;
+
+function TComplexTypeModelEG.GetComplexContent: TComplexContentE;
+begin
+  Result := TComplexContentE(Lazy(fComplexContent, TComplexContentE));
+end;
+
+{ TIdentityConstraintEG }
+
+function TIdentityConstraintEG.GetUnique: TUniqueE;
+begin
+  Result := TUniqueE(Lazy(fUnique, TUniqueE));
+end;
+
+function TIdentityConstraintEG.GetKey: TKeyE;
+begin
+  Result := TKeyE(Lazy(fKey, TKeyE));
+end;
+
+function TIdentityConstraintEG.GetKeyref: TKeyrefE;
+begin
+  Result := TKeyrefE(Lazy(fKeyref, TKeyrefE));
+end;
+
+{ TSimpleDerivationEG }
+
+function TSimpleDerivationEG.GetRestriction: TRestrictionE;
+begin
+  Result := TRestrictionE(Lazy(fRestriction, TRestrictionE));
+end;
+
+function TSimpleDerivationEG.GetList: TListE;
+begin
+  Result := TListE(Lazy(fList, TListE));
+end;
+
+function TSimpleDerivationEG.GetUnion: TUnionE;
+begin
+  Result := TUnionE(Lazy(fUnion, TUnionE));
+end;
+
+{ TFacetsEG }
+
+function TFacetsEG.GetMinExclusive: TMinExclusiveE;
+begin
+  Result := TMinExclusiveE(Lazy(fMinExclusive, TMinExclusiveE));
+end;
+
+function TFacetsEG.GetMinInclusive: TMinInclusiveE;
+begin
+  Result := TMinInclusiveE(Lazy(fMinInclusive, TMinInclusiveE));
+end;
+
+function TFacetsEG.GetMaxExclusive: TMaxExclusiveE;
+begin
+  Result := TMaxExclusiveE(Lazy(fMaxExclusive, TMaxExclusiveE));
+end;
+
+function TFacetsEG.GetMaxInclusive: TMaxInclusiveE;
+begin
+  Result := TMaxInclusiveE(Lazy(fMaxInclusive, TMaxInclusiveE));
+end;
+
+function TFacetsEG.GetTotalDigits: TTotalDigitsE;
+begin
+  Result := TTotalDigitsE(Lazy(fTotalDigits, TTotalDigitsE));
+end;
+
+function TFacetsEG.GetFractionDigits: TFractionDigitsE;
+begin
+  Result := TFractionDigitsE(Lazy(fFractionDigits, TFractionDigitsE));
+end;
+
+function TFacetsEG.GetLength: TLengthE;
+begin
+  Result := TLengthE(Lazy(fLength, TLengthE));
+end;
+
+function TFacetsEG.GetMinLength: TMinLengthE;
+begin
+  Result := TMinLengthE(Lazy(fMinLength, TMinLengthE));
+end;
+
+function TFacetsEG.GetMaxLength: TMaxLengthE;
+begin
+  Result := TMaxLengthE(Lazy(fMaxLength, TMaxLengthE));
+end;
+
+function TFacetsEG.GetEnumeration: TEnumerationE;
+begin
+  Result := TEnumerationE(Lazy(fEnumeration, TEnumerationE));
+end;
+
+function TFacetsEG.GetWhiteSpace: TWhiteSpaceE;
+begin
+  Result := TWhiteSpaceE(Lazy(fWhiteSpace, TWhiteSpaceE));
+end;
+
+function TFacetsEG.GetPattern: TPatternE;
+begin
+  Result := TPatternE(Lazy(fPattern, TPatternE));
+end;
 
 initialization
 
