@@ -65,6 +65,11 @@ type
     // markup that is not an element - a comment, CDATA, a processing instruction, a DOCTYPE - passed to its own end
     // (CDATA and comments may hold < and >, which bracket counting would take for tags)
     class function PassMarkup(var aCursor: PChar): boolean; static;
+    // an element as its exact text, the cursor on its < - the buffer is not changed. Well-formed only: tags nested and
+    // closed, attribute values, comments, CDATA and processing instructions closed, every prefix declared (in it or in
+    // aXmlns); else False. aNamespaces gets the prefixes it takes from outside ('' - the default namespace) with their URIs
+    class function ReadFragment(var aCursor: PChar; aXmlns: TXmlns; out aXml: string;
+      aNamespaces: TDictionary<string, string>): boolean; static;
 
     class function PassNode(var aCursor: PChar; const aNodeName: string): boolean; static; inline;
 
@@ -269,6 +274,179 @@ begin
     Result := PassTo('?>')
   else
     Result := PassDtd(aCursor);
+end;
+
+class function TReaderXmlite.ReadFragment(var aCursor: PChar; aXmlns: TXmlns; out aXml: string;
+  aNamespaces: TDictionary<string, string>): boolean;
+type
+  TDeclaration = record
+    Depth: integer;
+    Prefix: string;
+  end;
+var
+  names: TList<string>; // the open elements
+  declarations: TList<TDeclaration>; // the prefixes they declare
+
+  procedure PassSpaces;
+  begin
+    while CharInSet(aCursor^, [#32, #9, #$A, #$D]) do
+      Inc(aCursor);
+  end;
+
+  function ReadName(out aName: string): boolean;
+  begin
+    var start: PChar := aCursor;
+    while not CharInSet(aCursor^, [#0, #32, #9, #$A, #$D, '/', '>', '=', '<', '"', '''']) do
+      Inc(aCursor);
+    SetString(aName, start, aCursor - start);
+    Result := not aName.IsEmpty;
+  end;
+
+  procedure CloseElement;
+  begin
+    for var i := declarations.Count - 1 downto 0 do
+      if declarations[i].Depth = names.Count then
+        declarations.Delete(i);
+    names.Delete(names.Count - 1);
+  end;
+
+  // the prefix of a name: declared in the fragment, or outside - then recorded; an undeclared one is not well-formed
+  function Resolve(const aName: string; aElement: boolean): boolean;
+  begin
+    Result := True;
+    var prefix: string := '';
+    if aName.IndexOf(':') > 0 then
+      prefix := aName.Substring(0, aName.IndexOf(':'))
+    else if not aElement then
+      Exit; // an unprefixed attribute is in no namespace
+    if (prefix = cXmlPrefix) or (prefix = 'xmlns') then
+      Exit;
+    for var declaration: TDeclaration in declarations do
+      if declaration.Prefix = prefix then
+        Exit;
+    if prefix.IsEmpty then
+      aNamespaces.AddOrSetValue('', aXmlns.DefaultUri)
+    else
+    begin
+      var uri: string;
+      Result := aXmlns.TryGetValue(prefix, uri);
+      if Result then
+        aNamespaces.AddOrSetValue(prefix, uri);
+    end;
+  end;
+
+begin
+  Result := False;
+  var start: PChar := aCursor;
+  names := TList<string>.Create;
+  declarations := TList<TDeclaration>.Create;
+  try
+    repeat
+      if aCursor^ = #0 then
+        Exit;
+      if aCursor^ <> '<' then // text
+      begin
+        Inc(aCursor);
+        Continue;
+      end;
+
+      if (aCursor[1] = '!') or (aCursor[1] = '?') then
+      begin // a comment, CDATA, a processing instruction - a DOCTYPE has no place in an element
+        if (StrLComp(aCursor, '<!--', 4) <> 0) and (StrLComp(aCursor, '<![CDATA[', 9) <> 0) and (aCursor[1] <> '?') then
+          Exit;
+        if not PassMarkup(aCursor) then
+          Exit;
+        Continue;
+      end;
+
+      if aCursor[1] = '/' then
+      begin // an end tag closes the element opened last
+        Inc(aCursor, 2);
+        var name: string;
+        if not ReadName(name) or (names.Count = 0) or (names.Last <> name) then
+          Exit;
+        PassSpaces;
+        if aCursor^ <> '>' then
+          Exit;
+        Inc(aCursor);
+        CloseElement;
+        Continue;
+      end;
+
+      // a start tag: its declarations count for its own names
+      Inc(aCursor);
+      var name: string;
+      if not ReadName(name) then
+        Exit;
+      names.Add(name);
+      var attributes: TArray<string> := [];
+      var empty: boolean := False;
+      while True do
+      begin
+        PassSpaces;
+        if aCursor^ = '>' then
+        begin
+          Inc(aCursor);
+          Break;
+        end;
+        if (aCursor^ = '/') and (aCursor[1] = '>') then
+        begin
+          Inc(aCursor, 2);
+          empty := True;
+          Break;
+        end;
+
+        var attribute: string;
+        if not ReadName(attribute) then
+          Exit;
+        PassSpaces;
+        if aCursor^ <> '=' then
+          Exit;
+        Inc(aCursor);
+        PassSpaces;
+        if not CharInSet(aCursor^, ['"', '''']) then
+          Exit;
+        var quote: Char := aCursor^;
+        Inc(aCursor);
+        while aCursor^ <> quote do
+        begin
+          if (aCursor^ = #0) or (aCursor^ = '<') then // < is not allowed in an attribute value
+            Exit;
+          Inc(aCursor);
+        end;
+        Inc(aCursor);
+
+        var declaration: TDeclaration;
+        declaration.Depth := names.Count;
+        if attribute = 'xmlns' then
+        begin
+          declaration.Prefix := '';
+          declarations.Add(declaration);
+        end
+        else if attribute.StartsWith('xmlns:') then
+        begin
+          declaration.Prefix := attribute.Substring(6);
+          declarations.Add(declaration);
+        end
+        else
+          attributes := attributes + [attribute];
+      end;
+
+      if not Resolve(name, True) then
+        Exit;
+      for var attribute: string in attributes do
+        if not Resolve(attribute, False) then
+          Exit;
+      if empty then
+        CloseElement;
+    until names.Count = 0;
+
+    SetString(aXml, start, aCursor - start);
+    Result := True;
+  finally
+    declarations.Free;
+    names.Free;
+  end;
 end;
 
 class function TReaderXmlite.PassNode(var aCursor: PChar; const aNodeName: string): boolean;

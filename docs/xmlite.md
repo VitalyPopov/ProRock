@@ -113,6 +113,30 @@ namespace (`ProRock.Xmlite.Schema.<Name>`), so the units of a schema set use eac
 !!! note "Generated string types"
     `TStringST` is `type string`, so string-helper methods need a cast: `string(response.Address).Replace(...)`.
 
+## Content the schema does not describe
+
+Real documents carry more than their schema: Office writes its own extensions into every file, a newer version of a format
+adds elements. Xmlite keeps such content and writes it back:
+
+```xml
+<workbook ...>
+  <workbookPr defaultThemeVersion="202300"/>
+  <xr:revisionPtr revIDLastSave="0" documentId="..."/>   <!-- not in the schema: kept -->
+  <bookViews>...</bookViews>
+```
+
+- **Attributes** without a property are kept in `XmlAttributes`.
+- **Elements** without a property are kept as their exact text in `XmlUnknown` and written back where they were - after the
+  same element, between the same list items. The content of `xs:any` from a namespace without generated units is kept the
+  same way.
+- **Namespace declarations** of the document are written back too, so prefixes that only appear in values
+  (`mc:Ignorable="x14ac"`) stay declared.
+- `Clear` removes the kept content with the rest.
+
+Kept content is never written without being checked: an element whose tags are not closed or crossed, or which uses an
+undeclared prefix, fails the read - as any malformed XML does: `FromXml` returns `False`, and the object holds what was read
+up to there.
+
 ## Hand-written classes
 
 Without a schema, write the classes yourself. A published property is an attribute by default; `[TXmliteElement]` makes it a

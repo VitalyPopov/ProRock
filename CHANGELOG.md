@@ -12,6 +12,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   is now read through a getter: touching it (`Entry.Resource.Patient.Name...`) creates it as before, untouched ones cost
   nothing. A FHIR Bundle of 1,000 Patients: read 11.9 s -> 0.10 s, write 6.7 s -> 0.08 s, free 10.0 s -> 0.05 s - every
   entry pre-created two containers of 146 resources each (18,109 objects) before. Regenerate your units to get it
+- `FromXml` returns `False` for malformed content - a tag not closed, crossed tags, an undeclared prefix in kept content.
+  It returned `True` before, with what was read up to the error. The object still holds that part
 - Code that walks generated objects recursively and stops at `nil` must stop at empty objects instead (`HasContent`): a
   choice member's getter always returns an object, so a walk through a recursive type would not end
 - `@Obj.Member` (`Present`, `SetPresent`, `Clear` by address) does not compile for choice members - a property with a
@@ -20,6 +22,11 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   untouched choice members
 
 ### Added
+- Content the schema does not describe is kept: elements without a property are kept as their exact text (`XmlUnknown`) and
+  written back where they were - after the same element, between the same list items - and the document's namespace
+  declarations are written back, so prefixes named in values stay declared (`mc:Ignorable="x14ac"`). An Excel workbook read
+  and written back keeps Office's extensions (`extLst`, `mc:AlternateContent`, `xr:revisionPtr`). The content of `xs:any`
+  from a namespace without generated units is kept the same way
 - `[TChoice('Group')]` marks the members of a choice; `Chosen('Group')` returns the present member's object,
   `ChosenProperty('Group')` its property, without creating any member. `Chosen` without a name - the class's only choice
 - A typed shortcut per choice group named by its members' common prefix: `Obs.ValueChosen` for FHIR's `value[x]`

@@ -17,14 +17,15 @@ documents; it does not validate them against their schema.
 | | Status | Notes |
 |---|---|---|
 | Elements, attributes, text | supported | |
-| Namespaces and prefixes | supported | any prefixes on read; on write each namespace uses its own prefix, which can differ from the document's |
+| Namespaces and prefixes | supported | any prefixes on read; the document's declarations are written back, its elements with each namespace's own prefix, which can differ from the document's |
 | Character and entity references | supported | `&amp;`, `&lt;`, `&#65;`, `&#x42;` |
 | CDATA sections | supported | read as text as it is, written escaped (`a&lt;b`) |
 | Comments, processing instructions, DOCTYPE | supported | skipped on read, not written back |
 | Entities declared in a DTD | not supported | `&name;` stays text - which also rules out entity-expansion attacks |
 | `xml:space="preserve"` | supported | written for text with leading or trailing spaces |
 | Attributes the schema does not know | supported | kept and written back |
-| Elements the schema does not know | not yet | dropped on read - Office's own extensions (`extLst`, `mc:AlternateContent`) are lost on a round trip |
+| Elements the schema does not know | supported | kept as their exact text and written back where they were - Office's own extensions (`extLst`, `mc:AlternateContent`) survive a round trip ([Xmlite](xmlite.md#content-the-schema-does-not-describe)) |
+| Malformed XML | supported | the read fails: `FromXml` returns `False` - tags not closed or crossed, an undeclared prefix in kept content |
 | Mixed content | partial | text-only mixed content is plain text (`XmlValue`); with child elements (`<p>Hello <b>world</b>!</p>`) only the text before the first child is kept |
 
 ## Structures
@@ -39,7 +40,7 @@ documents; it does not validate them against their schema.
 | Groups, attribute groups, references | supported | a reference to an element of a simple type is a plain value |
 | Anonymous (inline) types | supported | |
 | Presence: absent vs. default | supported | `Present`, `SetPresent`, `Clear` ([Xmlite](xmlite.md#absent-or-default-presence)) |
-| `xs:any` | partial | elements of namespaces with generated units are read and written; others are dropped |
+| `xs:any` | supported | elements of namespaces with generated units are read as objects; others are kept as text |
 | `xs:anyAttribute` | partial | such attributes are kept as attributes the schema does not know, not typed |
 | `elementFormDefault="unqualified"` | partial | read correctly; on write, local elements get the parent's default namespace |
 
