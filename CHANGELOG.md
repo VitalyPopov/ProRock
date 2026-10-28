@@ -49,6 +49,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   generated. Use a string property marked `[TXmliteElement]`, or a value list for a repeating one
 
 ### Fixed
+- The writer no longer declares the namespaces of value types (`xmlns:xs="http://www.w3.org/2001/XMLSchema"` for any
+  string): they name nothing in the document
 - CDATA sections were read as empty, and every element after one was lost: `<name><![CDATA[a<b]]></name>` reads `a<b` now
   (the text as it is, written back escaped)
 - A processing instruction inside an element (`<?app data?>`) lost everything after it; it is skipped now, as comments are.

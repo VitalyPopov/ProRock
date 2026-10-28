@@ -952,8 +952,8 @@ function TBasiteHelper.GetXmlns(aDeclared: TDictionary<string, string>): string;
       if not aPropertyData.Required and not aObject.IsPresent(aPropertyData) then
         Exit;
 
+      // the property's own namespace only: its value type's one (xs of xs:string) names nothing in the document
       aXmlnsList.Add(aPropertyData.Xmlite.Namespace);
-      aXmlnsList.Add(aPropertyData.Meta.Xmlite.Namespace);
     end;
 
   begin
