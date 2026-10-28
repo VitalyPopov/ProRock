@@ -31,9 +31,8 @@ type
     function Header(const aName: string): string;
   end;
 
-  // protocol-agnostic HTTP exchange - protocol layers (SOAP, REST, ...) build requests and read responses on top of it.
-  // Default headers (authentication, API keys, ...) are added to every request; the protocol layers never see them, so they
-  // never reach their events or error texts. Configure them before concurrent use, like the rest of the transport
+  // protocol-agnostic HTTP exchange; default headers (authentication, API keys) go with every request and never reach the
+  // protocol layers' events or error texts. Configure them before concurrent use
   THttpTransport = class abstract
   private
     fHeaders: THttpHeaders;
@@ -75,17 +74,11 @@ type
     property UserName: string read fUserName write fUserName;
     property Password: string read fPassword write fPassword;
 
-    // mutual TLS: a PFX/P12 file with the client certificate and its private key (Windows, Linux, iOS); on Android the
-    // fingerprint or name of a certificate installed on the device. The file is opened by every call, before connecting: a
-    // missing file or a wrong password fails the call (Soapite: sekNetwork with the System.Net message, never the password).
-    // Delphi 12 or later: System.Net of 10.3 ignores the file silently, of 10.4 and 11 cannot open it - there a call with a
-    // certificate fails with ENotSupportedException instead of going out without it
+    // mutual TLS: a PFX/P12 file with the client certificate (Android: an installed one's name), opened by every call - a
+    // missing file or a wrong password fails it. Delphi 12 or later; before, a call fails with ENotSupportedException
     property ClientCertificate: string read fClientCertificate write fClientCertificate;
-    // the same certificate from memory: the bytes of a PFX/P12 (or PEM) file - from a database, a resource, a key vault.
-    // Kept as they are and read by every call; empty - not set. Either this or ClientCertificate, not both (the call fails
-    // with EInvalidOpException). Windows reads PFX bytes in memory; on Linux System.Net hands curl a temporary copy (curl
-    // takes files only). Not on Android (System.Net uses only certificates installed on the device there - set
-    // ClientCertificate to its name): ENotSupportedException, like before Delphi 12
+    // the same certificate from memory (PFX/P12 or PEM bytes: a database, a key vault); either this or ClientCertificate
+    // (both: EInvalidOpException). Not on Android (ENotSupportedException - use an installed one's name)
     property ClientCertificateData: TBytes read fClientCertificateData write fClientCertificateData;
     property ClientCertificatePassword: string read fClientCertificatePassword write fClientCertificatePassword;
   end;

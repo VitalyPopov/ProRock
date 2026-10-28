@@ -476,8 +476,7 @@ constructor TWriterBase.Create(aStream: TStream; aIndent, aWidth, aLevel: cardin
 begin
   if aStream = nil then
   begin
-    // TStreamWriter writes UTF-8, so Text must read the bytes as UTF-8 - TStringStream's default encoding is the ANSI code page
-    // on Windows (non-ASCII text came out garbled: Ё as РЃ); the shared TEncoding.UTF8 instance is not owned
+    // UTF-8, as TStreamWriter writes (TStringStream's default is the ANSI code page); the shared instance is not owned
     inherited Create(TStringStream.Create('', TEncoding.UTF8, False));
     OwnStream;
   end

@@ -49,9 +49,8 @@ type
   TMetaBank = ProRock.Basite.TMetaBank;
   {$ENDREGION}
 
-  // An element the schema does not describe (Office's extensions, a newer version's additions), kept as its text - a
-  // well-formed one - and written back where it was: after the AfterCount-th item of the element property After (nil:
-  // before the first element). Namespaces: prefix ('' - the default) -> URI of the names it takes from its ancestors
+  // an element the schema does not describe, kept as its text, written back after the AfterCount-th item of After (nil:
+  // first); Namespaces - the prefixes ('' - default) it takes from its ancestors
   TXmliteUnknown = record
     Xml: string;
     After: TProperty;
@@ -72,8 +71,7 @@ type
     property Pretty: boolean read fPretty write fPretty;
 
     procedure PopDeclared;
-    // a kept element the schema does not describe, as its text - with declarations of the prefixes it takes from outside
-    // whose binding here differs (or is missing)
+    // a kept element, declaring the outside prefixes it uses whose binding here differs
     procedure AddUnknown(const aUnknown: TXmliteUnknown);
 
     procedure AddIndent; reintroduce; inline;
@@ -117,21 +115,17 @@ type
     property XmlPrefix: string read fXmlPrefix write fXmlPrefix;
     property XmlName: string read fXmlName write fXmlName;
     property XmlAny: TBasiteList<TBasite> read fXmlAny;
-    // when the element was read: increasing in document order (0 - not read). Objects of different kinds keep their
-    // document order through it - in XSD a sequence's elements, choices and group refs, held in one list per kind
+    // the element's place in the document it was read from (0 - not read)
     property XmlPosition: cardinal read fXmlPosition;
     property XmlAttributes: TDictionary<string, string> read fXmlAttributes; // attributes without a property, kept for the round trip
     // elements without a property, kept for the round trip as their text (Clear removes them)
     property XmlUnknown: TList<TXmliteUnknown> read GetXmlUnknown;
     property XmlText: string read fXmlText write fXmlText;
-    // prefix -> URI declared again on write, so a document read and written back stays valid XML: the element's own
-    // declarations as the document had them (prefixes also appear in values: mc:Ignorable="x14ac", xsi:type), the prefixes
-    // of the names in XmlAttributes, set by SetXsiType
+    // prefix -> URI declared again on write: the document's declarations (prefixes appear in values: mc:Ignorable)
     property XmlAttributeNamespaces: TDictionary<string, string> read fXmlAttributeNamespaces;
 
-    // xsi:type: this element holds a value of aType, a complex type derived from its declared one (XSD) - e.g. OPC requires
-    // <dcterms:created xsi:type="dcterms:W3CDTF">: Created.SetXsiType(TW3cdtfCT). Raises EArgumentException for a class
-    // that is not a registered complex type derived from the element's type
+    // writes xsi:type: the element holds aType, a complex type derived from its own - Created.SetXsiType(TW3cdtfCT).
+    // Raises EArgumentException for any other class
     procedure SetXsiType(aType: TClass);
 
     procedure Clear; overload; override;
@@ -144,11 +138,12 @@ type
   TXmliteValueList<T> = class(TBasiteValueList<T>);
   TXmliteList = TXmliteList<TXmlite>;
 
-  TXmliteComplexType = class(TXmlite); // so far just to mark ComplexType (without base type)
-  TXmliteComplexTypeRestricted = class(TXmlite); // so far just to mark ComplexType based on restriction
-  TXmliteAttributeGroup = class(TXmlite); // so far just to mark AttributeGroups
-  TXmliteElement = class(TXmlite); // so far just to mark Elements
-  TXmliteElementGroup = class(TXmlite); // so far just to mark Groups
+  // the kind of schema component a generated class stands for
+  TXmliteComplexType = class(TXmlite);
+  TXmliteComplexTypeRestricted = class(TXmlite);
+  TXmliteAttributeGroup = class(TXmlite);
+  TXmliteElement = class(TXmlite);
+  TXmliteElementGroup = class(TXmlite);
 
   TNamespace = class;
 
@@ -164,15 +159,13 @@ type
     function ReadTagContents(var aCursor: PChar; const aName: string; aXmlns: TXmlns): boolean;
 
     function FromXml(var aXmlCursor: PChar; aXmlns: TXmlns = nil): boolean; overload;
-    // aScope: the default namespace in scope (xmlns="...") - a child element is prefixed exactly when its namespace is another
-    // one; aNamespaces: the element declares its namespaces (its own one becomes the default in scope)
+    // aScope: the default namespace in scope; aNamespaces: the element declares its namespaces (a root)
     procedure ToXml(aWriter: TWriterXmlite; const aName: string; aScope: TNamespace; aNamespaces: boolean;
       aXmlHeader: boolean = False); overload;
   public
     constructor CreateFromXml(const aXml: string);
 
-    // the declarations of this element: written by the root (and by xs:any content of another namespace); aDeclared, when
-    // given, gets them (prefix, '' - the default -> URI)
+    // the namespace declarations a root writes; aDeclared, when given, gets them (prefix, '' - default -> URI)
     function GetXmlns(aDeclared: TDictionary<string, string> = nil): string;
 
     procedure ToXml(aStream: TStream; const aName: string = ''; aXmlHeader: boolean = True); overload;
@@ -184,7 +177,7 @@ type
   // the property holds the element's text content (XSD simpleContent: text and attributes, no child elements)
   TXmliteTextAttribute = class(TCustomAttribute);
   TXmliteAnyElementAttribute = class(TCustomAttribute);
-  TXmliteAnyAttributeAttribute = class(TCustomAttribute); // not realized yet - unknown attributes are kept in XmlAttributes anyway
+  TXmliteAnyAttributeAttribute = class(TCustomAttribute); // reserved: unknown attributes are kept in XmlAttributes
 
   TNamespaceAttribute = class(TCustomAttribute)
   private
@@ -194,8 +187,7 @@ type
     property Uri: string read fUri;
   end;
 
-  // XSD form="qualified": the attribute is written with its namespace prefix also in elements of its own namespace - a global
-  // attribute referenced within its schema (wsu:Id in wsu:Timestamp); an attribute of another namespace is prefixed anyway
+  // XSD form="qualified": an attribute written prefixed also in elements of its own namespace (wsu:Id in wsu:Timestamp)
   TQualifiedAttribute = class(TCustomAttribute);
 
   TPropertyXmlite = class(TPropertyExtension)
@@ -209,8 +201,7 @@ type
   public
     constructor Create(aProperty: TProperty); override;
 
-    // XML name of a property out of any namespace: [TName] (exact), property [TNaming], class [TNaming], default naming;
-    // once registered in a namespace: [TName], property [TNaming], the namespace naming
+    // a property's XML name: [TName], property [TNaming], then the class's (or, in a namespace, the namespace's) naming
     class function XmlName(aProperty: TProperty): string; static;
 
     property Name: string read fName;
@@ -290,7 +281,7 @@ type
     property IsTXmlite: boolean read fIsTXmlite;
 
     property ProcessAnyElement: boolean read GetProcessAnyElement write fProcessAnyElement;
-    property ProcessAnyAttribute: boolean read GetProcessAnyAttribute write fProcessAnyAttribute; // not realized yet
+    property ProcessAnyAttribute: boolean read GetProcessAnyAttribute write fProcessAnyAttribute; // reserved
   end;
 
   TMetaBasiteHelper = class helper for TMetaBasite
@@ -404,8 +395,7 @@ end;
 
 function TBasiteHelper.FromXml(const aXml: string): boolean;
 begin
-  // parsing works in place (unescaping, temporary terminators): the caller's own string is parsed with no copy,
-  // but a literal (read-only memory) or a string shared with other owners must not be changed - they are copied
+  // parsing works in place: a literal (read-only memory) or a shared string is copied first
   var xmlCopy: string;
   var xmlCursor: PChar;
   if StringRefCount(aXml) = 1 then
@@ -505,7 +495,7 @@ begin
           if (attributePrefix <> 'xmlns') and (not attributePrefix.IsEmpty or (attributeName <> 'xmlns')) then // pass xmlns stuff
           begin
             TXmlite(Self).XmlAttributes.AddOrSetValue(attributeFullName, attributeValue);
-            // its prefix (xsi), and for xsi:type the prefix of the value (dcterms:W3CDTF) - declared again on write
+            // its prefix, and for xsi:type the value's (dcterms:W3CDTF) - declared again on write
             if not attributePrefix.IsEmpty and not uri.IsEmpty then
               TXmlite(Self).XmlAttributeNamespaces.AddOrSetValue(attributePrefix, uri);
             if (uri = cXsiUri) and (attributeName = 'type') and (attributeValue.IndexOf(':') > 0) then
@@ -545,8 +535,7 @@ begin
           TXmlite(Self).xmlText := TReaderXmlite.ReadUnescapeInPlace(aXmlCursor, '<');
       end;
 
-      // malformed content (a tag not closed, crossed tags, a malformed kept element) fails the read: False, the object holds
-      // what was read up to there
+      // malformed content fails the read; the object keeps what was read up to there
       Result := ReadTagContents(aXmlCursor, objectName, xmlns);
     end;
 
@@ -644,8 +633,7 @@ begin
     // get a property for property defined name, following prefix/uri
     var propertyElement: TProperty := Meta.Xmlite.Elements[TUriedName.Create(elementUri, tagName)];
 
-    // unqualified local element (elementFormDefault="unqualified", e.g. faultcode of SOAP 1.1 Fault) belongs to its parent type,
-    // the same way as unprefixed attributes
+    // an unqualified local element (SOAP 1.1 faultcode) belongs to its parent's type, as an unprefixed attribute does
     if (propertyElement = nil) and elementUri.IsEmpty and Assigned(Meta.Xmlite.Namespace) then
       propertyElement := Meta.Xmlite.Elements[TUriedName.Create(Meta.Xmlite.Namespace.Uri, tagName)];
 
@@ -670,9 +658,7 @@ begin
     if propertyElement = nil then // as a fallback - try to find such property without tag
       propertyElement := Meta.Xmlite.Elements[TUriedName.Create('', tagName)];
 
-    // compat 1.3.0, drop in 2.0: ProRock before 1.3.0 wrote some elements in the wrong namespace
-    // (a reference or the content of another namespace's type in the parent's one: <ScopeItem><Code> instead of
-    // <b:ScopeItem><b:Code>) - matched by name, so older documents still read; it also makes the reader lenient
+    // compat 1.3.0, drop in 2.0: matched by name - documents written before 1.3.0 put some elements in the parent's namespace
     if propertyElement = nil then
       for var candidate: TProperty in Meta.Xmlite.Elements.Values do
         if candidate.Xmlite.Name = tagName then
@@ -871,8 +857,7 @@ begin
               end;
             ptBasite:
               begin
-                // a pre-created object is written only when present (read, marked, or with content) or required - its own
-                // required values do not make it present (else <drawing r:id=""/> would be written though absent)
+                // written when present or required - its own required values do not make it present (<drawing r:id=""/>)
                 var propertyBasite: TPropertyBasite := TPropertyBasite(propertyElement);
                 var fieldObject: TBasite := propertyBasite.ObjectPointer(Self)^;
                 if (fieldObject <> nil) and (propertyBasite.Required or IsPresent(propertyBasite)) then
@@ -941,9 +926,7 @@ end;
 
 function TBasiteHelper.GetXmlns(aDeclared: TDictionary<string, string>): string;
 
-  // aPrefixed: namespaces used with a prefix in this subtree - the own one is then declared with a prefix too (a qualified
-  // attribute); aScope: the default namespace in scope - xs:any content of another one declares its namespaces itself
-  // aKept: prefix -> URI of kept attributes (TXmlite.XmlAttributeNamespaces)
+  // aPrefixed: namespaces used with a prefix in this subtree; aScope: the default one; aKept: the declarations kept
   procedure FillXmlnsList(aXmlnsList, aPrefixed: THashedObjectList<TNamespace>; aKept: TDictionary<string, string>; aObject: TBasite;
     aScope: TNamespace);
 
@@ -991,8 +974,7 @@ function TBasiteHelper.GetXmlns(aDeclared: TDictionary<string, string>): string;
       end;
     end;
 
-    // xs:any content in the scope is written as it is (its namespaces are declared here); content of another namespace declares
-    // its own (ToXml)
+    // xs:any content of the scope's namespace is declared here; of another one, by itself
     if aObject.Meta.Xmlite.IsTXmlite and aObject.Meta.Xmlite.ProcessAnyElement then
       for var anyElement: TBasite in TXmlite(aObject).XmlAny do
         if anyElement.Meta.Xmlite.Namespace = aScope then
@@ -1027,8 +1009,7 @@ begin
           declared.AddOrSetValue(namespace.Prefix, namespace.Uri);
         end;
 
-    // the prefixes of kept attributes, as the document had them (xsi of xsi:type) - unless the prefix is declared already
-    // (for another URI too: the attribute would change meaning either way, the element's own names win)
+    // the kept declarations, unless the prefix is declared already (the element's own names win)
     for var keptPrefix: TPair<string, string> in kept do
       if not declared.ContainsKey(keptPrefix.Key) and (keptPrefix.Key <> cXmlPrefix) then
       begin
@@ -1579,8 +1560,7 @@ begin
   for var simpleType: PTypeInfo in aSimpleTypes do
     Result.Add(TMetaBank.RegisterType(simpleType), xctSimpleType);
 
-  // global attributes before the classes: a member typed with one belongs to its namespace and is qualified (derived when the
-  // member registers - also within this namespace, e.g. wsu:Id in wsu:Timestamp)
+  // global attributes before the classes: a member typed with one takes its namespace when it registers
   for var attribute: PTypeInfo in aAttributes do
     Result.Add(TMetaBank.RegisterType(attribute), xctAttribute);
 
@@ -1677,9 +1657,7 @@ begin
   if not fIsTXmlite then
     Exit;
 
-  // inherited from the parent class. The parent's meta may exist without its extension yet: a class whose content holds
-  // its own descendants (XHTML: span in span) registers them while being registered itself - then the attributes of the
-  // ancestors give it (reading the missing extension would be an access violation)
+  // inherited from the parent class - whose extension may not exist yet (XHTML span in span registers while registering)
   var parentXmlite: TMetaBasiteXmlite := aMeta.ClassItself.ClassParent.Meta.Xmlite;
   if parentXmlite <> nil then
     fProcessAnyElement := parentXmlite.ProcessAnyElement
@@ -1819,8 +1797,7 @@ begin
         SetLength(fName, Length(fName) - fNamespace.fSuffixLengthElementGroup);
   end;
 
-  // [TName('Account.Coverage')]: the exact XML name, for one no naming style gives back from the Delphi name (dots, a
-  // hyphen in a PascalCase name, a name made unique); otherwise the name follows the type's [TNaming] or the namespace's
+  // [TName('Account.Coverage')]: the exact XML name no naming style gives back; else the type's or namespace's naming
   var fNaming: TNaming := fNamespace.Naming;
   var customName: string := '';
   for var attribute: TCustomAttribute in Self.Meta.RttiType.GetAttributes do
@@ -1916,9 +1893,7 @@ begin
     else if (attribute.ClassType = TNameAttribute) or attribute.ClassType.InheritsFrom(TNamingAttribute) then
       hasOwnName := True;
 
-  // a reference to a global declaration (xs:element ref, xs:attribute ref): an element class or an attribute type IS that
-  // declaration, so the member belongs to its namespace, and such an attribute is always qualified (XSD) - unlike a local
-  // member, which belongs to its owner whatever its type (ord:ShipTo of type cmn:AddressType)
+  // a reference to a global element or attribute belongs to its namespace (an attribute qualified); a local member to its owner
   if fNamespace = nil then
   begin
     var typeMeta: TMeta := PropertyInfo.Meta;

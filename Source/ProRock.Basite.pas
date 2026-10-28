@@ -10,8 +10,7 @@ uses System.Classes, System.Rtti, Generics.Collections, System.SysUtils, System.
 const
   cProRockVersion = '1.5.1';
 
-  // TBasite.AutoInitMaxDepth range: 1 - library code relies on non-recursive paths (e.g. Envelope.Body); 5 - pre-created objects
-  // grow as (self-references per type) ^ depth, so higher values only eat memory
+  // TBasite.AutoInitMaxDepth range: 1 - library code needs non-recursive paths (Envelope.Body); above 5 only costs memory
   cAutoInitMaxDepthMin = 1;
   cAutoInitMaxDepthMax = 5;
 
@@ -99,8 +98,7 @@ type
     class constructor Create;
     class procedure SetAutoInitMaxDepth(aValue: cardinal); static;
   private
-    // presence: a property read from the data or marked by SetPresent, also when its value equals the default (count="0") -
-    // one bit per TProperty.Index: properties 0..63 inline, 64 and above in fPresentMore (created when one of them is marked)
+    // presence: one bit per TProperty.Index - 0..63 inline, 64 and above in fPresentMore (created with the first one)
     fPresent: UInt64;
     fPresentMore: TArray<UInt64>;
 
@@ -113,11 +111,8 @@ type
     class function ClassParent: TBasiteClass; inline;
     class function Meta: TMetaBasite;
 
-    // How often one type may occur on a path when nested objects are created with their parent (auto-init); a self-nested
-    // type is cut there (nil), so the init ends. Only for init: reading creates whatever the data contains.
-    // 1 (default) - each type once per path, recursion is never pre-created; 2 - one self-nested level pre-created, and so on.
-    // Values outside cAutoInitMaxDepthMin..cAutoInitMaxDepthMax are clamped. One global value for all descendants (also
-    // reached as TXmlite.AutoInitMaxDepth); set it once at startup, not while other threads create objects
+    // How often one type may repeat on a path when nested objects are created with their parent: 1 (default) - recursion is
+    // never pre-created; reading creates what the data has. Clamped to 1..5, one global value - set it once at startup
     class property AutoInitMaxDepth: cardinal read fAutoInitMaxDepth write SetAutoInitMaxDepth;
 
   private
@@ -126,8 +121,7 @@ type
   protected
     procedure Initialize; virtual;
     procedure Deinitialize; virtual;
-    // the getter of a lazy object property (not pre-created): creates the object on first access -
-    // property Patient: TPatientE read GetPatient; GetPatient: Result := TPatientE(Lazy(fPatient, TPatientE))
+    // a lazy property's getter: creates the object on first access - Result := TPatientE(Lazy(fPatient, TPatientE))
     function Lazy(var aField; aClass: TBasiteClass): TBasite;
   public
     constructor Create; virtual;
@@ -138,11 +132,8 @@ type
     function IsEmptyOrDefault: boolean; virtual;
     function AssignProperty(const aName, aValue: string): boolean; inline;
 
-    // Presence - absent vs default. A property is present when it was read from the data, marked by SetPresent, its value
-    // is not the default, or (an object) it has content: exactly what a writer writes (besides required ones). Assignments
-    // in code are not seen (properties write their fields), so a value equal to its default set in code needs SetPresent.
-    // A property is given by its field-backed property's address (@Patient.Gender) or by its Basite name; a wrong one (not
-    // a property of this very object, an unknown name) is skipped: the functions return False
+    // Presence - absent vs default: read, marked by SetPresent, not the default, or (an object) with content - what the writer
+    // writes. A property by its address (@Patient.Gender) or name; a wrong one returns False
     property Present[aField: Pointer]: boolean read GetPresent;
     function IsPresent(const aName: string): boolean; overload;
     function IsPresent(aProperty: TProperty): boolean; overload;
@@ -157,9 +148,8 @@ type
     // anything present in the object: what makes an optional object written
     function HasContent: boolean; virtual;
 
-    // Choice - the present member of a choice group ([TChoice]), found without creating lazy members: its property, or
-    // the object of an object member (nil for a data member). '' - the class's only choice (nil when it has several).
-    // Nil when no member is present; with several present (filled in code) - the first, all of them are written
+    // the present member of a choice group ([TChoice]), lazy members not created: its property, or its object (nil for a
+    // value); '' - the class's only choice
     function ChosenProperty(const aGroup: string = ''): TProperty;
     function Chosen(const aGroup: string = ''): TBasite;
   end;
@@ -189,8 +179,7 @@ type
     Clear: procedure(aList: TObject);
   end;
 
-  // A list of plain values - a repeating element of a simple type (<author>Ann</author><author>Bob</author>): strings,
-  // numbers, enumerations, each converted as a property of its type would be. A TList<T> for everything else
+  // a list of plain values - a repeating element of a simple type: strings, numbers, enumerations (a TList<T>)
   TBasiteValueList<T> = class(TList<T>)
   private
     class function DoNew(aClass: TClass): TObject; static;
@@ -246,8 +235,7 @@ type
 
   TPropertyData = class(TProperty)
   private type
-    // a getter/setter is called with its own declared type: the result/parameter registers differ per float type, and an
-    // ordinal getter of a smaller type leaves the upper bits of the result undefined (cut by the ordinal type after the call)
+    // called with their declared types: float registers differ, a smaller ordinal leaves the upper bits undefined
     TGetterInteger = function: integer of object;
     TGetterInt64 = function: Int64 of object;
     TGetterSingle = function: Single of object;
@@ -417,8 +405,7 @@ type
     property EnumName[aEnumValue: integer]: string read GetEnumName;
     function EnumValueDef(const aEnumName: string; aDefault: integer = 0): integer;
 
-    // a value of this type in memory (a field, a list item) as text and back - aliases, enumeration texts, invariant
-    // numbers; text that does not fit the type (not a number, out of range) gives aDefault
+    // a value of this type in memory (a field, a list item) as text and back; text that does not fit gives aDefault
     function DataToText(aData: Pointer): string;
     procedure TextToData(const aText: string; aData: Pointer; const aDefault: variant);
 
@@ -848,8 +835,7 @@ begin
     fPresentMore[word] := fPresentMore[word] and not (UInt64(1) shl (aIndex and 63));
 end;
 
-// the field of a field-backed property (@Patient.Gender): its offset in this object - a field of another object (even a nested
-// one, @Patient.Gender.Value) is never inside this object's memory, so it is not found
+// the property whose field is at aField in this object (a nested object's field is not in this one's memory)
 function TBasite.FindProperty(aField: Pointer; out aProperty: TProperty): boolean;
 begin
   var offset: NativeInt := NativeInt(aField) - NativeInt(Self);
@@ -1039,8 +1025,7 @@ end;
 
 constructor TBasiteList<T>.Create;
 begin
-  // explicitly owning: Delphi 10.3's TObjectList<T> has no parameterless constructor, a plain inherited reached
-  // TList<T>.Create there - the items were never freed
+  // owning explicitly: 10.3's TObjectList<T> has no parameterless constructor
   inherited Create(True);
 end;
 
@@ -1189,9 +1174,7 @@ begin
       tkUString:
         fDefault := '';
     end
-  // a default given as text ([TDefault('false')] - generated units write it so for types of other units, xs:boolean
-  // included) into the property's own type, once: compared with text, every write raised EVariantTypeCastError, and
-  // the conversion of a number depended on the locale
+  // a default given as text ([TDefault('false')]) converted into the property's type once, invariant
   else if VarIsStr(fDefault) and (fRttiProperty.PropertyType.TypeKind <> tkUString) then
     fDefault := DefaultFromText(string(fDefault));
 end;
@@ -1838,9 +1821,8 @@ begin
   SaveMetaClass(aClass, Self);
 end;
 
-// The meta is cached in the class's own VMT slot (vmtAutoTable), so TBasite.Meta is one pointer read. The VMT is read-only
-// memory; if the OS refuses to make it writable, nothing is stored and Meta finds the class through TMetaBank.RegisterClass
-// (the registry under a lock) - correct, only slower
+// the meta is cached in the class's VMT slot (vmtAutoTable): one pointer read; if the VMT cannot be made writable, Meta
+// finds it through TMetaBank (under a lock) - only slower
 procedure TMetaClass.SaveMetaClass(aClass: TClass; aMeta: TMetaClass);
 begin
   var slot: PNativeUInt := PNativeUInt(NativeInt(aClass) + vmtAutoTable);
@@ -1858,8 +1840,7 @@ begin
   end;
   {$ENDIF}
   {$IFDEF POSIX}
-  // mprotect works on whole pages. The page stays writable: POSIX cannot tell its original protection, and guessing read-only
-  // could break other data on the page; code and data never share a page (ELF segments are page-aligned), so no code is touched
+  // whole pages, left writable: POSIX cannot tell their original protection (code and data never share a page)
   var pageSize: NativeUInt := sysconf(_SC_PAGESIZE);
   var page: Pointer := Pointer(NativeUInt(slot) and not (pageSize - 1));
   if mprotect(page, NativeUInt(slot) - NativeUInt(page) + SizeOf(NativeUInt), PROT_READ or PROT_WRITE) <> 0 then
@@ -1959,8 +1940,7 @@ begin
     for var i := enums.MinValue to enums.MaxValue do
       fEnumNames.Add(GetEnumerationName(aType, i));
 
-    // custom captions - the exact XML text of an item its name does not give (t="s", "<", "text/cql", "True" next to "true",
-    // ""): found by its default caption, exactly first (generated units), else ignoring case (hand-written ones)
+    // custom captions - the exact XML text an item's name does not give (t="s", "<", "True" next to "true")
     var defaultNames: TArray<string> := fEnumNames.ToStringArray;
     for var attribute: TCustomAttribute in RttiType.GetAttributes do
       if attribute.ClassType.InheritsFrom(TEnumCaptionAttribute) then

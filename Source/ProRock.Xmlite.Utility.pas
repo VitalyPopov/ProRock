@@ -62,12 +62,10 @@ type
     class function ReadUnescapeInPlace(var aCursor: PChar; aStringEndsAt: Char = #0): string; static; inline;
     class function ReadQuotedValueInPlace(var aCursor: PChar): string; static; inline;
     class function PassDtd(var aCursor: PChar): boolean; static; inline;
-    // markup that is not an element - a comment, CDATA, a processing instruction, a DOCTYPE - passed to its own end
-    // (CDATA and comments may hold < and >, which bracket counting would take for tags)
+    // a comment, CDATA, a processing instruction or a DOCTYPE, passed to its own end (it may hold < and >)
     class function PassMarkup(var aCursor: PChar): boolean; static;
-    // an element as its exact text, the cursor on its < - the buffer is not changed. Well-formed only: tags nested and
-    // closed, attribute values, comments, CDATA and processing instructions closed, every prefix declared (in it or in
-    // aXmlns); else False. aNamespaces gets the prefixes it takes from outside ('' - the default namespace) with their URIs
+    // an element as its exact text, the buffer not changed; False unless well-formed (nesting, closing, declared prefixes).
+    // aNamespaces gets the prefixes ('' - default) it takes from outside, with their URIs
     class function ReadFragment(var aCursor: PChar; aXmlns: TXmlns; out aXml: string;
       aNamespaces: TDictionary<string, string>): boolean; static;
 
@@ -578,9 +576,7 @@ begin
   if not TReaderXmlite.MoveToChar(aCursor, quoteChar) then
     Exit; // no closing quote found
 
-  // a start tag is read more than once (its xmlns declarations first, then its attributes): a value with entities is
-  // decoded from a copy - decoding in place would leave the shortened value padded with spaces for the next read ("&lt;"
-  // read as "<   " the second time)
+  // decoded from a copy: a start tag is read twice (declarations, then attributes) - in place would corrupt the second read
   SetString(Result, valueStart, aCursor - valueStart);
   if Result.IndexOf('&') >= 0 then
   begin
@@ -644,8 +640,7 @@ begin
   begin
     if aCursor^ = aStringEndsAt then
     begin
-      // element text: CDATA is text as it is (no entities: < and & are plain characters), a comment or a processing
-      // instruction is skipped; any other < ends the text
+      // CDATA is text as it is, a comment or a processing instruction is skipped; any other < ends the text
       if aStringEndsAt <> '<' then
         Break;
       if StrLComp(aCursor, '<![CDATA[', 9) = 0 then

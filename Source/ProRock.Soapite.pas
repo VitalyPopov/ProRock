@@ -102,9 +102,8 @@ type
     property OnRequest: TSoapiteXmlEvent read fOnRequest write fOnRequest;
     property OnResponse: TSoapiteXmlEvent read fOnResponse write fOnResponse;
 
-    // SOAP header blocks (WS-Addressing, WS-Security tokens, ebMS/AS4 messaging, a service's own headers, ...), called during
-    // each call. Request: add objects to aHeader.XmlAny - the envelope frees them after writing; nothing added - no Header
-    // element. Response: every parsed response, faults included, before the body is handled - Extract the objects to keep
+    // SOAP header blocks (WS-Security, ebMS, a service's own), per call. Request: add objects to aHeader.XmlAny (freed after
+    // writing). Response: every parsed one, faults included, before the body - Extract the objects to keep
     property OnRequestHeader: TSoapiteHeaderEvent read fOnRequestHeader write fOnRequestHeader;
     property OnResponseHeader: TSoapiteHeaderEvent read fOnResponseHeader write fOnResponseHeader;
   end;
@@ -117,8 +116,7 @@ uses System.StrUtils,
 const
   cSoapVersionOther: array [TSoapVersion] of TSoapVersion = (sv12, sv11);
 
-// an envelope of the given SOAP version with its Header and Body - both metamodels are TXmlite, so the rest of a call is
-// version-neutral
+// an envelope of the given SOAP version with its Header and Body (both TXmlite: the rest of a call is version-neutral)
 function CreateEnvelope(aSoapVersion: TSoapVersion; out aHeader, aBody: TXmlite): TXmlite;
 begin
   if aSoapVersion = sv12 then
@@ -248,9 +246,8 @@ begin
   // the raw body stays intact for the error: being shared, it is parsed from a copy (see FromXml)
   var responseBody: string := response.Body;
 
-  // SOAP faults normally come with HTTP 500, so the body is examined before the status.
-  // The requested version first; a service not speaking it answers in the other one (e.g. a 1.1 VersionMismatch Fault). The root
-  // element is not checked by parsing, so a version fits when its Body gets content; otherwise the first parsed envelope is kept
+  // the body before the status (faults come with HTTP 500); the requested version first, then the other one (a 1.1
+  // VersionMismatch fault) - a version fits when its Body gets content
   envelope := nil;
   header := nil;
   body := nil;
