@@ -27,7 +27,10 @@ Samples:
   them (`ProRock.Xmlite.Schema.WsSecurity`, `.WsSecurityUtility`) - [OASIS](#oasis)
 - `Samples/ProRock.Xmlite.DocumentProperties` - units ProRocket generates from the OPC schemas of ECMA-376 Part 2, 5th edition
   (December 2021: `opc-coreProperties.xsd`, `opc-relationships.xsd`; `ProRock.Xmlite.Schema.CoreProperties`,
-  `.Relationships`) - [Ecma International](#ecma-international) - and from the Dublin Core schemas of DCMI
+  `.Relationships`), and from three schemas of ECMA-376 Part 4 (Transitional Migration Features:
+  `shared-documentPropertiesExtended.xsd`, `shared-documentPropertiesVariantTypes.xsd`, `shared-commonSimpleTypes.xsd`;
+  `ProRock.Xmlite.Schema.Ooxml.PropExt`, `.PropVar`, `.SimpleTypes`) - [Ecma International](#ecma-international) - and from
+  the Dublin Core schemas of DCMI
   (http://dublincore.org/schemas/xmls/qdc/2003/04/02/ `dc.xsd`, `dcterms.xsd`, `dcmitype.xsd`;
   `ProRock.Xmlite.Schema.Dc.Elements`, `.Terms`, `.Types`) - [DCMI](#dcmi). The schemas themselves are not included
 
@@ -140,12 +143,14 @@ These schemas are governed by the W3C Software License, http://www.w3.org/Consor
 
 ## Ecma International
 
-ECMA-376 Office Open XML File Formats, Part 2: Open Packaging Conventions, 5th edition (December 2021), © Ecma International,
-https://ecma-international.org/publications-and-standards/standards/ecma-376/. The published package of this part (its PDF and
+ECMA-376 Office Open XML File Formats, Part 2: Open Packaging Conventions, 5th edition (December 2021), and Part 4:
+Transitional Migration Features (its XML schemas), © Ecma International,
+https://ecma-international.org/publications-and-standards/standards/ecma-376/. The published package of Part 2 (its PDF and
 schema files) carries no copyright page. Ecma's text copyright policy
 (https://www.ecma-international.org/policies/by-ipr/ecma-text-copyright-policy) gives the default notice of Ecma standards,
 reproduced here as it appears in ECMA-376 Part 3, 5th edition (verbatim but the year). The generated units are works of kind
-(iv): they implement the functionality of the specification (reading and writing its core properties and relationships).
+(iv): they implement the functionality of the specification (reading and writing its core properties and relationships,
+reading the application's properties).
 
 > COPYRIGHT NOTICE
 >

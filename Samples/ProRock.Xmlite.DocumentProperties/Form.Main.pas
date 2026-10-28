@@ -1,7 +1,8 @@
 unit Form.Main;
 
-// The core properties of an Office document - the ones File > Info shows - opened, edited and saved. All the document
-// work is in OfficeDocument.pas; this form only shows the values and takes them back
+// The core properties of an Office document - the ones File > Info shows - opened, edited and saved, and what the
+// application says about its contents (the sheets of a workbook), shown. All the document work is in OfficeDocument.pas;
+// this form only shows the values and takes them back
 
 interface
 
@@ -51,6 +52,12 @@ type
     ModifiedPanel: TPanel;
     ModifiedLabel: TLabel;
     ModifiedEdit: TEdit;
+    ApplicationPanel: TPanel;
+    ApplicationLabel: TLabel;
+    ApplicationEdit: TEdit;
+    PartsPanel: TPanel;
+    PartsLabel: TLabel;
+    PartsMemo: TMemo;
     OpenDialog: TOpenDialog;
     SaveDialog: TSaveDialog;
     procedure FormCreate(Sender: TObject);
@@ -65,6 +72,7 @@ type
     procedure OpenDocument(const aFileName: string);
     procedure SaveDocument(const aFileName: string);
     procedure ShowProperties;
+    procedure ShowContents;
     procedure TakeProperties;
   public
     destructor Destroy; override;
@@ -75,7 +83,7 @@ var
 
 implementation
 
-uses System.UITypes, Winapi.ShellAPI, ProRock.Xmlite.Schema.CoreProperties;
+uses System.UITypes, System.Math, Winapi.ShellAPI, ProRock.Xmlite.Schema.CoreProperties, ProRock.Xmlite.Schema.Ooxml.PropVar;
 
 {$R *.dfm}
 
@@ -112,12 +120,42 @@ begin
   RevisionEdit.Text := properties.Revision;
   CreatedEdit.Text := properties.Created.XmlValue;
   ModifiedEdit.Text := properties.Modified.XmlValue;
+  ShowContents;
 
   FileLabel.Caption := fDocument.FileName;
   SignedLabel.Visible := fDocument.Signed;
   FieldsPanel.Enabled := True;
   SaveButton.Enabled := True;
   SaveAsButton.Enabled := True;
+end;
+
+procedure TMainForm.ShowContents;
+begin
+  // docProps/app.xml: the titles of the parts are a list of plain strings (a vt:vector of vt:lpstr), grouped by the heading
+  // pairs - a name and a count each (vt:variant holding a vt:lpstr, then one holding a vt:i4): "Worksheets: Sales, Costs"
+  var extended := fDocument.ExtendedProperties;
+  ApplicationEdit.Text := extended.Application;
+
+  var titles := extended.TitlesOfParts.Vector.Lpstr;
+  var pairs := extended.HeadingPairs.Vector.Variant;
+  PartsMemo.Lines.BeginUpdate;
+  try
+    PartsMemo.Clear;
+    var first: integer := 0;
+    for var i := 0 to pairs.Count div 2 - 1 do
+    begin
+      var count: integer := pairs[2 * i + 1].I4;
+      var names: TArray<string> := [];
+      for var j := first to Min(first + count, titles.Count) - 1 do
+        names := names + [string(titles[j])];
+      PartsMemo.Lines.Add(string(pairs[2 * i].Lpstr) + ': ' + string.Join(', ', names));
+      Inc(first, count);
+    end;
+    for var j := first to titles.Count - 1 do // titles without a heading
+      PartsMemo.Lines.Add(titles[j]);
+  finally
+    PartsMemo.Lines.EndUpdate;
+  end;
 end;
 
 procedure TMainForm.TakeProperties;

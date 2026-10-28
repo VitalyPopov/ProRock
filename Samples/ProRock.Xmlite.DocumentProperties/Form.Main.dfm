@@ -2,10 +2,10 @@ object MainForm: TMainForm
   Left = 0
   Top = 0
   Caption = 'Office document properties - ProRock sample'
-  ClientHeight = 520
+  ClientHeight = 640
   ClientWidth = 584
   Color = clBtnFace
-  Constraints.MinHeight = 480
+  Constraints.MinHeight = 600
   Constraints.MinWidth = 480
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -110,7 +110,7 @@ object MainForm: TMainForm
     Left = 12
     Top = 89
     Width = 560
-    Height = 423
+    Height = 543
     Margins.Left = 12
     Margins.Right = 12
     Margins.Bottom = 8
@@ -463,6 +463,73 @@ object MainForm: TMainForm
         ReadOnly = True
         TabOrder = 0
         ExplicitHeight = 23
+      end
+    end
+    object ApplicationPanel: TPanel
+      Left = 0
+      Top = 392
+      Width = 560
+      Height = 32
+      Align = alTop
+      BevelOuter = bvNone
+      ShowCaption = False
+      TabOrder = 11
+      object ApplicationLabel: TLabel
+        AlignWithMargins = True
+        Left = 3
+        Top = 3
+        Width = 130
+        Height = 26
+        Align = alLeft
+        AutoSize = False
+        Caption = 'Application'
+        Layout = tlCenter
+      end
+      object ApplicationEdit: TEdit
+        AlignWithMargins = True
+        Left = 139
+        Top = 3
+        Width = 418
+        Height = 26
+        TabStop = False
+        Align = alClient
+        ParentColor = True
+        ReadOnly = True
+        TabOrder = 0
+        ExplicitHeight = 23
+      end
+    end
+    object PartsPanel: TPanel
+      Left = 0
+      Top = 424
+      Width = 560
+      Height = 119
+      Align = alClient
+      BevelOuter = bvNone
+      ShowCaption = False
+      TabOrder = 12
+      object PartsLabel: TLabel
+        AlignWithMargins = True
+        Left = 3
+        Top = 3
+        Width = 130
+        Height = 113
+        Align = alLeft
+        AutoSize = False
+        Caption = 'Contents'
+      end
+      object PartsMemo: TMemo
+        AlignWithMargins = True
+        Left = 139
+        Top = 3
+        Width = 418
+        Height = 113
+        TabStop = False
+        Align = alClient
+        ParentColor = True
+        ReadOnly = True
+        ScrollBars = ssVertical
+        TabOrder = 0
       end
     end
   end

@@ -6,7 +6,7 @@ running the generator.
 
 | Sample | What it shows |
 |---|---|
-| [`ProRock.Xmlite.DocumentProperties`](#office-document-properties) | the properties of any Office document: open, edit, save |
+| [`ProRock.Xmlite.DocumentProperties`](#office-document-properties) | the properties of any Office document: open, edit, save; the sheet or slide titles |
 | [`ProRock.Soapite.CheckVatService`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Soapite.CheckVatService) | EU VIES VAT number validation through the generated `TCheckVatService`, with live SOAP Fault handling; `-name:` compares the trader's name too (`checkVatApprox`) and tells an absent match code from VALID with `Present` |
 | [`ProRock.Soapite.WsSecurity`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Soapite.WsSecurity) | a WS-Security UsernameToken (PasswordDigest, Nonce, Timestamp) in the SOAP header, from units generated from the OASIS schemas; offline, or `-live`. Other header blocks work the same way, e.g. the ebMS 3.0 `eb:Messaging` of AS4 |
 | [`ProRock.Http.ClientCertificate`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Http.ClientCertificate) | client certificates (mutual TLS) against the public test server client.badssl.com: HTTP 400 without, 200 with - from a file and from memory |
@@ -21,12 +21,14 @@ opens any Office document (.docx, .xlsx, .pptx) and edits the properties Office 
 author, keywords, description, category, status. Save writes them back; Excel opens the saved file without a repair prompt
 and shows every value in File > Info.
 
-![The DocumentProperties sample with an .xlsx file open: title, subject, author, keywords, comments and the other core properties](assets/document-properties.png)
+![The DocumentProperties sample with an .xlsx file open: title, subject, author, keywords, comments and the other core properties, the application and the worksheets](assets/document-properties.png)
 
 An Office document is a zip of XML parts (OPC, ECMA-376 Part 2). The sample uses units generated from the official schemas:
 
 - `opc-relationships.xsd` - to find the core properties part through the package relationships (`_rels/.rels`)
 - `opc-coreProperties.xsd`, built on Dublin Core - the properties themselves (`docProps/core.xml`)
+- `shared-documentPropertiesExtended.xsd` (ECMA-376 Part 4) - what the application says about the document
+  (`docProps/app.xml`): its name, and the titles of its parts - the sheets of a workbook, the slides of a presentation
 
 ```pascal
 // the generated classes: Dublin Core elements carry their text in XmlValue (dc:title, dcterms:created), the elements of
@@ -47,5 +49,27 @@ var core: TBytes := TEncoding.UTF8.GetBytes(TXmlite.ObjectToXml(fProperties));
 ```
 
 A digitally signed document gets a warning first: the signature usually covers the core properties, so saving breaks it.
+
+The application's properties are shown, not edited (saved as they were). The titles of the parts are a list of plain
+strings - a `vt:vector` of `vt:lpstr` - grouped by heading pairs, a name and a count each:
+
+```xml
+<HeadingPairs><vt:vector size="2" baseType="variant">
+  <vt:variant><vt:lpstr>Worksheets</vt:lpstr></vt:variant><vt:variant><vt:i4>2</vt:i4></vt:variant>
+</vt:vector></HeadingPairs>
+<TitlesOfParts><vt:vector size="2" baseType="lpstr">
+  <vt:lpstr>Sales</vt:lpstr><vt:lpstr>Costs</vt:lpstr>
+</vt:vector></TitlesOfParts>
+```
+
+```pascal
+var titles := extended.TitlesOfParts.Vector.Lpstr;     // a TList<string>: Sales, Costs
+var pairs := extended.HeadingPairs.Vector.Variant;     // Worksheets, 2
+for var i := 0 to pairs.Count div 2 - 1 do
+begin
+  var count: integer := pairs[2 * i + 1].I4;
+  ...                                                  // "Worksheets: Sales, Costs"
+end;
+```
 
 The schemas behind it use substitution groups and `xsi:type` - see [XML concepts](xml-concepts.md) for what they are.

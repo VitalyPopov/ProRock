@@ -2,12 +2,14 @@ unit OfficeDocument;
 
 // An Office document (.docx, .xlsx, .pptx - any OPC package) and its core properties, the ones Office shows in File > Info.
 // Read and written with units generated from the official schemas: opc-coreProperties.xsd (on Dublin Core) for the
-// properties, opc-relationships.xsd for finding them. The package is a zip; every other part is copied as it is.
+// properties, opc-relationships.xsd for finding them. The application's own properties (docProps/app.xml: the
+// application, the sheet or slide titles) are read too, from shared-documentPropertiesExtended.xsd - shown, not edited.
+// The package is a zip; every other part is copied as it is.
 
 interface
 
 uses System.SysUtils,
-  ProRock.Xmlite.Schema.CoreProperties;
+  ProRock.Xmlite.Schema.CoreProperties, ProRock.Xmlite.Schema.Ooxml.PropExt;
 
 type
   EOfficeDocument = class(Exception);
@@ -17,6 +19,7 @@ type
     fFileName: string;
     fCorePartName: string; // its name in the zip, e.g. docProps/core.xml
     fProperties: TCorePropertiesE;
+    fExtendedProperties: TPropertiesE;
     fSigned: boolean;
   public
     constructor Create;
@@ -30,6 +33,8 @@ type
 
     property FileName: string read fFileName;
     property Properties: TCorePropertiesE read fProperties;
+    // docProps/app.xml - empty when the package has none (it is optional); saved as it was
+    property ExtendedProperties: TPropertiesE read fExtendedProperties;
     // the package has a digital signature: it usually covers the core properties, so saving breaks it
     property Signed: boolean read fSigned;
   end;
@@ -43,6 +48,7 @@ const
   // OPC (ECMA-376 Part 2): the package's relationships, and the types of the two we look for (Annex E)
   cPackageRelationships = '_rels/.rels';
   cCorePropertiesType = 'http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties';
+  cExtendedPropertiesType = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties';
   cSignatureOriginType = 'http://schemas.openxmlformats.org/package/2006/relationships/digital-signature/origin';
 
 // XML parts are UTF-8 (a BOM or not) or UTF-16 with a BOM
@@ -72,10 +78,12 @@ constructor TOfficeDocument.Create;
 begin
   inherited;
   fProperties := TCorePropertiesE.Create;
+  fExtendedProperties := TPropertiesE.Create;
 end;
 
 destructor TOfficeDocument.Destroy;
 begin
+  fExtendedProperties.Free;
   fProperties.Free;
   inherited;
 end;
@@ -88,6 +96,7 @@ begin
   var zip: TZipFile := TZipFile.Create;
   var relationships: TRelationshipsE := TRelationshipsE.Create;
   var properties: TCorePropertiesE := TCorePropertiesE.Create;
+  var extendedProperties: TPropertiesE := TPropertiesE.Create;
   try
     zip.Open(aFileName, zmRead);
 
@@ -101,11 +110,13 @@ begin
       raise EOfficeDocument.CreateFmt('%s: %s cannot be read', [ExtractFileName(aFileName), cPackageRelationships]);
 
     // OPC: at most one core properties part, found through the package's core properties relationship
-    var corePartName: string := '';
+    var corePartName, extendedPartName: string;
     var signed: boolean := False;
     for var relationship: TRelationshipE in relationships.Relationship do
       if relationship.&Type = cCorePropertiesType then
         corePartName := relationship.Target
+      else if relationship.&Type = cExtendedPropertiesType then
+        extendedPartName := relationship.Target
       else if relationship.&Type = cSignatureOriginType then
         signed := True;
 
@@ -119,15 +130,29 @@ begin
     zip.Read(index, bytes);
     if not TXmlite.XmlToObject(PartText(bytes), properties) then
       raise EOfficeDocument.CreateFmt('%s: the core properties cannot be read', [ExtractFileName(aFileName)]);
+    var corePartIndex: integer := index;
+
+    // the application's properties are optional: a package without them (or with a part that cannot be read) shows none
+    index := PartIndex(zip, extendedPartName);
+    if not extendedPartName.IsEmpty and (index >= 0) then
+    begin
+      zip.Read(index, bytes);
+      if not TXmlite.XmlToObject(PartText(bytes), extendedProperties) then
+        extendedProperties.Clear;
+    end;
 
     // loaded: from here on the document is this file
     fFileName := aFileName;
-    fCorePartName := zip.FileNames[index];
+    fCorePartName := zip.FileNames[corePartIndex];
     fSigned := signed;
     fProperties.Free;
     fProperties := properties;
     properties := nil;
+    fExtendedProperties.Free;
+    fExtendedProperties := extendedProperties;
+    extendedProperties := nil;
   finally
+    extendedProperties.Free;
     properties.Free;
     relationships.Free;
     zip.Free;

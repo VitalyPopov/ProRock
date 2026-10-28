@@ -30,6 +30,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   `TXmliteValueList<T>` - a `TList<T>` of strings, numbers, enumerations or booleans, each value read and written as a
   property of its type would be: `Authors.Author.Add('Ann')`. Such units did not compile before; the OOXML SpreadsheetML and
   DrawingML schemas now generate units that compile unchanged
+- A reference to a global element of a simple type (`<xs:element ref="lpstr"/>`) is a value too - a property of its type,
+  a value list when it repeats - instead of an element class without a place for its text
+- The DocumentProperties sample shows the application's properties (`docProps/app.xml`): the application and the titles of
+  the parts, grouped by heading - "Worksheets: Sales, Costs" - read as a value list of `vt:lpstr`
 
 ### Removed
 - `TXmliteTextElement` and `TXmliteTextNodeString`/`Integer`/`Int64`/`Cardinal`: an element of plain text as an object, never

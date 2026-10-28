@@ -138,6 +138,9 @@
         <DCCReference Include="ProRock.Xmlite.Schema.Dc.Elements.pas"/>
         <DCCReference Include="ProRock.Xmlite.Schema.Dc.Terms.pas"/>
         <DCCReference Include="ProRock.Xmlite.Schema.Dc.Types.pas"/>
+        <DCCReference Include="ProRock.Xmlite.Schema.Ooxml.PropExt.pas"/>
+        <DCCReference Include="ProRock.Xmlite.Schema.Ooxml.PropVar.pas"/>
+        <DCCReference Include="ProRock.Xmlite.Schema.Ooxml.SimpleTypes.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
