@@ -17,13 +17,10 @@ defaults, absent values stay absent, enumeration texts and element order as in t
 - a value set in code that equals its default is written only when marked present (`SetPresent`) - see
   [presence](xmlite.md#absent-or-default-presence)
 
-## Generated code that does not compile yet
+## Large schemas
 
-FHIR R4 and the OOXML SpreadsheetML/DrawingML schemas generate units that compile, except:
-
-- a repeating element of a simple type (a list of strings, OOXML `<header>`) - generated as a list type that does not exist
-
-Very large units compile slowly: all of FHIR R4 is one unit of about 37,000 lines, about 50 seconds for Delphi.
+FHIR R4 and the OOXML SpreadsheetML/DrawingML schemas generate units that compile unchanged. Very large units compile slowly:
+all of FHIR R4 is one unit of about 49,000 lines, about 50 seconds for Delphi.
 
 ## Not covered yet
 

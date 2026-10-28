@@ -29,7 +29,8 @@ end;
 
 - Nested objects and lists are created and freed with their parent (read-only properties); just use them. The members of a
   choice are created on first access - see [Large documents](large-documents.md).
-- Enumerations are Delphi enums, `maxOccurs > 1` gives a typed list (`...List`).
+- Enumerations are Delphi enums, `maxOccurs > 1` gives a typed list (`...List`): of objects, or of plain values for a repeating
+  element of a simple type (`<author>Ann</author><author>Bob</author>`: `Authors.Author.Add('Ann')`, a `TList<T>` to use).
 - `TXmlite.ObjectToXml(obj)` writes any object, also one that is not a root element.
 
 ## Absent or default: presence
@@ -106,7 +107,7 @@ namespace (`ProRock.Xmlite.Schema.<Name>`), so the units of a schema set use eac
 | `xs:date`, `xs:dateTime`, `xs:duration`, ... | `string` types: the text as in the document |
 | enumeration | a Delphi enum |
 | complex type, element | a class |
-| `maxOccurs > 1` | a typed list |
+| `maxOccurs > 1` | a typed list: of objects, or of values (`TXmliteValueList<T>`) for a simple type |
 | simpleContent (text plus attributes) | the text in `XmlValue`, the attributes as properties |
 
 !!! note "Generated string types"

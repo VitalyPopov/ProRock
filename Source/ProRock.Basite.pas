@@ -18,6 +18,7 @@ const
   cBasiteDefaultNaming = TNaming.nCamelCase;
   cBasiteListPattern = 'TBasiteList<[A-Za-z0-9_.]+>';
   cBasiteListNameLength = Length('TBasiteList');
+  cBasiteValueListPattern = 'TBasiteValueList<[A-Za-z0-9_.]+>';
 
 type
   TBaseTypeAttribute = class(TCustomAttribute)
@@ -178,7 +179,30 @@ type
   TBasiteList = TBasiteList<TBasite>;
   PBasiteList = ^TBasiteList;
 
-  TPropertyType = (ptNotSupported, ptData, ptBasite, ptBasiteList);
+  // how the runtime reaches a value list of any T: read once per list class (TBasiteValueList<T>.Access, through RTTI)
+  TBasiteValueListAccess = record
+    ItemType: PTypeInfo;
+    New: function(aClass: TClass): TObject;
+    Count: function(aList: TObject): integer;
+    Item: function(aList: TObject; aIndex: integer): Pointer; // the item's memory
+    Add: function(aList: TObject): Pointer; // a new item (zero, empty), its memory
+    Clear: procedure(aList: TObject);
+  end;
+
+  // A list of plain values - a repeating element of a simple type (<author>Ann</author><author>Bob</author>): strings,
+  // numbers, enumerations, each converted as a property of its type would be. A TList<T> for everything else
+  TBasiteValueList<T> = class(TList<T>)
+  private
+    class function DoNew(aClass: TClass): TObject; static;
+    class function DoCount(aList: TObject): integer; static;
+    class function DoItem(aList: TObject; aIndex: integer): Pointer; static;
+    class function DoAdd(aList: TObject): Pointer; static;
+    class procedure DoClear(aList: TObject); static;
+  public
+    class function Access: TBasiteValueListAccess; static;
+  end;
+
+  TPropertyType = (ptNotSupported, ptData, ptBasite, ptBasiteList, ptDataList);
 
   TPropertyExtension = class;
 
@@ -309,6 +333,26 @@ type
     function ObjectPointer(aParentObject: TBasite): PBasiteList;
   end;
 
+  // a TBasiteValueList<T> property; Meta is the item type
+  TPropertyDataList = class(TProperty)
+  private
+    fAccess: TBasiteValueListAccess;
+    function GetMeta: TMetaType;
+  public
+    constructor Create(aParentMeta: TMetaBasite; aProperty: TRttiProperty; aIsInherited: boolean = False;
+      aNaming: TNaming = cBasiteDefaultNaming); override;
+
+    property Meta: TMetaType read GetMeta;
+
+    function ObjectPointer(aParentObject: TBasite): PObject; inline;
+    procedure CreateList(aParentObject: TBasite);
+    function Count(aParentObject: TBasite): integer;
+    function ItemText(aParentObject: TBasite; aIndex: integer): string;
+    // a value from its text (as a property of the item type reads it); the list is created when missing, and present
+    procedure AddText(aParentObject: TBasite; const aText: string);
+    procedure ClearList(aParentObject: TBasite);
+  end;
+
   TPropertyExtension = class abstract
   private
     fProperty: TProperty;
@@ -372,6 +416,11 @@ type
 
     property EnumName[aEnumValue: integer]: string read GetEnumName;
     function EnumValueDef(const aEnumName: string; aDefault: integer = 0): integer;
+
+    // a value of this type in memory (a field, a list item) as text and back - aliases, enumeration texts, invariant
+    // numbers; text that does not fit the type (not a number, out of range) gives aDefault
+    function DataToText(aData: Pointer): string;
+    procedure TextToData(const aText: string; aData: Pointer; const aDefault: variant);
 
     function IsSystemType: boolean; inline;
   end;
@@ -471,6 +520,17 @@ implementation
 
 uses System.Types, System.RegularExpressions, System.StrUtils, System.Variants,
   {$IFDEF MSWINDOWS}Winapi.Windows{$ENDIF}{$IFDEF POSIX}Posix.SysMman, Posix.Unistd{$ENDIF};
+
+function IsBasiteValueListClass(aClass: TClass): boolean;
+begin
+  while (aClass <> nil) and (aClass <> TObject) do
+  begin
+    if TRegEx.IsMatch(aClass.ClassName, cBasiteValueListPattern) then
+      Exit(True);
+    aClass := aClass.ClassParent;
+  end;
+  Result := False;
+end;
 
 function GetBasiteListClass(aClass: TClass): TClass;
 begin
@@ -665,6 +725,8 @@ begin
           TPropertyBasite(propertyInfo).ObjectPointer(Self).Clear;
       ptData:
         TPropertyData(propertyInfo).SetDefaultValue(Self);
+      ptDataList:
+        TPropertyDataList(propertyInfo).ClearList(Self);
     end;
 end;
 
@@ -694,6 +756,9 @@ begin
           if not propertyBasiteList.fLazy then
             propertyBasiteList.ObjectPointer(Self)^ := propertyBasiteList.Meta.CreateList;
         end;
+      ptDataList:
+        if not propertyInfo.fLazy then
+          TPropertyDataList(propertyInfo).CreateList(Self);
       ptData:
         TPropertyData(propertyInfo).SetDefaultValue(Self);
     end;
@@ -722,8 +787,8 @@ begin
   Deinitialize;
 
   for var propertyInfo in Meta.Properties do
-    if propertyInfo.PropertyType in [ptBasite, ptBasiteList] then
-      TPropertyClass(propertyInfo).ObjectPointer(Self).Free;
+    if propertyInfo.PropertyType in [ptBasite, ptBasiteList, ptDataList] then
+      PObject(propertyInfo.DataPointer(Self))^.Free;
   inherited;
 end;
 
@@ -835,6 +900,8 @@ begin
         var propertyList: TBasiteList := TPropertyBasiteList(aProperty).ObjectPointer(Self)^;
         Result := (propertyList <> nil) and (propertyList.Count > 0);
       end;
+    ptDataList:
+      Result := TPropertyDataList(aProperty).Count(Self) > 0;
   else
     Result := False;
   end;
@@ -886,6 +953,8 @@ begin
     ptBasiteList:
       if TPropertyBasiteList(aProperty).ObjectPointer(Self)^ <> nil then
         TPropertyBasiteList(aProperty).ObjectPointer(Self).Clear;
+    ptDataList:
+      TPropertyDataList(aProperty).ClearList(Self);
   end;
   SetPresentBit(aProperty.fIndex, False);
 end;
@@ -953,6 +1022,8 @@ begin
       ptBasiteList:
         if TPropertyBasiteList(propertyInfo).ObjectPointer(Self)^ <> nil then
           Result := TPropertyBasiteList(propertyInfo).ObjectPointer(Self).Count = 0;
+      ptDataList:
+        Result := TPropertyDataList(propertyInfo).Count(Self) = 0;
     end;
     if not Result then
       Exit;
@@ -985,6 +1056,54 @@ begin
     Result := TMetaBank.RegisterList(Self);
 end;
 
+{ TBasiteValueList<T> }
+
+class function TBasiteValueList<T>.Access: TBasiteValueListAccess;
+begin
+  Result.ItemType := TypeInfo(T);
+  Result.New := DoNew;
+  Result.Count := DoCount;
+  Result.Item := DoItem;
+  Result.Add := DoAdd;
+  Result.Clear := DoClear;
+end;
+
+class function TBasiteValueList<T>.DoAdd(aList: TObject): Pointer;
+begin
+  var list: TBasiteValueList<T> := TBasiteValueList<T>(aList);
+  list.Add(Default(T));
+  Result := DoItem(aList, list.Count - 1);
+end;
+
+class procedure TBasiteValueList<T>.DoClear(aList: TObject);
+begin
+  TBasiteValueList<T>(aList).Clear;
+end;
+
+class function TBasiteValueList<T>.DoCount(aList: TObject): integer;
+begin
+  Result := TBasiteValueList<T>(aList).Count;
+end;
+
+class function TBasiteValueList<T>.DoItem(aList: TObject; aIndex: integer): Pointer;
+begin
+  var items: TArray<T> := TBasiteValueList<T>(aList).List; // the list's own array: its item stays where it is
+  Result := @items[aIndex];
+end;
+
+class function TBasiteValueList<T>.DoNew(aClass: TClass): TObject;
+begin
+  // a class of a generic type is refused (E2021): TList<T>'s Create runs on a new instance of the generated class
+  Result := aClass.NewInstance;
+  try
+    TBasiteValueList<T>(Result).Create;
+    Result.AfterConstruction;
+  except
+    Result.Free;
+    raise;
+  end;
+end;
+
 { TProperty }
 
 constructor TProperty.Create(aParentMeta: TMetaBasite; aProperty: TRttiProperty; aIsInherited: boolean; aNaming: TNaming);
@@ -1011,7 +1130,7 @@ begin
   fSetterAddress := TRttiInstanceProperty(fRttiProperty).PropInfo.SetProc;
   fSetterIsField := (fSetterAddress <> nil) and ((IntPtr(fSetterAddress) and PROPSLOT_MASK) = PROPSLOT_FIELD);
 
-  if (fPropertyType in [ptBasite, ptBasiteList]) and not fGetterIsField then
+  if (fPropertyType in [ptBasite, ptBasiteList, ptDataList]) and not fGetterIsField then
   begin
     // a lazy object: the runtime reads and writes its field (f + the property name), never the getter that would create it
     fLazy := True;
@@ -1021,7 +1140,7 @@ begin
         [aProperty.Parent.Name, aProperty.Name, aProperty.Name]);
     fFieldOffset := field.Offset;
   end
-  else if (fPropertyType in [ptBasite, ptBasiteList]) or ((fPropertyType = ptData) and fGetterIsField) then
+  else if (fPropertyType in [ptBasite, ptBasiteList, ptDataList]) or ((fPropertyType = ptData) and fGetterIsField) then
     fFieldOffset := NativeInt(fGetterAddress) and $00FFFFFF
   else if (fPropertyType = ptData) and fSetterIsField then
     fFieldOffset := NativeInt(fSetterAddress) and $00FFFFFF;
@@ -1154,8 +1273,12 @@ begin
     Exit;
 
   var fieldData: Pointer := DataPointer(aObject);
-  if fGetterIsField and (fieldData = nil) then
+  if fGetterIsField then
+  begin
+    if fieldData <> nil then
+      Result := Meta.DataToText(fieldData);
     Exit;
+  end;
 
   case fRttiProperty.PropertyType.TypeKind of
     tkInteger, tkInt64:
@@ -1305,8 +1428,14 @@ begin
     Exit;
 
   var fieldData: Pointer := DataPointer(aObject);
-  if fSetterIsField and (fieldData = nil) then
+  if fSetterIsField then
+  begin
+    if fieldData = nil then
+      Exit;
+    Meta.TextToData(aValue, fieldData, fDefault);
+    aObject.SetPresentBit(fIndex, True);
     Exit;
+  end;
 
   var value: string := aValue;
 
@@ -1521,6 +1650,62 @@ begin
   Result := DataPointer(aParentObject);
 end;
 
+{ TPropertyDataList }
+
+constructor TPropertyDataList.Create(aParentMeta: TMetaBasite; aProperty: TRttiProperty; aIsInherited: boolean; aNaming: TNaming);
+begin
+  fPropertyType := ptDataList;
+  inherited;
+
+  // the generated list class inherits TBasiteValueList<T>: its Access names T and the functions for it
+  var accessMethod: TRttiMethod := aProperty.PropertyType.GetMethod('Access');
+  fAccess := accessMethod.Invoke(aProperty.PropertyType.Handle.TypeData.ClassType, []).AsType<TBasiteValueListAccess>;
+  fMeta := TMetaBank.RegisterType(fAccess.ItemType);
+end;
+
+procedure TPropertyDataList.AddText(aParentObject: TBasite; const aText: string);
+begin
+  CreateList(aParentObject);
+  Meta.TextToData(aText, fAccess.Add(ObjectPointer(aParentObject)^), Null);
+  aParentObject.SetPresentBit(fIndex, True);
+end;
+
+procedure TPropertyDataList.ClearList(aParentObject: TBasite);
+begin
+  if ObjectPointer(aParentObject)^ <> nil then
+    fAccess.Clear(ObjectPointer(aParentObject)^);
+end;
+
+function TPropertyDataList.Count(aParentObject: TBasite): integer;
+begin
+  var list: TObject := ObjectPointer(aParentObject)^;
+  if list = nil then
+    Result := 0
+  else
+    Result := fAccess.Count(list);
+end;
+
+procedure TPropertyDataList.CreateList(aParentObject: TBasite);
+begin
+  if ObjectPointer(aParentObject)^ = nil then
+    ObjectPointer(aParentObject)^ := fAccess.New(fRttiProperty.PropertyType.Handle.TypeData.ClassType);
+end;
+
+function TPropertyDataList.GetMeta: TMetaType;
+begin
+  Result := TMetaType(inherited Meta);
+end;
+
+function TPropertyDataList.ItemText(aParentObject: TBasite; aIndex: integer): string;
+begin
+  Result := Meta.DataToText(fAccess.Item(ObjectPointer(aParentObject)^, aIndex));
+end;
+
+function TPropertyDataList.ObjectPointer(aParentObject: TBasite): PObject;
+begin
+  Result := DataPointer(aParentObject);
+end;
+
 { TPropertyList }
 
 function TPropertyList.Add(aProperty: TProperty): integer;
@@ -1552,6 +1737,9 @@ constructor TPropertyList.Create(aParentMeta: TMetaBasite);
 
         if GetBasiteListClass(aProperty.PropertyType.Handle.TypeData.ClassType) <> nil then
           Exit(ptBasiteList);
+
+        if IsBasiteValueListClass(aProperty.PropertyType.Handle.TypeData.ClassType) then
+          Exit(ptDataList);
       end;
     end;
 
@@ -1567,6 +1755,8 @@ constructor TPropertyList.Create(aParentMeta: TMetaBasite);
           propertyInfo := TPropertyBasite.Create(fParentMeta, rttiProperty, not aIsParentClass, aNaming);
         ptBasiteList:
           propertyInfo := TPropertyBasiteList.Create(fParentMeta, rttiProperty, not aIsParentClass, aNaming);
+        ptDataList:
+          propertyInfo := TPropertyDataList.Create(fParentMeta, rttiProperty, not aIsParentClass, aNaming);
         ptData:
           propertyInfo := TPropertyData.Create(fParentMeta, rttiProperty, not aIsParentClass, aNaming);
       else
@@ -1814,6 +2004,128 @@ begin
   fEnumExact.Free;
   fEnumNames.Free;
   inherited;
+end;
+
+function TMetaType.DataToText(aData: Pointer): string;
+
+  function Alias(const aValue: variant; out aAlias: string): boolean;
+  begin
+    Result := (fValuesAliases.Count > 0) and fValuesAliases.TryGetValueByKey(aValue, aAlias);
+  end;
+
+begin
+  Result := '';
+  case RttiType.TypeKind of
+    tkInteger, tkInt64:
+      begin
+        var ordinalValue: Int64;
+        if RttiType.TypeKind = tkInt64 then
+          ordinalValue := PInt64(aData)^
+        else
+          ordinalValue := ReadOrdinalFieldValue(aData, fOrdType);
+        if fUnsigned then
+        begin
+          if not Alias(UInt64(ordinalValue), Result) then
+            Result := UIntToStr(UInt64(ordinalValue));
+        end
+        else if not Alias(ordinalValue, Result) then
+          Result := IntToStr(ordinalValue);
+      end;
+    tkFloat:
+      if fFloatType = ftCurr then
+      begin
+        if not Alias(PCurrency(aData)^, Result) then
+          Result := CurrToStr(PCurrency(aData)^, FormatSettings.Invariant);
+      end
+      else
+      begin
+        var floatValue: Extended;
+        case fFloatType of
+          ftSingle:
+            floatValue := PSingle(aData)^;
+          ftDouble:
+            floatValue := PDouble(aData)^;
+          ftComp:
+            floatValue := PComp(aData)^;
+        else
+          floatValue := PExtended(aData)^;
+        end;
+        if not Alias(floatValue, Result) then
+          if fFloatType = ftSingle then // Single digits only: 0.1 stays 0.1, not 0.100000001490116
+            Result := FloatToStrF(floatValue, ffGeneral, 7, 0, FormatSettings.Invariant)
+          else
+            Result := FloatToStr(floatValue, FormatSettings.Invariant);
+      end;
+    tkUString:
+      if not Alias(PUnicodeString(aData)^, Result) then
+        Result := PUnicodeString(aData)^;
+    tkEnumeration:
+      begin
+        var enumValue: integer := ReadOrdinalFieldValue(aData, fOrdType);
+        if not Alias(enumValue, Result) then
+          Result := EnumName[enumValue];
+      end;
+  end;
+end;
+
+procedure TMetaType.TextToData(const aText: string; aData: Pointer; const aDefault: variant);
+begin
+  var value: string := aText;
+  if fValuesAliases.Count > 0 then
+  begin
+    var aliasValue: variant;
+    if fValuesAliases.TryGetKeyByValue(aText, aliasValue) then
+      value := VarToStr(aliasValue);
+  end;
+
+  // a list item has no default of its own: Null - zero, empty
+  var defaultValue: variant := aDefault;
+  if VarIsNull(defaultValue) then
+    if RttiType.TypeKind = tkUString then
+      defaultValue := ''
+    else
+      defaultValue := 0;
+
+  case RttiType.TypeKind of
+    tkInteger:
+      begin
+        var ordinalValue: Int64;
+        if not TryStrToInt64(value, ordinalValue) or not OrdinalFitsType(ordinalValue, fOrdType) then
+          ordinalValue := defaultValue;
+        WriteOrdinalFieldValue(aData, fOrdType, ordinalValue);
+      end;
+    tkInt64:
+      if fUnsigned then
+      begin
+        var unsignedValue: UInt64;
+        if not TryStrToUInt64(value, unsignedValue) then
+          unsignedValue := UInt64(Int64(defaultValue)); // the default holds the bits
+        PInt64(aData)^ := Int64(unsignedValue);
+      end
+      else
+        PInt64(aData)^ := StrToInt64Def(value, defaultValue);
+    tkFloat:
+      // parsed into the type itself: a value out of its range fails here instead of overflowing on assignment
+      case fFloatType of
+        ftSingle:
+          if not TryStrToFloat(value, PSingle(aData)^, FormatSettings.Invariant) then
+            PSingle(aData)^ := defaultValue;
+        ftDouble:
+          if not TryStrToFloat(value, PDouble(aData)^, FormatSettings.Invariant) then
+            PDouble(aData)^ := defaultValue;
+        ftCurr:
+          if not TryStrToCurr(value, PCurrency(aData)^, FormatSettings.Invariant) then
+            PCurrency(aData)^ := defaultValue;
+        ftComp:
+          PComp(aData)^ := StrToFloatDef(value, defaultValue, FormatSettings.Invariant);
+      else
+        PExtended(aData)^ := StrToFloatDef(value, defaultValue, FormatSettings.Invariant);
+      end;
+    tkUString:
+      PUnicodeString(aData)^ := value;
+    tkEnumeration:
+      WriteOrdinalFieldValue(aData, fOrdType, EnumValueDef(value, defaultValue));
+  end;
 end;
 
 function TMetaType.EnumValueDef(const aEnumName: string; aDefault: integer): integer;

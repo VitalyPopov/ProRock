@@ -26,6 +26,14 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   (`valueQuantity`, `valueString`...) instead of `Obs.Chosen('Value')`
 - Hand-written classes: an object property with a getter is not pre-created; its field (`f` + the property name) is
   used by the reader and writer, and `TBasite.Lazy` creates it in the getter
+- Lists of plain values: a repeating element of a simple type (`<author>Ann</author><author>Bob</author>`) is a
+  `TXmliteValueList<T>` - a `TList<T>` of strings, numbers, enumerations or booleans, each value read and written as a
+  property of its type would be: `Authors.Author.Add('Ann')`. Such units did not compile before; the OOXML SpreadsheetML and
+  DrawingML schemas now generate units that compile unchanged
+
+### Removed
+- `TXmliteTextElement` and `TXmliteTextNodeString`/`Integer`/`Int64`/`Cardinal`: an element of plain text as an object, never
+  generated. Use a string property marked `[TXmliteElement]`, or a value list for a repeating one
 
 ## [1.5.1] - 2026-10-24
 

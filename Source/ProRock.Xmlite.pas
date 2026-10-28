@@ -7,7 +7,6 @@ uses System.Classes, System.SysUtils, System.StrUtils, System.Generics.Collectio
   ProRock.Basite, ProRock.Utility, ProRock.Xmlite.Utility;
 
 const
-  cXmliteTextNodeFieldName = 'xmlText';
   cXmlDeclaration = '<?xml version="1.0" encoding="UTF-8"?>';
 
   cDefaultSuffixSimpleType = 'ST';
@@ -41,6 +40,7 @@ type
   TPropertyClass = ProRock.Basite.TPropertyClass;
   TPropertyBasite = ProRock.Basite.TPropertyBasite;
   TPropertyBasiteList = ProRock.Basite.TPropertyBasiteList;
+  TPropertyDataList = ProRock.Basite.TPropertyDataList;
   TPropertyList = ProRock.Basite.TPropertyList;
   TMeta = ProRock.Basite.TMeta;
   TMetaType = ProRock.Basite.TMetaType;
@@ -117,6 +117,8 @@ type
   end;
 
   TXmliteList<T: TXmlite, constructor> = class(TBasiteList<T>);
+  // a list of plain values: TSTXstringSTList = class(TXmliteValueList<TSTXstringST>) - Authors.Author.Add('Ann')
+  TXmliteValueList<T> = class(TBasiteValueList<T>);
   TXmliteList = TXmliteList<TXmlite>;
 
   TXmliteComplexType = class(TXmlite); // so far just to mark ComplexType (without base type)
@@ -124,56 +126,6 @@ type
   TXmliteAttributeGroup = class(TXmlite); // so far just to mark AttributeGroups
   TXmliteElement = class(TXmlite); // so far just to mark Elements
   TXmliteElementGroup = class(TXmlite); // so far just to mark Groups
-
-  TXmliteTextElement = class abstract(TXmlite) // not generated so far
-  protected
-    function GetXmlText: string; virtual; abstract;
-    procedure SetXmlText(const aValue: string); virtual; abstract;
-  public
-    function IsEmptyOrDefault: boolean; override;
-  published
-    property xmlText: string read GetXmlText write SetXmlText;
-  end;
-
-  TXmliteTextNodeString = class(TXmliteTextElement)
-  private
-    fValue: string;
-  protected
-    function GetXmlText: string; override;
-    procedure SetXmlText(const aValue: string); override;
-  public
-    property Value: string read fValue write fValue;
-  end;
-
-  TXmliteTextNodeInteger = class(TXmliteTextElement)
-  private
-    fValue: integer;
-  protected
-    function GetXmlText: string; override;
-    procedure SetXmlText(const aValue: string); override;
-  public
-    property Value: integer read fValue write fValue;
-  end;
-
-  TXmliteTextNodeInt64 = class(TXmliteTextElement)
-  private
-    fValue: Int64;
-  protected
-    function GetXmlText: string; override;
-    procedure SetXmlText(const aValue: string); override;
-  public
-    property Value: Int64 read fValue write fValue;
-  end;
-
-  TXmliteTextNodeCardinal = class(TXmliteTextElement)
-  private
-    fValue: cardinal;
-  protected
-    function GetXmlText: string; override;
-    procedure SetXmlText(const aValue: string); override;
-  public
-    property Value: cardinal read fValue write fValue;
-  end;
 
   TNamespace = class;
 
@@ -314,15 +266,6 @@ type
 
     property ProcessAnyElement: boolean read GetProcessAnyElement write fProcessAnyElement;
     property ProcessAnyAttribute: boolean read GetProcessAnyAttribute write fProcessAnyAttribute; // not realized yet
-  end;
-
-  TMetaBasiteXmliteText = class(TMetaBasiteXmlite)
-  private
-    fXmlTextProperty: TPropertyData;
-  public
-    constructor Create(aMeta: TMetaBasite); override;
-
-    property xmlTextProperty: TPropertyData read fXmlTextProperty;
   end;
 
   TMetaBasiteHelper = class helper for TMetaBasite
@@ -639,35 +582,6 @@ begin
 end;
 
 function TBasiteHelper.ReadTagContents(var aCursor: PChar; const aName: string; aXmlns: TXmlns): boolean;
-
-  procedure ReadTextNode(var aCursor: PChar; aTextNode: TXmliteTextElement; aXmlns: TXmlns); inline;
-  begin
-    if aCursor^ = ' ' then // attributes
-      while TReaderXmlite.MoveToVisualChar(aCursor) and (aCursor^ <> '>') do
-      begin
-        var attributeName, attributeNameWithPrefix, attributePrefix, attributeValue: string;
-        if not TReaderXmlite.ReadAttributeName(aCursor, attributePrefix, attributeName, attributeNameWithPrefix) then
-          Exit;
-
-        attributeValue := TReaderXmlite.ReadQuotedValueInPlace(aCursor);
-
-        // the same lookup as for attributes of ordinary objects - by XML (Xmlite) name, not by Basite one
-        var uri: string;
-        if attributePrefix.IsEmpty and Assigned(aTextNode.Meta.Xmlite.Namespace) then
-          uri := aTextNode.Meta.Xmlite.Namespace.Uri
-        else
-          uri := aXmlns[attributePrefix];
-
-        var propertyData: TPropertyData := aTextNode.Meta.Xmlite.Attributes[TUriedName.Create(uri, attributeName)];
-        if propertyData = nil then
-          propertyData := aTextNode.Meta.Xmlite.Attributes[TUriedName.Create('', attributeName)];
-        if propertyData <> nil then
-          propertyData.Value[aTextNode] := attributeValue;
-      end;
-
-    aTextNode.xmlText := TReaderXmlite.ReadTextNodeContents(aCursor);
-  end;
-
 begin
   Result := False;
 
@@ -758,16 +672,8 @@ begin
               fieldObject := propertyBasite.Meta.ClassItself.Create;
               propertyBasite.ObjectPointer(Self)^ := fieldObject;
             end;
-            if propertyBasite.Meta.ClassItself.InheritsFrom(TXmliteTextElement) then
-            begin
-              ReadTextNode(aCursor, TXmliteTextElement(fieldObject), aXmlns);
-              TReaderXmlite.PassNode(aCursor, tagFullName);
-            end
-            else
-            begin
-              aCursor := cursorStart;
-              fieldObject.FromXml(aCursor, aXmlns);
-            end;
+            aCursor := cursorStart;
+            fieldObject.FromXml(aCursor, aXmlns);
             SetPresent(propertyElement); // also when all its values are defaults (<fill/>)
           end;
         ptBasiteList:
@@ -776,18 +682,15 @@ begin
             if propertyObjectList.ObjectPointer(Self)^ = nil then
               propertyObjectList.ObjectPointer(Self)^ := propertyObjectList.Meta.CreateList;
             var objectListItem: TBasite := propertyObjectList.Meta.ItemMeta.ClassItself.Create;
-            if propertyObjectList.Meta.ItemMeta.ClassItself.InheritsFrom(TXmliteTextElement) then
-            begin
-              ReadTextNode(aCursor, TXmliteTextElement(objectListItem), aXmlns);
-              TReaderXmlite.PassNode(aCursor, tagFullName);
-            end
-            else
-            begin
-              aCursor := cursorStart;
-              objectListItem.FromXml(aCursor, aXmlns);
-            end;
+            aCursor := cursorStart;
+            objectListItem.FromXml(aCursor, aXmlns);
             propertyObjectList.ObjectPointer(Self).Add(objectListItem);
             SetPresent(propertyElement);
+          end;
+        ptDataList:
+          begin
+            TPropertyDataList(propertyElement).AddText(Self, TReaderXmlite.ReadTextNodeContents(aCursor));
+            TReaderXmlite.PassNode(aCursor, tagFullName);
           end;
       end;
   end;
@@ -875,6 +778,12 @@ begin
                 if propertyData.Required or IsPresent(propertyData) then
                   aWriter.AddTextNode(elementName(propertyElement, scope), propertyData.Value[Self], propertyData);
               end;
+            ptDataList:
+              begin
+                var propertyDataList: TPropertyDataList := TPropertyDataList(propertyElement);
+                for var i := 0 to propertyDataList.Count(Self) - 1 do
+                  aWriter.AddTextNode(elementName(propertyElement, scope), propertyDataList.ItemText(Self, i), propertyDataList);
+              end;
             ptBasite:
               begin
                 // a pre-created object is written only when present (read, marked, or with content) or required - its own
@@ -883,11 +792,7 @@ begin
                 var fieldObject: TBasite := propertyBasite.ObjectPointer(Self)^;
                 if (fieldObject = nil) or not (propertyBasite.Required or IsPresent(propertyBasite)) then
                   Continue;
-                if propertyBasite.Meta.ClassItself.InheritsFrom(TXmliteTextElement) then
-                  aWriter.AddTextNode(elementName(propertyElement, scope), TXmliteTextElement(fieldObject).xmlText,
-                    TMetaBasiteXmliteText(fieldObject.Meta.Xmlite).xmlTextProperty, fieldObject)
-                else
-                  fieldObject.ToXml(aWriter, elementName(propertyElement, scope), scope, False);
+                fieldObject.ToXml(aWriter, elementName(propertyElement, scope), scope, False);
               end;
             ptBasiteList:
               begin
@@ -897,11 +802,7 @@ begin
                 if list = nil then
                   Continue;
                 for var i := 0 to list.Count - 1 do
-                  if propertyBasiteList.Meta.ItemMeta.ClassItself.InheritsFrom(TXmliteTextElement) then
-                    aWriter.AddTextNode(elementName(propertyElement, scope), TXmliteTextElement(list[i]).xmlText,
-                      TMetaBasiteXmliteText(list[i].Meta.Xmlite).xmlTextProperty, list[i])
-                  else
-                    list[i].ToXml(aWriter, elementName(propertyElement, scope), scope, False);
+                  list[i].ToXml(aWriter, elementName(propertyElement, scope), scope, False);
               end;
           end;
 
@@ -978,7 +879,7 @@ function TBasiteHelper.GetXmlns: string;
 
     for var element: TProperty in aObject.Meta.Xmlite.Elements.Values do
     begin
-      if element.PropertyType in [ptBasite, ptBasiteList] then
+      if element.PropertyType in [ptBasite, ptBasiteList, ptDataList] then
         aXmlnsList.Add(element.Xmlite.Namespace); // the element's own namespace (its type may be another one's)
       case element.PropertyType of
         ptData:
@@ -1110,7 +1011,10 @@ begin
   Write(aName);
   if aObject <> nil then
     WriteAttributes(aObject);
-  if (aFieldInfo.RttiProperty.PropertyType.TypeKind in [tkString, tkLString, tkWString, tkUString]) and not aValue.IsEmpty and
+  var typeKind: TTypeKind := aFieldInfo.RttiProperty.PropertyType.TypeKind;
+  if aFieldInfo.PropertyType = ptDataList then
+    typeKind := TPropertyDataList(aFieldInfo).Meta.RttiType.TypeKind;
+  if (typeKind in [tkString, tkLString, tkWString, tkUString]) and not aValue.IsEmpty and
     ((aValue.Chars[0] <= ' ') or (aValue.Chars[aValue.Length - 1] <= ' ')) then
     WriteAttribute('xml:space', 'preserve');
   Write('>');
@@ -1296,61 +1200,6 @@ end;
 class function TXmlite.XmlToObject(const aXml: string; aObject: TBasite): boolean;
 begin
   Result := (aObject <> nil) and aObject.FromXml(aXml);
-end;
-
-{ TXmliteTextNodeString }
-
-function TXmliteTextNodeString.GetXmlText: string;
-begin
-  Result := fValue;
-end;
-
-procedure TXmliteTextNodeString.SetXmlText(const aValue: string);
-begin
-  fValue := aValue;
-end;
-
-{ TXmliteTextNodeInteger }
-
-function TXmliteTextNodeInteger.GetXmlText: string;
-begin
-  Result := fValue.ToString;
-end;
-
-procedure TXmliteTextNodeInteger.SetXmlText(const aValue: string);
-begin
-  fValue := StrToIntDef(aValue, 0);
-end;
-
-{ TXmliteTextNodeCardinal }
-
-function TXmliteTextNodeCardinal.GetXmlText: string;
-begin
-  Result := fValue.ToString;
-end;
-
-procedure TXmliteTextNodeCardinal.SetXmlText(const aValue: string);
-begin
-  fValue := Max(StrToIntDef(aValue, 0), 0);
-end;
-
-{ TXmliteTextNodeInt64 }
-
-function TXmliteTextNodeInt64.GetXmlText: string;
-begin
-  Result := fValue.ToString;
-end;
-
-procedure TXmliteTextNodeInt64.SetXmlText(const aValue: string);
-begin
-  fValue := StrToInt64Def(aValue, 0);
-end;
-
-{ TXmliteTextElement }
-
-function TXmliteTextElement.IsEmptyOrDefault: boolean;
-begin
-  Result := xmlText.IsEmpty;
 end;
 
 { TNamespace }
@@ -1541,10 +1390,7 @@ end;
 function TMetaBankXmlite.ItemCreate(aMeta: TMeta): TMetaExtension;
 begin
   if aMeta.ClassType = TMetaBasite then
-    if TMetaBasite(aMeta).ClassItself.InheritsFrom(TXmliteTextElement) then
-      Result := TMetaBasiteXmliteText.Create(TMetaBasite(aMeta))
-    else
-      Result := TMetaBasiteXmlite.Create(TMetaBasite(aMeta))
+    Result := TMetaBasiteXmlite.Create(TMetaBasite(aMeta))
   else if aMeta.ClassType = TMetaType then
     Result := TMetaTypeXmlite.Create(TMetaType(aMeta))
   else
@@ -1660,7 +1506,7 @@ begin
           else
             fAttributes.Add(uriedName, propertyData);
         end;
-      ptBasite, ptBasiteList:
+      ptBasite, ptBasiteList, ptDataList:
         fElements.Add(uriedName, propertyInfo);
     end;
   end;
@@ -1734,9 +1580,6 @@ begin
       ptData:
         begin
           var propertyData: TPropertyData := TPropertyData(propertyInfo);
-          if (Meta.ClassItself.InheritsFrom(TXmliteTextElement) and (propertyData.Name = cXmliteTextNodeFieldName)) then
-            Continue; // pass xmlText property
-
           if FieldIsText(propertyData) then
             fTextProperty := propertyData
           else if FieldIsElement(propertyData) then
@@ -1745,7 +1588,7 @@ begin
             fAttributes.Add(uriedName, propertyData);
         end;
 
-      ptBasite, ptBasiteList:
+      ptBasite, ptBasiteList, ptDataList:
         fElements.Add(uriedName, propertyInfo);
     end;
   end;
@@ -1972,17 +1815,6 @@ end;
 constructor TNamespaceAttribute.Create(const aUri: string);
 begin
   fUri := aUri;
-end;
-
-{ TMetaBasiteXmliteText }
-
-constructor TMetaBasiteXmliteText.Create(aMeta: TMetaBasite);
-begin
-  inherited;
-  // at initialization the key of property doesn't contain URI, the dictionary is reassembled during Namespace registration
-  var textNodeFieldName: TUriedName := TUriedName.Create(cXmliteTextNodeFieldName);
-  fXmlTextProperty := fAttributes[textNodeFieldName];
-  fAttributes.Remove(textNodeFieldName);
 end;
 
 end.
