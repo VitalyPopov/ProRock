@@ -62,6 +62,9 @@ type
     class function ReadUnescapeInPlace(var aCursor: PChar; aStringEndsAt: Char = #0): string; static; inline;
     class function ReadQuotedValueInPlace(var aCursor: PChar): string; static; inline;
     class function PassDtd(var aCursor: PChar): boolean; static; inline;
+    // markup that is not an element - a comment, CDATA, a processing instruction, a DOCTYPE - passed to its own end
+    // (CDATA and comments may hold < and >, which bracket counting would take for tags)
+    class function PassMarkup(var aCursor: PChar): boolean; static;
 
     class function PassNode(var aCursor: PChar; const aNodeName: string): boolean; static; inline;
 
@@ -247,6 +250,27 @@ begin
   Result := True;
 end;
 
+class function TReaderXmlite.PassMarkup(var aCursor: PChar): boolean;
+
+  function PassTo(const aEnd: string): boolean;
+  begin
+    var found: PChar := StrPos(aCursor, PChar(aEnd));
+    Result := found <> nil;
+    if Result then
+      aCursor := found + Length(aEnd);
+  end;
+
+begin
+  if StrLComp(aCursor, '<!--', 4) = 0 then
+    Result := PassTo('-->')
+  else if StrLComp(aCursor, '<![CDATA[', 9) = 0 then
+    Result := PassTo(']]>')
+  else if aCursor[1] = '?' then
+    Result := PassTo('?>')
+  else
+    Result := PassDtd(aCursor);
+end;
+
 class function TReaderXmlite.PassNode(var aCursor: PChar; const aNodeName: string): boolean;
 begin
   Result := False;
@@ -256,9 +280,9 @@ begin
       '"', '''': // attribute value
         PassQuotes(aCursor, aCursor^);
       '<': // next tag
-        if (aCursor[1] = '!') then // DTD or comments
+        if (aCursor[1] = '!') or (aCursor[1] = '?') then // a comment, CDATA, a processing instruction, a DOCTYPE
         begin
-          if not TReaderXmlite.PassDtd(aCursor) then
+          if not TReaderXmlite.PassMarkup(aCursor) then
             Exit;
         end
         else // regular node or end tag
@@ -438,8 +462,35 @@ begin
   var resultStart: PChar := aCursor;
   var resultCursor: PChar := aCursor;
 
-  while aCursor^ <> aStringEndsAt do
+  while True do
   begin
+    if aCursor^ = aStringEndsAt then
+    begin
+      // element text: CDATA is text as it is (no entities: < and & are plain characters), a comment or a processing
+      // instruction is skipped; any other < ends the text
+      if aStringEndsAt <> '<' then
+        Break;
+      if StrLComp(aCursor, '<![CDATA[', 9) = 0 then
+      begin
+        Inc(aCursor, 9);
+        while StrLComp(aCursor, ']]>', 3) <> 0 do
+        begin
+          if aCursor^ = #0 then
+            Exit(''); // invalid input
+          resultCursor^ := aCursor^;
+          Inc(resultCursor);
+          Inc(aCursor);
+        end;
+        Inc(aCursor, 3);
+        Continue;
+      end;
+      if (StrLComp(aCursor, '<!--', 4) <> 0) and (aCursor[1] <> '?') then
+        Break;
+      if not PassMarkup(aCursor) then
+        Exit(''); // invalid input
+      Continue;
+    end;
+
     if aCursor^ = #0 then
       Exit(''); // invalid input
 

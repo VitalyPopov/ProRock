@@ -39,6 +39,12 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 - `TXmliteTextElement` and `TXmliteTextNodeString`/`Integer`/`Int64`/`Cardinal`: an element of plain text as an object, never
   generated. Use a string property marked `[TXmliteElement]`, or a value list for a repeating one
 
+### Fixed
+- CDATA sections were read as empty, and every element after one was lost: `<name><![CDATA[a<b]]></name>` reads `a<b` now
+  (the text as it is, written back escaped)
+- A processing instruction inside an element (`<?app data?>`) lost everything after it; it is skipped now, as comments are.
+  Comments and processing instructions holding `<` or `>` no longer upset skipping an unknown element
+
 ## [1.5.1] - 2026-10-24
 
 A fix for Delphi 10.3 - lists never freed their items - and faster object creation. Units generated with 1.5.0 work

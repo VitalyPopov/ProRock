@@ -423,9 +423,9 @@ begin
   if not TReaderXmlite.MoveToChar(aXmlCursor, '<') then
     Exit;
 
-  // pass DTD and comments
-  while aXmlCursor[1] = '!' do
-    if not TReaderXmlite.PassDtd(aXmlCursor) or not TReaderXmlite.MoveToChar(aXmlCursor, '<') then
+  // pass the DOCTYPE, comments, processing instructions
+  while (aXmlCursor[1] = '!') or (aXmlCursor[1] = '?') do
+    if not TReaderXmlite.PassMarkup(aXmlCursor) or not TReaderXmlite.MoveToChar(aXmlCursor, '<') then
       Exit;
 
   var xmlns: TXmlns;
@@ -590,9 +590,9 @@ begin
     if not TReaderXmlite.MoveToChar(aCursor, '<') then
       Exit;
 
-    // pass DTD/comments
-    while aCursor[1] = '!' do
-      if not TReaderXmlite.PassDtd(aCursor) or not TReaderXmlite.MoveToChar(aCursor, '<') then
+    // pass comments, CDATA and processing instructions between elements (mixed content's text is not kept)
+    while (aCursor[1] = '!') or (aCursor[1] = '?') do
+      if not TReaderXmlite.PassMarkup(aCursor) or not TReaderXmlite.MoveToChar(aCursor, '<') then
         Exit;
 
     var cursorStart: PChar := aCursor;
