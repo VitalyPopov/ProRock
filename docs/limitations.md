@@ -1,38 +1,25 @@
 # Limitations and notes
 
-Coverage grows through real-world schemas. If yours doesn't generate or doesn't read right,
+What of XML and XML Schema is supported, in part or not yet: [XML support](xml-support.md). This page has the notes for
+using it. Coverage grows through real-world schemas. If yours doesn't generate or doesn't read right,
 [open an issue](https://github.com/VitalyPopov/ProRock/issues/new/choose) - see also the [roadmap](roadmap.md).
 
 ## Writing a document back
 
 A document read and written back keeps what its schema describes: values equal to their default, objects with only
 defaults, absent values stay absent, enumeration texts and element order as in the schema
-([presence](xmlite.md#absent-or-default-presence)). Not yet:
+([presence](xmlite.md#absent-or-default-presence)). Elements the schema does not know and mixed content are not kept yet
+([XML support](xml-support.md#the-document)).
 
-- **Unknown elements** are dropped: elements not in the schema, like Office's own extensions (`mc:AlternateContent`, the
-  content of `extLst`). Unknown attributes are kept
-- **Mixed content** (text interleaved with child elements) is kept only partially (`XmlText`): text after an inline
-  element is lost (XHTML `<p>Peter <b>James</b>, born 1974</p>`). Mixed content where no child element can occur is plain
-  text (`XmlValue`)
-- a value set in code that equals its default is written only when marked present (`SetPresent`) - see
-  [presence](xmlite.md#absent-or-default-presence)
+A value set in code that equals its default is written only when marked present (`SetPresent`) - see
+[presence](xmlite.md#absent-or-default-presence).
 
 ## Large schemas
 
 FHIR R4 and the OOXML SpreadsheetML/DrawingML schemas generate units that compile unchanged. Very large units compile slowly:
 all of FHIR R4 is one unit of about 49,000 lines, about 50 seconds for Delphi.
 
-## Not covered yet
-
-- **Elements standing in for their head**: a substitution group member gets its head's type, but a property of the head's type
-  does not yet hold any member
-- with `elementFormDefault="unqualified"`, local elements are written in the parent's default namespace (reading is fine)
-- unions hold their value as written (a `string`, unless the union has exactly one named member type); facets (patterns,
-  ranges, lengths) are not validated
-- schemas without `targetNamespace` (including "chameleon" includes) cannot be loaded by the generator yet
-- SOAP rpc/encoded operations are skipped by the generator (listed in the generated unit header)
-
-[XML concepts for Delphi developers](xml-concepts.md) explains these terms with examples.
+[XML concepts for Delphi developers](xml-concepts.md) explains the XML Schema terms of these pages with examples.
 
 ## Notes
 

@@ -173,4 +173,4 @@ The metamodels that ship with ProRock - XML Schema itself, WSDL, the SOAP envelo
 (`ProRock.Xmlite.Schema.*`) - are ordinary generated units: ProRocket Lite generates them from their official schemas with
 every release, and reads every XSD and WSDL through them.
 
-Limits of the current version: [Limitations and notes](limitations.md).
+What of XML and XML Schema is covered: [XML support](xml-support.md); notes for using it: [Limitations and notes](limitations.md).

@@ -35,6 +35,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 - The DocumentProperties sample shows the application's properties (`docProps/app.xml`): the application and the titles of
   the parts, grouped by heading - "Worksheets: Sales, Costs" - read as a value list of `vt:lpstr`
 
+- Docs: an XML support page - what of XML and XML Schema works, in part, or not yet - and Large documents (choices)
+
 ### Removed
 - `TXmliteTextElement` and `TXmliteTextNodeString`/`Integer`/`Int64`/`Cardinal`: an element of plain text as an object, never
   generated. Use a string property marked `[TXmliteElement]`, or a value list for a repeating one

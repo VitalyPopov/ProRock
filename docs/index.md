@@ -20,7 +20,7 @@ to install.
   objects created and freed with their parent, presence of every value. Independent of any data format, the base for Xmlite
   and later Jsonite
 - [Xmlite](xmlite.md): XML parsing and serialization to and from plain Delphi objects, namespace- and schema-aware. Parsing works
-  in place on the text, without building a DOM
+  in place on the text, without building a DOM. What of XML it covers: [XML support](xml-support.md)
 - [Soapite](soapite.md): SOAP 1.1 / 1.2 clients on top of Xmlite, generated from WSDL, with typed requests, responses and faults
 
 **ProRocket Lite** - the code generator: XSD and WSDL in, Delphi units out, in a [GUI](prorocket-lite.md) and from the
