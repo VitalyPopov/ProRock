@@ -104,6 +104,9 @@ silently.
   property with a getter; use the name: `shipment.IsPresent('pickup')`, `shipment.Clear('pickup')`.
 - **Threads.** Reading one object from several threads at once is safe for members already created; the first access to an
   untouched member creates it, so do that from one thread.
+- **Reading without a copy.** `FromXml` reads a copy of the text, so your string stays as it was. For a large text
+  you read once, `FromXmlInPlace(xml)` saves that copy - the read writes into `xml`, so it no longer holds the document
+  afterwards: `var xml := TFile.ReadAllText(...); bundle.FromXmlInPlace(xml);`
 
 ## Hand-written classes
 

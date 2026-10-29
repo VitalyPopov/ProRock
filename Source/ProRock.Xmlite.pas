@@ -213,7 +213,10 @@ type
 
     procedure ToXml(aStream: TStream; const aName: string = ''; aXmlHeader: boolean = True); overload;
     function ToXml(const aName: string = ''; aXmlHeader: boolean = True): string; overload;
+    // reads a copy: aXml stays as it is
     function FromXml(const aXml: string): boolean; overload;
+    // reads without a copy - aXml is changed by the read (large documents read once)
+    function FromXmlInPlace(var aXml: string): boolean;
   end;
 
   TXmliteElementAttribute = class(TCustomAttribute);
@@ -442,22 +445,20 @@ threadvar
 constructor TBasiteHelper.CreateFromXml(const aXml: string);
 begin
   inherited Create;
-  FromXml(PChar(aXml));
+  FromXml(aXml);
 end;
 
 function TBasiteHelper.FromXml(const aXml: string): boolean;
 begin
-  // parsing works in place: a literal (read-only memory) or a shared string is copied first
-  var xmlCopy: string;
-  var xmlCursor: PChar;
-  if StringRefCount(aXml) = 1 then
-    xmlCursor := PChar(aXml)
-  else
-  begin
-    xmlCopy := aXml;
-    UniqueString(xmlCopy);
-    xmlCursor := PChar(xmlCopy);
-  end;
+  var xml: string := aXml;
+  Result := FromXmlInPlace(xml); // shared now: copied there
+end;
+
+function TBasiteHelper.FromXmlInPlace(var aXml: string): boolean;
+begin
+  // the parser writes into the text: a shared string gets its own copy first, so only aXml changes
+  UniqueString(aXml);
+  var xmlCursor: PChar := PChar(aXml);
   if not TReaderXmlite.MoveToChar(xmlCursor, '<') then
     Exit(False);
 

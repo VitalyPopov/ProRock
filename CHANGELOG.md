@@ -20,6 +20,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   getter has no address; use the name forms (`IsPresent('patient')`)
 - The first access to a choice member creates it: reading one object from several threads at once is not safe for
   untouched choice members
+- `FromXml` reads a copy of the text: the caller's string stays as it was. It read a string held only by the caller in
+  place before, which changed that string (entities decoded, the rest padded with spaces); `FromXmlInPlace` does that now,
+  on request. `CreateFromXml` reads a copy too (it wrote into a literal's constant memory)
 - `XmlText` of a mixed element is its leading text node: whitespace before the first child is kept, and setting it replaces
   that text. Inside a mixed element the writer writes no indentation - it would become a part of the text
 
@@ -43,6 +46,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   a value list when it repeats - instead of an element class without a place for its text
 - The DocumentProperties sample shows the application's properties (`docProps/app.xml`): the application and the titles of
   the parts, grouped by heading - "Worksheets: Sales, Costs" - read as a value list of `vt:lpstr`
+- `FromXmlInPlace(var aXml)`: reads without copying the text - for a large text read once; the read changes `aXml`
 - Mixed content: text between child elements (`<p><b>status</b>: final</p>`, a FHIR narrative's XHTML) is kept with the
   children in document order in `XmlContent` and written back as it was. A mixed type gets `[TMixed]`; a repeating choice
   gets `[TOrdered]` - its members' order is kept too (an Excel `<font>`). The typed lists stay as they are; `XmlContent`

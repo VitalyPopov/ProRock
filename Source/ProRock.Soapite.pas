@@ -243,7 +243,7 @@ begin
   aError.HttpStatus := response.Status;
   aError.Response := response.Body;
 
-  // the raw body stays intact for the error: being shared, it is parsed from a copy (see FromXml)
+  // the raw body stays intact for the error: FromXml reads a copy
   var responseBody: string := response.Body;
 
   // the body before the status (faults come with HTTP 500); the requested version first, then the other one (a 1.1
