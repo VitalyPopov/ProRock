@@ -468,6 +468,7 @@ type
     property AnyAttribute: TAnyAttributeE read GetAnyAttribute;
   end;
 
+  [TOrdered]
   TRestrictionTypeCT = class(TAnnotatedCT)
   private
     fBase: TQNameST;
@@ -539,6 +540,7 @@ type
     property AnyAttribute: TAnyAttributeE read fAnyAttribute;
   end;
 
+  [TOrdered]
   TComplexRestrictionTypeCT = class(TXmliteComplexTypeRestricted)
   private
     fId: TIdST;
@@ -574,6 +576,7 @@ type
     property AnyAttribute: TAnyAttributeE read fAnyAttribute;
   end;
 
+  [TOrdered]
   TExtensionTypeCT = class(TAnnotatedCT)
   private
     fBase: TQNameST;
@@ -605,6 +608,7 @@ type
     property AnyAttribute: TAnyAttributeE read fAnyAttribute;
   end;
 
+  [TOrdered]
   TSimpleRestrictionTypeCT = class(TXmliteComplexTypeRestricted)
   private
     fId: TIdST;
@@ -664,6 +668,7 @@ type
     property AnyAttribute: TAnyAttributeE read fAnyAttribute;
   end;
 
+  [TOrdered]
   TSimpleExtensionTypeCT = class(TXmliteComplexTypeRestricted)
   private
     fId: TIdST;
@@ -682,6 +687,7 @@ type
     property AnyAttribute: TAnyAttributeE read fAnyAttribute;
   end;
 
+  [TOrdered]
   TElementCT = class(TAnnotatedCT)
   private
     fType: TQNameST;
@@ -732,6 +738,7 @@ type
     property Keyref: TKeyrefEList read fKeyref;
   end;
 
+  [TOrdered]
   TTopLevelElementCT = class(TXmliteComplexTypeRestricted)
   private
     fId: TIdST;
@@ -777,6 +784,7 @@ type
     property Keyref: TKeyrefEList read fKeyref;
   end;
 
+  [TOrdered]
   TLocalElementCT = class(TXmliteComplexTypeRestricted)
   private
     fId: TIdST;
@@ -824,6 +832,7 @@ type
     property Keyref: TKeyrefEList read fKeyref;
   end;
 
+  [TOrdered]
   TGroupCT = class(TAnnotatedCT)
   private
     fName: TNCNameST;
@@ -937,6 +946,7 @@ type
     property Annotation: TAnnotationE read fAnnotation;
   end;
 
+  [TOrdered]
   TExplicitGroupCT = class(TXmliteComplexTypeRestricted)
   private
     fId: TIdST;
@@ -962,6 +972,7 @@ type
     property Any: TAnyEList read fAny;
   end;
 
+  [TOrdered]
   TSimpleExplicitGroupCT = class(TXmliteComplexTypeRestricted)
   private
     fId: TIdST;
@@ -981,6 +992,7 @@ type
     property Any: TAnyEList read fAny;
   end;
 
+  [TOrdered]
   TNarrowMaxMinCT = class(TXmliteComplexTypeRestricted)
   type
     TMinOccurs = (mob0, mob1);
@@ -1064,6 +1076,7 @@ type
     property ProcessContents: TProcessContents read fProcessContents write fProcessContents;
   end;
 
+  [TOrdered]
   TAttributeGroupCT = class(TAnnotatedCT)
   private
     fName: TNCNameST;
@@ -1079,6 +1092,7 @@ type
     property AnyAttribute: TAnyAttributeE read fAnyAttribute;
   end;
 
+  [TOrdered]
   TNamedAttributeGroupCT = class(TXmliteComplexTypeRestricted)
   private
     fId: TIdST;
@@ -1123,6 +1137,7 @@ type
   end;
 
   [TXmliteAnyElement]
+  [TMixed]
   TAnyTypeCT = class(TXmliteComplexType);
 
   TSimpleTypeCT = class(TAnnotatedCT)
@@ -1254,6 +1269,7 @@ type
     property Ref: TQNameST read fRef write fRef;
   end;
 
+  [TOrdered]
   TSchemaE = class(TOpenAttrsCT)
   private
     fTargetNamespace: TAnyURIST;
@@ -1366,6 +1382,7 @@ type
     property SchemaLocation: TAnyURIST read fSchemaLocation write fSchemaLocation;
   end;
 
+  [TOrdered]
   TRedefineE = class(TOpenAttrsCT)
   private
     fSchemaLocation: TAnyURIST;
@@ -1440,6 +1457,7 @@ type
   end;
 
   [TXmliteAnyElement]
+  [TMixed]
   TAppinfoE = class(TXmliteElement)
   private
     fSource: TAnyURIST;
@@ -1448,6 +1466,7 @@ type
   end;
 
   [TXmliteAnyElement]
+  [TMixed]
   TDocumentationE = class(TXmliteElement)
   private
     fSource: TAnyURIST;
@@ -1457,6 +1476,7 @@ type
     property Lang: ProRock.Xmlite.Schema.Xml.TLangA read fLang write fLang;
   end;
 
+  [TOrdered]
   TAnnotationE = class(TOpenAttrsCT)
   private
     fId: TIdST;
@@ -1470,6 +1490,7 @@ type
 
   TSimpleTypeE = class(TTopLevelSimpleTypeCT);
 
+  [TOrdered]
   TRestrictionE = class(TAnnotatedCT)
   private
     fBase: TQNameST;

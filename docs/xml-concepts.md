@@ -99,9 +99,9 @@ An element with a value and attributes, but no child elements. The class gets th
 <p>Call <b>now</b> to order.</p>
 ```
 
-Text and elements interleaved, like HTML. ProRock keeps the text of such an element in `XmlText`; the interleaving with child
-elements is not kept yet. When the schema allows mixed content but no child elements can occur (Dublin Core's text values), it
-is plain text in `XmlValue`.
+Text and elements interleaved, like HTML. ProRock keeps the text runs and the child elements in document order in
+`XmlContent`; `InnerText` gives all the text ([Xmlite](xmlite.md#mixed-content-and-element-order)). When the schema allows
+mixed content but no child elements can occur (Dublin Core's text values), it is plain text in `XmlValue`.
 
 ## Derived types and `xsi:type`
 

@@ -58,6 +58,24 @@ type
     Namespaces: TArray<TPair<string, string>>;
   end;
 
+  TXmliteNodeKind = (xnkText, xnkElement, xnkUnknown);
+
+  // a child in XmlContent: a text run, an element (its object, or a plain value: Element nil, Index in its list) or a kept
+  // unknown element (Index in XmlUnknown, Text its name)
+  TXmliteNode = record
+    Kind: TXmliteNodeKind;
+    Text: string;
+    Element: TBasite;
+    ElementProperty: TProperty; // nil for xs:any and unknown elements
+    Index: integer;
+    function IsText: boolean; inline;
+    function IsElement<T: TBasite>: boolean; inline;
+    // the element as its class, EInvalidCast for another one: node.ElementAs<TAE>.Href
+    function ElementAs<T: TBasite>: T; inline;
+    // the element's XML name (b, span) from the meta, an unknown element's (its Text); '' for text
+    function Name: string;
+  end;
+
   TWriterXmlite = class(TWriterBase)
   private
     fPretty: boolean;
@@ -84,6 +102,8 @@ type
     procedure AddTagText(const aName: string; aObject: TBasite; aNamespaces: boolean; const aText: string); inline;
     procedure AddTextNode(const aName, aValue: string; aFieldInfo: TProperty; aObject: TBasite = nil); inline;
     procedure AddXmlEscape(const aString: string); inline;
+    // text of mixed content: line breaks and tabs as they are, so the text reads back the same
+    procedure AddTextEscape(const aString: string);
   end;
 
   TXmlite = class(TBasite)
@@ -99,8 +119,16 @@ type
     fXmlText: string;
     fXmlAny: TBasiteList<TBasite>;
     fXmlUnknown: TList<TXmliteUnknown>; // created with the first one
+    fXmlContent: TList<TXmliteNode>; // created with the first node
     fXmlPosition: cardinal;
     function GetXmlUnknown: TList<TXmliteUnknown>;
+    function GetXmlContent: TList<TXmliteNode>;
+    function GetXmlText: string;
+    procedure SetXmlText(const aValue: string);
+    // a node at the end of XmlContent; text joins a text node before it (text, CDATA, text)
+    procedure AddNode(aKind: TXmliteNodeKind; const aText: string; aElement: TBasite; aProperty: TProperty; aIndex: integer);
+    function PropertyOfClass(aClass: TClass; const aName: string = ''): TProperty;
+    function AddElement(aClass: TClass; const aProperty: string): TBasite;
   protected
     procedure Initialize; override;
     procedure Deinitialize; override;
@@ -120,13 +148,28 @@ type
     property XmlAttributes: TDictionary<string, string> read fXmlAttributes; // attributes without a property, kept for the round trip
     // elements without a property, kept for the round trip as their text (Clear removes them)
     property XmlUnknown: TList<TXmliteUnknown> read GetXmlUnknown;
-    property XmlText: string read fXmlText write fXmlText;
+    // [TOrdered]/[TMixed]: the children (and text) in document order, written so; children not in it come after. Remove a
+    // child by Remove - one deleted through its list leaves a dangling node
+    property XmlContent: TList<TXmliteNode> read GetXmlContent;
+    // the text before the first child element; in mixed content the leading text node of XmlContent
+    property XmlText: string read GetXmlText write SetXmlText;
     // prefix -> URI declared again on write: the document's declarations (prefixes appear in values: mc:Ignorable)
     property XmlAttributeNamespaces: TDictionary<string, string> read fXmlAttributeNamespaces;
 
     // writes xsi:type: the element holds aType, a complex type derived from its own - Created.SetXsiType(TW3cdtfCT).
     // Raises EArgumentException for any other class
     procedure SetXsiType(aType: TClass);
+
+    // a new child of class T in the property of that class, in XmlContent of an ordered element: Div.Add<TPE>.AddText('...');
+    // a single object's property gives its object. EArgumentException when no property, or more than one, has the class T
+    function Add<T: TBasite>: T; overload;
+    function Add<T: TBasite>(const aProperty: string): T; overload;
+    // a text run at the end of mixed content; elsewhere added to XmlText
+    procedure AddText(const aText: string);
+    // a child out of XmlContent and its property: a list item freed, a single object cleared
+    procedure Remove(aElement: TBasite);
+    // all text of the element and its children in document order: Observation.Text.&Div.InnerText
+    function InnerText: string;
 
     procedure Clear; overload; override;
     function IsEmptyOrDefault: boolean; override;
@@ -189,6 +232,11 @@ type
 
   // XSD form="qualified": an attribute written prefixed also in elements of its own namespace (wsu:Id in wsu:Timestamp)
   TQualifiedAttribute = class(TCustomAttribute);
+
+  // the children's document order kept in XmlContent (XSD: a repeating choice - one list per element would lose it)
+  TOrderedAttribute = class(TCustomAttribute);
+  // XSD mixed="true": text runs between the children kept too (an XHTML <p>); an ordered element
+  TMixedAttribute = class(TCustomAttribute);
 
   TPropertyXmlite = class(TPropertyExtension)
   private
@@ -256,7 +304,7 @@ type
 
   TMetaBasiteXmlite = class(TMetaXmlite)
   private
-    fIsTXmlite, fProcessAnyElement, fProcessAnyAttribute: boolean;
+    fIsTXmlite, fProcessAnyElement, fProcessAnyAttribute, fOrdered, fMixed: boolean;
     fAttributes: TDictObjectList<TUriedName, TPropertyData>;
     fElements: TDictObjectList<TUriedName, TProperty>;
     fTextProperty: TPropertyData;
@@ -266,6 +314,7 @@ type
     function GetMeta: TMetaBasite;
     function GetProcessAnyAttribute: boolean;
     function GetProcessAnyElement: boolean;
+    procedure SetMixed(aValue: boolean);
   protected
     procedure NamespaceUnregister; override;
     procedure NamespaceRegister(aNamespace: TNamespace; aType: TXmliteComponentType); override;
@@ -282,6 +331,9 @@ type
 
     property ProcessAnyElement: boolean read GetProcessAnyElement write fProcessAnyElement;
     property ProcessAnyAttribute: boolean read GetProcessAnyAttribute write fProcessAnyAttribute; // reserved
+    // [TOrdered], [TMixed] (inherited; mixed is ordered) - changeable at run time, for every object of the class
+    property Ordered: boolean read fOrdered write fOrdered;
+    property Mixed: boolean read fMixed write SetMixed;
   end;
 
   TMetaBasiteHelper = class helper for TMetaBasite
@@ -526,13 +578,13 @@ begin
         if aXmlCursor^ = #0 then
           Exit;
       end
-      else
+      else if not Meta.Xmlite.Mixed then // mixed content: every text run read in ReadTagContents, whitespace included
       begin
         if not TReaderXmlite.MoveToVisualChar(aXmlCursor) then
           Exit;
 
         if Meta.Xmlite.IsTXmlite and (aXmlCursor^ <> '<') then
-          TXmlite(Self).xmlText := TReaderXmlite.ReadUnescapeInPlace(aXmlCursor, '<');
+          TXmlite(Self).fXmlText := TReaderXmlite.ReadUnescapeInPlace(aXmlCursor, '<');
       end;
 
       // malformed content fails the read; the object keeps what was read up to there
@@ -605,8 +657,21 @@ begin
   var lastProperty: TProperty := nil;
   var lastCount: integer := 0;
 
+  // the children's order kept in XmlContent; mixed content's text too
+  var ordered: boolean := Meta.Xmlite.IsTXmlite and Meta.Xmlite.Ordered;
+  var mixed: boolean := ordered and Meta.Xmlite.Mixed;
+
   while not Result do
   begin
+    if mixed then
+    begin // the text up to the next tag, whitespace included - CDATA as text, comments and processing instructions passed
+      var text: string := TReaderXmlite.ReadUnescapeInPlace(aCursor, '<');
+      if aCursor^ = #0 then
+        Exit;
+      if not text.IsEmpty then
+        TXmlite(Self).AddNode(xnkText, text, nil, nil, 0);
+    end;
+
     if not TReaderXmlite.MoveToChar(aCursor, '<') then
       Exit;
 
@@ -648,6 +713,8 @@ begin
         if element.FromXml(aCursor, aXmlns) then
         begin
           TXmlite(Self).XmlAny.Add(element);
+          if ordered then
+            TXmlite(Self).AddNode(xnkElement, '', element, nil, 0);
           Continue;
         end
         else
@@ -679,6 +746,8 @@ begin
         unknown.AfterCount := lastCount;
         unknown.Namespaces := namespaces.ToArray;
         TXmlite(Self).XmlUnknown.Add(unknown);
+        if ordered then
+          TXmlite(Self).AddNode(xnkUnknown, tagFullName, nil, nil, TXmlite(Self).XmlUnknown.Count - 1);
       finally
         namespaces.Free;
       end;
@@ -697,6 +766,8 @@ begin
         ptData:
           begin
             TPropertyData(propertyElement).Value[Self] := TReaderXmlite.ReadTextNodeContents(aCursor);
+            if ordered then
+              TXmlite(Self).AddNode(xnkElement, '', nil, propertyElement, 0);
             if not TReaderXmlite.PassNode(aCursor, tagFullName) then
               Exit;
           end;
@@ -712,6 +783,8 @@ begin
             aCursor := cursorStart;
             var read: boolean := fieldObject.FromXml(aCursor, aXmlns);
             SetPresent(propertyElement); // also when all its values are defaults (<fill/>)
+            if ordered then
+              TXmlite(Self).AddNode(xnkElement, '', fieldObject, propertyElement, 0);
             if not read then
               Exit;
           end;
@@ -726,6 +799,8 @@ begin
             propertyObjectList.ObjectPointer(Self).Add(objectListItem); // owned by the list, also when not read whole
             SetPresent(propertyElement);
             lastCount := propertyObjectList.ObjectPointer(Self).Count;
+            if ordered then
+              TXmlite(Self).AddNode(xnkElement, '', objectListItem, propertyElement, lastCount - 1);
             if not read then
               Exit;
           end;
@@ -735,6 +810,8 @@ begin
             if not TReaderXmlite.PassNode(aCursor, tagFullName) then
               Exit;
             lastCount := TPropertyDataList(propertyElement).Count(Self);
+            if ordered then
+              TXmlite(Self).AddNode(xnkElement, '', nil, propertyElement, lastCount - 1);
           end;
       end;
     end;
@@ -759,6 +836,9 @@ begin
 
   // text of mixed content (OOXML cp:keywords: "q3, plan"): read into XmlText, so written back too
   if Meta.Xmlite.IsTXmlite and not TXmlite(Self).XmlText.IsEmpty then
+    Exit(xttOpenClose);
+
+  if Meta.Xmlite.IsTXmlite and (TXmlite(Self).fXmlContent <> nil) and (TXmlite(Self).fXmlContent.Count > 0) then
     Exit(xttOpenClose);
 
   // the same test as ToXml makes for each child element
@@ -800,11 +880,128 @@ var
       end;
   end;
 
+  // an ordered element's children in XmlContent's order, then the ones not in it in schema order; a node's object is written
+  // only while its property (or XmlAny) holds it - pointers compared, never followed - and once
+  procedure WriteOrdered(aScope: TNamespace);
+  var
+    children: TDictionary<TBasite, TProperty>; // the children now -> their property (nil: XmlAny)
+    valuesWritten: TDictionary<TProperty, TArray<boolean>>;
+
+    procedure WriteChild(aChild: TBasite);
+    begin
+      var childProperty: TProperty;
+      if not children.TryGetValue(aChild, childProperty) then
+        Exit;
+      children.Remove(aChild);
+      if childProperty <> nil then
+        aChild.ToXml(aWriter, elementName(childProperty, aScope), aScope, False)
+      else if aChild.Meta.Xmlite.Namespace = aScope then // as XmlAny below
+        aChild.ToXml(aWriter, aChild.Meta.Xmlite.Name, aScope, False)
+      else
+        aChild.ToXml(aWriter, aChild.Meta.Xmlite.Name, nil, True);
+    end;
+
+    procedure WriteValue(aProperty: TProperty; aIndex: integer);
+    begin
+      var count: integer := 1;
+      if aProperty.PropertyType = ptDataList then
+        count := TPropertyDataList(aProperty).Count(Self)
+      else if not aProperty.Required and not IsPresent(aProperty) then
+        Exit;
+      var written: TArray<boolean>;
+      if not valuesWritten.TryGetValue(aProperty, written) then
+        SetLength(written, count);
+      if (aIndex < 0) or (aIndex >= count) or (aIndex >= Length(written)) or written[aIndex] then
+        Exit;
+      written[aIndex] := True;
+      valuesWritten.AddOrSetValue(aProperty, written);
+      if aProperty.PropertyType = ptDataList then
+        aWriter.AddTextNode(elementName(aProperty, aScope), TPropertyDataList(aProperty).ItemText(Self, aIndex), aProperty)
+      else
+        aWriter.AddTextNode(elementName(aProperty, aScope), TPropertyData(aProperty).Value[Self], aProperty);
+    end;
+
+  begin
+    var unknowns: TList<TXmliteUnknown> := TXmlite(Self).fXmlUnknown;
+    if (unknowns <> nil) and (Length(unknownWritten) <> unknowns.Count) then
+      SetLength(unknownWritten, unknowns.Count);
+
+    children := TDictionary<TBasite, TProperty>.Create;
+    valuesWritten := TDictionary<TProperty, TArray<boolean>>.Create;
+    try
+      for var propertyElement in Meta.Xmlite.Elements.Values do
+        case propertyElement.PropertyType of
+          ptBasite:
+            begin
+              var fieldObject: TBasite := TPropertyBasite(propertyElement).ObjectPointer(Self)^;
+              if (fieldObject <> nil) and (propertyElement.Required or IsPresent(propertyElement)) then
+                children.AddOrSetValue(fieldObject, propertyElement);
+            end;
+          ptBasiteList:
+            begin
+              var list: TBasiteList := TPropertyBasiteList(propertyElement).ObjectPointer(Self)^;
+              if list <> nil then
+                for var item: TBasite in list do
+                  children.AddOrSetValue(item, propertyElement);
+            end;
+        end;
+      if Meta.Xmlite.ProcessAnyElement then
+        for var anyElement: TBasite in TXmlite(Self).XmlAny do
+          children.AddOrSetValue(anyElement, nil);
+
+      for var node: TXmliteNode in TXmlite(Self).fXmlContent do
+        case node.Kind of
+          xnkText:
+            if Meta.Xmlite.Mixed then
+              aWriter.AddTextEscape(node.Text);
+          xnkUnknown:
+            if (unknowns <> nil) and (node.Index >= 0) and (node.Index < unknowns.Count) and not unknownWritten[node.Index] then
+            begin
+              aWriter.AddUnknown(unknowns[node.Index]);
+              unknownWritten[node.Index] := True;
+            end;
+          xnkElement:
+            if node.Element <> nil then
+              WriteChild(node.Element)
+            else if node.ElementProperty <> nil then
+              WriteValue(node.ElementProperty, node.Index);
+        end;
+
+      // added straight to a list after reading: schema order
+      for var propertyElement in Meta.Xmlite.Elements.Values do
+        case propertyElement.PropertyType of
+          ptData:
+            WriteValue(propertyElement, 0);
+          ptDataList:
+            for var i := 0 to TPropertyDataList(propertyElement).Count(Self) - 1 do
+              WriteValue(propertyElement, i);
+          ptBasite:
+            if TPropertyBasite(propertyElement).ObjectPointer(Self)^ <> nil then
+              WriteChild(TPropertyBasite(propertyElement).ObjectPointer(Self)^);
+          ptBasiteList:
+            begin
+              var list: TBasiteList := TPropertyBasiteList(propertyElement).ObjectPointer(Self)^;
+              if list <> nil then
+                for var item: TBasite in list do
+                  WriteChild(item);
+            end;
+        end;
+      if Meta.Xmlite.ProcessAnyElement then
+        for var anyElement: TBasite in TXmlite(Self).XmlAny do
+          WriteChild(anyElement);
+      if unknowns <> nil then
+        for var i := 0 to unknowns.Count - 1 do
+          if not unknownWritten[i] then
+            aWriter.AddUnknown(unknowns[i]);
+    finally
+      valuesWritten.Free;
+      children.Free;
+    end;
+  end;
+
 begin
   if Self = nil then
     Exit;
-
-  aWriter.Pretty := TBasite.Pretty;
 
   if Meta.Xmlite.IsTXmlite then
     TXmlite(Self).DoBeforeSerialization;
@@ -829,70 +1026,92 @@ begin
         aWriter.AddTagText(objectName, Self, aNamespaces, Meta.Xmlite.TextProperty.Value[Self])
       else
       begin
+        // mixed content: no indentation inside - it would become a part of the text
+        var mixed: boolean := Meta.Xmlite.IsTXmlite and Meta.Xmlite.Mixed;
+        var pretty: boolean := aWriter.Pretty;
+        if mixed then
+        begin
+          aWriter.AddIndent;
+          aWriter.Pretty := False;
+        end;
+
         aWriter.AddTagOpen(objectName, Self, aNamespaces);
 
-        if Meta.Xmlite.IsTXmlite and not TXmlite(Self).XmlText.IsEmpty then
-          aWriter.AddXmlEscape(TXmlite(Self).XmlText);
+        if Meta.Xmlite.IsTXmlite and not mixed and not TXmlite(Self).fXmlText.IsEmpty then
+          aWriter.AddXmlEscape(TXmlite(Self).fXmlText);
 
         aWriter.IncLevel;
 
-        WriteUnknown(nil, 0);
-        for var propertyElement in Meta.Xmlite.Elements.Values do
+        if Meta.Xmlite.IsTXmlite and Meta.Xmlite.Ordered and (TXmlite(Self).fXmlContent <> nil) and
+          (TXmlite(Self).fXmlContent.Count > 0) then
+          WriteOrdered(scope)
+        else
         begin
-          case propertyElement.PropertyType of
-            ptData:
-              begin
-                var propertyData: TPropertyData := TPropertyData(propertyElement);
-                if propertyData.Required or IsPresent(propertyData) then
-                  aWriter.AddTextNode(elementName(propertyElement, scope), propertyData.Value[Self], propertyData);
-              end;
-            ptDataList:
-              begin
-                var propertyDataList: TPropertyDataList := TPropertyDataList(propertyElement);
-                for var i := 0 to propertyDataList.Count(Self) - 1 do
+          WriteUnknown(nil, 0);
+          for var propertyElement in Meta.Xmlite.Elements.Values do
+          begin
+            case propertyElement.PropertyType of
+              ptData:
                 begin
-                  aWriter.AddTextNode(elementName(propertyElement, scope), propertyDataList.ItemText(Self, i), propertyDataList);
-                  WriteUnknown(propertyElement, i + 1);
+                  var propertyData: TPropertyData := TPropertyData(propertyElement);
+                  if propertyData.Required or IsPresent(propertyData) then
+                    aWriter.AddTextNode(elementName(propertyElement, scope), propertyData.Value[Self], propertyData);
                 end;
-              end;
-            ptBasite:
-              begin
-                // written when present or required - its own required values do not make it present (<drawing r:id=""/>)
-                var propertyBasite: TPropertyBasite := TPropertyBasite(propertyElement);
-                var fieldObject: TBasite := propertyBasite.ObjectPointer(Self)^;
-                if (fieldObject <> nil) and (propertyBasite.Required or IsPresent(propertyBasite)) then
-                  fieldObject.ToXml(aWriter, elementName(propertyElement, scope), scope, False);
-              end;
-            ptBasiteList:
-              begin
-                // list items are always written - an item with only defaults too (<fill/>: Excel refers to it by index)
-                var propertyBasiteList: TPropertyBasiteList := TPropertyBasiteList(propertyElement);
-                var list: TBasiteList := propertyBasiteList.ObjectPointer(Self)^;
-                if list <> nil then
-                  for var i := 0 to list.Count - 1 do
+              ptDataList:
+                begin
+                  var propertyDataList: TPropertyDataList := TPropertyDataList(propertyElement);
+                  for var i := 0 to propertyDataList.Count(Self) - 1 do
                   begin
-                    list[i].ToXml(aWriter, elementName(propertyElement, scope), scope, False);
+                    aWriter.AddTextNode(elementName(propertyElement, scope), propertyDataList.ItemText(Self, i), propertyDataList);
                     WriteUnknown(propertyElement, i + 1);
                   end;
-              end;
+                end;
+              ptBasite:
+                begin
+                  // written when present or required - its own required values do not make it present (<drawing r:id=""/>)
+                  var propertyBasite: TPropertyBasite := TPropertyBasite(propertyElement);
+                  var fieldObject: TBasite := propertyBasite.ObjectPointer(Self)^;
+                  if (fieldObject <> nil) and (propertyBasite.Required or IsPresent(propertyBasite)) then
+                    fieldObject.ToXml(aWriter, elementName(propertyElement, scope), scope, False);
+                end;
+              ptBasiteList:
+                begin
+                  // list items are always written - an item with only defaults too (<fill/>: Excel refers to it by index)
+                  var propertyBasiteList: TPropertyBasiteList := TPropertyBasiteList(propertyElement);
+                  var list: TBasiteList := propertyBasiteList.ObjectPointer(Self)^;
+                  if list <> nil then
+                    for var i := 0 to list.Count - 1 do
+                    begin
+                      list[i].ToXml(aWriter, elementName(propertyElement, scope), scope, False);
+                      WriteUnknown(propertyElement, i + 1);
+                    end;
+                end;
+            end;
+            WriteUnknown(propertyElement, -1); // after it, or after the items it has now
           end;
-          WriteUnknown(propertyElement, -1); // after it, or after the items it has now
-        end;
 
-        if Meta.Xmlite.IsTXmlite and Meta.Xmlite.ProcessAnyElement then
-          for var anyElement: TBasite in TXmlite(Self).XmlAny do
-            if anyElement.Meta.Xmlite.Namespace = scope then
-              // the namespace in scope (wsse:UsernameToken in wsse:Security): unprefixed, declared by an ancestor
-              anyElement.ToXml(aWriter, anyElement.Meta.Xmlite.Name, scope, False)
-            else
-              // another namespace: declares it as its default one - its unprefixed members then belong to it
-              // (e.g. <Add xmlns="http://tempuri.org/"><intA>... inside soap:Body)
-              anyElement.ToXml(aWriter, anyElement.Meta.Xmlite.Name, nil, True);
+          if Meta.Xmlite.IsTXmlite and Meta.Xmlite.ProcessAnyElement then
+            for var anyElement: TBasite in TXmlite(Self).XmlAny do
+              if anyElement.Meta.Xmlite.Namespace = scope then
+                // the namespace in scope (wsse:UsernameToken in wsse:Security): unprefixed, declared by an ancestor
+                anyElement.ToXml(aWriter, anyElement.Meta.Xmlite.Name, scope, False)
+              else
+                // another namespace: declares it as its default one - its unprefixed members then belong to it
+                // (e.g. <Add xmlns="http://tempuri.org/"><intA>... inside soap:Body)
+                anyElement.ToXml(aWriter, anyElement.Meta.Xmlite.Name, nil, True);
+
+        end;
 
         aWriter.DecLevel;
 
         aWriter.AddIndent;
         aWriter.AddTagClose(objectName);
+
+        if mixed then
+        begin
+          aWriter.Pretty := pretty;
+          aWriter.FinishLine;
+        end;
       end;
   end;
 
@@ -907,6 +1126,7 @@ procedure TBasiteHelper.ToXml(aStream: TStream; const aName: string; aXmlHeader:
 begin
   var writer: TWriterXmlite := TWriterXmlite.Create(aStream);
   try
+    writer.Pretty := TBasite.Pretty;
     ToXml(writer, aName, nil, True, aXmlHeader);
   finally
     writer.Free;
@@ -917,6 +1137,7 @@ function TBasiteHelper.ToXml(const aName: string; aXmlHeader: boolean): string;
 begin
   var writer: TWriterXmlite := TWriterXmlite.Create;
   try
+    writer.Pretty := TBasite.Pretty;
     ToXml(writer, aName, nil, True, aXmlHeader);
     Result := writer.Text;
   finally
@@ -1147,6 +1368,28 @@ begin
   AddTagClose(aName);
 end;
 
+procedure TWriterXmlite.AddTextEscape(const aString: string);
+begin
+  // only what text needs escaped; a carriage return as a reference - a reader would turn it into a line feed
+  var start: integer := 1;
+  for var i := 1 to aString.Length do
+    case aString[i] of
+      '<', '>', '&', #13:
+        begin
+          Write(Copy(aString, start, i - start));
+          case aString[i] of
+            '<': Write('&lt;');
+            '>': Write('&gt;');
+            '&': Write('&amp;');
+          else
+            Write('&#x0D;');
+          end;
+          start := i + 1;
+        end;
+    end;
+  Write(Copy(aString, start, MaxInt));
+end;
+
 procedure TWriterXmlite.AddXmlEscape(const aString: string);
 
   function IsHighSurrogate(aChar: PChar): boolean; inline;
@@ -1246,6 +1489,7 @@ end;
 
 procedure TXmlite.Deinitialize;
 begin
+  fXmlContent.Free;
   fXmlUnknown.Free;
   fXmlAny.Free;
   fXmlns.Free;
@@ -1289,6 +1533,8 @@ begin
   fXmlAttributeNamespaces.Clear;
   if fXmlUnknown <> nil then
     fXmlUnknown.Clear;
+  if fXmlContent <> nil then
+    fXmlContent.Clear;
 end;
 
 function TXmlite.GetXmlUnknown: TList<TXmliteUnknown>;
@@ -1298,17 +1544,282 @@ begin
   Result := fXmlUnknown;
 end;
 
+function TXmlite.GetXmlContent: TList<TXmliteNode>;
+begin
+  if fXmlContent = nil then
+    fXmlContent := TList<TXmliteNode>.Create;
+  Result := fXmlContent;
+end;
+
+procedure TXmlite.AddNode(aKind: TXmliteNodeKind; const aText: string; aElement: TBasite; aProperty: TProperty; aIndex: integer);
+begin
+  var content: TList<TXmliteNode> := XmlContent;
+  if (aKind = xnkText) and (content.Count > 0) and (content.Last.Kind = xnkText) then
+  begin
+    var node: TXmliteNode := content.Last;
+    node.Text := node.Text + aText;
+    content[content.Count - 1] := node;
+    Exit;
+  end;
+
+  var node: TXmliteNode;
+  node.Kind := aKind;
+  node.Text := aText;
+  node.Element := aElement;
+  node.ElementProperty := aProperty;
+  node.Index := aIndex;
+  content.Add(node);
+end;
+
+function TXmlite.GetXmlText: string;
+begin
+  if not Meta.Xmlite.Mixed then
+    Exit(fXmlText);
+  Result := '';
+  if (fXmlContent <> nil) and (fXmlContent.Count > 0) and (fXmlContent[0].Kind = xnkText) then
+    Result := fXmlContent[0].Text;
+end;
+
+procedure TXmlite.SetXmlText(const aValue: string);
+begin
+  if not Meta.Xmlite.Mixed then
+  begin
+    fXmlText := aValue;
+    Exit;
+  end;
+
+  // the leading text node: replaced, inserted before the first child, or removed ('')
+  var content: TList<TXmliteNode> := XmlContent;
+  if (content.Count > 0) and (content[0].Kind = xnkText) then
+    if aValue.IsEmpty then
+      content.Delete(0)
+    else
+    begin
+      var node: TXmliteNode := content[0];
+      node.Text := aValue;
+      content[0] := node;
+    end
+  else if not aValue.IsEmpty then
+  begin
+    var node: TXmliteNode := Default(TXmliteNode);
+    node.Kind := xnkText;
+    node.Text := aValue;
+    content.Insert(0, node);
+  end;
+end;
+
+// the element property for children of aClass (aName: the one of that name); an exact class first, then a class it derives from
+function TXmlite.PropertyOfClass(aClass: TClass; const aName: string): TProperty;
+begin
+  Result := nil;
+  for var exact: boolean in [True, False] do
+  begin
+    var found: integer := 0;
+    for var propertyElement: TProperty in Meta.Xmlite.Elements.Values do
+    begin
+      var propertyClass: TClass := nil;
+      case propertyElement.PropertyType of
+        ptBasite:
+          propertyClass := TPropertyBasite(propertyElement).Meta.ClassItself;
+        ptBasiteList:
+          propertyClass := TPropertyBasiteList(propertyElement).Meta.ItemMeta.ClassItself;
+      end;
+      if (propertyClass = nil) or (not aName.IsEmpty and not SameText(propertyElement.Name, aName)) then
+        Continue;
+      if (exact and (propertyClass = aClass)) or (not exact and aClass.InheritsFrom(propertyClass)) then
+      begin
+        Result := propertyElement;
+        Inc(found);
+      end;
+    end;
+    if found > 1 then
+      raise EArgumentException.CreateFmt('Add: %s has more than one property for %s - name the property',
+        [ClassName, aClass.ClassName]);
+    if found = 1 then
+      Exit;
+  end;
+  raise EArgumentException.CreateFmt('Add: %s has no property for %s', [ClassName, aClass.ClassName]);
+end;
+
+function TXmlite.AddElement(aClass: TClass; const aProperty: string): TBasite;
+begin
+  var propertyElement: TProperty := PropertyOfClass(aClass, aProperty);
+  var index: integer := 0;
+  if propertyElement.PropertyType = ptBasiteList then
+  begin
+    var propertyList: TPropertyBasiteList := TPropertyBasiteList(propertyElement);
+    if propertyList.ObjectPointer(Self)^ = nil then
+      propertyList.ObjectPointer(Self)^ := propertyList.Meta.CreateList;
+    Result := TBasiteClass(aClass).Create;
+    propertyList.ObjectPointer(Self)^.Add(Result);
+    index := propertyList.ObjectPointer(Self)^.Count - 1;
+  end
+  else
+  begin // a single object: the one there (pre-created or lazy) - created when missing
+    var propertyObject: TPropertyBasite := TPropertyBasite(propertyElement);
+    if propertyObject.ObjectPointer(Self)^ = nil then
+      propertyObject.ObjectPointer(Self)^ := TBasiteClass(aClass).Create;
+    Result := propertyObject.ObjectPointer(Self)^;
+  end;
+  SetPresent(propertyElement);
+  if Meta.Xmlite.Ordered then
+    AddNode(xnkElement, '', Result, propertyElement, index);
+end;
+
+function TXmlite.Add<T>: T;
+begin
+  Result := T(AddElement(GetTypeData(TypeInfo(T))^.ClassType, ''));
+end;
+
+function TXmlite.Add<T>(const aProperty: string): T;
+begin
+  Result := T(AddElement(GetTypeData(TypeInfo(T))^.ClassType, aProperty));
+end;
+
+procedure TXmlite.AddText(const aText: string);
+begin
+  if aText.IsEmpty then
+    Exit;
+  if Meta.Xmlite.Mixed then
+    AddNode(xnkText, aText, nil, nil, 0)
+  else
+    fXmlText := fXmlText + aText;
+end;
+
+procedure TXmlite.Remove(aElement: TBasite);
+begin
+  if aElement = nil then
+    Exit;
+
+  if fXmlContent <> nil then
+    for var i := fXmlContent.Count - 1 downto 0 do
+      if fXmlContent[i].Element = aElement then
+        fXmlContent.Delete(i);
+
+  if fXmlAny.Remove(aElement) >= 0 then
+    Exit;
+  for var propertyElement: TProperty in Meta.Xmlite.Elements.Values do
+    case propertyElement.PropertyType of
+      ptBasite:
+        if TPropertyBasite(propertyElement).ObjectPointer(Self)^ = aElement then
+        begin
+          Clear(propertyElement);
+          Exit;
+        end;
+      ptBasiteList:
+        begin
+          var list: TBasiteList := TPropertyBasiteList(propertyElement).ObjectPointer(Self)^;
+          if (list <> nil) and (list.Remove(aElement) >= 0) then
+          begin
+            if list.Count = 0 then
+              Clear(propertyElement);
+            Exit;
+          end;
+        end;
+    end;
+end;
+
+function TXmlite.InnerText: string;
+
+  function TextOf(aChild: TBasite): string;
+  begin
+    if (aChild <> nil) and aChild.InheritsFrom(TXmlite) then
+      Result := TXmlite(aChild).InnerText
+    else
+      Result := '';
+  end;
+
+begin
+  if Meta.Xmlite.Ordered and (fXmlContent <> nil) and (fXmlContent.Count > 0) then
+  begin
+    Result := '';
+    for var node: TXmliteNode in fXmlContent do
+      case node.Kind of
+        xnkText:
+          Result := Result + node.Text;
+        xnkElement:
+          if node.Element <> nil then
+            Result := Result + TextOf(node.Element)
+          else if node.ElementProperty = nil then
+            Continue
+          else if node.ElementProperty.PropertyType = ptDataList then
+          begin
+            if node.Index < TPropertyDataList(node.ElementProperty).Count(Self) then // the list may have changed
+              Result := Result + TPropertyDataList(node.ElementProperty).ItemText(Self, node.Index);
+          end
+          else if node.ElementProperty.PropertyType = ptData then
+            Result := Result + TPropertyData(node.ElementProperty).Value[Self];
+      end;
+    Exit;
+  end;
+
+  // not ordered: XmlText, the text value, the children in schema order
+  Result := fXmlText;
+  if Assigned(Meta.Xmlite.TextProperty) then
+    Result := Result + Meta.Xmlite.TextProperty.Value[Self];
+  for var propertyElement: TProperty in Meta.Xmlite.Elements.Values do
+    case propertyElement.PropertyType of
+      ptData:
+        if IsPresent(propertyElement) then
+          Result := Result + TPropertyData(propertyElement).Value[Self];
+      ptDataList:
+        for var i := 0 to TPropertyDataList(propertyElement).Count(Self) - 1 do
+          Result := Result + TPropertyDataList(propertyElement).ItemText(Self, i);
+      ptBasite:
+        if IsPresent(propertyElement) then
+          Result := Result + TextOf(TPropertyBasite(propertyElement).ObjectPointer(Self)^);
+      ptBasiteList:
+        begin
+          var list: TBasiteList := TPropertyBasiteList(propertyElement).ObjectPointer(Self)^;
+          if list <> nil then
+            for var item: TBasite in list do
+              Result := Result + TextOf(item);
+        end;
+    end;
+end;
+
 function TXmlite.IsEmptyOrDefault: boolean;
 begin
   // content kept in xs:any or as not described attributes is content as well
   Result := inherited and fXmlText.IsEmpty and (fXmlAny.Count = 0) and (fXmlAttributes.Count = 0) and
-    ((fXmlUnknown = nil) or (fXmlUnknown.Count = 0));
+    ((fXmlUnknown = nil) or (fXmlUnknown.Count = 0)) and ((fXmlContent = nil) or (fXmlContent.Count = 0));
 end;
 
 function TXmlite.HasContent: boolean;
 begin
   Result := not fXmlText.IsEmpty or (fXmlAny.Count > 0) or (fXmlAttributes.Count > 0) or
-    ((fXmlUnknown <> nil) and (fXmlUnknown.Count > 0)) or inherited;
+    ((fXmlUnknown <> nil) and (fXmlUnknown.Count > 0)) or ((fXmlContent <> nil) and (fXmlContent.Count > 0)) or inherited;
+end;
+
+{ TXmliteNode }
+
+function TXmliteNode.IsText: boolean;
+begin
+  Result := Kind = xnkText;
+end;
+
+function TXmliteNode.IsElement<T>: boolean;
+begin
+  Result := (Kind = xnkElement) and (Element is T);
+end;
+
+function TXmliteNode.ElementAs<T>: T;
+begin
+  Result := Element as T;
+end;
+
+function TXmliteNode.Name: string;
+begin
+  Result := '';
+  case Kind of
+    xnkElement:
+      if ElementProperty <> nil then
+        Result := ElementProperty.Xmlite.Name
+      else if Element <> nil then
+        Result := Element.Meta.Xmlite.Name;
+    xnkUnknown:
+      Result := Text;
+  end;
 end;
 
 procedure TXmlite.SetXsiType(aType: TClass);
@@ -1626,6 +2137,24 @@ begin
   end;
 end;
 
+// [TOrdered] and [TMixed] on the class or one of its ancestors (an XHTML <b> is a mixed Inline) - RTTI, not the ancestors'
+// extensions: those may not exist yet while classes register
+procedure ReadOrderAttributes(aClass: TClass; out aOrdered, aMixed: boolean);
+begin
+  aOrdered := False;
+  aMixed := False;
+  var someClass: TClass := aClass;
+  while (someClass <> nil) and someClass.InheritsFrom(TXmlite) and not aMixed do
+  begin
+    for var attribute: TCustomAttribute in TMetaBank.RttiContext.GetType(someClass.ClassInfo).GetAttributes do
+      if attribute.ClassType = TOrderedAttribute then
+        aOrdered := True
+      else if attribute.ClassType = TMixedAttribute then
+        aMixed := True;
+    someClass := someClass.ClassParent;
+  end;
+end;
+
 { TMetaBasiteXmlite }
 
 constructor TMetaBasiteXmlite.Create(aMeta: TMetaBasite);
@@ -1665,6 +2194,18 @@ begin
     fProcessAnyElement := HasAnyElementAttribute(aMeta.ClassItself.ClassParent);
   if not fProcessAnyElement then
     fProcessAnyElement := HasAnyElementAttribute(aMeta.ClassItself, False);
+
+  var hasOrdered, hasMixed: boolean;
+  ReadOrderAttributes(aMeta.ClassItself, hasOrdered, hasMixed);
+  fOrdered := hasOrdered;
+  Mixed := hasMixed;
+end;
+
+procedure TMetaBasiteXmlite.SetMixed(aValue: boolean);
+begin
+  fMixed := aValue;
+  if aValue then
+    fOrdered := True;
 end;
 
 destructor TMetaBasiteXmlite.Destroy;

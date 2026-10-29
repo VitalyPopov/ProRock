@@ -68,6 +68,7 @@ type
   TDefinitionsEList = class;
 
   [TXmliteAnyElement]
+  [TMixed]
   TTDocumentationCT = class(TXmliteComplexType);
 
   TTDocumentedCT = class(TXmliteComplexType)
@@ -82,6 +83,7 @@ type
   [TXmliteAnyElement]
   TTExtensibleDocumentedCT = class(TTDocumentedCT);
 
+  [TOrdered]
   TTDefinitionsCT = class(TTExtensibleDocumentedCT)
   private
     fTargetNamespace: ProRock.Xmlite.Schema.Base.TAnyURIST;

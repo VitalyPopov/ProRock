@@ -137,6 +137,46 @@ Kept content is never written without being checked: an element whose tags are n
 undeclared prefix, fails the read - as any malformed XML does: `FromXml` returns `False`, and the object holds what was read
 up to there.
 
+## Mixed content and element order
+
+```xml
+<p><b>status</b>: final <span>(Details)</span></p>
+```
+
+Text between child elements, as in HTML - or a FHIR resource's narrative, which is XHTML. A mixed type (`mixed="true"`) gets
+`[TMixed]`, and its object keeps the text runs and its children in document order in `XmlContent`. A repeating choice
+(`<font>` in Excel styles: `<sz/><color/><name/>` in any order) gets `[TOrdered]`: the same order, without text. The typed
+lists stay as they are - `p.B[0]` is the first `<b>` - and `XmlContent` refers to the same objects:
+
+```pascal
+Writeln(obs.Text.&Div.InnerText);   // all the text, children included, in document order
+
+for var node in p.XmlContent do
+  if node.IsText then
+    Write(node.Text)
+  else if node.IsElement<TAE> then
+    Write('[', node.Element.InnerText, '](', node.ElementAs<TAE>.Href, ')')
+  else
+    Write(node.Element.InnerText);   // node.Name: the element's name - b, span
+```
+
+Built in code, in the order of the calls:
+
+```pascal
+var p := obs.Text.&Div.Add<TPE>;   // added to Div.P and to the order
+p.Add<TBE>.AddText('status');
+p.AddText(': final');
+// <div xmlns="http://www.w3.org/1999/xhtml"><p><b>status</b>: final</p></div>
+```
+
+- `XmlText` of a mixed element is its leading text (`cp:keywords`: the whole text); setting it replaces that text.
+- Children added straight to a typed list are written after the ones in `XmlContent`, in the schema's order.
+- Remove a child with `Remove(child)`: it leaves both its list and `XmlContent`. A child deleted through its list only is
+  no longer written, but its node in `XmlContent` refers to a freed object.
+- Inside a mixed element the writer writes no indentation (`Pretty`): it would become a part of the text.
+- `Ordered` and `Mixed` are settings of the class's metadata (`TPE.Meta.Xmlite.Mixed`) - changeable at run time, for every
+  object of the class. Units generated before 1.6 have no `[TMixed]`: regenerate them.
+
 ## Hand-written classes
 
 Without a schema, write the classes yourself. A published property is an attribute by default; `[TXmliteElement]` makes it a

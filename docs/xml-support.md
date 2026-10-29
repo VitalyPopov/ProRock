@@ -26,7 +26,7 @@ documents; it does not validate them against their schema.
 | Attributes the schema does not know | supported | kept and written back |
 | Elements the schema does not know | supported | kept as their exact text and written back where they were - Office's own extensions (`extLst`, `mc:AlternateContent`) survive a round trip ([Xmlite](xmlite.md#content-the-schema-does-not-describe)) |
 | Malformed XML | supported | the read fails: `FromXml` returns `False` - tags not closed or crossed, an undeclared prefix in kept content |
-| Mixed content | partial | text-only mixed content is plain text (`XmlValue`); with child elements (`<p>Hello <b>world</b>!</p>`) only the text before the first child is kept |
+| Mixed content | supported | text runs and child elements in document order (`XmlContent`, `InnerText`) - a FHIR narrative round-trips; text-only mixed content is plain text (`XmlValue`) ([Xmlite](xmlite.md#mixed-content-and-element-order)) |
 
 ## Structures
 
@@ -36,7 +36,7 @@ documents; it does not validate them against their schema.
 | Choices | supported | members created on first access; `Chosen` tells which is there ([Large documents](large-documents.md)) |
 | `xs:all` | supported | |
 | Repeating elements | supported | typed lists - of objects, or of plain values: `Authors.Author.Add('Ann')` |
-| A repeating choice in mixed order | partial | `<a/><b/><a/>`: every value is kept, each member in its own list; their order across members is not |
+| A repeating choice in mixed order | supported | `<a/><b/><a/>`: each member in its own list, their order across members in `XmlContent` (`[TOrdered]`) |
 | Groups, attribute groups, references | supported | a reference to an element of a simple type is a plain value |
 | Anonymous (inline) types | supported | |
 | Presence: absent vs. default | supported | `Present`, `SetPresent`, `Clear` ([Xmlite](xmlite.md#absent-or-default-presence)) |

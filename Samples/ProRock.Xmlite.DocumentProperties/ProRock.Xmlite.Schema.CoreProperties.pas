@@ -84,6 +84,7 @@ type
     property Version: ProRock.Xmlite.Schema.Base.TStringST read fVersion write fVersion;
   end;
 
+  [TMixed]
   [TName('CT_Keywords')]
   TCTKeywordsCT = class(TXmliteComplexType)
   private

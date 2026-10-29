@@ -151,6 +151,7 @@ type
   [TName('CT_Null')]
   TCTNullCT = class(TXmliteComplexType);
 
+  [TOrdered]
   [TNaming(TNaming.nTitleCase)]
   [TName('CT_Vector')]
   TCTVectorCT = class(TXmliteComplexType)
@@ -210,6 +211,7 @@ type
     property Clsid: TSTGuidSTList read fClsid;
   end;
 
+  [TOrdered]
   [TNaming(TNaming.nTitleCase)]
   [TName('CT_Array')]
   TCTArrayCT = class(TXmliteComplexType)

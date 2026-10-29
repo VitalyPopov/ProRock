@@ -20,6 +20,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   getter has no address; use the name forms (`IsPresent('patient')`)
 - The first access to a choice member creates it: reading one object from several threads at once is not safe for
   untouched choice members
+- `XmlText` of a mixed element is its leading text node: whitespace before the first child is kept, and setting it replaces
+  that text. Inside a mixed element the writer writes no indentation - it would become a part of the text
 
 ### Added
 - Content the schema does not describe is kept: elements without a property are kept as their exact text (`XmlUnknown`) and
@@ -41,6 +43,12 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   a value list when it repeats - instead of an element class without a place for its text
 - The DocumentProperties sample shows the application's properties (`docProps/app.xml`): the application and the titles of
   the parts, grouped by heading - "Worksheets: Sales, Costs" - read as a value list of `vt:lpstr`
+- Mixed content: text between child elements (`<p><b>status</b>: final</p>`, a FHIR narrative's XHTML) is kept with the
+  children in document order in `XmlContent` and written back as it was. A mixed type gets `[TMixed]`; a repeating choice
+  gets `[TOrdered]` - its members' order is kept too (an Excel `<font>`). The typed lists stay as they are; `XmlContent`
+  refers to their objects. Reading: `InnerText`, a node's `IsText`, `IsElement<T>`, `ElementAs<T>`, `Name`; building:
+  `Add<T>` (the list by the class, in order), `AddText`, `Remove`. `Ordered` and `Mixed` are settings of the class's
+  metadata, changeable at run time. Regenerate your units to get it
 
 - Docs: an XML support page - what of XML and XML Schema works, in part, or not yet - and Large documents (choices)
 

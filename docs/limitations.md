@@ -8,8 +8,8 @@ using it. Coverage grows through real-world schemas. If yours doesn't generate o
 
 A document read and written back keeps what its schema describes: values equal to their default, objects with only
 defaults, absent values stay absent, enumeration texts and element order as in the schema
-([presence](xmlite.md#absent-or-default-presence)), and the elements the schema does not describe. Mixed content is not kept
-whole yet ([XML support](xml-support.md#the-document)).
+([presence](xmlite.md#absent-or-default-presence)), the elements the schema does not describe, and mixed content with its text
+and order ([mixed content](xmlite.md#mixed-content-and-element-order)).
 
 A value set in code that equals its default is written only when marked present (`SetPresent`) - see
 [presence](xmlite.md#absent-or-default-presence).

@@ -83,11 +83,10 @@ client certificates and more.
 ## Known limitations and notes
 
 Coverage grows through real-world schemas. Reading and writing back are exact for what a schema describes, also for large
-schemas: FHIR R4 and the OOXML SpreadsheetML/DrawingML schemas generate units that compile and round-trip. Not covered yet:
-unknown elements (Office's own extensions) are dropped, lists of plain values (a repeating string element) do not generate,
-mixed content with child elements is kept only partly, elements standing in for their substitution group head; facets are not
-validated - the next items on the [ROADMAP](ROADMAP.md). The full list, with notes on decimals, string types and server error texts:
-[Limitations and notes](https://prorock.rocks/limitations/).
+schemas: FHIR R4 and the OOXML SpreadsheetML/DrawingML schemas generate units that compile and round-trip - Office's own
+extensions and FHIR's XHTML narratives included. Not covered yet: elements standing in for their substitution group head;
+facets are not validated - the next items on the [ROADMAP](ROADMAP.md). The full list, with notes on decimals, string types
+and server error texts: [Limitations and notes](https://prorock.rocks/limitations/).
 
 ## Development
 
