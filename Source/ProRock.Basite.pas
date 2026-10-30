@@ -606,6 +606,41 @@ begin
   end;
 end;
 
+// the shortest text that reads back to the same value: 0.1 stays 0.1, 0.79998168889431442 keeps its 17 digits
+// (FloatToStr stops at 15 - a different Double)
+function FloatText(aValue: Extended; aFloatType: TFloatType): string;
+begin
+  var precision, maxPrecision: integer;
+  case aFloatType of
+    ftSingle:
+      begin
+        precision := 7;
+        maxPrecision := 9;
+      end;
+    ftDouble:
+      begin
+        precision := 15;
+        maxPrecision := 17;
+      end;
+  else
+    Exit(FloatToStr(aValue, FormatSettings.Invariant));
+  end;
+  if IsNan(aValue) or IsInfinite(aValue) then
+    Exit(FloatToStr(aValue, FormatSettings.Invariant));
+
+  while True do
+  begin
+    Result := FloatToStrF(aValue, ffGeneral, precision, 0, FormatSettings.Invariant);
+    if precision >= maxPrecision then
+      Exit;
+    var readBack: Extended := StrToFloat(Result, FormatSettings.Invariant);
+    if ((aFloatType = ftSingle) and (Single(readBack) = Single(aValue))) or
+      ((aFloatType = ftDouble) and (Double(readBack) = Double(aValue))) then
+      Exit;
+    Inc(precision);
+  end;
+end;
+
 { TChoiceAttribute }
 
 constructor TChoiceAttribute.Create(const aGroup: string);
@@ -1286,10 +1321,7 @@ begin
       begin
         var floatValue: Extended := ReadFloat(aObject, fieldData);
         if not TryGetAliasForValue(Meta.ValuesAliases, floatValue, Result) then
-          if Meta.fFloatType = ftSingle then // Single digits only: 0.1 stays 0.1, not 0.100000001490116
-            Result := FloatToStrF(floatValue, ffGeneral, 7, 0, FormatSettings.Invariant)
-          else
-            Result := FloatToStr(floatValue, FormatSettings.Invariant);
+          Result := FloatText(floatValue, Meta.fFloatType);
       end;
     tkUString:
       begin
@@ -2031,10 +2063,7 @@ begin
           floatValue := PExtended(aData)^;
         end;
         if not Alias(floatValue, Result) then
-          if fFloatType = ftSingle then // Single digits only: 0.1 stays 0.1, not 0.100000001490116
-            Result := FloatToStrF(floatValue, ffGeneral, 7, 0, FormatSettings.Invariant)
-          else
-            Result := FloatToStr(floatValue, FormatSettings.Invariant);
+          Result := FloatText(floatValue, fFloatType);
       end;
     tkUString:
       if not Alias(PUnicodeString(aData)^, Result) then

@@ -8,9 +8,7 @@ program ProRock.Xmlite.FhirSample;
 // (the Patient and Observation examples of the specification) opens by default.
 // Compiling the FHIR unit takes about a minute; the program starts in about a third of a second.
 //
-// The schemas: Copyright (c) 2011+, HL7, Inc. - the notice is in fhir-single.xsd and THIRD-PARTY-NOTICES.md. HL7, FHIR
-// and the FHIR [FLAME DESIGN] are the registered trademarks of Health Level Seven International, and their use does not
-// constitute endorsement by HL7.
+// The schemas: Copyright (c) 2011+, HL7, Inc. - the notice is in fhir-single.xsd and THIRD-PARTY-NOTICES.md.
 
 uses
   Vcl.Forms,

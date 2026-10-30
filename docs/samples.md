@@ -72,9 +72,6 @@ the class metadata.
 
 Compiling the FHIR unit takes about a minute; the program starts in about a third of a second.
 
-HL7, FHIR and the FHIR [FLAME DESIGN] are the registered trademarks of Health Level Seven International, and their use
-does not constitute endorsement by HL7.
-
 ## Office document properties
 
 [`ProRock.Xmlite.DocumentProperties`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Xmlite.DocumentProperties)
