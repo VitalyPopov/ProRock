@@ -54,6 +54,12 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   `Add<T>` (the list by the class, in order), `AddText`, `Remove`. `Ordered` and `Mixed` are settings of the class's
   metadata, changeable at run time. Regenerate your units to get it
 
+- The spreadsheet sample: an Excel workbook read into units generated from the SpreadsheetML schemas - sheets, dates,
+  formulas and tables shown, cells edited, the workbook written back with everything Excel put in it; Excel opens it and
+  recalculates
+- The FHIR sample: HL7® FHIR® R4 resources read into units generated from the standard's schemas (146 resource types,
+  38,000 lines) - a Bundle listed with each Observation's value (`ValueChosen`), the narrative as text, written back as it
+  was; a Bundle of 1,000 resources read and written in about a third of a second each
 - Docs: an XML support page - what of XML and XML Schema works, in part, or not yet - and Large documents (choices)
 
 ### Removed

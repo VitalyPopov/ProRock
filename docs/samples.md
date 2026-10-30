@@ -6,6 +6,8 @@ running the generator.
 
 | Sample | What it shows |
 |---|---|
+| [`ProRock.Xmlite.Spreadsheet`](#excel-workbook) | an Excel workbook from the official SpreadsheetML schemas (22,000 generated lines): sheets, dates, formulas and tables shown, cells edited, written back with everything Excel put in it |
+| [`ProRock.Xmlite.Fhir`](#fhir-resources) | HL7® FHIR® R4 resources from the official schemas (38,000 generated lines): a Bundle listed with each Observation's value, the narrative as text, written back as it was; a Bundle of 1,000 resources timed |
 | [`ProRock.Xmlite.DocumentProperties`](#office-document-properties) | the properties of any Office document: open, edit, save; the sheet or slide titles |
 | [`ProRock.Soapite.CheckVatService`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Soapite.CheckVatService) | EU VIES VAT number validation through the generated `TCheckVatService`, with live SOAP Fault handling; `-name:` compares the trader's name too (`checkVatApprox`) and tells an absent match code from VALID with `Present` |
 | [`ProRock.Soapite.WsSecurity`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Soapite.WsSecurity) | a WS-Security UsernameToken (PasswordDigest, Nonce, Timestamp) in the SOAP header, from units generated from the OASIS schemas; offline, or `-live`. Other header blocks work the same way, e.g. the ebMS 3.0 `eb:Messaging` of AS4 |
@@ -13,6 +15,65 @@ running the generator.
 | [`ProRock.Soapite.Calculator`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Soapite.Calculator) | a generated client calling a public calculator service (`-soap12` and `-xml` switches) |
 | [`ProRock.Xmlite.Namespaces`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Xmlite.Namespaces) | a generated metamodel from `order.xsd`: parsing, enums, serialization, round trip |
 | [`ProRock.Xmlite.Basic`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Xmlite.Basic) | hand-written models, basic parsing and serialization |
+
+## Excel workbook
+
+[`ProRock.Xmlite.Spreadsheet`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Xmlite.Spreadsheet) opens an
+Excel workbook (.xlsx) into the units ProRocket generates from the SpreadsheetML schemas of ECMA-376: the workbook, its
+sheets, shared strings, styles and tables, found as Office finds them - through the package's relationships. Each sheet is
+shown in a grid: text, numbers, dates (from the cell's style), the formula of the selected cell; the tables with their
+columns. Cells without a formula can be edited. Save writes every part it read back from its objects - with everything
+Excel put in them that the schema does not describe (`extLst`, revision ids, `mc:Ignorable`) - and copies every other part
+as it is. Excel opens the saved file and recalculates its formulas. `demo.xlsx` is an invoice saved by Excel: a Table with
+a calculated column and a total row (`SUBTOTAL(109,Table1[Amount])`).
+
+```pascal
+// a cell's text: a shared string by its index, a number as written, a date from its style
+case cell.T of
+  stctS: Result := SharedString(StrToIntDef(cell.V, -1));       // <c r="B3" t="s"><v>4</v></c>
+  stctN: Result := cell.V;                                       // <c r="C6"><v>4</v></c>
+end;
+if cell.F.XmlValue <> '' then                                    // <f>C6*D6</f>
+  Writeln('=', cell.F.XmlValue);
+
+// an edit: Excel recalculates the totals when it opens the file
+cell.V := '5';
+workbook.CalcPr.FullCalcOnLoad := True;
+```
+
+## FHIR resources
+
+[`ProRock.Xmlite.Fhir`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Xmlite.Fhir) reads HL7® FHIR® R4
+XML - a Bundle or a single resource - into the units ProRocket generates from the standard's schemas (`fhir-single.xsd`,
+`fhir-xhtml.xsd`): 146 resource types, their data types and the narrative's XHTML, 38,000 lines. It lists each resource
+with what it is, its value and when; the selected one's narrative is shown as text. Save as writes the file back as it
+was read, and Speed test reads and writes a Bundle of 1,000 resources made of the same entries. `bundle.xml` holds the
+Patient and Observation examples of the specification.
+
+The resource of a Bundle entry is a choice of all 146 resource types; an Observation's `value[x]` is one of eleven.
+Only the member in the document is created, and the typed shortcut gives it:
+
+```pascal
+for var entry in bundle.Entry do
+begin
+  var resource := entry.Resource.Chosen;               // the one resource in this entry
+  if (resource <> nil) and resource.InheritsFrom(TObservationCT) then
+  begin
+    var value := TObservationCT(resource).ValueChosen; // TQuantityCT, TCodeableConceptCT, TStringCT... or nil
+    if (value <> nil) and value.InheritsFrom(TQuantityCT) then
+      Writeln(TQuantityCT(value).Value.Value, ' ', TQuantityCT(value).&Unit.Value); // 185 lbs
+  end;
+end;
+```
+
+The narrative is XHTML mixed content: `InnerText` gives its text; the sample walks `XmlContent` to end a line after
+each paragraph. FHIR's own `meta` element hides ProRock's `Meta` in every resource class - `TBasite(resource).Meta` is
+the class metadata.
+
+Compiling the FHIR unit takes about a minute; the program starts in about a third of a second.
+
+HL7, FHIR and the FHIR [FLAME DESIGN] are the registered trademarks of Health Level Seven International, and their use
+does not constitute endorsement by HL7.
 
 ## Office document properties
 

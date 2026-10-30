@@ -1,0 +1,1376 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- HL7® FHIR® R4 examples from the specification (http://hl7.org/fhir/R4/, CC0): the Patient example and the
+     Observation examples, collected into one Bundle for the ProRock FHIR sample -->
+<Bundle xmlns="http://hl7.org/fhir">
+  <id value="prorock-sample"/>
+  <type value="collection"/>
+  <entry>
+    <fullUrl value="http://hl7.org/fhir/Patient/example"/>
+    <resource>
+<Patient xmlns="http://hl7.org/fhir">
+	<id value="example"/>
+	<text>
+		<status value="generated"/>
+		<div xmlns="http://www.w3.org/1999/xhtml">
+			<table>
+				<tbody>
+					<tr>
+						<td>Name</td>
+						<td>Peter James 
+              <b>Chalmers</b> (&quot;Jim&quot;)
+            </td>
+					</tr>
+					<tr>
+						<td>Address</td>
+						<td>534 Erewhon, Pleasantville, Vic, 3999</td>
+					</tr>
+					<tr>
+						<td>Contacts</td>
+						<td>Home: unknown. Work: (03) 5555 6473</td>
+					</tr>
+					<tr>
+						<td>Id</td>
+						<td>MRN: 12345 (Acme Healthcare)</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</text>
+	<!--   MRN assigned by ACME healthcare on 6-May 2001   -->
+	<identifier>
+		<use value="usual"/>
+		<type>
+			<coding>
+				<system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+				<code value="MR"/>
+			</coding>
+		</type>
+		<system value="urn:oid:1.2.36.146.595.217.0.1"/>
+		<value value="12345"/>
+		<period>
+			<start value="2001-05-06"/>
+		</period>
+		<assigner>
+			<display value="Acme Healthcare"/>
+		</assigner>
+	</identifier>
+	<active value="true"/>
+	<!--   Peter James Chalmers, but called "Jim"   -->
+	<name>
+		<use value="official"/>
+		<family value="Chalmers"/>
+		<given value="Peter"/>
+		<given value="James"/>
+	</name>
+	<name>
+		<use value="usual"/>
+		<given value="Jim"/>
+	</name>
+	<name>
+    <!--  Maiden names apply for anyone whose name changes as a result of marriage - irrespective of gender  -->
+    <use value="maiden"/>
+    <family value="Windsor"/>
+		<given value="Peter"/>
+		<given value="James"/>
+    <period>
+      <end value="2002"/>
+    </period>
+	</name>
+	<telecom>
+		<use value="home"/>
+		<!--   home communication details aren't known   -->
+	</telecom>
+	<telecom>
+		<system value="phone"/>
+		<value value="(03) 5555 6473"/>
+		<use value="work"/>
+		<rank value="1"/>
+	</telecom>
+	<telecom>
+		<system value="phone"/>
+		<value value="(03) 3410 5613"/>
+		<use value="mobile"/>
+		<rank value="2"/>
+	</telecom>
+	<telecom>
+		<system value="phone"/>
+		<value value="(03) 5555 8834"/>
+		<use value="old"/>
+		<period>
+      <end value="2014"/>
+		</period>
+	</telecom>
+	<!--   use FHIR code system for male / female   -->
+	<gender value="male"/>
+	<birthDate value="1974-12-25">
+		<extension url="http://hl7.org/fhir/StructureDefinition/patient-birthTime">
+			<valueDateTime value="1974-12-25T14:35:45-05:00"/>
+		</extension>
+	</birthDate>
+	<deceasedBoolean value="false"/>
+	<address>
+		<use value="home"/>
+		<type value="both"/>
+		<text value="534 Erewhon St PeasantVille, Rainbow, Vic  3999"/>
+		<line value="534 Erewhon St"/>
+		<city value="PleasantVille"/>
+		<district value="Rainbow"/>
+		<state value="Vic"/>
+		<postalCode value="3999"/>
+		<period>
+			<start value="1974-12-25"/>
+		</period>
+	</address>
+	<contact>
+		<relationship>
+			<coding>
+				<system value="http://terminology.hl7.org/CodeSystem/v2-0131"/>
+				<code value="N"/>
+			</coding>
+		</relationship>
+		<name>
+			<family value="du March&#xE9;">
+				<!--   the "du" part is a family name prefix (VV in iso 21090)   -->
+				<extension url="http://hl7.org/fhir/StructureDefinition/humanname-own-prefix">
+					<valueString value="VV"/>
+				</extension>
+			</family>
+			<given value="B&#xE9;n&#xE9;dicte"/>
+		</name>
+		<telecom>
+			<system value="phone"/>
+			<value value="+33 (237) 998327"/>
+		</telecom>
+		<address>
+			<use value="home"/>
+			<type value="both"/>
+			<line value="534 Erewhon St"/>
+			<city value="PleasantVille"/>
+			<district value="Rainbow"/>
+			<state value="Vic"/>
+			<postalCode value="3999"/>
+			<period>
+				<start value="1974-12-25"/>
+			</period>
+		</address>
+		<gender value="female"/>
+		<period>
+			<!--   The contact relationship started in 2012   -->
+			<start value="2012"/>
+		</period>
+	</contact>
+	<managingOrganization>
+		<reference value="Organization/1"/>
+	</managingOrganization>
+</Patient>
+    </resource>
+  </entry>
+  <entry>
+    <fullUrl value="http://hl7.org/fhir/Observation/10minute-apgar-score"/>
+    <resource>
+<Observation xmlns="http://hl7.org/fhir">
+	<id value="10minute-apgar-score"/><!--  	Using a contained patient for the purposes of this example Observation.  Typically the reference would be to an external resource    --><text><status value="generated"/><div xmlns="http://www.w3.org/1999/xhtml"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: 10minute-apgar-score</p><p><b>contained</b>: </p><p><b>status</b>: final</p><p><b>category</b>: Survey <span>(Details : {http://terminology.hl7.org/CodeSystem/observation-category code &#39;survey&#39; = &#39;Survey&#39;, given as &#39;Survey&#39;})</span></p><p><b>code</b>: 10 minute Apgar Score <span>(Details : {LOINC code &#39;9271-8&#39; = &#39;10 minute Apgar Score&#39;, given as &#39;10 minute Apgar Score&#39;}; {SNOMED CT code &#39;169922007&#39; = &#39;Apgar at 10 minutes&#39;, given as &#39;Apgar at 10 minutes&#39;})</span></p><p><b>subject</b>: id: newborn; 12345; active; Peter James Chalmers ; gender: male; birthDate: 18/05/2016</p><p><b>effective</b>: 18/05/2016 10:33:22 PM</p><p><b>performer</b>: <a>Practitioner/example</a></p><p><b>value</b>: 10 {score}<span> (Details: UCUM code {score} = &#39;{score}&#39;)</span></p><blockquote><p><b>component</b></p><p><b>code</b>: Apgar color score <span>(Details : {LOINC code &#39;32401-2&#39; = &#39;10 minute Apgar Color&#39;, given as &#39;10 minute Apgar Color&#39;}; {SNOMED CT code &#39;249227004&#39; = &#39;Apgar color score&#39;, given as &#39;Apgar color score&#39;})</span></p><p><b>value</b>: 2. Good color all over <span>(Details : {LOINC code &#39;LA6724-4&#39; = &#39;Good color all over&#39;, given as &#39;Good color all over&#39;}; {http://acme.ped/apgarcolor code &#39;2&#39; = &#39;2)</span></p></blockquote><blockquote><p><b>component</b></p><p><b>code</b>: Apgar respiratory effort score <span>(Details : {LOINC code &#39;32402-0&#39; = &#39;10 minute Apgar Heart rate&#39;, given as &#39;10 minute Apgar Heart Rate&#39;}; {SNOMED CT code &#39;249223000&#39; = &#39;Apgar heart rate score&#39;, given as &#39;Apgar heart rate score&#39;})</span></p><p><b>value</b>: 2. At least 100 beats per minute <span>(Details : {LOINC code &#39;LA6718-6&#39; = &#39;At least 100 beats per minute&#39;, given as &#39;At least 100 beats per minute&#39;}; {http://acme.ped/apgarheartrate code &#39;2&#39; = &#39;2)</span></p></blockquote><blockquote><p><b>component</b></p><p><b>code</b>: Apgar response to stimulus score <span>(Details : {LOINC code &#39;32404-6&#39; = &#39;10 minute Apgar Reflex irritability&#39;, given as &#39;10 minute Apgar Reflex Irritability&#39;}; {SNOMED CT code &#39;249226008&#39; = &#39;Apgar response to stimulus score&#39;, given as &#39;Apgar response to stimulus score&#39;})</span></p><p><b>value</b>: 2. Grimace and pulling away, cough, or sneeze during suctioning <span>(Details : {LOINC code &#39;LA6721-0&#39; = &#39;Grimace and pulling away, cough, or sneeze during suctioning&#39;, given as &#39;Grimace and pulling away, cough, or sneeze during suctioning&#39;}; {http://acme.ped/apgarreflexirritability code &#39;2&#39; = &#39;2)</span></p></blockquote><blockquote><p><b>component</b></p><p><b>code</b>: Apgar muscle tone score <span>(Details : {LOINC code &#39;32403-8&#39; = &#39;10 minute Apgar Muscle tone&#39;, given as &#39;10 minute Apgar Muscle Tone&#39;}; {SNOMED CT code &#39;249225007&#39; = &#39;Apgar muscle tone score&#39;, given as &#39;Apgar muscle tone score&#39;})</span></p><p><b>value</b>: 2. Active motion <span>(Details : {LOINC code &#39;LA6715-2&#39; = &#39;Active motion&#39;, given as &#39;Active motion &#39;}; {http://acme.ped/apgarmuscletone code &#39;2&#39; = &#39;2)</span></p></blockquote><blockquote><p><b>component</b></p><p><b>code</b>: Apgar respiratory effort score <span>(Details : {LOINC code &#39;32405-3&#39; = &#39;10 minute Apgar Respiratory effort&#39;, given as &#39;10 minute Apgar Respiratory effort&#39;}; {SNOMED CT code &#39;249224006&#39; = &#39;Apgar respiratory effort score&#39;, given as &#39;Apgar respiratory effort score&#39;})</span></p><p><b>value</b>: 2. Good, strong cry; normal rate and effort of breathing <span>(Details : {LOINC code &#39;LA6727-7&#39; = &#39;Good, strong cry; normal rate and effort of breathing&#39;, given as &#39;Good, strong cry; normal rate and effort of breathing    &#39;}; {http://acme.ped/apgarrespiratoryeffort code &#39;2&#39; = &#39;2)</span></p></blockquote></div></text><contained>
+		<Patient>
+			<id value="newborn"/><!--     MRN assigned by ACME healthcare on     --><identifier>
+				<system value="http://acmehealthcare/org/mrns"/>
+				<value value="12345"/>
+			</identifier>
+			<active value="true"/><!--     Peter James Chalmers     --><name>
+				<family value="Chalmers"/>
+				<given value="Peter"/>
+				<given value="James"/>
+			</name><!--     use FHIR code system for male / female     --><gender value="male"/>
+			<birthDate value="2016-05-18">
+				<extension url="http://hl7.org/fhir/StructureDefinition/patient-birthTime">
+					<valueDateTime value="2016-05-18T10:28:45Z"/>
+				</extension>
+			</birthDate>
+		</Patient>
+	</contained>
+	<status value="final"/>
+	<category>
+		<coding>
+			<system value="http://terminology.hl7.org/CodeSystem/observation-category"/>
+			<code value="survey"/>
+			<display value="Survey"/>
+		</coding>
+		<text value="Survey"/>
+	</category>
+	<code>
+		<coding>
+			<system value="http://loinc.org"/>
+			<code value="9271-8"/>
+			<display value="10 minute Apgar Score"/>
+		</coding>
+		<coding>
+			<system value="http://snomed.info/sct"/>
+			<code value="169922007"/>
+			<display value="Apgar at 10 minutes"/>
+		</coding>
+		<text value="10 minute Apgar Score"/>
+	</code>
+	<subject>
+		<reference value="#newborn"/>
+	</subject>
+	<effectiveDateTime value="2016-05-18T22:33:22Z"/>
+	<performer>
+		<reference value="Practitioner/example"/>
+	</performer>
+	<valueQuantity>
+		<value value="10"/>
+		<system value="http://unitsofmeasure.org"/>
+		<code value="{score}"/>
+	</valueQuantity>
+	<component>
+		<code>
+			<coding>
+				<system value="http://loinc.org"/>
+				<code value="32401-2"/>
+				<display value="10 minute Apgar Color"/>
+			</coding>
+			<coding>
+				<system value="http://snomed.info/sct"/>
+				<code value="249227004"/>
+				<display value="Apgar color score"/>
+			</coding>
+			<text value="Apgar color score"/>
+		</code>
+		<valueCodeableConcept>
+			<coding><!--  this  extension  maps a numeric score to the code this may already be known and unecessary  --><extension url="http://hl7.org/fhir/StructureDefinition/ordinalValue">
+					<valueDecimal value="2"/>
+				</extension>
+				<system value="http://loinc.org"/>
+				<code value="LA6724-4"/>
+				<display value="Good color all over"/>
+			</coding>
+			<coding>
+				<system value="http://acme.ped/apgarcolor"/>
+				<code value="2"/>
+			</coding>
+			<text value="2. Good color all over"/>
+		</valueCodeableConcept>
+	</component>
+	<component>
+		<code>
+			<coding>
+				<system value="http://loinc.org"/>
+				<code value="32402-0"/>
+				<display value="10 minute Apgar Heart Rate"/>
+			</coding>
+			<coding>
+				<system value="http://snomed.info/sct"/>
+				<code value="249223000"/>
+				<display value="Apgar heart rate score"/>
+			</coding>
+			<text value="Apgar respiratory effort score"/>
+		</code>
+		<valueCodeableConcept>
+			<coding><!--  this  extension  maps a numeric score to the code this may already be known and unecessary  --><extension url="http://hl7.org/fhir/StructureDefinition/ordinalValue">
+					<valueDecimal value="2"/>
+				</extension>
+				<system value="http://loinc.org"/>
+				<code value="LA6718-6"/>
+				<display value="At least 100 beats per minute"/>
+			</coding>
+			<coding>
+				<system value="http://acme.ped/apgarheartrate"/>
+				<code value="2"/>
+			</coding>
+			<text value="2. At least 100 beats per minute"/>
+		</valueCodeableConcept>
+	</component>
+	<component>
+		<code>
+			<coding>
+				<system value="http://loinc.org"/>
+				<code value="32404-6"/>
+				<display value="10 minute Apgar Reflex Irritability"/>
+			</coding>
+			<coding>
+				<system value="http://snomed.info/sct"/>
+				<code value="249226008"/>
+				<display value="Apgar response to stimulus score"/>
+			</coding>
+			<text value="Apgar response to stimulus score"/>
+		</code>
+		<valueCodeableConcept>
+			<coding><!--  this  extension  maps a numeric score to the code this may already be known and unecessary  --><extension url="http://hl7.org/fhir/StructureDefinition/ordinalValue">
+					<valueDecimal value="2"/>
+				</extension>
+				<system value="http://loinc.org"/>
+				<code value="LA6721-0"/>
+				<display value="Grimace and pulling away, cough, or sneeze during suctioning"/>
+			</coding>
+			<coding>
+				<system value="http://acme.ped/apgarreflexirritability"/>
+				<code value="2"/>
+			</coding>
+			<text value="2. Grimace and pulling away, cough, or sneeze during suctioning"/>
+		</valueCodeableConcept>
+	</component>
+	<component>
+		<code>
+			<coding>
+				<system value="http://loinc.org"/>
+				<code value="32403-8"/>
+				<display value="10 minute Apgar Muscle Tone"/>
+			</coding>
+			<coding>
+				<system value="http://snomed.info/sct"/>
+				<code value="249225007"/>
+				<display value="Apgar muscle tone score"/>
+			</coding>
+			<text value="Apgar muscle tone score"/>
+		</code>
+		<valueCodeableConcept>
+			<coding><!--  this  extension  maps a numeric score to the code this may already be known and unecessary  --><extension url="http://hl7.org/fhir/StructureDefinition/ordinalValue">
+					<valueDecimal value="2"/>
+				</extension>
+				<system value="http://loinc.org"/>
+				<code value="LA6715-2"/>
+				<display value="Active motion "/>
+			</coding>
+			<coding>
+				<system value="http://acme.ped/apgarmuscletone"/>
+				<code value="2"/>
+			</coding>
+			<text value="2. Active motion"/>
+		</valueCodeableConcept>
+	</component>
+	<component>
+		<code>
+			<coding>
+				<system value="http://loinc.org"/>
+				<code value="32405-3"/>
+				<display value="10 minute Apgar Respiratory effort"/>
+			</coding>
+			<coding>
+				<system value="http://snomed.info/sct"/>
+				<code value="249224006"/>
+				<display value="Apgar respiratory effort score"/>
+			</coding>
+			<text value="Apgar respiratory effort score"/>
+		</code>
+		<valueCodeableConcept>
+			<coding><!--  this  extension  maps a numeric score to the code this may already be known and unecessary  --><extension url="http://hl7.org/fhir/StructureDefinition/ordinalValue">
+					<valueDecimal value="2"/>
+				</extension>
+				<system value="http://loinc.org"/>
+				<code value="LA6727-7"/>
+				<display value="Good, strong cry; normal rate and effort of breathing    "/>
+			</coding>
+			<coding>
+				<system value="http://acme.ped/apgarrespiratoryeffort"/>
+				<code value="2"/>
+			</coding>
+			<text value="2. Good, strong cry; normal rate and effort of breathing"/>
+		</valueCodeableConcept>
+	</component>
+</Observation>
+    </resource>
+  </entry>
+  <entry>
+    <fullUrl value="http://hl7.org/fhir/Observation/2minute-apgar-score"/>
+    <resource>
+<Observation xmlns="http://hl7.org/fhir">
+	<id value="2minute-apgar-score"/><!--  	Using a contained patient for the purposes of this example Observation.  Typically the reference would be to an external resource    --><text><status value="generated"/><div xmlns="http://www.w3.org/1999/xhtml"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: 2minute-apgar-score</p><p><b>contained</b>: </p><p><b>status</b>: final</p><p><b>category</b>: Survey <span>(Details : {http://terminology.hl7.org/CodeSystem/observation-category code &#39;survey&#39; = &#39;Survey&#39;, given as &#39;Survey&#39;})</span></p><p><b>code</b>: 2 minute Apgar Score <span>(Details : {LOINC code &#39;9273-4&#39; = &#39;2 minute Apgar Score&#39;, given as &#39;2 minute Apgar Score&#39;})</span></p><p><b>subject</b>: id: newborn; 12345; active; Peter James Chalmers ; gender: male; birthDate: 18/05/2016</p><p><b>effective</b>: 18/05/2016 10:33:22 PM</p><p><b>performer</b>: <a>Practitioner/example</a></p><p><b>value</b>: 5 {score}<span> (Details: UCUM code {score} = &#39;{score}&#39;)</span></p><blockquote><p><b>component</b></p><p><b>code</b>: Apgar color score <span>(Details : {SNOMED CT code &#39;249227004&#39; = &#39;Apgar color score&#39;, given as &#39;Apgar color score&#39;})</span></p><p><b>value</b>: 1. Good color in body with bluish hands or feet <span>(Details : {LOINC code &#39;LA6723-6&#39; = &#39;Good color in body with bluish hands or feet&#39;, given as &#39;Good color in body with bluish hands or feet&#39;}; {http://acme.ped/apgarcolor code &#39;1&#39; = &#39;1)</span></p></blockquote><blockquote><p><b>component</b></p><p><b>code</b>: Apgar respiratory effort score <span>(Details : {SNOMED CT code &#39;249223000&#39; = &#39;Apgar heart rate score&#39;, given as &#39;Apgar heart rate score&#39;})</span></p><p><b>value</b>: 1. Fewer than 100 beats per minute <span>(Details : {LOINC code &#39;LA6720-2&#39; = &#39;Grimace during suctioning&#39;, given as &#39;Fewer than 100 beats per minute&#39;}; {http://acme.ped/apgarheartrate code &#39;1&#39; = &#39;1)</span></p></blockquote><blockquote><p><b>component</b></p><p><b>code</b>: Apgar response to stimulus score <span>(Details : {SNOMED CT code &#39;249226008&#39; = &#39;Apgar response to stimulus score&#39;, given as &#39;Apgar response to stimulus score&#39;})</span></p><p><b>value</b>: 1. Grimace during suctioning <span>(Details : {LOINC code &#39;LA6721-0&#39; = &#39;Grimace and pulling away, cough, or sneeze during suctioning&#39;, given as &#39;Grimace during suctioning&#39;}; {http://acme.ped/apgarreflexirritability code &#39;1&#39; = &#39;1)</span></p></blockquote><blockquote><p><b>component</b></p><p><b>code</b>: Apgar muscle tone score <span>(Details : {SNOMED CT code &#39;249225007&#39; = &#39;Apgar muscle tone score&#39;, given as &#39;Apgar muscle tone score&#39;})</span></p><p><b>value</b>: 1. Some flexion of arms and legs <span>(Details : {LOINC code &#39;LA6714-5&#39; = &#39;Some flexion of arms and legs&#39;, given as &#39;Some flexion of arms and legs&#39;}; {http://acme.ped/apgarmuscletone code &#39;1&#39; = &#39;1)</span></p></blockquote><blockquote><p><b>component</b></p><p><b>code</b>: Apgar respiratory effort score <span>(Details : {SNOMED CT code &#39;249224006&#39; = &#39;Apgar respiratory effort score&#39;, given as &#39;Apgar respiratory effort score&#39;})</span></p><p><b>value</b>: 1. Weak cry; may sound like whimpering, slow or irregular breathing <span>(Details : {LOINC code &#39;LA6726-9&#39; = &#39;Weak cry; may sound like whimpering, slow or irregular breathing&#39;, given as &#39;Weak cry; may sound like whimpering, slow or irregular breathing&#39;}; {http://acme.ped/apgarrespiratoryeffort code &#39;1&#39; = &#39;1)</span></p></blockquote></div></text><contained>
+		<Patient>
+			<id value="newborn"/><!--     MRN assigned by ACME healthcare on     --><identifier>
+				<system value="http://acmehealthcare/org/mrns"/>
+				<value value="12345"/>
+			</identifier>
+			<active value="true"/><!--     Peter James Chalmers     --><name>
+				<family value="Chalmers"/>
+				<given value="Peter"/>
+				<given value="James"/>
+			</name><!--     use FHIR code system for male / female     --><gender value="male"/>
+			<birthDate value="2016-05-18">
+				<extension url="http://hl7.org/fhir/StructureDefinition/patient-birthTime">
+					<valueDateTime value="2016-05-18T10:28:45Z"/>
+				</extension>
+			</birthDate>
+		</Patient>
+	</contained>
+	<status value="final"/>
+	<category>
+		<coding>
+			<system value="http://terminology.hl7.org/CodeSystem/observation-category"/>
+			<code value="survey"/>
+			<display value="Survey"/>
+		</coding>
+		<text value="Survey"/>
+	</category>
+	<code>
+		<coding>
+			<system value="http://loinc.org"/>
+			<code value="9273-4"/>
+			<display value="2 minute Apgar Score"/>
+		</coding>
+		<text value="2 minute Apgar Score"/>
+	</code>
+	<subject>
+		<reference value="#newborn"/>
+	</subject>
+	<effectiveDateTime value="2016-05-18T22:33:22Z"/>
+	<performer>
+		<reference value="Practitioner/example"/>
+	</performer>
+	<valueQuantity>
+		<value value="5"/>
+		<system value="http://unitsofmeasure.org"/>
+		<code value="{score}"/>
+	</valueQuantity>
+	<component>
+		<code>
+			<coding>
+				<system value="http://snomed.info/sct"/>
+				<code value="249227004"/>
+				<display value="Apgar color score"/>
+			</coding>
+			<text value="Apgar color score"/>
+		</code>
+		<valueCodeableConcept>
+			<coding><!--  this  extension  maps a numeric score to the code this may already be known and unecessary  --><extension url="http://hl7.org/fhir/StructureDefinition/ordinalValue">
+					<valueDecimal value="1"/>
+				</extension>
+				<system value="http://loinc.org"/>
+				<code value="LA6723-6"/>
+				<display value="Good color in body with bluish hands or feet"/>
+			</coding>
+			<coding>
+				<system value="http://acme.ped/apgarcolor"/>
+				<code value="1"/>
+			</coding>
+			<text value="1. Good color in body with bluish hands or feet"/>
+		</valueCodeableConcept>
+	</component>
+	<component>
+		<code>
+			<coding>
+				<system value="http://snomed.info/sct"/>
+				<code value="249223000"/>
+				<display value="Apgar heart rate score"/>
+			</coding>
+			<text value="Apgar respiratory effort score"/>
+		</code>
+		<valueCodeableConcept>
+			<coding><!--  this  extension  maps a numeric score to the code this may already be known and unecessary  --><extension url="http://hl7.org/fhir/StructureDefinition/ordinalValue">
+					<valueDecimal value="1"/>
+				</extension>
+				<system value="http://loinc.org"/>
+				<code value="LA6720-2"/>
+				<display value="Fewer than 100 beats per minute"/>
+			</coding>
+			<coding>
+				<system value="http://acme.ped/apgarheartrate"/>
+				<code value="1"/>
+			</coding>
+			<text value="1. Fewer than 100 beats per minute"/>
+		</valueCodeableConcept>
+	</component>
+	<component>
+		<code>
+			<coding>
+				<system value="http://snomed.info/sct"/>
+				<code value="249226008"/>
+				<display value="Apgar response to stimulus score"/>
+			</coding>
+			<text value="Apgar response to stimulus score"/>
+		</code>
+		<valueCodeableConcept>
+			<coding><!--  this  extension  maps a numeric score to the code this may already be known and unecessary  --><extension url="http://hl7.org/fhir/StructureDefinition/ordinalValue">
+					<valueDecimal value="1"/>
+				</extension>
+				<system value="http://loinc.org"/>
+				<code value="LA6721-0"/>
+				<display value="Grimace during suctioning"/>
+			</coding>
+			<coding>
+				<system value="http://acme.ped/apgarreflexirritability"/>
+				<code value="1"/>
+			</coding>
+			<text value="1. Grimace during suctioning"/>
+		</valueCodeableConcept>
+	</component>
+	<component>
+		<code>
+			<coding>
+				<system value="http://snomed.info/sct"/>
+				<code value="249225007"/>
+				<display value="Apgar muscle tone score"/>
+			</coding>
+			<text value="Apgar muscle tone score"/>
+		</code>
+		<valueCodeableConcept>
+			<coding><!--  this  extension  maps a numeric score to the code this may already be known and unecessary  --><extension url="http://hl7.org/fhir/StructureDefinition/ordinalValue">
+					<valueDecimal value="1"/>
+				</extension>
+				<system value="http://loinc.org"/>
+				<code value="LA6714-5"/>
+				<display value="Some flexion of arms and legs"/>
+			</coding>
+			<coding>
+				<system value="http://acme.ped/apgarmuscletone"/>
+				<code value="1"/>
+			</coding>
+			<text value="1. Some flexion of arms and legs"/>
+		</valueCodeableConcept>
+	</component>
+	<component>
+		<code>
+			<coding>
+				<system value="http://snomed.info/sct"/>
+				<code value="249224006"/>
+				<display value="Apgar respiratory effort score"/>
+			</coding>
+			<text value="Apgar respiratory effort score"/>
+		</code>
+		<valueCodeableConcept>
+			<coding><!--  this  extension  maps a numeric score to the code this may already be known and unecessary  --><extension url="http://hl7.org/fhir/StructureDefinition/ordinalValue">
+					<valueDecimal value="1"/>
+				</extension>
+				<system value="http://loinc.org"/>
+				<code value="LA6726-9"/>
+				<display value="Weak cry; may sound like whimpering, slow or irregular breathing"/>
+			</coding>
+			<coding>
+				<system value="http://acme.ped/apgarrespiratoryeffort"/>
+				<code value="1"/>
+			</coding>
+			<text value="1. Weak cry; may sound like whimpering, slow or irregular breathing"/>
+		</valueCodeableConcept>
+	</component>
+</Observation>
+    </resource>
+  </entry>
+  <entry>
+    <fullUrl value="http://hl7.org/fhir/Observation/blood-pressure"/>
+    <resource>
+<Observation xmlns="http://hl7.org/fhir">
+	<id value="blood-pressure"/>
+	<meta>
+		<profile value="http://hl7.org/fhir/StructureDefinition/vitalsigns"/>
+	</meta>
+	<text><status value="generated"/><div xmlns="http://www.w3.org/1999/xhtml"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: blood-pressure</p><p><b>meta</b>: </p><p><b>identifier</b>: urn:uuid:187e0c12-8dd2-67e2-99b2-bf273c878281</p><p><b>basedOn</b>: </p><p><b>status</b>: final</p><p><b>category</b>: Vital Signs <span>(Details : {http://terminology.hl7.org/CodeSystem/observation-category code &#39;vital-signs&#39; = &#39;Vital Signs&#39;, given as &#39;Vital Signs&#39;})</span></p><p><b>code</b>: Blood pressure systolic &amp; diastolic <span>(Details : {LOINC code &#39;85354-9&#39; = &#39;Blood pressure panel with all children optional&#39;, given as &#39;Blood pressure panel with all children optional&#39;})</span></p><p><b>subject</b>: <a>Patient/example</a></p><p><b>effective</b>: 17/09/2012</p><p><b>performer</b>: <a>Practitioner/example</a></p><p><b>interpretation</b>: Below low normal <span>(Details : {http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation code &#39;L&#39; = &#39;Low&#39;, given as &#39;low&#39;})</span></p><p><b>bodySite</b>: Right arm <span>(Details : {SNOMED CT code &#39;368209003&#39; = &#39;Right upper arm&#39;, given as &#39;Right arm&#39;})</span></p><blockquote><p><b>component</b></p><p><b>code</b>: Systolic blood pressure <span>(Details : {LOINC code &#39;8480-6&#39; = &#39;Systolic blood pressure&#39;, given as &#39;Systolic blood pressure&#39;}; {SNOMED CT code &#39;271649006&#39; = &#39;Systolic blood pressure&#39;, given as &#39;Systolic blood pressure&#39;}; {http://acme.org/devices/clinical-codes code &#39;bp-s&#39; = &#39;bp-s&#39;, given as &#39;Systolic Blood pressure&#39;})</span></p><p><b>value</b>: 107 mmHg<span> (Details: UCUM code mm[Hg] = &#39;mmHg&#39;)</span></p><p><b>interpretation</b>: Normal <span>(Details : {http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation code &#39;N&#39; = &#39;Normal&#39;, given as &#39;normal&#39;})</span></p></blockquote><blockquote><p><b>component</b></p><p><b>code</b>: Diastolic blood pressure <span>(Details : {LOINC code &#39;8462-4&#39; = &#39;Diastolic blood pressure&#39;, given as &#39;Diastolic blood pressure&#39;})</span></p><p><b>value</b>: 60 mmHg<span> (Details: UCUM code mm[Hg] = &#39;mmHg&#39;)</span></p><p><b>interpretation</b>: Below low normal <span>(Details : {http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation code &#39;L&#39; = &#39;Low&#39;, given as &#39;low&#39;})</span></p></blockquote></div></text><identifier>
+		<system value="urn:ietf:rfc:3986"/>
+		<value value="urn:uuid:187e0c12-8dd2-67e2-99b2-bf273c878281"/>
+	</identifier><!--    demonstrating the use of the baseOn element with a fictive identifier  --><basedOn>
+		<identifier>
+			<system value="https://acme.org/identifiers"/>
+			<value value="1234"/>
+		</identifier>
+	</basedOn>
+	<status value="final"/>
+	<category>
+		<coding>
+			<system value="http://terminology.hl7.org/CodeSystem/observation-category"/>
+			<code value="vital-signs"/>
+			<display value="Vital Signs"/>
+		</coding>
+	</category>
+	<code><!--   replaced by 85354-9
+				<coding>
+					<system value="http://loinc.org"/>
+					<code value="85354-9"/>
+					<display value="Blood pressure systolic &amp; diastolic"/>
+				</coding>
+		  --><coding>
+			<system value="http://loinc.org"/>
+			<code value="85354-9"/>
+			<display value="Blood pressure panel with all children optional"/>
+		</coding>
+		<text value="Blood pressure systolic &amp; diastolic"/>
+	</code>
+	<subject>
+		<reference value="Patient/example"/>
+	</subject>
+	<effectiveDateTime value="2012-09-17"/>
+	<performer>
+		<reference value="Practitioner/example"/>
+	</performer><!--     an interpretation offered to the combination observation
+        generally, it would only be appropriate to offer an interpretation
+        of an observation that has no value if it has "COMP" (component)
+        observations     --><interpretation>
+		<coding>
+			<system value="http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"/>
+			<code value="L"/>
+			<display value="low"/>
+		</coding>
+		<text value="Below low normal"/>
+	</interpretation><!--  The BodySite can be captured in a LOINC code but am showing it here to demonstrate populating the element   --><bodySite>
+		<coding>
+			<system value="http://snomed.info/sct"/>
+			<code value="368209003"/>
+			<display value="Right arm"/>
+		</coding>
+	</bodySite>
+	<component><!--  
+           Observations are often coded in multiple code systems.
+           - LOINC provides a very specific code (though not more specific in this particular case)
+           - snomed provides a clinically relevant code that is usually less granular than LOINC
+           - the source system provides its own code, which may be less or more granular than LOINC
+
+this is shown here to demonstrate  the concept of translations within the codeableConcept datatype. The diastolic code below only has a LOINC code
+             --><code><!--     LOINC -code     --><coding>
+				<system value="http://loinc.org"/>
+				<code value="8480-6"/>
+				<display value="Systolic blood pressure"/>
+			</coding><!--     SNOMED CT Codes     --><coding>
+				<system value="http://snomed.info/sct"/>
+				<code value="271649006"/>
+				<display value="Systolic blood pressure"/>
+			</coding><!--     Also, a local code specific to the source system     --><coding>
+				<system value="http://acme.org/devices/clinical-codes"/>
+				<code value="bp-s"/>
+				<display value="Systolic Blood pressure"/>
+			</coding>
+		</code>
+		<valueQuantity>
+			<value value="107"/>
+			<unit value="mmHg"/>
+			<system value="http://unitsofmeasure.org"/>
+			<code value="mm[Hg]"/>
+		</valueQuantity><!--     an interpretation for the individual composite observation   --><interpretation>
+			<coding>
+				<system value="http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"/>
+				<code value="N"/>
+				<display value="normal"/>
+			</coding>
+			<text value="Normal"/>
+		</interpretation><!--    	Should have a refrange as well    --></component><component><!--     this codes only has a LOINC code     --><code>
+			<coding>
+				<system value="http://loinc.org"/>
+				<code value="8462-4"/>
+				<display value="Diastolic blood pressure"/>
+			</coding>
+		</code>
+		<valueQuantity>
+			<value value="60"/>
+			<unit value="mmHg"/>
+			<system value="http://unitsofmeasure.org"/>
+			<code value="mm[Hg]"/>
+		</valueQuantity><!--     an interpretation for the individual composite observation   --><interpretation>
+			<coding>
+				<system value="http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"/>
+				<code value="L"/>
+				<display value="low"/>
+			</coding>
+			<text value="Below low normal"/>
+		</interpretation><!--    	Should have a refrange as well    --></component></Observation>
+    </resource>
+  </entry>
+  <entry>
+    <fullUrl value="http://hl7.org/fhir/Observation/bmd"/>
+    <resource>
+<Observation xmlns="http://hl7.org/fhir"><!--        BMD measurements of left femur encoded as an observation for example purposes.        --><id value="bmd"/>
+	<text><status value="generated"/><div xmlns="http://www.w3.org/1999/xhtml"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: bmd</p><p><b>status</b>: final</p><p><b>code</b>: BMD - Left Femur <span>(Details : {LOINC code &#39;24701-5&#39; = &#39;Femur DXA Bone density&#39;, given as &#39;Femur DXA Bone density&#39;})</span></p><p><b>subject</b>: <a>Patient/pat2</a></p><p><b>performer</b>: <a>Acme Imaging Diagnostics</a></p><p><b>value</b>: 0.887 g/cm&#xB2;<span> (Details: UCUM code g/cm-2 = &#39;g/cm-2&#39;)</span></p><p><b>bodySite</b>: Left Femur <span>(Details : {SNOMED CT code &#39;71341001:272741003=7771000&#39; = &#39;Femur where Laterality = Left)</span></p></div></text><status value="final"/>
+	<code>
+		<coding>
+			<system value="http://loinc.org"/>
+			<code value="24701-5"/>
+			<display value="Femur DXA Bone density"/>
+		</coding>
+		<text value="BMD - Left Femur"/>
+	</code>
+	<subject>
+		<reference value="Patient/pat2"/>
+	</subject><!--        well, actually. this isn't the patient, but it'll do for now        --><performer>
+		<reference value="Organization/1832473e-2fe0-452d-abe9-3cdb9879522f"/>
+		<display value="Acme Imaging Diagnostics"/>
+	</performer>
+	<valueQuantity>
+		<value value="0.887"/>
+		<unit value="g/cm&#xB2;"/>
+		<system value="http://unitsofmeasure.org"/>
+		<code value="g/cm-2"/>
+	</valueQuantity>
+	<bodySite>
+		<coding>
+			<system value="http://snomed.info/sct"/>
+			<code value="71341001:272741003=7771000"/><!--  example of a post coordinated term  --></coding><text value="Left Femur"/>
+	</bodySite>
+</Observation>
+    </resource>
+  </entry>
+  <entry>
+    <fullUrl value="http://hl7.org/fhir/Observation/bmi"/>
+    <resource>
+<Observation xmlns="http://hl7.org/fhir">
+	<id value="bmi"/>
+	<meta>
+		<profile value="http://hl7.org/fhir/StructureDefinition/vitalsigns"/>
+	</meta>
+	<text><status value="generated"/><div xmlns="http://www.w3.org/1999/xhtml"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: bmi</p><p><b>meta</b>: </p><p><b>status</b>: final</p><p><b>category</b>: Vital Signs <span>(Details : {http://terminology.hl7.org/CodeSystem/observation-category code &#39;vital-signs&#39; = &#39;Vital Signs&#39;, given as &#39;Vital Signs&#39;})</span></p><p><b>code</b>: BMI <span>(Details : {LOINC code &#39;39156-5&#39; = &#39;Body mass index (BMI) [Ratio]&#39;, given as &#39;Body mass index (BMI) [Ratio]&#39;})</span></p><p><b>subject</b>: <a>Patient/example</a></p><p><b>effective</b>: 02/07/1999</p><p><b>value</b>: 16.2 kg/m2<span> (Details: UCUM code kg/m2 = &#39;kg/m2&#39;)</span></p></div></text><status value="final"/>
+	<category>
+		<coding>
+			<system value="http://terminology.hl7.org/CodeSystem/observation-category"/>
+			<code value="vital-signs"/>
+			<display value="Vital Signs"/>
+		</coding>
+		<text value="Vital Signs"/>
+	</category>
+	<code>
+		<coding>
+			<system value="http://loinc.org"/>
+			<code value="39156-5"/>
+			<display value="Body mass index (BMI) [Ratio]"/>
+		</coding>
+		<text value="BMI"/>
+	</code>
+	<subject>
+		<reference value="Patient/example"/>
+	</subject>
+	<effectiveDateTime value="1999-07-02"/>
+	<valueQuantity>
+		<value value="16.2"/>
+		<unit value="kg/m2"/>
+		<system value="http://unitsofmeasure.org"/>
+		<code value="kg/m2"/>
+	</valueQuantity>
+</Observation>
+    </resource>
+  </entry>
+  <entry>
+    <fullUrl value="http://hl7.org/fhir/Observation/eye-color"/>
+    <resource>
+<Observation xmlns="http://hl7.org/fhir">
+	<id value="eye-color"/>
+	<text><status value="generated"/><div xmlns="http://www.w3.org/1999/xhtml"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: eye-color</p><p><b>status</b>: final</p><p><b>code</b>: eye color <span>(Details )</span></p><p><b>subject</b>: <a>Patient/example</a></p><p><b>effective</b>: 18/05/2016</p><p><b>value</b>: blue</p></div></text><status value="final"/>
+	<code>
+		<text value="eye color"/>
+	</code>
+	<subject>
+		<reference value="Patient/example"/>
+	</subject>
+	<effectiveDateTime value="2016-05-18"/>
+	<valueString value="blue"/>
+</Observation>
+    </resource>
+  </entry>
+  <entry>
+    <fullUrl value="http://hl7.org/fhir/Observation/f001"/>
+    <resource>
+<Observation xmlns="http://hl7.org/fhir">
+	<id value="f001"/><!--    urn:oid:2.16.840.1.113883.4.642.1.7    --><!--    2.16.840.1.113883.4.642.1.118    --><text><status value="generated"/><div xmlns="http://www.w3.org/1999/xhtml"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: f001</p><p><b>identifier</b>: 6323 (OFFICIAL)</p><p><b>status</b>: final</p><p><b>code</b>: Glucose [Moles/volume] in Blood <span>(Details : {LOINC code &#39;15074-8&#39; = &#39;Glucose [Moles/volume] in Blood&#39;, given as &#39;Glucose [Moles/volume] in Blood&#39;})</span></p><p><b>subject</b>: <a>P. van de Heuvel</a></p><p><b>effective</b>: 02/04/2013 9:30:10 AM --&gt; (ongoing)</p><p><b>issued</b>: 03/04/2013 3:30:10 PM</p><p><b>performer</b>: <a>A. Langeveld</a></p><p><b>value</b>: 6.3 mmol/l<span> (Details: UCUM code mmol/L = &#39;mmol/L&#39;)</span></p><p><b>interpretation</b>: High <span>(Details : {http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation code &#39;H&#39; = &#39;High&#39;, given as &#39;High&#39;})</span></p><h3>ReferenceRanges</h3><table><tr><td>-</td><td><b>Low</b></td><td><b>High</b></td></tr><tr><td>*</td><td>3.1 mmol/l<span> (Details: UCUM code mmol/L = &#39;mmol/L&#39;)</span></td><td>6.2 mmol/l<span> (Details: UCUM code mmol/L = &#39;mmol/L&#39;)</span></td></tr></table></div></text><identifier>
+		<use value="official"/>
+		<system value="http://www.bmc.nl/zorgportal/identifiers/observations"/>
+		<value value="6323"/>
+	</identifier>
+	<status value="final"/>
+	<code>
+		<coding>
+			<system value="http://loinc.org"/>
+			<code value="15074-8"/>
+			<display value="Glucose [Moles/volume] in Blood"/>
+		</coding>
+	</code>
+	<subject>
+		<reference value="Patient/f001"/>
+		<display value="P. van de Heuvel"/>
+	</subject>
+	<effectivePeriod>
+		<start value="2013-04-02T09:30:10+01:00"/>
+	</effectivePeriod>
+	<issued value="2013-04-03T15:30:10+01:00"/>
+	<performer>
+		<reference value="Practitioner/f005"/>
+		<display value="A. Langeveld"/>
+	</performer>
+	<valueQuantity>
+		<value value="6.3"/>
+		<unit value="mmol/l"/>
+		<system value="http://unitsofmeasure.org"/>
+		<code value="mmol/L"/>
+	</valueQuantity>
+	<interpretation>
+		<coding>
+			<system value="http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"/>
+			<code value="H"/>
+			<display value="High"/>
+		</coding>
+	</interpretation>
+	<referenceRange>
+		<low>
+			<value value="3.1"/>
+			<unit value="mmol/l"/>
+			<system value="http://unitsofmeasure.org"/>
+			<code value="mmol/L"/>
+		</low>
+		<high>
+			<value value="6.2"/>
+			<unit value="mmol/l"/>
+			<system value="http://unitsofmeasure.org"/>
+			<code value="mmol/L"/>
+		</high>
+	</referenceRange>
+</Observation>
+    </resource>
+  </entry>
+  <entry>
+    <fullUrl value="http://hl7.org/fhir/Observation/f202"/>
+    <resource>
+<Observation xmlns="http://hl7.org/fhir">
+	<id value="f202"/><!--   Oral temperature was measured on April fourth   --><text><status value="generated"/><div xmlns="http://www.w3.org/1999/xhtml"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: f202</p><p><b>status</b>: entered-in-error</p><p><b>category</b>: Vital Signs <span>(Details : {http://terminology.hl7.org/CodeSystem/observation-category code &#39;vital-signs&#39; = &#39;Vital Signs&#39;, given as &#39;Vital Signs&#39;})</span></p><p><b>code</b>: Temperature <span>(Details : {http://acme.lab code &#39;BT&#39; = &#39;BT&#39;, given as &#39;Body temperature&#39;}; {LOINC code &#39;8310-5&#39; = &#39;Body temperature&#39;, given as &#39;Body temperature&#39;}; {LOINC code &#39;8331-1&#39; = &#39;Oral temperature&#39;, given as &#39;Oral temperature&#39;}; {SNOMED CT code &#39;56342008&#39; = &#39;Temperature taking&#39;, given as &#39;Temperature taking&#39;})</span></p><p><b>subject</b>: <a>Roel</a></p><p><b>issued</b>: 04/04/2013 1:27:00 PM</p><p><b>performer</b>: <a>Practitioner/f201</a></p><p><b>value</b>: 39 degrees C<span> (Details: UCUM code Cel = &#39;Cel&#39;)</span></p><p><b>interpretation</b>: High <span>(Details : {http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation code &#39;H&#39; = &#39;High)</span></p><p><b>bodySite</b>: Oral cavity <span>(Details : {SNOMED CT code &#39;74262004&#39; = &#39;Oral cavity&#39;, given as &#39;Oral cavity&#39;})</span></p><p><b>method</b>: Oral temperature taking <span>(Details : {SNOMED CT code &#39;89003005&#39; = &#39;Oral temperature taking&#39;, given as &#39;Oral temperature taking&#39;})</span></p><h3>ReferenceRanges</h3><table><tr><td>-</td><td><b>High</b></td></tr><tr><td>*</td><td>38.2 degrees C</td></tr></table></div></text><status value="entered-in-error"/><!--   category code is A code that classifies the general type of observation being made. This is used for searching, sorting and display purposes.  --><category>
+		<coding>
+			<system value="http://terminology.hl7.org/CodeSystem/observation-category"/>
+			<code value="vital-signs"/>
+			<display value="Vital Signs"/>
+		</coding>
+	</category>
+	<code><!--   Kind of observation = Temperature   --><!--   local code here   --><coding>
+			<system value="http://acme.lab"/>
+			<code value="BT"/>
+			<display value="Body temperature"/>
+		</coding><!--   LOINC and SNOMED CT translations here - Note in the US the primary code will be LOINC per meaningful use.  Further SNOMED CT  has acceeded to LOINC being the primary coding system for vitals and anthropromorphic measures.  SNOMED CT is required in some countries such as the UK.  --><coding>
+			<system value="http://loinc.org"/>
+			<code value="8310-5"/>
+			<display value="Body temperature"/>
+		</coding><!--     translation to more specific LOINC code (by system - ie oral temp) this example shows how the  LOINC or method element could be used to convey the same information both not necessary in most cases  --><coding>
+			<system value="http://loinc.org"/>
+			<code value="8331-1"/>
+			<display value="Oral temperature"/>
+		</coding>
+		<coding>
+			<system value="http://snomed.info/sct"/>
+			<code value="56342008"/>
+			<display value="Temperature taking"/>
+		</coding>
+		<text value="Temperature"/>
+	</code><!--   No identifier could be provided to this observation   --><subject>
+		<reference value="Patient/f201"/>
+		<display value="Roel"/>
+	</subject>
+	<issued value="2013-04-04T13:27:00+01:00"/>
+	<performer>
+		<reference value="Practitioner/f201"/>
+	</performer>
+	<valueQuantity><!--   Temperature=39 degrees Celsius   --><value value="39"/>
+		<unit value="degrees C"/>
+		<system value="http://unitsofmeasure.org"/>
+		<code value="Cel"/>
+	</valueQuantity>
+	<interpretation>
+		<coding>
+			<system value="http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"/>
+			<code value="H"/>
+		</coding>
+	</interpretation><!--   In the meantime a new oral temperature is measured   --><!--   http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3418963/   --><bodySite>
+		<coding>
+			<system value="http://snomed.info/sct"/>
+			<code value="74262004"/>
+			<display value="Oral cavity"/>
+		</coding>
+	</bodySite>
+	<method>
+		<coding>
+			<system value="http://snomed.info/sct"/>
+			<code value="89003005"/>
+			<display value="Oral temperature taking"/>
+		</coding>
+	</method>
+	<referenceRange><!--    0..* Provides guide for interpretation    --><high>
+			<value value="38.2"/>
+			<unit value="degrees C"/>
+		</high>
+	</referenceRange>
+</Observation>
+    </resource>
+  </entry>
+  <entry>
+    <fullUrl value="http://hl7.org/fhir/Observation/example-genetics-1"/>
+    <resource>
+<Observation xmlns="http://hl7.org/fhir">
+	<id value="example-genetics-1"/><!--  extension url="http://hl7.org/fhir/StructureDefinition/observation-geneticsDNASequenceVariantName" >
+    <valueCodeableConcept> 
+      <text value="NG_007726.3:g.146252T&gt;G" />
+    </valueCodeableConcept>
+  </extension  --><text><status value="generated"/><div xmlns="http://www.w3.org/1999/xhtml"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: example-genetics-1</p><p><b>status</b>: final</p><p><b>code</b>: Genetic analysis master panel-- This is the parent OBR for the panel holding all of the associated observations that can be reported with a molecular genetics analysis result. <span>(Details : {LOINC code &#39;55233-1&#39; = &#39;Genetic analysis master panel - Blood or Tissue by Molecular genetics method&#39;, given as &#39;Genetic analysis master panel-- This is the parent OBR for the panel holding all of the associated observations that can be reported with a molecular genetics analysis result.&#39;})</span></p><p><b>subject</b>: <a>Molecular Lab Patient ID: HOSP-23456</a></p><p><b>issued</b>: 03/04/2013 3:30:10 PM</p><p><b>performer</b>: <a>Molecular Diagnostics Laboratory</a></p><p><b>value</b>: Positive <span>(Details : {SNOMED CT code &#39;10828004&#39; = &#39;Positive&#39;, given as &#39;Positive&#39;})</span></p><p><b>specimen</b>: <a>Molecular Specimen ID: MLD45-Z4-1234</a></p></div></text><extension url="http://hl7.org/fhir/StructureDefinition/observation-geneticsGene">
+		<valueCodeableConcept>
+			<coding>
+				<system value="http://www.genenames.org"/>
+				<code value="3236"/>
+				<display value="EGFR"/>
+			</coding>
+		</valueCodeableConcept>
+	</extension>
+	<extension url="http://hl7.org/fhir/StructureDefinition/observation-geneticsDNARegionName">
+		<valueString value="Exon 21"/>
+	</extension>
+	<extension url="http://hl7.org/fhir/StructureDefinition/observation-geneticsGenomicSourceClass">
+		<valueCodeableConcept>
+			<coding>
+				<system value="http://loinc.org"/>
+				<code value="LA6684-0"/>
+				<display value="somatic"/>
+			</coding>
+		</valueCodeableConcept>
+	</extension>
+	<status value="final"/>
+	<code>
+		<coding>
+			<system value="http://loinc.org"/>
+			<code value="55233-1"/>
+			<display value="Genetic analysis master panel-- This is the parent OBR for the panel holding all of the associated observations that can be reported with a molecular genetics analysis result."/>
+		</coding>
+	</code>
+	<subject>
+		<reference value="Patient/example"/>
+		<display value="Molecular Lab Patient ID: HOSP-23456"/>
+	</subject>
+	<issued value="2013-04-03T15:30:10+01:00"/>
+	<performer>
+		<reference value="Practitioner/example"/>
+		<display value="Molecular Diagnostics Laboratory"/>
+	</performer>
+	<valueCodeableConcept>
+		<coding>
+			<system value="http://snomed.info/sct"/>
+			<code value="10828004"/>
+			<display value="Positive"/>
+		</coding>
+	</valueCodeableConcept>
+	<specimen>
+		<reference value="Specimen/genetics-example1-somatic"/>
+		<display value="Molecular Specimen ID: MLD45-Z4-1234"/>
+	</specimen>
+</Observation>
+    </resource>
+  </entry>
+  <entry>
+    <fullUrl value="http://hl7.org/fhir/Observation/head-circumference"/>
+    <resource>
+<Observation xmlns="http://hl7.org/fhir">
+	<id value="head-circumference"/>
+	<meta>
+		<profile value="http://hl7.org/fhir/StructureDefinition/vitalsigns"/>
+	</meta>
+	<text><status value="generated"/><div xmlns="http://www.w3.org/1999/xhtml"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: head-circumference</p><p><b>meta</b>: </p><p><b>status</b>: final</p><p><b>category</b>: Vital Signs <span>(Details : {http://terminology.hl7.org/CodeSystem/observation-category code &#39;vital-signs&#39; = &#39;Vital Signs&#39;, given as &#39;Vital Signs&#39;})</span></p><p><b>code</b>: Head Circumference <span>(Details : {LOINC code &#39;9843-4&#39; = &#39;Head Occipital-frontal circumference&#39;, given as &#39;Head Occipital-frontal circumference&#39;})</span></p><p><b>subject</b>: <a>Patient/example</a></p><p><b>effective</b>: 02/07/1999</p><p><b>value</b>: 51.2 cm<span> (Details: UCUM code cm = &#39;cm&#39;)</span></p></div></text><status value="final"/>
+	<category>
+		<coding>
+			<system value="http://terminology.hl7.org/CodeSystem/observation-category"/>
+			<code value="vital-signs"/>
+			<display value="Vital Signs"/>
+		</coding>
+		<text value="Vital Signs"/>
+	</category>
+	<code>
+		<coding>
+			<system value="http://loinc.org"/>
+			<code value="9843-4"/>
+			<display value="Head Occipital-frontal circumference"/>
+		</coding>
+		<text value="Head Circumference"/>
+	</code>
+	<subject>
+		<reference value="Patient/example"/>
+	</subject>
+	<effectiveDateTime value="1999-07-02"/>
+	<valueQuantity>
+		<value value="51.2"/>
+		<unit value="cm"/>
+		<system value="http://unitsofmeasure.org"/>
+		<code value="cm"/>
+	</valueQuantity>
+</Observation>
+    </resource>
+  </entry>
+  <entry>
+    <fullUrl value="http://hl7.org/fhir/Observation/mbp"/>
+    <resource>
+<Observation xmlns="http://hl7.org/fhir">
+	<id value="mbp"/>
+	<text><status value="generated"/><div xmlns="http://www.w3.org/1999/xhtml"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: mbp</p><p><b>status</b>: final</p><p><b>category</b>: Vital Signs <span>(Details : {http://terminology.hl7.org/CodeSystem/observation-category code &#39;vital-signs&#39; = &#39;Vital Signs&#39;, given as &#39;Vital Signs&#39;})</span></p><p><b>code</b>: Mean blood pressure <span>(Details : {LOINC code &#39;8478-0&#39; = &#39;Mean blood pressure&#39;, given as &#39;Mean blood pressure&#39;})</span></p><p><b>subject</b>: <a>Patient/example</a></p><p><b>effective</b>: 02/07/1999</p><p><b>value</b>: 80 mm[Hg]<span> (Details: UCUM code mm[Hg] = &#39;mmHg&#39;)</span></p></div></text><status value="final"/>
+	<category>
+		<coding>
+			<system value="http://terminology.hl7.org/CodeSystem/observation-category"/>
+			<code value="vital-signs"/>
+			<display value="Vital Signs"/>
+		</coding>
+		<text value="Vital Signs"/>
+	</category>
+	<code>
+		<coding>
+			<system value="http://loinc.org"/>
+			<code value="8478-0"/>
+			<display value="Mean blood pressure"/>
+		</coding>
+		<text value="Mean blood pressure"/>
+	</code>
+	<subject>
+		<reference value="Patient/example"/>
+	</subject>
+	<effectiveDateTime value="1999-07-02"/>
+	<valueQuantity>
+		<value value="80"/>
+		<unit value="mm[Hg]"/>
+		<system value="http://unitsofmeasure.org"/>
+		<code value="mm[Hg]"/>
+	</valueQuantity>
+</Observation>
+    </resource>
+  </entry>
+  <entry>
+    <fullUrl value="http://hl7.org/fhir/Observation/respiratory-rate"/>
+    <resource>
+<Observation xmlns="http://hl7.org/fhir">
+	<id value="respiratory-rate"/>
+	<meta>
+		<profile value="http://hl7.org/fhir/StructureDefinition/vitalsigns"/>
+	</meta>
+	<text><status value="generated"/><div xmlns="http://www.w3.org/1999/xhtml"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: respiratory-rate</p><p><b>meta</b>: </p><p><b>status</b>: final</p><p><b>category</b>: Vital Signs <span>(Details : {http://terminology.hl7.org/CodeSystem/observation-category code &#39;vital-signs&#39; = &#39;Vital Signs&#39;, given as &#39;Vital Signs&#39;})</span></p><p><b>code</b>: Respiratory rate <span>(Details : {LOINC code &#39;9279-1&#39; = &#39;Respiratory rate&#39;, given as &#39;Respiratory rate&#39;})</span></p><p><b>subject</b>: <a>Patient/example</a></p><p><b>effective</b>: 02/07/1999</p><p><b>value</b>: 26 breaths/minute<span> (Details: UCUM code /min = &#39;/min&#39;)</span></p></div></text><status value="final"/>
+	<category>
+		<coding>
+			<system value="http://terminology.hl7.org/CodeSystem/observation-category"/>
+			<code value="vital-signs"/>
+			<display value="Vital Signs"/>
+		</coding>
+		<text value="Vital Signs"/>
+	</category>
+	<code>
+		<coding>
+			<system value="http://loinc.org"/>
+			<code value="9279-1"/>
+			<display value="Respiratory rate"/>
+		</coding>
+		<text value="Respiratory rate"/>
+	</code>
+	<subject>
+		<reference value="Patient/example"/>
+	</subject>
+	<effectiveDateTime value="1999-07-02"/>
+	<valueQuantity>
+		<value value="26"/>
+		<unit value="breaths/minute"/>
+		<system value="http://unitsofmeasure.org"/>
+		<code value="/min"/>
+	</valueQuantity>
+</Observation>
+    </resource>
+  </entry>
+  <entry>
+    <fullUrl value="http://hl7.org/fhir/Observation/ekg"/>
+    <resource>
+<Observation xmlns="http://hl7.org/fhir">
+	<id value="ekg"/>
+	<text><status value="generated"/><div xmlns="http://www.w3.org/1999/xhtml"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: ekg</p><p><b>status</b>: final</p><p><b>category</b>: Procedure <span>(Details : {http://terminology.hl7.org/CodeSystem/observation-category code &#39;procedure&#39; = &#39;Procedure&#39;, given as &#39;Procedure&#39;})</span></p><p><b>code</b>: MDC_ECG_ELEC_POTL <span>(Details : {urn:oid:2.16.840.1.113883.6.24 code &#39;131328&#39; = &#39;131328&#39;, given as &#39;MDC_ECG_ELEC_POTL&#39;})</span></p><p><b>subject</b>: <a>P. van de Heuvel</a></p><p><b>effective</b>: 19/02/2015 9:30:35 AM</p><p><b>performer</b>: <a>A. Langeveld</a></p><p><b>device</b>: 12 lead EKG Device Metric</p><blockquote><p><b>component</b></p><p><b>code</b>: MDC_ECG_ELEC_POTL_I <span>(Details : {urn:oid:2.16.840.1.113883.6.24 code &#39;131329&#39; = &#39;131329&#39;, given as &#39;MDC_ECG_ELEC_POTL_I&#39;})</span></p><p><b>value</b>: Origin: (system = &#39;[not stated]&#39; code null = &#39;null&#39;), Period: 10, Factor: 1.612, Lower: -3300, Upper: 3300, Dimensions: 1, Data: 2041 2043 2037 2047 2060 2062 2051 2023 2014 2027 2034 2033 2040 2047 2047 2053 2058 2064 2059 2063 2061 2052 2053 2038 1966 1885 1884 2009 2129 2166 2137 2102 2086 2077 2067 2067 2060 2059 2062 2062 2060 2057 2045 2047 2057 2054 2042 2029 2027 2018 2007 1995 2001 2012 2024 2039 2068 2092 2111 2125 2131 2148 2137 2138 2128 2128 2115 2099 2097 2096 2101 2101 2091 2073 2076 2077 2084 2081 2088 2092 2070 2069 2074 2077 2075 2068 2064 2060 2062 2074 2075 2074 2075 2063 2058 2058 2064 2064 2070 2074 2067 2060 2062 2063 2061 2059 2048 2052 2049 2048 2051 2059 2059 2066 2077 2073</p></blockquote><blockquote><p><b>component</b></p><p><b>code</b>: MDC_ECG_ELEC_POTL_II <span>(Details : {urn:oid:2.16.840.1.113883.6.24 code &#39;131330&#39; = &#39;131330&#39;, given as &#39;MDC_ECG_ELEC_POTL_II&#39;})</span></p><p><b>value</b>: Origin: (system = &#39;[not stated]&#39; code null = &#39;null&#39;), Period: 10, Factor: 1.612, Lower: -3300, Upper: 3300, Dimensions: 1, Data: 2041 2043 2037 2047 2060 2062 2051 2023 2014 2027 2034 2033 2040 2047 2047 2053 2058 2064 2059 2063 2061 2052 2053 2038 1966 1885 1884 2009 2129 2166 2137 2102 2086 2077 2067 2067 2060 2059 2062 2062 2060 2057 2045 2047 2057 2054 2042 2029 2027 2018 2007 1995 2001 2012 2024 2039 2068 2092 2111 2125 2131 2148 2137 2138 2128 2128 2115 2099 2097 2096 2101 2101 2091 2073 2076 2077 2084 2081 2088 2092 2070 2069 2074 2077 2075 2068 2064 2060 2062 2074 2075 2074 2075 2063 2058 2058 2064 2064 2070 2074 2067 2060 2062 2063 2061 2059 2048 2052 2049 2048 2051 2059 2059 2066 2077 2073</p></blockquote><blockquote><p><b>component</b></p><p><b>code</b>: MDC_ECG_ELEC_POTL_III <span>(Details : {urn:oid:2.16.840.1.113883.6.24 code &#39;131389&#39; = &#39;131389&#39;, given as &#39;MDC_ECG_ELEC_POTL_III&#39;})</span></p><p><b>value</b>: Origin: (system = &#39;[not stated]&#39; code null = &#39;null&#39;), Period: 10, Factor: 1.612, Lower: -3300, Upper: 3300, Dimensions: 1, Data: 2041 2043 2037 2047 2060 2062 2051 2023 2014 2027 2034 2033 2040 2047 2047 2053 2058 2064 2059 2063 2061 2052 2053 2038 1966 1885 1884 2009 2129 2166 2137 2102 2086 2077 2067 2067 2060 2059 2062 2062 2060 2057 2045 2047 2057 2054 2042 2029 2027 2018 2007 1995 2001 2012 2024 2039 2068 2092 2111 2125 2131 2148 2137 2138 2128 2128 2115 2099 2097 2096 2101 2101 2091 2073 2076 2077 2084 2081 2088 2092 2070 2069 2074 2077 2075 2068 2064 2060 2062 2074 2075 2074 2075 2063 2058 2058 2064 2064 2070 2074 2067 2060 2062 2063 2061 2059 2048 2052 2049 2048 2051 2059 2059 2066 2077 2073</p></blockquote></div></text><status value="final"/>
+	<category>
+		<coding>
+			<system value="http://terminology.hl7.org/CodeSystem/observation-category"/>
+			<code value="procedure"/>
+			<display value="Procedure"/>
+		</coding>
+	</category>
+	<code>
+		<coding>
+			<system value="urn:oid:2.16.840.1.113883.6.24"/>
+			<code value="131328"/>
+			<display value="MDC_ECG_ELEC_POTL"/>
+		</coding>
+	</code>
+	<subject>
+		<reference value="Patient/f001"/>
+		<display value="P. van de Heuvel"/>
+	</subject>
+	<effectiveDateTime value="2015-02-19T09:30:35+01:00"/>
+	<performer>
+		<reference value="Practitioner/f005"/>
+		<display value="A. Langeveld"/>
+	</performer>
+	<device>
+		<display value="12 lead EKG Device Metric"/>
+	</device>
+	<!--   Lead I data chunk 0   -->
+	<component>
+		<code>
+			<coding>
+				<system value="urn:oid:2.16.840.1.113883.6.24"/>
+				<code value="131329"/>
+				<display value="MDC_ECG_ELEC_POTL_I"/>
+			</coding>
+		</code>
+		<valueSampledData>
+			<!--   Zero potential   -->
+			<origin>
+				<value value="2048"/>
+			</origin>
+			<!--   period in ms = 1000/frequency   -->
+			<period value="10"/>
+			<!--    factor.value   -->
+			<factor value="1.612"/>
+			<!--    voltage-min   -->
+			<lowerLimit value="-3300"/>
+			<!--    voltage-max   -->
+			<upperLimit value="3300"/>
+			<dimensions value="1"/>
+			<data value="2041 2043 2037 2047 2060 2062 2051 2023 2014 2027 2034 2033 2040 2047 2047 2053 2058 2064 2059 2063 2061 2052 2053 2038 1966 1885 1884 2009 2129 2166 2137 2102 2086 2077 2067 2067 2060 2059 2062 2062 2060 2057 2045 2047 2057 2054 2042 2029 2027 2018 2007 1995 2001 2012 2024 2039 2068 2092 2111 2125 2131 2148 2137 2138 2128 2128 2115 2099 2097 2096 2101 2101 2091 2073 2076 2077 2084 2081 2088 2092 2070 2069 2074 2077 2075 2068 2064 2060 2062 2074 2075 2074 2075 2063 2058 2058 2064 2064 2070 2074 2067 2060 2062 2063 2061 2059 2048 2052 2049 2048 2051 2059 2059 2066 2077 2073"/>
+		</valueSampledData>
+	</component>
+	<!--   Lead II data chunk 0   -->
+	<component>
+		<code>
+			<coding>
+				<system value="urn:oid:2.16.840.1.113883.6.24"/>
+				<code value="131330"/>
+				<display value="MDC_ECG_ELEC_POTL_II"/>
+			</coding>
+		</code>
+		<valueSampledData>
+			<!--   Zero potential   -->
+			<origin>
+				<value value="2048"/>
+			</origin>
+			<!--   period in ms = 1000/frequency   -->
+			<period value="10"/>
+			<!--    factor.value   -->
+			<factor value="1.612"/>
+			<!--    voltage-min   -->
+			<lowerLimit value="-3300"/>
+			<!--    voltage-max   -->
+			<upperLimit value="3300"/>
+			<dimensions value="1"/>
+			<data value="2041 2043 2037 2047 2060 2062 2051 2023 2014 2027 2034 2033 2040 2047 2047 2053 2058 2064 2059 2063 2061 2052 2053 2038 1966 1885 1884 2009 2129 2166 2137 2102 2086 2077 2067 2067 2060 2059 2062 2062 2060 2057 2045 2047 2057 2054 2042 2029 2027 2018 2007 1995 2001 2012 2024 2039 2068 2092 2111 2125 2131 2148 2137 2138 2128 2128 2115 2099 2097 2096 2101 2101 2091 2073 2076 2077 2084 2081 2088 2092 2070 2069 2074 2077 2075 2068 2064 2060 2062 2074 2075 2074 2075 2063 2058 2058 2064 2064 2070 2074 2067 2060 2062 2063 2061 2059 2048 2052 2049 2048 2051 2059 2059 2066 2077 2073"/>
+		</valueSampledData>
+	</component>
+	<!--   Lead III data chunk 0   -->
+	<component>
+		<code>
+			<coding>
+				<system value="urn:oid:2.16.840.1.113883.6.24"/>
+				<code value="131389"/>
+				<display value="MDC_ECG_ELEC_POTL_III"/>
+			</coding>
+		</code>
+		<valueSampledData>
+			<!--   Zero potential   -->
+			<origin>
+				<value value="2048"/>
+			</origin>
+			<!--   period in ms = 1000/frequency   -->
+			<period value="10"/>
+			<!--    factor.value   -->
+			<factor value="1.612"/>
+			<!--    voltage-min   -->
+			<lowerLimit value="-3300"/>
+			<!--    voltage-max   -->
+			<upperLimit value="3300"/>
+			<dimensions value="1"/>
+			<data value="2041 2043 2037 2047 2060 2062 2051 2023 2014 2027 2034 2033 2040 2047 2047 2053 2058 2064 2059 2063 2061 2052 2053 2038 1966 1885 1884 2009 2129 2166 2137 2102 2086 2077 2067 2067 2060 2059 2062 2062 2060 2057 2045 2047 2057 2054 2042 2029 2027 2018 2007 1995 2001 2012 2024 2039 2068 2092 2111 2125 2131 2148 2137 2138 2128 2128 2115 2099 2097 2096 2101 2101 2091 2073 2076 2077 2084 2081 2088 2092 2070 2069 2074 2077 2075 2068 2064 2060 2062 2074 2075 2074 2075 2063 2058 2058 2064 2064 2070 2074 2067 2060 2062 2063 2061 2059 2048 2052 2049 2048 2051 2059 2059 2066 2077 2073"/>
+		</valueSampledData>
+	</component>
+</Observation>
+    </resource>
+  </entry>
+  <entry>
+    <fullUrl value="http://hl7.org/fhir/Observation/satO2"/>
+    <resource>
+<Observation xmlns="http://hl7.org/fhir">
+	<id value="satO2"/>
+	<meta>
+		<profile value="http://hl7.org/fhir/StructureDefinition/vitalsigns"/>
+	</meta>
+	<text><status value="generated"/><div xmlns="http://www.w3.org/1999/xhtml"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: satO2</p><p><b>meta</b>: </p><p><b>identifier</b>: o1223435-10</p><p><b>partOf</b>: <a>Procedure/ob</a></p><p><b>status</b>: final</p><p><b>category</b>: Vital Signs <span>(Details : {http://terminology.hl7.org/CodeSystem/observation-category code &#39;vital-signs&#39; = &#39;Vital Signs&#39;, given as &#39;Vital Signs&#39;})</span></p><p><b>code</b>: Oxygen saturation in Arterial blood <span>(Details : {LOINC code &#39;2708-6&#39; = &#39;Oxygen saturation in Arterial blood&#39;, given as &#39;Oxygen saturation in Arterial blood&#39;}; {LOINC code &#39;59408-5&#39; = &#39;Oxygen saturation in Arterial blood by Pulse oximetry&#39;, given as &#39;Oxygen saturation in Arterial blood by Pulse oximetry&#39;}; {urn:iso:std:iso:11073:10101 code &#39;150456&#39; = &#39;150456&#39;, given as &#39;MDC_PULS_OXIM_SAT_O2&#39;})</span></p><p><b>subject</b>: <a>Patient/example</a></p><p><b>effective</b>: 05/12/2014 9:30:10 AM</p><p><b>value</b>: 95 %<span> (Details: UCUM code % = &#39;%&#39;)</span></p><p><b>interpretation</b>: Normal (applies to non-numeric results) <span>(Details : {http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation code &#39;N&#39; = &#39;Normal&#39;, given as &#39;Normal&#39;})</span></p><p><b>device</b>: <a>DeviceMetric/example</a></p><h3>ReferenceRanges</h3><table><tr><td>-</td><td><b>Low</b></td><td><b>High</b></td></tr><tr><td>*</td><td>90 %<span> (Details: UCUM code % = &#39;%&#39;)</span></td><td>99 %<span> (Details: UCUM code % = &#39;%&#39;)</span></td></tr></table></div></text><identifier>
+		<system value="http://goodcare.org/observation/id"/>
+		<value value="o1223435-10"/>
+	</identifier>
+	<partOf>
+		<reference value="Procedure/ob"/>
+	</partOf>
+	<status value="final"/>
+	<category>
+		<coding>
+			<system value="http://terminology.hl7.org/CodeSystem/observation-category"/>
+			<code value="vital-signs"/>
+			<display value="Vital Signs"/>
+		</coding>
+		<text value="Vital Signs"/>
+	</category>
+	<code>
+		<coding>
+			<system value="http://loinc.org"/>
+			<!--   LOINC   -->
+			<code value="2708-6"/>
+			<display value="Oxygen saturation in Arterial blood"/>
+		</coding>
+		<!--   Example of a translation to a more specific code  to the vitals profile LOINC code   -->
+    <coding>
+			<system value="http://loinc.org"/>
+			<!--   LOINC   -->
+			<code value="59408-5"/>
+			<display value="Oxygen saturation in Arterial blood by Pulse oximetry"/>
+		</coding>
+    <!--   Example of a translation to a more specific code  to the vitals profile LOINC code   -->
+    <coding>
+			<system value="urn:iso:std:iso:11073:10101"/>
+			<!--      mdc      -->
+			<code value="150456"/>
+			<display value="MDC_PULS_OXIM_SAT_O2"/>
+		</coding>
+	</code>
+	<subject>
+		<reference value="Patient/example"/>
+	</subject>
+	<effectiveDateTime value="2014-12-05T09:30:10+01:00"/>
+	<valueQuantity>
+		<value value="95"/>
+		<unit value="%"/>
+		<system value="http://unitsofmeasure.org"/>
+		<code value="%"/>
+	</valueQuantity>
+	<interpretation>
+		<coding>
+			<system value="http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"/>
+			<code value="N"/>
+			<display value="Normal"/>
+		</coding>
+		<text value="Normal (applies to non-numeric results)"/>
+	</interpretation>
+	<device>
+		<reference value="DeviceMetric/example"/>
+	</device>
+	<referenceRange>
+		<low>
+			<value value="90"/>
+			<unit value="%"/>
+			<system value="http://unitsofmeasure.org"/>
+			<code value="%"/>
+		</low>
+		<high>
+			<value value="99"/>
+			<unit value="%"/>
+			<system value="http://unitsofmeasure.org"/>
+			<code value="%"/>
+		</high>
+	</referenceRange>
+</Observation>
+    </resource>
+  </entry>
+  <entry>
+    <fullUrl value="http://hl7.org/fhir/Observation/unsat"/>
+    <resource>
+<Observation xmlns="http://hl7.org/fhir">
+  <id value="unsat"/>
+<!--    urn:oid:2.16.840.1.113883.4.642.1.7    -->
+<!--    2.16.840.1.113883.4.642.1.118    -->
+  <text><status value="generated"/><div xmlns="http://www.w3.org/1999/xhtml"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: unsat</p><p><b>identifier</b>: 6323 (OFFICIAL)</p><p><b>status</b>: cancelled</p><p><b>code</b>: Glucose [Moles/volume] in Blood <span>(Details : {LOINC code &#39;15074-8&#39; = &#39;Glucose [Moles/volume] in Blood&#39;, given as &#39;Glucose [Moles/volume] in Blood&#39;})</span></p><p><b>subject</b>: <a>P. van de Heuvel</a></p><p><b>effective</b>: 02/04/2013 9:30:10 AM --&gt; 05/04/2013 9:30:10 AM</p><p><b>issued</b>: 03/04/2013 3:30:10 PM</p><p><b>performer</b>: <a>A. Langeveld</a></p><p><b>dataAbsentReason</b>: Specimen unsatisfactory for evaluation <span>(Details : {SNOMED CT code &#39;125154007&#39; = &#39;Specimen unsatisfactory for evaluation&#39;, given as &#39;Specimen unsatisfactory for evaluation&#39;})</span></p><p><b>note</b>: Tube broken in transit and sample leaked</p><h3>ReferenceRanges</h3><table><tr><td>-</td><td><b>Low</b></td><td><b>High</b></td></tr><tr><td>*</td><td>3.1 mmol/l<span> (Details: UCUM code mmol/L = &#39;mmol/L&#39;)</span></td><td>6.2 mmol/l<span> (Details: UCUM code mmol/L = &#39;mmol/L&#39;)</span></td></tr></table></div></text><identifier>
+    <use value="official"/>
+    <system value="http://www.bmc.nl/zorgportal/identifiers/observations"/>
+    <value value="6323"/>
+  </identifier>
+  <status value="cancelled"/>
+  <code>
+    <coding>
+      <system value="http://loinc.org"/>
+      <code value="15074-8"/>
+      <display value="Glucose [Moles/volume] in Blood"/>
+    </coding>
+  </code>
+  <subject>
+    <reference value="Patient/f001"/>
+    <display value="P. van de Heuvel"/>
+  </subject>
+  <effectivePeriod>
+    <start value="2013-04-02T09:30:10+01:00"/>
+    <end value="2013-04-05T09:30:10+01:00"/>
+  </effectivePeriod>
+  <issued value="2013-04-03T15:30:10+01:00"/>
+  <performer>
+    <reference value="Practitioner/f005"/>
+    <display value="A. Langeveld"/>
+  </performer>
+  <dataAbsentReason>
+    <coding>
+      <system value="http://snomed.info/sct"/>
+      <code value="125154007"/>
+      <display value="Specimen unsatisfactory for evaluation"/>
+    </coding>
+  </dataAbsentReason>
+  <note><text value="Tube broken in transit and sample leaked"/></note>
+  <referenceRange>
+    <low>
+      <value value="3.1"/>
+      <unit value="mmol/l"/>
+      <system value="http://unitsofmeasure.org"/>
+      <code value="mmol/L"/>
+    </low>
+    <high>
+      <value value="6.2"/>
+      <unit value="mmol/l"/>
+      <system value="http://unitsofmeasure.org"/>
+      <code value="mmol/L"/>
+    </high>
+  </referenceRange>
+</Observation>
+    </resource>
+  </entry>
+  <entry>
+    <fullUrl value="http://hl7.org/fhir/Observation/example"/>
+    <resource>
+<Observation xmlns="http://hl7.org/fhir">
+	<id value="example"/>
+	<!--    the mandatory quality flags:    -->
+	<text><status value="generated"/><div xmlns="http://www.w3.org/1999/xhtml"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: example</p><p><b>status</b>: final</p><p><b>category</b>: Vital Signs <span>(Details : {http://terminology.hl7.org/CodeSystem/observation-category code &#39;vital-signs&#39; = &#39;Vital Signs&#39;, given as &#39;Vital Signs&#39;})</span></p><p><b>code</b>: Body Weight <span>(Details : {LOINC code &#39;29463-7&#39; = &#39;Body weight&#39;, given as &#39;Body Weight&#39;}; {LOINC code &#39;3141-9&#39; = &#39;Body weight Measured&#39;, given as &#39;Body weight Measured&#39;}; {SNOMED CT code &#39;27113001&#39; = &#39;Body weight&#39;, given as &#39;Body weight&#39;}; {http://acme.org/devices/clinical-codes code &#39;body-weight&#39; = &#39;body-weight&#39;, given as &#39;Body Weight&#39;})</span></p><p><b>subject</b>: <a>Patient/example</a></p><p><b>encounter</b>: <a>Encounter/example</a></p><p><b>effective</b>: 28/03/2016</p><p><b>value</b>: 185 lbs<span> (Details: UCUM code [lb_av] = &#39;lb_av&#39;)</span></p></div></text><status value="final"/>
+	<!--   category code is A code that classifies the general type of observation being made. This is used for searching, sorting and display purposes.  -->
+	<category>
+		<coding>
+			<system value="http://terminology.hl7.org/CodeSystem/observation-category"/>
+			<code value="vital-signs"/>
+			<display value="Vital Signs"/>
+		</coding>
+	</category>
+	<!--   
+    Observations are often coded in multiple code systems.
+      - LOINC provides codes of varying granularity (though not usefully more specific in this particular case) and more generic LOINCs  can be mapped to more specific codes as shown here
+      - snomed provides a clinically relevant code that is usually less granular than LOINC
+      - the source system provides its own code, which may be less or more granular than LOINC
+     -->
+	<code>
+		<!--    LOINC - always recommended to have a LOINC code    -->
+		<coding>
+			<system value="http://loinc.org"/>
+			<code value="29463-7"/> <!--  more generic methodless LOINC  -->
+			<display value="Body Weight"/>
+		</coding>
+		<coding>
+			<system value="http://loinc.org"/>
+			<code value="3141-9"/><!--  translation is more specific method = measured LOINC  -->
+			<display value="Body weight Measured"/>
+		</coding>
+		<!--    SNOMED CT Codes - becoming more common    -->
+		<coding>
+			<system value="http://snomed.info/sct"/>
+			<code value="27113001"/>
+			<display value="Body weight"/>
+		</coding>
+		<!--    Also, a local code specific to the source system    -->
+		<coding>
+			<system value="http://acme.org/devices/clinical-codes"/>
+			<code value="body-weight"/>
+			<display value="Body Weight"/>
+		</coding>
+	</code>
+	<subject>
+		<reference value="Patient/example"/>
+	</subject>
+	<encounter>
+		<reference value="Encounter/example"/>
+	</encounter>
+	<effectiveDateTime value="2016-03-28"/>
+	<!--    In FHIR, units may be represented twice. Once in the
+    agreed human representation, and once in a coded form.
+    Both is best, since it's not always possible to infer
+    one from the other in code.
+
+    When a computable unit is provided, UCUM (http://unitsofmeasure.org)
+    is always preferred, but it doesn't provide notional units (such as
+    "tablet"), etc. For these, something else is required (e.g. SNOMED CT)
+      -->
+	<valueQuantity>
+		<value value="185"/>
+		<unit value="lbs"/>
+		<system value="http://unitsofmeasure.org"/>
+		<code value="[lb_av]"/>
+	</valueQuantity>
+</Observation>
+    </resource>
+  </entry>
+</Bundle>

@@ -33,6 +33,15 @@ Samples:
   the Dublin Core schemas of DCMI
   (http://dublincore.org/schemas/xmls/qdc/2003/04/02/ `dc.xsd`, `dcterms.xsd`, `dcmitype.xsd`;
   `ProRock.Xmlite.Schema.Dc.Elements`, `.Terms`, `.Types`) - [DCMI](#dcmi). The schemas themselves are not included
+- `Samples/ProRock.Xmlite.Spreadsheet` - units ProRocket generates from the SpreadsheetML schemas of ECMA-376 Part 4, 5th
+  edition (October 2016, Transitional Migration Features: `sml.xsd`, `dml-spreadsheetDrawing.xsd`, `dml-main.xsd`,
+  `shared-relationshipReference.xsd`, `shared-commonSimpleTypes.xsd`; `ProRock.Xmlite.Schema.Ooxml.Sml`, `.DmlSheet`,
+  `.DmlMain`, `.Rel`, `.SimpleTypes`) and from `opc-relationships.xsd` of ECMA-376 Part 2, 5th edition (December 2021;
+  `ProRock.Xmlite.Schema.Relationships`) - [Ecma International](#ecma-international). The schemas themselves are not included
+- `Samples/ProRock.Xmlite.Fhir/fhir-single.xsd` and `fhir-xhtml.xsd` - the XML schemas of the HL7® FHIR® R4 standard
+  (version 4.0.1, http://hl7.org/fhir/R4/fhir-all-xsd.zip), unmodified, with the units ProRocket generates from them
+  (`ProRock.Xmlite.Schema.Fhir`, `.Xhtml`) - [HL7](#hl7); `fhir-xhtml.xsd` is HL7's pared-down version of the W3C XHTML
+  schema. `bundle.xml` collects examples of the specification (the Patient example and the Observation examples), CC0
 
 ---
 
@@ -195,3 +204,22 @@ https://www.dublincore.org/about/copyright/). The notice DCMI asks for, in the s
 > Portions of this software may use XML schemas Copyright © 2011 DCMI, the Dublin Core™ Metadata Initiative. These are licensed under the Creative Commons 4.0 Attribution license.
 
 DCMI: http://dublincore.org/ - License: https://creativecommons.org/licenses/by/4.0/
+
+---
+
+## HL7
+
+The HL7® FHIR® standard is licensed under Creative Commons "No Rights Reserved" (CC0), http://hl7.org/fhir/R4/license.html.
+HL7, FHIR and the FHIR [FLAME DESIGN] are the registered trademarks of Health Level Seven International, and their use does
+not constitute endorsement by HL7. The FHIR schemas carry this notice:
+
+> Copyright (c) 2011+, HL7, Inc.
+> All rights reserved.
+>
+> Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+>
+> * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+> * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+> * Neither the name of HL7 nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+>
+> THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
