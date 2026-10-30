@@ -3,28 +3,32 @@
 Plans, not promises: priorities follow real use. Themes only, no dates. The details of each release are in the
 [CHANGELOG](CHANGELOG.md).
 
-We test ProRock against large real-world schemas - so far OOXML (SpreadsheetML, DrawingML) and FHIR R4. What they find
-goes into the [known limitations](https://prorock.rocks/limitations/) and decides what comes first.
+We test ProRock against large real-world schemas - so far FHIR R4 and Office Open XML (SpreadsheetML, DrawingML). What they
+find goes into the [known limitations](https://prorock.rocks/limitations/) and decides what comes first.
 
 ## Now
 
-- **Unknown content kept**: elements a schema does not know - Office's own extensions in every real file - kept as they
-  were instead of dropped. With it, an Office document read and written back stays complete
-- **Lists of plain values**: a repeating element of a simple type (several `<given>` strings) - the last thing between the
-  OOXML schemas and units that compile unchanged
+- **E-invoicing and ISO 20022**: the schemas behind today's legal and banking requirements, explored end to end the way
+  FHIR and Excel were - with a sample
+- **Nicer generated names**: schema naming conventions (`CT_Font`, `FontType`) left out of the class names, the XML names
+  kept exact - with a way for code written against the current names to keep compiling
 
 ## Next
 
+- **Calcite**: Excel workbooks through plain objects - sheets, cells, styles, tables - read, changed and written back with
+  everything in them; OOXML end to end
 - **Polymorphic content**: substitution groups and full `xsi:type` - a property typed with a base element or type holds any
   of its derived ones
-- **OOXML end to end**: the base for Calcite (xlsx and ods, one object model)
-- **Android**: a sample app verified on a device
 
 ## Later / considering
 
 - **Jsonite**: JSON through the same classes (opens 2.x) - also the JSON side of FHIR
+- **Graphite**: Word documents (docx), on top of mixed content
 - more formats on the same classes: YAML, EDI (X12, EDIFACT)
-- exact decimals, mixed content with child elements, Graphite (docx and odt)
+- a relaxed read with a log of what it had to skip; `xsi:nil`; schemas without a target namespace; exact decimals
+- **Android**: a sample app verified on a device
+
+What people ask for moves items up.
 
 ## Your schema doesn't generate?
 

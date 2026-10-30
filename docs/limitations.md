@@ -1,7 +1,7 @@
 # Limitations and notes
 
 What of XML and XML Schema is supported, in part or not yet: [XML support](xml-support.md). This page has the notes for
-using it. Coverage grows through real-world schemas. If yours doesn't generate or doesn't read right,
+using it; [XML concepts](xml-concepts.md) explains the XML Schema terms with examples. Coverage grows through real-world schemas. If yours doesn't generate or doesn't read right,
 [open an issue](https://github.com/VitalyPopov/ProRock/issues/new/choose) - see also the [roadmap](roadmap.md).
 
 ## Writing a document back
@@ -17,9 +17,7 @@ A value set in code that equals its default is written only when marked present 
 ## Large schemas
 
 FHIR R4 and the OOXML SpreadsheetML/DrawingML schemas generate units that compile unchanged. Very large units compile slowly:
-all of FHIR R4 is one unit of about 49,000 lines, about 50 seconds for Delphi.
-
-[XML concepts for Delphi developers](xml-concepts.md) explains the XML Schema terms of these pages with examples.
+all of FHIR R4 is one unit of about 38,000 lines, which Delphi 13 compiles in a minute or more.
 
 ## Notes
 
@@ -27,8 +25,9 @@ all of FHIR R4 is one unit of about 49,000 lines, about 50 seconds for Delphi.
   traces, paths). Log them, and show your own message to end users.
 - Generated string types (`TStringST = type string`) need a cast before string-helper methods:
   `string(response.Address).Replace(...)`.
-- `xs:decimal`, `xs:float` and `xs:double` are `Double`: values up to about 15 significant digits read and write back unchanged,
-  but arithmetic is binary floating point. For money arithmetic, convert to `Currency` before calculating:
+- `xs:decimal`, `xs:float` and `xs:double` are `Double`, written as the shortest text that reads back the same value: a number
+  of up to 15 significant digits comes back as the same number (`0.1` stays `0.1`; `1.50` is written `1.5`), a longer one
+  as the same Double in its shortest text, and digits beyond what a Double holds (about 17) are lost. Arithmetic is binary floating point. For money arithmetic, convert to `Currency` before calculating:
   `var price: Currency := line.Price; var total := price * line.Quantity;`. `xs:integer` is `Int64`, `xs:unsignedLong` is
   `UInt64`.
 - A property that fell back to `string` (a schema the generator reported missing) where the XML has child elements: parsing

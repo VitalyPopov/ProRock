@@ -55,7 +55,7 @@ documents; it does not validate them against their schema.
 | Unions | partial | the text as written, unless the union has one named member type |
 | Defaults | supported | default values, written only when present or required |
 | `xsi:nil` | not yet | a nil element reads as its default and is written with a value |
-| Exact decimals | partial | `xs:decimal` is a `Double`: about 15 significant digits ([notes](limitations.md#notes)) |
+| Exact decimals | partial | `xs:decimal` is a `Double`: up to 15 significant digits come back as the same number, beyond about 17 they are lost ([notes](limitations.md#notes)) |
 | Text with attributes (simpleContent) | supported | the text in `XmlValue`, the attributes as properties |
 | Complex types by extension or restriction | supported | an extension is a Delphi descendant; a restriction a class of its own |
 

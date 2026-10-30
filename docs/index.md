@@ -11,6 +11,45 @@ then have to be found and fixed one by one. With ProRock you regenerate the unit
 [Get started in 5 minutes](getting-started.md){ .md-button .md-button--primary }
 [![](assets/prorocket.png){ .button-icon } Download ProRocket Lite](https://github.com/VitalyPopov/ProRock/releases/latest/download/ProRocket-Lite.zip){ .md-button }
 
+## Proven on real schemas
+
+- **HL7® FHIR® R4** - all 146 resource types from the official schemas: a Bundle of 1,000 Patients read in 0.1 s,
+  narratives written back as they were ([sample](samples.md#fhir-resources))
+- **Excel workbooks** - SpreadsheetML from ECMA-376: an invoice read, edited and written back with everything Excel put in
+  it; Excel opens it and recalculates ([sample](samples.md#excel-workbook))
+- **SOAP services** - the EU VIES VAT service, WS-Security, client certificates ([getting started](getting-started.md))
+
+What of XML and XML Schema is covered, in part or not yet: [XML support](xml-support.md).
+
+## What it looks like
+
+A FHIR Bundle: each entry holds one of 146 resource types, an Observation's value one of eleven - the classes say which:
+
+```pascal
+bundle.FromXml(xml);
+for var entry in bundle.Entry do
+begin
+  var resource := entry.Resource.Chosen;               // the one resource in this entry
+  if resource is TObservationCT then
+  begin
+    var value := TObservationCT(resource).ValueChosen; // TQuantityCT, TCodeableConceptCT, TStringCT... or nil
+    if value is TQuantityCT then
+      Writeln(TQuantityCT(value).Value.Value, ' ', TQuantityCT(value).&Unit.Value); // 185 lbs
+  end;
+end;
+```
+
+An Excel cell changed, and the workbook written back with everything else as it was:
+
+```pascal
+cell.V := '5';                           // <c r="C6"><v>5</v></c>
+workbook.CalcPr.FullCalcOnLoad := True;  // Excel recalculates the totals when it opens the file
+```
+
+![Excel with the workbook saved by the sample: the changed quantity, the amount and the total recalculated, the table intact](assets/excel-saved.png)
+
+A SOAP call from a WSDL takes [5 minutes](getting-started.md).
+
 ## Two parts
 
 **ProRock** - the runtime library. Open source (Apache 2.0), pure Delphi source, no dependencies beyond the RTL, no packages
@@ -27,35 +66,11 @@ to install.
 [command line](cli.md) - friendly to scripts and AI coding assistants. Free for any use, including commercial; the generated
 code is yours.
 
-## What it looks like
+## How it is designed
 
-```pascal
-uses ProRock.Soapite.CheckVatService; // generated from the EU VIES WSDL
-
-var service := TCheckVatService.Create('https://ec.europa.eu/taxation_customs/vies/services/checkVatService');
-try
-  var request := TCheckVatE.Create;
-  try
-    request.CountryCode := 'IE';
-    request.VatNumber := '6388047V';
-
-    var response: TCheckVatResponseE;
-    var error: TSoapiteError;
-    if service.TryCheckVat(request, response, error) then // never raises for service or network failures
-      try
-        Writeln(response.Name, ' - valid: ', response.Valid);
-      finally
-        response.Free;
-      end
-    else
-      Writeln('failed [', error.Code, ']: ', error.Message);
-  finally
-    request.Free;
-  end;
-finally
-  service.Free;
-end;
-```
+A cockpit, not an engine room: the complexity stays inside, outside are plain Delphi objects you own. Little to learn,
+nothing to install, as fast as it can be made - and tolerant of real-world data. More in
+[Design principles](principles.md).
 
 ## Platforms
 

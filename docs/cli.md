@@ -37,7 +37,7 @@ In PowerShell, give the path to the exe: `.\ProRocketCli.exe ...` in its folder,
 | `-o <folder>` | where the units are written; created if missing. Default: the current folder |
 | `--strict` | write nothing if there are problems (see below); exit code 1 |
 | `--no-timestamp` | leave out the `Generated (UTC)` header line: an unchanged schema gives a byte-identical unit |
-| `--version` | the version, e.g. `ProRocket Lite CLI 1.5.1` - the generated units need the ProRock release with that number |
+| `--version` | the version, e.g. `ProRocket Lite CLI 1.6.0` - the generated units need the ProRock release with that number |
 | `-h`, `--help` | usage |
 
 Give every schema file that belongs together in one run: the main XSD or WSDL and the files it imports and includes.
@@ -163,7 +163,10 @@ end;
 
 How the units behave:
 - Nested objects and lists are created and freed with their parent (read-only properties); just use them.
-- Schema enumerations are Delphi enums; `maxOccurs > 1` gives a typed list (`...List`); `xs:decimal` is `Double`.
+- Schema enumerations are Delphi enums; `maxOccurs > 1` gives a typed list (`...List`) - for a repeating element of a
+  simple type a list of plain values (`TXmliteValueList<T>`, a `TList<T>`); `xs:decimal` is `Double`.
+- A member of an `xs:choice` is created on first access, so its getter never returns `nil`: ask which member the document
+  has with `Chosen` (`Entry.Resource.Chosen`, `Obs.ValueChosen` for FHIR's `value[x]`).
 - Facets (lengths, patterns, ranges) are not validated: a 2-character code is a plain string type.
 - A property that fell back to `string` (an `unresolved-ref` or `missing-schema` problem) where the XML has child
   elements: parsing succeeds, the property stays empty and that content is dropped - also when written back with `ToXml`.

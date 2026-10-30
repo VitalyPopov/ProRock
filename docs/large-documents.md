@@ -40,7 +40,7 @@ private
   function GetPickup: TPickupCT;
   function GetCourier: TCourierCT;
 published
-  [TChoice('Pickup')]
+  [TChoice('Pickup')]                 // the group, named after its first member
   property Pickup: TPickupCT read GetPickup;
   [TChoice('Pickup')]
   property Courier: TCourierCT read GetCourier;

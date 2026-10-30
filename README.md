@@ -8,6 +8,16 @@ services with them.
 A schema changes: a new e-invoicing version, an ISO 20022 release, a service adding fields. Hand-written or hand-patched mappings
 then have to be found and fixed one by one. With ProRock you regenerate the units, and the compiler shows exactly what changed.
 
+**Proven on real schemas:**
+- **HL7® FHIR® R4** - all 146 resource types from the official schemas: a Bundle of 1,000 Patients read in 0.1 s,
+  narratives written back as they were ([sample](https://prorock.rocks/samples/#fhir-resources))
+- **Excel workbooks** - SpreadsheetML from ECMA-376: an invoice read, edited and written back with everything Excel put in
+  it; Excel opens it and recalculates ([sample](https://prorock.rocks/samples/#excel-workbook))
+- **SOAP services** - the EU VIES VAT service, WS-Security, client certificates (quick start below)
+
+![An invoice edited by the ProRock sample and opened in Excel: the quantity changed, the amount and the total recalculated, the table intact](docs/assets/excel-saved.png)
+
+**Two parts:**
 - **ProRock** - the runtime library: open source (Apache 2.0), pure Delphi source, no dependencies beyond the RTL
   - **Basite** - the core: plain Delphi objects described once by their metadata (MetaBank) - nested objects created and
     freed with their parent, presence of every value; independent of any data format, the base for Xmlite and later Jsonite
@@ -28,7 +38,8 @@ The full documentation is at **[prorock.rocks](https://prorock.rocks/)** (search
 | [Getting started](https://prorock.rocks/getting-started/) | from a WSDL to a working SOAP call in 5 minutes |
 | [Xmlite](https://prorock.rocks/xmlite/) · [Soapite](https://prorock.rocks/soapite/) | XML through typed classes · SOAP clients, transport, authentication |
 | [ProRocket Lite](https://prorock.rocks/prorocket-lite/) | the generator: GUI and command line |
-| [Samples](https://prorock.rocks/samples/) | seven samples, from Office document properties to WS-Security |
+| [Samples](https://prorock.rocks/samples/) | nine samples, from an Excel workbook and FHIR resources to WS-Security |
+| [Design principles](https://prorock.rocks/principles/) | a cockpit, not an engine room: what ProRock is built on - and what it is not |
 | [XML concepts](https://prorock.rocks/xml-concepts/) | namespaces, XSD types, substitution groups - explained for Delphi developers |
 
 ## Quick start: a SOAP client from a WSDL
@@ -77,15 +88,15 @@ repository, add its `Source` folder to your project's search path (ProRock 1.4 a
 the units you need.
 
 Delphi 10.3 Rio to 13 Florence, Win64 and Win32; all units compile for Android (Delphi 13), running on a device is not verified
-yet. The [Samples](Samples) folder has one group project with seven samples - Office document properties, EU VIES, WS-Security,
-client certificates and more.
+yet. The [Samples](Samples) folder has one group project with nine samples - an Excel workbook, FHIR resources, Office document
+properties, EU VIES, WS-Security, client certificates and more.
 
 ## Known limitations and notes
 
 Coverage grows through real-world schemas. Reading and writing back are exact for what a schema describes, also for large
 schemas: FHIR R4 and the OOXML SpreadsheetML/DrawingML schemas generate units that compile and round-trip - Office's own
-extensions and FHIR's XHTML narratives included. Not covered yet: elements standing in for their substitution group head;
-facets are not validated - the next items on the [ROADMAP](ROADMAP.md). The full list, with notes on decimals, string types
+extensions and FHIR's XHTML narratives included. Not covered yet: elements standing in for their substitution group head,
+`xsi:nil`, schemas without a target namespace; facets are not validated - see the [ROADMAP](ROADMAP.md). The full list, with notes on decimals, string types
 and server error texts: [Limitations and notes](https://prorock.rocks/limitations/).
 
 ## Development

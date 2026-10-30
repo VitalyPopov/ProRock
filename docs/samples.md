@@ -27,6 +27,13 @@ Excel put in them that the schema does not describe (`extLst`, revision ids, `mc
 as it is. Excel opens the saved file and recalculates its formulas. `demo.xlsx` is an invoice saved by Excel: a Table with
 a calculated column and a total row (`SUBTOTAL(109,Table1[Amount])`).
 
+![The Spreadsheet sample with demo.xlsx open: the invoice sheet in a grid, the table found, and the total row's formula =SUBTOTAL(109,Table1[Amount]) shown for the selected cell](assets/spreadsheet-sample.png)
+
+The quantity of the first line changed from 4 to 5 in the sample and saved - Excel opens the file without a repair prompt,
+with the table as it was, and recalculates the amount and the total:
+
+![Excel with the workbook saved by the sample: the quantity 5, the amount 6,250.00 and the total 11,122.00 recalculated, the table and its total row formula intact](assets/excel-saved.png)
+
 ```pascal
 // a cell's text: a shared string by its index, a number as written, a date from its style
 case cell.T of
@@ -50,6 +57,8 @@ with what it is, its value and when; the selected one's narrative is shown as te
 was read, and Speed test reads and writes a Bundle of 1,000 resources made of the same entries. `bundle.xml` holds the
 Patient and Observation examples of the specification.
 
+![The FHIR sample: a Bundle of the specification's examples, each Observation with its value - 51.2 cm, 107 mmHg / 60 mmHg, blue, 185 lbs - the Body Weight narrative below, and a Bundle of 1,003 resources read in 319 ms and written in 281 ms](assets/fhir-sample.png)
+
 The resource of a Bundle entry is a choice of all 146 resource types; an Observation's `value[x]` is one of eleven.
 Only the member in the document is created, and the typed shortcut gives it:
 
@@ -70,7 +79,7 @@ The narrative is XHTML mixed content: `InnerText` gives its text; the sample wal
 each paragraph. FHIR's own `meta` element hides ProRock's `Meta` in every resource class - `TBasite(resource).Meta` is
 the class metadata.
 
-Compiling the FHIR unit takes about a minute; the program starts in about a third of a second.
+Compiling the FHIR unit takes a minute or more; the program starts in about a third of a second.
 
 ## Office document properties
 

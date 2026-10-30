@@ -41,6 +41,7 @@ markdown_extensions:
 
 nav:
   - Home: index.md
+  - Design principles: principles.md
   - Getting started: getting-started.md
   - Library:
       - Xmlite (XML): xmlite.md

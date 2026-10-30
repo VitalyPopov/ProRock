@@ -66,9 +66,9 @@ The suffixes `E`, `CT` and `ST` keep an element and a type of the same name apar
 <order><id>1</id><note></note></order>  <!-- note is present and empty -->
 ```
 
-The schema sees two different documents. A Delphi `string` property is `''` in both cases. ProRock doesn't tell them apart yet:
-an absent optional value reads as its default, and an optional value equal to its default is not written. For most documents
-that is what you want; where the difference matters, it is a known limitation (on the [roadmap](roadmap.md)).
+The schema sees two different documents. A Delphi `string` property is `''` in both cases, so ProRock also remembers which
+values the document had: `order.Present[@order.Note]` is `True` for the second one only, and each is written back as it was
+([presence](xmlite.md#absent-or-default-presence)).
 
 ## Enumerations
 

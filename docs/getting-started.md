@@ -16,7 +16,7 @@ ProRock is a pure source library: no installation, no design-time packages, no c
 tag (tags have no `v`) next to your project:
 
 ```
-git clone --branch 1.5.1 https://github.com/VitalyPopov/ProRock ThirdParty\ProRock
+git clone --branch 1.6.0 https://github.com/VitalyPopov/ProRock ThirdParty\ProRock
 ```
 
 or download the source zip of the [latest release](https://github.com/VitalyPopov/ProRock/releases/latest).
@@ -92,7 +92,9 @@ That's it. Next: [Soapite](soapite.md) for timeouts, authentication and faults.
 
 ## The same from an XSD
 
-Generate the units from the XSD the same way, then parse and write documents through the typed classes:
+Generate the units from the XSD the same way, then parse and write documents through the typed classes. To try it, the
+[`ProRock.Xmlite.Namespaces`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Xmlite.Namespaces) sample
+has this `order.xsd` and a document for it (`demo.xml`):
 
 ```pascal
 uses System.SysUtils, System.IOUtils,
