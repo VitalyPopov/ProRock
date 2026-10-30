@@ -5,7 +5,14 @@ number since 1.1.0.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versions follow [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [1.6.0] - 2026-11-02
+
+OOXML and FHIR end to end: an Excel workbook read, edited and written back with everything Office put in it, and a FHIR R4
+Bundle of 1,000 Patients read in a tenth of a second. Choice members are created on first access, content the schema does
+not describe is kept, mixed content and element order round-trip, repeating simple elements are lists of values, and numbers
+are written back exactly. Two new samples show it: an Excel workbook and FHIR resources. Regenerate your units to get it;
+code that walks generated objects recursively or takes the address of a choice member needs a small change (see Changed).
+Verified on Delphi 10.3 to 13, Win32 and Win64.
 
 ### Changed
 - Choice members are created on first access, not with their parent. A property that is one alternative of an `xs:choice`
@@ -60,7 +67,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 - The FHIR sample: HL7® FHIR® R4 resources read into units generated from the standard's schemas (146 resource types,
   38,000 lines) - a Bundle listed with each Observation's value (`ValueChosen`), the narrative as text, written back as it
   was; a Bundle of 1,000 resources read and written in about a third of a second each
-- Docs: an XML support page - what of XML and XML Schema works, in part, or not yet - and Large documents (choices)
+- Docs: an XML support page - what of XML and XML Schema works, in part, or not yet - Large documents (choices), and Design
+  principles
 
 ### Removed
 - `TXmliteTextElement` and `TXmliteTextNodeString`/`Integer`/`Int64`/`Cardinal`: an element of plain text as an object, never
