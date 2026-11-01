@@ -45,7 +45,7 @@ uses System.Classes, System.IOUtils, System.Zip, System.DateUtils,
   ProRock.Basite, ProRock.Xmlite, ProRock.Xmlite.Schema.Relationships, ProRock.Xmlite.Schema.Dc.Terms;
 
 const
-  // OPC (ECMA-376 Part 2): the package's relationships, and the types of the two we look for (Annex E)
+  // OPC (ECMA-376 Part 2): the package's relationships, and the types of the two looked for (Annex E)
   cPackageRelationships = '_rels/.rels';
   cCorePropertiesType = 'http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties';
   cExtendedPropertiesType = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties';

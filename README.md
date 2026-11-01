@@ -95,9 +95,16 @@ properties, EU VIES, WS-Security, client certificates and more.
 
 Coverage grows through real-world schemas. Reading and writing back are exact for what a schema describes, also for large
 schemas: FHIR R4 and the OOXML SpreadsheetML/DrawingML schemas generate units that compile and round-trip - Office's own
-extensions and FHIR's XHTML narratives included. Not covered yet: elements standing in for their substitution group head,
-`xsi:nil`, schemas without a target namespace; facets are not validated - see the [ROADMAP](ROADMAP.md). The full list, with notes on decimals, string types
-and server error texts: [Limitations and notes](https://prorock.rocks/limitations/).
+extensions and FHIR's XHTML narratives included.
+
+Not covered yet:
+- elements standing in for their substitution group head
+- `xsi:nil`
+- schemas without a target namespace
+- facets (patterns, lengths, ranges) are not validated
+
+What comes next: [ROADMAP](ROADMAP.md). The full list, with notes on decimals, string types and server error texts:
+[Limitations and notes](https://prorock.rocks/limitations/).
 
 ## Development
 

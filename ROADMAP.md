@@ -3,7 +3,7 @@
 Plans, not promises: priorities follow real use. Themes only, no dates. The details of each release are in the
 [CHANGELOG](CHANGELOG.md).
 
-We test ProRock against large real-world schemas - so far FHIR R4 and Office Open XML (SpreadsheetML, DrawingML). What they
+ProRock is tested against large real-world schemas - so far FHIR R4 and Office Open XML (SpreadsheetML, DrawingML). What they
 find goes into the [known limitations](https://prorock.rocks/limitations/) and decides what comes first.
 
 ## Now
