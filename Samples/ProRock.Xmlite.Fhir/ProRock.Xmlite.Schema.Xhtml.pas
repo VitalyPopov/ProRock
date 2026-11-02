@@ -141,11 +141,6 @@ type
   TBlocktextEG = class;
   TBlockEG = class;
 
-  TInlineCTList = class;
-  TBlockCTList = class;
-  TFlowCTList = class;
-  TAContentCTList = class;
-  TPreContentCTList = class;
   TDivEList = class;
   TPEList = class;
   TH1EList = class;
@@ -190,9 +185,6 @@ type
   TMapEList = class;
   TAreaEList = class;
   TTableEList = class;
-  TCaptionEList = class;
-  TTheadEList = class;
-  TTfootEList = class;
   TTbodyEList = class;
   TColgroupEList = class;
   TColEList = class;
@@ -1374,11 +1366,6 @@ type
     property Table: TTableE read GetTable;
   end;
 
-  TInlineCTList = class(TXmliteList<TInlineCT>);
-  TBlockCTList = class(TXmliteList<TBlockCT>);
-  TFlowCTList = class(TXmliteList<TFlowCT>);
-  TAContentCTList = class(TXmliteList<TAContentCT>);
-  TPreContentCTList = class(TXmliteList<TPreContentCT>);
   TDivEList = class(TXmliteList<TDivE>);
   TPEList = class(TXmliteList<TPE>);
   TH1EList = class(TXmliteList<TH1E>);
@@ -1423,9 +1410,6 @@ type
   TMapEList = class(TXmliteList<TMapE>);
   TAreaEList = class(TXmliteList<TAreaE>);
   TTableEList = class(TXmliteList<TTableE>);
-  TCaptionEList = class(TXmliteList<TCaptionE>);
-  TTheadEList = class(TXmliteList<TTheadE>);
-  TTfootEList = class(TXmliteList<TTfootE>);
   TTbodyEList = class(TXmliteList<TTbodyE>);
   TColgroupEList = class(TXmliteList<TColgroupE>);
   TColEList = class(TXmliteList<TColE>);

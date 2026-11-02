@@ -26,11 +26,6 @@ type
   TCheckVatApproxE = class;
   TCheckVatApproxResponseE = class;
 
-  TCheckVatEList = class;
-  TCheckVatResponseEList = class;
-  TCheckVatApproxEList = class;
-  TCheckVatApproxResponseEList = class;
-
   TCheckVatE = class(TXmliteElement)
   private
     fCountryCode: ProRock.Xmlite.Schema.Base.TStringST;
@@ -162,11 +157,6 @@ type
     [TRequired]
     property RequestIdentifier: ProRock.Xmlite.Schema.Base.TStringST read fRequestIdentifier write fRequestIdentifier;
   end;
-
-  TCheckVatEList = class(TXmliteList<TCheckVatE>);
-  TCheckVatResponseEList = class(TXmliteList<TCheckVatResponseE>);
-  TCheckVatApproxEList = class(TXmliteList<TCheckVatApproxE>);
-  TCheckVatApproxResponseEList = class(TXmliteList<TCheckVatApproxResponseE>);
 
 implementation
 

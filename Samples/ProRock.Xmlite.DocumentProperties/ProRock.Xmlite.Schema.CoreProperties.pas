@@ -22,10 +22,7 @@ type
   TCTKeywordCT = class;
   TCorePropertiesE = class;
 
-  TCTCorePropertiesCTList = class;
-  TCTKeywordsCTList = class;
   TCTKeywordCTList = class;
-  TCorePropertiesEList = class;
 
   [TName('CT_CoreProperties')]
   TCTCorePropertiesCT = class(TXmliteComplexType)
@@ -112,10 +109,7 @@ type
   [TNaming(TNaming.nCamelCase)]
   TCorePropertiesE = class(TCTCorePropertiesCT);
 
-  TCTCorePropertiesCTList = class(TXmliteList<TCTCorePropertiesCT>);
-  TCTKeywordsCTList = class(TXmliteList<TCTKeywordsCT>);
   TCTKeywordCTList = class(TXmliteList<TCTKeywordCT>);
-  TCorePropertiesEList = class(TXmliteList<TCorePropertiesE>);
 
 implementation
 

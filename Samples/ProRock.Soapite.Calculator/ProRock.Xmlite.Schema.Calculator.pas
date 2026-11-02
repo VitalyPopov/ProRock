@@ -26,15 +26,6 @@ type
   TDivideE = class;
   TDivideResponseE = class;
 
-  TAddEList = class;
-  TAddResponseEList = class;
-  TSubtractEList = class;
-  TSubtractResponseEList = class;
-  TMultiplyEList = class;
-  TMultiplyResponseEList = class;
-  TDivideEList = class;
-  TDivideResponseEList = class;
-
   TAddE = class(TXmliteElement)
   private
     fIntA: ProRock.Xmlite.Schema.Base.TIntST;
@@ -130,15 +121,6 @@ type
     [TRequired]
     property DivideResult: ProRock.Xmlite.Schema.Base.TIntST read fDivideResult write fDivideResult;
   end;
-
-  TAddEList = class(TXmliteList<TAddE>);
-  TAddResponseEList = class(TXmliteList<TAddResponseE>);
-  TSubtractEList = class(TXmliteList<TSubtractE>);
-  TSubtractResponseEList = class(TXmliteList<TSubtractResponseE>);
-  TMultiplyEList = class(TXmliteList<TMultiplyE>);
-  TMultiplyResponseEList = class(TXmliteList<TMultiplyResponseE>);
-  TDivideEList = class(TXmliteList<TDivideE>);
-  TDivideResponseEList = class(TXmliteList<TDivideResponseE>);
 
 implementation
 

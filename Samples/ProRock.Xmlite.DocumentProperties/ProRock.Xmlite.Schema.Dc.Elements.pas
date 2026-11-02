@@ -37,24 +37,7 @@ type
   TRightsE = class;
   TElementsGroupEG = class;
 
-  TSimpleLiteralCTList = class;
-  TElementContainerCTList = class;
   TAnyEList = class;
-  TTitleEList = class;
-  TCreatorEList = class;
-  TSubjectEList = class;
-  TDescriptionEList = class;
-  TPublisherEList = class;
-  TContributorEList = class;
-  TDateEList = class;
-  TTypeEList = class;
-  TFormatEList = class;
-  TIdentifierEList = class;
-  TSourceEList = class;
-  TLanguageEList = class;
-  TRelationEList = class;
-  TCoverageEList = class;
-  TRightsEList = class;
 
   [TNaming(TNaming.nPascalCase)]
   TSimpleLiteralCT = class(TXmliteComplexTypeRestricted)
@@ -108,24 +91,7 @@ type
 
   TElementsGroupEG = class(TXmliteElementGroup);
 
-  TSimpleLiteralCTList = class(TXmliteList<TSimpleLiteralCT>);
-  TElementContainerCTList = class(TXmliteList<TElementContainerCT>);
   TAnyEList = class(TXmliteList<TAnyE>);
-  TTitleEList = class(TXmliteList<TTitleE>);
-  TCreatorEList = class(TXmliteList<TCreatorE>);
-  TSubjectEList = class(TXmliteList<TSubjectE>);
-  TDescriptionEList = class(TXmliteList<TDescriptionE>);
-  TPublisherEList = class(TXmliteList<TPublisherE>);
-  TContributorEList = class(TXmliteList<TContributorE>);
-  TDateEList = class(TXmliteList<TDateE>);
-  TTypeEList = class(TXmliteList<TTypeE>);
-  TFormatEList = class(TXmliteList<TFormatE>);
-  TIdentifierEList = class(TXmliteList<TIdentifierE>);
-  TSourceEList = class(TXmliteList<TSourceE>);
-  TLanguageEList = class(TXmliteList<TLanguageE>);
-  TRelationEList = class(TXmliteList<TRelationE>);
-  TCoverageEList = class(TXmliteList<TCoverageE>);
-  TRightsEList = class(TXmliteList<TRightsE>);
 
 implementation
 

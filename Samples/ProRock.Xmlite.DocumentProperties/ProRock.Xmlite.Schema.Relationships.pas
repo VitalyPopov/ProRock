@@ -27,9 +27,6 @@ type
   TRelationshipsE = class;
   TRelationshipE = class;
 
-  TCTRelationshipsCTList = class;
-  TCTRelationshipCTList = class;
-  TRelationshipsEList = class;
   TRelationshipEList = class;
 
   [TName('CT_Relationships')]
@@ -67,9 +64,6 @@ type
   [TNaming(TNaming.nPascalCase)]
   TRelationshipE = class(TCTRelationshipCT);
 
-  TCTRelationshipsCTList = class(TXmliteList<TCTRelationshipsCT>);
-  TCTRelationshipCTList = class(TXmliteList<TCTRelationshipCT>);
-  TRelationshipsEList = class(TXmliteList<TRelationshipsE>);
   TRelationshipEList = class(TXmliteList<TRelationshipE>);
 
 implementation

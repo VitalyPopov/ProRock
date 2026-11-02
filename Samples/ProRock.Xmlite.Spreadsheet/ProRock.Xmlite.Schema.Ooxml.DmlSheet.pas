@@ -48,26 +48,14 @@ type
   TEGObjectChoicesEG = class;
   TEGAnchorEG = class;
 
-  TCTAnchorClientDataCTList = class;
-  TCTShapeNonVisualCTList = class;
   TCTShapeCTList = class;
-  TCTConnectorNonVisualCTList = class;
   TCTConnectorCTList = class;
-  TCTPictureNonVisualCTList = class;
   TCTPictureCTList = class;
-  TCTGraphicalObjectFrameNonVisualCTList = class;
   TCTGraphicalObjectFrameCTList = class;
-  TCTGroupShapeNonVisualCTList = class;
   TCTGroupShapeCTList = class;
-  TCTRelCTList = class;
-  TCTMarkerCTList = class;
   TCTTwoCellAnchorCTList = class;
   TCTOneCellAnchorCTList = class;
   TCTAbsoluteAnchorCTList = class;
-  TCTDrawingCTList = class;
-  TFromEList = class;
-  TToEList = class;
-  TWsDrEList = class;
 
   [TName('CT_AnchorClientData')]
   TCTAnchorClientDataCT = class(TXmliteComplexType)
@@ -531,26 +519,14 @@ type
     property AbsoluteAnchor: TCTAbsoluteAnchorCT read GetAbsoluteAnchor;
   end;
 
-  TCTAnchorClientDataCTList = class(TXmliteList<TCTAnchorClientDataCT>);
-  TCTShapeNonVisualCTList = class(TXmliteList<TCTShapeNonVisualCT>);
   TCTShapeCTList = class(TXmliteList<TCTShapeCT>);
-  TCTConnectorNonVisualCTList = class(TXmliteList<TCTConnectorNonVisualCT>);
   TCTConnectorCTList = class(TXmliteList<TCTConnectorCT>);
-  TCTPictureNonVisualCTList = class(TXmliteList<TCTPictureNonVisualCT>);
   TCTPictureCTList = class(TXmliteList<TCTPictureCT>);
-  TCTGraphicalObjectFrameNonVisualCTList = class(TXmliteList<TCTGraphicalObjectFrameNonVisualCT>);
   TCTGraphicalObjectFrameCTList = class(TXmliteList<TCTGraphicalObjectFrameCT>);
-  TCTGroupShapeNonVisualCTList = class(TXmliteList<TCTGroupShapeNonVisualCT>);
   TCTGroupShapeCTList = class(TXmliteList<TCTGroupShapeCT>);
-  TCTRelCTList = class(TXmliteList<TCTRelCT>);
-  TCTMarkerCTList = class(TXmliteList<TCTMarkerCT>);
   TCTTwoCellAnchorCTList = class(TXmliteList<TCTTwoCellAnchorCT>);
   TCTOneCellAnchorCTList = class(TXmliteList<TCTOneCellAnchorCT>);
   TCTAbsoluteAnchorCTList = class(TXmliteList<TCTAbsoluteAnchorCT>);
-  TCTDrawingCTList = class(TXmliteList<TCTDrawingCT>);
-  TFromEList = class(TXmliteList<TFromE>);
-  TToEList = class(TXmliteList<TToE>);
-  TWsDrEList = class(TXmliteList<TWsDrE>);
 
 implementation
 

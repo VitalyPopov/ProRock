@@ -70,58 +70,6 @@ type
   TBibliographicCitationE = class;
   TElementsAndRefinementsGroupEG = class;
 
-  TLcshCTList = class;
-  TMeshCTList = class;
-  TDdcCTList = class;
-  TLccCTList = class;
-  TUdcCTList = class;
-  TPeriodCTList = class;
-  TW3cdtfCTList = class;
-  TDCMITypeCTList = class;
-  TImtCTList = class;
-  TUriCTList = class;
-  TIso6392CTList = class;
-  TRfc1766CTList = class;
-  TRfc3066CTList = class;
-  TPointCTList = class;
-  TIso3166CTList = class;
-  TBoxCTList = class;
-  TTgnCTList = class;
-  TElementOrRefinementContainerCTList = class;
-  TAlternativeEList = class;
-  TTableOfContentsEList = class;
-  TAbstractEList = class;
-  TCreatedEList = class;
-  TValidEList = class;
-  TAvailableEList = class;
-  TIssuedEList = class;
-  TModifiedEList = class;
-  TDateAcceptedEList = class;
-  TDateCopyrightedEList = class;
-  TDateSubmittedEList = class;
-  TExtentEList = class;
-  TMediumEList = class;
-  TIsVersionOfEList = class;
-  THasVersionEList = class;
-  TIsReplacedByEList = class;
-  TReplacesEList = class;
-  TIsRequiredByEList = class;
-  TRequiresEList = class;
-  TIsPartOfEList = class;
-  THasPartEList = class;
-  TIsReferencedByEList = class;
-  TReferencesEList = class;
-  TIsFormatOfEList = class;
-  THasFormatEList = class;
-  TConformsToEList = class;
-  TSpatialEList = class;
-  TTemporalEList = class;
-  TAudienceEList = class;
-  TMediatorEList = class;
-  TEducationLevelEList = class;
-  TAccessRightsEList = class;
-  TBibliographicCitationEList = class;
-
   [TNaming(TNaming.nUpperCase)]
   TLcshCT = class(ProRock.Xmlite.Schema.Dc.Elements.TSimpleLiteralCT);
 
@@ -248,58 +196,6 @@ type
   TBibliographicCitationE = class(ProRock.Xmlite.Schema.Dc.Elements.TIdentifierE);
 
   TElementsAndRefinementsGroupEG = class(TXmliteElementGroup);
-
-  TLcshCTList = class(TXmliteList<TLcshCT>);
-  TMeshCTList = class(TXmliteList<TMeshCT>);
-  TDdcCTList = class(TXmliteList<TDdcCT>);
-  TLccCTList = class(TXmliteList<TLccCT>);
-  TUdcCTList = class(TXmliteList<TUdcCT>);
-  TPeriodCTList = class(TXmliteList<TPeriodCT>);
-  TW3cdtfCTList = class(TXmliteList<TW3cdtfCT>);
-  TDCMITypeCTList = class(TXmliteList<TDCMITypeCT>);
-  TImtCTList = class(TXmliteList<TImtCT>);
-  TUriCTList = class(TXmliteList<TUriCT>);
-  TIso6392CTList = class(TXmliteList<TIso6392CT>);
-  TRfc1766CTList = class(TXmliteList<TRfc1766CT>);
-  TRfc3066CTList = class(TXmliteList<TRfc3066CT>);
-  TPointCTList = class(TXmliteList<TPointCT>);
-  TIso3166CTList = class(TXmliteList<TIso3166CT>);
-  TBoxCTList = class(TXmliteList<TBoxCT>);
-  TTgnCTList = class(TXmliteList<TTgnCT>);
-  TElementOrRefinementContainerCTList = class(TXmliteList<TElementOrRefinementContainerCT>);
-  TAlternativeEList = class(TXmliteList<TAlternativeE>);
-  TTableOfContentsEList = class(TXmliteList<TTableOfContentsE>);
-  TAbstractEList = class(TXmliteList<TAbstractE>);
-  TCreatedEList = class(TXmliteList<TCreatedE>);
-  TValidEList = class(TXmliteList<TValidE>);
-  TAvailableEList = class(TXmliteList<TAvailableE>);
-  TIssuedEList = class(TXmliteList<TIssuedE>);
-  TModifiedEList = class(TXmliteList<TModifiedE>);
-  TDateAcceptedEList = class(TXmliteList<TDateAcceptedE>);
-  TDateCopyrightedEList = class(TXmliteList<TDateCopyrightedE>);
-  TDateSubmittedEList = class(TXmliteList<TDateSubmittedE>);
-  TExtentEList = class(TXmliteList<TExtentE>);
-  TMediumEList = class(TXmliteList<TMediumE>);
-  TIsVersionOfEList = class(TXmliteList<TIsVersionOfE>);
-  THasVersionEList = class(TXmliteList<THasVersionE>);
-  TIsReplacedByEList = class(TXmliteList<TIsReplacedByE>);
-  TReplacesEList = class(TXmliteList<TReplacesE>);
-  TIsRequiredByEList = class(TXmliteList<TIsRequiredByE>);
-  TRequiresEList = class(TXmliteList<TRequiresE>);
-  TIsPartOfEList = class(TXmliteList<TIsPartOfE>);
-  THasPartEList = class(TXmliteList<THasPartE>);
-  TIsReferencedByEList = class(TXmliteList<TIsReferencedByE>);
-  TReferencesEList = class(TXmliteList<TReferencesE>);
-  TIsFormatOfEList = class(TXmliteList<TIsFormatOfE>);
-  THasFormatEList = class(TXmliteList<THasFormatE>);
-  TConformsToEList = class(TXmliteList<TConformsToE>);
-  TSpatialEList = class(TXmliteList<TSpatialE>);
-  TTemporalEList = class(TXmliteList<TTemporalE>);
-  TAudienceEList = class(TXmliteList<TAudienceE>);
-  TMediatorEList = class(TXmliteList<TMediatorE>);
-  TEducationLevelEList = class(TXmliteList<TEducationLevelE>);
-  TAccessRightsEList = class(TXmliteList<TAccessRightsE>);
-  TBibliographicCitationEList = class(TXmliteList<TBibliographicCitationE>);
 
 implementation
 

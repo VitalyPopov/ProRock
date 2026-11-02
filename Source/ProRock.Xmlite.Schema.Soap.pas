@@ -40,21 +40,7 @@ type
   THeaderfaultE = class;
   TAddressE = class;
 
-  TTBindingCTList = class;
-  TTOperationCTList = class;
-  TTBodyCTList = class;
-  TTFaultResCTList = class;
-  TTFaultCTList = class;
-  TTHeaderCTList = class;
-  TTHeaderFaultCTList = class;
-  TTAddressCTList = class;
-  TBindingEList = class;
-  TOperationEList = class;
-  TBodyEList = class;
-  TFaultEList = class;
-  THeaderEList = class;
   THeaderfaultEList = class;
-  TAddressEList = class;
 
   TTBindingCT = class(ProRock.Xmlite.Schema.Wsdl.TTExtensibilityElementCT)
   private
@@ -198,21 +184,7 @@ type
 
   TAddressE = class(TTAddressCT);
 
-  TTBindingCTList = class(TXmliteList<TTBindingCT>);
-  TTOperationCTList = class(TXmliteList<TTOperationCT>);
-  TTBodyCTList = class(TXmliteList<TTBodyCT>);
-  TTFaultResCTList = class(TXmliteList<TTFaultResCT>);
-  TTFaultCTList = class(TXmliteList<TTFaultCT>);
-  TTHeaderCTList = class(TXmliteList<TTHeaderCT>);
-  TTHeaderFaultCTList = class(TXmliteList<TTHeaderFaultCT>);
-  TTAddressCTList = class(TXmliteList<TTAddressCT>);
-  TBindingEList = class(TXmliteList<TBindingE>);
-  TOperationEList = class(TXmliteList<TOperationE>);
-  TBodyEList = class(TXmliteList<TBodyE>);
-  TFaultEList = class(TXmliteList<TFaultE>);
-  THeaderEList = class(TXmliteList<THeaderE>);
   THeaderfaultEList = class(TXmliteList<THeaderfaultE>);
-  TAddressEList = class(TXmliteList<TAddressE>);
 
 implementation
 

@@ -37,16 +37,6 @@ type
   TBodyE = class;
   TFaultE = class;
 
-  TEnvelopeCTList = class;
-  THeaderCTList = class;
-  TBodyCTList = class;
-  TFaultCTList = class;
-  TDetailCTList = class;
-  TEnvelopeEList = class;
-  THeaderEList = class;
-  TBodyEList = class;
-  TFaultEList = class;
-
   [TXmliteAnyElement]
   TEnvelopeCT = class(TXmliteComplexType)
   private
@@ -106,16 +96,6 @@ type
   TBodyE = class(TBodyCT);
 
   TFaultE = class(TFaultCT);
-
-  TEnvelopeCTList = class(TXmliteList<TEnvelopeCT>);
-  THeaderCTList = class(TXmliteList<THeaderCT>);
-  TBodyCTList = class(TXmliteList<TBodyCT>);
-  TFaultCTList = class(TXmliteList<TFaultCT>);
-  TDetailCTList = class(TXmliteList<TDetailCT>);
-  TEnvelopeEList = class(TXmliteList<TEnvelopeE>);
-  THeaderEList = class(TXmliteList<THeaderE>);
-  TBodyEList = class(TXmliteList<TBodyE>);
-  TFaultEList = class(TXmliteList<TFaultE>);
 
 implementation
 

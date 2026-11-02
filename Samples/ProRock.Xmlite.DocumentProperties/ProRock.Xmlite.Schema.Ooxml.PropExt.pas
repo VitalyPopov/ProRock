@@ -23,12 +23,6 @@ type
   TCTDigSigBlobCT = class;
   TPropertiesE = class;
 
-  TCTPropertiesCTList = class;
-  TCTVectorVariantCTList = class;
-  TCTVectorLpstrCTList = class;
-  TCTDigSigBlobCTList = class;
-  TPropertiesEList = class;
-
   [TName('CT_Properties')]
   TCTPropertiesCT = class(TXmliteComplexType)
   private
@@ -162,12 +156,6 @@ type
 
   [TNaming(TNaming.nPascalCase)]
   TPropertiesE = class(TCTPropertiesCT);
-
-  TCTPropertiesCTList = class(TXmliteList<TCTPropertiesCT>);
-  TCTVectorVariantCTList = class(TXmliteList<TCTVectorVariantCT>);
-  TCTVectorLpstrCTList = class(TXmliteList<TCTVectorLpstrCT>);
-  TCTDigSigBlobCTList = class(TXmliteList<TCTDigSigBlobCT>);
-  TPropertiesEList = class(TXmliteList<TPropertiesE>);
 
 implementation
 

@@ -29,13 +29,6 @@ type
   TExpiresE = class;
   TCreatedE = class;
 
-  TAttributedDateTimeCTList = class;
-  TAttributedURICTList = class;
-  TTimestampTypeCTList = class;
-  TTimestampEList = class;
-  TExpiresEList = class;
-  TCreatedEList = class;
-
   TAttributedDateTimeCT = class(TXmliteComplexType)
   private
     fXmlValue: ProRock.Xmlite.Schema.Base.TStringST;
@@ -81,13 +74,6 @@ type
   TExpiresE = class(TAttributedDateTimeCT);
 
   TCreatedE = class(TAttributedDateTimeCT);
-
-  TAttributedDateTimeCTList = class(TXmliteList<TAttributedDateTimeCT>);
-  TAttributedURICTList = class(TXmliteList<TAttributedURICT>);
-  TTimestampTypeCTList = class(TXmliteList<TTimestampTypeCT>);
-  TTimestampEList = class(TXmliteList<TTimestampE>);
-  TExpiresEList = class(TXmliteList<TExpiresE>);
-  TCreatedEList = class(TXmliteList<TCreatedE>);
 
 implementation
 

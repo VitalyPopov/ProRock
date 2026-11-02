@@ -85,8 +85,6 @@ type
   TVstreamE = class;
   TClsidE = class;
 
-  TCTEmptyCTList = class;
-  TCTNullCTList = class;
   TByteSTList = class;
   TShortSTList = class;
   TIntSTList = class;
@@ -103,45 +101,8 @@ type
   TSTCySTList = class;
   TSTErrorSTList = class;
   TSTGuidSTList = class;
-  TCTVectorCTList = class;
   TDecimalSTList = class;
-  TCTArrayCTList = class;
-  TCTVariantCTList = class;
-  TCTVstreamCTList = class;
   TVariantEList = class;
-  TVectorEList = class;
-  TArrayEList = class;
-  TBlobEList = class;
-  TOblobEList = class;
-  TEmptyEList = class;
-  TNullEList = class;
-  TI1EList = class;
-  TI2EList = class;
-  TI4EList = class;
-  TI8EList = class;
-  TIntEList = class;
-  TUi1EList = class;
-  TUi2EList = class;
-  TUi4EList = class;
-  TUi8EList = class;
-  TUintEList = class;
-  TR4EList = class;
-  TR8EList = class;
-  TDecimalEList = class;
-  TLpstrEList = class;
-  TLpwstrEList = class;
-  TBstrEList = class;
-  TDateEList = class;
-  TFiletimeEList = class;
-  TBoolEList = class;
-  TCyEList = class;
-  TErrorEList = class;
-  TStreamEList = class;
-  TOstreamEList = class;
-  TStorageEList = class;
-  TOstorageEList = class;
-  TVstreamEList = class;
-  TClsidEList = class;
 
   [TNaming(TNaming.nTitleCase)]
   [TName('CT_Empty')]
@@ -503,8 +464,6 @@ type
 
   TClsidE = class(TXmliteElement);
 
-  TCTEmptyCTList = class(TXmliteList<TCTEmptyCT>);
-  TCTNullCTList = class(TXmliteList<TCTNullCT>);
   TByteSTList = class(TXmliteValueList<ProRock.Xmlite.Schema.Base.TByteST>);
   TShortSTList = class(TXmliteValueList<ProRock.Xmlite.Schema.Base.TShortST>);
   TIntSTList = class(TXmliteValueList<ProRock.Xmlite.Schema.Base.TIntST>);
@@ -521,45 +480,8 @@ type
   TSTCySTList = class(TXmliteValueList<TSTCyST>);
   TSTErrorSTList = class(TXmliteValueList<TSTErrorST>);
   TSTGuidSTList = class(TXmliteValueList<ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST>);
-  TCTVectorCTList = class(TXmliteList<TCTVectorCT>);
   TDecimalSTList = class(TXmliteValueList<ProRock.Xmlite.Schema.Base.TDecimalST>);
-  TCTArrayCTList = class(TXmliteList<TCTArrayCT>);
-  TCTVariantCTList = class(TXmliteList<TCTVariantCT>);
-  TCTVstreamCTList = class(TXmliteList<TCTVstreamCT>);
   TVariantEList = class(TXmliteList<TVariantE>);
-  TVectorEList = class(TXmliteList<TVectorE>);
-  TArrayEList = class(TXmliteList<TArrayE>);
-  TBlobEList = class(TXmliteList<TBlobE>);
-  TOblobEList = class(TXmliteList<TOblobE>);
-  TEmptyEList = class(TXmliteList<TEmptyE>);
-  TNullEList = class(TXmliteList<TNullE>);
-  TI1EList = class(TXmliteList<TI1E>);
-  TI2EList = class(TXmliteList<TI2E>);
-  TI4EList = class(TXmliteList<TI4E>);
-  TI8EList = class(TXmliteList<TI8E>);
-  TIntEList = class(TXmliteList<TIntE>);
-  TUi1EList = class(TXmliteList<TUi1E>);
-  TUi2EList = class(TXmliteList<TUi2E>);
-  TUi4EList = class(TXmliteList<TUi4E>);
-  TUi8EList = class(TXmliteList<TUi8E>);
-  TUintEList = class(TXmliteList<TUintE>);
-  TR4EList = class(TXmliteList<TR4E>);
-  TR8EList = class(TXmliteList<TR8E>);
-  TDecimalEList = class(TXmliteList<TDecimalE>);
-  TLpstrEList = class(TXmliteList<TLpstrE>);
-  TLpwstrEList = class(TXmliteList<TLpwstrE>);
-  TBstrEList = class(TXmliteList<TBstrE>);
-  TDateEList = class(TXmliteList<TDateE>);
-  TFiletimeEList = class(TXmliteList<TFiletimeE>);
-  TBoolEList = class(TXmliteList<TBoolE>);
-  TCyEList = class(TXmliteList<TCyE>);
-  TErrorEList = class(TXmliteList<TErrorE>);
-  TStreamEList = class(TXmliteList<TStreamE>);
-  TOstreamEList = class(TXmliteList<TOstreamE>);
-  TStorageEList = class(TXmliteList<TStorageE>);
-  TOstorageEList = class(TXmliteList<TOstorageE>);
-  TVstreamEList = class(TXmliteList<TVstreamE>);
-  TClsidEList = class(TXmliteList<TClsidE>);
 
 implementation
 

@@ -5,6 +5,17 @@ number since 1.1.0.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versions follow [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Changed
+- Generated units compile about 4 times faster or more: a list class is declared only where it is needed, each one was a generic
+  instantiation for the compiler. The FHIR sample's units, Win64: about 53 s -> 11-15 s, .dcu 157 -> 75 MB; Win32: 23 s -> 5 s. UBL 2.4
+  Invoice + CreditNote, Win64: about 7 minutes -> 13 s. A unit keeps the lists it uses itself; a list only other units use is an
+  alias there, `TNoteEList = TXmliteList<TNoteE>`, one type in every unit. Generating one document with its common schemas and
+  later another one into the same folder writes the same common units
+- A list class nothing refers to is no longer generated, in the units shipped with ProRock too. Regenerate your units; code
+  that names such a list itself can use `TXmliteList<TItem>`
+
 ## [1.6.0] - 2026-11-02
 
 OOXML and FHIR end to end: an Excel workbook read, edited and written back with everything Office put in it, and a FHIR R4

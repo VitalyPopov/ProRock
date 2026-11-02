@@ -47,24 +47,8 @@ type
   TNotUnderstoodE = class;
   TUpgradeE = class;
 
-  TEnvelopeCTList = class;
-  THeaderCTList = class;
-  TBodyCTList = class;
-  TFaultCTList = class;
-  TFaultreasonCTList = class;
   TReasontextCTList = class;
-  TFaultcodeCTList = class;
-  TSubcodeCTList = class;
-  TDetailCTList = class;
-  TNotUnderstoodTypeCTList = class;
   TSupportedEnvTypeCTList = class;
-  TUpgradeTypeCTList = class;
-  TEnvelopeEList = class;
-  THeaderEList = class;
-  TBodyEList = class;
-  TFaultEList = class;
-  TNotUnderstoodEList = class;
-  TUpgradeEList = class;
 
   TEnvelopeCT = class(TXmliteComplexType)
   private
@@ -187,24 +171,8 @@ type
 
   TUpgradeE = class(TUpgradeTypeCT);
 
-  TEnvelopeCTList = class(TXmliteList<TEnvelopeCT>);
-  THeaderCTList = class(TXmliteList<THeaderCT>);
-  TBodyCTList = class(TXmliteList<TBodyCT>);
-  TFaultCTList = class(TXmliteList<TFaultCT>);
-  TFaultreasonCTList = class(TXmliteList<TFaultreasonCT>);
   TReasontextCTList = class(TXmliteList<TReasontextCT>);
-  TFaultcodeCTList = class(TXmliteList<TFaultcodeCT>);
-  TSubcodeCTList = class(TXmliteList<TSubcodeCT>);
-  TDetailCTList = class(TXmliteList<TDetailCT>);
-  TNotUnderstoodTypeCTList = class(TXmliteList<TNotUnderstoodTypeCT>);
   TSupportedEnvTypeCTList = class(TXmliteList<TSupportedEnvTypeCT>);
-  TUpgradeTypeCTList = class(TXmliteList<TUpgradeTypeCT>);
-  TEnvelopeEList = class(TXmliteList<TEnvelopeE>);
-  THeaderEList = class(TXmliteList<THeaderE>);
-  TBodyEList = class(TXmliteList<TBodyE>);
-  TFaultEList = class(TXmliteList<TFaultE>);
-  TNotUnderstoodEList = class(TXmliteList<TNotUnderstoodE>);
-  TUpgradeEList = class(TXmliteList<TUpgradeE>);
 
 implementation
 

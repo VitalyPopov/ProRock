@@ -45,27 +45,18 @@ type
   TRequestResponseOrOneWayOperationEG = class;
   TSolicitResponseOrNotificationOperationEG = class;
 
-  TTDocumentationCTList = class;
-  TTDocumentedCTList = class;
-  TTExtensibleAttributesDocumentedCTList = class;
-  TTExtensibleDocumentedCTList = class;
-  TTDefinitionsCTList = class;
   TTImportCTList = class;
   TTTypesCTList = class;
   TTMessageCTList = class;
   TTPartCTList = class;
   TTPortTypeCTList = class;
   TTOperationCTList = class;
-  TTParamCTList = class;
   TTFaultCTList = class;
   TTBindingCTList = class;
-  TTBindingOperationMessageCTList = class;
   TTBindingOperationFaultCTList = class;
   TTBindingOperationCTList = class;
   TTServiceCTList = class;
   TTPortCTList = class;
-  TTExtensibilityElementCTList = class;
-  TDefinitionsEList = class;
 
   [TXmliteAnyElement]
   [TMixed]
@@ -313,27 +304,18 @@ type
     property Output: TTParamCT read fOutput;
   end;
 
-  TTDocumentationCTList = class(TXmliteList<TTDocumentationCT>);
-  TTDocumentedCTList = class(TXmliteList<TTDocumentedCT>);
-  TTExtensibleAttributesDocumentedCTList = class(TXmliteList<TTExtensibleAttributesDocumentedCT>);
-  TTExtensibleDocumentedCTList = class(TXmliteList<TTExtensibleDocumentedCT>);
-  TTDefinitionsCTList = class(TXmliteList<TTDefinitionsCT>);
   TTImportCTList = class(TXmliteList<TTImportCT>);
   TTTypesCTList = class(TXmliteList<TTTypesCT>);
   TTMessageCTList = class(TXmliteList<TTMessageCT>);
   TTPartCTList = class(TXmliteList<TTPartCT>);
   TTPortTypeCTList = class(TXmliteList<TTPortTypeCT>);
   TTOperationCTList = class(TXmliteList<TTOperationCT>);
-  TTParamCTList = class(TXmliteList<TTParamCT>);
   TTFaultCTList = class(TXmliteList<TTFaultCT>);
   TTBindingCTList = class(TXmliteList<TTBindingCT>);
-  TTBindingOperationMessageCTList = class(TXmliteList<TTBindingOperationMessageCT>);
   TTBindingOperationFaultCTList = class(TXmliteList<TTBindingOperationFaultCT>);
   TTBindingOperationCTList = class(TXmliteList<TTBindingOperationCT>);
   TTServiceCTList = class(TXmliteList<TTServiceCT>);
   TTPortCTList = class(TXmliteList<TTPortCT>);
-  TTExtensibilityElementCTList = class(TXmliteList<TTExtensibilityElementCT>);
-  TDefinitionsEList = class(TXmliteList<TDefinitionsE>);
 
 implementation
 

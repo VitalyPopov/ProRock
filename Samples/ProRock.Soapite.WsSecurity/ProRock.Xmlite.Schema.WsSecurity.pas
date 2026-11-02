@@ -44,28 +44,6 @@ type
   TPasswordE = class;
   TNonceE = class;
 
-  TAttributedStringCTList = class;
-  TPasswordStringCTList = class;
-  TEncodedStringCTList = class;
-  TUsernameTokenTypeCTList = class;
-  TBinarySecurityTokenTypeCTList = class;
-  TKeyIdentifierTypeCTList = class;
-  TReferenceTypeCTList = class;
-  TEmbeddedTypeCTList = class;
-  TSecurityTokenReferenceTypeCTList = class;
-  TSecurityHeaderTypeCTList = class;
-  TTransformationParametersTypeCTList = class;
-  TUsernameTokenEList = class;
-  TBinarySecurityTokenEList = class;
-  TReferenceEList = class;
-  TEmbeddedEList = class;
-  TKeyIdentifierEList = class;
-  TSecurityTokenReferenceEList = class;
-  TSecurityEList = class;
-  TTransformationParametersEList = class;
-  TPasswordEList = class;
-  TNonceEList = class;
-
   TAttributedStringCT = class(TXmliteComplexType)
   private
     fXmlValue: ProRock.Xmlite.Schema.Base.TStringST;
@@ -168,28 +146,6 @@ type
   TPasswordE = class(TPasswordStringCT);
 
   TNonceE = class(TEncodedStringCT);
-
-  TAttributedStringCTList = class(TXmliteList<TAttributedStringCT>);
-  TPasswordStringCTList = class(TXmliteList<TPasswordStringCT>);
-  TEncodedStringCTList = class(TXmliteList<TEncodedStringCT>);
-  TUsernameTokenTypeCTList = class(TXmliteList<TUsernameTokenTypeCT>);
-  TBinarySecurityTokenTypeCTList = class(TXmliteList<TBinarySecurityTokenTypeCT>);
-  TKeyIdentifierTypeCTList = class(TXmliteList<TKeyIdentifierTypeCT>);
-  TReferenceTypeCTList = class(TXmliteList<TReferenceTypeCT>);
-  TEmbeddedTypeCTList = class(TXmliteList<TEmbeddedTypeCT>);
-  TSecurityTokenReferenceTypeCTList = class(TXmliteList<TSecurityTokenReferenceTypeCT>);
-  TSecurityHeaderTypeCTList = class(TXmliteList<TSecurityHeaderTypeCT>);
-  TTransformationParametersTypeCTList = class(TXmliteList<TTransformationParametersTypeCT>);
-  TUsernameTokenEList = class(TXmliteList<TUsernameTokenE>);
-  TBinarySecurityTokenEList = class(TXmliteList<TBinarySecurityTokenE>);
-  TReferenceEList = class(TXmliteList<TReferenceE>);
-  TEmbeddedEList = class(TXmliteList<TEmbeddedE>);
-  TKeyIdentifierEList = class(TXmliteList<TKeyIdentifierE>);
-  TSecurityTokenReferenceEList = class(TXmliteList<TSecurityTokenReferenceE>);
-  TSecurityEList = class(TXmliteList<TSecurityE>);
-  TTransformationParametersEList = class(TXmliteList<TTransformationParametersE>);
-  TPasswordEList = class(TXmliteList<TPasswordE>);
-  TNonceEList = class(TXmliteList<TNonceE>);
 
 implementation
 
