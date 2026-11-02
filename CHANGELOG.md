@@ -16,6 +16,12 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 - A list class nothing refers to is no longer generated, in the units shipped with ProRock too. Regenerate your units; code
   that names such a list itself can use `TXmliteList<TItem>`
 
+### Fixed
+- Three samples did not compile on older Delphi: `ProRock.Soapite.WsSecurity` on 10.3 and 10.4, `ProRock.Xmlite.Basic` and
+  `ProRock.Xmlite.Spreadsheet` on 10.3. The samples behave as before
+- Hand-written classes in the docs and the Basic sample derive from `TXmlite`: on Delphi 10.3 a direct `TBasite` descendant in a
+  unit that uses `ProRock.Xmlite` crashes the compiler (F2084 URW1237)
+
 ## [1.6.0] - 2026-11-02
 
 OOXML and FHIR end to end: an Excel workbook read, edited and written back with everything Office put in it, and a FHIR R4

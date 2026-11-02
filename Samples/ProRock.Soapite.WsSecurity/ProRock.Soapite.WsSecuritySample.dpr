@@ -72,11 +72,12 @@ begin
 end;
 
 // UsernameToken Profile 1.0: Password_Digest = Base64(SHA-1(nonce + created + password)), the nonce as raw bytes
+// (TNetEncoding.Base64 breaks lines after 76 characters: not reached by a digest or a nonce; Base64String needs Delphi 11)
 function PasswordDigest(const aNonce: TBytes; const aCreated, aPassword: string): string;
 begin
   var sha1: THashSHA1 := THashSHA1.Create;
   sha1.Update(aNonce + TEncoding.UTF8.GetBytes(aCreated) + TEncoding.UTF8.GetBytes(aPassword));
-  Result := TNetEncoding.Base64String.EncodeBytesToString(sha1.HashAsBytes);
+  Result := TNetEncoding.Base64.EncodeBytesToString(sha1.HashAsBytes);
 end;
 
 { TSecurityHeader }
@@ -112,7 +113,7 @@ begin
 
   var nonceElement: TNonceE := TNonceE.Create;
   nonceElement.EncodingType := cBase64Binary;
-  nonceElement.XmlValue := TNetEncoding.Base64String.EncodeBytesToString(nonce);
+  nonceElement.XmlValue := TNetEncoding.Base64.EncodeBytesToString(nonce);
   token.XmlAny.Add(nonceElement);
 
   var tokenCreated: TCreatedE := TCreatedE.Create;

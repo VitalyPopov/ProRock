@@ -4,11 +4,12 @@ interface
 
 uses ProRock.Basite, ProRock.Xmlite;
 
+// TXmlite, not TBasite: Delphi 10.3 crashes (URW1237) on a direct TBasite descendant in a unit that uses ProRock.Xmlite
 type
   TOrderStatus = (osNone, osNew, osPaid, osShipped);
   TCurrencyCode = (ccNone, ccUSD, ccEUR);
 
-  TCustomer = class(TBasite)
+  TCustomer = class(TXmlite)
   private
     fName: string;
     fAge: integer;
@@ -25,7 +26,7 @@ type
     property isVip: boolean read fIsVip write fIsVip;
   end;
 
-  TItem = class(TBasite)
+  TItem = class(TXmlite)
   private
     fPrice: double;
     fTitle: string;
@@ -44,14 +45,14 @@ type
     property currency: TCurrencyCode read fCurrency write fCurrency;
   end;
 
-  TItems = class(TBasite)
+  TItems = class(TXmlite)
   private
     fItem: TBasiteList<TItem>;
   published
     property item: TBasiteList<TItem> read fItem;
   end;
 
-  TOrder = class(TBasite)
+  TOrder = class(TXmlite)
   private
     fCustomer: TCustomer;
     fItems: TItems;

@@ -384,7 +384,7 @@ begin
     Exit;
 
   // the cell, created where Excel expects it: rows in order, cells in a row in column order
-  var cell: TCTCellCT := Cell(aSheet, aRef);
+  var cell: TCTCellCT := Self.Cell(aSheet, aRef); // Self: in Delphi 10.3 the new variable already hides the method here
   if cell = nil then
   begin
     var rows: TCTRowCTList := aSheet.Worksheet.SheetData.Row;
