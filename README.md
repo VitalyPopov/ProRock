@@ -15,7 +15,7 @@ then have to be found and fixed one by one. With ProRock you regenerate the unit
   it; Excel opens it and recalculates ([sample](https://prorock.rocks/samples/#excel-workbook))
 - **SOAP services** - the EU VIES VAT service, WS-Security, client certificates (quick start below)
 
-![An invoice edited by the ProRock sample and opened in Excel: the quantity changed, the amount and the total recalculated, the table intact](docs/assets/excel-saved.png)
+![ProRocket Lite with the FHIR R4 schemas generated, the FHIR sample reading a Bundle, and an invoice edited by the Excel sample, opened in Excel with its total recalculated](docs/assets/readme-screens.png)
 
 **Two parts:**
 - **ProRock** - the runtime library: open source (Apache 2.0), pure Delphi source, no dependencies beyond the RTL
