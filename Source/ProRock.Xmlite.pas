@@ -192,9 +192,11 @@ type
 
   TBasiteHelper = class helper for TBasite
   private
-    class var fPretty: boolean;
+    // not a class var: one in this helper crashes the compiler on a direct TBasite descendant in a build with debug info
+    class function GetPretty: boolean; static;
+    class procedure SetPretty(aValue: boolean); static;
   public
-    class property Pretty: boolean read fPretty write fPretty;
+    class property Pretty: boolean read GetPretty write SetPretty;
 
   private
     function TagType: TTagType;
@@ -209,7 +211,9 @@ type
     constructor CreateFromXml(const aXml: string);
 
     // the namespace declarations a root writes; aDeclared, when given, gets them (prefix, '' - default -> URI)
-    function GetXmlns(aDeclared: TDictionary<string, string> = nil): string;
+    // (overloads: a default parameter of a generic type here crashes Delphi 10.3 on a direct TBasite descendant, URW1237)
+    function GetXmlns: string; overload;
+    function GetXmlns(aDeclared: TDictionary<string, string>): string; overload;
 
     procedure ToXml(aStream: TStream; const aName: string = ''; aXmlHeader: boolean = True); overload;
     function ToXml(const aName: string = ''; aXmlHeader: boolean = True): string; overload;
@@ -1144,6 +1148,24 @@ begin
   finally
     writer.Free;
   end;
+end;
+
+var
+  gPretty: boolean;
+
+class function TBasiteHelper.GetPretty: boolean;
+begin
+  Result := gPretty;
+end;
+
+class procedure TBasiteHelper.SetPretty(aValue: boolean);
+begin
+  gPretty := aValue;
+end;
+
+function TBasiteHelper.GetXmlns: string;
+begin
+  Result := GetXmlns(nil);
 end;
 
 function TBasiteHelper.GetXmlns(aDeclared: TDictionary<string, string>): string;

@@ -39,6 +39,8 @@ all of FHIR R4 is one unit of about 38,000 lines, which Delphi 13 compiles in a 
 Developed and tested with **Delphi 13 Florence** (13.1), mainly on **Win64**; **Win32** is supported as well. Every release is
 also verified to compile and work with Delphi 12 Athens, 11 Alexandria, 10.4 Sydney and 10.3 Rio.
 
+Large generated units compile much slower on Delphi 10.3 than on 10.4 and later.
+
 The code uses inline variable declarations, so Delphi versions before 10.3 are not supported. Client certificates use
 System.Net's support for them, which works from Delphi 12 on.
 

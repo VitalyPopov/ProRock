@@ -9,8 +9,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 
 ### Changed
 - Generated units compile about 4 times faster or more: a list class is declared only where it is needed, each one was a generic
-  instantiation for the compiler. The FHIR sample's units, Win64: about 53 s -> 11-15 s, .dcu 157 -> 75 MB; Win32: 23 s -> 5 s. UBL 2.4
-  Invoice + CreditNote, Win64: about 7 minutes -> 13 s. A unit keeps the lists it uses itself; a list only other units use is an
+  instantiation for the compiler. The FHIR sample's units, Win64, Delphi 13: about 53 s -> 11-15 s (10.3: about 35 s),
+  .dcu 157 -> 75 MB; Win32: 23 s -> 5 s. UBL 2.4 Invoice + CreditNote, Win64: about 7 minutes -> 13 s. A unit keeps the lists it uses itself; a list only other units use is an
   alias there, `TNoteEList = TXmliteList<TNoteE>`, one type in every unit. Generating one document with its common schemas and
   later another one into the same folder writes the same common units
 - A list class nothing refers to is no longer generated, in the units shipped with ProRock too. Regenerate your units; code
@@ -19,8 +19,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 ### Fixed
 - Three samples did not compile on older Delphi: `ProRock.Soapite.WsSecurity` on 10.3 and 10.4, `ProRock.Xmlite.Basic` and
   `ProRock.Xmlite.Spreadsheet` on 10.3. The samples behave as before
-- Hand-written classes in the docs and the Basic sample derive from `TXmlite`: on Delphi 10.3 a direct `TBasite` descendant in a
-  unit that uses `ProRock.Xmlite` crashes the compiler (F2084 URW1237)
+- A hand-written class deriving directly from `TBasite`, in a unit that uses `ProRock.Xmlite`, crashed the compiler since 1.6.0
+  (F2084): on every Delphi in a build with debug info, on 10.3 in any build. Generated units were not affected
 
 ## [1.6.0] - 2026-11-02
 

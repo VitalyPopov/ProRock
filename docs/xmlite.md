@@ -186,7 +186,7 @@ child element:
 uses ProRock.Basite, ProRock.Xmlite;
 
 type
-  TItem = class(TXmlite)
+  TItem = class(TBasite)
   private
     fSku: string;
     fTitle: string;
@@ -199,7 +199,7 @@ type
     property price: Double read fPrice write fPrice;
   end;
 
-  TItems = class(TXmlite)
+  TItems = class(TBasite)
   private
     fItem: TBasiteList<TItem>;
   published
