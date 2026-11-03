@@ -1237,7 +1237,7 @@ begin
       else
       begin
         var floatValue: Extended;
-        if TryStrToFloat(aText, floatValue, FormatSettings.Invariant) then
+        if TUtility.TryFloatFromText(aText, floatValue) then
           Result := floatValue;
       end;
     tkEnumeration:
@@ -1485,7 +1485,7 @@ begin
         ftSingle:
           begin
             var singleValue: Single;
-            Result := TryStrToFloat(value, singleValue, FormatSettings.Invariant);
+            Result := TUtility.TryFloatFromText(value, singleValue);
             if not Result then
               singleValue := fDefault;
             WriteFloat(aObject, fieldData, singleValue);
@@ -1493,7 +1493,7 @@ begin
         ftDouble:
           begin
             var doubleValue: Double;
-            Result := TryStrToFloat(value, doubleValue, FormatSettings.Invariant);
+            Result := TUtility.TryFloatFromText(value, doubleValue);
             if not Result then
               doubleValue := fDefault;
             WriteFloat(aObject, fieldData, doubleValue);
@@ -1509,7 +1509,7 @@ begin
       else
         begin
           var floatValue: Extended;
-          Result := TryStrToFloat(value, floatValue, FormatSettings.Invariant);
+          Result := TUtility.TryFloatFromText(value, floatValue) and ((Meta.fFloatType <> ftComp) or TUtility.FloatFitsComp(floatValue));
           if not Result then
             floatValue := fDefault;
           WriteFloat(aObject, fieldData, floatValue);
@@ -1550,10 +1550,25 @@ begin
     tkInteger, tkInt64, tkEnumeration:
       Result := ReadOrdinal(aObject, fieldData) = fDefault;
     tkFloat:
-      if Meta.fFloatType = ftCurr then
-        Result := ReadCurrency(aObject, fieldData) = Currency(fDefault)
+      // exact, in the property's own type: SameValue takes 1.23E-13 for 0 on Win64 and 1E-20 on Win32, and the value is not written
+      case Meta.fFloatType of
+        ftCurr:
+          Result := ReadCurrency(aObject, fieldData) = Currency(fDefault);
+        ftSingle:
+          begin
+            var singleValue: Single := ReadFloat(aObject, fieldData);
+            var singleDefault: Single := fDefault;
+            Result := singleValue = singleDefault;
+          end;
+        ftDouble:
+          begin
+            var doubleValue: Double := ReadFloat(aObject, fieldData);
+            var doubleDefault: Double := fDefault;
+            Result := doubleValue = doubleDefault;
+          end;
       else
-        Result := SameValue(ReadFloat(aObject, fieldData), Extended(fDefault));
+        Result := ReadFloat(aObject, fieldData) = Extended(fDefault);
+      end;
     tkUString:
       begin
         var stringValue: string;
@@ -2155,13 +2170,13 @@ begin
       case fFloatType of
         ftSingle:
           begin
-            Result := TryStrToFloat(value, PSingle(aData)^, FormatSettings.Invariant);
+            Result := TUtility.TryFloatFromText(value, PSingle(aData)^);
             if not Result then
               PSingle(aData)^ := defaultValue;
           end;
         ftDouble:
           begin
-            Result := TryStrToFloat(value, PDouble(aData)^, FormatSettings.Invariant);
+            Result := TUtility.TryFloatFromText(value, PDouble(aData)^);
             if not Result then
               PDouble(aData)^ := defaultValue;
           end;
@@ -2174,7 +2189,7 @@ begin
       else
         begin
           var floatValue: Extended;
-          Result := TryStrToFloat(value, floatValue, FormatSettings.Invariant);
+          Result := TUtility.TryFloatFromText(value, floatValue) and ((fFloatType <> ftComp) or TUtility.FloatFitsComp(floatValue));
           if not Result then
             floatValue := defaultValue;
           if fFloatType = ftComp then

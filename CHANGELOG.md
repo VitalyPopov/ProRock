@@ -17,8 +17,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   that names such a list itself can use `TXmliteList<TItem>`
 - A value that does not fit its type (`12,50` in a decimal, `XXX` in an enumeration, an empty number) no longer turns silently
   into `0` or the enumeration's first item: the property is not present, and the value is kept and written back as it came, for
-  elements, list items, attributes and the text of an element with attributes. Setting the property replaces it. A list no longer
-  gets a zero item for it
+  elements, list items, attributes and the text of an element with attributes (`<amount currency="EUR"/>` stays empty). Setting the
+  property replaces it. A list no longer gets a zero item for it
+- A number is its property's default only when exactly equal, in the property's own type. Very small values set from code were taken
+  for 0 and not written (`1.23E-13` on Win64, `1E-20` on Win32 too), and so were values close to any other default
 - `xml:space="preserve"` is written only in Office's namespaces, which trim the text otherwise. Elsewhere a simple type has no such
   attribute and a validating reader refused the document; the spaces are kept without it
 - Generated simple types carry `[TBaseType]`, so the runtime knows what a type derives from. Regenerate your units for this; units
@@ -29,6 +31,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 - `xs:decimal` values are written without an exponent: `1E-5` and `1E15` are not valid decimals, `0.00001` and
   `1000000000000000` are. `xs:double` keeps its exponent
 - Whitespace around a number or an enumeration value is ignored, as XML Schema says: `<n> 12 </n>` is 12, it used to read as 0
+- Not a number is written `NaN`, as XML Schema spells it, not `NAN`; `NaN`, `INF` and `-INF` are read as numbers on every Delphi,
+  10.3 - 11 did not
+- A number too large for a `Comp` property, or `NaN` or `INF` in one, silently became -9223372036854775808; now it is a value that
+  does not fit its type
 - ProRocket Lite: a namespace ending in a code list's directory version (`...:ActionCode:D16A`) gives a unit of its own
   (`ActionCodeD16A`); before, the coupled UN/CEFACT CII schemas failed with a duplicate unit name. XAdES units are `Xades` and
   `Xades141`

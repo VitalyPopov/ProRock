@@ -129,10 +129,11 @@ adds elements. Xmlite keeps such content and writes it back:
 - **Elements** without a property are kept as their exact text in `XmlUnknown` and written back where they were - after the
   same element, between the same list items. The content of `xs:any` from a namespace without generated units is kept the
   same way.
-- **Values that do not fit their type** (`12,50` in a decimal, `XXX` in an enumeration): the property is not present and holds
-  its default, the read goes on, and the value is written back as it came - an element through `XmlUnknown`, an attribute
-  through `XmlAttributes`, the text of an element with attributes through `XmlText`. Setting the property replaces it. ProRock
-  is no validator: the other end will refuse such a value, as it would have refused the document before.
+- **Values that do not fit their type** (`12,50` in a decimal, `XXX` in an enumeration, `<amount currency="EUR"/>`): the property
+  is not present and holds its default, the read goes on, and the value is written back as it came - an element through
+  `XmlUnknown`, an attribute through `XmlAttributes`, the text of an element with attributes through `XmlText`. Setting the property
+  replaces it; to set it to its default, `SetPresent` too. ProRock is no validator: the other end will refuse such a value, as it
+  would have refused the document before.
 - **Namespace declarations** of the document are written back too, so prefixes that only appear in values
   (`mc:Ignorable="x14ac"`) stay declared.
 - `Clear` removes the kept content with the rest.

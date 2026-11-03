@@ -125,8 +125,10 @@ type
     fXmlContent: TList<TXmliteNode>; // created with the first node
     fXmlBadAttributes: TDictionary<string, TProperty>; // a name in XmlAttributes -> the property it did not fill; with the first one
     fXmlPosition: cardinal;
+    fXmlTextEmpty: boolean; // simple content that came empty and does not fit its type: written empty while not present
     // a kept value stands in for this property
     function HasBadValue(aProperty: TProperty): boolean;
+    procedure ReadEmptyText;
     function GetXmlUnknown: TList<TXmliteUnknown>;
     function GetXmlContent: TList<TXmliteNode>;
     function GetXmlText: string;
@@ -584,6 +586,8 @@ begin
     if (aXmlCursor^ = '/') and (aXmlCursor[1] = '>') then
     begin // empty tag
       Inc(aXmlCursor, 2);
+      if Meta.Xmlite.IsTXmlite then
+        TXmlite(Self).ReadEmptyText;
       Result := True;
     end
     else if aXmlCursor^ = '>' then
@@ -598,7 +602,9 @@ begin
           var text: string := TReaderXmlite.ReadUnescapeInPlace(aXmlCursor, '<');
           if not textProperty.TrySetValue(Self, text) and Meta.Xmlite.IsTXmlite then
             TXmlite(Self).fXmlText := text; // does not fit its type: kept as it came, written while the property is not present
-        end;
+        end
+        else if Meta.Xmlite.IsTXmlite then
+          TXmlite(Self).ReadEmptyText;
         if aXmlCursor^ = #0 then
           Exit;
       end
@@ -893,8 +899,10 @@ function TBasiteHelper.TagType: TTagType;
 begin
   Result := xttEmpty;
 
-  // simpleContent: text is written whenever the element is (<amount currency="EUR">0</amount>, never <amount currency="EUR"/>)
+  // simpleContent: text is written whenever the element is (<amount currency="EUR">0</amount> from code), unless it came empty
   var textProperty: TPropertyData := Meta.Xmlite.TextProperty;
+  if Assigned(textProperty) and Meta.Xmlite.IsTXmlite and TXmlite(Self).fXmlTextEmpty and not IsPresent(textProperty) then
+    textProperty := nil;
   if Assigned(textProperty) and (textProperty.Required or IsPresent(textProperty)) then
     Exit(xttOpenClose);
 
@@ -1096,7 +1104,8 @@ begin
       aWriter.AddTagEmpty(objectName, Self, aNamespaces);
     xttOpenClose:
       if Assigned(Meta.Xmlite.TextProperty) then
-        if Meta.Xmlite.IsTXmlite and not TXmlite(Self).fXmlText.IsEmpty and not IsPresent(Meta.Xmlite.TextProperty) then
+        if Meta.Xmlite.IsTXmlite and (TXmlite(Self).fXmlTextEmpty or not TXmlite(Self).fXmlText.IsEmpty) and
+          not IsPresent(Meta.Xmlite.TextProperty) then
           aWriter.AddTagText(objectName, Self, aNamespaces, TXmlite(Self).fXmlText) // did not fit its type, not set since
         else
           aWriter.AddTagText(objectName, Self, aNamespaces, Meta.Xmlite.TextProperty.Value[Self])
@@ -1455,8 +1464,9 @@ begin
   var typeKind: TTypeKind := aFieldInfo.RttiProperty.PropertyType.TypeKind;
   if aFieldInfo.PropertyType = ptDataList then
     typeKind := TPropertyDataList(aFieldInfo).Meta.RttiType.TypeKind;
-  // for Office only: it trims text without this, also where its schema does not declare the attribute (SpreadsheetML's t). A
-  // simple type elsewhere has no attributes, a validating reader refuses it, and readers keep the spaces anyway
+  // for Office only: Excel trims text without this (tested: spaces, tabs, line ends), also where its schema does not declare the
+  // attribute (SpreadsheetML's t). A simple type elsewhere has no attributes, a validating reader refuses it, and readers keep the
+  // spaces anyway
   if (typeKind in [tkString, tkLString, tkWString, tkUString]) and not aValue.IsEmpty and
     ((aValue.Chars[0] <= ' ') or (aValue.Chars[aValue.Length - 1] <= ' ')) and (aFieldInfo.Xmlite.Namespace <> nil) and
     (StartsText(cOoxmlUriPrefix, aFieldInfo.Xmlite.Namespace.Uri) or StartsText(cOoxmlStrictUriPrefix, aFieldInfo.Xmlite.Namespace.Uri)) then
@@ -1632,6 +1642,7 @@ procedure TXmlite.Clear;
 begin
   inherited;
   fXmlText := '';
+  fXmlTextEmpty := False;
   fXmlPosition := 0;
   fXmlAny.Clear;
   fXmlAttributes.Clear;
@@ -1655,6 +1666,15 @@ begin
     for var badOf: TProperty in fXmlBadAttributes.Values do
       if badOf = aProperty then
         Exit(True);
+end;
+
+procedure TXmlite.ReadEmptyText;
+begin
+  // a string may be empty, and so may an enumeration with an empty item; <amount/> and <code/> otherwise would be written as 0 and
+  // the first item
+  var textProperty: TPropertyData := Meta.Xmlite.TextProperty;
+  if Assigned(textProperty) and (textProperty.RttiProperty.PropertyType.TypeKind <> tkUString) and not textProperty.TrySetValue(Self, '') then
+    fXmlTextEmpty := True;
 end;
 
 function TXmlite.GetXmlUnknown: TList<TXmliteUnknown>;
@@ -1901,13 +1921,13 @@ end;
 function TXmlite.IsEmptyOrDefault: boolean;
 begin
   // content kept in xs:any or as not described attributes is content as well
-  Result := inherited and fXmlText.IsEmpty and (fXmlAny.Count = 0) and (fXmlAttributes.Count = 0) and
+  Result := inherited and fXmlText.IsEmpty and not fXmlTextEmpty and (fXmlAny.Count = 0) and (fXmlAttributes.Count = 0) and
     ((fXmlUnknown = nil) or (fXmlUnknown.Count = 0)) and ((fXmlContent = nil) or (fXmlContent.Count = 0));
 end;
 
 function TXmlite.HasContent: boolean;
 begin
-  Result := not fXmlText.IsEmpty or (fXmlAny.Count > 0) or (fXmlAttributes.Count > 0) or
+  Result := not fXmlText.IsEmpty or fXmlTextEmpty or (fXmlAny.Count > 0) or (fXmlAttributes.Count > 0) or
     ((fXmlUnknown <> nil) and (fXmlUnknown.Count > 0)) or ((fXmlContent <> nil) and (fXmlContent.Count > 0)) or inherited;
 end;
 

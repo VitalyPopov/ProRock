@@ -172,6 +172,13 @@ type
     class function Acronym(const aName: string; aAcronyms: THashSet<string> = nil): string; static; inline;
     class function ToPascalCase(const aName: string): string; static; inline;
     class function FromPascalCase(const aName: string; aNaming: TNaming): string; inline;
+
+    // TryStrToFloat, invariant, that knows XML Schema's NaN, INF and -INF on every Delphi: 10.3 - 11 read them as not numbers
+    class function TryFloatFromText(const aText: string; out aValue: Single): boolean; overload; static;
+    class function TryFloatFromText(const aText: string; out aValue: Double): boolean; overload; static;
+    class function TryFloatFromText(const aText: string; out aValue: Extended): boolean; overload; static;
+    // assigned to a Comp otherwise it silently becomes another number
+    class function FloatFitsComp(aValue: Extended): boolean; static;
   end;
 
 function GetEnumerationName(aEnumTypeInfo: PTypeInfo; aValue: cardinal): string; inline;
@@ -277,6 +284,9 @@ end;
 
 function ShortestFloatText(aValue: Extended; aFloatType: TFloatType): string;
 begin
+  if IsNan(aValue) then
+    Exit('NaN'); // XML Schema's spelling; the RTL's is NAN
+
   var precision, maxPrecision: integer;
   case aFloatType of
     ftSingle:
@@ -292,7 +302,7 @@ begin
   else
     Exit(FloatToStr(aValue, FormatSettings.Invariant));
   end;
-  if IsNan(aValue) or IsInfinite(aValue) then
+  if IsInfinite(aValue) then
     Exit(FloatToStr(aValue, FormatSettings.Invariant));
 
   while True do
@@ -775,6 +785,11 @@ begin
   Result := ExtractFilePath(ParamStr(0));
 end;
 
+class function TUtility.FloatFitsComp(aValue: Extended): boolean;
+begin
+  Result := not IsNan(aValue) and (Abs(aValue) < 9223372036854775808.0); // 2^63; infinity is above it
+end;
+
 class function TUtility.FromPascalCase(const aName: string; aNaming: TNaming): string;
 
   function SplitPascalCase(const aName: string): TArray<string>; inline;
@@ -1002,6 +1017,45 @@ begin
         Result[1] := UpCase(Result[1]);
       end;
   end;
+end;
+
+class function TUtility.TryFloatFromText(const aText: string; out aValue: Single): boolean;
+begin
+  Result := True;
+  if aText = 'NaN' then
+    aValue := NaN
+  else if aText = 'INF' then
+    aValue := Infinity
+  else if aText = '-INF' then
+    aValue := NegInfinity
+  else
+    Result := TryStrToFloat(aText, aValue, FormatSettings.Invariant);
+end;
+
+class function TUtility.TryFloatFromText(const aText: string; out aValue: Double): boolean;
+begin
+  Result := True;
+  if aText = 'NaN' then
+    aValue := NaN
+  else if aText = 'INF' then
+    aValue := Infinity
+  else if aText = '-INF' then
+    aValue := NegInfinity
+  else
+    Result := TryStrToFloat(aText, aValue, FormatSettings.Invariant);
+end;
+
+class function TUtility.TryFloatFromText(const aText: string; out aValue: Extended): boolean;
+begin
+  Result := True;
+  if aText = 'NaN' then
+    aValue := NaN
+  else if aText = 'INF' then
+    aValue := Infinity
+  else if aText = '-INF' then
+    aValue := NegInfinity
+  else
+    Result := TryStrToFloat(aText, aValue, FormatSettings.Invariant);
 end;
 
 { TSummaryDictionary }
