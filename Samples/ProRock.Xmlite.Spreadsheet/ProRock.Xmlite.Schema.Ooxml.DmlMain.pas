@@ -56,10 +56,6 @@ type
     stpcvRoyalBlue, stpcvSaddleBrown, stpcvSalmon, stpcvSandyBrown, stpcvSeaGreen, stpcvSeaShell, stpcvSienna, stpcvSilver, stpcvSkyBlue,
     stpcvSlateBlue, stpcvSlateGray, stpcvSlateGrey, stpcvSnow, stpcvSpringGreen, stpcvSteelBlue, stpcvTan, stpcvTeal, stpcvThistle,
     stpcvTomato, stpcvTurquoise, stpcvViolet, stpcvWheat, stpcvWhite, stpcvWhiteSmoke, stpcvYellow, stpcvYellowGreen);
-  [TEnumCaption('T', 't')]
-  [TEnumCaption('L', 'l')]
-  [TEnumCaption('R', 'r')]
-  [TEnumCaption('B', 'b')]
   [TName('ST_RectAlignment')]
   TSTRectAlignmentST = (straTl, straT, straTr, straL, straCtr, straR, straBl, straB, straBr);
   [TName('ST_BlackWhiteMode')]
@@ -91,10 +87,6 @@ type
     stpctPerspectiveContrastingLeftFacing, stpctPerspectiveContrastingRightFacing, stpctPerspectiveHeroicLeftFacing,
     stpctPerspectiveHeroicRightFacing, stpctPerspectiveHeroicExtremeLeftFacing, stpctPerspectiveHeroicExtremeRightFacing,
     stpctPerspectiveRelaxed, stpctPerspectiveRelaxedModerately);
-  [TEnumCaption('T', 't')]
-  [TEnumCaption('L', 'l')]
-  [TEnumCaption('R', 'r')]
-  [TEnumCaption('B', 'b')]
   [TName('ST_LightRigDirection')]
   TSTLightRigDirectionST = (stlrdTl, stlrdT, stlrdTr, stlrdL, stlrdR, stlrdBl, stlrdB, stlrdBr);
   [TName('ST_LightRigType')]
@@ -114,8 +106,6 @@ type
     stpsvShdw20);
   [TName('ST_PathShadeType')]
   TSTPathShadeTypeST = (stpstShape, stpstCircle, stpstRect);
-  [TEnumCaption('X', 'x')]
-  [TEnumCaption('Y', 'y')]
   [TName('ST_TileFlipMode')]
   TSTTileFlipModeST = (sttfmNone, sttfmX, sttfmY, sttfmXy);
   [TName('ST_BlipCompression')]
@@ -187,8 +177,6 @@ type
   TSTCompoundLineST = (stclSng, stclDbl, stclThickThin, stclThinThick, stclTri);
   [TName('ST_OnOffStyleType')]
   TSTOnOffStyleTypeST = (stoostOn, stoostOff, stoostDef);
-  [TEnumCaption('T', 't')]
-  [TEnumCaption('B', 'b')]
   [TName('ST_TextAnchoringType')]
   TSTTextAnchoringTypeST = (sttatT, sttatCtr, sttatB, sttatJust, sttatDist);
   [TName('ST_TextVertOverflowType')]
@@ -218,16 +206,10 @@ type
   TSTTextStrikeTypeST = (sttstaNoStrike, sttstaSngStrike, sttstaDblStrike);
   [TName('ST_TextCapsType')]
   TSTTextCapsTypeST = (sttctNone, sttctSmall, sttctAll);
-  [TEnumCaption('L', 'l')]
-  [TEnumCaption('R', 'r')]
   [TName('ST_TextTabAlignType')]
   TSTTextTabAlignTypeST = (stttatL, stttatCtr, stttatR, stttatDec);
-  [TEnumCaption('L', 'l')]
-  [TEnumCaption('R', 'r')]
   [TName('ST_TextAlignType')]
   TSTTextAlignTypeST = (sttataL, sttataCtr, sttataR, sttataJust, sttataJustLow, sttataDist, sttataThaiDist);
-  [TEnumCaption('T', 't')]
-  [TEnumCaption('B', 'b')]
   [TName('ST_TextFontAlignType')]
   TSTTextFontAlignTypeST = (sttfatAuto, sttfatT, sttfatCtr, sttfatBase, sttfatB);
 
@@ -724,9 +706,7 @@ type
     [TRequired]
     [TNaming(TNaming.nFlatCase)]
     property Link: ProRock.Xmlite.Schema.Ooxml.Rel.TLinkA read fLink write fLink;
-    [TNaming(TNaming.nCamelCase)]
     property ContentType: ProRock.Xmlite.Schema.Base.TStringST read fContentType write fContentType;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -740,9 +720,7 @@ type
     [TRequired]
     [TNaming(TNaming.nFlatCase)]
     property Link: ProRock.Xmlite.Schema.Ooxml.Rel.TLinkA read fLink write fLink;
-    [TNaming(TNaming.nCamelCase)]
     property ContentType: ProRock.Xmlite.Schema.Base.TStringST read fContentType write fContentType;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -755,7 +733,6 @@ type
     [TRequired]
     [TNaming(TNaming.nFlatCase)]
     property Link: ProRock.Xmlite.Schema.Ooxml.Rel.TLinkA read fLink write fLink;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -766,10 +743,8 @@ type
     fTime: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Track: ProRock.Xmlite.Schema.Base.TUnsignedByteST read fTrack write fTrack;
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Time: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fTime write fTime;
   end;
 
@@ -781,12 +756,9 @@ type
     fExtLst: TCTOfficeArtExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property St: TCTAudioCDTimeCT read fSt;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &End: TCTAudioCDTimeCT read fEnd;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -809,45 +781,31 @@ type
     fExtLst: TCTOfficeArtExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Base.TStringST read fName write fName;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Dk1: TCTColorCT read fDk1;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Lt1: TCTColorCT read fLt1;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Dk2: TCTColorCT read fDk2;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Lt2: TCTColorCT read fLt2;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Accent1: TCTColorCT read fAccent1;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Accent2: TCTColorCT read fAccent2;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Accent3: TCTColorCT read fAccent3;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Accent4: TCTColorCT read fAccent4;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Accent5: TCTColorCT read fAccent5;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Accent6: TCTColorCT read fAccent6;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Hlink: TCTColorCT read fHlink;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property FolHlink: TCTColorCT read fFolHlink;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -869,25 +827,18 @@ type
     function GetSchemeClr: TCTSchemeColorCT;
     function GetPrstClr: TCTPresetColorCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Base.TStringST read fName write fName;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property ScrgbClr: TCTScRgbColorCT read GetScrgbClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SrgbClr: TCTSRgbColorCT read GetSrgbClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property HslClr: TCTHslColorCT read GetHslClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SysClr: TCTSystemColorCT read GetSysClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SchemeClr: TCTSchemeColorCT read GetSchemeClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property PrstClr: TCTPresetColorCT read GetPrstClr;
   end;
 
@@ -898,10 +849,8 @@ type
     fTypeface: TSTTextTypefaceST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Script: ProRock.Xmlite.Schema.Base.TStringST read fScript write fScript;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Typeface: TSTTextTypefaceST read fTypeface write fTypeface;
   end;
 
@@ -910,7 +859,6 @@ type
   private
     fCustClr: TCTCustomColorCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property CustClr: TCTCustomColorCTList read fCustClr;
   end;
 
@@ -924,17 +872,12 @@ type
     fExtLst: TCTOfficeArtExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Latin: TCTTextFontCT read fLatin;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Ea: TCTTextFontCT read fEa;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Cs: TCTTextFontCT read fCs;
-    [TNaming(TNaming.nFlatCase)]
     property Font: TCTSupplementalFontCTList read fFont;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -953,14 +896,10 @@ type
     property EffectChosen: TBasite read GetEffectChosen;
   published
     [TChoice('Effect')]
-    [TNaming(TNaming.nCamelCase)]
     property EffectLst: TCTEffectListCT read GetEffectLst;
     [TChoice('Effect')]
-    [TNaming(TNaming.nCamelCase)]
     property EffectDag: TCTEffectContainerCT read GetEffectDag;
-    [TNaming(TNaming.nFlatCase)]
     property Scene3d: TCTScene3DCT read fScene3d;
-    [TNaming(TNaming.nFlatCase)]
     property Sp3d: TCTShape3DCT read fSp3d;
   end;
 
@@ -973,15 +912,11 @@ type
     fExtLst: TCTOfficeArtExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Base.TStringST read fName write fName;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property MajorFont: TCTFontCollectionCT read fMajorFont;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property MinorFont: TCTFontCollectionCT read fMinorFont;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -996,17 +931,11 @@ type
     fPattFill: TCTPatternFillPropertiesCTList;
     fGrpFill: TCTGroupFillPropertiesCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property NoFill: TCTNoFillPropertiesCTList read fNoFill;
-    [TNaming(TNaming.nCamelCase)]
     property SolidFill: TCTSolidColorFillPropertiesCTList read fSolidFill;
-    [TNaming(TNaming.nCamelCase)]
     property GradFill: TCTGradientFillPropertiesCTList read fGradFill;
-    [TNaming(TNaming.nCamelCase)]
     property BlipFill: TCTBlipFillPropertiesCTList read fBlipFill;
-    [TNaming(TNaming.nCamelCase)]
     property PattFill: TCTPatternFillPropertiesCTList read fPattFill;
-    [TNaming(TNaming.nCamelCase)]
     property GrpFill: TCTGroupFillPropertiesCTList read fGrpFill;
   end;
 
@@ -1015,7 +944,6 @@ type
   private
     fLn: TCTLinePropertiesCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Ln: TCTLinePropertiesCTList read fLn;
   end;
 
@@ -1024,7 +952,6 @@ type
   private
     fEffectStyle: TCTEffectStyleItemCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property EffectStyle: TCTEffectStyleItemCTList read fEffectStyle;
   end;
 
@@ -1039,17 +966,11 @@ type
     fPattFill: TCTPatternFillPropertiesCTList;
     fGrpFill: TCTGroupFillPropertiesCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property NoFill: TCTNoFillPropertiesCTList read fNoFill;
-    [TNaming(TNaming.nCamelCase)]
     property SolidFill: TCTSolidColorFillPropertiesCTList read fSolidFill;
-    [TNaming(TNaming.nCamelCase)]
     property GradFill: TCTGradientFillPropertiesCTList read fGradFill;
-    [TNaming(TNaming.nCamelCase)]
     property BlipFill: TCTBlipFillPropertiesCTList read fBlipFill;
-    [TNaming(TNaming.nCamelCase)]
     property PattFill: TCTPatternFillPropertiesCTList read fPattFill;
-    [TNaming(TNaming.nCamelCase)]
     property GrpFill: TCTGroupFillPropertiesCTList read fGrpFill;
   end;
 
@@ -1062,19 +983,14 @@ type
     fEffectStyleLst: TCTEffectStyleListCT;
     fBgFillStyleLst: TCTBackgroundFillStyleListCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Base.TStringST read fName write fName;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property FillStyleLst: TCTFillStyleListCT read fFillStyleLst;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property LnStyleLst: TCTLineStyleListCT read fLnStyleLst;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property EffectStyleLst: TCTEffectStyleListCT read fEffectStyleLst;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property BgFillStyleLst: TCTBackgroundFillStyleListCT read fBgFillStyleLst;
   end;
 
@@ -1087,15 +1003,11 @@ type
     fExtLst: TCTOfficeArtExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ClrScheme: TCTColorSchemeCT read fClrScheme;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property FontScheme: TCTFontSchemeCT read fFontScheme;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property FmtScheme: TCTStyleMatrixCT read fFmtScheme;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -1106,7 +1018,6 @@ type
     fUri: ProRock.Xmlite.Schema.Base.TTokenST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Uri: ProRock.Xmlite.Schema.Base.TTokenST read fUri write fUri;
   end;
 
@@ -1116,7 +1027,6 @@ type
     fVal: TSTAngleST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Val: TSTAngleST read fVal write fVal;
   end;
 
@@ -1126,7 +1036,6 @@ type
     fVal: TSTPositiveFixedAngleST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Val: TSTPositiveFixedAngleST read fVal write fVal;
   end;
 
@@ -1136,7 +1045,6 @@ type
     fVal: TSTPercentageST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Val: TSTPercentageST read fVal write fVal;
   end;
 
@@ -1146,7 +1054,6 @@ type
     fVal: TSTPositivePercentageST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Val: TSTPositivePercentageST read fVal write fVal;
   end;
 
@@ -1156,7 +1063,6 @@ type
     fVal: TSTFixedPercentageST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Val: TSTFixedPercentageST read fVal write fVal;
   end;
 
@@ -1166,7 +1072,6 @@ type
     fVal: TSTPositiveFixedPercentageST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Val: TSTPositiveFixedPercentageST read fVal write fVal;
   end;
 
@@ -1177,10 +1082,8 @@ type
     fD: ProRock.Xmlite.Schema.Base.TLongST;
   published
     [TRequired]
-    [TName('n')]
     property N: ProRock.Xmlite.Schema.Base.TLongST read fN write fN;
     [TRequired]
-    [TName('d')]
     property D: ProRock.Xmlite.Schema.Base.TLongST read fD write fD;
   end;
 
@@ -1191,10 +1094,8 @@ type
     fY: TSTCoordinateST;
   published
     [TRequired]
-    [TName('x')]
     property X: TSTCoordinateST read fX write fX;
     [TRequired]
-    [TName('y')]
     property Y: TSTCoordinateST read fY write fY;
   end;
 
@@ -1205,10 +1106,8 @@ type
     fCy: TSTPositiveCoordinateST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Cx: TSTPositiveCoordinateST read fCx write fCx;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Cy: TSTPositiveCoordinateST read fCy write fCy;
   end;
 
@@ -1264,69 +1163,38 @@ type
     fInvGamma: TCTInverseGammaTransformCTList;
   published
     [TRequired]
-    [TName('r')]
     property R: TSTPercentageST read fR write fR;
     [TRequired]
-    [TName('g')]
     property G: TSTPercentageST read fG write fG;
     [TRequired]
-    [TName('b')]
     property B: TSTPercentageST read fB write fB;
-    [TNaming(TNaming.nFlatCase)]
     property Tint: TCTPositiveFixedPercentageCTList read fTint;
-    [TNaming(TNaming.nFlatCase)]
     property Shade: TCTPositiveFixedPercentageCTList read fShade;
-    [TNaming(TNaming.nFlatCase)]
     property Comp: TCTComplementTransformCTList read fComp;
-    [TNaming(TNaming.nFlatCase)]
     property Inv: TCTInverseTransformCTList read fInv;
-    [TNaming(TNaming.nFlatCase)]
     property Gray: TCTGrayscaleTransformCTList read fGray;
-    [TNaming(TNaming.nFlatCase)]
     property Alpha: TCTPositiveFixedPercentageCTList read fAlpha;
-    [TNaming(TNaming.nCamelCase)]
     property AlphaOff: TCTFixedPercentageCTList read fAlphaOff;
-    [TNaming(TNaming.nCamelCase)]
     property AlphaMod: TCTPositivePercentageCTList read fAlphaMod;
-    [TNaming(TNaming.nFlatCase)]
     property Hue: TCTPositiveFixedAngleCTList read fHue;
-    [TNaming(TNaming.nCamelCase)]
     property HueOff: TCTAngleCTList read fHueOff;
-    [TNaming(TNaming.nCamelCase)]
     property HueMod: TCTPositivePercentageCTList read fHueMod;
-    [TNaming(TNaming.nFlatCase)]
     property Sat: TCTPercentageCTList read fSat;
-    [TNaming(TNaming.nCamelCase)]
     property SatOff: TCTPercentageCTList read fSatOff;
-    [TNaming(TNaming.nCamelCase)]
     property SatMod: TCTPercentageCTList read fSatMod;
-    [TNaming(TNaming.nFlatCase)]
     property Lum: TCTPercentageCTList read fLum;
-    [TNaming(TNaming.nCamelCase)]
     property LumOff: TCTPercentageCTList read fLumOff;
-    [TNaming(TNaming.nCamelCase)]
     property LumMod: TCTPercentageCTList read fLumMod;
-    [TNaming(TNaming.nFlatCase)]
     property Red: TCTPercentageCTList read fRed;
-    [TNaming(TNaming.nCamelCase)]
     property RedOff: TCTPercentageCTList read fRedOff;
-    [TNaming(TNaming.nCamelCase)]
     property RedMod: TCTPercentageCTList read fRedMod;
-    [TNaming(TNaming.nFlatCase)]
     property Green: TCTPercentageCTList read fGreen;
-    [TNaming(TNaming.nCamelCase)]
     property GreenOff: TCTPercentageCTList read fGreenOff;
-    [TNaming(TNaming.nCamelCase)]
     property GreenMod: TCTPercentageCTList read fGreenMod;
-    [TNaming(TNaming.nFlatCase)]
     property Blue: TCTPercentageCTList read fBlue;
-    [TNaming(TNaming.nCamelCase)]
     property BlueOff: TCTPercentageCTList read fBlueOff;
-    [TNaming(TNaming.nCamelCase)]
     property BlueMod: TCTPercentageCTList read fBlueMod;
-    [TNaming(TNaming.nFlatCase)]
     property Gamma: TCTGammaTransformCTList read fGamma;
-    [TNaming(TNaming.nCamelCase)]
     property InvGamma: TCTInverseGammaTransformCTList read fInvGamma;
   end;
 
@@ -1365,63 +1233,34 @@ type
     fInvGamma: TCTInverseGammaTransformCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Val: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTHexColorRGBST read fVal write fVal;
-    [TNaming(TNaming.nFlatCase)]
     property Tint: TCTPositiveFixedPercentageCTList read fTint;
-    [TNaming(TNaming.nFlatCase)]
     property Shade: TCTPositiveFixedPercentageCTList read fShade;
-    [TNaming(TNaming.nFlatCase)]
     property Comp: TCTComplementTransformCTList read fComp;
-    [TNaming(TNaming.nFlatCase)]
     property Inv: TCTInverseTransformCTList read fInv;
-    [TNaming(TNaming.nFlatCase)]
     property Gray: TCTGrayscaleTransformCTList read fGray;
-    [TNaming(TNaming.nFlatCase)]
     property Alpha: TCTPositiveFixedPercentageCTList read fAlpha;
-    [TNaming(TNaming.nCamelCase)]
     property AlphaOff: TCTFixedPercentageCTList read fAlphaOff;
-    [TNaming(TNaming.nCamelCase)]
     property AlphaMod: TCTPositivePercentageCTList read fAlphaMod;
-    [TNaming(TNaming.nFlatCase)]
     property Hue: TCTPositiveFixedAngleCTList read fHue;
-    [TNaming(TNaming.nCamelCase)]
     property HueOff: TCTAngleCTList read fHueOff;
-    [TNaming(TNaming.nCamelCase)]
     property HueMod: TCTPositivePercentageCTList read fHueMod;
-    [TNaming(TNaming.nFlatCase)]
     property Sat: TCTPercentageCTList read fSat;
-    [TNaming(TNaming.nCamelCase)]
     property SatOff: TCTPercentageCTList read fSatOff;
-    [TNaming(TNaming.nCamelCase)]
     property SatMod: TCTPercentageCTList read fSatMod;
-    [TNaming(TNaming.nFlatCase)]
     property Lum: TCTPercentageCTList read fLum;
-    [TNaming(TNaming.nCamelCase)]
     property LumOff: TCTPercentageCTList read fLumOff;
-    [TNaming(TNaming.nCamelCase)]
     property LumMod: TCTPercentageCTList read fLumMod;
-    [TNaming(TNaming.nFlatCase)]
     property Red: TCTPercentageCTList read fRed;
-    [TNaming(TNaming.nCamelCase)]
     property RedOff: TCTPercentageCTList read fRedOff;
-    [TNaming(TNaming.nCamelCase)]
     property RedMod: TCTPercentageCTList read fRedMod;
-    [TNaming(TNaming.nFlatCase)]
     property Green: TCTPercentageCTList read fGreen;
-    [TNaming(TNaming.nCamelCase)]
     property GreenOff: TCTPercentageCTList read fGreenOff;
-    [TNaming(TNaming.nCamelCase)]
     property GreenMod: TCTPercentageCTList read fGreenMod;
-    [TNaming(TNaming.nFlatCase)]
     property Blue: TCTPercentageCTList read fBlue;
-    [TNaming(TNaming.nCamelCase)]
     property BlueOff: TCTPercentageCTList read fBlueOff;
-    [TNaming(TNaming.nCamelCase)]
     property BlueMod: TCTPercentageCTList read fBlueMod;
-    [TNaming(TNaming.nFlatCase)]
     property Gamma: TCTGammaTransformCTList read fGamma;
-    [TNaming(TNaming.nCamelCase)]
     property InvGamma: TCTInverseGammaTransformCTList read fInvGamma;
   end;
 
@@ -1459,63 +1298,35 @@ type
     fInvGamma: TCTInverseGammaTransformCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Hue: TSTPositiveFixedAngleST read fHue write fHue;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Sat: TSTPercentageST read fSat write fSat;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Lum: TSTPercentageST read fLum write fLum;
-    [TNaming(TNaming.nFlatCase)]
     property Tint: TCTPositiveFixedPercentageCTList read fTint;
-    [TNaming(TNaming.nFlatCase)]
     property Shade: TCTPositiveFixedPercentageCTList read fShade;
-    [TNaming(TNaming.nFlatCase)]
     property Comp: TCTComplementTransformCTList read fComp;
-    [TNaming(TNaming.nFlatCase)]
     property Inv: TCTInverseTransformCTList read fInv;
-    [TNaming(TNaming.nFlatCase)]
     property Gray: TCTGrayscaleTransformCTList read fGray;
-    [TNaming(TNaming.nFlatCase)]
     property Alpha: TCTPositiveFixedPercentageCTList read fAlpha;
-    [TNaming(TNaming.nCamelCase)]
     property AlphaOff: TCTFixedPercentageCTList read fAlphaOff;
-    [TNaming(TNaming.nCamelCase)]
     property AlphaMod: TCTPositivePercentageCTList read fAlphaMod;
-    [TNaming(TNaming.nCamelCase)]
     property HueOff: TCTAngleCTList read fHueOff;
-    [TNaming(TNaming.nCamelCase)]
     property HueMod: TCTPositivePercentageCTList read fHueMod;
-    [TNaming(TNaming.nCamelCase)]
     property SatOff: TCTPercentageCTList read fSatOff;
-    [TNaming(TNaming.nCamelCase)]
     property SatMod: TCTPercentageCTList read fSatMod;
-    [TNaming(TNaming.nCamelCase)]
     property LumOff: TCTPercentageCTList read fLumOff;
-    [TNaming(TNaming.nCamelCase)]
     property LumMod: TCTPercentageCTList read fLumMod;
-    [TNaming(TNaming.nFlatCase)]
     property Red: TCTPercentageCTList read fRed;
-    [TNaming(TNaming.nCamelCase)]
     property RedOff: TCTPercentageCTList read fRedOff;
-    [TNaming(TNaming.nCamelCase)]
     property RedMod: TCTPercentageCTList read fRedMod;
-    [TNaming(TNaming.nFlatCase)]
     property Green: TCTPercentageCTList read fGreen;
-    [TNaming(TNaming.nCamelCase)]
     property GreenOff: TCTPercentageCTList read fGreenOff;
-    [TNaming(TNaming.nCamelCase)]
     property GreenMod: TCTPercentageCTList read fGreenMod;
-    [TNaming(TNaming.nFlatCase)]
     property Blue: TCTPercentageCTList read fBlue;
-    [TNaming(TNaming.nCamelCase)]
     property BlueOff: TCTPercentageCTList read fBlueOff;
-    [TNaming(TNaming.nCamelCase)]
     property BlueMod: TCTPercentageCTList read fBlueMod;
-    [TNaming(TNaming.nFlatCase)]
     property Gamma: TCTGammaTransformCTList read fGamma;
-    [TNaming(TNaming.nCamelCase)]
     property InvGamma: TCTInverseGammaTransformCTList read fInvGamma;
   end;
 
@@ -1555,65 +1366,35 @@ type
     fInvGamma: TCTInverseGammaTransformCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Val: TSTSystemColorValST read fVal write fVal;
-    [TNaming(TNaming.nCamelCase)]
     property LastClr: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTHexColorRGBST read fLastClr write fLastClr;
-    [TNaming(TNaming.nFlatCase)]
     property Tint: TCTPositiveFixedPercentageCTList read fTint;
-    [TNaming(TNaming.nFlatCase)]
     property Shade: TCTPositiveFixedPercentageCTList read fShade;
-    [TNaming(TNaming.nFlatCase)]
     property Comp: TCTComplementTransformCTList read fComp;
-    [TNaming(TNaming.nFlatCase)]
     property Inv: TCTInverseTransformCTList read fInv;
-    [TNaming(TNaming.nFlatCase)]
     property Gray: TCTGrayscaleTransformCTList read fGray;
-    [TNaming(TNaming.nFlatCase)]
     property Alpha: TCTPositiveFixedPercentageCTList read fAlpha;
-    [TNaming(TNaming.nCamelCase)]
     property AlphaOff: TCTFixedPercentageCTList read fAlphaOff;
-    [TNaming(TNaming.nCamelCase)]
     property AlphaMod: TCTPositivePercentageCTList read fAlphaMod;
-    [TNaming(TNaming.nFlatCase)]
     property Hue: TCTPositiveFixedAngleCTList read fHue;
-    [TNaming(TNaming.nCamelCase)]
     property HueOff: TCTAngleCTList read fHueOff;
-    [TNaming(TNaming.nCamelCase)]
     property HueMod: TCTPositivePercentageCTList read fHueMod;
-    [TNaming(TNaming.nFlatCase)]
     property Sat: TCTPercentageCTList read fSat;
-    [TNaming(TNaming.nCamelCase)]
     property SatOff: TCTPercentageCTList read fSatOff;
-    [TNaming(TNaming.nCamelCase)]
     property SatMod: TCTPercentageCTList read fSatMod;
-    [TNaming(TNaming.nFlatCase)]
     property Lum: TCTPercentageCTList read fLum;
-    [TNaming(TNaming.nCamelCase)]
     property LumOff: TCTPercentageCTList read fLumOff;
-    [TNaming(TNaming.nCamelCase)]
     property LumMod: TCTPercentageCTList read fLumMod;
-    [TNaming(TNaming.nFlatCase)]
     property Red: TCTPercentageCTList read fRed;
-    [TNaming(TNaming.nCamelCase)]
     property RedOff: TCTPercentageCTList read fRedOff;
-    [TNaming(TNaming.nCamelCase)]
     property RedMod: TCTPercentageCTList read fRedMod;
-    [TNaming(TNaming.nFlatCase)]
     property Green: TCTPercentageCTList read fGreen;
-    [TNaming(TNaming.nCamelCase)]
     property GreenOff: TCTPercentageCTList read fGreenOff;
-    [TNaming(TNaming.nCamelCase)]
     property GreenMod: TCTPercentageCTList read fGreenMod;
-    [TNaming(TNaming.nFlatCase)]
     property Blue: TCTPercentageCTList read fBlue;
-    [TNaming(TNaming.nCamelCase)]
     property BlueOff: TCTPercentageCTList read fBlueOff;
-    [TNaming(TNaming.nCamelCase)]
     property BlueMod: TCTPercentageCTList read fBlueMod;
-    [TNaming(TNaming.nFlatCase)]
     property Gamma: TCTGammaTransformCTList read fGamma;
-    [TNaming(TNaming.nCamelCase)]
     property InvGamma: TCTInverseGammaTransformCTList read fInvGamma;
   end;
 
@@ -1652,63 +1433,34 @@ type
     fInvGamma: TCTInverseGammaTransformCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Val: TSTSchemeColorValST read fVal write fVal;
-    [TNaming(TNaming.nFlatCase)]
     property Tint: TCTPositiveFixedPercentageCTList read fTint;
-    [TNaming(TNaming.nFlatCase)]
     property Shade: TCTPositiveFixedPercentageCTList read fShade;
-    [TNaming(TNaming.nFlatCase)]
     property Comp: TCTComplementTransformCTList read fComp;
-    [TNaming(TNaming.nFlatCase)]
     property Inv: TCTInverseTransformCTList read fInv;
-    [TNaming(TNaming.nFlatCase)]
     property Gray: TCTGrayscaleTransformCTList read fGray;
-    [TNaming(TNaming.nFlatCase)]
     property Alpha: TCTPositiveFixedPercentageCTList read fAlpha;
-    [TNaming(TNaming.nCamelCase)]
     property AlphaOff: TCTFixedPercentageCTList read fAlphaOff;
-    [TNaming(TNaming.nCamelCase)]
     property AlphaMod: TCTPositivePercentageCTList read fAlphaMod;
-    [TNaming(TNaming.nFlatCase)]
     property Hue: TCTPositiveFixedAngleCTList read fHue;
-    [TNaming(TNaming.nCamelCase)]
     property HueOff: TCTAngleCTList read fHueOff;
-    [TNaming(TNaming.nCamelCase)]
     property HueMod: TCTPositivePercentageCTList read fHueMod;
-    [TNaming(TNaming.nFlatCase)]
     property Sat: TCTPercentageCTList read fSat;
-    [TNaming(TNaming.nCamelCase)]
     property SatOff: TCTPercentageCTList read fSatOff;
-    [TNaming(TNaming.nCamelCase)]
     property SatMod: TCTPercentageCTList read fSatMod;
-    [TNaming(TNaming.nFlatCase)]
     property Lum: TCTPercentageCTList read fLum;
-    [TNaming(TNaming.nCamelCase)]
     property LumOff: TCTPercentageCTList read fLumOff;
-    [TNaming(TNaming.nCamelCase)]
     property LumMod: TCTPercentageCTList read fLumMod;
-    [TNaming(TNaming.nFlatCase)]
     property Red: TCTPercentageCTList read fRed;
-    [TNaming(TNaming.nCamelCase)]
     property RedOff: TCTPercentageCTList read fRedOff;
-    [TNaming(TNaming.nCamelCase)]
     property RedMod: TCTPercentageCTList read fRedMod;
-    [TNaming(TNaming.nFlatCase)]
     property Green: TCTPercentageCTList read fGreen;
-    [TNaming(TNaming.nCamelCase)]
     property GreenOff: TCTPercentageCTList read fGreenOff;
-    [TNaming(TNaming.nCamelCase)]
     property GreenMod: TCTPercentageCTList read fGreenMod;
-    [TNaming(TNaming.nFlatCase)]
     property Blue: TCTPercentageCTList read fBlue;
-    [TNaming(TNaming.nCamelCase)]
     property BlueOff: TCTPercentageCTList read fBlueOff;
-    [TNaming(TNaming.nCamelCase)]
     property BlueMod: TCTPercentageCTList read fBlueMod;
-    [TNaming(TNaming.nFlatCase)]
     property Gamma: TCTGammaTransformCTList read fGamma;
-    [TNaming(TNaming.nCamelCase)]
     property InvGamma: TCTInverseGammaTransformCTList read fInvGamma;
   end;
 
@@ -1747,63 +1499,34 @@ type
     fInvGamma: TCTInverseGammaTransformCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Val: TSTPresetColorValST read fVal write fVal;
-    [TNaming(TNaming.nFlatCase)]
     property Tint: TCTPositiveFixedPercentageCTList read fTint;
-    [TNaming(TNaming.nFlatCase)]
     property Shade: TCTPositiveFixedPercentageCTList read fShade;
-    [TNaming(TNaming.nFlatCase)]
     property Comp: TCTComplementTransformCTList read fComp;
-    [TNaming(TNaming.nFlatCase)]
     property Inv: TCTInverseTransformCTList read fInv;
-    [TNaming(TNaming.nFlatCase)]
     property Gray: TCTGrayscaleTransformCTList read fGray;
-    [TNaming(TNaming.nFlatCase)]
     property Alpha: TCTPositiveFixedPercentageCTList read fAlpha;
-    [TNaming(TNaming.nCamelCase)]
     property AlphaOff: TCTFixedPercentageCTList read fAlphaOff;
-    [TNaming(TNaming.nCamelCase)]
     property AlphaMod: TCTPositivePercentageCTList read fAlphaMod;
-    [TNaming(TNaming.nFlatCase)]
     property Hue: TCTPositiveFixedAngleCTList read fHue;
-    [TNaming(TNaming.nCamelCase)]
     property HueOff: TCTAngleCTList read fHueOff;
-    [TNaming(TNaming.nCamelCase)]
     property HueMod: TCTPositivePercentageCTList read fHueMod;
-    [TNaming(TNaming.nFlatCase)]
     property Sat: TCTPercentageCTList read fSat;
-    [TNaming(TNaming.nCamelCase)]
     property SatOff: TCTPercentageCTList read fSatOff;
-    [TNaming(TNaming.nCamelCase)]
     property SatMod: TCTPercentageCTList read fSatMod;
-    [TNaming(TNaming.nFlatCase)]
     property Lum: TCTPercentageCTList read fLum;
-    [TNaming(TNaming.nCamelCase)]
     property LumOff: TCTPercentageCTList read fLumOff;
-    [TNaming(TNaming.nCamelCase)]
     property LumMod: TCTPercentageCTList read fLumMod;
-    [TNaming(TNaming.nFlatCase)]
     property Red: TCTPercentageCTList read fRed;
-    [TNaming(TNaming.nCamelCase)]
     property RedOff: TCTPercentageCTList read fRedOff;
-    [TNaming(TNaming.nCamelCase)]
     property RedMod: TCTPercentageCTList read fRedMod;
-    [TNaming(TNaming.nFlatCase)]
     property Green: TCTPercentageCTList read fGreen;
-    [TNaming(TNaming.nCamelCase)]
     property GreenOff: TCTPercentageCTList read fGreenOff;
-    [TNaming(TNaming.nCamelCase)]
     property GreenMod: TCTPercentageCTList read fGreenMod;
-    [TNaming(TNaming.nFlatCase)]
     property Blue: TCTPercentageCTList read fBlue;
-    [TNaming(TNaming.nCamelCase)]
     property BlueOff: TCTPercentageCTList read fBlueOff;
-    [TNaming(TNaming.nCamelCase)]
     property BlueMod: TCTPercentageCTList read fBlueMod;
-    [TNaming(TNaming.nFlatCase)]
     property Gamma: TCTGammaTransformCTList read fGamma;
-    [TNaming(TNaming.nCamelCase)]
     property InvGamma: TCTInverseGammaTransformCTList read fInvGamma;
   end;
 
@@ -1812,7 +1535,6 @@ type
   private
     fExt: TCTOfficeArtExtensionCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Ext: TCTOfficeArtExtensionCTList read fExt;
   end;
 
@@ -1823,10 +1545,8 @@ type
     fSy: TCTRatioCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Sx: TCTRatioCT read fSx;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Sy: TCTRatioCT read fSy;
   end;
 
@@ -1840,17 +1560,12 @@ type
     fExt: TCTPositiveSize2DCT;
   published
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Rot: TSTAngleST read fRot write fRot;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property FlipH: ProRock.Xmlite.Schema.Base.TBooleanST read fFlipH write fFlipH;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property FlipV: ProRock.Xmlite.Schema.Base.TBooleanST read fFlipV write fFlipV;
-    [TNaming(TNaming.nFlatCase)]
     property Off: TCTPoint2DCT read fOff;
-    [TNaming(TNaming.nFlatCase)]
     property Ext: TCTPositiveSize2DCT read fExt;
   end;
 
@@ -1866,21 +1581,14 @@ type
     fChExt: TCTPositiveSize2DCT;
   published
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Rot: TSTAngleST read fRot write fRot;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property FlipH: ProRock.Xmlite.Schema.Base.TBooleanST read fFlipH write fFlipH;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property FlipV: ProRock.Xmlite.Schema.Base.TBooleanST read fFlipV write fFlipV;
-    [TNaming(TNaming.nFlatCase)]
     property Off: TCTPoint2DCT read fOff;
-    [TNaming(TNaming.nFlatCase)]
     property Ext: TCTPositiveSize2DCT read fExt;
-    [TNaming(TNaming.nCamelCase)]
     property ChOff: TCTPoint2DCT read fChOff;
-    [TNaming(TNaming.nCamelCase)]
     property ChExt: TCTPositiveSize2DCT read fChExt;
   end;
 
@@ -1892,13 +1600,10 @@ type
     fZ: TSTCoordinateST;
   published
     [TRequired]
-    [TName('x')]
     property X: TSTCoordinateST read fX write fX;
     [TRequired]
-    [TName('y')]
     property Y: TSTCoordinateST read fY write fY;
     [TRequired]
-    [TName('z')]
     property Z: TSTCoordinateST read fZ write fZ;
   end;
 
@@ -1910,13 +1615,10 @@ type
     fDz: TSTCoordinateST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Dx: TSTCoordinateST read fDx write fDx;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Dy: TSTCoordinateST read fDy write fDy;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Dz: TSTCoordinateST read fDz write fDz;
   end;
 
@@ -1928,13 +1630,10 @@ type
     fRev: TSTPositiveFixedAngleST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Lat: TSTPositiveFixedAngleST read fLat write fLat;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Lon: TSTPositiveFixedAngleST read fLon write fLon;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Rev: TSTPositiveFixedAngleST read fRev write fRev;
   end;
 
@@ -1947,16 +1646,12 @@ type
     fB: TSTPercentageST;
   published
     [TDefault('0%')]
-    [TName('l')]
     property L: TSTPercentageST read fL write fL;
     [TDefault('0%')]
-    [TName('t')]
     property T: TSTPercentageST read fT write fT;
     [TDefault('0%')]
-    [TName('r')]
     property R: TSTPercentageST read fR write fR;
     [TDefault('0%')]
-    [TName('b')]
     property B: TSTPercentageST read fB write fB;
   end;
 
@@ -1978,22 +1673,16 @@ type
     function GetPrstClr: TCTPresetColorCT;
   published
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property ScrgbClr: TCTScRgbColorCT read GetScrgbClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SrgbClr: TCTSRgbColorCT read GetSrgbClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property HslClr: TCTHslColorCT read GetHslClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SysClr: TCTSystemColorCT read GetSysClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SchemeClr: TCTSchemeColorCT read GetSchemeClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property PrstClr: TCTPresetColorCT read GetPrstClr;
   end;
 
@@ -2008,17 +1697,11 @@ type
     fSchemeClr: TCTSchemeColorCTList;
     fPrstClr: TCTPresetColorCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property ScrgbClr: TCTScRgbColorCTList read fScrgbClr;
-    [TNaming(TNaming.nCamelCase)]
     property SrgbClr: TCTSRgbColorCTList read fSrgbClr;
-    [TNaming(TNaming.nCamelCase)]
     property HslClr: TCTHslColorCTList read fHslClr;
-    [TNaming(TNaming.nCamelCase)]
     property SysClr: TCTSystemColorCTList read fSysClr;
-    [TNaming(TNaming.nCamelCase)]
     property SchemeClr: TCTSchemeColorCTList read fSchemeClr;
-    [TNaming(TNaming.nCamelCase)]
     property PrstClr: TCTPresetColorCTList read fPrstClr;
   end;
 
@@ -2031,7 +1714,6 @@ type
     [TRequired]
     [TNaming(TNaming.nFlatCase)]
     property Embed: ProRock.Xmlite.Schema.Ooxml.Rel.TEmbedA read fEmbed write fEmbed;
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Base.TStringST read fName write fName;
   end;
 
@@ -2051,26 +1733,17 @@ type
   published
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
-    [TNaming(TNaming.nCamelCase)]
     property InvalidUrl: ProRock.Xmlite.Schema.Base.TStringST read fInvalidUrl write fInvalidUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Action: ProRock.Xmlite.Schema.Base.TStringST read fAction write fAction;
-    [TNaming(TNaming.nCamelCase)]
     property TgtFrame: ProRock.Xmlite.Schema.Base.TStringST read fTgtFrame write fTgtFrame;
-    [TNaming(TNaming.nFlatCase)]
     property Tooltip: ProRock.Xmlite.Schema.Base.TStringST read fTooltip write fTooltip;
     [TDefault(True)]
-    [TNaming(TNaming.nFlatCase)]
     property History: ProRock.Xmlite.Schema.Base.TBooleanST read fHistory write fHistory;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property HighlightClick: ProRock.Xmlite.Schema.Base.TBooleanST read fHighlightClick write fHighlightClick;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property EndSnd: ProRock.Xmlite.Schema.Base.TBooleanST read fEndSnd write fEndSnd;
-    [TNaming(TNaming.nFlatCase)]
     property Snd: TCTEmbeddedWAVAudioFileCT read fSnd;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -2090,36 +1763,25 @@ type
     fExtLst: TCTOfficeArtExtensionListCT;
   published
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoGrp: ProRock.Xmlite.Schema.Base.TBooleanST read fNoGrp write fNoGrp;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoSelect: ProRock.Xmlite.Schema.Base.TBooleanST read fNoSelect write fNoSelect;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoRot: ProRock.Xmlite.Schema.Base.TBooleanST read fNoRot write fNoRot;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoChangeAspect: ProRock.Xmlite.Schema.Base.TBooleanST read fNoChangeAspect write fNoChangeAspect;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoMove: ProRock.Xmlite.Schema.Base.TBooleanST read fNoMove write fNoMove;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoResize: ProRock.Xmlite.Schema.Base.TBooleanST read fNoResize write fNoResize;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoEditPoints: ProRock.Xmlite.Schema.Base.TBooleanST read fNoEditPoints write fNoEditPoints;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoAdjustHandles: ProRock.Xmlite.Schema.Base.TBooleanST read fNoAdjustHandles write fNoAdjustHandles;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoChangeArrowheads: ProRock.Xmlite.Schema.Base.TBooleanST read fNoChangeArrowheads write fNoChangeArrowheads;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoChangeShapeType: ProRock.Xmlite.Schema.Base.TBooleanST read fNoChangeShapeType write fNoChangeShapeType;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -2140,39 +1802,27 @@ type
     fExtLst: TCTOfficeArtExtensionListCT;
   published
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoTextEdit: ProRock.Xmlite.Schema.Base.TBooleanST read fNoTextEdit write fNoTextEdit;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoGrp: ProRock.Xmlite.Schema.Base.TBooleanST read fNoGrp write fNoGrp;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoSelect: ProRock.Xmlite.Schema.Base.TBooleanST read fNoSelect write fNoSelect;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoRot: ProRock.Xmlite.Schema.Base.TBooleanST read fNoRot write fNoRot;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoChangeAspect: ProRock.Xmlite.Schema.Base.TBooleanST read fNoChangeAspect write fNoChangeAspect;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoMove: ProRock.Xmlite.Schema.Base.TBooleanST read fNoMove write fNoMove;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoResize: ProRock.Xmlite.Schema.Base.TBooleanST read fNoResize write fNoResize;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoEditPoints: ProRock.Xmlite.Schema.Base.TBooleanST read fNoEditPoints write fNoEditPoints;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoAdjustHandles: ProRock.Xmlite.Schema.Base.TBooleanST read fNoAdjustHandles write fNoAdjustHandles;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoChangeArrowheads: ProRock.Xmlite.Schema.Base.TBooleanST read fNoChangeArrowheads write fNoChangeArrowheads;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoChangeShapeType: ProRock.Xmlite.Schema.Base.TBooleanST read fNoChangeShapeType write fNoChangeShapeType;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -2193,39 +1843,27 @@ type
     fExtLst: TCTOfficeArtExtensionListCT;
   published
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoCrop: ProRock.Xmlite.Schema.Base.TBooleanST read fNoCrop write fNoCrop;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoGrp: ProRock.Xmlite.Schema.Base.TBooleanST read fNoGrp write fNoGrp;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoSelect: ProRock.Xmlite.Schema.Base.TBooleanST read fNoSelect write fNoSelect;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoRot: ProRock.Xmlite.Schema.Base.TBooleanST read fNoRot write fNoRot;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoChangeAspect: ProRock.Xmlite.Schema.Base.TBooleanST read fNoChangeAspect write fNoChangeAspect;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoMove: ProRock.Xmlite.Schema.Base.TBooleanST read fNoMove write fNoMove;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoResize: ProRock.Xmlite.Schema.Base.TBooleanST read fNoResize write fNoResize;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoEditPoints: ProRock.Xmlite.Schema.Base.TBooleanST read fNoEditPoints write fNoEditPoints;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoAdjustHandles: ProRock.Xmlite.Schema.Base.TBooleanST read fNoAdjustHandles write fNoAdjustHandles;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoChangeArrowheads: ProRock.Xmlite.Schema.Base.TBooleanST read fNoChangeArrowheads write fNoChangeArrowheads;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoChangeShapeType: ProRock.Xmlite.Schema.Base.TBooleanST read fNoChangeShapeType write fNoChangeShapeType;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -2242,27 +1880,19 @@ type
     fExtLst: TCTOfficeArtExtensionListCT;
   published
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoGrp: ProRock.Xmlite.Schema.Base.TBooleanST read fNoGrp write fNoGrp;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoUngrp: ProRock.Xmlite.Schema.Base.TBooleanST read fNoUngrp write fNoUngrp;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoSelect: ProRock.Xmlite.Schema.Base.TBooleanST read fNoSelect write fNoSelect;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoRot: ProRock.Xmlite.Schema.Base.TBooleanST read fNoRot write fNoRot;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoChangeAspect: ProRock.Xmlite.Schema.Base.TBooleanST read fNoChangeAspect write fNoChangeAspect;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoMove: ProRock.Xmlite.Schema.Base.TBooleanST read fNoMove write fNoMove;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoResize: ProRock.Xmlite.Schema.Base.TBooleanST read fNoResize write fNoResize;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -2278,24 +1908,17 @@ type
     fExtLst: TCTOfficeArtExtensionListCT;
   published
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoGrp: ProRock.Xmlite.Schema.Base.TBooleanST read fNoGrp write fNoGrp;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoDrilldown: ProRock.Xmlite.Schema.Base.TBooleanST read fNoDrilldown write fNoDrilldown;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoSelect: ProRock.Xmlite.Schema.Base.TBooleanST read fNoSelect write fNoSelect;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoChangeAspect: ProRock.Xmlite.Schema.Base.TBooleanST read fNoChangeAspect write fNoChangeAspect;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoMove: ProRock.Xmlite.Schema.Base.TBooleanST read fNoMove write fNoMove;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoResize: ProRock.Xmlite.Schema.Base.TBooleanST read fNoResize write fNoResize;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -2315,36 +1938,25 @@ type
     fExtLst: TCTOfficeArtExtensionListCT;
   published
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoGrp: ProRock.Xmlite.Schema.Base.TBooleanST read fNoGrp write fNoGrp;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoSelect: ProRock.Xmlite.Schema.Base.TBooleanST read fNoSelect write fNoSelect;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoRot: ProRock.Xmlite.Schema.Base.TBooleanST read fNoRot write fNoRot;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoChangeAspect: ProRock.Xmlite.Schema.Base.TBooleanST read fNoChangeAspect write fNoChangeAspect;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoMove: ProRock.Xmlite.Schema.Base.TBooleanST read fNoMove write fNoMove;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoResize: ProRock.Xmlite.Schema.Base.TBooleanST read fNoResize write fNoResize;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoEditPoints: ProRock.Xmlite.Schema.Base.TBooleanST read fNoEditPoints write fNoEditPoints;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoAdjustHandles: ProRock.Xmlite.Schema.Base.TBooleanST read fNoAdjustHandles write fNoAdjustHandles;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoChangeArrowheads: ProRock.Xmlite.Schema.Base.TBooleanST read fNoChangeArrowheads write fNoChangeArrowheads;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoChangeShapeType: ProRock.Xmlite.Schema.Base.TBooleanST read fNoChangeShapeType write fNoChangeShapeType;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -2361,23 +1973,15 @@ type
     fExtLst: TCTOfficeArtExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Id: TSTDrawingElementIdST read fId write fId;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Base.TStringST read fName write fName;
-    [TNaming(TNaming.nFlatCase)]
     property Descr: ProRock.Xmlite.Schema.Base.TStringST read fDescr write fDescr;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Hidden: ProRock.Xmlite.Schema.Base.TBooleanST read fHidden write fHidden;
-    [TNaming(TNaming.nFlatCase)]
     property Title: ProRock.Xmlite.Schema.Base.TStringST read fTitle write fTitle;
-    [TNaming(TNaming.nCamelCase)]
     property HlinkClick: TCTHyperlinkCT read fHlinkClick;
-    [TNaming(TNaming.nCamelCase)]
     property HlinkHover: TCTHyperlinkCT read fHlinkHover;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -2389,11 +1993,8 @@ type
     fExtLst: TCTOfficeArtExtensionListCT;
   published
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property TxBox: ProRock.Xmlite.Schema.Base.TBooleanST read fTxBox write fTxBox;
-    [TNaming(TNaming.nCamelCase)]
     property SpLocks: TCTShapeLockingCT read fSpLocks;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -2405,13 +2006,9 @@ type
     fEndCxn: TCTConnectionCT;
     fExtLst: TCTOfficeArtExtensionListCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property CxnSpLocks: TCTConnectorLockingCT read fCxnSpLocks;
-    [TNaming(TNaming.nCamelCase)]
     property StCxn: TCTConnectionCT read fStCxn;
-    [TNaming(TNaming.nCamelCase)]
     property EndCxn: TCTConnectionCT read fEndCxn;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -2423,11 +2020,8 @@ type
     fExtLst: TCTOfficeArtExtensionListCT;
   published
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property PreferRelativeResize: ProRock.Xmlite.Schema.Base.TBooleanST read fPreferRelativeResize write fPreferRelativeResize;
-    [TNaming(TNaming.nCamelCase)]
     property PicLocks: TCTPictureLockingCT read fPicLocks;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -2437,9 +2031,7 @@ type
     fGrpSpLocks: TCTGroupLockingCT;
     fExtLst: TCTOfficeArtExtensionListCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property GrpSpLocks: TCTGroupLockingCT read fGrpSpLocks;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -2449,9 +2041,7 @@ type
     fGraphicFrameLocks: TCTGraphicalObjectFrameLockingCT;
     fExtLst: TCTOfficeArtExtensionListCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property GraphicFrameLocks: TCTGraphicalObjectFrameLockingCT read fGraphicFrameLocks;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -2463,11 +2053,8 @@ type
     fExtLst: TCTOfficeArtExtensionListCT;
   published
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property IsComment: ProRock.Xmlite.Schema.Base.TBooleanST read fIsComment write fIsComment;
-    [TNaming(TNaming.nCamelCase)]
     property CpLocks: TCTContentPartLockingCT read fCpLocks;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -2477,7 +2064,6 @@ type
     fUri: ProRock.Xmlite.Schema.Base.TTokenST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Uri: ProRock.Xmlite.Schema.Base.TTokenST read fUri write fUri;
   end;
 
@@ -2487,7 +2073,6 @@ type
     fGraphicData: TCTGraphicalObjectDataCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property GraphicData: TCTGraphicalObjectDataCT read fGraphicData;
   end;
 
@@ -2498,10 +2083,8 @@ type
     fBldStep: TSTDgmBuildStepST;
   published
     [TDefault('{00000000-0000-0000-0000-000000000000}')]
-    [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST read fId write fId;
     [TDefault(Ord(stdbsSp))]
-    [TNaming(TNaming.nCamelCase)]
     property BldStep: TSTDgmBuildStepST read fBldStep write fBldStep;
   end;
 
@@ -2513,13 +2096,10 @@ type
     fBldStep: TSTChartBuildStepST;
   published
     [TDefault(-1)]
-    [TNaming(TNaming.nCamelCase)]
     property SeriesIdx: ProRock.Xmlite.Schema.Base.TIntST read fSeriesIdx write fSeriesIdx;
     [TDefault(-1)]
-    [TNaming(TNaming.nCamelCase)]
     property CategoryIdx: ProRock.Xmlite.Schema.Base.TIntST read fCategoryIdx write fCategoryIdx;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property BldStep: TSTChartBuildStepST read fBldStep write fBldStep;
   end;
 
@@ -2533,10 +2113,8 @@ type
     function GetChart: TCTAnimationChartElementCT;
   published
     [TChoice('Dgm')]
-    [TNaming(TNaming.nFlatCase)]
     property Dgm: TCTAnimationDgmElementCT read GetDgm;
     [TChoice('Dgm')]
-    [TNaming(TNaming.nFlatCase)]
     property Chart: TCTAnimationChartElementCT read GetChart;
   end;
 
@@ -2547,10 +2125,8 @@ type
     fRev: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
     [TDefault('allAtOnce')]
-    [TNaming(TNaming.nFlatCase)]
     property Bld: TSTAnimationDgmBuildTypeST read fBld write fBld;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Rev: ProRock.Xmlite.Schema.Base.TBooleanST read fRev write fRev;
   end;
 
@@ -2561,10 +2137,8 @@ type
     fAnimBg: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
     [TDefault('allAtOnce')]
-    [TNaming(TNaming.nFlatCase)]
     property Bld: TSTAnimationChartBuildTypeST read fBld write fBld;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property AnimBg: ProRock.Xmlite.Schema.Base.TBooleanST read fAnimBg write fAnimBg;
   end;
 
@@ -2581,10 +2155,8 @@ type
     property BldChosen: TBasite read GetBldChosen;
   published
     [TChoice('Bld')]
-    [TNaming(TNaming.nCamelCase)]
     property BldDgm: TCTAnimationDgmBuildPropertiesCT read GetBldDgm;
     [TChoice('Bld')]
-    [TNaming(TNaming.nCamelCase)]
     property BldChart: TCTAnimationChartBuildPropertiesCT read GetBldChart;
   end;
 
@@ -2613,28 +2185,20 @@ type
     property EffectChosen: TBasite read GetEffectChosen;
   published
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property NoFill: TCTNoFillPropertiesCT read GetNoFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property SolidFill: TCTSolidColorFillPropertiesCT read GetSolidFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property GradFill: TCTGradientFillPropertiesCT read GetGradFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property BlipFill: TCTBlipFillPropertiesCT read GetBlipFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property PattFill: TCTPatternFillPropertiesCT read GetPattFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property GrpFill: TCTGroupFillPropertiesCT read GetGrpFill;
     [TChoice('Effect')]
-    [TNaming(TNaming.nCamelCase)]
     property EffectLst: TCTEffectListCT read GetEffectLst;
     [TChoice('Effect')]
-    [TNaming(TNaming.nCamelCase)]
     property EffectDag: TCTEffectContainerCT read GetEffectDag;
   end;
 
@@ -2651,13 +2215,10 @@ type
   public
     property EffectChosen: TBasite read GetEffectChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Ln: TCTLinePropertiesCT read fLn;
     [TChoice('Effect')]
-    [TNaming(TNaming.nCamelCase)]
     property EffectLst: TCTEffectListCT read GetEffectLst;
     [TChoice('Effect')]
-    [TNaming(TNaming.nCamelCase)]
     property EffectDag: TCTEffectContainerCT read GetEffectDag;
   end;
 
@@ -2676,15 +2237,11 @@ type
     function GetXfrm: TCTTransform2DCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property TxBody: TCTTextBodyCT read fTxBody;
     [TChoice('UseSpRect')]
-    [TNaming(TNaming.nCamelCase)]
     property UseSpRect: TCTGvmlUseShapeRectangleCT read GetUseSpRect;
     [TChoice('UseSpRect')]
-    [TNaming(TNaming.nFlatCase)]
     property Xfrm: TCTTransform2DCT read GetXfrm;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -2695,10 +2252,8 @@ type
     fCNvSpPr: TCTNonVisualDrawingShapePropsCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property CNvPr: TCTNonVisualDrawingPropsCT read fCNvPr;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property CNvSpPr: TCTNonVisualDrawingShapePropsCT read fCNvSpPr;
   end;
 
@@ -2712,16 +2267,11 @@ type
     fExtLst: TCTOfficeArtExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property NvSpPr: TCTGvmlShapeNonVisualCT read fNvSpPr;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property SpPr: TCTShapePropertiesCT read fSpPr;
-    [TNaming(TNaming.nCamelCase)]
     property TxSp: TCTGvmlTextShapeCT read fTxSp;
-    [TNaming(TNaming.nFlatCase)]
     property Style: TCTShapeStyleCT read fStyle;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -2732,10 +2282,8 @@ type
     fCNvCxnSpPr: TCTNonVisualConnectorPropertiesCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property CNvPr: TCTNonVisualDrawingPropsCT read fCNvPr;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property CNvCxnSpPr: TCTNonVisualConnectorPropertiesCT read fCNvCxnSpPr;
   end;
 
@@ -2748,14 +2296,10 @@ type
     fExtLst: TCTOfficeArtExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property NvCxnSpPr: TCTGvmlConnectorNonVisualCT read fNvCxnSpPr;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property SpPr: TCTShapePropertiesCT read fSpPr;
-    [TNaming(TNaming.nFlatCase)]
     property Style: TCTShapeStyleCT read fStyle;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -2766,10 +2310,8 @@ type
     fCNvPicPr: TCTNonVisualPicturePropertiesCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property CNvPr: TCTNonVisualDrawingPropsCT read fCNvPr;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property CNvPicPr: TCTNonVisualPicturePropertiesCT read fCNvPicPr;
   end;
 
@@ -2783,17 +2325,12 @@ type
     fExtLst: TCTOfficeArtExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property NvPicPr: TCTGvmlPictureNonVisualCT read fNvPicPr;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property BlipFill: TCTBlipFillPropertiesCT read fBlipFill;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property SpPr: TCTShapePropertiesCT read fSpPr;
-    [TNaming(TNaming.nFlatCase)]
     property Style: TCTShapeStyleCT read fStyle;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -2804,10 +2341,8 @@ type
     fCNvGraphicFramePr: TCTNonVisualGraphicFramePropertiesCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property CNvPr: TCTNonVisualDrawingPropsCT read fCNvPr;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property CNvGraphicFramePr: TCTNonVisualGraphicFramePropertiesCT read fCNvGraphicFramePr;
   end;
 
@@ -2820,15 +2355,11 @@ type
     fExtLst: TCTOfficeArtExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property NvGraphicFramePr: TCTGvmlGraphicFrameNonVisualCT read fNvGraphicFramePr;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Graphic: TGraphicE read fGraphic;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Xfrm: TCTTransform2DCT read fXfrm;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -2839,10 +2370,8 @@ type
     fCNvGrpSpPr: TCTNonVisualGroupDrawingShapePropsCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property CNvPr: TCTNonVisualDrawingPropsCT read fCNvPr;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property CNvGrpSpPr: TCTNonVisualGroupDrawingShapePropsCT read fCNvGrpSpPr;
   end;
 
@@ -2861,24 +2390,15 @@ type
     fExtLst: TCTOfficeArtExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property NvGrpSpPr: TCTGvmlGroupShapeNonVisualCT read fNvGrpSpPr;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property GrpSpPr: TCTGroupShapePropertiesCT read fGrpSpPr;
-    [TNaming(TNaming.nCamelCase)]
     property TxSp: TCTGvmlTextShapeCTList read fTxSp;
-    [TNaming(TNaming.nFlatCase)]
     property Sp: TCTGvmlShapeCTList read fSp;
-    [TNaming(TNaming.nCamelCase)]
     property CxnSp: TCTGvmlConnectorCTList read fCxnSp;
-    [TNaming(TNaming.nFlatCase)]
     property Pic: TCTGvmlPictureCTList read fPic;
-    [TNaming(TNaming.nCamelCase)]
     property GraphicFrame: TCTGvmlGraphicalObjectFrameCTList read fGraphicFrame;
-    [TNaming(TNaming.nCamelCase)]
     property GrpSp: TCTGvmlGroupShapeCTList read fGrpSp;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -2891,14 +2411,10 @@ type
     fRot: TCTSphereCoordsCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Prst: TSTPresetCameraTypeST read fPrst write fPrst;
-    [TNaming(TNaming.nFlatCase)]
     property Fov: TSTFOVAngleST read fFov write fFov;
     [TDefault('100%')]
-    [TNaming(TNaming.nFlatCase)]
     property Zoom: TSTPositivePercentageST read fZoom write fZoom;
-    [TNaming(TNaming.nFlatCase)]
     property Rot: TCTSphereCoordsCT read fRot;
   end;
 
@@ -2910,12 +2426,9 @@ type
     fRot: TCTSphereCoordsCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Rig: TSTLightRigTypeST read fRig write fRig;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Dir: TSTLightRigDirectionST read fDir write fDir;
-    [TNaming(TNaming.nFlatCase)]
     property Rot: TCTSphereCoordsCT read fRot;
   end;
 
@@ -2928,14 +2441,10 @@ type
     fExtLst: TCTOfficeArtExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Camera: TCTCameraCT read fCamera;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property LightRig: TCTLightRigCT read fLightRig;
-    [TNaming(TNaming.nFlatCase)]
     property Backdrop: TCTBackdropCT read fBackdrop;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -2948,15 +2457,11 @@ type
     fExtLst: TCTOfficeArtExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Anchor: TCTPoint3DCT read fAnchor;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Norm: TCTVector3DCT read fNorm;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Up: TCTVector3DCT read fUp;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -2968,13 +2473,10 @@ type
     fPrst: TSTBevelPresetTypeST;
   published
     [TDefault(76200)]
-    [TName('w')]
     property W: TSTPositiveCoordinateST read fW write fW;
     [TDefault(76200)]
-    [TName('h')]
     property H: TSTPositiveCoordinateST read fH write fH;
     [TDefault(Ord(stbptCircle))]
-    [TNaming(TNaming.nFlatCase)]
     property Prst: TSTBevelPresetTypeST read fPrst write fPrst;
   end;
 
@@ -2992,26 +2494,17 @@ type
     fExtLst: TCTOfficeArtExtensionListCT;
   published
     [TDefault('0')]
-    [TName('z')]
     property Z: TSTCoordinateST read fZ write fZ;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property ExtrusionH: TSTPositiveCoordinateST read fExtrusionH write fExtrusionH;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property ContourW: TSTPositiveCoordinateST read fContourW write fContourW;
     [TDefault(Ord(stpmtWarmMatte))]
-    [TNaming(TNaming.nCamelCase)]
     property PrstMaterial: TSTPresetMaterialTypeST read fPrstMaterial write fPrstMaterial;
-    [TNaming(TNaming.nCamelCase)]
     property BevelT: TCTBevelCT read fBevelT;
-    [TNaming(TNaming.nCamelCase)]
     property BevelB: TCTBevelCT read fBevelB;
-    [TNaming(TNaming.nCamelCase)]
     property ExtrusionClr: TCTColorCT read fExtrusionClr;
-    [TNaming(TNaming.nCamelCase)]
     property ContourClr: TCTColorCT read fContourClr;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -3021,7 +2514,6 @@ type
     fZ: TSTCoordinateST;
   published
     [TDefault('0')]
-    [TName('z')]
     property Z: TSTCoordinateST read fZ write fZ;
   end;
 
@@ -3031,7 +2523,6 @@ type
     fThresh: TSTPositiveFixedPercentageST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Thresh: TSTPositiveFixedPercentageST read fThresh write fThresh;
   end;
 
@@ -3059,22 +2550,16 @@ type
     function GetPrstClr: TCTPresetColorCT;
   published
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property ScrgbClr: TCTScRgbColorCT read GetScrgbClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SrgbClr: TCTSRgbColorCT read GetSrgbClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property HslClr: TCTHslColorCT read GetHslClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SysClr: TCTSystemColorCT read GetSysClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SchemeClr: TCTSchemeColorCT read GetSchemeClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property PrstClr: TCTPresetColorCT read GetPrstClr;
   end;
 
@@ -3084,7 +2569,6 @@ type
     fAmt: TSTPositivePercentageST;
   published
     [TDefault('100%')]
-    [TNaming(TNaming.nFlatCase)]
     property Amt: TSTPositivePercentageST read fAmt write fAmt;
   end;
 
@@ -3094,7 +2578,6 @@ type
     fRad: TSTCoordinateST;
   published
     [TDefault('0')]
-    [TNaming(TNaming.nFlatCase)]
     property Rad: TSTCoordinateST read fRad write fRad;
   end;
 
@@ -3104,7 +2587,6 @@ type
     fA: TSTPositiveFixedPercentageST;
   published
     [TRequired]
-    [TName('a')]
     property A: TSTPositiveFixedPercentageST read fA write fA;
   end;
 
@@ -3114,7 +2596,6 @@ type
     fThresh: TSTPositiveFixedPercentageST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Thresh: TSTPositiveFixedPercentageST read fThresh write fThresh;
   end;
 
@@ -3125,10 +2606,8 @@ type
     fGrow: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Rad: TSTPositiveCoordinateST read fRad write fRad;
     [TDefault(True)]
-    [TNaming(TNaming.nFlatCase)]
     property Grow: ProRock.Xmlite.Schema.Base.TBooleanST read fGrow write fGrow;
   end;
 
@@ -3140,13 +2619,10 @@ type
     fClrTo: TCTColorCT;
   published
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property UseA: ProRock.Xmlite.Schema.Base.TBooleanST read fUseA write fUseA;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ClrFrom: TCTColorCT read fClrFrom;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ClrTo: TCTColorCT read fClrTo;
   end;
 
@@ -3168,22 +2644,16 @@ type
     function GetPrstClr: TCTPresetColorCT;
   published
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property ScrgbClr: TCTScRgbColorCT read GetScrgbClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SrgbClr: TCTSRgbColorCT read GetSrgbClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property HslClr: TCTHslColorCT read GetHslClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SysClr: TCTSystemColorCT read GetSysClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SchemeClr: TCTSchemeColorCT read GetSchemeClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property PrstClr: TCTPresetColorCT read GetPrstClr;
   end;
 
@@ -3198,17 +2668,11 @@ type
     fSchemeClr: TCTSchemeColorCTList;
     fPrstClr: TCTPresetColorCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property ScrgbClr: TCTScRgbColorCTList read fScrgbClr;
-    [TNaming(TNaming.nCamelCase)]
     property SrgbClr: TCTSRgbColorCTList read fSrgbClr;
-    [TNaming(TNaming.nCamelCase)]
     property HslClr: TCTHslColorCTList read fHslClr;
-    [TNaming(TNaming.nCamelCase)]
     property SysClr: TCTSystemColorCTList read fSysClr;
-    [TNaming(TNaming.nCamelCase)]
     property SchemeClr: TCTSchemeColorCTList read fSchemeClr;
-    [TNaming(TNaming.nCamelCase)]
     property PrstClr: TCTPresetColorCTList read fPrstClr;
   end;
 
@@ -3231,25 +2695,18 @@ type
     function GetPrstClr: TCTPresetColorCT;
   published
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Rad: TSTPositiveCoordinateST read fRad write fRad;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property ScrgbClr: TCTScRgbColorCT read GetScrgbClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SrgbClr: TCTSRgbColorCT read GetSrgbClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property HslClr: TCTHslColorCT read GetHslClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SysClr: TCTSystemColorCT read GetSysClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SchemeClr: TCTSchemeColorCT read GetSchemeClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property PrstClr: TCTPresetColorCT read GetPrstClr;
   end;
 
@@ -3264,13 +2721,10 @@ type
     fLum: TSTFixedPercentageST;
   published
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Hue: TSTPositiveFixedAngleST read fHue write fHue;
     [TDefault('0%')]
-    [TNaming(TNaming.nFlatCase)]
     property Sat: TSTFixedPercentageST read fSat write fSat;
     [TDefault('0%')]
-    [TNaming(TNaming.nFlatCase)]
     property Lum: TSTFixedPercentageST read fLum write fLum;
   end;
 
@@ -3295,31 +2749,22 @@ type
     function GetPrstClr: TCTPresetColorCT;
   published
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property BlurRad: TSTPositiveCoordinateST read fBlurRad write fBlurRad;
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Dist: TSTPositiveCoordinateST read fDist write fDist;
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Dir: TSTPositiveFixedAngleST read fDir write fDir;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property ScrgbClr: TCTScRgbColorCT read GetScrgbClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SrgbClr: TCTSRgbColorCT read GetSrgbClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property HslClr: TCTHslColorCT read GetHslClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SysClr: TCTSystemColorCT read GetSysClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SchemeClr: TCTSchemeColorCT read GetSchemeClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property PrstClr: TCTPresetColorCT read GetPrstClr;
   end;
 
@@ -3330,10 +2775,8 @@ type
     fContrast: TSTFixedPercentageST;
   published
     [TDefault('0%')]
-    [TNaming(TNaming.nFlatCase)]
     property Bright: TSTFixedPercentageST read fBright write fBright;
     [TDefault('0%')]
-    [TNaming(TNaming.nFlatCase)]
     property Contrast: TSTFixedPercentageST read fContrast write fContrast;
   end;
 
@@ -3364,49 +2807,34 @@ type
     function GetPrstClr: TCTPresetColorCT;
   published
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property BlurRad: TSTPositiveCoordinateST read fBlurRad write fBlurRad;
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Dist: TSTPositiveCoordinateST read fDist write fDist;
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Dir: TSTPositiveFixedAngleST read fDir write fDir;
     [TDefault('100%')]
-    [TNaming(TNaming.nFlatCase)]
     property Sx: TSTPercentageST read fSx write fSx;
     [TDefault('100%')]
-    [TNaming(TNaming.nFlatCase)]
     property Sy: TSTPercentageST read fSy write fSy;
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Kx: TSTFixedAngleST read fKx write fKx;
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Ky: TSTFixedAngleST read fKy write fKy;
     [TDefault(Ord(straB))]
-    [TNaming(TNaming.nFlatCase)]
     property Algn: TSTRectAlignmentST read fAlgn write fAlgn;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property RotWithShape: ProRock.Xmlite.Schema.Base.TBooleanST read fRotWithShape write fRotWithShape;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property ScrgbClr: TCTScRgbColorCT read GetScrgbClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SrgbClr: TCTSRgbColorCT read GetSrgbClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property HslClr: TCTHslColorCT read GetHslClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SysClr: TCTSystemColorCT read GetSysClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SchemeClr: TCTSchemeColorCT read GetSchemeClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property PrstClr: TCTPresetColorCT read GetPrstClr;
   end;
 
@@ -3431,31 +2859,22 @@ type
     function GetPrstClr: TCTPresetColorCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Prst: TSTPresetShadowValST read fPrst write fPrst;
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Dist: TSTPositiveCoordinateST read fDist write fDist;
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Dir: TSTPositiveFixedAngleST read fDir write fDir;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property ScrgbClr: TCTScRgbColorCT read GetScrgbClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SrgbClr: TCTSRgbColorCT read GetSrgbClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property HslClr: TCTHslColorCT read GetHslClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SysClr: TCTSystemColorCT read GetSysClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SchemeClr: TCTSchemeColorCT read GetSchemeClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property PrstClr: TCTPresetColorCT read GetPrstClr;
   end;
 
@@ -3478,46 +2897,32 @@ type
     fRotWithShape: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property BlurRad: TSTPositiveCoordinateST read fBlurRad write fBlurRad;
     [TDefault('100%')]
-    [TNaming(TNaming.nCamelCase)]
     property StA: TSTPositiveFixedPercentageST read fStA write fStA;
     [TDefault('0%')]
-    [TNaming(TNaming.nCamelCase)]
     property StPos: TSTPositiveFixedPercentageST read fStPos write fStPos;
     [TDefault('0%')]
-    [TNaming(TNaming.nCamelCase)]
     property EndA: TSTPositiveFixedPercentageST read fEndA write fEndA;
     [TDefault('100%')]
-    [TNaming(TNaming.nCamelCase)]
     property EndPos: TSTPositiveFixedPercentageST read fEndPos write fEndPos;
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Dist: TSTPositiveCoordinateST read fDist write fDist;
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Dir: TSTPositiveFixedAngleST read fDir write fDir;
     [TDefault(5400000)]
-    [TNaming(TNaming.nCamelCase)]
     property FadeDir: TSTPositiveFixedAngleST read fFadeDir write fFadeDir;
     [TDefault('100%')]
-    [TNaming(TNaming.nFlatCase)]
     property Sx: TSTPercentageST read fSx write fSx;
     [TDefault('100%')]
-    [TNaming(TNaming.nFlatCase)]
     property Sy: TSTPercentageST read fSy write fSy;
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Kx: TSTFixedAngleST read fKx write fKx;
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Ky: TSTFixedAngleST read fKy write fKy;
     [TDefault(Ord(straB))]
-    [TNaming(TNaming.nFlatCase)]
     property Algn: TSTRectAlignmentST read fAlgn write fAlgn;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property RotWithShape: ProRock.Xmlite.Schema.Base.TBooleanST read fRotWithShape write fRotWithShape;
   end;
 
@@ -3528,10 +2933,8 @@ type
     fTy: TSTPercentageST;
   published
     [TDefault('0%')]
-    [TNaming(TNaming.nFlatCase)]
     property Tx: TSTPercentageST read fTx write fTx;
     [TDefault('0%')]
-    [TNaming(TNaming.nFlatCase)]
     property Ty: TSTPercentageST read fTy write fTy;
   end;
 
@@ -3541,7 +2944,6 @@ type
     fRad: TSTPositiveCoordinateST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Rad: TSTPositiveCoordinateST read fRad write fRad;
   end;
 
@@ -3552,10 +2954,8 @@ type
     fAmt: TSTFixedPercentageST;
   published
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Hue: TSTPositiveFixedAngleST read fHue write fHue;
     [TDefault('0%')]
-    [TNaming(TNaming.nFlatCase)]
     property Amt: TSTFixedPercentageST read fAmt write fAmt;
   end;
 
@@ -3570,22 +2970,16 @@ type
     fTy: TSTCoordinateST;
   published
     [TDefault('100%')]
-    [TNaming(TNaming.nFlatCase)]
     property Sx: TSTPercentageST read fSx write fSx;
     [TDefault('100%')]
-    [TNaming(TNaming.nFlatCase)]
     property Sy: TSTPercentageST read fSy write fSy;
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Kx: TSTFixedAngleST read fKx write fKx;
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Ky: TSTFixedAngleST read fKy write fKy;
     [TDefault('0')]
-    [TNaming(TNaming.nFlatCase)]
     property Tx: TSTCoordinateST read fTx write fTx;
     [TDefault('0')]
-    [TNaming(TNaming.nFlatCase)]
     property Ty: TSTCoordinateST read fTy write fTy;
   end;
 
@@ -3610,22 +3004,16 @@ type
     function GetPrstClr: TCTPresetColorCT;
   published
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property ScrgbClr: TCTScRgbColorCT read GetScrgbClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SrgbClr: TCTSRgbColorCT read GetSrgbClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property HslClr: TCTHslColorCT read GetHslClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SysClr: TCTSystemColorCT read GetSysClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SchemeClr: TCTSchemeColorCT read GetSchemeClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property PrstClr: TCTPresetColorCT read GetPrstClr;
   end;
 
@@ -3635,9 +3023,7 @@ type
     fAng: TSTPositiveFixedAngleST;
     fScaled: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Ang: TSTPositiveFixedAngleST read fAng write fAng;
-    [TNaming(TNaming.nFlatCase)]
     property Scaled: ProRock.Xmlite.Schema.Base.TBooleanST read fScaled write fScaled;
   end;
 
@@ -3647,9 +3033,7 @@ type
     fPath: TSTPathShadeTypeST;
     fFillToRect: TCTRelativeRectCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Path: TSTPathShadeTypeST read fPath write fPath;
-    [TNaming(TNaming.nCamelCase)]
     property FillToRect: TCTRelativeRectCT read fFillToRect;
   end;
 
@@ -3672,25 +3056,18 @@ type
     function GetPrstClr: TCTPresetColorCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Pos: TSTPositiveFixedPercentageST read fPos write fPos;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property ScrgbClr: TCTScRgbColorCT read GetScrgbClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SrgbClr: TCTSRgbColorCT read GetSrgbClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property HslClr: TCTHslColorCT read GetHslClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SysClr: TCTSystemColorCT read GetSysClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SchemeClr: TCTSchemeColorCT read GetSchemeClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property PrstClr: TCTPresetColorCT read GetPrstClr;
   end;
 
@@ -3699,7 +3076,6 @@ type
   private
     fGs: TCTGradientStopCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Gs: TCTGradientStopCTList read fGs;
   end;
 
@@ -3717,19 +3093,13 @@ type
     function GetPath: TCTPathShadePropertiesCT;
   published
     [TDefault(Ord(sttfmNone))]
-    [TNaming(TNaming.nFlatCase)]
     property Flip: TSTTileFlipModeST read fFlip write fFlip;
-    [TNaming(TNaming.nCamelCase)]
     property RotWithShape: ProRock.Xmlite.Schema.Base.TBooleanST read fRotWithShape write fRotWithShape;
-    [TNaming(TNaming.nCamelCase)]
     property GsLst: TCTGradientStopListCT read fGsLst;
     [TChoice('Lin')]
-    [TNaming(TNaming.nFlatCase)]
     property Lin: TCTLinearShadePropertiesCT read GetLin;
     [TChoice('Lin')]
-    [TNaming(TNaming.nFlatCase)]
     property Path: TCTPathShadePropertiesCT read GetPath;
-    [TNaming(TNaming.nCamelCase)]
     property TileRect: TCTRelativeRectCT read fTileRect;
   end;
 
@@ -3743,18 +3113,12 @@ type
     fFlip: TSTTileFlipModeST;
     fAlgn: TSTRectAlignmentST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Tx: TSTCoordinateST read fTx write fTx;
-    [TNaming(TNaming.nFlatCase)]
     property Ty: TSTCoordinateST read fTy write fTy;
-    [TNaming(TNaming.nFlatCase)]
     property Sx: TSTPercentageST read fSx write fSx;
-    [TNaming(TNaming.nFlatCase)]
     property Sy: TSTPercentageST read fSy write fSy;
     [TDefault(Ord(sttfmNone))]
-    [TNaming(TNaming.nFlatCase)]
     property Flip: TSTTileFlipModeST read fFlip write fFlip;
-    [TNaming(TNaming.nFlatCase)]
     property Algn: TSTRectAlignmentST read fAlgn write fAlgn;
   end;
 
@@ -3763,7 +3127,6 @@ type
   private
     fFillRect: TCTRelativeRectCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property FillRect: TCTRelativeRectCT read fFillRect;
   end;
 
@@ -3794,47 +3157,28 @@ type
     fExtLst: TCTOfficeArtExtensionListCT;
   published
     [TDefault(Ord(stbcNone))]
-    [TNaming(TNaming.nFlatCase)]
     property Cstate: TSTBlipCompressionST read fCstate write fCstate;
     [TNaming(TNaming.nFlatCase)]
     property Embed: ProRock.Xmlite.Schema.Ooxml.Rel.TEmbedA read fEmbed write fEmbed;
     [TNaming(TNaming.nFlatCase)]
     property Link: ProRock.Xmlite.Schema.Ooxml.Rel.TLinkA read fLink write fLink;
-    [TNaming(TNaming.nCamelCase)]
     property AlphaBiLevel: TCTAlphaBiLevelEffectCTList read fAlphaBiLevel;
-    [TNaming(TNaming.nCamelCase)]
     property AlphaCeiling: TCTAlphaCeilingEffectCTList read fAlphaCeiling;
-    [TNaming(TNaming.nCamelCase)]
     property AlphaFloor: TCTAlphaFloorEffectCTList read fAlphaFloor;
-    [TNaming(TNaming.nCamelCase)]
     property AlphaInv: TCTAlphaInverseEffectCTList read fAlphaInv;
-    [TNaming(TNaming.nCamelCase)]
     property AlphaMod: TCTAlphaModulateEffectCTList read fAlphaMod;
-    [TNaming(TNaming.nCamelCase)]
     property AlphaModFix: TCTAlphaModulateFixedEffectCTList read fAlphaModFix;
-    [TNaming(TNaming.nCamelCase)]
     property AlphaRepl: TCTAlphaReplaceEffectCTList read fAlphaRepl;
-    [TNaming(TNaming.nCamelCase)]
     property BiLevel: TCTBiLevelEffectCTList read fBiLevel;
-    [TNaming(TNaming.nFlatCase)]
     property Blur: TCTBlurEffectCTList read fBlur;
-    [TNaming(TNaming.nCamelCase)]
     property ClrChange: TCTColorChangeEffectCTList read fClrChange;
-    [TNaming(TNaming.nCamelCase)]
     property ClrRepl: TCTColorReplaceEffectCTList read fClrRepl;
-    [TNaming(TNaming.nFlatCase)]
     property Duotone: TCTDuotoneEffectCTList read fDuotone;
-    [TNaming(TNaming.nCamelCase)]
     property FillOverlay: TCTFillOverlayEffectCTList read fFillOverlay;
-    [TNaming(TNaming.nFlatCase)]
     property Grayscl: TCTGrayscaleEffectCTList read fGrayscl;
-    [TNaming(TNaming.nFlatCase)]
     property Hsl: TCTHSLEffectCTList read fHsl;
-    [TNaming(TNaming.nFlatCase)]
     property Lum: TCTLuminanceEffectCTList read fLum;
-    [TNaming(TNaming.nFlatCase)]
     property Tint: TCTTintEffectCTList read fTint;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -3851,19 +3195,13 @@ type
     function GetTile: TCTTileInfoPropertiesCT;
     function GetStretch: TCTStretchInfoPropertiesCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Dpi: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fDpi write fDpi;
-    [TNaming(TNaming.nCamelCase)]
     property RotWithShape: ProRock.Xmlite.Schema.Base.TBooleanST read fRotWithShape write fRotWithShape;
-    [TNaming(TNaming.nFlatCase)]
     property Blip: TCTBlipCT read fBlip;
-    [TNaming(TNaming.nCamelCase)]
     property SrcRect: TCTRelativeRectCT read fSrcRect;
     [TChoice('Tile')]
-    [TNaming(TNaming.nFlatCase)]
     property Tile: TCTTileInfoPropertiesCT read GetTile;
     [TChoice('Tile')]
-    [TNaming(TNaming.nFlatCase)]
     property Stretch: TCTStretchInfoPropertiesCT read GetStretch;
   end;
 
@@ -3874,11 +3212,8 @@ type
     fFgClr: TCTColorCT;
     fBgClr: TCTColorCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Prst: TSTPresetPatternValST read fPrst write fPrst;
-    [TNaming(TNaming.nCamelCase)]
     property FgClr: TCTColorCT read fFgClr;
-    [TNaming(TNaming.nCamelCase)]
     property BgClr: TCTColorCT read fBgClr;
   end;
 
@@ -3903,22 +3238,16 @@ type
     function GetGrpFill: TCTGroupFillPropertiesCT;
   published
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property NoFill: TCTNoFillPropertiesCT read GetNoFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property SolidFill: TCTSolidColorFillPropertiesCT read GetSolidFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property GradFill: TCTGradientFillPropertiesCT read GetGradFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property BlipFill: TCTBlipFillPropertiesCT read GetBlipFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property PattFill: TCTPatternFillPropertiesCT read GetPattFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property GrpFill: TCTGroupFillPropertiesCT read GetGrpFill;
   end;
 
@@ -3940,22 +3269,16 @@ type
     function GetGrpFill: TCTGroupFillPropertiesCT;
   published
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property NoFill: TCTNoFillPropertiesCT read GetNoFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property SolidFill: TCTSolidColorFillPropertiesCT read GetSolidFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property GradFill: TCTGradientFillPropertiesCT read GetGradFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property BlipFill: TCTBlipFillPropertiesCT read GetBlipFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property PattFill: TCTPatternFillPropertiesCT read GetPattFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property GrpFill: TCTGroupFillPropertiesCT read GetGrpFill;
   end;
 
@@ -3978,25 +3301,18 @@ type
     function GetGrpFill: TCTGroupFillPropertiesCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Blend: TSTBlendModeST read fBlend write fBlend;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property NoFill: TCTNoFillPropertiesCT read GetNoFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property SolidFill: TCTSolidColorFillPropertiesCT read GetSolidFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property GradFill: TCTGradientFillPropertiesCT read GetGradFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property BlipFill: TCTBlipFillPropertiesCT read GetBlipFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property PattFill: TCTPatternFillPropertiesCT read GetPattFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property GrpFill: TCTGroupFillPropertiesCT read GetGrpFill;
   end;
 
@@ -4006,7 +3322,6 @@ type
     fRef: ProRock.Xmlite.Schema.Base.TTokenST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Ref: ProRock.Xmlite.Schema.Base.TTokenST read fRef write fRef;
   end;
 
@@ -4048,69 +3363,37 @@ type
     fXfrm: TCTTransformEffectCTList;
   published
     [TDefault(Ord(stectSib))]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TSTEffectContainerTypeST read fType write fType;
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Base.TTokenST read fName write fName;
-    [TNaming(TNaming.nFlatCase)]
     property Cont: TCTEffectContainerCTList read fCont;
-    [TNaming(TNaming.nFlatCase)]
     property Effect: TCTEffectReferenceCTList read fEffect;
-    [TNaming(TNaming.nCamelCase)]
     property AlphaBiLevel: TCTAlphaBiLevelEffectCTList read fAlphaBiLevel;
-    [TNaming(TNaming.nCamelCase)]
     property AlphaCeiling: TCTAlphaCeilingEffectCTList read fAlphaCeiling;
-    [TNaming(TNaming.nCamelCase)]
     property AlphaFloor: TCTAlphaFloorEffectCTList read fAlphaFloor;
-    [TNaming(TNaming.nCamelCase)]
     property AlphaInv: TCTAlphaInverseEffectCTList read fAlphaInv;
-    [TNaming(TNaming.nCamelCase)]
     property AlphaMod: TCTAlphaModulateEffectCTList read fAlphaMod;
-    [TNaming(TNaming.nCamelCase)]
     property AlphaModFix: TCTAlphaModulateFixedEffectCTList read fAlphaModFix;
-    [TNaming(TNaming.nCamelCase)]
     property AlphaOutset: TCTAlphaOutsetEffectCTList read fAlphaOutset;
-    [TNaming(TNaming.nCamelCase)]
     property AlphaRepl: TCTAlphaReplaceEffectCTList read fAlphaRepl;
-    [TNaming(TNaming.nCamelCase)]
     property BiLevel: TCTBiLevelEffectCTList read fBiLevel;
-    [TNaming(TNaming.nFlatCase)]
     property Blend: TCTBlendEffectCTList read fBlend;
-    [TNaming(TNaming.nFlatCase)]
     property Blur: TCTBlurEffectCTList read fBlur;
-    [TNaming(TNaming.nCamelCase)]
     property ClrChange: TCTColorChangeEffectCTList read fClrChange;
-    [TNaming(TNaming.nCamelCase)]
     property ClrRepl: TCTColorReplaceEffectCTList read fClrRepl;
-    [TNaming(TNaming.nFlatCase)]
     property Duotone: TCTDuotoneEffectCTList read fDuotone;
-    [TNaming(TNaming.nFlatCase)]
     property Fill: TCTFillEffectCTList read fFill;
-    [TNaming(TNaming.nCamelCase)]
     property FillOverlay: TCTFillOverlayEffectCTList read fFillOverlay;
-    [TNaming(TNaming.nFlatCase)]
     property Glow: TCTGlowEffectCTList read fGlow;
-    [TNaming(TNaming.nFlatCase)]
     property Grayscl: TCTGrayscaleEffectCTList read fGrayscl;
-    [TNaming(TNaming.nFlatCase)]
     property Hsl: TCTHSLEffectCTList read fHsl;
-    [TNaming(TNaming.nCamelCase)]
     property InnerShdw: TCTInnerShadowEffectCTList read fInnerShdw;
-    [TNaming(TNaming.nFlatCase)]
     property Lum: TCTLuminanceEffectCTList read fLum;
-    [TNaming(TNaming.nCamelCase)]
     property OuterShdw: TCTOuterShadowEffectCTList read fOuterShdw;
-    [TNaming(TNaming.nCamelCase)]
     property PrstShdw: TCTPresetShadowEffectCTList read fPrstShdw;
-    [TNaming(TNaming.nFlatCase)]
     property Reflection: TCTReflectionEffectCTList read fReflection;
-    [TNaming(TNaming.nCamelCase)]
     property RelOff: TCTRelativeOffsetEffectCTList read fRelOff;
-    [TNaming(TNaming.nCamelCase)]
     property SoftEdge: TCTSoftEdgesEffectCTList read fSoftEdge;
-    [TNaming(TNaming.nFlatCase)]
     property Tint: TCTTintEffectCTList read fTint;
-    [TNaming(TNaming.nFlatCase)]
     property Xfrm: TCTTransformEffectCTList read fXfrm;
   end;
 
@@ -4120,7 +3403,6 @@ type
     fCont: TCTEffectContainerCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Cont: TCTEffectContainerCT read fCont;
   end;
 
@@ -4131,10 +3413,8 @@ type
     fCont: TCTEffectContainerCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Blend: TSTBlendModeST read fBlend write fBlend;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Cont: TCTEffectContainerCT read fCont;
   end;
 
@@ -4150,21 +3430,13 @@ type
     fReflection: TCTReflectionEffectCT;
     fSoftEdge: TCTSoftEdgesEffectCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Blur: TCTBlurEffectCT read fBlur;
-    [TNaming(TNaming.nCamelCase)]
     property FillOverlay: TCTFillOverlayEffectCT read fFillOverlay;
-    [TNaming(TNaming.nFlatCase)]
     property Glow: TCTGlowEffectCT read fGlow;
-    [TNaming(TNaming.nCamelCase)]
     property InnerShdw: TCTInnerShadowEffectCT read fInnerShdw;
-    [TNaming(TNaming.nCamelCase)]
     property OuterShdw: TCTOuterShadowEffectCT read fOuterShdw;
-    [TNaming(TNaming.nCamelCase)]
     property PrstShdw: TCTPresetShadowEffectCT read fPrstShdw;
-    [TNaming(TNaming.nFlatCase)]
     property Reflection: TCTReflectionEffectCT read fReflection;
-    [TNaming(TNaming.nCamelCase)]
     property SoftEdge: TCTSoftEdgesEffectCT read fSoftEdge;
   end;
 
@@ -4181,10 +3453,8 @@ type
     property EffectChosen: TBasite read GetEffectChosen;
   published
     [TChoice('Effect')]
-    [TNaming(TNaming.nCamelCase)]
     property EffectLst: TCTEffectListCT read GetEffectLst;
     [TChoice('Effect')]
-    [TNaming(TNaming.nCamelCase)]
     property EffectDag: TCTEffectContainerCT read GetEffectDag;
   end;
 
@@ -4195,10 +3465,8 @@ type
     fFmla: TSTGeomGuideFormulaST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: TSTGeomGuideNameST read fName write fName;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Fmla: TSTGeomGuideFormulaST read fFmla write fFmla;
   end;
 
@@ -4207,7 +3475,6 @@ type
   private
     fGd: TCTGeomGuideCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Gd: TCTGeomGuideCTList read fGd;
   end;
 
@@ -4218,10 +3485,8 @@ type
     fY: TSTAdjCoordinateST;
   published
     [TRequired]
-    [TName('x')]
     property X: TSTAdjCoordinateST read fX write fX;
     [TRequired]
-    [TName('y')]
     property Y: TSTAdjCoordinateST read fY write fY;
   end;
 
@@ -4234,16 +3499,12 @@ type
     fB: TSTAdjCoordinateST;
   published
     [TRequired]
-    [TName('l')]
     property L: TSTAdjCoordinateST read fL write fL;
     [TRequired]
-    [TName('t')]
     property T: TSTAdjCoordinateST read fT write fT;
     [TRequired]
-    [TName('r')]
     property R: TSTAdjCoordinateST read fR write fR;
     [TRequired]
-    [TName('b')]
     property B: TSTAdjCoordinateST read fB write fB;
   end;
 
@@ -4258,20 +3519,13 @@ type
     fMaxY: TSTAdjCoordinateST;
     fPos: TCTAdjPoint2DCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property GdRefX: TSTGeomGuideNameST read fGdRefX write fGdRefX;
-    [TNaming(TNaming.nCamelCase)]
     property MinX: TSTAdjCoordinateST read fMinX write fMinX;
-    [TNaming(TNaming.nCamelCase)]
     property MaxX: TSTAdjCoordinateST read fMaxX write fMaxX;
-    [TNaming(TNaming.nCamelCase)]
     property GdRefY: TSTGeomGuideNameST read fGdRefY write fGdRefY;
-    [TNaming(TNaming.nCamelCase)]
     property MinY: TSTAdjCoordinateST read fMinY write fMinY;
-    [TNaming(TNaming.nCamelCase)]
     property MaxY: TSTAdjCoordinateST read fMaxY write fMaxY;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Pos: TCTAdjPoint2DCT read fPos;
   end;
 
@@ -4286,20 +3540,13 @@ type
     fMaxAng: TSTAdjAngleST;
     fPos: TCTAdjPoint2DCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property GdRefR: TSTGeomGuideNameST read fGdRefR write fGdRefR;
-    [TNaming(TNaming.nCamelCase)]
     property MinR: TSTAdjCoordinateST read fMinR write fMinR;
-    [TNaming(TNaming.nCamelCase)]
     property MaxR: TSTAdjCoordinateST read fMaxR write fMaxR;
-    [TNaming(TNaming.nCamelCase)]
     property GdRefAng: TSTGeomGuideNameST read fGdRefAng write fGdRefAng;
-    [TNaming(TNaming.nCamelCase)]
     property MinAng: TSTAdjAngleST read fMinAng write fMinAng;
-    [TNaming(TNaming.nCamelCase)]
     property MaxAng: TSTAdjAngleST read fMaxAng write fMaxAng;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Pos: TCTAdjPoint2DCT read fPos;
   end;
 
@@ -4310,10 +3557,8 @@ type
     fPos: TCTAdjPoint2DCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Ang: TSTAdjAngleST read fAng write fAng;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Pos: TCTAdjPoint2DCT read fPos;
   end;
 
@@ -4324,9 +3569,7 @@ type
     fAhXY: TCTXYAdjustHandleCTList;
     fAhPolar: TCTPolarAdjustHandleCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property AhXY: TCTXYAdjustHandleCTList read fAhXY;
-    [TNaming(TNaming.nCamelCase)]
     property AhPolar: TCTPolarAdjustHandleCTList read fAhPolar;
   end;
 
@@ -4335,7 +3578,6 @@ type
   private
     fCxn: TCTConnectionSiteCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Cxn: TCTConnectionSiteCTList read fCxn;
   end;
 
@@ -4346,10 +3588,8 @@ type
     fIdx: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Id: TSTDrawingElementIdST read fId write fId;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Idx: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fIdx write fIdx;
   end;
 
@@ -4359,7 +3599,6 @@ type
     fPt: TCTAdjPoint2DCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Pt: TCTAdjPoint2DCT read fPt;
   end;
 
@@ -4369,7 +3608,6 @@ type
     fPt: TCTAdjPoint2DCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Pt: TCTAdjPoint2DCT read fPt;
   end;
 
@@ -4388,10 +3626,8 @@ type
     [TName('hR')]
     property HR: TSTAdjCoordinateST read fHr write fHr;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property StAng: TSTAdjAngleST read fStAng write fStAng;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property SwAng: TSTAdjAngleST read fSwAng write fSwAng;
   end;
 
@@ -4400,7 +3636,6 @@ type
   private
     fPt: TCTAdjPoint2DCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Pt: TCTAdjPoint2DCTList read fPt;
   end;
 
@@ -4409,7 +3644,6 @@ type
   private
     fPt: TCTAdjPoint2DCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Pt: TCTAdjPoint2DCTList read fPt;
   end;
 
@@ -4433,31 +3667,20 @@ type
     fCubicBezTo: TCTPath2DCubicBezierToCTList;
   published
     [TDefault(0)]
-    [TName('w')]
     property W: TSTPositiveCoordinateST read fW write fW;
     [TDefault(0)]
-    [TName('h')]
     property H: TSTPositiveCoordinateST read fH write fH;
     [TDefault(Ord(stpfmNorm))]
-    [TNaming(TNaming.nFlatCase)]
     property Fill: TSTPathFillModeST read fFill write fFill;
     [TDefault(True)]
-    [TNaming(TNaming.nFlatCase)]
     property Stroke: ProRock.Xmlite.Schema.Base.TBooleanST read fStroke write fStroke;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ExtrusionOk: ProRock.Xmlite.Schema.Base.TBooleanST read fExtrusionOk write fExtrusionOk;
-    [TNaming(TNaming.nFlatCase)]
     property Close: TCTPath2DCloseCTList read fClose;
-    [TNaming(TNaming.nCamelCase)]
     property MoveTo: TCTPath2DMoveToCTList read fMoveTo;
-    [TNaming(TNaming.nCamelCase)]
     property LnTo: TCTPath2DLineToCTList read fLnTo;
-    [TNaming(TNaming.nCamelCase)]
     property ArcTo: TCTPath2DArcToCTList read fArcTo;
-    [TNaming(TNaming.nCamelCase)]
     property QuadBezTo: TCTPath2DQuadBezierToCTList read fQuadBezTo;
-    [TNaming(TNaming.nCamelCase)]
     property CubicBezTo: TCTPath2DCubicBezierToCTList read fCubicBezTo;
   end;
 
@@ -4466,7 +3689,6 @@ type
   private
     fPath: TCTPath2DCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Path: TCTPath2DCTList read fPath;
   end;
 
@@ -4477,9 +3699,7 @@ type
     fAvLst: TCTGeomGuideListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Prst: TSTShapeTypeST read fPrst write fPrst;
-    [TNaming(TNaming.nCamelCase)]
     property AvLst: TCTGeomGuideListCT read fAvLst;
   end;
 
@@ -4490,9 +3710,7 @@ type
     fAvLst: TCTGeomGuideListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Prst: TSTTextShapeTypeST read fPrst write fPrst;
-    [TNaming(TNaming.nCamelCase)]
     property AvLst: TCTGeomGuideListCT read fAvLst;
   end;
 
@@ -4506,18 +3724,12 @@ type
     fRect: TCTGeomRectCT;
     fPathLst: TCTPath2DListCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property AvLst: TCTGeomGuideListCT read fAvLst;
-    [TNaming(TNaming.nCamelCase)]
     property GdLst: TCTGeomGuideListCT read fGdLst;
-    [TNaming(TNaming.nCamelCase)]
     property AhLst: TCTAdjustHandleListCT read fAhLst;
-    [TNaming(TNaming.nCamelCase)]
     property CxnLst: TCTConnectionSiteListCT read fCxnLst;
-    [TNaming(TNaming.nFlatCase)]
     property Rect: TCTGeomRectCT read fRect;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property PathLst: TCTPath2DListCT read fPathLst;
   end;
 
@@ -4529,11 +3741,8 @@ type
     fLen: TSTLineEndLengthST;
   published
     [TDefault(Ord(stletNone))]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TSTLineEndTypeST read fType write fType;
-    [TName('w')]
     property W: TSTLineEndWidthST read fW write fW;
-    [TNaming(TNaming.nFlatCase)]
     property Len: TSTLineEndLengthST read fLen write fLen;
   end;
 
@@ -4548,7 +3757,6 @@ type
   private
     fLim: TSTPositivePercentageST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Lim: TSTPositivePercentageST read fLim write fLim;
   end;
 
@@ -4557,7 +3765,6 @@ type
   private
     fVal: TSTPresetLineDashValST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Val: TSTPresetLineDashValST read fVal write fVal;
   end;
 
@@ -4568,10 +3775,8 @@ type
     fSp: TSTPositivePercentageST;
   published
     [TRequired]
-    [TName('d')]
     property D: TSTPositivePercentageST read fD write fD;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Sp: TSTPositivePercentageST read fSp write fSp;
   end;
 
@@ -4580,7 +3785,6 @@ type
   private
     fDs: TCTDashStopCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Ds: TCTDashStopCTList read fDs;
   end;
 
@@ -4614,46 +3818,30 @@ type
     function GetBevel: TCTLineJoinBevelCT;
     function GetMiter: TCTLineJoinMiterPropertiesCT;
   published
-    [TName('w')]
     property W: TSTLineWidthST read fW write fW;
-    [TNaming(TNaming.nFlatCase)]
     property Cap: TSTLineCapST read fCap write fCap;
-    [TNaming(TNaming.nFlatCase)]
     property Cmpd: TSTCompoundLineST read fCmpd write fCmpd;
-    [TNaming(TNaming.nFlatCase)]
     property Algn: TSTPenAlignmentST read fAlgn write fAlgn;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property NoFill: TCTNoFillPropertiesCT read GetNoFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property SolidFill: TCTSolidColorFillPropertiesCT read GetSolidFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property GradFill: TCTGradientFillPropertiesCT read GetGradFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property PattFill: TCTPatternFillPropertiesCT read GetPattFill;
     [TChoice('PrstDash')]
-    [TNaming(TNaming.nCamelCase)]
     property PrstDash: TCTPresetLineDashPropertiesCT read GetPrstDash;
     [TChoice('PrstDash')]
-    [TNaming(TNaming.nCamelCase)]
     property CustDash: TCTDashStopListCT read GetCustDash;
     [TChoice('Round')]
-    [TNaming(TNaming.nFlatCase)]
     property Round: TCTLineJoinRoundCT read GetRound;
     [TChoice('Round')]
-    [TNaming(TNaming.nFlatCase)]
     property Bevel: TCTLineJoinBevelCT read GetBevel;
     [TChoice('Round')]
-    [TNaming(TNaming.nFlatCase)]
     property Miter: TCTLineJoinMiterPropertiesCT read GetMiter;
-    [TNaming(TNaming.nCamelCase)]
     property HeadEnd: TCTLineEndPropertiesCT read fHeadEnd;
-    [TNaming(TNaming.nCamelCase)]
     property TailEnd: TCTLineEndPropertiesCT read fTailEnd;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -4691,47 +3879,31 @@ type
   public
     property EffectChosen: TBasite read GetEffectChosen;
   published
-    [TNaming(TNaming.nCamelCase)]
     property BwMode: TSTBlackWhiteModeST read fBwMode write fBwMode;
-    [TNaming(TNaming.nFlatCase)]
     property Xfrm: TCTTransform2DCT read fXfrm;
     [TChoice('CustGeom')]
-    [TNaming(TNaming.nCamelCase)]
     property CustGeom: TCTCustomGeometry2DCT read GetCustGeom;
     [TChoice('CustGeom')]
-    [TNaming(TNaming.nCamelCase)]
     property PrstGeom: TCTPresetGeometry2DCT read GetPrstGeom;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property NoFill: TCTNoFillPropertiesCT read GetNoFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property SolidFill: TCTSolidColorFillPropertiesCT read GetSolidFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property GradFill: TCTGradientFillPropertiesCT read GetGradFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property BlipFill: TCTBlipFillPropertiesCT read GetBlipFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property PattFill: TCTPatternFillPropertiesCT read GetPattFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property GrpFill: TCTGroupFillPropertiesCT read GetGrpFill;
-    [TNaming(TNaming.nFlatCase)]
     property Ln: TCTLinePropertiesCT read fLn;
     [TChoice('Effect')]
-    [TNaming(TNaming.nCamelCase)]
     property EffectLst: TCTEffectListCT read GetEffectLst;
     [TChoice('Effect')]
-    [TNaming(TNaming.nCamelCase)]
     property EffectDag: TCTEffectContainerCT read GetEffectDag;
-    [TNaming(TNaming.nFlatCase)]
     property Scene3d: TCTScene3DCT read fScene3d;
-    [TNaming(TNaming.nFlatCase)]
     property Sp3d: TCTShape3DCT read fSp3d;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -4763,37 +3935,25 @@ type
   public
     property EffectChosen: TBasite read GetEffectChosen;
   published
-    [TNaming(TNaming.nCamelCase)]
     property BwMode: TSTBlackWhiteModeST read fBwMode write fBwMode;
-    [TNaming(TNaming.nFlatCase)]
     property Xfrm: TCTGroupTransform2DCT read fXfrm;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property NoFill: TCTNoFillPropertiesCT read GetNoFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property SolidFill: TCTSolidColorFillPropertiesCT read GetSolidFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property GradFill: TCTGradientFillPropertiesCT read GetGradFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property BlipFill: TCTBlipFillPropertiesCT read GetBlipFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property PattFill: TCTPatternFillPropertiesCT read GetPattFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property GrpFill: TCTGroupFillPropertiesCT read GetGrpFill;
     [TChoice('Effect')]
-    [TNaming(TNaming.nCamelCase)]
     property EffectLst: TCTEffectListCT read GetEffectLst;
     [TChoice('Effect')]
-    [TNaming(TNaming.nCamelCase)]
     property EffectDag: TCTEffectContainerCT read GetEffectDag;
-    [TNaming(TNaming.nFlatCase)]
     property Scene3d: TCTScene3DCT read fScene3d;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -4816,25 +3976,18 @@ type
     function GetPrstClr: TCTPresetColorCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Idx: TSTStyleMatrixColumnIndexST read fIdx write fIdx;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property ScrgbClr: TCTScRgbColorCT read GetScrgbClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SrgbClr: TCTSRgbColorCT read GetSrgbClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property HslClr: TCTHslColorCT read GetHslClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SysClr: TCTSystemColorCT read GetSysClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SchemeClr: TCTSchemeColorCT read GetSchemeClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property PrstClr: TCTPresetColorCT read GetPrstClr;
   end;
 
@@ -4857,25 +4010,18 @@ type
     function GetPrstClr: TCTPresetColorCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Idx: TSTFontCollectionIndexST read fIdx write fIdx;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property ScrgbClr: TCTScRgbColorCT read GetScrgbClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SrgbClr: TCTSRgbColorCT read GetSrgbClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property HslClr: TCTHslColorCT read GetHslClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SysClr: TCTSystemColorCT read GetSysClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SchemeClr: TCTSchemeColorCT read GetSchemeClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property PrstClr: TCTPresetColorCT read GetPrstClr;
   end;
 
@@ -4888,16 +4034,12 @@ type
     fFontRef: TCTFontReferenceCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property LnRef: TCTStyleMatrixReferenceCT read fLnRef;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property FillRef: TCTStyleMatrixReferenceCT read fFillRef;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property EffectRef: TCTStyleMatrixReferenceCT read fEffectRef;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property FontRef: TCTFontReferenceCT read fFontRef;
   end;
 
@@ -4911,17 +4053,12 @@ type
     fExtLst: TCTOfficeArtExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property SpPr: TCTShapePropertiesCT read fSpPr;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property BodyPr: TCTTextBodyPropertiesCT read fBodyPr;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property LstStyle: TCTTextListStyleCT read fLstStyle;
-    [TNaming(TNaming.nFlatCase)]
     property Style: TCTShapeStyleCT read fStyle;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -4933,13 +4070,9 @@ type
     fTxDef: TCTDefaultShapeDefinitionCT;
     fExtLst: TCTOfficeArtExtensionListCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property SpDef: TCTDefaultShapeDefinitionCT read fSpDef;
-    [TNaming(TNaming.nCamelCase)]
     property LnDef: TCTDefaultShapeDefinitionCT read fLnDef;
-    [TNaming(TNaming.nCamelCase)]
     property TxDef: TCTDefaultShapeDefinitionCT read fTxDef;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -4964,42 +4097,29 @@ type
     fExtLst: TCTOfficeArtExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Bg1: TSTColorSchemeIndexST read fBg1 write fBg1;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Tx1: TSTColorSchemeIndexST read fTx1 write fTx1;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Bg2: TSTColorSchemeIndexST read fBg2 write fBg2;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Tx2: TSTColorSchemeIndexST read fTx2 write fTx2;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Accent1: TSTColorSchemeIndexST read fAccent1 write fAccent1;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Accent2: TSTColorSchemeIndexST read fAccent2 write fAccent2;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Accent3: TSTColorSchemeIndexST read fAccent3 write fAccent3;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Accent4: TSTColorSchemeIndexST read fAccent4 write fAccent4;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Accent5: TSTColorSchemeIndexST read fAccent5 write fAccent5;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Accent6: TSTColorSchemeIndexST read fAccent6 write fAccent6;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Hlink: TSTColorSchemeIndexST read fHlink write fHlink;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property FolHlink: TSTColorSchemeIndexST read fFolHlink write fFolHlink;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -5013,10 +4133,8 @@ type
     function GetOverrideClrMapping: TCTColorMappingCT;
   published
     [TChoice('MasterClrMapping')]
-    [TNaming(TNaming.nCamelCase)]
     property MasterClrMapping: TCTEmptyElementCT read GetMasterClrMapping;
     [TChoice('MasterClrMapping')]
-    [TNaming(TNaming.nCamelCase)]
     property OverrideClrMapping: TCTColorMappingCT read GetOverrideClrMapping;
   end;
 
@@ -5027,9 +4145,7 @@ type
     fClrMap: TCTColorMappingCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ClrScheme: TCTColorSchemeCT read fClrScheme;
-    [TNaming(TNaming.nCamelCase)]
     property ClrMap: TCTColorMappingCT read fClrMap;
   end;
 
@@ -5038,7 +4154,6 @@ type
   private
     fExtraClrScheme: TCTColorSchemeAndMappingCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property ExtraClrScheme: TCTColorSchemeAndMappingCTList read fExtraClrScheme;
   end;
 
@@ -5052,18 +4167,12 @@ type
     fCustClrLst: TCTCustomColorListCT;
     fExtLst: TCTOfficeArtExtensionListCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Base.TStringST read fName write fName;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ThemeElements: TCTBaseStylesCT read fThemeElements;
-    [TNaming(TNaming.nCamelCase)]
     property ObjectDefaults: TCTObjectStyleDefaultsCT read fObjectDefaults;
-    [TNaming(TNaming.nCamelCase)]
     property ExtraClrSchemeLst: TCTColorSchemeListCT read fExtraClrSchemeLst;
-    [TNaming(TNaming.nCamelCase)]
     property CustClrLst: TCTCustomColorListCT read fCustClrLst;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -5074,11 +4183,8 @@ type
     fFontScheme: TCTFontSchemeCT;
     fFmtScheme: TCTStyleMatrixCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property ClrScheme: TCTColorSchemeCT read fClrScheme;
-    [TNaming(TNaming.nCamelCase)]
     property FontScheme: TCTFontSchemeCT read fFontScheme;
-    [TNaming(TNaming.nCamelCase)]
     property FmtScheme: TCTStyleMatrixCT read fFmtScheme;
   end;
 
@@ -5089,10 +4195,8 @@ type
     fClrMap: TCTColorMappingCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ThemeElements: TCTBaseStylesCT read fThemeElements;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ClrMap: TCTColorMappingCT read fClrMap;
   end;
 
@@ -5131,64 +4235,41 @@ type
     function GetGrpFill: TCTGroupFillPropertiesCT;
   published
     [TDefault('91440')]
-    [TNaming(TNaming.nCamelCase)]
     property MarL: TSTCoordinate32ST read fMarL write fMarL;
     [TDefault('91440')]
-    [TNaming(TNaming.nCamelCase)]
     property MarR: TSTCoordinate32ST read fMarR write fMarR;
     [TDefault('45720')]
-    [TNaming(TNaming.nCamelCase)]
     property MarT: TSTCoordinate32ST read fMarT write fMarT;
     [TDefault('45720')]
-    [TNaming(TNaming.nCamelCase)]
     property MarB: TSTCoordinate32ST read fMarB write fMarB;
     [TDefault(Ord(sttvtHorz))]
-    [TNaming(TNaming.nFlatCase)]
     property Vert: TSTTextVerticalTypeST read fVert write fVert;
     [TDefault(Ord(sttatT))]
-    [TNaming(TNaming.nFlatCase)]
     property Anchor: TSTTextAnchoringTypeST read fAnchor write fAnchor;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property AnchorCtr: ProRock.Xmlite.Schema.Base.TBooleanST read fAnchorCtr write fAnchorCtr;
     [TDefault(Ord(stthotClip))]
-    [TNaming(TNaming.nCamelCase)]
     property HorzOverflow: TSTTextHorzOverflowTypeST read fHorzOverflow write fHorzOverflow;
-    [TNaming(TNaming.nCamelCase)]
     property LnL: TCTLinePropertiesCT read fLnL;
-    [TNaming(TNaming.nCamelCase)]
     property LnR: TCTLinePropertiesCT read fLnR;
-    [TNaming(TNaming.nCamelCase)]
     property LnT: TCTLinePropertiesCT read fLnT;
-    [TNaming(TNaming.nCamelCase)]
     property LnB: TCTLinePropertiesCT read fLnB;
-    [TNaming(TNaming.nCamelCase)]
     property LnTlToBr: TCTLinePropertiesCT read fLnTlToBr;
-    [TNaming(TNaming.nCamelCase)]
     property LnBlToTr: TCTLinePropertiesCT read fLnBlToTr;
-    [TNaming(TNaming.nCamelCase)]
     property Cell3D: TCTCell3DCT read fCell3D;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property NoFill: TCTNoFillPropertiesCT read GetNoFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property SolidFill: TCTSolidColorFillPropertiesCT read GetSolidFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property GradFill: TCTGradientFillPropertiesCT read GetGradFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property BlipFill: TCTBlipFillPropertiesCT read GetBlipFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property PattFill: TCTPatternFillPropertiesCT read GetPattFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property GrpFill: TCTGroupFillPropertiesCT read GetGrpFill;
-    [TNaming(TNaming.nFlatCase)]
     property Headers: TCTHeadersCT read fHeaders;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -5197,7 +4278,6 @@ type
   private
     fHeader: TStringSTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Header: TStringSTList read fHeader;
   end;
 
@@ -5208,9 +4288,7 @@ type
     fExtLst: TCTOfficeArtExtensionListCT;
   published
     [TRequired]
-    [TName('w')]
     property W: TSTCoordinateST read fW write fW;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -5219,7 +4297,6 @@ type
   private
     fGridCol: TCTTableColCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property GridCol: TCTTableColCTList read fGridCol;
   end;
 
@@ -5236,24 +4313,16 @@ type
     fExtLst: TCTOfficeArtExtensionListCT;
   published
     [TDefault(1)]
-    [TNaming(TNaming.nCamelCase)]
     property RowSpan: ProRock.Xmlite.Schema.Base.TIntST read fRowSpan write fRowSpan;
     [TDefault(1)]
-    [TNaming(TNaming.nCamelCase)]
     property GridSpan: ProRock.Xmlite.Schema.Base.TIntST read fGridSpan write fGridSpan;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property HMerge: ProRock.Xmlite.Schema.Base.TBooleanST read fHMerge write fHMerge;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property VMerge: ProRock.Xmlite.Schema.Base.TBooleanST read fVMerge write fVMerge;
-    [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Base.TStringST read fId write fId;
-    [TNaming(TNaming.nCamelCase)]
     property TxBody: TCTTextBodyCT read fTxBody;
-    [TNaming(TNaming.nCamelCase)]
     property TcPr: TCTTableCellPropertiesCT read fTcPr;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -5265,11 +4334,8 @@ type
     fExtLst: TCTOfficeArtExtensionListCT;
   published
     [TRequired]
-    [TName('h')]
     property H: TSTCoordinateST read fH write fH;
-    [TNaming(TNaming.nFlatCase)]
     property Tc: TCTTableCellCTList read fTc;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -5311,58 +4377,40 @@ type
     property TableStyleChosen: TBasite read GetTableStyleChosen;
   published
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Rtl: ProRock.Xmlite.Schema.Base.TBooleanST read fRtl write fRtl;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property FirstRow: ProRock.Xmlite.Schema.Base.TBooleanST read fFirstRow write fFirstRow;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property FirstCol: ProRock.Xmlite.Schema.Base.TBooleanST read fFirstCol write fFirstCol;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property LastRow: ProRock.Xmlite.Schema.Base.TBooleanST read fLastRow write fLastRow;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property LastCol: ProRock.Xmlite.Schema.Base.TBooleanST read fLastCol write fLastCol;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property BandRow: ProRock.Xmlite.Schema.Base.TBooleanST read fBandRow write fBandRow;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property BandCol: ProRock.Xmlite.Schema.Base.TBooleanST read fBandCol write fBandCol;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property NoFill: TCTNoFillPropertiesCT read GetNoFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property SolidFill: TCTSolidColorFillPropertiesCT read GetSolidFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property GradFill: TCTGradientFillPropertiesCT read GetGradFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property BlipFill: TCTBlipFillPropertiesCT read GetBlipFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property PattFill: TCTPatternFillPropertiesCT read GetPattFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property GrpFill: TCTGroupFillPropertiesCT read GetGrpFill;
     [TChoice('Effect')]
-    [TNaming(TNaming.nCamelCase)]
     property EffectLst: TCTEffectListCT read GetEffectLst;
     [TChoice('Effect')]
-    [TNaming(TNaming.nCamelCase)]
     property EffectDag: TCTEffectContainerCT read GetEffectDag;
     [TChoice('TableStyle')]
-    [TNaming(TNaming.nCamelCase)]
     property TableStyle: TCTTableStyleCT read GetTableStyle;
     [TXmliteElement]
     [TChoice('TableStyle')]
-    [TNaming(TNaming.nCamelCase)]
     property TableStyleId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST read fTableStyleId write fTableStyleId;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -5373,12 +4421,9 @@ type
     fTblGrid: TCTTableGridCT;
     fTr: TCTTableRowCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property TblPr: TCTTablePropertiesCT read fTblPr;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property TblGrid: TCTTableGridCT read fTblGrid;
-    [TNaming(TNaming.nFlatCase)]
     property Tr: TCTTableRowCTList read fTr;
   end;
 
@@ -5391,14 +4436,10 @@ type
     fExtLst: TCTOfficeArtExtensionListCT;
   published
     [TDefault(Ord(stpmtPlastic))]
-    [TNaming(TNaming.nCamelCase)]
     property PrstMaterial: TSTPresetMaterialTypeST read fPrstMaterial write fPrstMaterial;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Bevel: TCTBevelCT read fBevel;
-    [TNaming(TNaming.nCamelCase)]
     property LightRig: TCTLightRigCT read fLightRig;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -5415,10 +4456,8 @@ type
     property LnChosen: TBasite read GetLnChosen;
   published
     [TChoice('Ln')]
-    [TNaming(TNaming.nFlatCase)]
     property Ln: TCTLinePropertiesCT read GetLn;
     [TChoice('Ln')]
-    [TNaming(TNaming.nCamelCase)]
     property LnRef: TCTStyleMatrixReferenceCT read GetLnRef;
   end;
 
@@ -5450,36 +4489,25 @@ type
     property FontChosen: TBasite read GetFontChosen;
   published
     [TDefault(Ord(stoostDef))]
-    [TName('b')]
     property B: TSTOnOffStyleTypeST read fB write fB;
     [TDefault(Ord(stoostDef))]
-    [TName('i')]
     property I: TSTOnOffStyleTypeST read fI write fI;
     [TChoice('Font')]
-    [TNaming(TNaming.nFlatCase)]
     property Font: TCTFontCollectionCT read GetFont;
     [TChoice('Font')]
-    [TNaming(TNaming.nCamelCase)]
     property FontRef: TCTFontReferenceCT read GetFontRef;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property ScrgbClr: TCTScRgbColorCT read GetScrgbClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SrgbClr: TCTSRgbColorCT read GetSrgbClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property HslClr: TCTHslColorCT read GetHslClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SysClr: TCTSystemColorCT read GetSysClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SchemeClr: TCTSchemeColorCT read GetSchemeClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property PrstClr: TCTPresetColorCT read GetPrstClr;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -5496,23 +4524,14 @@ type
     fTr2bl: TCTThemeableLineStyleCT;
     fExtLst: TCTOfficeArtExtensionListCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Left: TCTThemeableLineStyleCT read fLeft;
-    [TNaming(TNaming.nFlatCase)]
     property Right: TCTThemeableLineStyleCT read fRight;
-    [TNaming(TNaming.nFlatCase)]
     property Top: TCTThemeableLineStyleCT read fTop;
-    [TNaming(TNaming.nFlatCase)]
     property Bottom: TCTThemeableLineStyleCT read fBottom;
-    [TNaming(TNaming.nCamelCase)]
     property InsideH: TCTThemeableLineStyleCT read fInsideH;
-    [TNaming(TNaming.nCamelCase)]
     property InsideV: TCTThemeableLineStyleCT read fInsideV;
-    [TNaming(TNaming.nFlatCase)]
     property Tl2br: TCTThemeableLineStyleCT read fTl2br;
-    [TNaming(TNaming.nFlatCase)]
     property Tr2bl: TCTThemeableLineStyleCT read fTr2bl;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -5535,16 +4554,12 @@ type
     property EffectChosen: TBasite read GetEffectChosen;
   published
     [TChoice('Fill')]
-    [TNaming(TNaming.nFlatCase)]
     property Fill: TCTFillPropertiesCT read GetFill;
     [TChoice('Fill')]
-    [TNaming(TNaming.nCamelCase)]
     property FillRef: TCTStyleMatrixReferenceCT read GetFillRef;
     [TChoice('Effect')]
-    [TNaming(TNaming.nFlatCase)]
     property Effect: TCTEffectPropertiesCT read GetEffect;
     [TChoice('Effect')]
-    [TNaming(TNaming.nCamelCase)]
     property EffectRef: TCTStyleMatrixReferenceCT read GetEffectRef;
   end;
 
@@ -5562,15 +4577,11 @@ type
   public
     property FillChosen: TBasite read GetFillChosen;
   published
-    [TNaming(TNaming.nCamelCase)]
     property TcBdr: TCTTableCellBorderStyleCT read fTcBdr;
     [TChoice('Fill')]
-    [TNaming(TNaming.nFlatCase)]
     property Fill: TCTFillPropertiesCT read GetFill;
     [TChoice('Fill')]
-    [TNaming(TNaming.nCamelCase)]
     property FillRef: TCTStyleMatrixReferenceCT read GetFillRef;
-    [TNaming(TNaming.nCamelCase)]
     property Cell3D: TCTCell3DCT read fCell3D;
   end;
 
@@ -5580,9 +4591,7 @@ type
     fTcTxStyle: TCTTableStyleTextStyleCT;
     fTcStyle: TCTTableStyleCellStyleCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property TcTxStyle: TCTTableStyleTextStyleCT read fTcTxStyle;
-    [TNaming(TNaming.nCamelCase)]
     property TcStyle: TCTTableStyleCellStyleCT read fTcStyle;
   end;
 
@@ -5608,40 +4617,23 @@ type
     fExtLst: TCTOfficeArtExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property StyleId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST read fStyleId write fStyleId;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property StyleName: ProRock.Xmlite.Schema.Base.TStringST read fStyleName write fStyleName;
-    [TNaming(TNaming.nCamelCase)]
     property TblBg: TCTTableBackgroundStyleCT read fTblBg;
-    [TNaming(TNaming.nCamelCase)]
     property WholeTbl: TCTTablePartStyleCT read fWholeTbl;
-    [TNaming(TNaming.nCamelCase)]
     property Band1H: TCTTablePartStyleCT read fBand1H;
-    [TNaming(TNaming.nCamelCase)]
     property Band2H: TCTTablePartStyleCT read fBand2H;
-    [TNaming(TNaming.nCamelCase)]
     property Band1V: TCTTablePartStyleCT read fBand1V;
-    [TNaming(TNaming.nCamelCase)]
     property Band2V: TCTTablePartStyleCT read fBand2V;
-    [TNaming(TNaming.nCamelCase)]
     property LastCol: TCTTablePartStyleCT read fLastCol;
-    [TNaming(TNaming.nCamelCase)]
     property FirstCol: TCTTablePartStyleCT read fFirstCol;
-    [TNaming(TNaming.nCamelCase)]
     property LastRow: TCTTablePartStyleCT read fLastRow;
-    [TNaming(TNaming.nCamelCase)]
     property SeCell: TCTTablePartStyleCT read fSeCell;
-    [TNaming(TNaming.nCamelCase)]
     property SwCell: TCTTablePartStyleCT read fSwCell;
-    [TNaming(TNaming.nCamelCase)]
     property FirstRow: TCTTablePartStyleCT read fFirstRow;
-    [TNaming(TNaming.nCamelCase)]
     property NeCell: TCTTablePartStyleCT read fNeCell;
-    [TNaming(TNaming.nCamelCase)]
     property NwCell: TCTTablePartStyleCT read fNwCell;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -5652,9 +4644,7 @@ type
     fTblStyle: TCTTableStyleCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Def: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST read fDef write fDef;
-    [TNaming(TNaming.nCamelCase)]
     property TblStyle: TCTTableStyleCTList read fTblStyle;
   end;
 
@@ -5668,15 +4658,10 @@ type
     fFld: TCTTextFieldCTList;
     fEndParaRPr: TCTTextCharacterPropertiesCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property PPr: TCTTextParagraphPropertiesCT read fPPr;
-    [TName('r')]
     property R: TCTRegularTextRunCTList read fR;
-    [TNaming(TNaming.nFlatCase)]
     property Br: TCTTextLineBreakCTList read fBr;
-    [TNaming(TNaming.nFlatCase)]
     property Fld: TCTTextFieldCTList read fFld;
-    [TNaming(TNaming.nCamelCase)]
     property EndParaRPr: TCTTextCharacterPropertiesCT read fEndParaRPr;
   end;
 
@@ -5695,27 +4680,16 @@ type
     fLvl9pPr: TCTTextParagraphPropertiesCT;
     fExtLst: TCTOfficeArtExtensionListCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property DefPPr: TCTTextParagraphPropertiesCT read fDefPPr;
-    [TNaming(TNaming.nCamelCase)]
     property Lvl1pPr: TCTTextParagraphPropertiesCT read fLvl1pPr;
-    [TNaming(TNaming.nCamelCase)]
     property Lvl2pPr: TCTTextParagraphPropertiesCT read fLvl2pPr;
-    [TNaming(TNaming.nCamelCase)]
     property Lvl3pPr: TCTTextParagraphPropertiesCT read fLvl3pPr;
-    [TNaming(TNaming.nCamelCase)]
     property Lvl4pPr: TCTTextParagraphPropertiesCT read fLvl4pPr;
-    [TNaming(TNaming.nCamelCase)]
     property Lvl5pPr: TCTTextParagraphPropertiesCT read fLvl5pPr;
-    [TNaming(TNaming.nCamelCase)]
     property Lvl6pPr: TCTTextParagraphPropertiesCT read fLvl6pPr;
-    [TNaming(TNaming.nCamelCase)]
     property Lvl7pPr: TCTTextParagraphPropertiesCT read fLvl7pPr;
-    [TNaming(TNaming.nCamelCase)]
     property Lvl8pPr: TCTTextParagraphPropertiesCT read fLvl8pPr;
-    [TNaming(TNaming.nCamelCase)]
     property Lvl9pPr: TCTTextParagraphPropertiesCT read fLvl9pPr;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -5726,10 +4700,8 @@ type
     fLnSpcReduction: TSTTextSpacingPercentOrPercentStringST;
   published
     [TDefault('100%')]
-    [TNaming(TNaming.nCamelCase)]
     property FontScale: TSTTextFontScalePercentOrPercentStringST read fFontScale write fFontScale;
     [TDefault('0%')]
-    [TNaming(TNaming.nCamelCase)]
     property LnSpcReduction: TSTTextSpacingPercentOrPercentStringST read fLnSpcReduction write fLnSpcReduction;
   end;
 
@@ -5776,65 +4748,38 @@ type
     function GetSp3d: TCTShape3DCT;
     function GetFlatTx: TCTFlatTextCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Rot: TSTAngleST read fRot write fRot;
-    [TNaming(TNaming.nCamelCase)]
     property SpcFirstLastPara: ProRock.Xmlite.Schema.Base.TBooleanST read fSpcFirstLastPara write fSpcFirstLastPara;
-    [TNaming(TNaming.nCamelCase)]
     property VertOverflow: TSTTextVertOverflowTypeST read fVertOverflow write fVertOverflow;
-    [TNaming(TNaming.nCamelCase)]
     property HorzOverflow: TSTTextHorzOverflowTypeST read fHorzOverflow write fHorzOverflow;
-    [TNaming(TNaming.nFlatCase)]
     property Vert: TSTTextVerticalTypeST read fVert write fVert;
-    [TNaming(TNaming.nFlatCase)]
     property Wrap: TSTTextWrappingTypeST read fWrap write fWrap;
-    [TNaming(TNaming.nCamelCase)]
     property LIns: TSTCoordinate32ST read fLIns write fLIns;
-    [TNaming(TNaming.nCamelCase)]
     property TIns: TSTCoordinate32ST read fTIns write fTIns;
-    [TNaming(TNaming.nCamelCase)]
     property RIns: TSTCoordinate32ST read fRIns write fRIns;
-    [TNaming(TNaming.nCamelCase)]
     property BIns: TSTCoordinate32ST read fBIns write fBIns;
-    [TNaming(TNaming.nCamelCase)]
     property NumCol: TSTTextColumnCountST read fNumCol write fNumCol;
-    [TNaming(TNaming.nCamelCase)]
     property SpcCol: TSTPositiveCoordinate32ST read fSpcCol write fSpcCol;
-    [TNaming(TNaming.nCamelCase)]
     property RtlCol: ProRock.Xmlite.Schema.Base.TBooleanST read fRtlCol write fRtlCol;
-    [TNaming(TNaming.nCamelCase)]
     property FromWordArt: ProRock.Xmlite.Schema.Base.TBooleanST read fFromWordArt write fFromWordArt;
-    [TNaming(TNaming.nFlatCase)]
     property Anchor: TSTTextAnchoringTypeST read fAnchor write fAnchor;
-    [TNaming(TNaming.nCamelCase)]
     property AnchorCtr: ProRock.Xmlite.Schema.Base.TBooleanST read fAnchorCtr write fAnchorCtr;
-    [TNaming(TNaming.nCamelCase)]
     property ForceAA: ProRock.Xmlite.Schema.Base.TBooleanST read fForceAA write fForceAA;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Upright: ProRock.Xmlite.Schema.Base.TBooleanST read fUpright write fUpright;
-    [TNaming(TNaming.nCamelCase)]
     property CompatLnSpc: ProRock.Xmlite.Schema.Base.TBooleanST read fCompatLnSpc write fCompatLnSpc;
-    [TNaming(TNaming.nCamelCase)]
     property PrstTxWarp: TCTPresetTextShapeCT read fPrstTxWarp;
     [TChoice('NoAutofit')]
-    [TNaming(TNaming.nCamelCase)]
     property NoAutofit: TCTTextNoAutofitCT read GetNoAutofit;
     [TChoice('NoAutofit')]
-    [TNaming(TNaming.nCamelCase)]
     property NormAutofit: TCTTextNormalAutofitCT read GetNormAutofit;
     [TChoice('NoAutofit')]
-    [TNaming(TNaming.nCamelCase)]
     property SpAutoFit: TCTTextShapeAutofitCT read GetSpAutoFit;
-    [TNaming(TNaming.nFlatCase)]
     property Scene3d: TCTScene3DCT read fScene3d;
     [TChoice('Sp3d')]
-    [TNaming(TNaming.nFlatCase)]
     property Sp3d: TCTShape3DCT read GetSp3d;
     [TChoice('Sp3d')]
-    [TNaming(TNaming.nCamelCase)]
     property FlatTx: TCTFlatTextCT read GetFlatTx;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -5846,11 +4791,8 @@ type
     fP: TCTTextParagraphCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property BodyPr: TCTTextBodyPropertiesCT read fBodyPr;
-    [TNaming(TNaming.nCamelCase)]
     property LstStyle: TCTTextListStyleCT read fLstStyle;
-    [TName('p')]
     property P: TCTTextParagraphCTList read fP;
   end;
 
@@ -5866,7 +4808,6 @@ type
     fVal: TSTTextBulletSizePercentST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Val: TSTTextBulletSizePercentST read fVal write fVal;
   end;
 
@@ -5876,7 +4817,6 @@ type
     fVal: TSTTextFontSizeST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Val: TSTTextFontSizeST read fVal write fVal;
   end;
 
@@ -5890,10 +4830,8 @@ type
     fStartAt: TSTTextBulletStartAtNumST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TSTTextAutonumberSchemeST read fType write fType;
     [TDefault(1)]
-    [TNaming(TNaming.nCamelCase)]
     property StartAt: TSTTextBulletStartAtNumST read fStartAt write fStartAt;
   end;
 
@@ -5903,7 +4841,6 @@ type
     fChar: ProRock.Xmlite.Schema.Base.TStringST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Char: ProRock.Xmlite.Schema.Base.TStringST read fChar write fChar;
   end;
 
@@ -5913,7 +4850,6 @@ type
     fBlip: TCTBlipCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Blip: TCTBlipCT read fBlip;
   end;
 
@@ -5929,15 +4865,11 @@ type
     fCharset: ProRock.Xmlite.Schema.Base.TByteST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Typeface: TSTTextTypefaceST read fTypeface write fTypeface;
-    [TNaming(TNaming.nFlatCase)]
     property Panose: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTPanoseST read fPanose write fPanose;
     [TDefault('0')]
-    [TNaming(TNaming.nCamelCase)]
     property PitchFamily: TSTPitchFamilyST read fPitchFamily write fPitchFamily;
     [TDefault(1)]
-    [TNaming(TNaming.nFlatCase)]
     property Charset: ProRock.Xmlite.Schema.Base.TByteST read fCharset write fCharset;
   end;
 
@@ -5965,22 +4897,16 @@ type
     function GetGrpFill: TCTGroupFillPropertiesCT;
   published
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property NoFill: TCTNoFillPropertiesCT read GetNoFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property SolidFill: TCTSolidColorFillPropertiesCT read GetSolidFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property GradFill: TCTGradientFillPropertiesCT read GetGradFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property BlipFill: TCTBlipFillPropertiesCT read GetBlipFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property PattFill: TCTPatternFillPropertiesCT read GetPattFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property GrpFill: TCTGroupFillPropertiesCT read GetGrpFill;
   end;
 
@@ -6049,104 +4975,63 @@ type
     property ULnChosen: TBasite read GetULnChosen;
     property UFillChosen: TBasite read GetUFillChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Kumimoji: ProRock.Xmlite.Schema.Base.TBooleanST read fKumimoji write fKumimoji;
-    [TNaming(TNaming.nFlatCase)]
     property Lang: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTLangST read fLang write fLang;
-    [TNaming(TNaming.nCamelCase)]
     property AltLang: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTLangST read fAltLang write fAltLang;
-    [TNaming(TNaming.nFlatCase)]
     property Sz: TSTTextFontSizeST read fSz write fSz;
-    [TName('b')]
     property B: ProRock.Xmlite.Schema.Base.TBooleanST read fB write fB;
-    [TName('i')]
     property I: ProRock.Xmlite.Schema.Base.TBooleanST read fI write fI;
-    [TName('u')]
     property U: TSTTextUnderlineTypeST read fU write fU;
-    [TNaming(TNaming.nFlatCase)]
     property Strike: TSTTextStrikeTypeST read fStrike write fStrike;
-    [TNaming(TNaming.nFlatCase)]
     property Kern: TSTTextNonNegativePointST read fKern write fKern;
     [TDefault(Ord(sttctNone))]
-    [TNaming(TNaming.nFlatCase)]
     property Cap: TSTTextCapsTypeST read fCap write fCap;
-    [TNaming(TNaming.nFlatCase)]
     property Spc: TSTTextPointST read fSpc write fSpc;
-    [TNaming(TNaming.nCamelCase)]
     property NormalizeH: ProRock.Xmlite.Schema.Base.TBooleanST read fNormalizeH write fNormalizeH;
-    [TNaming(TNaming.nFlatCase)]
     property Baseline: TSTPercentageST read fBaseline write fBaseline;
-    [TNaming(TNaming.nCamelCase)]
     property NoProof: ProRock.Xmlite.Schema.Base.TBooleanST read fNoProof write fNoProof;
     [TDefault(True)]
-    [TNaming(TNaming.nFlatCase)]
     property Dirty: ProRock.Xmlite.Schema.Base.TBooleanST read fDirty write fDirty;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Err: ProRock.Xmlite.Schema.Base.TBooleanST read fErr write fErr;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property SmtClean: ProRock.Xmlite.Schema.Base.TBooleanST read fSmtClean write fSmtClean;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property SmtId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSmtId write fSmtId;
-    [TNaming(TNaming.nFlatCase)]
     property Bmk: ProRock.Xmlite.Schema.Base.TStringST read fBmk write fBmk;
-    [TNaming(TNaming.nFlatCase)]
     property Ln: TCTLinePropertiesCT read fLn;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property NoFill: TCTNoFillPropertiesCT read GetNoFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property SolidFill: TCTSolidColorFillPropertiesCT read GetSolidFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property GradFill: TCTGradientFillPropertiesCT read GetGradFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property BlipFill: TCTBlipFillPropertiesCT read GetBlipFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property PattFill: TCTPatternFillPropertiesCT read GetPattFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property GrpFill: TCTGroupFillPropertiesCT read GetGrpFill;
     [TChoice('Effect')]
-    [TNaming(TNaming.nCamelCase)]
     property EffectLst: TCTEffectListCT read GetEffectLst;
     [TChoice('Effect')]
-    [TNaming(TNaming.nCamelCase)]
     property EffectDag: TCTEffectContainerCT read GetEffectDag;
-    [TNaming(TNaming.nFlatCase)]
     property Highlight: TCTColorCT read fHighlight;
     [TChoice('ULn')]
-    [TNaming(TNaming.nCamelCase)]
     property ULnTx: TCTTextUnderlineLineFollowTextCT read GetULnTx;
     [TChoice('ULn')]
-    [TNaming(TNaming.nCamelCase)]
     property ULn: TCTLinePropertiesCT read GetULn;
     [TChoice('UFill')]
-    [TNaming(TNaming.nCamelCase)]
     property UFillTx: TCTTextUnderlineFillFollowTextCT read GetUFillTx;
     [TChoice('UFill')]
-    [TNaming(TNaming.nCamelCase)]
     property UFill: TCTTextUnderlineFillGroupWrapperCT read GetUFill;
-    [TNaming(TNaming.nFlatCase)]
     property Latin: TCTTextFontCT read fLatin;
-    [TNaming(TNaming.nFlatCase)]
     property Ea: TCTTextFontCT read fEa;
-    [TNaming(TNaming.nFlatCase)]
     property Cs: TCTTextFontCT read fCs;
-    [TNaming(TNaming.nFlatCase)]
     property Sym: TCTTextFontCT read fSym;
-    [TNaming(TNaming.nCamelCase)]
     property HlinkClick: TCTHyperlinkCT read fHlinkClick;
-    [TNaming(TNaming.nCamelCase)]
     property HlinkMouseOver: TCTHyperlinkCT read fHlinkMouseOver;
-    [TNaming(TNaming.nFlatCase)]
     property Rtl: TCTBooleanCT read fRtl;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -6156,7 +5041,6 @@ type
     fVal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTOnOffST;
   published
     [TDefault('0')]
-    [TNaming(TNaming.nFlatCase)]
     property Val: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTOnOffST read fVal write fVal;
   end;
 
@@ -6166,7 +5050,6 @@ type
     fVal: TSTTextSpacingPercentOrPercentStringST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Val: TSTTextSpacingPercentOrPercentStringST read fVal write fVal;
   end;
 
@@ -6176,7 +5059,6 @@ type
     fVal: TSTTextSpacingPointST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Val: TSTTextSpacingPointST read fVal write fVal;
   end;
 
@@ -6186,9 +5068,7 @@ type
     fPos: TSTCoordinate32ST;
     fAlgn: TSTTextTabAlignTypeST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Pos: TSTCoordinate32ST read fPos write fPos;
-    [TNaming(TNaming.nFlatCase)]
     property Algn: TSTTextTabAlignTypeST read fAlgn write fAlgn;
   end;
 
@@ -6197,7 +5077,6 @@ type
   private
     fTab: TCTTextTabStopCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Tab: TCTTextTabStopCTList read fTab;
   end;
 
@@ -6206,7 +5085,6 @@ type
   private
     fRPr: TCTTextCharacterPropertiesCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property RPr: TCTTextCharacterPropertiesCT read fRPr;
   end;
 
@@ -6223,10 +5101,8 @@ type
     property SpcChosen: TBasite read GetSpcChosen;
   published
     [TChoice('Spc')]
-    [TNaming(TNaming.nCamelCase)]
     property SpcPct: TCTTextSpacingPercentCT read GetSpcPct;
     [TChoice('Spc')]
-    [TNaming(TNaming.nCamelCase)]
     property SpcPts: TCTTextSpacingPointCT read GetSpcPts;
   end;
 
@@ -6283,72 +5159,44 @@ type
     property BuFontChosen: TBasite read GetBuFontChosen;
     property BuChosen: TBasite read GetBuChosen;
   published
-    [TNaming(TNaming.nCamelCase)]
     property MarL: TSTTextMarginST read fMarL write fMarL;
-    [TNaming(TNaming.nCamelCase)]
     property MarR: TSTTextMarginST read fMarR write fMarR;
-    [TNaming(TNaming.nFlatCase)]
     property Lvl: TSTTextIndentLevelTypeST read fLvl write fLvl;
-    [TNaming(TNaming.nFlatCase)]
     property Indent: TSTTextIndentST read fIndent write fIndent;
-    [TNaming(TNaming.nFlatCase)]
     property Algn: TSTTextAlignTypeST read fAlgn write fAlgn;
-    [TNaming(TNaming.nCamelCase)]
     property DefTabSz: TSTCoordinate32ST read fDefTabSz write fDefTabSz;
-    [TNaming(TNaming.nFlatCase)]
     property Rtl: ProRock.Xmlite.Schema.Base.TBooleanST read fRtl write fRtl;
-    [TNaming(TNaming.nCamelCase)]
     property EaLnBrk: ProRock.Xmlite.Schema.Base.TBooleanST read fEaLnBrk write fEaLnBrk;
-    [TNaming(TNaming.nCamelCase)]
     property FontAlgn: TSTTextFontAlignTypeST read fFontAlgn write fFontAlgn;
-    [TNaming(TNaming.nCamelCase)]
     property LatinLnBrk: ProRock.Xmlite.Schema.Base.TBooleanST read fLatinLnBrk write fLatinLnBrk;
-    [TNaming(TNaming.nCamelCase)]
     property HangingPunct: ProRock.Xmlite.Schema.Base.TBooleanST read fHangingPunct write fHangingPunct;
-    [TNaming(TNaming.nCamelCase)]
     property LnSpc: TCTTextSpacingCT read fLnSpc;
-    [TNaming(TNaming.nCamelCase)]
     property SpcBef: TCTTextSpacingCT read fSpcBef;
-    [TNaming(TNaming.nCamelCase)]
     property SpcAft: TCTTextSpacingCT read fSpcAft;
     [TChoice('BuClr')]
-    [TNaming(TNaming.nCamelCase)]
     property BuClrTx: TCTTextBulletColorFollowTextCT read GetBuClrTx;
     [TChoice('BuClr')]
-    [TNaming(TNaming.nCamelCase)]
     property BuClr: TCTColorCT read GetBuClr;
     [TChoice('BuSz')]
-    [TNaming(TNaming.nCamelCase)]
     property BuSzTx: TCTTextBulletSizeFollowTextCT read GetBuSzTx;
     [TChoice('BuSz')]
-    [TNaming(TNaming.nCamelCase)]
     property BuSzPct: TCTTextBulletSizePercentCT read GetBuSzPct;
     [TChoice('BuSz')]
-    [TNaming(TNaming.nCamelCase)]
     property BuSzPts: TCTTextBulletSizePointCT read GetBuSzPts;
     [TChoice('BuFont')]
-    [TNaming(TNaming.nCamelCase)]
     property BuFontTx: TCTTextBulletTypefaceFollowTextCT read GetBuFontTx;
     [TChoice('BuFont')]
-    [TNaming(TNaming.nCamelCase)]
     property BuFont: TCTTextFontCT read GetBuFont;
     [TChoice('Bu')]
-    [TNaming(TNaming.nCamelCase)]
     property BuNone: TCTTextNoBulletCT read GetBuNone;
     [TChoice('Bu')]
-    [TNaming(TNaming.nCamelCase)]
     property BuAutoNum: TCTTextAutonumberBulletCT read GetBuAutoNum;
     [TChoice('Bu')]
-    [TNaming(TNaming.nCamelCase)]
     property BuChar: TCTTextCharBulletCT read GetBuChar;
     [TChoice('Bu')]
-    [TNaming(TNaming.nCamelCase)]
     property BuBlip: TCTTextBlipBulletCT read GetBuBlip;
-    [TNaming(TNaming.nCamelCase)]
     property TabLst: TCTTextTabStopListCT read fTabLst;
-    [TNaming(TNaming.nCamelCase)]
     property DefRPr: TCTTextCharacterPropertiesCT read fDefRPr;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
   end;
 
@@ -6362,16 +5210,11 @@ type
     fT: ProRock.Xmlite.Schema.Base.TStringST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST read fId write fId;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: ProRock.Xmlite.Schema.Base.TStringST read fType write fType;
-    [TNaming(TNaming.nCamelCase)]
     property RPr: TCTTextCharacterPropertiesCT read fRPr;
-    [TNaming(TNaming.nCamelCase)]
     property PPr: TCTTextParagraphPropertiesCT read fPPr;
     [TXmliteElement]
-    [TName('t')]
     property T: ProRock.Xmlite.Schema.Base.TStringST read fT write fT;
   end;
 
@@ -6381,11 +5224,9 @@ type
     fRPr: TCTTextCharacterPropertiesCT;
     fT: ProRock.Xmlite.Schema.Base.TStringST;
   published
-    [TNaming(TNaming.nCamelCase)]
     property RPr: TCTTextCharacterPropertiesCT read fRPr;
     [TXmliteElement]
     [TRequired]
-    [TName('t')]
     property T: ProRock.Xmlite.Schema.Base.TStringST read fT write fT;
   end;
 
@@ -6416,59 +5257,41 @@ type
     fNoChangeShapeType: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoGrp: ProRock.Xmlite.Schema.Base.TBooleanST read fNoGrp write fNoGrp;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoSelect: ProRock.Xmlite.Schema.Base.TBooleanST read fNoSelect write fNoSelect;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoRot: ProRock.Xmlite.Schema.Base.TBooleanST read fNoRot write fNoRot;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoChangeAspect: ProRock.Xmlite.Schema.Base.TBooleanST read fNoChangeAspect write fNoChangeAspect;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoMove: ProRock.Xmlite.Schema.Base.TBooleanST read fNoMove write fNoMove;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoResize: ProRock.Xmlite.Schema.Base.TBooleanST read fNoResize write fNoResize;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoEditPoints: ProRock.Xmlite.Schema.Base.TBooleanST read fNoEditPoints write fNoEditPoints;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoAdjustHandles: ProRock.Xmlite.Schema.Base.TBooleanST read fNoAdjustHandles write fNoAdjustHandles;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoChangeArrowheads: ProRock.Xmlite.Schema.Base.TBooleanST read fNoChangeArrowheads write fNoChangeArrowheads;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NoChangeShapeType: ProRock.Xmlite.Schema.Base.TBooleanST read fNoChangeShapeType write fNoChangeShapeType;
   end;
 
-  [TNaming(TNaming.nCamelCase)]
   TVideoFileE = class(TCTVideoFileCT);
 
-  [TNaming(TNaming.nFlatCase)]
   TGraphicE = class(TCTGraphicalObjectCT);
 
-  [TNaming(TNaming.nFlatCase)]
   TBlipE = class(TCTBlipCT);
 
-  [TNaming(TNaming.nFlatCase)]
   TThemeE = class(TCTOfficeStyleSheetCT);
 
-  [TNaming(TNaming.nCamelCase)]
   TThemeOverrideE = class(TCTBaseStylesOverrideCT);
 
-  [TNaming(TNaming.nCamelCase)]
   TThemeManagerE = class(TCTEmptyElementCT);
 
-  [TNaming(TNaming.nFlatCase)]
   TTblE = class(TCTTableCT);
 
-  [TNaming(TNaming.nCamelCase)]
   TTblStyleLstE = class(TCTTableStyleListCT);
 
   [TName('EG_Media')]
@@ -6487,19 +5310,14 @@ type
     function GetQuickTimeFile: TCTQuickTimeFileCT;
   published
     [TChoice('AudioCd')]
-    [TNaming(TNaming.nCamelCase)]
     property AudioCd: TCTAudioCDCT read GetAudioCd;
     [TChoice('AudioCd')]
-    [TNaming(TNaming.nCamelCase)]
     property WavAudioFile: TCTEmbeddedWAVAudioFileCT read GetWavAudioFile;
     [TChoice('AudioCd')]
-    [TNaming(TNaming.nCamelCase)]
     property AudioFile: TCTAudioFileCT read GetAudioFile;
     [TChoice('AudioCd')]
-    [TNaming(TNaming.nCamelCase)]
     property VideoFile: TCTVideoFileCT read GetVideoFile;
     [TChoice('AudioCd')]
-    [TNaming(TNaming.nCamelCase)]
     property QuickTimeFile: TCTQuickTimeFileCT read GetQuickTimeFile;
   end;
 
@@ -6565,88 +5383,60 @@ type
     function GetInvGamma: TCTInverseGammaTransformCT;
   published
     [TChoice('Tint')]
-    [TNaming(TNaming.nFlatCase)]
     property Tint: TCTPositiveFixedPercentageCT read GetTint;
     [TChoice('Tint')]
-    [TNaming(TNaming.nFlatCase)]
     property Shade: TCTPositiveFixedPercentageCT read GetShade;
     [TChoice('Tint')]
-    [TNaming(TNaming.nFlatCase)]
     property Comp: TCTComplementTransformCT read GetComp;
     [TChoice('Tint')]
-    [TNaming(TNaming.nFlatCase)]
     property Inv: TCTInverseTransformCT read GetInv;
     [TChoice('Tint')]
-    [TNaming(TNaming.nFlatCase)]
     property Gray: TCTGrayscaleTransformCT read GetGray;
     [TChoice('Tint')]
-    [TNaming(TNaming.nFlatCase)]
     property Alpha: TCTPositiveFixedPercentageCT read GetAlpha;
     [TChoice('Tint')]
-    [TNaming(TNaming.nCamelCase)]
     property AlphaOff: TCTFixedPercentageCT read GetAlphaOff;
     [TChoice('Tint')]
-    [TNaming(TNaming.nCamelCase)]
     property AlphaMod: TCTPositivePercentageCT read GetAlphaMod;
     [TChoice('Tint')]
-    [TNaming(TNaming.nFlatCase)]
     property Hue: TCTPositiveFixedAngleCT read GetHue;
     [TChoice('Tint')]
-    [TNaming(TNaming.nCamelCase)]
     property HueOff: TCTAngleCT read GetHueOff;
     [TChoice('Tint')]
-    [TNaming(TNaming.nCamelCase)]
     property HueMod: TCTPositivePercentageCT read GetHueMod;
     [TChoice('Tint')]
-    [TNaming(TNaming.nFlatCase)]
     property Sat: TCTPercentageCT read GetSat;
     [TChoice('Tint')]
-    [TNaming(TNaming.nCamelCase)]
     property SatOff: TCTPercentageCT read GetSatOff;
     [TChoice('Tint')]
-    [TNaming(TNaming.nCamelCase)]
     property SatMod: TCTPercentageCT read GetSatMod;
     [TChoice('Tint')]
-    [TNaming(TNaming.nFlatCase)]
     property Lum: TCTPercentageCT read GetLum;
     [TChoice('Tint')]
-    [TNaming(TNaming.nCamelCase)]
     property LumOff: TCTPercentageCT read GetLumOff;
     [TChoice('Tint')]
-    [TNaming(TNaming.nCamelCase)]
     property LumMod: TCTPercentageCT read GetLumMod;
     [TChoice('Tint')]
-    [TNaming(TNaming.nFlatCase)]
     property Red: TCTPercentageCT read GetRed;
     [TChoice('Tint')]
-    [TNaming(TNaming.nCamelCase)]
     property RedOff: TCTPercentageCT read GetRedOff;
     [TChoice('Tint')]
-    [TNaming(TNaming.nCamelCase)]
     property RedMod: TCTPercentageCT read GetRedMod;
     [TChoice('Tint')]
-    [TNaming(TNaming.nFlatCase)]
     property Green: TCTPercentageCT read GetGreen;
     [TChoice('Tint')]
-    [TNaming(TNaming.nCamelCase)]
     property GreenOff: TCTPercentageCT read GetGreenOff;
     [TChoice('Tint')]
-    [TNaming(TNaming.nCamelCase)]
     property GreenMod: TCTPercentageCT read GetGreenMod;
     [TChoice('Tint')]
-    [TNaming(TNaming.nFlatCase)]
     property Blue: TCTPercentageCT read GetBlue;
     [TChoice('Tint')]
-    [TNaming(TNaming.nCamelCase)]
     property BlueOff: TCTPercentageCT read GetBlueOff;
     [TChoice('Tint')]
-    [TNaming(TNaming.nCamelCase)]
     property BlueMod: TCTPercentageCT read GetBlueMod;
     [TChoice('Tint')]
-    [TNaming(TNaming.nFlatCase)]
     property Gamma: TCTGammaTransformCT read GetGamma;
     [TChoice('Tint')]
-    [TNaming(TNaming.nCamelCase)]
     property InvGamma: TCTInverseGammaTransformCT read GetInvGamma;
   end;
 
@@ -6655,7 +5445,6 @@ type
   private
     fExt: TCTOfficeArtExtensionCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Ext: TCTOfficeArtExtensionCTList read fExt;
   end;
 
@@ -6677,22 +5466,16 @@ type
     function GetPrstClr: TCTPresetColorCT;
   published
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property ScrgbClr: TCTScRgbColorCT read GetScrgbClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SrgbClr: TCTSRgbColorCT read GetSrgbClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property HslClr: TCTHslColorCT read GetHslClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SysClr: TCTSystemColorCT read GetSysClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property SchemeClr: TCTSchemeColorCT read GetSchemeClr;
     [TChoice('ScrgbClr')]
-    [TNaming(TNaming.nCamelCase)]
     property PrstClr: TCTPresetColorCT read GetPrstClr;
   end;
 
@@ -6706,10 +5489,8 @@ type
     function GetFlatTx: TCTFlatTextCT;
   published
     [TChoice('Sp3d')]
-    [TNaming(TNaming.nFlatCase)]
     property Sp3d: TCTShape3DCT read GetSp3d;
     [TChoice('Sp3d')]
-    [TNaming(TNaming.nCamelCase)]
     property FlatTx: TCTFlatTextCT read GetFlatTx;
   end;
 
@@ -6723,10 +5504,8 @@ type
     function GetPath: TCTPathShadePropertiesCT;
   published
     [TChoice('Lin')]
-    [TNaming(TNaming.nFlatCase)]
     property Lin: TCTLinearShadePropertiesCT read GetLin;
     [TChoice('Lin')]
-    [TNaming(TNaming.nFlatCase)]
     property Path: TCTPathShadePropertiesCT read GetPath;
   end;
 
@@ -6740,10 +5519,8 @@ type
     function GetStretch: TCTStretchInfoPropertiesCT;
   published
     [TChoice('Tile')]
-    [TNaming(TNaming.nFlatCase)]
     property Tile: TCTTileInfoPropertiesCT read GetTile;
     [TChoice('Tile')]
-    [TNaming(TNaming.nFlatCase)]
     property Stretch: TCTStretchInfoPropertiesCT read GetStretch;
   end;
 
@@ -6765,22 +5542,16 @@ type
     function GetGrpFill: TCTGroupFillPropertiesCT;
   published
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property NoFill: TCTNoFillPropertiesCT read GetNoFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property SolidFill: TCTSolidColorFillPropertiesCT read GetSolidFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property GradFill: TCTGradientFillPropertiesCT read GetGradFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property BlipFill: TCTBlipFillPropertiesCT read GetBlipFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property PattFill: TCTPatternFillPropertiesCT read GetPattFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property GrpFill: TCTGroupFillPropertiesCT read GetGrpFill;
   end;
 
@@ -6850,94 +5621,64 @@ type
     function GetXfrm: TCTTransformEffectCT;
   published
     [TChoice('Cont')]
-    [TNaming(TNaming.nFlatCase)]
     property Cont: TCTEffectContainerCT read GetCont;
     [TChoice('Cont')]
-    [TNaming(TNaming.nFlatCase)]
     property Effect: TCTEffectReferenceCT read GetEffect;
     [TChoice('Cont')]
-    [TNaming(TNaming.nCamelCase)]
     property AlphaBiLevel: TCTAlphaBiLevelEffectCT read GetAlphaBiLevel;
     [TChoice('Cont')]
-    [TNaming(TNaming.nCamelCase)]
     property AlphaCeiling: TCTAlphaCeilingEffectCT read GetAlphaCeiling;
     [TChoice('Cont')]
-    [TNaming(TNaming.nCamelCase)]
     property AlphaFloor: TCTAlphaFloorEffectCT read GetAlphaFloor;
     [TChoice('Cont')]
-    [TNaming(TNaming.nCamelCase)]
     property AlphaInv: TCTAlphaInverseEffectCT read GetAlphaInv;
     [TChoice('Cont')]
-    [TNaming(TNaming.nCamelCase)]
     property AlphaMod: TCTAlphaModulateEffectCT read GetAlphaMod;
     [TChoice('Cont')]
-    [TNaming(TNaming.nCamelCase)]
     property AlphaModFix: TCTAlphaModulateFixedEffectCT read GetAlphaModFix;
     [TChoice('Cont')]
-    [TNaming(TNaming.nCamelCase)]
     property AlphaOutset: TCTAlphaOutsetEffectCT read GetAlphaOutset;
     [TChoice('Cont')]
-    [TNaming(TNaming.nCamelCase)]
     property AlphaRepl: TCTAlphaReplaceEffectCT read GetAlphaRepl;
     [TChoice('Cont')]
-    [TNaming(TNaming.nCamelCase)]
     property BiLevel: TCTBiLevelEffectCT read GetBiLevel;
     [TChoice('Cont')]
-    [TNaming(TNaming.nFlatCase)]
     property Blend: TCTBlendEffectCT read GetBlend;
     [TChoice('Cont')]
-    [TNaming(TNaming.nFlatCase)]
     property Blur: TCTBlurEffectCT read GetBlur;
     [TChoice('Cont')]
-    [TNaming(TNaming.nCamelCase)]
     property ClrChange: TCTColorChangeEffectCT read GetClrChange;
     [TChoice('Cont')]
-    [TNaming(TNaming.nCamelCase)]
     property ClrRepl: TCTColorReplaceEffectCT read GetClrRepl;
     [TChoice('Cont')]
-    [TNaming(TNaming.nFlatCase)]
     property Duotone: TCTDuotoneEffectCT read GetDuotone;
     [TChoice('Cont')]
-    [TNaming(TNaming.nFlatCase)]
     property Fill: TCTFillEffectCT read GetFill;
     [TChoice('Cont')]
-    [TNaming(TNaming.nCamelCase)]
     property FillOverlay: TCTFillOverlayEffectCT read GetFillOverlay;
     [TChoice('Cont')]
-    [TNaming(TNaming.nFlatCase)]
     property Glow: TCTGlowEffectCT read GetGlow;
     [TChoice('Cont')]
-    [TNaming(TNaming.nFlatCase)]
     property Grayscl: TCTGrayscaleEffectCT read GetGrayscl;
     [TChoice('Cont')]
-    [TNaming(TNaming.nFlatCase)]
     property Hsl: TCTHSLEffectCT read GetHsl;
     [TChoice('Cont')]
-    [TNaming(TNaming.nCamelCase)]
     property InnerShdw: TCTInnerShadowEffectCT read GetInnerShdw;
     [TChoice('Cont')]
-    [TNaming(TNaming.nFlatCase)]
     property Lum: TCTLuminanceEffectCT read GetLum;
     [TChoice('Cont')]
-    [TNaming(TNaming.nCamelCase)]
     property OuterShdw: TCTOuterShadowEffectCT read GetOuterShdw;
     [TChoice('Cont')]
-    [TNaming(TNaming.nCamelCase)]
     property PrstShdw: TCTPresetShadowEffectCT read GetPrstShdw;
     [TChoice('Cont')]
-    [TNaming(TNaming.nFlatCase)]
     property Reflection: TCTReflectionEffectCT read GetReflection;
     [TChoice('Cont')]
-    [TNaming(TNaming.nCamelCase)]
     property RelOff: TCTRelativeOffsetEffectCT read GetRelOff;
     [TChoice('Cont')]
-    [TNaming(TNaming.nCamelCase)]
     property SoftEdge: TCTSoftEdgesEffectCT read GetSoftEdge;
     [TChoice('Cont')]
-    [TNaming(TNaming.nFlatCase)]
     property Tint: TCTTintEffectCT read GetTint;
     [TChoice('Cont')]
-    [TNaming(TNaming.nFlatCase)]
     property Xfrm: TCTTransformEffectCT read GetXfrm;
   end;
 
@@ -6954,10 +5695,8 @@ type
     property EffectChosen: TBasite read GetEffectChosen;
   published
     [TChoice('Effect')]
-    [TNaming(TNaming.nCamelCase)]
     property EffectLst: TCTEffectListCT read GetEffectLst;
     [TChoice('Effect')]
-    [TNaming(TNaming.nCamelCase)]
     property EffectDag: TCTEffectContainerCT read GetEffectDag;
   end;
 
@@ -6971,10 +5710,8 @@ type
     function GetPrstGeom: TCTPresetGeometry2DCT;
   published
     [TChoice('CustGeom')]
-    [TNaming(TNaming.nCamelCase)]
     property CustGeom: TCTCustomGeometry2DCT read GetCustGeom;
     [TChoice('CustGeom')]
-    [TNaming(TNaming.nCamelCase)]
     property PrstGeom: TCTPresetGeometry2DCT read GetPrstGeom;
   end;
 
@@ -6988,10 +5725,8 @@ type
     function GetPrstTxWarp: TCTPresetTextShapeCT;
   published
     [TChoice('CustGeom')]
-    [TNaming(TNaming.nCamelCase)]
     property CustGeom: TCTCustomGeometry2DCT read GetCustGeom;
     [TChoice('CustGeom')]
-    [TNaming(TNaming.nCamelCase)]
     property PrstTxWarp: TCTPresetTextShapeCT read GetPrstTxWarp;
   end;
 
@@ -7009,16 +5744,12 @@ type
     function GetPattFill: TCTPatternFillPropertiesCT;
   published
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property NoFill: TCTNoFillPropertiesCT read GetNoFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property SolidFill: TCTSolidColorFillPropertiesCT read GetSolidFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property GradFill: TCTGradientFillPropertiesCT read GetGradFill;
     [TChoice('NoFill')]
-    [TNaming(TNaming.nCamelCase)]
     property PattFill: TCTPatternFillPropertiesCT read GetPattFill;
   end;
 
@@ -7034,13 +5765,10 @@ type
     function GetMiter: TCTLineJoinMiterPropertiesCT;
   published
     [TChoice('Round')]
-    [TNaming(TNaming.nFlatCase)]
     property Round: TCTLineJoinRoundCT read GetRound;
     [TChoice('Round')]
-    [TNaming(TNaming.nFlatCase)]
     property Bevel: TCTLineJoinBevelCT read GetBevel;
     [TChoice('Round')]
-    [TNaming(TNaming.nFlatCase)]
     property Miter: TCTLineJoinMiterPropertiesCT read GetMiter;
   end;
 
@@ -7054,10 +5782,8 @@ type
     function GetCustDash: TCTDashStopListCT;
   published
     [TChoice('PrstDash')]
-    [TNaming(TNaming.nCamelCase)]
     property PrstDash: TCTPresetLineDashPropertiesCT read GetPrstDash;
     [TChoice('PrstDash')]
-    [TNaming(TNaming.nCamelCase)]
     property CustDash: TCTDashStopListCT read GetCustDash;
   end;
 
@@ -7074,10 +5800,8 @@ type
     property FillChosen: TBasite read GetFillChosen;
   published
     [TChoice('Fill')]
-    [TNaming(TNaming.nFlatCase)]
     property Fill: TCTFillPropertiesCT read GetFill;
     [TChoice('Fill')]
-    [TNaming(TNaming.nCamelCase)]
     property FillRef: TCTStyleMatrixReferenceCT read GetFillRef;
   end;
 
@@ -7094,10 +5818,8 @@ type
     property EffectChosen: TBasite read GetEffectChosen;
   published
     [TChoice('Effect')]
-    [TNaming(TNaming.nFlatCase)]
     property Effect: TCTEffectPropertiesCT read GetEffect;
     [TChoice('Effect')]
-    [TNaming(TNaming.nCamelCase)]
     property EffectRef: TCTStyleMatrixReferenceCT read GetEffectRef;
   end;
 
@@ -7114,10 +5836,8 @@ type
     property FontChosen: TBasite read GetFontChosen;
   published
     [TChoice('Font')]
-    [TNaming(TNaming.nFlatCase)]
     property Font: TCTFontCollectionCT read GetFont;
     [TChoice('Font')]
-    [TNaming(TNaming.nCamelCase)]
     property FontRef: TCTFontReferenceCT read GetFontRef;
   end;
 
@@ -7133,13 +5853,10 @@ type
     function GetSpAutoFit: TCTTextShapeAutofitCT;
   published
     [TChoice('NoAutofit')]
-    [TNaming(TNaming.nCamelCase)]
     property NoAutofit: TCTTextNoAutofitCT read GetNoAutofit;
     [TChoice('NoAutofit')]
-    [TNaming(TNaming.nCamelCase)]
     property NormAutofit: TCTTextNormalAutofitCT read GetNormAutofit;
     [TChoice('NoAutofit')]
-    [TNaming(TNaming.nCamelCase)]
     property SpAutoFit: TCTTextShapeAutofitCT read GetSpAutoFit;
   end;
 
@@ -7156,10 +5873,8 @@ type
     property BuClrChosen: TBasite read GetBuClrChosen;
   published
     [TChoice('BuClr')]
-    [TNaming(TNaming.nCamelCase)]
     property BuClrTx: TCTTextBulletColorFollowTextCT read GetBuClrTx;
     [TChoice('BuClr')]
-    [TNaming(TNaming.nCamelCase)]
     property BuClr: TCTColorCT read GetBuClr;
   end;
 
@@ -7178,13 +5893,10 @@ type
     property BuSzChosen: TBasite read GetBuSzChosen;
   published
     [TChoice('BuSz')]
-    [TNaming(TNaming.nCamelCase)]
     property BuSzTx: TCTTextBulletSizeFollowTextCT read GetBuSzTx;
     [TChoice('BuSz')]
-    [TNaming(TNaming.nCamelCase)]
     property BuSzPct: TCTTextBulletSizePercentCT read GetBuSzPct;
     [TChoice('BuSz')]
-    [TNaming(TNaming.nCamelCase)]
     property BuSzPts: TCTTextBulletSizePointCT read GetBuSzPts;
   end;
 
@@ -7201,10 +5913,8 @@ type
     property BuFontChosen: TBasite read GetBuFontChosen;
   published
     [TChoice('BuFont')]
-    [TNaming(TNaming.nCamelCase)]
     property BuFontTx: TCTTextBulletTypefaceFollowTextCT read GetBuFontTx;
     [TChoice('BuFont')]
-    [TNaming(TNaming.nCamelCase)]
     property BuFont: TCTTextFontCT read GetBuFont;
   end;
 
@@ -7225,16 +5935,12 @@ type
     property BuChosen: TBasite read GetBuChosen;
   published
     [TChoice('Bu')]
-    [TNaming(TNaming.nCamelCase)]
     property BuNone: TCTTextNoBulletCT read GetBuNone;
     [TChoice('Bu')]
-    [TNaming(TNaming.nCamelCase)]
     property BuAutoNum: TCTTextAutonumberBulletCT read GetBuAutoNum;
     [TChoice('Bu')]
-    [TNaming(TNaming.nCamelCase)]
     property BuChar: TCTTextCharBulletCT read GetBuChar;
     [TChoice('Bu')]
-    [TNaming(TNaming.nCamelCase)]
     property BuBlip: TCTTextBlipBulletCT read GetBuBlip;
   end;
 
@@ -7251,10 +5957,8 @@ type
     property ULnChosen: TBasite read GetULnChosen;
   published
     [TChoice('ULn')]
-    [TNaming(TNaming.nCamelCase)]
     property ULnTx: TCTTextUnderlineLineFollowTextCT read GetULnTx;
     [TChoice('ULn')]
-    [TNaming(TNaming.nCamelCase)]
     property ULn: TCTLinePropertiesCT read GetULn;
   end;
 
@@ -7271,10 +5975,8 @@ type
     property UFillChosen: TBasite read GetUFillChosen;
   published
     [TChoice('UFill')]
-    [TNaming(TNaming.nCamelCase)]
     property UFillTx: TCTTextUnderlineFillFollowTextCT read GetUFillTx;
     [TChoice('UFill')]
-    [TNaming(TNaming.nCamelCase)]
     property UFill: TCTTextUnderlineFillGroupWrapperCT read GetUFill;
   end;
 
@@ -7290,13 +5992,10 @@ type
     function GetFld: TCTTextFieldCT;
   published
     [TChoice('R')]
-    [TName('r')]
     property R: TCTRegularTextRunCT read GetR;
     [TChoice('R')]
-    [TNaming(TNaming.nFlatCase)]
     property Br: TCTTextLineBreakCT read GetBr;
     [TChoice('R')]
-    [TNaming(TNaming.nFlatCase)]
     property Fld: TCTTextFieldCT read GetFld;
   end;
 
@@ -9429,6 +8128,6 @@ TMetaBankXmlite.RegisterNamespace('http://schemas.openxmlformats.org/drawingml/2
   TEGLineFillPropertiesEG, TEGLineJoinPropertiesEG, TEGLineDashPropertiesEG, TEGThemeableFillStyleEG, TEGThemeableEffectStyleEG,
   TEGThemeableFontStylesEG, TEGTextAutofitEG, TEGTextBulletColorEG, TEGTextBulletSizeEG, TEGTextBulletTypefaceEG, TEGTextBulletEG,
   TEGTextUnderlineLineEG, TEGTextUnderlineFillEG, TEGTextRunEG],
-  'a', TNaming.nTitleCase);
+  'a', TNaming.nCamelCase, TNaming.nCamelCase, TNaming.nCamelCase);
 
 end.

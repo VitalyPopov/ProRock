@@ -172,6 +172,10 @@ type
     class function Acronym(const aName: string; aAcronyms: THashSet<string> = nil): string; static; inline;
     class function ToPascalCase(const aName: string): string; static; inline;
     class function FromPascalCase(const aName: string; aNaming: TNaming): string; inline;
+    // FromPascalCase that also converts a name without lower-case letters (B -> b). Separate: in older generated units B means <B>
+    class function FromPascalCaseExact(const aName: string; aNaming: TNaming): string; static;
+    // GuessNaming that is sure: the style that gives the name back exactly, else nAsIs (FamilyHistoryStatus-list has no style)
+    class function NamingOf(const aName: string): TNaming; static;
 
     // TryStrToFloat, invariant, that knows XML Schema's NaN, INF and -INF on every Delphi: 10.3 - 11 read them as not numbers
     class function TryFloatFromText(const aText: string; out aValue: Single): boolean; overload; static;
@@ -181,7 +185,8 @@ type
     class function FloatFitsComp(aValue: Extended): boolean; static;
   end;
 
-function GetEnumerationName(aEnumTypeInfo: PTypeInfo; aValue: cardinal): string; inline;
+function GetEnumerationName(aEnumTypeInfo: PTypeInfo; aValue: cardinal): string; overload;
+function GetEnumerationName(aEnumTypeInfo: PTypeInfo; aValue: cardinal; aNaming: TNaming): string; overload;
 
 function SimplifiedGenericName(const aName: string): string; inline;
 
@@ -325,7 +330,7 @@ begin
     Result := WithoutExponent(Result);
 end;
 
-function GetEnumerationName(aEnumTypeInfo: PTypeInfo; aValue: cardinal): string;
+function EnumerationNameWithoutPrefix(aEnumTypeInfo: PTypeInfo; aValue: cardinal): string;
 begin
   Result := GetEnumName(aEnumTypeInfo, aValue);
 
@@ -333,7 +338,17 @@ begin
   while CharInSet(resultStartsAt^, ['a' .. 'z']) do
     Inc(resultStartsAt);
 
-  Result := TUtility.FromPascalCase(resultStartsAt, nCamelCase);
+  Result := resultStartsAt;
+end;
+
+function GetEnumerationName(aEnumTypeInfo: PTypeInfo; aValue: cardinal): string;
+begin
+  Result := TUtility.FromPascalCase(EnumerationNameWithoutPrefix(aEnumTypeInfo, aValue), nCamelCase);
+end;
+
+function GetEnumerationName(aEnumTypeInfo: PTypeInfo; aValue: cardinal; aNaming: TNaming): string;
+begin
+  Result := TUtility.FromPascalCaseExact(EnumerationNameWithoutPrefix(aEnumTypeInfo, aValue), aNaming);
 end;
 
 function SimplifiedGenericName(const aName: string): string;
@@ -852,6 +867,21 @@ begin
     nUpperCase:
       Result := Result.ToUpper;
   end;
+end;
+
+class function TUtility.FromPascalCaseExact(const aName: string; aNaming: TNaming): string;
+begin
+  if (GuessNaming(aName) = nUpperCase) and (aNaming in [nCamelCase, nSnakeCase, nKebabCase, nFlatCase]) then
+    Result := aName.ToLower
+  else
+    Result := TUtility.FromPascalCase(aName, aNaming);
+end;
+
+class function TUtility.NamingOf(const aName: string): TNaming;
+begin
+  Result := GuessNaming(aName);
+  if (Result <> nAsIs) and (TUtility.FromPascalCase(ToPascalCase(aName), Result) <> aName) then
+    Result := nAsIs;
 end;
 
 class function TUtility.GuessNaming(const aName: string): TNaming;

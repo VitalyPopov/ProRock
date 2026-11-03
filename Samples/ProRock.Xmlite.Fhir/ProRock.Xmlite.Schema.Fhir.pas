@@ -17,128 +17,73 @@ uses
   ProRock.Xmlite, ProRock.Xmlite.Schema.Base, ProRock.Xmlite.Schema.Xhtml;
 
 type
-  [TNaming(TNaming.nTrainCase)]
   [TName('NarrativeStatus-list')]
   TNarrativeStatusListST = (nslGenerated, nslExtensions, nslAdditional, nslEmpty);
-  [TNaming(TNaming.nTrainCase)]
   [TName('AddressUse-list')]
   TAddressUseListST = (aulHome, aulWork, aulTemp, aulOld, aulBilling);
-  [TNaming(TNaming.nTrainCase)]
   [TName('AddressType-list')]
   TAddressTypeListST = (atlPostal, atlPhysical, atlBoth);
-  [TNaming(TNaming.nTrainCase)]
   [TName('ContributorType-list')]
   TContributorTypeListST = (ctlAuthor, ctlEditor, ctlReviewer, ctlEndorser);
-  [TNaming(TNaming.nTrainCase)]
   [TName('SortDirection-list')]
   TSortDirectionListST = (sdlAscending, sdlDescending);
-  [TNaming(TNaming.nTrainCase)]
   [TName('NameUse-list')]
   TNameUseListST = (nulUsual, nulOfficial, nulTemp, nulNickname, nulAnonymous, nulOld, nulMaiden);
-  [TNaming(TNaming.nTrainCase)]
   [TName('ContactPointSystem-list')]
   TContactPointSystemListST = (cpslPhone, cpslFax, cpslEmail, cpslPager, cpslUrl, cpslSms, cpslOther);
-  [TNaming(TNaming.nTrainCase)]
   [TName('ContactPointUse-list')]
   TContactPointUseListST = (cpulHome, cpulWork, cpulTemp, cpulOld, cpulMobile);
-  [TNaming(TNaming.nTrainCase)]
   [TName('IdentifierUse-list')]
   TIdentifierUseListST = (iulUsual, iulOfficial, iulTemp, iulSecondary, iulOld);
-  [TEnumCaption('namedEvent', 'named-event')]
-  [TEnumCaption('dataChanged', 'data-changed')]
-  [TEnumCaption('dataAdded', 'data-added')]
-  [TEnumCaption('dataModified', 'data-modified')]
-  [TEnumCaption('dataRemoved', 'data-removed')]
-  [TEnumCaption('dataAccessed', 'data-accessed')]
-  [TEnumCaption('dataAccessEnded', 'data-access-ended')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('TriggerType-list')]
   TTriggerTypeListST = (ttlNamedEvent, ttlPeriodic, ttlDataChanged, ttlDataAdded, ttlDataModified, ttlDataRemoved, ttlDataAccessed,
     ttlDataAccessEnded);
   [TEnumCaption('less', '<')]
-  [TEnumCaption('lessEqual', '<=')]
-  [TEnumCaption('greaterEqual', '>=')]
+  [TEnumCaption('less-equal', '<=')]
+  [TEnumCaption('greater-equal', '>=')]
   [TEnumCaption('greater', '>')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('QuantityComparator-list')]
   TQuantityComparatorListST = (qclLess, qclLessEqual, qclGreaterEqual, qclGreater);
-  [TEnumCaption('derivedFrom', 'derived-from')]
-  [TEnumCaption('dependsOn', 'depends-on')]
-  [TEnumCaption('composedOf', 'composed-of')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('RelatedArtifactType-list')]
   TRelatedArtifactTypeListST = (ratlDocumentation, ratlJustification, ratlCitation, ratlPredecessor, ratlSuccessor, ratlDerivedFrom,
     ratlDependsOn, ratlComposedOf);
-  [TEnumCaption('textCql', 'text/cql')]
-  [TEnumCaption('textFhirpath', 'text/fhirpath')]
-  [TEnumCaption('applicationXFhirQuery', 'application/x-fhir-query')]
-  [TNaming(TNaming.nTrainCase)]
+  [TEnumCaption('text-cql', 'text/cql')]
+  [TEnumCaption('text-fhirpath', 'text/fhirpath')]
+  [TEnumCaption('application-x-fhir-query', 'application/x-fhir-query')]
   [TName('ExpressionLanguage-list')]
   TExpressionLanguageListST = (ellTextCql, ellTextFhirpath, ellApplicationXFhirQuery);
-  [TEnumCaption('S', 's')]
-  [TEnumCaption('H', 'h')]
-  [TEnumCaption('D', 'd')]
-  [TEnumCaption('A', 'a')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('UnitsOfTime-list')]
   TUnitsOfTimeListST = (uotlS, uotlMin, uotlH, uotlD, uotlWk, uotlMo, uotlA);
-  [TEnumCaption('morn', 'MORN')]
-  [TEnumCaption('mornEarly', 'MORN.early')]
-  [TEnumCaption('mornLate', 'MORN.late')]
-  [TEnumCaption('noon', 'NOON')]
-  [TEnumCaption('aft', 'AFT')]
-  [TEnumCaption('aftEarly', 'AFT.early')]
-  [TEnumCaption('aftLate', 'AFT.late')]
-  [TEnumCaption('eve', 'EVE')]
-  [TEnumCaption('eveEarly', 'EVE.early')]
-  [TEnumCaption('eveLate', 'EVE.late')]
-  [TEnumCaption('night', 'NIGHT')]
-  [TEnumCaption('phs', 'PHS')]
-  [TEnumCaption('hs', 'HS')]
-  [TEnumCaption('wake', 'WAKE')]
-  [TEnumCaption('cm', 'CM')]
-  [TEnumCaption('cd', 'CD')]
-  [TEnumCaption('cv', 'CV')]
-  [TEnumCaption('ac', 'AC')]
-  [TEnumCaption('acm', 'ACM')]
-  [TEnumCaption('acd', 'ACD')]
-  [TEnumCaption('acv', 'ACV')]
-  [TEnumCaption('pc', 'PC')]
-  [TEnumCaption('pcm', 'PCM')]
-  [TEnumCaption('pcd', 'PCD')]
-  [TEnumCaption('pcv', 'PCV')]
-  [TNaming(TNaming.nTrainCase)]
+  [TEnumNaming(TNaming.nUpperCase)]
+  [TEnumCaption('MORNEARLY', 'MORN.early')]
+  [TEnumCaption('MORNLATE', 'MORN.late')]
+  [TEnumCaption('AFTEARLY', 'AFT.early')]
+  [TEnumCaption('AFTLATE', 'AFT.late')]
+  [TEnumCaption('EVEEARLY', 'EVE.early')]
+  [TEnumCaption('EVELATE', 'EVE.late')]
   [TName('EventTiming-list')]
   TEventTimingListST = (etlMorn, etlMornEarly, etlMornLate, etlNoon, etlAft, etlAftEarly, etlAftLate, etlEve, etlEveEarly, etlEveLate,
     etlNight, etlPhs, etlHs, etlWake, etlC, etlCm, etlCd, etlCv, etlAc, etlAcm, etlAcd, etlAcv, etlPc, etlPcm, etlPcd, etlPcv);
-  [TNaming(TNaming.nTrainCase)]
+  [TEnumNaming(TNaming.nCamelCase)]
   [TName('PropertyRepresentation-list')]
   TPropertyRepresentationListST = (prlXmlAttr, prlXmlText, prlTypeAttr, prlCdaText, prlXhtml);
-  [TNaming(TNaming.nTrainCase)]
   [TName('ConstraintSeverity-list')]
   TConstraintSeverityListST = (cslError, cslWarning);
-  [TNaming(TNaming.nTrainCase)]
   [TName('AggregationMode-list')]
   TAggregationModeListST = (amlContained, amlReferenced, amlBundled);
-  [TNaming(TNaming.nTrainCase)]
   [TName('ReferenceVersionRules-list')]
   TReferenceVersionRulesListST = (rvrlEither, rvrlIndependent, rvrlSpecific);
-  [TNaming(TNaming.nTrainCase)]
+  [TEnumNaming(TNaming.nCamelCase)]
   [TName('SlicingRules-list')]
   TSlicingRulesListST = (srlClosed, srlOpen, srlOpenAtEnd);
-  [TNaming(TNaming.nTrainCase)]
   [TName('BindingStrength-list')]
   TBindingStrengthListST = (bslRequired, bslExtensible, bslPreferred, bslExample);
-  [TNaming(TNaming.nTrainCase)]
   [TName('DiscriminatorType-list')]
   TDiscriminatorTypeListST = (dtlValue, dtlExists, dtlPattern, dtlType, dtlProfile);
-  [TNaming(TNaming.nTrainCase)]
   [TName('PublicationStatus-list')]
   TPublicationStatusListST = (pslDraft, pslActive, pslRetired, pslUnknown);
-  [TNaming(TNaming.nTrainCase)]
   [TName('SearchParamType-list')]
   TSearchParamTypeListST = (sptlNumber, sptlDate, sptlString, sptlToken, sptlReference, sptlComposite, sptlQuantity, sptlUri, sptlSpecial);
-  [TNaming(TNaming.nTrainCase)]
   [TName('AdministrativeGender-list')]
   TAdministrativeGenderListST = (aglMale, aglFemale, aglOther, aglUnknown);
   [TEnumCaption('001', '0.01')]
@@ -163,555 +108,209 @@ type
   [TEnumCaption('350', '3.5.0')]
   [TEnumCaption('400', '4.0.0')]
   [TEnumCaption('401', '4.0.1')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('FHIRVersion-list')]
   TFHIRVersionListST = (fhirvl001, fhirvl005, fhirvl006, fhirvl011, fhirvl0080, fhirvl0081, fhirvl0082, fhirvl040, fhirvl050, fhirvl100,
     fhirvl101, fhirvl102, fhirvl110, fhirvl140, fhirvl160, fhirvl180, fhirvl300, fhirvl301, fhirvl330, fhirvl350, fhirvl400, fhirvl401);
-  [TNaming(TNaming.nTrainCase)]
   [TName('NoteType-list')]
   TNoteTypeListST = (ntlDisplay, ntlPrint, ntlPrintoper);
-  [TNaming(TNaming.nTrainCase)]
   [TName('RemittanceOutcome-list')]
   TRemittanceOutcomeListST = (rolQueued, rolComplete, rolError, rolPartial);
-  [TNaming(TNaming.nTrainCase)]
   [TName('ConceptMapEquivalence-list')]
   TConceptMapEquivalenceListST = (cmelRelatedto, cmelEquivalent, cmelEqual, cmelWider, cmelSubsumes, cmelNarrower, cmelSpecializes,
     cmelInexact, cmelUnmatched, cmelDisjoint);
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('DocumentReferenceStatus-list')]
   TDocumentReferenceStatusListST = (drslCurrent, drslSuperseded, drslEnteredInError);
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TEnumCaption('onHold', 'on-hold')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('AccountStatus-list')]
   TAccountStatusListST = (aslActive, aslInactive, aslEnteredInError, aslOnHold, aslUnknown);
-  [TEnumCaption('relatedPerson', 'related-person')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('ActionParticipantType-list')]
   TActionParticipantTypeListST = (aptlPatient, aptlPractitioner, aptlRelatedPerson, aptlDevice);
-  [TEnumCaption('originalOrder', 'original-order')]
-  [TEnumCaption('reflexOrder', 'reflex-order')]
-  [TEnumCaption('fillerOrder', 'filler-order')]
-  [TEnumCaption('instanceOrder', 'instance-order')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('RequestIntent-list')]
   TRequestIntentListST = (rilProposal, rilPlan, rilDirective, rilOrder, rilOriginalOrder, rilReflexOrder, rilFillerOrder, rilInstanceOrder,
     rilOption);
-  [TEnumCaption('appointment', 'Appointment')]
-  [TEnumCaption('appointmentResponse', 'AppointmentResponse')]
-  [TEnumCaption('carePlan', 'CarePlan')]
-  [TEnumCaption('claim', 'Claim')]
-  [TEnumCaption('communicationRequest', 'CommunicationRequest')]
-  [TEnumCaption('contract', 'Contract')]
-  [TEnumCaption('deviceRequest', 'DeviceRequest')]
-  [TEnumCaption('enrollmentRequest', 'EnrollmentRequest')]
-  [TEnumCaption('immunizationRecommendation', 'ImmunizationRecommendation')]
-  [TEnumCaption('medicationRequest', 'MedicationRequest')]
-  [TEnumCaption('nutritionOrder', 'NutritionOrder')]
-  [TEnumCaption('serviceRequest', 'ServiceRequest')]
-  [TEnumCaption('supplyRequest', 'SupplyRequest')]
-  [TEnumCaption('task', 'Task')]
-  [TEnumCaption('visionPrescription', 'VisionPrescription')]
-  [TNaming(TNaming.nTrainCase)]
+  [TEnumNaming(TNaming.nPascalCase)]
   [TName('RequestResourceType-list')]
   TRequestResourceTypeListST = (rrtlAppointment, rrtlAppointmentResponse, rrtlCarePlan, rrtlClaim, rrtlCommunicationRequest, rrtlContract,
     rrtlDeviceRequest, rrtlEnrollmentRequest, rrtlImmunizationRecommendation, rrtlMedicationRequest, rrtlNutritionOrder,
     rrtlServiceRequest, rrtlSupplyRequest, rrtlTask, rrtlVisionPrescription);
-  [TNaming(TNaming.nTrainCase)]
   [TName('RequestPriority-list')]
   TRequestPriorityListST = (rplRoutine, rplUrgent, rplAsap, rplStat);
-  [TNaming(TNaming.nTrainCase)]
   [TName('AdverseEventActuality-list')]
   TAdverseEventActualityListST = (aealActual, aealPotential);
-  [TEnumCaption('unableToAssess', 'unable-to-assess')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('AllergyIntoleranceCriticality-list')]
   TAllergyIntoleranceCriticalityListST = (aiclLow, aiclHigh, aiclUnableToAssess);
-  [TNaming(TNaming.nTrainCase)]
   [TName('AllergyIntoleranceType-list')]
   TAllergyIntoleranceTypeListST = (aitlAllergy, aitlIntolerance);
-  [TNaming(TNaming.nTrainCase)]
   [TName('AllergyIntoleranceCategory-list')]
   TAllergyIntoleranceCategoryListST = (aiclaFood, aiclaMedication, aiclaEnvironment, aiclaBiologic);
-  [TNaming(TNaming.nTrainCase)]
   [TName('AllergyIntoleranceSeverity-list')]
   TAllergyIntoleranceSeverityListST = (aislMild, aislModerate, aislSevere);
-  [TEnumCaption('informationOnly', 'information-only')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('ParticipantRequired-list')]
   TParticipantRequiredListST = (prlaRequired, prlaOptional, prlaInformationOnly);
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TEnumCaption('checkedIn', 'checked-in')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('AppointmentStatus-list')]
   TAppointmentStatusListST = (aslaProposed, aslaPending, aslaBooked, aslaArrived, aslaFulfilled, aslaCancelled, aslaNoshow,
     aslaEnteredInError, aslaCheckedIn, aslaWaitlist);
-  [TEnumCaption('needsAction', 'needs-action')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('ParticipationStatus-list')]
   TParticipationStatusListST = (pslaAccepted, pslaDeclined, pslaTentative, pslaNeedsAction);
-  [TNaming(TNaming.nTrainCase)]
   [TName('AuditEventOutcome-list')]
   TAuditEventOutcomeListST = (aeol0, aeol4, aeol8, aeol12);
-  [TNaming(TNaming.nTrainCase)]
+  [TEnumNaming(TNaming.nPascalCase)]
   [TName('AuditEventAction-list')]
   TAuditEventActionListST = (aealaC, aealaR, aealaU, aealaD, aealaE);
-  [TNaming(TNaming.nTrainCase)]
   [TName('AuditEventAgentNetworkType-list')]
   TAuditEventAgentNetworkTypeListST = (aeantl1, aeantl2, aeantl3, aeantl4, aeantl5);
-  [TNaming(TNaming.nTrainCase)]
+  [TEnumNaming(TNaming.nCamelCase)]
   [TName('BiologicallyDerivedProductCategory-list')]
   TBiologicallyDerivedProductCategoryListST = (bdpclOrgan, bdpclTissue, bdpclFluid, bdpclCells, bdpclBiologicalAgent);
-  [TNaming(TNaming.nTrainCase)]
   [TName('BiologicallyDerivedProductStatus-list')]
   TBiologicallyDerivedProductStatusListST = (bdpslAvailable, bdpslUnavailable);
-  [TNaming(TNaming.nTrainCase)]
   [TName('BiologicallyDerivedProductStorageScale-list')]
   TBiologicallyDerivedProductStorageScaleListST = (bdpsslFarenheit, bdpsslCelsius, bdpsslKelvin);
-  [TEnumCaption('get', 'GET')]
-  [TEnumCaption('head', 'HEAD')]
-  [TEnumCaption('post', 'POST')]
-  [TEnumCaption('put', 'PUT')]
-  [TEnumCaption('delete', 'DELETE')]
-  [TEnumCaption('patch', 'PATCH')]
-  [TNaming(TNaming.nTrainCase)]
+  [TEnumNaming(TNaming.nUpperCase)]
   [TName('HTTPVerb-list')]
   THTTPVerbListST = (httpvlGet, httpvlHead, httpvlPost, httpvlPut, httpvlDelete, httpvlPatch);
-  [TEnumCaption('transactionResponse', 'transaction-response')]
-  [TEnumCaption('batchResponse', 'batch-response')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('BundleType-list')]
   TBundleTypeListST = (btlDocument, btlMessage, btlTransaction, btlTransactionResponse, btlBatch, btlBatchResponse, btlHistory,
     btlSearchset, btlCollection);
-  [TNaming(TNaming.nTrainCase)]
   [TName('SearchEntryMode-list')]
   TSearchEntryModeListST = (semlMatch, semlInclude, semlOutcome);
-  [TNaming(TNaming.nTrainCase)]
   [TName('CapabilityStatementKind-list')]
   TCapabilityStatementKindListST = (csklInstance, csklCapability, csklRequirements);
-  [TNaming(TNaming.nTrainCase)]
   [TName('EventCapabilityMode-list')]
   TEventCapabilityModeListST = (ecmlSender, ecmlReceiver);
-  [TEnumCaption('noVersion', 'no-version')]
-  [TEnumCaption('versionedUpdate', 'versioned-update')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('ResourceVersionPolicy-list')]
   TResourceVersionPolicyListST = (rvplNoVersion, rvplVersioned, rvplVersionedUpdate);
-  [TNaming(TNaming.nTrainCase)]
   [TName('DocumentMode-list')]
   TDocumentModeListST = (dmlProducer, dmlConsumer);
-  [TNaming(TNaming.nTrainCase)]
   [TName('RestfulCapabilityMode-list')]
   TRestfulCapabilityModeListST = (rcmlClient, rcmlServer);
-  [TEnumCaption('historyInstance', 'history-instance')]
-  [TEnumCaption('historyType', 'history-type')]
-  [TEnumCaption('searchType', 'search-type')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('TypeRestfulInteraction-list')]
   TTypeRestfulInteractionListST = (trilRead, trilVread, trilUpdate, trilPatch, trilDelete, trilHistoryInstance, trilHistoryType,
     trilCreate, trilSearchType);
-  [TEnumCaption('searchSystem', 'search-system')]
-  [TEnumCaption('historySystem', 'history-system')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('SystemRestfulInteraction-list')]
   TSystemRestfulInteractionListST = (srilTransaction, srilBatch, srilSearchSystem, srilHistorySystem);
-  [TEnumCaption('notSupported', 'not-supported')]
-  [TEnumCaption('modifiedSince', 'modified-since')]
-  [TEnumCaption('notMatch', 'not-match')]
-  [TEnumCaption('fullSupport', 'full-support')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('ConditionalReadStatus-list')]
   TConditionalReadStatusListST = (crslNotSupported, crslModifiedSince, crslNotMatch, crslFullSupport);
-  [TNaming(TNaming.nTrainCase)]
   [TName('ReferenceHandlingPolicy-list')]
   TReferenceHandlingPolicyListST = (rhplLiteral, rhplLogical, rhplResolves, rhplEnforced, rhplLocal);
-  [TEnumCaption('notSupported', 'not-supported')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('ConditionalDeleteStatus-list')]
   TConditionalDeleteStatusListST = (cdslNotSupported, cdslSingle, cdslMultiple);
-  [TEnumCaption('appointment', 'Appointment')]
-  [TEnumCaption('communicationRequest', 'CommunicationRequest')]
-  [TEnumCaption('deviceRequest', 'DeviceRequest')]
-  [TEnumCaption('medicationRequest', 'MedicationRequest')]
-  [TEnumCaption('nutritionOrder', 'NutritionOrder')]
-  [TEnumCaption('task', 'Task')]
-  [TEnumCaption('serviceRequest', 'ServiceRequest')]
-  [TEnumCaption('visionPrescription', 'VisionPrescription')]
-  [TNaming(TNaming.nTrainCase)]
+  [TEnumNaming(TNaming.nPascalCase)]
   [TName('CarePlanActivityKind-list')]
   TCarePlanActivityKindListST = (cpaklAppointment, cpaklCommunicationRequest, cpaklDeviceRequest, cpaklMedicationRequest,
     cpaklNutritionOrder, cpaklTask, cpaklServiceRequest, cpaklVisionPrescription);
-  [TEnumCaption('notStarted', 'not-started')]
-  [TEnumCaption('inProgress', 'in-progress')]
-  [TEnumCaption('onHold', 'on-hold')]
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('CarePlanActivityStatus-list')]
   TCarePlanActivityStatusListST = (cpaslNotStarted, cpaslScheduled, cpaslInProgress, cpaslOnHold, cpaslCompleted, cpaslCancelled,
     cpaslStopped, cpaslUnknown, cpaslEnteredInError);
-  [TNaming(TNaming.nTrainCase)]
   [TName('CarePlanIntent-list')]
   TCarePlanIntentListST = (cpilProposal, cpilPlan, cpilOrder, cpilOption);
-  [TEnumCaption('onHold', 'on-hold')]
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('RequestStatus-list')]
   TRequestStatusListST = (rslDraft, rslActive, rslOnHold, rslRevoked, rslCompleted, rslEnteredInError, rslUnknown);
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('CareTeamStatus-list')]
   TCareTeamStatusListST = (ctslProposed, ctslActive, ctslSuspended, ctslInactive, ctslEnteredInError);
-  [TEnumCaption('isReplacedBy', 'is-replaced-by')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('CatalogEntryRelationType-list')]
   TCatalogEntryRelationTypeListST = (certlTriggers, certlIsReplacedBy);
-  [TEnumCaption('notBillable', 'not-billable')]
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('ChargeItemStatus-list')]
   TChargeItemStatusListST = (cislPlanned, cislBillable, cislNotBillable, cislAborted, cislBilled, cislEnteredInError, cislUnknown);
-  [TNaming(TNaming.nTrainCase)]
   [TName('InvoicePriceComponentType-list')]
   TInvoicePriceComponentTypeListST = (ipctlBase, ipctlSurcharge, ipctlDeduction, ipctlDiscount, ipctlTax, ipctlInformational);
-  [TNaming(TNaming.nTrainCase)]
   [TName('Use-list')]
   TUseListST = (ulClaim, ulPreauthorization, ulPredetermination);
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('FinancialResourceStatusCodes-list')]
   TFinancialResourceStatusCodesListST = (frsclActive, frsclCancelled, frsclDraft, frsclEnteredInError);
-  [TNaming(TNaming.nTrainCase)]
   [TName('ClaimProcessingCodes-list')]
   TClaimProcessingCodesListST = (cpclQueued, cpclComplete, cpclError, cpclPartial);
-  [TEnumCaption('inProgress', 'in-progress')]
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('ClinicalImpressionStatus-list')]
   TClinicalImpressionStatusListST = (cislaInProgress, cislaCompleted, cislaEnteredInError);
   [TEnumCaption('equal', '=')]
-  [TEnumCaption('isA', 'is-a')]
-  [TEnumCaption('descendentOf', 'descendent-of')]
-  [TEnumCaption('isNotA', 'is-not-a')]
-  [TEnumCaption('notIn', 'not-in')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('FilterOperator-list')]
   TFilterOperatorListST = (folEqual, folIsA, folDescendentOf, folIsNotA, folRegex, folIn, folNotIn, folGeneralizes, folExists);
+  [TEnumNaming(TNaming.nCamelCase)]
   [TEnumCaption('coding', 'Coding')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('PropertyType-list')]
   TPropertyTypeListST = (ptlCode, ptlCoding, ptlString, ptlInteger, ptlBoolean, ptlDateTime, ptlDecimal);
-  [TEnumCaption('groupedBy', 'grouped-by')]
-  [TEnumCaption('isA', 'is-a')]
-  [TEnumCaption('partOf', 'part-of')]
-  [TEnumCaption('classifiedWith', 'classified-with')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('CodeSystemHierarchyMeaning-list')]
   TCodeSystemHierarchyMeaningListST = (cshmlGroupedBy, cshmlIsA, cshmlPartOf, cshmlClassifiedWith);
-  [TEnumCaption('notPresent', 'not-present')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('CodeSystemContentMode-list')]
   TCodeSystemContentModeListST = (cscmlNotPresent, cscmlExample, cscmlFragment, cscmlComplete, cscmlSupplement);
-  [TEnumCaption('inProgress', 'in-progress')]
-  [TEnumCaption('notDone', 'not-done')]
-  [TEnumCaption('onHold', 'on-hold')]
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('EventStatus-list')]
   TEventStatusListST = (eslPreparation, eslInProgress, eslNotDone, eslOnHold, eslStopped, eslCompleted, eslEnteredInError, eslUnknown);
-  [TEnumCaption('patient', 'Patient')]
-  [TEnumCaption('encounter', 'Encounter')]
-  [TEnumCaption('relatedPerson', 'RelatedPerson')]
-  [TEnumCaption('practitioner', 'Practitioner')]
-  [TEnumCaption('device', 'Device')]
-  [TNaming(TNaming.nTrainCase)]
+  [TEnumNaming(TNaming.nPascalCase)]
   [TName('CompartmentType-list')]
   TCompartmentTypeListST = (ctlaPatient, ctlaEncounter, ctlaRelatedPerson, ctlaPractitioner, ctlaDevice);
-  [TNaming(TNaming.nKebabCase)]
+  [TEnumNaming(TNaming.nPascalCase)]
   [TName('vConfidentialityClassification-list')]
   TVConfidentialityClassificationListST = (vcclU, vcclL, vcclM, vcclN, vcclR, vcclV);
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('CompositionStatus-list')]
   TCompositionStatusListST = (cslaPreliminary, cslaFinal, cslaAmended, cslaEnteredInError);
-  [TNaming(TNaming.nTrainCase)]
   [TName('DocumentRelationshipType-list')]
   TDocumentRelationshipTypeListST = (drtlReplaces, drtlTransforms, drtlSigns, drtlAppends);
-  [TNaming(TNaming.nTrainCase)]
   [TName('CompositionAttestationMode-list')]
   TCompositionAttestationModeListST = (camlPersonal, camlProfessional, camlLegal, camlOfficial);
-  [TNaming(TNaming.nTrainCase)]
   [TName('ListMode-list')]
   TListModeListST = (lmlWorking, lmlSnapshot, lmlChanges);
-  [TEnumCaption('otherMap', 'other-map')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('ConceptMapGroupUnmappedMode-list')]
   TConceptMapGroupUnmappedModeListST = (cmgumlProvided, cmgumlFixed, cmgumlOtherMap);
-  [TNaming(TNaming.nTrainCase)]
   [TName('ConsentProvisionType-list')]
   TConsentProvisionTypeListST = (cptlDeny, cptlPermit);
-  [TNaming(TNaming.nTrainCase)]
   [TName('ConsentDataMeaning-list')]
   TConsentDataMeaningListST = (cdmlInstance, cdmlRelated, cdmlDependents, cdmlAuthoredby);
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('ConsentState-list')]
   TConsentStateListST = (cslbDraft, cslbProposed, cslbActive, cslbRejected, cslbInactive, cslbEnteredInError);
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('ContractResourceStatusCodes-list')]
   TContractResourceStatusCodesListST = (crsclAmended, crsclAppended, crsclCancelled, crsclDisputed, crsclEnteredInError, crsclExecutable,
     crsclExecuted, crsclNegotiable, crsclOffered, crsclPolicy, crsclRejected, crsclRenewed, crsclRevoked, crsclResolved, crsclTerminated);
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('ContractResourcePublicationStatusCodes-list')]
   TContractResourcePublicationStatusCodesListST = (crpsclAmended, crpsclAppended, crpsclCancelled, crpsclDisputed, crpsclEnteredInError,
     crpsclExecutable, crpsclExecuted, crpsclNegotiable, crpsclOffered, crpsclPolicy, crpsclRejected, crpsclRenewed, crpsclRevoked,
     crpsclResolved, crpsclTerminated);
-  [TEnumCaption('authRequirements', 'auth-requirements')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('EligibilityRequestPurpose-list')]
   TEligibilityRequestPurposeListST = (erplAuthRequirements, erplBenefits, erplDiscovery, erplValidation);
-  [TEnumCaption('authRequirements', 'auth-requirements')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('EligibilityResponsePurpose-list')]
   TEligibilityResponsePurposeListST = (erplaAuthRequirements, erplaBenefits, erplaDiscovery, erplaValidation);
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('ObservationStatus-list')]
   TObservationStatusListST = (oslRegistered, oslPreliminary, oslFinal, oslAmended, oslCorrected, oslCancelled, oslEnteredInError,
     oslUnknown);
-  [TNaming(TNaming.nTrainCase)]
   [TName('DetectedIssueSeverity-list')]
   TDetectedIssueSeverityListST = (dislHigh, dislModerate, dislLow);
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('FHIRDeviceStatus-list')]
   TFHIRDeviceStatusListST = (fhirdslActive, fhirdslInactive, fhirdslEnteredInError, fhirdslUnknown);
-  [TEnumCaption('udiLabelName', 'udi-label-name')]
-  [TEnumCaption('userFriendlyName', 'user-friendly-name')]
-  [TEnumCaption('patientReportedName', 'patient-reported-name')]
-  [TEnumCaption('manufacturerName', 'manufacturer-name')]
-  [TEnumCaption('modelName', 'model-name')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('DeviceNameType-list')]
   TDeviceNameTypeListST = (dntlUdiLabelName, dntlUserFriendlyName, dntlPatientReportedName, dntlManufacturerName, dntlModelName, dntlOther);
-  [TEnumCaption('selfReported', 'self-reported')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('UDIEntryType-list')]
   TUDIEntryTypeListST = (udietlBarcode, udietlRfid, udietlManual, udietlCard, udietlSelfReported, udietlUnknown);
-  [TEnumCaption('twoPoint', 'two-point')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('DeviceMetricCalibrationType-list')]
   TDeviceMetricCalibrationTypeListST = (dmctlUnspecified, dmctlOffset, dmctlGain, dmctlTwoPoint);
-  [TNaming(TNaming.nTrainCase)]
   [TName('DeviceMetricColor-list')]
   TDeviceMetricColorListST = (dmclBlack, dmclRed, dmclGreen, dmclYellow, dmclBlue, dmclMagenta, dmclCyan, dmclWhite);
-  [TEnumCaption('notCalibrated', 'not-calibrated')]
-  [TEnumCaption('calibrationRequired', 'calibration-required')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('DeviceMetricCalibrationState-list')]
   TDeviceMetricCalibrationStateListST = (dmcslNotCalibrated, dmcslCalibrationRequired, dmcslCalibrated, dmcslUnspecified);
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('DeviceMetricOperationalStatus-list')]
   TDeviceMetricOperationalStatusListST = (dmoslOn, dmoslOff, dmoslStandby, dmoslEnteredInError);
-  [TNaming(TNaming.nTrainCase)]
   [TName('DeviceMetricCategory-list')]
   TDeviceMetricCategoryListST = (dmclaMeasurement, dmclaSetting, dmclaCalculation, dmclaUnspecified);
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TEnumCaption('onHold', 'on-hold')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('DeviceUseStatementStatus-list')]
   TDeviceUseStatementStatusListST = (dusslActive, dusslCompleted, dusslEnteredInError, dusslIntended, dusslStopped, dusslOnHold);
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('DiagnosticReportStatus-list')]
   TDiagnosticReportStatusListST = (drslaRegistered, drslaPartial, drslaPreliminary, drslaFinal, drslaAmended, drslaCorrected,
     drslaAppended, drslaCancelled, drslaEnteredInError, drslaUnknown);
-  [TEnumCaption('exposureAlternative', 'exposure-alternative')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('ExposureState-list')]
   TExposureStateListST = (eslaExposure, eslaExposureAlternative);
-  [TNaming(TNaming.nTrainCase)]
   [TName('EncounterLocationStatus-list')]
   TEncounterLocationStatusListST = (elslPlanned, elslActive, elslReserved, elslCompleted);
-  [TEnumCaption('inProgress', 'in-progress')]
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('EncounterStatus-list')]
   TEncounterStatusListST = (eslbPlanned, eslbArrived, eslbTriaged, eslbInProgress, eslbOnleave, eslbFinished, eslbCancelled,
     eslbEnteredInError, eslbUnknown);
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('EndpointStatus-list')]
   TEndpointStatusListST = (eslcActive, eslcSuspended, eslcError, eslcOff, eslcEnteredInError, eslcTest);
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('EpisodeOfCareStatus-list')]
   TEpisodeOfCareStatusListST = (eocslPlanned, eocslWaitlist, eocslActive, eocslOnhold, eocslFinished, eocslCancelled, eocslEnteredInError);
-  [TNaming(TNaming.nTrainCase)]
   [TName('EvidenceVariableType-list')]
   TEvidenceVariableTypeListST = (evtlDichotomous, evtlContinuous, evtlDescriptive);
-  [TEnumCaption('meanOfMean', 'mean-of-mean')]
-  [TEnumCaption('meanOfMedian', 'mean-of-median')]
-  [TEnumCaption('medianOfMean', 'median-of-mean')]
-  [TEnumCaption('medianOfMedian', 'median-of-median')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('GroupMeasure-list')]
   TGroupMeasureListST = (gmlMean, gmlMedian, gmlMeanOfMean, gmlMeanOfMedian, gmlMedianOfMean, gmlMedianOfMedian);
-  [TNaming(TNaming.nTrainCase)]
   [TName('ExampleScenarioActorType-list')]
   TExampleScenarioActorTypeListST = (esatlPerson, esatlEntity);
-  [TEnumCaption('account', 'Account')]
-  [TEnumCaption('activityDefinition', 'ActivityDefinition')]
-  [TEnumCaption('adverseEvent', 'AdverseEvent')]
-  [TEnumCaption('allergyIntolerance', 'AllergyIntolerance')]
-  [TEnumCaption('appointment', 'Appointment')]
-  [TEnumCaption('appointmentResponse', 'AppointmentResponse')]
-  [TEnumCaption('auditEvent', 'AuditEvent')]
-  [TEnumCaption('basic', 'Basic')]
-  [TEnumCaption('binary', 'Binary')]
-  [TEnumCaption('biologicallyDerivedProduct', 'BiologicallyDerivedProduct')]
-  [TEnumCaption('bodyStructure', 'BodyStructure')]
-  [TEnumCaption('bundle', 'Bundle')]
-  [TEnumCaption('capabilityStatement', 'CapabilityStatement')]
-  [TEnumCaption('carePlan', 'CarePlan')]
-  [TEnumCaption('careTeam', 'CareTeam')]
-  [TEnumCaption('catalogEntry', 'CatalogEntry')]
-  [TEnumCaption('chargeItem', 'ChargeItem')]
-  [TEnumCaption('chargeItemDefinition', 'ChargeItemDefinition')]
-  [TEnumCaption('claim', 'Claim')]
-  [TEnumCaption('claimResponse', 'ClaimResponse')]
-  [TEnumCaption('clinicalImpression', 'ClinicalImpression')]
-  [TEnumCaption('codeSystem', 'CodeSystem')]
-  [TEnumCaption('communication', 'Communication')]
-  [TEnumCaption('communicationRequest', 'CommunicationRequest')]
-  [TEnumCaption('compartmentDefinition', 'CompartmentDefinition')]
-  [TEnumCaption('composition', 'Composition')]
-  [TEnumCaption('conceptMap', 'ConceptMap')]
-  [TEnumCaption('condition', 'Condition')]
-  [TEnumCaption('consent', 'Consent')]
-  [TEnumCaption('contract', 'Contract')]
-  [TEnumCaption('coverage', 'Coverage')]
-  [TEnumCaption('coverageEligibilityRequest', 'CoverageEligibilityRequest')]
-  [TEnumCaption('coverageEligibilityResponse', 'CoverageEligibilityResponse')]
-  [TEnumCaption('detectedIssue', 'DetectedIssue')]
-  [TEnumCaption('device', 'Device')]
-  [TEnumCaption('deviceDefinition', 'DeviceDefinition')]
-  [TEnumCaption('deviceMetric', 'DeviceMetric')]
-  [TEnumCaption('deviceRequest', 'DeviceRequest')]
-  [TEnumCaption('deviceUseStatement', 'DeviceUseStatement')]
-  [TEnumCaption('diagnosticReport', 'DiagnosticReport')]
-  [TEnumCaption('documentManifest', 'DocumentManifest')]
-  [TEnumCaption('documentReference', 'DocumentReference')]
-  [TEnumCaption('domainResource', 'DomainResource')]
-  [TEnumCaption('effectEvidenceSynthesis', 'EffectEvidenceSynthesis')]
-  [TEnumCaption('encounter', 'Encounter')]
-  [TEnumCaption('endpoint', 'Endpoint')]
-  [TEnumCaption('enrollmentRequest', 'EnrollmentRequest')]
-  [TEnumCaption('enrollmentResponse', 'EnrollmentResponse')]
-  [TEnumCaption('episodeOfCare', 'EpisodeOfCare')]
-  [TEnumCaption('eventDefinition', 'EventDefinition')]
-  [TEnumCaption('evidence', 'Evidence')]
-  [TEnumCaption('evidenceVariable', 'EvidenceVariable')]
-  [TEnumCaption('exampleScenario', 'ExampleScenario')]
-  [TEnumCaption('explanationOfBenefit', 'ExplanationOfBenefit')]
-  [TEnumCaption('familyMemberHistory', 'FamilyMemberHistory')]
-  [TEnumCaption('flag', 'Flag')]
-  [TEnumCaption('goal', 'Goal')]
-  [TEnumCaption('graphDefinition', 'GraphDefinition')]
-  [TEnumCaption('group', 'Group')]
-  [TEnumCaption('guidanceResponse', 'GuidanceResponse')]
-  [TEnumCaption('healthcareService', 'HealthcareService')]
-  [TEnumCaption('imagingStudy', 'ImagingStudy')]
-  [TEnumCaption('immunization', 'Immunization')]
-  [TEnumCaption('immunizationEvaluation', 'ImmunizationEvaluation')]
-  [TEnumCaption('immunizationRecommendation', 'ImmunizationRecommendation')]
-  [TEnumCaption('implementationGuide', 'ImplementationGuide')]
-  [TEnumCaption('insurancePlan', 'InsurancePlan')]
-  [TEnumCaption('invoice', 'Invoice')]
-  [TEnumCaption('library', 'Library')]
-  [TEnumCaption('linkage', 'Linkage')]
-  [TEnumCaption('list', 'List')]
-  [TEnumCaption('location', 'Location')]
-  [TEnumCaption('measure', 'Measure')]
-  [TEnumCaption('measureReport', 'MeasureReport')]
-  [TEnumCaption('media', 'Media')]
-  [TEnumCaption('medication', 'Medication')]
-  [TEnumCaption('medicationAdministration', 'MedicationAdministration')]
-  [TEnumCaption('medicationDispense', 'MedicationDispense')]
-  [TEnumCaption('medicationKnowledge', 'MedicationKnowledge')]
-  [TEnumCaption('medicationRequest', 'MedicationRequest')]
-  [TEnumCaption('medicationStatement', 'MedicationStatement')]
-  [TEnumCaption('medicinalProduct', 'MedicinalProduct')]
-  [TEnumCaption('medicinalProductAuthorization', 'MedicinalProductAuthorization')]
-  [TEnumCaption('medicinalProductContraindication', 'MedicinalProductContraindication')]
-  [TEnumCaption('medicinalProductIndication', 'MedicinalProductIndication')]
-  [TEnumCaption('medicinalProductIngredient', 'MedicinalProductIngredient')]
-  [TEnumCaption('medicinalProductInteraction', 'MedicinalProductInteraction')]
-  [TEnumCaption('medicinalProductManufactured', 'MedicinalProductManufactured')]
-  [TEnumCaption('medicinalProductPackaged', 'MedicinalProductPackaged')]
-  [TEnumCaption('medicinalProductPharmaceutical', 'MedicinalProductPharmaceutical')]
-  [TEnumCaption('medicinalProductUndesirableEffect', 'MedicinalProductUndesirableEffect')]
-  [TEnumCaption('messageDefinition', 'MessageDefinition')]
-  [TEnumCaption('messageHeader', 'MessageHeader')]
-  [TEnumCaption('molecularSequence', 'MolecularSequence')]
-  [TEnumCaption('namingSystem', 'NamingSystem')]
-  [TEnumCaption('nutritionOrder', 'NutritionOrder')]
-  [TEnumCaption('observation', 'Observation')]
-  [TEnumCaption('observationDefinition', 'ObservationDefinition')]
-  [TEnumCaption('operationDefinition', 'OperationDefinition')]
-  [TEnumCaption('operationOutcome', 'OperationOutcome')]
-  [TEnumCaption('organization', 'Organization')]
-  [TEnumCaption('organizationAffiliation', 'OrganizationAffiliation')]
-  [TEnumCaption('parameters', 'Parameters')]
-  [TEnumCaption('patient', 'Patient')]
-  [TEnumCaption('paymentNotice', 'PaymentNotice')]
-  [TEnumCaption('paymentReconciliation', 'PaymentReconciliation')]
-  [TEnumCaption('person', 'Person')]
-  [TEnumCaption('planDefinition', 'PlanDefinition')]
-  [TEnumCaption('practitioner', 'Practitioner')]
-  [TEnumCaption('practitionerRole', 'PractitionerRole')]
-  [TEnumCaption('procedure', 'Procedure')]
-  [TEnumCaption('provenance', 'Provenance')]
-  [TEnumCaption('questionnaire', 'Questionnaire')]
-  [TEnumCaption('questionnaireResponse', 'QuestionnaireResponse')]
-  [TEnumCaption('relatedPerson', 'RelatedPerson')]
-  [TEnumCaption('requestGroup', 'RequestGroup')]
-  [TEnumCaption('researchDefinition', 'ResearchDefinition')]
-  [TEnumCaption('researchElementDefinition', 'ResearchElementDefinition')]
-  [TEnumCaption('researchStudy', 'ResearchStudy')]
-  [TEnumCaption('researchSubject', 'ResearchSubject')]
-  [TEnumCaption('resource', 'Resource')]
-  [TEnumCaption('riskAssessment', 'RiskAssessment')]
-  [TEnumCaption('riskEvidenceSynthesis', 'RiskEvidenceSynthesis')]
-  [TEnumCaption('schedule', 'Schedule')]
-  [TEnumCaption('searchParameter', 'SearchParameter')]
-  [TEnumCaption('serviceRequest', 'ServiceRequest')]
-  [TEnumCaption('slot', 'Slot')]
-  [TEnumCaption('specimen', 'Specimen')]
-  [TEnumCaption('specimenDefinition', 'SpecimenDefinition')]
-  [TEnumCaption('structureDefinition', 'StructureDefinition')]
-  [TEnumCaption('structureMap', 'StructureMap')]
-  [TEnumCaption('subscription', 'Subscription')]
-  [TEnumCaption('substance', 'Substance')]
-  [TEnumCaption('substanceNucleicAcid', 'SubstanceNucleicAcid')]
-  [TEnumCaption('substancePolymer', 'SubstancePolymer')]
-  [TEnumCaption('substanceProtein', 'SubstanceProtein')]
-  [TEnumCaption('substanceReferenceInformation', 'SubstanceReferenceInformation')]
-  [TEnumCaption('substanceSourceMaterial', 'SubstanceSourceMaterial')]
-  [TEnumCaption('substanceSpecification', 'SubstanceSpecification')]
-  [TEnumCaption('supplyDelivery', 'SupplyDelivery')]
-  [TEnumCaption('supplyRequest', 'SupplyRequest')]
-  [TEnumCaption('task', 'Task')]
-  [TEnumCaption('terminologyCapabilities', 'TerminologyCapabilities')]
-  [TEnumCaption('testReport', 'TestReport')]
-  [TEnumCaption('testScript', 'TestScript')]
-  [TEnumCaption('valueSet', 'ValueSet')]
-  [TEnumCaption('verificationResult', 'VerificationResult')]
-  [TEnumCaption('visionPrescription', 'VisionPrescription')]
-  [TNaming(TNaming.nTrainCase)]
+  [TEnumNaming(TNaming.nPascalCase)]
   [TName('ResourceType-list')]
   TResourceTypeListST = (rtlAccount, rtlActivityDefinition, rtlAdverseEvent, rtlAllergyIntolerance, rtlAppointment, rtlAppointmentResponse,
     rtlAuditEvent, rtlBasic, rtlBinary, rtlBiologicallyDerivedProduct, rtlBodyStructure, rtlBundle, rtlCapabilityStatement, rtlCarePlan,
@@ -737,403 +336,323 @@ type
     rtlSubstanceNucleicAcid, rtlSubstancePolymer, rtlSubstanceProtein, rtlSubstanceReferenceInformation, rtlSubstanceSourceMaterial,
     rtlSubstanceSpecification, rtlSupplyDelivery, rtlSupplyRequest, rtlTask, rtlTerminologyCapabilities, rtlTestReport, rtlTestScript,
     rtlValueSet, rtlVerificationResult, rtlVisionPrescription);
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('ExplanationOfBenefitStatus-list')]
   TExplanationOfBenefitStatusListST = (eobslActive, eobslCancelled, eobslDraft, eobslEnteredInError);
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TEnumCaption('healthUnknown', 'health-unknown')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('FamilyHistoryStatus-list')]
   TFamilyHistoryStatusListST = (fhslPartial, fhslCompleted, fhslEnteredInError, fhslHealthUnknown);
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('FlagStatus-list')]
   TFlagStatusListST = (fslActive, fslInactive, fslEnteredInError);
-  [TEnumCaption('onHold', 'on-hold')]
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('GoalLifecycleStatus-list')]
   TGoalLifecycleStatusListST = (glslProposed, glslPlanned, glslAccepted, glslActive, glslOnHold, glslCompleted, glslCancelled,
     glslEnteredInError, glslRejected);
-  [TNaming(TNaming.nTrainCase)]
   [TName('GraphCompartmentUse-list')]
   TGraphCompartmentUseListST = (gculCondition, gculRequirement);
-  [TNaming(TNaming.nTrainCase)]
   [TName('GraphCompartmentRule-list')]
   TGraphCompartmentRuleListST = (gcrlIdentical, gcrlMatching, gcrlDifferent, gcrlCustom);
-  [TNaming(TNaming.nTrainCase)]
   [TName('GroupType-list')]
   TGroupTypeListST = (gtlPerson, gtlAnimal, gtlPractitioner, gtlDevice, gtlMedication, gtlSubstance);
-  [TEnumCaption('dataRequested', 'data-requested')]
-  [TEnumCaption('dataRequired', 'data-required')]
-  [TEnumCaption('inProgress', 'in-progress')]
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('GuidanceResponseStatus-list')]
   TGuidanceResponseStatusListST = (grslSuccess, grslDataRequested, grslDataRequired, grslInProgress, grslFailure, grslEnteredInError);
-  [TNaming(TNaming.nTrainCase)]
   [TName('DaysOfWeek-list')]
   TDaysOfWeekListST = (dowlMon, dowlTue, dowlWed, dowlThu, dowlFri, dowlSat, dowlSun);
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('ImagingStudyStatus-list')]
   TImagingStudyStatusListST = (isslRegistered, isslAvailable, isslCancelled, isslEnteredInError, isslUnknown);
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TEnumCaption('notDone', 'not-done')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('ImmunizationStatusCodes-list')]
   TImmunizationStatusCodesListST = (isclCompleted, isclEnteredInError, isclNotDone);
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('ImmunizationEvaluationStatusCodes-list')]
   TImmunizationEvaluationStatusCodesListST = (iesclCompleted, iesclEnteredInError);
-  [TEnumCaption('pathResource', 'path-resource')]
-  [TEnumCaption('pathPages', 'path-pages')]
-  [TEnumCaption('pathTxCache', 'path-tx-cache')]
-  [TEnumCaption('expansionParameter', 'expansion-parameter')]
-  [TEnumCaption('ruleBrokenLinks', 'rule-broken-links')]
-  [TEnumCaption('generateXml', 'generate-xml')]
-  [TEnumCaption('generateJson', 'generate-json')]
-  [TEnumCaption('generateTurtle', 'generate-turtle')]
-  [TEnumCaption('htmlTemplate', 'html-template')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('GuideParameterCode-list')]
   TGuideParameterCodeListST = (gpclApply, gpclPathResource, gpclPathPages, gpclPathTxCache, gpclExpansionParameter, gpclRuleBrokenLinks,
     gpclGenerateXml, gpclGenerateJson, gpclGenerateTurtle, gpclHtmlTemplate);
-  [TEnumCaption('notOpenSource', 'not-open-source')]
-  [TEnumCaption('aal', 'AAL')]
-  [TEnumCaption('abstyles', 'Abstyles')]
-  [TEnumCaption('adobe2006', 'Adobe-2006')]
-  [TEnumCaption('adobeGlyph', 'Adobe-Glyph')]
-  [TEnumCaption('adsl', 'ADSL')]
-  [TEnumCaption('afl11', 'AFL-1.1')]
-  [TEnumCaption('afl12', 'AFL-1.2')]
-  [TEnumCaption('afl20', 'AFL-2.0')]
-  [TEnumCaption('afl21', 'AFL-2.1')]
-  [TEnumCaption('afl30', 'AFL-3.0')]
-  [TEnumCaption('afmparse', 'Afmparse')]
-  [TEnumCaption('aGPL10Only', 'AGPL-1.0-only')]
-  [TEnumCaption('aGPL10OrLater', 'AGPL-1.0-or-later')]
-  [TEnumCaption('aGPL30Only', 'AGPL-3.0-only')]
-  [TEnumCaption('aGPL30OrLater', 'AGPL-3.0-or-later')]
-  [TEnumCaption('aladdin', 'Aladdin')]
-  [TEnumCaption('amdplpa', 'AMDPLPA')]
-  [TEnumCaption('aml', 'AML')]
-  [TEnumCaption('ampas', 'AMPAS')]
-  [TEnumCaption('antlrPd', 'ANTLR-PD')]
-  [TEnumCaption('apache10', 'Apache-1.0')]
-  [TEnumCaption('apache11', 'Apache-1.1')]
-  [TEnumCaption('apache20', 'Apache-2.0')]
-  [TEnumCaption('apafml', 'APAFML')]
-  [TEnumCaption('apl10', 'APL-1.0')]
-  [TEnumCaption('apsl10', 'APSL-1.0')]
-  [TEnumCaption('apsl11', 'APSL-1.1')]
-  [TEnumCaption('apsl12', 'APSL-1.2')]
-  [TEnumCaption('apsl20', 'APSL-2.0')]
-  [TEnumCaption('artistic10Cl8', 'Artistic-1.0-cl8')]
-  [TEnumCaption('artistic10Perl', 'Artistic-1.0-Perl')]
-  [TEnumCaption('artistic10', 'Artistic-1.0')]
-  [TEnumCaption('artistic20', 'Artistic-2.0')]
-  [TEnumCaption('bahyph', 'Bahyph')]
-  [TEnumCaption('barr', 'Barr')]
-  [TEnumCaption('beerware', 'Beerware')]
-  [TEnumCaption('bitTorrent10', 'BitTorrent-1.0')]
-  [TEnumCaption('bitTorrent11', 'BitTorrent-1.1')]
-  [TEnumCaption('borceux', 'Borceux')]
-  [TEnumCaption('bSD1Clause', 'BSD-1-Clause')]
-  [TEnumCaption('bSD2ClauseFreeBSD', 'BSD-2-Clause-FreeBSD')]
-  [TEnumCaption('bSD2ClauseNetBSD', 'BSD-2-Clause-NetBSD')]
-  [TEnumCaption('bSD2ClausePatent', 'BSD-2-Clause-Patent')]
-  [TEnumCaption('bSD2Clause', 'BSD-2-Clause')]
-  [TEnumCaption('bSD3ClauseAttribution', 'BSD-3-Clause-Attribution')]
-  [TEnumCaption('bSD3ClauseClear', 'BSD-3-Clause-Clear')]
-  [TEnumCaption('bSD3ClauseLBNL', 'BSD-3-Clause-LBNL')]
-  [TEnumCaption('bSD3ClauseNoNuclearLicense2014', 'BSD-3-Clause-No-Nuclear-License-2014')]
-  [TEnumCaption('bSD3ClauseNoNuclearLicense', 'BSD-3-Clause-No-Nuclear-License')]
-  [TEnumCaption('bSD3ClauseNoNuclearWarranty', 'BSD-3-Clause-No-Nuclear-Warranty')]
-  [TEnumCaption('bSD3Clause', 'BSD-3-Clause')]
-  [TEnumCaption('bSD4ClauseUC', 'BSD-4-Clause-UC')]
-  [TEnumCaption('bSD4Clause', 'BSD-4-Clause')]
-  [TEnumCaption('bSDProtection', 'BSD-Protection')]
-  [TEnumCaption('bSDSourceCode', 'BSD-Source-Code')]
-  [TEnumCaption('bsl10', 'BSL-1.0')]
-  [TEnumCaption('bzip2105', 'bzip2-1.0.5')]
-  [TEnumCaption('bzip2106', 'bzip2-1.0.6')]
-  [TEnumCaption('caldera', 'Caldera')]
-  [TEnumCaption('catosl11', 'CATOSL-1.1')]
-  [TEnumCaption('ccBy10', 'CC-BY-1.0')]
-  [TEnumCaption('ccBy20', 'CC-BY-2.0')]
-  [TEnumCaption('ccBy25', 'CC-BY-2.5')]
-  [TEnumCaption('ccBy30', 'CC-BY-3.0')]
-  [TEnumCaption('ccBy40', 'CC-BY-4.0')]
-  [TEnumCaption('ccByNc10', 'CC-BY-NC-1.0')]
-  [TEnumCaption('ccByNc20', 'CC-BY-NC-2.0')]
-  [TEnumCaption('ccByNc25', 'CC-BY-NC-2.5')]
-  [TEnumCaption('ccByNc30', 'CC-BY-NC-3.0')]
-  [TEnumCaption('ccByNc40', 'CC-BY-NC-4.0')]
-  [TEnumCaption('ccByNcNd10', 'CC-BY-NC-ND-1.0')]
-  [TEnumCaption('ccByNcNd20', 'CC-BY-NC-ND-2.0')]
-  [TEnumCaption('ccByNcNd25', 'CC-BY-NC-ND-2.5')]
-  [TEnumCaption('ccByNcNd30', 'CC-BY-NC-ND-3.0')]
-  [TEnumCaption('ccByNcNd40', 'CC-BY-NC-ND-4.0')]
-  [TEnumCaption('ccByNcSa10', 'CC-BY-NC-SA-1.0')]
-  [TEnumCaption('ccByNcSa20', 'CC-BY-NC-SA-2.0')]
-  [TEnumCaption('ccByNcSa25', 'CC-BY-NC-SA-2.5')]
-  [TEnumCaption('ccByNcSa30', 'CC-BY-NC-SA-3.0')]
-  [TEnumCaption('ccByNcSa40', 'CC-BY-NC-SA-4.0')]
-  [TEnumCaption('ccByNd10', 'CC-BY-ND-1.0')]
-  [TEnumCaption('ccByNd20', 'CC-BY-ND-2.0')]
-  [TEnumCaption('ccByNd25', 'CC-BY-ND-2.5')]
-  [TEnumCaption('ccByNd30', 'CC-BY-ND-3.0')]
-  [TEnumCaption('ccByNd40', 'CC-BY-ND-4.0')]
-  [TEnumCaption('ccBySa10', 'CC-BY-SA-1.0')]
-  [TEnumCaption('ccBySa20', 'CC-BY-SA-2.0')]
-  [TEnumCaption('ccBySa25', 'CC-BY-SA-2.5')]
-  [TEnumCaption('ccBySa30', 'CC-BY-SA-3.0')]
-  [TEnumCaption('ccBySa40', 'CC-BY-SA-4.0')]
-  [TEnumCaption('cc010', 'CC0-1.0')]
-  [TEnumCaption('cddl10', 'CDDL-1.0')]
-  [TEnumCaption('cddl11', 'CDDL-1.1')]
-  [TEnumCaption('cDLAPermissive10', 'CDLA-Permissive-1.0')]
-  [TEnumCaption('cDLASharing10', 'CDLA-Sharing-1.0')]
-  [TEnumCaption('cecill10', 'CECILL-1.0')]
-  [TEnumCaption('cecill11', 'CECILL-1.1')]
-  [TEnumCaption('cecill20', 'CECILL-2.0')]
-  [TEnumCaption('cecill21', 'CECILL-2.1')]
-  [TEnumCaption('cecillB', 'CECILL-B')]
-  [TEnumCaption('cecillC', 'CECILL-C')]
-  [TEnumCaption('clArtistic', 'ClArtistic')]
-  [TEnumCaption('cNRIJython', 'CNRI-Jython')]
-  [TEnumCaption('cNRIPythonGPLCompatible', 'CNRI-Python-GPL-Compatible')]
-  [TEnumCaption('cNRIPython', 'CNRI-Python')]
-  [TEnumCaption('condor11', 'Condor-1.1')]
-  [TEnumCaption('cpal10', 'CPAL-1.0')]
-  [TEnumCaption('cpl10', 'CPL-1.0')]
-  [TEnumCaption('cpol102', 'CPOL-1.02')]
-  [TEnumCaption('crossword', 'Crossword')]
-  [TEnumCaption('crystalStacker', 'CrystalStacker')]
-  [TEnumCaption('cuaOpl10', 'CUA-OPL-1.0')]
-  [TEnumCaption('cube', 'Cube')]
-  [TEnumCaption('dFsl10', 'D-FSL-1.0')]
-  [TEnumCaption('doc', 'DOC')]
-  [TEnumCaption('dotseqn', 'Dotseqn')]
-  [TEnumCaption('dsdp', 'DSDP')]
-  [TEnumCaption('ecl10', 'ECL-1.0')]
-  [TEnumCaption('ecl20', 'ECL-2.0')]
-  [TEnumCaption('efl10', 'EFL-1.0')]
-  [TEnumCaption('efl20', 'EFL-2.0')]
-  [TEnumCaption('entessa', 'Entessa')]
-  [TEnumCaption('epl10', 'EPL-1.0')]
-  [TEnumCaption('epl20', 'EPL-2.0')]
-  [TEnumCaption('erlPL11', 'ErlPL-1.1')]
-  [TEnumCaption('eUDatagrid', 'EUDatagrid')]
-  [TEnumCaption('eupl10', 'EUPL-1.0')]
-  [TEnumCaption('eupl11', 'EUPL-1.1')]
-  [TEnumCaption('eupl12', 'EUPL-1.2')]
-  [TEnumCaption('eurosym', 'Eurosym')]
-  [TEnumCaption('fair', 'Fair')]
-  [TEnumCaption('frameworx10', 'Frameworx-1.0')]
-  [TEnumCaption('freeImage', 'FreeImage')]
-  [TEnumCaption('fsfap', 'FSFAP')]
-  [TEnumCaption('fsful', 'FSFUL')]
-  [TEnumCaption('fsfullr', 'FSFULLR')]
-  [TEnumCaption('ftl', 'FTL')]
-  [TEnumCaption('gFDL11Only', 'GFDL-1.1-only')]
-  [TEnumCaption('gFDL11OrLater', 'GFDL-1.1-or-later')]
-  [TEnumCaption('gFDL12Only', 'GFDL-1.2-only')]
-  [TEnumCaption('gFDL12OrLater', 'GFDL-1.2-or-later')]
-  [TEnumCaption('gFDL13Only', 'GFDL-1.3-only')]
-  [TEnumCaption('gFDL13OrLater', 'GFDL-1.3-or-later')]
-  [TEnumCaption('giftware', 'Giftware')]
-  [TEnumCaption('gl2ps', 'GL2PS')]
-  [TEnumCaption('glide', 'Glide')]
-  [TEnumCaption('glulxe', 'Glulxe')]
-  [TEnumCaption('gPL10Only', 'GPL-1.0-only')]
-  [TEnumCaption('gPL10OrLater', 'GPL-1.0-or-later')]
-  [TEnumCaption('gPL20Only', 'GPL-2.0-only')]
-  [TEnumCaption('gPL20OrLater', 'GPL-2.0-or-later')]
-  [TEnumCaption('gPL30Only', 'GPL-3.0-only')]
-  [TEnumCaption('gPL30OrLater', 'GPL-3.0-or-later')]
-  [TEnumCaption('gSOAP13b', 'gSOAP-1.3b')]
-  [TEnumCaption('haskellReport', 'HaskellReport')]
-  [TEnumCaption('hpnd', 'HPND')]
-  [TEnumCaption('iBMPibs', 'IBM-pibs')]
-  [TEnumCaption('icu', 'ICU')]
-  [TEnumCaption('ijg', 'IJG')]
-  [TEnumCaption('imageMagick', 'ImageMagick')]
-  [TEnumCaption('imlib2', 'Imlib2')]
-  [TEnumCaption('infoZIP', 'Info-ZIP')]
-  [TEnumCaption('intelACPI', 'Intel-ACPI')]
-  [TEnumCaption('intel', 'Intel')]
-  [TEnumCaption('interbase10', 'Interbase-1.0')]
-  [TEnumCaption('ipa', 'IPA')]
-  [TEnumCaption('ipl10', 'IPL-1.0')]
-  [TEnumCaption('isc', 'ISC')]
-  [TEnumCaption('jasPer20', 'JasPer-2.0')]
-  [TEnumCaption('json', 'JSON')]
-  [TEnumCaption('lal12', 'LAL-1.2')]
-  [TEnumCaption('lal13', 'LAL-1.3')]
-  [TEnumCaption('latex2e', 'Latex2e')]
-  [TEnumCaption('leptonica', 'Leptonica')]
-  [TEnumCaption('lGPL20Only', 'LGPL-2.0-only')]
-  [TEnumCaption('lGPL20OrLater', 'LGPL-2.0-or-later')]
-  [TEnumCaption('lGPL21Only', 'LGPL-2.1-only')]
-  [TEnumCaption('lGPL21OrLater', 'LGPL-2.1-or-later')]
-  [TEnumCaption('lGPL30Only', 'LGPL-3.0-only')]
-  [TEnumCaption('lGPL30OrLater', 'LGPL-3.0-or-later')]
-  [TEnumCaption('lgpllr', 'LGPLLR')]
-  [TEnumCaption('libpng', 'Libpng')]
-  [TEnumCaption('liLiQP11', 'LiLiQ-P-1.1')]
-  [TEnumCaption('liLiQR11', 'LiLiQ-R-1.1')]
-  [TEnumCaption('liLiQRplus11', 'LiLiQ-Rplus-1.1')]
-  [TEnumCaption('linuxOpenIB', 'Linux-OpenIB')]
-  [TEnumCaption('lpl10', 'LPL-1.0')]
-  [TEnumCaption('lpl102', 'LPL-1.02')]
-  [TEnumCaption('lppl10', 'LPPL-1.0')]
-  [TEnumCaption('lppl11', 'LPPL-1.1')]
-  [TEnumCaption('lppl12', 'LPPL-1.2')]
-  [TEnumCaption('lppl13a', 'LPPL-1.3a')]
-  [TEnumCaption('lppl13c', 'LPPL-1.3c')]
-  [TEnumCaption('makeIndex', 'MakeIndex')]
-  [TEnumCaption('mirOS', 'MirOS')]
-  [TEnumCaption('mit0', 'MIT-0')]
-  [TEnumCaption('mITAdvertising', 'MIT-advertising')]
-  [TEnumCaption('mitCmu', 'MIT-CMU')]
-  [TEnumCaption('mITEnna', 'MIT-enna')]
-  [TEnumCaption('mITFeh', 'MIT-feh')]
-  [TEnumCaption('mit', 'MIT')]
-  [TEnumCaption('mitnfa', 'MITNFA')]
-  [TEnumCaption('motosoto', 'Motosoto')]
-  [TEnumCaption('mpl10', 'MPL-1.0')]
-  [TEnumCaption('mpl11', 'MPL-1.1')]
-  [TEnumCaption('mPL20NoCopyleftException', 'MPL-2.0-no-copyleft-exception')]
-  [TEnumCaption('mpl20', 'MPL-2.0')]
-  [TEnumCaption('msPl', 'MS-PL')]
-  [TEnumCaption('msRl', 'MS-RL')]
-  [TEnumCaption('mtll', 'MTLL')]
-  [TEnumCaption('multics', 'Multics')]
-  [TEnumCaption('mup', 'Mup')]
-  [TEnumCaption('nasa13', 'NASA-1.3')]
-  [TEnumCaption('naumen', 'Naumen')]
-  [TEnumCaption('nbpl10', 'NBPL-1.0')]
-  [TEnumCaption('ncsa', 'NCSA')]
-  [TEnumCaption('netSNMP', 'Net-SNMP')]
-  [TEnumCaption('netCDF', 'NetCDF')]
-  [TEnumCaption('newsletr', 'Newsletr')]
-  [TEnumCaption('ngpl', 'NGPL')]
-  [TEnumCaption('nlod10', 'NLOD-1.0')]
-  [TEnumCaption('nlpl', 'NLPL')]
-  [TEnumCaption('nokia', 'Nokia')]
-  [TEnumCaption('nosl', 'NOSL')]
-  [TEnumCaption('noweb', 'Noweb')]
-  [TEnumCaption('npl10', 'NPL-1.0')]
-  [TEnumCaption('npl11', 'NPL-1.1')]
-  [TEnumCaption('nposl30', 'NPOSL-3.0')]
-  [TEnumCaption('nrl', 'NRL')]
-  [TEnumCaption('ntp', 'NTP')]
-  [TEnumCaption('occtPl', 'OCCT-PL')]
-  [TEnumCaption('oclc20', 'OCLC-2.0')]
-  [TEnumCaption('oDbL10', 'ODbL-1.0')]
-  [TEnumCaption('ofl10', 'OFL-1.0')]
-  [TEnumCaption('ofl11', 'OFL-1.1')]
-  [TEnumCaption('ogtsl', 'OGTSL')]
-  [TEnumCaption('oldap11', 'OLDAP-1.1')]
-  [TEnumCaption('oldap12', 'OLDAP-1.2')]
-  [TEnumCaption('oldap13', 'OLDAP-1.3')]
-  [TEnumCaption('oldap14', 'OLDAP-1.4')]
-  [TEnumCaption('oldap201', 'OLDAP-2.0.1')]
-  [TEnumCaption('oldap20', 'OLDAP-2.0')]
-  [TEnumCaption('oldap21', 'OLDAP-2.1')]
-  [TEnumCaption('oldap221', 'OLDAP-2.2.1')]
-  [TEnumCaption('oldap222', 'OLDAP-2.2.2')]
-  [TEnumCaption('oldap22', 'OLDAP-2.2')]
-  [TEnumCaption('oldap23', 'OLDAP-2.3')]
-  [TEnumCaption('oldap24', 'OLDAP-2.4')]
-  [TEnumCaption('oldap25', 'OLDAP-2.5')]
-  [TEnumCaption('oldap26', 'OLDAP-2.6')]
-  [TEnumCaption('oldap27', 'OLDAP-2.7')]
-  [TEnumCaption('oldap28', 'OLDAP-2.8')]
-  [TEnumCaption('oml', 'OML')]
-  [TEnumCaption('openSSL', 'OpenSSL')]
-  [TEnumCaption('opl10', 'OPL-1.0')]
-  [TEnumCaption('osetPl21', 'OSET-PL-2.1')]
-  [TEnumCaption('osl10', 'OSL-1.0')]
-  [TEnumCaption('osl11', 'OSL-1.1')]
-  [TEnumCaption('osl20', 'OSL-2.0')]
-  [TEnumCaption('osl21', 'OSL-2.1')]
-  [TEnumCaption('osl30', 'OSL-3.0')]
-  [TEnumCaption('pddl10', 'PDDL-1.0')]
-  [TEnumCaption('php30', 'PHP-3.0')]
-  [TEnumCaption('php301', 'PHP-3.01')]
-  [TEnumCaption('plexus', 'Plexus')]
-  [TEnumCaption('postgreSQL', 'PostgreSQL')]
-  [TEnumCaption('python20', 'Python-2.0')]
-  [TEnumCaption('qhull', 'Qhull')]
-  [TEnumCaption('qpl10', 'QPL-1.0')]
-  [TEnumCaption('rdisc', 'Rdisc')]
-  [TEnumCaption('rHeCos11', 'RHeCos-1.1')]
-  [TEnumCaption('rpl11', 'RPL-1.1')]
-  [TEnumCaption('rpl15', 'RPL-1.5')]
-  [TEnumCaption('rpsl10', 'RPSL-1.0')]
-  [TEnumCaption('rsaMd', 'RSA-MD')]
-  [TEnumCaption('rscpl', 'RSCPL')]
-  [TEnumCaption('ruby', 'Ruby')]
-  [TEnumCaption('saxPd', 'SAX-PD')]
-  [TEnumCaption('saxpath', 'Saxpath')]
-  [TEnumCaption('scea', 'SCEA')]
-  [TEnumCaption('sendmail', 'Sendmail')]
-  [TEnumCaption('sgiB10', 'SGI-B-1.0')]
-  [TEnumCaption('sgiB11', 'SGI-B-1.1')]
-  [TEnumCaption('sgiB20', 'SGI-B-2.0')]
-  [TEnumCaption('simPL20', 'SimPL-2.0')]
-  [TEnumCaption('sissl12', 'SISSL-1.2')]
-  [TEnumCaption('sissl', 'SISSL')]
-  [TEnumCaption('sleepycat', 'Sleepycat')]
-  [TEnumCaption('smlnj', 'SMLNJ')]
-  [TEnumCaption('smppl', 'SMPPL')]
-  [TEnumCaption('snia', 'SNIA')]
-  [TEnumCaption('spencer86', 'Spencer-86')]
-  [TEnumCaption('spencer94', 'Spencer-94')]
-  [TEnumCaption('spencer99', 'Spencer-99')]
-  [TEnumCaption('spl10', 'SPL-1.0')]
-  [TEnumCaption('sugarCRM113', 'SugarCRM-1.1.3')]
-  [TEnumCaption('swl', 'SWL')]
-  [TEnumCaption('tcl', 'TCL')]
-  [TEnumCaption('tCPWrappers', 'TCP-wrappers')]
-  [TEnumCaption('tMate', 'TMate')]
-  [TEnumCaption('torque11', 'TORQUE-1.1')]
-  [TEnumCaption('tosl', 'TOSL')]
-  [TEnumCaption('unicodeDFS2015', 'Unicode-DFS-2015')]
-  [TEnumCaption('unicodeDFS2016', 'Unicode-DFS-2016')]
-  [TEnumCaption('unicodeTOU', 'Unicode-TOU')]
-  [TEnumCaption('unlicense', 'Unlicense')]
-  [TEnumCaption('upl10', 'UPL-1.0')]
-  [TEnumCaption('vim', 'Vim')]
-  [TEnumCaption('vostrom', 'VOSTROM')]
-  [TEnumCaption('vsl10', 'VSL-1.0')]
-  [TEnumCaption('w3c19980720', 'W3C-19980720')]
-  [TEnumCaption('w3c20150513', 'W3C-20150513')]
-  [TEnumCaption('w3c', 'W3C')]
-  [TEnumCaption('watcom10', 'Watcom-1.0')]
-  [TEnumCaption('wsuipa', 'Wsuipa')]
-  [TEnumCaption('wtfpl', 'WTFPL')]
-  [TEnumCaption('xerox', 'Xerox')]
-  [TEnumCaption('xFree8611', 'XFree86-1.1')]
-  [TEnumCaption('xnet', 'Xnet')]
-  [TEnumCaption('xSkat', 'XSkat')]
-  [TEnumCaption('ypl10', 'YPL-1.0')]
-  [TEnumCaption('ypl11', 'YPL-1.1')]
-  [TEnumCaption('zed', 'Zed')]
-  [TEnumCaption('zend20', 'Zend-2.0')]
-  [TEnumCaption('zimbra13', 'Zimbra-1.3')]
-  [TEnumCaption('zimbra14', 'Zimbra-1.4')]
-  [TEnumCaption('zlibAcknowledgement', 'zlib-acknowledgement')]
-  [TEnumCaption('zlib', 'Zlib')]
-  [TEnumCaption('zpl11', 'ZPL-1.1')]
-  [TEnumCaption('zpl20', 'ZPL-2.0')]
-  [TEnumCaption('zpl21', 'ZPL-2.1')]
-  [TNaming(TNaming.nTrainCase)]
+  [TEnumNaming(TNaming.nPascalCase)]
+  [TEnumCaption('NotOpenSource', 'not-open-source')]
+  [TEnumCaption('Aal', 'AAL')]
+  [TEnumCaption('Adobe2006', 'Adobe-2006')]
+  [TEnumCaption('AdobeGlyph', 'Adobe-Glyph')]
+  [TEnumCaption('Adsl', 'ADSL')]
+  [TEnumCaption('Afl11', 'AFL-1.1')]
+  [TEnumCaption('Afl12', 'AFL-1.2')]
+  [TEnumCaption('Afl20', 'AFL-2.0')]
+  [TEnumCaption('Afl21', 'AFL-2.1')]
+  [TEnumCaption('Afl30', 'AFL-3.0')]
+  [TEnumCaption('AGPL10Only', 'AGPL-1.0-only')]
+  [TEnumCaption('AGPL10OrLater', 'AGPL-1.0-or-later')]
+  [TEnumCaption('AGPL30Only', 'AGPL-3.0-only')]
+  [TEnumCaption('AGPL30OrLater', 'AGPL-3.0-or-later')]
+  [TEnumCaption('Amdplpa', 'AMDPLPA')]
+  [TEnumCaption('Aml', 'AML')]
+  [TEnumCaption('Ampas', 'AMPAS')]
+  [TEnumCaption('AntlrPd', 'ANTLR-PD')]
+  [TEnumCaption('Apache10', 'Apache-1.0')]
+  [TEnumCaption('Apache11', 'Apache-1.1')]
+  [TEnumCaption('Apache20', 'Apache-2.0')]
+  [TEnumCaption('Apafml', 'APAFML')]
+  [TEnumCaption('Apl10', 'APL-1.0')]
+  [TEnumCaption('Apsl10', 'APSL-1.0')]
+  [TEnumCaption('Apsl11', 'APSL-1.1')]
+  [TEnumCaption('Apsl12', 'APSL-1.2')]
+  [TEnumCaption('Apsl20', 'APSL-2.0')]
+  [TEnumCaption('Artistic10Cl8', 'Artistic-1.0-cl8')]
+  [TEnumCaption('Artistic10Perl', 'Artistic-1.0-Perl')]
+  [TEnumCaption('Artistic10', 'Artistic-1.0')]
+  [TEnumCaption('Artistic20', 'Artistic-2.0')]
+  [TEnumCaption('BitTorrent10', 'BitTorrent-1.0')]
+  [TEnumCaption('BitTorrent11', 'BitTorrent-1.1')]
+  [TEnumCaption('BSD1Clause', 'BSD-1-Clause')]
+  [TEnumCaption('BSD2ClauseFreeBSD', 'BSD-2-Clause-FreeBSD')]
+  [TEnumCaption('BSD2ClauseNetBSD', 'BSD-2-Clause-NetBSD')]
+  [TEnumCaption('BSD2ClausePatent', 'BSD-2-Clause-Patent')]
+  [TEnumCaption('BSD2Clause', 'BSD-2-Clause')]
+  [TEnumCaption('BSD3ClauseAttribution', 'BSD-3-Clause-Attribution')]
+  [TEnumCaption('BSD3ClauseClear', 'BSD-3-Clause-Clear')]
+  [TEnumCaption('BSD3ClauseLBNL', 'BSD-3-Clause-LBNL')]
+  [TEnumCaption('BSD3ClauseNoNuclearLicense2014', 'BSD-3-Clause-No-Nuclear-License-2014')]
+  [TEnumCaption('BSD3ClauseNoNuclearLicense', 'BSD-3-Clause-No-Nuclear-License')]
+  [TEnumCaption('BSD3ClauseNoNuclearWarranty', 'BSD-3-Clause-No-Nuclear-Warranty')]
+  [TEnumCaption('BSD3Clause', 'BSD-3-Clause')]
+  [TEnumCaption('BSD4ClauseUC', 'BSD-4-Clause-UC')]
+  [TEnumCaption('BSD4Clause', 'BSD-4-Clause')]
+  [TEnumCaption('BSDProtection', 'BSD-Protection')]
+  [TEnumCaption('BSDSourceCode', 'BSD-Source-Code')]
+  [TEnumCaption('Bsl10', 'BSL-1.0')]
+  [TEnumCaption('Bzip2105', 'bzip2-1.0.5')]
+  [TEnumCaption('Bzip2106', 'bzip2-1.0.6')]
+  [TEnumCaption('Catosl11', 'CATOSL-1.1')]
+  [TEnumCaption('CcBy10', 'CC-BY-1.0')]
+  [TEnumCaption('CcBy20', 'CC-BY-2.0')]
+  [TEnumCaption('CcBy25', 'CC-BY-2.5')]
+  [TEnumCaption('CcBy30', 'CC-BY-3.0')]
+  [TEnumCaption('CcBy40', 'CC-BY-4.0')]
+  [TEnumCaption('CcByNc10', 'CC-BY-NC-1.0')]
+  [TEnumCaption('CcByNc20', 'CC-BY-NC-2.0')]
+  [TEnumCaption('CcByNc25', 'CC-BY-NC-2.5')]
+  [TEnumCaption('CcByNc30', 'CC-BY-NC-3.0')]
+  [TEnumCaption('CcByNc40', 'CC-BY-NC-4.0')]
+  [TEnumCaption('CcByNcNd10', 'CC-BY-NC-ND-1.0')]
+  [TEnumCaption('CcByNcNd20', 'CC-BY-NC-ND-2.0')]
+  [TEnumCaption('CcByNcNd25', 'CC-BY-NC-ND-2.5')]
+  [TEnumCaption('CcByNcNd30', 'CC-BY-NC-ND-3.0')]
+  [TEnumCaption('CcByNcNd40', 'CC-BY-NC-ND-4.0')]
+  [TEnumCaption('CcByNcSa10', 'CC-BY-NC-SA-1.0')]
+  [TEnumCaption('CcByNcSa20', 'CC-BY-NC-SA-2.0')]
+  [TEnumCaption('CcByNcSa25', 'CC-BY-NC-SA-2.5')]
+  [TEnumCaption('CcByNcSa30', 'CC-BY-NC-SA-3.0')]
+  [TEnumCaption('CcByNcSa40', 'CC-BY-NC-SA-4.0')]
+  [TEnumCaption('CcByNd10', 'CC-BY-ND-1.0')]
+  [TEnumCaption('CcByNd20', 'CC-BY-ND-2.0')]
+  [TEnumCaption('CcByNd25', 'CC-BY-ND-2.5')]
+  [TEnumCaption('CcByNd30', 'CC-BY-ND-3.0')]
+  [TEnumCaption('CcByNd40', 'CC-BY-ND-4.0')]
+  [TEnumCaption('CcBySa10', 'CC-BY-SA-1.0')]
+  [TEnumCaption('CcBySa20', 'CC-BY-SA-2.0')]
+  [TEnumCaption('CcBySa25', 'CC-BY-SA-2.5')]
+  [TEnumCaption('CcBySa30', 'CC-BY-SA-3.0')]
+  [TEnumCaption('CcBySa40', 'CC-BY-SA-4.0')]
+  [TEnumCaption('Cc010', 'CC0-1.0')]
+  [TEnumCaption('Cddl10', 'CDDL-1.0')]
+  [TEnumCaption('Cddl11', 'CDDL-1.1')]
+  [TEnumCaption('CDLAPermissive10', 'CDLA-Permissive-1.0')]
+  [TEnumCaption('CDLASharing10', 'CDLA-Sharing-1.0')]
+  [TEnumCaption('Cecill10', 'CECILL-1.0')]
+  [TEnumCaption('Cecill11', 'CECILL-1.1')]
+  [TEnumCaption('Cecill20', 'CECILL-2.0')]
+  [TEnumCaption('Cecill21', 'CECILL-2.1')]
+  [TEnumCaption('CecillB', 'CECILL-B')]
+  [TEnumCaption('CecillC', 'CECILL-C')]
+  [TEnumCaption('CNRIJython', 'CNRI-Jython')]
+  [TEnumCaption('CNRIPythonGPLCompatible', 'CNRI-Python-GPL-Compatible')]
+  [TEnumCaption('CNRIPython', 'CNRI-Python')]
+  [TEnumCaption('Condor11', 'Condor-1.1')]
+  [TEnumCaption('Cpal10', 'CPAL-1.0')]
+  [TEnumCaption('Cpl10', 'CPL-1.0')]
+  [TEnumCaption('Cpol102', 'CPOL-1.02')]
+  [TEnumCaption('CuaOpl10', 'CUA-OPL-1.0')]
+  [TEnumCaption('Curl', 'curl')]
+  [TEnumCaption('DFsl10', 'D-FSL-1.0')]
+  [TEnumCaption('Diffmark', 'diffmark')]
+  [TEnumCaption('Doc', 'DOC')]
+  [TEnumCaption('Dsdp', 'DSDP')]
+  [TEnumCaption('Dvipdfm', 'dvipdfm')]
+  [TEnumCaption('Ecl10', 'ECL-1.0')]
+  [TEnumCaption('Ecl20', 'ECL-2.0')]
+  [TEnumCaption('Efl10', 'EFL-1.0')]
+  [TEnumCaption('Efl20', 'EFL-2.0')]
+  [TEnumCaption('EGenix', 'eGenix')]
+  [TEnumCaption('Epl10', 'EPL-1.0')]
+  [TEnumCaption('Epl20', 'EPL-2.0')]
+  [TEnumCaption('ErlPL11', 'ErlPL-1.1')]
+  [TEnumCaption('Eupl10', 'EUPL-1.0')]
+  [TEnumCaption('Eupl11', 'EUPL-1.1')]
+  [TEnumCaption('Eupl12', 'EUPL-1.2')]
+  [TEnumCaption('Frameworx10', 'Frameworx-1.0')]
+  [TEnumCaption('Fsfap', 'FSFAP')]
+  [TEnumCaption('Fsful', 'FSFUL')]
+  [TEnumCaption('Fsfullr', 'FSFULLR')]
+  [TEnumCaption('Ftl', 'FTL')]
+  [TEnumCaption('GFDL11Only', 'GFDL-1.1-only')]
+  [TEnumCaption('GFDL11OrLater', 'GFDL-1.1-or-later')]
+  [TEnumCaption('GFDL12Only', 'GFDL-1.2-only')]
+  [TEnumCaption('GFDL12OrLater', 'GFDL-1.2-or-later')]
+  [TEnumCaption('GFDL13Only', 'GFDL-1.3-only')]
+  [TEnumCaption('GFDL13OrLater', 'GFDL-1.3-or-later')]
+  [TEnumCaption('Gl2ps', 'GL2PS')]
+  [TEnumCaption('Gnuplot', 'gnuplot')]
+  [TEnumCaption('GPL10Only', 'GPL-1.0-only')]
+  [TEnumCaption('GPL10OrLater', 'GPL-1.0-or-later')]
+  [TEnumCaption('GPL20Only', 'GPL-2.0-only')]
+  [TEnumCaption('GPL20OrLater', 'GPL-2.0-or-later')]
+  [TEnumCaption('GPL30Only', 'GPL-3.0-only')]
+  [TEnumCaption('GPL30OrLater', 'GPL-3.0-or-later')]
+  [TEnumCaption('GSOAP13b', 'gSOAP-1.3b')]
+  [TEnumCaption('Hpnd', 'HPND')]
+  [TEnumCaption('IBMPibs', 'IBM-pibs')]
+  [TEnumCaption('Icu', 'ICU')]
+  [TEnumCaption('Ijg', 'IJG')]
+  [TEnumCaption('IMatix', 'iMatix')]
+  [TEnumCaption('InfoZIP', 'Info-ZIP')]
+  [TEnumCaption('IntelACPI', 'Intel-ACPI')]
+  [TEnumCaption('Interbase10', 'Interbase-1.0')]
+  [TEnumCaption('Ipa', 'IPA')]
+  [TEnumCaption('Ipl10', 'IPL-1.0')]
+  [TEnumCaption('Isc', 'ISC')]
+  [TEnumCaption('JasPer20', 'JasPer-2.0')]
+  [TEnumCaption('Json', 'JSON')]
+  [TEnumCaption('Lal12', 'LAL-1.2')]
+  [TEnumCaption('Lal13', 'LAL-1.3')]
+  [TEnumCaption('LGPL20Only', 'LGPL-2.0-only')]
+  [TEnumCaption('LGPL20OrLater', 'LGPL-2.0-or-later')]
+  [TEnumCaption('LGPL21Only', 'LGPL-2.1-only')]
+  [TEnumCaption('LGPL21OrLater', 'LGPL-2.1-or-later')]
+  [TEnumCaption('LGPL30Only', 'LGPL-3.0-only')]
+  [TEnumCaption('LGPL30OrLater', 'LGPL-3.0-or-later')]
+  [TEnumCaption('Lgpllr', 'LGPLLR')]
+  [TEnumCaption('Libtiff', 'libtiff')]
+  [TEnumCaption('LiLiQP11', 'LiLiQ-P-1.1')]
+  [TEnumCaption('LiLiQR11', 'LiLiQ-R-1.1')]
+  [TEnumCaption('LiLiQRplus11', 'LiLiQ-Rplus-1.1')]
+  [TEnumCaption('LinuxOpenIB', 'Linux-OpenIB')]
+  [TEnumCaption('Lpl10', 'LPL-1.0')]
+  [TEnumCaption('Lpl102', 'LPL-1.02')]
+  [TEnumCaption('Lppl10', 'LPPL-1.0')]
+  [TEnumCaption('Lppl11', 'LPPL-1.1')]
+  [TEnumCaption('Lppl12', 'LPPL-1.2')]
+  [TEnumCaption('Lppl13a', 'LPPL-1.3a')]
+  [TEnumCaption('Lppl13c', 'LPPL-1.3c')]
+  [TEnumCaption('Mit0', 'MIT-0')]
+  [TEnumCaption('MITAdvertising', 'MIT-advertising')]
+  [TEnumCaption('MitCmu', 'MIT-CMU')]
+  [TEnumCaption('MITEnna', 'MIT-enna')]
+  [TEnumCaption('MITFeh', 'MIT-feh')]
+  [TEnumCaption('Mit', 'MIT')]
+  [TEnumCaption('Mitnfa', 'MITNFA')]
+  [TEnumCaption('Mpich2', 'mpich2')]
+  [TEnumCaption('Mpl10', 'MPL-1.0')]
+  [TEnumCaption('Mpl11', 'MPL-1.1')]
+  [TEnumCaption('MPL20NoCopyleftException', 'MPL-2.0-no-copyleft-exception')]
+  [TEnumCaption('Mpl20', 'MPL-2.0')]
+  [TEnumCaption('MsPl', 'MS-PL')]
+  [TEnumCaption('MsRl', 'MS-RL')]
+  [TEnumCaption('Mtll', 'MTLL')]
+  [TEnumCaption('Nasa13', 'NASA-1.3')]
+  [TEnumCaption('Nbpl10', 'NBPL-1.0')]
+  [TEnumCaption('Ncsa', 'NCSA')]
+  [TEnumCaption('NetSNMP', 'Net-SNMP')]
+  [TEnumCaption('Ngpl', 'NGPL')]
+  [TEnumCaption('Nlod10', 'NLOD-1.0')]
+  [TEnumCaption('Nlpl', 'NLPL')]
+  [TEnumCaption('Nosl', 'NOSL')]
+  [TEnumCaption('Npl10', 'NPL-1.0')]
+  [TEnumCaption('Npl11', 'NPL-1.1')]
+  [TEnumCaption('Nposl30', 'NPOSL-3.0')]
+  [TEnumCaption('Nrl', 'NRL')]
+  [TEnumCaption('Ntp', 'NTP')]
+  [TEnumCaption('OcctPl', 'OCCT-PL')]
+  [TEnumCaption('Oclc20', 'OCLC-2.0')]
+  [TEnumCaption('ODbL10', 'ODbL-1.0')]
+  [TEnumCaption('Ofl10', 'OFL-1.0')]
+  [TEnumCaption('Ofl11', 'OFL-1.1')]
+  [TEnumCaption('Ogtsl', 'OGTSL')]
+  [TEnumCaption('Oldap11', 'OLDAP-1.1')]
+  [TEnumCaption('Oldap12', 'OLDAP-1.2')]
+  [TEnumCaption('Oldap13', 'OLDAP-1.3')]
+  [TEnumCaption('Oldap14', 'OLDAP-1.4')]
+  [TEnumCaption('Oldap201', 'OLDAP-2.0.1')]
+  [TEnumCaption('Oldap20', 'OLDAP-2.0')]
+  [TEnumCaption('Oldap21', 'OLDAP-2.1')]
+  [TEnumCaption('Oldap221', 'OLDAP-2.2.1')]
+  [TEnumCaption('Oldap222', 'OLDAP-2.2.2')]
+  [TEnumCaption('Oldap22', 'OLDAP-2.2')]
+  [TEnumCaption('Oldap23', 'OLDAP-2.3')]
+  [TEnumCaption('Oldap24', 'OLDAP-2.4')]
+  [TEnumCaption('Oldap25', 'OLDAP-2.5')]
+  [TEnumCaption('Oldap26', 'OLDAP-2.6')]
+  [TEnumCaption('Oldap27', 'OLDAP-2.7')]
+  [TEnumCaption('Oldap28', 'OLDAP-2.8')]
+  [TEnumCaption('Oml', 'OML')]
+  [TEnumCaption('Opl10', 'OPL-1.0')]
+  [TEnumCaption('OsetPl21', 'OSET-PL-2.1')]
+  [TEnumCaption('Osl10', 'OSL-1.0')]
+  [TEnumCaption('Osl11', 'OSL-1.1')]
+  [TEnumCaption('Osl20', 'OSL-2.0')]
+  [TEnumCaption('Osl21', 'OSL-2.1')]
+  [TEnumCaption('Osl30', 'OSL-3.0')]
+  [TEnumCaption('Pddl10', 'PDDL-1.0')]
+  [TEnumCaption('Php30', 'PHP-3.0')]
+  [TEnumCaption('Php301', 'PHP-3.01')]
+  [TEnumCaption('Psfrag', 'psfrag')]
+  [TEnumCaption('Psutils', 'psutils')]
+  [TEnumCaption('Python20', 'Python-2.0')]
+  [TEnumCaption('Qpl10', 'QPL-1.0')]
+  [TEnumCaption('RHeCos11', 'RHeCos-1.1')]
+  [TEnumCaption('Rpl11', 'RPL-1.1')]
+  [TEnumCaption('Rpl15', 'RPL-1.5')]
+  [TEnumCaption('Rpsl10', 'RPSL-1.0')]
+  [TEnumCaption('RsaMd', 'RSA-MD')]
+  [TEnumCaption('Rscpl', 'RSCPL')]
+  [TEnumCaption('SaxPd', 'SAX-PD')]
+  [TEnumCaption('Scea', 'SCEA')]
+  [TEnumCaption('SgiB10', 'SGI-B-1.0')]
+  [TEnumCaption('SgiB11', 'SGI-B-1.1')]
+  [TEnumCaption('SgiB20', 'SGI-B-2.0')]
+  [TEnumCaption('SimPL20', 'SimPL-2.0')]
+  [TEnumCaption('Sissl12', 'SISSL-1.2')]
+  [TEnumCaption('Sissl', 'SISSL')]
+  [TEnumCaption('Smlnj', 'SMLNJ')]
+  [TEnumCaption('Smppl', 'SMPPL')]
+  [TEnumCaption('Snia', 'SNIA')]
+  [TEnumCaption('Spencer86', 'Spencer-86')]
+  [TEnumCaption('Spencer94', 'Spencer-94')]
+  [TEnumCaption('Spencer99', 'Spencer-99')]
+  [TEnumCaption('Spl10', 'SPL-1.0')]
+  [TEnumCaption('SugarCRM113', 'SugarCRM-1.1.3')]
+  [TEnumCaption('Swl', 'SWL')]
+  [TEnumCaption('Tcl', 'TCL')]
+  [TEnumCaption('TCPWrappers', 'TCP-wrappers')]
+  [TEnumCaption('Torque11', 'TORQUE-1.1')]
+  [TEnumCaption('Tosl', 'TOSL')]
+  [TEnumCaption('UnicodeDFS2015', 'Unicode-DFS-2015')]
+  [TEnumCaption('UnicodeDFS2016', 'Unicode-DFS-2016')]
+  [TEnumCaption('UnicodeTOU', 'Unicode-TOU')]
+  [TEnumCaption('Upl10', 'UPL-1.0')]
+  [TEnumCaption('Vostrom', 'VOSTROM')]
+  [TEnumCaption('Vsl10', 'VSL-1.0')]
+  [TEnumCaption('W3c19980720', 'W3C-19980720')]
+  [TEnumCaption('W3c20150513', 'W3C-20150513')]
+  [TEnumCaption('W3c', 'W3C')]
+  [TEnumCaption('Watcom10', 'Watcom-1.0')]
+  [TEnumCaption('Wtfpl', 'WTFPL')]
+  [TEnumCaption('XFree8611', 'XFree86-1.1')]
+  [TEnumCaption('Xinetd', 'xinetd')]
+  [TEnumCaption('Xpp', 'xpp')]
+  [TEnumCaption('Ypl10', 'YPL-1.0')]
+  [TEnumCaption('Ypl11', 'YPL-1.1')]
+  [TEnumCaption('Zend20', 'Zend-2.0')]
+  [TEnumCaption('Zimbra13', 'Zimbra-1.3')]
+  [TEnumCaption('Zimbra14', 'Zimbra-1.4')]
+  [TEnumCaption('ZlibAcknowledgement', 'zlib-acknowledgement')]
+  [TEnumCaption('Zpl11', 'ZPL-1.1')]
+  [TEnumCaption('Zpl20', 'ZPL-2.0')]
+  [TEnumCaption('Zpl21', 'ZPL-2.1')]
   [TName('SPDXLicense-list')]
   TSPDXLicenseListST = (spdxllNotOpenSource, spdxll0BSD, spdxllAal, spdxllAbstyles, spdxllAdobe2006, spdxllAdobeGlyph, spdxllAdsl,
     spdxllAfl11, spdxllAfl12, spdxllAfl20, spdxllAfl21, spdxllAfl30, spdxllAfmparse, spdxllAGPL10Only, spdxllAGPL10OrLater,
@@ -1178,364 +697,203 @@ type
     spdxllW3c20150513, spdxllW3c, spdxllWatcom10, spdxllWsuipa, spdxllWtfpl, spdxllX11, spdxllXerox, spdxllXFree8611, spdxllXinetd,
     spdxllXnet, spdxllXpp, spdxllXSkat, spdxllYpl10, spdxllYpl11, spdxllZed, spdxllZend20, spdxllZimbra13, spdxllZimbra14,
     spdxllZlibAcknowledgement, spdxllZlib, spdxllZpl11, spdxllZpl20, spdxllZpl21);
-  [TNaming(TNaming.nTrainCase)]
   [TName('GuidePageGeneration-list')]
   TGuidePageGenerationListST = (gpglHtml, gpglMarkdown, gpglXml, gpglGenerated);
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('InvoiceStatus-list')]
   TInvoiceStatusListST = (islDraft, islIssued, islBalanced, islCancelled, islEnteredInError);
-  [TNaming(TNaming.nTrainCase)]
   [TName('LinkageType-list')]
   TLinkageTypeListST = (ltlSource, ltlAlternate, ltlHistorical);
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('ListStatus-list')]
   TListStatusListST = (lslCurrent, lslRetired, lslEnteredInError);
-  [TNaming(TNaming.nTrainCase)]
   [TName('LocationMode-list')]
   TLocationModeListST = (lmlaInstance, lmlaKind);
-  [TNaming(TNaming.nTrainCase)]
   [TName('LocationStatus-list')]
   TLocationStatusListST = (lslaActive, lslaSuspended, lslaInactive);
-  [TNaming(TNaming.nTrainCase)]
   [TName('MeasureReportStatus-list')]
   TMeasureReportStatusListST = (mrslComplete, mrslPending, mrslError);
-  [TEnumCaption('subjectList', 'subject-list')]
-  [TEnumCaption('dataCollection', 'data-collection')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('MeasureReportType-list')]
   TMeasureReportTypeListST = (mrtlIndividual, mrtlSubjectList, mrtlSummary, mrtlDataCollection);
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('MedicationStatusCodes-list')]
   TMedicationStatusCodesListST = (msclActive, msclInactive, msclEnteredInError);
-  [TEnumCaption('onHold', 'on-hold')]
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TNaming(TNaming.nKebabCase)]
   [TName('medicationrequestStatus-list')]
   TMedicationrequestStatusListST = (mslActive, mslOnHold, mslCancelled, mslCompleted, mslEnteredInError, mslStopped, mslDraft, mslUnknown);
-  [TEnumCaption('originalOrder', 'original-order')]
-  [TEnumCaption('reflexOrder', 'reflex-order')]
-  [TEnumCaption('fillerOrder', 'filler-order')]
-  [TEnumCaption('instanceOrder', 'instance-order')]
-  [TNaming(TNaming.nKebabCase)]
   [TName('medicationRequestIntent-list')]
   TMedicationRequestIntentListST = (mrilProposal, mrilPlan, mrilOrder, mrilOriginalOrder, mrilReflexOrder, mrilFillerOrder,
     mrilInstanceOrder, mrilOption);
-  [TNaming(TNaming.nTrainCase)]
   [TName('MessageSignificanceCategory-list')]
   TMessageSignificanceCategoryListST = (msclaConsequence, msclaCurrency, msclaNotification);
-  [TEnumCaption('onError', 'on-error')]
-  [TEnumCaption('onSuccess', 'on-success')]
-  [TNaming(TNaming.nKebabCase)]
   [TName('messageheaderResponseRequest-list')]
   TMessageheaderResponseRequestListST = (mrrlAlways, mrrlOnError, mrrlNever, mrrlOnSuccess);
-  [TEnumCaption('transientError', 'transient-error')]
-  [TEnumCaption('fatalError', 'fatal-error')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('ResponseType-list')]
   TResponseTypeListST = (rtlaOk, rtlaTransientError, rtlaFatalError);
-  [TNaming(TNaming.nKebabCase)]
   [TName('strandType-list')]
   TStrandTypeListST = (stlWatson, stlCrick);
-  [TNaming(TNaming.nKebabCase)]
   [TName('orientationType-list')]
   TOrientationTypeListST = (otlSense, otlAntisense);
-  [TNaming(TNaming.nKebabCase)]
   [TName('repositoryType-list')]
   TRepositoryTypeListST = (rtlbDirectlink, rtlbOpenapi, rtlbLogin, rtlbOauth, rtlbOther);
-  [TNaming(TNaming.nKebabCase)]
   [TName('qualityType-list')]
   TQualityTypeListST = (qtlIndel, qtlSnp, qtlUnknown);
-  [TNaming(TNaming.nKebabCase)]
   [TName('sequenceType-list')]
   TSequenceTypeListST = (stlaAa, stlaDna, stlaRna);
-  [TNaming(TNaming.nTrainCase)]
   [TName('NamingSystemIdentifierType-list')]
   TNamingSystemIdentifierTypeListST = (nsitlOid, nsitlUuid, nsitlUri, nsitlOther);
-  [TNaming(TNaming.nTrainCase)]
   [TName('NamingSystemType-list')]
   TNamingSystemTypeListST = (nstlCodesystem, nstlIdentifier, nstlRoot);
-  [TEnumCaption('quantity', 'Quantity')]
-  [TEnumCaption('codeableConcept', 'CodeableConcept')]
-  [TEnumCaption('range', 'Range')]
-  [TEnumCaption('ratio', 'Ratio')]
-  [TEnumCaption('sampledData', 'SampledData')]
-  [TEnumCaption('period', 'Period')]
-  [TNaming(TNaming.nTrainCase)]
+  [TEnumNaming(TNaming.nPascalCase)]
+  [TEnumCaption('String', 'string')]
+  [TEnumCaption('Boolean', 'boolean')]
+  [TEnumCaption('Integer', 'integer')]
+  [TEnumCaption('Time', 'time')]
+  [TEnumCaption('DateTime', 'dateTime')]
   [TName('ObservationDataType-list')]
   TObservationDataTypeListST = (odtlQuantity, odtlCodeableConcept, odtlString, odtlBoolean, odtlInteger, odtlRange, odtlRatio,
     odtlSampledData, odtlTime, odtlDateTime, odtlPeriod);
-  [TNaming(TNaming.nTrainCase)]
   [TName('ObservationRangeCategory-list')]
   TObservationRangeCategoryListST = (orclReference, orclCritical, orclAbsolute);
-  [TNaming(TNaming.nTrainCase)]
   [TName('OperationParameterUse-list')]
   TOperationParameterUseListST = (opulIn, opulOut);
-  [TNaming(TNaming.nTrainCase)]
   [TName('OperationKind-list')]
   TOperationKindListST = (oklOperation, oklQuery);
-  [TEnumCaption('notSupported', 'not-supported')]
-  [TEnumCaption('multipleMatches', 'multiple-matches')]
-  [TEnumCaption('notFound', 'not-found')]
-  [TEnumCaption('tooLong', 'too-long')]
-  [TEnumCaption('codeInvalid', 'code-invalid')]
-  [TEnumCaption('tooCostly', 'too-costly')]
-  [TEnumCaption('businessRule', 'business-rule')]
-  [TEnumCaption('lockError', 'lock-error')]
-  [TEnumCaption('noStore', 'no-store')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('IssueType-list')]
   TIssueTypeListST = (itlInvalid, itlStructure, itlRequired, itlValue, itlInvariant, itlSecurity, itlLogin, itlUnknown, itlExpired,
     itlForbidden, itlSuppressed, itlProcessing, itlNotSupported, itlDuplicate, itlMultipleMatches, itlNotFound, itlDeleted, itlTooLong,
     itlCodeInvalid, itlExtension, itlTooCostly, itlBusinessRule, itlConflict, itlTransient, itlLockError, itlNoStore, itlException,
     itlTimeout, itlIncomplete, itlThrottled, itlInformational);
-  [TNaming(TNaming.nTrainCase)]
   [TName('IssueSeverity-list')]
   TIssueSeverityListST = (islaFatal, islaError, islaWarning, islaInformation);
-  [TEnumCaption('replacedBy', 'replaced-by')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('LinkType-list')]
   TLinkTypeListST = (ltlaReplacedBy, ltlaReplaces, ltlaRefer, ltlaSeealso);
-  [TNaming(TNaming.nTrainCase)]
   [TName('IdentityAssuranceLevel-list')]
   TIdentityAssuranceLevelListST = (iallLevel1, iallLevel2, iallLevel3, iallLevel4);
-  [TEnumCaption('mustUnlessDocumented', 'must-unless-documented')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('ActionRequiredBehavior-list')]
   TActionRequiredBehaviorListST = (arblMust, arblCould, arblMustUnlessDocumented);
-  [TEnumCaption('beforeStart', 'before-start')]
-  [TEnumCaption('beforeEnd', 'before-end')]
-  [TEnumCaption('concurrentWithStart', 'concurrent-with-start')]
-  [TEnumCaption('concurrentWithEnd', 'concurrent-with-end')]
-  [TEnumCaption('afterStart', 'after-start')]
-  [TEnumCaption('afterEnd', 'after-end')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('ActionRelationshipType-list')]
   TActionRelationshipTypeListST = (artlBeforeStart, artlBefore, artlBeforeEnd, artlConcurrentWithStart, artlConcurrent,
     artlConcurrentWithEnd, artlAfterStart, artlAfter, artlAfterEnd);
-  [TEnumCaption('visualGroup', 'visual-group')]
-  [TEnumCaption('logicalGroup', 'logical-group')]
-  [TEnumCaption('sentenceGroup', 'sentence-group')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('ActionGroupingBehavior-list')]
   TActionGroupingBehaviorListST = (agblVisualGroup, agblLogicalGroup, agblSentenceGroup);
-  [TEnumCaption('allOrNone', 'all-or-none')]
-  [TEnumCaption('exactlyOne', 'exactly-one')]
-  [TEnumCaption('atMostOne', 'at-most-one')]
-  [TEnumCaption('oneOrMore', 'one-or-more')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('ActionSelectionBehavior-list')]
   TActionSelectionBehaviorListST = (asblAny, asblAll, asblAllOrNone, asblExactlyOne, asblAtMostOne, asblOneOrMore);
-  [TNaming(TNaming.nTrainCase)]
   [TName('ActionCardinalityBehavior-list')]
   TActionCardinalityBehaviorListST = (acblSingle, acblMultiple);
-  [TNaming(TNaming.nTrainCase)]
   [TName('ActionPrecheckBehavior-list')]
   TActionPrecheckBehaviorListST = (apblYes, apblNo);
-  [TNaming(TNaming.nTrainCase)]
   [TName('ActionConditionKind-list')]
   TActionConditionKindListST = (acklApplicability, acklStart, acklStop);
-  [TNaming(TNaming.nTrainCase)]
   [TName('ProvenanceEntityRole-list')]
   TProvenanceEntityRoleListST = (perlDerivation, perlRevision, perlQuotation, perlSource, perlRemoval);
-  [TEnumCaption('openChoice', 'open-choice')]
-  [TNaming(TNaming.nTrainCase)]
+  [TEnumCaption('date-time', 'dateTime')]
   [TName('QuestionnaireItemType-list')]
   TQuestionnaireItemTypeListST = (qitlGroup, qitlDisplay, qitlBoolean, qitlDecimal, qitlInteger, qitlDate, qitlDateTime, qitlTime,
     qitlString, qitlText, qitlUrl, qitlChoice, qitlOpenChoice, qitlAttachment, qitlReference, qitlQuantity);
-  [TNaming(TNaming.nTrainCase)]
   [TName('EnableWhenBehavior-list')]
   TEnableWhenBehaviorListST = (ewblAll, ewblAny);
   [TEnumCaption('equal', '=')]
-  [TEnumCaption('notEqual', '!=')]
+  [TEnumCaption('not-equal', '!=')]
   [TEnumCaption('greater', '>')]
   [TEnumCaption('less', '<')]
-  [TEnumCaption('greaterEqual', '>=')]
-  [TEnumCaption('lessEqual', '<=')]
-  [TNaming(TNaming.nTrainCase)]
+  [TEnumCaption('greater-equal', '>=')]
+  [TEnumCaption('less-equal', '<=')]
   [TName('QuestionnaireItemOperator-list')]
   TQuestionnaireItemOperatorListST = (qiolExists, qiolEqual, qiolNotEqual, qiolGreater, qiolLess, qiolGreaterEqual, qiolLessEqual);
-  [TEnumCaption('inProgress', 'in-progress')]
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('QuestionnaireResponseStatus-list')]
   TQuestionnaireResponseStatusListST = (qrslInProgress, qrslCompleted, qrslAmended, qrslEnteredInError, qrslStopped);
-  [TNaming(TNaming.nTrainCase)]
   [TName('ResearchElementType-list')]
   TResearchElementTypeListST = (retlPopulation, retlExposure, retlOutcome);
-  [TNaming(TNaming.nTrainCase)]
   [TName('VariableType-list')]
   TVariableTypeListST = (vtlDichotomous, vtlContinuous, vtlDescriptive);
-  [TEnumCaption('administrativelyCompleted', 'administratively-completed')]
-  [TEnumCaption('closedToAccrual', 'closed-to-accrual')]
-  [TEnumCaption('closedToAccrualAndIntervention', 'closed-to-accrual-and-intervention')]
-  [TEnumCaption('inReview', 'in-review')]
-  [TEnumCaption('temporarilyClosedToAccrual', 'temporarily-closed-to-accrual')]
-  [TEnumCaption('temporarilyClosedToAccrualAndIntervention', 'temporarily-closed-to-accrual-and-intervention')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('ResearchStudyStatus-list')]
   TResearchStudyStatusListST = (rsslActive, rsslAdministrativelyCompleted, rsslApproved, rsslClosedToAccrual,
     rsslClosedToAccrualAndIntervention, rsslCompleted, rsslDisapproved, rsslInReview, rsslTemporarilyClosedToAccrual,
     rsslTemporarilyClosedToAccrualAndIntervention, rsslWithdrawn);
-  [TEnumCaption('followUp', 'follow-up')]
-  [TEnumCaption('notRegistered', 'not-registered')]
-  [TEnumCaption('offStudy', 'off-study')]
-  [TEnumCaption('onStudy', 'on-study')]
-  [TEnumCaption('onStudyIntervention', 'on-study-intervention')]
-  [TEnumCaption('onStudyObservation', 'on-study-observation')]
-  [TEnumCaption('pendingOnStudy', 'pending-on-study')]
-  [TEnumCaption('potentialCandidate', 'potential-candidate')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('ResearchSubjectStatus-list')]
   TResearchSubjectStatusListST = (rsslaCandidate, rsslaEligible, rsslaFollowUp, rsslaIneligible, rsslaNotRegistered, rsslaOffStudy,
     rsslaOnStudy, rsslaOnStudyIntervention, rsslaOnStudyObservation, rsslaPendingOnStudy, rsslaPotentialCandidate, rsslaScreening,
     rsslaWithdrawn);
-  [TNaming(TNaming.nTrainCase)]
   [TName('XPathUsageType-list')]
   TXPathUsageTypeListST = (xputlNormal, xputlPhonetic, xputlNearby, xputlDistance, xputlOther);
-  [TEnumCaption('notIn', 'not-in')]
-  [TNaming(TNaming.nTrainCase)]
+  [TEnumCaption('of-type', 'ofType')]
   [TName('SearchModifierCode-list')]
   TSearchModifierCodeListST = (smclMissing, smclExact, smclContains, smclNot, smclText, smclIn, smclNotIn, smclBelow, smclAbove, smclType,
     smclIdentifier, smclOfType);
-  [TNaming(TNaming.nTrainCase)]
   [TName('SearchComparator-list')]
   TSearchComparatorListST = (sclEq, sclNe, sclGt, sclLt, sclGe, sclLe, sclSa, sclEb, sclAp);
-  [TEnumCaption('busyUnavailable', 'busy-unavailable')]
-  [TEnumCaption('busyTentative', 'busy-tentative')]
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('SlotStatus-list')]
   TSlotStatusListST = (sslBusy, sslFree, sslBusyUnavailable, sslBusyTentative, sslEnteredInError);
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('SpecimenStatus-list')]
   TSpecimenStatusListST = (sslaAvailable, sslaUnavailable, sslaUnsatisfactory, sslaEnteredInError);
-  [TNaming(TNaming.nTrainCase)]
   [TName('SpecimenContainedPreference-list')]
   TSpecimenContainedPreferenceListST = (scplPreferred, scplAlternate);
-  [TEnumCaption('primitiveType', 'primitive-type')]
-  [TEnumCaption('complexType', 'complex-type')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('StructureDefinitionKind-list')]
   TStructureDefinitionKindListST = (sdklPrimitiveType, sdklComplexType, sdklResource, sdklLogical);
-  [TNaming(TNaming.nTrainCase)]
   [TName('TypeDerivationRule-list')]
   TTypeDerivationRuleListST = (tdrlSpecialization, tdrlConstraint);
-  [TNaming(TNaming.nTrainCase)]
   [TName('ExtensionContextType-list')]
   TExtensionContextTypeListST = (ectlFhirpath, ectlElement, ectlExtension);
-  [TNaming(TNaming.nTrainCase)]
   [TName('StructureMapInputMode-list')]
   TStructureMapInputModeListST = (smimlSource, smimlTarget);
-  [TNaming(TNaming.nTrainCase)]
   [TName('StructureMapContextType-list')]
   TStructureMapContextTypeListST = (smctlType, smctlVariable);
-  [TNaming(TNaming.nTrainCase)]
   [TName('StructureMapTargetListMode-list')]
   TStructureMapTargetListModeListST = (smtlmlFirst, smtlmlShare, smtlmlLast, smtlmlCollate);
-  [TEnumCaption('C', 'c')]
-  [TNaming(TNaming.nTrainCase)]
+  [TEnumNaming(TNaming.nCamelCase)]
   [TName('StructureMapTransform-list')]
   TStructureMapTransformListST = (smtlCreate, smtlCopy, smtlTruncate, smtlEscape, smtlCast, smtlAppend, smtlTranslate, smtlReference,
     smtlDateOp, smtlUuid, smtlPointer, smtlEvaluate, smtlCc, smtlC, smtlQty, smtlId, smtlCp);
-  [TEnumCaption('notFirst', 'not_first')]
-  [TEnumCaption('notLast', 'not_last')]
-  [TEnumCaption('onlyOne', 'only_one')]
-  [TNaming(TNaming.nTrainCase)]
+  [TEnumNaming(TNaming.nSnakeCase)]
   [TName('StructureMapSourceListMode-list')]
   TStructureMapSourceListModeListST = (smslmlFirst, smslmlNotFirst, smslmlLast, smslmlNotLast, smslmlOnlyOne);
-  [TEnumCaption('typeAndTypes', 'type-and-types')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('StructureMapGroupTypeMode-list')]
   TStructureMapGroupTypeModeListST = (smgtmlNone, smgtmlTypes, smgtmlTypeAndTypes);
-  [TNaming(TNaming.nTrainCase)]
   [TName('StructureMapModelMode-list')]
   TStructureMapModelModeListST = (smmmlSource, smmmlQueried, smmmlTarget, smmmlProduced);
-  [TNaming(TNaming.nTrainCase)]
   [TName('SubscriptionStatus-list')]
   TSubscriptionStatusListST = (sslbRequested, sslbActive, sslbError, sslbOff);
-  [TEnumCaption('restHook', 'rest-hook')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('SubscriptionChannelType-list')]
   TSubscriptionChannelTypeListST = (sctlRestHook, sctlWebsocket, sctlEmail, sctlSms, sctlMessage);
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('FHIRSubstanceStatus-list')]
   TFHIRSubstanceStatusListST = (fhirsslActive, fhirsslInactive, fhirsslEnteredInError);
-  [TEnumCaption('inProgress', 'in-progress')]
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('SupplyDeliveryStatus-list')]
   TSupplyDeliveryStatusListST = (sdslInProgress, sdslCompleted, sdslAbandoned, sdslEnteredInError);
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('SupplyRequestStatus-list')]
   TSupplyRequestStatusListST = (srslDraft, srslActive, srslSuspended, srslCancelled, srslCompleted, srslEnteredInError, srslUnknown);
-  [TEnumCaption('inProgress', 'in-progress')]
-  [TEnumCaption('onHold', 'on-hold')]
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('TaskStatus-list')]
   TTaskStatusListST = (tslDraft, tslRequested, tslReceived, tslAccepted, tslRejected, tslReady, tslCancelled, tslInProgress, tslOnHold,
     tslFailed, tslCompleted, tslEnteredInError);
-  [TEnumCaption('originalOrder', 'original-order')]
-  [TEnumCaption('reflexOrder', 'reflex-order')]
-  [TEnumCaption('fillerOrder', 'filler-order')]
-  [TEnumCaption('instanceOrder', 'instance-order')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('TaskIntent-list')]
   TTaskIntentListST = (tilUnknown, tilProposal, tilPlan, tilOrder, tilOriginalOrder, tilReflexOrder, tilFillerOrder, tilInstanceOrder,
     tilOption);
-  [TNaming(TNaming.nTrainCase)]
   [TName('CodeSearchSupport-list')]
   TCodeSearchSupportListST = (csslExplicit, csslAll);
-  [TEnumCaption('inProgress', 'in-progress')]
-  [TEnumCaption('enteredInError', 'entered-in-error')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('TestReportStatus-list')]
   TTestReportStatusListST = (trslCompleted, trslInProgress, trslWaiting, trslStopped, trslEnteredInError);
-  [TNaming(TNaming.nTrainCase)]
   [TName('TestReportActionResult-list')]
   TTestReportActionResultListST = (trarlPass, trarlSkip, trarlFail, trarlWarning, trarlError);
-  [TEnumCaption('testEngine', 'test-engine')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('TestReportParticipantType-list')]
   TTestReportParticipantTypeListST = (trptlTestEngine, trptlClient, trptlServer);
-  [TNaming(TNaming.nTrainCase)]
   [TName('TestReportResult-list')]
   TTestReportResultListST = (trrlPass, trrlFail, trrlPending);
-  [TNaming(TNaming.nTrainCase)]
   [TName('AssertionDirectionType-list')]
   TAssertionDirectionTypeListST = (adtlResponse, adtlRequest);
-  [TNaming(TNaming.nTrainCase)]
+  [TEnumNaming(TNaming.nCamelCase)]
   [TName('AssertionOperatorType-list')]
   TAssertionOperatorTypeListST = (aotlEquals, aotlNotEquals, aotlIn, aotlNotIn, aotlGreaterThan, aotlLessThan, aotlEmpty, aotlNotEmpty,
     aotlContains, aotlNotContains, aotlEval);
-  [TNaming(TNaming.nTrainCase)]
+  [TEnumNaming(TNaming.nCamelCase)]
   [TName('AssertionResponseTypes-list')]
   TAssertionResponseTypesListST = (artlaOkay, artlaCreated, artlaNoContent, artlaNotModified, artlaBad, artlaForbidden, artlaNotFound,
     artlaMethodNotAllowed, artlaConflict, artlaGone, artlaPreconditionFailed, artlaUnprocessable);
-  [TNaming(TNaming.nTrainCase)]
   [TName('TestScriptRequestMethodCode-list')]
   TTestScriptRequestMethodCodeListST = (tsrmclDelete, tsrmclGet, tsrmclOptions, tsrmclPatch, tsrmclPost, tsrmclPut, tsrmclHead);
-  [TEnumCaption('inProcess', 'in-process')]
-  [TEnumCaption('reqRevalid', 'req-revalid')]
-  [TEnumCaption('valFail', 'val-fail')]
-  [TEnumCaption('revalFail', 'reval-fail')]
   [TNaming(TNaming.nKebabCase)]
   TStatusListST = (slAttested, slValidated, slInProcess, slReqRevalid, slValFail, slRevalFail);
-  [TNaming(TNaming.nTrainCase)]
   [TName('VisionBase-list')]
   TVisionBaseListST = (vblUp, vblDown, vblIn, vblOut);
-  [TNaming(TNaming.nTrainCase)]
   [TName('VisionEyes-list')]
   TVisionEyesListST = (velRight, velLeft);
 
   [TBaseType('ProRock.Xmlite.Schema.Base.TBase64BinaryST')]
-  [TNaming(TNaming.nKebabCase)]
   [TName('base64Binary-primitive')]
   TBase64BinaryPrimitiveST = type ProRock.Xmlite.Schema.Base.TBase64BinaryST;
   [TBaseType('ProRock.Xmlite.Schema.Base.TBooleanST')]
@@ -1549,7 +907,6 @@ type
   TCodePrimitiveST = type ProRock.Xmlite.Schema.Base.TTokenST;
   [TNaming(TNaming.nKebabCase)]
   TDatePrimitiveST = type string;
-  [TNaming(TNaming.nKebabCase)]
   [TName('dateTime-primitive')]
   TDateTimePrimitiveST = type string;
   [TNaming(TNaming.nKebabCase)]
@@ -1570,11 +927,9 @@ type
   [TNaming(TNaming.nKebabCase)]
   TOidPrimitiveST = type ProRock.Xmlite.Schema.Base.TAnyURIST;
   [TBaseType('ProRock.Xmlite.Schema.Base.TPositiveIntegerST')]
-  [TNaming(TNaming.nKebabCase)]
   [TName('positiveInt-primitive')]
   TPositiveIntPrimitiveST = type ProRock.Xmlite.Schema.Base.TPositiveIntegerST;
   [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
-  [TNaming(TNaming.nTrainCase)]
   [TName('SampledDataDataType-primitive')]
   TSampledDataDataTypePrimitiveST = type ProRock.Xmlite.Schema.Base.TStringST;
   [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
@@ -1584,7 +939,6 @@ type
   [TNaming(TNaming.nKebabCase)]
   TTimePrimitiveST = type ProRock.Xmlite.Schema.Base.TTimeST;
   [TBaseType('ProRock.Xmlite.Schema.Base.TNonNegativeIntegerST')]
-  [TNaming(TNaming.nKebabCase)]
   [TName('unsignedInt-primitive')]
   TUnsignedIntPrimitiveST = type ProRock.Xmlite.Schema.Base.TNonNegativeIntegerST;
   [TBaseType('ProRock.Xmlite.Schema.Base.TAnyURIST')]
@@ -3084,9 +2438,7 @@ type
     fId: TStringPrimitiveST;
     fExtension: TExtensionCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Id: TStringPrimitiveST read fId write fId;
-    [TNaming(TNaming.nFlatCase)]
     property Extension: TExtensionCTList read fExtension;
   end;
 
@@ -3095,7 +2447,6 @@ type
   private
     fValue: TDatePrimitiveST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TDatePrimitiveST read fValue write fValue;
   end;
 
@@ -3104,7 +2455,6 @@ type
   private
     fValue: TDateTimePrimitiveST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TDateTimePrimitiveST read fValue write fValue;
   end;
 
@@ -3113,7 +2463,6 @@ type
   private
     fValue: TCodePrimitiveST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TCodePrimitiveST read fValue write fValue;
   end;
 
@@ -3122,7 +2471,6 @@ type
   private
     fValue: TStringPrimitiveST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TStringPrimitiveST read fValue write fValue;
   end;
 
@@ -3131,7 +2479,6 @@ type
   private
     fValue: TIntegerPrimitiveST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TIntegerPrimitiveST read fValue write fValue;
   end;
 
@@ -3140,7 +2487,6 @@ type
   private
     fValue: TOidPrimitiveST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TOidPrimitiveST read fValue write fValue;
   end;
 
@@ -3149,7 +2495,6 @@ type
   private
     fValue: TCanonicalPrimitiveST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TCanonicalPrimitiveST read fValue write fValue;
   end;
 
@@ -3158,7 +2503,6 @@ type
   private
     fValue: TUriPrimitiveST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TUriPrimitiveST read fValue write fValue;
   end;
 
@@ -3167,7 +2511,6 @@ type
   private
     fValue: TUuidPrimitiveST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TUuidPrimitiveST read fValue write fValue;
   end;
 
@@ -3176,7 +2519,6 @@ type
   private
     fValue: TUrlPrimitiveST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TUrlPrimitiveST read fValue write fValue;
   end;
 
@@ -3185,7 +2527,6 @@ type
   private
     fValue: TInstantPrimitiveST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TInstantPrimitiveST read fValue write fValue;
   end;
 
@@ -3194,7 +2535,6 @@ type
   private
     fValue: TBooleanPrimitiveST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TBooleanPrimitiveST read fValue write fValue;
   end;
 
@@ -3203,7 +2543,6 @@ type
   private
     fValue: TBase64BinaryPrimitiveST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TBase64BinaryPrimitiveST read fValue write fValue;
   end;
 
@@ -3212,7 +2551,6 @@ type
   private
     fValue: TUnsignedIntPrimitiveST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TUnsignedIntPrimitiveST read fValue write fValue;
   end;
 
@@ -3221,7 +2559,6 @@ type
   private
     fValue: TMarkdownPrimitiveST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TMarkdownPrimitiveST read fValue write fValue;
   end;
 
@@ -3230,7 +2567,6 @@ type
   private
     fValue: TTimePrimitiveST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TTimePrimitiveST read fValue write fValue;
   end;
 
@@ -3239,7 +2575,6 @@ type
   private
     fValue: TIdPrimitiveST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TIdPrimitiveST read fValue write fValue;
   end;
 
@@ -3248,7 +2583,6 @@ type
   private
     fValue: TPositiveIntPrimitiveST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TPositiveIntPrimitiveST read fValue write fValue;
   end;
 
@@ -3257,7 +2591,6 @@ type
   private
     fValue: TDecimalPrimitiveST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TDecimalPrimitiveST read fValue write fValue;
   end;
 
@@ -3558,296 +2891,442 @@ type
     function GetParameters: TParametersE;
   published
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Account: TAccountE read GetAccount;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property ActivityDefinition: TActivityDefinitionE read GetActivityDefinition;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property AdverseEvent: TAdverseEventE read GetAdverseEvent;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property AllergyIntolerance: TAllergyIntoleranceE read GetAllergyIntolerance;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Appointment: TAppointmentE read GetAppointment;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property AppointmentResponse: TAppointmentResponseE read GetAppointmentResponse;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property AuditEvent: TAuditEventE read GetAuditEvent;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Basic: TBasicE read GetBasic;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Binary: TBinaryE read GetBinary;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property BiologicallyDerivedProduct: TBiologicallyDerivedProductE read GetBiologicallyDerivedProduct;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property BodyStructure: TBodyStructureE read GetBodyStructure;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Bundle: TBundleE read GetBundle;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property CapabilityStatement: TCapabilityStatementE read GetCapabilityStatement;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property CarePlan: TCarePlanE read GetCarePlan;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property CareTeam: TCareTeamE read GetCareTeam;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property CatalogEntry: TCatalogEntryE read GetCatalogEntry;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property ChargeItem: TChargeItemE read GetChargeItem;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property ChargeItemDefinition: TChargeItemDefinitionE read GetChargeItemDefinition;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Claim: TClaimE read GetClaim;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property ClaimResponse: TClaimResponseE read GetClaimResponse;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property ClinicalImpression: TClinicalImpressionE read GetClinicalImpression;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property CodeSystem: TCodeSystemE read GetCodeSystem;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Communication: TCommunicationE read GetCommunication;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property CommunicationRequest: TCommunicationRequestE read GetCommunicationRequest;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property CompartmentDefinition: TCompartmentDefinitionE read GetCompartmentDefinition;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Composition: TCompositionE read GetComposition;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property ConceptMap: TConceptMapE read GetConceptMap;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Condition: TConditionE read GetCondition;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Consent: TConsentE read GetConsent;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Contract: TContractE read GetContract;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Coverage: TCoverageE read GetCoverage;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property CoverageEligibilityRequest: TCoverageEligibilityRequestE read GetCoverageEligibilityRequest;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property CoverageEligibilityResponse: TCoverageEligibilityResponseE read GetCoverageEligibilityResponse;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property DetectedIssue: TDetectedIssueE read GetDetectedIssue;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Device: TDeviceE read GetDevice;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property DeviceDefinition: TDeviceDefinitionE read GetDeviceDefinition;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property DeviceMetric: TDeviceMetricE read GetDeviceMetric;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property DeviceRequest: TDeviceRequestE read GetDeviceRequest;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property DeviceUseStatement: TDeviceUseStatementE read GetDeviceUseStatement;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property DiagnosticReport: TDiagnosticReportE read GetDiagnosticReport;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property DocumentManifest: TDocumentManifestE read GetDocumentManifest;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property DocumentReference: TDocumentReferenceE read GetDocumentReference;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property EffectEvidenceSynthesis: TEffectEvidenceSynthesisE read GetEffectEvidenceSynthesis;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Encounter: TEncounterE read GetEncounter;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Endpoint: TEndpointE read GetEndpoint;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property EnrollmentRequest: TEnrollmentRequestE read GetEnrollmentRequest;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property EnrollmentResponse: TEnrollmentResponseE read GetEnrollmentResponse;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property EpisodeOfCare: TEpisodeOfCareE read GetEpisodeOfCare;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property EventDefinition: TEventDefinitionE read GetEventDefinition;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Evidence: TEvidenceE read GetEvidence;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property EvidenceVariable: TEvidenceVariableE read GetEvidenceVariable;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property ExampleScenario: TExampleScenarioE read GetExampleScenario;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property ExplanationOfBenefit: TExplanationOfBenefitE read GetExplanationOfBenefit;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property FamilyMemberHistory: TFamilyMemberHistoryE read GetFamilyMemberHistory;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Flag: TFlagE read GetFlag;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Goal: TGoalE read GetGoal;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property GraphDefinition: TGraphDefinitionE read GetGraphDefinition;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Group: TGroupE read GetGroup;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property GuidanceResponse: TGuidanceResponseE read GetGuidanceResponse;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property HealthcareService: THealthcareServiceE read GetHealthcareService;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property ImagingStudy: TImagingStudyE read GetImagingStudy;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Immunization: TImmunizationE read GetImmunization;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property ImmunizationEvaluation: TImmunizationEvaluationE read GetImmunizationEvaluation;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property ImmunizationRecommendation: TImmunizationRecommendationE read GetImmunizationRecommendation;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property ImplementationGuide: TImplementationGuideE read GetImplementationGuide;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property InsurancePlan: TInsurancePlanE read GetInsurancePlan;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Invoice: TInvoiceE read GetInvoice;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property &Library: TLibraryE read GetLibrary;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Linkage: TLinkageE read GetLinkage;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property List: TListE read GetList;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Location: TLocationE read GetLocation;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Measure: TMeasureE read GetMeasure;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property MeasureReport: TMeasureReportE read GetMeasureReport;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Media: TMediaE read GetMedia;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Medication: TMedicationE read GetMedication;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property MedicationAdministration: TMedicationAdministrationE read GetMedicationAdministration;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property MedicationDispense: TMedicationDispenseE read GetMedicationDispense;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property MedicationKnowledge: TMedicationKnowledgeE read GetMedicationKnowledge;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property MedicationRequest: TMedicationRequestE read GetMedicationRequest;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property MedicationStatement: TMedicationStatementE read GetMedicationStatement;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property MedicinalProduct: TMedicinalProductE read GetMedicinalProduct;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property MedicinalProductAuthorization: TMedicinalProductAuthorizationE read GetMedicinalProductAuthorization;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property MedicinalProductContraindication: TMedicinalProductContraindicationE read GetMedicinalProductContraindication;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property MedicinalProductIndication: TMedicinalProductIndicationE read GetMedicinalProductIndication;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property MedicinalProductIngredient: TMedicinalProductIngredientE read GetMedicinalProductIngredient;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property MedicinalProductInteraction: TMedicinalProductInteractionE read GetMedicinalProductInteraction;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property MedicinalProductManufactured: TMedicinalProductManufacturedE read GetMedicinalProductManufactured;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property MedicinalProductPackaged: TMedicinalProductPackagedE read GetMedicinalProductPackaged;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property MedicinalProductPharmaceutical: TMedicinalProductPharmaceuticalE read GetMedicinalProductPharmaceutical;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property MedicinalProductUndesirableEffect: TMedicinalProductUndesirableEffectE read GetMedicinalProductUndesirableEffect;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property MessageDefinition: TMessageDefinitionE read GetMessageDefinition;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property MessageHeader: TMessageHeaderE read GetMessageHeader;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property MolecularSequence: TMolecularSequenceE read GetMolecularSequence;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property NamingSystem: TNamingSystemE read GetNamingSystem;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property NutritionOrder: TNutritionOrderE read GetNutritionOrder;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Observation: TObservationE read GetObservation;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property ObservationDefinition: TObservationDefinitionE read GetObservationDefinition;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property OperationDefinition: TOperationDefinitionE read GetOperationDefinition;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property OperationOutcome: TOperationOutcomeE read GetOperationOutcome;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Organization: TOrganizationE read GetOrganization;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property OrganizationAffiliation: TOrganizationAffiliationE read GetOrganizationAffiliation;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Patient: TPatientE read GetPatient;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property PaymentNotice: TPaymentNoticeE read GetPaymentNotice;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property PaymentReconciliation: TPaymentReconciliationE read GetPaymentReconciliation;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Person: TPersonE read GetPerson;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property PlanDefinition: TPlanDefinitionE read GetPlanDefinition;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Practitioner: TPractitionerE read GetPractitioner;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property PractitionerRole: TPractitionerRoleE read GetPractitionerRole;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property &Procedure: TProcedureE read GetProcedure;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Provenance: TProvenanceE read GetProvenance;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Questionnaire: TQuestionnaireE read GetQuestionnaire;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property QuestionnaireResponse: TQuestionnaireResponseE read GetQuestionnaireResponse;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property RelatedPerson: TRelatedPersonE read GetRelatedPerson;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property RequestGroup: TRequestGroupE read GetRequestGroup;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property ResearchDefinition: TResearchDefinitionE read GetResearchDefinition;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property ResearchElementDefinition: TResearchElementDefinitionE read GetResearchElementDefinition;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property ResearchStudy: TResearchStudyE read GetResearchStudy;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property ResearchSubject: TResearchSubjectE read GetResearchSubject;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property RiskAssessment: TRiskAssessmentE read GetRiskAssessment;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property RiskEvidenceSynthesis: TRiskEvidenceSynthesisE read GetRiskEvidenceSynthesis;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Schedule: TScheduleE read GetSchedule;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property SearchParameter: TSearchParameterE read GetSearchParameter;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property ServiceRequest: TServiceRequestE read GetServiceRequest;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Slot: TSlotE read GetSlot;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Specimen: TSpecimenE read GetSpecimen;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property SpecimenDefinition: TSpecimenDefinitionE read GetSpecimenDefinition;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property StructureDefinition: TStructureDefinitionE read GetStructureDefinition;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property StructureMap: TStructureMapE read GetStructureMap;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Subscription: TSubscriptionE read GetSubscription;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Substance: TSubstanceE read GetSubstance;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property SubstanceNucleicAcid: TSubstanceNucleicAcidE read GetSubstanceNucleicAcid;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property SubstancePolymer: TSubstancePolymerE read GetSubstancePolymer;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property SubstanceProtein: TSubstanceProteinE read GetSubstanceProtein;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property SubstanceReferenceInformation: TSubstanceReferenceInformationE read GetSubstanceReferenceInformation;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property SubstanceSourceMaterial: TSubstanceSourceMaterialE read GetSubstanceSourceMaterial;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property SubstanceSpecification: TSubstanceSpecificationE read GetSubstanceSpecification;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property SupplyDelivery: TSupplyDeliveryE read GetSupplyDelivery;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property SupplyRequest: TSupplyRequestE read GetSupplyRequest;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Task: TTaskE read GetTask;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property TerminologyCapabilities: TTerminologyCapabilitiesE read GetTerminologyCapabilities;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property TestReport: TTestReportE read GetTestReport;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property TestScript: TTestScriptE read GetTestScript;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property ValueSet: TValueSetE read GetValueSet;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property VerificationResult: TVerificationResultE read GetVerificationResult;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property VisionPrescription: TVisionPrescriptionE read GetVisionPrescription;
     [TChoice('Account')]
+    [TNaming(TNaming.nPascalCase)]
     property Parameters: TParametersE read GetParameters;
   end;
 
@@ -3960,157 +3439,106 @@ type
     property ValueChosen: TBasite read GetValueChosen;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUriPrimitiveST read fUrl write fUrl;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueBase64Binary: TBase64BinaryCT read GetValueBase64Binary;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueBoolean: TBooleanCT read GetValueBoolean;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCanonical: TCanonicalCT read GetValueCanonical;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCode: TCodeCT read GetValueCode;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDate: TDateCT read GetValueDate;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDateTime: TDateTimeCT read GetValueDateTime;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDecimal: TDecimalCT read GetValueDecimal;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueId: TIdCT read GetValueId;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueInstant: TInstantCT read GetValueInstant;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueInteger: TIntegerCT read GetValueInteger;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueMarkdown: TMarkdownCT read GetValueMarkdown;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueOid: TOidCT read GetValueOid;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValuePositiveInt: TPositiveIntCT read GetValuePositiveInt;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueString: TStringCT read GetValueString;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueTime: TTimeCT read GetValueTime;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueUnsignedInt: TUnsignedIntCT read GetValueUnsignedInt;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueUri: TUriCT read GetValueUri;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueUrl: TUrlCT read GetValueUrl;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueUuid: TUuidCT read GetValueUuid;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueAddress: TAddressCT read GetValueAddress;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueAge: TAgeCT read GetValueAge;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueAnnotation: TAnnotationCT read GetValueAnnotation;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueAttachment: TAttachmentCT read GetValueAttachment;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCodeableConcept: TCodeableConceptCT read GetValueCodeableConcept;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCoding: TCodingCT read GetValueCoding;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueContactPoint: TContactPointCT read GetValueContactPoint;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCount: TCountCT read GetValueCount;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDistance: TDistanceCT read GetValueDistance;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDuration: TDurationCT read GetValueDuration;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueHumanName: THumanNameCT read GetValueHumanName;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueIdentifier: TIdentifierCT read GetValueIdentifier;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueMoney: TMoneyCT read GetValueMoney;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValuePeriod: TPeriodCT read GetValuePeriod;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueQuantity: TQuantityCT read GetValueQuantity;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueRange: TRangeCT read GetValueRange;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueRatio: TRatioCT read GetValueRatio;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueReference: TReferenceCT read GetValueReference;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueSampledData: TSampledDataCT read GetValueSampledData;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueSignature: TSignatureCT read GetValueSignature;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueTiming: TTimingCT read GetValueTiming;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueContactDetail: TContactDetailCT read GetValueContactDetail;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueContributor: TContributorCT read GetValueContributor;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDataRequirement: TDataRequirementCT read GetValueDataRequirement;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueExpression: TExpressionCT read GetValueExpression;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueParameterDefinition: TParameterDefinitionCT read GetValueParameterDefinition;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueRelatedArtifact: TRelatedArtifactCT read GetValueRelatedArtifact;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueTriggerDefinition: TTriggerDefinitionCT read GetValueTriggerDefinition;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueUsageContext: TUsageContextCT read GetValueUsageContext;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDosage: TDosageCT read GetValueDosage;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueMeta: TMetaCT read GetValueMeta;
   end;
 
@@ -4118,7 +3546,6 @@ type
   private
     fModifierExtension: TExtensionCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property ModifierExtension: TExtensionCTList read fModifierExtension;
   end;
 
@@ -4128,7 +3555,6 @@ type
     fDiv: ProRock.Xmlite.Schema.Xhtml.TDivE;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TNarrativeStatusCT read fStatus;
     [TRequired]
     [TNaming(TNaming.nFlatCase)]
@@ -4139,7 +3565,6 @@ type
   private
     fValue: TNarrativeStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TNarrativeStatusListST read fValue write fValue;
   end;
 
@@ -4152,17 +3577,11 @@ type
     fSecurity: TCodingCTList;
     fTag: TCodingCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property VersionId: TIdCT read fVersionId;
-    [TNaming(TNaming.nCamelCase)]
     property LastUpdated: TInstantCT read fLastUpdated;
-    [TNaming(TNaming.nFlatCase)]
     property Source: TUriCT read fSource;
-    [TNaming(TNaming.nFlatCase)]
     property Profile: TCanonicalCTList read fProfile;
-    [TNaming(TNaming.nFlatCase)]
     property Security: TCodingCTList read fSecurity;
-    [TNaming(TNaming.nFlatCase)]
     property Tag: TCodingCTList read fTag;
   end;
 
@@ -4179,25 +3598,15 @@ type
     fCountry: TStringCT;
     fPeriod: TPeriodCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Use: TAddressUseCT read fUse;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TAddressTypeCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Text: TStringCT read fText;
-    [TNaming(TNaming.nFlatCase)]
     property Line: TStringCTList read fLine;
-    [TNaming(TNaming.nFlatCase)]
     property City: TStringCT read fCity;
-    [TNaming(TNaming.nFlatCase)]
     property District: TStringCT read fDistrict;
-    [TNaming(TNaming.nFlatCase)]
     property State: TStringCT read fState;
-    [TNaming(TNaming.nCamelCase)]
     property PostalCode: TStringCT read fPostalCode;
-    [TNaming(TNaming.nFlatCase)]
     property Country: TStringCT read fCountry;
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCT read fPeriod;
   end;
 
@@ -4205,7 +3614,6 @@ type
   private
     fValue: TAddressUseListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TAddressUseListST read fValue write fValue;
   end;
 
@@ -4213,7 +3621,6 @@ type
   private
     fValue: TAddressTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TAddressTypeListST read fValue write fValue;
   end;
 
@@ -4224,12 +3631,9 @@ type
     fContact: TContactDetailCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TContributorTypeCT read fType;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TContactDetailCTList read fContact;
   end;
 
@@ -4237,7 +3641,6 @@ type
   private
     fValue: TContributorTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TContributorTypeListST read fValue write fValue;
   end;
 
@@ -4252,21 +3655,13 @@ type
     fTitle: TStringCT;
     fCreation: TDateTimeCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property ContentType: TCodeCT read fContentType;
-    [TNaming(TNaming.nFlatCase)]
     property Language: TCodeCT read fLanguage;
-    [TNaming(TNaming.nFlatCase)]
     property Data: TBase64BinaryCT read fData;
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUrlCT read fUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Size: TUnsignedIntCT read fSize;
-    [TNaming(TNaming.nFlatCase)]
     property Hash: TBase64BinaryCT read fHash;
-    [TNaming(TNaming.nFlatCase)]
     property Title: TStringCT read fTitle;
-    [TNaming(TNaming.nFlatCase)]
     property Creation: TDateTimeCT read fCreation;
   end;
 
@@ -4278,15 +3673,10 @@ type
     fSystem: TUriCT;
     fCode: TCodeCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TDecimalCT read fValue;
-    [TNaming(TNaming.nFlatCase)]
     property Comparator: TQuantityComparatorCT read fComparator;
-    [TNaming(TNaming.nFlatCase)]
     property &Unit: TStringCT read fUnit;
-    [TNaming(TNaming.nFlatCase)]
     property System: TUriCT read fSystem;
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeCT read fCode;
   end;
 
@@ -4311,29 +3701,19 @@ type
     property SubjectChosen: TBasite read GetSubjectChosen;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Profile: TCanonicalCTList read fProfile;
     [TChoice('Subject')]
-    [TNaming(TNaming.nCamelCase)]
     property SubjectCodeableConcept: TCodeableConceptCT read GetSubjectCodeableConcept;
     [TChoice('Subject')]
-    [TNaming(TNaming.nCamelCase)]
     property SubjectReference: TReferenceCT read GetSubjectReference;
-    [TNaming(TNaming.nCamelCase)]
     property MustSupport: TStringCTList read fMustSupport;
-    [TNaming(TNaming.nCamelCase)]
     property CodeFilter: TDataRequirementCodeFilterCTList read fCodeFilter;
-    [TNaming(TNaming.nCamelCase)]
     property DateFilter: TDataRequirementDateFilterCTList read fDateFilter;
-    [TNaming(TNaming.nFlatCase)]
     property Limit: TPositiveIntCT read fLimit;
-    [TNaming(TNaming.nFlatCase)]
     property Sort: TDataRequirementSortCTList read fSort;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('DataRequirement.CodeFilter')]
   TDataRequirementCodeFilterCT = class(TElementCT)
   private
@@ -4342,17 +3722,12 @@ type
     fValueSet: TCanonicalCT;
     fCode: TCodingCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Path: TStringCT read fPath;
-    [TNaming(TNaming.nCamelCase)]
     property SearchParam: TStringCT read fSearchParam;
-    [TNaming(TNaming.nCamelCase)]
     property ValueSet: TCanonicalCT read fValueSet;
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodingCTList read fCode;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('DataRequirement.DateFilter')]
   TDataRequirementDateFilterCT = class(TElementCT)
   private
@@ -4369,22 +3744,16 @@ type
   public
     property ValueChosen: TBasite read GetValueChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Path: TStringCT read fPath;
-    [TNaming(TNaming.nCamelCase)]
     property SearchParam: TStringCT read fSearchParam;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDateTime: TDateTimeCT read GetValueDateTime;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValuePeriod: TPeriodCT read GetValuePeriod;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDuration: TDurationCT read GetValueDuration;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('DataRequirement.Sort')]
   TDataRequirementSortCT = class(TElementCT)
   private
@@ -4392,10 +3761,8 @@ type
     fDirection: TSortDirectionCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Path: TStringCT read fPath;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Direction: TSortDirectionCT read fDirection;
   end;
 
@@ -4403,7 +3770,6 @@ type
   private
     fValue: TSortDirectionListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TSortDirectionListST read fValue write fValue;
   end;
 
@@ -4430,39 +3796,24 @@ type
   public
     property AsNeededChosen: TBasite read GetAsNeededChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Sequence: TIntegerCT read fSequence;
-    [TNaming(TNaming.nFlatCase)]
     property Text: TStringCT read fText;
-    [TNaming(TNaming.nCamelCase)]
     property AdditionalInstruction: TCodeableConceptCTList read fAdditionalInstruction;
-    [TNaming(TNaming.nCamelCase)]
     property PatientInstruction: TStringCT read fPatientInstruction;
-    [TNaming(TNaming.nFlatCase)]
     property Timing: TTimingCT read fTiming;
     [TChoice('AsNeeded')]
-    [TNaming(TNaming.nCamelCase)]
     property AsNeededBoolean: TBooleanCT read GetAsNeededBoolean;
     [TChoice('AsNeeded')]
-    [TNaming(TNaming.nCamelCase)]
     property AsNeededCodeableConcept: TCodeableConceptCT read GetAsNeededCodeableConcept;
-    [TNaming(TNaming.nFlatCase)]
     property Site: TCodeableConceptCT read fSite;
-    [TNaming(TNaming.nFlatCase)]
     property Route: TCodeableConceptCT read fRoute;
-    [TNaming(TNaming.nFlatCase)]
     property Method: TCodeableConceptCT read fMethod;
-    [TNaming(TNaming.nCamelCase)]
     property DoseAndRate: TDosageDoseAndRateCTList read fDoseAndRate;
-    [TNaming(TNaming.nCamelCase)]
     property MaxDosePerPeriod: TRatioCT read fMaxDosePerPeriod;
-    [TNaming(TNaming.nCamelCase)]
     property MaxDosePerAdministration: TQuantityCT read fMaxDosePerAdministration;
-    [TNaming(TNaming.nCamelCase)]
     property MaxDosePerLifetime: TQuantityCT read fMaxDosePerLifetime;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Dosage.DoseAndRate')]
   TDosageDoseAndRateCT = class(TBackboneElementCT)
   private
@@ -4484,22 +3835,16 @@ type
     property DoseChosen: TBasite read GetDoseChosen;
     property RateChosen: TBasite read GetRateChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
     [TChoice('Dose')]
-    [TNaming(TNaming.nCamelCase)]
     property DoseRange: TRangeCT read GetDoseRange;
     [TChoice('Dose')]
-    [TNaming(TNaming.nCamelCase)]
     property DoseQuantity: TQuantityCT read GetDoseQuantity;
     [TChoice('Rate')]
-    [TNaming(TNaming.nCamelCase)]
     property RateRatio: TRatioCT read GetRateRatio;
     [TChoice('Rate')]
-    [TNaming(TNaming.nCamelCase)]
     property RateRange: TRangeCT read GetRateRange;
     [TChoice('Rate')]
-    [TNaming(TNaming.nCamelCase)]
     property RateQuantity: TQuantityCT read GetRateQuantity;
   end;
 
@@ -4508,9 +3853,7 @@ type
     fValue: TDecimalCT;
     fCurrency: TCodeCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TDecimalCT read fValue;
-    [TNaming(TNaming.nFlatCase)]
     property Currency: TCodeCT read fCurrency;
   end;
 
@@ -4524,19 +3867,12 @@ type
     fSuffix: TStringCTList;
     fPeriod: TPeriodCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Use: TNameUseCT read fUse;
-    [TNaming(TNaming.nFlatCase)]
     property Text: TStringCT read fText;
-    [TNaming(TNaming.nFlatCase)]
     property Family: TStringCT read fFamily;
-    [TNaming(TNaming.nFlatCase)]
     property Given: TStringCTList read fGiven;
-    [TNaming(TNaming.nFlatCase)]
     property Prefix: TStringCTList read fPrefix;
-    [TNaming(TNaming.nFlatCase)]
     property Suffix: TStringCTList read fSuffix;
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCT read fPeriod;
   end;
 
@@ -4544,7 +3880,6 @@ type
   private
     fValue: TNameUseListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TNameUseListST read fValue write fValue;
   end;
 
@@ -4556,15 +3891,10 @@ type
     fRank: TPositiveIntCT;
     fPeriod: TPeriodCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property System: TContactPointSystemCT read fSystem;
-    [TNaming(TNaming.nFlatCase)]
     property Value: TStringCT read fValue;
-    [TNaming(TNaming.nFlatCase)]
     property Use: TContactPointUseCT read fUse;
-    [TNaming(TNaming.nFlatCase)]
     property Rank: TPositiveIntCT read fRank;
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCT read fPeriod;
   end;
 
@@ -4572,7 +3902,6 @@ type
   private
     fValue: TContactPointSystemListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TContactPointSystemListST read fValue write fValue;
   end;
 
@@ -4580,7 +3909,6 @@ type
   private
     fValue: TContactPointUseListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TContactPointUseListST read fValue write fValue;
   end;
 
@@ -4593,17 +3921,12 @@ type
     fRestoreDate: TDateTimeCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Country: TCodeableConceptCT read fCountry;
-    [TNaming(TNaming.nFlatCase)]
     property Jurisdiction: TCodeableConceptCT read fJurisdiction;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TCodeableConceptCT read fStatus;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property DateRange: TPeriodCT read fDateRange;
-    [TNaming(TNaming.nCamelCase)]
     property RestoreDate: TDateTimeCT read fRestoreDate;
   end;
 
@@ -4616,17 +3939,11 @@ type
     fPeriod: TPeriodCT;
     fAssigner: TReferenceCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Use: TIdentifierUseCT read fUse;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property System: TUriCT read fSystem;
-    [TNaming(TNaming.nFlatCase)]
     property Value: TStringCT read fValue;
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCT read fPeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Assigner: TReferenceCT read fAssigner;
   end;
 
@@ -4634,7 +3951,6 @@ type
   private
     fValue: TIdentifierUseListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TIdentifierUseListST read fValue write fValue;
   end;
 
@@ -4655,32 +3971,23 @@ type
     property AmountChosen: TBasite read GetAmountChosen;
   published
     [TChoice('Amount')]
-    [TNaming(TNaming.nCamelCase)]
     property AmountQuantity: TQuantityCT read GetAmountQuantity;
     [TChoice('Amount')]
-    [TNaming(TNaming.nCamelCase)]
     property AmountRange: TRangeCT read GetAmountRange;
     [TChoice('Amount')]
-    [TNaming(TNaming.nCamelCase)]
     property AmountString: TStringCT read GetAmountString;
-    [TNaming(TNaming.nCamelCase)]
     property AmountType: TCodeableConceptCT read fAmountType;
-    [TNaming(TNaming.nCamelCase)]
     property AmountText: TStringCT read fAmountText;
-    [TNaming(TNaming.nCamelCase)]
     property ReferenceRange: TSubstanceAmountReferenceRangeCT read fReferenceRange;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('SubstanceAmount.ReferenceRange')]
   TSubstanceAmountReferenceRangeCT = class(TBackboneElementCT)
   private
     fLowLimit: TQuantityCT;
     fHighLimit: TQuantityCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property LowLimit: TQuantityCT read fLowLimit;
-    [TNaming(TNaming.nCamelCase)]
     property HighLimit: TQuantityCT read fHighLimit;
   end;
 
@@ -4692,15 +3999,10 @@ type
     fDisplay: TStringCT;
     fUserSelected: TBooleanCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property System: TUriCT read fSystem;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCT read fVersion;
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Display: TStringCT read fDisplay;
-    [TNaming(TNaming.nCamelCase)]
     property UserSelected: TBooleanCT read fUserSelected;
   end;
 
@@ -4715,21 +4017,14 @@ type
     fData: TSampledDataDataTypeCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Origin: TQuantityCT read fOrigin;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Period: TDecimalCT read fPeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Factor: TDecimalCT read fFactor;
-    [TNaming(TNaming.nCamelCase)]
     property LowerLimit: TDecimalCT read fLowerLimit;
-    [TNaming(TNaming.nCamelCase)]
     property UpperLimit: TDecimalCT read fUpperLimit;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Dimensions: TPositiveIntCT read fDimensions;
-    [TNaming(TNaming.nFlatCase)]
     property Data: TSampledDataDataTypeCT read fData;
   end;
 
@@ -4737,7 +4032,6 @@ type
   private
     fValue: TSampledDataDataTypePrimitiveST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TSampledDataDataTypePrimitiveST read fValue write fValue;
   end;
 
@@ -4756,16 +4050,11 @@ type
     property AgeChosen: TBasite read GetAgeChosen;
   published
     [TChoice('Age')]
-    [TNaming(TNaming.nCamelCase)]
     property AgeRange: TRangeCT read GetAgeRange;
     [TChoice('Age')]
-    [TNaming(TNaming.nCamelCase)]
     property AgeCodeableConcept: TCodeableConceptCT read GetAgeCodeableConcept;
-    [TNaming(TNaming.nFlatCase)]
     property Gender: TCodeableConceptCT read fGender;
-    [TNaming(TNaming.nFlatCase)]
     property Race: TCodeableConceptCT read fRace;
-    [TNaming(TNaming.nCamelCase)]
     property PhysiologicalCondition: TCodeableConceptCT read fPhysiologicalCondition;
   end;
 
@@ -4774,9 +4063,7 @@ type
     fNumerator: TQuantityCT;
     fDenominator: TQuantityCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Numerator: TQuantityCT read fNumerator;
-    [TNaming(TNaming.nFlatCase)]
     property Denominator: TQuantityCT read fDenominator;
   end;
 
@@ -4791,13 +4078,9 @@ type
     fIdentifier: TIdentifierCT;
     fDisplay: TStringCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Reference: TStringCT read fReference;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TUriCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCT read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Display: TStringCT read fDisplay;
   end;
 
@@ -4821,25 +4104,17 @@ type
     property TimingChosen: TBasite read GetTimingChosen;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TTriggerTypeCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
     [TChoice('Timing')]
-    [TNaming(TNaming.nCamelCase)]
     property TimingTiming: TTimingCT read GetTimingTiming;
     [TChoice('Timing')]
-    [TNaming(TNaming.nCamelCase)]
     property TimingReference: TReferenceCT read GetTimingReference;
     [TChoice('Timing')]
-    [TNaming(TNaming.nCamelCase)]
     property TimingDate: TDateCT read GetTimingDate;
     [TChoice('Timing')]
-    [TNaming(TNaming.nCamelCase)]
     property TimingDateTime: TDateTimeCT read GetTimingDateTime;
-    [TNaming(TNaming.nFlatCase)]
     property Data: TDataRequirementCTList read fData;
-    [TNaming(TNaming.nFlatCase)]
     property Condition: TExpressionCT read fCondition;
   end;
 
@@ -4847,7 +4122,6 @@ type
   private
     fValue: TTriggerTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TTriggerTypeListST read fValue write fValue;
   end;
 
@@ -4855,7 +4129,6 @@ type
   private
     fValue: TQuantityComparatorListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TQuantityComparatorListST read fValue write fValue;
   end;
 
@@ -4864,9 +4137,7 @@ type
     fStart: TDateTimeCT;
     fEnd: TDateTimeCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Start: TDateTimeCT read fStart;
-    [TNaming(TNaming.nFlatCase)]
     property &End: TDateTimeCT read fEnd;
   end;
 
@@ -4877,9 +4148,7 @@ type
     fLow: TQuantityCT;
     fHigh: TQuantityCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Low: TQuantityCT read fLow;
-    [TNaming(TNaming.nFlatCase)]
     property High: TQuantityCT read fHigh;
   end;
 
@@ -4894,19 +4163,12 @@ type
     fResource: TCanonicalCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TRelatedArtifactTypeCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property &Label: TStringCT read fLabel;
-    [TNaming(TNaming.nFlatCase)]
     property Display: TStringCT read fDisplay;
-    [TNaming(TNaming.nFlatCase)]
     property Citation: TMarkdownCT read fCitation;
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUrlCT read fUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Document: TAttachmentCT read fDocument;
-    [TNaming(TNaming.nFlatCase)]
     property Resource: TCanonicalCT read fResource;
   end;
 
@@ -4914,7 +4176,6 @@ type
   private
     fValue: TRelatedArtifactTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TRelatedArtifactTypeListST read fValue write fValue;
   end;
 
@@ -4932,15 +4193,11 @@ type
     property AuthorChosen: TBasite read GetAuthorChosen;
   published
     [TChoice('Author')]
-    [TNaming(TNaming.nCamelCase)]
     property AuthorReference: TReferenceCT read GetAuthorReference;
     [TChoice('Author')]
-    [TNaming(TNaming.nCamelCase)]
     property AuthorString: TStringCT read GetAuthorString;
-    [TNaming(TNaming.nFlatCase)]
     property Time: TDateTimeCT read fTime;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Text: TMarkdownCT read fText;
   end;
 
@@ -4951,15 +4208,11 @@ type
     fPeriod: TQuantityCT;
     fSpecialPrecautionsForStorage: TCodeableConceptCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCT read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Period: TQuantityCT read fPeriod;
-    [TNaming(TNaming.nCamelCase)]
     property SpecialPrecautionsForStorage: TCodeableConceptCTList read fSpecialPrecautionsForStorage;
   end;
 
@@ -4968,9 +4221,7 @@ type
     fName: TStringCT;
     fTelecom: TContactPointCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Telecom: TContactPointCTList read fTelecom;
   end;
 
@@ -4991,19 +4242,14 @@ type
     property ValueChosen: TBasite read GetValueChosen;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodingCT read fCode;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCodeableConcept: TCodeableConceptCT read GetValueCodeableConcept;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueQuantity: TQuantityCT read GetValueQuantity;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueRange: TRangeCT read GetValueRange;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueReference: TReferenceCT read GetValueReference;
   end;
 
@@ -5015,16 +4261,11 @@ type
     fExpression: TStringCT;
     fReference: TUriCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TIdCT read fName;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Language: TExpressionLanguageCT read fLanguage;
-    [TNaming(TNaming.nFlatCase)]
     property Expression: TStringCT read fExpression;
-    [TNaming(TNaming.nFlatCase)]
     property Reference: TUriCT read fReference;
   end;
 
@@ -5032,7 +4273,6 @@ type
   private
     fValue: TExpressionLanguageListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TExpressionLanguageListST read fValue write fValue;
   end;
 
@@ -5046,21 +4286,14 @@ type
     fSigFormat: TCodeCT;
     fData: TBase64BinaryCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodingCTList read fType;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property When: TInstantCT read fWhen;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Who: TReferenceCT read fWho;
-    [TNaming(TNaming.nCamelCase)]
     property OnBehalfOf: TReferenceCT read fOnBehalfOf;
-    [TNaming(TNaming.nCamelCase)]
     property TargetFormat: TCodeCT read fTargetFormat;
-    [TNaming(TNaming.nCamelCase)]
     property SigFormat: TCodeCT read fSigFormat;
-    [TNaming(TNaming.nFlatCase)]
     property Data: TBase64BinaryCT read fData;
   end;
 
@@ -5070,15 +4303,11 @@ type
     fRepeat: TTimingRepeatCT;
     fCode: TCodeableConceptCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Event: TDateTimeCTList read fEvent;
-    [TNaming(TNaming.nFlatCase)]
     property &Repeat: TTimingRepeatCT read fRepeat;
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Timing.Repeat')]
   TTimingRepeatCT = class(TBackboneElementCT)
   private
@@ -5108,41 +4337,24 @@ type
     property BoundsChosen: TBasite read GetBoundsChosen;
   published
     [TChoice('Bounds')]
-    [TNaming(TNaming.nCamelCase)]
     property BoundsDuration: TDurationCT read GetBoundsDuration;
     [TChoice('Bounds')]
-    [TNaming(TNaming.nCamelCase)]
     property BoundsRange: TRangeCT read GetBoundsRange;
     [TChoice('Bounds')]
-    [TNaming(TNaming.nCamelCase)]
     property BoundsPeriod: TPeriodCT read GetBoundsPeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Count: TPositiveIntCT read fCount;
-    [TNaming(TNaming.nCamelCase)]
     property CountMax: TPositiveIntCT read fCountMax;
-    [TNaming(TNaming.nFlatCase)]
     property Duration: TDecimalCT read fDuration;
-    [TNaming(TNaming.nCamelCase)]
     property DurationMax: TDecimalCT read fDurationMax;
-    [TNaming(TNaming.nCamelCase)]
     property DurationUnit: TUnitsOfTimeCT read fDurationUnit;
-    [TNaming(TNaming.nFlatCase)]
     property Frequency: TPositiveIntCT read fFrequency;
-    [TNaming(TNaming.nCamelCase)]
     property FrequencyMax: TPositiveIntCT read fFrequencyMax;
-    [TNaming(TNaming.nFlatCase)]
     property Period: TDecimalCT read fPeriod;
-    [TNaming(TNaming.nCamelCase)]
     property PeriodMax: TDecimalCT read fPeriodMax;
-    [TNaming(TNaming.nCamelCase)]
     property PeriodUnit: TUnitsOfTimeCT read fPeriodUnit;
-    [TNaming(TNaming.nCamelCase)]
     property DayOfWeek: TCodeCTList read fDayOfWeek;
-    [TNaming(TNaming.nCamelCase)]
     property TimeOfDay: TTimeCTList read fTimeOfDay;
-    [TNaming(TNaming.nFlatCase)]
     property When: TEventTimingCTList read fWhen;
-    [TNaming(TNaming.nFlatCase)]
     property Offset: TUnsignedIntCT read fOffset;
   end;
 
@@ -5150,7 +4362,6 @@ type
   private
     fValue: TUnitsOfTimeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TUnitsOfTimeListST read fValue write fValue;
   end;
 
@@ -5158,7 +4369,6 @@ type
   private
     fValue: TEventTimingListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TEventTimingListST read fValue write fValue;
   end;
 
@@ -5176,27 +4386,16 @@ type
     fImage: TAttachmentCTList;
     fScoring: TCodeableConceptCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Height: TQuantityCT read fHeight;
-    [TNaming(TNaming.nFlatCase)]
     property Width: TQuantityCT read fWidth;
-    [TNaming(TNaming.nFlatCase)]
     property Depth: TQuantityCT read fDepth;
-    [TNaming(TNaming.nFlatCase)]
     property Weight: TQuantityCT read fWeight;
-    [TNaming(TNaming.nCamelCase)]
     property NominalVolume: TQuantityCT read fNominalVolume;
-    [TNaming(TNaming.nCamelCase)]
     property ExternalDiameter: TQuantityCT read fExternalDiameter;
-    [TNaming(TNaming.nFlatCase)]
     property Shape: TStringCT read fShape;
-    [TNaming(TNaming.nFlatCase)]
     property Color: TStringCTList read fColor;
-    [TNaming(TNaming.nFlatCase)]
     property Imprint: TStringCTList read fImprint;
-    [TNaming(TNaming.nFlatCase)]
     property Image: TAttachmentCTList read fImage;
-    [TNaming(TNaming.nFlatCase)]
     property Scoring: TCodeableConceptCT read fScoring;
   end;
 
@@ -5205,9 +4404,7 @@ type
     fCoding: TCodingCTList;
     fText: TStringCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Coding: TCodingCTList read fCoding;
-    [TNaming(TNaming.nFlatCase)]
     property Text: TStringCT read fText;
   end;
 
@@ -5221,21 +4418,14 @@ type
     fType: TCodeCT;
     fProfile: TCanonicalCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Name: TCodeCT read fName;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Use: TCodeCT read fUse;
-    [TNaming(TNaming.nFlatCase)]
     property Min: TIntegerCT read fMin;
-    [TNaming(TNaming.nFlatCase)]
     property Max: TStringCT read fMax;
-    [TNaming(TNaming.nFlatCase)]
     property Documentation: TStringCT read fDocumentation;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Profile: TCanonicalCT read fProfile;
   end;
 
@@ -5620,571 +4810,373 @@ type
     property MaxValueChosen: TBasite read GetMaxValueChosen;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Path: TStringCT read fPath;
-    [TNaming(TNaming.nFlatCase)]
     property Representation: TPropertyRepresentationCTList read fRepresentation;
-    [TNaming(TNaming.nCamelCase)]
     property SliceName: TStringCT read fSliceName;
-    [TNaming(TNaming.nCamelCase)]
     property SliceIsConstraining: TBooleanCT read fSliceIsConstraining;
-    [TNaming(TNaming.nFlatCase)]
     property &Label: TStringCT read fLabel;
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodingCTList read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Slicing: TElementDefinitionSlicingCT read fSlicing;
-    [TNaming(TNaming.nFlatCase)]
     property Short: TStringCT read fShort;
-    [TNaming(TNaming.nFlatCase)]
     property Definition: TMarkdownCT read fDefinition;
-    [TNaming(TNaming.nFlatCase)]
     property Comment: TMarkdownCT read fComment;
-    [TNaming(TNaming.nFlatCase)]
     property Requirements: TMarkdownCT read fRequirements;
-    [TNaming(TNaming.nFlatCase)]
     property Alias: TStringCTList read fAlias;
-    [TNaming(TNaming.nFlatCase)]
     property Min: TUnsignedIntCT read fMin;
-    [TNaming(TNaming.nFlatCase)]
     property Max: TStringCT read fMax;
-    [TNaming(TNaming.nFlatCase)]
     property Base: TElementDefinitionBaseCT read fBase;
-    [TNaming(TNaming.nCamelCase)]
     property ContentReference: TUriCT read fContentReference;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TElementDefinitionTypeCTList read fType;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueBase64Binary: TBase64BinaryCT read GetDefaultValueBase64Binary;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueBoolean: TBooleanCT read GetDefaultValueBoolean;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueCanonical: TCanonicalCT read GetDefaultValueCanonical;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueCode: TCodeCT read GetDefaultValueCode;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueDate: TDateCT read GetDefaultValueDate;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueDateTime: TDateTimeCT read GetDefaultValueDateTime;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueDecimal: TDecimalCT read GetDefaultValueDecimal;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueId: TIdCT read GetDefaultValueId;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueInstant: TInstantCT read GetDefaultValueInstant;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueInteger: TIntegerCT read GetDefaultValueInteger;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueMarkdown: TMarkdownCT read GetDefaultValueMarkdown;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueOid: TOidCT read GetDefaultValueOid;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValuePositiveInt: TPositiveIntCT read GetDefaultValuePositiveInt;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueString: TStringCT read GetDefaultValueString;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueTime: TTimeCT read GetDefaultValueTime;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueUnsignedInt: TUnsignedIntCT read GetDefaultValueUnsignedInt;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueUri: TUriCT read GetDefaultValueUri;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueUrl: TUrlCT read GetDefaultValueUrl;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueUuid: TUuidCT read GetDefaultValueUuid;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueAddress: TAddressCT read GetDefaultValueAddress;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueAge: TAgeCT read GetDefaultValueAge;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueAnnotation: TAnnotationCT read GetDefaultValueAnnotation;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueAttachment: TAttachmentCT read GetDefaultValueAttachment;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueCodeableConcept: TCodeableConceptCT read GetDefaultValueCodeableConcept;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueCoding: TCodingCT read GetDefaultValueCoding;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueContactPoint: TContactPointCT read GetDefaultValueContactPoint;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueCount: TCountCT read GetDefaultValueCount;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueDistance: TDistanceCT read GetDefaultValueDistance;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueDuration: TDurationCT read GetDefaultValueDuration;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueHumanName: THumanNameCT read GetDefaultValueHumanName;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueIdentifier: TIdentifierCT read GetDefaultValueIdentifier;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueMoney: TMoneyCT read GetDefaultValueMoney;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValuePeriod: TPeriodCT read GetDefaultValuePeriod;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueQuantity: TQuantityCT read GetDefaultValueQuantity;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueRange: TRangeCT read GetDefaultValueRange;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueRatio: TRatioCT read GetDefaultValueRatio;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueReference: TReferenceCT read GetDefaultValueReference;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueSampledData: TSampledDataCT read GetDefaultValueSampledData;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueSignature: TSignatureCT read GetDefaultValueSignature;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueTiming: TTimingCT read GetDefaultValueTiming;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueContactDetail: TContactDetailCT read GetDefaultValueContactDetail;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueContributor: TContributorCT read GetDefaultValueContributor;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueDataRequirement: TDataRequirementCT read GetDefaultValueDataRequirement;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueExpression: TExpressionCT read GetDefaultValueExpression;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueParameterDefinition: TParameterDefinitionCT read GetDefaultValueParameterDefinition;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueRelatedArtifact: TRelatedArtifactCT read GetDefaultValueRelatedArtifact;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueTriggerDefinition: TTriggerDefinitionCT read GetDefaultValueTriggerDefinition;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueUsageContext: TUsageContextCT read GetDefaultValueUsageContext;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueDosage: TDosageCT read GetDefaultValueDosage;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueMeta: TMetaCT read GetDefaultValueMeta;
-    [TNaming(TNaming.nCamelCase)]
     property MeaningWhenMissing: TMarkdownCT read fMeaningWhenMissing;
-    [TNaming(TNaming.nCamelCase)]
     property OrderMeaning: TStringCT read fOrderMeaning;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedBase64Binary: TBase64BinaryCT read GetFixedBase64Binary;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedBoolean: TBooleanCT read GetFixedBoolean;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedCanonical: TCanonicalCT read GetFixedCanonical;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedCode: TCodeCT read GetFixedCode;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedDate: TDateCT read GetFixedDate;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedDateTime: TDateTimeCT read GetFixedDateTime;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedDecimal: TDecimalCT read GetFixedDecimal;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedId: TIdCT read GetFixedId;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedInstant: TInstantCT read GetFixedInstant;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedInteger: TIntegerCT read GetFixedInteger;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedMarkdown: TMarkdownCT read GetFixedMarkdown;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedOid: TOidCT read GetFixedOid;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedPositiveInt: TPositiveIntCT read GetFixedPositiveInt;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedString: TStringCT read GetFixedString;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedTime: TTimeCT read GetFixedTime;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedUnsignedInt: TUnsignedIntCT read GetFixedUnsignedInt;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedUri: TUriCT read GetFixedUri;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedUrl: TUrlCT read GetFixedUrl;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedUuid: TUuidCT read GetFixedUuid;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedAddress: TAddressCT read GetFixedAddress;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedAge: TAgeCT read GetFixedAge;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedAnnotation: TAnnotationCT read GetFixedAnnotation;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedAttachment: TAttachmentCT read GetFixedAttachment;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedCodeableConcept: TCodeableConceptCT read GetFixedCodeableConcept;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedCoding: TCodingCT read GetFixedCoding;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedContactPoint: TContactPointCT read GetFixedContactPoint;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedCount: TCountCT read GetFixedCount;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedDistance: TDistanceCT read GetFixedDistance;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedDuration: TDurationCT read GetFixedDuration;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedHumanName: THumanNameCT read GetFixedHumanName;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedIdentifier: TIdentifierCT read GetFixedIdentifier;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedMoney: TMoneyCT read GetFixedMoney;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedPeriod: TPeriodCT read GetFixedPeriod;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedQuantity: TQuantityCT read GetFixedQuantity;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedRange: TRangeCT read GetFixedRange;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedRatio: TRatioCT read GetFixedRatio;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedReference: TReferenceCT read GetFixedReference;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedSampledData: TSampledDataCT read GetFixedSampledData;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedSignature: TSignatureCT read GetFixedSignature;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedTiming: TTimingCT read GetFixedTiming;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedContactDetail: TContactDetailCT read GetFixedContactDetail;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedContributor: TContributorCT read GetFixedContributor;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedDataRequirement: TDataRequirementCT read GetFixedDataRequirement;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedExpression: TExpressionCT read GetFixedExpression;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedParameterDefinition: TParameterDefinitionCT read GetFixedParameterDefinition;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedRelatedArtifact: TRelatedArtifactCT read GetFixedRelatedArtifact;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedTriggerDefinition: TTriggerDefinitionCT read GetFixedTriggerDefinition;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedUsageContext: TUsageContextCT read GetFixedUsageContext;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedDosage: TDosageCT read GetFixedDosage;
     [TChoice('Fixed')]
-    [TNaming(TNaming.nCamelCase)]
     property FixedMeta: TMetaCT read GetFixedMeta;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternBase64Binary: TBase64BinaryCT read GetPatternBase64Binary;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternBoolean: TBooleanCT read GetPatternBoolean;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternCanonical: TCanonicalCT read GetPatternCanonical;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternCode: TCodeCT read GetPatternCode;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternDate: TDateCT read GetPatternDate;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternDateTime: TDateTimeCT read GetPatternDateTime;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternDecimal: TDecimalCT read GetPatternDecimal;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternId: TIdCT read GetPatternId;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternInstant: TInstantCT read GetPatternInstant;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternInteger: TIntegerCT read GetPatternInteger;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternMarkdown: TMarkdownCT read GetPatternMarkdown;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternOid: TOidCT read GetPatternOid;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternPositiveInt: TPositiveIntCT read GetPatternPositiveInt;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternString: TStringCT read GetPatternString;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternTime: TTimeCT read GetPatternTime;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternUnsignedInt: TUnsignedIntCT read GetPatternUnsignedInt;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternUri: TUriCT read GetPatternUri;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternUrl: TUrlCT read GetPatternUrl;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternUuid: TUuidCT read GetPatternUuid;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternAddress: TAddressCT read GetPatternAddress;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternAge: TAgeCT read GetPatternAge;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternAnnotation: TAnnotationCT read GetPatternAnnotation;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternAttachment: TAttachmentCT read GetPatternAttachment;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternCodeableConcept: TCodeableConceptCT read GetPatternCodeableConcept;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternCoding: TCodingCT read GetPatternCoding;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternContactPoint: TContactPointCT read GetPatternContactPoint;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternCount: TCountCT read GetPatternCount;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternDistance: TDistanceCT read GetPatternDistance;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternDuration: TDurationCT read GetPatternDuration;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternHumanName: THumanNameCT read GetPatternHumanName;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternIdentifier: TIdentifierCT read GetPatternIdentifier;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternMoney: TMoneyCT read GetPatternMoney;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternPeriod: TPeriodCT read GetPatternPeriod;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternQuantity: TQuantityCT read GetPatternQuantity;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternRange: TRangeCT read GetPatternRange;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternRatio: TRatioCT read GetPatternRatio;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternReference: TReferenceCT read GetPatternReference;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternSampledData: TSampledDataCT read GetPatternSampledData;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternSignature: TSignatureCT read GetPatternSignature;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternTiming: TTimingCT read GetPatternTiming;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternContactDetail: TContactDetailCT read GetPatternContactDetail;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternContributor: TContributorCT read GetPatternContributor;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternDataRequirement: TDataRequirementCT read GetPatternDataRequirement;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternExpression: TExpressionCT read GetPatternExpression;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternParameterDefinition: TParameterDefinitionCT read GetPatternParameterDefinition;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternRelatedArtifact: TRelatedArtifactCT read GetPatternRelatedArtifact;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternTriggerDefinition: TTriggerDefinitionCT read GetPatternTriggerDefinition;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternUsageContext: TUsageContextCT read GetPatternUsageContext;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternDosage: TDosageCT read GetPatternDosage;
     [TChoice('Pattern')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternMeta: TMetaCT read GetPatternMeta;
-    [TNaming(TNaming.nFlatCase)]
     property Example: TElementDefinitionExampleCTList read fExample;
     [TChoice('MinValue')]
-    [TNaming(TNaming.nCamelCase)]
     property MinValueDate: TDateCT read GetMinValueDate;
     [TChoice('MinValue')]
-    [TNaming(TNaming.nCamelCase)]
     property MinValueDateTime: TDateTimeCT read GetMinValueDateTime;
     [TChoice('MinValue')]
-    [TNaming(TNaming.nCamelCase)]
     property MinValueInstant: TInstantCT read GetMinValueInstant;
     [TChoice('MinValue')]
-    [TNaming(TNaming.nCamelCase)]
     property MinValueTime: TTimeCT read GetMinValueTime;
     [TChoice('MinValue')]
-    [TNaming(TNaming.nCamelCase)]
     property MinValueDecimal: TDecimalCT read GetMinValueDecimal;
     [TChoice('MinValue')]
-    [TNaming(TNaming.nCamelCase)]
     property MinValueInteger: TIntegerCT read GetMinValueInteger;
     [TChoice('MinValue')]
-    [TNaming(TNaming.nCamelCase)]
     property MinValuePositiveInt: TPositiveIntCT read GetMinValuePositiveInt;
     [TChoice('MinValue')]
-    [TNaming(TNaming.nCamelCase)]
     property MinValueUnsignedInt: TUnsignedIntCT read GetMinValueUnsignedInt;
     [TChoice('MinValue')]
-    [TNaming(TNaming.nCamelCase)]
     property MinValueQuantity: TQuantityCT read GetMinValueQuantity;
     [TChoice('MaxValue')]
-    [TNaming(TNaming.nCamelCase)]
     property MaxValueDate: TDateCT read GetMaxValueDate;
     [TChoice('MaxValue')]
-    [TNaming(TNaming.nCamelCase)]
     property MaxValueDateTime: TDateTimeCT read GetMaxValueDateTime;
     [TChoice('MaxValue')]
-    [TNaming(TNaming.nCamelCase)]
     property MaxValueInstant: TInstantCT read GetMaxValueInstant;
     [TChoice('MaxValue')]
-    [TNaming(TNaming.nCamelCase)]
     property MaxValueTime: TTimeCT read GetMaxValueTime;
     [TChoice('MaxValue')]
-    [TNaming(TNaming.nCamelCase)]
     property MaxValueDecimal: TDecimalCT read GetMaxValueDecimal;
     [TChoice('MaxValue')]
-    [TNaming(TNaming.nCamelCase)]
     property MaxValueInteger: TIntegerCT read GetMaxValueInteger;
     [TChoice('MaxValue')]
-    [TNaming(TNaming.nCamelCase)]
     property MaxValuePositiveInt: TPositiveIntCT read GetMaxValuePositiveInt;
     [TChoice('MaxValue')]
-    [TNaming(TNaming.nCamelCase)]
     property MaxValueUnsignedInt: TUnsignedIntCT read GetMaxValueUnsignedInt;
     [TChoice('MaxValue')]
-    [TNaming(TNaming.nCamelCase)]
     property MaxValueQuantity: TQuantityCT read GetMaxValueQuantity;
-    [TNaming(TNaming.nCamelCase)]
     property MaxLength: TIntegerCT read fMaxLength;
-    [TNaming(TNaming.nFlatCase)]
     property Condition: TIdCTList read fCondition;
-    [TNaming(TNaming.nFlatCase)]
     property Constraint: TElementDefinitionConstraintCTList read fConstraint;
-    [TNaming(TNaming.nCamelCase)]
     property MustSupport: TBooleanCT read fMustSupport;
-    [TNaming(TNaming.nCamelCase)]
     property IsModifier: TBooleanCT read fIsModifier;
-    [TNaming(TNaming.nCamelCase)]
     property IsModifierReason: TStringCT read fIsModifierReason;
-    [TNaming(TNaming.nCamelCase)]
     property IsSummary: TBooleanCT read fIsSummary;
-    [TNaming(TNaming.nFlatCase)]
     property Binding: TElementDefinitionBindingCT read fBinding;
-    [TNaming(TNaming.nFlatCase)]
     property Mapping: TElementDefinitionMappingCTList read fMapping;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ElementDefinition.Constraint')]
   TElementDefinitionConstraintCT = class(TBackboneElementCT)
   private
@@ -6197,25 +5189,17 @@ type
     fSource: TCanonicalCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Key: TIdCT read fKey;
-    [TNaming(TNaming.nFlatCase)]
     property Requirements: TStringCT read fRequirements;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Severity: TConstraintSeverityCT read fSeverity;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Human: TStringCT read fHuman;
-    [TNaming(TNaming.nFlatCase)]
     property Expression: TStringCT read fExpression;
-    [TNaming(TNaming.nFlatCase)]
     property Xpath: TStringCT read fXpath;
-    [TNaming(TNaming.nFlatCase)]
     property Source: TCanonicalCT read fSource;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ElementDefinition.Mapping')]
   TElementDefinitionMappingCT = class(TBackboneElementCT)
   private
@@ -6225,18 +5209,13 @@ type
     fComment: TStringCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Identity: TIdCT read fIdentity;
-    [TNaming(TNaming.nFlatCase)]
     property Language: TCodeCT read fLanguage;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Map: TStringCT read fMap;
-    [TNaming(TNaming.nFlatCase)]
     property Comment: TStringCT read fComment;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ElementDefinition.Base')]
   TElementDefinitionBaseCT = class(TBackboneElementCT)
   private
@@ -6245,17 +5224,13 @@ type
     fMax: TStringCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Path: TStringCT read fPath;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Min: TUnsignedIntCT read fMin;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Max: TStringCT read fMax;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ElementDefinition.Type')]
   TElementDefinitionTypeCT = class(TBackboneElementCT)
   private
@@ -6266,19 +5241,13 @@ type
     fVersioning: TReferenceVersionRulesCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TUriCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Profile: TCanonicalCTList read fProfile;
-    [TNaming(TNaming.nCamelCase)]
     property TargetProfile: TCanonicalCTList read fTargetProfile;
-    [TNaming(TNaming.nFlatCase)]
     property Aggregation: TAggregationModeCTList read fAggregation;
-    [TNaming(TNaming.nFlatCase)]
     property Versioning: TReferenceVersionRulesCT read fVersioning;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ElementDefinition.Example')]
   TElementDefinitionExampleCT = class(TBackboneElementCT)
   private
@@ -6389,161 +5358,109 @@ type
     property ValueChosen: TBasite read GetValueChosen;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Label: TStringCT read fLabel;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueBase64Binary: TBase64BinaryCT read GetValueBase64Binary;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueBoolean: TBooleanCT read GetValueBoolean;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCanonical: TCanonicalCT read GetValueCanonical;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCode: TCodeCT read GetValueCode;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDate: TDateCT read GetValueDate;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDateTime: TDateTimeCT read GetValueDateTime;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDecimal: TDecimalCT read GetValueDecimal;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueId: TIdCT read GetValueId;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueInstant: TInstantCT read GetValueInstant;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueInteger: TIntegerCT read GetValueInteger;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueMarkdown: TMarkdownCT read GetValueMarkdown;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueOid: TOidCT read GetValueOid;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValuePositiveInt: TPositiveIntCT read GetValuePositiveInt;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueString: TStringCT read GetValueString;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueTime: TTimeCT read GetValueTime;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueUnsignedInt: TUnsignedIntCT read GetValueUnsignedInt;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueUri: TUriCT read GetValueUri;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueUrl: TUrlCT read GetValueUrl;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueUuid: TUuidCT read GetValueUuid;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueAddress: TAddressCT read GetValueAddress;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueAge: TAgeCT read GetValueAge;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueAnnotation: TAnnotationCT read GetValueAnnotation;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueAttachment: TAttachmentCT read GetValueAttachment;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCodeableConcept: TCodeableConceptCT read GetValueCodeableConcept;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCoding: TCodingCT read GetValueCoding;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueContactPoint: TContactPointCT read GetValueContactPoint;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCount: TCountCT read GetValueCount;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDistance: TDistanceCT read GetValueDistance;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDuration: TDurationCT read GetValueDuration;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueHumanName: THumanNameCT read GetValueHumanName;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueIdentifier: TIdentifierCT read GetValueIdentifier;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueMoney: TMoneyCT read GetValueMoney;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValuePeriod: TPeriodCT read GetValuePeriod;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueQuantity: TQuantityCT read GetValueQuantity;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueRange: TRangeCT read GetValueRange;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueRatio: TRatioCT read GetValueRatio;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueReference: TReferenceCT read GetValueReference;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueSampledData: TSampledDataCT read GetValueSampledData;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueSignature: TSignatureCT read GetValueSignature;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueTiming: TTimingCT read GetValueTiming;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueContactDetail: TContactDetailCT read GetValueContactDetail;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueContributor: TContributorCT read GetValueContributor;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDataRequirement: TDataRequirementCT read GetValueDataRequirement;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueExpression: TExpressionCT read GetValueExpression;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueParameterDefinition: TParameterDefinitionCT read GetValueParameterDefinition;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueRelatedArtifact: TRelatedArtifactCT read GetValueRelatedArtifact;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueTriggerDefinition: TTriggerDefinitionCT read GetValueTriggerDefinition;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueUsageContext: TUsageContextCT read GetValueUsageContext;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDosage: TDosageCT read GetValueDosage;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueMeta: TMetaCT read GetValueMeta;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ElementDefinition.Slicing')]
   TElementDefinitionSlicingCT = class(TBackboneElementCT)
   private
@@ -6552,18 +5469,13 @@ type
     fOrdered: TBooleanCT;
     fRules: TSlicingRulesCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Discriminator: TElementDefinitionDiscriminatorCTList read fDiscriminator;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Ordered: TBooleanCT read fOrdered;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Rules: TSlicingRulesCT read fRules;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ElementDefinition.Binding')]
   TElementDefinitionBindingCT = class(TBackboneElementCT)
   private
@@ -6572,15 +5484,11 @@ type
     fValueSet: TCanonicalCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Strength: TBindingStrengthCT read fStrength;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nCamelCase)]
     property ValueSet: TCanonicalCT read fValueSet;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ElementDefinition.Discriminator')]
   TElementDefinitionDiscriminatorCT = class(TBackboneElementCT)
   private
@@ -6588,10 +5496,8 @@ type
     fPath: TStringCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TDiscriminatorTypeCT read fType;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Path: TStringCT read fPath;
   end;
 
@@ -6599,7 +5505,6 @@ type
   private
     fValue: TPropertyRepresentationListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TPropertyRepresentationListST read fValue write fValue;
   end;
 
@@ -6607,7 +5512,6 @@ type
   private
     fValue: TConstraintSeverityListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TConstraintSeverityListST read fValue write fValue;
   end;
 
@@ -6615,7 +5519,6 @@ type
   private
     fValue: TAggregationModeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TAggregationModeListST read fValue write fValue;
   end;
 
@@ -6623,7 +5526,6 @@ type
   private
     fValue: TReferenceVersionRulesListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TReferenceVersionRulesListST read fValue write fValue;
   end;
 
@@ -6631,7 +5533,6 @@ type
   private
     fValue: TSlicingRulesListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TSlicingRulesListST read fValue write fValue;
   end;
 
@@ -6639,7 +5540,6 @@ type
   private
     fValue: TBindingStrengthListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TBindingStrengthListST read fValue write fValue;
   end;
 
@@ -6647,7 +5547,6 @@ type
   private
     fValue: TDiscriminatorTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TDiscriminatorTypeListST read fValue write fValue;
   end;
 
@@ -6658,13 +5557,9 @@ type
     fImplicitRules: TUriCT;
     fLanguage: TCodeCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Id: TIdCT read fId;
-    [TNaming(TNaming.nFlatCase)]
     property Meta: TMetaCT read fMeta;
-    [TNaming(TNaming.nCamelCase)]
     property ImplicitRules: TUriCT read fImplicitRules;
-    [TNaming(TNaming.nFlatCase)]
     property Language: TCodeCT read fLanguage;
   end;
 
@@ -6675,13 +5570,9 @@ type
     fExtension: TExtensionCTList;
     fModifierExtension: TExtensionCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Text: TNarrativeCT read fText;
-    [TNaming(TNaming.nFlatCase)]
     property Contained: TResourceContainerCTList read fContained;
-    [TNaming(TNaming.nFlatCase)]
     property Extension: TExtensionCTList read fExtension;
-    [TNaming(TNaming.nCamelCase)]
     property ModifierExtension: TExtensionCTList read fModifierExtension;
   end;
 
@@ -6689,7 +5580,6 @@ type
   private
     fValue: TPublicationStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TPublicationStatusListST read fValue write fValue;
   end;
 
@@ -6697,7 +5587,6 @@ type
   private
     fValue: TSearchParamTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TSearchParamTypeListST read fValue write fValue;
   end;
 
@@ -6705,7 +5594,6 @@ type
   private
     fValue: TAdministrativeGenderListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TAdministrativeGenderListST read fValue write fValue;
   end;
 
@@ -6713,7 +5601,6 @@ type
   private
     fValue: TFHIRVersionListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TFHIRVersionListST read fValue write fValue;
   end;
 
@@ -6721,7 +5608,6 @@ type
   private
     fValue: TNoteTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TNoteTypeListST read fValue write fValue;
   end;
 
@@ -6729,7 +5615,6 @@ type
   private
     fValue: TRemittanceOutcomeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TRemittanceOutcomeListST read fValue write fValue;
   end;
 
@@ -6737,7 +5622,6 @@ type
   private
     fValue: TConceptMapEquivalenceListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TConceptMapEquivalenceListST read fValue write fValue;
   end;
 
@@ -6745,7 +5629,6 @@ type
   private
     fValue: TDocumentReferenceStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TDocumentReferenceStatusListST read fValue write fValue;
   end;
 
@@ -6763,32 +5646,20 @@ type
     fGuarantor: TAccountGuarantorCTList;
     fPartOf: TReferenceCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TAccountStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCTList read fSubject;
-    [TNaming(TNaming.nCamelCase)]
     property ServicePeriod: TPeriodCT read fServicePeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Coverage: TAccountCoverageCTList read fCoverage;
-    [TNaming(TNaming.nFlatCase)]
     property Owner: TReferenceCT read fOwner;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Guarantor: TAccountGuarantorCTList read fGuarantor;
-    [TNaming(TNaming.nCamelCase)]
     property PartOf: TReferenceCT read fPartOf;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Account.Coverage')]
   TAccountCoverageCT = class(TBackboneElementCT)
   private
@@ -6796,13 +5667,10 @@ type
     fPriority: TPositiveIntCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Coverage: TReferenceCT read fCoverage;
-    [TNaming(TNaming.nFlatCase)]
     property Priority: TPositiveIntCT read fPriority;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Account.Guarantor')]
   TAccountGuarantorCT = class(TBackboneElementCT)
   private
@@ -6811,11 +5679,8 @@ type
     fPeriod: TPeriodCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Party: TReferenceCT read fParty;
-    [TNaming(TNaming.nCamelCase)]
     property OnHold: TBooleanCT read fOnHold;
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCT read fPeriod;
   end;
 
@@ -6823,7 +5688,6 @@ type
   private
     fValue: TAccountStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TAccountStatusListST read fValue write fValue;
   end;
 
@@ -6901,126 +5765,72 @@ type
     property TimingChosen: TBasite read GetTimingChosen;
     property ProductChosen: TBasite read GetProductChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUriCT read fUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCT read fVersion;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Title: TStringCT read fTitle;
-    [TNaming(TNaming.nFlatCase)]
     property Subtitle: TStringCT read fSubtitle;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TPublicationStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Experimental: TBooleanCT read fExperimental;
     [TChoice('Subject')]
-    [TNaming(TNaming.nCamelCase)]
     property SubjectCodeableConcept: TCodeableConceptCT read GetSubjectCodeableConcept;
     [TChoice('Subject')]
-    [TNaming(TNaming.nCamelCase)]
     property SubjectReference: TReferenceCT read GetSubjectReference;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Publisher: TStringCT read fPublisher;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TContactDetailCTList read fContact;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TMarkdownCT read fDescription;
-    [TNaming(TNaming.nCamelCase)]
     property UseContext: TUsageContextCTList read fUseContext;
-    [TNaming(TNaming.nFlatCase)]
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    [TNaming(TNaming.nFlatCase)]
     property Purpose: TMarkdownCT read fPurpose;
-    [TNaming(TNaming.nFlatCase)]
     property Usage: TStringCT read fUsage;
-    [TNaming(TNaming.nFlatCase)]
     property Copyright: TMarkdownCT read fCopyright;
-    [TNaming(TNaming.nCamelCase)]
     property ApprovalDate: TDateCT read fApprovalDate;
-    [TNaming(TNaming.nCamelCase)]
     property LastReviewDate: TDateCT read fLastReviewDate;
-    [TNaming(TNaming.nCamelCase)]
     property EffectivePeriod: TPeriodCT read fEffectivePeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Topic: TCodeableConceptCTList read fTopic;
-    [TNaming(TNaming.nFlatCase)]
     property Author: TContactDetailCTList read fAuthor;
-    [TNaming(TNaming.nFlatCase)]
     property Editor: TContactDetailCTList read fEditor;
-    [TNaming(TNaming.nFlatCase)]
     property Reviewer: TContactDetailCTList read fReviewer;
-    [TNaming(TNaming.nFlatCase)]
     property Endorser: TContactDetailCTList read fEndorser;
-    [TNaming(TNaming.nCamelCase)]
     property RelatedArtifact: TRelatedArtifactCTList read fRelatedArtifact;
-    [TNaming(TNaming.nFlatCase)]
     property &Library: TCanonicalCTList read fLibrary;
-    [TNaming(TNaming.nFlatCase)]
     property Kind: TRequestResourceTypeCT read fKind;
-    [TNaming(TNaming.nFlatCase)]
     property Profile: TCanonicalCT read fProfile;
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Intent: TRequestIntentCT read fIntent;
-    [TNaming(TNaming.nFlatCase)]
     property Priority: TRequestPriorityCT read fPriority;
-    [TNaming(TNaming.nCamelCase)]
     property DoNotPerform: TBooleanCT read fDoNotPerform;
     [TChoice('Timing')]
-    [TNaming(TNaming.nCamelCase)]
     property TimingTiming: TTimingCT read GetTimingTiming;
     [TChoice('Timing')]
-    [TNaming(TNaming.nCamelCase)]
     property TimingDateTime: TDateTimeCT read GetTimingDateTime;
     [TChoice('Timing')]
-    [TNaming(TNaming.nCamelCase)]
     property TimingAge: TAgeCT read GetTimingAge;
     [TChoice('Timing')]
-    [TNaming(TNaming.nCamelCase)]
     property TimingPeriod: TPeriodCT read GetTimingPeriod;
     [TChoice('Timing')]
-    [TNaming(TNaming.nCamelCase)]
     property TimingRange: TRangeCT read GetTimingRange;
     [TChoice('Timing')]
-    [TNaming(TNaming.nCamelCase)]
     property TimingDuration: TDurationCT read GetTimingDuration;
-    [TNaming(TNaming.nFlatCase)]
     property Location: TReferenceCT read fLocation;
-    [TNaming(TNaming.nFlatCase)]
     property Participant: TActivityDefinitionParticipantCTList read fParticipant;
     [TChoice('Product')]
-    [TNaming(TNaming.nCamelCase)]
     property ProductReference: TReferenceCT read GetProductReference;
     [TChoice('Product')]
-    [TNaming(TNaming.nCamelCase)]
     property ProductCodeableConcept: TCodeableConceptCT read GetProductCodeableConcept;
-    [TNaming(TNaming.nFlatCase)]
     property Quantity: TQuantityCT read fQuantity;
-    [TNaming(TNaming.nFlatCase)]
     property Dosage: TDosageCTList read fDosage;
-    [TNaming(TNaming.nCamelCase)]
     property BodySite: TCodeableConceptCTList read fBodySite;
-    [TNaming(TNaming.nCamelCase)]
     property SpecimenRequirement: TReferenceCTList read fSpecimenRequirement;
-    [TNaming(TNaming.nCamelCase)]
     property ObservationRequirement: TReferenceCTList read fObservationRequirement;
-    [TNaming(TNaming.nCamelCase)]
     property ObservationResultRequirement: TReferenceCTList read fObservationResultRequirement;
-    [TNaming(TNaming.nFlatCase)]
     property Transform: TCanonicalCT read fTransform;
-    [TNaming(TNaming.nCamelCase)]
     property DynamicValue: TActivityDefinitionDynamicValueCTList read fDynamicValue;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ActivityDefinition.Participant')]
   TActivityDefinitionParticipantCT = class(TBackboneElementCT)
   private
@@ -7028,13 +5838,10 @@ type
     fRole: TCodeableConceptCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TActionParticipantTypeCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Role: TCodeableConceptCT read fRole;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ActivityDefinition.DynamicValue')]
   TActivityDefinitionDynamicValueCT = class(TBackboneElementCT)
   private
@@ -7042,10 +5849,8 @@ type
     fExpression: TExpressionCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Path: TStringCT read fPath;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Expression: TExpressionCT read fExpression;
   end;
 
@@ -7053,7 +5858,6 @@ type
   private
     fValue: TActionParticipantTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TActionParticipantTypeListST read fValue write fValue;
   end;
 
@@ -7061,7 +5865,6 @@ type
   private
     fValue: TRequestIntentListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TRequestIntentListST read fValue write fValue;
   end;
 
@@ -7069,7 +5872,6 @@ type
   private
     fValue: TRequestResourceTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TRequestResourceTypeListST read fValue write fValue;
   end;
 
@@ -7077,7 +5879,6 @@ type
   private
     fValue: TRequestPriorityListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TRequestPriorityListST read fValue write fValue;
   end;
 
@@ -7104,51 +5905,30 @@ type
     fReferenceDocument: TReferenceCTList;
     fStudy: TReferenceCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCT read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Actuality: TAdverseEventActualityCT read fActuality;
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCTList read fCategory;
-    [TNaming(TNaming.nFlatCase)]
     property Event: TCodeableConceptCT read fEvent;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCT read fSubject;
-    [TNaming(TNaming.nFlatCase)]
     property Encounter: TReferenceCT read fEncounter;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Detected: TDateTimeCT read fDetected;
-    [TNaming(TNaming.nCamelCase)]
     property RecordedDate: TDateTimeCT read fRecordedDate;
-    [TNaming(TNaming.nCamelCase)]
     property ResultingCondition: TReferenceCTList read fResultingCondition;
-    [TNaming(TNaming.nFlatCase)]
     property Location: TReferenceCT read fLocation;
-    [TNaming(TNaming.nFlatCase)]
     property Seriousness: TCodeableConceptCT read fSeriousness;
-    [TNaming(TNaming.nFlatCase)]
     property Severity: TCodeableConceptCT read fSeverity;
-    [TNaming(TNaming.nFlatCase)]
     property Outcome: TCodeableConceptCT read fOutcome;
-    [TNaming(TNaming.nFlatCase)]
     property Recorder: TReferenceCT read fRecorder;
-    [TNaming(TNaming.nFlatCase)]
     property Contributor: TReferenceCTList read fContributor;
-    [TNaming(TNaming.nCamelCase)]
     property SuspectEntity: TAdverseEventSuspectEntityCTList read fSuspectEntity;
-    [TNaming(TNaming.nCamelCase)]
     property SubjectMedicalHistory: TReferenceCTList read fSubjectMedicalHistory;
-    [TNaming(TNaming.nCamelCase)]
     property ReferenceDocument: TReferenceCTList read fReferenceDocument;
-    [TNaming(TNaming.nFlatCase)]
     property Study: TReferenceCTList read fStudy;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('AdverseEvent.SuspectEntity')]
   TAdverseEventSuspectEntityCT = class(TBackboneElementCT)
   private
@@ -7156,13 +5936,10 @@ type
     fCausality: TAdverseEventCausalityCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Instance: TReferenceCT read fInstance;
-    [TNaming(TNaming.nFlatCase)]
     property Causality: TAdverseEventCausalityCTList read fCausality;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('AdverseEvent.Causality')]
   TAdverseEventCausalityCT = class(TBackboneElementCT)
   private
@@ -7171,13 +5948,9 @@ type
     fAuthor: TReferenceCT;
     fMethod: TCodeableConceptCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Assessment: TCodeableConceptCT read fAssessment;
-    [TNaming(TNaming.nCamelCase)]
     property ProductRelatedness: TStringCT read fProductRelatedness;
-    [TNaming(TNaming.nFlatCase)]
     property Author: TReferenceCT read fAuthor;
-    [TNaming(TNaming.nFlatCase)]
     property Method: TCodeableConceptCT read fMethod;
   end;
 
@@ -7185,7 +5958,6 @@ type
   private
     fValue: TAdverseEventActualityListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TAdverseEventActualityListST read fValue write fValue;
   end;
 
@@ -7221,55 +5993,34 @@ type
   public
     property OnsetChosen: TBasite read GetOnsetChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nCamelCase)]
     property ClinicalStatus: TCodeableConceptCT read fClinicalStatus;
-    [TNaming(TNaming.nCamelCase)]
     property VerificationStatus: TCodeableConceptCT read fVerificationStatus;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TAllergyIntoleranceTypeCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Category: TAllergyIntoleranceCategoryCTList read fCategory;
-    [TNaming(TNaming.nFlatCase)]
     property Criticality: TAllergyIntoleranceCriticalityCT read fCriticality;
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Patient: TReferenceCT read fPatient;
-    [TNaming(TNaming.nFlatCase)]
     property Encounter: TReferenceCT read fEncounter;
     [TChoice('Onset')]
-    [TNaming(TNaming.nCamelCase)]
     property OnsetDateTime: TDateTimeCT read GetOnsetDateTime;
     [TChoice('Onset')]
-    [TNaming(TNaming.nCamelCase)]
     property OnsetAge: TAgeCT read GetOnsetAge;
     [TChoice('Onset')]
-    [TNaming(TNaming.nCamelCase)]
     property OnsetPeriod: TPeriodCT read GetOnsetPeriod;
     [TChoice('Onset')]
-    [TNaming(TNaming.nCamelCase)]
     property OnsetRange: TRangeCT read GetOnsetRange;
     [TChoice('Onset')]
-    [TNaming(TNaming.nCamelCase)]
     property OnsetString: TStringCT read GetOnsetString;
-    [TNaming(TNaming.nCamelCase)]
     property RecordedDate: TDateTimeCT read fRecordedDate;
-    [TNaming(TNaming.nFlatCase)]
     property Recorder: TReferenceCT read fRecorder;
-    [TNaming(TNaming.nFlatCase)]
     property Asserter: TReferenceCT read fAsserter;
-    [TNaming(TNaming.nCamelCase)]
     property LastOccurrence: TDateTimeCT read fLastOccurrence;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
-    [TNaming(TNaming.nFlatCase)]
     property Reaction: TAllergyIntoleranceReactionCTList read fReaction;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('AllergyIntolerance.Reaction')]
   TAllergyIntoleranceReactionCT = class(TBackboneElementCT)
   private
@@ -7281,19 +6032,12 @@ type
     fExposureRoute: TCodeableConceptCT;
     fNote: TAnnotationCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Substance: TCodeableConceptCT read fSubstance;
-    [TNaming(TNaming.nFlatCase)]
     property Manifestation: TCodeableConceptCTList read fManifestation;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Onset: TDateTimeCT read fOnset;
-    [TNaming(TNaming.nFlatCase)]
     property Severity: TAllergyIntoleranceSeverityCT read fSeverity;
-    [TNaming(TNaming.nCamelCase)]
     property ExposureRoute: TCodeableConceptCT read fExposureRoute;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
   end;
 
@@ -7301,7 +6045,6 @@ type
   private
     fValue: TAllergyIntoleranceCriticalityListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TAllergyIntoleranceCriticalityListST read fValue write fValue;
   end;
 
@@ -7309,7 +6052,6 @@ type
   private
     fValue: TAllergyIntoleranceTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TAllergyIntoleranceTypeListST read fValue write fValue;
   end;
 
@@ -7317,7 +6059,6 @@ type
   private
     fValue: TAllergyIntoleranceCategoryListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TAllergyIntoleranceCategoryListST read fValue write fValue;
   end;
 
@@ -7325,7 +6066,6 @@ type
   private
     fValue: TAllergyIntoleranceSeverityListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TAllergyIntoleranceSeverityListST read fValue write fValue;
   end;
 
@@ -7354,54 +6094,31 @@ type
     fParticipant: TAppointmentParticipantCTList;
     fRequestedPeriod: TPeriodCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TAppointmentStatusCT read fStatus;
-    [TNaming(TNaming.nCamelCase)]
     property CancelationReason: TCodeableConceptCT read fCancelationReason;
-    [TNaming(TNaming.nCamelCase)]
     property ServiceCategory: TCodeableConceptCTList read fServiceCategory;
-    [TNaming(TNaming.nCamelCase)]
     property ServiceType: TCodeableConceptCTList read fServiceType;
-    [TNaming(TNaming.nFlatCase)]
     property Specialty: TCodeableConceptCTList read fSpecialty;
-    [TNaming(TNaming.nCamelCase)]
     property AppointmentType: TCodeableConceptCT read fAppointmentType;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonReference: TReferenceCTList read fReasonReference;
-    [TNaming(TNaming.nFlatCase)]
     property Priority: TUnsignedIntCT read fPriority;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nCamelCase)]
     property SupportingInformation: TReferenceCTList read fSupportingInformation;
-    [TNaming(TNaming.nFlatCase)]
     property Start: TInstantCT read fStart;
-    [TNaming(TNaming.nFlatCase)]
     property &End: TInstantCT read fEnd;
-    [TNaming(TNaming.nCamelCase)]
     property MinutesDuration: TPositiveIntCT read fMinutesDuration;
-    [TNaming(TNaming.nFlatCase)]
     property Slot: TReferenceCTList read fSlot;
-    [TNaming(TNaming.nFlatCase)]
     property Created: TDateTimeCT read fCreated;
-    [TNaming(TNaming.nFlatCase)]
     property Comment: TStringCT read fComment;
-    [TNaming(TNaming.nCamelCase)]
     property PatientInstruction: TStringCT read fPatientInstruction;
-    [TNaming(TNaming.nCamelCase)]
     property BasedOn: TReferenceCTList read fBasedOn;
-    [TNaming(TNaming.nFlatCase)]
     property Participant: TAppointmentParticipantCTList read fParticipant;
-    [TNaming(TNaming.nCamelCase)]
     property RequestedPeriod: TPeriodCTList read fRequestedPeriod;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Appointment.Participant')]
   TAppointmentParticipantCT = class(TBackboneElementCT)
   private
@@ -7411,16 +6128,11 @@ type
     fStatus: TParticipationStatusCT;
     fPeriod: TPeriodCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCTList read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Actor: TReferenceCT read fActor;
-    [TNaming(TNaming.nFlatCase)]
     property Required: TParticipantRequiredCT read fRequired;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TParticipationStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCT read fPeriod;
   end;
 
@@ -7428,7 +6140,6 @@ type
   private
     fValue: TParticipantRequiredListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TParticipantRequiredListST read fValue write fValue;
   end;
 
@@ -7436,7 +6147,6 @@ type
   private
     fValue: TAppointmentStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TAppointmentStatusListST read fValue write fValue;
   end;
 
@@ -7444,7 +6154,6 @@ type
   private
     fValue: TParticipationStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TParticipationStatusListST read fValue write fValue;
   end;
 
@@ -7459,23 +6168,15 @@ type
     fParticipantStatus: TParticipationStatusCT;
     fComment: TStringCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Appointment: TReferenceCT read fAppointment;
-    [TNaming(TNaming.nFlatCase)]
     property Start: TInstantCT read fStart;
-    [TNaming(TNaming.nFlatCase)]
     property &End: TInstantCT read fEnd;
-    [TNaming(TNaming.nCamelCase)]
     property ParticipantType: TCodeableConceptCTList read fParticipantType;
-    [TNaming(TNaming.nFlatCase)]
     property Actor: TReferenceCT read fActor;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ParticipantStatus: TParticipationStatusCT read fParticipantStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Comment: TStringCT read fComment;
   end;
 
@@ -7494,33 +6195,21 @@ type
     fEntity: TAuditEventEntityCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodingCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Subtype: TCodingCTList read fSubtype;
-    [TNaming(TNaming.nFlatCase)]
     property Action: TAuditEventActionCT read fAction;
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCT read fPeriod;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Recorded: TInstantCT read fRecorded;
-    [TNaming(TNaming.nFlatCase)]
     property Outcome: TAuditEventOutcomeCT read fOutcome;
-    [TNaming(TNaming.nCamelCase)]
     property OutcomeDesc: TStringCT read fOutcomeDesc;
-    [TNaming(TNaming.nCamelCase)]
     property PurposeOfEvent: TCodeableConceptCTList read fPurposeOfEvent;
-    [TNaming(TNaming.nFlatCase)]
     property Agent: TAuditEventAgentCTList read fAgent;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Source: TAuditEventSourceCT read fSource;
-    [TNaming(TNaming.nFlatCase)]
     property Entity: TAuditEventEntityCTList read fEntity;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('AuditEvent.Agent')]
   TAuditEventAgentCT = class(TBackboneElementCT)
   private
@@ -7536,45 +6225,30 @@ type
     fNetwork: TAuditEventNetworkCT;
     fPurposeOfUse: TCodeableConceptCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Role: TCodeableConceptCTList read fRole;
-    [TNaming(TNaming.nFlatCase)]
     property Who: TReferenceCT read fWho;
-    [TNaming(TNaming.nCamelCase)]
     property AltId: TStringCT read fAltId;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Requestor: TBooleanCT read fRequestor;
-    [TNaming(TNaming.nFlatCase)]
     property Location: TReferenceCT read fLocation;
-    [TNaming(TNaming.nFlatCase)]
     property Policy: TUriCTList read fPolicy;
-    [TNaming(TNaming.nFlatCase)]
     property Media: TCodingCT read fMedia;
-    [TNaming(TNaming.nFlatCase)]
     property Network: TAuditEventNetworkCT read fNetwork;
-    [TNaming(TNaming.nCamelCase)]
     property PurposeOfUse: TCodeableConceptCTList read fPurposeOfUse;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('AuditEvent.Network')]
   TAuditEventNetworkCT = class(TBackboneElementCT)
   private
     fAddress: TStringCT;
     fType: TAuditEventAgentNetworkTypeCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Address: TStringCT read fAddress;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TAuditEventAgentNetworkTypeCT read fType;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('AuditEvent.Source')]
   TAuditEventSourceCT = class(TBackboneElementCT)
   private
@@ -7582,16 +6256,12 @@ type
     fObserver: TReferenceCT;
     fType: TCodingCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Site: TStringCT read fSite;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Observer: TReferenceCT read fObserver;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodingCTList read fType;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('AuditEvent.Entity')]
   TAuditEventEntityCT = class(TBackboneElementCT)
   private
@@ -7605,27 +6275,17 @@ type
     fQuery: TBase64BinaryCT;
     fDetail: TAuditEventDetailCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property What: TReferenceCT read fWhat;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodingCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Role: TCodingCT read fRole;
-    [TNaming(TNaming.nFlatCase)]
     property Lifecycle: TCodingCT read fLifecycle;
-    [TNaming(TNaming.nCamelCase)]
     property SecurityLabel: TCodingCTList read fSecurityLabel;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Query: TBase64BinaryCT read fQuery;
-    [TNaming(TNaming.nFlatCase)]
     property Detail: TAuditEventDetailCTList read fDetail;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('AuditEvent.Detail')]
   TAuditEventDetailCT = class(TBackboneElementCT)
   private
@@ -7640,13 +6300,10 @@ type
     property ValueChosen: TBasite read GetValueChosen;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TStringCT read fType;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueString: TStringCT read GetValueString;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueBase64Binary: TBase64BinaryCT read GetValueBase64Binary;
   end;
 
@@ -7654,7 +6311,6 @@ type
   private
     fValue: TAuditEventOutcomeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TAuditEventOutcomeListST read fValue write fValue;
   end;
 
@@ -7662,7 +6318,6 @@ type
   private
     fValue: TAuditEventActionListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TAuditEventActionListST read fValue write fValue;
   end;
 
@@ -7670,7 +6325,6 @@ type
   private
     fValue: TAuditEventAgentNetworkTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TAuditEventAgentNetworkTypeListST read fValue write fValue;
   end;
 
@@ -7682,16 +6336,11 @@ type
     fCreated: TDateCT;
     fAuthor: TReferenceCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCT read fSubject;
-    [TNaming(TNaming.nFlatCase)]
     property Created: TDateCT read fCreated;
-    [TNaming(TNaming.nFlatCase)]
     property Author: TReferenceCT read fAuthor;
   end;
 
@@ -7702,11 +6351,8 @@ type
     fData: TBase64BinaryCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ContentType: TCodeCT read fContentType;
-    [TNaming(TNaming.nCamelCase)]
     property SecurityContext: TReferenceCT read fSecurityContext;
-    [TNaming(TNaming.nFlatCase)]
     property Data: TBase64BinaryCT read fData;
   end;
 
@@ -7724,31 +6370,19 @@ type
     fManipulation: TBiologicallyDerivedProductManipulationCT;
     fStorage: TBiologicallyDerivedProductStorageCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nCamelCase)]
     property ProductCategory: TBiologicallyDerivedProductCategoryCT read fProductCategory;
-    [TNaming(TNaming.nCamelCase)]
     property ProductCode: TCodeableConceptCT read fProductCode;
-    [TNaming(TNaming.nFlatCase)]
     property Status: TBiologicallyDerivedProductStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Request: TReferenceCTList read fRequest;
-    [TNaming(TNaming.nFlatCase)]
     property Quantity: TIntegerCT read fQuantity;
-    [TNaming(TNaming.nFlatCase)]
     property Parent: TReferenceCTList read fParent;
-    [TNaming(TNaming.nFlatCase)]
     property Collection: TBiologicallyDerivedProductCollectionCT read fCollection;
-    [TNaming(TNaming.nFlatCase)]
     property Processing: TBiologicallyDerivedProductProcessingCTList read fProcessing;
-    [TNaming(TNaming.nFlatCase)]
     property Manipulation: TBiologicallyDerivedProductManipulationCT read fManipulation;
-    [TNaming(TNaming.nFlatCase)]
     property Storage: TBiologicallyDerivedProductStorageCTList read fStorage;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('BiologicallyDerivedProduct.Collection')]
   TBiologicallyDerivedProductCollectionCT = class(TBackboneElementCT)
   private
@@ -7763,19 +6397,14 @@ type
   public
     property CollectedChosen: TBasite read GetCollectedChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Collector: TReferenceCT read fCollector;
-    [TNaming(TNaming.nFlatCase)]
     property Source: TReferenceCT read fSource;
     [TChoice('Collected')]
-    [TNaming(TNaming.nCamelCase)]
     property CollectedDateTime: TDateTimeCT read GetCollectedDateTime;
     [TChoice('Collected')]
-    [TNaming(TNaming.nCamelCase)]
     property CollectedPeriod: TPeriodCT read GetCollectedPeriod;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('BiologicallyDerivedProduct.Processing')]
   TBiologicallyDerivedProductProcessingCT = class(TBackboneElementCT)
   private
@@ -7791,21 +6420,15 @@ type
   public
     property TimeChosen: TBasite read GetTimeChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property &Procedure: TCodeableConceptCT read fProcedure;
-    [TNaming(TNaming.nFlatCase)]
     property Additive: TReferenceCT read fAdditive;
     [TChoice('Time')]
-    [TNaming(TNaming.nCamelCase)]
     property TimeDateTime: TDateTimeCT read GetTimeDateTime;
     [TChoice('Time')]
-    [TNaming(TNaming.nCamelCase)]
     property TimePeriod: TPeriodCT read GetTimePeriod;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('BiologicallyDerivedProduct.Manipulation')]
   TBiologicallyDerivedProductManipulationCT = class(TBackboneElementCT)
   private
@@ -7819,17 +6442,13 @@ type
   public
     property TimeChosen: TBasite read GetTimeChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
     [TChoice('Time')]
-    [TNaming(TNaming.nCamelCase)]
     property TimeDateTime: TDateTimeCT read GetTimeDateTime;
     [TChoice('Time')]
-    [TNaming(TNaming.nCamelCase)]
     property TimePeriod: TPeriodCT read GetTimePeriod;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('BiologicallyDerivedProduct.Storage')]
   TBiologicallyDerivedProductStorageCT = class(TBackboneElementCT)
   private
@@ -7838,13 +6457,9 @@ type
     fScale: TBiologicallyDerivedProductStorageScaleCT;
     fDuration: TPeriodCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Temperature: TDecimalCT read fTemperature;
-    [TNaming(TNaming.nFlatCase)]
     property Scale: TBiologicallyDerivedProductStorageScaleCT read fScale;
-    [TNaming(TNaming.nFlatCase)]
     property Duration: TPeriodCT read fDuration;
   end;
 
@@ -7852,7 +6467,6 @@ type
   private
     fValue: TBiologicallyDerivedProductCategoryListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TBiologicallyDerivedProductCategoryListST read fValue write fValue;
   end;
 
@@ -7860,7 +6474,6 @@ type
   private
     fValue: TBiologicallyDerivedProductStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TBiologicallyDerivedProductStatusListST read fValue write fValue;
   end;
 
@@ -7868,7 +6481,6 @@ type
   private
     fValue: TBiologicallyDerivedProductStorageScaleListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TBiologicallyDerivedProductStorageScaleListST read fValue write fValue;
   end;
 
@@ -7883,22 +6495,14 @@ type
     fImage: TAttachmentCTList;
     fPatient: TReferenceCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Active: TBooleanCT read fActive;
-    [TNaming(TNaming.nFlatCase)]
     property Morphology: TCodeableConceptCT read fMorphology;
-    [TNaming(TNaming.nFlatCase)]
     property Location: TCodeableConceptCT read fLocation;
-    [TNaming(TNaming.nCamelCase)]
     property LocationQualifier: TCodeableConceptCTList read fLocationQualifier;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Image: TAttachmentCTList read fImage;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Patient: TReferenceCT read fPatient;
   end;
 
@@ -7912,24 +6516,16 @@ type
     fEntry: TBundleEntryCTList;
     fSignature: TSignatureCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCT read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TBundleTypeCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Timestamp: TInstantCT read fTimestamp;
-    [TNaming(TNaming.nFlatCase)]
     property Total: TUnsignedIntCT read fTotal;
-    [TNaming(TNaming.nFlatCase)]
     property Link: TBundleLinkCTList read fLink;
-    [TNaming(TNaming.nFlatCase)]
     property Entry: TBundleEntryCTList read fEntry;
-    [TNaming(TNaming.nFlatCase)]
     property Signature: TSignatureCT read fSignature;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Bundle.Link')]
   TBundleLinkCT = class(TBackboneElementCT)
   private
@@ -7937,14 +6533,11 @@ type
     fUrl: TUriCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Relation: TStringCT read fRelation;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUriCT read fUrl;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Bundle.Entry')]
   TBundleEntryCT = class(TBackboneElementCT)
   private
@@ -7955,34 +6548,24 @@ type
     fRequest: TBundleRequestCT;
     fResponse: TBundleResponseCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Link: TBundleLinkCTList read fLink;
-    [TNaming(TNaming.nCamelCase)]
     property FullUrl: TUriCT read fFullUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Resource: TResourceContainerCT read fResource;
-    [TNaming(TNaming.nFlatCase)]
     property Search: TBundleSearchCT read fSearch;
-    [TNaming(TNaming.nFlatCase)]
     property Request: TBundleRequestCT read fRequest;
-    [TNaming(TNaming.nFlatCase)]
     property Response: TBundleResponseCT read fResponse;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Bundle.Search')]
   TBundleSearchCT = class(TBackboneElementCT)
   private
     fMode: TSearchEntryModeCT;
     fScore: TDecimalCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Mode: TSearchEntryModeCT read fMode;
-    [TNaming(TNaming.nFlatCase)]
     property Score: TDecimalCT read fScore;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Bundle.Request')]
   TBundleRequestCT = class(TBackboneElementCT)
   private
@@ -7994,22 +6577,15 @@ type
     fIfNoneExist: TStringCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Method: THTTPVerbCT read fMethod;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUriCT read fUrl;
-    [TNaming(TNaming.nCamelCase)]
     property IfNoneMatch: TStringCT read fIfNoneMatch;
-    [TNaming(TNaming.nCamelCase)]
     property IfModifiedSince: TInstantCT read fIfModifiedSince;
-    [TNaming(TNaming.nCamelCase)]
     property IfMatch: TStringCT read fIfMatch;
-    [TNaming(TNaming.nCamelCase)]
     property IfNoneExist: TStringCT read fIfNoneExist;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Bundle.Response')]
   TBundleResponseCT = class(TBackboneElementCT)
   private
@@ -8020,15 +6596,10 @@ type
     fOutcome: TResourceContainerCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TStringCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Location: TUriCT read fLocation;
-    [TNaming(TNaming.nFlatCase)]
     property Etag: TStringCT read fEtag;
-    [TNaming(TNaming.nCamelCase)]
     property LastModified: TInstantCT read fLastModified;
-    [TNaming(TNaming.nFlatCase)]
     property Outcome: TResourceContainerCT read fOutcome;
   end;
 
@@ -8036,7 +6607,6 @@ type
   private
     fValue: THTTPVerbListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: THTTPVerbListST read fValue write fValue;
   end;
 
@@ -8044,7 +6614,6 @@ type
   private
     fValue: TBundleTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TBundleTypeListST read fValue write fValue;
   end;
 
@@ -8052,7 +6621,6 @@ type
   private
     fValue: TSearchEntryModeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TSearchEntryModeListST read fValue write fValue;
   end;
 
@@ -8085,65 +6653,38 @@ type
     fMessaging: TCapabilityStatementMessagingCTList;
     fDocument: TCapabilityStatementDocumentCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUriCT read fUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCT read fVersion;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Title: TStringCT read fTitle;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TPublicationStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Experimental: TBooleanCT read fExperimental;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Publisher: TStringCT read fPublisher;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TContactDetailCTList read fContact;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TMarkdownCT read fDescription;
-    [TNaming(TNaming.nCamelCase)]
     property UseContext: TUsageContextCTList read fUseContext;
-    [TNaming(TNaming.nFlatCase)]
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    [TNaming(TNaming.nFlatCase)]
     property Purpose: TMarkdownCT read fPurpose;
-    [TNaming(TNaming.nFlatCase)]
     property Copyright: TMarkdownCT read fCopyright;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Kind: TCapabilityStatementKindCT read fKind;
-    [TNaming(TNaming.nFlatCase)]
     property Instantiates: TCanonicalCTList read fInstantiates;
-    [TNaming(TNaming.nFlatCase)]
     property Imports: TCanonicalCTList read fImports;
-    [TNaming(TNaming.nFlatCase)]
     property Software: TCapabilityStatementSoftwareCT read fSoftware;
-    [TNaming(TNaming.nFlatCase)]
     property &Implementation: TCapabilityStatementImplementationCT read fImplementation;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property FhirVersion: TFHIRVersionCT read fFhirVersion;
-    [TNaming(TNaming.nFlatCase)]
     property Format: TCodeCTList read fFormat;
-    [TNaming(TNaming.nCamelCase)]
     property PatchFormat: TCodeCTList read fPatchFormat;
-    [TNaming(TNaming.nCamelCase)]
     property ImplementationGuide: TCanonicalCTList read fImplementationGuide;
-    [TNaming(TNaming.nFlatCase)]
     property Rest: TCapabilityStatementRestCTList read fRest;
-    [TNaming(TNaming.nFlatCase)]
     property Messaging: TCapabilityStatementMessagingCTList read fMessaging;
-    [TNaming(TNaming.nFlatCase)]
     property Document: TCapabilityStatementDocumentCTList read fDocument;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('CapabilityStatement.Software')]
   TCapabilityStatementSoftwareCT = class(TBackboneElementCT)
   private
@@ -8152,15 +6693,11 @@ type
     fReleaseDate: TDateTimeCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCT read fVersion;
-    [TNaming(TNaming.nCamelCase)]
     property ReleaseDate: TDateTimeCT read fReleaseDate;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('CapabilityStatement.Implementation')]
   TCapabilityStatementImplementationCT = class(TBackboneElementCT)
   private
@@ -8169,15 +6706,11 @@ type
     fCustodian: TReferenceCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUrlCT read fUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Custodian: TReferenceCT read fCustodian;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('CapabilityStatement.Rest')]
   TCapabilityStatementRestCT = class(TBackboneElementCT)
   private
@@ -8191,25 +6724,16 @@ type
     fCompartment: TCanonicalCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Mode: TRestfulCapabilityModeCT read fMode;
-    [TNaming(TNaming.nFlatCase)]
     property Documentation: TMarkdownCT read fDocumentation;
-    [TNaming(TNaming.nFlatCase)]
     property Security: TCapabilityStatementSecurityCT read fSecurity;
-    [TNaming(TNaming.nFlatCase)]
     property Resource: TCapabilityStatementResourceCTList read fResource;
-    [TNaming(TNaming.nFlatCase)]
     property Interaction: TCapabilityStatementInteraction1CTList read fInteraction;
-    [TNaming(TNaming.nCamelCase)]
     property SearchParam: TCapabilityStatementSearchParamCTList read fSearchParam;
-    [TNaming(TNaming.nFlatCase)]
     property Operation: TCapabilityStatementOperationCTList read fOperation;
-    [TNaming(TNaming.nFlatCase)]
     property Compartment: TCanonicalCTList read fCompartment;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('CapabilityStatement.Security')]
   TCapabilityStatementSecurityCT = class(TBackboneElementCT)
   private
@@ -8217,15 +6741,11 @@ type
     fService: TCodeableConceptCTList;
     fDescription: TMarkdownCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Cors: TBooleanCT read fCors;
-    [TNaming(TNaming.nFlatCase)]
     property Service: TCodeableConceptCTList read fService;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TMarkdownCT read fDescription;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('CapabilityStatement.Resource')]
   TCapabilityStatementResourceCT = class(TBackboneElementCT)
   private
@@ -8248,43 +6768,25 @@ type
     fOperation: TCapabilityStatementOperationCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Profile: TCanonicalCT read fProfile;
-    [TNaming(TNaming.nCamelCase)]
     property SupportedProfile: TCanonicalCTList read fSupportedProfile;
-    [TNaming(TNaming.nFlatCase)]
     property Documentation: TMarkdownCT read fDocumentation;
-    [TNaming(TNaming.nFlatCase)]
     property Interaction: TCapabilityStatementInteractionCTList read fInteraction;
-    [TNaming(TNaming.nFlatCase)]
     property Versioning: TResourceVersionPolicyCT read fVersioning;
-    [TNaming(TNaming.nCamelCase)]
     property ReadHistory: TBooleanCT read fReadHistory;
-    [TNaming(TNaming.nCamelCase)]
     property UpdateCreate: TBooleanCT read fUpdateCreate;
-    [TNaming(TNaming.nCamelCase)]
     property ConditionalCreate: TBooleanCT read fConditionalCreate;
-    [TNaming(TNaming.nCamelCase)]
     property ConditionalRead: TConditionalReadStatusCT read fConditionalRead;
-    [TNaming(TNaming.nCamelCase)]
     property ConditionalUpdate: TBooleanCT read fConditionalUpdate;
-    [TNaming(TNaming.nCamelCase)]
     property ConditionalDelete: TConditionalDeleteStatusCT read fConditionalDelete;
-    [TNaming(TNaming.nCamelCase)]
     property ReferencePolicy: TReferenceHandlingPolicyCTList read fReferencePolicy;
-    [TNaming(TNaming.nCamelCase)]
     property SearchInclude: TStringCTList read fSearchInclude;
-    [TNaming(TNaming.nCamelCase)]
     property SearchRevInclude: TStringCTList read fSearchRevInclude;
-    [TNaming(TNaming.nCamelCase)]
     property SearchParam: TCapabilityStatementSearchParamCTList read fSearchParam;
-    [TNaming(TNaming.nFlatCase)]
     property Operation: TCapabilityStatementOperationCTList read fOperation;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('CapabilityStatement.Interaction')]
   TCapabilityStatementInteractionCT = class(TBackboneElementCT)
   private
@@ -8292,13 +6794,10 @@ type
     fDocumentation: TMarkdownCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TTypeRestfulInteractionCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Documentation: TMarkdownCT read fDocumentation;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('CapabilityStatement.SearchParam')]
   TCapabilityStatementSearchParamCT = class(TBackboneElementCT)
   private
@@ -8308,18 +6807,13 @@ type
     fDocumentation: TMarkdownCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Definition: TCanonicalCT read fDefinition;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TSearchParamTypeCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Documentation: TMarkdownCT read fDocumentation;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('CapabilityStatement.Operation')]
   TCapabilityStatementOperationCT = class(TBackboneElementCT)
   private
@@ -8328,16 +6822,12 @@ type
     fDocumentation: TMarkdownCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Definition: TCanonicalCT read fDefinition;
-    [TNaming(TNaming.nFlatCase)]
     property Documentation: TMarkdownCT read fDocumentation;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('CapabilityStatement.Interaction1')]
   TCapabilityStatementInteraction1CT = class(TBackboneElementCT)
   private
@@ -8345,13 +6835,10 @@ type
     fDocumentation: TMarkdownCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TSystemRestfulInteractionCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Documentation: TMarkdownCT read fDocumentation;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('CapabilityStatement.Messaging')]
   TCapabilityStatementMessagingCT = class(TBackboneElementCT)
   private
@@ -8360,17 +6847,12 @@ type
     fDocumentation: TMarkdownCT;
     fSupportedMessage: TCapabilityStatementSupportedMessageCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Endpoint: TCapabilityStatementEndpointCTList read fEndpoint;
-    [TNaming(TNaming.nCamelCase)]
     property ReliableCache: TUnsignedIntCT read fReliableCache;
-    [TNaming(TNaming.nFlatCase)]
     property Documentation: TMarkdownCT read fDocumentation;
-    [TNaming(TNaming.nCamelCase)]
     property SupportedMessage: TCapabilityStatementSupportedMessageCTList read fSupportedMessage;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('CapabilityStatement.Endpoint')]
   TCapabilityStatementEndpointCT = class(TBackboneElementCT)
   private
@@ -8378,14 +6860,11 @@ type
     fAddress: TUrlCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Protocol: TCodingCT read fProtocol;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Address: TUrlCT read fAddress;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('CapabilityStatement.SupportedMessage')]
   TCapabilityStatementSupportedMessageCT = class(TBackboneElementCT)
   private
@@ -8393,14 +6872,11 @@ type
     fDefinition: TCanonicalCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Mode: TEventCapabilityModeCT read fMode;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Definition: TCanonicalCT read fDefinition;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('CapabilityStatement.Document')]
   TCapabilityStatementDocumentCT = class(TBackboneElementCT)
   private
@@ -8409,12 +6885,9 @@ type
     fProfile: TCanonicalCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Mode: TDocumentModeCT read fMode;
-    [TNaming(TNaming.nFlatCase)]
     property Documentation: TMarkdownCT read fDocumentation;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Profile: TCanonicalCT read fProfile;
   end;
 
@@ -8422,7 +6895,6 @@ type
   private
     fValue: TCapabilityStatementKindListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TCapabilityStatementKindListST read fValue write fValue;
   end;
 
@@ -8430,7 +6902,6 @@ type
   private
     fValue: TEventCapabilityModeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TEventCapabilityModeListST read fValue write fValue;
   end;
 
@@ -8438,7 +6909,6 @@ type
   private
     fValue: TResourceVersionPolicyListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TResourceVersionPolicyListST read fValue write fValue;
   end;
 
@@ -8446,7 +6916,6 @@ type
   private
     fValue: TDocumentModeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TDocumentModeListST read fValue write fValue;
   end;
 
@@ -8454,7 +6923,6 @@ type
   private
     fValue: TRestfulCapabilityModeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TRestfulCapabilityModeListST read fValue write fValue;
   end;
 
@@ -8462,7 +6930,6 @@ type
   private
     fValue: TTypeRestfulInteractionListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TTypeRestfulInteractionListST read fValue write fValue;
   end;
 
@@ -8470,7 +6937,6 @@ type
   private
     fValue: TSystemRestfulInteractionListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TSystemRestfulInteractionListST read fValue write fValue;
   end;
 
@@ -8478,7 +6944,6 @@ type
   private
     fValue: TConditionalReadStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TConditionalReadStatusListST read fValue write fValue;
   end;
 
@@ -8486,7 +6951,6 @@ type
   private
     fValue: TReferenceHandlingPolicyListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TReferenceHandlingPolicyListST read fValue write fValue;
   end;
 
@@ -8494,7 +6958,6 @@ type
   private
     fValue: TConditionalDeleteStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TConditionalDeleteStatusListST read fValue write fValue;
   end;
 
@@ -8524,58 +6987,34 @@ type
     fActivity: TCarePlanActivityCTList;
     fNote: TAnnotationCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nCamelCase)]
     property InstantiatesCanonical: TCanonicalCTList read fInstantiatesCanonical;
-    [TNaming(TNaming.nCamelCase)]
     property InstantiatesUri: TUriCTList read fInstantiatesUri;
-    [TNaming(TNaming.nCamelCase)]
     property BasedOn: TReferenceCTList read fBasedOn;
-    [TNaming(TNaming.nFlatCase)]
     property Replaces: TReferenceCTList read fReplaces;
-    [TNaming(TNaming.nCamelCase)]
     property PartOf: TReferenceCTList read fPartOf;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TRequestStatusCT read fStatus;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Intent: TCarePlanIntentCT read fIntent;
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCTList read fCategory;
-    [TNaming(TNaming.nFlatCase)]
     property Title: TStringCT read fTitle;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCT read fSubject;
-    [TNaming(TNaming.nFlatCase)]
     property Encounter: TReferenceCT read fEncounter;
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCT read fPeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Created: TDateTimeCT read fCreated;
-    [TNaming(TNaming.nFlatCase)]
     property Author: TReferenceCT read fAuthor;
-    [TNaming(TNaming.nFlatCase)]
     property Contributor: TReferenceCTList read fContributor;
-    [TNaming(TNaming.nCamelCase)]
     property CareTeam: TReferenceCTList read fCareTeam;
-    [TNaming(TNaming.nFlatCase)]
     property Addresses: TReferenceCTList read fAddresses;
-    [TNaming(TNaming.nCamelCase)]
     property SupportingInfo: TReferenceCTList read fSupportingInfo;
-    [TNaming(TNaming.nFlatCase)]
     property Goal: TReferenceCTList read fGoal;
-    [TNaming(TNaming.nFlatCase)]
     property Activity: TCarePlanActivityCTList read fActivity;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('CarePlan.Activity')]
   TCarePlanActivityCT = class(TBackboneElementCT)
   private
@@ -8585,19 +7024,13 @@ type
     fReference: TReferenceCT;
     fDetail: TCarePlanDetailCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property OutcomeCodeableConcept: TCodeableConceptCTList read fOutcomeCodeableConcept;
-    [TNaming(TNaming.nCamelCase)]
     property OutcomeReference: TReferenceCTList read fOutcomeReference;
-    [TNaming(TNaming.nFlatCase)]
     property Progress: TAnnotationCTList read fProgress;
-    [TNaming(TNaming.nFlatCase)]
     property Reference: TReferenceCT read fReference;
-    [TNaming(TNaming.nFlatCase)]
     property Detail: TCarePlanDetailCT read fDetail;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('CarePlan.Detail')]
   TCarePlanDetailCT = class(TBackboneElementCT)
   private
@@ -8633,51 +7066,31 @@ type
     property ScheduledChosen: TBasite read GetScheduledChosen;
     property ProductChosen: TBasite read GetProductChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Kind: TCarePlanActivityKindCT read fKind;
-    [TNaming(TNaming.nCamelCase)]
     property InstantiatesCanonical: TCanonicalCTList read fInstantiatesCanonical;
-    [TNaming(TNaming.nCamelCase)]
     property InstantiatesUri: TUriCTList read fInstantiatesUri;
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonReference: TReferenceCTList read fReasonReference;
-    [TNaming(TNaming.nFlatCase)]
     property Goal: TReferenceCTList read fGoal;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TCarePlanActivityStatusCT read fStatus;
-    [TNaming(TNaming.nCamelCase)]
     property StatusReason: TCodeableConceptCT read fStatusReason;
-    [TNaming(TNaming.nCamelCase)]
     property DoNotPerform: TBooleanCT read fDoNotPerform;
     [TChoice('Scheduled')]
-    [TNaming(TNaming.nCamelCase)]
     property ScheduledTiming: TTimingCT read GetScheduledTiming;
     [TChoice('Scheduled')]
-    [TNaming(TNaming.nCamelCase)]
     property ScheduledPeriod: TPeriodCT read GetScheduledPeriod;
     [TChoice('Scheduled')]
-    [TNaming(TNaming.nCamelCase)]
     property ScheduledString: TStringCT read GetScheduledString;
-    [TNaming(TNaming.nFlatCase)]
     property Location: TReferenceCT read fLocation;
-    [TNaming(TNaming.nFlatCase)]
     property Performer: TReferenceCTList read fPerformer;
     [TChoice('Product')]
-    [TNaming(TNaming.nCamelCase)]
     property ProductCodeableConcept: TCodeableConceptCT read GetProductCodeableConcept;
     [TChoice('Product')]
-    [TNaming(TNaming.nCamelCase)]
     property ProductReference: TReferenceCT read GetProductReference;
-    [TNaming(TNaming.nCamelCase)]
     property DailyAmount: TQuantityCT read fDailyAmount;
-    [TNaming(TNaming.nFlatCase)]
     property Quantity: TQuantityCT read fQuantity;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
   end;
 
@@ -8685,7 +7098,6 @@ type
   private
     fValue: TCarePlanActivityKindListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TCarePlanActivityKindListST read fValue write fValue;
   end;
 
@@ -8693,7 +7105,6 @@ type
   private
     fValue: TCarePlanActivityStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TCarePlanActivityStatusListST read fValue write fValue;
   end;
 
@@ -8701,7 +7112,6 @@ type
   private
     fValue: TCarePlanIntentListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TCarePlanIntentListST read fValue write fValue;
   end;
 
@@ -8709,7 +7119,6 @@ type
   private
     fValue: TRequestStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TRequestStatusListST read fValue write fValue;
   end;
 
@@ -8729,35 +7138,21 @@ type
     fTelecom: TContactPointCTList;
     fNote: TAnnotationCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Status: TCareTeamStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCTList read fCategory;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCT read fSubject;
-    [TNaming(TNaming.nFlatCase)]
     property Encounter: TReferenceCT read fEncounter;
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCT read fPeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Participant: TCareTeamParticipantCTList read fParticipant;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonReference: TReferenceCTList read fReasonReference;
-    [TNaming(TNaming.nCamelCase)]
     property ManagingOrganization: TReferenceCTList read fManagingOrganization;
-    [TNaming(TNaming.nFlatCase)]
     property Telecom: TContactPointCTList read fTelecom;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('CareTeam.Participant')]
   TCareTeamParticipantCT = class(TBackboneElementCT)
   private
@@ -8766,13 +7161,9 @@ type
     fOnBehalfOf: TReferenceCT;
     fPeriod: TPeriodCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Role: TCodeableConceptCTList read fRole;
-    [TNaming(TNaming.nFlatCase)]
     property Member: TReferenceCT read fMember;
-    [TNaming(TNaming.nCamelCase)]
     property OnBehalfOf: TReferenceCT read fOnBehalfOf;
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCT read fPeriod;
   end;
 
@@ -8780,7 +7171,6 @@ type
   private
     fValue: TCareTeamStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TCareTeamStatusListST read fValue write fValue;
   end;
 
@@ -8800,37 +7190,23 @@ type
     fAdditionalClassification: TCodeableConceptCTList;
     fRelatedEntry: TCatalogEntryRelatedEntryCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Orderable: TBooleanCT read fOrderable;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ReferencedItem: TReferenceCT read fReferencedItem;
-    [TNaming(TNaming.nCamelCase)]
     property AdditionalIdentifier: TIdentifierCTList read fAdditionalIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Classification: TCodeableConceptCTList read fClassification;
-    [TNaming(TNaming.nFlatCase)]
     property Status: TPublicationStatusCT read fStatus;
-    [TNaming(TNaming.nCamelCase)]
     property ValidityPeriod: TPeriodCT read fValidityPeriod;
-    [TNaming(TNaming.nCamelCase)]
     property ValidTo: TDateTimeCT read fValidTo;
-    [TNaming(TNaming.nCamelCase)]
     property LastUpdated: TDateTimeCT read fLastUpdated;
-    [TNaming(TNaming.nCamelCase)]
     property AdditionalCharacteristic: TCodeableConceptCTList read fAdditionalCharacteristic;
-    [TNaming(TNaming.nCamelCase)]
     property AdditionalClassification: TCodeableConceptCTList read fAdditionalClassification;
-    [TNaming(TNaming.nCamelCase)]
     property RelatedEntry: TCatalogEntryRelatedEntryCTList read fRelatedEntry;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('CatalogEntry.RelatedEntry')]
   TCatalogEntryRelatedEntryCT = class(TBackboneElementCT)
   private
@@ -8838,10 +7214,8 @@ type
     fItem: TReferenceCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Relationtype: TCatalogEntryRelationTypeCT read fRelationtype;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Item: TReferenceCT read fItem;
   end;
 
@@ -8849,7 +7223,6 @@ type
   private
     fValue: TCatalogEntryRelationTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TCatalogEntryRelationTypeListST read fValue write fValue;
   end;
 
@@ -8896,85 +7269,53 @@ type
     property OccurrenceChosen: TBasite read GetOccurrenceChosen;
     property ProductChosen: TBasite read GetProductChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nCamelCase)]
     property DefinitionUri: TUriCTList read fDefinitionUri;
-    [TNaming(TNaming.nCamelCase)]
     property DefinitionCanonical: TCanonicalCTList read fDefinitionCanonical;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TChargeItemStatusCT read fStatus;
-    [TNaming(TNaming.nCamelCase)]
     property PartOf: TReferenceCTList read fPartOf;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCT read fSubject;
-    [TNaming(TNaming.nFlatCase)]
     property Context: TReferenceCT read fContext;
     [TChoice('Occurrence')]
-    [TNaming(TNaming.nCamelCase)]
     property OccurrenceDateTime: TDateTimeCT read GetOccurrenceDateTime;
     [TChoice('Occurrence')]
-    [TNaming(TNaming.nCamelCase)]
     property OccurrencePeriod: TPeriodCT read GetOccurrencePeriod;
     [TChoice('Occurrence')]
-    [TNaming(TNaming.nCamelCase)]
     property OccurrenceTiming: TTimingCT read GetOccurrenceTiming;
-    [TNaming(TNaming.nFlatCase)]
     property Performer: TChargeItemPerformerCTList read fPerformer;
-    [TNaming(TNaming.nCamelCase)]
     property PerformingOrganization: TReferenceCT read fPerformingOrganization;
-    [TNaming(TNaming.nCamelCase)]
     property RequestingOrganization: TReferenceCT read fRequestingOrganization;
-    [TNaming(TNaming.nCamelCase)]
     property CostCenter: TReferenceCT read fCostCenter;
-    [TNaming(TNaming.nFlatCase)]
     property Quantity: TQuantityCT read fQuantity;
-    [TNaming(TNaming.nFlatCase)]
     property Bodysite: TCodeableConceptCTList read fBodysite;
-    [TNaming(TNaming.nCamelCase)]
     property FactorOverride: TDecimalCT read fFactorOverride;
-    [TNaming(TNaming.nCamelCase)]
     property PriceOverride: TMoneyCT read fPriceOverride;
-    [TNaming(TNaming.nCamelCase)]
     property OverrideReason: TStringCT read fOverrideReason;
-    [TNaming(TNaming.nFlatCase)]
     property Enterer: TReferenceCT read fEnterer;
-    [TNaming(TNaming.nCamelCase)]
     property EnteredDate: TDateTimeCT read fEnteredDate;
-    [TNaming(TNaming.nFlatCase)]
     property Reason: TCodeableConceptCTList read fReason;
-    [TNaming(TNaming.nFlatCase)]
     property Service: TReferenceCTList read fService;
     [TChoice('Product')]
-    [TNaming(TNaming.nCamelCase)]
     property ProductReference: TReferenceCT read GetProductReference;
     [TChoice('Product')]
-    [TNaming(TNaming.nCamelCase)]
     property ProductCodeableConcept: TCodeableConceptCT read GetProductCodeableConcept;
-    [TNaming(TNaming.nFlatCase)]
     property Account: TReferenceCTList read fAccount;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
-    [TNaming(TNaming.nCamelCase)]
     property SupportingInformation: TReferenceCTList read fSupportingInformation;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ChargeItem.Performer')]
   TChargeItemPerformerCT = class(TBackboneElementCT)
   private
     fFunction: TCodeableConceptCT;
     fActor: TReferenceCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property &Function: TCodeableConceptCT read fFunction;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Actor: TReferenceCT read fActor;
   end;
 
@@ -8982,7 +7323,6 @@ type
   private
     fValue: TChargeItemStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TChargeItemStatusListST read fValue write fValue;
   end;
 
@@ -9013,56 +7353,32 @@ type
     fPropertyGroup: TChargeItemDefinitionPropertyGroupCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUriCT read fUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCT read fVersion;
-    [TNaming(TNaming.nFlatCase)]
     property Title: TStringCT read fTitle;
-    [TNaming(TNaming.nCamelCase)]
     property DerivedFromUri: TUriCTList read fDerivedFromUri;
-    [TNaming(TNaming.nCamelCase)]
     property PartOf: TCanonicalCTList read fPartOf;
-    [TNaming(TNaming.nFlatCase)]
     property Replaces: TCanonicalCTList read fReplaces;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TPublicationStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Experimental: TBooleanCT read fExperimental;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Publisher: TStringCT read fPublisher;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TContactDetailCTList read fContact;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TMarkdownCT read fDescription;
-    [TNaming(TNaming.nCamelCase)]
     property UseContext: TUsageContextCTList read fUseContext;
-    [TNaming(TNaming.nFlatCase)]
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    [TNaming(TNaming.nFlatCase)]
     property Copyright: TMarkdownCT read fCopyright;
-    [TNaming(TNaming.nCamelCase)]
     property ApprovalDate: TDateCT read fApprovalDate;
-    [TNaming(TNaming.nCamelCase)]
     property LastReviewDate: TDateCT read fLastReviewDate;
-    [TNaming(TNaming.nCamelCase)]
     property EffectivePeriod: TPeriodCT read fEffectivePeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Instance: TReferenceCTList read fInstance;
-    [TNaming(TNaming.nFlatCase)]
     property Applicability: TChargeItemDefinitionApplicabilityCTList read fApplicability;
-    [TNaming(TNaming.nCamelCase)]
     property PropertyGroup: TChargeItemDefinitionPropertyGroupCTList read fPropertyGroup;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ChargeItemDefinition.Applicability')]
   TChargeItemDefinitionApplicabilityCT = class(TBackboneElementCT)
   private
@@ -9070,28 +7386,21 @@ type
     fLanguage: TStringCT;
     fExpression: TStringCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Language: TStringCT read fLanguage;
-    [TNaming(TNaming.nFlatCase)]
     property Expression: TStringCT read fExpression;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ChargeItemDefinition.PropertyGroup')]
   TChargeItemDefinitionPropertyGroupCT = class(TBackboneElementCT)
   private
     fApplicability: TChargeItemDefinitionApplicabilityCTList;
     fPriceComponent: TChargeItemDefinitionPriceComponentCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Applicability: TChargeItemDefinitionApplicabilityCTList read fApplicability;
-    [TNaming(TNaming.nCamelCase)]
     property PriceComponent: TChargeItemDefinitionPriceComponentCTList read fPriceComponent;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ChargeItemDefinition.PriceComponent')]
   TChargeItemDefinitionPriceComponentCT = class(TBackboneElementCT)
   private
@@ -9101,13 +7410,9 @@ type
     fAmount: TMoneyCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TInvoicePriceComponentTypeCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Factor: TDecimalCT read fFactor;
-    [TNaming(TNaming.nFlatCase)]
     property Amount: TMoneyCT read fAmount;
   end;
 
@@ -9115,7 +7420,6 @@ type
   private
     fValue: TInvoicePriceComponentTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TInvoicePriceComponentTypeListST read fValue write fValue;
   end;
 
@@ -9149,70 +7453,42 @@ type
     fItem: TClaimItemCTList;
     fTotal: TMoneyCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TFinancialResourceStatusCodesCT read fStatus;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nCamelCase)]
     property SubType: TCodeableConceptCT read fSubType;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Use: TUseCT read fUse;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Patient: TReferenceCT read fPatient;
-    [TNaming(TNaming.nCamelCase)]
     property BillablePeriod: TPeriodCT read fBillablePeriod;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Created: TDateTimeCT read fCreated;
-    [TNaming(TNaming.nFlatCase)]
     property Enterer: TReferenceCT read fEnterer;
-    [TNaming(TNaming.nFlatCase)]
     property Insurer: TReferenceCT read fInsurer;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Provider: TReferenceCT read fProvider;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Priority: TCodeableConceptCT read fPriority;
-    [TNaming(TNaming.nCamelCase)]
     property FundsReserve: TCodeableConceptCT read fFundsReserve;
-    [TNaming(TNaming.nFlatCase)]
     property Related: TClaimRelatedCTList read fRelated;
-    [TNaming(TNaming.nFlatCase)]
     property Prescription: TReferenceCT read fPrescription;
-    [TNaming(TNaming.nCamelCase)]
     property OriginalPrescription: TReferenceCT read fOriginalPrescription;
-    [TNaming(TNaming.nFlatCase)]
     property Payee: TClaimPayeeCT read fPayee;
-    [TNaming(TNaming.nFlatCase)]
     property Referral: TReferenceCT read fReferral;
-    [TNaming(TNaming.nFlatCase)]
     property Facility: TReferenceCT read fFacility;
-    [TNaming(TNaming.nCamelCase)]
     property CareTeam: TClaimCareTeamCTList read fCareTeam;
-    [TNaming(TNaming.nCamelCase)]
     property SupportingInfo: TClaimSupportingInfoCTList read fSupportingInfo;
-    [TNaming(TNaming.nFlatCase)]
     property Diagnosis: TClaimDiagnosisCTList read fDiagnosis;
-    [TNaming(TNaming.nFlatCase)]
     property &Procedure: TClaimProcedureCTList read fProcedure;
-    [TNaming(TNaming.nFlatCase)]
     property Insurance: TClaimInsuranceCTList read fInsurance;
-    [TNaming(TNaming.nFlatCase)]
     property Accident: TClaimAccidentCT read fAccident;
-    [TNaming(TNaming.nFlatCase)]
     property Item: TClaimItemCTList read fItem;
-    [TNaming(TNaming.nFlatCase)]
     property Total: TMoneyCT read fTotal;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Claim.Related')]
   TClaimRelatedCT = class(TBackboneElementCT)
   private
@@ -9220,15 +7496,11 @@ type
     fRelationship: TCodeableConceptCT;
     fReference: TIdentifierCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Claim: TReferenceCT read fClaim;
-    [TNaming(TNaming.nFlatCase)]
     property Relationship: TCodeableConceptCT read fRelationship;
-    [TNaming(TNaming.nFlatCase)]
     property Reference: TIdentifierCT read fReference;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Claim.Payee')]
   TClaimPayeeCT = class(TBackboneElementCT)
   private
@@ -9236,13 +7508,10 @@ type
     fParty: TReferenceCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Party: TReferenceCT read fParty;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Claim.CareTeam')]
   TClaimCareTeamCT = class(TBackboneElementCT)
   private
@@ -9253,20 +7522,14 @@ type
     fQualification: TCodeableConceptCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Sequence: TPositiveIntCT read fSequence;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Provider: TReferenceCT read fProvider;
-    [TNaming(TNaming.nFlatCase)]
     property Responsible: TBooleanCT read fResponsible;
-    [TNaming(TNaming.nFlatCase)]
     property Role: TCodeableConceptCT read fRole;
-    [TNaming(TNaming.nFlatCase)]
     property Qualification: TCodeableConceptCT read fQualification;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Claim.SupportingInfo')]
   TClaimSupportingInfoCT = class(TBackboneElementCT)
   private
@@ -9296,39 +7559,27 @@ type
     property ValueChosen: TBasite read GetValueChosen;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Sequence: TPositiveIntCT read fSequence;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCT read fCategory;
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
     [TChoice('Timing')]
-    [TNaming(TNaming.nCamelCase)]
     property TimingDate: TDateCT read GetTimingDate;
     [TChoice('Timing')]
-    [TNaming(TNaming.nCamelCase)]
     property TimingPeriod: TPeriodCT read GetTimingPeriod;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueBoolean: TBooleanCT read GetValueBoolean;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueString: TStringCT read GetValueString;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueQuantity: TQuantityCT read GetValueQuantity;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueAttachment: TAttachmentCT read GetValueAttachment;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueReference: TReferenceCT read GetValueReference;
-    [TNaming(TNaming.nFlatCase)]
     property Reason: TCodeableConceptCT read fReason;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Claim.Diagnosis')]
   TClaimDiagnosisCT = class(TBackboneElementCT)
   private
@@ -9346,23 +7597,16 @@ type
     property DiagnosisChosen: TBasite read GetDiagnosisChosen;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Sequence: TPositiveIntCT read fSequence;
     [TChoice('Diagnosis')]
-    [TNaming(TNaming.nCamelCase)]
     property DiagnosisCodeableConcept: TCodeableConceptCT read GetDiagnosisCodeableConcept;
     [TChoice('Diagnosis')]
-    [TNaming(TNaming.nCamelCase)]
     property DiagnosisReference: TReferenceCT read GetDiagnosisReference;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCTList read fType;
-    [TNaming(TNaming.nCamelCase)]
     property OnAdmission: TCodeableConceptCT read fOnAdmission;
-    [TNaming(TNaming.nCamelCase)]
     property PackageCode: TCodeableConceptCT read fPackageCode;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Claim.Procedure')]
   TClaimProcedureCT = class(TBackboneElementCT)
   private
@@ -9380,23 +7624,16 @@ type
     property ProcedureChosen: TBasite read GetProcedureChosen;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Sequence: TPositiveIntCT read fSequence;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCTList read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
     [TChoice('Procedure')]
-    [TNaming(TNaming.nCamelCase)]
     property ProcedureCodeableConcept: TCodeableConceptCT read GetProcedureCodeableConcept;
     [TChoice('Procedure')]
-    [TNaming(TNaming.nCamelCase)]
     property ProcedureReference: TReferenceCT read GetProcedureReference;
-    [TNaming(TNaming.nFlatCase)]
     property Udi: TReferenceCTList read fUdi;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Claim.Insurance')]
   TClaimInsuranceCT = class(TBackboneElementCT)
   private
@@ -9409,25 +7646,17 @@ type
     fClaimResponse: TReferenceCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Sequence: TPositiveIntCT read fSequence;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Focal: TBooleanCT read fFocal;
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCT read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Coverage: TReferenceCT read fCoverage;
-    [TNaming(TNaming.nCamelCase)]
     property BusinessArrangement: TStringCT read fBusinessArrangement;
-    [TNaming(TNaming.nCamelCase)]
     property PreAuthRef: TStringCTList read fPreAuthRef;
-    [TNaming(TNaming.nCamelCase)]
     property ClaimResponse: TReferenceCT read fClaimResponse;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Claim.Accident')]
   TClaimAccidentCT = class(TBackboneElementCT)
   private
@@ -9443,19 +7672,14 @@ type
     property LocationChosen: TBasite read GetLocationChosen;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
     [TChoice('Location')]
-    [TNaming(TNaming.nCamelCase)]
     property LocationAddress: TAddressCT read GetLocationAddress;
     [TChoice('Location')]
-    [TNaming(TNaming.nCamelCase)]
     property LocationReference: TReferenceCT read GetLocationReference;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Claim.Item')]
   TClaimItemCT = class(TBackboneElementCT)
   private
@@ -9496,63 +7720,38 @@ type
     property LocationChosen: TBasite read GetLocationChosen;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Sequence: TPositiveIntCT read fSequence;
-    [TNaming(TNaming.nCamelCase)]
     property CareTeamSequence: TPositiveIntCTList read fCareTeamSequence;
-    [TNaming(TNaming.nCamelCase)]
     property DiagnosisSequence: TPositiveIntCTList read fDiagnosisSequence;
-    [TNaming(TNaming.nCamelCase)]
     property ProcedureSequence: TPositiveIntCTList read fProcedureSequence;
-    [TNaming(TNaming.nCamelCase)]
     property InformationSequence: TPositiveIntCTList read fInformationSequence;
-    [TNaming(TNaming.nFlatCase)]
     property Revenue: TCodeableConceptCT read fRevenue;
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCT read fCategory;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ProductOrService: TCodeableConceptCT read fProductOrService;
-    [TNaming(TNaming.nFlatCase)]
     property Modifier: TCodeableConceptCTList read fModifier;
-    [TNaming(TNaming.nCamelCase)]
     property ProgramCode: TCodeableConceptCTList read fProgramCode;
     [TChoice('Serviced')]
-    [TNaming(TNaming.nCamelCase)]
     property ServicedDate: TDateCT read GetServicedDate;
     [TChoice('Serviced')]
-    [TNaming(TNaming.nCamelCase)]
     property ServicedPeriod: TPeriodCT read GetServicedPeriod;
     [TChoice('Location')]
-    [TNaming(TNaming.nCamelCase)]
     property LocationCodeableConcept: TCodeableConceptCT read GetLocationCodeableConcept;
     [TChoice('Location')]
-    [TNaming(TNaming.nCamelCase)]
     property LocationAddress: TAddressCT read GetLocationAddress;
     [TChoice('Location')]
-    [TNaming(TNaming.nCamelCase)]
     property LocationReference: TReferenceCT read GetLocationReference;
-    [TNaming(TNaming.nFlatCase)]
     property Quantity: TQuantityCT read fQuantity;
-    [TNaming(TNaming.nCamelCase)]
     property UnitPrice: TMoneyCT read fUnitPrice;
-    [TNaming(TNaming.nFlatCase)]
     property Factor: TDecimalCT read fFactor;
-    [TNaming(TNaming.nFlatCase)]
     property Net: TMoneyCT read fNet;
-    [TNaming(TNaming.nFlatCase)]
     property Udi: TReferenceCTList read fUdi;
-    [TNaming(TNaming.nCamelCase)]
     property BodySite: TCodeableConceptCT read fBodySite;
-    [TNaming(TNaming.nCamelCase)]
     property SubSite: TCodeableConceptCTList read fSubSite;
-    [TNaming(TNaming.nFlatCase)]
     property Encounter: TReferenceCTList read fEncounter;
-    [TNaming(TNaming.nFlatCase)]
     property Detail: TClaimDetailCTList read fDetail;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Claim.Detail')]
   TClaimDetailCT = class(TBackboneElementCT)
   private
@@ -9570,34 +7769,21 @@ type
     fSubDetail: TClaimSubDetailCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Sequence: TPositiveIntCT read fSequence;
-    [TNaming(TNaming.nFlatCase)]
     property Revenue: TCodeableConceptCT read fRevenue;
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCT read fCategory;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ProductOrService: TCodeableConceptCT read fProductOrService;
-    [TNaming(TNaming.nFlatCase)]
     property Modifier: TCodeableConceptCTList read fModifier;
-    [TNaming(TNaming.nCamelCase)]
     property ProgramCode: TCodeableConceptCTList read fProgramCode;
-    [TNaming(TNaming.nFlatCase)]
     property Quantity: TQuantityCT read fQuantity;
-    [TNaming(TNaming.nCamelCase)]
     property UnitPrice: TMoneyCT read fUnitPrice;
-    [TNaming(TNaming.nFlatCase)]
     property Factor: TDecimalCT read fFactor;
-    [TNaming(TNaming.nFlatCase)]
     property Net: TMoneyCT read fNet;
-    [TNaming(TNaming.nFlatCase)]
     property Udi: TReferenceCTList read fUdi;
-    [TNaming(TNaming.nCamelCase)]
     property SubDetail: TClaimSubDetailCTList read fSubDetail;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Claim.SubDetail')]
   TClaimSubDetailCT = class(TBackboneElementCT)
   private
@@ -9614,28 +7800,17 @@ type
     fUdi: TReferenceCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Sequence: TPositiveIntCT read fSequence;
-    [TNaming(TNaming.nFlatCase)]
     property Revenue: TCodeableConceptCT read fRevenue;
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCT read fCategory;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ProductOrService: TCodeableConceptCT read fProductOrService;
-    [TNaming(TNaming.nFlatCase)]
     property Modifier: TCodeableConceptCTList read fModifier;
-    [TNaming(TNaming.nCamelCase)]
     property ProgramCode: TCodeableConceptCTList read fProgramCode;
-    [TNaming(TNaming.nFlatCase)]
     property Quantity: TQuantityCT read fQuantity;
-    [TNaming(TNaming.nCamelCase)]
     property UnitPrice: TMoneyCT read fUnitPrice;
-    [TNaming(TNaming.nFlatCase)]
     property Factor: TDecimalCT read fFactor;
-    [TNaming(TNaming.nFlatCase)]
     property Net: TMoneyCT read fNet;
-    [TNaming(TNaming.nFlatCase)]
     property Udi: TReferenceCTList read fUdi;
   end;
 
@@ -9643,7 +7818,6 @@ type
   private
     fValue: TUseListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TUseListST read fValue write fValue;
   end;
 
@@ -9651,7 +7825,6 @@ type
   private
     fValue: TFinancialResourceStatusCodesListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TFinancialResourceStatusCodesListST read fValue write fValue;
   end;
 
@@ -9685,70 +7858,42 @@ type
     fInsurance: TClaimResponseInsuranceCTList;
     fError: TClaimResponseErrorCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TFinancialResourceStatusCodesCT read fStatus;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nCamelCase)]
     property SubType: TCodeableConceptCT read fSubType;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Use: TUseCT read fUse;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Patient: TReferenceCT read fPatient;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Created: TDateTimeCT read fCreated;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Insurer: TReferenceCT read fInsurer;
-    [TNaming(TNaming.nFlatCase)]
     property Requestor: TReferenceCT read fRequestor;
-    [TNaming(TNaming.nFlatCase)]
     property Request: TReferenceCT read fRequest;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Outcome: TClaimProcessingCodesCT read fOutcome;
-    [TNaming(TNaming.nFlatCase)]
     property Disposition: TStringCT read fDisposition;
-    [TNaming(TNaming.nCamelCase)]
     property PreAuthRef: TStringCT read fPreAuthRef;
-    [TNaming(TNaming.nCamelCase)]
     property PreAuthPeriod: TPeriodCT read fPreAuthPeriod;
-    [TNaming(TNaming.nCamelCase)]
     property PayeeType: TCodeableConceptCT read fPayeeType;
-    [TNaming(TNaming.nFlatCase)]
     property Item: TClaimResponseItemCTList read fItem;
-    [TNaming(TNaming.nCamelCase)]
     property AddItem: TClaimResponseAddItemCTList read fAddItem;
-    [TNaming(TNaming.nFlatCase)]
     property Adjudication: TClaimResponseAdjudicationCTList read fAdjudication;
-    [TNaming(TNaming.nFlatCase)]
     property Total: TClaimResponseTotalCTList read fTotal;
-    [TNaming(TNaming.nFlatCase)]
     property Payment: TClaimResponsePaymentCT read fPayment;
-    [TNaming(TNaming.nCamelCase)]
     property FundsReserve: TCodeableConceptCT read fFundsReserve;
-    [TNaming(TNaming.nCamelCase)]
     property FormCode: TCodeableConceptCT read fFormCode;
-    [TNaming(TNaming.nFlatCase)]
     property Form: TAttachmentCT read fForm;
-    [TNaming(TNaming.nCamelCase)]
     property ProcessNote: TClaimResponseProcessNoteCTList read fProcessNote;
-    [TNaming(TNaming.nCamelCase)]
     property CommunicationRequest: TReferenceCTList read fCommunicationRequest;
-    [TNaming(TNaming.nFlatCase)]
     property Insurance: TClaimResponseInsuranceCTList read fInsurance;
-    [TNaming(TNaming.nFlatCase)]
     property Error: TClaimResponseErrorCTList read fError;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ClaimResponse.Item')]
   TClaimResponseItemCT = class(TBackboneElementCT)
   private
@@ -9758,17 +7903,12 @@ type
     fDetail: TClaimResponseDetailCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ItemSequence: TPositiveIntCT read fItemSequence;
-    [TNaming(TNaming.nCamelCase)]
     property NoteNumber: TPositiveIntCTList read fNoteNumber;
-    [TNaming(TNaming.nFlatCase)]
     property Adjudication: TClaimResponseAdjudicationCTList read fAdjudication;
-    [TNaming(TNaming.nFlatCase)]
     property Detail: TClaimResponseDetailCTList read fDetail;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ClaimResponse.Adjudication')]
   TClaimResponseAdjudicationCT = class(TBackboneElementCT)
   private
@@ -9778,17 +7918,12 @@ type
     fValue: TDecimalCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCT read fCategory;
-    [TNaming(TNaming.nFlatCase)]
     property Reason: TCodeableConceptCT read fReason;
-    [TNaming(TNaming.nFlatCase)]
     property Amount: TMoneyCT read fAmount;
-    [TNaming(TNaming.nFlatCase)]
     property Value: TDecimalCT read fValue;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ClaimResponse.Detail')]
   TClaimResponseDetailCT = class(TBackboneElementCT)
   private
@@ -9798,17 +7933,12 @@ type
     fSubDetail: TClaimResponseSubDetailCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property DetailSequence: TPositiveIntCT read fDetailSequence;
-    [TNaming(TNaming.nCamelCase)]
     property NoteNumber: TPositiveIntCTList read fNoteNumber;
-    [TNaming(TNaming.nFlatCase)]
     property Adjudication: TClaimResponseAdjudicationCTList read fAdjudication;
-    [TNaming(TNaming.nCamelCase)]
     property SubDetail: TClaimResponseSubDetailCTList read fSubDetail;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ClaimResponse.SubDetail')]
   TClaimResponseSubDetailCT = class(TBackboneElementCT)
   private
@@ -9817,15 +7947,11 @@ type
     fAdjudication: TClaimResponseAdjudicationCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property SubDetailSequence: TPositiveIntCT read fSubDetailSequence;
-    [TNaming(TNaming.nCamelCase)]
     property NoteNumber: TPositiveIntCTList read fNoteNumber;
-    [TNaming(TNaming.nFlatCase)]
     property Adjudication: TClaimResponseAdjudicationCTList read fAdjudication;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ClaimResponse.AddItem')]
   TClaimResponseAddItemCT = class(TBackboneElementCT)
   private
@@ -9862,57 +7988,35 @@ type
     property ServicedChosen: TBasite read GetServicedChosen;
     property LocationChosen: TBasite read GetLocationChosen;
   published
-    [TNaming(TNaming.nCamelCase)]
     property ItemSequence: TPositiveIntCTList read fItemSequence;
-    [TNaming(TNaming.nCamelCase)]
     property DetailSequence: TPositiveIntCTList read fDetailSequence;
-    [TNaming(TNaming.nCamelCase)]
     property SubdetailSequence: TPositiveIntCTList read fSubdetailSequence;
-    [TNaming(TNaming.nFlatCase)]
     property Provider: TReferenceCTList read fProvider;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ProductOrService: TCodeableConceptCT read fProductOrService;
-    [TNaming(TNaming.nFlatCase)]
     property Modifier: TCodeableConceptCTList read fModifier;
-    [TNaming(TNaming.nCamelCase)]
     property ProgramCode: TCodeableConceptCTList read fProgramCode;
     [TChoice('Serviced')]
-    [TNaming(TNaming.nCamelCase)]
     property ServicedDate: TDateCT read GetServicedDate;
     [TChoice('Serviced')]
-    [TNaming(TNaming.nCamelCase)]
     property ServicedPeriod: TPeriodCT read GetServicedPeriod;
     [TChoice('Location')]
-    [TNaming(TNaming.nCamelCase)]
     property LocationCodeableConcept: TCodeableConceptCT read GetLocationCodeableConcept;
     [TChoice('Location')]
-    [TNaming(TNaming.nCamelCase)]
     property LocationAddress: TAddressCT read GetLocationAddress;
     [TChoice('Location')]
-    [TNaming(TNaming.nCamelCase)]
     property LocationReference: TReferenceCT read GetLocationReference;
-    [TNaming(TNaming.nFlatCase)]
     property Quantity: TQuantityCT read fQuantity;
-    [TNaming(TNaming.nCamelCase)]
     property UnitPrice: TMoneyCT read fUnitPrice;
-    [TNaming(TNaming.nFlatCase)]
     property Factor: TDecimalCT read fFactor;
-    [TNaming(TNaming.nFlatCase)]
     property Net: TMoneyCT read fNet;
-    [TNaming(TNaming.nCamelCase)]
     property BodySite: TCodeableConceptCT read fBodySite;
-    [TNaming(TNaming.nCamelCase)]
     property SubSite: TCodeableConceptCTList read fSubSite;
-    [TNaming(TNaming.nCamelCase)]
     property NoteNumber: TPositiveIntCTList read fNoteNumber;
-    [TNaming(TNaming.nFlatCase)]
     property Adjudication: TClaimResponseAdjudicationCTList read fAdjudication;
-    [TNaming(TNaming.nFlatCase)]
     property Detail: TClaimResponseDetail1CTList read fDetail;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ClaimResponse.Detail1')]
   TClaimResponseDetail1CT = class(TBackboneElementCT)
   private
@@ -9927,27 +8031,17 @@ type
     fSubDetail: TClaimResponseSubDetail1CTList;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ProductOrService: TCodeableConceptCT read fProductOrService;
-    [TNaming(TNaming.nFlatCase)]
     property Modifier: TCodeableConceptCTList read fModifier;
-    [TNaming(TNaming.nFlatCase)]
     property Quantity: TQuantityCT read fQuantity;
-    [TNaming(TNaming.nCamelCase)]
     property UnitPrice: TMoneyCT read fUnitPrice;
-    [TNaming(TNaming.nFlatCase)]
     property Factor: TDecimalCT read fFactor;
-    [TNaming(TNaming.nFlatCase)]
     property Net: TMoneyCT read fNet;
-    [TNaming(TNaming.nCamelCase)]
     property NoteNumber: TPositiveIntCTList read fNoteNumber;
-    [TNaming(TNaming.nFlatCase)]
     property Adjudication: TClaimResponseAdjudicationCTList read fAdjudication;
-    [TNaming(TNaming.nCamelCase)]
     property SubDetail: TClaimResponseSubDetail1CTList read fSubDetail;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ClaimResponse.SubDetail1')]
   TClaimResponseSubDetail1CT = class(TBackboneElementCT)
   private
@@ -9961,25 +8055,16 @@ type
     fAdjudication: TClaimResponseAdjudicationCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ProductOrService: TCodeableConceptCT read fProductOrService;
-    [TNaming(TNaming.nFlatCase)]
     property Modifier: TCodeableConceptCTList read fModifier;
-    [TNaming(TNaming.nFlatCase)]
     property Quantity: TQuantityCT read fQuantity;
-    [TNaming(TNaming.nCamelCase)]
     property UnitPrice: TMoneyCT read fUnitPrice;
-    [TNaming(TNaming.nFlatCase)]
     property Factor: TDecimalCT read fFactor;
-    [TNaming(TNaming.nFlatCase)]
     property Net: TMoneyCT read fNet;
-    [TNaming(TNaming.nCamelCase)]
     property NoteNumber: TPositiveIntCTList read fNoteNumber;
-    [TNaming(TNaming.nFlatCase)]
     property Adjudication: TClaimResponseAdjudicationCTList read fAdjudication;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ClaimResponse.Total')]
   TClaimResponseTotalCT = class(TBackboneElementCT)
   private
@@ -9987,14 +8072,11 @@ type
     fAmount: TMoneyCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCT read fCategory;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Amount: TMoneyCT read fAmount;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ClaimResponse.Payment')]
   TClaimResponsePaymentCT = class(TBackboneElementCT)
   private
@@ -10006,22 +8088,15 @@ type
     fIdentifier: TIdentifierCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Adjustment: TMoneyCT read fAdjustment;
-    [TNaming(TNaming.nCamelCase)]
     property AdjustmentReason: TCodeableConceptCT read fAdjustmentReason;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateCT read fDate;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Amount: TMoneyCT read fAmount;
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCT read fIdentifier;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ClaimResponse.ProcessNote')]
   TClaimResponseProcessNoteCT = class(TBackboneElementCT)
   private
@@ -10030,18 +8105,13 @@ type
     fText: TStringCT;
     fLanguage: TCodeableConceptCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Number: TPositiveIntCT read fNumber;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TNoteTypeCT read fType;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Text: TStringCT read fText;
-    [TNaming(TNaming.nFlatCase)]
     property Language: TCodeableConceptCT read fLanguage;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ClaimResponse.Insurance')]
   TClaimResponseInsuranceCT = class(TBackboneElementCT)
   private
@@ -10052,21 +8122,15 @@ type
     fClaimResponse: TReferenceCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Sequence: TPositiveIntCT read fSequence;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Focal: TBooleanCT read fFocal;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Coverage: TReferenceCT read fCoverage;
-    [TNaming(TNaming.nCamelCase)]
     property BusinessArrangement: TStringCT read fBusinessArrangement;
-    [TNaming(TNaming.nCamelCase)]
     property ClaimResponse: TReferenceCT read fClaimResponse;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ClaimResponse.Error')]
   TClaimResponseErrorCT = class(TBackboneElementCT)
   private
@@ -10075,14 +8139,10 @@ type
     fSubDetailSequence: TPositiveIntCT;
     fCode: TCodeableConceptCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property ItemSequence: TPositiveIntCT read fItemSequence;
-    [TNaming(TNaming.nCamelCase)]
     property DetailSequence: TPositiveIntCT read fDetailSequence;
-    [TNaming(TNaming.nCamelCase)]
     property SubDetailSequence: TPositiveIntCT read fSubDetailSequence;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
   end;
 
@@ -10090,7 +8150,6 @@ type
   private
     fValue: TClaimProcessingCodesListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TClaimProcessingCodesListST read fValue write fValue;
   end;
 
@@ -10124,55 +8183,33 @@ type
   public
     property EffectiveChosen: TBasite read GetEffectiveChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TClinicalImpressionStatusCT read fStatus;
-    [TNaming(TNaming.nCamelCase)]
     property StatusReason: TCodeableConceptCT read fStatusReason;
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCT read fSubject;
-    [TNaming(TNaming.nFlatCase)]
     property Encounter: TReferenceCT read fEncounter;
     [TChoice('Effective')]
-    [TNaming(TNaming.nCamelCase)]
     property EffectiveDateTime: TDateTimeCT read GetEffectiveDateTime;
     [TChoice('Effective')]
-    [TNaming(TNaming.nCamelCase)]
     property EffectivePeriod: TPeriodCT read GetEffectivePeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Assessor: TReferenceCT read fAssessor;
-    [TNaming(TNaming.nFlatCase)]
     property Previous: TReferenceCT read fPrevious;
-    [TNaming(TNaming.nFlatCase)]
     property Problem: TReferenceCTList read fProblem;
-    [TNaming(TNaming.nFlatCase)]
     property Investigation: TClinicalImpressionInvestigationCTList read fInvestigation;
-    [TNaming(TNaming.nFlatCase)]
     property Protocol: TUriCTList read fProtocol;
-    [TNaming(TNaming.nFlatCase)]
     property Summary: TStringCT read fSummary;
-    [TNaming(TNaming.nFlatCase)]
     property Finding: TClinicalImpressionFindingCTList read fFinding;
-    [TNaming(TNaming.nCamelCase)]
     property PrognosisCodeableConcept: TCodeableConceptCTList read fPrognosisCodeableConcept;
-    [TNaming(TNaming.nCamelCase)]
     property PrognosisReference: TReferenceCTList read fPrognosisReference;
-    [TNaming(TNaming.nCamelCase)]
     property SupportingInfo: TReferenceCTList read fSupportingInfo;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ClinicalImpression.Investigation')]
   TClinicalImpressionInvestigationCT = class(TBackboneElementCT)
   private
@@ -10180,13 +8217,10 @@ type
     fItem: TReferenceCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Item: TReferenceCTList read fItem;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ClinicalImpression.Finding')]
   TClinicalImpressionFindingCT = class(TBackboneElementCT)
   private
@@ -10194,11 +8228,8 @@ type
     fItemReference: TReferenceCT;
     fBasis: TStringCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property ItemCodeableConcept: TCodeableConceptCT read fItemCodeableConcept;
-    [TNaming(TNaming.nCamelCase)]
     property ItemReference: TReferenceCT read fItemReference;
-    [TNaming(TNaming.nFlatCase)]
     property Basis: TStringCT read fBasis;
   end;
 
@@ -10206,7 +8237,6 @@ type
   private
     fValue: TClinicalImpressionStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TClinicalImpressionStatusListST read fValue write fValue;
   end;
 
@@ -10239,63 +8269,36 @@ type
     fProperty: TCodeSystemPropertyCTList;
     fConcept: TCodeSystemConceptCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUriCT read fUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCT read fVersion;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Title: TStringCT read fTitle;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TPublicationStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Experimental: TBooleanCT read fExperimental;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Publisher: TStringCT read fPublisher;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TContactDetailCTList read fContact;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TMarkdownCT read fDescription;
-    [TNaming(TNaming.nCamelCase)]
     property UseContext: TUsageContextCTList read fUseContext;
-    [TNaming(TNaming.nFlatCase)]
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    [TNaming(TNaming.nFlatCase)]
     property Purpose: TMarkdownCT read fPurpose;
-    [TNaming(TNaming.nFlatCase)]
     property Copyright: TMarkdownCT read fCopyright;
-    [TNaming(TNaming.nCamelCase)]
     property CaseSensitive: TBooleanCT read fCaseSensitive;
-    [TNaming(TNaming.nCamelCase)]
     property ValueSet: TCanonicalCT read fValueSet;
-    [TNaming(TNaming.nCamelCase)]
     property HierarchyMeaning: TCodeSystemHierarchyMeaningCT read fHierarchyMeaning;
-    [TNaming(TNaming.nFlatCase)]
     property Compositional: TBooleanCT read fCompositional;
-    [TNaming(TNaming.nCamelCase)]
     property VersionNeeded: TBooleanCT read fVersionNeeded;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Content: TCodeSystemContentModeCT read fContent;
-    [TNaming(TNaming.nFlatCase)]
     property Supplements: TCanonicalCT read fSupplements;
-    [TNaming(TNaming.nFlatCase)]
     property Count: TUnsignedIntCT read fCount;
-    [TNaming(TNaming.nFlatCase)]
     property Filter: TCodeSystemFilterCTList read fFilter;
-    [TNaming(TNaming.nFlatCase)]
     property &Property: TCodeSystemPropertyCTList read fProperty;
-    [TNaming(TNaming.nFlatCase)]
     property Concept: TCodeSystemConceptCTList read fConcept;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('CodeSystem.Filter')]
   TCodeSystemFilterCT = class(TBackboneElementCT)
   private
@@ -10305,18 +8308,13 @@ type
     fValue: TStringCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Operator: TFilterOperatorCTList read fOperator;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Value: TStringCT read fValue;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('CodeSystem.Property')]
   TCodeSystemPropertyCT = class(TBackboneElementCT)
   private
@@ -10326,18 +8324,13 @@ type
     fType: TPropertyTypeCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Uri: TUriCT read fUri;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TPropertyTypeCT read fType;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('CodeSystem.Concept')]
   TCodeSystemConceptCT = class(TBackboneElementCT)
   private
@@ -10349,21 +8342,14 @@ type
     fConcept: TCodeSystemConceptCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Display: TStringCT read fDisplay;
-    [TNaming(TNaming.nFlatCase)]
     property Definition: TStringCT read fDefinition;
-    [TNaming(TNaming.nFlatCase)]
     property Designation: TCodeSystemDesignationCTList read fDesignation;
-    [TNaming(TNaming.nFlatCase)]
     property &Property: TCodeSystemProperty1CTList read fProperty;
-    [TNaming(TNaming.nFlatCase)]
     property Concept: TCodeSystemConceptCTList read fConcept;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('CodeSystem.Designation')]
   TCodeSystemDesignationCT = class(TBackboneElementCT)
   private
@@ -10371,16 +8357,12 @@ type
     fUse: TCodingCT;
     fValue: TStringCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Language: TCodeCT read fLanguage;
-    [TNaming(TNaming.nFlatCase)]
     property Use: TCodingCT read fUse;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Value: TStringCT read fValue;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('CodeSystem.Property1')]
   TCodeSystemProperty1CT = class(TBackboneElementCT)
   private
@@ -10405,28 +8387,20 @@ type
     property ValueChosen: TBasite read GetValueChosen;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeCT read fCode;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCode: TCodeCT read GetValueCode;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCoding: TCodingCT read GetValueCoding;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueString: TStringCT read GetValueString;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueInteger: TIntegerCT read GetValueInteger;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueBoolean: TBooleanCT read GetValueBoolean;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDateTime: TDateTimeCT read GetValueDateTime;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDecimal: TDecimalCT read GetValueDecimal;
   end;
 
@@ -10434,7 +8408,6 @@ type
   private
     fValue: TFilterOperatorListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TFilterOperatorListST read fValue write fValue;
   end;
 
@@ -10442,7 +8415,6 @@ type
   private
     fValue: TPropertyTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TPropertyTypeListST read fValue write fValue;
   end;
 
@@ -10450,7 +8422,6 @@ type
   private
     fValue: TCodeSystemHierarchyMeaningListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TCodeSystemHierarchyMeaningListST read fValue write fValue;
   end;
 
@@ -10458,7 +8429,6 @@ type
   private
     fValue: TCodeSystemContentModeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TCodeSystemContentModeListST read fValue write fValue;
   end;
 
@@ -10488,56 +8458,32 @@ type
     fPayload: TCommunicationPayloadCTList;
     fNote: TAnnotationCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nCamelCase)]
     property InstantiatesCanonical: TCanonicalCTList read fInstantiatesCanonical;
-    [TNaming(TNaming.nCamelCase)]
     property InstantiatesUri: TUriCTList read fInstantiatesUri;
-    [TNaming(TNaming.nCamelCase)]
     property BasedOn: TReferenceCTList read fBasedOn;
-    [TNaming(TNaming.nCamelCase)]
     property PartOf: TReferenceCTList read fPartOf;
-    [TNaming(TNaming.nCamelCase)]
     property InResponseTo: TReferenceCTList read fInResponseTo;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TEventStatusCT read fStatus;
-    [TNaming(TNaming.nCamelCase)]
     property StatusReason: TCodeableConceptCT read fStatusReason;
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCTList read fCategory;
-    [TNaming(TNaming.nFlatCase)]
     property Priority: TRequestPriorityCT read fPriority;
-    [TNaming(TNaming.nFlatCase)]
     property Medium: TCodeableConceptCTList read fMedium;
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCT read fSubject;
-    [TNaming(TNaming.nFlatCase)]
     property Topic: TCodeableConceptCT read fTopic;
-    [TNaming(TNaming.nFlatCase)]
     property About: TReferenceCTList read fAbout;
-    [TNaming(TNaming.nFlatCase)]
     property Encounter: TReferenceCT read fEncounter;
-    [TNaming(TNaming.nFlatCase)]
     property Sent: TDateTimeCT read fSent;
-    [TNaming(TNaming.nFlatCase)]
     property Received: TDateTimeCT read fReceived;
-    [TNaming(TNaming.nFlatCase)]
     property Recipient: TReferenceCTList read fRecipient;
-    [TNaming(TNaming.nFlatCase)]
     property Sender: TReferenceCT read fSender;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonReference: TReferenceCTList read fReasonReference;
-    [TNaming(TNaming.nFlatCase)]
     property Payload: TCommunicationPayloadCTList read fPayload;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Communication.Payload')]
   TCommunicationPayloadCT = class(TBackboneElementCT)
   private
@@ -10553,13 +8499,10 @@ type
     property ContentChosen: TBasite read GetContentChosen;
   published
     [TChoice('Content')]
-    [TNaming(TNaming.nCamelCase)]
     property ContentString: TStringCT read GetContentString;
     [TChoice('Content')]
-    [TNaming(TNaming.nCamelCase)]
     property ContentAttachment: TAttachmentCT read GetContentAttachment;
     [TChoice('Content')]
-    [TNaming(TNaming.nCamelCase)]
     property ContentReference: TReferenceCT read GetContentReference;
   end;
 
@@ -10567,7 +8510,6 @@ type
   private
     fValue: TEventStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TEventStatusListST read fValue write fValue;
   end;
 
@@ -10603,58 +8545,34 @@ type
   public
     property OccurrenceChosen: TBasite read GetOccurrenceChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nCamelCase)]
     property BasedOn: TReferenceCTList read fBasedOn;
-    [TNaming(TNaming.nFlatCase)]
     property Replaces: TReferenceCTList read fReplaces;
-    [TNaming(TNaming.nCamelCase)]
     property GroupIdentifier: TIdentifierCT read fGroupIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TRequestStatusCT read fStatus;
-    [TNaming(TNaming.nCamelCase)]
     property StatusReason: TCodeableConceptCT read fStatusReason;
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCTList read fCategory;
-    [TNaming(TNaming.nFlatCase)]
     property Priority: TRequestPriorityCT read fPriority;
-    [TNaming(TNaming.nCamelCase)]
     property DoNotPerform: TBooleanCT read fDoNotPerform;
-    [TNaming(TNaming.nFlatCase)]
     property Medium: TCodeableConceptCTList read fMedium;
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCT read fSubject;
-    [TNaming(TNaming.nFlatCase)]
     property About: TReferenceCTList read fAbout;
-    [TNaming(TNaming.nFlatCase)]
     property Encounter: TReferenceCT read fEncounter;
-    [TNaming(TNaming.nFlatCase)]
     property Payload: TCommunicationRequestPayloadCTList read fPayload;
     [TChoice('Occurrence')]
-    [TNaming(TNaming.nCamelCase)]
     property OccurrenceDateTime: TDateTimeCT read GetOccurrenceDateTime;
     [TChoice('Occurrence')]
-    [TNaming(TNaming.nCamelCase)]
     property OccurrencePeriod: TPeriodCT read GetOccurrencePeriod;
-    [TNaming(TNaming.nCamelCase)]
     property AuthoredOn: TDateTimeCT read fAuthoredOn;
-    [TNaming(TNaming.nFlatCase)]
     property Requester: TReferenceCT read fRequester;
-    [TNaming(TNaming.nFlatCase)]
     property Recipient: TReferenceCTList read fRecipient;
-    [TNaming(TNaming.nFlatCase)]
     property Sender: TReferenceCT read fSender;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonReference: TReferenceCTList read fReasonReference;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('CommunicationRequest.Payload')]
   TCommunicationRequestPayloadCT = class(TBackboneElementCT)
   private
@@ -10670,13 +8588,10 @@ type
     property ContentChosen: TBasite read GetContentChosen;
   published
     [TChoice('Content')]
-    [TNaming(TNaming.nCamelCase)]
     property ContentString: TStringCT read GetContentString;
     [TChoice('Content')]
-    [TNaming(TNaming.nCamelCase)]
     property ContentAttachment: TAttachmentCT read GetContentAttachment;
     [TChoice('Content')]
-    [TNaming(TNaming.nCamelCase)]
     property ContentReference: TReferenceCT read GetContentReference;
   end;
 
@@ -10698,41 +8613,26 @@ type
     fResource: TCompartmentDefinitionResourceCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUriCT read fUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCT read fVersion;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TPublicationStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Experimental: TBooleanCT read fExperimental;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Publisher: TStringCT read fPublisher;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TContactDetailCTList read fContact;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TMarkdownCT read fDescription;
-    [TNaming(TNaming.nCamelCase)]
     property UseContext: TUsageContextCTList read fUseContext;
-    [TNaming(TNaming.nFlatCase)]
     property Purpose: TMarkdownCT read fPurpose;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCompartmentTypeCT read fCode;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Search: TBooleanCT read fSearch;
-    [TNaming(TNaming.nFlatCase)]
     property Resource: TCompartmentDefinitionResourceCTList read fResource;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('CompartmentDefinition.Resource')]
   TCompartmentDefinitionResourceCT = class(TBackboneElementCT)
   private
@@ -10741,11 +8641,8 @@ type
     fDocumentation: TStringCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Param: TStringCTList read fParam;
-    [TNaming(TNaming.nFlatCase)]
     property Documentation: TStringCT read fDocumentation;
   end;
 
@@ -10753,7 +8650,6 @@ type
   private
     fValue: TCompartmentTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TCompartmentTypeListST read fValue write fValue;
   end;
 
@@ -10775,43 +8671,27 @@ type
     fEvent: TCompositionEventCTList;
     fSection: TCompositionSectionCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCT read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TCompositionStatusCT read fStatus;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCTList read fCategory;
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCT read fSubject;
-    [TNaming(TNaming.nFlatCase)]
     property Encounter: TReferenceCT read fEncounter;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Author: TReferenceCTList read fAuthor;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Title: TStringCT read fTitle;
-    [TNaming(TNaming.nFlatCase)]
     property Confidentiality: TVConfidentialityClassificationCT read fConfidentiality;
-    [TNaming(TNaming.nFlatCase)]
     property Attester: TCompositionAttesterCTList read fAttester;
-    [TNaming(TNaming.nFlatCase)]
     property Custodian: TReferenceCT read fCustodian;
-    [TNaming(TNaming.nCamelCase)]
     property RelatesTo: TCompositionRelatesToCTList read fRelatesTo;
-    [TNaming(TNaming.nFlatCase)]
     property Event: TCompositionEventCTList read fEvent;
-    [TNaming(TNaming.nFlatCase)]
     property Section: TCompositionSectionCTList read fSection;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Composition.Attester')]
   TCompositionAttesterCT = class(TBackboneElementCT)
   private
@@ -10820,15 +8700,11 @@ type
     fParty: TReferenceCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Mode: TCompositionAttestationModeCT read fMode;
-    [TNaming(TNaming.nFlatCase)]
     property Time: TDateTimeCT read fTime;
-    [TNaming(TNaming.nFlatCase)]
     property Party: TReferenceCT read fParty;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Composition.RelatesTo')]
   TCompositionRelatesToCT = class(TBackboneElementCT)
   private
@@ -10843,17 +8719,13 @@ type
     property TargetChosen: TBasite read GetTargetChosen;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TDocumentRelationshipTypeCT read fCode;
     [TChoice('Target')]
-    [TNaming(TNaming.nCamelCase)]
     property TargetIdentifier: TIdentifierCT read GetTargetIdentifier;
     [TChoice('Target')]
-    [TNaming(TNaming.nCamelCase)]
     property TargetReference: TReferenceCT read GetTargetReference;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Composition.Event')]
   TCompositionEventCT = class(TBackboneElementCT)
   private
@@ -10861,15 +8733,11 @@ type
     fPeriod: TPeriodCT;
     fDetail: TReferenceCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCTList read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCT read fPeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Detail: TReferenceCTList read fDetail;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Composition.Section')]
   TCompositionSectionCT = class(TBackboneElementCT)
   private
@@ -10884,25 +8752,15 @@ type
     fEmptyReason: TCodeableConceptCT;
     fSection: TCompositionSectionCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Title: TStringCT read fTitle;
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Author: TReferenceCTList read fAuthor;
-    [TNaming(TNaming.nFlatCase)]
     property Focus: TReferenceCT read fFocus;
-    [TNaming(TNaming.nFlatCase)]
     property Text: TNarrativeCT read fText;
-    [TNaming(TNaming.nFlatCase)]
     property Mode: TListModeCT read fMode;
-    [TNaming(TNaming.nCamelCase)]
     property OrderedBy: TCodeableConceptCT read fOrderedBy;
-    [TNaming(TNaming.nFlatCase)]
     property Entry: TReferenceCTList read fEntry;
-    [TNaming(TNaming.nCamelCase)]
     property EmptyReason: TCodeableConceptCT read fEmptyReason;
-    [TNaming(TNaming.nFlatCase)]
     property Section: TCompositionSectionCTList read fSection;
   end;
 
@@ -10911,7 +8769,6 @@ type
   private
     fValue: TVConfidentialityClassificationListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TVConfidentialityClassificationListST read fValue write fValue;
   end;
 
@@ -10919,7 +8776,6 @@ type
   private
     fValue: TCompositionStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TCompositionStatusListST read fValue write fValue;
   end;
 
@@ -10927,7 +8783,6 @@ type
   private
     fValue: TDocumentRelationshipTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TDocumentRelationshipTypeListST read fValue write fValue;
   end;
 
@@ -10935,7 +8790,6 @@ type
   private
     fValue: TCompositionAttestationModeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TCompositionAttestationModeListST read fValue write fValue;
   end;
 
@@ -10943,7 +8797,6 @@ type
   private
     fValue: TListModeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TListModeListST read fValue write fValue;
   end;
 
@@ -10980,54 +8833,33 @@ type
     property SourceChosen: TBasite read GetSourceChosen;
     property TargetChosen: TBasite read GetTargetChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUriCT read fUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCT read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCT read fVersion;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Title: TStringCT read fTitle;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TPublicationStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Experimental: TBooleanCT read fExperimental;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Publisher: TStringCT read fPublisher;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TContactDetailCTList read fContact;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TMarkdownCT read fDescription;
-    [TNaming(TNaming.nCamelCase)]
     property UseContext: TUsageContextCTList read fUseContext;
-    [TNaming(TNaming.nFlatCase)]
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    [TNaming(TNaming.nFlatCase)]
     property Purpose: TMarkdownCT read fPurpose;
-    [TNaming(TNaming.nFlatCase)]
     property Copyright: TMarkdownCT read fCopyright;
     [TChoice('Source')]
-    [TNaming(TNaming.nCamelCase)]
     property SourceUri: TUriCT read GetSourceUri;
     [TChoice('Source')]
-    [TNaming(TNaming.nCamelCase)]
     property SourceCanonical: TCanonicalCT read GetSourceCanonical;
     [TChoice('Target')]
-    [TNaming(TNaming.nCamelCase)]
     property TargetUri: TUriCT read GetTargetUri;
     [TChoice('Target')]
-    [TNaming(TNaming.nCamelCase)]
     property TargetCanonical: TCanonicalCT read GetTargetCanonical;
-    [TNaming(TNaming.nFlatCase)]
     property Group: TConceptMapGroupCTList read fGroup;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ConceptMap.Group')]
   TConceptMapGroupCT = class(TBackboneElementCT)
   private
@@ -11038,21 +8870,14 @@ type
     fElement: TConceptMapElementCTList;
     fUnmapped: TConceptMapUnmappedCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Source: TUriCT read fSource;
-    [TNaming(TNaming.nCamelCase)]
     property SourceVersion: TStringCT read fSourceVersion;
-    [TNaming(TNaming.nFlatCase)]
     property Target: TUriCT read fTarget;
-    [TNaming(TNaming.nCamelCase)]
     property TargetVersion: TStringCT read fTargetVersion;
-    [TNaming(TNaming.nFlatCase)]
     property Element: TConceptMapElementCTList read fElement;
-    [TNaming(TNaming.nFlatCase)]
     property Unmapped: TConceptMapUnmappedCT read fUnmapped;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ConceptMap.Element')]
   TConceptMapElementCT = class(TBackboneElementCT)
   private
@@ -11060,15 +8885,11 @@ type
     fDisplay: TStringCT;
     fTarget: TConceptMapTargetCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Display: TStringCT read fDisplay;
-    [TNaming(TNaming.nFlatCase)]
     property Target: TConceptMapTargetCTList read fTarget;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ConceptMap.Target')]
   TConceptMapTargetCT = class(TBackboneElementCT)
   private
@@ -11079,22 +8900,15 @@ type
     fDependsOn: TConceptMapDependsOnCTList;
     fProduct: TConceptMapDependsOnCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Display: TStringCT read fDisplay;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Equivalence: TConceptMapEquivalenceCT read fEquivalence;
-    [TNaming(TNaming.nFlatCase)]
     property Comment: TStringCT read fComment;
-    [TNaming(TNaming.nCamelCase)]
     property DependsOn: TConceptMapDependsOnCTList read fDependsOn;
-    [TNaming(TNaming.nFlatCase)]
     property Product: TConceptMapDependsOnCTList read fProduct;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ConceptMap.DependsOn')]
   TConceptMapDependsOnCT = class(TBackboneElementCT)
   private
@@ -11104,18 +8918,13 @@ type
     fDisplay: TStringCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Property: TUriCT read fProperty;
-    [TNaming(TNaming.nFlatCase)]
     property System: TCanonicalCT read fSystem;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Value: TStringCT read fValue;
-    [TNaming(TNaming.nFlatCase)]
     property Display: TStringCT read fDisplay;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ConceptMap.Unmapped')]
   TConceptMapUnmappedCT = class(TBackboneElementCT)
   private
@@ -11125,13 +8934,9 @@ type
     fUrl: TCanonicalCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Mode: TConceptMapGroupUnmappedModeCT read fMode;
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Display: TStringCT read fDisplay;
-    [TNaming(TNaming.nFlatCase)]
     property Url: TCanonicalCT read fUrl;
   end;
 
@@ -11139,7 +8944,6 @@ type
   private
     fValue: TConceptMapGroupUnmappedModeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TConceptMapGroupUnmappedModeListST read fValue write fValue;
   end;
 
@@ -11187,70 +8991,44 @@ type
     property OnsetChosen: TBasite read GetOnsetChosen;
     property AbatementChosen: TBasite read GetAbatementChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nCamelCase)]
     property ClinicalStatus: TCodeableConceptCT read fClinicalStatus;
-    [TNaming(TNaming.nCamelCase)]
     property VerificationStatus: TCodeableConceptCT read fVerificationStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCTList read fCategory;
-    [TNaming(TNaming.nFlatCase)]
     property Severity: TCodeableConceptCT read fSeverity;
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nCamelCase)]
     property BodySite: TCodeableConceptCTList read fBodySite;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCT read fSubject;
-    [TNaming(TNaming.nFlatCase)]
     property Encounter: TReferenceCT read fEncounter;
     [TChoice('Onset')]
-    [TNaming(TNaming.nCamelCase)]
     property OnsetDateTime: TDateTimeCT read GetOnsetDateTime;
     [TChoice('Onset')]
-    [TNaming(TNaming.nCamelCase)]
     property OnsetAge: TAgeCT read GetOnsetAge;
     [TChoice('Onset')]
-    [TNaming(TNaming.nCamelCase)]
     property OnsetPeriod: TPeriodCT read GetOnsetPeriod;
     [TChoice('Onset')]
-    [TNaming(TNaming.nCamelCase)]
     property OnsetRange: TRangeCT read GetOnsetRange;
     [TChoice('Onset')]
-    [TNaming(TNaming.nCamelCase)]
     property OnsetString: TStringCT read GetOnsetString;
     [TChoice('Abatement')]
-    [TNaming(TNaming.nCamelCase)]
     property AbatementDateTime: TDateTimeCT read GetAbatementDateTime;
     [TChoice('Abatement')]
-    [TNaming(TNaming.nCamelCase)]
     property AbatementAge: TAgeCT read GetAbatementAge;
     [TChoice('Abatement')]
-    [TNaming(TNaming.nCamelCase)]
     property AbatementPeriod: TPeriodCT read GetAbatementPeriod;
     [TChoice('Abatement')]
-    [TNaming(TNaming.nCamelCase)]
     property AbatementRange: TRangeCT read GetAbatementRange;
     [TChoice('Abatement')]
-    [TNaming(TNaming.nCamelCase)]
     property AbatementString: TStringCT read GetAbatementString;
-    [TNaming(TNaming.nCamelCase)]
     property RecordedDate: TDateTimeCT read fRecordedDate;
-    [TNaming(TNaming.nFlatCase)]
     property Recorder: TReferenceCT read fRecorder;
-    [TNaming(TNaming.nFlatCase)]
     property Asserter: TReferenceCT read fAsserter;
-    [TNaming(TNaming.nFlatCase)]
     property Stage: TConditionStageCTList read fStage;
-    [TNaming(TNaming.nFlatCase)]
     property Evidence: TConditionEvidenceCTList read fEvidence;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Condition.Stage')]
   TConditionStageCT = class(TBackboneElementCT)
   private
@@ -11258,24 +9036,18 @@ type
     fAssessment: TReferenceCTList;
     fType: TCodeableConceptCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Summary: TCodeableConceptCT read fSummary;
-    [TNaming(TNaming.nFlatCase)]
     property Assessment: TReferenceCTList read fAssessment;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Condition.Evidence')]
   TConditionEvidenceCT = class(TBackboneElementCT)
   private
     fCode: TCodeableConceptCTList;
     fDetail: TReferenceCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCTList read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Detail: TReferenceCTList read fDetail;
   end;
 
@@ -11302,54 +9074,36 @@ type
   public
     property SourceChosen: TBasite read GetSourceChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TConsentStateCT read fStatus;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Scope: TCodeableConceptCT read fScope;
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCTList read fCategory;
-    [TNaming(TNaming.nFlatCase)]
     property Patient: TReferenceCT read fPatient;
-    [TNaming(TNaming.nCamelCase)]
     property DateTime: TDateTimeCT read fDateTime;
-    [TNaming(TNaming.nFlatCase)]
     property Performer: TReferenceCTList read fPerformer;
-    [TNaming(TNaming.nFlatCase)]
     property Organization: TReferenceCTList read fOrganization;
     [TChoice('Source')]
-    [TNaming(TNaming.nCamelCase)]
     property SourceAttachment: TAttachmentCT read GetSourceAttachment;
     [TChoice('Source')]
-    [TNaming(TNaming.nCamelCase)]
     property SourceReference: TReferenceCT read GetSourceReference;
-    [TNaming(TNaming.nFlatCase)]
     property Policy: TConsentPolicyCTList read fPolicy;
-    [TNaming(TNaming.nCamelCase)]
     property PolicyRule: TCodeableConceptCT read fPolicyRule;
-    [TNaming(TNaming.nFlatCase)]
     property Verification: TConsentVerificationCTList read fVerification;
-    [TNaming(TNaming.nFlatCase)]
     property Provision: TConsentProvisionCT read fProvision;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Consent.Policy')]
   TConsentPolicyCT = class(TBackboneElementCT)
   private
     fAuthority: TUriCT;
     fUri: TUriCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Authority: TUriCT read fAuthority;
-    [TNaming(TNaming.nFlatCase)]
     property Uri: TUriCT read fUri;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Consent.Verification')]
   TConsentVerificationCT = class(TBackboneElementCT)
   private
@@ -11358,15 +9112,11 @@ type
     fVerificationDate: TDateTimeCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Verified: TBooleanCT read fVerified;
-    [TNaming(TNaming.nCamelCase)]
     property VerifiedWith: TReferenceCT read fVerifiedWith;
-    [TNaming(TNaming.nCamelCase)]
     property VerificationDate: TDateTimeCT read fVerificationDate;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Consent.Provision')]
   TConsentProvisionCT = class(TBackboneElementCT)
   private
@@ -11382,31 +9132,19 @@ type
     fData: TConsentDataCTList;
     fProvision: TConsentProvisionCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TConsentProvisionTypeCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCT read fPeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Actor: TConsentActorCTList read fActor;
-    [TNaming(TNaming.nFlatCase)]
     property Action: TCodeableConceptCTList read fAction;
-    [TNaming(TNaming.nCamelCase)]
     property SecurityLabel: TCodingCTList read fSecurityLabel;
-    [TNaming(TNaming.nFlatCase)]
     property Purpose: TCodingCTList read fPurpose;
-    [TNaming(TNaming.nFlatCase)]
     property &Class: TCodingCTList read fClass;
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCTList read fCode;
-    [TNaming(TNaming.nCamelCase)]
     property DataPeriod: TPeriodCT read fDataPeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Data: TConsentDataCTList read fData;
-    [TNaming(TNaming.nFlatCase)]
     property Provision: TConsentProvisionCTList read fProvision;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Consent.Actor')]
   TConsentActorCT = class(TBackboneElementCT)
   private
@@ -11414,14 +9152,11 @@ type
     fReference: TReferenceCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Role: TCodeableConceptCT read fRole;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Reference: TReferenceCT read fReference;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Consent.Data')]
   TConsentDataCT = class(TBackboneElementCT)
   private
@@ -11429,10 +9164,8 @@ type
     fReference: TReferenceCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Meaning: TConsentDataMeaningCT read fMeaning;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Reference: TReferenceCT read fReference;
   end;
 
@@ -11440,7 +9173,6 @@ type
   private
     fValue: TConsentProvisionTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TConsentProvisionTypeListST read fValue write fValue;
   end;
 
@@ -11448,7 +9180,6 @@ type
   private
     fValue: TConsentDataMeaningListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TConsentDataMeaningListST read fValue write fValue;
   end;
 
@@ -11456,7 +9187,6 @@ type
   private
     fValue: TConsentStateListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TConsentStateListST read fValue write fValue;
   end;
 
@@ -11508,83 +9238,47 @@ type
     property TopicChosen: TBasite read GetTopicChosen;
     property LegallyBindingChosen: TBasite read GetLegallyBindingChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUriCT read fUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCT read fVersion;
-    [TNaming(TNaming.nFlatCase)]
     property Status: TContractResourceStatusCodesCT read fStatus;
-    [TNaming(TNaming.nCamelCase)]
     property LegalState: TCodeableConceptCT read fLegalState;
-    [TNaming(TNaming.nCamelCase)]
     property InstantiatesCanonical: TReferenceCT read fInstantiatesCanonical;
-    [TNaming(TNaming.nCamelCase)]
     property InstantiatesUri: TUriCT read fInstantiatesUri;
-    [TNaming(TNaming.nCamelCase)]
     property ContentDerivative: TCodeableConceptCT read fContentDerivative;
-    [TNaming(TNaming.nFlatCase)]
     property Issued: TDateTimeCT read fIssued;
-    [TNaming(TNaming.nFlatCase)]
     property Applies: TPeriodCT read fApplies;
-    [TNaming(TNaming.nCamelCase)]
     property ExpirationType: TCodeableConceptCT read fExpirationType;
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCTList read fSubject;
-    [TNaming(TNaming.nFlatCase)]
     property Authority: TReferenceCTList read fAuthority;
-    [TNaming(TNaming.nFlatCase)]
     property Domain: TReferenceCTList read fDomain;
-    [TNaming(TNaming.nFlatCase)]
     property Site: TReferenceCTList read fSite;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Title: TStringCT read fTitle;
-    [TNaming(TNaming.nFlatCase)]
     property Subtitle: TStringCT read fSubtitle;
-    [TNaming(TNaming.nFlatCase)]
     property Alias: TStringCTList read fAlias;
-    [TNaming(TNaming.nFlatCase)]
     property Author: TReferenceCT read fAuthor;
-    [TNaming(TNaming.nFlatCase)]
     property Scope: TCodeableConceptCT read fScope;
     [TChoice('Topic')]
-    [TNaming(TNaming.nCamelCase)]
     property TopicCodeableConcept: TCodeableConceptCT read GetTopicCodeableConcept;
     [TChoice('Topic')]
-    [TNaming(TNaming.nCamelCase)]
     property TopicReference: TReferenceCT read GetTopicReference;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nCamelCase)]
     property SubType: TCodeableConceptCTList read fSubType;
-    [TNaming(TNaming.nCamelCase)]
     property ContentDefinition: TContractContentDefinitionCT read fContentDefinition;
-    [TNaming(TNaming.nFlatCase)]
     property Term: TContractTermCTList read fTerm;
-    [TNaming(TNaming.nCamelCase)]
     property SupportingInfo: TReferenceCTList read fSupportingInfo;
-    [TNaming(TNaming.nCamelCase)]
     property RelevantHistory: TReferenceCTList read fRelevantHistory;
-    [TNaming(TNaming.nFlatCase)]
     property Signer: TContractSignerCTList read fSigner;
-    [TNaming(TNaming.nFlatCase)]
     property Friendly: TContractFriendlyCTList read fFriendly;
-    [TNaming(TNaming.nFlatCase)]
     property Legal: TContractLegalCTList read fLegal;
-    [TNaming(TNaming.nFlatCase)]
     property Rule: TContractRuleCTList read fRule;
     [TChoice('LegallyBinding')]
-    [TNaming(TNaming.nCamelCase)]
     property LegallyBindingAttachment: TAttachmentCT read GetLegallyBindingAttachment;
     [TChoice('LegallyBinding')]
-    [TNaming(TNaming.nCamelCase)]
     property LegallyBindingReference: TReferenceCT read GetLegallyBindingReference;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Contract.ContentDefinition')]
   TContractContentDefinitionCT = class(TBackboneElementCT)
   private
@@ -11596,22 +9290,15 @@ type
     fCopyright: TMarkdownCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nCamelCase)]
     property SubType: TCodeableConceptCT read fSubType;
-    [TNaming(TNaming.nFlatCase)]
     property Publisher: TReferenceCT read fPublisher;
-    [TNaming(TNaming.nCamelCase)]
     property PublicationDate: TDateTimeCT read fPublicationDate;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property PublicationStatus: TContractResourcePublicationStatusCodesCT read fPublicationStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Copyright: TMarkdownCT read fCopyright;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Contract.Term')]
   TContractTermCT = class(TBackboneElementCT)
   private
@@ -11635,38 +9322,24 @@ type
   public
     property TopicChosen: TBasite read GetTopicChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCT read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Issued: TDateTimeCT read fIssued;
-    [TNaming(TNaming.nFlatCase)]
     property Applies: TPeriodCT read fApplies;
     [TChoice('Topic')]
-    [TNaming(TNaming.nCamelCase)]
     property TopicCodeableConcept: TCodeableConceptCT read GetTopicCodeableConcept;
     [TChoice('Topic')]
-    [TNaming(TNaming.nCamelCase)]
     property TopicReference: TReferenceCT read GetTopicReference;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nCamelCase)]
     property SubType: TCodeableConceptCT read fSubType;
-    [TNaming(TNaming.nFlatCase)]
     property Text: TStringCT read fText;
-    [TNaming(TNaming.nCamelCase)]
     property SecurityLabel: TContractSecurityLabelCTList read fSecurityLabel;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Offer: TContractOfferCT read fOffer;
-    [TNaming(TNaming.nFlatCase)]
     property Asset: TContractAssetCTList read fAsset;
-    [TNaming(TNaming.nFlatCase)]
     property Action: TContractActionCTList read fAction;
-    [TNaming(TNaming.nFlatCase)]
     property Group: TContractTermCTList read fGroup;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Contract.SecurityLabel')]
   TContractSecurityLabelCT = class(TBackboneElementCT)
   private
@@ -11675,18 +9348,13 @@ type
     fCategory: TCodingCTList;
     fControl: TCodingCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Number: TUnsignedIntCTList read fNumber;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Classification: TCodingCT read fClassification;
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodingCTList read fCategory;
-    [TNaming(TNaming.nFlatCase)]
     property Control: TCodingCTList read fControl;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Contract.Offer')]
   TContractOfferCT = class(TBackboneElementCT)
   private
@@ -11701,43 +9369,29 @@ type
     fLinkId: TStringCTList;
     fSecurityLabelNumber: TUnsignedIntCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Party: TContractPartyCTList read fParty;
-    [TNaming(TNaming.nFlatCase)]
     property Topic: TReferenceCT read fTopic;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Decision: TCodeableConceptCT read fDecision;
-    [TNaming(TNaming.nCamelCase)]
     property DecisionMode: TCodeableConceptCTList read fDecisionMode;
-    [TNaming(TNaming.nFlatCase)]
     property Answer: TContractAnswerCTList read fAnswer;
-    [TNaming(TNaming.nFlatCase)]
     property Text: TStringCT read fText;
-    [TNaming(TNaming.nCamelCase)]
     property LinkId: TStringCTList read fLinkId;
-    [TNaming(TNaming.nCamelCase)]
     property SecurityLabelNumber: TUnsignedIntCTList read fSecurityLabelNumber;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Contract.Party')]
   TContractPartyCT = class(TBackboneElementCT)
   private
     fReference: TReferenceCTList;
     fRole: TCodeableConceptCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Reference: TReferenceCTList read fReference;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Role: TCodeableConceptCT read fRole;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Contract.Answer')]
   TContractAnswerCT = class(TBackboneElementCT)
   private
@@ -11771,44 +9425,31 @@ type
     property ValueChosen: TBasite read GetValueChosen;
   published
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueBoolean: TBooleanCT read GetValueBoolean;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDecimal: TDecimalCT read GetValueDecimal;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueInteger: TIntegerCT read GetValueInteger;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDate: TDateCT read GetValueDate;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDateTime: TDateTimeCT read GetValueDateTime;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueTime: TTimeCT read GetValueTime;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueString: TStringCT read GetValueString;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueUri: TUriCT read GetValueUri;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueAttachment: TAttachmentCT read GetValueAttachment;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCoding: TCodingCT read GetValueCoding;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueQuantity: TQuantityCT read GetValueQuantity;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueReference: TReferenceCT read GetValueReference;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Contract.Asset')]
   TContractAssetCT = class(TBackboneElementCT)
   private
@@ -11828,39 +9469,23 @@ type
     fSecurityLabelNumber: TUnsignedIntCTList;
     fValuedItem: TContractValuedItemCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Scope: TCodeableConceptCT read fScope;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCTList read fType;
-    [TNaming(TNaming.nCamelCase)]
     property TypeReference: TReferenceCTList read fTypeReference;
-    [TNaming(TNaming.nFlatCase)]
     property Subtype: TCodeableConceptCTList read fSubtype;
-    [TNaming(TNaming.nFlatCase)]
     property Relationship: TCodingCT read fRelationship;
-    [TNaming(TNaming.nFlatCase)]
     property Context: TContractContextCTList read fContext;
-    [TNaming(TNaming.nFlatCase)]
     property Condition: TStringCT read fCondition;
-    [TNaming(TNaming.nCamelCase)]
     property PeriodType: TCodeableConceptCTList read fPeriodType;
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCTList read fPeriod;
-    [TNaming(TNaming.nCamelCase)]
     property UsePeriod: TPeriodCTList read fUsePeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Text: TStringCT read fText;
-    [TNaming(TNaming.nCamelCase)]
     property LinkId: TStringCTList read fLinkId;
-    [TNaming(TNaming.nFlatCase)]
     property Answer: TContractAnswerCTList read fAnswer;
-    [TNaming(TNaming.nCamelCase)]
     property SecurityLabelNumber: TUnsignedIntCTList read fSecurityLabelNumber;
-    [TNaming(TNaming.nCamelCase)]
     property ValuedItem: TContractValuedItemCTList read fValuedItem;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Contract.Context')]
   TContractContextCT = class(TBackboneElementCT)
   private
@@ -11868,15 +9493,11 @@ type
     fCode: TCodeableConceptCTList;
     fText: TStringCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Reference: TReferenceCT read fReference;
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCTList read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Text: TStringCT read fText;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Contract.ValuedItem')]
   TContractValuedItemCT = class(TBackboneElementCT)
   private
@@ -11903,40 +9524,24 @@ type
     property EntityChosen: TBasite read GetEntityChosen;
   published
     [TChoice('Entity')]
-    [TNaming(TNaming.nCamelCase)]
     property EntityCodeableConcept: TCodeableConceptCT read GetEntityCodeableConcept;
     [TChoice('Entity')]
-    [TNaming(TNaming.nCamelCase)]
     property EntityReference: TReferenceCT read GetEntityReference;
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCT read fIdentifier;
-    [TNaming(TNaming.nCamelCase)]
     property EffectiveTime: TDateTimeCT read fEffectiveTime;
-    [TNaming(TNaming.nFlatCase)]
     property Quantity: TQuantityCT read fQuantity;
-    [TNaming(TNaming.nCamelCase)]
     property UnitPrice: TMoneyCT read fUnitPrice;
-    [TNaming(TNaming.nFlatCase)]
     property Factor: TDecimalCT read fFactor;
-    [TNaming(TNaming.nFlatCase)]
     property Points: TDecimalCT read fPoints;
-    [TNaming(TNaming.nFlatCase)]
     property Net: TMoneyCT read fNet;
-    [TNaming(TNaming.nFlatCase)]
     property Payment: TStringCT read fPayment;
-    [TNaming(TNaming.nCamelCase)]
     property PaymentDate: TDateTimeCT read fPaymentDate;
-    [TNaming(TNaming.nFlatCase)]
     property Responsible: TReferenceCT read fResponsible;
-    [TNaming(TNaming.nFlatCase)]
     property Recipient: TReferenceCT read fRecipient;
-    [TNaming(TNaming.nCamelCase)]
     property LinkId: TStringCTList read fLinkId;
-    [TNaming(TNaming.nCamelCase)]
     property SecurityLabelNumber: TUnsignedIntCTList read fSecurityLabelNumber;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Contract.Action')]
   TContractActionCT = class(TBackboneElementCT)
   private
@@ -11971,74 +9576,47 @@ type
   public
     property OccurrenceChosen: TBasite read GetOccurrenceChosen;
   published
-    [TNaming(TNaming.nCamelCase)]
     property DoNotPerform: TBooleanCT read fDoNotPerform;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TContractSubjectCTList read fSubject;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Intent: TCodeableConceptCT read fIntent;
-    [TNaming(TNaming.nCamelCase)]
     property LinkId: TStringCTList read fLinkId;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TCodeableConceptCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Context: TReferenceCT read fContext;
-    [TNaming(TNaming.nCamelCase)]
     property ContextLinkId: TStringCTList read fContextLinkId;
     [TChoice('Occurrence')]
-    [TNaming(TNaming.nCamelCase)]
     property OccurrenceDateTime: TDateTimeCT read GetOccurrenceDateTime;
     [TChoice('Occurrence')]
-    [TNaming(TNaming.nCamelCase)]
     property OccurrencePeriod: TPeriodCT read GetOccurrencePeriod;
     [TChoice('Occurrence')]
-    [TNaming(TNaming.nCamelCase)]
     property OccurrenceTiming: TTimingCT read GetOccurrenceTiming;
-    [TNaming(TNaming.nFlatCase)]
     property Requester: TReferenceCTList read fRequester;
-    [TNaming(TNaming.nCamelCase)]
     property RequesterLinkId: TStringCTList read fRequesterLinkId;
-    [TNaming(TNaming.nCamelCase)]
     property PerformerType: TCodeableConceptCTList read fPerformerType;
-    [TNaming(TNaming.nCamelCase)]
     property PerformerRole: TCodeableConceptCT read fPerformerRole;
-    [TNaming(TNaming.nFlatCase)]
     property Performer: TReferenceCT read fPerformer;
-    [TNaming(TNaming.nCamelCase)]
     property PerformerLinkId: TStringCTList read fPerformerLinkId;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonReference: TReferenceCTList read fReasonReference;
-    [TNaming(TNaming.nFlatCase)]
     property Reason: TStringCTList read fReason;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonLinkId: TStringCTList read fReasonLinkId;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
-    [TNaming(TNaming.nCamelCase)]
     property SecurityLabelNumber: TUnsignedIntCTList read fSecurityLabelNumber;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Contract.Subject')]
   TContractSubjectCT = class(TBackboneElementCT)
   private
     fReference: TReferenceCTList;
     fRole: TCodeableConceptCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Reference: TReferenceCTList read fReference;
-    [TNaming(TNaming.nFlatCase)]
     property Role: TCodeableConceptCT read fRole;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Contract.Signer')]
   TContractSignerCT = class(TBackboneElementCT)
   private
@@ -12047,16 +9625,12 @@ type
     fSignature: TSignatureCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodingCT read fType;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Party: TReferenceCT read fParty;
-    [TNaming(TNaming.nFlatCase)]
     property Signature: TSignatureCTList read fSignature;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Contract.Friendly')]
   TContractFriendlyCT = class(TBackboneElementCT)
   private
@@ -12070,14 +9644,11 @@ type
     property ContentChosen: TBasite read GetContentChosen;
   published
     [TChoice('Content')]
-    [TNaming(TNaming.nCamelCase)]
     property ContentAttachment: TAttachmentCT read GetContentAttachment;
     [TChoice('Content')]
-    [TNaming(TNaming.nCamelCase)]
     property ContentReference: TReferenceCT read GetContentReference;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Contract.Legal')]
   TContractLegalCT = class(TBackboneElementCT)
   private
@@ -12091,14 +9662,11 @@ type
     property ContentChosen: TBasite read GetContentChosen;
   published
     [TChoice('Content')]
-    [TNaming(TNaming.nCamelCase)]
     property ContentAttachment: TAttachmentCT read GetContentAttachment;
     [TChoice('Content')]
-    [TNaming(TNaming.nCamelCase)]
     property ContentReference: TReferenceCT read GetContentReference;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Contract.Rule')]
   TContractRuleCT = class(TBackboneElementCT)
   private
@@ -12112,10 +9680,8 @@ type
     property ContentChosen: TBasite read GetContentChosen;
   published
     [TChoice('Content')]
-    [TNaming(TNaming.nCamelCase)]
     property ContentAttachment: TAttachmentCT read GetContentAttachment;
     [TChoice('Content')]
-    [TNaming(TNaming.nCamelCase)]
     property ContentReference: TReferenceCT read GetContentReference;
   end;
 
@@ -12123,7 +9689,6 @@ type
   private
     fValue: TContractResourceStatusCodesListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TContractResourceStatusCodesListST read fValue write fValue;
   end;
 
@@ -12131,7 +9696,6 @@ type
   private
     fValue: TContractResourcePublicationStatusCodesListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TContractResourcePublicationStatusCodesListST read fValue write fValue;
   end;
 
@@ -12155,45 +9719,27 @@ type
     fSubrogation: TBooleanCT;
     fContract: TReferenceCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TFinancialResourceStatusCodesCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nCamelCase)]
     property PolicyHolder: TReferenceCT read fPolicyHolder;
-    [TNaming(TNaming.nFlatCase)]
     property Subscriber: TReferenceCT read fSubscriber;
-    [TNaming(TNaming.nCamelCase)]
     property SubscriberId: TStringCT read fSubscriberId;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Beneficiary: TReferenceCT read fBeneficiary;
-    [TNaming(TNaming.nFlatCase)]
     property Dependent: TStringCT read fDependent;
-    [TNaming(TNaming.nFlatCase)]
     property Relationship: TCodeableConceptCT read fRelationship;
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCT read fPeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Payor: TReferenceCTList read fPayor;
-    [TNaming(TNaming.nFlatCase)]
     property &Class: TCoverageClassCTList read fClass;
-    [TNaming(TNaming.nFlatCase)]
     property Order: TPositiveIntCT read fOrder;
-    [TNaming(TNaming.nFlatCase)]
     property Network: TStringCT read fNetwork;
-    [TNaming(TNaming.nCamelCase)]
     property CostToBeneficiary: TCoverageCostToBeneficiaryCTList read fCostToBeneficiary;
-    [TNaming(TNaming.nFlatCase)]
     property Subrogation: TBooleanCT read fSubrogation;
-    [TNaming(TNaming.nFlatCase)]
     property Contract: TReferenceCTList read fContract;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Coverage.Class')]
   TCoverageClassCT = class(TBackboneElementCT)
   private
@@ -12202,16 +9748,12 @@ type
     fName: TStringCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Value: TStringCT read fValue;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Coverage.CostToBeneficiary')]
   TCoverageCostToBeneficiaryCT = class(TBackboneElementCT)
   private
@@ -12226,19 +9768,14 @@ type
   public
     property ValueChosen: TBasite read GetValueChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueQuantity: TQuantityCT read GetValueQuantity;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueMoney: TMoneyCT read GetValueMoney;
-    [TNaming(TNaming.nFlatCase)]
     property Exception: TCoverageExceptionCTList read fException;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Coverage.Exception')]
   TCoverageExceptionCT = class(TBackboneElementCT)
   private
@@ -12246,9 +9783,7 @@ type
     fPeriod: TPeriodCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCT read fPeriod;
   end;
 
@@ -12276,45 +9811,29 @@ type
   public
     property ServicedChosen: TBasite read GetServicedChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TFinancialResourceStatusCodesCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Priority: TCodeableConceptCT read fPriority;
-    [TNaming(TNaming.nFlatCase)]
     property Purpose: TEligibilityRequestPurposeCTList read fPurpose;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Patient: TReferenceCT read fPatient;
     [TChoice('Serviced')]
-    [TNaming(TNaming.nCamelCase)]
     property ServicedDate: TDateCT read GetServicedDate;
     [TChoice('Serviced')]
-    [TNaming(TNaming.nCamelCase)]
     property ServicedPeriod: TPeriodCT read GetServicedPeriod;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Created: TDateTimeCT read fCreated;
-    [TNaming(TNaming.nFlatCase)]
     property Enterer: TReferenceCT read fEnterer;
-    [TNaming(TNaming.nFlatCase)]
     property Provider: TReferenceCT read fProvider;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Insurer: TReferenceCT read fInsurer;
-    [TNaming(TNaming.nFlatCase)]
     property Facility: TReferenceCT read fFacility;
-    [TNaming(TNaming.nCamelCase)]
     property SupportingInfo: TCoverageEligibilityRequestSupportingInfoCTList read fSupportingInfo;
-    [TNaming(TNaming.nFlatCase)]
     property Insurance: TCoverageEligibilityRequestInsuranceCTList read fInsurance;
-    [TNaming(TNaming.nFlatCase)]
     property Item: TCoverageEligibilityRequestItemCTList read fItem;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('CoverageEligibilityRequest.SupportingInfo')]
   TCoverageEligibilityRequestSupportingInfoCT = class(TBackboneElementCT)
   private
@@ -12323,16 +9842,12 @@ type
     fAppliesToAll: TBooleanCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Sequence: TPositiveIntCT read fSequence;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Information: TReferenceCT read fInformation;
-    [TNaming(TNaming.nCamelCase)]
     property AppliesToAll: TBooleanCT read fAppliesToAll;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('CoverageEligibilityRequest.Insurance')]
   TCoverageEligibilityRequestInsuranceCT = class(TBackboneElementCT)
   private
@@ -12340,16 +9855,12 @@ type
     fCoverage: TReferenceCT;
     fBusinessArrangement: TStringCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Focal: TBooleanCT read fFocal;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Coverage: TReferenceCT read fCoverage;
-    [TNaming(TNaming.nCamelCase)]
     property BusinessArrangement: TStringCT read fBusinessArrangement;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('CoverageEligibilityRequest.Item')]
   TCoverageEligibilityRequestItemCT = class(TBackboneElementCT)
   private
@@ -12364,29 +9875,18 @@ type
     fDiagnosis: TCoverageEligibilityRequestDiagnosisCTList;
     fDetail: TReferenceCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property SupportingInfoSequence: TPositiveIntCTList read fSupportingInfoSequence;
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCT read fCategory;
-    [TNaming(TNaming.nCamelCase)]
     property ProductOrService: TCodeableConceptCT read fProductOrService;
-    [TNaming(TNaming.nFlatCase)]
     property Modifier: TCodeableConceptCTList read fModifier;
-    [TNaming(TNaming.nFlatCase)]
     property Provider: TReferenceCT read fProvider;
-    [TNaming(TNaming.nFlatCase)]
     property Quantity: TQuantityCT read fQuantity;
-    [TNaming(TNaming.nCamelCase)]
     property UnitPrice: TMoneyCT read fUnitPrice;
-    [TNaming(TNaming.nFlatCase)]
     property Facility: TReferenceCT read fFacility;
-    [TNaming(TNaming.nFlatCase)]
     property Diagnosis: TCoverageEligibilityRequestDiagnosisCTList read fDiagnosis;
-    [TNaming(TNaming.nFlatCase)]
     property Detail: TReferenceCTList read fDetail;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('CoverageEligibilityRequest.Diagnosis')]
   TCoverageEligibilityRequestDiagnosisCT = class(TBackboneElementCT)
   private
@@ -12400,10 +9900,8 @@ type
     property DiagnosisChosen: TBasite read GetDiagnosisChosen;
   published
     [TChoice('Diagnosis')]
-    [TNaming(TNaming.nCamelCase)]
     property DiagnosisCodeableConcept: TCodeableConceptCT read GetDiagnosisCodeableConcept;
     [TChoice('Diagnosis')]
-    [TNaming(TNaming.nCamelCase)]
     property DiagnosisReference: TReferenceCT read GetDiagnosisReference;
   end;
 
@@ -12411,7 +9909,6 @@ type
   private
     fValue: TEligibilityRequestPurposeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TEligibilityRequestPurposeListST read fValue write fValue;
   end;
 
@@ -12440,49 +9937,32 @@ type
   public
     property ServicedChosen: TBasite read GetServicedChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TFinancialResourceStatusCodesCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Purpose: TEligibilityResponsePurposeCTList read fPurpose;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Patient: TReferenceCT read fPatient;
     [TChoice('Serviced')]
-    [TNaming(TNaming.nCamelCase)]
     property ServicedDate: TDateCT read GetServicedDate;
     [TChoice('Serviced')]
-    [TNaming(TNaming.nCamelCase)]
     property ServicedPeriod: TPeriodCT read GetServicedPeriod;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Created: TDateTimeCT read fCreated;
-    [TNaming(TNaming.nFlatCase)]
     property Requestor: TReferenceCT read fRequestor;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Request: TReferenceCT read fRequest;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Outcome: TRemittanceOutcomeCT read fOutcome;
-    [TNaming(TNaming.nFlatCase)]
     property Disposition: TStringCT read fDisposition;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Insurer: TReferenceCT read fInsurer;
-    [TNaming(TNaming.nFlatCase)]
     property Insurance: TCoverageEligibilityResponseInsuranceCTList read fInsurance;
-    [TNaming(TNaming.nCamelCase)]
     property PreAuthRef: TStringCT read fPreAuthRef;
-    [TNaming(TNaming.nFlatCase)]
     property Form: TCodeableConceptCT read fForm;
-    [TNaming(TNaming.nFlatCase)]
     property Error: TCoverageEligibilityResponseErrorCTList read fError;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('CoverageEligibilityResponse.Insurance')]
   TCoverageEligibilityResponseInsuranceCT = class(TBackboneElementCT)
   private
@@ -12492,17 +9972,12 @@ type
     fItem: TCoverageEligibilityResponseItemCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Coverage: TReferenceCT read fCoverage;
-    [TNaming(TNaming.nFlatCase)]
     property Inforce: TBooleanCT read fInforce;
-    [TNaming(TNaming.nCamelCase)]
     property BenefitPeriod: TPeriodCT read fBenefitPeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Item: TCoverageEligibilityResponseItemCTList read fItem;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('CoverageEligibilityResponse.Item')]
   TCoverageEligibilityResponseItemCT = class(TBackboneElementCT)
   private
@@ -12521,37 +9996,22 @@ type
     fAuthorizationSupporting: TCodeableConceptCTList;
     fAuthorizationUrl: TUriCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCT read fCategory;
-    [TNaming(TNaming.nCamelCase)]
     property ProductOrService: TCodeableConceptCT read fProductOrService;
-    [TNaming(TNaming.nFlatCase)]
     property Modifier: TCodeableConceptCTList read fModifier;
-    [TNaming(TNaming.nFlatCase)]
     property Provider: TReferenceCT read fProvider;
-    [TNaming(TNaming.nFlatCase)]
     property Excluded: TBooleanCT read fExcluded;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Network: TCodeableConceptCT read fNetwork;
-    [TNaming(TNaming.nFlatCase)]
     property &Unit: TCodeableConceptCT read fUnit;
-    [TNaming(TNaming.nFlatCase)]
     property Term: TCodeableConceptCT read fTerm;
-    [TNaming(TNaming.nFlatCase)]
     property Benefit: TCoverageEligibilityResponseBenefitCTList read fBenefit;
-    [TNaming(TNaming.nCamelCase)]
     property AuthorizationRequired: TBooleanCT read fAuthorizationRequired;
-    [TNaming(TNaming.nCamelCase)]
     property AuthorizationSupporting: TCodeableConceptCTList read fAuthorizationSupporting;
-    [TNaming(TNaming.nCamelCase)]
     property AuthorizationUrl: TUriCT read fAuthorizationUrl;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('CoverageEligibilityResponse.Benefit')]
   TCoverageEligibilityResponseBenefitCT = class(TBackboneElementCT)
   private
@@ -12576,36 +10036,27 @@ type
     property UsedChosen: TBasite read GetUsedChosen;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
     [TChoice('Allowed')]
-    [TNaming(TNaming.nCamelCase)]
     property AllowedUnsignedInt: TUnsignedIntCT read GetAllowedUnsignedInt;
     [TChoice('Allowed')]
-    [TNaming(TNaming.nCamelCase)]
     property AllowedString: TStringCT read GetAllowedString;
     [TChoice('Allowed')]
-    [TNaming(TNaming.nCamelCase)]
     property AllowedMoney: TMoneyCT read GetAllowedMoney;
     [TChoice('Used')]
-    [TNaming(TNaming.nCamelCase)]
     property UsedUnsignedInt: TUnsignedIntCT read GetUsedUnsignedInt;
     [TChoice('Used')]
-    [TNaming(TNaming.nCamelCase)]
     property UsedString: TStringCT read GetUsedString;
     [TChoice('Used')]
-    [TNaming(TNaming.nCamelCase)]
     property UsedMoney: TMoneyCT read GetUsedMoney;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('CoverageEligibilityResponse.Error')]
   TCoverageEligibilityResponseErrorCT = class(TBackboneElementCT)
   private
     fCode: TCodeableConceptCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
   end;
 
@@ -12613,7 +10064,6 @@ type
   private
     fValue: TEligibilityResponsePurposeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TEligibilityResponsePurposeListST read fValue write fValue;
   end;
 
@@ -12639,51 +10089,34 @@ type
   public
     property IdentifiedChosen: TBasite read GetIdentifiedChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TObservationStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Severity: TDetectedIssueSeverityCT read fSeverity;
-    [TNaming(TNaming.nFlatCase)]
     property Patient: TReferenceCT read fPatient;
     [TChoice('Identified')]
-    [TNaming(TNaming.nCamelCase)]
     property IdentifiedDateTime: TDateTimeCT read GetIdentifiedDateTime;
     [TChoice('Identified')]
-    [TNaming(TNaming.nCamelCase)]
     property IdentifiedPeriod: TPeriodCT read GetIdentifiedPeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Author: TReferenceCT read fAuthor;
-    [TNaming(TNaming.nFlatCase)]
     property Implicated: TReferenceCTList read fImplicated;
-    [TNaming(TNaming.nFlatCase)]
     property Evidence: TDetectedIssueEvidenceCTList read fEvidence;
-    [TNaming(TNaming.nFlatCase)]
     property Detail: TStringCT read fDetail;
-    [TNaming(TNaming.nFlatCase)]
     property Reference: TUriCT read fReference;
-    [TNaming(TNaming.nFlatCase)]
     property Mitigation: TDetectedIssueMitigationCTList read fMitigation;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('DetectedIssue.Evidence')]
   TDetectedIssueEvidenceCT = class(TBackboneElementCT)
   private
     fCode: TCodeableConceptCTList;
     fDetail: TReferenceCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCTList read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Detail: TReferenceCTList read fDetail;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('DetectedIssue.Mitigation')]
   TDetectedIssueMitigationCT = class(TBackboneElementCT)
   private
@@ -12692,11 +10125,8 @@ type
     fAuthor: TReferenceCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Action: TCodeableConceptCT read fAction;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Author: TReferenceCT read fAuthor;
   end;
 
@@ -12704,7 +10134,6 @@ type
   private
     fValue: TObservationStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TObservationStatusListST read fValue write fValue;
   end;
 
@@ -12712,7 +10141,6 @@ type
   private
     fValue: TDetectedIssueSeverityListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TDetectedIssueSeverityListST read fValue write fValue;
   end;
 
@@ -12745,61 +10173,34 @@ type
     fSafety: TCodeableConceptCTList;
     fParent: TReferenceCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Definition: TReferenceCT read fDefinition;
-    [TNaming(TNaming.nCamelCase)]
     property UdiCarrier: TDeviceUdiCarrierCTList read fUdiCarrier;
-    [TNaming(TNaming.nFlatCase)]
     property Status: TFHIRDeviceStatusCT read fStatus;
-    [TNaming(TNaming.nCamelCase)]
     property StatusReason: TCodeableConceptCTList read fStatusReason;
-    [TNaming(TNaming.nCamelCase)]
     property DistinctIdentifier: TStringCT read fDistinctIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Manufacturer: TStringCT read fManufacturer;
-    [TNaming(TNaming.nCamelCase)]
     property ManufactureDate: TDateTimeCT read fManufactureDate;
-    [TNaming(TNaming.nCamelCase)]
     property ExpirationDate: TDateTimeCT read fExpirationDate;
-    [TNaming(TNaming.nCamelCase)]
     property LotNumber: TStringCT read fLotNumber;
-    [TNaming(TNaming.nCamelCase)]
     property SerialNumber: TStringCT read fSerialNumber;
-    [TNaming(TNaming.nCamelCase)]
     property DeviceName: TDeviceDeviceNameCTList read fDeviceName;
-    [TNaming(TNaming.nCamelCase)]
     property ModelNumber: TStringCT read fModelNumber;
-    [TNaming(TNaming.nCamelCase)]
     property PartNumber: TStringCT read fPartNumber;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Specialization: TDeviceSpecializationCTList read fSpecialization;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TDeviceVersionCTList read fVersion;
-    [TNaming(TNaming.nFlatCase)]
     property &Property: TDevicePropertyCTList read fProperty;
-    [TNaming(TNaming.nFlatCase)]
     property Patient: TReferenceCT read fPatient;
-    [TNaming(TNaming.nFlatCase)]
     property Owner: TReferenceCT read fOwner;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TContactPointCTList read fContact;
-    [TNaming(TNaming.nFlatCase)]
     property Location: TReferenceCT read fLocation;
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUriCT read fUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
-    [TNaming(TNaming.nFlatCase)]
     property Safety: TCodeableConceptCTList read fSafety;
-    [TNaming(TNaming.nFlatCase)]
     property Parent: TReferenceCT read fParent;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Device.UdiCarrier')]
   TDeviceUdiCarrierCT = class(TBackboneElementCT)
   private
@@ -12810,21 +10211,14 @@ type
     fCarrierHRF: TStringCT;
     fEntryType: TUDIEntryTypeCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property DeviceIdentifier: TStringCT read fDeviceIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Issuer: TUriCT read fIssuer;
-    [TNaming(TNaming.nFlatCase)]
     property Jurisdiction: TUriCT read fJurisdiction;
-    [TNaming(TNaming.nCamelCase)]
     property CarrierAIDC: TBase64BinaryCT read fCarrierAIDC;
-    [TNaming(TNaming.nCamelCase)]
     property CarrierHRF: TStringCT read fCarrierHRF;
-    [TNaming(TNaming.nCamelCase)]
     property EntryType: TUDIEntryTypeCT read fEntryType;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Device.DeviceName')]
   TDeviceDeviceNameCT = class(TBackboneElementCT)
   private
@@ -12832,14 +10226,11 @@ type
     fType: TDeviceNameTypeCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TDeviceNameTypeCT read fType;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Device.Specialization')]
   TDeviceSpecializationCT = class(TBackboneElementCT)
   private
@@ -12847,13 +10238,10 @@ type
     fVersion: TStringCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property SystemType: TCodeableConceptCT read fSystemType;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCT read fVersion;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Device.Version')]
   TDeviceVersionCT = class(TBackboneElementCT)
   private
@@ -12861,16 +10249,12 @@ type
     fComponent: TIdentifierCT;
     fValue: TStringCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Component: TIdentifierCT read fComponent;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Value: TStringCT read fValue;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Device.Property')]
   TDevicePropertyCT = class(TBackboneElementCT)
   private
@@ -12879,11 +10263,8 @@ type
     fValueCode: TCodeableConceptCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nCamelCase)]
     property ValueQuantity: TQuantityCTList read fValueQuantity;
-    [TNaming(TNaming.nCamelCase)]
     property ValueCode: TCodeableConceptCTList read fValueCode;
   end;
 
@@ -12891,7 +10272,6 @@ type
   private
     fValue: TFHIRDeviceStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TFHIRDeviceStatusListST read fValue write fValue;
   end;
 
@@ -12899,7 +10279,6 @@ type
   private
     fValue: TDeviceNameTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TDeviceNameTypeListST read fValue write fValue;
   end;
 
@@ -12907,7 +10286,6 @@ type
   private
     fValue: TUDIEntryTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TUDIEntryTypeListST read fValue write fValue;
   end;
 
@@ -12943,57 +10321,33 @@ type
   public
     property ManufacturerChosen: TBasite read GetManufacturerChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nCamelCase)]
     property UdiDeviceIdentifier: TDeviceDefinitionUdiDeviceIdentifierCTList read fUdiDeviceIdentifier;
     [TChoice('Manufacturer')]
-    [TNaming(TNaming.nCamelCase)]
     property ManufacturerString: TStringCT read GetManufacturerString;
     [TChoice('Manufacturer')]
-    [TNaming(TNaming.nCamelCase)]
     property ManufacturerReference: TReferenceCT read GetManufacturerReference;
-    [TNaming(TNaming.nCamelCase)]
     property DeviceName: TDeviceDefinitionDeviceNameCTList read fDeviceName;
-    [TNaming(TNaming.nCamelCase)]
     property ModelNumber: TStringCT read fModelNumber;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Specialization: TDeviceDefinitionSpecializationCTList read fSpecialization;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCTList read fVersion;
-    [TNaming(TNaming.nFlatCase)]
     property Safety: TCodeableConceptCTList read fSafety;
-    [TNaming(TNaming.nCamelCase)]
     property ShelfLifeStorage: TProductShelfLifeCTList read fShelfLifeStorage;
-    [TNaming(TNaming.nCamelCase)]
     property PhysicalCharacteristics: TProdCharacteristicCT read fPhysicalCharacteristics;
-    [TNaming(TNaming.nCamelCase)]
     property LanguageCode: TCodeableConceptCTList read fLanguageCode;
-    [TNaming(TNaming.nFlatCase)]
     property Capability: TDeviceDefinitionCapabilityCTList read fCapability;
-    [TNaming(TNaming.nFlatCase)]
     property &Property: TDeviceDefinitionPropertyCTList read fProperty;
-    [TNaming(TNaming.nFlatCase)]
     property Owner: TReferenceCT read fOwner;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TContactPointCTList read fContact;
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUriCT read fUrl;
-    [TNaming(TNaming.nCamelCase)]
     property OnlineInformation: TUriCT read fOnlineInformation;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
-    [TNaming(TNaming.nFlatCase)]
     property Quantity: TQuantityCT read fQuantity;
-    [TNaming(TNaming.nCamelCase)]
     property ParentDevice: TReferenceCT read fParentDevice;
-    [TNaming(TNaming.nFlatCase)]
     property Material: TDeviceDefinitionMaterialCTList read fMaterial;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('DeviceDefinition.UdiDeviceIdentifier')]
   TDeviceDefinitionUdiDeviceIdentifierCT = class(TBackboneElementCT)
   private
@@ -13002,17 +10356,13 @@ type
     fJurisdiction: TUriCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property DeviceIdentifier: TStringCT read fDeviceIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Issuer: TUriCT read fIssuer;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Jurisdiction: TUriCT read fJurisdiction;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('DeviceDefinition.DeviceName')]
   TDeviceDefinitionDeviceNameCT = class(TBackboneElementCT)
   private
@@ -13020,14 +10370,11 @@ type
     fType: TDeviceNameTypeCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TDeviceNameTypeCT read fType;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('DeviceDefinition.Specialization')]
   TDeviceDefinitionSpecializationCT = class(TBackboneElementCT)
   private
@@ -13035,13 +10382,10 @@ type
     fVersion: TStringCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property SystemType: TStringCT read fSystemType;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCT read fVersion;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('DeviceDefinition.Capability')]
   TDeviceDefinitionCapabilityCT = class(TBackboneElementCT)
   private
@@ -13049,13 +10393,10 @@ type
     fDescription: TCodeableConceptCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TCodeableConceptCTList read fDescription;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('DeviceDefinition.Property')]
   TDeviceDefinitionPropertyCT = class(TBackboneElementCT)
   private
@@ -13064,15 +10405,11 @@ type
     fValueCode: TCodeableConceptCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nCamelCase)]
     property ValueQuantity: TQuantityCTList read fValueQuantity;
-    [TNaming(TNaming.nCamelCase)]
     property ValueCode: TCodeableConceptCTList read fValueCode;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('DeviceDefinition.Material')]
   TDeviceDefinitionMaterialCT = class(TBackboneElementCT)
   private
@@ -13081,11 +10418,8 @@ type
     fAllergenicIndicator: TBooleanCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Substance: TCodeableConceptCT read fSubstance;
-    [TNaming(TNaming.nFlatCase)]
     property Alternate: TBooleanCT read fAlternate;
-    [TNaming(TNaming.nCamelCase)]
     property AllergenicIndicator: TBooleanCT read fAllergenicIndicator;
   end;
 
@@ -13102,31 +10436,20 @@ type
     fMeasurementPeriod: TTimingCT;
     fCalibration: TDeviceMetricCalibrationCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property &Unit: TCodeableConceptCT read fUnit;
-    [TNaming(TNaming.nFlatCase)]
     property Source: TReferenceCT read fSource;
-    [TNaming(TNaming.nFlatCase)]
     property Parent: TReferenceCT read fParent;
-    [TNaming(TNaming.nCamelCase)]
     property OperationalStatus: TDeviceMetricOperationalStatusCT read fOperationalStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Color: TDeviceMetricColorCT read fColor;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Category: TDeviceMetricCategoryCT read fCategory;
-    [TNaming(TNaming.nCamelCase)]
     property MeasurementPeriod: TTimingCT read fMeasurementPeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Calibration: TDeviceMetricCalibrationCTList read fCalibration;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('DeviceMetric.Calibration')]
   TDeviceMetricCalibrationCT = class(TBackboneElementCT)
   private
@@ -13134,11 +10457,8 @@ type
     fState: TDeviceMetricCalibrationStateCT;
     fTime: TInstantCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TDeviceMetricCalibrationTypeCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property State: TDeviceMetricCalibrationStateCT read fState;
-    [TNaming(TNaming.nFlatCase)]
     property Time: TInstantCT read fTime;
   end;
 
@@ -13146,7 +10466,6 @@ type
   private
     fValue: TDeviceMetricCalibrationTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TDeviceMetricCalibrationTypeListST read fValue write fValue;
   end;
 
@@ -13154,7 +10473,6 @@ type
   private
     fValue: TDeviceMetricColorListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TDeviceMetricColorListST read fValue write fValue;
   end;
 
@@ -13162,7 +10480,6 @@ type
   private
     fValue: TDeviceMetricCalibrationStateListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TDeviceMetricCalibrationStateListST read fValue write fValue;
   end;
 
@@ -13170,7 +10487,6 @@ type
   private
     fValue: TDeviceMetricOperationalStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TDeviceMetricOperationalStatusListST read fValue write fValue;
   end;
 
@@ -13178,7 +10494,6 @@ type
   private
     fValue: TDeviceMetricCategoryListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TDeviceMetricCategoryListST read fValue write fValue;
   end;
 
@@ -13223,70 +10538,42 @@ type
     property CodeChosen: TBasite read GetCodeChosen;
     property OccurrenceChosen: TBasite read GetOccurrenceChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nCamelCase)]
     property InstantiatesCanonical: TCanonicalCTList read fInstantiatesCanonical;
-    [TNaming(TNaming.nCamelCase)]
     property InstantiatesUri: TUriCTList read fInstantiatesUri;
-    [TNaming(TNaming.nCamelCase)]
     property BasedOn: TReferenceCTList read fBasedOn;
-    [TNaming(TNaming.nCamelCase)]
     property PriorRequest: TReferenceCTList read fPriorRequest;
-    [TNaming(TNaming.nCamelCase)]
     property GroupIdentifier: TIdentifierCT read fGroupIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Status: TRequestStatusCT read fStatus;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Intent: TRequestIntentCT read fIntent;
-    [TNaming(TNaming.nFlatCase)]
     property Priority: TRequestPriorityCT read fPriority;
     [TChoice('Code')]
-    [TNaming(TNaming.nCamelCase)]
     property CodeReference: TReferenceCT read GetCodeReference;
     [TChoice('Code')]
-    [TNaming(TNaming.nCamelCase)]
     property CodeCodeableConcept: TCodeableConceptCT read GetCodeCodeableConcept;
-    [TNaming(TNaming.nFlatCase)]
     property Parameter: TDeviceRequestParameterCTList read fParameter;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCT read fSubject;
-    [TNaming(TNaming.nFlatCase)]
     property Encounter: TReferenceCT read fEncounter;
     [TChoice('Occurrence')]
-    [TNaming(TNaming.nCamelCase)]
     property OccurrenceDateTime: TDateTimeCT read GetOccurrenceDateTime;
     [TChoice('Occurrence')]
-    [TNaming(TNaming.nCamelCase)]
     property OccurrencePeriod: TPeriodCT read GetOccurrencePeriod;
     [TChoice('Occurrence')]
-    [TNaming(TNaming.nCamelCase)]
     property OccurrenceTiming: TTimingCT read GetOccurrenceTiming;
-    [TNaming(TNaming.nCamelCase)]
     property AuthoredOn: TDateTimeCT read fAuthoredOn;
-    [TNaming(TNaming.nFlatCase)]
     property Requester: TReferenceCT read fRequester;
-    [TNaming(TNaming.nCamelCase)]
     property PerformerType: TCodeableConceptCT read fPerformerType;
-    [TNaming(TNaming.nFlatCase)]
     property Performer: TReferenceCT read fPerformer;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonReference: TReferenceCTList read fReasonReference;
-    [TNaming(TNaming.nFlatCase)]
     property Insurance: TReferenceCTList read fInsurance;
-    [TNaming(TNaming.nCamelCase)]
     property SupportingInfo: TReferenceCTList read fSupportingInfo;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
-    [TNaming(TNaming.nCamelCase)]
     property RelevantHistory: TReferenceCTList read fRelevantHistory;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('DeviceRequest.Parameter')]
   TDeviceRequestParameterCT = class(TBackboneElementCT)
   private
@@ -13304,19 +10591,14 @@ type
   public
     property ValueChosen: TBasite read GetValueChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCodeableConcept: TCodeableConceptCT read GetValueCodeableConcept;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueQuantity: TQuantityCT read GetValueQuantity;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueRange: TRangeCT read GetValueRange;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueBoolean: TBooleanCT read GetValueBoolean;
   end;
 
@@ -13345,41 +10627,26 @@ type
   public
     property TimingChosen: TBasite read GetTimingChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nCamelCase)]
     property BasedOn: TReferenceCTList read fBasedOn;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TDeviceUseStatementStatusCT read fStatus;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCT read fSubject;
-    [TNaming(TNaming.nCamelCase)]
     property DerivedFrom: TReferenceCTList read fDerivedFrom;
     [TChoice('Timing')]
-    [TNaming(TNaming.nCamelCase)]
     property TimingTiming: TTimingCT read GetTimingTiming;
     [TChoice('Timing')]
-    [TNaming(TNaming.nCamelCase)]
     property TimingPeriod: TPeriodCT read GetTimingPeriod;
     [TChoice('Timing')]
-    [TNaming(TNaming.nCamelCase)]
     property TimingDateTime: TDateTimeCT read GetTimingDateTime;
-    [TNaming(TNaming.nCamelCase)]
     property RecordedOn: TDateTimeCT read fRecordedOn;
-    [TNaming(TNaming.nFlatCase)]
     property Source: TReferenceCT read fSource;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Device: TReferenceCT read fDevice;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonReference: TReferenceCTList read fReasonReference;
-    [TNaming(TNaming.nCamelCase)]
     property BodySite: TCodeableConceptCT read fBodySite;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
   end;
 
@@ -13387,7 +10654,6 @@ type
   private
     fValue: TDeviceUseStatementStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TDeviceUseStatementStatusListST read fValue write fValue;
   end;
 
@@ -13419,61 +10685,39 @@ type
   public
     property EffectiveChosen: TBasite read GetEffectiveChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nCamelCase)]
     property BasedOn: TReferenceCTList read fBasedOn;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TDiagnosticReportStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCTList read fCategory;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCT read fSubject;
-    [TNaming(TNaming.nFlatCase)]
     property Encounter: TReferenceCT read fEncounter;
     [TChoice('Effective')]
-    [TNaming(TNaming.nCamelCase)]
     property EffectiveDateTime: TDateTimeCT read GetEffectiveDateTime;
     [TChoice('Effective')]
-    [TNaming(TNaming.nCamelCase)]
     property EffectivePeriod: TPeriodCT read GetEffectivePeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Issued: TInstantCT read fIssued;
-    [TNaming(TNaming.nFlatCase)]
     property Performer: TReferenceCTList read fPerformer;
-    [TNaming(TNaming.nCamelCase)]
     property ResultsInterpreter: TReferenceCTList read fResultsInterpreter;
-    [TNaming(TNaming.nFlatCase)]
     property Specimen: TReferenceCTList read fSpecimen;
-    [TNaming(TNaming.nFlatCase)]
     property Result: TReferenceCTList read fResult;
-    [TNaming(TNaming.nCamelCase)]
     property ImagingStudy: TReferenceCTList read fImagingStudy;
-    [TNaming(TNaming.nFlatCase)]
     property Media: TDiagnosticReportMediaCTList read fMedia;
-    [TNaming(TNaming.nFlatCase)]
     property Conclusion: TStringCT read fConclusion;
-    [TNaming(TNaming.nCamelCase)]
     property ConclusionCode: TCodeableConceptCTList read fConclusionCode;
-    [TNaming(TNaming.nCamelCase)]
     property PresentedForm: TAttachmentCTList read fPresentedForm;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('DiagnosticReport.Media')]
   TDiagnosticReportMediaCT = class(TBackboneElementCT)
   private
     fComment: TStringCT;
     fLink: TReferenceCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Comment: TStringCT read fComment;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Link: TReferenceCT read fLink;
   end;
 
@@ -13481,7 +10725,6 @@ type
   private
     fValue: TDiagnosticReportStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TDiagnosticReportStatusListST read fValue write fValue;
   end;
 
@@ -13500,43 +10743,28 @@ type
     fContent: TReferenceCTList;
     fRelated: TDocumentManifestRelatedCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property MasterIdentifier: TIdentifierCT read fMasterIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TDocumentReferenceStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCT read fSubject;
-    [TNaming(TNaming.nFlatCase)]
     property Created: TDateTimeCT read fCreated;
-    [TNaming(TNaming.nFlatCase)]
     property Author: TReferenceCTList read fAuthor;
-    [TNaming(TNaming.nFlatCase)]
     property Recipient: TReferenceCTList read fRecipient;
-    [TNaming(TNaming.nFlatCase)]
     property Source: TUriCT read fSource;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Content: TReferenceCTList read fContent;
-    [TNaming(TNaming.nFlatCase)]
     property Related: TDocumentManifestRelatedCTList read fRelated;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('DocumentManifest.Related')]
   TDocumentManifestRelatedCT = class(TBackboneElementCT)
   private
     fIdentifier: TIdentifierCT;
     fRef: TReferenceCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCT read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Ref: TReferenceCT read fRef;
   end;
 
@@ -13559,42 +10787,25 @@ type
     fContent: TDocumentReferenceContentCTList;
     fContext: TDocumentReferenceContextCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property MasterIdentifier: TIdentifierCT read fMasterIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TDocumentReferenceStatusCT read fStatus;
-    [TNaming(TNaming.nCamelCase)]
     property DocStatus: TCompositionStatusCT read fDocStatus;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCTList read fCategory;
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCT read fSubject;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TInstantCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Author: TReferenceCTList read fAuthor;
-    [TNaming(TNaming.nFlatCase)]
     property Authenticator: TReferenceCT read fAuthenticator;
-    [TNaming(TNaming.nFlatCase)]
     property Custodian: TReferenceCT read fCustodian;
-    [TNaming(TNaming.nCamelCase)]
     property RelatesTo: TDocumentReferenceRelatesToCTList read fRelatesTo;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nCamelCase)]
     property SecurityLabel: TCodeableConceptCTList read fSecurityLabel;
-    [TNaming(TNaming.nFlatCase)]
     property Content: TDocumentReferenceContentCTList read fContent;
-    [TNaming(TNaming.nFlatCase)]
     property Context: TDocumentReferenceContextCT read fContext;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('DocumentReference.RelatesTo')]
   TDocumentReferenceRelatesToCT = class(TBackboneElementCT)
   private
@@ -13602,14 +10813,11 @@ type
     fTarget: TReferenceCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TDocumentRelationshipTypeCT read fCode;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Target: TReferenceCT read fTarget;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('DocumentReference.Content')]
   TDocumentReferenceContentCT = class(TBackboneElementCT)
   private
@@ -13617,13 +10825,10 @@ type
     fFormat: TCodingCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Attachment: TAttachmentCT read fAttachment;
-    [TNaming(TNaming.nFlatCase)]
     property Format: TCodingCT read fFormat;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('DocumentReference.Context')]
   TDocumentReferenceContextCT = class(TBackboneElementCT)
   private
@@ -13635,19 +10840,12 @@ type
     fSourcePatientInfo: TReferenceCT;
     fRelated: TReferenceCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Encounter: TReferenceCTList read fEncounter;
-    [TNaming(TNaming.nFlatCase)]
     property Event: TCodeableConceptCTList read fEvent;
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCT read fPeriod;
-    [TNaming(TNaming.nCamelCase)]
     property FacilityType: TCodeableConceptCT read fFacilityType;
-    [TNaming(TNaming.nCamelCase)]
     property PracticeSetting: TCodeableConceptCT read fPracticeSetting;
-    [TNaming(TNaming.nCamelCase)]
     property SourcePatientInfo: TReferenceCT read fSourcePatientInfo;
-    [TNaming(TNaming.nFlatCase)]
     property Related: TReferenceCTList read fRelated;
   end;
 
@@ -13687,80 +10885,46 @@ type
     fEffectEstimate: TEffectEvidenceSynthesisEffectEstimateCTList;
     fCertainty: TEffectEvidenceSynthesisCertaintyCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUriCT read fUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCT read fVersion;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Title: TStringCT read fTitle;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TPublicationStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Publisher: TStringCT read fPublisher;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TContactDetailCTList read fContact;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TMarkdownCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
-    [TNaming(TNaming.nCamelCase)]
     property UseContext: TUsageContextCTList read fUseContext;
-    [TNaming(TNaming.nFlatCase)]
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    [TNaming(TNaming.nFlatCase)]
     property Copyright: TMarkdownCT read fCopyright;
-    [TNaming(TNaming.nCamelCase)]
     property ApprovalDate: TDateCT read fApprovalDate;
-    [TNaming(TNaming.nCamelCase)]
     property LastReviewDate: TDateCT read fLastReviewDate;
-    [TNaming(TNaming.nCamelCase)]
     property EffectivePeriod: TPeriodCT read fEffectivePeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Topic: TCodeableConceptCTList read fTopic;
-    [TNaming(TNaming.nFlatCase)]
     property Author: TContactDetailCTList read fAuthor;
-    [TNaming(TNaming.nFlatCase)]
     property Editor: TContactDetailCTList read fEditor;
-    [TNaming(TNaming.nFlatCase)]
     property Reviewer: TContactDetailCTList read fReviewer;
-    [TNaming(TNaming.nFlatCase)]
     property Endorser: TContactDetailCTList read fEndorser;
-    [TNaming(TNaming.nCamelCase)]
     property RelatedArtifact: TRelatedArtifactCTList read fRelatedArtifact;
-    [TNaming(TNaming.nCamelCase)]
     property SynthesisType: TCodeableConceptCT read fSynthesisType;
-    [TNaming(TNaming.nCamelCase)]
     property StudyType: TCodeableConceptCT read fStudyType;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Population: TReferenceCT read fPopulation;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Exposure: TReferenceCT read fExposure;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ExposureAlternative: TReferenceCT read fExposureAlternative;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Outcome: TReferenceCT read fOutcome;
-    [TNaming(TNaming.nCamelCase)]
     property SampleSize: TEffectEvidenceSynthesisSampleSizeCT read fSampleSize;
-    [TNaming(TNaming.nCamelCase)]
     property ResultsByExposure: TEffectEvidenceSynthesisResultsByExposureCTList read fResultsByExposure;
-    [TNaming(TNaming.nCamelCase)]
     property EffectEstimate: TEffectEvidenceSynthesisEffectEstimateCTList read fEffectEstimate;
-    [TNaming(TNaming.nFlatCase)]
     property Certainty: TEffectEvidenceSynthesisCertaintyCTList read fCertainty;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('EffectEvidenceSynthesis.SampleSize')]
   TEffectEvidenceSynthesisSampleSizeCT = class(TBackboneElementCT)
   private
@@ -13768,15 +10932,11 @@ type
     fNumberOfStudies: TIntegerCT;
     fNumberOfParticipants: TIntegerCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nCamelCase)]
     property NumberOfStudies: TIntegerCT read fNumberOfStudies;
-    [TNaming(TNaming.nCamelCase)]
     property NumberOfParticipants: TIntegerCT read fNumberOfParticipants;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('EffectEvidenceSynthesis.ResultsByExposure')]
   TEffectEvidenceSynthesisResultsByExposureCT = class(TBackboneElementCT)
   private
@@ -13785,18 +10945,13 @@ type
     fVariantState: TCodeableConceptCT;
     fRiskEvidenceSynthesis: TReferenceCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nCamelCase)]
     property ExposureState: TExposureStateCT read fExposureState;
-    [TNaming(TNaming.nCamelCase)]
     property VariantState: TCodeableConceptCT read fVariantState;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property RiskEvidenceSynthesis: TReferenceCT read fRiskEvidenceSynthesis;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('EffectEvidenceSynthesis.EffectEstimate')]
   TEffectEvidenceSynthesisEffectEstimateCT = class(TBackboneElementCT)
   private
@@ -13807,21 +10962,14 @@ type
     fUnitOfMeasure: TCodeableConceptCT;
     fPrecisionEstimate: TEffectEvidenceSynthesisPrecisionEstimateCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nCamelCase)]
     property VariantState: TCodeableConceptCT read fVariantState;
-    [TNaming(TNaming.nFlatCase)]
     property Value: TDecimalCT read fValue;
-    [TNaming(TNaming.nCamelCase)]
     property UnitOfMeasure: TCodeableConceptCT read fUnitOfMeasure;
-    [TNaming(TNaming.nCamelCase)]
     property PrecisionEstimate: TEffectEvidenceSynthesisPrecisionEstimateCTList read fPrecisionEstimate;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('EffectEvidenceSynthesis.PrecisionEstimate')]
   TEffectEvidenceSynthesisPrecisionEstimateCT = class(TBackboneElementCT)
   private
@@ -13830,17 +10978,12 @@ type
     fFrom: TDecimalCT;
     fTo: TDecimalCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Level: TDecimalCT read fLevel;
-    [TNaming(TNaming.nFlatCase)]
     property From: TDecimalCT read fFrom;
-    [TNaming(TNaming.nFlatCase)]
     property &To: TDecimalCT read fTo;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('EffectEvidenceSynthesis.Certainty')]
   TEffectEvidenceSynthesisCertaintyCT = class(TBackboneElementCT)
   private
@@ -13848,15 +10991,11 @@ type
     fNote: TAnnotationCTList;
     fCertaintySubcomponent: TEffectEvidenceSynthesisCertaintySubcomponentCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Rating: TCodeableConceptCTList read fRating;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
-    [TNaming(TNaming.nCamelCase)]
     property CertaintySubcomponent: TEffectEvidenceSynthesisCertaintySubcomponentCTList read fCertaintySubcomponent;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('EffectEvidenceSynthesis.CertaintySubcomponent')]
   TEffectEvidenceSynthesisCertaintySubcomponentCT = class(TBackboneElementCT)
   private
@@ -13864,11 +11003,8 @@ type
     fRating: TCodeableConceptCTList;
     fNote: TAnnotationCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Rating: TCodeableConceptCTList read fRating;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
   end;
 
@@ -13876,7 +11012,6 @@ type
   private
     fValue: TExposureStateListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TExposureStateListST read fValue write fValue;
   end;
 
@@ -13906,57 +11041,33 @@ type
     fServiceProvider: TReferenceCT;
     fPartOf: TReferenceCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TEncounterStatusCT read fStatus;
-    [TNaming(TNaming.nCamelCase)]
     property StatusHistory: TEncounterStatusHistoryCTList read fStatusHistory;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Class: TCodingCT read fClass;
-    [TNaming(TNaming.nCamelCase)]
     property ClassHistory: TEncounterClassHistoryCTList read fClassHistory;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCTList read fType;
-    [TNaming(TNaming.nCamelCase)]
     property ServiceType: TCodeableConceptCT read fServiceType;
-    [TNaming(TNaming.nFlatCase)]
     property Priority: TCodeableConceptCT read fPriority;
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCT read fSubject;
-    [TNaming(TNaming.nCamelCase)]
     property EpisodeOfCare: TReferenceCTList read fEpisodeOfCare;
-    [TNaming(TNaming.nCamelCase)]
     property BasedOn: TReferenceCTList read fBasedOn;
-    [TNaming(TNaming.nFlatCase)]
     property Participant: TEncounterParticipantCTList read fParticipant;
-    [TNaming(TNaming.nFlatCase)]
     property Appointment: TReferenceCTList read fAppointment;
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCT read fPeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Length: TDurationCT read fLength;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonReference: TReferenceCTList read fReasonReference;
-    [TNaming(TNaming.nFlatCase)]
     property Diagnosis: TEncounterDiagnosisCTList read fDiagnosis;
-    [TNaming(TNaming.nFlatCase)]
     property Account: TReferenceCTList read fAccount;
-    [TNaming(TNaming.nFlatCase)]
     property Hospitalization: TEncounterHospitalizationCT read fHospitalization;
-    [TNaming(TNaming.nFlatCase)]
     property Location: TEncounterLocationCTList read fLocation;
-    [TNaming(TNaming.nCamelCase)]
     property ServiceProvider: TReferenceCT read fServiceProvider;
-    [TNaming(TNaming.nCamelCase)]
     property PartOf: TReferenceCT read fPartOf;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Encounter.StatusHistory')]
   TEncounterStatusHistoryCT = class(TBackboneElementCT)
   private
@@ -13964,14 +11075,11 @@ type
     fPeriod: TPeriodCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TEncounterStatusCT read fStatus;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCT read fPeriod;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Encounter.ClassHistory')]
   TEncounterClassHistoryCT = class(TBackboneElementCT)
   private
@@ -13979,14 +11087,11 @@ type
     fPeriod: TPeriodCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Class: TCodingCT read fClass;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCT read fPeriod;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Encounter.Participant')]
   TEncounterParticipantCT = class(TBackboneElementCT)
   private
@@ -13994,15 +11099,11 @@ type
     fPeriod: TPeriodCT;
     fIndividual: TReferenceCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCTList read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCT read fPeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Individual: TReferenceCT read fIndividual;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Encounter.Diagnosis')]
   TEncounterDiagnosisCT = class(TBackboneElementCT)
   private
@@ -14011,15 +11112,11 @@ type
     fRank: TPositiveIntCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Condition: TReferenceCT read fCondition;
-    [TNaming(TNaming.nFlatCase)]
     property Use: TCodeableConceptCT read fUse;
-    [TNaming(TNaming.nFlatCase)]
     property Rank: TPositiveIntCT read fRank;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Encounter.Hospitalization')]
   TEncounterHospitalizationCT = class(TBackboneElementCT)
   private
@@ -14033,27 +11130,17 @@ type
     fDestination: TReferenceCT;
     fDischargeDisposition: TCodeableConceptCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property PreAdmissionIdentifier: TIdentifierCT read fPreAdmissionIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Origin: TReferenceCT read fOrigin;
-    [TNaming(TNaming.nCamelCase)]
     property AdmitSource: TCodeableConceptCT read fAdmitSource;
-    [TNaming(TNaming.nCamelCase)]
     property ReAdmission: TCodeableConceptCT read fReAdmission;
-    [TNaming(TNaming.nCamelCase)]
     property DietPreference: TCodeableConceptCTList read fDietPreference;
-    [TNaming(TNaming.nCamelCase)]
     property SpecialCourtesy: TCodeableConceptCTList read fSpecialCourtesy;
-    [TNaming(TNaming.nCamelCase)]
     property SpecialArrangement: TCodeableConceptCTList read fSpecialArrangement;
-    [TNaming(TNaming.nFlatCase)]
     property Destination: TReferenceCT read fDestination;
-    [TNaming(TNaming.nCamelCase)]
     property DischargeDisposition: TCodeableConceptCT read fDischargeDisposition;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Encounter.Location')]
   TEncounterLocationCT = class(TBackboneElementCT)
   private
@@ -14063,13 +11150,9 @@ type
     fPeriod: TPeriodCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Location: TReferenceCT read fLocation;
-    [TNaming(TNaming.nFlatCase)]
     property Status: TEncounterLocationStatusCT read fStatus;
-    [TNaming(TNaming.nCamelCase)]
     property PhysicalType: TCodeableConceptCT read fPhysicalType;
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCT read fPeriod;
   end;
 
@@ -14077,7 +11160,6 @@ type
   private
     fValue: TEncounterLocationStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TEncounterLocationStatusListST read fValue write fValue;
   end;
 
@@ -14085,7 +11167,6 @@ type
   private
     fValue: TEncounterStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TEncounterStatusListST read fValue write fValue;
   end;
 
@@ -14103,30 +11184,19 @@ type
     fAddress: TUrlCT;
     fHeader: TStringCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TEndpointStatusCT read fStatus;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ConnectionType: TCodingCT read fConnectionType;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nCamelCase)]
     property ManagingOrganization: TReferenceCT read fManagingOrganization;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TContactPointCTList read fContact;
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCT read fPeriod;
-    [TNaming(TNaming.nCamelCase)]
     property PayloadType: TCodeableConceptCTList read fPayloadType;
-    [TNaming(TNaming.nCamelCase)]
     property PayloadMimeType: TCodeCTList read fPayloadMimeType;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Address: TUrlCT read fAddress;
-    [TNaming(TNaming.nFlatCase)]
     property Header: TStringCTList read fHeader;
   end;
 
@@ -14134,7 +11204,6 @@ type
   private
     fValue: TEndpointStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TEndpointStatusListST read fValue write fValue;
   end;
 
@@ -14148,19 +11217,12 @@ type
     fCandidate: TReferenceCT;
     fCoverage: TReferenceCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Status: TFinancialResourceStatusCodesCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Created: TDateTimeCT read fCreated;
-    [TNaming(TNaming.nFlatCase)]
     property Insurer: TReferenceCT read fInsurer;
-    [TNaming(TNaming.nFlatCase)]
     property Provider: TReferenceCT read fProvider;
-    [TNaming(TNaming.nFlatCase)]
     property Candidate: TReferenceCT read fCandidate;
-    [TNaming(TNaming.nFlatCase)]
     property Coverage: TReferenceCT read fCoverage;
   end;
 
@@ -14175,21 +11237,13 @@ type
     fOrganization: TReferenceCT;
     fRequestProvider: TReferenceCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Status: TFinancialResourceStatusCodesCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Request: TReferenceCT read fRequest;
-    [TNaming(TNaming.nFlatCase)]
     property Outcome: TRemittanceOutcomeCT read fOutcome;
-    [TNaming(TNaming.nFlatCase)]
     property Disposition: TStringCT read fDisposition;
-    [TNaming(TNaming.nFlatCase)]
     property Created: TDateTimeCT read fCreated;
-    [TNaming(TNaming.nFlatCase)]
     property Organization: TReferenceCT read fOrganization;
-    [TNaming(TNaming.nCamelCase)]
     property RequestProvider: TReferenceCT read fRequestProvider;
   end;
 
@@ -14208,35 +11262,22 @@ type
     fTeam: TReferenceCTList;
     fAccount: TReferenceCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TEpisodeOfCareStatusCT read fStatus;
-    [TNaming(TNaming.nCamelCase)]
     property StatusHistory: TEpisodeOfCareStatusHistoryCTList read fStatusHistory;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCTList read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Diagnosis: TEpisodeOfCareDiagnosisCTList read fDiagnosis;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Patient: TReferenceCT read fPatient;
-    [TNaming(TNaming.nCamelCase)]
     property ManagingOrganization: TReferenceCT read fManagingOrganization;
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCT read fPeriod;
-    [TNaming(TNaming.nCamelCase)]
     property ReferralRequest: TReferenceCTList read fReferralRequest;
-    [TNaming(TNaming.nCamelCase)]
     property CareManager: TReferenceCT read fCareManager;
-    [TNaming(TNaming.nFlatCase)]
     property Team: TReferenceCTList read fTeam;
-    [TNaming(TNaming.nFlatCase)]
     property Account: TReferenceCTList read fAccount;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('EpisodeOfCare.StatusHistory')]
   TEpisodeOfCareStatusHistoryCT = class(TBackboneElementCT)
   private
@@ -14244,14 +11285,11 @@ type
     fPeriod: TPeriodCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TEpisodeOfCareStatusCT read fStatus;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCT read fPeriod;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('EpisodeOfCare.Diagnosis')]
   TEpisodeOfCareDiagnosisCT = class(TBackboneElementCT)
   private
@@ -14260,11 +11298,8 @@ type
     fRank: TPositiveIntCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Condition: TReferenceCT read fCondition;
-    [TNaming(TNaming.nFlatCase)]
     property Role: TCodeableConceptCT read fRole;
-    [TNaming(TNaming.nFlatCase)]
     property Rank: TPositiveIntCT read fRank;
   end;
 
@@ -14272,7 +11307,6 @@ type
   private
     fValue: TEpisodeOfCareStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TEpisodeOfCareStatusListST read fValue write fValue;
   end;
 
@@ -14314,66 +11348,37 @@ type
   public
     property SubjectChosen: TBasite read GetSubjectChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUriCT read fUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCT read fVersion;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Title: TStringCT read fTitle;
-    [TNaming(TNaming.nFlatCase)]
     property Subtitle: TStringCT read fSubtitle;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TPublicationStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Experimental: TBooleanCT read fExperimental;
     [TChoice('Subject')]
-    [TNaming(TNaming.nCamelCase)]
     property SubjectCodeableConcept: TCodeableConceptCT read GetSubjectCodeableConcept;
     [TChoice('Subject')]
-    [TNaming(TNaming.nCamelCase)]
     property SubjectReference: TReferenceCT read GetSubjectReference;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Publisher: TStringCT read fPublisher;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TContactDetailCTList read fContact;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TMarkdownCT read fDescription;
-    [TNaming(TNaming.nCamelCase)]
     property UseContext: TUsageContextCTList read fUseContext;
-    [TNaming(TNaming.nFlatCase)]
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    [TNaming(TNaming.nFlatCase)]
     property Purpose: TMarkdownCT read fPurpose;
-    [TNaming(TNaming.nFlatCase)]
     property Usage: TStringCT read fUsage;
-    [TNaming(TNaming.nFlatCase)]
     property Copyright: TMarkdownCT read fCopyright;
-    [TNaming(TNaming.nCamelCase)]
     property ApprovalDate: TDateCT read fApprovalDate;
-    [TNaming(TNaming.nCamelCase)]
     property LastReviewDate: TDateCT read fLastReviewDate;
-    [TNaming(TNaming.nCamelCase)]
     property EffectivePeriod: TPeriodCT read fEffectivePeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Topic: TCodeableConceptCTList read fTopic;
-    [TNaming(TNaming.nFlatCase)]
     property Author: TContactDetailCTList read fAuthor;
-    [TNaming(TNaming.nFlatCase)]
     property Editor: TContactDetailCTList read fEditor;
-    [TNaming(TNaming.nFlatCase)]
     property Reviewer: TContactDetailCTList read fReviewer;
-    [TNaming(TNaming.nFlatCase)]
     property Endorser: TContactDetailCTList read fEndorser;
-    [TNaming(TNaming.nCamelCase)]
     property RelatedArtifact: TRelatedArtifactCTList read fRelatedArtifact;
-    [TNaming(TNaming.nFlatCase)]
     property Trigger: TTriggerDefinitionCTList read fTrigger;
   end;
 
@@ -14408,63 +11413,35 @@ type
     fExposureVariant: TReferenceCTList;
     fOutcome: TReferenceCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUriCT read fUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCT read fVersion;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Title: TStringCT read fTitle;
-    [TNaming(TNaming.nCamelCase)]
     property ShortTitle: TStringCT read fShortTitle;
-    [TNaming(TNaming.nFlatCase)]
     property Subtitle: TStringCT read fSubtitle;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TPublicationStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Publisher: TStringCT read fPublisher;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TContactDetailCTList read fContact;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TMarkdownCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
-    [TNaming(TNaming.nCamelCase)]
     property UseContext: TUsageContextCTList read fUseContext;
-    [TNaming(TNaming.nFlatCase)]
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    [TNaming(TNaming.nFlatCase)]
     property Copyright: TMarkdownCT read fCopyright;
-    [TNaming(TNaming.nCamelCase)]
     property ApprovalDate: TDateCT read fApprovalDate;
-    [TNaming(TNaming.nCamelCase)]
     property LastReviewDate: TDateCT read fLastReviewDate;
-    [TNaming(TNaming.nCamelCase)]
     property EffectivePeriod: TPeriodCT read fEffectivePeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Topic: TCodeableConceptCTList read fTopic;
-    [TNaming(TNaming.nFlatCase)]
     property Author: TContactDetailCTList read fAuthor;
-    [TNaming(TNaming.nFlatCase)]
     property Editor: TContactDetailCTList read fEditor;
-    [TNaming(TNaming.nFlatCase)]
     property Reviewer: TContactDetailCTList read fReviewer;
-    [TNaming(TNaming.nFlatCase)]
     property Endorser: TContactDetailCTList read fEndorser;
-    [TNaming(TNaming.nCamelCase)]
     property RelatedArtifact: TRelatedArtifactCTList read fRelatedArtifact;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ExposureBackground: TReferenceCT read fExposureBackground;
-    [TNaming(TNaming.nCamelCase)]
     property ExposureVariant: TReferenceCTList read fExposureVariant;
-    [TNaming(TNaming.nFlatCase)]
     property Outcome: TReferenceCTList read fOutcome;
   end;
 
@@ -14498,64 +11475,36 @@ type
     fType: TEvidenceVariableTypeCT;
     fCharacteristic: TEvidenceVariableCharacteristicCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUriCT read fUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCT read fVersion;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Title: TStringCT read fTitle;
-    [TNaming(TNaming.nCamelCase)]
     property ShortTitle: TStringCT read fShortTitle;
-    [TNaming(TNaming.nFlatCase)]
     property Subtitle: TStringCT read fSubtitle;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TPublicationStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Publisher: TStringCT read fPublisher;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TContactDetailCTList read fContact;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TMarkdownCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
-    [TNaming(TNaming.nCamelCase)]
     property UseContext: TUsageContextCTList read fUseContext;
-    [TNaming(TNaming.nFlatCase)]
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    [TNaming(TNaming.nFlatCase)]
     property Copyright: TMarkdownCT read fCopyright;
-    [TNaming(TNaming.nCamelCase)]
     property ApprovalDate: TDateCT read fApprovalDate;
-    [TNaming(TNaming.nCamelCase)]
     property LastReviewDate: TDateCT read fLastReviewDate;
-    [TNaming(TNaming.nCamelCase)]
     property EffectivePeriod: TPeriodCT read fEffectivePeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Topic: TCodeableConceptCTList read fTopic;
-    [TNaming(TNaming.nFlatCase)]
     property Author: TContactDetailCTList read fAuthor;
-    [TNaming(TNaming.nFlatCase)]
     property Editor: TContactDetailCTList read fEditor;
-    [TNaming(TNaming.nFlatCase)]
     property Reviewer: TContactDetailCTList read fReviewer;
-    [TNaming(TNaming.nFlatCase)]
     property Endorser: TContactDetailCTList read fEndorser;
-    [TNaming(TNaming.nCamelCase)]
     property RelatedArtifact: TRelatedArtifactCTList read fRelatedArtifact;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TEvidenceVariableTypeCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Characteristic: TEvidenceVariableCharacteristicCTList read fCharacteristic;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('EvidenceVariable.Characteristic')]
   TEvidenceVariableCharacteristicCT = class(TBackboneElementCT)
   private
@@ -14591,45 +11540,30 @@ type
     property DefinitionChosen: TBasite read GetDefinitionChosen;
     property ParticipantEffectiveChosen: TBasite read GetParticipantEffectiveChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
     [TChoice('Definition')]
-    [TNaming(TNaming.nCamelCase)]
     property DefinitionReference: TReferenceCT read GetDefinitionReference;
     [TChoice('Definition')]
-    [TNaming(TNaming.nCamelCase)]
     property DefinitionCanonical: TCanonicalCT read GetDefinitionCanonical;
     [TChoice('Definition')]
-    [TNaming(TNaming.nCamelCase)]
     property DefinitionCodeableConcept: TCodeableConceptCT read GetDefinitionCodeableConcept;
     [TChoice('Definition')]
-    [TNaming(TNaming.nCamelCase)]
     property DefinitionExpression: TExpressionCT read GetDefinitionExpression;
     [TChoice('Definition')]
-    [TNaming(TNaming.nCamelCase)]
     property DefinitionDataRequirement: TDataRequirementCT read GetDefinitionDataRequirement;
     [TChoice('Definition')]
-    [TNaming(TNaming.nCamelCase)]
     property DefinitionTriggerDefinition: TTriggerDefinitionCT read GetDefinitionTriggerDefinition;
-    [TNaming(TNaming.nCamelCase)]
     property UsageContext: TUsageContextCTList read fUsageContext;
-    [TNaming(TNaming.nFlatCase)]
     property Exclude: TBooleanCT read fExclude;
     [TChoice('ParticipantEffective')]
-    [TNaming(TNaming.nCamelCase)]
     property ParticipantEffectiveDateTime: TDateTimeCT read GetParticipantEffectiveDateTime;
     [TChoice('ParticipantEffective')]
-    [TNaming(TNaming.nCamelCase)]
     property ParticipantEffectivePeriod: TPeriodCT read GetParticipantEffectivePeriod;
     [TChoice('ParticipantEffective')]
-    [TNaming(TNaming.nCamelCase)]
     property ParticipantEffectiveDuration: TDurationCT read GetParticipantEffectiveDuration;
     [TChoice('ParticipantEffective')]
-    [TNaming(TNaming.nCamelCase)]
     property ParticipantEffectiveTiming: TTimingCT read GetParticipantEffectiveTiming;
-    [TNaming(TNaming.nCamelCase)]
     property TimeFromStart: TDurationCT read fTimeFromStart;
-    [TNaming(TNaming.nCamelCase)]
     property GroupMeasure: TGroupMeasureCT read fGroupMeasure;
   end;
 
@@ -14637,7 +11571,6 @@ type
   private
     fValue: TEvidenceVariableTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TEvidenceVariableTypeListST read fValue write fValue;
   end;
 
@@ -14645,7 +11578,6 @@ type
   private
     fValue: TGroupMeasureListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TGroupMeasureListST read fValue write fValue;
   end;
 
@@ -14669,44 +11601,26 @@ type
     fProcess: TExampleScenarioProcessCTList;
     fWorkflow: TCanonicalCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUriCT read fUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCT read fVersion;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TPublicationStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Experimental: TBooleanCT read fExperimental;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Publisher: TStringCT read fPublisher;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TContactDetailCTList read fContact;
-    [TNaming(TNaming.nCamelCase)]
     property UseContext: TUsageContextCTList read fUseContext;
-    [TNaming(TNaming.nFlatCase)]
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    [TNaming(TNaming.nFlatCase)]
     property Copyright: TMarkdownCT read fCopyright;
-    [TNaming(TNaming.nFlatCase)]
     property Purpose: TMarkdownCT read fPurpose;
-    [TNaming(TNaming.nFlatCase)]
     property Actor: TExampleScenarioActorCTList read fActor;
-    [TNaming(TNaming.nFlatCase)]
     property Instance: TExampleScenarioInstanceCTList read fInstance;
-    [TNaming(TNaming.nFlatCase)]
     property Process: TExampleScenarioProcessCTList read fProcess;
-    [TNaming(TNaming.nFlatCase)]
     property Workflow: TCanonicalCTList read fWorkflow;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ExampleScenario.Actor')]
   TExampleScenarioActorCT = class(TBackboneElementCT)
   private
@@ -14716,18 +11630,13 @@ type
     fDescription: TMarkdownCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ActorId: TStringCT read fActorId;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TExampleScenarioActorTypeCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TMarkdownCT read fDescription;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ExampleScenario.Instance')]
   TExampleScenarioInstanceCT = class(TBackboneElementCT)
   private
@@ -14739,22 +11648,15 @@ type
     fContainedInstance: TExampleScenarioContainedInstanceCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ResourceId: TStringCT read fResourceId;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ResourceType: TResourceTypeCT read fResourceType;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TMarkdownCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TExampleScenarioVersionCTList read fVersion;
-    [TNaming(TNaming.nCamelCase)]
     property ContainedInstance: TExampleScenarioContainedInstanceCTList read fContainedInstance;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ExampleScenario.Version')]
   TExampleScenarioVersionCT = class(TBackboneElementCT)
   private
@@ -14762,14 +11664,11 @@ type
     fDescription: TMarkdownCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property VersionId: TStringCT read fVersionId;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Description: TMarkdownCT read fDescription;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ExampleScenario.ContainedInstance')]
   TExampleScenarioContainedInstanceCT = class(TBackboneElementCT)
   private
@@ -14777,13 +11676,10 @@ type
     fVersionId: TStringCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ResourceId: TStringCT read fResourceId;
-    [TNaming(TNaming.nCamelCase)]
     property VersionId: TStringCT read fVersionId;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ExampleScenario.Process')]
   TExampleScenarioProcessCT = class(TBackboneElementCT)
   private
@@ -14794,19 +11690,13 @@ type
     fStep: TExampleScenarioStepCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Title: TStringCT read fTitle;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TMarkdownCT read fDescription;
-    [TNaming(TNaming.nCamelCase)]
     property PreConditions: TMarkdownCT read fPreConditions;
-    [TNaming(TNaming.nCamelCase)]
     property PostConditions: TMarkdownCT read fPostConditions;
-    [TNaming(TNaming.nFlatCase)]
     property Step: TExampleScenarioStepCTList read fStep;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ExampleScenario.Step')]
   TExampleScenarioStepCT = class(TBackboneElementCT)
   private
@@ -14815,17 +11705,12 @@ type
     fOperation: TExampleScenarioOperationCT;
     fAlternative: TExampleScenarioAlternativeCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Process: TExampleScenarioProcessCTList read fProcess;
-    [TNaming(TNaming.nFlatCase)]
     property Pause: TBooleanCT read fPause;
-    [TNaming(TNaming.nFlatCase)]
     property Operation: TExampleScenarioOperationCT read fOperation;
-    [TNaming(TNaming.nFlatCase)]
     property Alternative: TExampleScenarioAlternativeCTList read fAlternative;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ExampleScenario.Operation')]
   TExampleScenarioOperationCT = class(TBackboneElementCT)
   private
@@ -14841,29 +11726,18 @@ type
     fResponse: TExampleScenarioContainedInstanceCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Number: TStringCT read fNumber;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TStringCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Initiator: TStringCT read fInitiator;
-    [TNaming(TNaming.nFlatCase)]
     property Receiver: TStringCT read fReceiver;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TMarkdownCT read fDescription;
-    [TNaming(TNaming.nCamelCase)]
     property InitiatorActive: TBooleanCT read fInitiatorActive;
-    [TNaming(TNaming.nCamelCase)]
     property ReceiverActive: TBooleanCT read fReceiverActive;
-    [TNaming(TNaming.nFlatCase)]
     property Request: TExampleScenarioContainedInstanceCT read fRequest;
-    [TNaming(TNaming.nFlatCase)]
     property Response: TExampleScenarioContainedInstanceCT read fResponse;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ExampleScenario.Alternative')]
   TExampleScenarioAlternativeCT = class(TBackboneElementCT)
   private
@@ -14872,11 +11746,8 @@ type
     fStep: TExampleScenarioStepCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Title: TStringCT read fTitle;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TMarkdownCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Step: TExampleScenarioStepCTList read fStep;
   end;
 
@@ -14884,7 +11755,6 @@ type
   private
     fValue: TExampleScenarioActorTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TExampleScenarioActorTypeListST read fValue write fValue;
   end;
 
@@ -14892,7 +11762,6 @@ type
   private
     fValue: TResourceTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TResourceTypeListST read fValue write fValue;
   end;
 
@@ -14942,103 +11811,59 @@ type
     fBenefitPeriod: TPeriodCT;
     fBenefitBalance: TExplanationOfBenefitBenefitBalanceCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TExplanationOfBenefitStatusCT read fStatus;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nCamelCase)]
     property SubType: TCodeableConceptCT read fSubType;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Use: TUseCT read fUse;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Patient: TReferenceCT read fPatient;
-    [TNaming(TNaming.nCamelCase)]
     property BillablePeriod: TPeriodCT read fBillablePeriod;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Created: TDateTimeCT read fCreated;
-    [TNaming(TNaming.nFlatCase)]
     property Enterer: TReferenceCT read fEnterer;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Insurer: TReferenceCT read fInsurer;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Provider: TReferenceCT read fProvider;
-    [TNaming(TNaming.nFlatCase)]
     property Priority: TCodeableConceptCT read fPriority;
-    [TNaming(TNaming.nCamelCase)]
     property FundsReserveRequested: TCodeableConceptCT read fFundsReserveRequested;
-    [TNaming(TNaming.nCamelCase)]
     property FundsReserve: TCodeableConceptCT read fFundsReserve;
-    [TNaming(TNaming.nFlatCase)]
     property Related: TExplanationOfBenefitRelatedCTList read fRelated;
-    [TNaming(TNaming.nFlatCase)]
     property Prescription: TReferenceCT read fPrescription;
-    [TNaming(TNaming.nCamelCase)]
     property OriginalPrescription: TReferenceCT read fOriginalPrescription;
-    [TNaming(TNaming.nFlatCase)]
     property Payee: TExplanationOfBenefitPayeeCT read fPayee;
-    [TNaming(TNaming.nFlatCase)]
     property Referral: TReferenceCT read fReferral;
-    [TNaming(TNaming.nFlatCase)]
     property Facility: TReferenceCT read fFacility;
-    [TNaming(TNaming.nFlatCase)]
     property Claim: TReferenceCT read fClaim;
-    [TNaming(TNaming.nCamelCase)]
     property ClaimResponse: TReferenceCT read fClaimResponse;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Outcome: TClaimProcessingCodesCT read fOutcome;
-    [TNaming(TNaming.nFlatCase)]
     property Disposition: TStringCT read fDisposition;
-    [TNaming(TNaming.nCamelCase)]
     property PreAuthRef: TStringCTList read fPreAuthRef;
-    [TNaming(TNaming.nCamelCase)]
     property PreAuthRefPeriod: TPeriodCTList read fPreAuthRefPeriod;
-    [TNaming(TNaming.nCamelCase)]
     property CareTeam: TExplanationOfBenefitCareTeamCTList read fCareTeam;
-    [TNaming(TNaming.nCamelCase)]
     property SupportingInfo: TExplanationOfBenefitSupportingInfoCTList read fSupportingInfo;
-    [TNaming(TNaming.nFlatCase)]
     property Diagnosis: TExplanationOfBenefitDiagnosisCTList read fDiagnosis;
-    [TNaming(TNaming.nFlatCase)]
     property &Procedure: TExplanationOfBenefitProcedureCTList read fProcedure;
-    [TNaming(TNaming.nFlatCase)]
     property Precedence: TPositiveIntCT read fPrecedence;
-    [TNaming(TNaming.nFlatCase)]
     property Insurance: TExplanationOfBenefitInsuranceCTList read fInsurance;
-    [TNaming(TNaming.nFlatCase)]
     property Accident: TExplanationOfBenefitAccidentCT read fAccident;
-    [TNaming(TNaming.nFlatCase)]
     property Item: TExplanationOfBenefitItemCTList read fItem;
-    [TNaming(TNaming.nCamelCase)]
     property AddItem: TExplanationOfBenefitAddItemCTList read fAddItem;
-    [TNaming(TNaming.nFlatCase)]
     property Adjudication: TExplanationOfBenefitAdjudicationCTList read fAdjudication;
-    [TNaming(TNaming.nFlatCase)]
     property Total: TExplanationOfBenefitTotalCTList read fTotal;
-    [TNaming(TNaming.nFlatCase)]
     property Payment: TExplanationOfBenefitPaymentCT read fPayment;
-    [TNaming(TNaming.nCamelCase)]
     property FormCode: TCodeableConceptCT read fFormCode;
-    [TNaming(TNaming.nFlatCase)]
     property Form: TAttachmentCT read fForm;
-    [TNaming(TNaming.nCamelCase)]
     property ProcessNote: TExplanationOfBenefitProcessNoteCTList read fProcessNote;
-    [TNaming(TNaming.nCamelCase)]
     property BenefitPeriod: TPeriodCT read fBenefitPeriod;
-    [TNaming(TNaming.nCamelCase)]
     property BenefitBalance: TExplanationOfBenefitBenefitBalanceCTList read fBenefitBalance;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ExplanationOfBenefit.Related')]
   TExplanationOfBenefitRelatedCT = class(TBackboneElementCT)
   private
@@ -15046,28 +11871,21 @@ type
     fRelationship: TCodeableConceptCT;
     fReference: TIdentifierCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Claim: TReferenceCT read fClaim;
-    [TNaming(TNaming.nFlatCase)]
     property Relationship: TCodeableConceptCT read fRelationship;
-    [TNaming(TNaming.nFlatCase)]
     property Reference: TIdentifierCT read fReference;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ExplanationOfBenefit.Payee')]
   TExplanationOfBenefitPayeeCT = class(TBackboneElementCT)
   private
     fType: TCodeableConceptCT;
     fParty: TReferenceCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Party: TReferenceCT read fParty;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ExplanationOfBenefit.CareTeam')]
   TExplanationOfBenefitCareTeamCT = class(TBackboneElementCT)
   private
@@ -15078,20 +11896,14 @@ type
     fQualification: TCodeableConceptCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Sequence: TPositiveIntCT read fSequence;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Provider: TReferenceCT read fProvider;
-    [TNaming(TNaming.nFlatCase)]
     property Responsible: TBooleanCT read fResponsible;
-    [TNaming(TNaming.nFlatCase)]
     property Role: TCodeableConceptCT read fRole;
-    [TNaming(TNaming.nFlatCase)]
     property Qualification: TCodeableConceptCT read fQualification;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ExplanationOfBenefit.SupportingInfo')]
   TExplanationOfBenefitSupportingInfoCT = class(TBackboneElementCT)
   private
@@ -15121,39 +11933,27 @@ type
     property ValueChosen: TBasite read GetValueChosen;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Sequence: TPositiveIntCT read fSequence;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCT read fCategory;
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
     [TChoice('Timing')]
-    [TNaming(TNaming.nCamelCase)]
     property TimingDate: TDateCT read GetTimingDate;
     [TChoice('Timing')]
-    [TNaming(TNaming.nCamelCase)]
     property TimingPeriod: TPeriodCT read GetTimingPeriod;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueBoolean: TBooleanCT read GetValueBoolean;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueString: TStringCT read GetValueString;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueQuantity: TQuantityCT read GetValueQuantity;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueAttachment: TAttachmentCT read GetValueAttachment;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueReference: TReferenceCT read GetValueReference;
-    [TNaming(TNaming.nFlatCase)]
     property Reason: TCodingCT read fReason;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ExplanationOfBenefit.Diagnosis')]
   TExplanationOfBenefitDiagnosisCT = class(TBackboneElementCT)
   private
@@ -15171,23 +11971,16 @@ type
     property DiagnosisChosen: TBasite read GetDiagnosisChosen;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Sequence: TPositiveIntCT read fSequence;
     [TChoice('Diagnosis')]
-    [TNaming(TNaming.nCamelCase)]
     property DiagnosisCodeableConcept: TCodeableConceptCT read GetDiagnosisCodeableConcept;
     [TChoice('Diagnosis')]
-    [TNaming(TNaming.nCamelCase)]
     property DiagnosisReference: TReferenceCT read GetDiagnosisReference;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCTList read fType;
-    [TNaming(TNaming.nCamelCase)]
     property OnAdmission: TCodeableConceptCT read fOnAdmission;
-    [TNaming(TNaming.nCamelCase)]
     property PackageCode: TCodeableConceptCT read fPackageCode;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ExplanationOfBenefit.Procedure')]
   TExplanationOfBenefitProcedureCT = class(TBackboneElementCT)
   private
@@ -15205,23 +11998,16 @@ type
     property ProcedureChosen: TBasite read GetProcedureChosen;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Sequence: TPositiveIntCT read fSequence;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCTList read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
     [TChoice('Procedure')]
-    [TNaming(TNaming.nCamelCase)]
     property ProcedureCodeableConcept: TCodeableConceptCT read GetProcedureCodeableConcept;
     [TChoice('Procedure')]
-    [TNaming(TNaming.nCamelCase)]
     property ProcedureReference: TReferenceCT read GetProcedureReference;
-    [TNaming(TNaming.nFlatCase)]
     property Udi: TReferenceCTList read fUdi;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ExplanationOfBenefit.Insurance')]
   TExplanationOfBenefitInsuranceCT = class(TBackboneElementCT)
   private
@@ -15230,16 +12016,12 @@ type
     fPreAuthRef: TStringCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Focal: TBooleanCT read fFocal;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Coverage: TReferenceCT read fCoverage;
-    [TNaming(TNaming.nCamelCase)]
     property PreAuthRef: TStringCTList read fPreAuthRef;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ExplanationOfBenefit.Accident')]
   TExplanationOfBenefitAccidentCT = class(TBackboneElementCT)
   private
@@ -15254,19 +12036,14 @@ type
   public
     property LocationChosen: TBasite read GetLocationChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
     [TChoice('Location')]
-    [TNaming(TNaming.nCamelCase)]
     property LocationAddress: TAddressCT read GetLocationAddress;
     [TChoice('Location')]
-    [TNaming(TNaming.nCamelCase)]
     property LocationReference: TReferenceCT read GetLocationReference;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ExplanationOfBenefit.Item')]
   TExplanationOfBenefitItemCT = class(TBackboneElementCT)
   private
@@ -15309,67 +12086,40 @@ type
     property LocationChosen: TBasite read GetLocationChosen;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Sequence: TPositiveIntCT read fSequence;
-    [TNaming(TNaming.nCamelCase)]
     property CareTeamSequence: TPositiveIntCTList read fCareTeamSequence;
-    [TNaming(TNaming.nCamelCase)]
     property DiagnosisSequence: TPositiveIntCTList read fDiagnosisSequence;
-    [TNaming(TNaming.nCamelCase)]
     property ProcedureSequence: TPositiveIntCTList read fProcedureSequence;
-    [TNaming(TNaming.nCamelCase)]
     property InformationSequence: TPositiveIntCTList read fInformationSequence;
-    [TNaming(TNaming.nFlatCase)]
     property Revenue: TCodeableConceptCT read fRevenue;
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCT read fCategory;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ProductOrService: TCodeableConceptCT read fProductOrService;
-    [TNaming(TNaming.nFlatCase)]
     property Modifier: TCodeableConceptCTList read fModifier;
-    [TNaming(TNaming.nCamelCase)]
     property ProgramCode: TCodeableConceptCTList read fProgramCode;
     [TChoice('Serviced')]
-    [TNaming(TNaming.nCamelCase)]
     property ServicedDate: TDateCT read GetServicedDate;
     [TChoice('Serviced')]
-    [TNaming(TNaming.nCamelCase)]
     property ServicedPeriod: TPeriodCT read GetServicedPeriod;
     [TChoice('Location')]
-    [TNaming(TNaming.nCamelCase)]
     property LocationCodeableConcept: TCodeableConceptCT read GetLocationCodeableConcept;
     [TChoice('Location')]
-    [TNaming(TNaming.nCamelCase)]
     property LocationAddress: TAddressCT read GetLocationAddress;
     [TChoice('Location')]
-    [TNaming(TNaming.nCamelCase)]
     property LocationReference: TReferenceCT read GetLocationReference;
-    [TNaming(TNaming.nFlatCase)]
     property Quantity: TQuantityCT read fQuantity;
-    [TNaming(TNaming.nCamelCase)]
     property UnitPrice: TMoneyCT read fUnitPrice;
-    [TNaming(TNaming.nFlatCase)]
     property Factor: TDecimalCT read fFactor;
-    [TNaming(TNaming.nFlatCase)]
     property Net: TMoneyCT read fNet;
-    [TNaming(TNaming.nFlatCase)]
     property Udi: TReferenceCTList read fUdi;
-    [TNaming(TNaming.nCamelCase)]
     property BodySite: TCodeableConceptCT read fBodySite;
-    [TNaming(TNaming.nCamelCase)]
     property SubSite: TCodeableConceptCTList read fSubSite;
-    [TNaming(TNaming.nFlatCase)]
     property Encounter: TReferenceCTList read fEncounter;
-    [TNaming(TNaming.nCamelCase)]
     property NoteNumber: TPositiveIntCTList read fNoteNumber;
-    [TNaming(TNaming.nFlatCase)]
     property Adjudication: TExplanationOfBenefitAdjudicationCTList read fAdjudication;
-    [TNaming(TNaming.nFlatCase)]
     property Detail: TExplanationOfBenefitDetailCTList read fDetail;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ExplanationOfBenefit.Adjudication')]
   TExplanationOfBenefitAdjudicationCT = class(TBackboneElementCT)
   private
@@ -15379,17 +12129,12 @@ type
     fValue: TDecimalCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCT read fCategory;
-    [TNaming(TNaming.nFlatCase)]
     property Reason: TCodeableConceptCT read fReason;
-    [TNaming(TNaming.nFlatCase)]
     property Amount: TMoneyCT read fAmount;
-    [TNaming(TNaming.nFlatCase)]
     property Value: TDecimalCT read fValue;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ExplanationOfBenefit.Detail')]
   TExplanationOfBenefitDetailCT = class(TBackboneElementCT)
   private
@@ -15409,38 +12154,23 @@ type
     fSubDetail: TExplanationOfBenefitSubDetailCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Sequence: TPositiveIntCT read fSequence;
-    [TNaming(TNaming.nFlatCase)]
     property Revenue: TCodeableConceptCT read fRevenue;
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCT read fCategory;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ProductOrService: TCodeableConceptCT read fProductOrService;
-    [TNaming(TNaming.nFlatCase)]
     property Modifier: TCodeableConceptCTList read fModifier;
-    [TNaming(TNaming.nCamelCase)]
     property ProgramCode: TCodeableConceptCTList read fProgramCode;
-    [TNaming(TNaming.nFlatCase)]
     property Quantity: TQuantityCT read fQuantity;
-    [TNaming(TNaming.nCamelCase)]
     property UnitPrice: TMoneyCT read fUnitPrice;
-    [TNaming(TNaming.nFlatCase)]
     property Factor: TDecimalCT read fFactor;
-    [TNaming(TNaming.nFlatCase)]
     property Net: TMoneyCT read fNet;
-    [TNaming(TNaming.nFlatCase)]
     property Udi: TReferenceCTList read fUdi;
-    [TNaming(TNaming.nCamelCase)]
     property NoteNumber: TPositiveIntCTList read fNoteNumber;
-    [TNaming(TNaming.nFlatCase)]
     property Adjudication: TExplanationOfBenefitAdjudicationCTList read fAdjudication;
-    [TNaming(TNaming.nCamelCase)]
     property SubDetail: TExplanationOfBenefitSubDetailCTList read fSubDetail;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ExplanationOfBenefit.SubDetail')]
   TExplanationOfBenefitSubDetailCT = class(TBackboneElementCT)
   private
@@ -15459,36 +12189,22 @@ type
     fAdjudication: TExplanationOfBenefitAdjudicationCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Sequence: TPositiveIntCT read fSequence;
-    [TNaming(TNaming.nFlatCase)]
     property Revenue: TCodeableConceptCT read fRevenue;
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCT read fCategory;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ProductOrService: TCodeableConceptCT read fProductOrService;
-    [TNaming(TNaming.nFlatCase)]
     property Modifier: TCodeableConceptCTList read fModifier;
-    [TNaming(TNaming.nCamelCase)]
     property ProgramCode: TCodeableConceptCTList read fProgramCode;
-    [TNaming(TNaming.nFlatCase)]
     property Quantity: TQuantityCT read fQuantity;
-    [TNaming(TNaming.nCamelCase)]
     property UnitPrice: TMoneyCT read fUnitPrice;
-    [TNaming(TNaming.nFlatCase)]
     property Factor: TDecimalCT read fFactor;
-    [TNaming(TNaming.nFlatCase)]
     property Net: TMoneyCT read fNet;
-    [TNaming(TNaming.nFlatCase)]
     property Udi: TReferenceCTList read fUdi;
-    [TNaming(TNaming.nCamelCase)]
     property NoteNumber: TPositiveIntCTList read fNoteNumber;
-    [TNaming(TNaming.nFlatCase)]
     property Adjudication: TExplanationOfBenefitAdjudicationCTList read fAdjudication;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ExplanationOfBenefit.AddItem')]
   TExplanationOfBenefitAddItemCT = class(TBackboneElementCT)
   private
@@ -15525,57 +12241,35 @@ type
     property ServicedChosen: TBasite read GetServicedChosen;
     property LocationChosen: TBasite read GetLocationChosen;
   published
-    [TNaming(TNaming.nCamelCase)]
     property ItemSequence: TPositiveIntCTList read fItemSequence;
-    [TNaming(TNaming.nCamelCase)]
     property DetailSequence: TPositiveIntCTList read fDetailSequence;
-    [TNaming(TNaming.nCamelCase)]
     property SubDetailSequence: TPositiveIntCTList read fSubDetailSequence;
-    [TNaming(TNaming.nFlatCase)]
     property Provider: TReferenceCTList read fProvider;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ProductOrService: TCodeableConceptCT read fProductOrService;
-    [TNaming(TNaming.nFlatCase)]
     property Modifier: TCodeableConceptCTList read fModifier;
-    [TNaming(TNaming.nCamelCase)]
     property ProgramCode: TCodeableConceptCTList read fProgramCode;
     [TChoice('Serviced')]
-    [TNaming(TNaming.nCamelCase)]
     property ServicedDate: TDateCT read GetServicedDate;
     [TChoice('Serviced')]
-    [TNaming(TNaming.nCamelCase)]
     property ServicedPeriod: TPeriodCT read GetServicedPeriod;
     [TChoice('Location')]
-    [TNaming(TNaming.nCamelCase)]
     property LocationCodeableConcept: TCodeableConceptCT read GetLocationCodeableConcept;
     [TChoice('Location')]
-    [TNaming(TNaming.nCamelCase)]
     property LocationAddress: TAddressCT read GetLocationAddress;
     [TChoice('Location')]
-    [TNaming(TNaming.nCamelCase)]
     property LocationReference: TReferenceCT read GetLocationReference;
-    [TNaming(TNaming.nFlatCase)]
     property Quantity: TQuantityCT read fQuantity;
-    [TNaming(TNaming.nCamelCase)]
     property UnitPrice: TMoneyCT read fUnitPrice;
-    [TNaming(TNaming.nFlatCase)]
     property Factor: TDecimalCT read fFactor;
-    [TNaming(TNaming.nFlatCase)]
     property Net: TMoneyCT read fNet;
-    [TNaming(TNaming.nCamelCase)]
     property BodySite: TCodeableConceptCT read fBodySite;
-    [TNaming(TNaming.nCamelCase)]
     property SubSite: TCodeableConceptCTList read fSubSite;
-    [TNaming(TNaming.nCamelCase)]
     property NoteNumber: TPositiveIntCTList read fNoteNumber;
-    [TNaming(TNaming.nFlatCase)]
     property Adjudication: TExplanationOfBenefitAdjudicationCTList read fAdjudication;
-    [TNaming(TNaming.nFlatCase)]
     property Detail: TExplanationOfBenefitDetail1CTList read fDetail;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ExplanationOfBenefit.Detail1')]
   TExplanationOfBenefitDetail1CT = class(TBackboneElementCT)
   private
@@ -15590,27 +12284,17 @@ type
     fSubDetail: TExplanationOfBenefitSubDetail1CTList;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ProductOrService: TCodeableConceptCT read fProductOrService;
-    [TNaming(TNaming.nFlatCase)]
     property Modifier: TCodeableConceptCTList read fModifier;
-    [TNaming(TNaming.nFlatCase)]
     property Quantity: TQuantityCT read fQuantity;
-    [TNaming(TNaming.nCamelCase)]
     property UnitPrice: TMoneyCT read fUnitPrice;
-    [TNaming(TNaming.nFlatCase)]
     property Factor: TDecimalCT read fFactor;
-    [TNaming(TNaming.nFlatCase)]
     property Net: TMoneyCT read fNet;
-    [TNaming(TNaming.nCamelCase)]
     property NoteNumber: TPositiveIntCTList read fNoteNumber;
-    [TNaming(TNaming.nFlatCase)]
     property Adjudication: TExplanationOfBenefitAdjudicationCTList read fAdjudication;
-    [TNaming(TNaming.nCamelCase)]
     property SubDetail: TExplanationOfBenefitSubDetail1CTList read fSubDetail;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ExplanationOfBenefit.SubDetail1')]
   TExplanationOfBenefitSubDetail1CT = class(TBackboneElementCT)
   private
@@ -15624,25 +12308,16 @@ type
     fAdjudication: TExplanationOfBenefitAdjudicationCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ProductOrService: TCodeableConceptCT read fProductOrService;
-    [TNaming(TNaming.nFlatCase)]
     property Modifier: TCodeableConceptCTList read fModifier;
-    [TNaming(TNaming.nFlatCase)]
     property Quantity: TQuantityCT read fQuantity;
-    [TNaming(TNaming.nCamelCase)]
     property UnitPrice: TMoneyCT read fUnitPrice;
-    [TNaming(TNaming.nFlatCase)]
     property Factor: TDecimalCT read fFactor;
-    [TNaming(TNaming.nFlatCase)]
     property Net: TMoneyCT read fNet;
-    [TNaming(TNaming.nCamelCase)]
     property NoteNumber: TPositiveIntCTList read fNoteNumber;
-    [TNaming(TNaming.nFlatCase)]
     property Adjudication: TExplanationOfBenefitAdjudicationCTList read fAdjudication;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ExplanationOfBenefit.Total')]
   TExplanationOfBenefitTotalCT = class(TBackboneElementCT)
   private
@@ -15650,14 +12325,11 @@ type
     fAmount: TMoneyCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCT read fCategory;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Amount: TMoneyCT read fAmount;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ExplanationOfBenefit.Payment')]
   TExplanationOfBenefitPaymentCT = class(TBackboneElementCT)
   private
@@ -15668,21 +12340,14 @@ type
     fAmount: TMoneyCT;
     fIdentifier: TIdentifierCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Adjustment: TMoneyCT read fAdjustment;
-    [TNaming(TNaming.nCamelCase)]
     property AdjustmentReason: TCodeableConceptCT read fAdjustmentReason;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Amount: TMoneyCT read fAmount;
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCT read fIdentifier;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ExplanationOfBenefit.ProcessNote')]
   TExplanationOfBenefitProcessNoteCT = class(TBackboneElementCT)
   private
@@ -15691,17 +12356,12 @@ type
     fText: TStringCT;
     fLanguage: TCodeableConceptCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Number: TPositiveIntCT read fNumber;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TNoteTypeCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Text: TStringCT read fText;
-    [TNaming(TNaming.nFlatCase)]
     property Language: TCodeableConceptCT read fLanguage;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ExplanationOfBenefit.BenefitBalance')]
   TExplanationOfBenefitBenefitBalanceCT = class(TBackboneElementCT)
   private
@@ -15715,25 +12375,16 @@ type
     fFinancial: TExplanationOfBenefitFinancialCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCT read fCategory;
-    [TNaming(TNaming.nFlatCase)]
     property Excluded: TBooleanCT read fExcluded;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Network: TCodeableConceptCT read fNetwork;
-    [TNaming(TNaming.nFlatCase)]
     property &Unit: TCodeableConceptCT read fUnit;
-    [TNaming(TNaming.nFlatCase)]
     property Term: TCodeableConceptCT read fTerm;
-    [TNaming(TNaming.nFlatCase)]
     property Financial: TExplanationOfBenefitFinancialCTList read fFinancial;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ExplanationOfBenefit.Financial')]
   TExplanationOfBenefitFinancialCT = class(TBackboneElementCT)
   private
@@ -15756,22 +12407,16 @@ type
     property UsedChosen: TBasite read GetUsedChosen;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
     [TChoice('Allowed')]
-    [TNaming(TNaming.nCamelCase)]
     property AllowedUnsignedInt: TUnsignedIntCT read GetAllowedUnsignedInt;
     [TChoice('Allowed')]
-    [TNaming(TNaming.nCamelCase)]
     property AllowedString: TStringCT read GetAllowedString;
     [TChoice('Allowed')]
-    [TNaming(TNaming.nCamelCase)]
     property AllowedMoney: TMoneyCT read GetAllowedMoney;
     [TChoice('Used')]
-    [TNaming(TNaming.nCamelCase)]
     property UsedUnsignedInt: TUnsignedIntCT read GetUsedUnsignedInt;
     [TChoice('Used')]
-    [TNaming(TNaming.nCamelCase)]
     property UsedMoney: TMoneyCT read GetUsedMoney;
   end;
 
@@ -15779,7 +12424,6 @@ type
   private
     fValue: TExplanationOfBenefitStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TExplanationOfBenefitStatusListST read fValue write fValue;
   end;
 
@@ -15831,75 +12475,48 @@ type
     property AgeChosen: TBasite read GetAgeChosen;
     property DeceasedChosen: TBasite read GetDeceasedChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nCamelCase)]
     property InstantiatesCanonical: TCanonicalCTList read fInstantiatesCanonical;
-    [TNaming(TNaming.nCamelCase)]
     property InstantiatesUri: TUriCTList read fInstantiatesUri;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TFamilyHistoryStatusCT read fStatus;
-    [TNaming(TNaming.nCamelCase)]
     property DataAbsentReason: TCodeableConceptCT read fDataAbsentReason;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Patient: TReferenceCT read fPatient;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Relationship: TCodeableConceptCT read fRelationship;
-    [TNaming(TNaming.nFlatCase)]
     property Sex: TCodeableConceptCT read fSex;
     [TChoice('Born')]
-    [TNaming(TNaming.nCamelCase)]
     property BornPeriod: TPeriodCT read GetBornPeriod;
     [TChoice('Born')]
-    [TNaming(TNaming.nCamelCase)]
     property BornDate: TDateCT read GetBornDate;
     [TChoice('Born')]
-    [TNaming(TNaming.nCamelCase)]
     property BornString: TStringCT read GetBornString;
     [TChoice('Age')]
-    [TNaming(TNaming.nCamelCase)]
     property AgeAge: TAgeCT read GetAgeAge;
     [TChoice('Age')]
-    [TNaming(TNaming.nCamelCase)]
     property AgeRange: TRangeCT read GetAgeRange;
     [TChoice('Age')]
-    [TNaming(TNaming.nCamelCase)]
     property AgeString: TStringCT read GetAgeString;
-    [TNaming(TNaming.nCamelCase)]
     property EstimatedAge: TBooleanCT read fEstimatedAge;
     [TChoice('Deceased')]
-    [TNaming(TNaming.nCamelCase)]
     property DeceasedBoolean: TBooleanCT read GetDeceasedBoolean;
     [TChoice('Deceased')]
-    [TNaming(TNaming.nCamelCase)]
     property DeceasedAge: TAgeCT read GetDeceasedAge;
     [TChoice('Deceased')]
-    [TNaming(TNaming.nCamelCase)]
     property DeceasedRange: TRangeCT read GetDeceasedRange;
     [TChoice('Deceased')]
-    [TNaming(TNaming.nCamelCase)]
     property DeceasedDate: TDateCT read GetDeceasedDate;
     [TChoice('Deceased')]
-    [TNaming(TNaming.nCamelCase)]
     property DeceasedString: TStringCT read GetDeceasedString;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonReference: TReferenceCTList read fReasonReference;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
-    [TNaming(TNaming.nFlatCase)]
     property Condition: TFamilyMemberHistoryConditionCTList read fCondition;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('FamilyMemberHistory.Condition')]
   TFamilyMemberHistoryConditionCT = class(TBackboneElementCT)
   private
@@ -15921,25 +12538,17 @@ type
     property OnsetChosen: TBasite read GetOnsetChosen;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Outcome: TCodeableConceptCT read fOutcome;
-    [TNaming(TNaming.nCamelCase)]
     property ContributedToDeath: TBooleanCT read fContributedToDeath;
     [TChoice('Onset')]
-    [TNaming(TNaming.nCamelCase)]
     property OnsetAge: TAgeCT read GetOnsetAge;
     [TChoice('Onset')]
-    [TNaming(TNaming.nCamelCase)]
     property OnsetRange: TRangeCT read GetOnsetRange;
     [TChoice('Onset')]
-    [TNaming(TNaming.nCamelCase)]
     property OnsetPeriod: TPeriodCT read GetOnsetPeriod;
     [TChoice('Onset')]
-    [TNaming(TNaming.nCamelCase)]
     property OnsetString: TStringCT read GetOnsetString;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
   end;
 
@@ -15947,7 +12556,6 @@ type
   private
     fValue: TFamilyHistoryStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TFamilyHistoryStatusListST read fValue write fValue;
   end;
 
@@ -15962,24 +12570,16 @@ type
     fEncounter: TReferenceCT;
     fAuthor: TReferenceCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TFlagStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCTList read fCategory;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCT read fSubject;
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCT read fPeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Encounter: TReferenceCT read fEncounter;
-    [TNaming(TNaming.nFlatCase)]
     property Author: TReferenceCT read fAuthor;
   end;
 
@@ -15987,7 +12587,6 @@ type
   private
     fValue: TFlagStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TFlagStatusListST read fValue write fValue;
   end;
 
@@ -16017,48 +12616,30 @@ type
   public
     property StartChosen: TBasite read GetStartChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property LifecycleStatus: TGoalLifecycleStatusCT read fLifecycleStatus;
-    [TNaming(TNaming.nCamelCase)]
     property AchievementStatus: TCodeableConceptCT read fAchievementStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCTList read fCategory;
-    [TNaming(TNaming.nFlatCase)]
     property Priority: TCodeableConceptCT read fPriority;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Description: TCodeableConceptCT read fDescription;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCT read fSubject;
     [TChoice('Start')]
-    [TNaming(TNaming.nCamelCase)]
     property StartDate: TDateCT read GetStartDate;
     [TChoice('Start')]
-    [TNaming(TNaming.nCamelCase)]
     property StartCodeableConcept: TCodeableConceptCT read GetStartCodeableConcept;
-    [TNaming(TNaming.nFlatCase)]
     property Target: TGoalTargetCTList read fTarget;
-    [TNaming(TNaming.nCamelCase)]
     property StatusDate: TDateCT read fStatusDate;
-    [TNaming(TNaming.nCamelCase)]
     property StatusReason: TStringCT read fStatusReason;
-    [TNaming(TNaming.nCamelCase)]
     property ExpressedBy: TReferenceCT read fExpressedBy;
-    [TNaming(TNaming.nFlatCase)]
     property Addresses: TReferenceCTList read fAddresses;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
-    [TNaming(TNaming.nCamelCase)]
     property OutcomeCode: TCodeableConceptCTList read fOutcomeCode;
-    [TNaming(TNaming.nCamelCase)]
     property OutcomeReference: TReferenceCTList read fOutcomeReference;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Goal.Target')]
   TGoalTargetCT = class(TBackboneElementCT)
   private
@@ -16088,34 +12669,24 @@ type
     property DetailChosen: TBasite read GetDetailChosen;
     property DueChosen: TBasite read GetDueChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Measure: TCodeableConceptCT read fMeasure;
     [TChoice('Detail')]
-    [TNaming(TNaming.nCamelCase)]
     property DetailQuantity: TQuantityCT read GetDetailQuantity;
     [TChoice('Detail')]
-    [TNaming(TNaming.nCamelCase)]
     property DetailRange: TRangeCT read GetDetailRange;
     [TChoice('Detail')]
-    [TNaming(TNaming.nCamelCase)]
     property DetailCodeableConcept: TCodeableConceptCT read GetDetailCodeableConcept;
     [TChoice('Detail')]
-    [TNaming(TNaming.nCamelCase)]
     property DetailString: TStringCT read GetDetailString;
     [TChoice('Detail')]
-    [TNaming(TNaming.nCamelCase)]
     property DetailBoolean: TBooleanCT read GetDetailBoolean;
     [TChoice('Detail')]
-    [TNaming(TNaming.nCamelCase)]
     property DetailInteger: TIntegerCT read GetDetailInteger;
     [TChoice('Detail')]
-    [TNaming(TNaming.nCamelCase)]
     property DetailRatio: TRatioCT read GetDetailRatio;
     [TChoice('Due')]
-    [TNaming(TNaming.nCamelCase)]
     property DueDate: TDateCT read GetDueDate;
     [TChoice('Due')]
-    [TNaming(TNaming.nCamelCase)]
     property DueDuration: TDurationCT read GetDueDuration;
   end;
 
@@ -16123,7 +12694,6 @@ type
   private
     fValue: TGoalLifecycleStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TGoalLifecycleStatusListST read fValue write fValue;
   end;
 
@@ -16145,42 +12715,26 @@ type
     fProfile: TCanonicalCT;
     fLink: TGraphDefinitionLinkCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUriCT read fUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCT read fVersion;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TPublicationStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Experimental: TBooleanCT read fExperimental;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Publisher: TStringCT read fPublisher;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TContactDetailCTList read fContact;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TMarkdownCT read fDescription;
-    [TNaming(TNaming.nCamelCase)]
     property UseContext: TUsageContextCTList read fUseContext;
-    [TNaming(TNaming.nFlatCase)]
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    [TNaming(TNaming.nFlatCase)]
     property Purpose: TMarkdownCT read fPurpose;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Start: TCodeCT read fStart;
-    [TNaming(TNaming.nFlatCase)]
     property Profile: TCanonicalCT read fProfile;
-    [TNaming(TNaming.nFlatCase)]
     property Link: TGraphDefinitionLinkCTList read fLink;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('GraphDefinition.Link')]
   TGraphDefinitionLinkCT = class(TBackboneElementCT)
   private
@@ -16191,21 +12745,14 @@ type
     fDescription: TStringCT;
     fTarget: TGraphDefinitionTargetCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Path: TStringCT read fPath;
-    [TNaming(TNaming.nCamelCase)]
     property SliceName: TStringCT read fSliceName;
-    [TNaming(TNaming.nFlatCase)]
     property Min: TIntegerCT read fMin;
-    [TNaming(TNaming.nFlatCase)]
     property Max: TStringCT read fMax;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Target: TGraphDefinitionTargetCTList read fTarget;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('GraphDefinition.Target')]
   TGraphDefinitionTargetCT = class(TBackboneElementCT)
   private
@@ -16216,19 +12763,13 @@ type
     fLink: TGraphDefinitionLinkCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Params: TStringCT read fParams;
-    [TNaming(TNaming.nFlatCase)]
     property Profile: TCanonicalCT read fProfile;
-    [TNaming(TNaming.nFlatCase)]
     property Compartment: TGraphDefinitionCompartmentCTList read fCompartment;
-    [TNaming(TNaming.nFlatCase)]
     property Link: TGraphDefinitionLinkCTList read fLink;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('GraphDefinition.Compartment')]
   TGraphDefinitionCompartmentCT = class(TBackboneElementCT)
   private
@@ -16239,17 +12780,12 @@ type
     fDescription: TStringCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Use: TGraphCompartmentUseCT read fUse;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCompartmentTypeCT read fCode;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Rule: TGraphCompartmentRuleCT read fRule;
-    [TNaming(TNaming.nFlatCase)]
     property Expression: TStringCT read fExpression;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
   end;
 
@@ -16257,7 +12793,6 @@ type
   private
     fValue: TGraphCompartmentUseListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TGraphCompartmentUseListST read fValue write fValue;
   end;
 
@@ -16265,7 +12800,6 @@ type
   private
     fValue: TGraphCompartmentRuleListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TGraphCompartmentRuleListST read fValue write fValue;
   end;
 
@@ -16282,31 +12816,20 @@ type
     fCharacteristic: TGroupCharacteristicCTList;
     fMember: TGroupMemberCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Active: TBooleanCT read fActive;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TGroupTypeCT read fType;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Actual: TBooleanCT read fActual;
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Quantity: TUnsignedIntCT read fQuantity;
-    [TNaming(TNaming.nCamelCase)]
     property ManagingEntity: TReferenceCT read fManagingEntity;
-    [TNaming(TNaming.nFlatCase)]
     property Characteristic: TGroupCharacteristicCTList read fCharacteristic;
-    [TNaming(TNaming.nFlatCase)]
     property Member: TGroupMemberCTList read fMember;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Group.Characteristic')]
   TGroupCharacteristicCT = class(TBackboneElementCT)
   private
@@ -16329,31 +12852,22 @@ type
     property ValueChosen: TBasite read GetValueChosen;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCodeableConcept: TCodeableConceptCT read GetValueCodeableConcept;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueBoolean: TBooleanCT read GetValueBoolean;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueQuantity: TQuantityCT read GetValueQuantity;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueRange: TRangeCT read GetValueRange;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueReference: TReferenceCT read GetValueReference;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Exclude: TBooleanCT read fExclude;
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCT read fPeriod;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Group.Member')]
   TGroupMemberCT = class(TBackboneElementCT)
   private
@@ -16362,11 +12876,8 @@ type
     fInactive: TBooleanCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Entity: TReferenceCT read fEntity;
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCT read fPeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Inactive: TBooleanCT read fInactive;
   end;
 
@@ -16374,7 +12885,6 @@ type
   private
     fValue: TGroupTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TGroupTypeListST read fValue write fValue;
   end;
 
@@ -16405,43 +12915,26 @@ type
   public
     property ModuleChosen: TBasite read GetModuleChosen;
   published
-    [TNaming(TNaming.nCamelCase)]
     property RequestIdentifier: TIdentifierCT read fRequestIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
     [TChoice('Module')]
-    [TNaming(TNaming.nCamelCase)]
     property ModuleUri: TUriCT read GetModuleUri;
     [TChoice('Module')]
-    [TNaming(TNaming.nCamelCase)]
     property ModuleCanonical: TCanonicalCT read GetModuleCanonical;
     [TChoice('Module')]
-    [TNaming(TNaming.nCamelCase)]
     property ModuleCodeableConcept: TCodeableConceptCT read GetModuleCodeableConcept;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TGuidanceResponseStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCT read fSubject;
-    [TNaming(TNaming.nFlatCase)]
     property Encounter: TReferenceCT read fEncounter;
-    [TNaming(TNaming.nCamelCase)]
     property OccurrenceDateTime: TDateTimeCT read fOccurrenceDateTime;
-    [TNaming(TNaming.nFlatCase)]
     property Performer: TReferenceCT read fPerformer;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonReference: TReferenceCTList read fReasonReference;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
-    [TNaming(TNaming.nCamelCase)]
     property EvaluationMessage: TReferenceCTList read fEvaluationMessage;
-    [TNaming(TNaming.nCamelCase)]
     property OutputParameters: TReferenceCT read fOutputParameters;
-    [TNaming(TNaming.nFlatCase)]
     property Result: TReferenceCT read fResult;
-    [TNaming(TNaming.nCamelCase)]
     property DataRequirement: TDataRequirementCTList read fDataRequirement;
   end;
 
@@ -16449,7 +12942,6 @@ type
   private
     fValue: TGuidanceResponseStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TGuidanceResponseStatusListST read fValue write fValue;
   end;
 
@@ -16480,70 +12972,42 @@ type
     fAvailabilityExceptions: TStringCT;
     fEndpoint: TReferenceCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Active: TBooleanCT read fActive;
-    [TNaming(TNaming.nCamelCase)]
     property ProvidedBy: TReferenceCT read fProvidedBy;
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCTList read fCategory;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCTList read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Specialty: TCodeableConceptCTList read fSpecialty;
-    [TNaming(TNaming.nFlatCase)]
     property Location: TReferenceCTList read fLocation;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Comment: TStringCT read fComment;
-    [TNaming(TNaming.nCamelCase)]
     property ExtraDetails: TMarkdownCT read fExtraDetails;
-    [TNaming(TNaming.nFlatCase)]
     property Photo: TAttachmentCT read fPhoto;
-    [TNaming(TNaming.nFlatCase)]
     property Telecom: TContactPointCTList read fTelecom;
-    [TNaming(TNaming.nCamelCase)]
     property CoverageArea: TReferenceCTList read fCoverageArea;
-    [TNaming(TNaming.nCamelCase)]
     property ServiceProvisionCode: TCodeableConceptCTList read fServiceProvisionCode;
-    [TNaming(TNaming.nFlatCase)]
     property Eligibility: THealthcareServiceEligibilityCTList read fEligibility;
-    [TNaming(TNaming.nFlatCase)]
     property &Program: TCodeableConceptCTList read fProgram;
-    [TNaming(TNaming.nFlatCase)]
     property Characteristic: TCodeableConceptCTList read fCharacteristic;
-    [TNaming(TNaming.nFlatCase)]
     property Communication: TCodeableConceptCTList read fCommunication;
-    [TNaming(TNaming.nCamelCase)]
     property ReferralMethod: TCodeableConceptCTList read fReferralMethod;
-    [TNaming(TNaming.nCamelCase)]
     property AppointmentRequired: TBooleanCT read fAppointmentRequired;
-    [TNaming(TNaming.nCamelCase)]
     property AvailableTime: THealthcareServiceAvailableTimeCTList read fAvailableTime;
-    [TNaming(TNaming.nCamelCase)]
     property NotAvailable: THealthcareServiceNotAvailableCTList read fNotAvailable;
-    [TNaming(TNaming.nCamelCase)]
     property AvailabilityExceptions: TStringCT read fAvailabilityExceptions;
-    [TNaming(TNaming.nFlatCase)]
     property Endpoint: TReferenceCTList read fEndpoint;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('HealthcareService.Eligibility')]
   THealthcareServiceEligibilityCT = class(TBackboneElementCT)
   private
     fCode: TCodeableConceptCT;
     fComment: TMarkdownCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Comment: TMarkdownCT read fComment;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('HealthcareService.AvailableTime')]
   THealthcareServiceAvailableTimeCT = class(TBackboneElementCT)
   private
@@ -16552,17 +13016,12 @@ type
     fAvailableStartTime: TTimeCT;
     fAvailableEndTime: TTimeCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property DaysOfWeek: TDaysOfWeekCTList read fDaysOfWeek;
-    [TNaming(TNaming.nCamelCase)]
     property AllDay: TBooleanCT read fAllDay;
-    [TNaming(TNaming.nCamelCase)]
     property AvailableStartTime: TTimeCT read fAvailableStartTime;
-    [TNaming(TNaming.nCamelCase)]
     property AvailableEndTime: TTimeCT read fAvailableEndTime;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('HealthcareService.NotAvailable')]
   THealthcareServiceNotAvailableCT = class(TBackboneElementCT)
   private
@@ -16570,9 +13029,7 @@ type
     fDuring: TPeriodCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property During: TPeriodCT read fDuring;
   end;
 
@@ -16580,7 +13037,6 @@ type
   private
     fValue: TDaysOfWeekListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TDaysOfWeekListST read fValue write fValue;
   end;
 
@@ -16607,51 +13063,30 @@ type
     fDescription: TStringCT;
     fSeries: TImagingStudySeriesCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TImagingStudyStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Modality: TCodingCTList read fModality;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCT read fSubject;
-    [TNaming(TNaming.nFlatCase)]
     property Encounter: TReferenceCT read fEncounter;
-    [TNaming(TNaming.nFlatCase)]
     property Started: TDateTimeCT read fStarted;
-    [TNaming(TNaming.nCamelCase)]
     property BasedOn: TReferenceCTList read fBasedOn;
-    [TNaming(TNaming.nFlatCase)]
     property Referrer: TReferenceCT read fReferrer;
-    [TNaming(TNaming.nFlatCase)]
     property Interpreter: TReferenceCTList read fInterpreter;
-    [TNaming(TNaming.nFlatCase)]
     property Endpoint: TReferenceCTList read fEndpoint;
-    [TNaming(TNaming.nCamelCase)]
     property NumberOfSeries: TUnsignedIntCT read fNumberOfSeries;
-    [TNaming(TNaming.nCamelCase)]
     property NumberOfInstances: TUnsignedIntCT read fNumberOfInstances;
-    [TNaming(TNaming.nCamelCase)]
     property ProcedureReference: TReferenceCT read fProcedureReference;
-    [TNaming(TNaming.nCamelCase)]
     property ProcedureCode: TCodeableConceptCTList read fProcedureCode;
-    [TNaming(TNaming.nFlatCase)]
     property Location: TReferenceCT read fLocation;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonReference: TReferenceCTList read fReasonReference;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Series: TImagingStudySeriesCTList read fSeries;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ImagingStudy.Series')]
   TImagingStudySeriesCT = class(TBackboneElementCT)
   private
@@ -16669,48 +13104,32 @@ type
     fInstance: TImagingStudyInstanceCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Uid: TIdCT read fUid;
-    [TNaming(TNaming.nFlatCase)]
     property Number: TUnsignedIntCT read fNumber;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Modality: TCodingCT read fModality;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nCamelCase)]
     property NumberOfInstances: TUnsignedIntCT read fNumberOfInstances;
-    [TNaming(TNaming.nFlatCase)]
     property Endpoint: TReferenceCTList read fEndpoint;
-    [TNaming(TNaming.nCamelCase)]
     property BodySite: TCodingCT read fBodySite;
-    [TNaming(TNaming.nFlatCase)]
     property Laterality: TCodingCT read fLaterality;
-    [TNaming(TNaming.nFlatCase)]
     property Specimen: TReferenceCTList read fSpecimen;
-    [TNaming(TNaming.nFlatCase)]
     property Started: TDateTimeCT read fStarted;
-    [TNaming(TNaming.nFlatCase)]
     property Performer: TImagingStudyPerformerCTList read fPerformer;
-    [TNaming(TNaming.nFlatCase)]
     property Instance: TImagingStudyInstanceCTList read fInstance;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ImagingStudy.Performer')]
   TImagingStudyPerformerCT = class(TBackboneElementCT)
   private
     fFunction: TCodeableConceptCT;
     fActor: TReferenceCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property &Function: TCodeableConceptCT read fFunction;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Actor: TReferenceCT read fActor;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ImagingStudy.Instance')]
   TImagingStudyInstanceCT = class(TBackboneElementCT)
   private
@@ -16720,14 +13139,10 @@ type
     fTitle: TStringCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Uid: TIdCT read fUid;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property SopClass: TCodingCT read fSopClass;
-    [TNaming(TNaming.nFlatCase)]
     property Number: TUnsignedIntCT read fNumber;
-    [TNaming(TNaming.nFlatCase)]
     property Title: TStringCT read fTitle;
   end;
 
@@ -16735,7 +13150,6 @@ type
   private
     fValue: TImagingStudyStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TImagingStudyStatusListST read fValue write fValue;
   end;
 
@@ -16777,86 +13191,53 @@ type
   public
     property OccurrenceChosen: TBasite read GetOccurrenceChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TImmunizationStatusCodesCT read fStatus;
-    [TNaming(TNaming.nCamelCase)]
     property StatusReason: TCodeableConceptCT read fStatusReason;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property VaccineCode: TCodeableConceptCT read fVaccineCode;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Patient: TReferenceCT read fPatient;
-    [TNaming(TNaming.nFlatCase)]
     property Encounter: TReferenceCT read fEncounter;
     [TChoice('Occurrence')]
-    [TNaming(TNaming.nCamelCase)]
     property OccurrenceDateTime: TDateTimeCT read GetOccurrenceDateTime;
     [TChoice('Occurrence')]
-    [TNaming(TNaming.nCamelCase)]
     property OccurrenceString: TStringCT read GetOccurrenceString;
-    [TNaming(TNaming.nFlatCase)]
     property Recorded: TDateTimeCT read fRecorded;
-    [TNaming(TNaming.nCamelCase)]
     property PrimarySource: TBooleanCT read fPrimarySource;
-    [TNaming(TNaming.nCamelCase)]
     property ReportOrigin: TCodeableConceptCT read fReportOrigin;
-    [TNaming(TNaming.nFlatCase)]
     property Location: TReferenceCT read fLocation;
-    [TNaming(TNaming.nFlatCase)]
     property Manufacturer: TReferenceCT read fManufacturer;
-    [TNaming(TNaming.nCamelCase)]
     property LotNumber: TStringCT read fLotNumber;
-    [TNaming(TNaming.nCamelCase)]
     property ExpirationDate: TDateCT read fExpirationDate;
-    [TNaming(TNaming.nFlatCase)]
     property Site: TCodeableConceptCT read fSite;
-    [TNaming(TNaming.nFlatCase)]
     property Route: TCodeableConceptCT read fRoute;
-    [TNaming(TNaming.nCamelCase)]
     property DoseQuantity: TQuantityCT read fDoseQuantity;
-    [TNaming(TNaming.nFlatCase)]
     property Performer: TImmunizationPerformerCTList read fPerformer;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonReference: TReferenceCTList read fReasonReference;
-    [TNaming(TNaming.nCamelCase)]
     property IsSubpotent: TBooleanCT read fIsSubpotent;
-    [TNaming(TNaming.nCamelCase)]
     property SubpotentReason: TCodeableConceptCTList read fSubpotentReason;
-    [TNaming(TNaming.nFlatCase)]
     property Education: TImmunizationEducationCTList read fEducation;
-    [TNaming(TNaming.nCamelCase)]
     property ProgramEligibility: TCodeableConceptCTList read fProgramEligibility;
-    [TNaming(TNaming.nCamelCase)]
     property FundingSource: TCodeableConceptCT read fFundingSource;
-    [TNaming(TNaming.nFlatCase)]
     property Reaction: TImmunizationReactionCTList read fReaction;
-    [TNaming(TNaming.nCamelCase)]
     property ProtocolApplied: TImmunizationProtocolAppliedCTList read fProtocolApplied;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Immunization.Performer')]
   TImmunizationPerformerCT = class(TBackboneElementCT)
   private
     fFunction: TCodeableConceptCT;
     fActor: TReferenceCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property &Function: TCodeableConceptCT read fFunction;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Actor: TReferenceCT read fActor;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Immunization.Education')]
   TImmunizationEducationCT = class(TBackboneElementCT)
   private
@@ -16865,17 +13246,12 @@ type
     fPublicationDate: TDateTimeCT;
     fPresentationDate: TDateTimeCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property DocumentType: TStringCT read fDocumentType;
-    [TNaming(TNaming.nFlatCase)]
     property Reference: TUriCT read fReference;
-    [TNaming(TNaming.nCamelCase)]
     property PublicationDate: TDateTimeCT read fPublicationDate;
-    [TNaming(TNaming.nCamelCase)]
     property PresentationDate: TDateTimeCT read fPresentationDate;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Immunization.Reaction')]
   TImmunizationReactionCT = class(TBackboneElementCT)
   private
@@ -16883,15 +13259,11 @@ type
     fDetail: TReferenceCT;
     fReported: TBooleanCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Detail: TReferenceCT read fDetail;
-    [TNaming(TNaming.nFlatCase)]
     property Reported: TBooleanCT read fReported;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Immunization.ProtocolApplied')]
   TImmunizationProtocolAppliedCT = class(TBackboneElementCT)
   private
@@ -16913,23 +13285,16 @@ type
     property DoseNumberChosen: TBasite read GetDoseNumberChosen;
     property SeriesDosesChosen: TBasite read GetSeriesDosesChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Series: TStringCT read fSeries;
-    [TNaming(TNaming.nFlatCase)]
     property Authority: TReferenceCT read fAuthority;
-    [TNaming(TNaming.nCamelCase)]
     property TargetDisease: TCodeableConceptCTList read fTargetDisease;
     [TChoice('DoseNumber')]
-    [TNaming(TNaming.nCamelCase)]
     property DoseNumberPositiveInt: TPositiveIntCT read GetDoseNumberPositiveInt;
     [TChoice('DoseNumber')]
-    [TNaming(TNaming.nCamelCase)]
     property DoseNumberString: TStringCT read GetDoseNumberString;
     [TChoice('SeriesDoses')]
-    [TNaming(TNaming.nCamelCase)]
     property SeriesDosesPositiveInt: TPositiveIntCT read GetSeriesDosesPositiveInt;
     [TChoice('SeriesDoses')]
-    [TNaming(TNaming.nCamelCase)]
     property SeriesDosesString: TStringCT read GetSeriesDosesString;
   end;
 
@@ -16937,7 +13302,6 @@ type
   private
     fValue: TImmunizationStatusCodesListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TImmunizationStatusCodesListST read fValue write fValue;
   end;
 
@@ -16969,44 +13333,29 @@ type
     property DoseNumberChosen: TBasite read GetDoseNumberChosen;
     property SeriesDosesChosen: TBasite read GetSeriesDosesChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TImmunizationEvaluationStatusCodesCT read fStatus;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Patient: TReferenceCT read fPatient;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Authority: TReferenceCT read fAuthority;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property TargetDisease: TCodeableConceptCT read fTargetDisease;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ImmunizationEvent: TReferenceCT read fImmunizationEvent;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property DoseStatus: TCodeableConceptCT read fDoseStatus;
-    [TNaming(TNaming.nCamelCase)]
     property DoseStatusReason: TCodeableConceptCTList read fDoseStatusReason;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Series: TStringCT read fSeries;
     [TChoice('DoseNumber')]
-    [TNaming(TNaming.nCamelCase)]
     property DoseNumberPositiveInt: TPositiveIntCT read GetDoseNumberPositiveInt;
     [TChoice('DoseNumber')]
-    [TNaming(TNaming.nCamelCase)]
     property DoseNumberString: TStringCT read GetDoseNumberString;
     [TChoice('SeriesDoses')]
-    [TNaming(TNaming.nCamelCase)]
     property SeriesDosesPositiveInt: TPositiveIntCT read GetSeriesDosesPositiveInt;
     [TChoice('SeriesDoses')]
-    [TNaming(TNaming.nCamelCase)]
     property SeriesDosesString: TStringCT read GetSeriesDosesString;
   end;
 
@@ -17014,7 +13363,6 @@ type
   private
     fValue: TImmunizationEvaluationStatusCodesListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TImmunizationEvaluationStatusCodesListST read fValue write fValue;
   end;
 
@@ -17026,21 +13374,15 @@ type
     fAuthority: TReferenceCT;
     fRecommendation: TImmunizationRecommendationRecommendationCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Patient: TReferenceCT read fPatient;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Authority: TReferenceCT read fAuthority;
-    [TNaming(TNaming.nFlatCase)]
     property Recommendation: TImmunizationRecommendationRecommendationCTList read fRecommendation;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ImmunizationRecommendation.Recommendation')]
   TImmunizationRecommendationRecommendationCT = class(TBackboneElementCT)
   private
@@ -17069,42 +13411,27 @@ type
     property DoseNumberChosen: TBasite read GetDoseNumberChosen;
     property SeriesDosesChosen: TBasite read GetSeriesDosesChosen;
   published
-    [TNaming(TNaming.nCamelCase)]
     property VaccineCode: TCodeableConceptCTList read fVaccineCode;
-    [TNaming(TNaming.nCamelCase)]
     property TargetDisease: TCodeableConceptCT read fTargetDisease;
-    [TNaming(TNaming.nCamelCase)]
     property ContraindicatedVaccineCode: TCodeableConceptCTList read fContraindicatedVaccineCode;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ForecastStatus: TCodeableConceptCT read fForecastStatus;
-    [TNaming(TNaming.nCamelCase)]
     property ForecastReason: TCodeableConceptCTList read fForecastReason;
-    [TNaming(TNaming.nCamelCase)]
     property DateCriterion: TImmunizationRecommendationDateCriterionCTList read fDateCriterion;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Series: TStringCT read fSeries;
     [TChoice('DoseNumber')]
-    [TNaming(TNaming.nCamelCase)]
     property DoseNumberPositiveInt: TPositiveIntCT read GetDoseNumberPositiveInt;
     [TChoice('DoseNumber')]
-    [TNaming(TNaming.nCamelCase)]
     property DoseNumberString: TStringCT read GetDoseNumberString;
     [TChoice('SeriesDoses')]
-    [TNaming(TNaming.nCamelCase)]
     property SeriesDosesPositiveInt: TPositiveIntCT read GetSeriesDosesPositiveInt;
     [TChoice('SeriesDoses')]
-    [TNaming(TNaming.nCamelCase)]
     property SeriesDosesString: TStringCT read GetSeriesDosesString;
-    [TNaming(TNaming.nCamelCase)]
     property SupportingImmunization: TReferenceCTList read fSupportingImmunization;
-    [TNaming(TNaming.nCamelCase)]
     property SupportingPatientInformation: TReferenceCTList read fSupportingPatientInformation;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ImmunizationRecommendation.DateCriterion')]
   TImmunizationRecommendationDateCriterionCT = class(TBackboneElementCT)
   private
@@ -17112,10 +13439,8 @@ type
     fValue: TDateTimeCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Value: TDateTimeCT read fValue;
   end;
 
@@ -17143,52 +13468,31 @@ type
     fManifest: TImplementationGuideManifestCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUriCT read fUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCT read fVersion;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Title: TStringCT read fTitle;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TPublicationStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Experimental: TBooleanCT read fExperimental;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Publisher: TStringCT read fPublisher;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TContactDetailCTList read fContact;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TMarkdownCT read fDescription;
-    [TNaming(TNaming.nCamelCase)]
     property UseContext: TUsageContextCTList read fUseContext;
-    [TNaming(TNaming.nFlatCase)]
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    [TNaming(TNaming.nFlatCase)]
     property Copyright: TMarkdownCT read fCopyright;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property PackageId: TIdCT read fPackageId;
-    [TNaming(TNaming.nFlatCase)]
     property License: TSPDXLicenseCT read fLicense;
-    [TNaming(TNaming.nCamelCase)]
     property FhirVersion: TFHIRVersionCTList read fFhirVersion;
-    [TNaming(TNaming.nCamelCase)]
     property DependsOn: TImplementationGuideDependsOnCTList read fDependsOn;
-    [TNaming(TNaming.nFlatCase)]
     property Global: TImplementationGuideGlobalCTList read fGlobal;
-    [TNaming(TNaming.nFlatCase)]
     property Definition: TImplementationGuideDefinitionCT read fDefinition;
-    [TNaming(TNaming.nFlatCase)]
     property Manifest: TImplementationGuideManifestCT read fManifest;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ImplementationGuide.DependsOn')]
   TImplementationGuideDependsOnCT = class(TBackboneElementCT)
   private
@@ -17197,15 +13501,11 @@ type
     fVersion: TStringCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Uri: TCanonicalCT read fUri;
-    [TNaming(TNaming.nCamelCase)]
     property PackageId: TIdCT read fPackageId;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCT read fVersion;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ImplementationGuide.Global')]
   TImplementationGuideGlobalCT = class(TBackboneElementCT)
   private
@@ -17213,14 +13513,11 @@ type
     fProfile: TCanonicalCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeCT read fType;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Profile: TCanonicalCT read fProfile;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ImplementationGuide.Definition')]
   TImplementationGuideDefinitionCT = class(TBackboneElementCT)
   private
@@ -17230,19 +13527,13 @@ type
     fParameter: TImplementationGuideParameterCTList;
     fTemplate: TImplementationGuideTemplateCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Grouping: TImplementationGuideGroupingCTList read fGrouping;
-    [TNaming(TNaming.nFlatCase)]
     property Resource: TImplementationGuideResourceCTList read fResource;
-    [TNaming(TNaming.nFlatCase)]
     property Page: TImplementationGuidePageCT read fPage;
-    [TNaming(TNaming.nFlatCase)]
     property Parameter: TImplementationGuideParameterCTList read fParameter;
-    [TNaming(TNaming.nFlatCase)]
     property Template: TImplementationGuideTemplateCTList read fTemplate;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ImplementationGuide.Grouping')]
   TImplementationGuideGroupingCT = class(TBackboneElementCT)
   private
@@ -17250,13 +13541,10 @@ type
     fDescription: TStringCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ImplementationGuide.Resource')]
   TImplementationGuideResourceCT = class(TBackboneElementCT)
   private
@@ -17275,25 +13563,17 @@ type
     property ExampleChosen: TBasite read GetExampleChosen;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Reference: TReferenceCT read fReference;
-    [TNaming(TNaming.nCamelCase)]
     property FhirVersion: TFHIRVersionCTList read fFhirVersion;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
     [TChoice('Example')]
-    [TNaming(TNaming.nCamelCase)]
     property ExampleBoolean: TBooleanCT read GetExampleBoolean;
     [TChoice('Example')]
-    [TNaming(TNaming.nCamelCase)]
     property ExampleCanonical: TCanonicalCT read GetExampleCanonical;
-    [TNaming(TNaming.nCamelCase)]
     property GroupingId: TIdCT read fGroupingId;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ImplementationGuide.Page')]
   TImplementationGuidePageCT = class(TBackboneElementCT)
   private
@@ -17310,22 +13590,16 @@ type
     property NameChosen: TBasite read GetNameChosen;
   published
     [TChoice('Name')]
-    [TNaming(TNaming.nCamelCase)]
     property NameUrl: TUrlCT read GetNameUrl;
     [TChoice('Name')]
-    [TNaming(TNaming.nCamelCase)]
     property NameReference: TReferenceCT read GetNameReference;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Title: TStringCT read fTitle;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Generation: TGuidePageGenerationCT read fGeneration;
-    [TNaming(TNaming.nFlatCase)]
     property Page: TImplementationGuidePageCTList read fPage;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ImplementationGuide.Parameter')]
   TImplementationGuideParameterCT = class(TBackboneElementCT)
   private
@@ -17333,14 +13607,11 @@ type
     fValue: TStringCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TGuideParameterCodeCT read fCode;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Value: TStringCT read fValue;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ImplementationGuide.Template')]
   TImplementationGuideTemplateCT = class(TBackboneElementCT)
   private
@@ -17349,16 +13620,12 @@ type
     fScope: TStringCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeCT read fCode;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Source: TStringCT read fSource;
-    [TNaming(TNaming.nFlatCase)]
     property Scope: TStringCT read fScope;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ImplementationGuide.Manifest')]
   TImplementationGuideManifestCT = class(TBackboneElementCT)
   private
@@ -17368,19 +13635,13 @@ type
     fImage: TStringCTList;
     fOther: TStringCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Rendering: TUrlCT read fRendering;
-    [TNaming(TNaming.nFlatCase)]
     property Resource: TImplementationGuideResource1CTList read fResource;
-    [TNaming(TNaming.nFlatCase)]
     property Page: TImplementationGuidePage1CTList read fPage;
-    [TNaming(TNaming.nFlatCase)]
     property Image: TStringCTList read fImage;
-    [TNaming(TNaming.nFlatCase)]
     property Other: TStringCTList read fOther;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ImplementationGuide.Resource1')]
   TImplementationGuideResource1CT = class(TBackboneElementCT)
   private
@@ -17396,19 +13657,14 @@ type
     property ExampleChosen: TBasite read GetExampleChosen;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Reference: TReferenceCT read fReference;
     [TChoice('Example')]
-    [TNaming(TNaming.nCamelCase)]
     property ExampleBoolean: TBooleanCT read GetExampleBoolean;
     [TChoice('Example')]
-    [TNaming(TNaming.nCamelCase)]
     property ExampleCanonical: TCanonicalCT read GetExampleCanonical;
-    [TNaming(TNaming.nCamelCase)]
     property RelativePath: TUrlCT read fRelativePath;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ImplementationGuide.Page1')]
   TImplementationGuidePage1CT = class(TBackboneElementCT)
   private
@@ -17417,11 +13673,8 @@ type
     fAnchor: TStringCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Title: TStringCT read fTitle;
-    [TNaming(TNaming.nFlatCase)]
     property Anchor: TStringCTList read fAnchor;
   end;
 
@@ -17429,7 +13682,6 @@ type
   private
     fValue: TGuideParameterCodeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TGuideParameterCodeListST read fValue write fValue;
   end;
 
@@ -17437,7 +13689,6 @@ type
   private
     fValue: TSPDXLicenseListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TSPDXLicenseListST read fValue write fValue;
   end;
 
@@ -17445,7 +13696,6 @@ type
   private
     fValue: TGuidePageGenerationListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TGuidePageGenerationListST read fValue write fValue;
   end;
 
@@ -17466,37 +13716,22 @@ type
     fCoverage: TInsurancePlanCoverageCTList;
     fPlan: TInsurancePlanPlanCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Status: TPublicationStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCTList read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Alias: TStringCTList read fAlias;
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCT read fPeriod;
-    [TNaming(TNaming.nCamelCase)]
     property OwnedBy: TReferenceCT read fOwnedBy;
-    [TNaming(TNaming.nCamelCase)]
     property AdministeredBy: TReferenceCT read fAdministeredBy;
-    [TNaming(TNaming.nCamelCase)]
     property CoverageArea: TReferenceCTList read fCoverageArea;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TInsurancePlanContactCTList read fContact;
-    [TNaming(TNaming.nFlatCase)]
     property Endpoint: TReferenceCTList read fEndpoint;
-    [TNaming(TNaming.nFlatCase)]
     property Network: TReferenceCTList read fNetwork;
-    [TNaming(TNaming.nFlatCase)]
     property Coverage: TInsurancePlanCoverageCTList read fCoverage;
-    [TNaming(TNaming.nFlatCase)]
     property Plan: TInsurancePlanPlanCTList read fPlan;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('InsurancePlan.Contact')]
   TInsurancePlanContactCT = class(TBackboneElementCT)
   private
@@ -17505,17 +13740,12 @@ type
     fTelecom: TContactPointCTList;
     fAddress: TAddressCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Purpose: TCodeableConceptCT read fPurpose;
-    [TNaming(TNaming.nFlatCase)]
     property Name: THumanNameCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Telecom: TContactPointCTList read fTelecom;
-    [TNaming(TNaming.nFlatCase)]
     property Address: TAddressCT read fAddress;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('InsurancePlan.Coverage')]
   TInsurancePlanCoverageCT = class(TBackboneElementCT)
   private
@@ -17524,15 +13754,11 @@ type
     fBenefit: TInsurancePlanBenefitCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Network: TReferenceCTList read fNetwork;
-    [TNaming(TNaming.nFlatCase)]
     property Benefit: TInsurancePlanBenefitCTList read fBenefit;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('InsurancePlan.Benefit')]
   TInsurancePlanBenefitCT = class(TBackboneElementCT)
   private
@@ -17541,28 +13767,21 @@ type
     fLimit: TInsurancePlanLimitCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Requirement: TStringCT read fRequirement;
-    [TNaming(TNaming.nFlatCase)]
     property Limit: TInsurancePlanLimitCTList read fLimit;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('InsurancePlan.Limit')]
   TInsurancePlanLimitCT = class(TBackboneElementCT)
   private
     fValue: TQuantityCT;
     fCode: TCodeableConceptCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TQuantityCT read fValue;
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('InsurancePlan.Plan')]
   TInsurancePlanPlanCT = class(TBackboneElementCT)
   private
@@ -17573,21 +13792,14 @@ type
     fGeneralCost: TInsurancePlanGeneralCostCTList;
     fSpecificCost: TInsurancePlanSpecificCostCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nCamelCase)]
     property CoverageArea: TReferenceCTList read fCoverageArea;
-    [TNaming(TNaming.nFlatCase)]
     property Network: TReferenceCTList read fNetwork;
-    [TNaming(TNaming.nCamelCase)]
     property GeneralCost: TInsurancePlanGeneralCostCTList read fGeneralCost;
-    [TNaming(TNaming.nCamelCase)]
     property SpecificCost: TInsurancePlanSpecificCostCTList read fSpecificCost;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('InsurancePlan.GeneralCost')]
   TInsurancePlanGeneralCostCT = class(TBackboneElementCT)
   private
@@ -17596,17 +13808,12 @@ type
     fCost: TMoneyCT;
     fComment: TStringCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nCamelCase)]
     property GroupSize: TPositiveIntCT read fGroupSize;
-    [TNaming(TNaming.nFlatCase)]
     property Cost: TMoneyCT read fCost;
-    [TNaming(TNaming.nFlatCase)]
     property Comment: TStringCT read fComment;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('InsurancePlan.SpecificCost')]
   TInsurancePlanSpecificCostCT = class(TBackboneElementCT)
   private
@@ -17614,13 +13821,10 @@ type
     fBenefit: TInsurancePlanBenefit1CTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCT read fCategory;
-    [TNaming(TNaming.nFlatCase)]
     property Benefit: TInsurancePlanBenefit1CTList read fBenefit;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('InsurancePlan.Benefit1')]
   TInsurancePlanBenefit1CT = class(TBackboneElementCT)
   private
@@ -17628,13 +13832,10 @@ type
     fCost: TInsurancePlanCostCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Cost: TInsurancePlanCostCTList read fCost;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('InsurancePlan.Cost')]
   TInsurancePlanCostCT = class(TBackboneElementCT)
   private
@@ -17644,13 +13845,9 @@ type
     fValue: TQuantityCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Applicability: TCodeableConceptCT read fApplicability;
-    [TNaming(TNaming.nFlatCase)]
     property Qualifiers: TCodeableConceptCTList read fQualifiers;
-    [TNaming(TNaming.nFlatCase)]
     property Value: TQuantityCT read fValue;
   end;
 
@@ -17673,56 +13870,36 @@ type
     fPaymentTerms: TMarkdownCT;
     fNote: TAnnotationCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TInvoiceStatusCT read fStatus;
-    [TNaming(TNaming.nCamelCase)]
     property CancelledReason: TStringCT read fCancelledReason;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCT read fSubject;
-    [TNaming(TNaming.nFlatCase)]
     property Recipient: TReferenceCT read fRecipient;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Participant: TInvoiceParticipantCTList read fParticipant;
-    [TNaming(TNaming.nFlatCase)]
     property Issuer: TReferenceCT read fIssuer;
-    [TNaming(TNaming.nFlatCase)]
     property Account: TReferenceCT read fAccount;
-    [TNaming(TNaming.nCamelCase)]
     property LineItem: TInvoiceLineItemCTList read fLineItem;
-    [TNaming(TNaming.nCamelCase)]
     property TotalPriceComponent: TInvoicePriceComponentCTList read fTotalPriceComponent;
-    [TNaming(TNaming.nCamelCase)]
     property TotalNet: TMoneyCT read fTotalNet;
-    [TNaming(TNaming.nCamelCase)]
     property TotalGross: TMoneyCT read fTotalGross;
-    [TNaming(TNaming.nCamelCase)]
     property PaymentTerms: TMarkdownCT read fPaymentTerms;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Invoice.Participant')]
   TInvoiceParticipantCT = class(TBackboneElementCT)
   private
     fRole: TCodeableConceptCT;
     fActor: TReferenceCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Role: TCodeableConceptCT read fRole;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Actor: TReferenceCT read fActor;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Invoice.LineItem')]
   TInvoiceLineItemCT = class(TBackboneElementCT)
   private
@@ -17737,19 +13914,14 @@ type
   public
     property ChargeItemChosen: TBasite read GetChargeItemChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Sequence: TPositiveIntCT read fSequence;
     [TChoice('ChargeItem')]
-    [TNaming(TNaming.nCamelCase)]
     property ChargeItemReference: TReferenceCT read GetChargeItemReference;
     [TChoice('ChargeItem')]
-    [TNaming(TNaming.nCamelCase)]
     property ChargeItemCodeableConcept: TCodeableConceptCT read GetChargeItemCodeableConcept;
-    [TNaming(TNaming.nCamelCase)]
     property PriceComponent: TInvoicePriceComponentCTList read fPriceComponent;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Invoice.PriceComponent')]
   TInvoicePriceComponentCT = class(TBackboneElementCT)
   private
@@ -17759,13 +13931,9 @@ type
     fAmount: TMoneyCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TInvoicePriceComponentTypeCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Factor: TDecimalCT read fFactor;
-    [TNaming(TNaming.nFlatCase)]
     property Amount: TMoneyCT read fAmount;
   end;
 
@@ -17773,7 +13941,6 @@ type
   private
     fValue: TInvoiceStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TInvoiceStatusListST read fValue write fValue;
   end;
 
@@ -17818,73 +13985,41 @@ type
   public
     property SubjectChosen: TBasite read GetSubjectChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUriCT read fUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCT read fVersion;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Title: TStringCT read fTitle;
-    [TNaming(TNaming.nFlatCase)]
     property Subtitle: TStringCT read fSubtitle;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TPublicationStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Experimental: TBooleanCT read fExperimental;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
     [TChoice('Subject')]
-    [TNaming(TNaming.nCamelCase)]
     property SubjectCodeableConcept: TCodeableConceptCT read GetSubjectCodeableConcept;
     [TChoice('Subject')]
-    [TNaming(TNaming.nCamelCase)]
     property SubjectReference: TReferenceCT read GetSubjectReference;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Publisher: TStringCT read fPublisher;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TContactDetailCTList read fContact;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TMarkdownCT read fDescription;
-    [TNaming(TNaming.nCamelCase)]
     property UseContext: TUsageContextCTList read fUseContext;
-    [TNaming(TNaming.nFlatCase)]
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    [TNaming(TNaming.nFlatCase)]
     property Purpose: TMarkdownCT read fPurpose;
-    [TNaming(TNaming.nFlatCase)]
     property Usage: TStringCT read fUsage;
-    [TNaming(TNaming.nFlatCase)]
     property Copyright: TMarkdownCT read fCopyright;
-    [TNaming(TNaming.nCamelCase)]
     property ApprovalDate: TDateCT read fApprovalDate;
-    [TNaming(TNaming.nCamelCase)]
     property LastReviewDate: TDateCT read fLastReviewDate;
-    [TNaming(TNaming.nCamelCase)]
     property EffectivePeriod: TPeriodCT read fEffectivePeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Topic: TCodeableConceptCTList read fTopic;
-    [TNaming(TNaming.nFlatCase)]
     property Author: TContactDetailCTList read fAuthor;
-    [TNaming(TNaming.nFlatCase)]
     property Editor: TContactDetailCTList read fEditor;
-    [TNaming(TNaming.nFlatCase)]
     property Reviewer: TContactDetailCTList read fReviewer;
-    [TNaming(TNaming.nFlatCase)]
     property Endorser: TContactDetailCTList read fEndorser;
-    [TNaming(TNaming.nCamelCase)]
     property RelatedArtifact: TRelatedArtifactCTList read fRelatedArtifact;
-    [TNaming(TNaming.nFlatCase)]
     property Parameter: TParameterDefinitionCTList read fParameter;
-    [TNaming(TNaming.nCamelCase)]
     property DataRequirement: TDataRequirementCTList read fDataRequirement;
-    [TNaming(TNaming.nFlatCase)]
     property Content: TAttachmentCTList read fContent;
   end;
 
@@ -17894,15 +14029,11 @@ type
     fAuthor: TReferenceCT;
     fItem: TLinkageItemCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Active: TBooleanCT read fActive;
-    [TNaming(TNaming.nFlatCase)]
     property Author: TReferenceCT read fAuthor;
-    [TNaming(TNaming.nFlatCase)]
     property Item: TLinkageItemCTList read fItem;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Linkage.Item')]
   TLinkageItemCT = class(TBackboneElementCT)
   private
@@ -17910,10 +14041,8 @@ type
     fResource: TReferenceCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TLinkageTypeCT read fType;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Resource: TReferenceCT read fResource;
   end;
 
@@ -17921,7 +14050,6 @@ type
   private
     fValue: TLinkageTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TLinkageTypeListST read fValue write fValue;
   end;
 
@@ -17941,37 +14069,23 @@ type
     fEntry: TListEntryCTList;
     fEmptyReason: TCodeableConceptCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TListStatusCT read fStatus;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Mode: TListModeCT read fMode;
-    [TNaming(TNaming.nFlatCase)]
     property Title: TStringCT read fTitle;
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCT read fSubject;
-    [TNaming(TNaming.nFlatCase)]
     property Encounter: TReferenceCT read fEncounter;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Source: TReferenceCT read fSource;
-    [TNaming(TNaming.nCamelCase)]
     property OrderedBy: TCodeableConceptCT read fOrderedBy;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
-    [TNaming(TNaming.nFlatCase)]
     property Entry: TListEntryCTList read fEntry;
-    [TNaming(TNaming.nCamelCase)]
     property EmptyReason: TCodeableConceptCT read fEmptyReason;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('List.Entry')]
   TListEntryCT = class(TBackboneElementCT)
   private
@@ -17980,14 +14094,10 @@ type
     fDate: TDateTimeCT;
     fItem: TReferenceCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Flag: TCodeableConceptCT read fFlag;
-    [TNaming(TNaming.nFlatCase)]
     property Deleted: TBooleanCT read fDeleted;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Item: TReferenceCT read fItem;
   end;
 
@@ -17995,7 +14105,6 @@ type
   private
     fValue: TListStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TListStatusListST read fValue write fValue;
   end;
 
@@ -18019,43 +14128,25 @@ type
     fAvailabilityExceptions: TStringCT;
     fEndpoint: TReferenceCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Status: TLocationStatusCT read fStatus;
-    [TNaming(TNaming.nCamelCase)]
     property OperationalStatus: TCodingCT read fOperationalStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Alias: TStringCTList read fAlias;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Mode: TLocationModeCT read fMode;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCTList read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Telecom: TContactPointCTList read fTelecom;
-    [TNaming(TNaming.nFlatCase)]
     property Address: TAddressCT read fAddress;
-    [TNaming(TNaming.nCamelCase)]
     property PhysicalType: TCodeableConceptCT read fPhysicalType;
-    [TNaming(TNaming.nFlatCase)]
     property Position: TLocationPositionCT read fPosition;
-    [TNaming(TNaming.nCamelCase)]
     property ManagingOrganization: TReferenceCT read fManagingOrganization;
-    [TNaming(TNaming.nCamelCase)]
     property PartOf: TReferenceCT read fPartOf;
-    [TNaming(TNaming.nCamelCase)]
     property HoursOfOperation: TLocationHoursOfOperationCTList read fHoursOfOperation;
-    [TNaming(TNaming.nCamelCase)]
     property AvailabilityExceptions: TStringCT read fAvailabilityExceptions;
-    [TNaming(TNaming.nFlatCase)]
     property Endpoint: TReferenceCTList read fEndpoint;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Location.Position')]
   TLocationPositionCT = class(TBackboneElementCT)
   private
@@ -18064,16 +14155,12 @@ type
     fAltitude: TDecimalCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Longitude: TDecimalCT read fLongitude;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Latitude: TDecimalCT read fLatitude;
-    [TNaming(TNaming.nFlatCase)]
     property Altitude: TDecimalCT read fAltitude;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Location.HoursOfOperation')]
   TLocationHoursOfOperationCT = class(TBackboneElementCT)
   private
@@ -18082,13 +14169,9 @@ type
     fOpeningTime: TTimeCT;
     fClosingTime: TTimeCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property DaysOfWeek: TDaysOfWeekCTList read fDaysOfWeek;
-    [TNaming(TNaming.nCamelCase)]
     property AllDay: TBooleanCT read fAllDay;
-    [TNaming(TNaming.nCamelCase)]
     property OpeningTime: TTimeCT read fOpeningTime;
-    [TNaming(TNaming.nCamelCase)]
     property ClosingTime: TTimeCT read fClosingTime;
   end;
 
@@ -18096,7 +14179,6 @@ type
   private
     fValue: TLocationModeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TLocationModeListST read fValue write fValue;
   end;
 
@@ -18104,7 +14186,6 @@ type
   private
     fValue: TLocationStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TLocationStatusListST read fValue write fValue;
   end;
 
@@ -18159,96 +14240,53 @@ type
   public
     property SubjectChosen: TBasite read GetSubjectChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUriCT read fUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCT read fVersion;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Title: TStringCT read fTitle;
-    [TNaming(TNaming.nFlatCase)]
     property Subtitle: TStringCT read fSubtitle;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TPublicationStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Experimental: TBooleanCT read fExperimental;
     [TChoice('Subject')]
-    [TNaming(TNaming.nCamelCase)]
     property SubjectCodeableConcept: TCodeableConceptCT read GetSubjectCodeableConcept;
     [TChoice('Subject')]
-    [TNaming(TNaming.nCamelCase)]
     property SubjectReference: TReferenceCT read GetSubjectReference;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Publisher: TStringCT read fPublisher;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TContactDetailCTList read fContact;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TMarkdownCT read fDescription;
-    [TNaming(TNaming.nCamelCase)]
     property UseContext: TUsageContextCTList read fUseContext;
-    [TNaming(TNaming.nFlatCase)]
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    [TNaming(TNaming.nFlatCase)]
     property Purpose: TMarkdownCT read fPurpose;
-    [TNaming(TNaming.nFlatCase)]
     property Usage: TStringCT read fUsage;
-    [TNaming(TNaming.nFlatCase)]
     property Copyright: TMarkdownCT read fCopyright;
-    [TNaming(TNaming.nCamelCase)]
     property ApprovalDate: TDateCT read fApprovalDate;
-    [TNaming(TNaming.nCamelCase)]
     property LastReviewDate: TDateCT read fLastReviewDate;
-    [TNaming(TNaming.nCamelCase)]
     property EffectivePeriod: TPeriodCT read fEffectivePeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Topic: TCodeableConceptCTList read fTopic;
-    [TNaming(TNaming.nFlatCase)]
     property Author: TContactDetailCTList read fAuthor;
-    [TNaming(TNaming.nFlatCase)]
     property Editor: TContactDetailCTList read fEditor;
-    [TNaming(TNaming.nFlatCase)]
     property Reviewer: TContactDetailCTList read fReviewer;
-    [TNaming(TNaming.nFlatCase)]
     property Endorser: TContactDetailCTList read fEndorser;
-    [TNaming(TNaming.nCamelCase)]
     property RelatedArtifact: TRelatedArtifactCTList read fRelatedArtifact;
-    [TNaming(TNaming.nFlatCase)]
     property &Library: TCanonicalCTList read fLibrary;
-    [TNaming(TNaming.nFlatCase)]
     property Disclaimer: TMarkdownCT read fDisclaimer;
-    [TNaming(TNaming.nFlatCase)]
     property Scoring: TCodeableConceptCT read fScoring;
-    [TNaming(TNaming.nCamelCase)]
     property CompositeScoring: TCodeableConceptCT read fCompositeScoring;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCTList read fType;
-    [TNaming(TNaming.nCamelCase)]
     property RiskAdjustment: TStringCT read fRiskAdjustment;
-    [TNaming(TNaming.nCamelCase)]
     property RateAggregation: TStringCT read fRateAggregation;
-    [TNaming(TNaming.nFlatCase)]
     property Rationale: TMarkdownCT read fRationale;
-    [TNaming(TNaming.nCamelCase)]
     property ClinicalRecommendationStatement: TMarkdownCT read fClinicalRecommendationStatement;
-    [TNaming(TNaming.nCamelCase)]
     property ImprovementNotation: TCodeableConceptCT read fImprovementNotation;
-    [TNaming(TNaming.nFlatCase)]
     property Definition: TMarkdownCTList read fDefinition;
-    [TNaming(TNaming.nFlatCase)]
     property Guidance: TMarkdownCT read fGuidance;
-    [TNaming(TNaming.nFlatCase)]
     property Group: TMeasureGroupCTList read fGroup;
-    [TNaming(TNaming.nCamelCase)]
     property SupplementalData: TMeasureSupplementalDataCTList read fSupplementalData;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Measure.Group')]
   TMeasureGroupCT = class(TBackboneElementCT)
   private
@@ -18257,17 +14295,12 @@ type
     fPopulation: TMeasurePopulationCTList;
     fStratifier: TMeasureStratifierCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Population: TMeasurePopulationCTList read fPopulation;
-    [TNaming(TNaming.nFlatCase)]
     property Stratifier: TMeasureStratifierCTList read fStratifier;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Measure.Population')]
   TMeasurePopulationCT = class(TBackboneElementCT)
   private
@@ -18275,16 +14308,12 @@ type
     fDescription: TStringCT;
     fCriteria: TExpressionCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Criteria: TExpressionCT read fCriteria;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Measure.Stratifier')]
   TMeasureStratifierCT = class(TBackboneElementCT)
   private
@@ -18293,17 +14322,12 @@ type
     fCriteria: TExpressionCT;
     fComponent: TMeasureComponentCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Criteria: TExpressionCT read fCriteria;
-    [TNaming(TNaming.nFlatCase)]
     property Component: TMeasureComponentCTList read fComponent;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Measure.Component')]
   TMeasureComponentCT = class(TBackboneElementCT)
   private
@@ -18311,16 +14335,12 @@ type
     fDescription: TStringCT;
     fCriteria: TExpressionCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Criteria: TExpressionCT read fCriteria;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Measure.SupplementalData')]
   TMeasureSupplementalDataCT = class(TBackboneElementCT)
   private
@@ -18329,14 +14349,10 @@ type
     fDescription: TStringCT;
     fCriteria: TExpressionCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Usage: TCodeableConceptCTList read fUsage;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Criteria: TExpressionCT read fCriteria;
   end;
 
@@ -18354,35 +14370,23 @@ type
     fGroup: TMeasureReportGroupCTList;
     fEvaluatedResource: TReferenceCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TMeasureReportStatusCT read fStatus;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TMeasureReportTypeCT read fType;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Measure: TCanonicalCT read fMeasure;
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCT read fSubject;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Reporter: TReferenceCT read fReporter;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCT read fPeriod;
-    [TNaming(TNaming.nCamelCase)]
     property ImprovementNotation: TCodeableConceptCT read fImprovementNotation;
-    [TNaming(TNaming.nFlatCase)]
     property Group: TMeasureReportGroupCTList read fGroup;
-    [TNaming(TNaming.nCamelCase)]
     property EvaluatedResource: TReferenceCTList read fEvaluatedResource;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MeasureReport.Group')]
   TMeasureReportGroupCT = class(TBackboneElementCT)
   private
@@ -18391,17 +14395,12 @@ type
     fMeasureScore: TQuantityCT;
     fStratifier: TMeasureReportStratifierCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Population: TMeasureReportPopulationCTList read fPopulation;
-    [TNaming(TNaming.nCamelCase)]
     property MeasureScore: TQuantityCT read fMeasureScore;
-    [TNaming(TNaming.nFlatCase)]
     property Stratifier: TMeasureReportStratifierCTList read fStratifier;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MeasureReport.Population')]
   TMeasureReportPopulationCT = class(TBackboneElementCT)
   private
@@ -18409,28 +14408,21 @@ type
     fCount: TIntegerCT;
     fSubjectResults: TReferenceCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Count: TIntegerCT read fCount;
-    [TNaming(TNaming.nCamelCase)]
     property SubjectResults: TReferenceCT read fSubjectResults;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MeasureReport.Stratifier')]
   TMeasureReportStratifierCT = class(TBackboneElementCT)
   private
     fCode: TCodeableConceptCTList;
     fStratum: TMeasureReportStratumCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCTList read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Stratum: TMeasureReportStratumCTList read fStratum;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MeasureReport.Stratum')]
   TMeasureReportStratumCT = class(TBackboneElementCT)
   private
@@ -18439,17 +14431,12 @@ type
     fPopulation: TMeasureReportPopulation1CTList;
     fMeasureScore: TQuantityCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TCodeableConceptCT read fValue;
-    [TNaming(TNaming.nFlatCase)]
     property Component: TMeasureReportComponentCTList read fComponent;
-    [TNaming(TNaming.nFlatCase)]
     property Population: TMeasureReportPopulation1CTList read fPopulation;
-    [TNaming(TNaming.nCamelCase)]
     property MeasureScore: TQuantityCT read fMeasureScore;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MeasureReport.Component')]
   TMeasureReportComponentCT = class(TBackboneElementCT)
   private
@@ -18457,14 +14444,11 @@ type
     fValue: TCodeableConceptCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Value: TCodeableConceptCT read fValue;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MeasureReport.Population1')]
   TMeasureReportPopulation1CT = class(TBackboneElementCT)
   private
@@ -18472,11 +14456,8 @@ type
     fCount: TIntegerCT;
     fSubjectResults: TReferenceCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Count: TIntegerCT read fCount;
-    [TNaming(TNaming.nCamelCase)]
     property SubjectResults: TReferenceCT read fSubjectResults;
   end;
 
@@ -18484,7 +14465,6 @@ type
   private
     fValue: TMeasureReportStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TMeasureReportStatusListST read fValue write fValue;
   end;
 
@@ -18492,7 +14472,6 @@ type
   private
     fValue: TMeasureReportTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TMeasureReportTypeListST read fValue write fValue;
   end;
 
@@ -18528,55 +14507,32 @@ type
   public
     property CreatedChosen: TBasite read GetCreatedChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nCamelCase)]
     property BasedOn: TReferenceCTList read fBasedOn;
-    [TNaming(TNaming.nCamelCase)]
     property PartOf: TReferenceCTList read fPartOf;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TEventStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Modality: TCodeableConceptCT read fModality;
-    [TNaming(TNaming.nFlatCase)]
     property View: TCodeableConceptCT read fView;
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCT read fSubject;
-    [TNaming(TNaming.nFlatCase)]
     property Encounter: TReferenceCT read fEncounter;
     [TChoice('Created')]
-    [TNaming(TNaming.nCamelCase)]
     property CreatedDateTime: TDateTimeCT read GetCreatedDateTime;
     [TChoice('Created')]
-    [TNaming(TNaming.nCamelCase)]
     property CreatedPeriod: TPeriodCT read GetCreatedPeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Issued: TInstantCT read fIssued;
-    [TNaming(TNaming.nFlatCase)]
     property Operator: TReferenceCT read fOperator;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
-    [TNaming(TNaming.nCamelCase)]
     property BodySite: TCodeableConceptCT read fBodySite;
-    [TNaming(TNaming.nCamelCase)]
     property DeviceName: TStringCT read fDeviceName;
-    [TNaming(TNaming.nFlatCase)]
     property Device: TReferenceCT read fDevice;
-    [TNaming(TNaming.nFlatCase)]
     property Height: TPositiveIntCT read fHeight;
-    [TNaming(TNaming.nFlatCase)]
     property Width: TPositiveIntCT read fWidth;
-    [TNaming(TNaming.nFlatCase)]
     property Frames: TPositiveIntCT read fFrames;
-    [TNaming(TNaming.nFlatCase)]
     property Duration: TDecimalCT read fDuration;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Content: TAttachmentCT read fContent;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
   end;
 
@@ -18591,25 +14547,16 @@ type
     fIngredient: TMedicationIngredientCTList;
     fBatch: TMedicationBatchCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Status: TMedicationStatusCodesCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Manufacturer: TReferenceCT read fManufacturer;
-    [TNaming(TNaming.nFlatCase)]
     property Form: TCodeableConceptCT read fForm;
-    [TNaming(TNaming.nFlatCase)]
     property Amount: TRatioCT read fAmount;
-    [TNaming(TNaming.nFlatCase)]
     property Ingredient: TMedicationIngredientCTList read fIngredient;
-    [TNaming(TNaming.nFlatCase)]
     property Batch: TMedicationBatchCT read fBatch;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Medication.Ingredient')]
   TMedicationIngredientCT = class(TBackboneElementCT)
   private
@@ -18625,27 +14572,20 @@ type
     property ItemChosen: TBasite read GetItemChosen;
   published
     [TChoice('Item')]
-    [TNaming(TNaming.nCamelCase)]
     property ItemCodeableConcept: TCodeableConceptCT read GetItemCodeableConcept;
     [TChoice('Item')]
-    [TNaming(TNaming.nCamelCase)]
     property ItemReference: TReferenceCT read GetItemReference;
-    [TNaming(TNaming.nCamelCase)]
     property IsActive: TBooleanCT read fIsActive;
-    [TNaming(TNaming.nFlatCase)]
     property Strength: TRatioCT read fStrength;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Medication.Batch')]
   TMedicationBatchCT = class(TBackboneElementCT)
   private
     fLotNumber: TStringCT;
     fExpirationDate: TDateTimeCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property LotNumber: TStringCT read fLotNumber;
-    [TNaming(TNaming.nCamelCase)]
     property ExpirationDate: TDateTimeCT read fExpirationDate;
   end;
 
@@ -18653,7 +14593,6 @@ type
   private
     fValue: TMedicationStatusCodesListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TMedicationStatusCodesListST read fValue write fValue;
   end;
 
@@ -18691,71 +14630,46 @@ type
     property MedicationChosen: TBasite read GetMedicationChosen;
     property EffectiveChosen: TBasite read GetEffectiveChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Instantiates: TUriCTList read fInstantiates;
-    [TNaming(TNaming.nCamelCase)]
     property PartOf: TReferenceCTList read fPartOf;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TCodeCT read fStatus;
-    [TNaming(TNaming.nCamelCase)]
     property StatusReason: TCodeableConceptCTList read fStatusReason;
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCT read fCategory;
     [TChoice('Medication')]
-    [TNaming(TNaming.nCamelCase)]
     property MedicationCodeableConcept: TCodeableConceptCT read GetMedicationCodeableConcept;
     [TChoice('Medication')]
-    [TNaming(TNaming.nCamelCase)]
     property MedicationReference: TReferenceCT read GetMedicationReference;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCT read fSubject;
-    [TNaming(TNaming.nFlatCase)]
     property Context: TReferenceCT read fContext;
-    [TNaming(TNaming.nCamelCase)]
     property SupportingInformation: TReferenceCTList read fSupportingInformation;
     [TChoice('Effective')]
-    [TNaming(TNaming.nCamelCase)]
     property EffectiveDateTime: TDateTimeCT read GetEffectiveDateTime;
     [TChoice('Effective')]
-    [TNaming(TNaming.nCamelCase)]
     property EffectivePeriod: TPeriodCT read GetEffectivePeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Performer: TMedicationAdministrationPerformerCTList read fPerformer;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonReference: TReferenceCTList read fReasonReference;
-    [TNaming(TNaming.nFlatCase)]
     property Request: TReferenceCT read fRequest;
-    [TNaming(TNaming.nFlatCase)]
     property Device: TReferenceCTList read fDevice;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
-    [TNaming(TNaming.nFlatCase)]
     property Dosage: TMedicationAdministrationDosageCT read fDosage;
-    [TNaming(TNaming.nCamelCase)]
     property EventHistory: TReferenceCTList read fEventHistory;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicationAdministration.Performer')]
   TMedicationAdministrationPerformerCT = class(TBackboneElementCT)
   private
     fFunction: TCodeableConceptCT;
     fActor: TReferenceCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property &Function: TCodeableConceptCT read fFunction;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Actor: TReferenceCT read fActor;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicationAdministration.Dosage')]
   TMedicationAdministrationDosageCT = class(TBackboneElementCT)
   private
@@ -18773,21 +14687,14 @@ type
   public
     property RateChosen: TBasite read GetRateChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Text: TStringCT read fText;
-    [TNaming(TNaming.nFlatCase)]
     property Site: TCodeableConceptCT read fSite;
-    [TNaming(TNaming.nFlatCase)]
     property Route: TCodeableConceptCT read fRoute;
-    [TNaming(TNaming.nFlatCase)]
     property Method: TCodeableConceptCT read fMethod;
-    [TNaming(TNaming.nFlatCase)]
     property Dose: TQuantityCT read fDose;
     [TChoice('Rate')]
-    [TNaming(TNaming.nCamelCase)]
     property RateRatio: TRatioCT read GetRateRatio;
     [TChoice('Rate')]
-    [TNaming(TNaming.nCamelCase)]
     property RateQuantity: TQuantityCT read GetRateQuantity;
   end;
 
@@ -18830,80 +14737,50 @@ type
     property StatusReasonChosen: TBasite read GetStatusReasonChosen;
     property MedicationChosen: TBasite read GetMedicationChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nCamelCase)]
     property PartOf: TReferenceCTList read fPartOf;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TCodeCT read fStatus;
     [TChoice('StatusReason')]
-    [TNaming(TNaming.nCamelCase)]
     property StatusReasonCodeableConcept: TCodeableConceptCT read GetStatusReasonCodeableConcept;
     [TChoice('StatusReason')]
-    [TNaming(TNaming.nCamelCase)]
     property StatusReasonReference: TReferenceCT read GetStatusReasonReference;
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCT read fCategory;
     [TChoice('Medication')]
-    [TNaming(TNaming.nCamelCase)]
     property MedicationCodeableConcept: TCodeableConceptCT read GetMedicationCodeableConcept;
     [TChoice('Medication')]
-    [TNaming(TNaming.nCamelCase)]
     property MedicationReference: TReferenceCT read GetMedicationReference;
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCT read fSubject;
-    [TNaming(TNaming.nFlatCase)]
     property Context: TReferenceCT read fContext;
-    [TNaming(TNaming.nCamelCase)]
     property SupportingInformation: TReferenceCTList read fSupportingInformation;
-    [TNaming(TNaming.nFlatCase)]
     property Performer: TMedicationDispensePerformerCTList read fPerformer;
-    [TNaming(TNaming.nFlatCase)]
     property Location: TReferenceCT read fLocation;
-    [TNaming(TNaming.nCamelCase)]
     property AuthorizingPrescription: TReferenceCTList read fAuthorizingPrescription;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Quantity: TQuantityCT read fQuantity;
-    [TNaming(TNaming.nCamelCase)]
     property DaysSupply: TQuantityCT read fDaysSupply;
-    [TNaming(TNaming.nCamelCase)]
     property WhenPrepared: TDateTimeCT read fWhenPrepared;
-    [TNaming(TNaming.nCamelCase)]
     property WhenHandedOver: TDateTimeCT read fWhenHandedOver;
-    [TNaming(TNaming.nFlatCase)]
     property Destination: TReferenceCT read fDestination;
-    [TNaming(TNaming.nFlatCase)]
     property Receiver: TReferenceCTList read fReceiver;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
-    [TNaming(TNaming.nCamelCase)]
     property DosageInstruction: TDosageCTList read fDosageInstruction;
-    [TNaming(TNaming.nFlatCase)]
     property Substitution: TMedicationDispenseSubstitutionCT read fSubstitution;
-    [TNaming(TNaming.nCamelCase)]
     property DetectedIssue: TReferenceCTList read fDetectedIssue;
-    [TNaming(TNaming.nCamelCase)]
     property EventHistory: TReferenceCTList read fEventHistory;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicationDispense.Performer')]
   TMedicationDispensePerformerCT = class(TBackboneElementCT)
   private
     fFunction: TCodeableConceptCT;
     fActor: TReferenceCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property &Function: TCodeableConceptCT read fFunction;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Actor: TReferenceCT read fActor;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicationDispense.Substitution')]
   TMedicationDispenseSubstitutionCT = class(TBackboneElementCT)
   private
@@ -18913,13 +14790,9 @@ type
     fResponsibleParty: TReferenceCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property WasSubstituted: TBooleanCT read fWasSubstituted;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Reason: TCodeableConceptCTList read fReason;
-    [TNaming(TNaming.nCamelCase)]
     property ResponsibleParty: TReferenceCTList read fResponsibleParty;
   end;
 
@@ -18948,53 +14821,30 @@ type
     fRegulatory: TMedicationKnowledgeRegulatoryCTList;
     fKinetics: TMedicationKnowledgeKineticsCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Status: TCodeCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Manufacturer: TReferenceCT read fManufacturer;
-    [TNaming(TNaming.nCamelCase)]
     property DoseForm: TCodeableConceptCT read fDoseForm;
-    [TNaming(TNaming.nFlatCase)]
     property Amount: TQuantityCT read fAmount;
-    [TNaming(TNaming.nFlatCase)]
     property Synonym: TStringCTList read fSynonym;
-    [TNaming(TNaming.nCamelCase)]
     property RelatedMedicationKnowledge: TMedicationKnowledgeRelatedMedicationKnowledgeCTList read fRelatedMedicationKnowledge;
-    [TNaming(TNaming.nCamelCase)]
     property AssociatedMedication: TReferenceCTList read fAssociatedMedication;
-    [TNaming(TNaming.nCamelCase)]
     property ProductType: TCodeableConceptCTList read fProductType;
-    [TNaming(TNaming.nFlatCase)]
     property Monograph: TMedicationKnowledgeMonographCTList read fMonograph;
-    [TNaming(TNaming.nFlatCase)]
     property Ingredient: TMedicationKnowledgeIngredientCTList read fIngredient;
-    [TNaming(TNaming.nCamelCase)]
     property PreparationInstruction: TMarkdownCT read fPreparationInstruction;
-    [TNaming(TNaming.nCamelCase)]
     property IntendedRoute: TCodeableConceptCTList read fIntendedRoute;
-    [TNaming(TNaming.nFlatCase)]
     property Cost: TMedicationKnowledgeCostCTList read fCost;
-    [TNaming(TNaming.nCamelCase)]
     property MonitoringProgram: TMedicationKnowledgeMonitoringProgramCTList read fMonitoringProgram;
-    [TNaming(TNaming.nCamelCase)]
     property AdministrationGuidelines: TMedicationKnowledgeAdministrationGuidelinesCTList read fAdministrationGuidelines;
-    [TNaming(TNaming.nCamelCase)]
     property MedicineClassification: TMedicationKnowledgeMedicineClassificationCTList read fMedicineClassification;
-    [TNaming(TNaming.nFlatCase)]
     property Packaging: TMedicationKnowledgePackagingCT read fPackaging;
-    [TNaming(TNaming.nCamelCase)]
     property DrugCharacteristic: TMedicationKnowledgeDrugCharacteristicCTList read fDrugCharacteristic;
-    [TNaming(TNaming.nFlatCase)]
     property Contraindication: TReferenceCTList read fContraindication;
-    [TNaming(TNaming.nFlatCase)]
     property Regulatory: TMedicationKnowledgeRegulatoryCTList read fRegulatory;
-    [TNaming(TNaming.nFlatCase)]
     property Kinetics: TMedicationKnowledgeKineticsCTList read fKinetics;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicationKnowledge.RelatedMedicationKnowledge')]
   TMedicationKnowledgeRelatedMedicationKnowledgeCT = class(TBackboneElementCT)
   private
@@ -19002,26 +14852,20 @@ type
     fReference: TReferenceCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Reference: TReferenceCTList read fReference;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicationKnowledge.Monograph')]
   TMedicationKnowledgeMonographCT = class(TBackboneElementCT)
   private
     fType: TCodeableConceptCT;
     fSource: TReferenceCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Source: TReferenceCT read fSource;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicationKnowledge.Ingredient')]
   TMedicationKnowledgeIngredientCT = class(TBackboneElementCT)
   private
@@ -19037,18 +14881,13 @@ type
     property ItemChosen: TBasite read GetItemChosen;
   published
     [TChoice('Item')]
-    [TNaming(TNaming.nCamelCase)]
     property ItemCodeableConcept: TCodeableConceptCT read GetItemCodeableConcept;
     [TChoice('Item')]
-    [TNaming(TNaming.nCamelCase)]
     property ItemReference: TReferenceCT read GetItemReference;
-    [TNaming(TNaming.nCamelCase)]
     property IsActive: TBooleanCT read fIsActive;
-    [TNaming(TNaming.nFlatCase)]
     property Strength: TRatioCT read fStrength;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicationKnowledge.Cost')]
   TMedicationKnowledgeCostCT = class(TBackboneElementCT)
   private
@@ -19057,29 +14896,22 @@ type
     fCost: TMoneyCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Source: TStringCT read fSource;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Cost: TMoneyCT read fCost;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicationKnowledge.MonitoringProgram')]
   TMedicationKnowledgeMonitoringProgramCT = class(TBackboneElementCT)
   private
     fType: TCodeableConceptCT;
     fName: TStringCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicationKnowledge.AdministrationGuidelines')]
   TMedicationKnowledgeAdministrationGuidelinesCT = class(TBackboneElementCT)
   private
@@ -19094,19 +14926,14 @@ type
   public
     property IndicationChosen: TBasite read GetIndicationChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Dosage: TMedicationKnowledgeDosageCTList read fDosage;
     [TChoice('Indication')]
-    [TNaming(TNaming.nCamelCase)]
     property IndicationCodeableConcept: TCodeableConceptCT read GetIndicationCodeableConcept;
     [TChoice('Indication')]
-    [TNaming(TNaming.nCamelCase)]
     property IndicationReference: TReferenceCT read GetIndicationReference;
-    [TNaming(TNaming.nCamelCase)]
     property PatientCharacteristics: TMedicationKnowledgePatientCharacteristicsCTList read fPatientCharacteristics;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicationKnowledge.Dosage')]
   TMedicationKnowledgeDosageCT = class(TBackboneElementCT)
   private
@@ -19114,13 +14941,10 @@ type
     fDosage: TDosageCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Dosage: TDosageCTList read fDosage;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicationKnowledge.PatientCharacteristics')]
   TMedicationKnowledgePatientCharacteristicsCT = class(TBackboneElementCT)
   private
@@ -19135,16 +14959,12 @@ type
     property CharacteristicChosen: TBasite read GetCharacteristicChosen;
   published
     [TChoice('Characteristic')]
-    [TNaming(TNaming.nCamelCase)]
     property CharacteristicCodeableConcept: TCodeableConceptCT read GetCharacteristicCodeableConcept;
     [TChoice('Characteristic')]
-    [TNaming(TNaming.nCamelCase)]
     property CharacteristicQuantity: TQuantityCT read GetCharacteristicQuantity;
-    [TNaming(TNaming.nFlatCase)]
     property Value: TStringCTList read fValue;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicationKnowledge.MedicineClassification')]
   TMedicationKnowledgeMedicineClassificationCT = class(TBackboneElementCT)
   private
@@ -19152,26 +14972,20 @@ type
     fClassification: TCodeableConceptCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Classification: TCodeableConceptCTList read fClassification;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicationKnowledge.Packaging')]
   TMedicationKnowledgePackagingCT = class(TBackboneElementCT)
   private
     fType: TCodeableConceptCT;
     fQuantity: TQuantityCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Quantity: TQuantityCT read fQuantity;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicationKnowledge.DrugCharacteristic')]
   TMedicationKnowledgeDrugCharacteristicCT = class(TBackboneElementCT)
   private
@@ -19189,23 +15003,17 @@ type
   public
     property ValueChosen: TBasite read GetValueChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCodeableConcept: TCodeableConceptCT read GetValueCodeableConcept;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueString: TStringCT read GetValueString;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueQuantity: TQuantityCT read GetValueQuantity;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueBase64Binary: TBase64BinaryCT read GetValueBase64Binary;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicationKnowledge.Regulatory')]
   TMedicationKnowledgeRegulatoryCT = class(TBackboneElementCT)
   private
@@ -19215,17 +15023,12 @@ type
     fMaxDispense: TMedicationKnowledgeMaxDispenseCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property RegulatoryAuthority: TReferenceCT read fRegulatoryAuthority;
-    [TNaming(TNaming.nFlatCase)]
     property Substitution: TMedicationKnowledgeSubstitutionCTList read fSubstitution;
-    [TNaming(TNaming.nFlatCase)]
     property Schedule: TMedicationKnowledgeScheduleCTList read fSchedule;
-    [TNaming(TNaming.nCamelCase)]
     property MaxDispense: TMedicationKnowledgeMaxDispenseCT read fMaxDispense;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicationKnowledge.Substitution')]
   TMedicationKnowledgeSubstitutionCT = class(TBackboneElementCT)
   private
@@ -19233,25 +15036,20 @@ type
     fAllowed: TBooleanCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Allowed: TBooleanCT read fAllowed;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicationKnowledge.Schedule')]
   TMedicationKnowledgeScheduleCT = class(TBackboneElementCT)
   private
     fSchedule: TCodeableConceptCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Schedule: TCodeableConceptCT read fSchedule;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicationKnowledge.MaxDispense')]
   TMedicationKnowledgeMaxDispenseCT = class(TBackboneElementCT)
   private
@@ -19259,13 +15057,10 @@ type
     fPeriod: TDurationCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Quantity: TQuantityCT read fQuantity;
-    [TNaming(TNaming.nFlatCase)]
     property Period: TDurationCT read fPeriod;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicationKnowledge.Kinetics')]
   TMedicationKnowledgeKineticsCT = class(TBackboneElementCT)
   private
@@ -19273,11 +15068,8 @@ type
     fLethalDose50: TQuantityCTList;
     fHalfLifePeriod: TDurationCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property AreaUnderCurve: TQuantityCTList read fAreaUnderCurve;
-    [TNaming(TNaming.nCamelCase)]
     property LethalDose50: TQuantityCTList read fLethalDose50;
-    [TNaming(TNaming.nCamelCase)]
     property HalfLifePeriod: TDurationCT read fHalfLifePeriod;
   end;
 
@@ -19328,84 +15120,49 @@ type
     property ReportedChosen: TBasite read GetReportedChosen;
     property MedicationChosen: TBasite read GetMedicationChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TMedicationrequestStatusCT read fStatus;
-    [TNaming(TNaming.nCamelCase)]
     property StatusReason: TCodeableConceptCT read fStatusReason;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Intent: TMedicationRequestIntentCT read fIntent;
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCTList read fCategory;
-    [TNaming(TNaming.nFlatCase)]
     property Priority: TRequestPriorityCT read fPriority;
-    [TNaming(TNaming.nCamelCase)]
     property DoNotPerform: TBooleanCT read fDoNotPerform;
     [TChoice('Reported')]
-    [TNaming(TNaming.nCamelCase)]
     property ReportedBoolean: TBooleanCT read GetReportedBoolean;
     [TChoice('Reported')]
-    [TNaming(TNaming.nCamelCase)]
     property ReportedReference: TReferenceCT read GetReportedReference;
     [TChoice('Medication')]
-    [TNaming(TNaming.nCamelCase)]
     property MedicationCodeableConcept: TCodeableConceptCT read GetMedicationCodeableConcept;
     [TChoice('Medication')]
-    [TNaming(TNaming.nCamelCase)]
     property MedicationReference: TReferenceCT read GetMedicationReference;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCT read fSubject;
-    [TNaming(TNaming.nFlatCase)]
     property Encounter: TReferenceCT read fEncounter;
-    [TNaming(TNaming.nCamelCase)]
     property SupportingInformation: TReferenceCTList read fSupportingInformation;
-    [TNaming(TNaming.nCamelCase)]
     property AuthoredOn: TDateTimeCT read fAuthoredOn;
-    [TNaming(TNaming.nFlatCase)]
     property Requester: TReferenceCT read fRequester;
-    [TNaming(TNaming.nFlatCase)]
     property Performer: TReferenceCT read fPerformer;
-    [TNaming(TNaming.nCamelCase)]
     property PerformerType: TCodeableConceptCT read fPerformerType;
-    [TNaming(TNaming.nFlatCase)]
     property Recorder: TReferenceCT read fRecorder;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonReference: TReferenceCTList read fReasonReference;
-    [TNaming(TNaming.nCamelCase)]
     property InstantiatesCanonical: TCanonicalCTList read fInstantiatesCanonical;
-    [TNaming(TNaming.nCamelCase)]
     property InstantiatesUri: TUriCTList read fInstantiatesUri;
-    [TNaming(TNaming.nCamelCase)]
     property BasedOn: TReferenceCTList read fBasedOn;
-    [TNaming(TNaming.nCamelCase)]
     property GroupIdentifier: TIdentifierCT read fGroupIdentifier;
-    [TNaming(TNaming.nCamelCase)]
     property CourseOfTherapyType: TCodeableConceptCT read fCourseOfTherapyType;
-    [TNaming(TNaming.nFlatCase)]
     property Insurance: TReferenceCTList read fInsurance;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
-    [TNaming(TNaming.nCamelCase)]
     property DosageInstruction: TDosageCTList read fDosageInstruction;
-    [TNaming(TNaming.nCamelCase)]
     property DispenseRequest: TMedicationRequestDispenseRequestCT read fDispenseRequest;
-    [TNaming(TNaming.nFlatCase)]
     property Substitution: TMedicationRequestSubstitutionCT read fSubstitution;
-    [TNaming(TNaming.nCamelCase)]
     property PriorPrescription: TReferenceCT read fPriorPrescription;
-    [TNaming(TNaming.nCamelCase)]
     property DetectedIssue: TReferenceCTList read fDetectedIssue;
-    [TNaming(TNaming.nCamelCase)]
     property EventHistory: TReferenceCTList read fEventHistory;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicationRequest.DispenseRequest')]
   TMedicationRequestDispenseRequestCT = class(TBackboneElementCT)
   private
@@ -19417,36 +15174,25 @@ type
     fExpectedSupplyDuration: TDurationCT;
     fPerformer: TReferenceCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property InitialFill: TMedicationRequestInitialFillCT read fInitialFill;
-    [TNaming(TNaming.nCamelCase)]
     property DispenseInterval: TDurationCT read fDispenseInterval;
-    [TNaming(TNaming.nCamelCase)]
     property ValidityPeriod: TPeriodCT read fValidityPeriod;
-    [TNaming(TNaming.nCamelCase)]
     property NumberOfRepeatsAllowed: TUnsignedIntCT read fNumberOfRepeatsAllowed;
-    [TNaming(TNaming.nFlatCase)]
     property Quantity: TQuantityCT read fQuantity;
-    [TNaming(TNaming.nCamelCase)]
     property ExpectedSupplyDuration: TDurationCT read fExpectedSupplyDuration;
-    [TNaming(TNaming.nFlatCase)]
     property Performer: TReferenceCT read fPerformer;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicationRequest.InitialFill')]
   TMedicationRequestInitialFillCT = class(TBackboneElementCT)
   private
     fQuantity: TQuantityCT;
     fDuration: TDurationCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Quantity: TQuantityCT read fQuantity;
-    [TNaming(TNaming.nFlatCase)]
     property Duration: TDurationCT read fDuration;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicationRequest.Substitution')]
   TMedicationRequestSubstitutionCT = class(TBackboneElementCT)
   private
@@ -19461,12 +15207,9 @@ type
     property AllowedChosen: TBasite read GetAllowedChosen;
   published
     [TChoice('Allowed')]
-    [TNaming(TNaming.nCamelCase)]
     property AllowedBoolean: TBooleanCT read GetAllowedBoolean;
     [TChoice('Allowed')]
-    [TNaming(TNaming.nCamelCase)]
     property AllowedCodeableConcept: TCodeableConceptCT read GetAllowedCodeableConcept;
-    [TNaming(TNaming.nFlatCase)]
     property Reason: TCodeableConceptCT read fReason;
   end;
 
@@ -19475,7 +15218,6 @@ type
   private
     fValue: TMedicationrequestStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TMedicationrequestStatusListST read fValue write fValue;
   end;
 
@@ -19484,7 +15226,6 @@ type
   private
     fValue: TMedicationRequestIntentListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TMedicationRequestIntentListST read fValue write fValue;
   end;
 
@@ -19520,49 +15261,30 @@ type
     property MedicationChosen: TBasite read GetMedicationChosen;
     property EffectiveChosen: TBasite read GetEffectiveChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nCamelCase)]
     property BasedOn: TReferenceCTList read fBasedOn;
-    [TNaming(TNaming.nCamelCase)]
     property PartOf: TReferenceCTList read fPartOf;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TMedicationStatusCodesCT read fStatus;
-    [TNaming(TNaming.nCamelCase)]
     property StatusReason: TCodeableConceptCTList read fStatusReason;
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCT read fCategory;
     [TChoice('Medication')]
-    [TNaming(TNaming.nCamelCase)]
     property MedicationCodeableConcept: TCodeableConceptCT read GetMedicationCodeableConcept;
     [TChoice('Medication')]
-    [TNaming(TNaming.nCamelCase)]
     property MedicationReference: TReferenceCT read GetMedicationReference;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCT read fSubject;
-    [TNaming(TNaming.nFlatCase)]
     property Context: TReferenceCT read fContext;
     [TChoice('Effective')]
-    [TNaming(TNaming.nCamelCase)]
     property EffectiveDateTime: TDateTimeCT read GetEffectiveDateTime;
     [TChoice('Effective')]
-    [TNaming(TNaming.nCamelCase)]
     property EffectivePeriod: TPeriodCT read GetEffectivePeriod;
-    [TNaming(TNaming.nCamelCase)]
     property DateAsserted: TDateTimeCT read fDateAsserted;
-    [TNaming(TNaming.nCamelCase)]
     property InformationSource: TReferenceCT read fInformationSource;
-    [TNaming(TNaming.nCamelCase)]
     property DerivedFrom: TReferenceCTList read fDerivedFrom;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonReference: TReferenceCTList read fReasonReference;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
-    [TNaming(TNaming.nFlatCase)]
     property Dosage: TDosageCTList read fDosage;
   end;
 
@@ -19589,49 +15311,28 @@ type
     fManufacturingBusinessOperation: TMedicinalProductManufacturingBusinessOperationCTList;
     fSpecialDesignation: TMedicinalProductSpecialDesignationCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Domain: TCodingCT read fDomain;
-    [TNaming(TNaming.nCamelCase)]
     property CombinedPharmaceuticalDoseForm: TCodeableConceptCT read fCombinedPharmaceuticalDoseForm;
-    [TNaming(TNaming.nCamelCase)]
     property LegalStatusOfSupply: TCodeableConceptCT read fLegalStatusOfSupply;
-    [TNaming(TNaming.nCamelCase)]
     property AdditionalMonitoringIndicator: TCodeableConceptCT read fAdditionalMonitoringIndicator;
-    [TNaming(TNaming.nCamelCase)]
     property SpecialMeasures: TStringCTList read fSpecialMeasures;
-    [TNaming(TNaming.nCamelCase)]
     property PaediatricUseIndicator: TCodeableConceptCT read fPaediatricUseIndicator;
-    [TNaming(TNaming.nCamelCase)]
     property ProductClassification: TCodeableConceptCTList read fProductClassification;
-    [TNaming(TNaming.nCamelCase)]
     property MarketingStatus: TMarketingStatusCTList read fMarketingStatus;
-    [TNaming(TNaming.nCamelCase)]
     property PharmaceuticalProduct: TReferenceCTList read fPharmaceuticalProduct;
-    [TNaming(TNaming.nCamelCase)]
     property PackagedMedicinalProduct: TReferenceCTList read fPackagedMedicinalProduct;
-    [TNaming(TNaming.nCamelCase)]
     property AttachedDocument: TReferenceCTList read fAttachedDocument;
-    [TNaming(TNaming.nCamelCase)]
     property MasterFile: TReferenceCTList read fMasterFile;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TReferenceCTList read fContact;
-    [TNaming(TNaming.nCamelCase)]
     property ClinicalTrial: TReferenceCTList read fClinicalTrial;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TMedicinalProductNameCTList read fName;
-    [TNaming(TNaming.nCamelCase)]
     property CrossReference: TIdentifierCTList read fCrossReference;
-    [TNaming(TNaming.nCamelCase)]
     property ManufacturingBusinessOperation: TMedicinalProductManufacturingBusinessOperationCTList read fManufacturingBusinessOperation;
-    [TNaming(TNaming.nCamelCase)]
     property SpecialDesignation: TMedicinalProductSpecialDesignationCTList read fSpecialDesignation;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicinalProduct.Name')]
   TMedicinalProductNameCT = class(TBackboneElementCT)
   private
@@ -19640,15 +15341,11 @@ type
     fCountryLanguage: TMedicinalProductCountryLanguageCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ProductName: TStringCT read fProductName;
-    [TNaming(TNaming.nCamelCase)]
     property NamePart: TMedicinalProductNamePartCTList read fNamePart;
-    [TNaming(TNaming.nCamelCase)]
     property CountryLanguage: TMedicinalProductCountryLanguageCTList read fCountryLanguage;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicinalProduct.NamePart')]
   TMedicinalProductNamePartCT = class(TBackboneElementCT)
   private
@@ -19656,14 +15353,11 @@ type
     fType: TCodingCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Part: TStringCT read fPart;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodingCT read fType;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicinalProduct.CountryLanguage')]
   TMedicinalProductCountryLanguageCT = class(TBackboneElementCT)
   private
@@ -19672,16 +15366,12 @@ type
     fLanguage: TCodeableConceptCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Country: TCodeableConceptCT read fCountry;
-    [TNaming(TNaming.nFlatCase)]
     property Jurisdiction: TCodeableConceptCT read fJurisdiction;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Language: TCodeableConceptCT read fLanguage;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicinalProduct.ManufacturingBusinessOperation')]
   TMedicinalProductManufacturingBusinessOperationCT = class(TBackboneElementCT)
   private
@@ -19692,21 +15382,14 @@ type
     fManufacturer: TReferenceCTList;
     fRegulator: TReferenceCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property OperationType: TCodeableConceptCT read fOperationType;
-    [TNaming(TNaming.nCamelCase)]
     property AuthorisationReferenceNumber: TIdentifierCT read fAuthorisationReferenceNumber;
-    [TNaming(TNaming.nCamelCase)]
     property EffectiveDate: TDateTimeCT read fEffectiveDate;
-    [TNaming(TNaming.nCamelCase)]
     property ConfidentialityIndicator: TCodeableConceptCT read fConfidentialityIndicator;
-    [TNaming(TNaming.nFlatCase)]
     property Manufacturer: TReferenceCTList read fManufacturer;
-    [TNaming(TNaming.nFlatCase)]
     property Regulator: TReferenceCT read fRegulator;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicinalProduct.SpecialDesignation')]
   TMedicinalProductSpecialDesignationCT = class(TBackboneElementCT)
   private
@@ -19725,23 +15408,15 @@ type
   public
     property IndicationChosen: TBasite read GetIndicationChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nCamelCase)]
     property IntendedUse: TCodeableConceptCT read fIntendedUse;
     [TChoice('Indication')]
-    [TNaming(TNaming.nCamelCase)]
     property IndicationCodeableConcept: TCodeableConceptCT read GetIndicationCodeableConcept;
     [TChoice('Indication')]
-    [TNaming(TNaming.nCamelCase)]
     property IndicationReference: TReferenceCT read GetIndicationReference;
-    [TNaming(TNaming.nFlatCase)]
     property Status: TCodeableConceptCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Species: TCodeableConceptCT read fSpecies;
   end;
 
@@ -19764,41 +15439,24 @@ type
     fRegulator: TReferenceCT;
     fProcedure: TMedicinalProductAuthorizationProcedureCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCT read fSubject;
-    [TNaming(TNaming.nFlatCase)]
     property Country: TCodeableConceptCTList read fCountry;
-    [TNaming(TNaming.nFlatCase)]
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    [TNaming(TNaming.nFlatCase)]
     property Status: TCodeableConceptCT read fStatus;
-    [TNaming(TNaming.nCamelCase)]
     property StatusDate: TDateTimeCT read fStatusDate;
-    [TNaming(TNaming.nCamelCase)]
     property RestoreDate: TDateTimeCT read fRestoreDate;
-    [TNaming(TNaming.nCamelCase)]
     property ValidityPeriod: TPeriodCT read fValidityPeriod;
-    [TNaming(TNaming.nCamelCase)]
     property DataExclusivityPeriod: TPeriodCT read fDataExclusivityPeriod;
-    [TNaming(TNaming.nCamelCase)]
     property DateOfFirstAuthorization: TDateTimeCT read fDateOfFirstAuthorization;
-    [TNaming(TNaming.nCamelCase)]
     property InternationalBirthDate: TDateTimeCT read fInternationalBirthDate;
-    [TNaming(TNaming.nCamelCase)]
     property LegalBasis: TCodeableConceptCT read fLegalBasis;
-    [TNaming(TNaming.nCamelCase)]
     property JurisdictionalAuthorization: TMedicinalProductAuthorizationJurisdictionalAuthorizationCTList read fJurisdictionalAuthorization;
-    [TNaming(TNaming.nFlatCase)]
     property Holder: TReferenceCT read fHolder;
-    [TNaming(TNaming.nFlatCase)]
     property Regulator: TReferenceCT read fRegulator;
-    [TNaming(TNaming.nFlatCase)]
     property &Procedure: TMedicinalProductAuthorizationProcedureCT read fProcedure;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicinalProductAuthorization.JurisdictionalAuthorization')]
   TMedicinalProductAuthorizationJurisdictionalAuthorizationCT = class(TBackboneElementCT)
   private
@@ -19808,19 +15466,13 @@ type
     fLegalStatusOfSupply: TCodeableConceptCT;
     fValidityPeriod: TPeriodCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Country: TCodeableConceptCT read fCountry;
-    [TNaming(TNaming.nFlatCase)]
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    [TNaming(TNaming.nCamelCase)]
     property LegalStatusOfSupply: TCodeableConceptCT read fLegalStatusOfSupply;
-    [TNaming(TNaming.nCamelCase)]
     property ValidityPeriod: TPeriodCT read fValidityPeriod;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicinalProductAuthorization.Procedure')]
   TMedicinalProductAuthorizationProcedureCT = class(TBackboneElementCT)
   private
@@ -19836,18 +15488,13 @@ type
   public
     property DateChosen: TBasite read GetDateChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCT read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
     [TChoice('Date')]
-    [TNaming(TNaming.nCamelCase)]
     property DatePeriod: TPeriodCT read GetDatePeriod;
     [TChoice('Date')]
-    [TNaming(TNaming.nCamelCase)]
     property DateDateTime: TDateTimeCT read GetDateDateTime;
-    [TNaming(TNaming.nFlatCase)]
     property Application: TMedicinalProductAuthorizationProcedureCTList read fApplication;
   end;
 
@@ -19861,23 +15508,15 @@ type
     fOtherTherapy: TMedicinalProductContraindicationOtherTherapyCTList;
     fPopulation: TPopulationCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCTList read fSubject;
-    [TNaming(TNaming.nFlatCase)]
     property Disease: TCodeableConceptCT read fDisease;
-    [TNaming(TNaming.nCamelCase)]
     property DiseaseStatus: TCodeableConceptCT read fDiseaseStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Comorbidity: TCodeableConceptCTList read fComorbidity;
-    [TNaming(TNaming.nCamelCase)]
     property TherapeuticIndication: TReferenceCTList read fTherapeuticIndication;
-    [TNaming(TNaming.nCamelCase)]
     property OtherTherapy: TMedicinalProductContraindicationOtherTherapyCTList read fOtherTherapy;
-    [TNaming(TNaming.nFlatCase)]
     property Population: TPopulationCTList read fPopulation;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicinalProductContraindication.OtherTherapy')]
   TMedicinalProductContraindicationOtherTherapyCT = class(TBackboneElementCT)
   private
@@ -19892,13 +15531,10 @@ type
     property MedicationChosen: TBasite read GetMedicationChosen;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property TherapyRelationshipType: TCodeableConceptCT read fTherapyRelationshipType;
     [TChoice('Medication')]
-    [TNaming(TNaming.nCamelCase)]
     property MedicationCodeableConcept: TCodeableConceptCT read GetMedicationCodeableConcept;
     [TChoice('Medication')]
-    [TNaming(TNaming.nCamelCase)]
     property MedicationReference: TReferenceCT read GetMedicationReference;
   end;
 
@@ -19914,27 +15550,17 @@ type
     fUndesirableEffect: TReferenceCTList;
     fPopulation: TPopulationCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCTList read fSubject;
-    [TNaming(TNaming.nCamelCase)]
     property DiseaseSymptomProcedure: TCodeableConceptCT read fDiseaseSymptomProcedure;
-    [TNaming(TNaming.nCamelCase)]
     property DiseaseStatus: TCodeableConceptCT read fDiseaseStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Comorbidity: TCodeableConceptCTList read fComorbidity;
-    [TNaming(TNaming.nCamelCase)]
     property IntendedEffect: TCodeableConceptCT read fIntendedEffect;
-    [TNaming(TNaming.nFlatCase)]
     property Duration: TQuantityCT read fDuration;
-    [TNaming(TNaming.nCamelCase)]
     property OtherTherapy: TMedicinalProductIndicationOtherTherapyCTList read fOtherTherapy;
-    [TNaming(TNaming.nCamelCase)]
     property UndesirableEffect: TReferenceCTList read fUndesirableEffect;
-    [TNaming(TNaming.nFlatCase)]
     property Population: TPopulationCTList read fPopulation;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicinalProductIndication.OtherTherapy')]
   TMedicinalProductIndicationOtherTherapyCT = class(TBackboneElementCT)
   private
@@ -19949,13 +15575,10 @@ type
     property MedicationChosen: TBasite read GetMedicationChosen;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property TherapyRelationshipType: TCodeableConceptCT read fTherapyRelationshipType;
     [TChoice('Medication')]
-    [TNaming(TNaming.nCamelCase)]
     property MedicationCodeableConcept: TCodeableConceptCT read GetMedicationCodeableConcept;
     [TChoice('Medication')]
-    [TNaming(TNaming.nCamelCase)]
     property MedicationReference: TReferenceCT read GetMedicationReference;
   end;
 
@@ -19968,22 +15591,15 @@ type
     fSpecifiedSubstance: TMedicinalProductIngredientSpecifiedSubstanceCTList;
     fSubstance: TMedicinalProductIngredientSubstanceCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCT read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Role: TCodeableConceptCT read fRole;
-    [TNaming(TNaming.nCamelCase)]
     property AllergenicIndicator: TBooleanCT read fAllergenicIndicator;
-    [TNaming(TNaming.nFlatCase)]
     property Manufacturer: TReferenceCTList read fManufacturer;
-    [TNaming(TNaming.nCamelCase)]
     property SpecifiedSubstance: TMedicinalProductIngredientSpecifiedSubstanceCTList read fSpecifiedSubstance;
-    [TNaming(TNaming.nFlatCase)]
     property Substance: TMedicinalProductIngredientSubstanceCT read fSubstance;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicinalProductIngredient.SpecifiedSubstance')]
   TMedicinalProductIngredientSpecifiedSubstanceCT = class(TBackboneElementCT)
   private
@@ -19993,18 +15609,13 @@ type
     fStrength: TMedicinalProductIngredientStrengthCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Group: TCodeableConceptCT read fGroup;
-    [TNaming(TNaming.nFlatCase)]
     property Confidentiality: TCodeableConceptCT read fConfidentiality;
-    [TNaming(TNaming.nFlatCase)]
     property Strength: TMedicinalProductIngredientStrengthCTList read fStrength;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicinalProductIngredient.Strength')]
   TMedicinalProductIngredientStrengthCT = class(TBackboneElementCT)
   private
@@ -20017,23 +15628,15 @@ type
     fReferenceStrength: TMedicinalProductIngredientReferenceStrengthCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Presentation: TRatioCT read fPresentation;
-    [TNaming(TNaming.nCamelCase)]
     property PresentationLowLimit: TRatioCT read fPresentationLowLimit;
-    [TNaming(TNaming.nFlatCase)]
     property Concentration: TRatioCT read fConcentration;
-    [TNaming(TNaming.nCamelCase)]
     property ConcentrationLowLimit: TRatioCT read fConcentrationLowLimit;
-    [TNaming(TNaming.nCamelCase)]
     property MeasurementPoint: TStringCT read fMeasurementPoint;
-    [TNaming(TNaming.nFlatCase)]
     property Country: TCodeableConceptCTList read fCountry;
-    [TNaming(TNaming.nCamelCase)]
     property ReferenceStrength: TMedicinalProductIngredientReferenceStrengthCTList read fReferenceStrength;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicinalProductIngredient.ReferenceStrength')]
   TMedicinalProductIngredientReferenceStrengthCT = class(TBackboneElementCT)
   private
@@ -20043,20 +15646,14 @@ type
     fMeasurementPoint: TStringCT;
     fCountry: TCodeableConceptCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Substance: TCodeableConceptCT read fSubstance;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Strength: TRatioCT read fStrength;
-    [TNaming(TNaming.nCamelCase)]
     property StrengthLowLimit: TRatioCT read fStrengthLowLimit;
-    [TNaming(TNaming.nCamelCase)]
     property MeasurementPoint: TStringCT read fMeasurementPoint;
-    [TNaming(TNaming.nFlatCase)]
     property Country: TCodeableConceptCTList read fCountry;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicinalProductIngredient.Substance')]
   TMedicinalProductIngredientSubstanceCT = class(TBackboneElementCT)
   private
@@ -20064,9 +15661,7 @@ type
     fStrength: TMedicinalProductIngredientStrengthCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Strength: TMedicinalProductIngredientStrengthCTList read fStrength;
   end;
 
@@ -20080,23 +15675,15 @@ type
     fIncidence: TCodeableConceptCT;
     fManagement: TCodeableConceptCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCTList read fSubject;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Interactant: TMedicinalProductInteractionInteractantCTList read fInteractant;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Effect: TCodeableConceptCT read fEffect;
-    [TNaming(TNaming.nFlatCase)]
     property Incidence: TCodeableConceptCT read fIncidence;
-    [TNaming(TNaming.nFlatCase)]
     property Management: TCodeableConceptCT read fManagement;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicinalProductInteraction.Interactant')]
   TMedicinalProductInteractionInteractantCT = class(TBackboneElementCT)
   private
@@ -20110,10 +15697,8 @@ type
     property ItemChosen: TBasite read GetItemChosen;
   published
     [TChoice('Item')]
-    [TNaming(TNaming.nCamelCase)]
     property ItemReference: TReferenceCT read GetItemReference;
     [TChoice('Item')]
-    [TNaming(TNaming.nCamelCase)]
     property ItemCodeableConcept: TCodeableConceptCT read GetItemCodeableConcept;
   end;
 
@@ -20128,20 +15713,13 @@ type
     fOtherCharacteristics: TCodeableConceptCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ManufacturedDoseForm: TCodeableConceptCT read fManufacturedDoseForm;
-    [TNaming(TNaming.nCamelCase)]
     property UnitOfPresentation: TCodeableConceptCT read fUnitOfPresentation;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Quantity: TQuantityCT read fQuantity;
-    [TNaming(TNaming.nFlatCase)]
     property Manufacturer: TReferenceCTList read fManufacturer;
-    [TNaming(TNaming.nFlatCase)]
     property Ingredient: TReferenceCTList read fIngredient;
-    [TNaming(TNaming.nCamelCase)]
     property PhysicalCharacteristics: TProdCharacteristicCT read fPhysicalCharacteristics;
-    [TNaming(TNaming.nCamelCase)]
     property OtherCharacteristics: TCodeableConceptCTList read fOtherCharacteristics;
   end;
 
@@ -20157,27 +15735,17 @@ type
     fBatchIdentifier: TMedicinalProductPackagedBatchIdentifierCTList;
     fPackageItem: TMedicinalProductPackagedPackageItemCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCTList read fSubject;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nCamelCase)]
     property LegalStatusOfSupply: TCodeableConceptCT read fLegalStatusOfSupply;
-    [TNaming(TNaming.nCamelCase)]
     property MarketingStatus: TMarketingStatusCTList read fMarketingStatus;
-    [TNaming(TNaming.nCamelCase)]
     property MarketingAuthorization: TReferenceCT read fMarketingAuthorization;
-    [TNaming(TNaming.nFlatCase)]
     property Manufacturer: TReferenceCTList read fManufacturer;
-    [TNaming(TNaming.nCamelCase)]
     property BatchIdentifier: TMedicinalProductPackagedBatchIdentifierCTList read fBatchIdentifier;
-    [TNaming(TNaming.nCamelCase)]
     property PackageItem: TMedicinalProductPackagedPackageItemCTList read fPackageItem;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicinalProductPackaged.BatchIdentifier')]
   TMedicinalProductPackagedBatchIdentifierCT = class(TBackboneElementCT)
   private
@@ -20185,13 +15753,10 @@ type
     fImmediatePackaging: TIdentifierCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property OuterPackaging: TIdentifierCT read fOuterPackaging;
-    [TNaming(TNaming.nCamelCase)]
     property ImmediatePackaging: TIdentifierCT read fImmediatePackaging;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicinalProductPackaged.PackageItem')]
   TMedicinalProductPackagedPackageItemCT = class(TBackboneElementCT)
   private
@@ -20208,31 +15773,19 @@ type
     fShelfLifeStorage: TProductShelfLifeCTList;
     fManufacturer: TReferenceCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Quantity: TQuantityCT read fQuantity;
-    [TNaming(TNaming.nFlatCase)]
     property Material: TCodeableConceptCTList read fMaterial;
-    [TNaming(TNaming.nCamelCase)]
     property AlternateMaterial: TCodeableConceptCTList read fAlternateMaterial;
-    [TNaming(TNaming.nFlatCase)]
     property Device: TReferenceCTList read fDevice;
-    [TNaming(TNaming.nCamelCase)]
     property ManufacturedItem: TReferenceCTList read fManufacturedItem;
-    [TNaming(TNaming.nCamelCase)]
     property PackageItem: TMedicinalProductPackagedPackageItemCTList read fPackageItem;
-    [TNaming(TNaming.nCamelCase)]
     property PhysicalCharacteristics: TProdCharacteristicCT read fPhysicalCharacteristics;
-    [TNaming(TNaming.nCamelCase)]
     property OtherCharacteristics: TCodeableConceptCTList read fOtherCharacteristics;
-    [TNaming(TNaming.nCamelCase)]
     property ShelfLifeStorage: TProductShelfLifeCTList read fShelfLifeStorage;
-    [TNaming(TNaming.nFlatCase)]
     property Manufacturer: TReferenceCTList read fManufacturer;
   end;
 
@@ -20246,24 +15799,16 @@ type
     fCharacteristics: TMedicinalProductPharmaceuticalCharacteristicsCTList;
     fRouteOfAdministration: TMedicinalProductPharmaceuticalRouteOfAdministrationCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property AdministrableDoseForm: TCodeableConceptCT read fAdministrableDoseForm;
-    [TNaming(TNaming.nCamelCase)]
     property UnitOfPresentation: TCodeableConceptCT read fUnitOfPresentation;
-    [TNaming(TNaming.nFlatCase)]
     property Ingredient: TReferenceCTList read fIngredient;
-    [TNaming(TNaming.nFlatCase)]
     property Device: TReferenceCTList read fDevice;
-    [TNaming(TNaming.nFlatCase)]
     property Characteristics: TMedicinalProductPharmaceuticalCharacteristicsCTList read fCharacteristics;
-    [TNaming(TNaming.nCamelCase)]
     property RouteOfAdministration: TMedicinalProductPharmaceuticalRouteOfAdministrationCTList read fRouteOfAdministration;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicinalProductPharmaceutical.Characteristics')]
   TMedicinalProductPharmaceuticalCharacteristicsCT = class(TBackboneElementCT)
   private
@@ -20271,13 +15816,10 @@ type
     fStatus: TCodeableConceptCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Status: TCodeableConceptCT read fStatus;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicinalProductPharmaceutical.RouteOfAdministration')]
   TMedicinalProductPharmaceuticalRouteOfAdministrationCT = class(TBackboneElementCT)
   private
@@ -20290,23 +15832,15 @@ type
     fTargetSpecies: TMedicinalProductPharmaceuticalTargetSpeciesCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nCamelCase)]
     property FirstDose: TQuantityCT read fFirstDose;
-    [TNaming(TNaming.nCamelCase)]
     property MaxSingleDose: TQuantityCT read fMaxSingleDose;
-    [TNaming(TNaming.nCamelCase)]
     property MaxDosePerDay: TQuantityCT read fMaxDosePerDay;
-    [TNaming(TNaming.nCamelCase)]
     property MaxDosePerTreatmentPeriod: TRatioCT read fMaxDosePerTreatmentPeriod;
-    [TNaming(TNaming.nCamelCase)]
     property MaxTreatmentPeriod: TDurationCT read fMaxTreatmentPeriod;
-    [TNaming(TNaming.nCamelCase)]
     property TargetSpecies: TMedicinalProductPharmaceuticalTargetSpeciesCTList read fTargetSpecies;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicinalProductPharmaceutical.TargetSpecies')]
   TMedicinalProductPharmaceuticalTargetSpeciesCT = class(TBackboneElementCT)
   private
@@ -20314,13 +15848,10 @@ type
     fWithdrawalPeriod: TMedicinalProductPharmaceuticalWithdrawalPeriodCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nCamelCase)]
     property WithdrawalPeriod: TMedicinalProductPharmaceuticalWithdrawalPeriodCTList read fWithdrawalPeriod;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MedicinalProductPharmaceutical.WithdrawalPeriod')]
   TMedicinalProductPharmaceuticalWithdrawalPeriodCT = class(TBackboneElementCT)
   private
@@ -20329,12 +15860,9 @@ type
     fSupportingInformation: TStringCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Tissue: TCodeableConceptCT read fTissue;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Value: TQuantityCT read fValue;
-    [TNaming(TNaming.nCamelCase)]
     property SupportingInformation: TStringCT read fSupportingInformation;
   end;
 
@@ -20346,15 +15874,10 @@ type
     fFrequencyOfOccurrence: TCodeableConceptCT;
     fPopulation: TPopulationCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCTList read fSubject;
-    [TNaming(TNaming.nCamelCase)]
     property SymptomConditionEffect: TCodeableConceptCT read fSymptomConditionEffect;
-    [TNaming(TNaming.nFlatCase)]
     property Classification: TCodeableConceptCT read fClassification;
-    [TNaming(TNaming.nCamelCase)]
     property FrequencyOfOccurrence: TCodeableConceptCT read fFrequencyOfOccurrence;
-    [TNaming(TNaming.nFlatCase)]
     property Population: TPopulationCTList read fPopulation;
   end;
 
@@ -20392,63 +15915,37 @@ type
   public
     property EventChosen: TBasite read GetEventChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUriCT read fUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCT read fVersion;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Title: TStringCT read fTitle;
-    [TNaming(TNaming.nFlatCase)]
     property Replaces: TCanonicalCTList read fReplaces;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TPublicationStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Experimental: TBooleanCT read fExperimental;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Publisher: TStringCT read fPublisher;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TContactDetailCTList read fContact;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TMarkdownCT read fDescription;
-    [TNaming(TNaming.nCamelCase)]
     property UseContext: TUsageContextCTList read fUseContext;
-    [TNaming(TNaming.nFlatCase)]
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    [TNaming(TNaming.nFlatCase)]
     property Purpose: TMarkdownCT read fPurpose;
-    [TNaming(TNaming.nFlatCase)]
     property Copyright: TMarkdownCT read fCopyright;
-    [TNaming(TNaming.nFlatCase)]
     property Base: TCanonicalCT read fBase;
-    [TNaming(TNaming.nFlatCase)]
     property Parent: TCanonicalCTList read fParent;
     [TChoice('Event')]
-    [TNaming(TNaming.nCamelCase)]
     property EventCoding: TCodingCT read GetEventCoding;
     [TChoice('Event')]
-    [TNaming(TNaming.nCamelCase)]
     property EventUri: TUriCT read GetEventUri;
-    [TNaming(TNaming.nFlatCase)]
     property Category: TMessageSignificanceCategoryCT read fCategory;
-    [TNaming(TNaming.nFlatCase)]
     property Focus: TMessageDefinitionFocusCTList read fFocus;
-    [TNaming(TNaming.nCamelCase)]
     property ResponseRequired: TMessageheaderResponseRequestCT read fResponseRequired;
-    [TNaming(TNaming.nCamelCase)]
     property AllowedResponse: TMessageDefinitionAllowedResponseCTList read fAllowedResponse;
-    [TNaming(TNaming.nFlatCase)]
     property Graph: TCanonicalCTList read fGraph;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MessageDefinition.Focus')]
   TMessageDefinitionFocusCT = class(TBackboneElementCT)
   private
@@ -20458,18 +15955,13 @@ type
     fMax: TStringCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Profile: TCanonicalCT read fProfile;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Min: TUnsignedIntCT read fMin;
-    [TNaming(TNaming.nFlatCase)]
     property Max: TStringCT read fMax;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MessageDefinition.AllowedResponse')]
   TMessageDefinitionAllowedResponseCT = class(TBackboneElementCT)
   private
@@ -20477,9 +15969,7 @@ type
     fSituation: TMarkdownCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Message: TCanonicalCT read fMessage;
-    [TNaming(TNaming.nFlatCase)]
     property Situation: TMarkdownCT read fSituation;
   end;
 
@@ -20487,7 +15977,6 @@ type
   private
     fValue: TMessageSignificanceCategoryListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TMessageSignificanceCategoryListST read fValue write fValue;
   end;
 
@@ -20496,7 +15985,6 @@ type
   private
     fValue: TMessageheaderResponseRequestListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TMessageheaderResponseRequestListST read fValue write fValue;
   end;
 
@@ -20522,35 +16010,22 @@ type
     property EventChosen: TBasite read GetEventChosen;
   published
     [TChoice('Event')]
-    [TNaming(TNaming.nCamelCase)]
     property EventCoding: TCodingCT read GetEventCoding;
     [TChoice('Event')]
-    [TNaming(TNaming.nCamelCase)]
     property EventUri: TUriCT read GetEventUri;
-    [TNaming(TNaming.nFlatCase)]
     property Destination: TMessageHeaderDestinationCTList read fDestination;
-    [TNaming(TNaming.nFlatCase)]
     property Sender: TReferenceCT read fSender;
-    [TNaming(TNaming.nFlatCase)]
     property Enterer: TReferenceCT read fEnterer;
-    [TNaming(TNaming.nFlatCase)]
     property Author: TReferenceCT read fAuthor;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Source: TMessageHeaderSourceCT read fSource;
-    [TNaming(TNaming.nFlatCase)]
     property Responsible: TReferenceCT read fResponsible;
-    [TNaming(TNaming.nFlatCase)]
     property Reason: TCodeableConceptCT read fReason;
-    [TNaming(TNaming.nFlatCase)]
     property Response: TMessageHeaderResponseCT read fResponse;
-    [TNaming(TNaming.nFlatCase)]
     property Focus: TReferenceCTList read fFocus;
-    [TNaming(TNaming.nFlatCase)]
     property Definition: TCanonicalCT read fDefinition;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MessageHeader.Destination')]
   TMessageHeaderDestinationCT = class(TBackboneElementCT)
   private
@@ -20559,18 +16034,13 @@ type
     fEndpoint: TUrlCT;
     fReceiver: TReferenceCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Target: TReferenceCT read fTarget;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Endpoint: TUrlCT read fEndpoint;
-    [TNaming(TNaming.nFlatCase)]
     property Receiver: TReferenceCT read fReceiver;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MessageHeader.Source')]
   TMessageHeaderSourceCT = class(TBackboneElementCT)
   private
@@ -20580,20 +16050,14 @@ type
     fContact: TContactPointCT;
     fEndpoint: TUrlCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Software: TStringCT read fSoftware;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCT read fVersion;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TContactPointCT read fContact;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Endpoint: TUrlCT read fEndpoint;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MessageHeader.Response')]
   TMessageHeaderResponseCT = class(TBackboneElementCT)
   private
@@ -20602,12 +16066,9 @@ type
     fDetails: TReferenceCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdCT read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TResponseTypeCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Details: TReferenceCT read fDetails;
   end;
 
@@ -20615,7 +16076,6 @@ type
   private
     fValue: TResponseTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TResponseTypeListST read fValue write fValue;
   end;
 
@@ -20638,42 +16098,25 @@ type
     fPointer: TReferenceCTList;
     fStructureVariant: TMolecularSequenceStructureVariantCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TSequenceTypeCT read fType;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property CoordinateSystem: TIntegerCT read fCoordinateSystem;
-    [TNaming(TNaming.nFlatCase)]
     property Patient: TReferenceCT read fPatient;
-    [TNaming(TNaming.nFlatCase)]
     property Specimen: TReferenceCT read fSpecimen;
-    [TNaming(TNaming.nFlatCase)]
     property Device: TReferenceCT read fDevice;
-    [TNaming(TNaming.nFlatCase)]
     property Performer: TReferenceCT read fPerformer;
-    [TNaming(TNaming.nFlatCase)]
     property Quantity: TQuantityCT read fQuantity;
-    [TNaming(TNaming.nCamelCase)]
     property ReferenceSeq: TMolecularSequenceReferenceSeqCT read fReferenceSeq;
-    [TNaming(TNaming.nFlatCase)]
     property Variant: TMolecularSequenceVariantCTList read fVariant;
-    [TNaming(TNaming.nCamelCase)]
     property ObservedSeq: TStringCT read fObservedSeq;
-    [TNaming(TNaming.nFlatCase)]
     property Quality: TMolecularSequenceQualityCTList read fQuality;
-    [TNaming(TNaming.nCamelCase)]
     property ReadCoverage: TIntegerCT read fReadCoverage;
-    [TNaming(TNaming.nFlatCase)]
     property Repository: TMolecularSequenceRepositoryCTList read fRepository;
-    [TNaming(TNaming.nFlatCase)]
     property Pointer: TReferenceCTList read fPointer;
-    [TNaming(TNaming.nCamelCase)]
     property StructureVariant: TMolecularSequenceStructureVariantCTList read fStructureVariant;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MolecularSequence.ReferenceSeq')]
   TMolecularSequenceReferenceSeqCT = class(TBackboneElementCT)
   private
@@ -20687,27 +16130,17 @@ type
     fWindowStart: TIntegerCT;
     fWindowEnd: TIntegerCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Chromosome: TCodeableConceptCT read fChromosome;
-    [TNaming(TNaming.nCamelCase)]
     property GenomeBuild: TStringCT read fGenomeBuild;
-    [TNaming(TNaming.nFlatCase)]
     property Orientation: TOrientationTypeCT read fOrientation;
-    [TNaming(TNaming.nCamelCase)]
     property ReferenceSeqId: TCodeableConceptCT read fReferenceSeqId;
-    [TNaming(TNaming.nCamelCase)]
     property ReferenceSeqPointer: TReferenceCT read fReferenceSeqPointer;
-    [TNaming(TNaming.nCamelCase)]
     property ReferenceSeqString: TStringCT read fReferenceSeqString;
-    [TNaming(TNaming.nFlatCase)]
     property Strand: TStrandTypeCT read fStrand;
-    [TNaming(TNaming.nCamelCase)]
     property WindowStart: TIntegerCT read fWindowStart;
-    [TNaming(TNaming.nCamelCase)]
     property WindowEnd: TIntegerCT read fWindowEnd;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MolecularSequence.Variant')]
   TMolecularSequenceVariantCT = class(TBackboneElementCT)
   private
@@ -20718,21 +16151,14 @@ type
     fCigar: TStringCT;
     fVariantPointer: TReferenceCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Start: TIntegerCT read fStart;
-    [TNaming(TNaming.nFlatCase)]
     property &End: TIntegerCT read fEnd;
-    [TNaming(TNaming.nCamelCase)]
     property ObservedAllele: TStringCT read fObservedAllele;
-    [TNaming(TNaming.nCamelCase)]
     property ReferenceAllele: TStringCT read fReferenceAllele;
-    [TNaming(TNaming.nFlatCase)]
     property Cigar: TStringCT read fCigar;
-    [TNaming(TNaming.nCamelCase)]
     property VariantPointer: TReferenceCT read fVariantPointer;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MolecularSequence.Quality')]
   TMolecularSequenceQualityCT = class(TBackboneElementCT)
   private
@@ -20753,39 +16179,23 @@ type
     fRoc: TMolecularSequenceRocCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TQualityTypeCT read fType;
-    [TNaming(TNaming.nCamelCase)]
     property StandardSequence: TCodeableConceptCT read fStandardSequence;
-    [TNaming(TNaming.nFlatCase)]
     property Start: TIntegerCT read fStart;
-    [TNaming(TNaming.nFlatCase)]
     property &End: TIntegerCT read fEnd;
-    [TNaming(TNaming.nFlatCase)]
     property Score: TQuantityCT read fScore_;
-    [TNaming(TNaming.nFlatCase)]
     property Method: TCodeableConceptCT read fMethod;
-    [TNaming(TNaming.nCamelCase)]
     property TruthTP: TDecimalCT read fTruthTP;
-    [TNaming(TNaming.nCamelCase)]
     property QueryTP: TDecimalCT read fQueryTP;
-    [TNaming(TNaming.nCamelCase)]
     property TruthFN: TDecimalCT read fTruthFN;
-    [TNaming(TNaming.nCamelCase)]
     property QueryFP: TDecimalCT read fQueryFP;
-    [TNaming(TNaming.nCamelCase)]
     property GtFP: TDecimalCT read fGtFP;
-    [TNaming(TNaming.nFlatCase)]
     property Precision: TDecimalCT read fPrecision;
-    [TNaming(TNaming.nFlatCase)]
     property Recall: TDecimalCT read fRecall;
-    [TNaming(TNaming.nCamelCase)]
     property FScore: TDecimalCT read fFScore;
-    [TNaming(TNaming.nFlatCase)]
     property Roc: TMolecularSequenceRocCT read fRoc;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MolecularSequence.Roc')]
   TMolecularSequenceRocCT = class(TBackboneElementCT)
   private
@@ -20797,23 +16207,15 @@ type
     fSensitivity: TDecimalCTList;
     fFMeasure: TDecimalCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Score: TIntegerCTList read fScore;
-    [TNaming(TNaming.nCamelCase)]
     property NumTP: TIntegerCTList read fNumTP;
-    [TNaming(TNaming.nCamelCase)]
     property NumFP: TIntegerCTList read fNumFP;
-    [TNaming(TNaming.nCamelCase)]
     property NumFN: TIntegerCTList read fNumFN;
-    [TNaming(TNaming.nFlatCase)]
     property Precision: TDecimalCTList read fPrecision;
-    [TNaming(TNaming.nFlatCase)]
     property Sensitivity: TDecimalCTList read fSensitivity;
-    [TNaming(TNaming.nCamelCase)]
     property FMeasure: TDecimalCTList read fFMeasure;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MolecularSequence.Repository')]
   TMolecularSequenceRepositoryCT = class(TBackboneElementCT)
   private
@@ -20825,21 +16227,14 @@ type
     fReadsetId: TStringCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TRepositoryTypeCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUriCT read fUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nCamelCase)]
     property DatasetId: TStringCT read fDatasetId;
-    [TNaming(TNaming.nCamelCase)]
     property VariantsetId: TStringCT read fVariantsetId;
-    [TNaming(TNaming.nCamelCase)]
     property ReadsetId: TStringCT read fReadsetId;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MolecularSequence.StructureVariant')]
   TMolecularSequenceStructureVariantCT = class(TBackboneElementCT)
   private
@@ -20849,41 +16244,30 @@ type
     fOuter: TMolecularSequenceOuterCT;
     fInner: TMolecularSequenceInnerCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property VariantType: TCodeableConceptCT read fVariantType;
-    [TNaming(TNaming.nFlatCase)]
     property Exact: TBooleanCT read fExact;
-    [TNaming(TNaming.nFlatCase)]
     property Length: TIntegerCT read fLength;
-    [TNaming(TNaming.nFlatCase)]
     property Outer: TMolecularSequenceOuterCT read fOuter;
-    [TNaming(TNaming.nFlatCase)]
     property Inner: TMolecularSequenceInnerCT read fInner;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MolecularSequence.Outer')]
   TMolecularSequenceOuterCT = class(TBackboneElementCT)
   private
     fStart: TIntegerCT;
     fEnd: TIntegerCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Start: TIntegerCT read fStart;
-    [TNaming(TNaming.nFlatCase)]
     property &End: TIntegerCT read fEnd;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('MolecularSequence.Inner')]
   TMolecularSequenceInnerCT = class(TBackboneElementCT)
   private
     fStart: TIntegerCT;
     fEnd: TIntegerCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Start: TIntegerCT read fStart;
-    [TNaming(TNaming.nFlatCase)]
     property &End: TIntegerCT read fEnd;
   end;
 
@@ -20892,7 +16276,6 @@ type
   private
     fValue: TStrandTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TStrandTypeListST read fValue write fValue;
   end;
 
@@ -20901,7 +16284,6 @@ type
   private
     fValue: TOrientationTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TOrientationTypeListST read fValue write fValue;
   end;
 
@@ -20910,7 +16292,6 @@ type
   private
     fValue: TRepositoryTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TRepositoryTypeListST read fValue write fValue;
   end;
 
@@ -20919,7 +16300,6 @@ type
   private
     fValue: TQualityTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TQualityTypeListST read fValue write fValue;
   end;
 
@@ -20928,7 +16308,6 @@ type
   private
     fValue: TSequenceTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TSequenceTypeListST read fValue write fValue;
   end;
 
@@ -20949,38 +16328,24 @@ type
     fUniqueId: TNamingSystemUniqueIdCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TPublicationStatusCT read fStatus;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Kind: TNamingSystemTypeCT read fKind;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Publisher: TStringCT read fPublisher;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TContactDetailCTList read fContact;
-    [TNaming(TNaming.nFlatCase)]
     property Responsible: TStringCT read fResponsible;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TMarkdownCT read fDescription;
-    [TNaming(TNaming.nCamelCase)]
     property UseContext: TUsageContextCTList read fUseContext;
-    [TNaming(TNaming.nFlatCase)]
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    [TNaming(TNaming.nFlatCase)]
     property Usage: TStringCT read fUsage;
-    [TNaming(TNaming.nCamelCase)]
     property UniqueId: TNamingSystemUniqueIdCTList read fUniqueId;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('NamingSystem.UniqueId')]
   TNamingSystemUniqueIdCT = class(TBackboneElementCT)
   private
@@ -20991,16 +16356,11 @@ type
     fPeriod: TPeriodCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TNamingSystemIdentifierTypeCT read fType;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Value: TStringCT read fValue;
-    [TNaming(TNaming.nFlatCase)]
     property Preferred: TBooleanCT read fPreferred;
-    [TNaming(TNaming.nFlatCase)]
     property Comment: TStringCT read fComment;
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCT read fPeriod;
   end;
 
@@ -21008,7 +16368,6 @@ type
   private
     fValue: TNamingSystemIdentifierTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TNamingSystemIdentifierTypeListST read fValue write fValue;
   end;
 
@@ -21016,7 +16375,6 @@ type
   private
     fValue: TNamingSystemTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TNamingSystemTypeListST read fValue write fValue;
   end;
 
@@ -21040,47 +16398,29 @@ type
     fEnteralFormula: TNutritionOrderEnteralFormulaCT;
     fNote: TAnnotationCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nCamelCase)]
     property InstantiatesCanonical: TCanonicalCTList read fInstantiatesCanonical;
-    [TNaming(TNaming.nCamelCase)]
     property InstantiatesUri: TUriCTList read fInstantiatesUri;
-    [TNaming(TNaming.nFlatCase)]
     property Instantiates: TUriCTList read fInstantiates;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TRequestStatusCT read fStatus;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Intent: TRequestIntentCT read fIntent;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Patient: TReferenceCT read fPatient;
-    [TNaming(TNaming.nFlatCase)]
     property Encounter: TReferenceCT read fEncounter;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property DateTime: TDateTimeCT read fDateTime;
-    [TNaming(TNaming.nFlatCase)]
     property Orderer: TReferenceCT read fOrderer;
-    [TNaming(TNaming.nCamelCase)]
     property AllergyIntolerance: TReferenceCTList read fAllergyIntolerance;
-    [TNaming(TNaming.nCamelCase)]
     property FoodPreferenceModifier: TCodeableConceptCTList read fFoodPreferenceModifier;
-    [TNaming(TNaming.nCamelCase)]
     property ExcludeFoodModifier: TCodeableConceptCTList read fExcludeFoodModifier;
-    [TNaming(TNaming.nCamelCase)]
     property OralDiet: TNutritionOrderOralDietCT read fOralDiet;
-    [TNaming(TNaming.nFlatCase)]
     property Supplement: TNutritionOrderSupplementCTList read fSupplement;
-    [TNaming(TNaming.nCamelCase)]
     property EnteralFormula: TNutritionOrderEnteralFormulaCT read fEnteralFormula;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('NutritionOrder.OralDiet')]
   TNutritionOrderOralDietCT = class(TBackboneElementCT)
   private
@@ -21091,47 +16431,34 @@ type
     fFluidConsistencyType: TCodeableConceptCTList;
     fInstruction: TStringCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCTList read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Schedule: TTimingCTList read fSchedule;
-    [TNaming(TNaming.nFlatCase)]
     property Nutrient: TNutritionOrderNutrientCTList read fNutrient;
-    [TNaming(TNaming.nFlatCase)]
     property Texture: TNutritionOrderTextureCTList read fTexture;
-    [TNaming(TNaming.nCamelCase)]
     property FluidConsistencyType: TCodeableConceptCTList read fFluidConsistencyType;
-    [TNaming(TNaming.nFlatCase)]
     property Instruction: TStringCT read fInstruction;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('NutritionOrder.Nutrient')]
   TNutritionOrderNutrientCT = class(TBackboneElementCT)
   private
     fModifier: TCodeableConceptCT;
     fAmount: TQuantityCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Modifier: TCodeableConceptCT read fModifier;
-    [TNaming(TNaming.nFlatCase)]
     property Amount: TQuantityCT read fAmount;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('NutritionOrder.Texture')]
   TNutritionOrderTextureCT = class(TBackboneElementCT)
   private
     fModifier: TCodeableConceptCT;
     fFoodType: TCodeableConceptCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Modifier: TCodeableConceptCT read fModifier;
-    [TNaming(TNaming.nCamelCase)]
     property FoodType: TCodeableConceptCT read fFoodType;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('NutritionOrder.Supplement')]
   TNutritionOrderSupplementCT = class(TBackboneElementCT)
   private
@@ -21141,19 +16468,13 @@ type
     fQuantity: TQuantityCT;
     fInstruction: TStringCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nCamelCase)]
     property ProductName: TStringCT read fProductName;
-    [TNaming(TNaming.nFlatCase)]
     property Schedule: TTimingCTList read fSchedule;
-    [TNaming(TNaming.nFlatCase)]
     property Quantity: TQuantityCT read fQuantity;
-    [TNaming(TNaming.nFlatCase)]
     property Instruction: TStringCT read fInstruction;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('NutritionOrder.EnteralFormula')]
   TNutritionOrderEnteralFormulaCT = class(TBackboneElementCT)
   private
@@ -21167,27 +16488,17 @@ type
     fMaxVolumeToDeliver: TQuantityCT;
     fAdministrationInstruction: TStringCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property BaseFormulaType: TCodeableConceptCT read fBaseFormulaType;
-    [TNaming(TNaming.nCamelCase)]
     property BaseFormulaProductName: TStringCT read fBaseFormulaProductName;
-    [TNaming(TNaming.nCamelCase)]
     property AdditiveType: TCodeableConceptCT read fAdditiveType;
-    [TNaming(TNaming.nCamelCase)]
     property AdditiveProductName: TStringCT read fAdditiveProductName;
-    [TNaming(TNaming.nCamelCase)]
     property CaloricDensity: TQuantityCT read fCaloricDensity;
-    [TNaming(TNaming.nCamelCase)]
     property RouteofAdministration: TCodeableConceptCT read fRouteofAdministration;
-    [TNaming(TNaming.nFlatCase)]
     property Administration: TNutritionOrderAdministrationCTList read fAdministration;
-    [TNaming(TNaming.nCamelCase)]
     property MaxVolumeToDeliver: TQuantityCT read fMaxVolumeToDeliver;
-    [TNaming(TNaming.nCamelCase)]
     property AdministrationInstruction: TStringCT read fAdministrationInstruction;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('NutritionOrder.Administration')]
   TNutritionOrderAdministrationCT = class(TBackboneElementCT)
   private
@@ -21202,15 +16513,11 @@ type
   public
     property RateChosen: TBasite read GetRateChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Schedule: TTimingCT read fSchedule;
-    [TNaming(TNaming.nFlatCase)]
     property Quantity: TQuantityCT read fQuantity;
     [TChoice('Rate')]
-    [TNaming(TNaming.nCamelCase)]
     property RateQuantity: TQuantityCT read GetRateQuantity;
     [TChoice('Rate')]
-    [TNaming(TNaming.nCamelCase)]
     property RateRatio: TRatioCT read GetRateRatio;
   end;
 
@@ -21275,100 +16582,62 @@ type
     property EffectiveChosen: TBasite read GetEffectiveChosen;
     property ValueChosen: TBasite read GetValueChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nCamelCase)]
     property BasedOn: TReferenceCTList read fBasedOn;
-    [TNaming(TNaming.nCamelCase)]
     property PartOf: TReferenceCTList read fPartOf;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TObservationStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCTList read fCategory;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCT read fSubject;
-    [TNaming(TNaming.nFlatCase)]
     property Focus: TReferenceCTList read fFocus;
-    [TNaming(TNaming.nFlatCase)]
     property Encounter: TReferenceCT read fEncounter;
     [TChoice('Effective')]
-    [TNaming(TNaming.nCamelCase)]
     property EffectiveDateTime: TDateTimeCT read GetEffectiveDateTime;
     [TChoice('Effective')]
-    [TNaming(TNaming.nCamelCase)]
     property EffectivePeriod: TPeriodCT read GetEffectivePeriod;
     [TChoice('Effective')]
-    [TNaming(TNaming.nCamelCase)]
     property EffectiveTiming: TTimingCT read GetEffectiveTiming;
     [TChoice('Effective')]
-    [TNaming(TNaming.nCamelCase)]
     property EffectiveInstant: TInstantCT read GetEffectiveInstant;
-    [TNaming(TNaming.nFlatCase)]
     property Issued: TInstantCT read fIssued;
-    [TNaming(TNaming.nFlatCase)]
     property Performer: TReferenceCTList read fPerformer;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueQuantity: TQuantityCT read GetValueQuantity;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCodeableConcept: TCodeableConceptCT read GetValueCodeableConcept;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueString: TStringCT read GetValueString;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueBoolean: TBooleanCT read GetValueBoolean;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueInteger: TIntegerCT read GetValueInteger;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueRange: TRangeCT read GetValueRange;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueRatio: TRatioCT read GetValueRatio;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueSampledData: TSampledDataCT read GetValueSampledData;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueTime: TTimeCT read GetValueTime;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDateTime: TDateTimeCT read GetValueDateTime;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValuePeriod: TPeriodCT read GetValuePeriod;
-    [TNaming(TNaming.nCamelCase)]
     property DataAbsentReason: TCodeableConceptCT read fDataAbsentReason;
-    [TNaming(TNaming.nFlatCase)]
     property Interpretation: TCodeableConceptCTList read fInterpretation;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
-    [TNaming(TNaming.nCamelCase)]
     property BodySite: TCodeableConceptCT read fBodySite;
-    [TNaming(TNaming.nFlatCase)]
     property Method: TCodeableConceptCT read fMethod;
-    [TNaming(TNaming.nFlatCase)]
     property Specimen: TReferenceCT read fSpecimen;
-    [TNaming(TNaming.nFlatCase)]
     property Device: TReferenceCT read fDevice;
-    [TNaming(TNaming.nCamelCase)]
     property ReferenceRange: TObservationReferenceRangeCTList read fReferenceRange;
-    [TNaming(TNaming.nCamelCase)]
     property HasMember: TReferenceCTList read fHasMember;
-    [TNaming(TNaming.nCamelCase)]
     property DerivedFrom: TReferenceCTList read fDerivedFrom;
-    [TNaming(TNaming.nFlatCase)]
     property Component: TObservationComponentCTList read fComponent;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Observation.ReferenceRange')]
   TObservationReferenceRangeCT = class(TBackboneElementCT)
   private
@@ -21379,21 +16648,14 @@ type
     fAge: TRangeCT;
     fText: TStringCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Low: TQuantityCT read fLow;
-    [TNaming(TNaming.nFlatCase)]
     property High: TQuantityCT read fHigh;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nCamelCase)]
     property AppliesTo: TCodeableConceptCTList read fAppliesTo;
-    [TNaming(TNaming.nFlatCase)]
     property Age: TRangeCT read fAge;
-    [TNaming(TNaming.nFlatCase)]
     property Text: TStringCT read fText;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Observation.Component')]
   TObservationComponentCT = class(TBackboneElementCT)
   private
@@ -21429,46 +16691,31 @@ type
     property ValueChosen: TBasite read GetValueChosen;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueQuantity: TQuantityCT read GetValueQuantity;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCodeableConcept: TCodeableConceptCT read GetValueCodeableConcept;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueString: TStringCT read GetValueString;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueBoolean: TBooleanCT read GetValueBoolean;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueInteger: TIntegerCT read GetValueInteger;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueRange: TRangeCT read GetValueRange;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueRatio: TRatioCT read GetValueRatio;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueSampledData: TSampledDataCT read GetValueSampledData;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueTime: TTimeCT read GetValueTime;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDateTime: TDateTimeCT read GetValueDateTime;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValuePeriod: TPeriodCT read GetValuePeriod;
-    [TNaming(TNaming.nCamelCase)]
     property DataAbsentReason: TCodeableConceptCT read fDataAbsentReason;
-    [TNaming(TNaming.nFlatCase)]
     property Interpretation: TCodeableConceptCTList read fInterpretation;
-    [TNaming(TNaming.nCamelCase)]
     property ReferenceRange: TObservationReferenceRangeCTList read fReferenceRange;
   end;
 
@@ -21488,36 +16735,22 @@ type
     fAbnormalCodedValueSet: TReferenceCT;
     fCriticalCodedValueSet: TReferenceCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCTList read fCategory;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nCamelCase)]
     property PermittedDataType: TObservationDataTypeCTList read fPermittedDataType;
-    [TNaming(TNaming.nCamelCase)]
     property MultipleResultsAllowed: TBooleanCT read fMultipleResultsAllowed;
-    [TNaming(TNaming.nFlatCase)]
     property Method: TCodeableConceptCT read fMethod;
-    [TNaming(TNaming.nCamelCase)]
     property PreferredReportName: TStringCT read fPreferredReportName;
-    [TNaming(TNaming.nCamelCase)]
     property QuantitativeDetails: TObservationDefinitionQuantitativeDetailsCT read fQuantitativeDetails;
-    [TNaming(TNaming.nCamelCase)]
     property QualifiedInterval: TObservationDefinitionQualifiedIntervalCTList read fQualifiedInterval;
-    [TNaming(TNaming.nCamelCase)]
     property ValidCodedValueSet: TReferenceCT read fValidCodedValueSet;
-    [TNaming(TNaming.nCamelCase)]
     property NormalCodedValueSet: TReferenceCT read fNormalCodedValueSet;
-    [TNaming(TNaming.nCamelCase)]
     property AbnormalCodedValueSet: TReferenceCT read fAbnormalCodedValueSet;
-    [TNaming(TNaming.nCamelCase)]
     property CriticalCodedValueSet: TReferenceCT read fCriticalCodedValueSet;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ObservationDefinition.QuantitativeDetails')]
   TObservationDefinitionQuantitativeDetailsCT = class(TBackboneElementCT)
   private
@@ -21526,17 +16759,12 @@ type
     fConversionFactor: TDecimalCT;
     fDecimalPrecision: TIntegerCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property CustomaryUnit: TCodeableConceptCT read fCustomaryUnit;
-    [TNaming(TNaming.nFlatCase)]
     property &Unit: TCodeableConceptCT read fUnit;
-    [TNaming(TNaming.nCamelCase)]
     property ConversionFactor: TDecimalCT read fConversionFactor;
-    [TNaming(TNaming.nCamelCase)]
     property DecimalPrecision: TIntegerCT read fDecimalPrecision;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ObservationDefinition.QualifiedInterval')]
   TObservationDefinitionQualifiedIntervalCT = class(TBackboneElementCT)
   private
@@ -21549,21 +16777,13 @@ type
     fGestationalAge: TRangeCT;
     fCondition: TStringCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Category: TObservationRangeCategoryCT read fCategory;
-    [TNaming(TNaming.nFlatCase)]
     property Range: TRangeCT read fRange;
-    [TNaming(TNaming.nFlatCase)]
     property Context: TCodeableConceptCT read fContext;
-    [TNaming(TNaming.nCamelCase)]
     property AppliesTo: TCodeableConceptCTList read fAppliesTo;
-    [TNaming(TNaming.nFlatCase)]
     property Gender: TAdministrativeGenderCT read fGender;
-    [TNaming(TNaming.nFlatCase)]
     property Age: TRangeCT read fAge;
-    [TNaming(TNaming.nCamelCase)]
     property GestationalAge: TRangeCT read fGestationalAge;
-    [TNaming(TNaming.nFlatCase)]
     property Condition: TStringCT read fCondition;
   end;
 
@@ -21571,7 +16791,6 @@ type
   private
     fValue: TObservationDataTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TObservationDataTypeListST read fValue write fValue;
   end;
 
@@ -21579,7 +16798,6 @@ type
   private
     fValue: TObservationRangeCategoryListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TObservationRangeCategoryListST read fValue write fValue;
   end;
 
@@ -21612,68 +16830,41 @@ type
     fParameter: TOperationDefinitionParameterCTList;
     fOverload: TOperationDefinitionOverloadCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUriCT read fUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCT read fVersion;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Title: TStringCT read fTitle;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TPublicationStatusCT read fStatus;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Kind: TOperationKindCT read fKind;
-    [TNaming(TNaming.nFlatCase)]
     property Experimental: TBooleanCT read fExperimental;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Publisher: TStringCT read fPublisher;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TContactDetailCTList read fContact;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TMarkdownCT read fDescription;
-    [TNaming(TNaming.nCamelCase)]
     property UseContext: TUsageContextCTList read fUseContext;
-    [TNaming(TNaming.nFlatCase)]
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    [TNaming(TNaming.nFlatCase)]
     property Purpose: TMarkdownCT read fPurpose;
-    [TNaming(TNaming.nCamelCase)]
     property AffectsState: TBooleanCT read fAffectsState;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Comment: TMarkdownCT read fComment;
-    [TNaming(TNaming.nFlatCase)]
     property Base: TCanonicalCT read fBase;
-    [TNaming(TNaming.nFlatCase)]
     property Resource: TCodeCTList read fResource;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property System: TBooleanCT read fSystem;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TBooleanCT read fType;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Instance: TBooleanCT read fInstance;
-    [TNaming(TNaming.nCamelCase)]
     property InputProfile: TCanonicalCT read fInputProfile;
-    [TNaming(TNaming.nCamelCase)]
     property OutputProfile: TCanonicalCT read fOutputProfile;
-    [TNaming(TNaming.nFlatCase)]
     property Parameter: TOperationDefinitionParameterCTList read fParameter;
-    [TNaming(TNaming.nFlatCase)]
     property Overload: TOperationDefinitionOverloadCTList read fOverload;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('OperationDefinition.Parameter')]
   TOperationDefinitionParameterCT = class(TBackboneElementCT)
   private
@@ -21690,34 +16881,22 @@ type
     fPart: TOperationDefinitionParameterCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: TCodeCT read fName;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Use: TOperationParameterUseCT read fUse;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Min: TIntegerCT read fMin;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Max: TStringCT read fMax;
-    [TNaming(TNaming.nFlatCase)]
     property Documentation: TStringCT read fDocumentation;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeCT read fType;
-    [TNaming(TNaming.nCamelCase)]
     property TargetProfile: TCanonicalCTList read fTargetProfile;
-    [TNaming(TNaming.nCamelCase)]
     property SearchType: TSearchParamTypeCT read fSearchType;
-    [TNaming(TNaming.nFlatCase)]
     property Binding: TOperationDefinitionBindingCT read fBinding;
-    [TNaming(TNaming.nCamelCase)]
     property ReferencedFrom: TOperationDefinitionReferencedFromCTList read fReferencedFrom;
-    [TNaming(TNaming.nFlatCase)]
     property Part: TOperationDefinitionParameterCTList read fPart;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('OperationDefinition.Binding')]
   TOperationDefinitionBindingCT = class(TBackboneElementCT)
   private
@@ -21725,14 +16904,11 @@ type
     fValueSet: TCanonicalCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Strength: TBindingStrengthCT read fStrength;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ValueSet: TCanonicalCT read fValueSet;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('OperationDefinition.ReferencedFrom')]
   TOperationDefinitionReferencedFromCT = class(TBackboneElementCT)
   private
@@ -21740,22 +16916,17 @@ type
     fSourceId: TStringCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Source: TStringCT read fSource;
-    [TNaming(TNaming.nCamelCase)]
     property SourceId: TStringCT read fSourceId;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('OperationDefinition.Overload')]
   TOperationDefinitionOverloadCT = class(TBackboneElementCT)
   private
     fParameterName: TStringCTList;
     fComment: TStringCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property ParameterName: TStringCTList read fParameterName;
-    [TNaming(TNaming.nFlatCase)]
     property Comment: TStringCT read fComment;
   end;
 
@@ -21763,7 +16934,6 @@ type
   private
     fValue: TOperationParameterUseListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TOperationParameterUseListST read fValue write fValue;
   end;
 
@@ -21771,7 +16941,6 @@ type
   private
     fValue: TOperationKindListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TOperationKindListST read fValue write fValue;
   end;
 
@@ -21779,11 +16948,9 @@ type
   private
     fIssue: TOperationOutcomeIssueCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Issue: TOperationOutcomeIssueCTList read fIssue;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('OperationOutcome.Issue')]
   TOperationOutcomeIssueCT = class(TBackboneElementCT)
   private
@@ -21795,18 +16962,12 @@ type
     fExpression: TStringCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Severity: TIssueSeverityCT read fSeverity;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TIssueTypeCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Details: TCodeableConceptCT read fDetails;
-    [TNaming(TNaming.nFlatCase)]
     property Diagnostics: TStringCT read fDiagnostics;
-    [TNaming(TNaming.nFlatCase)]
     property Location: TStringCTList read fLocation;
-    [TNaming(TNaming.nFlatCase)]
     property Expression: TStringCTList read fExpression;
   end;
 
@@ -21814,7 +16975,6 @@ type
   private
     fValue: TIssueTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TIssueTypeListST read fValue write fValue;
   end;
 
@@ -21822,7 +16982,6 @@ type
   private
     fValue: TIssueSeverityListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TIssueSeverityListST read fValue write fValue;
   end;
 
@@ -21839,29 +16998,18 @@ type
     fContact: TOrganizationContactCTList;
     fEndpoint: TReferenceCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Active: TBooleanCT read fActive;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCTList read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Alias: TStringCTList read fAlias;
-    [TNaming(TNaming.nFlatCase)]
     property Telecom: TContactPointCTList read fTelecom;
-    [TNaming(TNaming.nFlatCase)]
     property Address: TAddressCTList read fAddress;
-    [TNaming(TNaming.nCamelCase)]
     property PartOf: TReferenceCT read fPartOf;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TOrganizationContactCTList read fContact;
-    [TNaming(TNaming.nFlatCase)]
     property Endpoint: TReferenceCTList read fEndpoint;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Organization.Contact')]
   TOrganizationContactCT = class(TBackboneElementCT)
   private
@@ -21870,13 +17018,9 @@ type
     fTelecom: TContactPointCTList;
     fAddress: TAddressCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Purpose: TCodeableConceptCT read fPurpose;
-    [TNaming(TNaming.nFlatCase)]
     property Name: THumanNameCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Telecom: TContactPointCTList read fTelecom;
-    [TNaming(TNaming.nFlatCase)]
     property Address: TAddressCT read fAddress;
   end;
 
@@ -21895,29 +17039,17 @@ type
     fTelecom: TContactPointCTList;
     fEndpoint: TReferenceCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Active: TBooleanCT read fActive;
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCT read fPeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Organization: TReferenceCT read fOrganization;
-    [TNaming(TNaming.nCamelCase)]
     property ParticipatingOrganization: TReferenceCT read fParticipatingOrganization;
-    [TNaming(TNaming.nFlatCase)]
     property Network: TReferenceCTList read fNetwork;
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCTList read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Specialty: TCodeableConceptCTList read fSpecialty;
-    [TNaming(TNaming.nFlatCase)]
     property Location: TReferenceCTList read fLocation;
-    [TNaming(TNaming.nCamelCase)]
     property HealthcareService: TReferenceCTList read fHealthcareService;
-    [TNaming(TNaming.nFlatCase)]
     property Telecom: TContactPointCTList read fTelecom;
-    [TNaming(TNaming.nFlatCase)]
     property Endpoint: TReferenceCTList read fEndpoint;
   end;
 
@@ -21925,11 +17057,9 @@ type
   private
     fParameter: TParametersParameterCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Parameter: TParametersParameterCTList read fParameter;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Parameters.Parameter')]
   TParametersParameterCT = class(TBackboneElementCT)
   private
@@ -22042,161 +17172,108 @@ type
     property ValueChosen: TBasite read GetValueChosen;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueBase64Binary: TBase64BinaryCT read GetValueBase64Binary;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueBoolean: TBooleanCT read GetValueBoolean;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCanonical: TCanonicalCT read GetValueCanonical;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCode: TCodeCT read GetValueCode;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDate: TDateCT read GetValueDate;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDateTime: TDateTimeCT read GetValueDateTime;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDecimal: TDecimalCT read GetValueDecimal;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueId: TIdCT read GetValueId;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueInstant: TInstantCT read GetValueInstant;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueInteger: TIntegerCT read GetValueInteger;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueMarkdown: TMarkdownCT read GetValueMarkdown;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueOid: TOidCT read GetValueOid;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValuePositiveInt: TPositiveIntCT read GetValuePositiveInt;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueString: TStringCT read GetValueString;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueTime: TTimeCT read GetValueTime;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueUnsignedInt: TUnsignedIntCT read GetValueUnsignedInt;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueUri: TUriCT read GetValueUri;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueUrl: TUrlCT read GetValueUrl;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueUuid: TUuidCT read GetValueUuid;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueAddress: TAddressCT read GetValueAddress;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueAge: TAgeCT read GetValueAge;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueAnnotation: TAnnotationCT read GetValueAnnotation;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueAttachment: TAttachmentCT read GetValueAttachment;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCodeableConcept: TCodeableConceptCT read GetValueCodeableConcept;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCoding: TCodingCT read GetValueCoding;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueContactPoint: TContactPointCT read GetValueContactPoint;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCount: TCountCT read GetValueCount;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDistance: TDistanceCT read GetValueDistance;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDuration: TDurationCT read GetValueDuration;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueHumanName: THumanNameCT read GetValueHumanName;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueIdentifier: TIdentifierCT read GetValueIdentifier;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueMoney: TMoneyCT read GetValueMoney;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValuePeriod: TPeriodCT read GetValuePeriod;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueQuantity: TQuantityCT read GetValueQuantity;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueRange: TRangeCT read GetValueRange;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueRatio: TRatioCT read GetValueRatio;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueReference: TReferenceCT read GetValueReference;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueSampledData: TSampledDataCT read GetValueSampledData;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueSignature: TSignatureCT read GetValueSignature;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueTiming: TTimingCT read GetValueTiming;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueContactDetail: TContactDetailCT read GetValueContactDetail;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueContributor: TContributorCT read GetValueContributor;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDataRequirement: TDataRequirementCT read GetValueDataRequirement;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueExpression: TExpressionCT read GetValueExpression;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueParameterDefinition: TParameterDefinitionCT read GetValueParameterDefinition;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueRelatedArtifact: TRelatedArtifactCT read GetValueRelatedArtifact;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueTriggerDefinition: TTriggerDefinitionCT read GetValueTriggerDefinition;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueUsageContext: TUsageContextCT read GetValueUsageContext;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDosage: TDosageCT read GetValueDosage;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueMeta: TMetaCT read GetValueMeta;
-    [TNaming(TNaming.nFlatCase)]
     property Resource: TResourceContainerCT read fResource;
-    [TNaming(TNaming.nFlatCase)]
     property Part: TParametersParameterCTList read fPart;
   end;
 
@@ -22231,49 +17308,30 @@ type
     property DeceasedChosen: TBasite read GetDeceasedChosen;
     property MultipleBirthChosen: TBasite read GetMultipleBirthChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Active: TBooleanCT read fActive;
-    [TNaming(TNaming.nFlatCase)]
     property Name: THumanNameCTList read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Telecom: TContactPointCTList read fTelecom;
-    [TNaming(TNaming.nFlatCase)]
     property Gender: TAdministrativeGenderCT read fGender;
-    [TNaming(TNaming.nCamelCase)]
     property BirthDate: TDateCT read fBirthDate;
     [TChoice('Deceased')]
-    [TNaming(TNaming.nCamelCase)]
     property DeceasedBoolean: TBooleanCT read GetDeceasedBoolean;
     [TChoice('Deceased')]
-    [TNaming(TNaming.nCamelCase)]
     property DeceasedDateTime: TDateTimeCT read GetDeceasedDateTime;
-    [TNaming(TNaming.nFlatCase)]
     property Address: TAddressCTList read fAddress;
-    [TNaming(TNaming.nCamelCase)]
     property MaritalStatus: TCodeableConceptCT read fMaritalStatus;
     [TChoice('MultipleBirth')]
-    [TNaming(TNaming.nCamelCase)]
     property MultipleBirthBoolean: TBooleanCT read GetMultipleBirthBoolean;
     [TChoice('MultipleBirth')]
-    [TNaming(TNaming.nCamelCase)]
     property MultipleBirthInteger: TIntegerCT read GetMultipleBirthInteger;
-    [TNaming(TNaming.nFlatCase)]
     property Photo: TAttachmentCTList read fPhoto;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TPatientContactCTList read fContact;
-    [TNaming(TNaming.nFlatCase)]
     property Communication: TPatientCommunicationCTList read fCommunication;
-    [TNaming(TNaming.nCamelCase)]
     property GeneralPractitioner: TReferenceCTList read fGeneralPractitioner;
-    [TNaming(TNaming.nCamelCase)]
     property ManagingOrganization: TReferenceCT read fManagingOrganization;
-    [TNaming(TNaming.nFlatCase)]
     property Link: TPatientLinkCTList read fLink;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Patient.Contact')]
   TPatientContactCT = class(TBackboneElementCT)
   private
@@ -22285,23 +17343,15 @@ type
     fOrganization: TReferenceCT;
     fPeriod: TPeriodCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Relationship: TCodeableConceptCTList read fRelationship;
-    [TNaming(TNaming.nFlatCase)]
     property Name: THumanNameCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Telecom: TContactPointCTList read fTelecom;
-    [TNaming(TNaming.nFlatCase)]
     property Address: TAddressCT read fAddress;
-    [TNaming(TNaming.nFlatCase)]
     property Gender: TAdministrativeGenderCT read fGender;
-    [TNaming(TNaming.nFlatCase)]
     property Organization: TReferenceCT read fOrganization;
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCT read fPeriod;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Patient.Communication')]
   TPatientCommunicationCT = class(TBackboneElementCT)
   private
@@ -22309,13 +17359,10 @@ type
     fPreferred: TBooleanCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Language: TCodeableConceptCT read fLanguage;
-    [TNaming(TNaming.nFlatCase)]
     property Preferred: TBooleanCT read fPreferred;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Patient.Link')]
   TPatientLinkCT = class(TBackboneElementCT)
   private
@@ -22323,10 +17370,8 @@ type
     fType: TLinkTypeCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Other: TReferenceCT read fOther;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TLinkTypeCT read fType;
   end;
 
@@ -22334,7 +17379,6 @@ type
   private
     fValue: TLinkTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TLinkTypeListST read fValue write fValue;
   end;
 
@@ -22353,34 +17397,22 @@ type
     fAmount: TMoneyCT;
     fPaymentStatus: TCodeableConceptCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TFinancialResourceStatusCodesCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Request: TReferenceCT read fRequest;
-    [TNaming(TNaming.nFlatCase)]
     property Response: TReferenceCT read fResponse;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Created: TDateTimeCT read fCreated;
-    [TNaming(TNaming.nFlatCase)]
     property Provider: TReferenceCT read fProvider;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Payment: TReferenceCT read fPayment;
-    [TNaming(TNaming.nCamelCase)]
     property PaymentDate: TDateCT read fPaymentDate;
-    [TNaming(TNaming.nFlatCase)]
     property Payee: TReferenceCT read fPayee;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Recipient: TReferenceCT read fRecipient;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Amount: TMoneyCT read fAmount;
-    [TNaming(TNaming.nCamelCase)]
     property PaymentStatus: TCodeableConceptCT read fPaymentStatus;
   end;
 
@@ -22402,43 +17434,27 @@ type
     fFormCode: TCodeableConceptCT;
     fProcessNote: TPaymentReconciliationProcessNoteCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TFinancialResourceStatusCodesCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCT read fPeriod;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Created: TDateTimeCT read fCreated;
-    [TNaming(TNaming.nCamelCase)]
     property PaymentIssuer: TReferenceCT read fPaymentIssuer;
-    [TNaming(TNaming.nFlatCase)]
     property Request: TReferenceCT read fRequest;
-    [TNaming(TNaming.nFlatCase)]
     property Requestor: TReferenceCT read fRequestor;
-    [TNaming(TNaming.nFlatCase)]
     property Outcome: TRemittanceOutcomeCT read fOutcome;
-    [TNaming(TNaming.nFlatCase)]
     property Disposition: TStringCT read fDisposition;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property PaymentDate: TDateCT read fPaymentDate;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property PaymentAmount: TMoneyCT read fPaymentAmount;
-    [TNaming(TNaming.nCamelCase)]
     property PaymentIdentifier: TIdentifierCT read fPaymentIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Detail: TPaymentReconciliationDetailCTList read fDetail;
-    [TNaming(TNaming.nCamelCase)]
     property FormCode: TCodeableConceptCT read fFormCode;
-    [TNaming(TNaming.nCamelCase)]
     property ProcessNote: TPaymentReconciliationProcessNoteCTList read fProcessNote;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('PaymentReconciliation.Detail')]
   TPaymentReconciliationDetailCT = class(TBackboneElementCT)
   private
@@ -22453,39 +17469,26 @@ type
     fPayee: TReferenceCT;
     fAmount: TMoneyCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCT read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Predecessor: TIdentifierCT read fPredecessor;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Request: TReferenceCT read fRequest;
-    [TNaming(TNaming.nFlatCase)]
     property Submitter: TReferenceCT read fSubmitter;
-    [TNaming(TNaming.nFlatCase)]
     property Response: TReferenceCT read fResponse;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Responsible: TReferenceCT read fResponsible;
-    [TNaming(TNaming.nFlatCase)]
     property Payee: TReferenceCT read fPayee;
-    [TNaming(TNaming.nFlatCase)]
     property Amount: TMoneyCT read fAmount;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('PaymentReconciliation.ProcessNote')]
   TPaymentReconciliationProcessNoteCT = class(TBackboneElementCT)
   private
     fType: TNoteTypeCT;
     fText: TStringCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TNoteTypeCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Text: TStringCT read fText;
   end;
 
@@ -22502,29 +17505,18 @@ type
     fActive: TBooleanCT;
     fLink: TPersonLinkCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Name: THumanNameCTList read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Telecom: TContactPointCTList read fTelecom;
-    [TNaming(TNaming.nFlatCase)]
     property Gender: TAdministrativeGenderCT read fGender;
-    [TNaming(TNaming.nCamelCase)]
     property BirthDate: TDateCT read fBirthDate;
-    [TNaming(TNaming.nFlatCase)]
     property Address: TAddressCTList read fAddress;
-    [TNaming(TNaming.nFlatCase)]
     property Photo: TAttachmentCT read fPhoto;
-    [TNaming(TNaming.nCamelCase)]
     property ManagingOrganization: TReferenceCT read fManagingOrganization;
-    [TNaming(TNaming.nFlatCase)]
     property Active: TBooleanCT read fActive;
-    [TNaming(TNaming.nFlatCase)]
     property Link: TPersonLinkCTList read fLink;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Person.Link')]
   TPersonLinkCT = class(TBackboneElementCT)
   private
@@ -22532,9 +17524,7 @@ type
     fAssurance: TIdentityAssuranceLevelCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Target: TReferenceCT read fTarget;
-    [TNaming(TNaming.nFlatCase)]
     property Assurance: TIdentityAssuranceLevelCT read fAssurance;
   end;
 
@@ -22542,7 +17532,6 @@ type
   private
     fValue: TIdentityAssuranceLevelListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TIdentityAssuranceLevelListST read fValue write fValue;
   end;
 
@@ -22587,76 +17576,43 @@ type
   public
     property SubjectChosen: TBasite read GetSubjectChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUriCT read fUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCT read fVersion;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Title: TStringCT read fTitle;
-    [TNaming(TNaming.nFlatCase)]
     property Subtitle: TStringCT read fSubtitle;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TPublicationStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Experimental: TBooleanCT read fExperimental;
     [TChoice('Subject')]
-    [TNaming(TNaming.nCamelCase)]
     property SubjectCodeableConcept: TCodeableConceptCT read GetSubjectCodeableConcept;
     [TChoice('Subject')]
-    [TNaming(TNaming.nCamelCase)]
     property SubjectReference: TReferenceCT read GetSubjectReference;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Publisher: TStringCT read fPublisher;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TContactDetailCTList read fContact;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TMarkdownCT read fDescription;
-    [TNaming(TNaming.nCamelCase)]
     property UseContext: TUsageContextCTList read fUseContext;
-    [TNaming(TNaming.nFlatCase)]
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    [TNaming(TNaming.nFlatCase)]
     property Purpose: TMarkdownCT read fPurpose;
-    [TNaming(TNaming.nFlatCase)]
     property Usage: TStringCT read fUsage;
-    [TNaming(TNaming.nFlatCase)]
     property Copyright: TMarkdownCT read fCopyright;
-    [TNaming(TNaming.nCamelCase)]
     property ApprovalDate: TDateCT read fApprovalDate;
-    [TNaming(TNaming.nCamelCase)]
     property LastReviewDate: TDateCT read fLastReviewDate;
-    [TNaming(TNaming.nCamelCase)]
     property EffectivePeriod: TPeriodCT read fEffectivePeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Topic: TCodeableConceptCTList read fTopic;
-    [TNaming(TNaming.nFlatCase)]
     property Author: TContactDetailCTList read fAuthor;
-    [TNaming(TNaming.nFlatCase)]
     property Editor: TContactDetailCTList read fEditor;
-    [TNaming(TNaming.nFlatCase)]
     property Reviewer: TContactDetailCTList read fReviewer;
-    [TNaming(TNaming.nFlatCase)]
     property Endorser: TContactDetailCTList read fEndorser;
-    [TNaming(TNaming.nCamelCase)]
     property RelatedArtifact: TRelatedArtifactCTList read fRelatedArtifact;
-    [TNaming(TNaming.nFlatCase)]
     property &Library: TCanonicalCTList read fLibrary;
-    [TNaming(TNaming.nFlatCase)]
     property Goal: TPlanDefinitionGoalCTList read fGoal;
-    [TNaming(TNaming.nFlatCase)]
     property Action: TPlanDefinitionActionCTList read fAction;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('PlanDefinition.Goal')]
   TPlanDefinitionGoalCT = class(TBackboneElementCT)
   private
@@ -22668,24 +17624,16 @@ type
     fDocumentation: TRelatedArtifactCTList;
     fTarget: TPlanDefinitionTargetCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCT read fCategory;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Description: TCodeableConceptCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Priority: TCodeableConceptCT read fPriority;
-    [TNaming(TNaming.nFlatCase)]
     property Start: TCodeableConceptCT read fStart;
-    [TNaming(TNaming.nFlatCase)]
     property Addresses: TCodeableConceptCTList read fAddresses;
-    [TNaming(TNaming.nFlatCase)]
     property Documentation: TRelatedArtifactCTList read fDocumentation;
-    [TNaming(TNaming.nFlatCase)]
     property Target: TPlanDefinitionTargetCTList read fTarget;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('PlanDefinition.Target')]
   TPlanDefinitionTargetCT = class(TBackboneElementCT)
   private
@@ -22702,22 +17650,16 @@ type
   public
     property DetailChosen: TBasite read GetDetailChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Measure: TCodeableConceptCT read fMeasure;
     [TChoice('Detail')]
-    [TNaming(TNaming.nCamelCase)]
     property DetailQuantity: TQuantityCT read GetDetailQuantity;
     [TChoice('Detail')]
-    [TNaming(TNaming.nCamelCase)]
     property DetailRange: TRangeCT read GetDetailRange;
     [TChoice('Detail')]
-    [TNaming(TNaming.nCamelCase)]
     property DetailCodeableConcept: TCodeableConceptCT read GetDetailCodeableConcept;
-    [TNaming(TNaming.nFlatCase)]
     property Due: TDurationCT read fDue;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('PlanDefinition.Action')]
   TPlanDefinitionActionCT = class(TBackboneElementCT)
   private
@@ -22774,87 +17716,52 @@ type
     property TimingChosen: TBasite read GetTimingChosen;
     property DefinitionChosen: TBasite read GetDefinitionChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Prefix: TStringCT read fPrefix;
-    [TNaming(TNaming.nFlatCase)]
     property Title: TStringCT read fTitle;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nCamelCase)]
     property TextEquivalent: TStringCT read fTextEquivalent;
-    [TNaming(TNaming.nFlatCase)]
     property Priority: TRequestPriorityCT read fPriority;
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCTList read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Reason: TCodeableConceptCTList read fReason;
-    [TNaming(TNaming.nFlatCase)]
     property Documentation: TRelatedArtifactCTList read fDocumentation;
-    [TNaming(TNaming.nCamelCase)]
     property GoalId: TIdCTList read fGoalId;
     [TChoice('Subject')]
-    [TNaming(TNaming.nCamelCase)]
     property SubjectCodeableConcept: TCodeableConceptCT read GetSubjectCodeableConcept;
     [TChoice('Subject')]
-    [TNaming(TNaming.nCamelCase)]
     property SubjectReference: TReferenceCT read GetSubjectReference;
-    [TNaming(TNaming.nFlatCase)]
     property Trigger: TTriggerDefinitionCTList read fTrigger;
-    [TNaming(TNaming.nFlatCase)]
     property Condition: TPlanDefinitionConditionCTList read fCondition;
-    [TNaming(TNaming.nFlatCase)]
     property Input: TDataRequirementCTList read fInput;
-    [TNaming(TNaming.nFlatCase)]
     property Output: TDataRequirementCTList read fOutput;
-    [TNaming(TNaming.nCamelCase)]
     property RelatedAction: TPlanDefinitionRelatedActionCTList read fRelatedAction;
     [TChoice('Timing')]
-    [TNaming(TNaming.nCamelCase)]
     property TimingDateTime: TDateTimeCT read GetTimingDateTime;
     [TChoice('Timing')]
-    [TNaming(TNaming.nCamelCase)]
     property TimingAge: TAgeCT read GetTimingAge;
     [TChoice('Timing')]
-    [TNaming(TNaming.nCamelCase)]
     property TimingPeriod: TPeriodCT read GetTimingPeriod;
     [TChoice('Timing')]
-    [TNaming(TNaming.nCamelCase)]
     property TimingDuration: TDurationCT read GetTimingDuration;
     [TChoice('Timing')]
-    [TNaming(TNaming.nCamelCase)]
     property TimingRange: TRangeCT read GetTimingRange;
     [TChoice('Timing')]
-    [TNaming(TNaming.nCamelCase)]
     property TimingTiming: TTimingCT read GetTimingTiming;
-    [TNaming(TNaming.nFlatCase)]
     property Participant: TPlanDefinitionParticipantCTList read fParticipant;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nCamelCase)]
     property GroupingBehavior: TActionGroupingBehaviorCT read fGroupingBehavior;
-    [TNaming(TNaming.nCamelCase)]
     property SelectionBehavior: TActionSelectionBehaviorCT read fSelectionBehavior;
-    [TNaming(TNaming.nCamelCase)]
     property RequiredBehavior: TActionRequiredBehaviorCT read fRequiredBehavior;
-    [TNaming(TNaming.nCamelCase)]
     property PrecheckBehavior: TActionPrecheckBehaviorCT read fPrecheckBehavior;
-    [TNaming(TNaming.nCamelCase)]
     property CardinalityBehavior: TActionCardinalityBehaviorCT read fCardinalityBehavior;
     [TChoice('Definition')]
-    [TNaming(TNaming.nCamelCase)]
     property DefinitionCanonical: TCanonicalCT read GetDefinitionCanonical;
     [TChoice('Definition')]
-    [TNaming(TNaming.nCamelCase)]
     property DefinitionUri: TUriCT read GetDefinitionUri;
-    [TNaming(TNaming.nFlatCase)]
     property Transform: TCanonicalCT read fTransform;
-    [TNaming(TNaming.nCamelCase)]
     property DynamicValue: TPlanDefinitionDynamicValueCTList read fDynamicValue;
-    [TNaming(TNaming.nFlatCase)]
     property Action: TPlanDefinitionActionCTList read fAction;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('PlanDefinition.Condition')]
   TPlanDefinitionConditionCT = class(TBackboneElementCT)
   private
@@ -22862,13 +17769,10 @@ type
     fExpression: TExpressionCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Kind: TActionConditionKindCT read fKind;
-    [TNaming(TNaming.nFlatCase)]
     property Expression: TExpressionCT read fExpression;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('PlanDefinition.RelatedAction')]
   TPlanDefinitionRelatedActionCT = class(TBackboneElementCT)
   private
@@ -22884,20 +17788,15 @@ type
     property OffsetChosen: TBasite read GetOffsetChosen;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ActionId: TIdCT read fActionId;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Relationship: TActionRelationshipTypeCT read fRelationship;
     [TChoice('Offset')]
-    [TNaming(TNaming.nCamelCase)]
     property OffsetDuration: TDurationCT read GetOffsetDuration;
     [TChoice('Offset')]
-    [TNaming(TNaming.nCamelCase)]
     property OffsetRange: TRangeCT read GetOffsetRange;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('PlanDefinition.Participant')]
   TPlanDefinitionParticipantCT = class(TBackboneElementCT)
   private
@@ -22905,22 +17804,17 @@ type
     fRole: TCodeableConceptCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TActionParticipantTypeCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Role: TCodeableConceptCT read fRole;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('PlanDefinition.DynamicValue')]
   TPlanDefinitionDynamicValueCT = class(TBackboneElementCT)
   private
     fPath: TStringCT;
     fExpression: TExpressionCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Path: TStringCT read fPath;
-    [TNaming(TNaming.nFlatCase)]
     property Expression: TExpressionCT read fExpression;
   end;
 
@@ -22928,7 +17822,6 @@ type
   private
     fValue: TActionRequiredBehaviorListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TActionRequiredBehaviorListST read fValue write fValue;
   end;
 
@@ -22936,7 +17829,6 @@ type
   private
     fValue: TActionRelationshipTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TActionRelationshipTypeListST read fValue write fValue;
   end;
 
@@ -22944,7 +17836,6 @@ type
   private
     fValue: TActionGroupingBehaviorListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TActionGroupingBehaviorListST read fValue write fValue;
   end;
 
@@ -22952,7 +17843,6 @@ type
   private
     fValue: TActionSelectionBehaviorListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TActionSelectionBehaviorListST read fValue write fValue;
   end;
 
@@ -22960,7 +17850,6 @@ type
   private
     fValue: TActionCardinalityBehaviorListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TActionCardinalityBehaviorListST read fValue write fValue;
   end;
 
@@ -22968,7 +17857,6 @@ type
   private
     fValue: TActionPrecheckBehaviorListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TActionPrecheckBehaviorListST read fValue write fValue;
   end;
 
@@ -22976,7 +17864,6 @@ type
   private
     fValue: TActionConditionKindListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TActionConditionKindListST read fValue write fValue;
   end;
 
@@ -22993,29 +17880,18 @@ type
     fQualification: TPractitionerQualificationCTList;
     fCommunication: TCodeableConceptCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Active: TBooleanCT read fActive;
-    [TNaming(TNaming.nFlatCase)]
     property Name: THumanNameCTList read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Telecom: TContactPointCTList read fTelecom;
-    [TNaming(TNaming.nFlatCase)]
     property Address: TAddressCTList read fAddress;
-    [TNaming(TNaming.nFlatCase)]
     property Gender: TAdministrativeGenderCT read fGender;
-    [TNaming(TNaming.nCamelCase)]
     property BirthDate: TDateCT read fBirthDate;
-    [TNaming(TNaming.nFlatCase)]
     property Photo: TAttachmentCTList read fPhoto;
-    [TNaming(TNaming.nFlatCase)]
     property Qualification: TPractitionerQualificationCTList read fQualification;
-    [TNaming(TNaming.nFlatCase)]
     property Communication: TCodeableConceptCTList read fCommunication;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Practitioner.Qualification')]
   TPractitionerQualificationCT = class(TBackboneElementCT)
   private
@@ -23024,14 +17900,10 @@ type
     fPeriod: TPeriodCT;
     fIssuer: TReferenceCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCT read fPeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Issuer: TReferenceCT read fIssuer;
   end;
 
@@ -23052,37 +17924,22 @@ type
     fAvailabilityExceptions: TStringCT;
     fEndpoint: TReferenceCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Active: TBooleanCT read fActive;
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCT read fPeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Practitioner: TReferenceCT read fPractitioner;
-    [TNaming(TNaming.nFlatCase)]
     property Organization: TReferenceCT read fOrganization;
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCTList read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Specialty: TCodeableConceptCTList read fSpecialty;
-    [TNaming(TNaming.nFlatCase)]
     property Location: TReferenceCTList read fLocation;
-    [TNaming(TNaming.nCamelCase)]
     property HealthcareService: TReferenceCTList read fHealthcareService;
-    [TNaming(TNaming.nFlatCase)]
     property Telecom: TContactPointCTList read fTelecom;
-    [TNaming(TNaming.nCamelCase)]
     property AvailableTime: TPractitionerRoleAvailableTimeCTList read fAvailableTime;
-    [TNaming(TNaming.nCamelCase)]
     property NotAvailable: TPractitionerRoleNotAvailableCTList read fNotAvailable;
-    [TNaming(TNaming.nCamelCase)]
     property AvailabilityExceptions: TStringCT read fAvailabilityExceptions;
-    [TNaming(TNaming.nFlatCase)]
     property Endpoint: TReferenceCTList read fEndpoint;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('PractitionerRole.AvailableTime')]
   TPractitionerRoleAvailableTimeCT = class(TBackboneElementCT)
   private
@@ -23091,17 +17948,12 @@ type
     fAvailableStartTime: TTimeCT;
     fAvailableEndTime: TTimeCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property DaysOfWeek: TDaysOfWeekCTList read fDaysOfWeek;
-    [TNaming(TNaming.nCamelCase)]
     property AllDay: TBooleanCT read fAllDay;
-    [TNaming(TNaming.nCamelCase)]
     property AvailableStartTime: TTimeCT read fAvailableStartTime;
-    [TNaming(TNaming.nCamelCase)]
     property AvailableEndTime: TTimeCT read fAvailableEndTime;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('PractitionerRole.NotAvailable')]
   TPractitionerRoleNotAvailableCT = class(TBackboneElementCT)
   private
@@ -23109,9 +17961,7 @@ type
     fDuring: TPeriodCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property During: TPeriodCT read fDuring;
   end;
 
@@ -23159,80 +18009,47 @@ type
   public
     property PerformedChosen: TBasite read GetPerformedChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nCamelCase)]
     property InstantiatesCanonical: TCanonicalCTList read fInstantiatesCanonical;
-    [TNaming(TNaming.nCamelCase)]
     property InstantiatesUri: TUriCTList read fInstantiatesUri;
-    [TNaming(TNaming.nCamelCase)]
     property BasedOn: TReferenceCTList read fBasedOn;
-    [TNaming(TNaming.nCamelCase)]
     property PartOf: TReferenceCTList read fPartOf;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TEventStatusCT read fStatus;
-    [TNaming(TNaming.nCamelCase)]
     property StatusReason: TCodeableConceptCT read fStatusReason;
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCT read fCategory;
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCT read fSubject;
-    [TNaming(TNaming.nFlatCase)]
     property Encounter: TReferenceCT read fEncounter;
     [TChoice('Performed')]
-    [TNaming(TNaming.nCamelCase)]
     property PerformedDateTime: TDateTimeCT read GetPerformedDateTime;
     [TChoice('Performed')]
-    [TNaming(TNaming.nCamelCase)]
     property PerformedPeriod: TPeriodCT read GetPerformedPeriod;
     [TChoice('Performed')]
-    [TNaming(TNaming.nCamelCase)]
     property PerformedString: TStringCT read GetPerformedString;
     [TChoice('Performed')]
-    [TNaming(TNaming.nCamelCase)]
     property PerformedAge: TAgeCT read GetPerformedAge;
     [TChoice('Performed')]
-    [TNaming(TNaming.nCamelCase)]
     property PerformedRange: TRangeCT read GetPerformedRange;
-    [TNaming(TNaming.nFlatCase)]
     property Recorder: TReferenceCT read fRecorder;
-    [TNaming(TNaming.nFlatCase)]
     property Asserter: TReferenceCT read fAsserter;
-    [TNaming(TNaming.nFlatCase)]
     property Performer: TProcedurePerformerCTList read fPerformer;
-    [TNaming(TNaming.nFlatCase)]
     property Location: TReferenceCT read fLocation;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonReference: TReferenceCTList read fReasonReference;
-    [TNaming(TNaming.nCamelCase)]
     property BodySite: TCodeableConceptCTList read fBodySite;
-    [TNaming(TNaming.nFlatCase)]
     property Outcome: TCodeableConceptCT read fOutcome;
-    [TNaming(TNaming.nFlatCase)]
     property Report: TReferenceCTList read fReport;
-    [TNaming(TNaming.nFlatCase)]
     property Complication: TCodeableConceptCTList read fComplication;
-    [TNaming(TNaming.nCamelCase)]
     property ComplicationDetail: TReferenceCTList read fComplicationDetail;
-    [TNaming(TNaming.nCamelCase)]
     property FollowUp: TCodeableConceptCTList read fFollowUp;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
-    [TNaming(TNaming.nCamelCase)]
     property FocalDevice: TProcedureFocalDeviceCTList read fFocalDevice;
-    [TNaming(TNaming.nCamelCase)]
     property UsedReference: TReferenceCTList read fUsedReference;
-    [TNaming(TNaming.nCamelCase)]
     property UsedCode: TCodeableConceptCTList read fUsedCode;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Procedure.Performer')]
   TProcedurePerformerCT = class(TBackboneElementCT)
   private
@@ -23240,26 +18057,20 @@ type
     fActor: TReferenceCT;
     fOnBehalfOf: TReferenceCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property &Function: TCodeableConceptCT read fFunction;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Actor: TReferenceCT read fActor;
-    [TNaming(TNaming.nCamelCase)]
     property OnBehalfOf: TReferenceCT read fOnBehalfOf;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Procedure.FocalDevice')]
   TProcedureFocalDeviceCT = class(TBackboneElementCT)
   private
     fAction: TCodeableConceptCT;
     fManipulated: TReferenceCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Action: TCodeableConceptCT read fAction;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Manipulated: TReferenceCT read fManipulated;
   end;
 
@@ -23283,34 +18094,22 @@ type
   public
     property OccurredChosen: TBasite read GetOccurredChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Target: TReferenceCTList read fTarget;
     [TChoice('Occurred')]
-    [TNaming(TNaming.nCamelCase)]
     property OccurredPeriod: TPeriodCT read GetOccurredPeriod;
     [TChoice('Occurred')]
-    [TNaming(TNaming.nCamelCase)]
     property OccurredDateTime: TDateTimeCT read GetOccurredDateTime;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Recorded: TInstantCT read fRecorded;
-    [TNaming(TNaming.nFlatCase)]
     property Policy: TUriCTList read fPolicy;
-    [TNaming(TNaming.nFlatCase)]
     property Location: TReferenceCT read fLocation;
-    [TNaming(TNaming.nFlatCase)]
     property Reason: TCodeableConceptCTList read fReason;
-    [TNaming(TNaming.nFlatCase)]
     property Activity: TCodeableConceptCT read fActivity;
-    [TNaming(TNaming.nFlatCase)]
     property Agent: TProvenanceAgentCTList read fAgent;
-    [TNaming(TNaming.nFlatCase)]
     property Entity: TProvenanceEntityCTList read fEntity;
-    [TNaming(TNaming.nFlatCase)]
     property Signature: TSignatureCTList read fSignature;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Provenance.Agent')]
   TProvenanceAgentCT = class(TBackboneElementCT)
   private
@@ -23319,18 +18118,13 @@ type
     fWho: TReferenceCT;
     fOnBehalfOf: TReferenceCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Role: TCodeableConceptCTList read fRole;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Who: TReferenceCT read fWho;
-    [TNaming(TNaming.nCamelCase)]
     property OnBehalfOf: TReferenceCT read fOnBehalfOf;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Provenance.Entity')]
   TProvenanceEntityCT = class(TBackboneElementCT)
   private
@@ -23339,12 +18133,9 @@ type
     fAgent: TProvenanceAgentCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Role: TProvenanceEntityRoleCT read fRole;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property What: TReferenceCT read fWhat;
-    [TNaming(TNaming.nFlatCase)]
     property Agent: TProvenanceAgentCTList read fAgent;
   end;
 
@@ -23352,7 +18143,6 @@ type
   private
     fValue: TProvenanceEntityRoleListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TProvenanceEntityRoleListST read fValue write fValue;
   end;
 
@@ -23381,54 +18171,31 @@ type
     fCode: TCodingCTList;
     fItem: TQuestionnaireItemCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUriCT read fUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCT read fVersion;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Title: TStringCT read fTitle;
-    [TNaming(TNaming.nCamelCase)]
     property DerivedFrom: TCanonicalCTList read fDerivedFrom;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TPublicationStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Experimental: TBooleanCT read fExperimental;
-    [TNaming(TNaming.nCamelCase)]
     property SubjectType: TCodeCTList read fSubjectType;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Publisher: TStringCT read fPublisher;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TContactDetailCTList read fContact;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TMarkdownCT read fDescription;
-    [TNaming(TNaming.nCamelCase)]
     property UseContext: TUsageContextCTList read fUseContext;
-    [TNaming(TNaming.nFlatCase)]
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    [TNaming(TNaming.nFlatCase)]
     property Purpose: TMarkdownCT read fPurpose;
-    [TNaming(TNaming.nFlatCase)]
     property Copyright: TMarkdownCT read fCopyright;
-    [TNaming(TNaming.nCamelCase)]
     property ApprovalDate: TDateCT read fApprovalDate;
-    [TNaming(TNaming.nCamelCase)]
     property LastReviewDate: TDateCT read fLastReviewDate;
-    [TNaming(TNaming.nCamelCase)]
     property EffectivePeriod: TPeriodCT read fEffectivePeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodingCTList read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Item: TQuestionnaireItemCTList read fItem;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Questionnaire.Item')]
   TQuestionnaireItemCT = class(TBackboneElementCT)
   private
@@ -23450,42 +18217,25 @@ type
     fItem: TQuestionnaireItemCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property LinkId: TStringCT read fLinkId;
-    [TNaming(TNaming.nFlatCase)]
     property Definition: TUriCT read fDefinition;
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodingCTList read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Prefix: TStringCT read fPrefix;
-    [TNaming(TNaming.nFlatCase)]
     property Text: TStringCT read fText;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TQuestionnaireItemTypeCT read fType;
-    [TNaming(TNaming.nCamelCase)]
     property EnableWhen: TQuestionnaireEnableWhenCTList read fEnableWhen;
-    [TNaming(TNaming.nCamelCase)]
     property EnableBehavior: TEnableWhenBehaviorCT read fEnableBehavior;
-    [TNaming(TNaming.nFlatCase)]
     property Required: TBooleanCT read fRequired;
-    [TNaming(TNaming.nFlatCase)]
     property Repeats: TBooleanCT read fRepeats;
-    [TNaming(TNaming.nCamelCase)]
     property ReadOnly: TBooleanCT read fReadOnly;
-    [TNaming(TNaming.nCamelCase)]
     property MaxLength: TIntegerCT read fMaxLength;
-    [TNaming(TNaming.nCamelCase)]
     property AnswerValueSet: TCanonicalCT read fAnswerValueSet;
-    [TNaming(TNaming.nCamelCase)]
     property AnswerOption: TQuestionnaireAnswerOptionCTList read fAnswerOption;
-    [TNaming(TNaming.nFlatCase)]
     property Initial: TQuestionnaireInitialCTList read fInitial;
-    [TNaming(TNaming.nFlatCase)]
     property Item: TQuestionnaireItemCTList read fItem;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Questionnaire.EnableWhen')]
   TQuestionnaireEnableWhenCT = class(TBackboneElementCT)
   private
@@ -23517,44 +18267,31 @@ type
     property AnswerChosen: TBasite read GetAnswerChosen;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Question: TStringCT read fQuestion;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Operator: TQuestionnaireItemOperatorCT read fOperator;
     [TChoice('Answer')]
-    [TNaming(TNaming.nCamelCase)]
     property AnswerBoolean: TBooleanCT read GetAnswerBoolean;
     [TChoice('Answer')]
-    [TNaming(TNaming.nCamelCase)]
     property AnswerDecimal: TDecimalCT read GetAnswerDecimal;
     [TChoice('Answer')]
-    [TNaming(TNaming.nCamelCase)]
     property AnswerInteger: TIntegerCT read GetAnswerInteger;
     [TChoice('Answer')]
-    [TNaming(TNaming.nCamelCase)]
     property AnswerDate: TDateCT read GetAnswerDate;
     [TChoice('Answer')]
-    [TNaming(TNaming.nCamelCase)]
     property AnswerDateTime: TDateTimeCT read GetAnswerDateTime;
     [TChoice('Answer')]
-    [TNaming(TNaming.nCamelCase)]
     property AnswerTime: TTimeCT read GetAnswerTime;
     [TChoice('Answer')]
-    [TNaming(TNaming.nCamelCase)]
     property AnswerString: TStringCT read GetAnswerString;
     [TChoice('Answer')]
-    [TNaming(TNaming.nCamelCase)]
     property AnswerCoding: TCodingCT read GetAnswerCoding;
     [TChoice('Answer')]
-    [TNaming(TNaming.nCamelCase)]
     property AnswerQuantity: TQuantityCT read GetAnswerQuantity;
     [TChoice('Answer')]
-    [TNaming(TNaming.nCamelCase)]
     property AnswerReference: TReferenceCT read GetAnswerReference;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Questionnaire.AnswerOption')]
   TQuestionnaireAnswerOptionCT = class(TBackboneElementCT)
   private
@@ -23577,28 +18314,20 @@ type
     property ValueChosen: TBasite read GetValueChosen;
   published
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueInteger: TIntegerCT read GetValueInteger;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDate: TDateCT read GetValueDate;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueTime: TTimeCT read GetValueTime;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueString: TStringCT read GetValueString;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCoding: TCodingCT read GetValueCoding;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueReference: TReferenceCT read GetValueReference;
-    [TNaming(TNaming.nCamelCase)]
     property InitialSelected: TBooleanCT read fInitialSelected;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Questionnaire.Initial')]
   TQuestionnaireInitialCT = class(TBackboneElementCT)
   private
@@ -23632,40 +18361,28 @@ type
     property ValueChosen: TBasite read GetValueChosen;
   published
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueBoolean: TBooleanCT read GetValueBoolean;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDecimal: TDecimalCT read GetValueDecimal;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueInteger: TIntegerCT read GetValueInteger;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDate: TDateCT read GetValueDate;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDateTime: TDateTimeCT read GetValueDateTime;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueTime: TTimeCT read GetValueTime;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueString: TStringCT read GetValueString;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueUri: TUriCT read GetValueUri;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueAttachment: TAttachmentCT read GetValueAttachment;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCoding: TCodingCT read GetValueCoding;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueQuantity: TQuantityCT read GetValueQuantity;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueReference: TReferenceCT read GetValueReference;
   end;
 
@@ -23673,7 +18390,6 @@ type
   private
     fValue: TQuestionnaireItemTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TQuestionnaireItemTypeListST read fValue write fValue;
   end;
 
@@ -23681,7 +18397,6 @@ type
   private
     fValue: TEnableWhenBehaviorListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TEnableWhenBehaviorListST read fValue write fValue;
   end;
 
@@ -23689,7 +18404,6 @@ type
   private
     fValue: TQuestionnaireItemOperatorListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TQuestionnaireItemOperatorListST read fValue write fValue;
   end;
 
@@ -23707,32 +18421,20 @@ type
     fSource: TReferenceCT;
     fItem: TQuestionnaireResponseItemCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCT read fIdentifier;
-    [TNaming(TNaming.nCamelCase)]
     property BasedOn: TReferenceCTList read fBasedOn;
-    [TNaming(TNaming.nCamelCase)]
     property PartOf: TReferenceCTList read fPartOf;
-    [TNaming(TNaming.nFlatCase)]
     property Questionnaire: TCanonicalCT read fQuestionnaire;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TQuestionnaireResponseStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCT read fSubject;
-    [TNaming(TNaming.nFlatCase)]
     property Encounter: TReferenceCT read fEncounter;
-    [TNaming(TNaming.nFlatCase)]
     property Authored: TDateTimeCT read fAuthored;
-    [TNaming(TNaming.nFlatCase)]
     property Author: TReferenceCT read fAuthor;
-    [TNaming(TNaming.nFlatCase)]
     property Source: TReferenceCT read fSource;
-    [TNaming(TNaming.nFlatCase)]
     property Item: TQuestionnaireResponseItemCTList read fItem;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('QuestionnaireResponse.Item')]
   TQuestionnaireResponseItemCT = class(TBackboneElementCT)
   private
@@ -23743,19 +18445,13 @@ type
     fItem: TQuestionnaireResponseItemCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property LinkId: TStringCT read fLinkId;
-    [TNaming(TNaming.nFlatCase)]
     property Definition: TUriCT read fDefinition;
-    [TNaming(TNaming.nFlatCase)]
     property Text: TStringCT read fText;
-    [TNaming(TNaming.nFlatCase)]
     property Answer: TQuestionnaireResponseAnswerCTList read fAnswer;
-    [TNaming(TNaming.nFlatCase)]
     property Item: TQuestionnaireResponseItemCTList read fItem;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('QuestionnaireResponse.Answer')]
   TQuestionnaireResponseAnswerCT = class(TBackboneElementCT)
   private
@@ -23790,42 +18486,29 @@ type
     property ValueChosen: TBasite read GetValueChosen;
   published
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueBoolean: TBooleanCT read GetValueBoolean;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDecimal: TDecimalCT read GetValueDecimal;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueInteger: TIntegerCT read GetValueInteger;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDate: TDateCT read GetValueDate;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDateTime: TDateTimeCT read GetValueDateTime;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueTime: TTimeCT read GetValueTime;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueString: TStringCT read GetValueString;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueUri: TUriCT read GetValueUri;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueAttachment: TAttachmentCT read GetValueAttachment;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCoding: TCodingCT read GetValueCoding;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueQuantity: TQuantityCT read GetValueQuantity;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueReference: TReferenceCT read GetValueReference;
-    [TNaming(TNaming.nFlatCase)]
     property Item: TQuestionnaireResponseItemCTList read fItem;
   end;
 
@@ -23833,7 +18516,6 @@ type
   private
     fValue: TQuestionnaireResponseStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TQuestionnaireResponseStatusListST read fValue write fValue;
   end;
 
@@ -23852,34 +18534,21 @@ type
     fPeriod: TPeriodCT;
     fCommunication: TRelatedPersonCommunicationCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Active: TBooleanCT read fActive;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Patient: TReferenceCT read fPatient;
-    [TNaming(TNaming.nFlatCase)]
     property Relationship: TCodeableConceptCTList read fRelationship;
-    [TNaming(TNaming.nFlatCase)]
     property Name: THumanNameCTList read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Telecom: TContactPointCTList read fTelecom;
-    [TNaming(TNaming.nFlatCase)]
     property Gender: TAdministrativeGenderCT read fGender;
-    [TNaming(TNaming.nCamelCase)]
     property BirthDate: TDateCT read fBirthDate;
-    [TNaming(TNaming.nFlatCase)]
     property Address: TAddressCTList read fAddress;
-    [TNaming(TNaming.nFlatCase)]
     property Photo: TAttachmentCTList read fPhoto;
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCT read fPeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Communication: TRelatedPersonCommunicationCTList read fCommunication;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('RelatedPerson.Communication')]
   TRelatedPersonCommunicationCT = class(TBackboneElementCT)
   private
@@ -23887,9 +18556,7 @@ type
     fPreferred: TBooleanCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Language: TCodeableConceptCT read fLanguage;
-    [TNaming(TNaming.nFlatCase)]
     property Preferred: TBooleanCT read fPreferred;
   end;
 
@@ -23914,47 +18581,28 @@ type
     fNote: TAnnotationCTList;
     fAction: TRequestGroupActionCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nCamelCase)]
     property InstantiatesCanonical: TCanonicalCTList read fInstantiatesCanonical;
-    [TNaming(TNaming.nCamelCase)]
     property InstantiatesUri: TUriCTList read fInstantiatesUri;
-    [TNaming(TNaming.nCamelCase)]
     property BasedOn: TReferenceCTList read fBasedOn;
-    [TNaming(TNaming.nFlatCase)]
     property Replaces: TReferenceCTList read fReplaces;
-    [TNaming(TNaming.nCamelCase)]
     property GroupIdentifier: TIdentifierCT read fGroupIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TRequestStatusCT read fStatus;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Intent: TRequestIntentCT read fIntent;
-    [TNaming(TNaming.nFlatCase)]
     property Priority: TRequestPriorityCT read fPriority;
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCT read fSubject;
-    [TNaming(TNaming.nFlatCase)]
     property Encounter: TReferenceCT read fEncounter;
-    [TNaming(TNaming.nCamelCase)]
     property AuthoredOn: TDateTimeCT read fAuthoredOn;
-    [TNaming(TNaming.nFlatCase)]
     property Author: TReferenceCT read fAuthor;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonReference: TReferenceCTList read fReasonReference;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
-    [TNaming(TNaming.nFlatCase)]
     property Action: TRequestGroupActionCTList read fAction;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('RequestGroup.Action')]
   TRequestGroupActionCT = class(TBackboneElementCT)
   private
@@ -23993,63 +18641,38 @@ type
   public
     property TimingChosen: TBasite read GetTimingChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Prefix: TStringCT read fPrefix;
-    [TNaming(TNaming.nFlatCase)]
     property Title: TStringCT read fTitle;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nCamelCase)]
     property TextEquivalent: TStringCT read fTextEquivalent;
-    [TNaming(TNaming.nFlatCase)]
     property Priority: TRequestPriorityCT read fPriority;
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCTList read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Documentation: TRelatedArtifactCTList read fDocumentation;
-    [TNaming(TNaming.nFlatCase)]
     property Condition: TRequestGroupConditionCTList read fCondition;
-    [TNaming(TNaming.nCamelCase)]
     property RelatedAction: TRequestGroupRelatedActionCTList read fRelatedAction;
     [TChoice('Timing')]
-    [TNaming(TNaming.nCamelCase)]
     property TimingDateTime: TDateTimeCT read GetTimingDateTime;
     [TChoice('Timing')]
-    [TNaming(TNaming.nCamelCase)]
     property TimingAge: TAgeCT read GetTimingAge;
     [TChoice('Timing')]
-    [TNaming(TNaming.nCamelCase)]
     property TimingPeriod: TPeriodCT read GetTimingPeriod;
     [TChoice('Timing')]
-    [TNaming(TNaming.nCamelCase)]
     property TimingDuration: TDurationCT read GetTimingDuration;
     [TChoice('Timing')]
-    [TNaming(TNaming.nCamelCase)]
     property TimingRange: TRangeCT read GetTimingRange;
     [TChoice('Timing')]
-    [TNaming(TNaming.nCamelCase)]
     property TimingTiming: TTimingCT read GetTimingTiming;
-    [TNaming(TNaming.nFlatCase)]
     property Participant: TReferenceCTList read fParticipant;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nCamelCase)]
     property GroupingBehavior: TActionGroupingBehaviorCT read fGroupingBehavior;
-    [TNaming(TNaming.nCamelCase)]
     property SelectionBehavior: TActionSelectionBehaviorCT read fSelectionBehavior;
-    [TNaming(TNaming.nCamelCase)]
     property RequiredBehavior: TActionRequiredBehaviorCT read fRequiredBehavior;
-    [TNaming(TNaming.nCamelCase)]
     property PrecheckBehavior: TActionPrecheckBehaviorCT read fPrecheckBehavior;
-    [TNaming(TNaming.nCamelCase)]
     property CardinalityBehavior: TActionCardinalityBehaviorCT read fCardinalityBehavior;
-    [TNaming(TNaming.nFlatCase)]
     property Resource: TReferenceCT read fResource;
-    [TNaming(TNaming.nFlatCase)]
     property Action: TRequestGroupActionCTList read fAction;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('RequestGroup.Condition')]
   TRequestGroupConditionCT = class(TBackboneElementCT)
   private
@@ -24057,13 +18680,10 @@ type
     fExpression: TExpressionCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Kind: TActionConditionKindCT read fKind;
-    [TNaming(TNaming.nFlatCase)]
     property Expression: TExpressionCT read fExpression;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('RequestGroup.RelatedAction')]
   TRequestGroupRelatedActionCT = class(TBackboneElementCT)
   private
@@ -24079,16 +18699,12 @@ type
     property OffsetChosen: TBasite read GetOffsetChosen;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ActionId: TIdCT read fActionId;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Relationship: TActionRelationshipTypeCT read fRelationship;
     [TChoice('Offset')]
-    [TNaming(TNaming.nCamelCase)]
     property OffsetDuration: TDurationCT read GetOffsetDuration;
     [TChoice('Offset')]
-    [TNaming(TNaming.nCamelCase)]
     property OffsetRange: TRangeCT read GetOffsetRange;
   end;
 
@@ -24136,79 +18752,44 @@ type
   public
     property SubjectChosen: TBasite read GetSubjectChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUriCT read fUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCT read fVersion;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Title: TStringCT read fTitle;
-    [TNaming(TNaming.nCamelCase)]
     property ShortTitle: TStringCT read fShortTitle;
-    [TNaming(TNaming.nFlatCase)]
     property Subtitle: TStringCT read fSubtitle;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TPublicationStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Experimental: TBooleanCT read fExperimental;
     [TChoice('Subject')]
-    [TNaming(TNaming.nCamelCase)]
     property SubjectCodeableConcept: TCodeableConceptCT read GetSubjectCodeableConcept;
     [TChoice('Subject')]
-    [TNaming(TNaming.nCamelCase)]
     property SubjectReference: TReferenceCT read GetSubjectReference;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Publisher: TStringCT read fPublisher;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TContactDetailCTList read fContact;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TMarkdownCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Comment: TStringCTList read fComment;
-    [TNaming(TNaming.nCamelCase)]
     property UseContext: TUsageContextCTList read fUseContext;
-    [TNaming(TNaming.nFlatCase)]
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    [TNaming(TNaming.nFlatCase)]
     property Purpose: TMarkdownCT read fPurpose;
-    [TNaming(TNaming.nFlatCase)]
     property Usage: TStringCT read fUsage;
-    [TNaming(TNaming.nFlatCase)]
     property Copyright: TMarkdownCT read fCopyright;
-    [TNaming(TNaming.nCamelCase)]
     property ApprovalDate: TDateCT read fApprovalDate;
-    [TNaming(TNaming.nCamelCase)]
     property LastReviewDate: TDateCT read fLastReviewDate;
-    [TNaming(TNaming.nCamelCase)]
     property EffectivePeriod: TPeriodCT read fEffectivePeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Topic: TCodeableConceptCTList read fTopic;
-    [TNaming(TNaming.nFlatCase)]
     property Author: TContactDetailCTList read fAuthor;
-    [TNaming(TNaming.nFlatCase)]
     property Editor: TContactDetailCTList read fEditor;
-    [TNaming(TNaming.nFlatCase)]
     property Reviewer: TContactDetailCTList read fReviewer;
-    [TNaming(TNaming.nFlatCase)]
     property Endorser: TContactDetailCTList read fEndorser;
-    [TNaming(TNaming.nCamelCase)]
     property RelatedArtifact: TRelatedArtifactCTList read fRelatedArtifact;
-    [TNaming(TNaming.nFlatCase)]
     property &Library: TCanonicalCTList read fLibrary;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Population: TReferenceCT read fPopulation;
-    [TNaming(TNaming.nFlatCase)]
     property Exposure: TReferenceCT read fExposure;
-    [TNaming(TNaming.nCamelCase)]
     property ExposureAlternative: TReferenceCT read fExposureAlternative;
-    [TNaming(TNaming.nFlatCase)]
     property Outcome: TReferenceCT read fOutcome;
   end;
 
@@ -24255,81 +18836,46 @@ type
   public
     property SubjectChosen: TBasite read GetSubjectChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUriCT read fUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCT read fVersion;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Title: TStringCT read fTitle;
-    [TNaming(TNaming.nCamelCase)]
     property ShortTitle: TStringCT read fShortTitle;
-    [TNaming(TNaming.nFlatCase)]
     property Subtitle: TStringCT read fSubtitle;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TPublicationStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Experimental: TBooleanCT read fExperimental;
     [TChoice('Subject')]
-    [TNaming(TNaming.nCamelCase)]
     property SubjectCodeableConcept: TCodeableConceptCT read GetSubjectCodeableConcept;
     [TChoice('Subject')]
-    [TNaming(TNaming.nCamelCase)]
     property SubjectReference: TReferenceCT read GetSubjectReference;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Publisher: TStringCT read fPublisher;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TContactDetailCTList read fContact;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TMarkdownCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Comment: TStringCTList read fComment;
-    [TNaming(TNaming.nCamelCase)]
     property UseContext: TUsageContextCTList read fUseContext;
-    [TNaming(TNaming.nFlatCase)]
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    [TNaming(TNaming.nFlatCase)]
     property Purpose: TMarkdownCT read fPurpose;
-    [TNaming(TNaming.nFlatCase)]
     property Usage: TStringCT read fUsage;
-    [TNaming(TNaming.nFlatCase)]
     property Copyright: TMarkdownCT read fCopyright;
-    [TNaming(TNaming.nCamelCase)]
     property ApprovalDate: TDateCT read fApprovalDate;
-    [TNaming(TNaming.nCamelCase)]
     property LastReviewDate: TDateCT read fLastReviewDate;
-    [TNaming(TNaming.nCamelCase)]
     property EffectivePeriod: TPeriodCT read fEffectivePeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Topic: TCodeableConceptCTList read fTopic;
-    [TNaming(TNaming.nFlatCase)]
     property Author: TContactDetailCTList read fAuthor;
-    [TNaming(TNaming.nFlatCase)]
     property Editor: TContactDetailCTList read fEditor;
-    [TNaming(TNaming.nFlatCase)]
     property Reviewer: TContactDetailCTList read fReviewer;
-    [TNaming(TNaming.nFlatCase)]
     property Endorser: TContactDetailCTList read fEndorser;
-    [TNaming(TNaming.nCamelCase)]
     property RelatedArtifact: TRelatedArtifactCTList read fRelatedArtifact;
-    [TNaming(TNaming.nFlatCase)]
     property &Library: TCanonicalCTList read fLibrary;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TResearchElementTypeCT read fType;
-    [TNaming(TNaming.nCamelCase)]
     property VariableType: TVariableTypeCT read fVariableType;
-    [TNaming(TNaming.nFlatCase)]
     property Characteristic: TResearchElementDefinitionCharacteristicCTList read fCharacteristic;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ResearchElementDefinition.Characteristic')]
   TResearchElementDefinitionCharacteristicCT = class(TBackboneElementCT)
   private
@@ -24376,58 +18922,37 @@ type
     property ParticipantEffectiveChosen: TBasite read GetParticipantEffectiveChosen;
   published
     [TChoice('Definition')]
-    [TNaming(TNaming.nCamelCase)]
     property DefinitionCodeableConcept: TCodeableConceptCT read GetDefinitionCodeableConcept;
     [TChoice('Definition')]
-    [TNaming(TNaming.nCamelCase)]
     property DefinitionCanonical: TCanonicalCT read GetDefinitionCanonical;
     [TChoice('Definition')]
-    [TNaming(TNaming.nCamelCase)]
     property DefinitionExpression: TExpressionCT read GetDefinitionExpression;
     [TChoice('Definition')]
-    [TNaming(TNaming.nCamelCase)]
     property DefinitionDataRequirement: TDataRequirementCT read GetDefinitionDataRequirement;
-    [TNaming(TNaming.nCamelCase)]
     property UsageContext: TUsageContextCTList read fUsageContext;
-    [TNaming(TNaming.nFlatCase)]
     property Exclude: TBooleanCT read fExclude;
-    [TNaming(TNaming.nCamelCase)]
     property UnitOfMeasure: TCodeableConceptCT read fUnitOfMeasure;
-    [TNaming(TNaming.nCamelCase)]
     property StudyEffectiveDescription: TStringCT read fStudyEffectiveDescription;
     [TChoice('StudyEffective')]
-    [TNaming(TNaming.nCamelCase)]
     property StudyEffectiveDateTime: TDateTimeCT read GetStudyEffectiveDateTime;
     [TChoice('StudyEffective')]
-    [TNaming(TNaming.nCamelCase)]
     property StudyEffectivePeriod: TPeriodCT read GetStudyEffectivePeriod;
     [TChoice('StudyEffective')]
-    [TNaming(TNaming.nCamelCase)]
     property StudyEffectiveDuration: TDurationCT read GetStudyEffectiveDuration;
     [TChoice('StudyEffective')]
-    [TNaming(TNaming.nCamelCase)]
     property StudyEffectiveTiming: TTimingCT read GetStudyEffectiveTiming;
-    [TNaming(TNaming.nCamelCase)]
     property StudyEffectiveTimeFromStart: TDurationCT read fStudyEffectiveTimeFromStart;
-    [TNaming(TNaming.nCamelCase)]
     property StudyEffectiveGroupMeasure: TGroupMeasureCT read fStudyEffectiveGroupMeasure;
-    [TNaming(TNaming.nCamelCase)]
     property ParticipantEffectiveDescription: TStringCT read fParticipantEffectiveDescription;
     [TChoice('ParticipantEffective')]
-    [TNaming(TNaming.nCamelCase)]
     property ParticipantEffectiveDateTime: TDateTimeCT read GetParticipantEffectiveDateTime;
     [TChoice('ParticipantEffective')]
-    [TNaming(TNaming.nCamelCase)]
     property ParticipantEffectivePeriod: TPeriodCT read GetParticipantEffectivePeriod;
     [TChoice('ParticipantEffective')]
-    [TNaming(TNaming.nCamelCase)]
     property ParticipantEffectiveDuration: TDurationCT read GetParticipantEffectiveDuration;
     [TChoice('ParticipantEffective')]
-    [TNaming(TNaming.nCamelCase)]
     property ParticipantEffectiveTiming: TTimingCT read GetParticipantEffectiveTiming;
-    [TNaming(TNaming.nCamelCase)]
     property ParticipantEffectiveTimeFromStart: TDurationCT read fParticipantEffectiveTimeFromStart;
-    [TNaming(TNaming.nCamelCase)]
     property ParticipantEffectiveGroupMeasure: TGroupMeasureCT read fParticipantEffectiveGroupMeasure;
   end;
 
@@ -24435,7 +18960,6 @@ type
   private
     fValue: TResearchElementTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TResearchElementTypeListST read fValue write fValue;
   end;
 
@@ -24443,7 +18967,6 @@ type
   private
     fValue: TVariableTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TVariableTypeListST read fValue write fValue;
   end;
 
@@ -24474,58 +18997,33 @@ type
     fArm: TResearchStudyArmCTList;
     fObjective: TResearchStudyObjectiveCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Title: TStringCT read fTitle;
-    [TNaming(TNaming.nFlatCase)]
     property Protocol: TReferenceCTList read fProtocol;
-    [TNaming(TNaming.nCamelCase)]
     property PartOf: TReferenceCTList read fPartOf;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TResearchStudyStatusCT read fStatus;
-    [TNaming(TNaming.nCamelCase)]
     property PrimaryPurposeType: TCodeableConceptCT read fPrimaryPurposeType;
-    [TNaming(TNaming.nFlatCase)]
     property Phase: TCodeableConceptCT read fPhase;
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCTList read fCategory;
-    [TNaming(TNaming.nFlatCase)]
     property Focus: TCodeableConceptCTList read fFocus;
-    [TNaming(TNaming.nFlatCase)]
     property Condition: TCodeableConceptCTList read fCondition;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TContactDetailCTList read fContact;
-    [TNaming(TNaming.nCamelCase)]
     property RelatedArtifact: TRelatedArtifactCTList read fRelatedArtifact;
-    [TNaming(TNaming.nFlatCase)]
     property Keyword: TCodeableConceptCTList read fKeyword;
-    [TNaming(TNaming.nFlatCase)]
     property Location: TCodeableConceptCTList read fLocation;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TMarkdownCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Enrollment: TReferenceCTList read fEnrollment;
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCT read fPeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Sponsor: TReferenceCT read fSponsor;
-    [TNaming(TNaming.nCamelCase)]
     property PrincipalInvestigator: TReferenceCT read fPrincipalInvestigator;
-    [TNaming(TNaming.nFlatCase)]
     property Site: TReferenceCTList read fSite;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonStopped: TCodeableConceptCT read fReasonStopped;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
-    [TNaming(TNaming.nFlatCase)]
     property Arm: TResearchStudyArmCTList read fArm;
-    [TNaming(TNaming.nFlatCase)]
     property Objective: TResearchStudyObjectiveCTList read fObjective;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ResearchStudy.Arm')]
   TResearchStudyArmCT = class(TBackboneElementCT)
   private
@@ -24534,24 +19032,18 @@ type
     fDescription: TStringCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ResearchStudy.Objective')]
   TResearchStudyObjectiveCT = class(TBackboneElementCT)
   private
     fName: TStringCT;
     fType: TCodeableConceptCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
   end;
 
@@ -24559,7 +19051,6 @@ type
   private
     fValue: TResearchStudyStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TResearchStudyStatusListST read fValue write fValue;
   end;
 
@@ -24574,24 +19065,16 @@ type
     fActualArm: TStringCT;
     fConsent: TReferenceCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TResearchSubjectStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCT read fPeriod;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Study: TReferenceCT read fStudy;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Individual: TReferenceCT read fIndividual;
-    [TNaming(TNaming.nCamelCase)]
     property AssignedArm: TStringCT read fAssignedArm;
-    [TNaming(TNaming.nCamelCase)]
     property ActualArm: TStringCT read fActualArm;
-    [TNaming(TNaming.nFlatCase)]
     property Consent: TReferenceCT read fConsent;
   end;
 
@@ -24599,7 +19082,6 @@ type
   private
     fValue: TResearchSubjectStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TResearchSubjectStatusListST read fValue write fValue;
   end;
 
@@ -24630,49 +19112,30 @@ type
   public
     property OccurrenceChosen: TBasite read GetOccurrenceChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nCamelCase)]
     property BasedOn: TReferenceCT read fBasedOn;
-    [TNaming(TNaming.nFlatCase)]
     property Parent: TReferenceCT read fParent;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TObservationStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Method: TCodeableConceptCT read fMethod;
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCT read fSubject;
-    [TNaming(TNaming.nFlatCase)]
     property Encounter: TReferenceCT read fEncounter;
     [TChoice('Occurrence')]
-    [TNaming(TNaming.nCamelCase)]
     property OccurrenceDateTime: TDateTimeCT read GetOccurrenceDateTime;
     [TChoice('Occurrence')]
-    [TNaming(TNaming.nCamelCase)]
     property OccurrencePeriod: TPeriodCT read GetOccurrencePeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Condition: TReferenceCT read fCondition;
-    [TNaming(TNaming.nFlatCase)]
     property Performer: TReferenceCT read fPerformer;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonReference: TReferenceCTList read fReasonReference;
-    [TNaming(TNaming.nFlatCase)]
     property Basis: TReferenceCTList read fBasis;
-    [TNaming(TNaming.nFlatCase)]
     property Prediction: TRiskAssessmentPredictionCTList read fPrediction;
-    [TNaming(TNaming.nFlatCase)]
     property Mitigation: TStringCT read fMitigation;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('RiskAssessment.Prediction')]
   TRiskAssessmentPredictionCT = class(TBackboneElementCT)
   private
@@ -24695,25 +19158,17 @@ type
     property ProbabilityChosen: TBasite read GetProbabilityChosen;
     property WhenChosen: TBasite read GetWhenChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Outcome: TCodeableConceptCT read fOutcome;
     [TChoice('Probability')]
-    [TNaming(TNaming.nCamelCase)]
     property ProbabilityDecimal: TDecimalCT read GetProbabilityDecimal;
     [TChoice('Probability')]
-    [TNaming(TNaming.nCamelCase)]
     property ProbabilityRange: TRangeCT read GetProbabilityRange;
-    [TNaming(TNaming.nCamelCase)]
     property QualitativeRisk: TCodeableConceptCT read fQualitativeRisk;
-    [TNaming(TNaming.nCamelCase)]
     property RelativeRisk: TDecimalCT read fRelativeRisk;
     [TChoice('When')]
-    [TNaming(TNaming.nCamelCase)]
     property WhenPeriod: TPeriodCT read GetWhenPeriod;
     [TChoice('When')]
-    [TNaming(TNaming.nCamelCase)]
     property WhenRange: TRangeCT read GetWhenRange;
-    [TNaming(TNaming.nFlatCase)]
     property Rationale: TStringCT read fRationale;
   end;
 
@@ -24751,74 +19206,42 @@ type
     fRiskEstimate: TRiskEvidenceSynthesisRiskEstimateCT;
     fCertainty: TRiskEvidenceSynthesisCertaintyCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUriCT read fUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCT read fVersion;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Title: TStringCT read fTitle;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TPublicationStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Publisher: TStringCT read fPublisher;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TContactDetailCTList read fContact;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TMarkdownCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
-    [TNaming(TNaming.nCamelCase)]
     property UseContext: TUsageContextCTList read fUseContext;
-    [TNaming(TNaming.nFlatCase)]
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    [TNaming(TNaming.nFlatCase)]
     property Copyright: TMarkdownCT read fCopyright;
-    [TNaming(TNaming.nCamelCase)]
     property ApprovalDate: TDateCT read fApprovalDate;
-    [TNaming(TNaming.nCamelCase)]
     property LastReviewDate: TDateCT read fLastReviewDate;
-    [TNaming(TNaming.nCamelCase)]
     property EffectivePeriod: TPeriodCT read fEffectivePeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Topic: TCodeableConceptCTList read fTopic;
-    [TNaming(TNaming.nFlatCase)]
     property Author: TContactDetailCTList read fAuthor;
-    [TNaming(TNaming.nFlatCase)]
     property Editor: TContactDetailCTList read fEditor;
-    [TNaming(TNaming.nFlatCase)]
     property Reviewer: TContactDetailCTList read fReviewer;
-    [TNaming(TNaming.nFlatCase)]
     property Endorser: TContactDetailCTList read fEndorser;
-    [TNaming(TNaming.nCamelCase)]
     property RelatedArtifact: TRelatedArtifactCTList read fRelatedArtifact;
-    [TNaming(TNaming.nCamelCase)]
     property SynthesisType: TCodeableConceptCT read fSynthesisType;
-    [TNaming(TNaming.nCamelCase)]
     property StudyType: TCodeableConceptCT read fStudyType;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Population: TReferenceCT read fPopulation;
-    [TNaming(TNaming.nFlatCase)]
     property Exposure: TReferenceCT read fExposure;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Outcome: TReferenceCT read fOutcome;
-    [TNaming(TNaming.nCamelCase)]
     property SampleSize: TRiskEvidenceSynthesisSampleSizeCT read fSampleSize;
-    [TNaming(TNaming.nCamelCase)]
     property RiskEstimate: TRiskEvidenceSynthesisRiskEstimateCT read fRiskEstimate;
-    [TNaming(TNaming.nFlatCase)]
     property Certainty: TRiskEvidenceSynthesisCertaintyCTList read fCertainty;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('RiskEvidenceSynthesis.SampleSize')]
   TRiskEvidenceSynthesisSampleSizeCT = class(TBackboneElementCT)
   private
@@ -24826,15 +19249,11 @@ type
     fNumberOfStudies: TIntegerCT;
     fNumberOfParticipants: TIntegerCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nCamelCase)]
     property NumberOfStudies: TIntegerCT read fNumberOfStudies;
-    [TNaming(TNaming.nCamelCase)]
     property NumberOfParticipants: TIntegerCT read fNumberOfParticipants;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('RiskEvidenceSynthesis.RiskEstimate')]
   TRiskEvidenceSynthesisRiskEstimateCT = class(TBackboneElementCT)
   private
@@ -24846,23 +19265,15 @@ type
     fNumeratorCount: TIntegerCT;
     fPrecisionEstimate: TRiskEvidenceSynthesisPrecisionEstimateCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Value: TDecimalCT read fValue;
-    [TNaming(TNaming.nCamelCase)]
     property UnitOfMeasure: TCodeableConceptCT read fUnitOfMeasure;
-    [TNaming(TNaming.nCamelCase)]
     property DenominatorCount: TIntegerCT read fDenominatorCount;
-    [TNaming(TNaming.nCamelCase)]
     property NumeratorCount: TIntegerCT read fNumeratorCount;
-    [TNaming(TNaming.nCamelCase)]
     property PrecisionEstimate: TRiskEvidenceSynthesisPrecisionEstimateCTList read fPrecisionEstimate;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('RiskEvidenceSynthesis.PrecisionEstimate')]
   TRiskEvidenceSynthesisPrecisionEstimateCT = class(TBackboneElementCT)
   private
@@ -24871,17 +19282,12 @@ type
     fFrom: TDecimalCT;
     fTo: TDecimalCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Level: TDecimalCT read fLevel;
-    [TNaming(TNaming.nFlatCase)]
     property From: TDecimalCT read fFrom;
-    [TNaming(TNaming.nFlatCase)]
     property &To: TDecimalCT read fTo;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('RiskEvidenceSynthesis.Certainty')]
   TRiskEvidenceSynthesisCertaintyCT = class(TBackboneElementCT)
   private
@@ -24889,15 +19295,11 @@ type
     fNote: TAnnotationCTList;
     fCertaintySubcomponent: TRiskEvidenceSynthesisCertaintySubcomponentCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Rating: TCodeableConceptCTList read fRating;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
-    [TNaming(TNaming.nCamelCase)]
     property CertaintySubcomponent: TRiskEvidenceSynthesisCertaintySubcomponentCTList read fCertaintySubcomponent;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('RiskEvidenceSynthesis.CertaintySubcomponent')]
   TRiskEvidenceSynthesisCertaintySubcomponentCT = class(TBackboneElementCT)
   private
@@ -24905,11 +19307,8 @@ type
     fRating: TCodeableConceptCTList;
     fNote: TAnnotationCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Rating: TCodeableConceptCTList read fRating;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
   end;
 
@@ -24924,21 +19323,13 @@ type
     fPlanningHorizon: TPeriodCT;
     fComment: TStringCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Active: TBooleanCT read fActive;
-    [TNaming(TNaming.nCamelCase)]
     property ServiceCategory: TCodeableConceptCTList read fServiceCategory;
-    [TNaming(TNaming.nCamelCase)]
     property ServiceType: TCodeableConceptCTList read fServiceType;
-    [TNaming(TNaming.nFlatCase)]
     property Specialty: TCodeableConceptCTList read fSpecialty;
-    [TNaming(TNaming.nFlatCase)]
     property Actor: TReferenceCTList read fActor;
-    [TNaming(TNaming.nCamelCase)]
     property PlanningHorizon: TPeriodCT read fPlanningHorizon;
-    [TNaming(TNaming.nFlatCase)]
     property Comment: TStringCT read fComment;
   end;
 
@@ -24972,66 +19363,39 @@ type
     fComponent: TSearchParameterComponentCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUriCT read fUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCT read fVersion;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nCamelCase)]
     property DerivedFrom: TCanonicalCT read fDerivedFrom;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TPublicationStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Experimental: TBooleanCT read fExperimental;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Publisher: TStringCT read fPublisher;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TContactDetailCTList read fContact;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Description: TMarkdownCT read fDescription;
-    [TNaming(TNaming.nCamelCase)]
     property UseContext: TUsageContextCTList read fUseContext;
-    [TNaming(TNaming.nFlatCase)]
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    [TNaming(TNaming.nFlatCase)]
     property Purpose: TMarkdownCT read fPurpose;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Base: TCodeCTList read fBase;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TSearchParamTypeCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Expression: TStringCT read fExpression;
-    [TNaming(TNaming.nFlatCase)]
     property Xpath: TStringCT read fXpath;
-    [TNaming(TNaming.nCamelCase)]
     property XpathUsage: TXPathUsageTypeCT read fXpathUsage;
-    [TNaming(TNaming.nFlatCase)]
     property Target: TCodeCTList read fTarget;
-    [TNaming(TNaming.nCamelCase)]
     property MultipleOr: TBooleanCT read fMultipleOr;
-    [TNaming(TNaming.nCamelCase)]
     property MultipleAnd: TBooleanCT read fMultipleAnd;
-    [TNaming(TNaming.nFlatCase)]
     property Comparator: TSearchComparatorCTList read fComparator;
-    [TNaming(TNaming.nFlatCase)]
     property Modifier: TSearchModifierCodeCTList read fModifier;
-    [TNaming(TNaming.nFlatCase)]
     property Chain: TStringCTList read fChain;
-    [TNaming(TNaming.nFlatCase)]
     property Component: TSearchParameterComponentCTList read fComponent;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('SearchParameter.Component')]
   TSearchParameterComponentCT = class(TBackboneElementCT)
   private
@@ -25039,10 +19403,8 @@ type
     fExpression: TStringCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Definition: TCanonicalCT read fDefinition;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Expression: TStringCT read fExpression;
   end;
 
@@ -25050,7 +19412,6 @@ type
   private
     fValue: TXPathUsageTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TXPathUsageTypeListST read fValue write fValue;
   end;
 
@@ -25058,7 +19419,6 @@ type
   private
     fValue: TSearchModifierCodeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TSearchModifierCodeListST read fValue write fValue;
   end;
 
@@ -25066,7 +19426,6 @@ type
   private
     fValue: TSearchComparatorListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TSearchComparatorListST read fValue write fValue;
   end;
 
@@ -25127,92 +19486,54 @@ type
     property OccurrenceChosen: TBasite read GetOccurrenceChosen;
     property AsNeededChosen: TBasite read GetAsNeededChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nCamelCase)]
     property InstantiatesCanonical: TCanonicalCTList read fInstantiatesCanonical;
-    [TNaming(TNaming.nCamelCase)]
     property InstantiatesUri: TUriCTList read fInstantiatesUri;
-    [TNaming(TNaming.nCamelCase)]
     property BasedOn: TReferenceCTList read fBasedOn;
-    [TNaming(TNaming.nFlatCase)]
     property Replaces: TReferenceCTList read fReplaces;
-    [TNaming(TNaming.nFlatCase)]
     property Requisition: TIdentifierCT read fRequisition;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TRequestStatusCT read fStatus;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Intent: TRequestIntentCT read fIntent;
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCTList read fCategory;
-    [TNaming(TNaming.nFlatCase)]
     property Priority: TRequestPriorityCT read fPriority;
-    [TNaming(TNaming.nCamelCase)]
     property DoNotPerform: TBooleanCT read fDoNotPerform;
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nCamelCase)]
     property OrderDetail: TCodeableConceptCTList read fOrderDetail;
     [TChoice('Quantity')]
-    [TNaming(TNaming.nCamelCase)]
     property QuantityQuantity: TQuantityCT read GetQuantityQuantity;
     [TChoice('Quantity')]
-    [TNaming(TNaming.nCamelCase)]
     property QuantityRatio: TRatioCT read GetQuantityRatio;
     [TChoice('Quantity')]
-    [TNaming(TNaming.nCamelCase)]
     property QuantityRange: TRangeCT read GetQuantityRange;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCT read fSubject;
-    [TNaming(TNaming.nFlatCase)]
     property Encounter: TReferenceCT read fEncounter;
     [TChoice('Occurrence')]
-    [TNaming(TNaming.nCamelCase)]
     property OccurrenceDateTime: TDateTimeCT read GetOccurrenceDateTime;
     [TChoice('Occurrence')]
-    [TNaming(TNaming.nCamelCase)]
     property OccurrencePeriod: TPeriodCT read GetOccurrencePeriod;
     [TChoice('Occurrence')]
-    [TNaming(TNaming.nCamelCase)]
     property OccurrenceTiming: TTimingCT read GetOccurrenceTiming;
     [TChoice('AsNeeded')]
-    [TNaming(TNaming.nCamelCase)]
     property AsNeededBoolean: TBooleanCT read GetAsNeededBoolean;
     [TChoice('AsNeeded')]
-    [TNaming(TNaming.nCamelCase)]
     property AsNeededCodeableConcept: TCodeableConceptCT read GetAsNeededCodeableConcept;
-    [TNaming(TNaming.nCamelCase)]
     property AuthoredOn: TDateTimeCT read fAuthoredOn;
-    [TNaming(TNaming.nFlatCase)]
     property Requester: TReferenceCT read fRequester;
-    [TNaming(TNaming.nCamelCase)]
     property PerformerType: TCodeableConceptCT read fPerformerType;
-    [TNaming(TNaming.nFlatCase)]
     property Performer: TReferenceCTList read fPerformer;
-    [TNaming(TNaming.nCamelCase)]
     property LocationCode: TCodeableConceptCTList read fLocationCode;
-    [TNaming(TNaming.nCamelCase)]
     property LocationReference: TReferenceCTList read fLocationReference;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonReference: TReferenceCTList read fReasonReference;
-    [TNaming(TNaming.nFlatCase)]
     property Insurance: TReferenceCTList read fInsurance;
-    [TNaming(TNaming.nCamelCase)]
     property SupportingInfo: TReferenceCTList read fSupportingInfo;
-    [TNaming(TNaming.nFlatCase)]
     property Specimen: TReferenceCTList read fSpecimen;
-    [TNaming(TNaming.nCamelCase)]
     property BodySite: TCodeableConceptCTList read fBodySite;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
-    [TNaming(TNaming.nCamelCase)]
     property PatientInstruction: TStringCT read fPatientInstruction;
-    [TNaming(TNaming.nCamelCase)]
     property RelevantHistory: TReferenceCTList read fRelevantHistory;
   end;
 
@@ -25230,31 +19551,20 @@ type
     fOverbooked: TBooleanCT;
     fComment: TStringCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nCamelCase)]
     property ServiceCategory: TCodeableConceptCTList read fServiceCategory;
-    [TNaming(TNaming.nCamelCase)]
     property ServiceType: TCodeableConceptCTList read fServiceType;
-    [TNaming(TNaming.nFlatCase)]
     property Specialty: TCodeableConceptCTList read fSpecialty;
-    [TNaming(TNaming.nCamelCase)]
     property AppointmentType: TCodeableConceptCT read fAppointmentType;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Schedule: TReferenceCT read fSchedule;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TSlotStatusCT read fStatus;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Start: TInstantCT read fStart;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &End: TInstantCT read fEnd;
-    [TNaming(TNaming.nFlatCase)]
     property Overbooked: TBooleanCT read fOverbooked;
-    [TNaming(TNaming.nFlatCase)]
     property Comment: TStringCT read fComment;
   end;
 
@@ -25262,7 +19572,6 @@ type
   private
     fValue: TSlotStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TSlotStatusListST read fValue write fValue;
   end;
 
@@ -25282,35 +19591,21 @@ type
     fCondition: TCodeableConceptCTList;
     fNote: TAnnotationCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nCamelCase)]
     property AccessionIdentifier: TIdentifierCT read fAccessionIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Status: TSpecimenStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Subject: TReferenceCT read fSubject;
-    [TNaming(TNaming.nCamelCase)]
     property ReceivedTime: TDateTimeCT read fReceivedTime;
-    [TNaming(TNaming.nFlatCase)]
     property Parent: TReferenceCTList read fParent;
-    [TNaming(TNaming.nFlatCase)]
     property Request: TReferenceCTList read fRequest;
-    [TNaming(TNaming.nFlatCase)]
     property Collection: TSpecimenCollectionCT read fCollection;
-    [TNaming(TNaming.nFlatCase)]
     property Processing: TSpecimenProcessingCTList read fProcessing;
-    [TNaming(TNaming.nFlatCase)]
     property Container: TSpecimenContainerCTList read fContainer;
-    [TNaming(TNaming.nFlatCase)]
     property Condition: TCodeableConceptCTList read fCondition;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Specimen.Collection')]
   TSpecimenCollectionCT = class(TBackboneElementCT)
   private
@@ -25334,31 +19629,21 @@ type
     property CollectedChosen: TBasite read GetCollectedChosen;
     property FastingStatusChosen: TBasite read GetFastingStatusChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Collector: TReferenceCT read fCollector;
     [TChoice('Collected')]
-    [TNaming(TNaming.nCamelCase)]
     property CollectedDateTime: TDateTimeCT read GetCollectedDateTime;
     [TChoice('Collected')]
-    [TNaming(TNaming.nCamelCase)]
     property CollectedPeriod: TPeriodCT read GetCollectedPeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Duration: TDurationCT read fDuration;
-    [TNaming(TNaming.nFlatCase)]
     property Quantity: TQuantityCT read fQuantity;
-    [TNaming(TNaming.nFlatCase)]
     property Method: TCodeableConceptCT read fMethod;
-    [TNaming(TNaming.nCamelCase)]
     property BodySite: TCodeableConceptCT read fBodySite;
     [TChoice('FastingStatus')]
-    [TNaming(TNaming.nCamelCase)]
     property FastingStatusCodeableConcept: TCodeableConceptCT read GetFastingStatusCodeableConcept;
     [TChoice('FastingStatus')]
-    [TNaming(TNaming.nCamelCase)]
     property FastingStatusDuration: TDurationCT read GetFastingStatusDuration;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Specimen.Processing')]
   TSpecimenProcessingCT = class(TBackboneElementCT)
   private
@@ -25374,21 +19659,15 @@ type
   public
     property TimeChosen: TBasite read GetTimeChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property &Procedure: TCodeableConceptCT read fProcedure;
-    [TNaming(TNaming.nFlatCase)]
     property Additive: TReferenceCTList read fAdditive;
     [TChoice('Time')]
-    [TNaming(TNaming.nCamelCase)]
     property TimeDateTime: TDateTimeCT read GetTimeDateTime;
     [TChoice('Time')]
-    [TNaming(TNaming.nCamelCase)]
     property TimePeriod: TPeriodCT read GetTimePeriod;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Specimen.Container')]
   TSpecimenContainerCT = class(TBackboneElementCT)
   private
@@ -25406,21 +19685,14 @@ type
   public
     property AdditiveChosen: TBasite read GetAdditiveChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Capacity: TQuantityCT read fCapacity;
-    [TNaming(TNaming.nCamelCase)]
     property SpecimenQuantity: TQuantityCT read fSpecimenQuantity;
     [TChoice('Additive')]
-    [TNaming(TNaming.nCamelCase)]
     property AdditiveCodeableConcept: TCodeableConceptCT read GetAdditiveCodeableConcept;
     [TChoice('Additive')]
-    [TNaming(TNaming.nCamelCase)]
     property AdditiveReference: TReferenceCT read GetAdditiveReference;
   end;
 
@@ -25428,7 +19700,6 @@ type
   private
     fValue: TSpecimenStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TSpecimenStatusListST read fValue write fValue;
   end;
 
@@ -25441,21 +19712,14 @@ type
     fCollection: TCodeableConceptCTList;
     fTypeTested: TSpecimenDefinitionTypeTestedCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCT read fIdentifier;
-    [TNaming(TNaming.nCamelCase)]
     property TypeCollected: TCodeableConceptCT read fTypeCollected;
-    [TNaming(TNaming.nCamelCase)]
     property PatientPreparation: TCodeableConceptCTList read fPatientPreparation;
-    [TNaming(TNaming.nCamelCase)]
     property TimeAspect: TStringCT read fTimeAspect;
-    [TNaming(TNaming.nFlatCase)]
     property Collection: TCodeableConceptCTList read fCollection;
-    [TNaming(TNaming.nCamelCase)]
     property TypeTested: TSpecimenDefinitionTypeTestedCTList read fTypeTested;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('SpecimenDefinition.TypeTested')]
   TSpecimenDefinitionTypeTestedCT = class(TBackboneElementCT)
   private
@@ -25468,26 +19732,17 @@ type
     fRejectionCriterion: TCodeableConceptCTList;
     fHandling: TSpecimenDefinitionHandlingCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property IsDerived: TBooleanCT read fIsDerived;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Preference: TSpecimenContainedPreferenceCT read fPreference;
-    [TNaming(TNaming.nFlatCase)]
     property Container: TSpecimenDefinitionContainerCT read fContainer;
-    [TNaming(TNaming.nFlatCase)]
     property Requirement: TStringCT read fRequirement;
-    [TNaming(TNaming.nCamelCase)]
     property RetentionTime: TDurationCT read fRetentionTime;
-    [TNaming(TNaming.nCamelCase)]
     property RejectionCriterion: TCodeableConceptCTList read fRejectionCriterion;
-    [TNaming(TNaming.nFlatCase)]
     property Handling: TSpecimenDefinitionHandlingCTList read fHandling;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('SpecimenDefinition.Container')]
   TSpecimenDefinitionContainerCT = class(TBackboneElementCT)
   private
@@ -25507,29 +19762,19 @@ type
   public
     property MinimumVolumeChosen: TBasite read GetMinimumVolumeChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Material: TCodeableConceptCT read fMaterial;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Cap: TCodeableConceptCT read fCap;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Capacity: TQuantityCT read fCapacity;
     [TChoice('MinimumVolume')]
-    [TNaming(TNaming.nCamelCase)]
     property MinimumVolumeQuantity: TQuantityCT read GetMinimumVolumeQuantity;
     [TChoice('MinimumVolume')]
-    [TNaming(TNaming.nCamelCase)]
     property MinimumVolumeString: TStringCT read GetMinimumVolumeString;
-    [TNaming(TNaming.nFlatCase)]
     property Additive: TSpecimenDefinitionAdditiveCTList read fAdditive;
-    [TNaming(TNaming.nFlatCase)]
     property Preparation: TStringCT read fPreparation;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('SpecimenDefinition.Additive')]
   TSpecimenDefinitionAdditiveCT = class(TBackboneElementCT)
   private
@@ -25543,14 +19788,11 @@ type
     property AdditiveChosen: TBasite read GetAdditiveChosen;
   published
     [TChoice('Additive')]
-    [TNaming(TNaming.nCamelCase)]
     property AdditiveCodeableConcept: TCodeableConceptCT read GetAdditiveCodeableConcept;
     [TChoice('Additive')]
-    [TNaming(TNaming.nCamelCase)]
     property AdditiveReference: TReferenceCT read GetAdditiveReference;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('SpecimenDefinition.Handling')]
   TSpecimenDefinitionHandlingCT = class(TBackboneElementCT)
   private
@@ -25559,13 +19801,9 @@ type
     fMaxDuration: TDurationCT;
     fInstruction: TStringCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property TemperatureQualifier: TCodeableConceptCT read fTemperatureQualifier;
-    [TNaming(TNaming.nCamelCase)]
     property TemperatureRange: TRangeCT read fTemperatureRange;
-    [TNaming(TNaming.nCamelCase)]
     property MaxDuration: TDurationCT read fMaxDuration;
-    [TNaming(TNaming.nFlatCase)]
     property Instruction: TStringCT read fInstruction;
   end;
 
@@ -25573,7 +19811,6 @@ type
   private
     fValue: TSpecimenContainedPreferenceListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TSpecimenContainedPreferenceListST read fValue write fValue;
   end;
 
@@ -25608,68 +19845,40 @@ type
     fDifferential: TStructureDefinitionDifferentialCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUriCT read fUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCT read fVersion;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Title: TStringCT read fTitle;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TPublicationStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Experimental: TBooleanCT read fExperimental;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Publisher: TStringCT read fPublisher;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TContactDetailCTList read fContact;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TMarkdownCT read fDescription;
-    [TNaming(TNaming.nCamelCase)]
     property UseContext: TUsageContextCTList read fUseContext;
-    [TNaming(TNaming.nFlatCase)]
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    [TNaming(TNaming.nFlatCase)]
     property Purpose: TMarkdownCT read fPurpose;
-    [TNaming(TNaming.nFlatCase)]
     property Copyright: TMarkdownCT read fCopyright;
-    [TNaming(TNaming.nFlatCase)]
     property Keyword: TCodingCTList read fKeyword;
-    [TNaming(TNaming.nCamelCase)]
     property FhirVersion: TFHIRVersionCT read fFhirVersion;
-    [TNaming(TNaming.nFlatCase)]
     property Mapping: TStructureDefinitionMappingCTList read fMapping;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Kind: TStructureDefinitionKindCT read fKind;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Abstract: TBooleanCT read fAbstract;
-    [TNaming(TNaming.nFlatCase)]
     property Context: TStructureDefinitionContextCTList read fContext;
-    [TNaming(TNaming.nCamelCase)]
     property ContextInvariant: TStringCTList read fContextInvariant;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TUriCT read fType;
-    [TNaming(TNaming.nCamelCase)]
     property BaseDefinition: TCanonicalCT read fBaseDefinition;
-    [TNaming(TNaming.nFlatCase)]
     property Derivation: TTypeDerivationRuleCT read fDerivation;
-    [TNaming(TNaming.nFlatCase)]
     property Snapshot: TStructureDefinitionSnapshotCT read fSnapshot;
-    [TNaming(TNaming.nFlatCase)]
     property Differential: TStructureDefinitionDifferentialCT read fDifferential;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('StructureDefinition.Mapping')]
   TStructureDefinitionMappingCT = class(TBackboneElementCT)
   private
@@ -25679,17 +19888,12 @@ type
     fComment: TStringCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Identity: TIdCT read fIdentity;
-    [TNaming(TNaming.nFlatCase)]
     property Uri: TUriCT read fUri;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Comment: TStringCT read fComment;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('StructureDefinition.Context')]
   TStructureDefinitionContextCT = class(TBackboneElementCT)
   private
@@ -25697,30 +19901,24 @@ type
     fExpression: TStringCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TExtensionContextTypeCT read fType;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Expression: TStringCT read fExpression;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('StructureDefinition.Snapshot')]
   TStructureDefinitionSnapshotCT = class(TBackboneElementCT)
   private
     fElement: TElementDefinitionCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Element: TElementDefinitionCTList read fElement;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('StructureDefinition.Differential')]
   TStructureDefinitionDifferentialCT = class(TBackboneElementCT)
   private
     fElement: TElementDefinitionCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Element: TElementDefinitionCTList read fElement;
   end;
 
@@ -25728,7 +19926,6 @@ type
   private
     fValue: TStructureDefinitionKindListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TStructureDefinitionKindListST read fValue write fValue;
   end;
 
@@ -25736,7 +19933,6 @@ type
   private
     fValue: TTypeDerivationRuleListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TTypeDerivationRuleListST read fValue write fValue;
   end;
 
@@ -25744,7 +19940,6 @@ type
   private
     fValue: TExtensionContextTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TExtensionContextTypeListST read fValue write fValue;
   end;
 
@@ -25770,47 +19965,28 @@ type
     fGroup: TStructureMapGroupCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUriCT read fUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCT read fVersion;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Title: TStringCT read fTitle;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TPublicationStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Experimental: TBooleanCT read fExperimental;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Publisher: TStringCT read fPublisher;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TContactDetailCTList read fContact;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TMarkdownCT read fDescription;
-    [TNaming(TNaming.nCamelCase)]
     property UseContext: TUsageContextCTList read fUseContext;
-    [TNaming(TNaming.nFlatCase)]
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    [TNaming(TNaming.nFlatCase)]
     property Purpose: TMarkdownCT read fPurpose;
-    [TNaming(TNaming.nFlatCase)]
     property Copyright: TMarkdownCT read fCopyright;
-    [TNaming(TNaming.nFlatCase)]
     property Structure: TStructureMapStructureCTList read fStructure;
-    [TNaming(TNaming.nFlatCase)]
     property Import: TCanonicalCTList read fImport;
-    [TNaming(TNaming.nFlatCase)]
     property Group: TStructureMapGroupCTList read fGroup;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('StructureMap.Structure')]
   TStructureMapStructureCT = class(TBackboneElementCT)
   private
@@ -25820,18 +19996,13 @@ type
     fDocumentation: TStringCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Url: TCanonicalCT read fUrl;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Mode: TStructureMapModelModeCT read fMode;
-    [TNaming(TNaming.nFlatCase)]
     property Alias: TStringCT read fAlias;
-    [TNaming(TNaming.nFlatCase)]
     property Documentation: TStringCT read fDocumentation;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('StructureMap.Group')]
   TStructureMapGroupCT = class(TBackboneElementCT)
   private
@@ -25843,22 +20014,15 @@ type
     fRule: TStructureMapRuleCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: TIdCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Extends: TIdCT read fExtends;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property TypeMode: TStructureMapGroupTypeModeCT read fTypeMode;
-    [TNaming(TNaming.nFlatCase)]
     property Documentation: TStringCT read fDocumentation;
-    [TNaming(TNaming.nFlatCase)]
     property Input: TStructureMapInputCTList read fInput;
-    [TNaming(TNaming.nFlatCase)]
     property Rule: TStructureMapRuleCTList read fRule;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('StructureMap.Input')]
   TStructureMapInputCT = class(TBackboneElementCT)
   private
@@ -25868,18 +20032,13 @@ type
     fDocumentation: TStringCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: TIdCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TStringCT read fType;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Mode: TStructureMapInputModeCT read fMode;
-    [TNaming(TNaming.nFlatCase)]
     property Documentation: TStringCT read fDocumentation;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('StructureMap.Rule')]
   TStructureMapRuleCT = class(TBackboneElementCT)
   private
@@ -25891,21 +20050,14 @@ type
     fDocumentation: TStringCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: TIdCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Source: TStructureMapSourceCTList read fSource;
-    [TNaming(TNaming.nFlatCase)]
     property Target: TStructureMapTargetCTList read fTarget;
-    [TNaming(TNaming.nFlatCase)]
     property Rule: TStructureMapRuleCTList read fRule;
-    [TNaming(TNaming.nFlatCase)]
     property Dependent: TStructureMapDependentCTList read fDependent;
-    [TNaming(TNaming.nFlatCase)]
     property Documentation: TStringCT read fDocumentation;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('StructureMap.Source')]
   TStructureMapSourceCT = class(TBackboneElementCT)
   private
@@ -26025,179 +20177,118 @@ type
     property DefaultValueChosen: TBasite read GetDefaultValueChosen;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Context: TIdCT read fContext;
-    [TNaming(TNaming.nFlatCase)]
     property Min: TIntegerCT read fMin;
-    [TNaming(TNaming.nFlatCase)]
     property Max: TStringCT read fMax;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TStringCT read fType;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueBase64Binary: TBase64BinaryCT read GetDefaultValueBase64Binary;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueBoolean: TBooleanCT read GetDefaultValueBoolean;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueCanonical: TCanonicalCT read GetDefaultValueCanonical;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueCode: TCodeCT read GetDefaultValueCode;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueDate: TDateCT read GetDefaultValueDate;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueDateTime: TDateTimeCT read GetDefaultValueDateTime;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueDecimal: TDecimalCT read GetDefaultValueDecimal;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueId: TIdCT read GetDefaultValueId;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueInstant: TInstantCT read GetDefaultValueInstant;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueInteger: TIntegerCT read GetDefaultValueInteger;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueMarkdown: TMarkdownCT read GetDefaultValueMarkdown;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueOid: TOidCT read GetDefaultValueOid;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValuePositiveInt: TPositiveIntCT read GetDefaultValuePositiveInt;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueString: TStringCT read GetDefaultValueString;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueTime: TTimeCT read GetDefaultValueTime;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueUnsignedInt: TUnsignedIntCT read GetDefaultValueUnsignedInt;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueUri: TUriCT read GetDefaultValueUri;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueUrl: TUrlCT read GetDefaultValueUrl;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueUuid: TUuidCT read GetDefaultValueUuid;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueAddress: TAddressCT read GetDefaultValueAddress;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueAge: TAgeCT read GetDefaultValueAge;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueAnnotation: TAnnotationCT read GetDefaultValueAnnotation;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueAttachment: TAttachmentCT read GetDefaultValueAttachment;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueCodeableConcept: TCodeableConceptCT read GetDefaultValueCodeableConcept;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueCoding: TCodingCT read GetDefaultValueCoding;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueContactPoint: TContactPointCT read GetDefaultValueContactPoint;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueCount: TCountCT read GetDefaultValueCount;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueDistance: TDistanceCT read GetDefaultValueDistance;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueDuration: TDurationCT read GetDefaultValueDuration;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueHumanName: THumanNameCT read GetDefaultValueHumanName;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueIdentifier: TIdentifierCT read GetDefaultValueIdentifier;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueMoney: TMoneyCT read GetDefaultValueMoney;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValuePeriod: TPeriodCT read GetDefaultValuePeriod;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueQuantity: TQuantityCT read GetDefaultValueQuantity;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueRange: TRangeCT read GetDefaultValueRange;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueRatio: TRatioCT read GetDefaultValueRatio;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueReference: TReferenceCT read GetDefaultValueReference;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueSampledData: TSampledDataCT read GetDefaultValueSampledData;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueSignature: TSignatureCT read GetDefaultValueSignature;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueTiming: TTimingCT read GetDefaultValueTiming;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueContactDetail: TContactDetailCT read GetDefaultValueContactDetail;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueContributor: TContributorCT read GetDefaultValueContributor;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueDataRequirement: TDataRequirementCT read GetDefaultValueDataRequirement;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueExpression: TExpressionCT read GetDefaultValueExpression;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueParameterDefinition: TParameterDefinitionCT read GetDefaultValueParameterDefinition;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueRelatedArtifact: TRelatedArtifactCT read GetDefaultValueRelatedArtifact;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueTriggerDefinition: TTriggerDefinitionCT read GetDefaultValueTriggerDefinition;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueUsageContext: TUsageContextCT read GetDefaultValueUsageContext;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueDosage: TDosageCT read GetDefaultValueDosage;
     [TChoice('DefaultValue')]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValueMeta: TMetaCT read GetDefaultValueMeta;
-    [TNaming(TNaming.nFlatCase)]
     property Element: TStringCT read fElement;
-    [TNaming(TNaming.nCamelCase)]
     property ListMode: TStructureMapSourceListModeCT read fListMode;
-    [TNaming(TNaming.nFlatCase)]
     property Variable: TIdCT read fVariable;
-    [TNaming(TNaming.nFlatCase)]
     property Condition: TStringCT read fCondition;
-    [TNaming(TNaming.nFlatCase)]
     property Check: TStringCT read fCheck;
-    [TNaming(TNaming.nCamelCase)]
     property LogMessage: TStringCT read fLogMessage;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('StructureMap.Target')]
   TStructureMapTargetCT = class(TBackboneElementCT)
   private
@@ -26210,25 +20301,16 @@ type
     fTransform: TStructureMapTransformCT;
     fParameter: TStructureMapParameterCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Context: TIdCT read fContext;
-    [TNaming(TNaming.nCamelCase)]
     property ContextType: TStructureMapContextTypeCT read fContextType;
-    [TNaming(TNaming.nFlatCase)]
     property Element: TStringCT read fElement;
-    [TNaming(TNaming.nFlatCase)]
     property Variable: TIdCT read fVariable;
-    [TNaming(TNaming.nCamelCase)]
     property ListMode: TStructureMapTargetListModeCTList read fListMode;
-    [TNaming(TNaming.nCamelCase)]
     property ListRuleId: TIdCT read fListRuleId;
-    [TNaming(TNaming.nFlatCase)]
     property Transform: TStructureMapTransformCT read fTransform;
-    [TNaming(TNaming.nFlatCase)]
     property Parameter: TStructureMapParameterCTList read fParameter;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('StructureMap.Parameter')]
   TStructureMapParameterCT = class(TBackboneElementCT)
   private
@@ -26248,23 +20330,17 @@ type
     property ValueChosen: TBasite read GetValueChosen;
   published
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueId: TIdCT read GetValueId;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueString: TStringCT read GetValueString;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueBoolean: TBooleanCT read GetValueBoolean;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueInteger: TIntegerCT read GetValueInteger;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDecimal: TDecimalCT read GetValueDecimal;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('StructureMap.Dependent')]
   TStructureMapDependentCT = class(TBackboneElementCT)
   private
@@ -26272,9 +20348,7 @@ type
     fVariable: TStringCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: TIdCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Variable: TStringCTList read fVariable;
   end;
 
@@ -26282,7 +20356,6 @@ type
   private
     fValue: TStructureMapInputModeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TStructureMapInputModeListST read fValue write fValue;
   end;
 
@@ -26290,7 +20363,6 @@ type
   private
     fValue: TStructureMapContextTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TStructureMapContextTypeListST read fValue write fValue;
   end;
 
@@ -26298,7 +20370,6 @@ type
   private
     fValue: TStructureMapTargetListModeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TStructureMapTargetListModeListST read fValue write fValue;
   end;
 
@@ -26306,7 +20377,6 @@ type
   private
     fValue: TStructureMapTransformListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TStructureMapTransformListST read fValue write fValue;
   end;
 
@@ -26314,7 +20384,6 @@ type
   private
     fValue: TStructureMapSourceListModeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TStructureMapSourceListModeListST read fValue write fValue;
   end;
 
@@ -26322,7 +20391,6 @@ type
   private
     fValue: TStructureMapGroupTypeModeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TStructureMapGroupTypeModeListST read fValue write fValue;
   end;
 
@@ -26330,7 +20398,6 @@ type
   private
     fValue: TStructureMapModelModeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TStructureMapModelModeListST read fValue write fValue;
   end;
 
@@ -26345,26 +20412,18 @@ type
     fChannel: TSubscriptionChannelCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TSubscriptionStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TContactPointCTList read fContact;
-    [TNaming(TNaming.nFlatCase)]
     property &End: TInstantCT read fEnd;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Reason: TStringCT read fReason;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Criteria: TStringCT read fCriteria;
-    [TNaming(TNaming.nFlatCase)]
     property Error: TStringCT read fError;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Channel: TSubscriptionChannelCT read fChannel;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Subscription.Channel')]
   TSubscriptionChannelCT = class(TBackboneElementCT)
   private
@@ -26374,13 +20433,9 @@ type
     fHeader: TStringCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TSubscriptionChannelTypeCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Endpoint: TUrlCT read fEndpoint;
-    [TNaming(TNaming.nFlatCase)]
     property Payload: TCodeCT read fPayload;
-    [TNaming(TNaming.nFlatCase)]
     property Header: TStringCTList read fHeader;
   end;
 
@@ -26388,7 +20443,6 @@ type
   private
     fValue: TSubscriptionStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TSubscriptionStatusListST read fValue write fValue;
   end;
 
@@ -26396,7 +20450,6 @@ type
   private
     fValue: TSubscriptionChannelTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TSubscriptionChannelTypeListST read fValue write fValue;
   end;
 
@@ -26410,24 +20463,16 @@ type
     fInstance: TSubstanceInstanceCTList;
     fIngredient: TSubstanceIngredientCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Status: TFHIRSubstanceStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCTList read fCategory;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Instance: TSubstanceInstanceCTList read fInstance;
-    [TNaming(TNaming.nFlatCase)]
     property Ingredient: TSubstanceIngredientCTList read fIngredient;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Substance.Instance')]
   TSubstanceInstanceCT = class(TBackboneElementCT)
   private
@@ -26435,15 +20480,11 @@ type
     fExpiry: TDateTimeCT;
     fQuantity: TQuantityCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCT read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Expiry: TDateTimeCT read fExpiry;
-    [TNaming(TNaming.nFlatCase)]
     property Quantity: TQuantityCT read fQuantity;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Substance.Ingredient')]
   TSubstanceIngredientCT = class(TBackboneElementCT)
   private
@@ -26457,13 +20498,10 @@ type
   public
     property SubstanceChosen: TBasite read GetSubstanceChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Quantity: TRatioCT read fQuantity;
     [TChoice('Substance')]
-    [TNaming(TNaming.nCamelCase)]
     property SubstanceCodeableConcept: TCodeableConceptCT read GetSubstanceCodeableConcept;
     [TChoice('Substance')]
-    [TNaming(TNaming.nCamelCase)]
     property SubstanceReference: TReferenceCT read GetSubstanceReference;
   end;
 
@@ -26471,7 +20509,6 @@ type
   private
     fValue: TFHIRSubstanceStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TFHIRSubstanceStatusListST read fValue write fValue;
   end;
 
@@ -26483,19 +20520,13 @@ type
     fOligoNucleotideType: TCodeableConceptCT;
     fSubunit: TSubstanceNucleicAcidSubunitCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property SequenceType: TCodeableConceptCT read fSequenceType;
-    [TNaming(TNaming.nCamelCase)]
     property NumberOfSubunits: TIntegerCT read fNumberOfSubunits;
-    [TNaming(TNaming.nCamelCase)]
     property AreaOfHybridisation: TStringCT read fAreaOfHybridisation;
-    [TNaming(TNaming.nCamelCase)]
     property OligoNucleotideType: TCodeableConceptCT read fOligoNucleotideType;
-    [TNaming(TNaming.nFlatCase)]
     property Subunit: TSubstanceNucleicAcidSubunitCTList read fSubunit;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('SubstanceNucleicAcid.Subunit')]
   TSubstanceNucleicAcidSubunitCT = class(TBackboneElementCT)
   private
@@ -26508,25 +20539,16 @@ type
     fLinkage: TSubstanceNucleicAcidLinkageCTList;
     fSugar: TSubstanceNucleicAcidSugarCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Subunit: TIntegerCT read fSubunit;
-    [TNaming(TNaming.nFlatCase)]
     property Sequence: TStringCT read fSequence;
-    [TNaming(TNaming.nFlatCase)]
     property Length: TIntegerCT read fLength;
-    [TNaming(TNaming.nCamelCase)]
     property SequenceAttachment: TAttachmentCT read fSequenceAttachment;
-    [TNaming(TNaming.nCamelCase)]
     property FivePrime: TCodeableConceptCT read fFivePrime;
-    [TNaming(TNaming.nCamelCase)]
     property ThreePrime: TCodeableConceptCT read fThreePrime;
-    [TNaming(TNaming.nFlatCase)]
     property Linkage: TSubstanceNucleicAcidLinkageCTList read fLinkage;
-    [TNaming(TNaming.nFlatCase)]
     property Sugar: TSubstanceNucleicAcidSugarCTList read fSugar;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('SubstanceNucleicAcid.Linkage')]
   TSubstanceNucleicAcidLinkageCT = class(TBackboneElementCT)
   private
@@ -26535,17 +20557,12 @@ type
     fName: TStringCT;
     fResidueSite: TStringCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Connectivity: TStringCT read fConnectivity;
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCT read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nCamelCase)]
     property ResidueSite: TStringCT read fResidueSite;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('SubstanceNucleicAcid.Sugar')]
   TSubstanceNucleicAcidSugarCT = class(TBackboneElementCT)
   private
@@ -26553,11 +20570,8 @@ type
     fName: TStringCT;
     fResidueSite: TStringCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCT read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nCamelCase)]
     property ResidueSite: TStringCT read fResidueSite;
   end;
 
@@ -26570,34 +20584,24 @@ type
     fMonomerSet: TSubstancePolymerMonomerSetCTList;
     fRepeat: TSubstancePolymerRepeatCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property &Class: TCodeableConceptCT read fClass;
-    [TNaming(TNaming.nFlatCase)]
     property Geometry: TCodeableConceptCT read fGeometry;
-    [TNaming(TNaming.nCamelCase)]
     property CopolymerConnectivity: TCodeableConceptCTList read fCopolymerConnectivity;
-    [TNaming(TNaming.nFlatCase)]
     property Modification: TStringCTList read fModification;
-    [TNaming(TNaming.nCamelCase)]
     property MonomerSet: TSubstancePolymerMonomerSetCTList read fMonomerSet;
-    [TNaming(TNaming.nFlatCase)]
     property &Repeat: TSubstancePolymerRepeatCTList read fRepeat;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('SubstancePolymer.MonomerSet')]
   TSubstancePolymerMonomerSetCT = class(TBackboneElementCT)
   private
     fRatioType: TCodeableConceptCT;
     fStartingMaterial: TSubstancePolymerStartingMaterialCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property RatioType: TCodeableConceptCT read fRatioType;
-    [TNaming(TNaming.nCamelCase)]
     property StartingMaterial: TSubstancePolymerStartingMaterialCTList read fStartingMaterial;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('SubstancePolymer.StartingMaterial')]
   TSubstancePolymerStartingMaterialCT = class(TBackboneElementCT)
   private
@@ -26606,17 +20610,12 @@ type
     fIsDefining: TBooleanCT;
     fAmount: TSubstanceAmountCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Material: TCodeableConceptCT read fMaterial;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nCamelCase)]
     property IsDefining: TBooleanCT read fIsDefining;
-    [TNaming(TNaming.nFlatCase)]
     property Amount: TSubstanceAmountCT read fAmount;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('SubstancePolymer.Repeat')]
   TSubstancePolymerRepeatCT = class(TBackboneElementCT)
   private
@@ -26625,17 +20624,12 @@ type
     fRepeatUnitAmountType: TCodeableConceptCT;
     fRepeatUnit: TSubstancePolymerRepeatUnitCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property NumberOfUnits: TIntegerCT read fNumberOfUnits;
-    [TNaming(TNaming.nCamelCase)]
     property AverageMolecularFormula: TStringCT read fAverageMolecularFormula;
-    [TNaming(TNaming.nCamelCase)]
     property RepeatUnitAmountType: TCodeableConceptCT read fRepeatUnitAmountType;
-    [TNaming(TNaming.nCamelCase)]
     property RepeatUnit: TSubstancePolymerRepeatUnitCTList read fRepeatUnit;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('SubstancePolymer.RepeatUnit')]
   TSubstancePolymerRepeatUnitCT = class(TBackboneElementCT)
   private
@@ -26645,32 +20639,23 @@ type
     fDegreeOfPolymerisation: TSubstancePolymerDegreeOfPolymerisationCTList;
     fStructuralRepresentation: TSubstancePolymerStructuralRepresentationCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property OrientationOfPolymerisation: TCodeableConceptCT read fOrientationOfPolymerisation;
-    [TNaming(TNaming.nCamelCase)]
     property RepeatUnit: TStringCT read fRepeatUnit;
-    [TNaming(TNaming.nFlatCase)]
     property Amount: TSubstanceAmountCT read fAmount;
-    [TNaming(TNaming.nCamelCase)]
     property DegreeOfPolymerisation: TSubstancePolymerDegreeOfPolymerisationCTList read fDegreeOfPolymerisation;
-    [TNaming(TNaming.nCamelCase)]
     property StructuralRepresentation: TSubstancePolymerStructuralRepresentationCTList read fStructuralRepresentation;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('SubstancePolymer.DegreeOfPolymerisation')]
   TSubstancePolymerDegreeOfPolymerisationCT = class(TBackboneElementCT)
   private
     fDegree: TCodeableConceptCT;
     fAmount: TSubstanceAmountCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Degree: TCodeableConceptCT read fDegree;
-    [TNaming(TNaming.nFlatCase)]
     property Amount: TSubstanceAmountCT read fAmount;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('SubstancePolymer.StructuralRepresentation')]
   TSubstancePolymerStructuralRepresentationCT = class(TBackboneElementCT)
   private
@@ -26678,11 +20663,8 @@ type
     fRepresentation: TStringCT;
     fAttachment: TAttachmentCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Representation: TStringCT read fRepresentation;
-    [TNaming(TNaming.nFlatCase)]
     property Attachment: TAttachmentCT read fAttachment;
   end;
 
@@ -26693,17 +20675,12 @@ type
     fDisulfideLinkage: TStringCTList;
     fSubunit: TSubstanceProteinSubunitCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property SequenceType: TCodeableConceptCT read fSequenceType;
-    [TNaming(TNaming.nCamelCase)]
     property NumberOfSubunits: TIntegerCT read fNumberOfSubunits;
-    [TNaming(TNaming.nCamelCase)]
     property DisulfideLinkage: TStringCTList read fDisulfideLinkage;
-    [TNaming(TNaming.nFlatCase)]
     property Subunit: TSubstanceProteinSubunitCTList read fSubunit;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('SubstanceProtein.Subunit')]
   TSubstanceProteinSubunitCT = class(TBackboneElementCT)
   private
@@ -26716,21 +20693,13 @@ type
     fCTerminalModificationId: TIdentifierCT;
     fCTerminalModification: TStringCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Subunit: TIntegerCT read fSubunit;
-    [TNaming(TNaming.nFlatCase)]
     property Sequence: TStringCT read fSequence;
-    [TNaming(TNaming.nFlatCase)]
     property Length: TIntegerCT read fLength;
-    [TNaming(TNaming.nCamelCase)]
     property SequenceAttachment: TAttachmentCT read fSequenceAttachment;
-    [TNaming(TNaming.nCamelCase)]
     property NTerminalModificationId: TIdentifierCT read fNTerminalModificationId;
-    [TNaming(TNaming.nCamelCase)]
     property NTerminalModification: TStringCT read fNTerminalModification;
-    [TNaming(TNaming.nCamelCase)]
     property CTerminalModificationId: TIdentifierCT read fCTerminalModificationId;
-    [TNaming(TNaming.nCamelCase)]
     property CTerminalModification: TStringCT read fCTerminalModification;
   end;
 
@@ -26742,19 +20711,13 @@ type
     fClassification: TSubstanceReferenceInformationClassificationCTList;
     fTarget: TSubstanceReferenceInformationTargetCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Comment: TStringCT read fComment;
-    [TNaming(TNaming.nFlatCase)]
     property Gene: TSubstanceReferenceInformationGeneCTList read fGene;
-    [TNaming(TNaming.nCamelCase)]
     property GeneElement: TSubstanceReferenceInformationGeneElementCTList read fGeneElement;
-    [TNaming(TNaming.nFlatCase)]
     property Classification: TSubstanceReferenceInformationClassificationCTList read fClassification;
-    [TNaming(TNaming.nFlatCase)]
     property Target: TSubstanceReferenceInformationTargetCTList read fTarget;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('SubstanceReferenceInformation.Gene')]
   TSubstanceReferenceInformationGeneCT = class(TBackboneElementCT)
   private
@@ -26762,15 +20725,11 @@ type
     fGene: TCodeableConceptCT;
     fSource: TReferenceCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property GeneSequenceOrigin: TCodeableConceptCT read fGeneSequenceOrigin;
-    [TNaming(TNaming.nFlatCase)]
     property Gene: TCodeableConceptCT read fGene;
-    [TNaming(TNaming.nFlatCase)]
     property Source: TReferenceCTList read fSource;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('SubstanceReferenceInformation.GeneElement')]
   TSubstanceReferenceInformationGeneElementCT = class(TBackboneElementCT)
   private
@@ -26778,15 +20737,11 @@ type
     fElement: TIdentifierCT;
     fSource: TReferenceCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Element: TIdentifierCT read fElement;
-    [TNaming(TNaming.nFlatCase)]
     property Source: TReferenceCTList read fSource;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('SubstanceReferenceInformation.Classification')]
   TSubstanceReferenceInformationClassificationCT = class(TBackboneElementCT)
   private
@@ -26795,17 +20750,12 @@ type
     fSubtype: TCodeableConceptCTList;
     fSource: TReferenceCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Domain: TCodeableConceptCT read fDomain;
-    [TNaming(TNaming.nFlatCase)]
     property Classification: TCodeableConceptCT read fClassification;
-    [TNaming(TNaming.nFlatCase)]
     property Subtype: TCodeableConceptCTList read fSubtype;
-    [TNaming(TNaming.nFlatCase)]
     property Source: TReferenceCTList read fSource;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('SubstanceReferenceInformation.Target')]
   TSubstanceReferenceInformationTargetCT = class(TBackboneElementCT)
   private
@@ -26827,28 +20777,18 @@ type
   public
     property AmountChosen: TBasite read GetAmountChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Target: TIdentifierCT read fTarget;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Interaction: TCodeableConceptCT read fInteraction;
-    [TNaming(TNaming.nFlatCase)]
     property Organism: TCodeableConceptCT read fOrganism;
-    [TNaming(TNaming.nCamelCase)]
     property OrganismType: TCodeableConceptCT read fOrganismType;
     [TChoice('Amount')]
-    [TNaming(TNaming.nCamelCase)]
     property AmountQuantity: TQuantityCT read GetAmountQuantity;
     [TChoice('Amount')]
-    [TNaming(TNaming.nCamelCase)]
     property AmountRange: TRangeCT read GetAmountRange;
     [TChoice('Amount')]
-    [TNaming(TNaming.nCamelCase)]
     property AmountString: TStringCT read GetAmountString;
-    [TNaming(TNaming.nCamelCase)]
     property AmountType: TCodeableConceptCT read fAmountType;
-    [TNaming(TNaming.nFlatCase)]
     property Source: TReferenceCTList read fSource;
   end;
 
@@ -26868,48 +20808,31 @@ type
     fOrganism: TSubstanceSourceMaterialOrganismCT;
     fPartDescription: TSubstanceSourceMaterialPartDescriptionCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property SourceMaterialClass: TCodeableConceptCT read fSourceMaterialClass;
-    [TNaming(TNaming.nCamelCase)]
     property SourceMaterialType: TCodeableConceptCT read fSourceMaterialType;
-    [TNaming(TNaming.nCamelCase)]
     property SourceMaterialState: TCodeableConceptCT read fSourceMaterialState;
-    [TNaming(TNaming.nCamelCase)]
     property OrganismId: TIdentifierCT read fOrganismId;
-    [TNaming(TNaming.nCamelCase)]
     property OrganismName: TStringCT read fOrganismName;
-    [TNaming(TNaming.nCamelCase)]
     property ParentSubstanceId: TIdentifierCTList read fParentSubstanceId;
-    [TNaming(TNaming.nCamelCase)]
     property ParentSubstanceName: TStringCTList read fParentSubstanceName;
-    [TNaming(TNaming.nCamelCase)]
     property CountryOfOrigin: TCodeableConceptCTList read fCountryOfOrigin;
-    [TNaming(TNaming.nCamelCase)]
     property GeographicalLocation: TStringCTList read fGeographicalLocation;
-    [TNaming(TNaming.nCamelCase)]
     property DevelopmentStage: TCodeableConceptCT read fDevelopmentStage;
-    [TNaming(TNaming.nCamelCase)]
     property FractionDescription: TSubstanceSourceMaterialFractionDescriptionCTList read fFractionDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Organism: TSubstanceSourceMaterialOrganismCT read fOrganism;
-    [TNaming(TNaming.nCamelCase)]
     property PartDescription: TSubstanceSourceMaterialPartDescriptionCTList read fPartDescription;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('SubstanceSourceMaterial.FractionDescription')]
   TSubstanceSourceMaterialFractionDescriptionCT = class(TBackboneElementCT)
   private
     fFraction: TStringCT;
     fMaterialType: TCodeableConceptCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Fraction: TStringCT read fFraction;
-    [TNaming(TNaming.nCamelCase)]
     property MaterialType: TCodeableConceptCT read fMaterialType;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('SubstanceSourceMaterial.Organism')]
   TSubstanceSourceMaterialOrganismCT = class(TBackboneElementCT)
   private
@@ -26922,38 +20845,26 @@ type
     fHybrid: TSubstanceSourceMaterialHybridCT;
     fOrganismGeneral: TSubstanceSourceMaterialOrganismGeneralCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Family: TCodeableConceptCT read fFamily;
-    [TNaming(TNaming.nFlatCase)]
     property Genus: TCodeableConceptCT read fGenus;
-    [TNaming(TNaming.nFlatCase)]
     property Species: TCodeableConceptCT read fSpecies;
-    [TNaming(TNaming.nCamelCase)]
     property IntraspecificType: TCodeableConceptCT read fIntraspecificType;
-    [TNaming(TNaming.nCamelCase)]
     property IntraspecificDescription: TStringCT read fIntraspecificDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Author: TSubstanceSourceMaterialAuthorCTList read fAuthor;
-    [TNaming(TNaming.nFlatCase)]
     property Hybrid: TSubstanceSourceMaterialHybridCT read fHybrid;
-    [TNaming(TNaming.nCamelCase)]
     property OrganismGeneral: TSubstanceSourceMaterialOrganismGeneralCT read fOrganismGeneral;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('SubstanceSourceMaterial.Author')]
   TSubstanceSourceMaterialAuthorCT = class(TBackboneElementCT)
   private
     fAuthorType: TCodeableConceptCT;
     fAuthorDescription: TStringCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property AuthorType: TCodeableConceptCT read fAuthorType;
-    [TNaming(TNaming.nCamelCase)]
     property AuthorDescription: TStringCT read fAuthorDescription;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('SubstanceSourceMaterial.Hybrid')]
   TSubstanceSourceMaterialHybridCT = class(TBackboneElementCT)
   private
@@ -26963,19 +20874,13 @@ type
     fPaternalOrganismName: TStringCT;
     fHybridType: TCodeableConceptCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property MaternalOrganismId: TStringCT read fMaternalOrganismId;
-    [TNaming(TNaming.nCamelCase)]
     property MaternalOrganismName: TStringCT read fMaternalOrganismName;
-    [TNaming(TNaming.nCamelCase)]
     property PaternalOrganismId: TStringCT read fPaternalOrganismId;
-    [TNaming(TNaming.nCamelCase)]
     property PaternalOrganismName: TStringCT read fPaternalOrganismName;
-    [TNaming(TNaming.nCamelCase)]
     property HybridType: TCodeableConceptCT read fHybridType;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('SubstanceSourceMaterial.OrganismGeneral')]
   TSubstanceSourceMaterialOrganismGeneralCT = class(TBackboneElementCT)
   private
@@ -26984,26 +20889,19 @@ type
     fClass: TCodeableConceptCT;
     fOrder: TCodeableConceptCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Kingdom: TCodeableConceptCT read fKingdom;
-    [TNaming(TNaming.nFlatCase)]
     property Phylum: TCodeableConceptCT read fPhylum;
-    [TNaming(TNaming.nFlatCase)]
     property &Class: TCodeableConceptCT read fClass;
-    [TNaming(TNaming.nFlatCase)]
     property Order: TCodeableConceptCT read fOrder;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('SubstanceSourceMaterial.PartDescription')]
   TSubstanceSourceMaterialPartDescriptionCT = class(TBackboneElementCT)
   private
     fPart: TCodeableConceptCT;
     fPartLocation: TCodeableConceptCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Part: TCodeableConceptCT read fPart;
-    [TNaming(TNaming.nCamelCase)]
     property PartLocation: TCodeableConceptCT read fPartLocation;
   end;
 
@@ -27029,47 +20927,27 @@ type
     fProtein: TReferenceCT;
     fSourceMaterial: TReferenceCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCT read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Status: TCodeableConceptCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Domain: TCodeableConceptCT read fDomain;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Source: TReferenceCTList read fSource;
-    [TNaming(TNaming.nFlatCase)]
     property Comment: TStringCT read fComment;
-    [TNaming(TNaming.nFlatCase)]
     property Moiety: TSubstanceSpecificationMoietyCTList read fMoiety;
-    [TNaming(TNaming.nFlatCase)]
     property &Property: TSubstanceSpecificationPropertyCTList read fProperty;
-    [TNaming(TNaming.nCamelCase)]
     property ReferenceInformation: TReferenceCT read fReferenceInformation;
-    [TNaming(TNaming.nFlatCase)]
     property Structure: TSubstanceSpecificationStructureCT read fStructure;
-    [TNaming(TNaming.nFlatCase)]
     property Code: TSubstanceSpecificationCodeCTList read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TSubstanceSpecificationNameCTList read fName;
-    [TNaming(TNaming.nCamelCase)]
     property MolecularWeight: TSubstanceSpecificationMolecularWeightCTList read fMolecularWeight;
-    [TNaming(TNaming.nFlatCase)]
     property Relationship: TSubstanceSpecificationRelationshipCTList read fRelationship;
-    [TNaming(TNaming.nCamelCase)]
     property NucleicAcid: TReferenceCT read fNucleicAcid;
-    [TNaming(TNaming.nFlatCase)]
     property Polymer: TReferenceCT read fPolymer;
-    [TNaming(TNaming.nFlatCase)]
     property Protein: TReferenceCT read fProtein;
-    [TNaming(TNaming.nCamelCase)]
     property SourceMaterial: TReferenceCT read fSourceMaterial;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('SubstanceSpecification.Moiety')]
   TSubstanceSpecificationMoietyCT = class(TBackboneElementCT)
   private
@@ -27088,27 +20966,18 @@ type
   public
     property AmountChosen: TBasite read GetAmountChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Role: TCodeableConceptCT read fRole;
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCT read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Stereochemistry: TCodeableConceptCT read fStereochemistry;
-    [TNaming(TNaming.nCamelCase)]
     property OpticalActivity: TCodeableConceptCT read fOpticalActivity;
-    [TNaming(TNaming.nCamelCase)]
     property MolecularFormula: TStringCT read fMolecularFormula;
     [TChoice('Amount')]
-    [TNaming(TNaming.nCamelCase)]
     property AmountQuantity: TQuantityCT read GetAmountQuantity;
     [TChoice('Amount')]
-    [TNaming(TNaming.nCamelCase)]
     property AmountString: TStringCT read GetAmountString;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('SubstanceSpecification.Property')]
   TSubstanceSpecificationPropertyCT = class(TBackboneElementCT)
   private
@@ -27130,27 +20999,19 @@ type
     property DefiningSubstanceChosen: TBasite read GetDefiningSubstanceChosen;
     property AmountChosen: TBasite read GetAmountChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCT read fCategory;
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Parameters: TStringCT read fParameters;
     [TChoice('DefiningSubstance')]
-    [TNaming(TNaming.nCamelCase)]
     property DefiningSubstanceReference: TReferenceCT read GetDefiningSubstanceReference;
     [TChoice('DefiningSubstance')]
-    [TNaming(TNaming.nCamelCase)]
     property DefiningSubstanceCodeableConcept: TCodeableConceptCT read GetDefiningSubstanceCodeableConcept;
     [TChoice('Amount')]
-    [TNaming(TNaming.nCamelCase)]
     property AmountQuantity: TQuantityCT read GetAmountQuantity;
     [TChoice('Amount')]
-    [TNaming(TNaming.nCamelCase)]
     property AmountString: TStringCT read GetAmountString;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('SubstanceSpecification.Structure')]
   TSubstanceSpecificationStructureCT = class(TBackboneElementCT)
   private
@@ -27163,25 +21024,16 @@ type
     fSource: TReferenceCTList;
     fRepresentation: TSubstanceSpecificationRepresentationCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Stereochemistry: TCodeableConceptCT read fStereochemistry;
-    [TNaming(TNaming.nCamelCase)]
     property OpticalActivity: TCodeableConceptCT read fOpticalActivity;
-    [TNaming(TNaming.nCamelCase)]
     property MolecularFormula: TStringCT read fMolecularFormula;
-    [TNaming(TNaming.nCamelCase)]
     property MolecularFormulaByMoiety: TStringCT read fMolecularFormulaByMoiety;
-    [TNaming(TNaming.nFlatCase)]
     property Isotope: TSubstanceSpecificationIsotopeCTList read fIsotope;
-    [TNaming(TNaming.nCamelCase)]
     property MolecularWeight: TSubstanceSpecificationMolecularWeightCT read fMolecularWeight;
-    [TNaming(TNaming.nFlatCase)]
     property Source: TReferenceCTList read fSource;
-    [TNaming(TNaming.nFlatCase)]
     property Representation: TSubstanceSpecificationRepresentationCTList read fRepresentation;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('SubstanceSpecification.Isotope')]
   TSubstanceSpecificationIsotopeCT = class(TBackboneElementCT)
   private
@@ -27191,19 +21043,13 @@ type
     fHalfLife: TQuantityCT;
     fMolecularWeight: TSubstanceSpecificationMolecularWeightCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCT read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TCodeableConceptCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Substitution: TCodeableConceptCT read fSubstitution;
-    [TNaming(TNaming.nCamelCase)]
     property HalfLife: TQuantityCT read fHalfLife;
-    [TNaming(TNaming.nCamelCase)]
     property MolecularWeight: TSubstanceSpecificationMolecularWeightCT read fMolecularWeight;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('SubstanceSpecification.MolecularWeight')]
   TSubstanceSpecificationMolecularWeightCT = class(TBackboneElementCT)
   private
@@ -27211,15 +21057,11 @@ type
     fType: TCodeableConceptCT;
     fAmount: TQuantityCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Method: TCodeableConceptCT read fMethod;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Amount: TQuantityCT read fAmount;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('SubstanceSpecification.Representation')]
   TSubstanceSpecificationRepresentationCT = class(TBackboneElementCT)
   private
@@ -27227,15 +21069,11 @@ type
     fRepresentation: TStringCT;
     fAttachment: TAttachmentCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Representation: TStringCT read fRepresentation;
-    [TNaming(TNaming.nFlatCase)]
     property Attachment: TAttachmentCT read fAttachment;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('SubstanceSpecification.Code')]
   TSubstanceSpecificationCodeCT = class(TBackboneElementCT)
   private
@@ -27245,19 +21083,13 @@ type
     fComment: TStringCT;
     fSource: TReferenceCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Status: TCodeableConceptCT read fStatus;
-    [TNaming(TNaming.nCamelCase)]
     property StatusDate: TDateTimeCT read fStatusDate;
-    [TNaming(TNaming.nFlatCase)]
     property Comment: TStringCT read fComment;
-    [TNaming(TNaming.nFlatCase)]
     property Source: TReferenceCTList read fSource;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('SubstanceSpecification.Name')]
   TSubstanceSpecificationNameCT = class(TBackboneElementCT)
   private
@@ -27274,31 +21106,19 @@ type
     fSource: TReferenceCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Status: TCodeableConceptCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Preferred: TBooleanCT read fPreferred;
-    [TNaming(TNaming.nFlatCase)]
     property Language: TCodeableConceptCTList read fLanguage;
-    [TNaming(TNaming.nFlatCase)]
     property Domain: TCodeableConceptCTList read fDomain;
-    [TNaming(TNaming.nFlatCase)]
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    [TNaming(TNaming.nFlatCase)]
     property Synonym: TSubstanceSpecificationNameCTList read fSynonym;
-    [TNaming(TNaming.nFlatCase)]
     property Translation: TSubstanceSpecificationNameCTList read fTranslation;
-    [TNaming(TNaming.nFlatCase)]
     property Official: TSubstanceSpecificationOfficialCTList read fOfficial;
-    [TNaming(TNaming.nFlatCase)]
     property Source: TReferenceCTList read fSource;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('SubstanceSpecification.Official')]
   TSubstanceSpecificationOfficialCT = class(TBackboneElementCT)
   private
@@ -27306,15 +21126,11 @@ type
     fStatus: TCodeableConceptCT;
     fDate: TDateTimeCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Authority: TCodeableConceptCT read fAuthority;
-    [TNaming(TNaming.nFlatCase)]
     property Status: TCodeableConceptCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('SubstanceSpecification.Relationship')]
   TSubstanceSpecificationRelationshipCT = class(TBackboneElementCT)
   private
@@ -27343,32 +21159,21 @@ type
     property AmountChosen: TBasite read GetAmountChosen;
   published
     [TChoice('Substance')]
-    [TNaming(TNaming.nCamelCase)]
     property SubstanceReference: TReferenceCT read GetSubstanceReference;
     [TChoice('Substance')]
-    [TNaming(TNaming.nCamelCase)]
     property SubstanceCodeableConcept: TCodeableConceptCT read GetSubstanceCodeableConcept;
-    [TNaming(TNaming.nFlatCase)]
     property Relationship: TCodeableConceptCT read fRelationship;
-    [TNaming(TNaming.nCamelCase)]
     property IsDefining: TBooleanCT read fIsDefining;
     [TChoice('Amount')]
-    [TNaming(TNaming.nCamelCase)]
     property AmountQuantity: TQuantityCT read GetAmountQuantity;
     [TChoice('Amount')]
-    [TNaming(TNaming.nCamelCase)]
     property AmountRange: TRangeCT read GetAmountRange;
     [TChoice('Amount')]
-    [TNaming(TNaming.nCamelCase)]
     property AmountRatio: TRatioCT read GetAmountRatio;
     [TChoice('Amount')]
-    [TNaming(TNaming.nCamelCase)]
     property AmountString: TStringCT read GetAmountString;
-    [TNaming(TNaming.nCamelCase)]
     property AmountRatioLowLimit: TRatioCT read fAmountRatioLowLimit;
-    [TNaming(TNaming.nCamelCase)]
     property AmountType: TCodeableConceptCT read fAmountType;
-    [TNaming(TNaming.nFlatCase)]
     property Source: TReferenceCTList read fSource;
   end;
 
@@ -27395,38 +21200,24 @@ type
   public
     property OccurrenceChosen: TBasite read GetOccurrenceChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nCamelCase)]
     property BasedOn: TReferenceCTList read fBasedOn;
-    [TNaming(TNaming.nCamelCase)]
     property PartOf: TReferenceCTList read fPartOf;
-    [TNaming(TNaming.nFlatCase)]
     property Status: TSupplyDeliveryStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Patient: TReferenceCT read fPatient;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
-    [TNaming(TNaming.nCamelCase)]
     property SuppliedItem: TSupplyDeliverySuppliedItemCT read fSuppliedItem;
     [TChoice('Occurrence')]
-    [TNaming(TNaming.nCamelCase)]
     property OccurrenceDateTime: TDateTimeCT read GetOccurrenceDateTime;
     [TChoice('Occurrence')]
-    [TNaming(TNaming.nCamelCase)]
     property OccurrencePeriod: TPeriodCT read GetOccurrencePeriod;
     [TChoice('Occurrence')]
-    [TNaming(TNaming.nCamelCase)]
     property OccurrenceTiming: TTimingCT read GetOccurrenceTiming;
-    [TNaming(TNaming.nFlatCase)]
     property Supplier: TReferenceCT read fSupplier;
-    [TNaming(TNaming.nFlatCase)]
     property Destination: TReferenceCT read fDestination;
-    [TNaming(TNaming.nFlatCase)]
     property Receiver: TReferenceCTList read fReceiver;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('SupplyDelivery.SuppliedItem')]
   TSupplyDeliverySuppliedItemCT = class(TBackboneElementCT)
   private
@@ -27440,13 +21231,10 @@ type
   public
     property ItemChosen: TBasite read GetItemChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Quantity: TQuantityCT read fQuantity;
     [TChoice('Item')]
-    [TNaming(TNaming.nCamelCase)]
     property ItemCodeableConcept: TCodeableConceptCT read GetItemCodeableConcept;
     [TChoice('Item')]
-    [TNaming(TNaming.nCamelCase)]
     property ItemReference: TReferenceCT read GetItemReference;
   end;
 
@@ -27454,7 +21242,6 @@ type
   private
     fValue: TSupplyDeliveryStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TSupplyDeliveryStatusListST read fValue write fValue;
   end;
 
@@ -27490,51 +21277,32 @@ type
     property ItemChosen: TBasite read GetItemChosen;
     property OccurrenceChosen: TBasite read GetOccurrenceChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Status: TSupplyRequestStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Category: TCodeableConceptCT read fCategory;
-    [TNaming(TNaming.nFlatCase)]
     property Priority: TRequestPriorityCT read fPriority;
     [TChoice('Item')]
-    [TNaming(TNaming.nCamelCase)]
     property ItemCodeableConcept: TCodeableConceptCT read GetItemCodeableConcept;
     [TChoice('Item')]
-    [TNaming(TNaming.nCamelCase)]
     property ItemReference: TReferenceCT read GetItemReference;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Quantity: TQuantityCT read fQuantity;
-    [TNaming(TNaming.nFlatCase)]
     property Parameter: TSupplyRequestParameterCTList read fParameter;
     [TChoice('Occurrence')]
-    [TNaming(TNaming.nCamelCase)]
     property OccurrenceDateTime: TDateTimeCT read GetOccurrenceDateTime;
     [TChoice('Occurrence')]
-    [TNaming(TNaming.nCamelCase)]
     property OccurrencePeriod: TPeriodCT read GetOccurrencePeriod;
     [TChoice('Occurrence')]
-    [TNaming(TNaming.nCamelCase)]
     property OccurrenceTiming: TTimingCT read GetOccurrenceTiming;
-    [TNaming(TNaming.nCamelCase)]
     property AuthoredOn: TDateTimeCT read fAuthoredOn;
-    [TNaming(TNaming.nFlatCase)]
     property Requester: TReferenceCT read fRequester;
-    [TNaming(TNaming.nFlatCase)]
     property Supplier: TReferenceCTList read fSupplier;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonReference: TReferenceCTList read fReasonReference;
-    [TNaming(TNaming.nCamelCase)]
     property DeliverFrom: TReferenceCT read fDeliverFrom;
-    [TNaming(TNaming.nCamelCase)]
     property DeliverTo: TReferenceCT read fDeliverTo;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('SupplyRequest.Parameter')]
   TSupplyRequestParameterCT = class(TBackboneElementCT)
   private
@@ -27552,19 +21320,14 @@ type
   public
     property ValueChosen: TBasite read GetValueChosen;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCodeableConcept: TCodeableConceptCT read GetValueCodeableConcept;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueQuantity: TQuantityCT read GetValueQuantity;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueRange: TRangeCT read GetValueRange;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueBoolean: TBooleanCT read GetValueBoolean;
   end;
 
@@ -27572,7 +21335,6 @@ type
   private
     fValue: TSupplyRequestStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TSupplyRequestStatusListST read fValue write fValue;
   end;
 
@@ -27610,73 +21372,41 @@ type
     fInput: TTaskInputCTList;
     fOutput: TTaskOutputCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nCamelCase)]
     property InstantiatesCanonical: TCanonicalCT read fInstantiatesCanonical;
-    [TNaming(TNaming.nCamelCase)]
     property InstantiatesUri: TUriCT read fInstantiatesUri;
-    [TNaming(TNaming.nCamelCase)]
     property BasedOn: TReferenceCTList read fBasedOn;
-    [TNaming(TNaming.nCamelCase)]
     property GroupIdentifier: TIdentifierCT read fGroupIdentifier;
-    [TNaming(TNaming.nCamelCase)]
     property PartOf: TReferenceCTList read fPartOf;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TTaskStatusCT read fStatus;
-    [TNaming(TNaming.nCamelCase)]
     property StatusReason: TCodeableConceptCT read fStatusReason;
-    [TNaming(TNaming.nCamelCase)]
     property BusinessStatus: TCodeableConceptCT read fBusinessStatus;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Intent: TTaskIntentCT read fIntent;
-    [TNaming(TNaming.nFlatCase)]
     property Priority: TRequestPriorityCT read fPriority;
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeableConceptCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Focus: TReferenceCT read fFocus;
-    [TNaming(TNaming.nFlatCase)]
     property &For: TReferenceCT read fFor;
-    [TNaming(TNaming.nFlatCase)]
     property Encounter: TReferenceCT read fEncounter;
-    [TNaming(TNaming.nCamelCase)]
     property ExecutionPeriod: TPeriodCT read fExecutionPeriod;
-    [TNaming(TNaming.nCamelCase)]
     property AuthoredOn: TDateTimeCT read fAuthoredOn;
-    [TNaming(TNaming.nCamelCase)]
     property LastModified: TDateTimeCT read fLastModified;
-    [TNaming(TNaming.nFlatCase)]
     property Requester: TReferenceCT read fRequester;
-    [TNaming(TNaming.nCamelCase)]
     property PerformerType: TCodeableConceptCTList read fPerformerType;
-    [TNaming(TNaming.nFlatCase)]
     property Owner: TReferenceCT read fOwner;
-    [TNaming(TNaming.nFlatCase)]
     property Location: TReferenceCT read fLocation;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonCode: TCodeableConceptCT read fReasonCode;
-    [TNaming(TNaming.nCamelCase)]
     property ReasonReference: TReferenceCT read fReasonReference;
-    [TNaming(TNaming.nFlatCase)]
     property Insurance: TReferenceCTList read fInsurance;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
-    [TNaming(TNaming.nCamelCase)]
     property RelevantHistory: TReferenceCTList read fRelevantHistory;
-    [TNaming(TNaming.nFlatCase)]
     property Restriction: TTaskRestrictionCT read fRestriction;
-    [TNaming(TNaming.nFlatCase)]
     property Input: TTaskInputCTList read fInput;
-    [TNaming(TNaming.nFlatCase)]
     property Output: TTaskOutputCTList read fOutput;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Task.Restriction')]
   TTaskRestrictionCT = class(TBackboneElementCT)
   private
@@ -27684,15 +21414,11 @@ type
     fPeriod: TPeriodCT;
     fRecipient: TReferenceCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Repetitions: TPositiveIntCT read fRepetitions;
-    [TNaming(TNaming.nFlatCase)]
     property Period: TPeriodCT read fPeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Recipient: TReferenceCTList read fRecipient;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Task.Input')]
   TTaskInputCT = class(TBackboneElementCT)
   private
@@ -27803,161 +21529,109 @@ type
     property ValueChosen: TBasite read GetValueChosen;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueBase64Binary: TBase64BinaryCT read GetValueBase64Binary;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueBoolean: TBooleanCT read GetValueBoolean;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCanonical: TCanonicalCT read GetValueCanonical;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCode: TCodeCT read GetValueCode;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDate: TDateCT read GetValueDate;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDateTime: TDateTimeCT read GetValueDateTime;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDecimal: TDecimalCT read GetValueDecimal;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueId: TIdCT read GetValueId;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueInstant: TInstantCT read GetValueInstant;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueInteger: TIntegerCT read GetValueInteger;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueMarkdown: TMarkdownCT read GetValueMarkdown;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueOid: TOidCT read GetValueOid;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValuePositiveInt: TPositiveIntCT read GetValuePositiveInt;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueString: TStringCT read GetValueString;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueTime: TTimeCT read GetValueTime;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueUnsignedInt: TUnsignedIntCT read GetValueUnsignedInt;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueUri: TUriCT read GetValueUri;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueUrl: TUrlCT read GetValueUrl;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueUuid: TUuidCT read GetValueUuid;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueAddress: TAddressCT read GetValueAddress;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueAge: TAgeCT read GetValueAge;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueAnnotation: TAnnotationCT read GetValueAnnotation;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueAttachment: TAttachmentCT read GetValueAttachment;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCodeableConcept: TCodeableConceptCT read GetValueCodeableConcept;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCoding: TCodingCT read GetValueCoding;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueContactPoint: TContactPointCT read GetValueContactPoint;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCount: TCountCT read GetValueCount;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDistance: TDistanceCT read GetValueDistance;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDuration: TDurationCT read GetValueDuration;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueHumanName: THumanNameCT read GetValueHumanName;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueIdentifier: TIdentifierCT read GetValueIdentifier;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueMoney: TMoneyCT read GetValueMoney;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValuePeriod: TPeriodCT read GetValuePeriod;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueQuantity: TQuantityCT read GetValueQuantity;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueRange: TRangeCT read GetValueRange;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueRatio: TRatioCT read GetValueRatio;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueReference: TReferenceCT read GetValueReference;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueSampledData: TSampledDataCT read GetValueSampledData;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueSignature: TSignatureCT read GetValueSignature;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueTiming: TTimingCT read GetValueTiming;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueContactDetail: TContactDetailCT read GetValueContactDetail;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueContributor: TContributorCT read GetValueContributor;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDataRequirement: TDataRequirementCT read GetValueDataRequirement;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueExpression: TExpressionCT read GetValueExpression;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueParameterDefinition: TParameterDefinitionCT read GetValueParameterDefinition;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueRelatedArtifact: TRelatedArtifactCT read GetValueRelatedArtifact;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueTriggerDefinition: TTriggerDefinitionCT read GetValueTriggerDefinition;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueUsageContext: TUsageContextCT read GetValueUsageContext;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDosage: TDosageCT read GetValueDosage;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueMeta: TMetaCT read GetValueMeta;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('Task.Output')]
   TTaskOutputCT = class(TBackboneElementCT)
   private
@@ -28068,157 +21742,106 @@ type
     property ValueChosen: TBasite read GetValueChosen;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCT read fType;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueBase64Binary: TBase64BinaryCT read GetValueBase64Binary;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueBoolean: TBooleanCT read GetValueBoolean;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCanonical: TCanonicalCT read GetValueCanonical;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCode: TCodeCT read GetValueCode;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDate: TDateCT read GetValueDate;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDateTime: TDateTimeCT read GetValueDateTime;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDecimal: TDecimalCT read GetValueDecimal;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueId: TIdCT read GetValueId;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueInstant: TInstantCT read GetValueInstant;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueInteger: TIntegerCT read GetValueInteger;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueMarkdown: TMarkdownCT read GetValueMarkdown;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueOid: TOidCT read GetValueOid;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValuePositiveInt: TPositiveIntCT read GetValuePositiveInt;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueString: TStringCT read GetValueString;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueTime: TTimeCT read GetValueTime;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueUnsignedInt: TUnsignedIntCT read GetValueUnsignedInt;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueUri: TUriCT read GetValueUri;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueUrl: TUrlCT read GetValueUrl;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueUuid: TUuidCT read GetValueUuid;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueAddress: TAddressCT read GetValueAddress;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueAge: TAgeCT read GetValueAge;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueAnnotation: TAnnotationCT read GetValueAnnotation;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueAttachment: TAttachmentCT read GetValueAttachment;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCodeableConcept: TCodeableConceptCT read GetValueCodeableConcept;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCoding: TCodingCT read GetValueCoding;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueContactPoint: TContactPointCT read GetValueContactPoint;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCount: TCountCT read GetValueCount;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDistance: TDistanceCT read GetValueDistance;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDuration: TDurationCT read GetValueDuration;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueHumanName: THumanNameCT read GetValueHumanName;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueIdentifier: TIdentifierCT read GetValueIdentifier;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueMoney: TMoneyCT read GetValueMoney;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValuePeriod: TPeriodCT read GetValuePeriod;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueQuantity: TQuantityCT read GetValueQuantity;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueRange: TRangeCT read GetValueRange;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueRatio: TRatioCT read GetValueRatio;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueReference: TReferenceCT read GetValueReference;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueSampledData: TSampledDataCT read GetValueSampledData;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueSignature: TSignatureCT read GetValueSignature;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueTiming: TTimingCT read GetValueTiming;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueContactDetail: TContactDetailCT read GetValueContactDetail;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueContributor: TContributorCT read GetValueContributor;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDataRequirement: TDataRequirementCT read GetValueDataRequirement;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueExpression: TExpressionCT read GetValueExpression;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueParameterDefinition: TParameterDefinitionCT read GetValueParameterDefinition;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueRelatedArtifact: TRelatedArtifactCT read GetValueRelatedArtifact;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueTriggerDefinition: TTriggerDefinitionCT read GetValueTriggerDefinition;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueUsageContext: TUsageContextCT read GetValueUsageContext;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDosage: TDosageCT read GetValueDosage;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueMeta: TMetaCT read GetValueMeta;
   end;
 
@@ -28226,7 +21849,6 @@ type
   private
     fValue: TTaskStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TTaskStatusListST read fValue write fValue;
   end;
 
@@ -28234,7 +21856,6 @@ type
   private
     fValue: TTaskIntentListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TTaskIntentListST read fValue write fValue;
   end;
 
@@ -28265,60 +21886,35 @@ type
     fTranslation: TTerminologyCapabilitiesTranslationCT;
     fClosure: TTerminologyCapabilitiesClosureCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUriCT read fUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCT read fVersion;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Title: TStringCT read fTitle;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TPublicationStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Experimental: TBooleanCT read fExperimental;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Publisher: TStringCT read fPublisher;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TContactDetailCTList read fContact;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TMarkdownCT read fDescription;
-    [TNaming(TNaming.nCamelCase)]
     property UseContext: TUsageContextCTList read fUseContext;
-    [TNaming(TNaming.nFlatCase)]
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    [TNaming(TNaming.nFlatCase)]
     property Purpose: TMarkdownCT read fPurpose;
-    [TNaming(TNaming.nFlatCase)]
     property Copyright: TMarkdownCT read fCopyright;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Kind: TCapabilityStatementKindCT read fKind;
-    [TNaming(TNaming.nFlatCase)]
     property Software: TTerminologyCapabilitiesSoftwareCT read fSoftware;
-    [TNaming(TNaming.nFlatCase)]
     property &Implementation: TTerminologyCapabilitiesImplementationCT read fImplementation;
-    [TNaming(TNaming.nCamelCase)]
     property LockedDate: TBooleanCT read fLockedDate;
-    [TNaming(TNaming.nCamelCase)]
     property CodeSystem: TTerminologyCapabilitiesCodeSystemCTList read fCodeSystem;
-    [TNaming(TNaming.nFlatCase)]
     property Expansion: TTerminologyCapabilitiesExpansionCT read fExpansion;
-    [TNaming(TNaming.nCamelCase)]
     property CodeSearch: TCodeSearchSupportCT read fCodeSearch;
-    [TNaming(TNaming.nCamelCase)]
     property ValidateCode: TTerminologyCapabilitiesValidateCodeCT read fValidateCode;
-    [TNaming(TNaming.nFlatCase)]
     property Translation: TTerminologyCapabilitiesTranslationCT read fTranslation;
-    [TNaming(TNaming.nFlatCase)]
     property Closure: TTerminologyCapabilitiesClosureCT read fClosure;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('TerminologyCapabilities.Software')]
   TTerminologyCapabilitiesSoftwareCT = class(TBackboneElementCT)
   private
@@ -28326,13 +21922,10 @@ type
     fVersion: TStringCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCT read fVersion;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('TerminologyCapabilities.Implementation')]
   TTerminologyCapabilitiesImplementationCT = class(TBackboneElementCT)
   private
@@ -28340,13 +21933,10 @@ type
     fUrl: TUrlCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUrlCT read fUrl;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('TerminologyCapabilities.CodeSystem')]
   TTerminologyCapabilitiesCodeSystemCT = class(TBackboneElementCT)
   private
@@ -28354,15 +21944,11 @@ type
     fVersion: TTerminologyCapabilitiesVersionCTList;
     fSubsumption: TBooleanCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Uri: TCanonicalCT read fUri;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TTerminologyCapabilitiesVersionCTList read fVersion;
-    [TNaming(TNaming.nFlatCase)]
     property Subsumption: TBooleanCT read fSubsumption;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('TerminologyCapabilities.Version')]
   TTerminologyCapabilitiesVersionCT = class(TBackboneElementCT)
   private
@@ -28373,21 +21959,14 @@ type
     fFilter: TTerminologyCapabilitiesFilterCTList;
     fProperty: TCodeCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Code: TStringCT read fCode;
-    [TNaming(TNaming.nCamelCase)]
     property IsDefault: TBooleanCT read fIsDefault;
-    [TNaming(TNaming.nFlatCase)]
     property Compositional: TBooleanCT read fCompositional;
-    [TNaming(TNaming.nFlatCase)]
     property Language: TCodeCTList read fLanguage;
-    [TNaming(TNaming.nFlatCase)]
     property Filter: TTerminologyCapabilitiesFilterCTList read fFilter;
-    [TNaming(TNaming.nFlatCase)]
     property &Property: TCodeCTList read fProperty;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('TerminologyCapabilities.Filter')]
   TTerminologyCapabilitiesFilterCT = class(TBackboneElementCT)
   private
@@ -28395,13 +21974,10 @@ type
     fOp: TCodeCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Op: TCodeCTList read fOp;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('TerminologyCapabilities.Expansion')]
   TTerminologyCapabilitiesExpansionCT = class(TBackboneElementCT)
   private
@@ -28411,19 +21987,13 @@ type
     fParameter: TTerminologyCapabilitiesParameterCTList;
     fTextFilter: TMarkdownCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Hierarchical: TBooleanCT read fHierarchical;
-    [TNaming(TNaming.nFlatCase)]
     property Paging: TBooleanCT read fPaging;
-    [TNaming(TNaming.nFlatCase)]
     property Incomplete: TBooleanCT read fIncomplete;
-    [TNaming(TNaming.nFlatCase)]
     property Parameter: TTerminologyCapabilitiesParameterCTList read fParameter;
-    [TNaming(TNaming.nCamelCase)]
     property TextFilter: TMarkdownCT read fTextFilter;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('TerminologyCapabilities.Parameter')]
   TTerminologyCapabilitiesParameterCT = class(TBackboneElementCT)
   private
@@ -28431,41 +22001,33 @@ type
     fDocumentation: TStringCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: TCodeCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Documentation: TStringCT read fDocumentation;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('TerminologyCapabilities.ValidateCode')]
   TTerminologyCapabilitiesValidateCodeCT = class(TBackboneElementCT)
   private
     fTranslations: TBooleanCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Translations: TBooleanCT read fTranslations;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('TerminologyCapabilities.Translation')]
   TTerminologyCapabilitiesTranslationCT = class(TBackboneElementCT)
   private
     fNeedsMap: TBooleanCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property NeedsMap: TBooleanCT read fNeedsMap;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('TerminologyCapabilities.Closure')]
   TTerminologyCapabilitiesClosureCT = class(TBackboneElementCT)
   private
     fTranslation: TBooleanCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Translation: TBooleanCT read fTranslation;
   end;
 
@@ -28473,7 +22035,6 @@ type
   private
     fValue: TCodeSearchSupportListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TCodeSearchSupportListST read fValue write fValue;
   end;
 
@@ -28492,36 +22053,23 @@ type
     fTest: TTestReportTestCTList;
     fTeardown: TTestReportTeardownCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCT read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TTestReportStatusCT read fStatus;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property TestScript: TReferenceCT read fTestScript;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Result: TTestReportResultCT read fResult;
-    [TNaming(TNaming.nFlatCase)]
     property Score: TDecimalCT read fScore;
-    [TNaming(TNaming.nFlatCase)]
     property Tester: TStringCT read fTester;
-    [TNaming(TNaming.nFlatCase)]
     property Issued: TDateTimeCT read fIssued;
-    [TNaming(TNaming.nFlatCase)]
     property Participant: TTestReportParticipantCTList read fParticipant;
-    [TNaming(TNaming.nFlatCase)]
     property Setup: TTestReportSetupCT read fSetup;
-    [TNaming(TNaming.nFlatCase)]
     property Test: TTestReportTestCTList read fTest;
-    [TNaming(TNaming.nFlatCase)]
     property Teardown: TTestReportTeardownCT read fTeardown;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('TestReport.Participant')]
   TTestReportParticipantCT = class(TBackboneElementCT)
   private
@@ -28530,39 +22078,30 @@ type
     fDisplay: TStringCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TTestReportParticipantTypeCT read fType;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Uri: TUriCT read fUri;
-    [TNaming(TNaming.nFlatCase)]
     property Display: TStringCT read fDisplay;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('TestReport.Setup')]
   TTestReportSetupCT = class(TBackboneElementCT)
   private
     fAction: TTestReportActionCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Action: TTestReportActionCTList read fAction;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('TestReport.Action')]
   TTestReportActionCT = class(TBackboneElementCT)
   private
     fOperation: TTestReportOperationCT;
     fAssert: TTestReportAssertCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Operation: TTestReportOperationCT read fOperation;
-    [TNaming(TNaming.nFlatCase)]
     property Assert: TTestReportAssertCT read fAssert;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('TestReport.Operation')]
   TTestReportOperationCT = class(TBackboneElementCT)
   private
@@ -28571,15 +22110,11 @@ type
     fDetail: TUriCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Result: TTestReportActionResultCT read fResult;
-    [TNaming(TNaming.nFlatCase)]
     property Message: TMarkdownCT read fMessage;
-    [TNaming(TNaming.nFlatCase)]
     property Detail: TUriCT read fDetail;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('TestReport.Assert')]
   TTestReportAssertCT = class(TBackboneElementCT)
   private
@@ -28588,15 +22123,11 @@ type
     fDetail: TStringCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Result: TTestReportActionResultCT read fResult;
-    [TNaming(TNaming.nFlatCase)]
     property Message: TMarkdownCT read fMessage;
-    [TNaming(TNaming.nFlatCase)]
     property Detail: TStringCT read fDetail;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('TestReport.Test')]
   TTestReportTestCT = class(TBackboneElementCT)
   private
@@ -28604,45 +22135,35 @@ type
     fDescription: TStringCT;
     fAction: TTestReportAction1CTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Action: TTestReportAction1CTList read fAction;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('TestReport.Action1')]
   TTestReportAction1CT = class(TBackboneElementCT)
   private
     fOperation: TTestReportOperationCT;
     fAssert: TTestReportAssertCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Operation: TTestReportOperationCT read fOperation;
-    [TNaming(TNaming.nFlatCase)]
     property Assert: TTestReportAssertCT read fAssert;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('TestReport.Teardown')]
   TTestReportTeardownCT = class(TBackboneElementCT)
   private
     fAction: TTestReportAction2CTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Action: TTestReportAction2CTList read fAction;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('TestReport.Action2')]
   TTestReportAction2CT = class(TBackboneElementCT)
   private
     fOperation: TTestReportOperationCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Operation: TTestReportOperationCT read fOperation;
   end;
 
@@ -28650,7 +22171,6 @@ type
   private
     fValue: TTestReportStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TTestReportStatusListST read fValue write fValue;
   end;
 
@@ -28658,7 +22178,6 @@ type
   private
     fValue: TTestReportActionResultListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TTestReportActionResultListST read fValue write fValue;
   end;
 
@@ -28666,7 +22185,6 @@ type
   private
     fValue: TTestReportParticipantTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TTestReportParticipantTypeListST read fValue write fValue;
   end;
 
@@ -28674,7 +22192,6 @@ type
   private
     fValue: TTestReportResultListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TTestReportResultListST read fValue write fValue;
   end;
 
@@ -28706,59 +22223,34 @@ type
     fTeardown: TTestScriptTeardownCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUriCT read fUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCT read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCT read fVersion;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Title: TStringCT read fTitle;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TPublicationStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Experimental: TBooleanCT read fExperimental;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Publisher: TStringCT read fPublisher;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TContactDetailCTList read fContact;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TMarkdownCT read fDescription;
-    [TNaming(TNaming.nCamelCase)]
     property UseContext: TUsageContextCTList read fUseContext;
-    [TNaming(TNaming.nFlatCase)]
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    [TNaming(TNaming.nFlatCase)]
     property Purpose: TMarkdownCT read fPurpose;
-    [TNaming(TNaming.nFlatCase)]
     property Copyright: TMarkdownCT read fCopyright;
-    [TNaming(TNaming.nFlatCase)]
     property Origin: TTestScriptOriginCTList read fOrigin;
-    [TNaming(TNaming.nFlatCase)]
     property Destination: TTestScriptDestinationCTList read fDestination;
-    [TNaming(TNaming.nFlatCase)]
     property Metadata: TTestScriptMetadataCT read fMetadata;
-    [TNaming(TNaming.nFlatCase)]
     property Fixture: TTestScriptFixtureCTList read fFixture;
-    [TNaming(TNaming.nFlatCase)]
     property Profile: TReferenceCTList read fProfile;
-    [TNaming(TNaming.nFlatCase)]
     property Variable: TTestScriptVariableCTList read fVariable;
-    [TNaming(TNaming.nFlatCase)]
     property Setup: TTestScriptSetupCT read fSetup;
-    [TNaming(TNaming.nFlatCase)]
     property Test: TTestScriptTestCTList read fTest;
-    [TNaming(TNaming.nFlatCase)]
     property Teardown: TTestScriptTeardownCT read fTeardown;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('TestScript.Origin')]
   TTestScriptOriginCT = class(TBackboneElementCT)
   private
@@ -28766,14 +22258,11 @@ type
     fProfile: TCodingCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Index: TIntegerCT read fIndex;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Profile: TCodingCT read fProfile;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('TestScript.Destination')]
   TTestScriptDestinationCT = class(TBackboneElementCT)
   private
@@ -28781,27 +22270,21 @@ type
     fProfile: TCodingCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Index: TIntegerCT read fIndex;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Profile: TCodingCT read fProfile;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('TestScript.Metadata')]
   TTestScriptMetadataCT = class(TBackboneElementCT)
   private
     fLink: TTestScriptLinkCTList;
     fCapability: TTestScriptCapabilityCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Link: TTestScriptLinkCTList read fLink;
-    [TNaming(TNaming.nFlatCase)]
     property Capability: TTestScriptCapabilityCTList read fCapability;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('TestScript.Link')]
   TTestScriptLinkCT = class(TBackboneElementCT)
   private
@@ -28809,13 +22292,10 @@ type
     fDescription: TStringCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUriCT read fUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('TestScript.Capability')]
   TTestScriptCapabilityCT = class(TBackboneElementCT)
   private
@@ -28828,25 +22308,17 @@ type
     fCapabilities: TCanonicalCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Required: TBooleanCT read fRequired;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Validated: TBooleanCT read fValidated;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Origin: TIntegerCTList read fOrigin;
-    [TNaming(TNaming.nFlatCase)]
     property Destination: TIntegerCT read fDestination;
-    [TNaming(TNaming.nFlatCase)]
     property Link: TUriCTList read fLink;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Capabilities: TCanonicalCT read fCapabilities;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('TestScript.Fixture')]
   TTestScriptFixtureCT = class(TBackboneElementCT)
   private
@@ -28855,16 +22327,12 @@ type
     fResource: TReferenceCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Autocreate: TBooleanCT read fAutocreate;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Autodelete: TBooleanCT read fAutodelete;
-    [TNaming(TNaming.nFlatCase)]
     property Resource: TReferenceCT read fResource;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('TestScript.Variable')]
   TTestScriptVariableCT = class(TBackboneElementCT)
   private
@@ -28878,48 +22346,34 @@ type
     fSourceId: TIdCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nCamelCase)]
     property DefaultValue: TStringCT read fDefaultValue;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Expression: TStringCT read fExpression;
-    [TNaming(TNaming.nCamelCase)]
     property HeaderField: TStringCT read fHeaderField;
-    [TNaming(TNaming.nFlatCase)]
     property Hint: TStringCT read fHint;
-    [TNaming(TNaming.nFlatCase)]
     property Path: TStringCT read fPath;
-    [TNaming(TNaming.nCamelCase)]
     property SourceId: TIdCT read fSourceId;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('TestScript.Setup')]
   TTestScriptSetupCT = class(TBackboneElementCT)
   private
     fAction: TTestScriptActionCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Action: TTestScriptActionCTList read fAction;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('TestScript.Action')]
   TTestScriptActionCT = class(TBackboneElementCT)
   private
     fOperation: TTestScriptOperationCT;
     fAssert: TTestScriptAssertCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Operation: TTestScriptOperationCT read fOperation;
-    [TNaming(TNaming.nFlatCase)]
     property Assert: TTestScriptAssertCT read fAssert;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('TestScript.Operation')]
   TTestScriptOperationCT = class(TBackboneElementCT)
   private
@@ -28941,44 +22395,26 @@ type
     fTargetId: TIdCT;
     fUrl: TStringCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodingCT read fType;
-    [TNaming(TNaming.nFlatCase)]
     property Resource: TCodeCT read fResource;
-    [TNaming(TNaming.nFlatCase)]
     property &Label: TStringCT read fLabel;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Accept: TCodeCT read fAccept;
-    [TNaming(TNaming.nCamelCase)]
     property ContentType: TCodeCT read fContentType;
-    [TNaming(TNaming.nFlatCase)]
     property Destination: TIntegerCT read fDestination;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property EncodeRequestUrl: TBooleanCT read fEncodeRequestUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Method: TTestScriptRequestMethodCodeCT read fMethod;
-    [TNaming(TNaming.nFlatCase)]
     property Origin: TIntegerCT read fOrigin;
-    [TNaming(TNaming.nFlatCase)]
     property Params: TStringCT read fParams;
-    [TNaming(TNaming.nCamelCase)]
     property RequestHeader: TTestScriptRequestHeaderCTList read fRequestHeader;
-    [TNaming(TNaming.nCamelCase)]
     property RequestId: TIdCT read fRequestId;
-    [TNaming(TNaming.nCamelCase)]
     property ResponseId: TIdCT read fResponseId;
-    [TNaming(TNaming.nCamelCase)]
     property SourceId: TIdCT read fSourceId;
-    [TNaming(TNaming.nCamelCase)]
     property TargetId: TIdCT read fTargetId;
-    [TNaming(TNaming.nFlatCase)]
     property Url: TStringCT read fUrl;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('TestScript.RequestHeader')]
   TTestScriptRequestHeaderCT = class(TBackboneElementCT)
   private
@@ -28986,14 +22422,11 @@ type
     fValue: TStringCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Field: TStringCT read fField;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Value: TStringCT read fValue;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('TestScript.Assert')]
   TTestScriptAssertCT = class(TBackboneElementCT)
   private
@@ -29020,54 +22453,31 @@ type
     fValue: TStringCT;
     fWarningOnly: TBooleanCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property &Label: TStringCT read fLabel;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Direction: TAssertionDirectionTypeCT read fDirection;
-    [TNaming(TNaming.nCamelCase)]
     property CompareToSourceId: TStringCT read fCompareToSourceId;
-    [TNaming(TNaming.nCamelCase)]
     property CompareToSourceExpression: TStringCT read fCompareToSourceExpression;
-    [TNaming(TNaming.nCamelCase)]
     property CompareToSourcePath: TStringCT read fCompareToSourcePath;
-    [TNaming(TNaming.nCamelCase)]
     property ContentType: TCodeCT read fContentType;
-    [TNaming(TNaming.nFlatCase)]
     property Expression: TStringCT read fExpression;
-    [TNaming(TNaming.nCamelCase)]
     property HeaderField: TStringCT read fHeaderField;
-    [TNaming(TNaming.nCamelCase)]
     property MinimumId: TStringCT read fMinimumId;
-    [TNaming(TNaming.nCamelCase)]
     property NavigationLinks: TBooleanCT read fNavigationLinks;
-    [TNaming(TNaming.nFlatCase)]
     property Operator: TAssertionOperatorTypeCT read fOperator;
-    [TNaming(TNaming.nFlatCase)]
     property Path: TStringCT read fPath;
-    [TNaming(TNaming.nCamelCase)]
     property RequestMethod: TTestScriptRequestMethodCodeCT read fRequestMethod;
-    [TNaming(TNaming.nCamelCase)]
     property RequestURL: TStringCT read fRequestURL;
-    [TNaming(TNaming.nFlatCase)]
     property Resource: TCodeCT read fResource;
-    [TNaming(TNaming.nFlatCase)]
     property Response: TAssertionResponseTypesCT read fResponse;
-    [TNaming(TNaming.nCamelCase)]
     property ResponseCode: TStringCT read fResponseCode;
-    [TNaming(TNaming.nCamelCase)]
     property SourceId: TIdCT read fSourceId;
-    [TNaming(TNaming.nCamelCase)]
     property ValidateProfileId: TIdCT read fValidateProfileId;
-    [TNaming(TNaming.nFlatCase)]
     property Value: TStringCT read fValue;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property WarningOnly: TBooleanCT read fWarningOnly;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('TestScript.Test')]
   TTestScriptTestCT = class(TBackboneElementCT)
   private
@@ -29075,45 +22485,35 @@ type
     fDescription: TStringCT;
     fAction: TTestScriptAction1CTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TStringCT read fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Action: TTestScriptAction1CTList read fAction;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('TestScript.Action1')]
   TTestScriptAction1CT = class(TBackboneElementCT)
   private
     fOperation: TTestScriptOperationCT;
     fAssert: TTestScriptAssertCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Operation: TTestScriptOperationCT read fOperation;
-    [TNaming(TNaming.nFlatCase)]
     property Assert: TTestScriptAssertCT read fAssert;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('TestScript.Teardown')]
   TTestScriptTeardownCT = class(TBackboneElementCT)
   private
     fAction: TTestScriptAction2CTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Action: TTestScriptAction2CTList read fAction;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('TestScript.Action2')]
   TTestScriptAction2CT = class(TBackboneElementCT)
   private
     fOperation: TTestScriptOperationCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Operation: TTestScriptOperationCT read fOperation;
   end;
 
@@ -29121,7 +22521,6 @@ type
   private
     fValue: TAssertionDirectionTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TAssertionDirectionTypeListST read fValue write fValue;
   end;
 
@@ -29129,7 +22528,6 @@ type
   private
     fValue: TAssertionOperatorTypeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TAssertionOperatorTypeListST read fValue write fValue;
   end;
 
@@ -29137,7 +22535,6 @@ type
   private
     fValue: TAssertionResponseTypesListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TAssertionResponseTypesListST read fValue write fValue;
   end;
 
@@ -29145,7 +22542,6 @@ type
   private
     fValue: TTestScriptRequestMethodCodeListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TTestScriptRequestMethodCodeListST read fValue write fValue;
   end;
 
@@ -29170,46 +22566,27 @@ type
     fCompose: TValueSetComposeCT;
     fExpansion: TValueSetExpansionCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Url: TUriCT read fUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCT read fVersion;
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Title: TStringCT read fTitle;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TPublicationStatusCT read fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Experimental: TBooleanCT read fExperimental;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateTimeCT read fDate;
-    [TNaming(TNaming.nFlatCase)]
     property Publisher: TStringCT read fPublisher;
-    [TNaming(TNaming.nFlatCase)]
     property Contact: TContactDetailCTList read fContact;
-    [TNaming(TNaming.nFlatCase)]
     property Description: TMarkdownCT read fDescription;
-    [TNaming(TNaming.nCamelCase)]
     property UseContext: TUsageContextCTList read fUseContext;
-    [TNaming(TNaming.nFlatCase)]
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    [TNaming(TNaming.nFlatCase)]
     property Immutable: TBooleanCT read fImmutable;
-    [TNaming(TNaming.nFlatCase)]
     property Purpose: TMarkdownCT read fPurpose;
-    [TNaming(TNaming.nFlatCase)]
     property Copyright: TMarkdownCT read fCopyright;
-    [TNaming(TNaming.nFlatCase)]
     property Compose: TValueSetComposeCT read fCompose;
-    [TNaming(TNaming.nFlatCase)]
     property Expansion: TValueSetExpansionCT read fExpansion;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ValueSet.Compose')]
   TValueSetComposeCT = class(TBackboneElementCT)
   private
@@ -29218,17 +22595,12 @@ type
     fInclude: TValueSetIncludeCTList;
     fExclude: TValueSetIncludeCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property LockedDate: TDateCT read fLockedDate;
-    [TNaming(TNaming.nFlatCase)]
     property Inactive: TBooleanCT read fInactive;
-    [TNaming(TNaming.nFlatCase)]
     property Include: TValueSetIncludeCTList read fInclude;
-    [TNaming(TNaming.nFlatCase)]
     property Exclude: TValueSetIncludeCTList read fExclude;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ValueSet.Include')]
   TValueSetIncludeCT = class(TBackboneElementCT)
   private
@@ -29238,19 +22610,13 @@ type
     fFilter: TValueSetFilterCTList;
     fValueSet: TCanonicalCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property System: TUriCT read fSystem;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCT read fVersion;
-    [TNaming(TNaming.nFlatCase)]
     property Concept: TValueSetConceptCTList read fConcept;
-    [TNaming(TNaming.nFlatCase)]
     property Filter: TValueSetFilterCTList read fFilter;
-    [TNaming(TNaming.nCamelCase)]
     property ValueSet: TCanonicalCTList read fValueSet;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ValueSet.Concept')]
   TValueSetConceptCT = class(TBackboneElementCT)
   private
@@ -29259,15 +22625,11 @@ type
     fDesignation: TValueSetDesignationCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Display: TStringCT read fDisplay;
-    [TNaming(TNaming.nFlatCase)]
     property Designation: TValueSetDesignationCTList read fDesignation;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ValueSet.Designation')]
   TValueSetDesignationCT = class(TBackboneElementCT)
   private
@@ -29275,16 +22637,12 @@ type
     fUse: TCodingCT;
     fValue: TStringCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Language: TCodeCT read fLanguage;
-    [TNaming(TNaming.nFlatCase)]
     property Use: TCodingCT read fUse;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Value: TStringCT read fValue;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ValueSet.Filter')]
   TValueSetFilterCT = class(TBackboneElementCT)
   private
@@ -29293,17 +22651,13 @@ type
     fValue: TStringCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Property: TCodeCT read fProperty;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Op: TFilterOperatorCT read fOp;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Value: TStringCT read fValue;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ValueSet.Expansion')]
   TValueSetExpansionCT = class(TBackboneElementCT)
   private
@@ -29314,22 +22668,15 @@ type
     fParameter: TValueSetParameterCTList;
     fContains: TValueSetContainsCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TUriCT read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Timestamp: TDateTimeCT read fTimestamp;
-    [TNaming(TNaming.nFlatCase)]
     property Total: TIntegerCT read fTotal;
-    [TNaming(TNaming.nFlatCase)]
     property Offset: TIntegerCT read fOffset;
-    [TNaming(TNaming.nFlatCase)]
     property Parameter: TValueSetParameterCTList read fParameter;
-    [TNaming(TNaming.nFlatCase)]
     property Contains: TValueSetContainsCTList read fContains;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ValueSet.Parameter')]
   TValueSetParameterCT = class(TBackboneElementCT)
   private
@@ -29354,32 +22701,23 @@ type
     property ValueChosen: TBasite read GetValueChosen;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: TStringCT read fName;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueString: TStringCT read GetValueString;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueBoolean: TBooleanCT read GetValueBoolean;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueInteger: TIntegerCT read GetValueInteger;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDecimal: TDecimalCT read GetValueDecimal;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueUri: TUriCT read GetValueUri;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueCode: TCodeCT read GetValueCode;
     [TChoice('Value')]
-    [TNaming(TNaming.nCamelCase)]
     property ValueDateTime: TDateTimeCT read GetValueDateTime;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('ValueSet.Contains')]
   TValueSetContainsCT = class(TBackboneElementCT)
   private
@@ -29392,21 +22730,13 @@ type
     fDesignation: TValueSetDesignationCTList;
     fContains: TValueSetContainsCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property System: TUriCT read fSystem;
-    [TNaming(TNaming.nFlatCase)]
     property Abstract: TBooleanCT read fAbstract;
-    [TNaming(TNaming.nFlatCase)]
     property Inactive: TBooleanCT read fInactive;
-    [TNaming(TNaming.nFlatCase)]
     property Version: TStringCT read fVersion;
-    [TNaming(TNaming.nFlatCase)]
     property Code: TCodeCT read fCode;
-    [TNaming(TNaming.nFlatCase)]
     property Display: TStringCT read fDisplay;
-    [TNaming(TNaming.nFlatCase)]
     property Designation: TValueSetDesignationCTList read fDesignation;
-    [TNaming(TNaming.nFlatCase)]
     property Contains: TValueSetContainsCTList read fContains;
   end;
 
@@ -29427,38 +22757,23 @@ type
     fAttestation: TVerificationResultAttestationCT;
     fValidator: TVerificationResultValidatorCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Target: TReferenceCTList read fTarget;
-    [TNaming(TNaming.nCamelCase)]
     property TargetLocation: TStringCTList read fTargetLocation;
-    [TNaming(TNaming.nFlatCase)]
     property Need: TCodeableConceptCT read fNeed;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TStatusCT read fStatus;
-    [TNaming(TNaming.nCamelCase)]
     property StatusDate: TDateTimeCT read fStatusDate;
-    [TNaming(TNaming.nCamelCase)]
     property ValidationType: TCodeableConceptCT read fValidationType;
-    [TNaming(TNaming.nCamelCase)]
     property ValidationProcess: TCodeableConceptCTList read fValidationProcess;
-    [TNaming(TNaming.nFlatCase)]
     property Frequency: TTimingCT read fFrequency;
-    [TNaming(TNaming.nCamelCase)]
     property LastPerformed: TDateTimeCT read fLastPerformed;
-    [TNaming(TNaming.nCamelCase)]
     property NextScheduled: TDateCT read fNextScheduled;
-    [TNaming(TNaming.nCamelCase)]
     property FailureAction: TCodeableConceptCT read fFailureAction;
-    [TNaming(TNaming.nCamelCase)]
     property PrimarySource: TVerificationResultPrimarySourceCTList read fPrimarySource;
-    [TNaming(TNaming.nFlatCase)]
     property Attestation: TVerificationResultAttestationCT read fAttestation;
-    [TNaming(TNaming.nFlatCase)]
     property Validator: TVerificationResultValidatorCTList read fValidator;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('VerificationResult.PrimarySource')]
   TVerificationResultPrimarySourceCT = class(TBackboneElementCT)
   private
@@ -29470,23 +22785,15 @@ type
     fCanPushUpdates: TCodeableConceptCT;
     fPushTypeAvailable: TCodeableConceptCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Who: TReferenceCT read fWho;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TCodeableConceptCTList read fType;
-    [TNaming(TNaming.nCamelCase)]
     property CommunicationMethod: TCodeableConceptCTList read fCommunicationMethod;
-    [TNaming(TNaming.nCamelCase)]
     property ValidationStatus: TCodeableConceptCT read fValidationStatus;
-    [TNaming(TNaming.nCamelCase)]
     property ValidationDate: TDateTimeCT read fValidationDate;
-    [TNaming(TNaming.nCamelCase)]
     property CanPushUpdates: TCodeableConceptCT read fCanPushUpdates;
-    [TNaming(TNaming.nCamelCase)]
     property PushTypeAvailable: TCodeableConceptCTList read fPushTypeAvailable;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('VerificationResult.Attestation')]
   TVerificationResultAttestationCT = class(TBackboneElementCT)
   private
@@ -29499,25 +22806,16 @@ type
     fProxySignature: TSignatureCT;
     fSourceSignature: TSignatureCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Who: TReferenceCT read fWho;
-    [TNaming(TNaming.nCamelCase)]
     property OnBehalfOf: TReferenceCT read fOnBehalfOf;
-    [TNaming(TNaming.nCamelCase)]
     property CommunicationMethod: TCodeableConceptCT read fCommunicationMethod;
-    [TNaming(TNaming.nFlatCase)]
     property Date: TDateCT read fDate;
-    [TNaming(TNaming.nCamelCase)]
     property SourceIdentityCertificate: TStringCT read fSourceIdentityCertificate;
-    [TNaming(TNaming.nCamelCase)]
     property ProxyIdentityCertificate: TStringCT read fProxyIdentityCertificate;
-    [TNaming(TNaming.nCamelCase)]
     property ProxySignature: TSignatureCT read fProxySignature;
-    [TNaming(TNaming.nCamelCase)]
     property SourceSignature: TSignatureCT read fSourceSignature;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('VerificationResult.Validator')]
   TVerificationResultValidatorCT = class(TBackboneElementCT)
   private
@@ -29526,11 +22824,8 @@ type
     fAttestationSignature: TSignatureCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Organization: TReferenceCT read fOrganization;
-    [TNaming(TNaming.nCamelCase)]
     property IdentityCertificate: TStringCT read fIdentityCertificate;
-    [TNaming(TNaming.nCamelCase)]
     property AttestationSignature: TSignatureCT read fAttestationSignature;
   end;
 
@@ -29539,7 +22834,6 @@ type
   private
     fValue: TStatusListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TStatusListST read fValue write fValue;
   end;
 
@@ -29554,30 +22848,21 @@ type
     fPrescriber: TReferenceCT;
     fLensSpecification: TVisionPrescriptionLensSpecificationCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Status: TFinancialResourceStatusCodesCT read fStatus;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Created: TDateTimeCT read fCreated;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Patient: TReferenceCT read fPatient;
-    [TNaming(TNaming.nFlatCase)]
     property Encounter: TReferenceCT read fEncounter;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property DateWritten: TDateTimeCT read fDateWritten;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Prescriber: TReferenceCT read fPrescriber;
-    [TNaming(TNaming.nCamelCase)]
     property LensSpecification: TVisionPrescriptionLensSpecificationCTList read fLensSpecification;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('VisionPrescription.LensSpecification')]
   TVisionPrescriptionLensSpecificationCT = class(TBackboneElementCT)
   private
@@ -29597,38 +22882,23 @@ type
     fNote: TAnnotationCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Product: TCodeableConceptCT read fProduct;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Eye: TVisionEyesCT read fEye;
-    [TNaming(TNaming.nFlatCase)]
     property Sphere: TDecimalCT read fSphere;
-    [TNaming(TNaming.nFlatCase)]
     property Cylinder: TDecimalCT read fCylinder;
-    [TNaming(TNaming.nFlatCase)]
     property Axis: TIntegerCT read fAxis;
-    [TNaming(TNaming.nFlatCase)]
     property Prism: TVisionPrescriptionPrismCTList read fPrism;
-    [TNaming(TNaming.nFlatCase)]
     property Add: TDecimalCT read fAdd;
-    [TNaming(TNaming.nFlatCase)]
     property Power: TDecimalCT read fPower;
-    [TNaming(TNaming.nCamelCase)]
     property BackCurve: TDecimalCT read fBackCurve;
-    [TNaming(TNaming.nFlatCase)]
     property Diameter: TDecimalCT read fDiameter;
-    [TNaming(TNaming.nFlatCase)]
     property Duration: TQuantityCT read fDuration;
-    [TNaming(TNaming.nFlatCase)]
     property Color: TStringCT read fColor;
-    [TNaming(TNaming.nFlatCase)]
     property Brand: TStringCT read fBrand;
-    [TNaming(TNaming.nFlatCase)]
     property Note: TAnnotationCTList read fNote;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('VisionPrescription.Prism')]
   TVisionPrescriptionPrismCT = class(TBackboneElementCT)
   private
@@ -29636,10 +22906,8 @@ type
     fBase: TVisionBaseCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Amount: TDecimalCT read fAmount;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Base: TVisionBaseCT read fBase;
   end;
 
@@ -29647,7 +22915,6 @@ type
   private
     fValue: TVisionBaseListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TVisionBaseListST read fValue write fValue;
   end;
 
@@ -29655,7 +22922,6 @@ type
   private
     fValue: TVisionEyesListST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Value: TVisionEyesListST read fValue write fValue;
   end;
 
@@ -37562,6 +30828,6 @@ TMetaBankXmlite.RegisterNamespace('http://hl7.org/fhir',
   TVerificationResultE, TVisionPrescriptionE],
   { groups }
   [],
-  'f', TNaming.nPascalCase);
+  'f', TNaming.nPascalCase, TNaming.nCamelCase, TNaming.nKebabCase);
 
 end.

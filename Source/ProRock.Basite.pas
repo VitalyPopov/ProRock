@@ -72,6 +72,15 @@ type
     property CustomCaption: string read fCustomCaption;
   end;
 
+  // the naming of an enumeration's items; [TEnumCaption] still wins per item. Not a TNaming: that one is about the type's own name
+  TEnumNamingAttribute = class(TCustomAttribute)
+  private
+    fNaming: TNaming;
+  public
+    constructor Create(aNaming: TNaming);
+    property Naming: TNaming read fNaming;
+  end;
+
   TValueAliasAttribute = class(TCustomAttribute)
   protected
     fAlias: string;
@@ -402,12 +411,17 @@ type
     fIsBoolean: boolean;     // tkEnumeration based on Boolean (xs:boolean): also "1" and "0"
     fEnumNames: THashedStringList;
     fEnumExact: TDictionary<string, integer>; // text -> value, case-sensitive: true and True are two values (OOXML)
+    fEnumOwnNaming: boolean; // [TEnumNaming]: a namespace's items naming does not apply
     fBaseType: TMetaType;
     fPlainNumber: boolean;   // [TPlainNumber], its own or through BaseType
     function GetEnumName(aEnumValue: integer): string;
+    procedure FillEnumNames(const aDefaultNames: TArray<string>);
   public
     constructor Create(aType: PTypeInfo); reintroduce;
     destructor Destroy; override;
+
+    // the naming of the namespace this enumeration registers in
+    procedure SetItemNaming(aNaming: TNaming);
 
     property BaseType: TMetaType read fBaseType;
     property ValuesAliases: TDualDictionary<variant, string> read fValuesAliases;
@@ -659,6 +673,13 @@ constructor TEnumCaptionAttribute.Create(const aCaption, aCustomCaption: string)
 begin
   fCaption := aCaption;
   fCustomCaption := aCustomCaption;
+end;
+
+{ TEnumNamingAttribute }
+
+constructor TEnumNamingAttribute.Create(aNaming: TNaming);
+begin
+  fNaming := aNaming;
 end;
 
 { TValueAliasAttribute }
@@ -2008,48 +2029,79 @@ begin
     fIsBoolean := GetTypeData(aType).BaseType^ = TypeInfo(boolean); // also through type copies (TBooleanST = type boolean)
 
     fEnumNames := THashedStringList.Create;
+    fEnumExact := TDictionary<string, integer>.Create;
 
-    // default captions
     var enums: TRttiOrdinalType := RttiType.AsOrdinal;
+    var defaultNames: TArray<string>;
+    SetLength(defaultNames, enums.MaxValue - enums.MinValue + 1);
     for var i := enums.MinValue to enums.MaxValue do
-      fEnumNames.Add(GetEnumerationName(aType, i));
+      defaultNames[i - enums.MinValue] := GetEnumerationName(aType, i);
 
-    // custom captions - the exact XML text an item's name does not give (t="s", "<", "True" next to "true")
-    var defaultNames: TArray<string> := fEnumNames.ToStringArray;
     for var attribute: TCustomAttribute in RttiType.GetAttributes do
-      if attribute.ClassType.InheritsFrom(TEnumCaptionAttribute) then
+      if attribute.ClassType.InheritsFrom(TEnumNamingAttribute) then
       begin
-        var attrubuteEnumCaption: TEnumCaptionAttribute := TEnumCaptionAttribute(attribute);
-        if attrubuteEnumCaption.Caption.IsEmpty then
-          Continue;
-
-        var elementIndex: integer := -1;
-        for var i := 0 to High(defaultNames) do
-          if defaultNames[i] = attrubuteEnumCaption.Caption then
-          begin
-            elementIndex := i;
-            break;
-          end;
-        if elementIndex < 0 then
-          for var i := 0 to High(defaultNames) do
-            if SameText(defaultNames[i], attrubuteEnumCaption.Caption) then
-            begin
-              elementIndex := i;
-              break;
-            end;
-        if elementIndex >= 0 then
-          fEnumNames[elementIndex] := attrubuteEnumCaption.CustomCaption;
+        fEnumOwnNaming := True;
+        for var i := enums.MinValue to enums.MaxValue do
+          defaultNames[i - enums.MinValue] := GetEnumerationName(aType, i, TEnumNamingAttribute(attribute).Naming);
       end;
 
-    fEnumExact := TDictionary<string, integer>.Create;
-    for var i := 0 to fEnumNames.Count - 1 do
-      fEnumExact.TryAdd(fEnumNames[i], i); // the first one wins
+    FillEnumNames(defaultNames);
   end;
 
   fValuesAliases := TDualDictionary<variant, string>.Create;
   for var attribute: TCustomAttribute in RttiType.GetAttributes do
     if attribute.ClassType.InheritsFrom(TValueAliasAttribute) then
       fValuesAliases.Add(TValueAliasAttribute(attribute).Value, TValueAliasAttribute(attribute).Alias);
+end;
+
+procedure TMetaType.FillEnumNames(const aDefaultNames: TArray<string>);
+begin
+  fEnumNames.Clear;
+  fEnumExact.Clear;
+  for var defaultName: string in aDefaultNames do
+    fEnumNames.Add(defaultName);
+
+  // custom captions - the exact XML text an item's name does not give (t="s", "<", "True" next to "true")
+  for var attribute: TCustomAttribute in RttiType.GetAttributes do
+    if attribute.ClassType.InheritsFrom(TEnumCaptionAttribute) then
+    begin
+      var attrubuteEnumCaption: TEnumCaptionAttribute := TEnumCaptionAttribute(attribute);
+      if attrubuteEnumCaption.Caption.IsEmpty then
+        Continue;
+
+      var elementIndex: integer := -1;
+      for var i := 0 to High(aDefaultNames) do
+        if aDefaultNames[i] = attrubuteEnumCaption.Caption then
+        begin
+          elementIndex := i;
+          break;
+        end;
+      if elementIndex < 0 then
+        for var i := 0 to High(aDefaultNames) do
+          if SameText(aDefaultNames[i], attrubuteEnumCaption.Caption) then
+          begin
+            elementIndex := i;
+            break;
+          end;
+      if elementIndex >= 0 then
+        fEnumNames[elementIndex] := attrubuteEnumCaption.CustomCaption;
+    end;
+
+  for var i := 0 to fEnumNames.Count - 1 do
+    fEnumExact.TryAdd(fEnumNames[i], i); // the first one wins
+end;
+
+procedure TMetaType.SetItemNaming(aNaming: TNaming);
+begin
+  if (fEnumNames = nil) or fEnumOwnNaming or fIsBoolean then // xs:boolean is true and false whatever the schema's lists are
+    Exit;
+
+  var enums: TRttiOrdinalType := RttiType.AsOrdinal;
+  var defaultNames: TArray<string>;
+  SetLength(defaultNames, enums.MaxValue - enums.MinValue + 1);
+  for var i := enums.MinValue to enums.MaxValue do
+    defaultNames[i - enums.MinValue] := GetEnumerationName(RttiType.Handle, i, aNaming);
+  FillEnumNames(defaultNames);
 end;
 
 destructor TMetaType.Destroy;

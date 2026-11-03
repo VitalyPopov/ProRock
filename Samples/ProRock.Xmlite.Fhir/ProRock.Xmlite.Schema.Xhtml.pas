@@ -242,7 +242,6 @@ type
     fSub: TSubEList;
     fSup: TSupEList;
   published
-    [TName('a')]
     property A: TAEList read fA;
     property Br: TBrEList read fBr;
     property Span: TSpanEList read fSpan;
@@ -250,9 +249,7 @@ type
     property Map: TMapEList read fMap;
     property Img: TImgEList read fImg;
     property Tt: TTtEList read fTt;
-    [TName('i')]
     property I: TIEList read fI;
-    [TName('b')]
     property B: TBEList read fB;
     property Big: TBigEList read fBig;
     property Small: TSmallEList read fSmall;
@@ -260,7 +257,6 @@ type
     property Strong: TStrongEList read fStrong;
     property Dfn: TDfnEList read fDfn;
     property Code: TCodeEList read fCode;
-    [TName('q')]
     property Q: TQEList read fQ;
     property Samp: TSampEList read fSamp;
     property Kbd: TKbdEList read fKbd;
@@ -293,19 +289,12 @@ type
     fAddress: TAddressEList;
     fTable: TTableEList;
   published
-    [TName('p')]
     property P: TPEList read fP;
-    [TName('h1')]
     property H1: TH1EList read fH1;
-    [TName('h2')]
     property H2: TH2EList read fH2;
-    [TName('h3')]
     property H3: TH3EList read fH3;
-    [TName('h4')]
     property H4: TH4EList read fH4;
-    [TName('h5')]
     property H5: TH5EList read fH5;
-    [TName('h6')]
     property H6: TH6EList read fH6;
     property &Div: TDivEList read fDiv;
     property Ul: TUlEList read fUl;
@@ -364,19 +353,12 @@ type
     fSub: TSubEList;
     fSup: TSupEList;
   published
-    [TName('p')]
     property P: TPEList read fP;
-    [TName('h1')]
     property H1: TH1EList read fH1;
-    [TName('h2')]
     property H2: TH2EList read fH2;
-    [TName('h3')]
     property H3: TH3EList read fH3;
-    [TName('h4')]
     property H4: TH4EList read fH4;
-    [TName('h5')]
     property H5: TH5EList read fH5;
-    [TName('h6')]
     property H6: TH6EList read fH6;
     property &Div: TDivEList read fDiv;
     property Ul: TUlEList read fUl;
@@ -387,7 +369,6 @@ type
     property Blockquote: TBlockquoteEList read fBlockquote;
     property Address: TAddressEList read fAddress;
     property Table: TTableEList read fTable;
-    [TName('a')]
     property A: TAEList read fA;
     property Br: TBrEList read fBr;
     property Span: TSpanEList read fSpan;
@@ -395,9 +376,7 @@ type
     property Map: TMapEList read fMap;
     property Img: TImgEList read fImg;
     property Tt: TTtEList read fTt;
-    [TName('i')]
     property I: TIEList read fI;
-    [TName('b')]
     property B: TBEList read fB;
     property Big: TBigEList read fBig;
     property Small: TSmallEList read fSmall;
@@ -405,7 +384,6 @@ type
     property Strong: TStrongEList read fStrong;
     property Dfn: TDfnEList read fDfn;
     property Code: TCodeEList read fCode;
-    [TName('q')]
     property Q: TQEList read fQ;
     property Samp: TSampEList read fSamp;
     property Kbd: TKbdEList read fKbd;
@@ -419,7 +397,6 @@ type
 
   [TOrdered]
   [TMixed]
-  [TNaming(TNaming.nAsIs)]
   [TName('a.content')]
   TAContentCT = class(TXmliteComplexType)
   private
@@ -453,9 +430,7 @@ type
     property Map: TMapEList read fMap;
     property Img: TImgEList read fImg;
     property Tt: TTtEList read fTt;
-    [TName('i')]
     property I: TIEList read fI;
-    [TName('b')]
     property B: TBEList read fB;
     property Big: TBigEList read fBig;
     property Small: TSmallEList read fSmall;
@@ -463,7 +438,6 @@ type
     property Strong: TStrongEList read fStrong;
     property Dfn: TDfnEList read fDfn;
     property Code: TCodeEList read fCode;
-    [TName('q')]
     property Q: TQEList read fQ;
     property Samp: TSampEList read fSamp;
     property Kbd: TKbdEList read fKbd;
@@ -477,7 +451,6 @@ type
 
   [TOrdered]
   [TMixed]
-  [TNaming(TNaming.nAsIs)]
   [TName('pre.content')]
   TPreContentCT = class(TXmliteComplexType)
   private
@@ -505,12 +478,9 @@ type
     fBdo: TBdoEList;
     fMap: TMapEList;
   published
-    [TName('a')]
     property A: TAEList read fA;
     property Tt: TTtEList read fTt;
-    [TName('i')]
     property I: TIEList read fI;
-    [TName('b')]
     property B: TBEList read fB;
     property Big: TBigEList read fBig;
     property Small: TSmallEList read fSmall;
@@ -518,7 +488,6 @@ type
     property Strong: TStrongEList read fStrong;
     property Dfn: TDfnEList read fDfn;
     property Code: TCodeEList read fCode;
-    [TName('q')]
     property Q: TQEList read fQ;
     property Samp: TSampEList read fSamp;
     property Kbd: TKbdEList read fKbd;
@@ -671,6 +640,7 @@ type
   private
     fSpace: ProRock.Xmlite.Schema.Xml.TSpaceA;
   published
+    [TNaming(TNaming.nFlatCase)]
     property Space: ProRock.Xmlite.Schema.Xml.TSpaceA read fSpace write fSpace;
   end;
 
@@ -879,25 +849,18 @@ type
     property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
     property Dir: TDir read fDir write fDir;
     [TChoice('P')]
-    [TName('p')]
     property P: TPEList read fP;
     [TChoice('P')]
-    [TName('h1')]
     property H1: TH1EList read fH1;
     [TChoice('P')]
-    [TName('h2')]
     property H2: TH2EList read fH2;
     [TChoice('P')]
-    [TName('h3')]
     property H3: TH3EList read fH3;
     [TChoice('P')]
-    [TName('h4')]
     property H4: TH4EList read fH4;
     [TChoice('P')]
-    [TName('h5')]
     property H5: TH5EList read fH5;
     [TChoice('P')]
-    [TName('h6')]
     property H6: TH6EList read fH6;
     [TChoice('P')]
     property &Div: TDivEList read fDiv;
@@ -1165,7 +1128,6 @@ type
     property Valign: TValign read fValign write fValign;
   end;
 
-  [TNaming(TNaming.nAsIs)]
   [TName('special.pre')]
   TSpecialPreEG = class(TXmliteElementGroup)
   private
@@ -1213,10 +1175,8 @@ type
     [TChoice('Tt')]
     property Tt: TTtE read GetTt;
     [TChoice('Tt')]
-    [TName('i')]
     property I: TIE read GetI;
     [TChoice('Tt')]
-    [TName('b')]
     property B: TBE read GetB;
     [TChoice('Tt')]
     property Big: TBigE read GetBig;
@@ -1263,7 +1223,6 @@ type
     [TChoice('Em')]
     property Code: TCodeE read GetCode;
     [TChoice('Em')]
-    [TName('q')]
     property Q: TQE read GetQ;
     [TChoice('Em')]
     property Samp: TSampE read GetSamp;
@@ -1287,7 +1246,6 @@ type
   private
     fA: TAE;
   published
-    [TName('a')]
     property A: TAE read fA;
   end;
 
@@ -1308,22 +1266,16 @@ type
     function GetH6: TH6E;
   published
     [TChoice('H1')]
-    [TName('h1')]
     property H1: TH1E read GetH1;
     [TChoice('H1')]
-    [TName('h2')]
     property H2: TH2E read GetH2;
     [TChoice('H1')]
-    [TName('h3')]
     property H3: TH3E read GetH3;
     [TChoice('H1')]
-    [TName('h4')]
     property H4: TH4E read GetH4;
     [TChoice('H1')]
-    [TName('h5')]
     property H5: TH5E read GetH5;
     [TChoice('H1')]
-    [TName('h6')]
     property H6: TH6E read GetH6;
   end;
 
@@ -1378,7 +1330,6 @@ type
     function GetTable: TTableE;
   published
     [TChoice('P')]
-    [TName('p')]
     property P: TPE read GetP;
     [TChoice('P')]
     property &Div: TDivE read GetDiv;
@@ -1664,6 +1615,6 @@ TMetaBankXmlite.RegisterNamespace('http://www.w3.org/1999/xhtml',
   TSmallE, TImgE, TMapE, TAreaE, TTableE, TCaptionE, TTheadE, TTfootE, TTbodyE, TColgroupE, TColE, TTrE, TThE, TTdE],
   { groups }
   [TSpecialPreEG, TSpecialEG, TFontstyleEG, TPhraseEG, TInlineEG, THeadingEG, TListsEG, TBlocktextEG, TBlockEG],
-  'x');
+  'x', TNaming.nCamelCase, TNaming.nCamelCase, TNaming.nCamelCase);
 
 end.

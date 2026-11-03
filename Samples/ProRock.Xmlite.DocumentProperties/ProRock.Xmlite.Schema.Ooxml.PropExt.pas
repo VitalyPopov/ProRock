@@ -67,7 +67,6 @@ type
     [TXmliteElement]
     property Characters: ProRock.Xmlite.Schema.Base.TIntST read fCharacters write fCharacters;
     [TXmliteElement]
-    [TNaming(TNaming.nPascalCase)]
     property PresentationFormat: ProRock.Xmlite.Schema.Base.TStringST read fPresentationFormat write fPresentationFormat;
     [TXmliteElement]
     property Lines: ProRock.Xmlite.Schema.Base.TIntST read fLines write fLines;
@@ -78,47 +77,32 @@ type
     [TXmliteElement]
     property Notes: ProRock.Xmlite.Schema.Base.TIntST read fNotes write fNotes;
     [TXmliteElement]
-    [TNaming(TNaming.nPascalCase)]
     property TotalTime: ProRock.Xmlite.Schema.Base.TIntST read fTotalTime write fTotalTime;
     [TXmliteElement]
-    [TNaming(TNaming.nPascalCase)]
     property HiddenSlides: ProRock.Xmlite.Schema.Base.TIntST read fHiddenSlides write fHiddenSlides;
     [TXmliteElement]
-    [TNaming(TNaming.nPascalCase)]
     property MMClips: ProRock.Xmlite.Schema.Base.TIntST read fMMClips write fMMClips;
     [TXmliteElement]
-    [TNaming(TNaming.nPascalCase)]
     property ScaleCrop: ProRock.Xmlite.Schema.Base.TBooleanST read fScaleCrop write fScaleCrop;
-    [TNaming(TNaming.nPascalCase)]
     property HeadingPairs: TCTVectorVariantCT read fHeadingPairs;
-    [TNaming(TNaming.nPascalCase)]
     property TitlesOfParts: TCTVectorLpstrCT read fTitlesOfParts;
     [TXmliteElement]
-    [TNaming(TNaming.nPascalCase)]
     property LinksUpToDate: ProRock.Xmlite.Schema.Base.TBooleanST read fLinksUpToDate write fLinksUpToDate;
     [TXmliteElement]
-    [TNaming(TNaming.nPascalCase)]
     property CharactersWithSpaces: ProRock.Xmlite.Schema.Base.TIntST read fCharactersWithSpaces write fCharactersWithSpaces;
     [TXmliteElement]
-    [TNaming(TNaming.nPascalCase)]
     property SharedDoc: ProRock.Xmlite.Schema.Base.TBooleanST read fSharedDoc write fSharedDoc;
     [TXmliteElement]
-    [TNaming(TNaming.nPascalCase)]
     property HyperlinkBase: ProRock.Xmlite.Schema.Base.TStringST read fHyperlinkBase write fHyperlinkBase;
-    [TNaming(TNaming.nPascalCase)]
     property HLinks: TCTVectorVariantCT read fHLinks;
     [TXmliteElement]
-    [TNaming(TNaming.nPascalCase)]
     property HyperlinksChanged: ProRock.Xmlite.Schema.Base.TBooleanST read fHyperlinksChanged write fHyperlinksChanged;
-    [TNaming(TNaming.nPascalCase)]
     property DigSig: TCTDigSigBlobCT read fDigSig;
     [TXmliteElement]
     property Application: ProRock.Xmlite.Schema.Base.TStringST read fApplication write fApplication;
     [TXmliteElement]
-    [TNaming(TNaming.nPascalCase)]
     property AppVersion: ProRock.Xmlite.Schema.Base.TStringST read fAppVersion write fAppVersion;
     [TXmliteElement]
-    [TNaming(TNaming.nPascalCase)]
     property DocSecurity: ProRock.Xmlite.Schema.Base.TIntST read fDocSecurity write fDocSecurity;
   end;
 
@@ -154,7 +138,6 @@ type
     property Blob: ProRock.Xmlite.Schema.Base.TBase64BinaryST read fBlob write fBlob;
   end;
 
-  [TNaming(TNaming.nPascalCase)]
   TPropertiesE = class(TCTPropertiesCT);
 
 implementation
@@ -174,6 +157,6 @@ TMetaBankXmlite.RegisterNamespace('http://schemas.openxmlformats.org/officeDocum
   [TPropertiesE],
   { groups }
   [],
-  'ep', TNaming.nTitleCase);
+  'ep', TNaming.nPascalCase);
 
 end.

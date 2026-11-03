@@ -81,6 +81,7 @@ type
     fUse: TUseChoiceST;
     fNamespace: ProRock.Xmlite.Schema.Base.TAnyURIST;
   published
+    [TNaming(TNaming.nFlatCase)]
     property Required: ProRock.Xmlite.Schema.Wsdl.TRequiredA read fRequired write fRequired;
     property EncodingStyle: TEncodingStyleST read fEncodingStyle write fEncodingStyle;
     property Use: TUseChoiceST read fUse write fUse;

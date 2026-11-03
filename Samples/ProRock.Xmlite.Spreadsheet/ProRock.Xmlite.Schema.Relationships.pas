@@ -17,8 +17,6 @@ uses
   ProRock.Xmlite, ProRock.Xmlite.Schema.Base;
 
 type
-  [TEnumCaption('external', 'External')]
-  [TEnumCaption('internal', 'Internal')]
   [TName('ST_TargetMode')]
   TSTTargetModeST = (sttmExternal, sttmInternal);
 
@@ -48,7 +46,6 @@ type
   published
     [TXmliteText]
     property XmlValue: ProRock.Xmlite.Schema.Base.TStringST read fXmlValue write fXmlValue;
-    [TNaming(TNaming.nPascalCase)]
     property TargetMode: TSTTargetModeST read fTargetMode write fTargetMode;
     [TRequired]
     property Target: ProRock.Xmlite.Schema.Base.TAnyURIST read fTarget write fTarget;
@@ -58,10 +55,8 @@ type
     property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
   end;
 
-  [TNaming(TNaming.nPascalCase)]
   TRelationshipsE = class(TCTRelationshipsCT);
 
-  [TNaming(TNaming.nPascalCase)]
   TRelationshipE = class(TCTRelationshipCT);
 
   TRelationshipEList = class(TXmliteList<TRelationshipE>);
@@ -83,6 +78,6 @@ TMetaBankXmlite.RegisterNamespace('http://schemas.openxmlformats.org/package/200
   [TRelationshipsE, TRelationshipE],
   { groups }
   [],
-  'r', TNaming.nTitleCase);
+  'r', TNaming.nPascalCase, TNaming.nPascalCase, TNaming.nPascalCase);
 
 end.

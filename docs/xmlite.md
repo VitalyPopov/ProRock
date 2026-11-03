@@ -89,13 +89,17 @@ TItemsTypeCT = class(TXmliteComplexType)
 private
   fItem: TItemTypeCTList;
 published
-  [TNaming(TNaming.nFlatCase)]
   property Item: TItemTypeCTList read fItem;
 end;
 ```
 
 The suffix tells what a name was in the schema: `E` an element, `CT` a complex type, `ST` a simple type. One unit per XML
 namespace (`ProRock.Xmlite.Schema.<Name>`), so the units of a schema set use each other as the schemas import each other.
+
+XML names come back from the Delphi names by the schema's own styles, which `RegisterNamespace` at the end of the unit states: for types,
+for the elements and attributes inside them, for enumeration items (FHIR: `TNaming.nPascalCase, TNaming.nCamelCase, TNaming.nKebabCase`).
+`[TEnumNaming]` marks a list named differently; `[TNaming]`, `[TName]` and `[TEnumCaption]` appear only where those do not give the
+exact name.
 
 | XSD | Delphi |
 |---|---|

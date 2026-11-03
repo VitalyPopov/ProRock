@@ -100,7 +100,6 @@ type
   [TNaming(TNaming.nUpperCase)]
   TUriCT = class(ProRock.Xmlite.Schema.Dc.Elements.TSimpleLiteralCT);
 
-  [TNaming(TNaming.nCobolCase)]
   [TName('ISO639-2')]
   TIso6392CT = class(ProRock.Xmlite.Schema.Dc.Elements.TSimpleLiteralCT);
 
@@ -126,6 +125,7 @@ type
   private
     fAny: ProRock.Xmlite.Schema.Dc.Elements.TAnyEList;
   published
+    [TNaming(TNaming.nFlatCase)]
     property Any: ProRock.Xmlite.Schema.Dc.Elements.TAnyEList read fAny;
   end;
 

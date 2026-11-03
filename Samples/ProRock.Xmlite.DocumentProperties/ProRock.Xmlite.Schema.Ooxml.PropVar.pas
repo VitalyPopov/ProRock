@@ -17,32 +17,17 @@ uses
   ProRock.Xmlite, ProRock.Xmlite.Schema.Base, ProRock.Xmlite.Schema.Ooxml.SimpleTypes;
 
 type
-  [TEnumCaption('I1', 'i1')]
-  [TEnumCaption('I2', 'i2')]
-  [TEnumCaption('I4', 'i4')]
-  [TEnumCaption('I8', 'i8')]
-  [TEnumCaption('R4', 'r4')]
-  [TEnumCaption('R8', 'r8')]
-  [TNaming(TNaming.nTitleCase)]
   [TName('ST_VectorBaseType')]
   TSTVectorBaseTypeST = (stvbtVariant, stvbtI1, stvbtI2, stvbtI4, stvbtI8, stvbtUi1, stvbtUi2, stvbtUi4, stvbtUi8, stvbtR4, stvbtR8,
     stvbtLpstr, stvbtLpwstr, stvbtBstr, stvbtDate, stvbtFiletime, stvbtBool, stvbtCy, stvbtError, stvbtClsid);
-  [TEnumCaption('I1', 'i1')]
-  [TEnumCaption('I2', 'i2')]
-  [TEnumCaption('I4', 'i4')]
-  [TEnumCaption('R4', 'r4')]
-  [TEnumCaption('R8', 'r8')]
-  [TNaming(TNaming.nTitleCase)]
   [TName('ST_ArrayBaseType')]
   TSTArrayBaseTypeST = (stabtVariant, stabtI1, stabtI2, stabtI4, stabtInt, stabtUi1, stabtUi2, stabtUi4, stabtUint, stabtR4, stabtR8,
     stabtDecimal, stabtBstr, stabtDate, stabtBool, stabtCy, stabtError);
 
   [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
-  [TNaming(TNaming.nTitleCase)]
   [TName('ST_Cy')]
   TSTCyST = type ProRock.Xmlite.Schema.Base.TStringST;
   [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
-  [TNaming(TNaming.nTitleCase)]
   [TName('ST_Error')]
   TSTErrorST = type ProRock.Xmlite.Schema.Base.TStringST;
 
@@ -106,16 +91,13 @@ type
   TDecimalSTList = class;
   TVariantEList = class;
 
-  [TNaming(TNaming.nTitleCase)]
   [TName('CT_Empty')]
   TCTEmptyCT = class(TXmliteComplexType);
 
-  [TNaming(TNaming.nTitleCase)]
   [TName('CT_Null')]
   TCTNullCT = class(TXmliteComplexType);
 
   [TOrdered]
-  [TNaming(TNaming.nTitleCase)]
   [TName('CT_Vector')]
   TCTVectorCT = class(TXmliteComplexType)
   private
@@ -147,21 +129,15 @@ type
     [TRequired]
     property Size: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSize write fSize;
     property Variant: TVariantEList read fVariant;
-    [TName('i1')]
     property I1: TByteSTList read fI1;
-    [TName('i2')]
     property I2: TShortSTList read fI2;
-    [TName('i4')]
     property I4: TIntSTList read fI4;
-    [TName('i8')]
     property I8: TLongSTList read fI8;
     property Ui1: TUnsignedByteSTList read fUi1;
     property Ui2: TUnsignedShortSTList read fUi2;
     property Ui4: TUnsignedIntSTList read fUi4;
     property Ui8: TUnsignedLongSTList read fUi8;
-    [TName('r4')]
     property R4: TFloatSTList read fR4;
-    [TName('r8')]
     property R8: TDoubleSTList read fR8;
     property Lpstr: TStringSTList read fLpstr;
     property Lpwstr: TStringSTList read fLpwstr;
@@ -175,7 +151,6 @@ type
   end;
 
   [TOrdered]
-  [TNaming(TNaming.nTitleCase)]
   [TName('CT_Array')]
   TCTArrayCT = class(TXmliteComplexType)
   private
@@ -207,20 +182,15 @@ type
     [TRequired]
     property BaseType: TSTArrayBaseTypeST read fBaseType write fBaseType;
     property Variant: TVariantEList read fVariant;
-    [TName('i1')]
     property I1: TByteSTList read fI1;
-    [TName('i2')]
     property I2: TShortSTList read fI2;
-    [TName('i4')]
     property I4: TIntSTList read fI4;
     property Int: TIntSTList read fInt;
     property Ui1: TUnsignedByteSTList read fUi1;
     property Ui2: TUnsignedShortSTList read fUi2;
     property Ui4: TUnsignedIntSTList read fUi4;
     property Uint: TUnsignedIntSTList read fUint;
-    [TName('r4')]
     property R4: TFloatSTList read fR4;
-    [TName('r8')]
     property R8: TDoubleSTList read fR8;
     property Decimal: TDecimalSTList read fDecimal;
     property Bstr: TStringSTList read fBstr;
@@ -230,7 +200,6 @@ type
     property Cy: TSTCySTList read fCy;
   end;
 
-  [TNaming(TNaming.nTitleCase)]
   [TName('CT_Variant')]
   TCTVariantCT = class(TXmliteComplexType)
   private
@@ -294,19 +263,15 @@ type
     property Null: TNullE read GetNull;
     [TXmliteElement]
     [TChoice('Variant')]
-    [TName('i1')]
     property I1: ProRock.Xmlite.Schema.Base.TByteST read fI1 write fI1;
     [TXmliteElement]
     [TChoice('Variant')]
-    [TName('i2')]
     property I2: ProRock.Xmlite.Schema.Base.TShortST read fI2 write fI2;
     [TXmliteElement]
     [TChoice('Variant')]
-    [TName('i4')]
     property I4: ProRock.Xmlite.Schema.Base.TIntST read fI4 write fI4;
     [TXmliteElement]
     [TChoice('Variant')]
-    [TName('i8')]
     property I8: ProRock.Xmlite.Schema.Base.TLongST read fI8 write fI8;
     [TXmliteElement]
     [TChoice('Variant')]
@@ -328,11 +293,9 @@ type
     property Uint: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fUint write fUint;
     [TXmliteElement]
     [TChoice('Variant')]
-    [TName('r4')]
     property R4: ProRock.Xmlite.Schema.Base.TFloatST read fR4 write fR4;
     [TXmliteElement]
     [TChoice('Variant')]
-    [TName('r8')]
     property R8: ProRock.Xmlite.Schema.Base.TDoubleST read fR8 write fR8;
     [TXmliteElement]
     [TChoice('Variant')]
@@ -380,7 +343,6 @@ type
     property Clsid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST read fClsid write fClsid;
   end;
 
-  [TNaming(TNaming.nTitleCase)]
   [TName('CT_Vstream')]
   TCTVstreamCT = class(TXmliteComplexType)
   private
@@ -536,6 +498,6 @@ TMetaBankXmlite.RegisterNamespace('http://schemas.openxmlformats.org/officeDocum
   TVstreamE, TClsidE],
   { groups }
   [],
-  'vp');
+  'vp', TNaming.nCamelCase, TNaming.nCamelCase, TNaming.nCamelCase);
 
 end.

@@ -28,12 +28,8 @@ type
   TSTAlgTypeST = (statTypeAny, statCustom);
   [TName('ST_OnOff1')]
   TSTOnOff1ST = (stooOn, stooOff);
-  [TEnumCaption('T', 't')]
-  [TEnumCaption('F', 'f')]
   [TName('ST_TrueFalse')]
   TSTTrueFalseST = (sttfT, sttfF, sttfTrue, sttfFalse);
-  [TEnumCaption('T', 't')]
-  [TEnumCaption('F', 'f')]
   [TEnumCaption('empty', '')]
   [TEnumCaption('true2', 'True')]
   [TEnumCaption('false2', 'False')]
@@ -121,6 +117,6 @@ TMetaBankXmlite.RegisterNamespace('http://schemas.openxmlformats.org/officeDocum
   [],
   { groups }
   [],
-  'st', TNaming.nTitleCase);
+  'st', TNaming.nCamelCase, TNaming.nCamelCase, TNaming.nCamelCase);
 
 end.

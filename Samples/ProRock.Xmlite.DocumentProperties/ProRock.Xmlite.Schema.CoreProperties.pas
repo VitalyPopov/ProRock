@@ -44,10 +44,8 @@ type
     fVersion: ProRock.Xmlite.Schema.Base.TStringST;
   published
     [TXmliteElement]
-    [TNaming(TNaming.nFlatCase)]
     property Category: ProRock.Xmlite.Schema.Base.TStringST read fCategory write fCategory;
     [TXmliteElement]
-    [TNaming(TNaming.nCamelCase)]
     property ContentStatus: ProRock.Xmlite.Schema.Base.TStringST read fContentStatus write fContentStatus;
     [TNaming(TNaming.nFlatCase)]
     property Created: ProRock.Xmlite.Schema.Dc.Terms.TCreatedE read fCreated;
@@ -57,27 +55,22 @@ type
     property Description: ProRock.Xmlite.Schema.Dc.Elements.TDescriptionE read fDescription;
     [TNaming(TNaming.nFlatCase)]
     property Identifier: ProRock.Xmlite.Schema.Dc.Elements.TIdentifierE read fIdentifier;
-    [TNaming(TNaming.nFlatCase)]
     property Keywords: TCTKeywordsCT read fKeywords;
     [TNaming(TNaming.nFlatCase)]
     property Language: ProRock.Xmlite.Schema.Dc.Elements.TLanguageE read fLanguage;
     [TXmliteElement]
-    [TNaming(TNaming.nCamelCase)]
     property LastModifiedBy: ProRock.Xmlite.Schema.Base.TStringST read fLastModifiedBy write fLastModifiedBy;
     [TXmliteElement]
-    [TNaming(TNaming.nCamelCase)]
     property LastPrinted: ProRock.Xmlite.Schema.Base.TDateTimeST read fLastPrinted write fLastPrinted;
     [TNaming(TNaming.nFlatCase)]
     property Modified: ProRock.Xmlite.Schema.Dc.Terms.TModifiedE read fModified;
     [TXmliteElement]
-    [TNaming(TNaming.nFlatCase)]
     property Revision: ProRock.Xmlite.Schema.Base.TStringST read fRevision write fRevision;
     [TNaming(TNaming.nFlatCase)]
     property Subject: ProRock.Xmlite.Schema.Dc.Elements.TSubjectE read fSubject;
     [TNaming(TNaming.nFlatCase)]
     property Title: ProRock.Xmlite.Schema.Dc.Elements.TTitleE read fTitle;
     [TXmliteElement]
-    [TNaming(TNaming.nFlatCase)]
     property Version: ProRock.Xmlite.Schema.Base.TStringST read fVersion write fVersion;
   end;
 
@@ -90,7 +83,6 @@ type
   published
     [TNaming(TNaming.nFlatCase)]
     property Lang: ProRock.Xmlite.Schema.Xml.TLangA read fLang write fLang;
-    [TNaming(TNaming.nFlatCase)]
     property Value: TCTKeywordCTList read fValue;
   end;
 
@@ -106,7 +98,6 @@ type
     property Lang: ProRock.Xmlite.Schema.Xml.TLangA read fLang write fLang;
   end;
 
-  [TNaming(TNaming.nCamelCase)]
   TCorePropertiesE = class(TCTCorePropertiesCT);
 
   TCTKeywordCTList = class(TXmliteList<TCTKeywordCT>);
@@ -128,6 +119,6 @@ TMetaBankXmlite.RegisterNamespace('http://schemas.openxmlformats.org/package/200
   [TCorePropertiesE],
   { groups }
   [],
-  'cp', TNaming.nTitleCase);
+  'cp');
 
 end.

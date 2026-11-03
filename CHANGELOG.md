@@ -25,8 +25,17 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   attribute and a validating reader refused the document; the spaces are kept without it
 - Generated simple types carry `[TBaseType]`, so the runtime knows what a type derives from. Regenerate your units for this; units
   generated earlier keep working as before
+- Generated units are shorter and easier to read: a schema's types, members and enumeration items are often named in different styles
+  but the same across the schema, so `RegisterNamespace` can now state all three, and most `[TNaming]`, `[TName]` and `[TEnumCaption]`
+  lines are gone (SpreadsheetML 11,244 -> 9,083 lines, FHIR 37,566 -> 30,832). No Delphi name changes, so your code is not affected.
+  Units generated earlier keep working as before
+- `[TEnumNaming(TNaming.nKebabCase)]`: the naming of an enumeration's items, where it differs from its namespace's. `[TEnumCaption]`
+  still wins per item
+- A type gets `[TNaming]` only when that style really gives its name back: `FamilyHistoryStatus-list` said Train-Case, it now has its
+  exact name alone
 
 ### Fixed
+- An inherited member follows the naming of the namespace that declares it, not of the class that inherits it, where the two differ
 - An empty element of a simple type (`<title/>`) made `FromXml` return `False`, and everything after it was lost
 - `xs:decimal` values are written without an exponent: `1E-5` and `1E15` are not valid decimals, `0.00001` and
   `1000000000000000` are. `xs:double` keeps its exponent

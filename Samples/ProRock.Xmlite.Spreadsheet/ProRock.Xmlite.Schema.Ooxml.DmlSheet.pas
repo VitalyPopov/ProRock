@@ -66,10 +66,8 @@ type
     fFPrintsWithSheet: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property FLocksWithSheet: ProRock.Xmlite.Schema.Base.TBooleanST read fFLocksWithSheet write fFLocksWithSheet;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property FPrintsWithSheet: ProRock.Xmlite.Schema.Base.TBooleanST read fFPrintsWithSheet write fFPrintsWithSheet;
   end;
 
@@ -80,10 +78,8 @@ type
     fCNvSpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTNonVisualDrawingShapePropsCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property CNvPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTNonVisualDrawingPropsCT read fCNvPr;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property CNvSpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTNonVisualDrawingShapePropsCT read fCNvSpPr;
   end;
 
@@ -99,25 +95,17 @@ type
     fStyle: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTShapeStyleCT;
     fTxBody: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTTextBodyCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Macro: ProRock.Xmlite.Schema.Base.TStringST read fMacro write fMacro;
-    [TNaming(TNaming.nFlatCase)]
     property Textlink: ProRock.Xmlite.Schema.Base.TStringST read fTextlink write fTextlink;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property FLocksText: ProRock.Xmlite.Schema.Base.TBooleanST read fFLocksText write fFLocksText;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property FPublished: ProRock.Xmlite.Schema.Base.TBooleanST read fFPublished write fFPublished;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property NvSpPr: TCTShapeNonVisualCT read fNvSpPr;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property SpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTShapePropertiesCT read fSpPr;
-    [TNaming(TNaming.nFlatCase)]
     property Style: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTShapeStyleCT read fStyle;
-    [TNaming(TNaming.nCamelCase)]
     property TxBody: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTTextBodyCT read fTxBody;
   end;
 
@@ -128,10 +116,8 @@ type
     fCNvCxnSpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTNonVisualConnectorPropertiesCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property CNvPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTNonVisualDrawingPropsCT read fCNvPr;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property CNvCxnSpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTNonVisualConnectorPropertiesCT read fCNvCxnSpPr;
   end;
 
@@ -144,18 +130,13 @@ type
     fSpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTShapePropertiesCT;
     fStyle: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTShapeStyleCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Macro: ProRock.Xmlite.Schema.Base.TStringST read fMacro write fMacro;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property FPublished: ProRock.Xmlite.Schema.Base.TBooleanST read fFPublished write fFPublished;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property NvCxnSpPr: TCTConnectorNonVisualCT read fNvCxnSpPr;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property SpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTShapePropertiesCT read fSpPr;
-    [TNaming(TNaming.nFlatCase)]
     property Style: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTShapeStyleCT read fStyle;
   end;
 
@@ -166,10 +147,8 @@ type
     fCNvPicPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTNonVisualPicturePropertiesCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property CNvPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTNonVisualDrawingPropsCT read fCNvPr;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property CNvPicPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTNonVisualPicturePropertiesCT read fCNvPicPr;
   end;
 
@@ -183,21 +162,15 @@ type
     fSpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTShapePropertiesCT;
     fStyle: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTShapeStyleCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Macro: ProRock.Xmlite.Schema.Base.TStringST read fMacro write fMacro;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property FPublished: ProRock.Xmlite.Schema.Base.TBooleanST read fFPublished write fFPublished;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property NvPicPr: TCTPictureNonVisualCT read fNvPicPr;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property BlipFill: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTBlipFillPropertiesCT read fBlipFill;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property SpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTShapePropertiesCT read fSpPr;
-    [TNaming(TNaming.nFlatCase)]
     property Style: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTShapeStyleCT read fStyle;
   end;
 
@@ -208,10 +181,8 @@ type
     fCNvGraphicFramePr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTNonVisualGraphicFramePropertiesCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property CNvPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTNonVisualDrawingPropsCT read fCNvPr;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property CNvGraphicFramePr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTNonVisualGraphicFramePropertiesCT read fCNvGraphicFramePr;
   end;
 
@@ -224,16 +195,12 @@ type
     fXfrm: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTTransform2DCT;
     fGraphic: ProRock.Xmlite.Schema.Ooxml.DmlMain.TGraphicE;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Macro: ProRock.Xmlite.Schema.Base.TStringST read fMacro write fMacro;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property FPublished: ProRock.Xmlite.Schema.Base.TBooleanST read fFPublished write fFPublished;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property NvGraphicFramePr: TCTGraphicalObjectFrameNonVisualCT read fNvGraphicFramePr;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Xfrm: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTTransform2DCT read fXfrm;
     [TRequired]
     [TNaming(TNaming.nFlatCase)]
@@ -247,10 +214,8 @@ type
     fCNvGrpSpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTNonVisualGroupDrawingShapePropsCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property CNvPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTNonVisualDrawingPropsCT read fCNvPr;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property CNvGrpSpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTNonVisualGroupDrawingShapePropsCT read fCNvGrpSpPr;
   end;
 
@@ -267,20 +232,13 @@ type
     fPic: TCTPictureCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property NvGrpSpPr: TCTGroupShapeNonVisualCT read fNvGrpSpPr;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property GrpSpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTGroupShapePropertiesCT read fGrpSpPr;
-    [TNaming(TNaming.nFlatCase)]
     property Sp: TCTShapeCTList read fSp;
-    [TNaming(TNaming.nCamelCase)]
     property GrpSp: TCTGroupShapeCTList read fGrpSp;
-    [TNaming(TNaming.nCamelCase)]
     property GraphicFrame: TCTGraphicalObjectFrameCTList read fGraphicFrame;
-    [TNaming(TNaming.nCamelCase)]
     property CxnSp: TCTConnectorCTList read fCxnSp;
-    [TNaming(TNaming.nFlatCase)]
     property Pic: TCTPictureCTList read fPic;
   end;
 
@@ -304,19 +262,15 @@ type
   published
     [TXmliteElement]
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Col: TSTColIDST read fCol write fCol;
     [TXmliteElement]
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ColOff: ProRock.Xmlite.Schema.Ooxml.DmlMain.TSTCoordinateST read fColOff write fColOff;
     [TXmliteElement]
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Row: TSTRowIDST read fRow write fRow;
     [TXmliteElement]
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property RowOff: ProRock.Xmlite.Schema.Ooxml.DmlMain.TSTCoordinateST read fRowOff write fRowOff;
   end;
 
@@ -342,34 +296,24 @@ type
     function GetContentPart: TCTRelCT;
   published
     [TDefault(Ord(steaTwoCell))]
-    [TNaming(TNaming.nCamelCase)]
     property EditAs: TSTEditAsST read fEditAs write fEditAs;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property From: TCTMarkerCT read fFrom;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &To: TCTMarkerCT read fTo;
     [TChoice('Sp')]
-    [TNaming(TNaming.nFlatCase)]
     property Sp: TCTShapeCT read GetSp;
     [TChoice('Sp')]
-    [TNaming(TNaming.nCamelCase)]
     property GrpSp: TCTGroupShapeCT read GetGrpSp;
     [TChoice('Sp')]
-    [TNaming(TNaming.nCamelCase)]
     property GraphicFrame: TCTGraphicalObjectFrameCT read GetGraphicFrame;
     [TChoice('Sp')]
-    [TNaming(TNaming.nCamelCase)]
     property CxnSp: TCTConnectorCT read GetCxnSp;
     [TChoice('Sp')]
-    [TNaming(TNaming.nFlatCase)]
     property Pic: TCTPictureCT read GetPic;
     [TChoice('Sp')]
-    [TNaming(TNaming.nCamelCase)]
     property ContentPart: TCTRelCT read GetContentPart;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ClientData: TCTAnchorClientDataCT read fClientData;
   end;
 
@@ -394,31 +338,22 @@ type
     function GetContentPart: TCTRelCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property From: TCTMarkerCT read fFrom;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Ext: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTPositiveSize2DCT read fExt;
     [TChoice('Sp')]
-    [TNaming(TNaming.nFlatCase)]
     property Sp: TCTShapeCT read GetSp;
     [TChoice('Sp')]
-    [TNaming(TNaming.nCamelCase)]
     property GrpSp: TCTGroupShapeCT read GetGrpSp;
     [TChoice('Sp')]
-    [TNaming(TNaming.nCamelCase)]
     property GraphicFrame: TCTGraphicalObjectFrameCT read GetGraphicFrame;
     [TChoice('Sp')]
-    [TNaming(TNaming.nCamelCase)]
     property CxnSp: TCTConnectorCT read GetCxnSp;
     [TChoice('Sp')]
-    [TNaming(TNaming.nFlatCase)]
     property Pic: TCTPictureCT read GetPic;
     [TChoice('Sp')]
-    [TNaming(TNaming.nCamelCase)]
     property ContentPart: TCTRelCT read GetContentPart;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ClientData: TCTAnchorClientDataCT read fClientData;
   end;
 
@@ -443,31 +378,22 @@ type
     function GetContentPart: TCTRelCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Pos: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTPoint2DCT read fPos;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Ext: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTPositiveSize2DCT read fExt;
     [TChoice('Sp')]
-    [TNaming(TNaming.nFlatCase)]
     property Sp: TCTShapeCT read GetSp;
     [TChoice('Sp')]
-    [TNaming(TNaming.nCamelCase)]
     property GrpSp: TCTGroupShapeCT read GetGrpSp;
     [TChoice('Sp')]
-    [TNaming(TNaming.nCamelCase)]
     property GraphicFrame: TCTGraphicalObjectFrameCT read GetGraphicFrame;
     [TChoice('Sp')]
-    [TNaming(TNaming.nCamelCase)]
     property CxnSp: TCTConnectorCT read GetCxnSp;
     [TChoice('Sp')]
-    [TNaming(TNaming.nFlatCase)]
     property Pic: TCTPictureCT read GetPic;
     [TChoice('Sp')]
-    [TNaming(TNaming.nCamelCase)]
     property ContentPart: TCTRelCT read GetContentPart;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ClientData: TCTAnchorClientDataCT read fClientData;
   end;
 
@@ -479,21 +405,15 @@ type
     fOneCellAnchor: TCTOneCellAnchorCTList;
     fAbsoluteAnchor: TCTAbsoluteAnchorCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property TwoCellAnchor: TCTTwoCellAnchorCTList read fTwoCellAnchor;
-    [TNaming(TNaming.nCamelCase)]
     property OneCellAnchor: TCTOneCellAnchorCTList read fOneCellAnchor;
-    [TNaming(TNaming.nCamelCase)]
     property AbsoluteAnchor: TCTAbsoluteAnchorCTList read fAbsoluteAnchor;
   end;
 
-  [TNaming(TNaming.nFlatCase)]
   TFromE = class(TCTMarkerCT);
 
-  [TNaming(TNaming.nFlatCase)]
   TToE = class(TCTMarkerCT);
 
-  [TNaming(TNaming.nCamelCase)]
   TWsDrE = class(TCTDrawingCT);
 
   [TName('EG_ObjectChoices')]
@@ -511,13 +431,10 @@ type
     function GetAbsoluteAnchor: TCTAbsoluteAnchorCT;
   published
     [TChoice('TwoCellAnchor')]
-    [TNaming(TNaming.nCamelCase)]
     property TwoCellAnchor: TCTTwoCellAnchorCT read GetTwoCellAnchor;
     [TChoice('TwoCellAnchor')]
-    [TNaming(TNaming.nCamelCase)]
     property OneCellAnchor: TCTOneCellAnchorCT read GetOneCellAnchor;
     [TChoice('TwoCellAnchor')]
-    [TNaming(TNaming.nCamelCase)]
     property AbsoluteAnchor: TCTAbsoluteAnchorCT read GetAbsoluteAnchor;
   end;
 
@@ -662,6 +579,6 @@ TMetaBankXmlite.RegisterNamespace('http://schemas.openxmlformats.org/drawingml/2
   [TFromE, TToE, TWsDrE],
   { groups }
   [TEGObjectChoicesEG, TEGAnchorEG],
-  'xdr', TNaming.nTitleCase);
+  'xdr');
 
 end.

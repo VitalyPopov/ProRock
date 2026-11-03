@@ -52,6 +52,7 @@ type
   published
     [TXmliteText]
     property XmlValue: ProRock.Xmlite.Schema.Base.TStringST read fXmlValue write fXmlValue;
+    [TNaming(TNaming.nPascalCase)]
     property Id: ProRock.Xmlite.Schema.WsSecurityUtility.TIdA read fId write fId;
   end;
 
@@ -75,6 +76,7 @@ type
     fId: ProRock.Xmlite.Schema.WsSecurityUtility.TIdA;
     fUsername: TAttributedStringCT;
   published
+    [TNaming(TNaming.nPascalCase)]
     property Id: ProRock.Xmlite.Schema.WsSecurityUtility.TIdA read fId write fId;
     [TRequired]
     property Username: TAttributedStringCT read fUsername;
@@ -118,6 +120,7 @@ type
     fId: ProRock.Xmlite.Schema.WsSecurityUtility.TIdA;
     fUsage: TUsageA;
   published
+    [TNaming(TNaming.nPascalCase)]
     property Id: ProRock.Xmlite.Schema.WsSecurityUtility.TIdA read fId write fId;
     property Usage: TUsageA read fUsage write fUsage;
   end;

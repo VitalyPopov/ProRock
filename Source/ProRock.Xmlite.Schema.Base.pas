@@ -1306,6 +1306,7 @@ type
     [TDefault(Ord(fcUnqualified))]
     property ElementFormDefault: TFormChoiceST read fElementFormDefault write fElementFormDefault;
     property Id: TIdST read fId write fId;
+    [TNaming(TNaming.nFlatCase)]
     property Lang: ProRock.Xmlite.Schema.Xml.TLangA read fLang write fLang;
     property Include: TIncludeEList read fInclude;
     property Import: TImportEList read fImport;
@@ -1480,6 +1481,7 @@ type
     fLang: ProRock.Xmlite.Schema.Xml.TLangA;
   published
     property Source: TAnyURIST read fSource write fSource;
+    [TNaming(TNaming.nFlatCase)]
     property Lang: ProRock.Xmlite.Schema.Xml.TLangA read fLang write fLang;
   end;
 

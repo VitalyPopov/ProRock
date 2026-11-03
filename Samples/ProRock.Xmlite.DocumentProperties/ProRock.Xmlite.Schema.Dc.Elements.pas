@@ -45,6 +45,7 @@ type
     fLang: ProRock.Xmlite.Schema.Xml.TLangA;
     fXmlValue: ProRock.Xmlite.Schema.Base.TStringST;
   published
+    [TNaming(TNaming.nFlatCase)]
     property Lang: ProRock.Xmlite.Schema.Xml.TLangA read fLang write fLang;
     [TXmliteText]
     property XmlValue: ProRock.Xmlite.Schema.Base.TStringST read fXmlValue write fXmlValue;

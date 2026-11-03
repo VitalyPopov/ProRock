@@ -33,11 +33,9 @@ type
   published
     [TXmliteElement]
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property IntA: ProRock.Xmlite.Schema.Base.TIntST read fIntA write fIntA;
     [TXmliteElement]
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property IntB: ProRock.Xmlite.Schema.Base.TIntST read fIntB write fIntB;
   end;
 
@@ -47,6 +45,7 @@ type
   published
     [TXmliteElement]
     [TRequired]
+    [TNaming(TNaming.nPascalCase)]
     property AddResult: ProRock.Xmlite.Schema.Base.TIntST read fAddResult write fAddResult;
   end;
 
@@ -57,11 +56,9 @@ type
   published
     [TXmliteElement]
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property IntA: ProRock.Xmlite.Schema.Base.TIntST read fIntA write fIntA;
     [TXmliteElement]
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property IntB: ProRock.Xmlite.Schema.Base.TIntST read fIntB write fIntB;
   end;
 
@@ -71,6 +68,7 @@ type
   published
     [TXmliteElement]
     [TRequired]
+    [TNaming(TNaming.nPascalCase)]
     property SubtractResult: ProRock.Xmlite.Schema.Base.TIntST read fSubtractResult write fSubtractResult;
   end;
 
@@ -81,11 +79,9 @@ type
   published
     [TXmliteElement]
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property IntA: ProRock.Xmlite.Schema.Base.TIntST read fIntA write fIntA;
     [TXmliteElement]
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property IntB: ProRock.Xmlite.Schema.Base.TIntST read fIntB write fIntB;
   end;
 
@@ -95,6 +91,7 @@ type
   published
     [TXmliteElement]
     [TRequired]
+    [TNaming(TNaming.nPascalCase)]
     property MultiplyResult: ProRock.Xmlite.Schema.Base.TIntST read fMultiplyResult write fMultiplyResult;
   end;
 
@@ -105,11 +102,9 @@ type
   published
     [TXmliteElement]
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property IntA: ProRock.Xmlite.Schema.Base.TIntST read fIntA write fIntA;
     [TXmliteElement]
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property IntB: ProRock.Xmlite.Schema.Base.TIntST read fIntB write fIntB;
   end;
 
@@ -119,6 +114,7 @@ type
   published
     [TXmliteElement]
     [TRequired]
+    [TNaming(TNaming.nPascalCase)]
     property DivideResult: ProRock.Xmlite.Schema.Base.TIntST read fDivideResult write fDivideResult;
   end;
 
@@ -139,6 +135,6 @@ TMetaBankXmlite.RegisterNamespace('http://tempuri.org/',
   [TAddE, TAddResponseE, TSubtractE, TSubtractResponseE, TMultiplyE, TMultiplyResponseE, TDivideE, TDivideResponseE],
   { groups }
   [],
-  'tns', TNaming.nPascalCase);
+  'tns', TNaming.nPascalCase, TNaming.nCamelCase, TNaming.nCamelCase);
 
 end.

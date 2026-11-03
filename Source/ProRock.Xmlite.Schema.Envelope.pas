@@ -44,8 +44,10 @@ type
     fHeader: THeaderE;
     fBody: TBodyE;
   published
+    [TNaming(TNaming.nPascalCase)]
     property Header: THeaderE read fHeader;
     [TRequired]
+    [TNaming(TNaming.nPascalCase)]
     property Body: TBodyE read fBody;
   end;
 
@@ -64,16 +66,12 @@ type
   published
     [TXmliteElement]
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Faultcode: ProRock.Xmlite.Schema.Base.TQNameST read fFaultcode write fFaultcode;
     [TXmliteElement]
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Faultstring: ProRock.Xmlite.Schema.Base.TStringST read fFaultstring write fFaultstring;
     [TXmliteElement]
-    [TNaming(TNaming.nFlatCase)]
     property Faultactor: ProRock.Xmlite.Schema.Base.TAnyURIST read fFaultactor write fFaultactor;
-    [TNaming(TNaming.nFlatCase)]
     property Detail: TDetailCT read fDetail;
   end;
 
@@ -86,7 +84,6 @@ type
   private
     fEncodingStyle: TEncodingStyleA;
   published
-    [TNaming(TNaming.nCamelCase)]
     property EncodingStyle: TEncodingStyleA read fEncodingStyle write fEncodingStyle;
   end;
 
@@ -115,6 +112,6 @@ TMetaBankXmlite.RegisterNamespace('http://schemas.xmlsoap.org/soap/envelope/',
   [TEnvelopeE, THeaderE, TBodyE, TFaultE],
   { groups }
   [],
-  'tns', TNaming.nPascalCase);
+  'tns', TNaming.nPascalCase, TNaming.nCamelCase, TNaming.nCamelCase);
 
 end.

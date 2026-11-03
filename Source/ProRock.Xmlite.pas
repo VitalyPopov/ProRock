@@ -32,6 +32,7 @@ type
   TRequiredAttribute = ProRock.Basite.TRequiredAttribute;
   TChoiceAttribute = ProRock.Basite.TChoiceAttribute;
   TEnumCaptionAttribute = ProRock.Basite.TEnumCaptionAttribute;
+  TEnumNamingAttribute = ProRock.Basite.TEnumNamingAttribute;
   TValueAliasAttribute = ProRock.Basite.TValueAliasAttribute;
   TBasite = ProRock.Basite.TBasite;
   TBasiteList = Prorock.Basite.TBasiteList;
@@ -366,7 +367,8 @@ type
     fSuffixLengthSimpleType, fSuffixLengthComplexType, fSuffixLengthAttribute, fSuffixLengthAttributeGroup, fSuffixLengthElement,
       fSuffixLengthElementGroup: integer;
     fUri: string;
-    fNaming: TNaming;
+    fNaming, fMemberNaming, fItemNaming: TNaming;
+    fExactNames: boolean; // registered with members' and items' naming: FromPascalCaseExact (older units rely on B meaning <B>)
     fSimpleTypes, fAttributes: TDictObjectList<string, TMetaType>;
     fComplexTypes, fAttributeGroups, fElements, fElementGroups: TDictObjectList<string, TMetaBasite>;
   public
@@ -377,7 +379,9 @@ type
     property UnitQualifiedName: string read fUnitQualifiedName;
     property Uri: string read fUri;
     property Prefix: string read fPrefix;
-    property Naming: TNaming read fNaming;
+    property Naming: TNaming read fNaming; // of the components (types, global elements)
+    property MemberNaming: TNaming read fMemberNaming; // of elements and attributes inside them
+    property ItemNaming: TNaming read fItemNaming; // of enumeration items
 
     property SuffixSimpleType: string read fSuffixSimpleType;
     property SuffixComplexType: string read fSuffixComplexType;
@@ -420,13 +424,19 @@ type
     class var Instance: TMetaBankXmlite;
 
     class constructor Create;
+    class procedure AddComponents(aNamespace: TNamespace; const aSimpleTypes: TArray<PTypeInfo>; const aComplexTypes: TArray<TBasiteClass>;
+      const aAttributes: TArray<PTypeInfo>; const aAttributeGroups, aElements, aGroups: TArray<TBasiteClass>);
   public
     class function RegisterNamespace(const aUri: string; const aSimpleTypes: TArray<PTypeInfo>; const aComplexTypes: TArray<TBasiteClass>;
       const aAttributes: TArray<PTypeInfo>; const aAttributeGroups, aElements, aGroups: TArray<TBasiteClass>; const aPrefix: string;
       aNaming: TNaming = cDefaultNaming; const aSuffixSimpleType: string = cDefaultSuffixSimpleType;
       const aSuffixComplexType: string = cDefaultSuffixComplexType; const aSuffixAttribute: string = cDefaultSuffixAttribute;
       const aSuffixAttributeGroup: string = cDefaultSuffixAttributeGroup; const aSuffixElement: string = cDefaultSuffixElement;
-      const aSuffixElementGroup: string = cDefaultSuffixElementGroup): TNamespace;
+      const aSuffixElementGroup: string = cDefaultSuffixElementGroup): TNamespace; overload;
+    // members and enumeration items are often named differently from the types, but the same across a schema
+    class function RegisterNamespace(const aUri: string; const aSimpleTypes: TArray<PTypeInfo>; const aComplexTypes: TArray<TBasiteClass>;
+      const aAttributes: TArray<PTypeInfo>; const aAttributeGroups, aElements, aGroups: TArray<TBasiteClass>; const aPrefix: string;
+      aNaming, aMemberNaming, aItemNaming: TNaming): TNamespace; overload;
 
   private
     fNamespaces: TNamespaceList;
@@ -2004,6 +2014,8 @@ var
   metaBasite: TMetaBasite absolute aMeta;
 begin
   aMeta.Xmlite.NamespaceRegister(Self, aType);
+  if fExactNames and (aType in [xctSimpleType, xctAttribute]) then
+    metaType.SetItemNaming(fItemNaming);
   case aType of
     xctSimpleType:
       fSimpleTypes.Add(aMeta.Xmlite.Name, metaType);
@@ -2029,6 +2041,8 @@ begin
   fUri := aUri;
   fPrefix := aPrefix;
   fNaming := aNaming;
+  fMemberNaming := aNaming;
+  fItemNaming := cDefaultNaming;
 
   fSuffixSimpleType := aSuffixSimpleType;
   fSuffixLengthSimpleType := Length(fSuffixSimpleType);
@@ -2207,27 +2221,49 @@ begin
 
   Result := TNamespace.Create(aUri, aPrefix, aNaming, aSuffixSimpleType, aSuffixComplexType, aSuffixAttribute, aSuffixAttributeGroup,
     aSuffixElement, aSuffixElementGroup);
+  AddComponents(Result, aSimpleTypes, aComplexTypes, aAttributes, aAttributeGroups, aElements, aGroups);
+end;
 
+class function TMetaBankXmlite.RegisterNamespace(const aUri: string; const aSimpleTypes: TArray<PTypeInfo>;
+  const aComplexTypes: TArray<TBasiteClass>; const aAttributes: TArray<PTypeInfo>;
+  const aAttributeGroups, aElements, aGroups: TArray<TBasiteClass>; const aPrefix: string; aNaming, aMemberNaming, aItemNaming: TNaming)
+  : TNamespace;
+begin
+  if Instance.TryGetNamespace(aUri, Result) then // already registered
+    Exit;
+
+  Result := TNamespace.Create(aUri, aPrefix, aNaming, cDefaultSuffixSimpleType, cDefaultSuffixComplexType, cDefaultSuffixAttribute,
+    cDefaultSuffixAttributeGroup, cDefaultSuffixElement, cDefaultSuffixElementGroup);
+  Result.fMemberNaming := aMemberNaming;
+  Result.fItemNaming := aItemNaming;
+  Result.fExactNames := True;
+  AddComponents(Result, aSimpleTypes, aComplexTypes, aAttributes, aAttributeGroups, aElements, aGroups);
+end;
+
+class procedure TMetaBankXmlite.AddComponents(aNamespace: TNamespace; const aSimpleTypes: TArray<PTypeInfo>;
+  const aComplexTypes: TArray<TBasiteClass>; const aAttributes: TArray<PTypeInfo>;
+  const aAttributeGroups, aElements, aGroups: TArray<TBasiteClass>);
+begin
   for var simpleType: PTypeInfo in aSimpleTypes do
-    Result.Add(TMetaBank.RegisterType(simpleType), xctSimpleType);
+    aNamespace.Add(TMetaBank.RegisterType(simpleType), xctSimpleType);
 
   // global attributes before the classes: a member typed with one takes its namespace when it registers
   for var attribute: PTypeInfo in aAttributes do
-    Result.Add(TMetaBank.RegisterType(attribute), xctAttribute);
+    aNamespace.Add(TMetaBank.RegisterType(attribute), xctAttribute);
 
   for var complexType: TBasiteClass in aComplexTypes do
-    Result.Add(complexType.Meta, xctComplexType);
+    aNamespace.Add(complexType.Meta, xctComplexType);
 
   for var attributeGroup: TBasiteClass in aAttributeGroups do
-    Result.Add(attributeGroup.Meta, xctAttributeGroup);
+    aNamespace.Add(attributeGroup.Meta, xctAttributeGroup);
 
   for var element: TBasiteClass in aElements do
-    Result.Add(element.Meta, xctElement);
+    aNamespace.Add(element.Meta, xctElement);
 
   for var elementGroup: TBasiteClass in aGroups do
-    Result.Add(elementGroup.Meta, xctElementGroup);
+    aNamespace.Add(elementGroup.Meta, xctElementGroup);
 
-  Instance.fNamespaces.Add(Result);
+  Instance.fNamespaces.Add(aNamespace);
 end;
 
 function TMetaBankXmlite.TryGetNamespace(const aUri: string; var aNamespace: TNamespace): boolean;
@@ -2598,9 +2634,23 @@ begin
   if fNamespace = nil then
     fNamespace := aNamespace;
 
-  // a member follows its namespace naming (as components do), unless the property defines its own [TName] or [TNaming]
+  // a member follows its namespace's members' naming, unless the property defines its own [TName] or [TNaming];
+  // an inherited one follows the namespace of the class that declares it (UBL's cbc:Amount has udt's currencyID)
   if not hasOwnName then
-    fName := TUtility.FromPascalCase(PropertyInfo.RttiProperty.Name, fNamespace.Naming);
+  begin
+    var naming: TNamespace := fNamespace;
+    var declaring: TRttiType := PropertyInfo.RttiProperty.Parent;
+    if (fNamespace = aNamespace) and declaring.IsInstance and declaring.AsInstance.MetaclassType.InheritsFrom(TBasite) then
+    begin
+      var declaringXmlite: TMetaXmlite := TBasiteClass(declaring.AsInstance.MetaclassType).Meta.Xmlite;
+      if (declaringXmlite <> nil) and (declaringXmlite.Namespace <> nil) then
+        naming := declaringXmlite.Namespace;
+    end;
+    if naming.fExactNames then
+      fName := TUtility.FromPascalCaseExact(PropertyInfo.RttiProperty.Name, naming.MemberNaming)
+    else
+      fName := TUtility.FromPascalCase(PropertyInfo.RttiProperty.Name, naming.MemberNaming);
+  end;
 
   if not fNamespace.Prefix.IsEmpty then
     fNamePrefixed := fNamespace.Prefix + ':' + fName;

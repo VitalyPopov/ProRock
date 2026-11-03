@@ -19,6 +19,22 @@ uses
 type
   [TName('ST_FilterOperator')]
   TSTFilterOperatorST = (stfoEqual, stfoLessThan, stfoLessThanOrEqual, stfoNotEqual, stfoGreaterThanOrEqual, stfoGreaterThan);
+  [TEnumCaption('q1', 'Q1')]
+  [TEnumCaption('q2', 'Q2')]
+  [TEnumCaption('q3', 'Q3')]
+  [TEnumCaption('q4', 'Q4')]
+  [TEnumCaption('m1', 'M1')]
+  [TEnumCaption('m2', 'M2')]
+  [TEnumCaption('m3', 'M3')]
+  [TEnumCaption('m4', 'M4')]
+  [TEnumCaption('m5', 'M5')]
+  [TEnumCaption('m6', 'M6')]
+  [TEnumCaption('m7', 'M7')]
+  [TEnumCaption('m8', 'M8')]
+  [TEnumCaption('m9', 'M9')]
+  [TEnumCaption('m10', 'M10')]
+  [TEnumCaption('m11', 'M11')]
+  [TEnumCaption('m12', 'M12')]
   [TName('ST_DynamicFilterType')]
   TSTDynamicFilterTypeST = (stdftNull, stdftAboveAverage, stdftBelowAverage, stdftTomorrow, stdftToday, stdftYesterday, stdftNextWeek,
     stdftThisWeek, stdftLastWeek, stdftNextMonth, stdftThisMonth, stdftLastMonth, stdftNextQuarter, stdftThisQuarter, stdftLastQuarter,
@@ -48,13 +64,10 @@ type
   TSTFileTypeST = (stftMac, stftWin, stftDos, stftLin, stftOther);
   [TName('ST_Qualifier')]
   TSTQualifierST = (stqDoubleQuote, stqSingleQuote, stqNone);
-  [TEnumCaption('mdy', 'MDY')]
-  [TEnumCaption('dmy', 'DMY')]
-  [TEnumCaption('ymd', 'YMD')]
-  [TEnumCaption('myd', 'MYD')]
-  [TEnumCaption('dym', 'DYM')]
-  [TEnumCaption('ydm', 'YDM')]
-  [TEnumCaption('emd', 'EMD')]
+  [TEnumNaming(TNaming.nUpperCase)]
+  [TEnumCaption('GENERAL', 'general')]
+  [TEnumCaption('TEXT', 'text')]
+  [TEnumCaption('SKIP', 'skip')]
   [TName('ST_ExternalConnectionType')]
   TSTExternalConnectionTypeST = (stectGeneral, stectText, stectMdy, stectDmy, stectYmd, stectMyd, stectDym, stectYdm, stectSkip, stectEmd);
   [TName('ST_SourceType')]
@@ -78,6 +91,22 @@ type
   TSTFormatActionST = (stfaBlank, stfaFormatting, stfaDrill, stfaFormula);
   [TName('ST_FieldSortType')]
   TSTFieldSortTypeST = (stfstManual, stfstAscending, stfstDescending);
+  [TEnumCaption('q1', 'Q1')]
+  [TEnumCaption('q2', 'Q2')]
+  [TEnumCaption('q3', 'Q3')]
+  [TEnumCaption('q4', 'Q4')]
+  [TEnumCaption('m1', 'M1')]
+  [TEnumCaption('m2', 'M2')]
+  [TEnumCaption('m3', 'M3')]
+  [TEnumCaption('m4', 'M4')]
+  [TEnumCaption('m5', 'M5')]
+  [TEnumCaption('m6', 'M6')]
+  [TEnumCaption('m7', 'M7')]
+  [TEnumCaption('m8', 'M8')]
+  [TEnumCaption('m9', 'M9')]
+  [TEnumCaption('m10', 'M10')]
+  [TEnumCaption('m11', 'M11')]
+  [TEnumCaption('m12', 'M12')]
   [TName('ST_PivotFilterType')]
   TSTPivotFilterTypeST = (stpftUnknown, stpftCount, stpftPercent, stpftSum, stpftCaptionEqual, stpftCaptionNotEqual,
     stpftCaptionBeginsWith, stpftCaptionNotBeginsWith, stpftCaptionEndsWith, stpftCaptionNotEndsWith, stpftCaptionContains,
@@ -105,10 +134,6 @@ type
   TSTRevisionActionST = (straAdd, straDelete);
   [TName('ST_FormulaExpression')]
   TSTFormulaExpressionST = (stfeRef, stfeRefError, stfeArea, stfeAreaError, stfeComputedArea);
-  [TEnumCaption('B', 'b')]
-  [TEnumCaption('N', 'n')]
-  [TEnumCaption('E', 'e')]
-  [TEnumCaption('S', 's')]
   [TName('ST_CellType')]
   TSTCellTypeST = (stctB, stctN, stctE, stctS, stctStr, stctInlineStr);
   [TName('ST_CellFormulaType')]
@@ -151,38 +176,20 @@ type
   [TEnumCaption('na', 'NA')]
   [TName('ST_PrintError')]
   TSTPrintErrorST = (stpeDisplayed, stpeBlank, stpeDash, stpeNa);
-  [TEnumCaption('dvaspectContent', 'DVASPECT_CONTENT')]
-  [TEnumCaption('dvaspectIcon', 'DVASPECT_ICON')]
+  [TEnumNaming(TNaming.nCapsCase)]
   [TName('ST_DvAspect')]
   TSTDvAspectST = (stdaDvaspectContent, stdaDvaspectIcon);
-  [TEnumCaption('oleupdateAlways', 'OLEUPDATE_ALWAYS')]
-  [TEnumCaption('oleupdateOncall', 'OLEUPDATE_ONCALL')]
+  [TEnumNaming(TNaming.nCapsCase)]
   [TName('ST_OleUpdate')]
   TSTOleUpdateST = (stouOleupdateAlways, stouOleupdateOncall);
   [TName('ST_WebSourceType')]
   TSTWebSourceTypeST = (stwstSheet, stwstPrintArea, stwstAutoFilter, stwstRange, stwstChart, stwstPivotTable, stwstQuery, stwstLabel);
   [TName('ST_PaneState')]
   TSTPaneStateST = (stpsSplit, stpsFrozen, stpsFrozenSplit);
-  [TEnumCaption('M', 'm')]
-  [TEnumCaption('V', 'v')]
-  [TEnumCaption('S', 's')]
-  [TEnumCaption('C', 'c')]
-  [TEnumCaption('R', 'r')]
-  [TEnumCaption('P', 'p')]
-  [TEnumCaption('K', 'k')]
   [TName('ST_MdxFunctionType')]
   TSTMdxFunctionTypeST = (stmftM, stmftV, stmftS, stmftC, stmftR, stmftP, stmftK);
-  [TEnumCaption('U', 'u')]
-  [TEnumCaption('A', 'a')]
-  [TEnumCaption('D', 'd')]
   [TName('ST_MdxSetOrder')]
   TSTMdxSetOrderST = (stmsoU, stmsoA, stmsoD, stmsoAa, stmsoAd, stmsoNa, stmsoNd);
-  [TEnumCaption('V', 'v')]
-  [TEnumCaption('G', 'g')]
-  [TEnumCaption('S', 's')]
-  [TEnumCaption('T', 't')]
-  [TEnumCaption('W', 'w')]
-  [TEnumCaption('M', 'm')]
   [TName('ST_MdxKPIProperty')]
   TSTMdxKPIPropertyST = (stmkpipV, stmkpipG, stmkpipS, stmkpipT, stmkpipW, stmkpipM);
   [TName('ST_BorderStyle')]
@@ -209,9 +216,6 @@ type
   TSTFontSchemeST = (stfsNone, stfsMajor, stfsMinor);
   [TName('ST_UnderlineValues')]
   TSTUnderlineValuesST = (stuvSingle, stuvDouble, stuvSingleAccounting, stuvDoubleAccounting, stuvNone);
-  [TEnumCaption('B', 'b')]
-  [TEnumCaption('N', 'n')]
-  [TEnumCaption('E', 'e')]
   [TName('ST_DdeValueType')]
   TSTDdeValueTypeST = (stdvtaNil, stdvtaB, stdvtaN, stdvtaE, stdvtaStr);
   [TName('ST_TableType')]
@@ -221,10 +225,6 @@ type
     sttrfCustom);
   [TName('ST_VolDepType')]
   TSTVolDepTypeST = (stvdtRealTimeData, stvdtOlapFunctions);
-  [TEnumCaption('B', 'b')]
-  [TEnumCaption('N', 'n')]
-  [TEnumCaption('E', 'e')]
-  [TEnumCaption('S', 's')]
   [TName('ST_VolValueType')]
   TSTVolValueTypeST = (stvvtB, stvvtN, stvvtE, stvvtS);
   [TName('ST_Visibility')]
@@ -241,7 +241,7 @@ type
   TSTSmartTagShowST = (ststsAll, ststsNone, ststsNoIndicator);
   [TName('ST_CalcMode')]
   TSTCalcModeST = (stcmaManual, stcmaAuto, stcmaAutoNoTable);
-  [TEnumCaption('r1c1', 'R1C1')]
+  [TEnumNaming(TNaming.nUpperCase)]
   [TName('ST_RefMode')]
   TSTRefModeST = (strmA1, strmR1c1);
   [TName('ST_TargetScreenSize')]
@@ -870,13 +870,9 @@ type
     fSortState: TCTSortStateCT;
     fExtLst: TCTExtensionListCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Ref: TSTRefST read fRef write fRef;
-    [TNaming(TNaming.nCamelCase)]
     property FilterColumn: TCTFilterColumnCTList read fFilterColumn;
-    [TNaming(TNaming.nCamelCase)]
     property SortState: TCTSortStateCT read fSortState;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -903,34 +899,24 @@ type
     function GetExtLst: TCTExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ColId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fColId write fColId;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property HiddenButton: ProRock.Xmlite.Schema.Base.TBooleanST read fHiddenButton write fHiddenButton;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowButton: ProRock.Xmlite.Schema.Base.TBooleanST read fShowButton write fShowButton;
     [TChoice('Filters')]
-    [TNaming(TNaming.nFlatCase)]
     property Filters: TCTFiltersCT read GetFilters;
     [TChoice('Filters')]
-    [TNaming(TNaming.nFlatCase)]
     property Top10: TCTTop10CT read GetTop10;
     [TChoice('Filters')]
-    [TNaming(TNaming.nCamelCase)]
     property CustomFilters: TCTCustomFiltersCT read GetCustomFilters;
     [TChoice('Filters')]
-    [TNaming(TNaming.nCamelCase)]
     property DynamicFilter: TCTDynamicFilterCT read GetDynamicFilter;
     [TChoice('Filters')]
-    [TNaming(TNaming.nCamelCase)]
     property ColorFilter: TCTColorFilterCT read GetColorFilter;
     [TChoice('Filters')]
-    [TNaming(TNaming.nCamelCase)]
     property IconFilter: TCTIconFilterCT read GetIconFilter;
     [TChoice('Filters')]
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read GetExtLst;
   end;
 
@@ -943,14 +929,10 @@ type
     fDateGroupItem: TCTDateGroupItemCTList;
   published
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Blank: ProRock.Xmlite.Schema.Base.TBooleanST read fBlank write fBlank;
     [TDefault('none')]
-    [TNaming(TNaming.nCamelCase)]
     property CalendarType: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTCalendarTypeST read fCalendarType write fCalendarType;
-    [TNaming(TNaming.nFlatCase)]
     property Filter: TCTFilterCTList read fFilter;
-    [TNaming(TNaming.nCamelCase)]
     property DateGroupItem: TCTDateGroupItemCTList read fDateGroupItem;
   end;
 
@@ -959,7 +941,6 @@ type
   private
     fVal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Val: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fVal write fVal;
   end;
 
@@ -970,9 +951,7 @@ type
     fCustomFilter: TCTCustomFilterCTList;
   published
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property &And: ProRock.Xmlite.Schema.Base.TBooleanST read fAnd write fAnd;
-    [TNaming(TNaming.nCamelCase)]
     property CustomFilter: TCTCustomFilterCTList read fCustomFilter;
   end;
 
@@ -983,9 +962,7 @@ type
     fVal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
   published
     [TDefault(Ord(stfoEqual))]
-    [TNaming(TNaming.nFlatCase)]
     property Operator: TSTFilterOperatorST read fOperator write fOperator;
-    [TNaming(TNaming.nFlatCase)]
     property Val: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fVal write fVal;
   end;
 
@@ -998,15 +975,11 @@ type
     fFilterVal: ProRock.Xmlite.Schema.Base.TDoubleST;
   published
     [TDefault(True)]
-    [TNaming(TNaming.nFlatCase)]
     property Top: ProRock.Xmlite.Schema.Base.TBooleanST read fTop write fTop;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Percent: ProRock.Xmlite.Schema.Base.TBooleanST read fPercent write fPercent;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Val: ProRock.Xmlite.Schema.Base.TDoubleST read fVal write fVal;
-    [TNaming(TNaming.nCamelCase)]
     property FilterVal: ProRock.Xmlite.Schema.Base.TDoubleST read fFilterVal write fFilterVal;
   end;
 
@@ -1016,10 +989,8 @@ type
     fDxfId: TSTDxfIdST;
     fCellColor: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
-    [TNaming(TNaming.nCamelCase)]
     property DxfId: TSTDxfIdST read fDxfId write fDxfId;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property CellColor: ProRock.Xmlite.Schema.Base.TBooleanST read fCellColor write fCellColor;
   end;
 
@@ -1030,9 +1001,7 @@ type
     fIconId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property IconSet: TSTIconSetTypeST read fIconSet write fIconSet;
-    [TNaming(TNaming.nCamelCase)]
     property IconId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fIconId write fIconId;
   end;
 
@@ -1046,15 +1015,10 @@ type
     fMaxValIso: ProRock.Xmlite.Schema.Base.TDateTimeST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TSTDynamicFilterTypeST read fType write fType;
-    [TNaming(TNaming.nFlatCase)]
     property Val: ProRock.Xmlite.Schema.Base.TDoubleST read fVal write fVal;
-    [TNaming(TNaming.nCamelCase)]
     property ValIso: ProRock.Xmlite.Schema.Base.TDateTimeST read fValIso write fValIso;
-    [TNaming(TNaming.nCamelCase)]
     property MaxVal: ProRock.Xmlite.Schema.Base.TDoubleST read fMaxVal write fMaxVal;
-    [TNaming(TNaming.nCamelCase)]
     property MaxValIso: ProRock.Xmlite.Schema.Base.TDateTimeST read fMaxValIso write fMaxValIso;
   end;
 
@@ -1069,20 +1033,14 @@ type
     fExtLst: TCTExtensionListCT;
   published
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ColumnSort: ProRock.Xmlite.Schema.Base.TBooleanST read fColumnSort write fColumnSort;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property CaseSensitive: ProRock.Xmlite.Schema.Base.TBooleanST read fCaseSensitive write fCaseSensitive;
     [TDefault(Ord(stsmNone))]
-    [TNaming(TNaming.nCamelCase)]
     property SortMethod: TSTSortMethodST read fSortMethod write fSortMethod;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Ref: TSTRefST read fRef write fRef;
-    [TNaming(TNaming.nCamelCase)]
     property SortCondition: TCTSortConditionCTList read fSortCondition;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -1098,22 +1056,15 @@ type
     fIconId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Descending: ProRock.Xmlite.Schema.Base.TBooleanST read fDescending write fDescending;
     [TDefault(Ord(stsbValue))]
-    [TNaming(TNaming.nCamelCase)]
     property SortBy: TSTSortByST read fSortBy write fSortBy;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Ref: TSTRefST read fRef write fRef;
-    [TNaming(TNaming.nCamelCase)]
     property CustomList: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fCustomList write fCustomList;
-    [TNaming(TNaming.nCamelCase)]
     property DxfId: TSTDxfIdST read fDxfId write fDxfId;
     [TDefault(Ord(stist3Arrows))]
-    [TNaming(TNaming.nCamelCase)]
     property IconSet: TSTIconSetTypeST read fIconSet write fIconSet;
-    [TNaming(TNaming.nCamelCase)]
     property IconId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fIconId write fIconId;
   end;
 
@@ -1129,20 +1080,13 @@ type
     fDateTimeGrouping: TSTDateTimeGroupingST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Year: ProRock.Xmlite.Schema.Base.TUnsignedShortST read fYear write fYear;
-    [TNaming(TNaming.nFlatCase)]
     property Month: ProRock.Xmlite.Schema.Base.TUnsignedShortST read fMonth write fMonth;
-    [TNaming(TNaming.nFlatCase)]
     property Day: ProRock.Xmlite.Schema.Base.TUnsignedShortST read fDay write fDay;
-    [TNaming(TNaming.nFlatCase)]
     property Hour: ProRock.Xmlite.Schema.Base.TUnsignedShortST read fHour write fHour;
-    [TNaming(TNaming.nFlatCase)]
     property Minute: ProRock.Xmlite.Schema.Base.TUnsignedShortST read fMinute write fMinute;
-    [TNaming(TNaming.nFlatCase)]
     property Second: ProRock.Xmlite.Schema.Base.TUnsignedShortST read fSecond write fSecond;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property DateTimeGrouping: TSTDateTimeGroupingST read fDateTimeGrouping write fDateTimeGrouping;
   end;
 
@@ -1152,7 +1096,6 @@ type
     fV: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
   published
     [TRequired]
-    [TName('v')]
     property V: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fV write fV;
   end;
 
@@ -1162,7 +1105,6 @@ type
   private
     fUri: ProRock.Xmlite.Schema.Base.TTokenST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Uri: ProRock.Xmlite.Schema.Base.TTokenST read fUri write fUri;
   end;
 
@@ -1175,10 +1117,8 @@ type
     fTo: ProRock.Xmlite.Schema.Ooxml.DmlSheet.TToE;
   published
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property MoveWithCells: ProRock.Xmlite.Schema.Base.TBooleanST read fMoveWithCells write fMoveWithCells;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property SizeWithCells: ProRock.Xmlite.Schema.Base.TBooleanST read fSizeWithCells write fSizeWithCells;
     [TRequired]
     [TNaming(TNaming.nFlatCase)]
@@ -1193,7 +1133,6 @@ type
   private
     fExt: TCTExtensionCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Ext: TCTExtensionCTList read fExt;
   end;
 
@@ -1203,9 +1142,7 @@ type
     fC: TCTCalcCellCTList;
     fExtLst: TCTExtensionListCT;
   published
-    [TName('c')]
     property C: TCTCalcCellCTList read fC;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -1220,24 +1157,17 @@ type
     fT: ProRock.Xmlite.Schema.Base.TBooleanST;
     fA: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
-    [TName('r')]
     property R: TSTCellRefST read fR write fR;
-    [TNaming(TNaming.nFlatCase)]
     property Ref: TSTCellRefST read fRef write fRef;
     [TDefault(0)]
-    [TName('i')]
     property I: ProRock.Xmlite.Schema.Base.TIntST read fI write fI;
     [TDefault(False)]
-    [TName('s')]
     property S: ProRock.Xmlite.Schema.Base.TBooleanST read fS write fS;
     [TDefault(False)]
-    [TName('l')]
     property L: ProRock.Xmlite.Schema.Base.TBooleanST read fL write fL;
     [TDefault(False)]
-    [TName('t')]
     property T: ProRock.Xmlite.Schema.Base.TBooleanST read fT write fT;
     [TDefault(False)]
-    [TName('a')]
     property A: ProRock.Xmlite.Schema.Base.TBooleanST read fA write fA;
   end;
 
@@ -1249,12 +1179,9 @@ type
     fExtLst: TCTExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Authors: TCTAuthorsCT read fAuthors;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property CommentList: TCTCommentListCT read fCommentList;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -1263,7 +1190,6 @@ type
   private
     fAuthor: TSTXstringSTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Author: TSTXstringSTList read fAuthor;
   end;
 
@@ -1272,7 +1198,6 @@ type
   private
     fComment: TCTCommentCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Comment: TCTCommentCTList read fComment;
   end;
 
@@ -1287,19 +1212,13 @@ type
     fCommentPr: TCTCommentPrCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Ref: TSTRefST read fRef write fRef;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property AuthorId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fAuthorId write fAuthorId;
-    [TNaming(TNaming.nFlatCase)]
     property Guid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST read fGuid write fGuid;
-    [TNaming(TNaming.nCamelCase)]
     property ShapeId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fShapeId write fShapeId;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Text: TCTRstCT read fText;
-    [TNaming(TNaming.nCamelCase)]
     property CommentPr: TCTCommentPrCT read fCommentPr;
   end;
 
@@ -1321,42 +1240,29 @@ type
     fAnchor: TCTObjectAnchorCT;
   published
     [TDefault(True)]
-    [TNaming(TNaming.nFlatCase)]
     property Locked: ProRock.Xmlite.Schema.Base.TBooleanST read fLocked write fLocked;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultSize: ProRock.Xmlite.Schema.Base.TBooleanST read fDefaultSize write fDefaultSize;
     [TDefault(True)]
-    [TNaming(TNaming.nFlatCase)]
     property Print: ProRock.Xmlite.Schema.Base.TBooleanST read fPrint write fPrint;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Disabled: ProRock.Xmlite.Schema.Base.TBooleanST read fDisabled write fDisabled;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property AutoFill: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoFill write fAutoFill;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property AutoLine: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoLine write fAutoLine;
-    [TNaming(TNaming.nCamelCase)]
     property AltText: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fAltText write fAltText;
     [TDefault(Ord(stthaLeft))]
-    [TNaming(TNaming.nCamelCase)]
     property TextHAlign: TSTTextHAlignST read fTextHAlign write fTextHAlign;
     [TDefault(Ord(sttvaTop))]
-    [TNaming(TNaming.nCamelCase)]
     property TextVAlign: TSTTextVAlignST read fTextVAlign write fTextVAlign;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property LockText: ProRock.Xmlite.Schema.Base.TBooleanST read fLockText write fLockText;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property JustLastX: ProRock.Xmlite.Schema.Base.TBooleanST read fJustLastX write fJustLastX;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property AutoScale: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoScale write fAutoScale;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Anchor: TCTObjectAnchorCT read fAnchor;
   end;
 
@@ -1370,7 +1276,9 @@ type
     [TRequired]
     [TNaming(TNaming.nPascalCase)]
     property SelectionNamespaces: ProRock.Xmlite.Schema.Base.TStringST read fSelectionNamespaces write fSelectionNamespaces;
+    [TNaming(TNaming.nPascalCase)]
     property Schema: TCTSchemaCTList read fSchema;
+    [TNaming(TNaming.nPascalCase)]
     property Map: TCTMapCTList read fMap;
   end;
 
@@ -1388,6 +1296,7 @@ type
     property Id: ProRock.Xmlite.Schema.Base.TStringST read fId write fId;
     [TNaming(TNaming.nPascalCase)]
     property SchemaRef: ProRock.Xmlite.Schema.Base.TStringST read fSchemaRef write fSchemaRef;
+    [TNaming(TNaming.nPascalCase)]
     property Namespace: ProRock.Xmlite.Schema.Base.TStringST read fNamespace write fNamespace;
     [TNaming(TNaming.nPascalCase)]
     property SchemaLanguage: ProRock.Xmlite.Schema.Base.TTokenST read fSchemaLanguage write fSchemaLanguage;
@@ -1411,6 +1320,7 @@ type
     [TNaming(TNaming.nUpperCase)]
     property Id: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fId write fId;
     [TRequired]
+    [TNaming(TNaming.nPascalCase)]
     property Name: ProRock.Xmlite.Schema.Base.TStringST read fName write fName;
     [TRequired]
     [TNaming(TNaming.nPascalCase)]
@@ -1425,6 +1335,7 @@ type
     [TNaming(TNaming.nPascalCase)]
     property AutoFit: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoFit write fAutoFit;
     [TRequired]
+    [TNaming(TNaming.nPascalCase)]
     property Append: ProRock.Xmlite.Schema.Base.TBooleanST read fAppend write fAppend;
     [TRequired]
     [TNaming(TNaming.nPascalCase)]
@@ -1463,7 +1374,6 @@ type
   private
     fConnection: TCTConnectionCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Connection: TCTConnectionCTList read fConnection;
   end;
 
@@ -1498,70 +1408,44 @@ type
     fExtLst: TCTExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fId write fId;
-    [TNaming(TNaming.nCamelCase)]
     property SourceFile: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fSourceFile write fSourceFile;
-    [TNaming(TNaming.nCamelCase)]
     property OdcFile: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fOdcFile write fOdcFile;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property KeepAlive: ProRock.Xmlite.Schema.Base.TBooleanST read fKeepAlive write fKeepAlive;
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Interval: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fInterval write fInterval;
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
-    [TNaming(TNaming.nFlatCase)]
     property Description: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDescription write fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property &Type: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fType write fType;
     [TDefault(1)]
-    [TNaming(TNaming.nCamelCase)]
     property ReconnectionMethod: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fReconnectionMethod write fReconnectionMethod;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property RefreshedVersion: ProRock.Xmlite.Schema.Base.TUnsignedByteST read fRefreshedVersion write fRefreshedVersion;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property MinRefreshableVersion: ProRock.Xmlite.Schema.Base.TUnsignedByteST read fMinRefreshableVersion write fMinRefreshableVersion;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property SavePassword: ProRock.Xmlite.Schema.Base.TBooleanST read fSavePassword write fSavePassword;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property New: ProRock.Xmlite.Schema.Base.TBooleanST read fNew write fNew;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Deleted: ProRock.Xmlite.Schema.Base.TBooleanST read fDeleted write fDeleted;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property OnlyUseConnectionFile: ProRock.Xmlite.Schema.Base.TBooleanST read fOnlyUseConnectionFile write fOnlyUseConnectionFile;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Background: ProRock.Xmlite.Schema.Base.TBooleanST read fBackground write fBackground;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property RefreshOnLoad: ProRock.Xmlite.Schema.Base.TBooleanST read fRefreshOnLoad write fRefreshOnLoad;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property SaveData: ProRock.Xmlite.Schema.Base.TBooleanST read fSaveData write fSaveData;
     [TDefault(Ord(stcmIntegrated))]
-    [TNaming(TNaming.nFlatCase)]
     property Credentials: TSTCredMethodST read fCredentials write fCredentials;
-    [TNaming(TNaming.nCamelCase)]
     property SingleSignOnId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fSingleSignOnId write fSingleSignOnId;
-    [TNaming(TNaming.nCamelCase)]
     property DbPr: TCTDbPrCT read fDbPr;
-    [TNaming(TNaming.nCamelCase)]
     property OlapPr: TCTOlapPrCT read fOlapPr;
-    [TNaming(TNaming.nCamelCase)]
     property WebPr: TCTWebPrCT read fWebPr;
-    [TNaming(TNaming.nCamelCase)]
     property TextPr: TCTTextPrCT read fTextPr;
-    [TNaming(TNaming.nFlatCase)]
     property Parameters: TCTParametersCT read fParameters;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -1574,14 +1458,10 @@ type
     fCommandType: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Connection: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fConnection write fConnection;
-    [TNaming(TNaming.nFlatCase)]
     property Command: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fCommand write fCommand;
-    [TNaming(TNaming.nCamelCase)]
     property ServerCommand: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fServerCommand write fServerCommand;
     [TDefault(2)]
-    [TNaming(TNaming.nCamelCase)]
     property CommandType: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCommandType write fCommandType;
   end;
 
@@ -1599,29 +1479,20 @@ type
     fServerFontColor: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Local: ProRock.Xmlite.Schema.Base.TBooleanST read fLocal write fLocal;
-    [TNaming(TNaming.nCamelCase)]
     property LocalConnection: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fLocalConnection write fLocalConnection;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property LocalRefresh: ProRock.Xmlite.Schema.Base.TBooleanST read fLocalRefresh write fLocalRefresh;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property SendLocale: ProRock.Xmlite.Schema.Base.TBooleanST read fSendLocale write fSendLocale;
-    [TNaming(TNaming.nCamelCase)]
     property RowDrillCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fRowDrillCount write fRowDrillCount;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ServerFill: ProRock.Xmlite.Schema.Base.TBooleanST read fServerFill write fServerFill;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ServerNumberFormat: ProRock.Xmlite.Schema.Base.TBooleanST read fServerNumberFormat write fServerNumberFormat;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ServerFont: ProRock.Xmlite.Schema.Base.TBooleanST read fServerFont write fServerFont;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ServerFontColor: ProRock.Xmlite.Schema.Base.TBooleanST read fServerFontColor write fServerFontColor;
   end;
 
@@ -1644,42 +1515,28 @@ type
     fTables: TCTTablesCT;
   published
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Xml: ProRock.Xmlite.Schema.Base.TBooleanST read fXml write fXml;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property SourceData: ProRock.Xmlite.Schema.Base.TBooleanST read fSourceData write fSourceData;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ParsePre: ProRock.Xmlite.Schema.Base.TBooleanST read fParsePre write fParsePre;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Consecutive: ProRock.Xmlite.Schema.Base.TBooleanST read fConsecutive write fConsecutive;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property FirstRow: ProRock.Xmlite.Schema.Base.TBooleanST read fFirstRow write fFirstRow;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Xl97: ProRock.Xmlite.Schema.Base.TBooleanST read fXl97 write fXl97;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property TextDates: ProRock.Xmlite.Schema.Base.TBooleanST read fTextDates write fTextDates;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Xl2000: ProRock.Xmlite.Schema.Base.TBooleanST read fXl2000 write fXl2000;
-    [TNaming(TNaming.nFlatCase)]
     property Url: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fUrl write fUrl;
-    [TNaming(TNaming.nFlatCase)]
     property Post: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fPost write fPost;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property HtmlTables: ProRock.Xmlite.Schema.Base.TBooleanST read fHtmlTables write fHtmlTables;
     [TDefault(Ord(sthfNone))]
-    [TNaming(TNaming.nCamelCase)]
     property HtmlFormat: TSTHtmlFmtST read fHtmlFormat write fHtmlFormat;
-    [TNaming(TNaming.nCamelCase)]
     property EditPage: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fEditPage write fEditPage;
-    [TNaming(TNaming.nFlatCase)]
     property Tables: TCTTablesCT read fTables;
   end;
 
@@ -1689,9 +1546,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fParameter: TCTParameterCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nFlatCase)]
     property Parameter: TCTParameterCTList read fParameter;
   end;
 
@@ -1709,28 +1564,18 @@ type
     fString: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
     fCell: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property SqlType: ProRock.Xmlite.Schema.Base.TIntST read fSqlType write fSqlType;
     [TDefault(Ord(stptPrompt))]
-    [TNaming(TNaming.nCamelCase)]
     property ParameterType: TSTParameterTypeST read fParameterType write fParameterType;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property RefreshOnChange: ProRock.Xmlite.Schema.Base.TBooleanST read fRefreshOnChange write fRefreshOnChange;
-    [TNaming(TNaming.nFlatCase)]
     property Prompt: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fPrompt write fPrompt;
-    [TNaming(TNaming.nFlatCase)]
     property Boolean: ProRock.Xmlite.Schema.Base.TBooleanST read fBoolean write fBoolean;
-    [TNaming(TNaming.nFlatCase)]
     property Double: ProRock.Xmlite.Schema.Base.TDoubleST read fDouble write fDouble;
-    [TNaming(TNaming.nFlatCase)]
     property Integer: ProRock.Xmlite.Schema.Base.TIntST read fInteger write fInteger;
-    [TNaming(TNaming.nFlatCase)]
     property &String: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fString write fString;
-    [TNaming(TNaming.nFlatCase)]
     property Cell: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fCell write fCell;
   end;
 
@@ -1743,13 +1588,9 @@ type
     fS: TCTXStringElementCTList;
     fX: TCTIndexCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TName('m')]
     property M: TCTTableMissingCTList read fM;
-    [TName('s')]
     property S: TCTXStringElementCTList read fS;
-    [TName('x')]
     property X: TCTIndexCTList read fX;
   end;
 
@@ -1778,51 +1619,34 @@ type
     fTextFields: TCTTextFieldsCT;
   published
     [TDefault(True)]
-    [TNaming(TNaming.nFlatCase)]
     property Prompt: ProRock.Xmlite.Schema.Base.TBooleanST read fPrompt write fPrompt;
     [TDefault(Ord(stftWin))]
-    [TNaming(TNaming.nCamelCase)]
     property FileType: TSTFileTypeST read fFileType write fFileType;
     [TDefault(1252)]
-    [TNaming(TNaming.nCamelCase)]
     property CodePage: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCodePage write fCodePage;
-    [TNaming(TNaming.nCamelCase)]
     property CharacterSet: ProRock.Xmlite.Schema.Base.TStringST read fCharacterSet write fCharacterSet;
     [TDefault(1)]
-    [TNaming(TNaming.nCamelCase)]
     property FirstRow: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fFirstRow write fFirstRow;
-    [TNaming(TNaming.nCamelCase)]
     property SourceFile: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fSourceFile write fSourceFile;
     [TDefault(True)]
-    [TNaming(TNaming.nFlatCase)]
     property Delimited: ProRock.Xmlite.Schema.Base.TBooleanST read fDelimited write fDelimited;
     [TDefault('.')]
-    [TNaming(TNaming.nFlatCase)]
     property Decimal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDecimal write fDecimal;
     [TDefault(',')]
-    [TNaming(TNaming.nFlatCase)]
     property Thousands: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fThousands write fThousands;
     [TDefault(True)]
-    [TNaming(TNaming.nFlatCase)]
     property Tab: ProRock.Xmlite.Schema.Base.TBooleanST read fTab write fTab;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Space: ProRock.Xmlite.Schema.Base.TBooleanST read fSpace write fSpace;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Comma: ProRock.Xmlite.Schema.Base.TBooleanST read fComma write fComma;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Semicolon: ProRock.Xmlite.Schema.Base.TBooleanST read fSemicolon write fSemicolon;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Consecutive: ProRock.Xmlite.Schema.Base.TBooleanST read fConsecutive write fConsecutive;
     [TDefault(Ord(stqDoubleQuote))]
-    [TNaming(TNaming.nFlatCase)]
     property Qualifier: TSTQualifierST read fQualifier write fQualifier;
-    [TNaming(TNaming.nFlatCase)]
     property Delimiter: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDelimiter write fDelimiter;
-    [TNaming(TNaming.nCamelCase)]
     property TextFields: TCTTextFieldsCT read fTextFields;
   end;
 
@@ -1833,9 +1657,7 @@ type
     fTextField: TCTTextFieldCTList;
   published
     [TDefault(1)]
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nCamelCase)]
     property TextField: TCTTextFieldCTList read fTextField;
   end;
 
@@ -1846,10 +1668,8 @@ type
     fPosition: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
     [TDefault(Ord(stectGeneral))]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TSTExternalConnectionTypeST read fType write fType;
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Position: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fPosition write fPosition;
   end;
 
@@ -1889,75 +1709,47 @@ type
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Invalid: ProRock.Xmlite.Schema.Base.TBooleanST read fInvalid write fInvalid;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property SaveData: ProRock.Xmlite.Schema.Base.TBooleanST read fSaveData write fSaveData;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property RefreshOnLoad: ProRock.Xmlite.Schema.Base.TBooleanST read fRefreshOnLoad write fRefreshOnLoad;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property OptimizeMemory: ProRock.Xmlite.Schema.Base.TBooleanST read fOptimizeMemory write fOptimizeMemory;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property EnableRefresh: ProRock.Xmlite.Schema.Base.TBooleanST read fEnableRefresh write fEnableRefresh;
-    [TNaming(TNaming.nCamelCase)]
     property RefreshedBy: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fRefreshedBy write fRefreshedBy;
-    [TNaming(TNaming.nCamelCase)]
     property RefreshedDate: ProRock.Xmlite.Schema.Base.TDoubleST read fRefreshedDate write fRefreshedDate;
-    [TNaming(TNaming.nCamelCase)]
     property RefreshedDateIso: ProRock.Xmlite.Schema.Base.TDateTimeST read fRefreshedDateIso write fRefreshedDateIso;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property BackgroundQuery: ProRock.Xmlite.Schema.Base.TBooleanST read fBackgroundQuery write fBackgroundQuery;
-    [TNaming(TNaming.nCamelCase)]
     property MissingItemsLimit: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fMissingItemsLimit write fMissingItemsLimit;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property CreatedVersion: ProRock.Xmlite.Schema.Base.TUnsignedByteST read fCreatedVersion write fCreatedVersion;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property RefreshedVersion: ProRock.Xmlite.Schema.Base.TUnsignedByteST read fRefreshedVersion write fRefreshedVersion;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property MinRefreshableVersion: ProRock.Xmlite.Schema.Base.TUnsignedByteST read fMinRefreshableVersion write fMinRefreshableVersion;
-    [TNaming(TNaming.nCamelCase)]
     property RecordCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fRecordCount write fRecordCount;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property UpgradeOnRefresh: ProRock.Xmlite.Schema.Base.TBooleanST read fUpgradeOnRefresh write fUpgradeOnRefresh;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property TupleCache: ProRock.Xmlite.Schema.Base.TBooleanST read fTupleCache write fTupleCache;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property SupportSubquery: ProRock.Xmlite.Schema.Base.TBooleanST read fSupportSubquery write fSupportSubquery;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property SupportAdvancedDrill: ProRock.Xmlite.Schema.Base.TBooleanST read fSupportAdvancedDrill write fSupportAdvancedDrill;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property CacheSource: TCTCacheSourceCT read fCacheSource;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property CacheFields: TCTCacheFieldsCT read fCacheFields;
-    [TNaming(TNaming.nCamelCase)]
     property CacheHierarchies: TCTCacheHierarchiesCT read fCacheHierarchies;
-    [TNaming(TNaming.nFlatCase)]
     property Kpis: TCTPCDKPIsCT read fKpis;
-    [TNaming(TNaming.nCamelCase)]
     property CalculatedItems: TCTCalculatedItemsCT read fCalculatedItems;
-    [TNaming(TNaming.nCamelCase)]
     property CalculatedMembers: TCTCalculatedMembersCT read fCalculatedMembers;
-    [TNaming(TNaming.nFlatCase)]
     property Dimensions: TCTDimensionsCT read fDimensions;
-    [TNaming(TNaming.nCamelCase)]
     property MeasureGroups: TCTMeasureGroupsCT read fMeasureGroups;
-    [TNaming(TNaming.nFlatCase)]
     property Maps: TCTMeasureDimensionMapsCT read fMaps;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -1967,9 +1759,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fCacheField: TCTCacheFieldCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nCamelCase)]
     property CacheField: TCTCacheFieldCTList read fCacheField;
   end;
 
@@ -1995,46 +1785,29 @@ type
     fExtLst: TCTExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
-    [TNaming(TNaming.nFlatCase)]
     property Caption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fCaption write fCaption;
-    [TNaming(TNaming.nCamelCase)]
     property PropertyName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fPropertyName write fPropertyName;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ServerField: ProRock.Xmlite.Schema.Base.TBooleanST read fServerField write fServerField;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property UniqueList: ProRock.Xmlite.Schema.Base.TBooleanST read fUniqueList write fUniqueList;
-    [TNaming(TNaming.nCamelCase)]
     property NumFmtId: TSTNumFmtIdST read fNumFmtId write fNumFmtId;
-    [TNaming(TNaming.nFlatCase)]
     property Formula: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fFormula write fFormula;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property SqlType: ProRock.Xmlite.Schema.Base.TIntST read fSqlType write fSqlType;
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Hierarchy: ProRock.Xmlite.Schema.Base.TIntST read fHierarchy write fHierarchy;
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Level: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fLevel write fLevel;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property DatabaseField: ProRock.Xmlite.Schema.Base.TBooleanST read fDatabaseField write fDatabaseField;
-    [TNaming(TNaming.nCamelCase)]
     property MappingCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fMappingCount write fMappingCount;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property MemberPropertyField: ProRock.Xmlite.Schema.Base.TBooleanST read fMemberPropertyField write fMemberPropertyField;
-    [TNaming(TNaming.nCamelCase)]
     property SharedItems: TCTSharedItemsCT read fSharedItems;
-    [TNaming(TNaming.nCamelCase)]
     property FieldGroup: TCTFieldGroupCT read fFieldGroup;
-    [TNaming(TNaming.nCamelCase)]
     property MpMap: TCtXCTList read fMpMap;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -2052,19 +1825,14 @@ type
     function GetExtLst: TCTExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TSTSourceTypeST read fType write fType;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property ConnectionId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fConnectionId write fConnectionId;
     [TChoice('WorksheetSource')]
-    [TNaming(TNaming.nCamelCase)]
     property WorksheetSource: TCTWorksheetSourceCT read GetWorksheetSource;
     [TChoice('WorksheetSource')]
-    [TNaming(TNaming.nFlatCase)]
     property Consolidation: TCTConsolidationCT read GetConsolidation;
     [TChoice('WorksheetSource')]
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read GetExtLst;
   end;
 
@@ -2076,11 +1844,8 @@ type
     fSheet: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
     fId: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Ref: TSTRefST read fRef write fRef;
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
-    [TNaming(TNaming.nFlatCase)]
     property Sheet: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fSheet write fSheet;
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
@@ -2094,12 +1859,9 @@ type
     fRangeSets: TCTRangeSetsCT;
   published
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property AutoPage: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoPage write fAutoPage;
-    [TNaming(TNaming.nFlatCase)]
     property Pages: TCTPagesCT read fPages;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property RangeSets: TCTRangeSetsCT read fRangeSets;
   end;
 
@@ -2109,9 +1871,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fPage: TCTPCDSCPageCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nFlatCase)]
     property Page: TCTPCDSCPageCTList read fPage;
   end;
 
@@ -2121,9 +1881,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fPageItem: TCTPageItemCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nCamelCase)]
     property PageItem: TCTPageItemCTList read fPageItem;
   end;
 
@@ -2133,7 +1891,6 @@ type
     fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
   end;
 
@@ -2143,9 +1900,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fRangeSet: TCTRangeSetCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nCamelCase)]
     property RangeSet: TCTRangeSetCTList read fRangeSet;
   end;
 
@@ -2161,19 +1916,12 @@ type
     fSheet: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
     fId: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA;
   published
-    [TName('i1')]
     property I1: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fI1 write fI1;
-    [TName('i2')]
     property I2: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fI2 write fI2;
-    [TName('i3')]
     property I3: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fI3 write fI3;
-    [TName('i4')]
     property I4: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fI4 write fI4;
-    [TNaming(TNaming.nFlatCase)]
     property Ref: TSTRefST read fRef write fRef;
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
-    [TNaming(TNaming.nFlatCase)]
     property Sheet: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fSheet write fSheet;
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
@@ -2205,53 +1953,33 @@ type
     fD: TCTDateTimeCTList;
   published
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ContainsSemiMixedTypes: ProRock.Xmlite.Schema.Base.TBooleanST read fContainsSemiMixedTypes write fContainsSemiMixedTypes;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ContainsNonDate: ProRock.Xmlite.Schema.Base.TBooleanST read fContainsNonDate write fContainsNonDate;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ContainsDate: ProRock.Xmlite.Schema.Base.TBooleanST read fContainsDate write fContainsDate;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ContainsString: ProRock.Xmlite.Schema.Base.TBooleanST read fContainsString write fContainsString;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ContainsBlank: ProRock.Xmlite.Schema.Base.TBooleanST read fContainsBlank write fContainsBlank;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ContainsMixedTypes: ProRock.Xmlite.Schema.Base.TBooleanST read fContainsMixedTypes write fContainsMixedTypes;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ContainsNumber: ProRock.Xmlite.Schema.Base.TBooleanST read fContainsNumber write fContainsNumber;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ContainsInteger: ProRock.Xmlite.Schema.Base.TBooleanST read fContainsInteger write fContainsInteger;
-    [TNaming(TNaming.nCamelCase)]
     property MinValue: ProRock.Xmlite.Schema.Base.TDoubleST read fMinValue write fMinValue;
-    [TNaming(TNaming.nCamelCase)]
     property MaxValue: ProRock.Xmlite.Schema.Base.TDoubleST read fMaxValue write fMaxValue;
-    [TNaming(TNaming.nCamelCase)]
     property MinDate: ProRock.Xmlite.Schema.Base.TDateTimeST read fMinDate write fMinDate;
-    [TNaming(TNaming.nCamelCase)]
     property MaxDate: ProRock.Xmlite.Schema.Base.TDateTimeST read fMaxDate write fMaxDate;
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property LongText: ProRock.Xmlite.Schema.Base.TBooleanST read fLongText write fLongText;
-    [TName('m')]
     property M: TCTMissingCTList read fM;
-    [TName('n')]
     property N: TCTNumberCTList read fN;
-    [TName('b')]
     property B: TCTBooleanCTList read fB;
-    [TName('e')]
     property E: TCTErrorCTList read fE;
-    [TName('s')]
     property S: TCTStringCTList read fS;
-    [TName('d')]
     property D: TCTDateTimeCTList read fD;
   end;
 
@@ -2272,35 +2000,22 @@ type
     fTpls: TCTTuplesCTList;
     fX: TCtXCTList;
   published
-    [TName('u')]
     property U: ProRock.Xmlite.Schema.Base.TBooleanST read fU write fU;
-    [TName('f')]
     property F: ProRock.Xmlite.Schema.Base.TBooleanST read fF write fF;
-    [TName('c')]
     property C: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fC_ write fC_;
-    [TNaming(TNaming.nFlatCase)]
     property Cp: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCp write fCp;
-    [TNaming(TNaming.nFlatCase)]
     property &In: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fIn write fIn;
-    [TNaming(TNaming.nFlatCase)]
     property Bc: TSTUnsignedIntHexST read fBc write fBc;
-    [TNaming(TNaming.nFlatCase)]
     property Fc: TSTUnsignedIntHexST read fFc write fFc;
     [TDefault(False)]
-    [TName('i')]
     property I: ProRock.Xmlite.Schema.Base.TBooleanST read fI write fI;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Un: ProRock.Xmlite.Schema.Base.TBooleanST read fUn write fUn;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property St: ProRock.Xmlite.Schema.Base.TBooleanST read fSt write fSt;
     [TDefault(False)]
-    [TName('b')]
     property B: ProRock.Xmlite.Schema.Base.TBooleanST read fB write fB;
-    [TNaming(TNaming.nFlatCase)]
     property Tpls: TCTTuplesCTList read fTpls;
-    [TName('x')]
     property X: TCtXCTList read fX;
   end;
 
@@ -2323,37 +2038,23 @@ type
     fX: TCtXCTList;
   published
     [TRequired]
-    [TName('v')]
     property V: ProRock.Xmlite.Schema.Base.TDoubleST read fV write fV;
-    [TName('u')]
     property U: ProRock.Xmlite.Schema.Base.TBooleanST read fU write fU;
-    [TName('f')]
     property F: ProRock.Xmlite.Schema.Base.TBooleanST read fF write fF;
-    [TName('c')]
     property C: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fC_ write fC_;
-    [TNaming(TNaming.nFlatCase)]
     property Cp: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCp write fCp;
-    [TNaming(TNaming.nFlatCase)]
     property &In: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fIn write fIn;
-    [TNaming(TNaming.nFlatCase)]
     property Bc: TSTUnsignedIntHexST read fBc write fBc;
-    [TNaming(TNaming.nFlatCase)]
     property Fc: TSTUnsignedIntHexST read fFc write fFc;
     [TDefault(False)]
-    [TName('i')]
     property I: ProRock.Xmlite.Schema.Base.TBooleanST read fI write fI;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Un: ProRock.Xmlite.Schema.Base.TBooleanST read fUn write fUn;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property St: ProRock.Xmlite.Schema.Base.TBooleanST read fSt write fSt;
     [TDefault(False)]
-    [TName('b')]
     property B: ProRock.Xmlite.Schema.Base.TBooleanST read fB write fB;
-    [TNaming(TNaming.nFlatCase)]
     property Tpls: TCTTuplesCTList read fTpls;
-    [TName('x')]
     property X: TCtXCTList read fX;
   end;
 
@@ -2368,17 +2069,11 @@ type
     fX: TCtXCTList;
   published
     [TRequired]
-    [TName('v')]
     property V: ProRock.Xmlite.Schema.Base.TBooleanST read fV write fV;
-    [TName('u')]
     property U: ProRock.Xmlite.Schema.Base.TBooleanST read fU write fU;
-    [TName('f')]
     property F: ProRock.Xmlite.Schema.Base.TBooleanST read fF write fF;
-    [TName('c')]
     property C: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fC write fC;
-    [TNaming(TNaming.nFlatCase)]
     property Cp: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCp write fCp;
-    [TName('x')]
     property X: TCtXCTList read fX;
   end;
 
@@ -2401,37 +2096,23 @@ type
     fX: TCtXCTList;
   published
     [TRequired]
-    [TName('v')]
     property V: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fV write fV;
-    [TName('u')]
     property U: ProRock.Xmlite.Schema.Base.TBooleanST read fU write fU;
-    [TName('f')]
     property F: ProRock.Xmlite.Schema.Base.TBooleanST read fF write fF;
-    [TName('c')]
     property C: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fC_ write fC_;
-    [TNaming(TNaming.nFlatCase)]
     property Cp: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCp write fCp;
-    [TNaming(TNaming.nFlatCase)]
     property &In: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fIn write fIn;
-    [TNaming(TNaming.nFlatCase)]
     property Bc: TSTUnsignedIntHexST read fBc write fBc;
-    [TNaming(TNaming.nFlatCase)]
     property Fc: TSTUnsignedIntHexST read fFc write fFc;
     [TDefault(False)]
-    [TName('i')]
     property I: ProRock.Xmlite.Schema.Base.TBooleanST read fI write fI;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Un: ProRock.Xmlite.Schema.Base.TBooleanST read fUn write fUn;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property St: ProRock.Xmlite.Schema.Base.TBooleanST read fSt write fSt;
     [TDefault(False)]
-    [TName('b')]
     property B: ProRock.Xmlite.Schema.Base.TBooleanST read fB write fB;
-    [TNaming(TNaming.nFlatCase)]
     property Tpls: TCTTuplesCT read fTpls;
-    [TName('x')]
     property X: TCtXCTList read fX;
   end;
 
@@ -2454,37 +2135,23 @@ type
     fX: TCtXCTList;
   published
     [TRequired]
-    [TName('v')]
     property V: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fV write fV;
-    [TName('u')]
     property U: ProRock.Xmlite.Schema.Base.TBooleanST read fU write fU;
-    [TName('f')]
     property F: ProRock.Xmlite.Schema.Base.TBooleanST read fF write fF;
-    [TName('c')]
     property C: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fC_ write fC_;
-    [TNaming(TNaming.nFlatCase)]
     property Cp: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCp write fCp;
-    [TNaming(TNaming.nFlatCase)]
     property &In: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fIn write fIn;
-    [TNaming(TNaming.nFlatCase)]
     property Bc: TSTUnsignedIntHexST read fBc write fBc;
-    [TNaming(TNaming.nFlatCase)]
     property Fc: TSTUnsignedIntHexST read fFc write fFc;
     [TDefault(False)]
-    [TName('i')]
     property I: ProRock.Xmlite.Schema.Base.TBooleanST read fI write fI;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Un: ProRock.Xmlite.Schema.Base.TBooleanST read fUn write fUn;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property St: ProRock.Xmlite.Schema.Base.TBooleanST read fSt write fSt;
     [TDefault(False)]
-    [TName('b')]
     property B: ProRock.Xmlite.Schema.Base.TBooleanST read fB write fB;
-    [TNaming(TNaming.nFlatCase)]
     property Tpls: TCTTuplesCTList read fTpls;
-    [TName('x')]
     property X: TCtXCTList read fX;
   end;
 
@@ -2499,17 +2166,11 @@ type
     fX: TCtXCTList;
   published
     [TRequired]
-    [TName('v')]
     property V: ProRock.Xmlite.Schema.Base.TDateTimeST read fV write fV;
-    [TName('u')]
     property U: ProRock.Xmlite.Schema.Base.TBooleanST read fU write fU;
-    [TName('f')]
     property F: ProRock.Xmlite.Schema.Base.TBooleanST read fF write fF;
-    [TName('c')]
     property C: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fC write fC;
-    [TNaming(TNaming.nFlatCase)]
     property Cp: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCp write fCp;
-    [TName('x')]
     property X: TCtXCTList read fX;
   end;
 
@@ -2522,15 +2183,10 @@ type
     fDiscretePr: TCTDiscretePrCT;
     fGroupItems: TCTGroupItemsCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Par: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fPar write fPar;
-    [TNaming(TNaming.nFlatCase)]
     property Base: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fBase write fBase;
-    [TNaming(TNaming.nCamelCase)]
     property RangePr: TCTRangePrCT read fRangePr;
-    [TNaming(TNaming.nCamelCase)]
     property DiscretePr: TCTDiscretePrCT read fDiscretePr;
-    [TNaming(TNaming.nCamelCase)]
     property GroupItems: TCTGroupItemsCT read fGroupItems;
   end;
 
@@ -2547,24 +2203,16 @@ type
     fGroupInterval: ProRock.Xmlite.Schema.Base.TDoubleST;
   published
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property AutoStart: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoStart write fAutoStart;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property AutoEnd: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoEnd write fAutoEnd;
     [TDefault(Ord(stgbRange))]
-    [TNaming(TNaming.nCamelCase)]
     property GroupBy: TSTGroupByST read fGroupBy write fGroupBy;
-    [TNaming(TNaming.nCamelCase)]
     property StartNum: ProRock.Xmlite.Schema.Base.TDoubleST read fStartNum write fStartNum;
-    [TNaming(TNaming.nCamelCase)]
     property EndNum: ProRock.Xmlite.Schema.Base.TDoubleST read fEndNum write fEndNum;
-    [TNaming(TNaming.nCamelCase)]
     property StartDate: ProRock.Xmlite.Schema.Base.TDateTimeST read fStartDate write fStartDate;
-    [TNaming(TNaming.nCamelCase)]
     property EndDate: ProRock.Xmlite.Schema.Base.TDateTimeST read fEndDate write fEndDate;
     [TDefault(1)]
-    [TNaming(TNaming.nCamelCase)]
     property GroupInterval: ProRock.Xmlite.Schema.Base.TDoubleST read fGroupInterval write fGroupInterval;
   end;
 
@@ -2574,9 +2222,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fX: TCTIndexCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TName('x')]
     property X: TCTIndexCTList read fX;
   end;
 
@@ -2592,19 +2238,12 @@ type
     fS: TCTStringCTList;
     fD: TCTDateTimeCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TName('m')]
     property M: TCTMissingCTList read fM;
-    [TName('n')]
     property N: TCTNumberCTList read fN;
-    [TName('b')]
     property B: TCTBooleanCTList read fB;
-    [TName('e')]
     property E: TCTErrorCTList read fE;
-    [TName('s')]
     property S: TCTStringCTList read fS;
-    [TName('d')]
     property D: TCTDateTimeCTList read fD;
   end;
 
@@ -2615,11 +2254,8 @@ type
     fR: TCTRecordCTList;
     fExtLst: TCTExtensionListCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TName('r')]
     property R: TCTRecordCTList read fR;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -2635,19 +2271,12 @@ type
     fD: TCTDateTimeCTList;
     fX: TCTIndexCTList;
   published
-    [TName('m')]
     property M: TCTMissingCTList read fM;
-    [TName('n')]
     property N: TCTNumberCTList read fN;
-    [TName('b')]
     property B: TCTBooleanCTList read fB;
-    [TName('e')]
     property E: TCTErrorCTList read fE;
-    [TName('s')]
     property S: TCTStringCTList read fS;
-    [TName('d')]
     property D: TCTDateTimeCTList read fD;
-    [TName('x')]
     property X: TCTIndexCTList read fX;
   end;
 
@@ -2657,9 +2286,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fKpi: TCtPcdkpiCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nFlatCase)]
     property Kpi: TCtPcdkpiCTList read fKpi;
   end;
 
@@ -2679,28 +2306,17 @@ type
     fTime: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property UniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fUniqueName write fUniqueName;
-    [TNaming(TNaming.nFlatCase)]
     property Caption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fCaption write fCaption;
-    [TNaming(TNaming.nCamelCase)]
     property DisplayFolder: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDisplayFolder write fDisplayFolder;
-    [TNaming(TNaming.nCamelCase)]
     property MeasureGroup: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fMeasureGroup write fMeasureGroup;
-    [TNaming(TNaming.nFlatCase)]
     property Parent: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fParent write fParent;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Value: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fValue write fValue;
-    [TNaming(TNaming.nFlatCase)]
     property Goal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fGoal write fGoal;
-    [TNaming(TNaming.nFlatCase)]
     property Status: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fStatus write fStatus;
-    [TNaming(TNaming.nFlatCase)]
     property Trend: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fTrend write fTrend;
-    [TNaming(TNaming.nFlatCase)]
     property Weight: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fWeight write fWeight;
-    [TNaming(TNaming.nFlatCase)]
     property Time: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fTime write fTime;
   end;
 
@@ -2710,9 +2326,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fCacheHierarchy: TCTCacheHierarchyCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nCamelCase)]
     property CacheHierarchy: TCTCacheHierarchyCTList read fCacheHierarchy;
   end;
 
@@ -2746,65 +2360,40 @@ type
     fExtLst: TCTExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property UniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fUniqueName write fUniqueName;
-    [TNaming(TNaming.nFlatCase)]
     property Caption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fCaption write fCaption;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Measure: ProRock.Xmlite.Schema.Base.TBooleanST read fMeasure write fMeasure;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property &Set: ProRock.Xmlite.Schema.Base.TBooleanST read fSet write fSet;
-    [TNaming(TNaming.nCamelCase)]
     property ParentSet: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fParentSet write fParentSet;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property IconSet: ProRock.Xmlite.Schema.Base.TIntST read fIconSet write fIconSet;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Attribute: ProRock.Xmlite.Schema.Base.TBooleanST read fAttribute write fAttribute;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Time: ProRock.Xmlite.Schema.Base.TBooleanST read fTime write fTime;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property KeyAttribute: ProRock.Xmlite.Schema.Base.TBooleanST read fKeyAttribute write fKeyAttribute;
-    [TNaming(TNaming.nCamelCase)]
     property DefaultMemberUniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDefaultMemberUniqueName write fDefaultMemberUniqueName;
-    [TNaming(TNaming.nCamelCase)]
     property AllUniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fAllUniqueName write fAllUniqueName;
-    [TNaming(TNaming.nCamelCase)]
     property AllCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fAllCaption write fAllCaption;
-    [TNaming(TNaming.nCamelCase)]
     property DimensionUniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDimensionUniqueName write fDimensionUniqueName;
-    [TNaming(TNaming.nCamelCase)]
     property DisplayFolder: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDisplayFolder write fDisplayFolder;
-    [TNaming(TNaming.nCamelCase)]
     property MeasureGroup: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fMeasureGroup write fMeasureGroup;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Measures: ProRock.Xmlite.Schema.Base.TBooleanST read fMeasures write fMeasures;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property OneField: ProRock.Xmlite.Schema.Base.TBooleanST read fOneField write fOneField;
-    [TNaming(TNaming.nCamelCase)]
     property MemberValueDatatype: ProRock.Xmlite.Schema.Base.TUnsignedShortST read fMemberValueDatatype write fMemberValueDatatype;
-    [TNaming(TNaming.nFlatCase)]
     property Unbalanced: ProRock.Xmlite.Schema.Base.TBooleanST read fUnbalanced write fUnbalanced;
-    [TNaming(TNaming.nCamelCase)]
     property UnbalancedGroup: ProRock.Xmlite.Schema.Base.TBooleanST read fUnbalancedGroup write fUnbalancedGroup;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Hidden: ProRock.Xmlite.Schema.Base.TBooleanST read fHidden write fHidden;
-    [TNaming(TNaming.nCamelCase)]
     property FieldsUsage: TCTFieldsUsageCT read fFieldsUsage;
-    [TNaming(TNaming.nCamelCase)]
     property GroupLevels: TCTGroupLevelsCT read fGroupLevels;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -2814,9 +2403,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fFieldUsage: TCTFieldUsageCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nCamelCase)]
     property FieldUsage: TCTFieldUsageCTList read fFieldUsage;
   end;
 
@@ -2826,7 +2413,6 @@ type
     fX: ProRock.Xmlite.Schema.Base.TIntST;
   published
     [TRequired]
-    [TName('x')]
     property X: ProRock.Xmlite.Schema.Base.TIntST read fX write fX;
   end;
 
@@ -2836,9 +2422,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fGroupLevel: TCTGroupLevelCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nCamelCase)]
     property GroupLevel: TCTGroupLevelCTList read fGroupLevel;
   end;
 
@@ -2853,20 +2437,14 @@ type
     fExtLst: TCTExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property UniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fUniqueName write fUniqueName;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Caption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fCaption write fCaption;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property User: ProRock.Xmlite.Schema.Base.TBooleanST read fUser write fUser;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property CustomRollUp: ProRock.Xmlite.Schema.Base.TBooleanST read fCustomRollUp write fCustomRollUp;
-    [TNaming(TNaming.nFlatCase)]
     property Groups: TCTGroupsCT read fGroups;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -2876,9 +2454,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fGroup: TCTLevelGroupCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nFlatCase)]
     property Group: TCTLevelGroupCTList read fGroup;
   end;
 
@@ -2893,20 +2469,14 @@ type
     fGroupMembers: TCTGroupMembersCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property UniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fUniqueName write fUniqueName;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Caption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fCaption write fCaption;
-    [TNaming(TNaming.nCamelCase)]
     property UniqueParent: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fUniqueParent write fUniqueParent;
-    [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Base.TIntST read fId write fId;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property GroupMembers: TCTGroupMembersCT read fGroupMembers;
   end;
 
@@ -2916,9 +2486,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fGroupMember: TCTGroupMemberCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nCamelCase)]
     property GroupMember: TCTGroupMemberCTList read fGroupMember;
   end;
 
@@ -2929,10 +2497,8 @@ type
     fGroup: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property UniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fUniqueName write fUniqueName;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Group: ProRock.Xmlite.Schema.Base.TBooleanST read fGroup write fGroup;
   end;
 
@@ -2945,15 +2511,10 @@ type
     fServerFormats: TCTServerFormatsCT;
     fExtLst: TCTExtensionListCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Entries: TCTPCDSDTCEntriesCT read fEntries;
-    [TNaming(TNaming.nFlatCase)]
     property Sets: TCTSetsCT read fSets;
-    [TNaming(TNaming.nCamelCase)]
     property QueryCache: TCTQueryCacheCT read fQueryCache;
-    [TNaming(TNaming.nCamelCase)]
     property ServerFormats: TCTServerFormatsCT read fServerFormats;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -2963,9 +2524,7 @@ type
     fCulture: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
     fFormat: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Culture: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fCulture write fCulture;
-    [TNaming(TNaming.nFlatCase)]
     property Format: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fFormat write fFormat;
   end;
 
@@ -2975,9 +2534,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fServerFormat: TCTServerFormatCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nCamelCase)]
     property ServerFormat: TCTServerFormatCTList read fServerFormat;
   end;
 
@@ -2991,15 +2548,10 @@ type
     fE: TCTErrorCTList;
     fS: TCTStringCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TName('m')]
     property M: TCTMissingCTList read fM;
-    [TName('n')]
     property N: TCTNumberCTList read fN;
-    [TName('e')]
     property E: TCTErrorCTList read fE;
-    [TName('s')]
     property S: TCTStringCTList read fS;
   end;
 
@@ -3009,9 +2561,7 @@ type
     fC: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fTpl: TCTTupleCTList;
   published
-    [TName('c')]
     property C: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fC write fC;
-    [TNaming(TNaming.nFlatCase)]
     property Tpl: TCTTupleCTList read fTpl;
   end;
 
@@ -3022,12 +2572,9 @@ type
     fHier: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fItem: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Fld: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fFld write fFld;
-    [TNaming(TNaming.nFlatCase)]
     property Hier: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fHier write fHier;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Item: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fItem write fItem;
   end;
 
@@ -3037,9 +2584,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fSet: TCTSetCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nFlatCase)]
     property &Set: TCTSetCTList read fSet;
   end;
 
@@ -3054,23 +2599,16 @@ type
     fTpls: TCTTuplesCTList;
     fSortByTuple: TCTTuplesCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property MaxRank: ProRock.Xmlite.Schema.Base.TIntST read fMaxRank write fMaxRank;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property SetDefinition: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fSetDefinition write fSetDefinition;
     [TDefault(Ord(ststaNone))]
-    [TNaming(TNaming.nCamelCase)]
     property SortType: TSTSortTypeST read fSortType write fSortType;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property QueryFailed: ProRock.Xmlite.Schema.Base.TBooleanST read fQueryFailed write fQueryFailed;
-    [TNaming(TNaming.nFlatCase)]
     property Tpls: TCTTuplesCTList read fTpls;
-    [TNaming(TNaming.nCamelCase)]
     property SortByTuple: TCTTuplesCT read fSortByTuple;
   end;
 
@@ -3080,9 +2618,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fQuery: TCTQueryCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nFlatCase)]
     property Query: TCTQueryCTList read fQuery;
   end;
 
@@ -3093,9 +2629,7 @@ type
     fTpls: TCTTuplesCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Mdx: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fMdx write fMdx;
-    [TNaming(TNaming.nFlatCase)]
     property Tpls: TCTTuplesCT read fTpls;
   end;
 
@@ -3105,9 +2639,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fCalculatedItem: TCTCalculatedItemCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nCamelCase)]
     property CalculatedItem: TCTCalculatedItemCTList read fCalculatedItem;
   end;
 
@@ -3119,14 +2651,10 @@ type
     fPivotArea: TCTPivotAreaCT;
     fExtLst: TCTExtensionListCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Field: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fField write fField;
-    [TNaming(TNaming.nFlatCase)]
     property Formula: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fFormula write fFormula;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property PivotArea: TCTPivotAreaCT read fPivotArea;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -3136,9 +2664,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fCalculatedMember: TCTCalculatedMemberCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nCamelCase)]
     property CalculatedMember: TCTCalculatedMemberCTList read fCalculatedMember;
   end;
 
@@ -3155,24 +2681,16 @@ type
     fExtLst: TCTExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Mdx: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fMdx write fMdx;
-    [TNaming(TNaming.nCamelCase)]
     property MemberName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fMemberName write fMemberName;
-    [TNaming(TNaming.nFlatCase)]
     property Hierarchy: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fHierarchy write fHierarchy;
-    [TNaming(TNaming.nFlatCase)]
     property Parent: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fParent write fParent;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property SolveOrder: ProRock.Xmlite.Schema.Base.TIntST read fSolveOrder write fSolveOrder;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property &Set: ProRock.Xmlite.Schema.Base.TBooleanST read fSet write fSet;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -3266,226 +2784,141 @@ type
     fExtLst: TCTExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property CacheId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCacheId write fCacheId;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property DataOnRows: ProRock.Xmlite.Schema.Base.TBooleanST read fDataOnRows write fDataOnRows;
-    [TNaming(TNaming.nCamelCase)]
     property DataPosition: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fDataPosition write fDataPosition;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property DataCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDataCaption write fDataCaption;
-    [TNaming(TNaming.nCamelCase)]
     property GrandTotalCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fGrandTotalCaption write fGrandTotalCaption;
-    [TNaming(TNaming.nCamelCase)]
     property ErrorCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fErrorCaption write fErrorCaption;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowError: ProRock.Xmlite.Schema.Base.TBooleanST read fShowError write fShowError;
-    [TNaming(TNaming.nCamelCase)]
     property MissingCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fMissingCaption write fMissingCaption;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowMissing: ProRock.Xmlite.Schema.Base.TBooleanST read fShowMissing write fShowMissing;
-    [TNaming(TNaming.nCamelCase)]
     property PageStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fPageStyle write fPageStyle;
-    [TNaming(TNaming.nCamelCase)]
     property PivotTableStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fPivotTableStyle write fPivotTableStyle;
-    [TNaming(TNaming.nCamelCase)]
     property VacatedStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fVacatedStyle write fVacatedStyle;
-    [TNaming(TNaming.nFlatCase)]
     property Tag: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fTag write fTag;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property UpdatedVersion: ProRock.Xmlite.Schema.Base.TUnsignedByteST read fUpdatedVersion write fUpdatedVersion;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property MinRefreshableVersion: ProRock.Xmlite.Schema.Base.TUnsignedByteST read fMinRefreshableVersion write fMinRefreshableVersion;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property AsteriskTotals: ProRock.Xmlite.Schema.Base.TBooleanST read fAsteriskTotals write fAsteriskTotals;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowItems: ProRock.Xmlite.Schema.Base.TBooleanST read fShowItems write fShowItems;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property EditData: ProRock.Xmlite.Schema.Base.TBooleanST read fEditData write fEditData;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property DisableFieldList: ProRock.Xmlite.Schema.Base.TBooleanST read fDisableFieldList write fDisableFieldList;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowCalcMbrs: ProRock.Xmlite.Schema.Base.TBooleanST read fShowCalcMbrs write fShowCalcMbrs;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property VisualTotals: ProRock.Xmlite.Schema.Base.TBooleanST read fVisualTotals write fVisualTotals;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowMultipleLabel: ProRock.Xmlite.Schema.Base.TBooleanST read fShowMultipleLabel write fShowMultipleLabel;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowDataDropDown: ProRock.Xmlite.Schema.Base.TBooleanST read fShowDataDropDown write fShowDataDropDown;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowDrill: ProRock.Xmlite.Schema.Base.TBooleanST read fShowDrill write fShowDrill;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property PrintDrill: ProRock.Xmlite.Schema.Base.TBooleanST read fPrintDrill write fPrintDrill;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowMemberPropertyTips: ProRock.Xmlite.Schema.Base.TBooleanST read fShowMemberPropertyTips write fShowMemberPropertyTips;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowDataTips: ProRock.Xmlite.Schema.Base.TBooleanST read fShowDataTips write fShowDataTips;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property EnableWizard: ProRock.Xmlite.Schema.Base.TBooleanST read fEnableWizard write fEnableWizard;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property EnableDrill: ProRock.Xmlite.Schema.Base.TBooleanST read fEnableDrill write fEnableDrill;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property EnableFieldProperties: ProRock.Xmlite.Schema.Base.TBooleanST read fEnableFieldProperties write fEnableFieldProperties;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property PreserveFormatting: ProRock.Xmlite.Schema.Base.TBooleanST read fPreserveFormatting write fPreserveFormatting;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property UseAutoFormatting: ProRock.Xmlite.Schema.Base.TBooleanST read fUseAutoFormatting write fUseAutoFormatting;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property PageWrap: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fPageWrap write fPageWrap;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property PageOverThenDown: ProRock.Xmlite.Schema.Base.TBooleanST read fPageOverThenDown write fPageOverThenDown;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property SubtotalHiddenItems: ProRock.Xmlite.Schema.Base.TBooleanST read fSubtotalHiddenItems write fSubtotalHiddenItems;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property RowGrandTotals: ProRock.Xmlite.Schema.Base.TBooleanST read fRowGrandTotals write fRowGrandTotals;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ColGrandTotals: ProRock.Xmlite.Schema.Base.TBooleanST read fColGrandTotals write fColGrandTotals;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property FieldPrintTitles: ProRock.Xmlite.Schema.Base.TBooleanST read fFieldPrintTitles write fFieldPrintTitles;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ItemPrintTitles: ProRock.Xmlite.Schema.Base.TBooleanST read fItemPrintTitles write fItemPrintTitles;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property MergeItem: ProRock.Xmlite.Schema.Base.TBooleanST read fMergeItem write fMergeItem;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowDropZones: ProRock.Xmlite.Schema.Base.TBooleanST read fShowDropZones write fShowDropZones;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property CreatedVersion: ProRock.Xmlite.Schema.Base.TUnsignedByteST read fCreatedVersion write fCreatedVersion;
     [TDefault(1)]
-    [TNaming(TNaming.nFlatCase)]
     property Indent: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fIndent write fIndent;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowEmptyRow: ProRock.Xmlite.Schema.Base.TBooleanST read fShowEmptyRow write fShowEmptyRow;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowEmptyCol: ProRock.Xmlite.Schema.Base.TBooleanST read fShowEmptyCol write fShowEmptyCol;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowHeaders: ProRock.Xmlite.Schema.Base.TBooleanST read fShowHeaders write fShowHeaders;
     [TDefault(True)]
-    [TNaming(TNaming.nFlatCase)]
     property Compact: ProRock.Xmlite.Schema.Base.TBooleanST read fCompact write fCompact;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Outline: ProRock.Xmlite.Schema.Base.TBooleanST read fOutline write fOutline;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property OutlineData: ProRock.Xmlite.Schema.Base.TBooleanST read fOutlineData write fOutlineData;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property CompactData: ProRock.Xmlite.Schema.Base.TBooleanST read fCompactData write fCompactData;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Published: ProRock.Xmlite.Schema.Base.TBooleanST read fPublished write fPublished;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property GridDropZones: ProRock.Xmlite.Schema.Base.TBooleanST read fGridDropZones write fGridDropZones;
     [TDefault(True)]
-    [TNaming(TNaming.nFlatCase)]
     property Immersive: ProRock.Xmlite.Schema.Base.TBooleanST read fImmersive write fImmersive;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property MultipleFieldFilters: ProRock.Xmlite.Schema.Base.TBooleanST read fMultipleFieldFilters write fMultipleFieldFilters;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property ChartFormat: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fChartFormat write fChartFormat;
-    [TNaming(TNaming.nCamelCase)]
     property RowHeaderCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fRowHeaderCaption write fRowHeaderCaption;
-    [TNaming(TNaming.nCamelCase)]
     property ColHeaderCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fColHeaderCaption write fColHeaderCaption;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property FieldListSortAscending: ProRock.Xmlite.Schema.Base.TBooleanST read fFieldListSortAscending write fFieldListSortAscending;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property MdxSubqueries: ProRock.Xmlite.Schema.Base.TBooleanST read fMdxSubqueries write fMdxSubqueries;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property CustomListSort: ProRock.Xmlite.Schema.Base.TBooleanST read fCustomListSort write fCustomListSort;
-    [TNaming(TNaming.nCamelCase)]
     property AutoFormatId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fAutoFormatId write fAutoFormatId;
-    [TNaming(TNaming.nCamelCase)]
     property ApplyNumberFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyNumberFormats write fApplyNumberFormats;
-    [TNaming(TNaming.nCamelCase)]
     property ApplyBorderFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyBorderFormats write fApplyBorderFormats;
-    [TNaming(TNaming.nCamelCase)]
     property ApplyFontFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyFontFormats write fApplyFontFormats;
-    [TNaming(TNaming.nCamelCase)]
     property ApplyPatternFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyPatternFormats write fApplyPatternFormats;
-    [TNaming(TNaming.nCamelCase)]
     property ApplyAlignmentFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyAlignmentFormats write fApplyAlignmentFormats;
-    [TNaming(TNaming.nCamelCase)]
     property ApplyWidthHeightFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyWidthHeightFormats write fApplyWidthHeightFormats;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Location: TCTLocationCT read fLocation;
-    [TNaming(TNaming.nCamelCase)]
     property PivotFields: TCTPivotFieldsCT read fPivotFields;
-    [TNaming(TNaming.nCamelCase)]
     property RowFields: TCTRowFieldsCT read fRowFields;
-    [TNaming(TNaming.nCamelCase)]
     property RowItems: TCTRowItemsCT read fRowItems;
-    [TNaming(TNaming.nCamelCase)]
     property ColFields: TCTColFieldsCT read fColFields;
-    [TNaming(TNaming.nCamelCase)]
     property ColItems: TCTColItemsCT read fColItems;
-    [TNaming(TNaming.nCamelCase)]
     property PageFields: TCTPageFieldsCT read fPageFields;
-    [TNaming(TNaming.nCamelCase)]
     property DataFields: TCTDataFieldsCT read fDataFields;
-    [TNaming(TNaming.nFlatCase)]
     property Formats: TCTFormatsCT read fFormats;
-    [TNaming(TNaming.nCamelCase)]
     property ConditionalFormats: TCTConditionalFormatsCT read fConditionalFormats;
-    [TNaming(TNaming.nCamelCase)]
     property ChartFormats: TCTChartFormatsCT read fChartFormats;
-    [TNaming(TNaming.nCamelCase)]
     property PivotHierarchies: TCTPivotHierarchiesCT read fPivotHierarchies;
-    [TNaming(TNaming.nCamelCase)]
     property PivotTableStyleInfo: TCTPivotTableStyleCT read fPivotTableStyleInfo;
-    [TNaming(TNaming.nFlatCase)]
     property Filters: TCTPivotFiltersCT read fFilters;
-    [TNaming(TNaming.nCamelCase)]
     property RowHierarchiesUsage: TCTRowHierarchiesUsageCT read fRowHierarchiesUsage;
-    [TNaming(TNaming.nCamelCase)]
     property ColHierarchiesUsage: TCTColHierarchiesUsageCT read fColHierarchiesUsage;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -3500,22 +2933,16 @@ type
     fColPageCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Ref: TSTRefST read fRef write fRef;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property FirstHeaderRow: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fFirstHeaderRow write fFirstHeaderRow;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property FirstDataRow: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fFirstDataRow write fFirstDataRow;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property FirstDataCol: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fFirstDataCol write fFirstDataCol;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property RowPageCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fRowPageCount write fRowPageCount;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property ColPageCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fColPageCount write fColPageCount;
   end;
 
@@ -3525,9 +2952,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fPivotField: TCTPivotFieldCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nCamelCase)]
     property PivotField: TCTPivotFieldCTList read fPivotField;
   end;
 
@@ -3586,148 +3011,97 @@ type
     fAutoSortScope: TCTAutoSortScopeCT;
     fExtLst: TCTExtensionListCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
-    [TNaming(TNaming.nFlatCase)]
     property Axis: TSTAxisST read fAxis write fAxis;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property DataField: ProRock.Xmlite.Schema.Base.TBooleanST read fDataField write fDataField;
-    [TNaming(TNaming.nCamelCase)]
     property SubtotalCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fSubtotalCaption write fSubtotalCaption;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowDropDowns: ProRock.Xmlite.Schema.Base.TBooleanST read fShowDropDowns write fShowDropDowns;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property HiddenLevel: ProRock.Xmlite.Schema.Base.TBooleanST read fHiddenLevel write fHiddenLevel;
-    [TNaming(TNaming.nCamelCase)]
     property UniqueMemberProperty: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fUniqueMemberProperty write fUniqueMemberProperty;
     [TDefault(True)]
-    [TNaming(TNaming.nFlatCase)]
     property Compact: ProRock.Xmlite.Schema.Base.TBooleanST read fCompact write fCompact;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property AllDrilled: ProRock.Xmlite.Schema.Base.TBooleanST read fAllDrilled write fAllDrilled;
-    [TNaming(TNaming.nCamelCase)]
     property NumFmtId: TSTNumFmtIdST read fNumFmtId write fNumFmtId;
     [TDefault(True)]
-    [TNaming(TNaming.nFlatCase)]
     property Outline: ProRock.Xmlite.Schema.Base.TBooleanST read fOutline write fOutline;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property SubtotalTop: ProRock.Xmlite.Schema.Base.TBooleanST read fSubtotalTop write fSubtotalTop;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property DragToRow: ProRock.Xmlite.Schema.Base.TBooleanST read fDragToRow write fDragToRow;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property DragToCol: ProRock.Xmlite.Schema.Base.TBooleanST read fDragToCol write fDragToCol;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property MultipleItemSelectionAllowed: ProRock.Xmlite.Schema.Base.TBooleanST read fMultipleItemSelectionAllowed write fMultipleItemSelectionAllowed;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property DragToPage: ProRock.Xmlite.Schema.Base.TBooleanST read fDragToPage write fDragToPage;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property DragToData: ProRock.Xmlite.Schema.Base.TBooleanST read fDragToData write fDragToData;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property DragOff: ProRock.Xmlite.Schema.Base.TBooleanST read fDragOff write fDragOff;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowAll: ProRock.Xmlite.Schema.Base.TBooleanST read fShowAll write fShowAll;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property InsertBlankRow: ProRock.Xmlite.Schema.Base.TBooleanST read fInsertBlankRow write fInsertBlankRow;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ServerField: ProRock.Xmlite.Schema.Base.TBooleanST read fServerField write fServerField;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property InsertPageBreak: ProRock.Xmlite.Schema.Base.TBooleanST read fInsertPageBreak write fInsertPageBreak;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property AutoShow: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoShow write fAutoShow;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property TopAutoShow: ProRock.Xmlite.Schema.Base.TBooleanST read fTopAutoShow write fTopAutoShow;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property HideNewItems: ProRock.Xmlite.Schema.Base.TBooleanST read fHideNewItems write fHideNewItems;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property MeasureFilter: ProRock.Xmlite.Schema.Base.TBooleanST read fMeasureFilter write fMeasureFilter;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property IncludeNewItemsInFilter: ProRock.Xmlite.Schema.Base.TBooleanST read fIncludeNewItemsInFilter write fIncludeNewItemsInFilter;
     [TDefault(10)]
-    [TNaming(TNaming.nCamelCase)]
     property ItemPageCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fItemPageCount write fItemPageCount;
     [TDefault(Ord(stfstManual))]
-    [TNaming(TNaming.nCamelCase)]
     property SortType: TSTFieldSortTypeST read fSortType write fSortType;
-    [TNaming(TNaming.nCamelCase)]
     property DataSourceSort: ProRock.Xmlite.Schema.Base.TBooleanST read fDataSourceSort write fDataSourceSort;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NonAutoSortDefault: ProRock.Xmlite.Schema.Base.TBooleanST read fNonAutoSortDefault write fNonAutoSortDefault;
-    [TNaming(TNaming.nCamelCase)]
     property RankBy: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fRankBy write fRankBy;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultSubtotal: ProRock.Xmlite.Schema.Base.TBooleanST read fDefaultSubtotal write fDefaultSubtotal;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property SumSubtotal: ProRock.Xmlite.Schema.Base.TBooleanST read fSumSubtotal write fSumSubtotal;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property CountASubtotal: ProRock.Xmlite.Schema.Base.TBooleanST read fCountASubtotal write fCountASubtotal;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property AvgSubtotal: ProRock.Xmlite.Schema.Base.TBooleanST read fAvgSubtotal write fAvgSubtotal;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property MaxSubtotal: ProRock.Xmlite.Schema.Base.TBooleanST read fMaxSubtotal write fMaxSubtotal;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property MinSubtotal: ProRock.Xmlite.Schema.Base.TBooleanST read fMinSubtotal write fMinSubtotal;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ProductSubtotal: ProRock.Xmlite.Schema.Base.TBooleanST read fProductSubtotal write fProductSubtotal;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property CountSubtotal: ProRock.Xmlite.Schema.Base.TBooleanST read fCountSubtotal write fCountSubtotal;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property StdDevSubtotal: ProRock.Xmlite.Schema.Base.TBooleanST read fStdDevSubtotal write fStdDevSubtotal;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property StdDevPSubtotal: ProRock.Xmlite.Schema.Base.TBooleanST read fStdDevPSubtotal write fStdDevPSubtotal;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property VarSubtotal: ProRock.Xmlite.Schema.Base.TBooleanST read fVarSubtotal write fVarSubtotal;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property VarPSubtotal: ProRock.Xmlite.Schema.Base.TBooleanST read fVarPSubtotal write fVarPSubtotal;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowPropCell: ProRock.Xmlite.Schema.Base.TBooleanST read fShowPropCell write fShowPropCell;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowPropTip: ProRock.Xmlite.Schema.Base.TBooleanST read fShowPropTip write fShowPropTip;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowPropAsCaption: ProRock.Xmlite.Schema.Base.TBooleanST read fShowPropAsCaption write fShowPropAsCaption;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultAttributeDrillState: ProRock.Xmlite.Schema.Base.TBooleanST read fDefaultAttributeDrillState write fDefaultAttributeDrillState;
-    [TNaming(TNaming.nFlatCase)]
     property Items: TCTItemsCT read fItems;
-    [TNaming(TNaming.nCamelCase)]
     property AutoSortScope: TCTAutoSortScopeCT read fAutoSortScope;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -3737,7 +3111,6 @@ type
     fPivotArea: TCTPivotAreaCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property PivotArea: TCTPivotAreaCT read fPivotArea;
   end;
 
@@ -3747,9 +3120,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fItem: TCTItemCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nFlatCase)]
     property Item: TCTItemCTList read fItem;
   end;
 
@@ -3768,36 +3139,25 @@ type
     fD: ProRock.Xmlite.Schema.Base.TBooleanST;
     fE: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
-    [TName('n')]
     property N: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fN write fN;
     [TDefault(Ord(stitData))]
-    [TName('t')]
     property T: TSTItemTypeST read fT write fT;
     [TDefault(False)]
-    [TName('h')]
     property H: ProRock.Xmlite.Schema.Base.TBooleanST read fH write fH;
     [TDefault(False)]
-    [TName('s')]
     property S: ProRock.Xmlite.Schema.Base.TBooleanST read fS write fS;
     [TDefault(True)]
-    [TNaming(TNaming.nFlatCase)]
     property Sd: ProRock.Xmlite.Schema.Base.TBooleanST read fSd write fSd;
     [TDefault(False)]
-    [TName('f')]
     property F: ProRock.Xmlite.Schema.Base.TBooleanST read fF write fF;
     [TDefault(False)]
-    [TName('m')]
     property M: ProRock.Xmlite.Schema.Base.TBooleanST read fM write fM;
     [TDefault(False)]
-    [TName('c')]
     property C: ProRock.Xmlite.Schema.Base.TBooleanST read fC write fC;
-    [TName('x')]
     property X: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fX write fX;
     [TDefault(False)]
-    [TName('d')]
     property D: ProRock.Xmlite.Schema.Base.TBooleanST read fD write fD;
     [TDefault(True)]
-    [TName('e')]
     property E: ProRock.Xmlite.Schema.Base.TBooleanST read fE write fE;
   end;
 
@@ -3807,9 +3167,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fPageField: TCTPageFieldCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nCamelCase)]
     property PageField: TCTPageFieldCTList read fPageField;
   end;
 
@@ -3824,17 +3182,11 @@ type
     fExtLst: TCTExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Fld: ProRock.Xmlite.Schema.Base.TIntST read fFld write fFld;
-    [TNaming(TNaming.nFlatCase)]
     property Item: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fItem write fItem;
-    [TNaming(TNaming.nFlatCase)]
     property Hier: ProRock.Xmlite.Schema.Base.TIntST read fHier write fHier;
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
-    [TNaming(TNaming.nFlatCase)]
     property Cap: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fCap write fCap;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -3844,9 +3196,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fDataField: TCTDataFieldCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nCamelCase)]
     property DataField: TCTDataFieldCTList read fDataField;
   end;
 
@@ -3862,26 +3212,18 @@ type
     fNumFmtId: TSTNumFmtIdST;
     fExtLst: TCTExtensionListCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Fld: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fFld write fFld;
     [TDefault(Ord(stdcfSum))]
-    [TNaming(TNaming.nFlatCase)]
     property Subtotal: TSTDataConsolidateFunctionST read fSubtotal write fSubtotal;
     [TDefault(Ord(stsdaNormal))]
-    [TNaming(TNaming.nCamelCase)]
     property ShowDataAs: TSTShowDataAsST read fShowDataAs write fShowDataAs;
     [TDefault(-1)]
-    [TNaming(TNaming.nCamelCase)]
     property BaseField: ProRock.Xmlite.Schema.Base.TIntST read fBaseField write fBaseField;
     [TDefault(1048832)]
-    [TNaming(TNaming.nCamelCase)]
     property BaseItem: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fBaseItem write fBaseItem;
-    [TNaming(TNaming.nCamelCase)]
     property NumFmtId: TSTNumFmtIdST read fNumFmtId write fNumFmtId;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -3891,9 +3233,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fI: TCtICTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TName('i')]
     property I: TCtICTList read fI;
   end;
 
@@ -3903,9 +3243,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fI: TCtICTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TName('i')]
     property I: TCtICTList read fI;
   end;
 
@@ -3918,15 +3256,11 @@ type
     fX: TCtXCTList;
   published
     [TDefault(Ord(stitData))]
-    [TName('t')]
     property T: TSTItemTypeST read fT write fT;
     [TDefault(0)]
-    [TName('r')]
     property R: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fR write fR;
     [TDefault(0)]
-    [TName('i')]
     property I: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fI write fI;
-    [TName('x')]
     property X: TCtXCTList read fX;
   end;
 
@@ -3936,7 +3270,6 @@ type
     fV: ProRock.Xmlite.Schema.Base.TIntST;
   published
     [TDefault(0)]
-    [TName('v')]
     property V: ProRock.Xmlite.Schema.Base.TIntST read fV write fV;
   end;
 
@@ -3947,9 +3280,7 @@ type
     fField: TCTFieldCTList;
   published
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nFlatCase)]
     property Field: TCTFieldCTList read fField;
   end;
 
@@ -3960,9 +3291,7 @@ type
     fField: TCTFieldCTList;
   published
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nFlatCase)]
     property Field: TCTFieldCTList read fField;
   end;
 
@@ -3972,7 +3301,6 @@ type
     fX: ProRock.Xmlite.Schema.Base.TIntST;
   published
     [TRequired]
-    [TName('x')]
     property X: ProRock.Xmlite.Schema.Base.TIntST read fX write fX;
   end;
 
@@ -3983,9 +3311,7 @@ type
     fFormat: TCTFormatCTList;
   published
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nFlatCase)]
     property Format: TCTFormatCTList read fFormat;
   end;
 
@@ -3998,14 +3324,10 @@ type
     fExtLst: TCTExtensionListCT;
   published
     [TDefault(Ord(stfaFormatting))]
-    [TNaming(TNaming.nFlatCase)]
     property Action: TSTFormatActionST read fAction write fAction;
-    [TNaming(TNaming.nCamelCase)]
     property DxfId: TSTDxfIdST read fDxfId write fDxfId;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property PivotArea: TCTPivotAreaCT read fPivotArea;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -4016,9 +3338,7 @@ type
     fConditionalFormat: TCTConditionalFormatCTList;
   published
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nCamelCase)]
     property ConditionalFormat: TCTConditionalFormatCTList read fConditionalFormat;
   end;
 
@@ -4032,18 +3352,13 @@ type
     fExtLst: TCTExtensionListCT;
   published
     [TDefault(Ord(stsSelection))]
-    [TNaming(TNaming.nFlatCase)]
     property Scope: TSTScopeST read fScope write fScope;
     [TDefault(Ord(sttNone))]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TSTTypeST read fType write fType;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Priority: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fPriority write fPriority;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property PivotAreas: TCTPivotAreasCT read fPivotAreas;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -4053,9 +3368,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fPivotArea: TCTPivotAreaCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nCamelCase)]
     property PivotArea: TCTPivotAreaCTList read fPivotArea;
   end;
 
@@ -4066,9 +3379,7 @@ type
     fChartFormat: TCTChartFormatCTList;
   published
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nCamelCase)]
     property ChartFormat: TCTChartFormatCTList read fChartFormat;
   end;
 
@@ -4081,16 +3392,12 @@ type
     fPivotArea: TCTPivotAreaCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Chart: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fChart write fChart;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Format: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fFormat write fFormat;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Series: ProRock.Xmlite.Schema.Base.TBooleanST read fSeries write fSeries;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property PivotArea: TCTPivotAreaCT read fPivotArea;
   end;
 
@@ -4100,9 +3407,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fPivotHierarchy: TCTPivotHierarchyCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nCamelCase)]
     property PivotHierarchy: TCTPivotHierarchyCTList read fPivotHierarchy;
   end;
 
@@ -4125,42 +3430,28 @@ type
     fExtLst: TCTExtensionListCT;
   published
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Outline: ProRock.Xmlite.Schema.Base.TBooleanST read fOutline write fOutline;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property MultipleItemSelectionAllowed: ProRock.Xmlite.Schema.Base.TBooleanST read fMultipleItemSelectionAllowed write fMultipleItemSelectionAllowed;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property SubtotalTop: ProRock.Xmlite.Schema.Base.TBooleanST read fSubtotalTop write fSubtotalTop;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowInFieldList: ProRock.Xmlite.Schema.Base.TBooleanST read fShowInFieldList write fShowInFieldList;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property DragToRow: ProRock.Xmlite.Schema.Base.TBooleanST read fDragToRow write fDragToRow;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property DragToCol: ProRock.Xmlite.Schema.Base.TBooleanST read fDragToCol write fDragToCol;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property DragToPage: ProRock.Xmlite.Schema.Base.TBooleanST read fDragToPage write fDragToPage;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property DragToData: ProRock.Xmlite.Schema.Base.TBooleanST read fDragToData write fDragToData;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property DragOff: ProRock.Xmlite.Schema.Base.TBooleanST read fDragOff write fDragOff;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property IncludeNewItemsInFilter: ProRock.Xmlite.Schema.Base.TBooleanST read fIncludeNewItemsInFilter write fIncludeNewItemsInFilter;
-    [TNaming(TNaming.nFlatCase)]
     property Caption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fCaption write fCaption;
-    [TNaming(TNaming.nFlatCase)]
     property Mps: TCTMemberPropertiesCT read fMps;
-    [TNaming(TNaming.nFlatCase)]
     property Members: TCTMembersCTList read fMembers;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -4170,9 +3461,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fRowHierarchyUsage: TCTHierarchyUsageCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nCamelCase)]
     property RowHierarchyUsage: TCTHierarchyUsageCTList read fRowHierarchyUsage;
   end;
 
@@ -4182,9 +3471,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fColHierarchyUsage: TCTHierarchyUsageCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nCamelCase)]
     property ColHierarchyUsage: TCTHierarchyUsageCTList read fColHierarchyUsage;
   end;
 
@@ -4194,7 +3481,6 @@ type
     fHierarchyUsage: ProRock.Xmlite.Schema.Base.TIntST;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property HierarchyUsage: ProRock.Xmlite.Schema.Base.TIntST read fHierarchyUsage write fHierarchyUsage;
   end;
 
@@ -4204,9 +3490,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fMp: TCTMemberPropertyCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nFlatCase)]
     property Mp: TCTMemberPropertyCTList read fMp;
   end;
 
@@ -4223,27 +3507,18 @@ type
     fLevel: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fField: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowCell: ProRock.Xmlite.Schema.Base.TBooleanST read fShowCell write fShowCell;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowTip: ProRock.Xmlite.Schema.Base.TBooleanST read fShowTip write fShowTip;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowAsCaption: ProRock.Xmlite.Schema.Base.TBooleanST read fShowAsCaption write fShowAsCaption;
-    [TNaming(TNaming.nCamelCase)]
     property NameLen: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fNameLen write fNameLen;
-    [TNaming(TNaming.nCamelCase)]
     property PPos: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fPPos write fPPos;
-    [TNaming(TNaming.nCamelCase)]
     property PLen: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fPLen write fPLen;
-    [TNaming(TNaming.nFlatCase)]
     property Level: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fLevel write fLevel;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Field: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fField write fField;
   end;
 
@@ -4254,11 +3529,8 @@ type
     fLevel: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fMember: TCTMemberCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nFlatCase)]
     property Level: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fLevel write fLevel;
-    [TNaming(TNaming.nFlatCase)]
     property Member: TCTMemberCTList read fMember;
   end;
 
@@ -4268,7 +3540,6 @@ type
     fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
   end;
 
@@ -4278,9 +3549,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fDimension: TCTPivotDimensionCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nFlatCase)]
     property Dimension: TCTPivotDimensionCTList read fDimension;
   end;
 
@@ -4293,16 +3562,12 @@ type
     fCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
   published
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Measure: ProRock.Xmlite.Schema.Base.TBooleanST read fMeasure write fMeasure;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property UniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fUniqueName write fUniqueName;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Caption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fCaption write fCaption;
   end;
 
@@ -4312,9 +3577,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fMeasureGroup: TCTMeasureGroupCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nCamelCase)]
     property MeasureGroup: TCTMeasureGroupCTList read fMeasureGroup;
   end;
 
@@ -4324,9 +3587,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fMap: TCTMeasureDimensionMapCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nFlatCase)]
     property Map: TCTMeasureDimensionMapCTList read fMap;
   end;
 
@@ -4337,10 +3598,8 @@ type
     fCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Caption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fCaption write fCaption;
   end;
 
@@ -4350,9 +3609,7 @@ type
     fMeasureGroup: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fDimension: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
-    [TNaming(TNaming.nCamelCase)]
     property MeasureGroup: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fMeasureGroup write fMeasureGroup;
-    [TNaming(TNaming.nFlatCase)]
     property Dimension: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fDimension write fDimension;
   end;
 
@@ -4366,17 +3623,11 @@ type
     fShowColStripes: ProRock.Xmlite.Schema.Base.TBooleanST;
     fShowLastColumn: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Base.TStringST read fName write fName;
-    [TNaming(TNaming.nCamelCase)]
     property ShowRowHeaders: ProRock.Xmlite.Schema.Base.TBooleanST read fShowRowHeaders write fShowRowHeaders;
-    [TNaming(TNaming.nCamelCase)]
     property ShowColHeaders: ProRock.Xmlite.Schema.Base.TBooleanST read fShowColHeaders write fShowColHeaders;
-    [TNaming(TNaming.nCamelCase)]
     property ShowRowStripes: ProRock.Xmlite.Schema.Base.TBooleanST read fShowRowStripes write fShowRowStripes;
-    [TNaming(TNaming.nCamelCase)]
     property ShowColStripes: ProRock.Xmlite.Schema.Base.TBooleanST read fShowColStripes write fShowColStripes;
-    [TNaming(TNaming.nCamelCase)]
     property ShowLastColumn: ProRock.Xmlite.Schema.Base.TBooleanST read fShowLastColumn write fShowLastColumn;
   end;
 
@@ -4387,9 +3638,7 @@ type
     fFilter: TCTPivotFilterCTList;
   published
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nFlatCase)]
     property Filter: TCTPivotFilterCTList read fFilter;
   end;
 
@@ -4411,35 +3660,22 @@ type
     fExtLst: TCTExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Fld: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fFld write fFld;
-    [TNaming(TNaming.nCamelCase)]
     property MpFld: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fMpFld write fMpFld;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TSTPivotFilterTypeST read fType write fType;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property EvalOrder: ProRock.Xmlite.Schema.Base.TIntST read fEvalOrder write fEvalOrder;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fId write fId;
-    [TNaming(TNaming.nCamelCase)]
     property IMeasureHier: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fIMeasureHier write fIMeasureHier;
-    [TNaming(TNaming.nCamelCase)]
     property IMeasureFld: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fIMeasureFld write fIMeasureFld;
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
-    [TNaming(TNaming.nFlatCase)]
     property Description: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDescription write fDescription;
-    [TNaming(TNaming.nCamelCase)]
     property StringValue1: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fStringValue1 write fStringValue1;
-    [TNaming(TNaming.nCamelCase)]
     property StringValue2: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fStringValue2 write fStringValue2;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property AutoFilter: TCTAutoFilterCT read fAutoFilter;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -4461,41 +3697,27 @@ type
     fReferences: TCTPivotAreaReferencesCT;
     fExtLst: TCTExtensionListCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Field: ProRock.Xmlite.Schema.Base.TIntST read fField write fField;
     [TDefault(Ord(stpatNormal))]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TSTPivotAreaTypeST read fType write fType;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property DataOnly: ProRock.Xmlite.Schema.Base.TBooleanST read fDataOnly write fDataOnly;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property LabelOnly: ProRock.Xmlite.Schema.Base.TBooleanST read fLabelOnly write fLabelOnly;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property GrandRow: ProRock.Xmlite.Schema.Base.TBooleanST read fGrandRow write fGrandRow;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property GrandCol: ProRock.Xmlite.Schema.Base.TBooleanST read fGrandCol write fGrandCol;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property CacheIndex: ProRock.Xmlite.Schema.Base.TBooleanST read fCacheIndex write fCacheIndex;
     [TDefault(True)]
-    [TNaming(TNaming.nFlatCase)]
     property Outline: ProRock.Xmlite.Schema.Base.TBooleanST read fOutline write fOutline;
-    [TNaming(TNaming.nFlatCase)]
     property Offset: TSTRefST read fOffset write fOffset;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property CollapsedLevelsAreSubtotals: ProRock.Xmlite.Schema.Base.TBooleanST read fCollapsedLevelsAreSubtotals write fCollapsedLevelsAreSubtotals;
-    [TNaming(TNaming.nFlatCase)]
     property Axis: TSTAxisST read fAxis write fAxis;
-    [TNaming(TNaming.nCamelCase)]
     property FieldPosition: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fFieldPosition write fFieldPosition;
-    [TNaming(TNaming.nFlatCase)]
     property References: TCTPivotAreaReferencesCT read fReferences;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -4505,9 +3727,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fReference: TCTPivotAreaReferenceCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nFlatCase)]
     property Reference: TCTPivotAreaReferenceCTList read fReference;
   end;
 
@@ -4534,58 +3754,39 @@ type
     fX: TCTIndexCTList;
     fExtLst: TCTExtensionListCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Field: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fField write fField;
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
     [TDefault(True)]
-    [TNaming(TNaming.nFlatCase)]
     property Selected: ProRock.Xmlite.Schema.Base.TBooleanST read fSelected write fSelected;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ByPosition: ProRock.Xmlite.Schema.Base.TBooleanST read fByPosition write fByPosition;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Relative: ProRock.Xmlite.Schema.Base.TBooleanST read fRelative write fRelative;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultSubtotal: ProRock.Xmlite.Schema.Base.TBooleanST read fDefaultSubtotal write fDefaultSubtotal;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property SumSubtotal: ProRock.Xmlite.Schema.Base.TBooleanST read fSumSubtotal write fSumSubtotal;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property CountASubtotal: ProRock.Xmlite.Schema.Base.TBooleanST read fCountASubtotal write fCountASubtotal;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property AvgSubtotal: ProRock.Xmlite.Schema.Base.TBooleanST read fAvgSubtotal write fAvgSubtotal;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property MaxSubtotal: ProRock.Xmlite.Schema.Base.TBooleanST read fMaxSubtotal write fMaxSubtotal;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property MinSubtotal: ProRock.Xmlite.Schema.Base.TBooleanST read fMinSubtotal write fMinSubtotal;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ProductSubtotal: ProRock.Xmlite.Schema.Base.TBooleanST read fProductSubtotal write fProductSubtotal;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property CountSubtotal: ProRock.Xmlite.Schema.Base.TBooleanST read fCountSubtotal write fCountSubtotal;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property StdDevSubtotal: ProRock.Xmlite.Schema.Base.TBooleanST read fStdDevSubtotal write fStdDevSubtotal;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property StdDevPSubtotal: ProRock.Xmlite.Schema.Base.TBooleanST read fStdDevPSubtotal write fStdDevPSubtotal;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property VarSubtotal: ProRock.Xmlite.Schema.Base.TBooleanST read fVarSubtotal write fVarSubtotal;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property VarPSubtotal: ProRock.Xmlite.Schema.Base.TBooleanST read fVarPSubtotal write fVarPSubtotal;
-    [TName('x')]
     property X: TCTIndexCTList read fX;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -4595,7 +3796,6 @@ type
     fV: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
     [TRequired]
-    [TName('v')]
     property V: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fV write fV;
   end;
 
@@ -4628,67 +3828,43 @@ type
     fExtLst: TCTExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
     [TDefault(True)]
-    [TNaming(TNaming.nFlatCase)]
     property Headers: ProRock.Xmlite.Schema.Base.TBooleanST read fHeaders write fHeaders;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property RowNumbers: ProRock.Xmlite.Schema.Base.TBooleanST read fRowNumbers write fRowNumbers;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property DisableRefresh: ProRock.Xmlite.Schema.Base.TBooleanST read fDisableRefresh write fDisableRefresh;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property BackgroundRefresh: ProRock.Xmlite.Schema.Base.TBooleanST read fBackgroundRefresh write fBackgroundRefresh;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property FirstBackgroundRefresh: ProRock.Xmlite.Schema.Base.TBooleanST read fFirstBackgroundRefresh write fFirstBackgroundRefresh;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property RefreshOnLoad: ProRock.Xmlite.Schema.Base.TBooleanST read fRefreshOnLoad write fRefreshOnLoad;
     [TDefault(Ord(stgstInsertDelete))]
-    [TNaming(TNaming.nCamelCase)]
     property GrowShrinkType: TSTGrowShrinkTypeST read fGrowShrinkType write fGrowShrinkType;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property FillFormulas: ProRock.Xmlite.Schema.Base.TBooleanST read fFillFormulas write fFillFormulas;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property RemoveDataOnSave: ProRock.Xmlite.Schema.Base.TBooleanST read fRemoveDataOnSave write fRemoveDataOnSave;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property DisableEdit: ProRock.Xmlite.Schema.Base.TBooleanST read fDisableEdit write fDisableEdit;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property PreserveFormatting: ProRock.Xmlite.Schema.Base.TBooleanST read fPreserveFormatting write fPreserveFormatting;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property AdjustColumnWidth: ProRock.Xmlite.Schema.Base.TBooleanST read fAdjustColumnWidth write fAdjustColumnWidth;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Intermediate: ProRock.Xmlite.Schema.Base.TBooleanST read fIntermediate write fIntermediate;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ConnectionId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fConnectionId write fConnectionId;
-    [TNaming(TNaming.nCamelCase)]
     property AutoFormatId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fAutoFormatId write fAutoFormatId;
-    [TNaming(TNaming.nCamelCase)]
     property ApplyNumberFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyNumberFormats write fApplyNumberFormats;
-    [TNaming(TNaming.nCamelCase)]
     property ApplyBorderFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyBorderFormats write fApplyBorderFormats;
-    [TNaming(TNaming.nCamelCase)]
     property ApplyFontFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyFontFormats write fApplyFontFormats;
-    [TNaming(TNaming.nCamelCase)]
     property ApplyPatternFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyPatternFormats write fApplyPatternFormats;
-    [TNaming(TNaming.nCamelCase)]
     property ApplyAlignmentFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyAlignmentFormats write fApplyAlignmentFormats;
-    [TNaming(TNaming.nCamelCase)]
     property ApplyWidthHeightFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyWidthHeightFormats write fApplyWidthHeightFormats;
-    [TNaming(TNaming.nCamelCase)]
     property QueryTableRefresh: TCTQueryTableRefreshCT read fQueryTableRefresh;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -4708,34 +3884,23 @@ type
     fExtLst: TCTExtensionListCT;
   published
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property PreserveSortFilterLayout: ProRock.Xmlite.Schema.Base.TBooleanST read fPreserveSortFilterLayout write fPreserveSortFilterLayout;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property FieldIdWrapped: ProRock.Xmlite.Schema.Base.TBooleanST read fFieldIdWrapped write fFieldIdWrapped;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property HeadersInLastRefresh: ProRock.Xmlite.Schema.Base.TBooleanST read fHeadersInLastRefresh write fHeadersInLastRefresh;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property MinimumVersion: ProRock.Xmlite.Schema.Base.TUnsignedByteST read fMinimumVersion write fMinimumVersion;
     [TDefault(1)]
-    [TNaming(TNaming.nCamelCase)]
     property NextId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fNextId write fNextId;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property UnboundColumnsLeft: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fUnboundColumnsLeft write fUnboundColumnsLeft;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property UnboundColumnsRight: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fUnboundColumnsRight write fUnboundColumnsRight;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property QueryTableFields: TCTQueryTableFieldsCT read fQueryTableFields;
-    [TNaming(TNaming.nCamelCase)]
     property QueryTableDeletedFields: TCTQueryTableDeletedFieldsCT read fQueryTableDeletedFields;
-    [TNaming(TNaming.nCamelCase)]
     property SortState: TCTSortStateCT read fSortState;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -4745,9 +3910,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fDeletedField: TCTDeletedFieldCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nCamelCase)]
     property DeletedField: TCTDeletedFieldCTList read fDeletedField;
   end;
 
@@ -4757,7 +3920,6 @@ type
     fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
   end;
 
@@ -4768,9 +3930,7 @@ type
     fQueryTableField: TCTQueryTableFieldCTList;
   published
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nCamelCase)]
     property QueryTableField: TCTQueryTableFieldCTList read fQueryTableField;
   end;
 
@@ -4787,26 +3947,18 @@ type
     fExtLst: TCTExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fId write fId;
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property DataBound: ProRock.Xmlite.Schema.Base.TBooleanST read fDataBound write fDataBound;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property RowNumbers: ProRock.Xmlite.Schema.Base.TBooleanST read fRowNumbers write fRowNumbers;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property FillFormulas: ProRock.Xmlite.Schema.Base.TBooleanST read fFillFormulas write fFillFormulas;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Clipped: ProRock.Xmlite.Schema.Base.TBooleanST read fClipped write fClipped;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property TableColumnId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fTableColumnId write fTableColumnId;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -4818,13 +3970,9 @@ type
     fSi: TCTRstCTList;
     fExtLst: TCTExtensionListCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nCamelCase)]
     property UniqueCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fUniqueCount write fUniqueCount;
-    [TNaming(TNaming.nFlatCase)]
     property Si: TCTRstCTList read fSi;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -4836,14 +3984,11 @@ type
     fT: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Sb: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSb write fSb;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Eb: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fEb write fEb;
     [TXmliteElement]
     [TRequired]
-    [TName('t')]
     property T: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fT write fT;
   end;
 
@@ -4853,11 +3998,9 @@ type
     fRPr: TCTRPrEltCT;
     fT: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
   published
-    [TNaming(TNaming.nCamelCase)]
     property RPr: TCTRPrEltCT read fRPr;
     [TXmliteElement]
     [TRequired]
-    [TName('t')]
     property T: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fT write fT;
   end;
 
@@ -4881,35 +4024,20 @@ type
     fVertAlign: TCTVerticalAlignFontPropertyCTList;
     fScheme: TCTFontSchemeCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property RFont: TCTFontNameCTList read fRFont;
-    [TNaming(TNaming.nFlatCase)]
     property Charset: TCTIntPropertyCTList read fCharset;
-    [TNaming(TNaming.nFlatCase)]
     property Family: TCTIntPropertyCTList read fFamily;
-    [TName('b')]
     property B: TCTBooleanPropertyCTList read fB;
-    [TName('i')]
     property I: TCTBooleanPropertyCTList read fI;
-    [TNaming(TNaming.nFlatCase)]
     property Strike: TCTBooleanPropertyCTList read fStrike;
-    [TNaming(TNaming.nFlatCase)]
     property Outline: TCTBooleanPropertyCTList read fOutline;
-    [TNaming(TNaming.nFlatCase)]
     property Shadow: TCTBooleanPropertyCTList read fShadow;
-    [TNaming(TNaming.nFlatCase)]
     property Condense: TCTBooleanPropertyCTList read fCondense;
-    [TNaming(TNaming.nFlatCase)]
     property Extend: TCTBooleanPropertyCTList read fExtend;
-    [TNaming(TNaming.nFlatCase)]
     property Color: TCTColorCTList read fColor;
-    [TNaming(TNaming.nFlatCase)]
     property Sz: TCTFontSizeCTList read fSz;
-    [TName('u')]
     property U: TCTUnderlinePropertyCTList read fU;
-    [TNaming(TNaming.nCamelCase)]
     property VertAlign: TCTVerticalAlignFontPropertyCTList read fVertAlign;
-    [TNaming(TNaming.nFlatCase)]
     property Scheme: TCTFontSchemeCTList read fScheme;
   end;
 
@@ -4922,13 +4050,9 @@ type
     fPhoneticPr: TCTPhoneticPrCT;
   published
     [TXmliteElement]
-    [TName('t')]
     property T: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fT write fT;
-    [TName('r')]
     property R: TCTREltCTList read fR;
-    [TNaming(TNaming.nCamelCase)]
     property RPh: TCTPhoneticRunCTList read fRPh;
-    [TNaming(TNaming.nCamelCase)]
     property PhoneticPr: TCTPhoneticPrCT read fPhoneticPr;
   end;
 
@@ -4940,13 +4064,10 @@ type
     fAlignment: TSTPhoneticAlignmentST;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property FontId: TSTFontIdST read fFontId write fFontId;
     [TDefault(Ord(stptaFullwidthKatakana))]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TSTPhoneticTypeST read fType write fType;
     [TDefault(Ord(stpaLeft))]
-    [TNaming(TNaming.nFlatCase)]
     property Alignment: TSTPhoneticAlignmentST read fAlignment write fAlignment;
   end;
 
@@ -4968,41 +4089,28 @@ type
     fHeader: TCTRevisionHeaderCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Guid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST read fGuid write fGuid;
-    [TNaming(TNaming.nCamelCase)]
     property LastGuid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST read fLastGuid write fLastGuid;
     [TDefault(True)]
-    [TNaming(TNaming.nFlatCase)]
     property Shared: ProRock.Xmlite.Schema.Base.TBooleanST read fShared write fShared;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property DiskRevisions: ProRock.Xmlite.Schema.Base.TBooleanST read fDiskRevisions write fDiskRevisions;
     [TDefault(True)]
-    [TNaming(TNaming.nFlatCase)]
     property History: ProRock.Xmlite.Schema.Base.TBooleanST read fHistory write fHistory;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property TrackRevisions: ProRock.Xmlite.Schema.Base.TBooleanST read fTrackRevisions write fTrackRevisions;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Exclusive: ProRock.Xmlite.Schema.Base.TBooleanST read fExclusive write fExclusive;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property RevisionId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fRevisionId write fRevisionId;
     [TDefault(1)]
-    [TNaming(TNaming.nFlatCase)]
     property Version: ProRock.Xmlite.Schema.Base.TIntST read fVersion write fVersion;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property KeepChangeHistory: ProRock.Xmlite.Schema.Base.TBooleanST read fKeepChangeHistory write fKeepChangeHistory;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Protected: ProRock.Xmlite.Schema.Base.TBooleanST read fProtected write fProtected;
     [TDefault(30)]
-    [TNaming(TNaming.nCamelCase)]
     property PreserveHistory: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fPreserveHistory write fPreserveHistory;
-    [TNaming(TNaming.nFlatCase)]
     property Header: TCTRevisionHeaderCTList read fHeader;
   end;
 
@@ -5023,29 +4131,17 @@ type
     fRqt: TCTRevisionQueryTableFieldCTList;
     fRcft: TCTRevisionConflictCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Rrc: TCTRevisionRowColumnCTList read fRrc;
-    [TNaming(TNaming.nFlatCase)]
     property Rm: TCTRevisionMoveCTList read fRm;
-    [TNaming(TNaming.nFlatCase)]
     property Rcv: TCTRevisionCustomViewCTList read fRcv;
-    [TNaming(TNaming.nFlatCase)]
     property Rsnm: TCTRevisionSheetRenameCTList read fRsnm;
-    [TNaming(TNaming.nFlatCase)]
     property Ris: TCTRevisionInsertSheetCTList read fRis;
-    [TNaming(TNaming.nFlatCase)]
     property Rcc: TCTRevisionCellChangeCTList read fRcc;
-    [TNaming(TNaming.nFlatCase)]
     property Rfmt: TCTRevisionFormattingCTList read fRfmt;
-    [TNaming(TNaming.nFlatCase)]
     property Raf: TCTRevisionAutoFormattingCTList read fRaf;
-    [TNaming(TNaming.nFlatCase)]
     property Rdn: TCTRevisionDefinedNameCTList read fRdn;
-    [TNaming(TNaming.nFlatCase)]
     property Rcmt: TCTRevisionCommentCTList read fRcmt;
-    [TNaming(TNaming.nFlatCase)]
     property Rqt: TCTRevisionQueryTableFieldCTList read fRqt;
-    [TNaming(TNaming.nFlatCase)]
     property Rcft: TCTRevisionConflictCTList read fRcft;
   end;
 
@@ -5064,30 +4160,21 @@ type
     fExtLst: TCTExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Guid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST read fGuid write fGuid;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property DateTime: ProRock.Xmlite.Schema.Base.TDateTimeST read fDateTime write fDateTime;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property MaxSheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fMaxSheetId write fMaxSheetId;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property UserName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fUserName write fUserName;
     [TRequired]
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
-    [TNaming(TNaming.nCamelCase)]
     property MinRId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fMinRId write fMinRId;
-    [TNaming(TNaming.nCamelCase)]
     property MaxRId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fMaxRId write fMaxRId;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property SheetIdMap: TCTSheetIdMapCT read fSheetIdMap;
-    [TNaming(TNaming.nCamelCase)]
     property ReviewedList: TCTReviewedRevisionsCT read fReviewedList;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -5097,9 +4184,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fSheetId: TCTSheetIdCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nCamelCase)]
     property SheetId: TCTSheetIdCTList read fSheetId;
   end;
 
@@ -5109,7 +4194,6 @@ type
     fVal: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Val: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fVal write fVal;
   end;
 
@@ -5119,9 +4203,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fReviewed: TCTReviewedCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nFlatCase)]
     property Reviewed: TCTReviewedCTList read fReviewed;
   end;
 
@@ -5131,7 +4213,6 @@ type
     fRId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property RId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fRId write fRId;
   end;
 
@@ -5151,34 +4232,23 @@ type
     fSId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Index: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fIndex write fIndex;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Exp: TSTFormulaExpressionST read fExp write fExp;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property Ref3D: ProRock.Xmlite.Schema.Base.TBooleanST read fRef3D write fRef3D;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property &Array: ProRock.Xmlite.Schema.Base.TBooleanST read fArray write fArray;
     [TDefault(False)]
-    [TName('v')]
     property V: ProRock.Xmlite.Schema.Base.TBooleanST read fV write fV;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Nf: ProRock.Xmlite.Schema.Base.TBooleanST read fNf write fNf;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Cs: ProRock.Xmlite.Schema.Base.TBooleanST read fCs write fCs;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Dr: TSTRefAST read fDr write fDr;
-    [TNaming(TNaming.nFlatCase)]
     property Dn: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDn write fDn;
-    [TName('r')]
     property R: TSTCellRefST read fR write fR;
-    [TNaming(TNaming.nCamelCase)]
     property SId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSId write fSId;
   end;
 
@@ -5199,34 +4269,23 @@ type
     fRfmt: TCTRevisionFormattingCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property SId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSId write fSId;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Eol: ProRock.Xmlite.Schema.Base.TBooleanST read fEol write fEol;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Ref: TSTRefST read fRef write fRef;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Action: TSTRwColActionTypeST read fAction write fAction;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Edge: ProRock.Xmlite.Schema.Base.TBooleanST read fEdge write fEdge;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property RId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fRId write fRId;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Ua: ProRock.Xmlite.Schema.Base.TBooleanST read fUa write fUa;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Ra: ProRock.Xmlite.Schema.Base.TBooleanST read fRa write fRa;
-    [TNaming(TNaming.nFlatCase)]
     property Undo: TCTUndoInfoCTList read fUndo;
-    [TNaming(TNaming.nFlatCase)]
     property Rcc: TCTRevisionCellChangeCTList read fRcc;
-    [TNaming(TNaming.nFlatCase)]
     property Rfmt: TCTRevisionFormattingCTList read fRfmt;
   end;
 
@@ -5246,31 +4305,21 @@ type
     fRfmt: TCTRevisionFormattingCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property SheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSheetId write fSheetId;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Source: TSTRefST read fSource write fSource;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Destination: TSTRefST read fDestination write fDestination;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property SourceSheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSourceSheetId write fSourceSheetId;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property RId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fRId write fRId;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Ua: ProRock.Xmlite.Schema.Base.TBooleanST read fUa write fUa;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Ra: ProRock.Xmlite.Schema.Base.TBooleanST read fRa write fRa;
-    [TNaming(TNaming.nFlatCase)]
     property Undo: TCTUndoInfoCTList read fUndo;
-    [TNaming(TNaming.nFlatCase)]
     property Rcc: TCTRevisionCellChangeCTList read fRcc;
-    [TNaming(TNaming.nFlatCase)]
     property Rfmt: TCTRevisionFormattingCTList read fRfmt;
   end;
 
@@ -5281,10 +4330,8 @@ type
     fAction: TSTRevisionActionST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Guid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST read fGuid write fGuid;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Action: TSTRevisionActionST read fAction write fAction;
   end;
 
@@ -5300,24 +4347,17 @@ type
     fExtLst: TCTExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property SheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSheetId write fSheetId;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property OldName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fOldName write fOldName;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property NewName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fNewName write fNewName;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property RId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fRId write fRId;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Ua: ProRock.Xmlite.Schema.Base.TBooleanST read fUa write fUa;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Ra: ProRock.Xmlite.Schema.Base.TBooleanST read fRa write fRa;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -5332,22 +4372,16 @@ type
     fRa: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property SheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSheetId write fSheetId;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property SheetPosition: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSheetPosition write fSheetPosition;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property RId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fRId write fRId;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Ua: ProRock.Xmlite.Schema.Base.TBooleanST read fUa write fUa;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Ra: ProRock.Xmlite.Schema.Base.TBooleanST read fRa write fRa;
   end;
 
@@ -5374,54 +4408,36 @@ type
     fExtLst: TCTExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property SId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSId write fSId;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Odxf: ProRock.Xmlite.Schema.Base.TBooleanST read fOdxf write fOdxf;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property XfDxf: ProRock.Xmlite.Schema.Base.TBooleanST read fXfDxf write fXfDxf;
     [TDefault(False)]
-    [TName('s')]
     property S: ProRock.Xmlite.Schema.Base.TBooleanST read fS write fS;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Dxf: ProRock.Xmlite.Schema.Base.TBooleanST read fDxf write fDxf;
-    [TNaming(TNaming.nCamelCase)]
     property NumFmtId: TSTNumFmtIdST read fNumFmtId write fNumFmtId;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property QuotePrefix: ProRock.Xmlite.Schema.Base.TBooleanST read fQuotePrefix write fQuotePrefix;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property OldQuotePrefix: ProRock.Xmlite.Schema.Base.TBooleanST read fOldQuotePrefix write fOldQuotePrefix;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Ph: ProRock.Xmlite.Schema.Base.TBooleanST read fPh write fPh;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property OldPh: ProRock.Xmlite.Schema.Base.TBooleanST read fOldPh write fOldPh;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property EndOfListFormulaUpdate: ProRock.Xmlite.Schema.Base.TBooleanST read fEndOfListFormulaUpdate write fEndOfListFormulaUpdate;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property RId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fRId write fRId;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Ua: ProRock.Xmlite.Schema.Base.TBooleanST read fUa write fUa;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Ra: ProRock.Xmlite.Schema.Base.TBooleanST read fRa write fRa;
-    [TNaming(TNaming.nFlatCase)]
     property Oc: TCTCellCT read fOc;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Nc: TCTCellCT read fNc;
-    [TNaming(TNaming.nFlatCase)]
     property Ndxf: TCTDxfCT read fNdxf;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -5438,24 +4454,16 @@ type
     fExtLst: TCTExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property SheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSheetId write fSheetId;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property XfDxf: ProRock.Xmlite.Schema.Base.TBooleanST read fXfDxf write fXfDxf;
     [TDefault(False)]
-    [TName('s')]
     property S: ProRock.Xmlite.Schema.Base.TBooleanST read fS write fS;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Sqref: TSTSqrefST read fSqref write fSqref;
-    [TNaming(TNaming.nFlatCase)]
     property Start: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fStart write fStart;
-    [TNaming(TNaming.nFlatCase)]
     property Length: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fLength write fLength;
-    [TNaming(TNaming.nFlatCase)]
     property Dxf: TCTDxfCT read fDxf;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -5473,24 +4481,15 @@ type
     fApplyWidthHeightFormats: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property SheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSheetId write fSheetId;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Ref: TSTRefST read fRef write fRef;
-    [TNaming(TNaming.nCamelCase)]
     property AutoFormatId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fAutoFormatId write fAutoFormatId;
-    [TNaming(TNaming.nCamelCase)]
     property ApplyNumberFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyNumberFormats write fApplyNumberFormats;
-    [TNaming(TNaming.nCamelCase)]
     property ApplyBorderFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyBorderFormats write fApplyBorderFormats;
-    [TNaming(TNaming.nCamelCase)]
     property ApplyFontFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyFontFormats write fApplyFontFormats;
-    [TNaming(TNaming.nCamelCase)]
     property ApplyPatternFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyPatternFormats write fApplyPatternFormats;
-    [TNaming(TNaming.nCamelCase)]
     property ApplyAlignmentFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyAlignmentFormats write fApplyAlignmentFormats;
-    [TNaming(TNaming.nCamelCase)]
     property ApplyWidthHeightFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyWidthHeightFormats write fApplyWidthHeightFormats;
   end;
 
@@ -5510,37 +4509,26 @@ type
     fNewLength: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property SheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSheetId write fSheetId;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Cell: TSTCellRefST read fCell write fCell;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Guid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST read fGuid write fGuid;
     [TDefault(Ord(straAdd))]
-    [TNaming(TNaming.nFlatCase)]
     property Action: TSTRevisionActionST read fAction write fAction;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property AlwaysShow: ProRock.Xmlite.Schema.Base.TBooleanST read fAlwaysShow write fAlwaysShow;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Old: ProRock.Xmlite.Schema.Base.TBooleanST read fOld write fOld;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property HiddenRow: ProRock.Xmlite.Schema.Base.TBooleanST read fHiddenRow write fHiddenRow;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property HiddenColumn: ProRock.Xmlite.Schema.Base.TBooleanST read fHiddenColumn write fHiddenColumn;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Author: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fAuthor write fAuthor;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property OldLength: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fOldLength write fOldLength;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property NewLength: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fNewLength write fNewLength;
   end;
 
@@ -5575,70 +4563,43 @@ type
     fOldFormula: TSTFormulaST;
     fExtLst: TCTExtensionListCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property LocalSheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fLocalSheetId write fLocalSheetId;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property CustomView: ProRock.Xmlite.Schema.Base.TBooleanST read fCustomView write fCustomView;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property &Function: ProRock.Xmlite.Schema.Base.TBooleanST read fFunction write fFunction;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property OldFunction: ProRock.Xmlite.Schema.Base.TBooleanST read fOldFunction write fOldFunction;
-    [TNaming(TNaming.nCamelCase)]
     property FunctionGroupId: ProRock.Xmlite.Schema.Base.TUnsignedByteST read fFunctionGroupId write fFunctionGroupId;
-    [TNaming(TNaming.nCamelCase)]
     property OldFunctionGroupId: ProRock.Xmlite.Schema.Base.TUnsignedByteST read fOldFunctionGroupId write fOldFunctionGroupId;
-    [TNaming(TNaming.nCamelCase)]
     property ShortcutKey: ProRock.Xmlite.Schema.Base.TUnsignedByteST read fShortcutKey write fShortcutKey;
-    [TNaming(TNaming.nCamelCase)]
     property OldShortcutKey: ProRock.Xmlite.Schema.Base.TUnsignedByteST read fOldShortcutKey write fOldShortcutKey;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Hidden: ProRock.Xmlite.Schema.Base.TBooleanST read fHidden write fHidden;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property OldHidden: ProRock.Xmlite.Schema.Base.TBooleanST read fOldHidden write fOldHidden;
-    [TNaming(TNaming.nCamelCase)]
     property CustomMenu: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fCustomMenu write fCustomMenu;
-    [TNaming(TNaming.nCamelCase)]
     property OldCustomMenu: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fOldCustomMenu write fOldCustomMenu;
-    [TNaming(TNaming.nFlatCase)]
     property Description: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDescription write fDescription;
-    [TNaming(TNaming.nCamelCase)]
     property OldDescription: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fOldDescription write fOldDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Help: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fHelp write fHelp;
-    [TNaming(TNaming.nCamelCase)]
     property OldHelp: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fOldHelp write fOldHelp;
-    [TNaming(TNaming.nCamelCase)]
     property StatusBar: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fStatusBar write fStatusBar;
-    [TNaming(TNaming.nCamelCase)]
     property OldStatusBar: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fOldStatusBar write fOldStatusBar;
-    [TNaming(TNaming.nFlatCase)]
     property Comment: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fComment write fComment;
-    [TNaming(TNaming.nCamelCase)]
     property OldComment: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fOldComment write fOldComment;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property RId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fRId write fRId;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Ua: ProRock.Xmlite.Schema.Base.TBooleanST read fUa write fUa;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Ra: ProRock.Xmlite.Schema.Base.TBooleanST read fRa write fRa;
     [TXmliteElement]
-    [TNaming(TNaming.nFlatCase)]
     property Formula: TSTFormulaST read fFormula write fFormula;
     [TXmliteElement]
-    [TNaming(TNaming.nCamelCase)]
     property OldFormula: TSTFormulaST read fOldFormula write fOldFormula;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -5650,16 +4611,12 @@ type
     fUa: ProRock.Xmlite.Schema.Base.TBooleanST;
     fRa: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
-    [TNaming(TNaming.nCamelCase)]
     property SheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSheetId write fSheetId;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property RId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fRId write fRId;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Ua: ProRock.Xmlite.Schema.Base.TBooleanST read fUa write fUa;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Ra: ProRock.Xmlite.Schema.Base.TBooleanST read fRa write fRa;
   end;
 
@@ -5671,13 +4628,10 @@ type
     fFieldId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property SheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSheetId write fSheetId;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Ref: TSTRefST read fRef write fRef;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property FieldId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fFieldId write fFieldId;
   end;
 
@@ -5687,9 +4641,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fUserInfo: TCTSharedUserCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nCamelCase)]
     property UserInfo: TCTSharedUserCTList read fUserInfo;
   end;
 
@@ -5703,18 +4655,13 @@ type
     fExtLst: TCTExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Guid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST read fGuid write fGuid;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Base.TIntST read fId write fId;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property DateTime: ProRock.Xmlite.Schema.Base.TDateTimeST read fDateTime write fDateTime;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -5749,60 +4696,33 @@ type
     fOleObjects: TCTOleObjectsCT;
     fExtLst: TCTExtensionListCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property SheetPr: TCTSheetPrCT read fSheetPr;
-    [TNaming(TNaming.nFlatCase)]
     property Dimension: TCTSheetDimensionCT read fDimension;
-    [TNaming(TNaming.nCamelCase)]
     property SheetViews: TCTSheetViewsCT read fSheetViews;
-    [TNaming(TNaming.nCamelCase)]
     property SheetFormatPr: TCTSheetFormatPrCT read fSheetFormatPr;
-    [TNaming(TNaming.nFlatCase)]
     property Cols: TCTColsCTList read fCols;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property SheetData: TCTSheetDataCT read fSheetData;
-    [TNaming(TNaming.nCamelCase)]
     property SheetProtection: TCTSheetProtectionCT read fSheetProtection;
-    [TNaming(TNaming.nCamelCase)]
     property AutoFilter: TCTAutoFilterCT read fAutoFilter;
-    [TNaming(TNaming.nCamelCase)]
     property SortState: TCTSortStateCT read fSortState;
-    [TNaming(TNaming.nCamelCase)]
     property DataConsolidate: TCTDataConsolidateCT read fDataConsolidate;
-    [TNaming(TNaming.nCamelCase)]
     property CustomSheetViews: TCTCustomSheetViewsCT read fCustomSheetViews;
-    [TNaming(TNaming.nCamelCase)]
     property PhoneticPr: TCTPhoneticPrCT read fPhoneticPr;
-    [TNaming(TNaming.nCamelCase)]
     property ConditionalFormatting: TCTConditionalFormattingCTList read fConditionalFormatting;
-    [TNaming(TNaming.nCamelCase)]
     property PrintOptions: TCTPrintOptionsCT read fPrintOptions;
-    [TNaming(TNaming.nCamelCase)]
     property PageMargins: TCTPageMarginsCT read fPageMargins;
-    [TNaming(TNaming.nCamelCase)]
     property PageSetup: TCTPageSetupCT read fPageSetup;
-    [TNaming(TNaming.nCamelCase)]
     property HeaderFooter: TCTHeaderFooterCT read fHeaderFooter;
-    [TNaming(TNaming.nCamelCase)]
     property RowBreaks: TCTPageBreakCT read fRowBreaks;
-    [TNaming(TNaming.nCamelCase)]
     property ColBreaks: TCTPageBreakCT read fColBreaks;
-    [TNaming(TNaming.nCamelCase)]
     property CustomProperties: TCTCustomPropertiesCT read fCustomProperties;
-    [TNaming(TNaming.nFlatCase)]
     property Drawing: TCTDrawingCT read fDrawing;
-    [TNaming(TNaming.nCamelCase)]
     property LegacyDrawing: TCTLegacyDrawingCT read fLegacyDrawing;
-    [TNaming(TNaming.nCamelCase)]
     property LegacyDrawingHF: TCTLegacyDrawingCT read fLegacyDrawingHF;
-    [TNaming(TNaming.nCamelCase)]
     property DrawingHF: TCTDrawingHFCT read fDrawingHF;
-    [TNaming(TNaming.nFlatCase)]
     property Picture: TCTSheetBackgroundPictureCT read fPicture;
-    [TNaming(TNaming.nCamelCase)]
     property OleObjects: TCTOleObjectsCT read fOleObjects;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -5826,37 +4746,21 @@ type
     fControls: TCTControlsCT;
     fExtLst: TCTExtensionListCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property SheetPr: TCTSheetPrCT read fSheetPr;
-    [TNaming(TNaming.nCamelCase)]
     property SheetViews: TCTSheetViewsCT read fSheetViews;
-    [TNaming(TNaming.nCamelCase)]
     property SheetFormatPr: TCTSheetFormatPrCT read fSheetFormatPr;
-    [TNaming(TNaming.nCamelCase)]
     property SheetProtection: TCTSheetProtectionCT read fSheetProtection;
-    [TNaming(TNaming.nCamelCase)]
     property CustomSheetViews: TCTCustomSheetViewsCT read fCustomSheetViews;
-    [TNaming(TNaming.nCamelCase)]
     property PrintOptions: TCTPrintOptionsCT read fPrintOptions;
-    [TNaming(TNaming.nCamelCase)]
     property PageMargins: TCTPageMarginsCT read fPageMargins;
-    [TNaming(TNaming.nCamelCase)]
     property PageSetup: TCTPageSetupCT read fPageSetup;
-    [TNaming(TNaming.nCamelCase)]
     property HeaderFooter: TCTHeaderFooterCT read fHeaderFooter;
-    [TNaming(TNaming.nFlatCase)]
     property Drawing: TCTDrawingCT read fDrawing;
-    [TNaming(TNaming.nCamelCase)]
     property LegacyDrawing: TCTLegacyDrawingCT read fLegacyDrawing;
-    [TNaming(TNaming.nCamelCase)]
     property LegacyDrawingHF: TCTLegacyDrawingCT read fLegacyDrawingHF;
-    [TNaming(TNaming.nCamelCase)]
     property DrawingHF: TCTDrawingHFCT read fDrawingHF;
-    [TNaming(TNaming.nCamelCase)]
     property OleObjects: TCTOleObjectsCT read fOleObjects;
-    [TNaming(TNaming.nFlatCase)]
     property Controls: TCTControlsCT read fControls;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -5903,84 +4807,45 @@ type
     fTableParts: TCTTablePartsCT;
     fExtLst: TCTExtensionListCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property SheetPr: TCTSheetPrCT read fSheetPr;
-    [TNaming(TNaming.nFlatCase)]
     property Dimension: TCTSheetDimensionCT read fDimension;
-    [TNaming(TNaming.nCamelCase)]
     property SheetViews: TCTSheetViewsCT read fSheetViews;
-    [TNaming(TNaming.nCamelCase)]
     property SheetFormatPr: TCTSheetFormatPrCT read fSheetFormatPr;
-    [TNaming(TNaming.nFlatCase)]
     property Cols: TCTColsCTList read fCols;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property SheetData: TCTSheetDataCT read fSheetData;
-    [TNaming(TNaming.nCamelCase)]
     property SheetCalcPr: TCTSheetCalcPrCT read fSheetCalcPr;
-    [TNaming(TNaming.nCamelCase)]
     property SheetProtection: TCTSheetProtectionCT read fSheetProtection;
-    [TNaming(TNaming.nCamelCase)]
     property ProtectedRanges: TCTProtectedRangesCT read fProtectedRanges;
-    [TNaming(TNaming.nFlatCase)]
     property Scenarios: TCTScenariosCT read fScenarios;
-    [TNaming(TNaming.nCamelCase)]
     property AutoFilter: TCTAutoFilterCT read fAutoFilter;
-    [TNaming(TNaming.nCamelCase)]
     property SortState: TCTSortStateCT read fSortState;
-    [TNaming(TNaming.nCamelCase)]
     property DataConsolidate: TCTDataConsolidateCT read fDataConsolidate;
-    [TNaming(TNaming.nCamelCase)]
     property CustomSheetViews: TCTCustomSheetViewsCT read fCustomSheetViews;
-    [TNaming(TNaming.nCamelCase)]
     property MergeCells: TCTMergeCellsCT read fMergeCells;
-    [TNaming(TNaming.nCamelCase)]
     property PhoneticPr: TCTPhoneticPrCT read fPhoneticPr;
-    [TNaming(TNaming.nCamelCase)]
     property ConditionalFormatting: TCTConditionalFormattingCTList read fConditionalFormatting;
-    [TNaming(TNaming.nCamelCase)]
     property DataValidations: TCTDataValidationsCT read fDataValidations;
-    [TNaming(TNaming.nFlatCase)]
     property Hyperlinks: TCTHyperlinksCT read fHyperlinks;
-    [TNaming(TNaming.nCamelCase)]
     property PrintOptions: TCTPrintOptionsCT read fPrintOptions;
-    [TNaming(TNaming.nCamelCase)]
     property PageMargins: TCTPageMarginsCT read fPageMargins;
-    [TNaming(TNaming.nCamelCase)]
     property PageSetup: TCTPageSetupCT read fPageSetup;
-    [TNaming(TNaming.nCamelCase)]
     property HeaderFooter: TCTHeaderFooterCT read fHeaderFooter;
-    [TNaming(TNaming.nCamelCase)]
     property RowBreaks: TCTPageBreakCT read fRowBreaks;
-    [TNaming(TNaming.nCamelCase)]
     property ColBreaks: TCTPageBreakCT read fColBreaks;
-    [TNaming(TNaming.nCamelCase)]
     property CustomProperties: TCTCustomPropertiesCT read fCustomProperties;
-    [TNaming(TNaming.nCamelCase)]
     property CellWatches: TCTCellWatchesCT read fCellWatches;
-    [TNaming(TNaming.nCamelCase)]
     property IgnoredErrors: TCTIgnoredErrorsCT read fIgnoredErrors;
-    [TNaming(TNaming.nCamelCase)]
     property SmartTags: TCTSmartTagsCT read fSmartTags;
-    [TNaming(TNaming.nFlatCase)]
     property Drawing: TCTDrawingCT read fDrawing;
-    [TNaming(TNaming.nCamelCase)]
     property LegacyDrawing: TCTLegacyDrawingCT read fLegacyDrawing;
-    [TNaming(TNaming.nCamelCase)]
     property LegacyDrawingHF: TCTLegacyDrawingCT read fLegacyDrawingHF;
-    [TNaming(TNaming.nCamelCase)]
     property DrawingHF: TCTDrawingHFCT read fDrawingHF;
-    [TNaming(TNaming.nFlatCase)]
     property Picture: TCTSheetBackgroundPictureCT read fPicture;
-    [TNaming(TNaming.nCamelCase)]
     property OleObjects: TCTOleObjectsCT read fOleObjects;
-    [TNaming(TNaming.nFlatCase)]
     property Controls: TCTControlsCT read fControls;
-    [TNaming(TNaming.nCamelCase)]
     property WebPublishItems: TCTWebPublishItemsCT read fWebPublishItems;
-    [TNaming(TNaming.nCamelCase)]
     property TableParts: TCTTablePartsCT read fTableParts;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -5989,7 +4854,6 @@ type
   private
     fRow: TCTRowCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Row: TCTRowCTList read fRow;
   end;
 
@@ -5999,7 +4863,6 @@ type
     fFullCalcOnLoad: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property FullCalcOnLoad: ProRock.Xmlite.Schema.Base.TBooleanST read fFullCalcOnLoad write fFullCalcOnLoad;
   end;
 
@@ -6017,30 +4880,21 @@ type
     fOutlineLevelCol: ProRock.Xmlite.Schema.Base.TUnsignedByteST;
   published
     [TDefault(8)]
-    [TNaming(TNaming.nCamelCase)]
     property BaseColWidth: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fBaseColWidth write fBaseColWidth;
-    [TNaming(TNaming.nCamelCase)]
     property DefaultColWidth: ProRock.Xmlite.Schema.Base.TDoubleST read fDefaultColWidth write fDefaultColWidth;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultRowHeight: ProRock.Xmlite.Schema.Base.TDoubleST read fDefaultRowHeight write fDefaultRowHeight;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property CustomHeight: ProRock.Xmlite.Schema.Base.TBooleanST read fCustomHeight write fCustomHeight;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ZeroHeight: ProRock.Xmlite.Schema.Base.TBooleanST read fZeroHeight write fZeroHeight;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ThickTop: ProRock.Xmlite.Schema.Base.TBooleanST read fThickTop write fThickTop;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ThickBottom: ProRock.Xmlite.Schema.Base.TBooleanST read fThickBottom write fThickBottom;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property OutlineLevelRow: ProRock.Xmlite.Schema.Base.TUnsignedByteST read fOutlineLevelRow write fOutlineLevelRow;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property OutlineLevelCol: ProRock.Xmlite.Schema.Base.TUnsignedByteST read fOutlineLevelCol write fOutlineLevelCol;
   end;
 
@@ -6049,7 +4903,6 @@ type
   private
     fCol: TCTColCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Col: TCTColCTList read fCol;
   end;
 
@@ -6068,33 +4921,23 @@ type
     fCollapsed: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Min: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fMin write fMin;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Max: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fMax write fMax;
-    [TNaming(TNaming.nFlatCase)]
     property Width: ProRock.Xmlite.Schema.Base.TDoubleST read fWidth write fWidth;
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Style: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fStyle write fStyle;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Hidden: ProRock.Xmlite.Schema.Base.TBooleanST read fHidden write fHidden;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property BestFit: ProRock.Xmlite.Schema.Base.TBooleanST read fBestFit write fBestFit;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property CustomWidth: ProRock.Xmlite.Schema.Base.TBooleanST read fCustomWidth write fCustomWidth;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Phonetic: ProRock.Xmlite.Schema.Base.TBooleanST read fPhonetic write fPhonetic;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property OutlineLevel: ProRock.Xmlite.Schema.Base.TUnsignedByteST read fOutlineLevel write fOutlineLevel;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Collapsed: ProRock.Xmlite.Schema.Base.TBooleanST read fCollapsed write fCollapsed;
   end;
 
@@ -6116,42 +4959,28 @@ type
     fC: TCTCellCTList;
     fExtLst: TCTExtensionListCT;
   published
-    [TName('r')]
     property R: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fR write fR;
-    [TNaming(TNaming.nFlatCase)]
     property Spans: TSTCellSpansST read fSpans write fSpans;
     [TDefault(0)]
-    [TName('s')]
     property S: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fS write fS;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property CustomFormat: ProRock.Xmlite.Schema.Base.TBooleanST read fCustomFormat write fCustomFormat;
-    [TNaming(TNaming.nFlatCase)]
     property Ht: ProRock.Xmlite.Schema.Base.TDoubleST read fHt write fHt;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Hidden: ProRock.Xmlite.Schema.Base.TBooleanST read fHidden write fHidden;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property CustomHeight: ProRock.Xmlite.Schema.Base.TBooleanST read fCustomHeight write fCustomHeight;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property OutlineLevel: ProRock.Xmlite.Schema.Base.TUnsignedByteST read fOutlineLevel write fOutlineLevel;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Collapsed: ProRock.Xmlite.Schema.Base.TBooleanST read fCollapsed write fCollapsed;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ThickTop: ProRock.Xmlite.Schema.Base.TBooleanST read fThickTop write fThickTop;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ThickBot: ProRock.Xmlite.Schema.Base.TBooleanST read fThickBot write fThickBot;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Ph: ProRock.Xmlite.Schema.Base.TBooleanST read fPh write fPh;
-    [TName('c')]
     property C: TCTCellCTList read fC;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -6169,31 +4998,21 @@ type
     fIs: TCTRstCT;
     fExtLst: TCTExtensionListCT;
   published
-    [TName('r')]
     property R: TSTCellRefST read fR write fR;
     [TDefault(0)]
-    [TName('s')]
     property S: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fS write fS;
     [TDefault(Ord(stctN))]
-    [TName('t')]
     property T: TSTCellTypeST read fT write fT;
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Cm: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCm write fCm;
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Vm: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fVm write fVm;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Ph: ProRock.Xmlite.Schema.Base.TBooleanST read fPh write fPh;
-    [TName('f')]
     property F: TCTCellFormulaCT read fF;
     [TXmliteElement]
-    [TName('v')]
     property V: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fV write fV;
-    [TNaming(TNaming.nFlatCase)]
     property &Is: TCTRstCT read fIs;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -6214,35 +5033,23 @@ type
     fPageSetUpPr: TCTPageSetUpPrCT;
   published
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property SyncHorizontal: ProRock.Xmlite.Schema.Base.TBooleanST read fSyncHorizontal write fSyncHorizontal;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property SyncVertical: ProRock.Xmlite.Schema.Base.TBooleanST read fSyncVertical write fSyncVertical;
-    [TNaming(TNaming.nCamelCase)]
     property SyncRef: TSTRefST read fSyncRef write fSyncRef;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property TransitionEvaluation: ProRock.Xmlite.Schema.Base.TBooleanST read fTransitionEvaluation write fTransitionEvaluation;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property TransitionEntry: ProRock.Xmlite.Schema.Base.TBooleanST read fTransitionEntry write fTransitionEntry;
     [TDefault(True)]
-    [TNaming(TNaming.nFlatCase)]
     property Published: ProRock.Xmlite.Schema.Base.TBooleanST read fPublished write fPublished;
-    [TNaming(TNaming.nCamelCase)]
     property CodeName: ProRock.Xmlite.Schema.Base.TStringST read fCodeName write fCodeName;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property FilterMode: ProRock.Xmlite.Schema.Base.TBooleanST read fFilterMode write fFilterMode;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property EnableFormatConditionsCalculation: ProRock.Xmlite.Schema.Base.TBooleanST read fEnableFormatConditionsCalculation write fEnableFormatConditionsCalculation;
-    [TNaming(TNaming.nCamelCase)]
     property TabColor: TCTColorCT read fTabColor;
-    [TNaming(TNaming.nCamelCase)]
     property OutlinePr: TCTOutlinePrCT read fOutlinePr;
-    [TNaming(TNaming.nCamelCase)]
     property PageSetUpPr: TCTPageSetUpPrCT read fPageSetUpPr;
   end;
 
@@ -6252,7 +5059,6 @@ type
     fRef: TSTRefST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Ref: TSTRefST read fRef write fRef;
   end;
 
@@ -6262,9 +5068,7 @@ type
     fSheetView: TCTSheetViewCTList;
     fExtLst: TCTExtensionListCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property SheetView: TCTSheetViewCTList read fSheetView;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -6296,68 +5100,45 @@ type
     fExtLst: TCTExtensionListCT;
   published
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property WindowProtection: ProRock.Xmlite.Schema.Base.TBooleanST read fWindowProtection write fWindowProtection;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowFormulas: ProRock.Xmlite.Schema.Base.TBooleanST read fShowFormulas write fShowFormulas;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowGridLines: ProRock.Xmlite.Schema.Base.TBooleanST read fShowGridLines write fShowGridLines;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowRowColHeaders: ProRock.Xmlite.Schema.Base.TBooleanST read fShowRowColHeaders write fShowRowColHeaders;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowZeros: ProRock.Xmlite.Schema.Base.TBooleanST read fShowZeros write fShowZeros;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property RightToLeft: ProRock.Xmlite.Schema.Base.TBooleanST read fRightToLeft write fRightToLeft;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property TabSelected: ProRock.Xmlite.Schema.Base.TBooleanST read fTabSelected write fTabSelected;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowRuler: ProRock.Xmlite.Schema.Base.TBooleanST read fShowRuler write fShowRuler;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowOutlineSymbols: ProRock.Xmlite.Schema.Base.TBooleanST read fShowOutlineSymbols write fShowOutlineSymbols;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultGridColor: ProRock.Xmlite.Schema.Base.TBooleanST read fDefaultGridColor write fDefaultGridColor;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowWhiteSpace: ProRock.Xmlite.Schema.Base.TBooleanST read fShowWhiteSpace write fShowWhiteSpace;
     [TDefault(Ord(stsvtNormal))]
-    [TNaming(TNaming.nFlatCase)]
     property View: TSTSheetViewTypeST read fView write fView;
-    [TNaming(TNaming.nCamelCase)]
     property TopLeftCell: TSTCellRefST read fTopLeftCell write fTopLeftCell;
     [TDefault(64)]
-    [TNaming(TNaming.nCamelCase)]
     property ColorId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fColorId write fColorId;
     [TDefault(100)]
-    [TNaming(TNaming.nCamelCase)]
     property ZoomScale: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fZoomScale write fZoomScale;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property ZoomScaleNormal: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fZoomScaleNormal write fZoomScaleNormal;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property ZoomScaleSheetLayoutView: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fZoomScaleSheetLayoutView write fZoomScaleSheetLayoutView;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property ZoomScalePageLayoutView: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fZoomScalePageLayoutView write fZoomScalePageLayoutView;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property WorkbookViewId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fWorkbookViewId write fWorkbookViewId;
-    [TNaming(TNaming.nFlatCase)]
     property Pane: TCTPaneCT read fPane;
-    [TNaming(TNaming.nFlatCase)]
     property Selection: TCTSelectionCTList read fSelection;
-    [TNaming(TNaming.nCamelCase)]
     property PivotSelection: TCTPivotSelectionCTList read fPivotSelection;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -6371,18 +5152,13 @@ type
     fState: TSTPaneStateST;
   published
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property XSplit: ProRock.Xmlite.Schema.Base.TDoubleST read fXSplit write fXSplit;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property YSplit: ProRock.Xmlite.Schema.Base.TDoubleST read fYSplit write fYSplit;
-    [TNaming(TNaming.nCamelCase)]
     property TopLeftCell: TSTCellRefST read fTopLeftCell write fTopLeftCell;
     [TDefault(Ord(stpTopLeft))]
-    [TNaming(TNaming.nCamelCase)]
     property ActivePane: TSTPaneST read fActivePane write fActivePane;
     [TDefault(Ord(stpsSplit))]
-    [TNaming(TNaming.nFlatCase)]
     property State: TSTPaneStateST read fState write fState;
   end;
 
@@ -6409,56 +5185,39 @@ type
     fPivotArea: TCTPivotAreaCT;
   published
     [TDefault(Ord(stpTopLeft))]
-    [TNaming(TNaming.nFlatCase)]
     property Pane: TSTPaneST read fPane write fPane;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowHeader: ProRock.Xmlite.Schema.Base.TBooleanST read fShowHeader write fShowHeader;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property &Label: ProRock.Xmlite.Schema.Base.TBooleanST read fLabel write fLabel;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Data: ProRock.Xmlite.Schema.Base.TBooleanST read fData write fData;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Extendable: ProRock.Xmlite.Schema.Base.TBooleanST read fExtendable write fExtendable;
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nFlatCase)]
     property Axis: TSTAxisST read fAxis write fAxis;
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Dimension: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fDimension write fDimension;
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Start: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fStart write fStart;
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Min: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fMin write fMin;
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Max: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fMax write fMax;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property ActiveRow: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fActiveRow write fActiveRow;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property ActiveCol: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fActiveCol write fActiveCol;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property PreviousRow: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fPreviousRow write fPreviousRow;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property PreviousCol: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fPreviousCol write fPreviousCol;
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Click: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fClick write fClick;
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property PivotArea: TCTPivotAreaCT read fPivotArea;
   end;
 
@@ -6471,15 +5230,11 @@ type
     fSqref: TSTSqrefST;
   published
     [TDefault(Ord(stpTopLeft))]
-    [TNaming(TNaming.nFlatCase)]
     property Pane: TSTPaneST read fPane write fPane;
-    [TNaming(TNaming.nCamelCase)]
     property ActiveCell: TSTCellRefST read fActiveCell write fActiveCell;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property ActiveCellId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fActiveCellId write fActiveCellId;
     [TDefault('A1')]
-    [TNaming(TNaming.nFlatCase)]
     property Sqref: TSTSqrefST read fSqref write fSqref;
   end;
 
@@ -6491,12 +5246,9 @@ type
     fBrk: TCTBreakCTList;
   published
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property ManualBreakCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fManualBreakCount write fManualBreakCount;
-    [TNaming(TNaming.nFlatCase)]
     property Brk: TCTBreakCTList read fBrk;
   end;
 
@@ -6510,19 +5262,14 @@ type
     fPt: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fId write fId;
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Min: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fMin write fMin;
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Max: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fMax write fMax;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Man: ProRock.Xmlite.Schema.Base.TBooleanST read fMan write fMan;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Pt: ProRock.Xmlite.Schema.Base.TBooleanST read fPt write fPt;
   end;
 
@@ -6535,16 +5282,12 @@ type
     fShowOutlineSymbols: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ApplyStyles: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyStyles write fApplyStyles;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property SummaryBelow: ProRock.Xmlite.Schema.Base.TBooleanST read fSummaryBelow write fSummaryBelow;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property SummaryRight: ProRock.Xmlite.Schema.Base.TBooleanST read fSummaryRight write fSummaryRight;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowOutlineSymbols: ProRock.Xmlite.Schema.Base.TBooleanST read fShowOutlineSymbols write fShowOutlineSymbols;
   end;
 
@@ -6555,10 +5298,8 @@ type
     fFitToPage: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property AutoPageBreaks: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoPageBreaks write fAutoPageBreaks;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property FitToPage: ProRock.Xmlite.Schema.Base.TBooleanST read fFitToPage write fFitToPage;
   end;
 
@@ -6573,21 +5314,15 @@ type
     fDataRefs: TCTDataRefsCT;
   published
     [TDefault(Ord(stdcfSum))]
-    [TNaming(TNaming.nFlatCase)]
     property &Function: TSTDataConsolidateFunctionST read fFunction write fFunction;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property StartLabels: ProRock.Xmlite.Schema.Base.TBooleanST read fStartLabels write fStartLabels;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property LeftLabels: ProRock.Xmlite.Schema.Base.TBooleanST read fLeftLabels write fLeftLabels;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property TopLabels: ProRock.Xmlite.Schema.Base.TBooleanST read fTopLabels write fTopLabels;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Link: ProRock.Xmlite.Schema.Base.TBooleanST read fLink write fLink;
-    [TNaming(TNaming.nCamelCase)]
     property DataRefs: TCTDataRefsCT read fDataRefs;
   end;
 
@@ -6597,9 +5332,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fDataRef: TCTDataRefCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nCamelCase)]
     property DataRef: TCTDataRefCTList read fDataRef;
   end;
 
@@ -6611,11 +5344,8 @@ type
     fSheet: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
     fId: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Ref: TSTRefST read fRef write fRef;
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
-    [TNaming(TNaming.nFlatCase)]
     property Sheet: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fSheet write fSheet;
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
@@ -6627,9 +5357,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fMergeCell: TCTMergeCellCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nCamelCase)]
     property MergeCell: TCTMergeCellCTList read fMergeCell;
   end;
 
@@ -6639,7 +5367,6 @@ type
     fRef: TSTRefST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Ref: TSTRefST read fRef write fRef;
   end;
 
@@ -6648,7 +5375,6 @@ type
   private
     fCellSmartTags: TCTCellSmartTagsCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property CellSmartTags: TCTCellSmartTagsCTList read fCellSmartTags;
   end;
 
@@ -6659,9 +5385,7 @@ type
     fCellSmartTag: TCTCellSmartTagCTList;
   published
     [TRequired]
-    [TName('r')]
     property R: TSTCellRefST read fR write fR;
-    [TNaming(TNaming.nCamelCase)]
     property CellSmartTag: TCTCellSmartTagCTList read fCellSmartTag;
   end;
 
@@ -6674,15 +5398,11 @@ type
     fCellSmartTagPr: TCTCellSmartTagPrCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fType write fType;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Deleted: ProRock.Xmlite.Schema.Base.TBooleanST read fDeleted write fDeleted;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property XmlBased: ProRock.Xmlite.Schema.Base.TBooleanST read fXmlBased write fXmlBased;
-    [TNaming(TNaming.nCamelCase)]
     property CellSmartTagPr: TCTCellSmartTagPrCTList read fCellSmartTagPr;
   end;
 
@@ -6693,10 +5413,8 @@ type
     fVal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Key: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fKey write fKey;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Val: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fVal write fVal;
   end;
 
@@ -6746,41 +5464,23 @@ type
     [TRequired]
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
-    [TNaming(TNaming.nFlatCase)]
     property Lho: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fLho write fLho;
-    [TNaming(TNaming.nFlatCase)]
     property Lhe: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fLhe write fLhe;
-    [TNaming(TNaming.nFlatCase)]
     property Lhf: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fLhf write fLhf;
-    [TNaming(TNaming.nFlatCase)]
     property Cho: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCho write fCho;
-    [TNaming(TNaming.nFlatCase)]
     property Che: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fChe write fChe;
-    [TNaming(TNaming.nFlatCase)]
     property Chf: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fChf write fChf;
-    [TNaming(TNaming.nFlatCase)]
     property Rho: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fRho write fRho;
-    [TNaming(TNaming.nFlatCase)]
     property Rhe: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fRhe write fRhe;
-    [TNaming(TNaming.nFlatCase)]
     property Rhf: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fRhf write fRhf;
-    [TNaming(TNaming.nFlatCase)]
     property Lfo: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fLfo write fLfo;
-    [TNaming(TNaming.nFlatCase)]
     property Lfe: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fLfe write fLfe;
-    [TNaming(TNaming.nFlatCase)]
     property Lff: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fLff write fLff;
-    [TNaming(TNaming.nFlatCase)]
     property Cfo: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCfo write fCfo;
-    [TNaming(TNaming.nFlatCase)]
     property Cfe: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCfe write fCfe;
-    [TNaming(TNaming.nFlatCase)]
     property Cff: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCff write fCff;
-    [TNaming(TNaming.nFlatCase)]
     property Rfo: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fRfo write fRfo;
-    [TNaming(TNaming.nFlatCase)]
     property Rfe: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fRfe write fRfe;
-    [TNaming(TNaming.nFlatCase)]
     property Rff: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fRff write fRff;
   end;
 
@@ -6789,7 +5489,6 @@ type
   private
     fCustomSheetView: TCTCustomSheetViewCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property CustomSheetView: TCTCustomSheetViewCTList read fCustomSheetView;
   end;
 
@@ -6828,83 +5527,53 @@ type
     fExtLst: TCTExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Guid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST read fGuid write fGuid;
     [TDefault(100)]
-    [TNaming(TNaming.nFlatCase)]
     property Scale: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fScale write fScale;
     [TDefault(64)]
-    [TNaming(TNaming.nCamelCase)]
     property ColorId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fColorId write fColorId;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowPageBreaks: ProRock.Xmlite.Schema.Base.TBooleanST read fShowPageBreaks write fShowPageBreaks;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowFormulas: ProRock.Xmlite.Schema.Base.TBooleanST read fShowFormulas write fShowFormulas;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowGridLines: ProRock.Xmlite.Schema.Base.TBooleanST read fShowGridLines write fShowGridLines;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowRowCol: ProRock.Xmlite.Schema.Base.TBooleanST read fShowRowCol write fShowRowCol;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property OutlineSymbols: ProRock.Xmlite.Schema.Base.TBooleanST read fOutlineSymbols write fOutlineSymbols;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ZeroValues: ProRock.Xmlite.Schema.Base.TBooleanST read fZeroValues write fZeroValues;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property FitToPage: ProRock.Xmlite.Schema.Base.TBooleanST read fFitToPage write fFitToPage;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property PrintArea: ProRock.Xmlite.Schema.Base.TBooleanST read fPrintArea write fPrintArea;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Filter: ProRock.Xmlite.Schema.Base.TBooleanST read fFilter write fFilter;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowAutoFilter: ProRock.Xmlite.Schema.Base.TBooleanST read fShowAutoFilter write fShowAutoFilter;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property HiddenRows: ProRock.Xmlite.Schema.Base.TBooleanST read fHiddenRows write fHiddenRows;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property HiddenColumns: ProRock.Xmlite.Schema.Base.TBooleanST read fHiddenColumns write fHiddenColumns;
     [TDefault(Ord(stssVisible))]
-    [TNaming(TNaming.nFlatCase)]
     property State: TSTSheetStateST read fState write fState;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property FilterUnique: ProRock.Xmlite.Schema.Base.TBooleanST read fFilterUnique write fFilterUnique;
     [TDefault(Ord(stsvtNormal))]
-    [TNaming(TNaming.nFlatCase)]
     property View: TSTSheetViewTypeST read fView write fView;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowRuler: ProRock.Xmlite.Schema.Base.TBooleanST read fShowRuler write fShowRuler;
-    [TNaming(TNaming.nCamelCase)]
     property TopLeftCell: TSTCellRefST read fTopLeftCell write fTopLeftCell;
-    [TNaming(TNaming.nFlatCase)]
     property Pane: TCTPaneCT read fPane;
-    [TNaming(TNaming.nFlatCase)]
     property Selection: TCTSelectionCT read fSelection;
-    [TNaming(TNaming.nCamelCase)]
     property RowBreaks: TCTPageBreakCT read fRowBreaks;
-    [TNaming(TNaming.nCamelCase)]
     property ColBreaks: TCTPageBreakCT read fColBreaks;
-    [TNaming(TNaming.nCamelCase)]
     property PageMargins: TCTPageMarginsCT read fPageMargins;
-    [TNaming(TNaming.nCamelCase)]
     property PrintOptions: TCTPrintOptionsCT read fPrintOptions;
-    [TNaming(TNaming.nCamelCase)]
     property PageSetup: TCTPageSetupCT read fPageSetup;
-    [TNaming(TNaming.nCamelCase)]
     property HeaderFooter: TCTHeaderFooterCT read fHeaderFooter;
-    [TNaming(TNaming.nCamelCase)]
     property AutoFilter: TCTAutoFilterCT read fAutoFilter;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -6918,15 +5587,10 @@ type
     fDataValidation: TCTDataValidationCTList;
   published
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property DisablePrompts: ProRock.Xmlite.Schema.Base.TBooleanST read fDisablePrompts write fDisablePrompts;
-    [TNaming(TNaming.nCamelCase)]
     property XWindow: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fXWindow write fXWindow;
-    [TNaming(TNaming.nCamelCase)]
     property YWindow: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fYWindow write fYWindow;
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nCamelCase)]
     property DataValidation: TCTDataValidationCTList read fDataValidation;
   end;
 
@@ -6950,45 +5614,30 @@ type
     fFormula2: TSTFormulaST;
   published
     [TDefault(Ord(stdvtNone))]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TSTDataValidationTypeST read fType write fType;
     [TDefault(Ord(stdvesStop))]
-    [TNaming(TNaming.nCamelCase)]
     property ErrorStyle: TSTDataValidationErrorStyleST read fErrorStyle write fErrorStyle;
     [TDefault(Ord(stdvimNoControl))]
-    [TNaming(TNaming.nCamelCase)]
     property ImeMode: TSTDataValidationImeModeST read fImeMode write fImeMode;
     [TDefault(Ord(stdvoBetween))]
-    [TNaming(TNaming.nFlatCase)]
     property Operator: TSTDataValidationOperatorST read fOperator write fOperator;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property AllowBlank: ProRock.Xmlite.Schema.Base.TBooleanST read fAllowBlank write fAllowBlank;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowDropDown: ProRock.Xmlite.Schema.Base.TBooleanST read fShowDropDown write fShowDropDown;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowInputMessage: ProRock.Xmlite.Schema.Base.TBooleanST read fShowInputMessage write fShowInputMessage;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowErrorMessage: ProRock.Xmlite.Schema.Base.TBooleanST read fShowErrorMessage write fShowErrorMessage;
-    [TNaming(TNaming.nCamelCase)]
     property ErrorTitle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fErrorTitle write fErrorTitle;
-    [TNaming(TNaming.nFlatCase)]
     property Error: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fError write fError;
-    [TNaming(TNaming.nCamelCase)]
     property PromptTitle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fPromptTitle write fPromptTitle;
-    [TNaming(TNaming.nFlatCase)]
     property Prompt: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fPrompt write fPrompt;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Sqref: TSTSqrefST read fSqref write fSqref;
     [TXmliteElement]
-    [TNaming(TNaming.nFlatCase)]
     property Formula1: TSTFormulaST read fFormula1 write fFormula1;
     [TXmliteElement]
-    [TNaming(TNaming.nFlatCase)]
     property Formula2: TSTFormulaST read fFormula2 write fFormula2;
   end;
 
@@ -7001,13 +5650,9 @@ type
     fExtLst: TCTExtensionListCT;
   published
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Pivot: ProRock.Xmlite.Schema.Base.TBooleanST read fPivot write fPivot;
-    [TNaming(TNaming.nFlatCase)]
     property Sqref: TSTSqrefST read fSqref write fSqref;
-    [TNaming(TNaming.nCamelCase)]
     property CfRule: TCTCfRuleCTList read fCfRule;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -7033,47 +5678,29 @@ type
     fIconSet: TCTIconSetCT;
     fExtLst: TCTExtensionListCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TSTCfTypeST read fType write fType;
-    [TNaming(TNaming.nCamelCase)]
     property DxfId: TSTDxfIdST read fDxfId write fDxfId;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Priority: ProRock.Xmlite.Schema.Base.TIntST read fPriority write fPriority;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property StopIfTrue: ProRock.Xmlite.Schema.Base.TBooleanST read fStopIfTrue write fStopIfTrue;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property AboveAverage: ProRock.Xmlite.Schema.Base.TBooleanST read fAboveAverage write fAboveAverage;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Percent: ProRock.Xmlite.Schema.Base.TBooleanST read fPercent write fPercent;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Bottom: ProRock.Xmlite.Schema.Base.TBooleanST read fBottom write fBottom;
-    [TNaming(TNaming.nFlatCase)]
     property Operator: TSTConditionalFormattingOperatorST read fOperator write fOperator;
-    [TNaming(TNaming.nFlatCase)]
     property Text: ProRock.Xmlite.Schema.Base.TStringST read fText write fText;
-    [TNaming(TNaming.nCamelCase)]
     property TimePeriod: TSTTimePeriodST read fTimePeriod write fTimePeriod;
-    [TNaming(TNaming.nFlatCase)]
     property Rank: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fRank write fRank;
-    [TNaming(TNaming.nCamelCase)]
     property StdDev: ProRock.Xmlite.Schema.Base.TIntST read fStdDev write fStdDev;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property EqualAverage: ProRock.Xmlite.Schema.Base.TBooleanST read fEqualAverage write fEqualAverage;
-    [TNaming(TNaming.nFlatCase)]
     property Formula: TSTFormulaSTList read fFormula;
-    [TNaming(TNaming.nCamelCase)]
     property ColorScale: TCTColorScaleCT read fColorScale;
-    [TNaming(TNaming.nCamelCase)]
     property DataBar: TCTDataBarCT read fDataBar;
-    [TNaming(TNaming.nCamelCase)]
     property IconSet: TCTIconSetCT read fIconSet;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -7082,7 +5709,6 @@ type
   private
     fHyperlink: TCTHyperlinkCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Hyperlink: TCTHyperlinkCTList read fHyperlink;
   end;
 
@@ -7096,15 +5722,11 @@ type
     fDisplay: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Ref: TSTRefST read fRef write fRef;
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
-    [TNaming(TNaming.nFlatCase)]
     property Location: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fLocation write fLocation;
-    [TNaming(TNaming.nFlatCase)]
     property Tooltip: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fTooltip write fTooltip;
-    [TNaming(TNaming.nFlatCase)]
     property Display: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDisplay write fDisplay;
   end;
 
@@ -7128,36 +5750,24 @@ type
     [TXmliteText]
     property XmlValue: TSTFormulaST read fXmlValue write fXmlValue;
     [TDefault(Ord(stcftNormal))]
-    [TName('t')]
     property T: TSTCellFormulaTypeST read fT write fT;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Aca: ProRock.Xmlite.Schema.Base.TBooleanST read fAca write fAca;
-    [TNaming(TNaming.nFlatCase)]
     property Ref: TSTRefST read fRef write fRef;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property Dt2D: ProRock.Xmlite.Schema.Base.TBooleanST read fDt2D write fDt2D;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Dtr: ProRock.Xmlite.Schema.Base.TBooleanST read fDtr write fDtr;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Del1: ProRock.Xmlite.Schema.Base.TBooleanST read fDel1 write fDel1;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Del2: ProRock.Xmlite.Schema.Base.TBooleanST read fDel2 write fDel2;
-    [TName('r1')]
     property R1: TSTCellRefST read fR1 write fR1;
-    [TName('r2')]
     property R2: TSTCellRefST read fR2 write fR2;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Ca: ProRock.Xmlite.Schema.Base.TBooleanST read fCa write fCa;
-    [TNaming(TNaming.nFlatCase)]
     property Si: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSi write fSi;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Bx: ProRock.Xmlite.Schema.Base.TBooleanST read fBx write fBx;
   end;
 
@@ -7167,9 +5777,7 @@ type
     fCfvo: TCTCfvoCTList;
     fColor: TCTColorCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Cfvo: TCTCfvoCTList read fCfvo;
-    [TNaming(TNaming.nFlatCase)]
     property Color: TCTColorCTList read fColor;
   end;
 
@@ -7183,18 +5791,13 @@ type
     fColor: TCTColorCT;
   published
     [TDefault(10)]
-    [TNaming(TNaming.nCamelCase)]
     property MinLength: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fMinLength write fMinLength;
     [TDefault(90)]
-    [TNaming(TNaming.nCamelCase)]
     property MaxLength: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fMaxLength write fMaxLength;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowValue: ProRock.Xmlite.Schema.Base.TBooleanST read fShowValue write fShowValue;
-    [TNaming(TNaming.nFlatCase)]
     property Cfvo: TCTCfvoCTList read fCfvo;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Color: TCTColorCT read fColor;
   end;
 
@@ -7208,18 +5811,13 @@ type
     fCfvo: TCTCfvoCTList;
   published
     [TDefault(Ord(stist3TrafficLights1))]
-    [TNaming(TNaming.nCamelCase)]
     property IconSet: TSTIconSetTypeST read fIconSet write fIconSet;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowValue: ProRock.Xmlite.Schema.Base.TBooleanST read fShowValue write fShowValue;
     [TDefault(True)]
-    [TNaming(TNaming.nFlatCase)]
     property Percent: ProRock.Xmlite.Schema.Base.TBooleanST read fPercent write fPercent;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Reverse: ProRock.Xmlite.Schema.Base.TBooleanST read fReverse write fReverse;
-    [TNaming(TNaming.nFlatCase)]
     property Cfvo: TCTCfvoCTList read fCfvo;
   end;
 
@@ -7232,14 +5830,10 @@ type
     fExtLst: TCTExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TSTCfvoTypeST read fType write fType;
-    [TNaming(TNaming.nFlatCase)]
     property Val: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fVal write fVal;
     [TDefault(True)]
-    [TNaming(TNaming.nFlatCase)]
     property Gte: ProRock.Xmlite.Schema.Base.TBooleanST read fGte write fGte;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -7254,22 +5848,16 @@ type
     fFooter: ProRock.Xmlite.Schema.Base.TDoubleST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Left: ProRock.Xmlite.Schema.Base.TDoubleST read fLeft write fLeft;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Right: ProRock.Xmlite.Schema.Base.TDoubleST read fRight write fRight;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Top: ProRock.Xmlite.Schema.Base.TDoubleST read fTop write fTop;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Bottom: ProRock.Xmlite.Schema.Base.TDoubleST read fBottom write fBottom;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Header: ProRock.Xmlite.Schema.Base.TDoubleST read fHeader write fHeader;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Footer: ProRock.Xmlite.Schema.Base.TDoubleST read fFooter write fFooter;
   end;
 
@@ -7283,19 +5871,14 @@ type
     fGridLinesSet: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property HorizontalCentered: ProRock.Xmlite.Schema.Base.TBooleanST read fHorizontalCentered write fHorizontalCentered;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property VerticalCentered: ProRock.Xmlite.Schema.Base.TBooleanST read fVerticalCentered write fVerticalCentered;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Headings: ProRock.Xmlite.Schema.Base.TBooleanST read fHeadings write fHeadings;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property GridLines: ProRock.Xmlite.Schema.Base.TBooleanST read fGridLines write fGridLines;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property GridLinesSet: ProRock.Xmlite.Schema.Base.TBooleanST read fGridLinesSet write fGridLinesSet;
   end;
 
@@ -7323,56 +5906,38 @@ type
     fId: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA;
   published
     [TDefault(1)]
-    [TNaming(TNaming.nCamelCase)]
     property PaperSize: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fPaperSize write fPaperSize;
-    [TNaming(TNaming.nCamelCase)]
     property PaperHeight: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTPositiveUniversalMeasureST read fPaperHeight write fPaperHeight;
-    [TNaming(TNaming.nCamelCase)]
     property PaperWidth: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTPositiveUniversalMeasureST read fPaperWidth write fPaperWidth;
     [TDefault(100)]
-    [TNaming(TNaming.nFlatCase)]
     property Scale: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fScale write fScale;
     [TDefault(1)]
-    [TNaming(TNaming.nCamelCase)]
     property FirstPageNumber: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fFirstPageNumber write fFirstPageNumber;
     [TDefault(1)]
-    [TNaming(TNaming.nCamelCase)]
     property FitToWidth: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fFitToWidth write fFitToWidth;
     [TDefault(1)]
-    [TNaming(TNaming.nCamelCase)]
     property FitToHeight: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fFitToHeight write fFitToHeight;
     [TDefault(Ord(stpoDownThenOver))]
-    [TNaming(TNaming.nCamelCase)]
     property PageOrder: TSTPageOrderST read fPageOrder write fPageOrder;
     [TDefault(Ord(stoDefault))]
-    [TNaming(TNaming.nFlatCase)]
     property Orientation: TSTOrientationST read fOrientation write fOrientation;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property UsePrinterDefaults: ProRock.Xmlite.Schema.Base.TBooleanST read fUsePrinterDefaults write fUsePrinterDefaults;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property BlackAndWhite: ProRock.Xmlite.Schema.Base.TBooleanST read fBlackAndWhite write fBlackAndWhite;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Draft: ProRock.Xmlite.Schema.Base.TBooleanST read fDraft write fDraft;
     [TDefault(Ord(stccNone))]
-    [TNaming(TNaming.nCamelCase)]
     property CellComments: TSTCellCommentsST read fCellComments write fCellComments;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property UseFirstPageNumber: ProRock.Xmlite.Schema.Base.TBooleanST read fUseFirstPageNumber write fUseFirstPageNumber;
     [TDefault(Ord(stpeDisplayed))]
-    [TNaming(TNaming.nFlatCase)]
     property Errors: TSTPrintErrorST read fErrors write fErrors;
     [TDefault(600)]
-    [TNaming(TNaming.nCamelCase)]
     property HorizontalDpi: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fHorizontalDpi write fHorizontalDpi;
     [TDefault(600)]
-    [TNaming(TNaming.nCamelCase)]
     property VerticalDpi: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fVerticalDpi write fVerticalDpi;
     [TDefault(1)]
-    [TNaming(TNaming.nFlatCase)]
     property Copies: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCopies write fCopies;
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
@@ -7393,34 +5958,24 @@ type
     fFirstFooter: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
   published
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property DifferentOddEven: ProRock.Xmlite.Schema.Base.TBooleanST read fDifferentOddEven write fDifferentOddEven;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property DifferentFirst: ProRock.Xmlite.Schema.Base.TBooleanST read fDifferentFirst write fDifferentFirst;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ScaleWithDoc: ProRock.Xmlite.Schema.Base.TBooleanST read fScaleWithDoc write fScaleWithDoc;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property AlignWithMargins: ProRock.Xmlite.Schema.Base.TBooleanST read fAlignWithMargins write fAlignWithMargins;
     [TXmliteElement]
-    [TNaming(TNaming.nCamelCase)]
     property OddHeader: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fOddHeader write fOddHeader;
     [TXmliteElement]
-    [TNaming(TNaming.nCamelCase)]
     property OddFooter: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fOddFooter write fOddFooter;
     [TXmliteElement]
-    [TNaming(TNaming.nCamelCase)]
     property EvenHeader: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fEvenHeader write fEvenHeader;
     [TXmliteElement]
-    [TNaming(TNaming.nCamelCase)]
     property EvenFooter: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fEvenFooter write fEvenFooter;
     [TXmliteElement]
-    [TNaming(TNaming.nCamelCase)]
     property FirstHeader: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fFirstHeader write fFirstHeader;
     [TXmliteElement]
-    [TNaming(TNaming.nCamelCase)]
     property FirstFooter: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fFirstFooter write fFirstFooter;
   end;
 
@@ -7432,13 +5987,9 @@ type
     fSqref: TSTSqrefST;
     fScenario: TCTScenarioCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Current: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCurrent write fCurrent;
-    [TNaming(TNaming.nFlatCase)]
     property Show: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fShow write fShow;
-    [TNaming(TNaming.nFlatCase)]
     property Sqref: TSTSqrefST read fSqref write fSqref;
-    [TNaming(TNaming.nFlatCase)]
     property Scenario: TCTScenarioCTList read fScenario;
   end;
 
@@ -7467,63 +6018,42 @@ type
     fPivotTables: ProRock.Xmlite.Schema.Base.TBooleanST;
     fSelectUnlockedCells: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Password: TSTUnsignedShortHexST read fPassword write fPassword;
-    [TNaming(TNaming.nCamelCase)]
     property AlgorithmName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fAlgorithmName write fAlgorithmName;
-    [TNaming(TNaming.nCamelCase)]
     property HashValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST read fHashValue write fHashValue;
-    [TNaming(TNaming.nCamelCase)]
     property SaltValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST read fSaltValue write fSaltValue;
-    [TNaming(TNaming.nCamelCase)]
     property SpinCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSpinCount write fSpinCount;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Sheet: ProRock.Xmlite.Schema.Base.TBooleanST read fSheet write fSheet;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Objects: ProRock.Xmlite.Schema.Base.TBooleanST read fObjects write fObjects;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Scenarios: ProRock.Xmlite.Schema.Base.TBooleanST read fScenarios write fScenarios;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property FormatCells: ProRock.Xmlite.Schema.Base.TBooleanST read fFormatCells write fFormatCells;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property FormatColumns: ProRock.Xmlite.Schema.Base.TBooleanST read fFormatColumns write fFormatColumns;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property FormatRows: ProRock.Xmlite.Schema.Base.TBooleanST read fFormatRows write fFormatRows;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property InsertColumns: ProRock.Xmlite.Schema.Base.TBooleanST read fInsertColumns write fInsertColumns;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property InsertRows: ProRock.Xmlite.Schema.Base.TBooleanST read fInsertRows write fInsertRows;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property InsertHyperlinks: ProRock.Xmlite.Schema.Base.TBooleanST read fInsertHyperlinks write fInsertHyperlinks;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property DeleteColumns: ProRock.Xmlite.Schema.Base.TBooleanST read fDeleteColumns write fDeleteColumns;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property DeleteRows: ProRock.Xmlite.Schema.Base.TBooleanST read fDeleteRows write fDeleteRows;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property SelectLockedCells: ProRock.Xmlite.Schema.Base.TBooleanST read fSelectLockedCells write fSelectLockedCells;
     [TDefault(True)]
-    [TNaming(TNaming.nFlatCase)]
     property Sort: ProRock.Xmlite.Schema.Base.TBooleanST read fSort write fSort;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property AutoFilter: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoFilter write fAutoFilter;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property PivotTables: ProRock.Xmlite.Schema.Base.TBooleanST read fPivotTables write fPivotTables;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property SelectUnlockedCells: ProRock.Xmlite.Schema.Base.TBooleanST read fSelectUnlockedCells write fSelectUnlockedCells;
   end;
 
@@ -7532,7 +6062,6 @@ type
   private
     fProtectedRange: TCTProtectedRangeCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property ProtectedRange: TCTProtectedRangeCTList read fProtectedRange;
   end;
 
@@ -7548,23 +6077,15 @@ type
     fSaltValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST;
     fSpinCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Password: TSTUnsignedShortHexST read fPassword write fPassword;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Sqref: TSTSqrefST read fSqref write fSqref;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
-    [TNaming(TNaming.nCamelCase)]
     property SecurityDescriptor: ProRock.Xmlite.Schema.Base.TStringST read fSecurityDescriptor write fSecurityDescriptor;
-    [TNaming(TNaming.nCamelCase)]
     property AlgorithmName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fAlgorithmName write fAlgorithmName;
-    [TNaming(TNaming.nCamelCase)]
     property HashValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST read fHashValue write fHashValue;
-    [TNaming(TNaming.nCamelCase)]
     property SaltValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST read fSaltValue write fSaltValue;
-    [TNaming(TNaming.nCamelCase)]
     property SpinCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSpinCount write fSpinCount;
   end;
 
@@ -7580,21 +6101,14 @@ type
     fInputCells: TCTInputCellsCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Locked: ProRock.Xmlite.Schema.Base.TBooleanST read fLocked write fLocked;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Hidden: ProRock.Xmlite.Schema.Base.TBooleanST read fHidden write fHidden;
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nFlatCase)]
     property User: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fUser write fUser;
-    [TNaming(TNaming.nFlatCase)]
     property Comment: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fComment write fComment;
-    [TNaming(TNaming.nCamelCase)]
     property InputCells: TCTInputCellsCTList read fInputCells;
   end;
 
@@ -7608,18 +6122,13 @@ type
     fNumFmtId: TSTNumFmtIdST;
   published
     [TRequired]
-    [TName('r')]
     property R: TSTCellRefST read fR write fR;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Deleted: ProRock.Xmlite.Schema.Base.TBooleanST read fDeleted write fDeleted;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Undone: ProRock.Xmlite.Schema.Base.TBooleanST read fUndone write fUndone;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Val: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fVal write fVal;
-    [TNaming(TNaming.nCamelCase)]
     property NumFmtId: TSTNumFmtIdST read fNumFmtId write fNumFmtId;
   end;
 
@@ -7628,7 +6137,6 @@ type
   private
     fCellWatch: TCTCellWatchCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property CellWatch: TCTCellWatchCTList read fCellWatch;
   end;
 
@@ -7638,7 +6146,6 @@ type
     fR: TSTCellRefST;
   published
     [TRequired]
-    [TName('r')]
     property R: TSTCellRefST read fR write fR;
   end;
 
@@ -7660,35 +6167,21 @@ type
     fWebPublishItems: TCTWebPublishItemsCT;
     fExtLst: TCTExtensionListCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property SheetPr: TCTChartsheetPrCT read fSheetPr;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property SheetViews: TCTChartsheetViewsCT read fSheetViews;
-    [TNaming(TNaming.nCamelCase)]
     property SheetProtection: TCTChartsheetProtectionCT read fSheetProtection;
-    [TNaming(TNaming.nCamelCase)]
     property CustomSheetViews: TCTCustomChartsheetViewsCT read fCustomSheetViews;
-    [TNaming(TNaming.nCamelCase)]
     property PageMargins: TCTPageMarginsCT read fPageMargins;
-    [TNaming(TNaming.nCamelCase)]
     property PageSetup: TCTCsPageSetupCT read fPageSetup;
-    [TNaming(TNaming.nCamelCase)]
     property HeaderFooter: TCTHeaderFooterCT read fHeaderFooter;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Drawing: TCTDrawingCT read fDrawing;
-    [TNaming(TNaming.nCamelCase)]
     property LegacyDrawing: TCTLegacyDrawingCT read fLegacyDrawing;
-    [TNaming(TNaming.nCamelCase)]
     property LegacyDrawingHF: TCTLegacyDrawingCT read fLegacyDrawingHF;
-    [TNaming(TNaming.nCamelCase)]
     property DrawingHF: TCTDrawingHFCT read fDrawingHF;
-    [TNaming(TNaming.nFlatCase)]
     property Picture: TCTSheetBackgroundPictureCT read fPicture;
-    [TNaming(TNaming.nCamelCase)]
     property WebPublishItems: TCTWebPublishItemsCT read fWebPublishItems;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -7700,11 +6193,8 @@ type
     fTabColor: TCTColorCT;
   published
     [TDefault(True)]
-    [TNaming(TNaming.nFlatCase)]
     property Published: ProRock.Xmlite.Schema.Base.TBooleanST read fPublished write fPublished;
-    [TNaming(TNaming.nCamelCase)]
     property CodeName: ProRock.Xmlite.Schema.Base.TStringST read fCodeName write fCodeName;
-    [TNaming(TNaming.nCamelCase)]
     property TabColor: TCTColorCT read fTabColor;
   end;
 
@@ -7714,9 +6204,7 @@ type
     fSheetView: TCTChartsheetViewCTList;
     fExtLst: TCTExtensionListCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property SheetView: TCTChartsheetViewCTList read fSheetView;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -7730,18 +6218,13 @@ type
     fExtLst: TCTExtensionListCT;
   published
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property TabSelected: ProRock.Xmlite.Schema.Base.TBooleanST read fTabSelected write fTabSelected;
     [TDefault(100)]
-    [TNaming(TNaming.nCamelCase)]
     property ZoomScale: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fZoomScale write fZoomScale;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property WorkbookViewId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fWorkbookViewId write fWorkbookViewId;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ZoomToFit: ProRock.Xmlite.Schema.Base.TBooleanST read fZoomToFit write fZoomToFit;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -7756,21 +6239,14 @@ type
     fContent: ProRock.Xmlite.Schema.Base.TBooleanST;
     fObjects: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Password: TSTUnsignedShortHexST read fPassword write fPassword;
-    [TNaming(TNaming.nCamelCase)]
     property AlgorithmName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fAlgorithmName write fAlgorithmName;
-    [TNaming(TNaming.nCamelCase)]
     property HashValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST read fHashValue write fHashValue;
-    [TNaming(TNaming.nCamelCase)]
     property SaltValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST read fSaltValue write fSaltValue;
-    [TNaming(TNaming.nCamelCase)]
     property SpinCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSpinCount write fSpinCount;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Content: ProRock.Xmlite.Schema.Base.TBooleanST read fContent write fContent;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Objects: ProRock.Xmlite.Schema.Base.TBooleanST read fObjects write fObjects;
   end;
 
@@ -7792,38 +6268,26 @@ type
     fId: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA;
   published
     [TDefault(1)]
-    [TNaming(TNaming.nCamelCase)]
     property PaperSize: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fPaperSize write fPaperSize;
-    [TNaming(TNaming.nCamelCase)]
     property PaperHeight: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTPositiveUniversalMeasureST read fPaperHeight write fPaperHeight;
-    [TNaming(TNaming.nCamelCase)]
     property PaperWidth: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTPositiveUniversalMeasureST read fPaperWidth write fPaperWidth;
     [TDefault(1)]
-    [TNaming(TNaming.nCamelCase)]
     property FirstPageNumber: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fFirstPageNumber write fFirstPageNumber;
     [TDefault(Ord(stoDefault))]
-    [TNaming(TNaming.nFlatCase)]
     property Orientation: TSTOrientationST read fOrientation write fOrientation;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property UsePrinterDefaults: ProRock.Xmlite.Schema.Base.TBooleanST read fUsePrinterDefaults write fUsePrinterDefaults;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property BlackAndWhite: ProRock.Xmlite.Schema.Base.TBooleanST read fBlackAndWhite write fBlackAndWhite;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Draft: ProRock.Xmlite.Schema.Base.TBooleanST read fDraft write fDraft;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property UseFirstPageNumber: ProRock.Xmlite.Schema.Base.TBooleanST read fUseFirstPageNumber write fUseFirstPageNumber;
     [TDefault(600)]
-    [TNaming(TNaming.nCamelCase)]
     property HorizontalDpi: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fHorizontalDpi write fHorizontalDpi;
     [TDefault(600)]
-    [TNaming(TNaming.nCamelCase)]
     property VerticalDpi: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fVerticalDpi write fVerticalDpi;
     [TDefault(1)]
-    [TNaming(TNaming.nFlatCase)]
     property Copies: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCopies write fCopies;
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
@@ -7834,7 +6298,6 @@ type
   private
     fCustomSheetView: TCTCustomChartsheetViewCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property CustomSheetView: TCTCustomChartsheetViewCTList read fCustomSheetView;
   end;
 
@@ -7850,22 +6313,15 @@ type
     fHeaderFooter: TCTHeaderFooterCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Guid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST read fGuid write fGuid;
     [TDefault(100)]
-    [TNaming(TNaming.nFlatCase)]
     property Scale: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fScale write fScale;
     [TDefault(Ord(stssVisible))]
-    [TNaming(TNaming.nFlatCase)]
     property State: TSTSheetStateST read fState write fState;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ZoomToFit: ProRock.Xmlite.Schema.Base.TBooleanST read fZoomToFit write fZoomToFit;
-    [TNaming(TNaming.nCamelCase)]
     property PageMargins: TCTPageMarginsCT read fPageMargins;
-    [TNaming(TNaming.nCamelCase)]
     property PageSetup: TCTCsPageSetupCT read fPageSetup;
-    [TNaming(TNaming.nCamelCase)]
     property HeaderFooter: TCTHeaderFooterCT read fHeaderFooter;
   end;
 
@@ -7874,7 +6330,6 @@ type
   private
     fCustomPr: TCTCustomPropertyCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property CustomPr: TCTCustomPropertyCTList read fCustomPr;
   end;
 
@@ -7885,7 +6340,6 @@ type
     fId: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
     [TRequired]
     [TNaming(TNaming.nFlatCase)]
@@ -7897,7 +6351,6 @@ type
   private
     fOleObject: TCTOleObjectCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property OleObject: TCTOleObjectCTList read fOleObject;
   end;
 
@@ -7913,24 +6366,17 @@ type
     fId: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA;
     fObjectPr: TCTObjectPrCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property ProgId: ProRock.Xmlite.Schema.Base.TStringST read fProgId write fProgId;
     [TDefault(Ord(stdaDvaspectContent))]
-    [TNaming(TNaming.nCamelCase)]
     property DvAspect: TSTDvAspectST read fDvAspect write fDvAspect;
-    [TNaming(TNaming.nFlatCase)]
     property Link: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fLink write fLink;
-    [TNaming(TNaming.nCamelCase)]
     property OleUpdate: TSTOleUpdateST read fOleUpdate write fOleUpdate;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property AutoLoad: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoLoad write fAutoLoad;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ShapeId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fShapeId write fShapeId;
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
-    [TNaming(TNaming.nCamelCase)]
     property ObjectPr: TCTObjectPrCT read fObjectPr;
   end;
 
@@ -7952,40 +6398,28 @@ type
     fAnchor: TCTObjectAnchorCT;
   published
     [TDefault(True)]
-    [TNaming(TNaming.nFlatCase)]
     property Locked: ProRock.Xmlite.Schema.Base.TBooleanST read fLocked write fLocked;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultSize: ProRock.Xmlite.Schema.Base.TBooleanST read fDefaultSize write fDefaultSize;
     [TDefault(True)]
-    [TNaming(TNaming.nFlatCase)]
     property Print: ProRock.Xmlite.Schema.Base.TBooleanST read fPrint write fPrint;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Disabled: ProRock.Xmlite.Schema.Base.TBooleanST read fDisabled write fDisabled;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property UiObject: ProRock.Xmlite.Schema.Base.TBooleanST read fUiObject write fUiObject;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property AutoFill: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoFill write fAutoFill;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property AutoLine: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoLine write fAutoLine;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property AutoPict: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoPict write fAutoPict;
-    [TNaming(TNaming.nFlatCase)]
     property Macro: TSTFormulaST read fMacro write fMacro;
-    [TNaming(TNaming.nCamelCase)]
     property AltText: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fAltText write fAltText;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Dde: ProRock.Xmlite.Schema.Base.TBooleanST read fDde write fDde;
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Anchor: TCTObjectAnchorCT read fAnchor;
   end;
 
@@ -7995,9 +6429,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fWebPublishItem: TCTWebPublishItemCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nCamelCase)]
     property WebPublishItem: TCTWebPublishItemCTList read fWebPublishItem;
   end;
 
@@ -8014,25 +6446,17 @@ type
     fAutoRepublish: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fId write fId;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property DivId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDivId write fDivId;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property SourceType: TSTWebSourceTypeST read fSourceType write fSourceType;
-    [TNaming(TNaming.nCamelCase)]
     property SourceRef: TSTRefST read fSourceRef write fSourceRef;
-    [TNaming(TNaming.nCamelCase)]
     property SourceObject: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fSourceObject write fSourceObject;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property DestinationFile: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDestinationFile write fDestinationFile;
-    [TNaming(TNaming.nFlatCase)]
     property Title: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fTitle write fTitle;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property AutoRepublish: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoRepublish write fAutoRepublish;
   end;
 
@@ -8041,7 +6465,6 @@ type
   private
     fControl: TCTControlCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Control: TCTControlCTList read fControl;
   end;
 
@@ -8054,14 +6477,11 @@ type
     fControlPr: TCTControlPrCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ShapeId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fShapeId write fShapeId;
     [TRequired]
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Base.TStringST read fName write fName;
-    [TNaming(TNaming.nCamelCase)]
     property ControlPr: TCTControlPrCT read fControlPr;
   end;
 
@@ -8086,47 +6506,32 @@ type
     fAnchor: TCTObjectAnchorCT;
   published
     [TDefault(True)]
-    [TNaming(TNaming.nFlatCase)]
     property Locked: ProRock.Xmlite.Schema.Base.TBooleanST read fLocked write fLocked;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property DefaultSize: ProRock.Xmlite.Schema.Base.TBooleanST read fDefaultSize write fDefaultSize;
     [TDefault(True)]
-    [TNaming(TNaming.nFlatCase)]
     property Print: ProRock.Xmlite.Schema.Base.TBooleanST read fPrint write fPrint;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Disabled: ProRock.Xmlite.Schema.Base.TBooleanST read fDisabled write fDisabled;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property RecalcAlways: ProRock.Xmlite.Schema.Base.TBooleanST read fRecalcAlways write fRecalcAlways;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property UiObject: ProRock.Xmlite.Schema.Base.TBooleanST read fUiObject write fUiObject;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property AutoFill: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoFill write fAutoFill;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property AutoLine: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoLine write fAutoLine;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property AutoPict: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoPict write fAutoPict;
-    [TNaming(TNaming.nFlatCase)]
     property Macro: TSTFormulaST read fMacro write fMacro;
-    [TNaming(TNaming.nCamelCase)]
     property AltText: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fAltText write fAltText;
-    [TNaming(TNaming.nCamelCase)]
     property LinkedCell: TSTFormulaST read fLinkedCell write fLinkedCell;
-    [TNaming(TNaming.nCamelCase)]
     property ListFillRange: TSTFormulaST read fListFillRange write fListFillRange;
     [TDefault('pict')]
-    [TNaming(TNaming.nFlatCase)]
     property Cf: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fCf write fCf;
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Anchor: TCTObjectAnchorCT read fAnchor;
   end;
 
@@ -8136,9 +6541,7 @@ type
     fIgnoredError: TCTIgnoredErrorCTList;
     fExtLst: TCTExtensionListCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property IgnoredError: TCTIgnoredErrorCTList read fIgnoredError;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -8157,34 +6560,24 @@ type
     fCalculatedColumn: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Sqref: TSTSqrefST read fSqref write fSqref;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property EvalError: ProRock.Xmlite.Schema.Base.TBooleanST read fEvalError write fEvalError;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property TwoDigitTextYear: ProRock.Xmlite.Schema.Base.TBooleanST read fTwoDigitTextYear write fTwoDigitTextYear;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property NumberStoredAsText: ProRock.Xmlite.Schema.Base.TBooleanST read fNumberStoredAsText write fNumberStoredAsText;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Formula: ProRock.Xmlite.Schema.Base.TBooleanST read fFormula write fFormula;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property FormulaRange: ProRock.Xmlite.Schema.Base.TBooleanST read fFormulaRange write fFormulaRange;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property UnlockedFormula: ProRock.Xmlite.Schema.Base.TBooleanST read fUnlockedFormula write fUnlockedFormula;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property EmptyCellReference: ProRock.Xmlite.Schema.Base.TBooleanST read fEmptyCellReference write fEmptyCellReference;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ListDataValidation: ProRock.Xmlite.Schema.Base.TBooleanST read fListDataValidation write fListDataValidation;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property CalculatedColumn: ProRock.Xmlite.Schema.Base.TBooleanST read fCalculatedColumn write fCalculatedColumn;
   end;
 
@@ -8194,9 +6587,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fTablePart: TCTTablePartCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nCamelCase)]
     property TablePart: TCTTablePartCTList read fTablePart;
   end;
 
@@ -8221,19 +6612,12 @@ type
     fValueMetadata: TCTMetadataBlocksCT;
     fExtLst: TCTExtensionListCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property MetadataTypes: TCTMetadataTypesCT read fMetadataTypes;
-    [TNaming(TNaming.nCamelCase)]
     property MetadataStrings: TCTMetadataStringsCT read fMetadataStrings;
-    [TNaming(TNaming.nCamelCase)]
     property MdxMetadata: TCTMdxMetadataCT read fMdxMetadata;
-    [TNaming(TNaming.nCamelCase)]
     property FutureMetadata: TCTFutureMetadataCTList read fFutureMetadata;
-    [TNaming(TNaming.nCamelCase)]
     property CellMetadata: TCTMetadataBlocksCT read fCellMetadata;
-    [TNaming(TNaming.nCamelCase)]
     property ValueMetadata: TCTMetadataBlocksCT read fValueMetadata;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -8244,9 +6628,7 @@ type
     fMetadataType: TCTMetadataTypeCTList;
   published
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nCamelCase)]
     property MetadataType: TCTMetadataTypeCTList read fMetadataType;
   end;
 
@@ -8283,88 +6665,61 @@ type
     fCellMeta: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property MinSupportedVersion: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fMinSupportedVersion write fMinSupportedVersion;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property GhostRow: ProRock.Xmlite.Schema.Base.TBooleanST read fGhostRow write fGhostRow;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property GhostCol: ProRock.Xmlite.Schema.Base.TBooleanST read fGhostCol write fGhostCol;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Edit: ProRock.Xmlite.Schema.Base.TBooleanST read fEdit write fEdit;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Delete: ProRock.Xmlite.Schema.Base.TBooleanST read fDelete write fDelete;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Copy: ProRock.Xmlite.Schema.Base.TBooleanST read fCopy write fCopy;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property PasteAll: ProRock.Xmlite.Schema.Base.TBooleanST read fPasteAll write fPasteAll;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property PasteFormulas: ProRock.Xmlite.Schema.Base.TBooleanST read fPasteFormulas write fPasteFormulas;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property PasteValues: ProRock.Xmlite.Schema.Base.TBooleanST read fPasteValues write fPasteValues;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property PasteFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fPasteFormats write fPasteFormats;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property PasteComments: ProRock.Xmlite.Schema.Base.TBooleanST read fPasteComments write fPasteComments;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property PasteDataValidation: ProRock.Xmlite.Schema.Base.TBooleanST read fPasteDataValidation write fPasteDataValidation;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property PasteBorders: ProRock.Xmlite.Schema.Base.TBooleanST read fPasteBorders write fPasteBorders;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property PasteColWidths: ProRock.Xmlite.Schema.Base.TBooleanST read fPasteColWidths write fPasteColWidths;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property PasteNumberFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fPasteNumberFormats write fPasteNumberFormats;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Merge: ProRock.Xmlite.Schema.Base.TBooleanST read fMerge write fMerge;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property SplitFirst: ProRock.Xmlite.Schema.Base.TBooleanST read fSplitFirst write fSplitFirst;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property SplitAll: ProRock.Xmlite.Schema.Base.TBooleanST read fSplitAll write fSplitAll;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property RowColShift: ProRock.Xmlite.Schema.Base.TBooleanST read fRowColShift write fRowColShift;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ClearAll: ProRock.Xmlite.Schema.Base.TBooleanST read fClearAll write fClearAll;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ClearFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fClearFormats write fClearFormats;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ClearContents: ProRock.Xmlite.Schema.Base.TBooleanST read fClearContents write fClearContents;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ClearComments: ProRock.Xmlite.Schema.Base.TBooleanST read fClearComments write fClearComments;
     [TDefault(False)]
     [TName('assign')]
     property Assign_: ProRock.Xmlite.Schema.Base.TBooleanST read fAssign write fAssign;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Coerce: ProRock.Xmlite.Schema.Base.TBooleanST read fCoerce write fCoerce;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Adjust: ProRock.Xmlite.Schema.Base.TBooleanST read fAdjust write fAdjust;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property CellMeta: ProRock.Xmlite.Schema.Base.TBooleanST read fCellMeta write fCellMeta;
   end;
 
@@ -8375,9 +6730,7 @@ type
     fBk: TCTMetadataBlockCTList;
   published
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nFlatCase)]
     property Bk: TCTMetadataBlockCTList read fBk;
   end;
 
@@ -8386,7 +6739,6 @@ type
   private
     fRc: TCTMetadataRecordCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Rc: TCTMetadataRecordCTList read fRc;
   end;
 
@@ -8397,10 +6749,8 @@ type
     fV: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
     [TRequired]
-    [TName('t')]
     property T: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fT write fT;
     [TRequired]
-    [TName('v')]
     property V: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fV write fV;
   end;
 
@@ -8413,14 +6763,10 @@ type
     fExtLst: TCTExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nFlatCase)]
     property Bk: TCTFutureMetadataBlockCTList read fBk;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -8429,7 +6775,6 @@ type
   private
     fExtLst: TCTExtensionListCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -8440,9 +6785,7 @@ type
     fMdx: TCTMdxCTList;
   published
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nFlatCase)]
     property Mdx: TCTMdxCTList read fMdx;
   end;
 
@@ -8462,22 +6805,16 @@ type
     function GetK: TCTMdxKPICT;
   published
     [TRequired]
-    [TName('n')]
     property N: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fN write fN;
     [TRequired]
-    [TName('f')]
     property F: TSTMdxFunctionTypeST read fF write fF;
     [TChoice('T')]
-    [TName('t')]
     property T: TCTMdxTupleCT read GetT;
     [TChoice('T')]
-    [TNaming(TNaming.nFlatCase)]
     property Ms: TCTMdxSetCT read GetMs;
     [TChoice('T')]
-    [TName('p')]
     property P: TCTMdxMemeberPropCT read GetP;
     [TChoice('T')]
-    [TName('k')]
     property K: TCTMdxKPICT read GetK;
   end;
 
@@ -8497,31 +6834,20 @@ type
     fN: TCTMetadataStringIndexCTList;
   published
     [TDefault(0)]
-    [TName('c')]
     property C: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fC_ write fC_;
-    [TNaming(TNaming.nFlatCase)]
     property Ct: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fCt write fCt;
-    [TNaming(TNaming.nFlatCase)]
     property Si: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSi write fSi;
-    [TNaming(TNaming.nFlatCase)]
     property Fi: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fFi write fFi;
-    [TNaming(TNaming.nFlatCase)]
     property Bc: TSTUnsignedIntHexST read fBc write fBc;
-    [TNaming(TNaming.nFlatCase)]
     property Fc: TSTUnsignedIntHexST read fFc write fFc;
     [TDefault(False)]
-    [TName('i')]
     property I: ProRock.Xmlite.Schema.Base.TBooleanST read fI_ write fI_;
     [TDefault(False)]
-    [TName('u')]
     property U: ProRock.Xmlite.Schema.Base.TBooleanST read fU write fU;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property St: ProRock.Xmlite.Schema.Base.TBooleanST read fSt write fSt;
     [TDefault(False)]
-    [TName('b')]
     property B: ProRock.Xmlite.Schema.Base.TBooleanST read fB write fB;
-    [TName('n')]
     property N: TCTMetadataStringIndexCTList read fN;
   end;
 
@@ -8534,15 +6860,11 @@ type
     fN: TCTMetadataStringIndexCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Ns: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fNs write fNs;
     [TDefault(0)]
-    [TName('c')]
     property C: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fC write fC;
     [TDefault(Ord(stmsoU))]
-    [TName('o')]
     property O: TSTMdxSetOrderST read fO write fO;
-    [TName('n')]
     property N: TCTMetadataStringIndexCTList read fN;
   end;
 
@@ -8553,10 +6875,8 @@ type
     fNp: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
     [TRequired]
-    [TName('n')]
     property N: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fN write fN;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Np: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fNp write fNp;
   end;
 
@@ -8568,13 +6888,10 @@ type
     fP: TSTMdxKPIPropertyST;
   published
     [TRequired]
-    [TName('n')]
     property N: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fN write fN;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Np: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fNp write fNp;
     [TRequired]
-    [TName('p')]
     property P: TSTMdxKPIPropertyST read fP write fP;
   end;
 
@@ -8585,10 +6902,8 @@ type
     fS: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
     [TRequired]
-    [TName('x')]
     property X: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fX write fX;
     [TDefault(False)]
-    [TName('s')]
     property S: ProRock.Xmlite.Schema.Base.TBooleanST read fS write fS;
   end;
 
@@ -8599,9 +6914,7 @@ type
     fS: TCTXStringElementCTList;
   published
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TName('s')]
     property S: TCTXStringElementCTList read fS;
   end;
 
@@ -8610,7 +6923,6 @@ type
   private
     fSingleXmlCell: TCTSingleXmlCellCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property SingleXmlCell: TCTSingleXmlCellCTList read fSingleXmlCell;
   end;
 
@@ -8624,18 +6936,13 @@ type
     fExtLst: TCTExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fId write fId;
     [TRequired]
-    [TName('r')]
     property R: TSTCellRefST read fR write fR;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ConnectionId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fConnectionId write fConnectionId;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property XmlCellPr: TCTXmlCellPrCT read fXmlCellPr;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -8648,14 +6955,10 @@ type
     fExtLst: TCTExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fId write fId;
-    [TNaming(TNaming.nCamelCase)]
     property UniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fUniqueName write fUniqueName;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property XmlPr: TCTXmlPrCT read fXmlPr;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -8668,15 +6971,11 @@ type
     fExtLst: TCTExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property MapId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fMapId write fMapId;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Xpath: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fXpath write fXpath;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property XmlDataType: TSTXmlDataTypeST read fXmlDataType write fXmlDataType;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -8695,27 +6994,16 @@ type
     fColors: TCTColorsCT;
     fExtLst: TCTExtensionListCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property NumFmts: TCTNumFmtsCT read fNumFmts;
-    [TNaming(TNaming.nFlatCase)]
     property Fonts: TCTFontsCT read fFonts;
-    [TNaming(TNaming.nFlatCase)]
     property Fills: TCTFillsCT read fFills;
-    [TNaming(TNaming.nFlatCase)]
     property Borders: TCTBordersCT read fBorders;
-    [TNaming(TNaming.nCamelCase)]
     property CellStyleXfs: TCTCellStyleXfsCT read fCellStyleXfs;
-    [TNaming(TNaming.nCamelCase)]
     property CellXfs: TCTCellXfsCT read fCellXfs;
-    [TNaming(TNaming.nCamelCase)]
     property CellStyles: TCTCellStylesCT read fCellStyles;
-    [TNaming(TNaming.nFlatCase)]
     property Dxfs: TCTDxfsCT read fDxfs;
-    [TNaming(TNaming.nCamelCase)]
     property TableStyles: TCTTableStylesCT read fTableStyles;
-    [TNaming(TNaming.nFlatCase)]
     property Colors: TCTColorsCT read fColors;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -8732,24 +7020,15 @@ type
     fShrinkToFit: ProRock.Xmlite.Schema.Base.TBooleanST;
     fReadingOrder: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Horizontal: TSTHorizontalAlignmentST read fHorizontal write fHorizontal;
     [TDefault(Ord(stvaBottom))]
-    [TNaming(TNaming.nFlatCase)]
     property Vertical: TSTVerticalAlignmentST read fVertical write fVertical;
-    [TNaming(TNaming.nCamelCase)]
     property TextRotation: TSTTextRotationST read fTextRotation write fTextRotation;
-    [TNaming(TNaming.nCamelCase)]
     property WrapText: ProRock.Xmlite.Schema.Base.TBooleanST read fWrapText write fWrapText;
-    [TNaming(TNaming.nFlatCase)]
     property Indent: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fIndent write fIndent;
-    [TNaming(TNaming.nCamelCase)]
     property RelativeIndent: ProRock.Xmlite.Schema.Base.TIntST read fRelativeIndent write fRelativeIndent;
-    [TNaming(TNaming.nCamelCase)]
     property JustifyLastLine: ProRock.Xmlite.Schema.Base.TBooleanST read fJustifyLastLine write fJustifyLastLine;
-    [TNaming(TNaming.nCamelCase)]
     property ShrinkToFit: ProRock.Xmlite.Schema.Base.TBooleanST read fShrinkToFit write fShrinkToFit;
-    [TNaming(TNaming.nCamelCase)]
     property ReadingOrder: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fReadingOrder write fReadingOrder;
   end;
 
@@ -8759,9 +7038,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fBorder: TCTBorderCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nFlatCase)]
     property Border: TCTBorderCTList read fBorder;
   end;
 
@@ -8781,30 +7058,18 @@ type
     fVertical: TCTBorderPrCT;
     fHorizontal: TCTBorderPrCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property DiagonalUp: ProRock.Xmlite.Schema.Base.TBooleanST read fDiagonalUp write fDiagonalUp;
-    [TNaming(TNaming.nCamelCase)]
     property DiagonalDown: ProRock.Xmlite.Schema.Base.TBooleanST read fDiagonalDown write fDiagonalDown;
     [TDefault(True)]
-    [TNaming(TNaming.nFlatCase)]
     property Outline: ProRock.Xmlite.Schema.Base.TBooleanST read fOutline write fOutline;
-    [TNaming(TNaming.nFlatCase)]
     property Start: TCTBorderPrCT read fStart;
-    [TNaming(TNaming.nFlatCase)]
     property &End: TCTBorderPrCT read fEnd;
-    [TNaming(TNaming.nFlatCase)]
     property Left: TCTBorderPrCT read fLeft;
-    [TNaming(TNaming.nFlatCase)]
     property Right: TCTBorderPrCT read fRight;
-    [TNaming(TNaming.nFlatCase)]
     property Top: TCTBorderPrCT read fTop;
-    [TNaming(TNaming.nFlatCase)]
     property Bottom: TCTBorderPrCT read fBottom;
-    [TNaming(TNaming.nFlatCase)]
     property Diagonal: TCTBorderPrCT read fDiagonal;
-    [TNaming(TNaming.nFlatCase)]
     property Vertical: TCTBorderPrCT read fVertical;
-    [TNaming(TNaming.nFlatCase)]
     property Horizontal: TCTBorderPrCT read fHorizontal;
   end;
 
@@ -8815,9 +7080,7 @@ type
     fColor: TCTColorCT;
   published
     [TDefault(Ord(stbsNone))]
-    [TNaming(TNaming.nFlatCase)]
     property Style: TSTBorderStyleST read fStyle write fStyle;
-    [TNaming(TNaming.nFlatCase)]
     property Color: TCTColorCT read fColor;
   end;
 
@@ -8827,9 +7090,7 @@ type
     fLocked: ProRock.Xmlite.Schema.Base.TBooleanST;
     fHidden: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Locked: ProRock.Xmlite.Schema.Base.TBooleanST read fLocked write fLocked;
-    [TNaming(TNaming.nFlatCase)]
     property Hidden: ProRock.Xmlite.Schema.Base.TBooleanST read fHidden write fHidden;
   end;
 
@@ -8839,9 +7100,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fFont: TCTFontCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nFlatCase)]
     property Font: TCTFontCTList read fFont;
   end;
 
@@ -8851,9 +7110,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fFill: TCTFillCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nFlatCase)]
     property Fill: TCTFillCTList read fFill;
   end;
 
@@ -8867,10 +7124,8 @@ type
     function GetGradientFill: TCTGradientFillCT;
   published
     [TChoice('PatternFill')]
-    [TNaming(TNaming.nCamelCase)]
     property PatternFill: TCTPatternFillCT read GetPatternFill;
     [TChoice('PatternFill')]
-    [TNaming(TNaming.nCamelCase)]
     property GradientFill: TCTGradientFillCT read GetGradientFill;
   end;
 
@@ -8881,11 +7136,8 @@ type
     fFgColor: TCTColorCT;
     fBgColor: TCTColorCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property PatternType: TSTPatternTypeST read fPatternType write fPatternType;
-    [TNaming(TNaming.nCamelCase)]
     property FgColor: TCTColorCT read fFgColor;
-    [TNaming(TNaming.nCamelCase)]
     property BgColor: TCTColorCT read fBgColor;
   end;
 
@@ -8898,16 +7150,11 @@ type
     fTheme: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fTint: ProRock.Xmlite.Schema.Base.TDoubleST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Auto: ProRock.Xmlite.Schema.Base.TBooleanST read fAuto write fAuto;
-    [TNaming(TNaming.nFlatCase)]
     property Indexed: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fIndexed write fIndexed;
-    [TNaming(TNaming.nFlatCase)]
     property Rgb: TSTUnsignedIntHexST read fRgb write fRgb;
-    [TNaming(TNaming.nFlatCase)]
     property Theme: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fTheme write fTheme;
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Tint: ProRock.Xmlite.Schema.Base.TDoubleST read fTint write fTint;
   end;
 
@@ -8923,24 +7170,17 @@ type
     fStop: TCTGradientStopCTList;
   published
     [TDefault(Ord(stgtLinear))]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TSTGradientTypeST read fType write fType;
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Degree: ProRock.Xmlite.Schema.Base.TDoubleST read fDegree write fDegree;
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Left: ProRock.Xmlite.Schema.Base.TDoubleST read fLeft write fLeft;
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Right: ProRock.Xmlite.Schema.Base.TDoubleST read fRight write fRight;
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Top: ProRock.Xmlite.Schema.Base.TDoubleST read fTop write fTop;
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Bottom: ProRock.Xmlite.Schema.Base.TDoubleST read fBottom write fBottom;
-    [TNaming(TNaming.nFlatCase)]
     property Stop: TCTGradientStopCTList read fStop;
   end;
 
@@ -8951,10 +7191,8 @@ type
     fColor: TCTColorCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Position: ProRock.Xmlite.Schema.Base.TDoubleST read fPosition write fPosition;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Color: TCTColorCT read fColor;
   end;
 
@@ -8964,9 +7202,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fNumFmt: TCTNumFmtCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nCamelCase)]
     property NumFmt: TCTNumFmtCTList read fNumFmt;
   end;
 
@@ -8977,10 +7213,8 @@ type
     fFormatCode: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property NumFmtId: TSTNumFmtIdST read fNumFmtId write fNumFmtId;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property FormatCode: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fFormatCode write fFormatCode;
   end;
 
@@ -8990,9 +7224,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fXf: TCTXfCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nFlatCase)]
     property Xf: TCTXfCTList read fXf;
   end;
 
@@ -9002,9 +7234,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fXf: TCTXfCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nFlatCase)]
     property Xf: TCTXfCTList read fXf;
   end;
 
@@ -9028,39 +7258,23 @@ type
     fProtection: TCTCellProtectionCT;
     fExtLst: TCTExtensionListCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property NumFmtId: TSTNumFmtIdST read fNumFmtId write fNumFmtId;
-    [TNaming(TNaming.nCamelCase)]
     property FontId: TSTFontIdST read fFontId write fFontId;
-    [TNaming(TNaming.nCamelCase)]
     property FillId: TSTFillIdST read fFillId write fFillId;
-    [TNaming(TNaming.nCamelCase)]
     property BorderId: TSTBorderIdST read fBorderId write fBorderId;
-    [TNaming(TNaming.nCamelCase)]
     property XfId: TSTCellStyleXfIdST read fXfId write fXfId;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property QuotePrefix: ProRock.Xmlite.Schema.Base.TBooleanST read fQuotePrefix write fQuotePrefix;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property PivotButton: ProRock.Xmlite.Schema.Base.TBooleanST read fPivotButton write fPivotButton;
-    [TNaming(TNaming.nCamelCase)]
     property ApplyNumberFormat: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyNumberFormat write fApplyNumberFormat;
-    [TNaming(TNaming.nCamelCase)]
     property ApplyFont: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyFont write fApplyFont;
-    [TNaming(TNaming.nCamelCase)]
     property ApplyFill: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyFill write fApplyFill;
-    [TNaming(TNaming.nCamelCase)]
     property ApplyBorder: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyBorder write fApplyBorder;
-    [TNaming(TNaming.nCamelCase)]
     property ApplyAlignment: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyAlignment write fApplyAlignment;
-    [TNaming(TNaming.nCamelCase)]
     property ApplyProtection: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyProtection write fApplyProtection;
-    [TNaming(TNaming.nFlatCase)]
     property Alignment: TCTCellAlignmentCT read fAlignment;
-    [TNaming(TNaming.nFlatCase)]
     property Protection: TCTCellProtectionCT read fProtection;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -9070,9 +7284,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fCellStyle: TCTCellStyleCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nCamelCase)]
     property CellStyle: TCTCellStyleCTList read fCellStyle;
   end;
 
@@ -9087,20 +7299,13 @@ type
     fCustomBuiltin: ProRock.Xmlite.Schema.Base.TBooleanST;
     fExtLst: TCTExtensionListCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property XfId: TSTCellStyleXfIdST read fXfId write fXfId;
-    [TNaming(TNaming.nCamelCase)]
     property BuiltinId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fBuiltinId write fBuiltinId;
-    [TNaming(TNaming.nCamelCase)]
     property ILevel: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fILevel write fILevel;
-    [TNaming(TNaming.nFlatCase)]
     property Hidden: ProRock.Xmlite.Schema.Base.TBooleanST read fHidden write fHidden;
-    [TNaming(TNaming.nCamelCase)]
     property CustomBuiltin: ProRock.Xmlite.Schema.Base.TBooleanST read fCustomBuiltin write fCustomBuiltin;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -9110,9 +7315,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fDxf: TCTDxfCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nFlatCase)]
     property Dxf: TCTDxfCTList read fDxf;
   end;
 
@@ -9127,19 +7330,12 @@ type
     fProtection: TCTCellProtectionCT;
     fExtLst: TCTExtensionListCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Font: TCTFontCT read fFont;
-    [TNaming(TNaming.nCamelCase)]
     property NumFmt: TCTNumFmtCT read fNumFmt;
-    [TNaming(TNaming.nFlatCase)]
     property Fill: TCTFillCT read fFill;
-    [TNaming(TNaming.nFlatCase)]
     property Alignment: TCTCellAlignmentCT read fAlignment;
-    [TNaming(TNaming.nFlatCase)]
     property Border: TCTBorderCT read fBorder;
-    [TNaming(TNaming.nFlatCase)]
     property Protection: TCTCellProtectionCT read fProtection;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -9149,9 +7345,7 @@ type
     fIndexedColors: TCTIndexedColorsCT;
     fMruColors: TCTMRUColorsCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property IndexedColors: TCTIndexedColorsCT read fIndexedColors;
-    [TNaming(TNaming.nCamelCase)]
     property MruColors: TCTMRUColorsCT read fMruColors;
   end;
 
@@ -9160,7 +7354,6 @@ type
   private
     fRgbColor: TCTRgbColorCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property RgbColor: TCTRgbColorCTList read fRgbColor;
   end;
 
@@ -9169,7 +7362,6 @@ type
   private
     fColor: TCTColorCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Color: TCTColorCTList read fColor;
   end;
 
@@ -9178,7 +7370,6 @@ type
   private
     fRgb: TSTUnsignedIntHexST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Rgb: TSTUnsignedIntHexST read fRgb write fRgb;
   end;
 
@@ -9190,13 +7381,9 @@ type
     fDefaultPivotStyle: ProRock.Xmlite.Schema.Base.TStringST;
     fTableStyle: TCTTableStyleCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nCamelCase)]
     property DefaultTableStyle: ProRock.Xmlite.Schema.Base.TStringST read fDefaultTableStyle write fDefaultTableStyle;
-    [TNaming(TNaming.nCamelCase)]
     property DefaultPivotStyle: ProRock.Xmlite.Schema.Base.TStringST read fDefaultPivotStyle write fDefaultPivotStyle;
-    [TNaming(TNaming.nCamelCase)]
     property TableStyle: TCTTableStyleCTList read fTableStyle;
   end;
 
@@ -9210,17 +7397,12 @@ type
     fTableStyleElement: TCTTableStyleElementCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Base.TStringST read fName write fName;
     [TDefault(True)]
-    [TNaming(TNaming.nFlatCase)]
     property Pivot: ProRock.Xmlite.Schema.Base.TBooleanST read fPivot write fPivot;
     [TDefault(True)]
-    [TNaming(TNaming.nFlatCase)]
     property Table: ProRock.Xmlite.Schema.Base.TBooleanST read fTable write fTable;
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nCamelCase)]
     property TableStyleElement: TCTTableStyleElementCTList read fTableStyleElement;
   end;
 
@@ -9232,12 +7414,9 @@ type
     fDxfId: TSTDxfIdST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TSTTableStyleTypeST read fType write fType;
     [TDefault(1)]
-    [TNaming(TNaming.nFlatCase)]
     property Size: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSize write fSize;
-    [TNaming(TNaming.nCamelCase)]
     property DxfId: TSTDxfIdST read fDxfId write fDxfId;
   end;
 
@@ -9247,7 +7426,6 @@ type
     fVal: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
     [TDefault(True)]
-    [TNaming(TNaming.nFlatCase)]
     property Val: ProRock.Xmlite.Schema.Base.TBooleanST read fVal write fVal;
   end;
 
@@ -9257,7 +7435,6 @@ type
     fVal: ProRock.Xmlite.Schema.Base.TDoubleST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Val: ProRock.Xmlite.Schema.Base.TDoubleST read fVal write fVal;
   end;
 
@@ -9267,7 +7444,6 @@ type
     fVal: ProRock.Xmlite.Schema.Base.TIntST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Val: ProRock.Xmlite.Schema.Base.TIntST read fVal write fVal;
   end;
 
@@ -9277,7 +7453,6 @@ type
     fVal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Val: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fVal write fVal;
   end;
 
@@ -9287,7 +7462,6 @@ type
     fVal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTVerticalAlignRunST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Val: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTVerticalAlignRunST read fVal write fVal;
   end;
 
@@ -9297,7 +7471,6 @@ type
     fVal: TSTFontSchemeST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Val: TSTFontSchemeST read fVal write fVal;
   end;
 
@@ -9307,7 +7480,6 @@ type
     fVal: TSTUnderlineValuesST;
   published
     [TDefault(Ord(stuvSingle))]
-    [TNaming(TNaming.nFlatCase)]
     property Val: TSTUnderlineValuesST read fVal write fVal;
   end;
 
@@ -9331,35 +7503,20 @@ type
     fVertAlign: TCTVerticalAlignFontPropertyCTList;
     fScheme: TCTFontSchemeCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Name: TCTFontNameCTList read fName;
-    [TNaming(TNaming.nFlatCase)]
     property Charset: TCTIntPropertyCTList read fCharset;
-    [TNaming(TNaming.nFlatCase)]
     property Family: TCTFontFamilyCTList read fFamily;
-    [TName('b')]
     property B: TCTBooleanPropertyCTList read fB;
-    [TName('i')]
     property I: TCTBooleanPropertyCTList read fI;
-    [TNaming(TNaming.nFlatCase)]
     property Strike: TCTBooleanPropertyCTList read fStrike;
-    [TNaming(TNaming.nFlatCase)]
     property Outline: TCTBooleanPropertyCTList read fOutline;
-    [TNaming(TNaming.nFlatCase)]
     property Shadow: TCTBooleanPropertyCTList read fShadow;
-    [TNaming(TNaming.nFlatCase)]
     property Condense: TCTBooleanPropertyCTList read fCondense;
-    [TNaming(TNaming.nFlatCase)]
     property Extend: TCTBooleanPropertyCTList read fExtend;
-    [TNaming(TNaming.nFlatCase)]
     property Color: TCTColorCTList read fColor;
-    [TNaming(TNaming.nFlatCase)]
     property Sz: TCTFontSizeCTList read fSz;
-    [TName('u')]
     property U: TCTUnderlinePropertyCTList read fU;
-    [TNaming(TNaming.nCamelCase)]
     property VertAlign: TCTVerticalAlignFontPropertyCTList read fVertAlign;
-    [TNaming(TNaming.nFlatCase)]
     property Scheme: TCTFontSchemeCTList read fScheme;
   end;
 
@@ -9369,7 +7526,6 @@ type
     fVal: TSTFontFamilyST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Val: TSTFontFamilyST read fVal write fVal;
   end;
 
@@ -9386,15 +7542,11 @@ type
     function GetOleLink: TCTOleLinkCT;
   published
     [TChoice('ExternalBook')]
-    [TNaming(TNaming.nCamelCase)]
     property ExternalBook: TCTExternalBookCT read GetExternalBook;
     [TChoice('ExternalBook')]
-    [TNaming(TNaming.nCamelCase)]
     property DdeLink: TCTDdeLinkCT read GetDdeLink;
     [TChoice('ExternalBook')]
-    [TNaming(TNaming.nCamelCase)]
     property OleLink: TCTOleLinkCT read GetOleLink;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -9409,11 +7561,8 @@ type
     [TRequired]
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
-    [TNaming(TNaming.nCamelCase)]
     property SheetNames: TCTExternalSheetNamesCT read fSheetNames;
-    [TNaming(TNaming.nCamelCase)]
     property DefinedNames: TCTExternalDefinedNamesCT read fDefinedNames;
-    [TNaming(TNaming.nCamelCase)]
     property SheetDataSet: TCTExternalSheetDataSetCT read fSheetDataSet;
   end;
 
@@ -9422,7 +7571,6 @@ type
   private
     fSheetName: TCTExternalSheetNameCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property SheetName: TCTExternalSheetNameCTList read fSheetName;
   end;
 
@@ -9431,7 +7579,6 @@ type
   private
     fVal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Val: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fVal write fVal;
   end;
 
@@ -9440,7 +7587,6 @@ type
   private
     fDefinedName: TCTExternalDefinedNameCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property DefinedName: TCTExternalDefinedNameCTList read fDefinedName;
   end;
 
@@ -9452,11 +7598,8 @@ type
     fSheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
-    [TNaming(TNaming.nCamelCase)]
     property RefersTo: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fRefersTo write fRefersTo;
-    [TNaming(TNaming.nCamelCase)]
     property SheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSheetId write fSheetId;
   end;
 
@@ -9465,7 +7608,6 @@ type
   private
     fSheetData: TCTExternalSheetDataCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property SheetData: TCTExternalSheetDataCTList read fSheetData;
   end;
 
@@ -9477,12 +7619,9 @@ type
     fRow: TCTExternalRowCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property SheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSheetId write fSheetId;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property RefreshError: ProRock.Xmlite.Schema.Base.TBooleanST read fRefreshError write fRefreshError;
-    [TNaming(TNaming.nFlatCase)]
     property Row: TCTExternalRowCTList read fRow;
   end;
 
@@ -9493,9 +7632,7 @@ type
     fCell: TCTExternalCellCTList;
   published
     [TRequired]
-    [TName('r')]
     property R: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fR write fR;
-    [TNaming(TNaming.nFlatCase)]
     property Cell: TCTExternalCellCTList read fCell;
   end;
 
@@ -9507,16 +7644,12 @@ type
     fVm: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fV: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
   published
-    [TName('r')]
     property R: TSTCellRefST read fR write fR;
     [TDefault(Ord(stctN))]
-    [TName('t')]
     property T: TSTCellTypeST read fT write fT;
     [TDefault(0)]
-    [TNaming(TNaming.nFlatCase)]
     property Vm: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fVm write fVm;
     [TXmliteElement]
-    [TName('v')]
     property V: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fV write fV;
   end;
 
@@ -9528,12 +7661,9 @@ type
     fDdeItems: TCTDdeItemsCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property DdeService: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDdeService write fDdeService;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property DdeTopic: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDdeTopic write fDdeTopic;
-    [TNaming(TNaming.nCamelCase)]
     property DdeItems: TCTDdeItemsCT read fDdeItems;
   end;
 
@@ -9542,7 +7672,6 @@ type
   private
     fDdeItem: TCTDdeItemCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property DdeItem: TCTDdeItemCTList read fDdeItem;
   end;
 
@@ -9556,18 +7685,13 @@ type
     fValues: TCTDdeValuesCT;
   published
     [TDefault('0')]
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Ole: ProRock.Xmlite.Schema.Base.TBooleanST read fOle write fOle;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Advise: ProRock.Xmlite.Schema.Base.TBooleanST read fAdvise write fAdvise;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property PreferPic: ProRock.Xmlite.Schema.Base.TBooleanST read fPreferPic write fPreferPic;
-    [TNaming(TNaming.nFlatCase)]
     property Values: TCTDdeValuesCT read fValues;
   end;
 
@@ -9579,12 +7703,9 @@ type
     fValue: TCTDdeValueCTList;
   published
     [TDefault(1)]
-    [TNaming(TNaming.nFlatCase)]
     property Rows: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fRows write fRows;
     [TDefault(1)]
-    [TNaming(TNaming.nFlatCase)]
     property Cols: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCols write fCols;
-    [TNaming(TNaming.nFlatCase)]
     property Value: TCTDdeValueCTList read fValue;
   end;
 
@@ -9595,11 +7716,9 @@ type
     fVal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
   published
     [TDefault(Ord(stdvtaN))]
-    [TName('t')]
     property T: TSTDdeValueTypeST read fT write fT;
     [TXmliteElement]
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Val: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fVal write fVal;
   end;
 
@@ -9614,9 +7733,7 @@ type
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ProgId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fProgId write fProgId;
-    [TNaming(TNaming.nCamelCase)]
     property OleItems: TCTOleItemsCT read fOleItems;
   end;
 
@@ -9625,7 +7742,6 @@ type
   private
     fOleItem: TCTOleItemCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property OleItem: TCTOleItemCTList read fOleItem;
   end;
 
@@ -9638,16 +7754,12 @@ type
     fPreferPic: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Icon: ProRock.Xmlite.Schema.Base.TBooleanST read fIcon write fIcon;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Advise: ProRock.Xmlite.Schema.Base.TBooleanST read fAdvise write fAdvise;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property PreferPic: ProRock.Xmlite.Schema.Base.TBooleanST read fPreferPic write fPreferPic;
   end;
 
@@ -9683,69 +7795,42 @@ type
     fExtLst: TCTExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fId write fId;
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property DisplayName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDisplayName write fDisplayName;
-    [TNaming(TNaming.nFlatCase)]
     property Comment: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fComment write fComment;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Ref: TSTRefST read fRef write fRef;
     [TDefault(Ord(stttWorksheet))]
-    [TNaming(TNaming.nCamelCase)]
     property TableType: TSTTableTypeST read fTableType write fTableType;
     [TDefault(1)]
-    [TNaming(TNaming.nCamelCase)]
     property HeaderRowCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fHeaderRowCount write fHeaderRowCount;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property InsertRow: ProRock.Xmlite.Schema.Base.TBooleanST read fInsertRow write fInsertRow;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property InsertRowShift: ProRock.Xmlite.Schema.Base.TBooleanST read fInsertRowShift write fInsertRowShift;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property TotalsRowCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fTotalsRowCount write fTotalsRowCount;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property TotalsRowShown: ProRock.Xmlite.Schema.Base.TBooleanST read fTotalsRowShown write fTotalsRowShown;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Published: ProRock.Xmlite.Schema.Base.TBooleanST read fPublished write fPublished;
-    [TNaming(TNaming.nCamelCase)]
     property HeaderRowDxfId: TSTDxfIdST read fHeaderRowDxfId write fHeaderRowDxfId;
-    [TNaming(TNaming.nCamelCase)]
     property DataDxfId: TSTDxfIdST read fDataDxfId write fDataDxfId;
-    [TNaming(TNaming.nCamelCase)]
     property TotalsRowDxfId: TSTDxfIdST read fTotalsRowDxfId write fTotalsRowDxfId;
-    [TNaming(TNaming.nCamelCase)]
     property HeaderRowBorderDxfId: TSTDxfIdST read fHeaderRowBorderDxfId write fHeaderRowBorderDxfId;
-    [TNaming(TNaming.nCamelCase)]
     property TableBorderDxfId: TSTDxfIdST read fTableBorderDxfId write fTableBorderDxfId;
-    [TNaming(TNaming.nCamelCase)]
     property TotalsRowBorderDxfId: TSTDxfIdST read fTotalsRowBorderDxfId write fTotalsRowBorderDxfId;
-    [TNaming(TNaming.nCamelCase)]
     property HeaderRowCellStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fHeaderRowCellStyle write fHeaderRowCellStyle;
-    [TNaming(TNaming.nCamelCase)]
     property DataCellStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDataCellStyle write fDataCellStyle;
-    [TNaming(TNaming.nCamelCase)]
     property TotalsRowCellStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fTotalsRowCellStyle write fTotalsRowCellStyle;
-    [TNaming(TNaming.nCamelCase)]
     property ConnectionId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fConnectionId write fConnectionId;
-    [TNaming(TNaming.nCamelCase)]
     property AutoFilter: TCTAutoFilterCT read fAutoFilter;
-    [TNaming(TNaming.nCamelCase)]
     property SortState: TCTSortStateCT read fSortState;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property TableColumns: TCTTableColumnsCT read fTableColumns;
-    [TNaming(TNaming.nCamelCase)]
     property TableStyleInfo: TCTTableStyleInfoCT read fTableStyleInfo;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -9758,15 +7843,10 @@ type
     fShowRowStripes: ProRock.Xmlite.Schema.Base.TBooleanST;
     fShowColumnStripes: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
-    [TNaming(TNaming.nCamelCase)]
     property ShowFirstColumn: ProRock.Xmlite.Schema.Base.TBooleanST read fShowFirstColumn write fShowFirstColumn;
-    [TNaming(TNaming.nCamelCase)]
     property ShowLastColumn: ProRock.Xmlite.Schema.Base.TBooleanST read fShowLastColumn write fShowLastColumn;
-    [TNaming(TNaming.nCamelCase)]
     property ShowRowStripes: ProRock.Xmlite.Schema.Base.TBooleanST read fShowRowStripes write fShowRowStripes;
-    [TNaming(TNaming.nCamelCase)]
     property ShowColumnStripes: ProRock.Xmlite.Schema.Base.TBooleanST read fShowColumnStripes write fShowColumnStripes;
   end;
 
@@ -9776,9 +7856,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fTableColumn: TCTTableColumnCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nCamelCase)]
     property TableColumn: TCTTableColumnCTList read fTableColumn;
   end;
 
@@ -9803,39 +7881,23 @@ type
     fExtLst: TCTExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fId write fId;
-    [TNaming(TNaming.nCamelCase)]
     property UniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fUniqueName write fUniqueName;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
     [TDefault(Ord(sttrfNone))]
-    [TNaming(TNaming.nCamelCase)]
     property TotalsRowFunction: TSTTotalsRowFunctionST read fTotalsRowFunction write fTotalsRowFunction;
-    [TNaming(TNaming.nCamelCase)]
     property TotalsRowLabel: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fTotalsRowLabel write fTotalsRowLabel;
-    [TNaming(TNaming.nCamelCase)]
     property QueryTableFieldId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fQueryTableFieldId write fQueryTableFieldId;
-    [TNaming(TNaming.nCamelCase)]
     property HeaderRowDxfId: TSTDxfIdST read fHeaderRowDxfId write fHeaderRowDxfId;
-    [TNaming(TNaming.nCamelCase)]
     property DataDxfId: TSTDxfIdST read fDataDxfId write fDataDxfId;
-    [TNaming(TNaming.nCamelCase)]
     property TotalsRowDxfId: TSTDxfIdST read fTotalsRowDxfId write fTotalsRowDxfId;
-    [TNaming(TNaming.nCamelCase)]
     property HeaderRowCellStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fHeaderRowCellStyle write fHeaderRowCellStyle;
-    [TNaming(TNaming.nCamelCase)]
     property DataCellStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDataCellStyle write fDataCellStyle;
-    [TNaming(TNaming.nCamelCase)]
     property TotalsRowCellStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fTotalsRowCellStyle write fTotalsRowCellStyle;
-    [TNaming(TNaming.nCamelCase)]
     property CalculatedColumnFormula: TCTTableFormulaCT read fCalculatedColumnFormula;
-    [TNaming(TNaming.nCamelCase)]
     property TotalsRowFormula: TCTTableFormulaCT read fTotalsRowFormula;
-    [TNaming(TNaming.nCamelCase)]
     property XmlColumnPr: TCTXmlColumnPrCT read fXmlColumnPr;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -9848,7 +7910,6 @@ type
     [TXmliteText]
     property XmlValue: TSTFormulaST read fXmlValue write fXmlValue;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property &Array: ProRock.Xmlite.Schema.Base.TBooleanST read fArray write fArray;
   end;
 
@@ -9862,18 +7923,13 @@ type
     fExtLst: TCTExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property MapId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fMapId write fMapId;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Xpath: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fXpath write fXpath;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Denormalized: ProRock.Xmlite.Schema.Base.TBooleanST read fDenormalized write fDenormalized;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property XmlDataType: TSTXmlDataTypeST read fXmlDataType write fXmlDataType;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -9883,9 +7939,7 @@ type
     fVolType: TCTVolTypeCTList;
     fExtLst: TCTExtensionListCT;
   published
-    [TNaming(TNaming.nCamelCase)]
     property VolType: TCTVolTypeCTList read fVolType;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -9896,9 +7950,7 @@ type
     fMain: TCTVolMainCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property &Type: TSTVolDepTypeST read fType write fType;
-    [TNaming(TNaming.nFlatCase)]
     property Main: TCTVolMainCTList read fMain;
   end;
 
@@ -9909,9 +7961,7 @@ type
     fTp: TCTVolTopicCTList;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property First: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fFirst write fFirst;
-    [TNaming(TNaming.nFlatCase)]
     property Tp: TCTVolTopicCTList read fTp;
   end;
 
@@ -9924,15 +7974,11 @@ type
     fTr: TCTVolTopicRefCTList;
   published
     [TDefault(Ord(stvvtN))]
-    [TName('t')]
     property T: TSTVolValueTypeST read fT write fT;
     [TXmliteElement]
     [TRequired]
-    [TName('v')]
     property V: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fV write fV;
-    [TNaming(TNaming.nFlatCase)]
     property Stp: TSTXstringSTList read fStp;
-    [TNaming(TNaming.nFlatCase)]
     property Tr: TCTVolTopicRefCTList read fTr;
   end;
 
@@ -9943,10 +7989,8 @@ type
     fS: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
     [TRequired]
-    [TName('r')]
     property R: TSTCellRefST read fR write fR;
     [TRequired]
-    [TName('s')]
     property S: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fS write fS;
   end;
 
@@ -9974,46 +8018,26 @@ type
     fWebPublishObjects: TCTWebPublishObjectsCT;
     fExtLst: TCTExtensionListCT;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Conformance: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTConformanceClassST read fConformance write fConformance;
-    [TNaming(TNaming.nCamelCase)]
     property FileVersion: TCTFileVersionCT read fFileVersion;
-    [TNaming(TNaming.nCamelCase)]
     property FileSharing: TCTFileSharingCT read fFileSharing;
-    [TNaming(TNaming.nCamelCase)]
     property WorkbookPr: TCTWorkbookPrCT read fWorkbookPr;
-    [TNaming(TNaming.nCamelCase)]
     property WorkbookProtection: TCTWorkbookProtectionCT read fWorkbookProtection;
-    [TNaming(TNaming.nCamelCase)]
     property BookViews: TCTBookViewsCT read fBookViews;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Sheets: TCTSheetsCT read fSheets;
-    [TNaming(TNaming.nCamelCase)]
     property FunctionGroups: TCTFunctionGroupsCT read fFunctionGroups;
-    [TNaming(TNaming.nCamelCase)]
     property ExternalReferences: TCTExternalReferencesCT read fExternalReferences;
-    [TNaming(TNaming.nCamelCase)]
     property DefinedNames: TCTDefinedNamesCT read fDefinedNames;
-    [TNaming(TNaming.nCamelCase)]
     property CalcPr: TCTCalcPrCT read fCalcPr;
-    [TNaming(TNaming.nCamelCase)]
     property OleSize: TCTOleSizeCT read fOleSize;
-    [TNaming(TNaming.nCamelCase)]
     property CustomWorkbookViews: TCTCustomWorkbookViewsCT read fCustomWorkbookViews;
-    [TNaming(TNaming.nCamelCase)]
     property PivotCaches: TCTPivotCachesCT read fPivotCaches;
-    [TNaming(TNaming.nCamelCase)]
     property SmartTagPr: TCTSmartTagPrCT read fSmartTagPr;
-    [TNaming(TNaming.nCamelCase)]
     property SmartTagTypes: TCTSmartTagTypesCT read fSmartTagTypes;
-    [TNaming(TNaming.nCamelCase)]
     property WebPublishing: TCTWebPublishingCT read fWebPublishing;
-    [TNaming(TNaming.nCamelCase)]
     property FileRecoveryPr: TCTFileRecoveryPrCTList read fFileRecoveryPr;
-    [TNaming(TNaming.nCamelCase)]
     property WebPublishObjects: TCTWebPublishObjectsCT read fWebPublishObjects;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -10026,15 +8050,10 @@ type
     fRupBuild: ProRock.Xmlite.Schema.Base.TStringST;
     fCodeName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST;
   published
-    [TNaming(TNaming.nCamelCase)]
     property AppName: ProRock.Xmlite.Schema.Base.TStringST read fAppName write fAppName;
-    [TNaming(TNaming.nCamelCase)]
     property LastEdited: ProRock.Xmlite.Schema.Base.TStringST read fLastEdited write fLastEdited;
-    [TNaming(TNaming.nCamelCase)]
     property LowestEdited: ProRock.Xmlite.Schema.Base.TStringST read fLowestEdited write fLowestEdited;
-    [TNaming(TNaming.nCamelCase)]
     property RupBuild: ProRock.Xmlite.Schema.Base.TStringST read fRupBuild write fRupBuild;
-    [TNaming(TNaming.nCamelCase)]
     property CodeName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST read fCodeName write fCodeName;
   end;
 
@@ -10043,7 +8062,6 @@ type
   private
     fWorkbookView: TCTBookViewCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property WorkbookView: TCTBookViewCTList read fWorkbookView;
   end;
 
@@ -10066,41 +8084,27 @@ type
     fExtLst: TCTExtensionListCT;
   published
     [TDefault(Ord(stvVisible))]
-    [TNaming(TNaming.nFlatCase)]
     property Visibility: TSTVisibilityST read fVisibility write fVisibility;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Minimized: ProRock.Xmlite.Schema.Base.TBooleanST read fMinimized write fMinimized;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowHorizontalScroll: ProRock.Xmlite.Schema.Base.TBooleanST read fShowHorizontalScroll write fShowHorizontalScroll;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowVerticalScroll: ProRock.Xmlite.Schema.Base.TBooleanST read fShowVerticalScroll write fShowVerticalScroll;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowSheetTabs: ProRock.Xmlite.Schema.Base.TBooleanST read fShowSheetTabs write fShowSheetTabs;
-    [TNaming(TNaming.nCamelCase)]
     property XWindow: ProRock.Xmlite.Schema.Base.TIntST read fXWindow write fXWindow;
-    [TNaming(TNaming.nCamelCase)]
     property YWindow: ProRock.Xmlite.Schema.Base.TIntST read fYWindow write fYWindow;
-    [TNaming(TNaming.nCamelCase)]
     property WindowWidth: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fWindowWidth write fWindowWidth;
-    [TNaming(TNaming.nCamelCase)]
     property WindowHeight: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fWindowHeight write fWindowHeight;
     [TDefault(600)]
-    [TNaming(TNaming.nCamelCase)]
     property TabRatio: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fTabRatio write fTabRatio;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property FirstSheet: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fFirstSheet write fFirstSheet;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property ActiveTab: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fActiveTab write fActiveTab;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property AutoFilterDateGrouping: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoFilterDateGrouping write fAutoFilterDateGrouping;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -10109,7 +8113,6 @@ type
   private
     fCustomWorkbookView: TCTCustomWorkbookViewCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property CustomWorkbookView: TCTCustomWorkbookViewCTList read fCustomWorkbookView;
   end;
 
@@ -10143,77 +8146,52 @@ type
     fExtLst: TCTExtensionListCT;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Guid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST read fGuid write fGuid;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property AutoUpdate: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoUpdate write fAutoUpdate;
-    [TNaming(TNaming.nCamelCase)]
     property MergeInterval: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fMergeInterval write fMergeInterval;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ChangesSavedWin: ProRock.Xmlite.Schema.Base.TBooleanST read fChangesSavedWin write fChangesSavedWin;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property OnlySync: ProRock.Xmlite.Schema.Base.TBooleanST read fOnlySync write fOnlySync;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property PersonalView: ProRock.Xmlite.Schema.Base.TBooleanST read fPersonalView write fPersonalView;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property IncludePrintSettings: ProRock.Xmlite.Schema.Base.TBooleanST read fIncludePrintSettings write fIncludePrintSettings;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property IncludeHiddenRowCol: ProRock.Xmlite.Schema.Base.TBooleanST read fIncludeHiddenRowCol write fIncludeHiddenRowCol;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Maximized: ProRock.Xmlite.Schema.Base.TBooleanST read fMaximized write fMaximized;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Minimized: ProRock.Xmlite.Schema.Base.TBooleanST read fMinimized write fMinimized;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowHorizontalScroll: ProRock.Xmlite.Schema.Base.TBooleanST read fShowHorizontalScroll write fShowHorizontalScroll;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowVerticalScroll: ProRock.Xmlite.Schema.Base.TBooleanST read fShowVerticalScroll write fShowVerticalScroll;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowSheetTabs: ProRock.Xmlite.Schema.Base.TBooleanST read fShowSheetTabs write fShowSheetTabs;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property XWindow: ProRock.Xmlite.Schema.Base.TIntST read fXWindow write fXWindow;
     [TDefault(0)]
-    [TNaming(TNaming.nCamelCase)]
     property YWindow: ProRock.Xmlite.Schema.Base.TIntST read fYWindow write fYWindow;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property WindowWidth: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fWindowWidth write fWindowWidth;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property WindowHeight: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fWindowHeight write fWindowHeight;
     [TDefault(600)]
-    [TNaming(TNaming.nCamelCase)]
     property TabRatio: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fTabRatio write fTabRatio;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property ActiveSheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fActiveSheetId write fActiveSheetId;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowFormulaBar: ProRock.Xmlite.Schema.Base.TBooleanST read fShowFormulaBar write fShowFormulaBar;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowStatusbar: ProRock.Xmlite.Schema.Base.TBooleanST read fShowStatusbar write fShowStatusbar;
     [TDefault(Ord(stcCommIndicator))]
-    [TNaming(TNaming.nCamelCase)]
     property ShowComments: TSTCommentsST read fShowComments write fShowComments;
     [TDefault(Ord(stoaAll))]
-    [TNaming(TNaming.nCamelCase)]
     property ShowObjects: TSTObjectsST read fShowObjects write fShowObjects;
-    [TNaming(TNaming.nCamelCase)]
     property ExtLst: TCTExtensionListCT read fExtLst;
   end;
 
@@ -10222,7 +8200,6 @@ type
   private
     fSheet: TCTSheetCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Sheet: TCTSheetCTList read fSheet;
   end;
 
@@ -10235,13 +8212,10 @@ type
     fId: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property SheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSheetId write fSheetId;
     [TDefault(Ord(stssVisible))]
-    [TNaming(TNaming.nFlatCase)]
     property State: TSTSheetStateST read fState write fState;
     [TRequired]
     [TNaming(TNaming.nFlatCase)]
@@ -10271,56 +8245,38 @@ type
     fDefaultThemeVersion: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Date1904: ProRock.Xmlite.Schema.Base.TBooleanST read fDate1904 write fDate1904;
     [TDefault(Ord(stoaAll))]
-    [TNaming(TNaming.nCamelCase)]
     property ShowObjects: TSTObjectsST read fShowObjects write fShowObjects;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowBorderUnselectedTables: ProRock.Xmlite.Schema.Base.TBooleanST read fShowBorderUnselectedTables write fShowBorderUnselectedTables;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property FilterPrivacy: ProRock.Xmlite.Schema.Base.TBooleanST read fFilterPrivacy write fFilterPrivacy;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property PromptedSolutions: ProRock.Xmlite.Schema.Base.TBooleanST read fPromptedSolutions write fPromptedSolutions;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowInkAnnotation: ProRock.Xmlite.Schema.Base.TBooleanST read fShowInkAnnotation write fShowInkAnnotation;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property BackupFile: ProRock.Xmlite.Schema.Base.TBooleanST read fBackupFile write fBackupFile;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property SaveExternalLinkValues: ProRock.Xmlite.Schema.Base.TBooleanST read fSaveExternalLinkValues write fSaveExternalLinkValues;
     [TDefault(Ord(stulUserSet))]
-    [TNaming(TNaming.nCamelCase)]
     property UpdateLinks: TSTUpdateLinksST read fUpdateLinks write fUpdateLinks;
-    [TNaming(TNaming.nCamelCase)]
     property CodeName: ProRock.Xmlite.Schema.Base.TStringST read fCodeName write fCodeName;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property HidePivotFieldList: ProRock.Xmlite.Schema.Base.TBooleanST read fHidePivotFieldList write fHidePivotFieldList;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ShowPivotChartFilter: ProRock.Xmlite.Schema.Base.TBooleanST read fShowPivotChartFilter write fShowPivotChartFilter;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property AllowRefreshQuery: ProRock.Xmlite.Schema.Base.TBooleanST read fAllowRefreshQuery write fAllowRefreshQuery;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property PublishItems: ProRock.Xmlite.Schema.Base.TBooleanST read fPublishItems write fPublishItems;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property CheckCompatibility: ProRock.Xmlite.Schema.Base.TBooleanST read fCheckCompatibility write fCheckCompatibility;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property AutoCompressPictures: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoCompressPictures write fAutoCompressPictures;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property RefreshAllConnections: ProRock.Xmlite.Schema.Base.TBooleanST read fRefreshAllConnections write fRefreshAllConnections;
-    [TNaming(TNaming.nCamelCase)]
     property DefaultThemeVersion: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fDefaultThemeVersion write fDefaultThemeVersion;
   end;
 
@@ -10331,10 +8287,8 @@ type
     fShow: TSTSmartTagShowST;
   published
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Embed: ProRock.Xmlite.Schema.Base.TBooleanST read fEmbed write fEmbed;
     [TDefault(Ord(ststsAll))]
-    [TNaming(TNaming.nFlatCase)]
     property Show: TSTSmartTagShowST read fShow write fShow;
   end;
 
@@ -10343,7 +8297,6 @@ type
   private
     fSmartTagType: TCTSmartTagTypeCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property SmartTagType: TCTSmartTagTypeCTList read fSmartTagType;
   end;
 
@@ -10354,11 +8307,8 @@ type
     fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
     fUrl: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
   published
-    [TNaming(TNaming.nCamelCase)]
     property NamespaceUri: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fNamespaceUri write fNamespaceUri;
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
-    [TNaming(TNaming.nFlatCase)]
     property Url: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fUrl write fUrl;
   end;
 
@@ -10371,16 +8321,12 @@ type
     fRepairLoad: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property AutoRecover: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoRecover write fAutoRecover;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property CrashSave: ProRock.Xmlite.Schema.Base.TBooleanST read fCrashSave write fCrashSave;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property DataExtractLoad: ProRock.Xmlite.Schema.Base.TBooleanST read fDataExtractLoad write fDataExtractLoad;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property RepairLoad: ProRock.Xmlite.Schema.Base.TBooleanST read fRepairLoad write fRepairLoad;
   end;
 
@@ -10401,41 +8347,28 @@ type
     fConcurrentManualCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fForceFullCalc: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
-    [TNaming(TNaming.nCamelCase)]
     property CalcId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCalcId write fCalcId;
     [TDefault(Ord(stcmaAuto))]
-    [TNaming(TNaming.nCamelCase)]
     property CalcMode: TSTCalcModeST read fCalcMode write fCalcMode;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property FullCalcOnLoad: ProRock.Xmlite.Schema.Base.TBooleanST read fFullCalcOnLoad write fFullCalcOnLoad;
     [TDefault(Ord(strmA1))]
-    [TNaming(TNaming.nCamelCase)]
     property RefMode: TSTRefModeST read fRefMode write fRefMode;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Iterate: ProRock.Xmlite.Schema.Base.TBooleanST read fIterate write fIterate;
     [TDefault(100)]
-    [TNaming(TNaming.nCamelCase)]
     property IterateCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fIterateCount write fIterateCount;
     [TDefault(0.001)]
-    [TNaming(TNaming.nCamelCase)]
     property IterateDelta: ProRock.Xmlite.Schema.Base.TDoubleST read fIterateDelta write fIterateDelta;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property FullPrecision: ProRock.Xmlite.Schema.Base.TBooleanST read fFullPrecision write fFullPrecision;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property CalcCompleted: ProRock.Xmlite.Schema.Base.TBooleanST read fCalcCompleted write fCalcCompleted;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property CalcOnSave: ProRock.Xmlite.Schema.Base.TBooleanST read fCalcOnSave write fCalcOnSave;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property ConcurrentCalc: ProRock.Xmlite.Schema.Base.TBooleanST read fConcurrentCalc write fConcurrentCalc;
-    [TNaming(TNaming.nCamelCase)]
     property ConcurrentManualCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fConcurrentManualCount write fConcurrentManualCount;
-    [TNaming(TNaming.nCamelCase)]
     property ForceFullCalc: ProRock.Xmlite.Schema.Base.TBooleanST read fForceFullCalc write fForceFullCalc;
   end;
 
@@ -10444,7 +8377,6 @@ type
   private
     fDefinedName: TCTDefinedNameCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property DefinedName: TCTDefinedNameCTList read fDefinedName;
   end;
 
@@ -10471,41 +8403,26 @@ type
     [TXmliteText]
     property XmlValue: TSTFormulaST read fXmlValue write fXmlValue;
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
-    [TNaming(TNaming.nFlatCase)]
     property Comment: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fComment write fComment;
-    [TNaming(TNaming.nCamelCase)]
     property CustomMenu: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fCustomMenu write fCustomMenu;
-    [TNaming(TNaming.nFlatCase)]
     property Description: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDescription write fDescription;
-    [TNaming(TNaming.nFlatCase)]
     property Help: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fHelp write fHelp;
-    [TNaming(TNaming.nCamelCase)]
     property StatusBar: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fStatusBar write fStatusBar;
-    [TNaming(TNaming.nCamelCase)]
     property LocalSheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fLocalSheetId write fLocalSheetId;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Hidden: ProRock.Xmlite.Schema.Base.TBooleanST read fHidden write fHidden;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property &Function: ProRock.Xmlite.Schema.Base.TBooleanST read fFunction write fFunction;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property VbProcedure: ProRock.Xmlite.Schema.Base.TBooleanST read fVbProcedure write fVbProcedure;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Xlm: ProRock.Xmlite.Schema.Base.TBooleanST read fXlm write fXlm;
-    [TNaming(TNaming.nCamelCase)]
     property FunctionGroupId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fFunctionGroupId write fFunctionGroupId;
-    [TNaming(TNaming.nCamelCase)]
     property ShortcutKey: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fShortcutKey write fShortcutKey;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property PublishToServer: ProRock.Xmlite.Schema.Base.TBooleanST read fPublishToServer write fPublishToServer;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property WorkbookParameter: ProRock.Xmlite.Schema.Base.TBooleanST read fWorkbookParameter write fWorkbookParameter;
   end;
 
@@ -10514,7 +8431,6 @@ type
   private
     fExternalReference: TCTExternalReferenceCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property ExternalReference: TCTExternalReferenceCTList read fExternalReference;
   end;
 
@@ -10543,7 +8459,6 @@ type
   private
     fPivotCache: TCTPivotCacheCTList;
   published
-    [TNaming(TNaming.nCamelCase)]
     property PivotCache: TCTPivotCacheCTList read fPivotCache;
   end;
 
@@ -10554,7 +8469,6 @@ type
     fId: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property CacheId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCacheId write fCacheId;
     [TRequired]
     [TNaming(TNaming.nFlatCase)]
@@ -10573,19 +8487,12 @@ type
     fSpinCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property ReadOnlyRecommended: ProRock.Xmlite.Schema.Base.TBooleanST read fReadOnlyRecommended write fReadOnlyRecommended;
-    [TNaming(TNaming.nCamelCase)]
     property UserName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fUserName write fUserName;
-    [TNaming(TNaming.nCamelCase)]
     property ReservationPassword: TSTUnsignedShortHexST read fReservationPassword write fReservationPassword;
-    [TNaming(TNaming.nCamelCase)]
     property AlgorithmName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fAlgorithmName write fAlgorithmName;
-    [TNaming(TNaming.nCamelCase)]
     property HashValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST read fHashValue write fHashValue;
-    [TNaming(TNaming.nCamelCase)]
     property SaltValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST read fSaltValue write fSaltValue;
-    [TNaming(TNaming.nCamelCase)]
     property SpinCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSpinCount write fSpinCount;
   end;
 
@@ -10595,7 +8502,6 @@ type
     fRef: TSTRefST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Ref: TSTRefST read fRef write fRef;
   end;
 
@@ -10618,38 +8524,23 @@ type
     fWorkbookSaltValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST;
     fWorkbookSpinCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
-    [TNaming(TNaming.nCamelCase)]
     property WorkbookPassword: TSTUnsignedShortHexST read fWorkbookPassword write fWorkbookPassword;
-    [TNaming(TNaming.nCamelCase)]
     property WorkbookPasswordCharacterSet: ProRock.Xmlite.Schema.Base.TStringST read fWorkbookPasswordCharacterSet write fWorkbookPasswordCharacterSet;
-    [TNaming(TNaming.nCamelCase)]
     property RevisionsPassword: TSTUnsignedShortHexST read fRevisionsPassword write fRevisionsPassword;
-    [TNaming(TNaming.nCamelCase)]
     property RevisionsPasswordCharacterSet: ProRock.Xmlite.Schema.Base.TStringST read fRevisionsPasswordCharacterSet write fRevisionsPasswordCharacterSet;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property LockStructure: ProRock.Xmlite.Schema.Base.TBooleanST read fLockStructure write fLockStructure;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property LockWindows: ProRock.Xmlite.Schema.Base.TBooleanST read fLockWindows write fLockWindows;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property LockRevision: ProRock.Xmlite.Schema.Base.TBooleanST read fLockRevision write fLockRevision;
-    [TNaming(TNaming.nCamelCase)]
     property RevisionsAlgorithmName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fRevisionsAlgorithmName write fRevisionsAlgorithmName;
-    [TNaming(TNaming.nCamelCase)]
     property RevisionsHashValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST read fRevisionsHashValue write fRevisionsHashValue;
-    [TNaming(TNaming.nCamelCase)]
     property RevisionsSaltValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST read fRevisionsSaltValue write fRevisionsSaltValue;
-    [TNaming(TNaming.nCamelCase)]
     property RevisionsSpinCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fRevisionsSpinCount write fRevisionsSpinCount;
-    [TNaming(TNaming.nCamelCase)]
     property WorkbookAlgorithmName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fWorkbookAlgorithmName write fWorkbookAlgorithmName;
-    [TNaming(TNaming.nCamelCase)]
     property WorkbookHashValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST read fWorkbookHashValue write fWorkbookHashValue;
-    [TNaming(TNaming.nCamelCase)]
     property WorkbookSaltValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST read fWorkbookSaltValue write fWorkbookSaltValue;
-    [TNaming(TNaming.nCamelCase)]
     property WorkbookSpinCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fWorkbookSpinCount write fWorkbookSpinCount;
   end;
 
@@ -10667,29 +8558,20 @@ type
     fCharacterSet: ProRock.Xmlite.Schema.Base.TStringST;
   published
     [TDefault(True)]
-    [TNaming(TNaming.nFlatCase)]
     property Css: ProRock.Xmlite.Schema.Base.TBooleanST read fCss write fCss;
     [TDefault(True)]
-    [TNaming(TNaming.nFlatCase)]
     property Thicket: ProRock.Xmlite.Schema.Base.TBooleanST read fThicket write fThicket;
     [TDefault(True)]
-    [TNaming(TNaming.nCamelCase)]
     property LongFileNames: ProRock.Xmlite.Schema.Base.TBooleanST read fLongFileNames write fLongFileNames;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Vml: ProRock.Xmlite.Schema.Base.TBooleanST read fVml write fVml;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property AllowPng: ProRock.Xmlite.Schema.Base.TBooleanST read fAllowPng write fAllowPng;
     [TDefault(Ord(sttss800x600))]
-    [TNaming(TNaming.nCamelCase)]
     property TargetScreenSize: TSTTargetScreenSizeST read fTargetScreenSize write fTargetScreenSize;
     [TDefault(96)]
-    [TNaming(TNaming.nFlatCase)]
     property Dpi: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fDpi write fDpi;
-    [TNaming(TNaming.nCamelCase)]
     property CodePage: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCodePage write fCodePage;
-    [TNaming(TNaming.nCamelCase)]
     property CharacterSet: ProRock.Xmlite.Schema.Base.TStringST read fCharacterSet write fCharacterSet;
   end;
 
@@ -10700,9 +8582,7 @@ type
     fFunctionGroup: TCTFunctionGroupCTList;
   published
     [TDefault(16)]
-    [TNaming(TNaming.nCamelCase)]
     property BuiltInGroupCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fBuiltInGroupCount write fBuiltInGroupCount;
-    [TNaming(TNaming.nCamelCase)]
     property FunctionGroup: TCTFunctionGroupCTList read fFunctionGroup;
   end;
 
@@ -10711,7 +8591,6 @@ type
   private
     fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
   end;
 
@@ -10721,9 +8600,7 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fWebPublishObject: TCTWebPublishObjectCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    [TNaming(TNaming.nCamelCase)]
     property WebPublishObject: TCTWebPublishObjectCTList read fWebPublishObject;
   end;
 
@@ -10738,20 +8615,14 @@ type
     fAutoRepublish: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
     [TRequired]
-    [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fId write fId;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property DivId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDivId write fDivId;
-    [TNaming(TNaming.nCamelCase)]
     property SourceObject: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fSourceObject write fSourceObject;
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property DestinationFile: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDestinationFile write fDestinationFile;
-    [TNaming(TNaming.nFlatCase)]
     property Title: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fTitle write fTitle;
     [TDefault(False)]
-    [TNaming(TNaming.nCamelCase)]
     property AutoRepublish: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoRepublish write fAutoRepublish;
   end;
 
@@ -10763,13 +8634,10 @@ type
     fRa: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
     [TRequired]
-    [TNaming(TNaming.nCamelCase)]
     property RId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fRId write fRId;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Ua: ProRock.Xmlite.Schema.Base.TBooleanST read fUa write fUa;
     [TDefault(False)]
-    [TNaming(TNaming.nFlatCase)]
     property Ra: ProRock.Xmlite.Schema.Base.TBooleanST read fRa write fRa;
   end;
 
@@ -10784,86 +8652,58 @@ type
     fApplyAlignmentFormats: ProRock.Xmlite.Schema.Base.TBooleanST;
     fApplyWidthHeightFormats: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
-    [TNaming(TNaming.nCamelCase)]
     property AutoFormatId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fAutoFormatId write fAutoFormatId;
-    [TNaming(TNaming.nCamelCase)]
     property ApplyNumberFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyNumberFormats write fApplyNumberFormats;
-    [TNaming(TNaming.nCamelCase)]
     property ApplyBorderFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyBorderFormats write fApplyBorderFormats;
-    [TNaming(TNaming.nCamelCase)]
     property ApplyFontFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyFontFormats write fApplyFontFormats;
-    [TNaming(TNaming.nCamelCase)]
     property ApplyPatternFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyPatternFormats write fApplyPatternFormats;
-    [TNaming(TNaming.nCamelCase)]
     property ApplyAlignmentFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyAlignmentFormats write fApplyAlignmentFormats;
-    [TNaming(TNaming.nCamelCase)]
     property ApplyWidthHeightFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyWidthHeightFormats write fApplyWidthHeightFormats;
   end;
 
-  [TNaming(TNaming.nCamelCase)]
   TCalcChainE = class(TCTCalcChainCT);
 
-  [TNaming(TNaming.nFlatCase)]
   TCommentsE = class(TCTCommentsCT);
 
   [TNaming(TNaming.nPascalCase)]
   TMapInfoE = class(TCTMapInfoCT);
 
-  [TNaming(TNaming.nFlatCase)]
   TConnectionsE = class(TCTConnectionsCT);
 
-  [TNaming(TNaming.nCamelCase)]
   TPivotCacheDefinitionE = class(TCTPivotCacheDefinitionCT);
 
-  [TNaming(TNaming.nCamelCase)]
   TPivotCacheRecordsE = class(TCTPivotCacheRecordsCT);
 
-  [TNaming(TNaming.nCamelCase)]
   TPivotTableDefinitionE = class(TCTPivotTableDefinitionCT);
 
-  [TNaming(TNaming.nCamelCase)]
   TQueryTableE = class(TCTQueryTableCT);
 
-  [TNaming(TNaming.nFlatCase)]
   TSstE = class(TCTSstCT);
 
-  [TNaming(TNaming.nFlatCase)]
   THeadersE = class(TCTRevisionHeadersCT);
 
-  [TNaming(TNaming.nFlatCase)]
   TRevisionsE = class(TCTRevisionsCT);
 
-  [TNaming(TNaming.nFlatCase)]
   TUsersE = class(TCTUsersCT);
 
-  [TNaming(TNaming.nFlatCase)]
   TWorksheetE = class(TCTWorksheetCT);
 
-  [TNaming(TNaming.nFlatCase)]
   TChartsheetE = class(TCTChartsheetCT);
 
-  [TNaming(TNaming.nFlatCase)]
   TDialogsheetE = class(TCTDialogsheetCT);
 
-  [TNaming(TNaming.nFlatCase)]
   TMetadataE = class(TCTMetadataCT);
 
-  [TNaming(TNaming.nCamelCase)]
   TSingleXmlCellsE = class(TCTSingleXmlCellsCT);
 
-  [TNaming(TNaming.nCamelCase)]
   TStyleSheetE = class(TCTStylesheetCT);
 
-  [TNaming(TNaming.nCamelCase)]
   TExternalLinkE = class(TCTExternalLinkCT);
 
-  [TNaming(TNaming.nFlatCase)]
   TTableE = class(TCTTableCT);
 
-  [TNaming(TNaming.nCamelCase)]
   TVolTypesE = class(TCTVolTypesCT);
 
-  [TNaming(TNaming.nFlatCase)]
   TWorkbookE = class(TCTWorkbookCT);
 
   [TName('EG_ExtensionList')]
@@ -10871,7 +8711,6 @@ type
   private
     fExt: TCTExtensionCTList;
   published
-    [TNaming(TNaming.nFlatCase)]
     property Ext: TCTExtensionCTList read fExt;
   end;
 
@@ -11240,6 +9079,6 @@ TMetaBankXmlite.RegisterNamespace('http://schemas.openxmlformats.org/spreadsheet
   TExternalLinkE, TTableE, TVolTypesE, TWorkbookE],
   { groups }
   [TEGExtensionListEG],
-  'sml', TNaming.nTitleCase);
+  'sml', TNaming.nCamelCase, TNaming.nCamelCase, TNaming.nCamelCase);
 
 end.
