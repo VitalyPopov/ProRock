@@ -1534,13 +1534,17 @@ type
   [TName('VisionEyes-list')]
   TVisionEyesListST = (velRight, velLeft);
 
+  [TBaseType('ProRock.Xmlite.Schema.Base.TBase64BinaryST')]
   [TNaming(TNaming.nKebabCase)]
   [TName('base64Binary-primitive')]
   TBase64BinaryPrimitiveST = type ProRock.Xmlite.Schema.Base.TBase64BinaryST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TBooleanST')]
   [TNaming(TNaming.nKebabCase)]
   TBooleanPrimitiveST = type ProRock.Xmlite.Schema.Base.TBooleanST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TAnyURIST')]
   [TNaming(TNaming.nKebabCase)]
   TCanonicalPrimitiveST = type ProRock.Xmlite.Schema.Base.TAnyURIST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TTokenST')]
   [TNaming(TNaming.nKebabCase)]
   TCodePrimitiveST = type ProRock.Xmlite.Schema.Base.TTokenST;
   [TNaming(TNaming.nKebabCase)]
@@ -1550,33 +1554,46 @@ type
   TDateTimePrimitiveST = type string;
   [TNaming(TNaming.nKebabCase)]
   TDecimalPrimitiveST = type string;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TNaming(TNaming.nKebabCase)]
   TIdPrimitiveST = type ProRock.Xmlite.Schema.Base.TStringST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TDateTimeST')]
   [TNaming(TNaming.nKebabCase)]
   TInstantPrimitiveST = type ProRock.Xmlite.Schema.Base.TDateTimeST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TIntST')]
   [TNaming(TNaming.nKebabCase)]
   TIntegerPrimitiveST = type ProRock.Xmlite.Schema.Base.TIntST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TNaming(TNaming.nKebabCase)]
   TMarkdownPrimitiveST = type ProRock.Xmlite.Schema.Base.TStringST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TAnyURIST')]
   [TNaming(TNaming.nKebabCase)]
   TOidPrimitiveST = type ProRock.Xmlite.Schema.Base.TAnyURIST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TPositiveIntegerST')]
   [TNaming(TNaming.nKebabCase)]
   [TName('positiveInt-primitive')]
   TPositiveIntPrimitiveST = type ProRock.Xmlite.Schema.Base.TPositiveIntegerST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TNaming(TNaming.nTrainCase)]
   [TName('SampledDataDataType-primitive')]
   TSampledDataDataTypePrimitiveST = type ProRock.Xmlite.Schema.Base.TStringST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TNaming(TNaming.nKebabCase)]
   TStringPrimitiveST = type ProRock.Xmlite.Schema.Base.TStringST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TTimeST')]
   [TNaming(TNaming.nKebabCase)]
   TTimePrimitiveST = type ProRock.Xmlite.Schema.Base.TTimeST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TNonNegativeIntegerST')]
   [TNaming(TNaming.nKebabCase)]
   [TName('unsignedInt-primitive')]
   TUnsignedIntPrimitiveST = type ProRock.Xmlite.Schema.Base.TNonNegativeIntegerST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TAnyURIST')]
   [TNaming(TNaming.nKebabCase)]
   TUriPrimitiveST = type ProRock.Xmlite.Schema.Base.TAnyURIST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TAnyURIST')]
   [TNaming(TNaming.nKebabCase)]
   TUrlPrimitiveST = type ProRock.Xmlite.Schema.Base.TAnyURIST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TAnyURIST')]
   [TNaming(TNaming.nKebabCase)]
   TUuidPrimitiveST = type ProRock.Xmlite.Schema.Base.TAnyURIST;
 

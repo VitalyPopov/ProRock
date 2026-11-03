@@ -235,6 +235,7 @@ type
   TSTAdjAngleST = type string;
   [TName('ST_AdjCoordinate')]
   TSTAdjCoordinateST = type string;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TIntST')]
   [TName('ST_Angle')]
   TSTAngleST = type ProRock.Xmlite.Schema.Base.TIntST;
   [TName('ST_AnimationChartBuildType')]
@@ -243,84 +244,115 @@ type
   TSTAnimationDgmBuildTypeST = type string;
   [TName('ST_Coordinate32')]
   TSTCoordinate32ST = type string;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TIntST')]
   [TName('ST_Coordinate32Unqualified')]
   TSTCoordinate32UnqualifiedST = type ProRock.Xmlite.Schema.Base.TIntST;
   [TName('ST_Coordinate')]
   TSTCoordinateST = type string;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TLongST')]
   [TName('ST_CoordinateUnqualified')]
   TSTCoordinateUnqualifiedST = type ProRock.Xmlite.Schema.Base.TLongST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TUnsignedIntST')]
   [TName('ST_DrawingElementId')]
   TSTDrawingElementIdST = type ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   [TName('ST_FixedPercentage')]
   TSTFixedPercentageST = type string;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TName('ST_GeomGuideFormula')]
   TSTGeomGuideFormulaST = type ProRock.Xmlite.Schema.Base.TStringST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TTokenST')]
   [TName('ST_GeomGuideName')]
   TSTGeomGuideNameST = type ProRock.Xmlite.Schema.Base.TTokenST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TIntST')]
   [TName('ST_PercentageDecimal')]
   TSTPercentageDecimalST = type ProRock.Xmlite.Schema.Base.TIntST;
   [TName('ST_Percentage')]
   TSTPercentageST = type string;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TLongST')]
   [TName('ST_PositiveCoordinate')]
   TSTPositiveCoordinateST = type ProRock.Xmlite.Schema.Base.TLongST;
   [TName('ST_PositiveFixedPercentage')]
   TSTPositiveFixedPercentageST = type string;
   [TName('ST_PositivePercentage')]
   TSTPositivePercentageST = type string;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TTokenST')]
   [TName('ST_ShapeID')]
   TSTShapeIDST = type ProRock.Xmlite.Schema.Base.TTokenST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TUnsignedIntST')]
   [TName('ST_StyleMatrixColumnIndex')]
   TSTStyleMatrixColumnIndexST = type ProRock.Xmlite.Schema.Base.TUnsignedIntST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TName('ST_TextBulletSizePercent')]
   TSTTextBulletSizePercentST = type ProRock.Xmlite.Schema.Base.TStringST;
   [TName('ST_TextBulletSize')]
   TSTTextBulletSizeST = type string;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TIntST')]
   [TName('ST_TextBulletStartAtNum')]
   TSTTextBulletStartAtNumST = type ProRock.Xmlite.Schema.Base.TIntST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TIntST')]
   [TName('ST_TextColumnCount')]
   TSTTextColumnCountST = type ProRock.Xmlite.Schema.Base.TIntST;
   [TName('ST_TextFontScalePercentOrPercentString')]
   TSTTextFontScalePercentOrPercentStringST = type string;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TIntST')]
   [TName('ST_TextFontSize')]
   TSTTextFontSizeST = type ProRock.Xmlite.Schema.Base.TIntST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TIntST')]
   [TName('ST_TextIndentLevelType')]
   TSTTextIndentLevelTypeST = type ProRock.Xmlite.Schema.Base.TIntST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TIntST')]
   [TName('ST_TextNonNegativePoint')]
   TSTTextNonNegativePointST = type ProRock.Xmlite.Schema.Base.TIntST;
   [TName('ST_TextPoint')]
   TSTTextPointST = type string;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TIntST')]
   [TName('ST_TextPointUnqualified')]
   TSTTextPointUnqualifiedST = type ProRock.Xmlite.Schema.Base.TIntST;
   [TName('ST_TextSpacingPercentOrPercentString')]
   TSTTextSpacingPercentOrPercentStringST = type string;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TIntST')]
   [TName('ST_TextSpacingPoint')]
   TSTTextSpacingPointST = type ProRock.Xmlite.Schema.Base.TIntST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TName('ST_TextTypeface')]
   TSTTextTypefaceST = type ProRock.Xmlite.Schema.Base.TStringST;
+  [TBaseType('TSTAngleST')]
   [TName('ST_FOVAngle')]
   TSTFOVAngleST = type TSTAngleST;
+  [TBaseType('TSTAngleST')]
   [TName('ST_FixedAngle')]
   TSTFixedAngleST = type TSTAngleST;
+  [TBaseType('TSTPercentageDecimalST')]
   [TName('ST_FixedPercentageDecimal')]
   TSTFixedPercentageDecimalST = type TSTPercentageDecimalST;
+  [TBaseType('TSTCoordinate32UnqualifiedST')]
   [TName('ST_LineWidth')]
   TSTLineWidthST = type TSTCoordinate32UnqualifiedST;
+  [TBaseType('TSTCoordinate32UnqualifiedST')]
   [TName('ST_PositiveCoordinate32')]
   TSTPositiveCoordinate32ST = type TSTCoordinate32UnqualifiedST;
+  [TBaseType('TSTAngleST')]
   [TName('ST_PositiveFixedAngle')]
   TSTPositiveFixedAngleST = type TSTAngleST;
+  [TBaseType('TSTPercentageDecimalST')]
   [TName('ST_PositiveFixedPercentageDecimal')]
   TSTPositiveFixedPercentageDecimalST = type TSTPercentageDecimalST;
+  [TBaseType('TSTPercentageDecimalST')]
   [TName('ST_PositivePercentageDecimal')]
   TSTPositivePercentageDecimalST = type TSTPercentageDecimalST;
+  [TBaseType('TSTPercentageDecimalST')]
   [TName('ST_TextBulletSizeDecimal')]
   TSTTextBulletSizeDecimalST = type TSTPercentageDecimalST;
+  [TBaseType('TSTPercentageDecimalST')]
   [TName('ST_TextFontScalePercent')]
   TSTTextFontScalePercentST = type TSTPercentageDecimalST;
+  [TBaseType('TSTCoordinate32UnqualifiedST')]
   [TName('ST_TextIndent')]
   TSTTextIndentST = type TSTCoordinate32UnqualifiedST;
+  [TBaseType('TSTCoordinate32UnqualifiedST')]
   [TName('ST_TextMargin')]
   TSTTextMarginST = type TSTCoordinate32UnqualifiedST;
+  [TBaseType('TSTPercentageDecimalST')]
   [TName('ST_TextSpacingPercent')]
   TSTTextSpacingPercentST = type TSTPercentageDecimalST;
 

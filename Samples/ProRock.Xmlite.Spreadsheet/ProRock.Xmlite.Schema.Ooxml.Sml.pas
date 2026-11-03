@@ -248,40 +248,55 @@ type
   TSTTargetScreenSizeST = (sttss544x376, sttss640x480, sttss720x512, sttss800x600, sttss1024x768, sttss1152x882, sttss1152x900,
     sttss1280x1024, sttss1600x1200, sttss1800x1440, sttss1920x1200);
 
+  [TBaseType('ProRock.Xmlite.Schema.Base.TUnsignedIntST')]
   [TName('ST_BorderId')]
   TSTBorderIdST = type ProRock.Xmlite.Schema.Base.TUnsignedIntST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TName('ST_CellRef')]
   TSTCellRefST = type ProRock.Xmlite.Schema.Base.TStringST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TName('ST_CellSpan')]
   TSTCellSpanST = type ProRock.Xmlite.Schema.Base.TStringST;
   [TName('ST_CellSpans')]
   TSTCellSpansST = type string;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TUnsignedIntST')]
   [TName('ST_CellStyleXfId')]
   TSTCellStyleXfIdST = type ProRock.Xmlite.Schema.Base.TUnsignedIntST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TUnsignedIntST')]
   [TName('ST_DxfId')]
   TSTDxfIdST = type ProRock.Xmlite.Schema.Base.TUnsignedIntST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TUnsignedIntST')]
   [TName('ST_FillId')]
   TSTFillIdST = type ProRock.Xmlite.Schema.Base.TUnsignedIntST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TIntegerST')]
   [TName('ST_FontFamily')]
   TSTFontFamilyST = type ProRock.Xmlite.Schema.Base.TIntegerST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TUnsignedIntST')]
   [TName('ST_FontId')]
   TSTFontIdST = type ProRock.Xmlite.Schema.Base.TUnsignedIntST;
+  [TBaseType('ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST')]
   [TName('ST_Formula')]
   TSTFormulaST = type ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TUnsignedIntST')]
   [TName('ST_NumFmtId')]
   TSTNumFmtIdST = type ProRock.Xmlite.Schema.Base.TUnsignedIntST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TName('ST_RefA')]
   TSTRefAST = type ProRock.Xmlite.Schema.Base.TStringST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TName('ST_Ref')]
   TSTRefST = type ProRock.Xmlite.Schema.Base.TStringST;
   [TName('ST_Sqref')]
   TSTSqrefST = type string;
   [TName('ST_TextRotation')]
   TSTTextRotationST = type string;
+  [TBaseType('ProRock.Xmlite.Schema.Base.THexBinaryST')]
   [TName('ST_UnsignedIntHex')]
   TSTUnsignedIntHexST = type ProRock.Xmlite.Schema.Base.THexBinaryST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.THexBinaryST')]
   [TName('ST_UnsignedShortHex')]
   TSTUnsignedShortHexST = type ProRock.Xmlite.Schema.Base.THexBinaryST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TName('ST_XmlDataType')]
   TSTXmlDataTypeST = type ProRock.Xmlite.Schema.Base.TStringST;
 

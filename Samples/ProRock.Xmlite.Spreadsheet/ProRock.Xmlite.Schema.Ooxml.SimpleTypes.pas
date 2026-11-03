@@ -48,38 +48,53 @@ type
   [TName('ST_ConformanceClass')]
   TSTConformanceClassST = (stccStrict, stccTransitional);
 
+  [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TName('ST_ColorType')]
   TSTColorTypeST = type ProRock.Xmlite.Schema.Base.TStringST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TTokenST')]
   [TName('ST_Guid')]
   TSTGuidST = type ProRock.Xmlite.Schema.Base.TTokenST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.THexBinaryST')]
   [TName('ST_HexColorRGB')]
   TSTHexColorRGBST = type ProRock.Xmlite.Schema.Base.THexBinaryST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TName('ST_Lang')]
   TSTLangST = type ProRock.Xmlite.Schema.Base.TStringST;
   [TName('ST_OnOff')]
   TSTOnOffST = type string;
+  [TBaseType('ProRock.Xmlite.Schema.Base.THexBinaryST')]
   [TName('ST_Panose')]
   TSTPanoseST = type ProRock.Xmlite.Schema.Base.THexBinaryST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TName('ST_Percentage')]
   TSTPercentageST = type ProRock.Xmlite.Schema.Base.TStringST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TName('ST_String')]
   TSTStringST = type ProRock.Xmlite.Schema.Base.TStringST;
   [TName('ST_TwipsMeasure')]
   TSTTwipsMeasureST = type string;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TName('ST_UniversalMeasure')]
   TSTUniversalMeasureST = type ProRock.Xmlite.Schema.Base.TStringST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TUnsignedLongST')]
   [TName('ST_UnsignedDecimalNumber')]
   TSTUnsignedDecimalNumberST = type ProRock.Xmlite.Schema.Base.TUnsignedLongST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TNCNameST')]
   [TName('ST_XmlName')]
   TSTXmlNameST = type ProRock.Xmlite.Schema.Base.TNCNameST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TName('ST_Xstring')]
   TSTXstringST = type ProRock.Xmlite.Schema.Base.TStringST;
+  [TBaseType('TSTPercentageST')]
   [TName('ST_FixedPercentage')]
   TSTFixedPercentageST = type TSTPercentageST;
+  [TBaseType('TSTPercentageST')]
   [TName('ST_PositiveFixedPercentage')]
   TSTPositiveFixedPercentageST = type TSTPercentageST;
+  [TBaseType('TSTPercentageST')]
   [TName('ST_PositivePercentage')]
   TSTPositivePercentageST = type TSTPercentageST;
+  [TBaseType('TSTUniversalMeasureST')]
   [TName('ST_PositiveUniversalMeasure')]
   TSTPositiveUniversalMeasureST = type TSTUniversalMeasureST;
 

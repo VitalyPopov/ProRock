@@ -12,6 +12,9 @@ const
   // xsi:type, xsi:nil - the prefix is usual, not fixed: it is declared like any other
   cXsiPrefix = 'xsi';
   cXsiUri = 'http://www.w3.org/2001/XMLSchema-instance';
+  // Office's namespaces, transitional and strict
+  cOoxmlUriPrefix = 'http://schemas.openxmlformats.org/';
+  cOoxmlStrictUriPrefix = 'http://purl.oclc.org/ooxml/';
 
 type
   TXmliteComponentType = (xctUndefined, xctSimpleType, xctComplexType, xctAttribute, xctAttributeGroup, xctElement, xctElementGroup);
@@ -79,6 +82,8 @@ type
     class function ReadAttributeName(var aCursor: PChar; out aPrefix, aName, aFullName: string): boolean; static; inline;
 
     class function ReadTextNodeContents(var aCursor: PChar): string; static; inline;
+    // a text-only element, from after its name to after its end: aText ('' for <a/>), aTagEnd after its start tag
+    class function ReadValueNode(var aCursor: PChar; const aNodeName: string; out aText: string; out aTagEnd: PChar): boolean; static;
     class function ReadXmlns(aCursor: PChar; aXmlns: TXmlns): boolean; static; inline;
   end;
 
@@ -629,6 +634,36 @@ begin
   Inc(aCursor);
 
   Result := ReadUnescapeInPlace(aCursor, '<');
+end;
+
+class function TReaderXmlite.ReadValueNode(var aCursor: PChar; const aNodeName: string; out aText: string; out aTagEnd: PChar): boolean;
+begin
+  Result := False;
+  aText := '';
+  aTagEnd := nil;
+
+  var quote: Char := #0;
+  while (quote <> #0) or (aCursor^ <> '>') do
+  begin
+    if aCursor^ = #0 then
+      Exit;
+    if quote <> #0 then
+    begin
+      if aCursor^ = quote then
+        quote := #0;
+    end
+    else if CharInSet(aCursor^, ['"', '''']) then
+      quote := aCursor^;
+    Inc(aCursor);
+  end;
+  Inc(aCursor);
+  aTagEnd := aCursor;
+
+  if aTagEnd[-2] = '/' then
+    Exit(True);
+
+  aText := ReadUnescapeInPlace(aCursor, '<');
+  Result := PassNode(aCursor, aNodeName);
 end;
 
 class function TReaderXmlite.ReadUnescapeInPlace(var aCursor: PChar; aStringEndsAt: Char): string;

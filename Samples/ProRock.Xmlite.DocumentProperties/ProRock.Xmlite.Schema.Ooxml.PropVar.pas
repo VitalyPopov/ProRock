@@ -37,9 +37,11 @@ type
   TSTArrayBaseTypeST = (stabtVariant, stabtI1, stabtI2, stabtI4, stabtInt, stabtUi1, stabtUi2, stabtUi4, stabtUint, stabtR4, stabtR8,
     stabtDecimal, stabtBstr, stabtDate, stabtBool, stabtCy, stabtError);
 
+  [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TNaming(TNaming.nTitleCase)]
   [TName('ST_Cy')]
   TSTCyST = type ProRock.Xmlite.Schema.Base.TStringST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TNaming(TNaming.nTitleCase)]
   [TName('ST_Error')]
   TSTErrorST = type ProRock.Xmlite.Schema.Base.TStringST;

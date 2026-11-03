@@ -22,9 +22,10 @@ documents; it does not validate them against their schema.
 | CDATA sections | supported | read as text as it is, written escaped (`a&lt;b`) |
 | Comments, processing instructions, DOCTYPE | supported | skipped on read, not written back |
 | Entities declared in a DTD | not supported | `&name;` stays text - which also rules out entity-expansion attacks |
-| `xml:space="preserve"` | supported | written for text with leading or trailing spaces |
+| `xml:space="preserve"` | supported | written for text with leading or trailing spaces in Office's namespaces, which trim it otherwise; elsewhere the spaces are kept without it, as a schema's simple type has no such attribute |
 | Attributes the schema does not know | supported | kept and written back |
 | Elements the schema does not know | supported | kept as their exact text and written back where they were - Office's own extensions (`extLst`, `mc:AlternateContent`) survive a round trip ([Xmlite](xmlite.md#content-the-schema-does-not-describe)) |
+| Values that do not fit their type | supported | `12,50` in a decimal, `XXX` in an enumeration, an empty number: the property is not present, the value is kept and written back as it came, attributes and list items too; setting the property replaces it. CDATA in such a value comes back as escaped text |
 | Malformed XML | supported | the read fails: `FromXml` returns `False` - tags not closed or crossed, an undeclared prefix in kept content |
 | Mixed content | supported | text runs and child elements in document order (`XmlContent`, `InnerText`) - a FHIR narrative round-trips; text-only mixed content is plain text (`XmlValue`) ([Xmlite](xmlite.md#mixed-content-and-element-order)) |
 

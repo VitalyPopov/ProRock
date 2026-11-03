@@ -20,8 +20,10 @@ type
   [TName('ST_EditAs')]
   TSTEditAsST = (steaTwoCell, steaOneCell, steaAbsolute);
 
+  [TBaseType('ProRock.Xmlite.Schema.Base.TIntST')]
   [TName('ST_ColID')]
   TSTColIDST = type ProRock.Xmlite.Schema.Base.TIntST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TIntST')]
   [TName('ST_RowID')]
   TSTRowIDST = type ProRock.Xmlite.Schema.Base.TIntST;
 

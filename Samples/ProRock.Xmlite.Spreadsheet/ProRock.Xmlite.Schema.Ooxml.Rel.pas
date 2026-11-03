@@ -17,6 +17,7 @@ uses
   ProRock.Xmlite, ProRock.Xmlite.Schema.Base;
 
 type
+  [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TNaming(TNaming.nTitleCase)]
   [TName('ST_RelationshipId')]
   TSTRelationshipIdST = type ProRock.Xmlite.Schema.Base.TStringST;

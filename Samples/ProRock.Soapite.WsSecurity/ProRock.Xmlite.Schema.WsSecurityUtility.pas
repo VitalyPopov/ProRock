@@ -18,6 +18,7 @@ uses
 
 type
   TIdA = type ProRock.Xmlite.Schema.Base.TIdST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TQNameST')]
   [TNaming(TNaming.nCamelCase)]
   TTTimestampFaultST = type ProRock.Xmlite.Schema.Base.TQNameST;
 

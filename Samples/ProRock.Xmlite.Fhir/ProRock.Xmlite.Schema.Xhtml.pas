@@ -26,44 +26,64 @@ type
   [TNaming(TNaming.nPascalCase)]
   TScopeST = (saRow, saCol, saRowgroup, saColgroup);
 
+  [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TNaming(TNaming.nPascalCase)]
   TCharacterST = type ProRock.Xmlite.Schema.Base.TStringST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TNaming(TNaming.nPascalCase)]
   TCharsetST = type ProRock.Xmlite.Schema.Base.TStringST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TNaming(TNaming.nPascalCase)]
   TCharsetsST = type ProRock.Xmlite.Schema.Base.TStringST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TNaming(TNaming.nPascalCase)]
   TContentTypeST = type ProRock.Xmlite.Schema.Base.TStringST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TNaming(TNaming.nPascalCase)]
   TContentTypesST = type ProRock.Xmlite.Schema.Base.TStringST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TNaming(TNaming.nPascalCase)]
   TCoordsST = type ProRock.Xmlite.Schema.Base.TStringST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TDateTimeST')]
   [TNaming(TNaming.nPascalCase)]
   TDatetimeST = type ProRock.Xmlite.Schema.Base.TDateTimeST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TLanguageST')]
   [TNaming(TNaming.nPascalCase)]
   TLanguageCodeST = type ProRock.Xmlite.Schema.Base.TLanguageST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TNaming(TNaming.nPascalCase)]
   TLengthST = type ProRock.Xmlite.Schema.Base.TStringST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TNmtokensST')]
   [TNaming(TNaming.nPascalCase)]
   TLinkTypesST = type ProRock.Xmlite.Schema.Base.TNmtokensST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TNaming(TNaming.nPascalCase)]
   TMediaDescST = type ProRock.Xmlite.Schema.Base.TStringST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TNaming(TNaming.nPascalCase)]
   TMultiLengthST = type ProRock.Xmlite.Schema.Base.TStringST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TNonNegativeIntegerST')]
   [TNaming(TNaming.nPascalCase)]
   TNumberST = type ProRock.Xmlite.Schema.Base.TNonNegativeIntegerST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TNonNegativeIntegerST')]
   [TNaming(TNaming.nPascalCase)]
   TPixelsST = type ProRock.Xmlite.Schema.Base.TNonNegativeIntegerST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TNaming(TNaming.nPascalCase)]
   TScriptST = type ProRock.Xmlite.Schema.Base.TStringST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TNaming(TNaming.nPascalCase)]
   TStyleSheetST = type ProRock.Xmlite.Schema.Base.TStringST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TNaming(TNaming.nPascalCase)]
   TTextST = type ProRock.Xmlite.Schema.Base.TStringST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TNaming(TNaming.nPascalCase)]
   TUriListST = type ProRock.Xmlite.Schema.Base.TStringST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TAnyURIST')]
   [TNaming(TNaming.nUpperCase)]
   TUriST = type ProRock.Xmlite.Schema.Base.TAnyURIST;
+  [TBaseType('TNumberST')]
   TTabindexNumberST = type TNumberST;
 
   TInlineCT = class;

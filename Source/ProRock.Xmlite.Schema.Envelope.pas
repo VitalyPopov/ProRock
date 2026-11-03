@@ -21,6 +21,7 @@ type
   TActorA = type ProRock.Xmlite.Schema.Base.TAnyURIST;
   [TNaming(TNaming.nCamelCase)]
   TEncodingStyleST = type string;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TBooleanST')]
   [TNaming(TNaming.nCamelCase)]
   TMustUnderstandA = type ProRock.Xmlite.Schema.Base.TBooleanST;
   [TNaming(TNaming.nCamelCase)]

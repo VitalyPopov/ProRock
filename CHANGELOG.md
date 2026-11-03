@@ -15,8 +15,23 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   later another one into the same folder writes the same common units
 - A list class nothing refers to is no longer generated, in the units shipped with ProRock too. Regenerate your units; code
   that names such a list itself can use `TXmliteList<TItem>`
+- A value that does not fit its type (`12,50` in a decimal, `XXX` in an enumeration, an empty number) no longer turns silently
+  into `0` or the enumeration's first item: the property is not present, and the value is kept and written back as it came, for
+  elements, list items, attributes and the text of an element with attributes. Setting the property replaces it. A list no longer
+  gets a zero item for it
+- `xml:space="preserve"` is written only in Office's namespaces, which trim the text otherwise. Elsewhere a simple type has no such
+  attribute and a validating reader refused the document; the spaces are kept without it
+- Generated simple types carry `[TBaseType]`, so the runtime knows what a type derives from. Regenerate your units for this; units
+  generated earlier keep working as before
 
 ### Fixed
+- An empty element of a simple type (`<title/>`) made `FromXml` return `False`, and everything after it was lost
+- `xs:decimal` values are written without an exponent: `1E-5` and `1E15` are not valid decimals, `0.00001` and
+  `1000000000000000` are. `xs:double` keeps its exponent
+- Whitespace around a number or an enumeration value is ignored, as XML Schema says: `<n> 12 </n>` is 12, it used to read as 0
+- ProRocket Lite: a namespace ending in a code list's directory version (`...:ActionCode:D16A`) gives a unit of its own
+  (`ActionCodeD16A`); before, the coupled UN/CEFACT CII schemas failed with a duplicate unit name. XAdES units are `Xades` and
+  `Xades141`
 - Three samples did not compile on older Delphi: `ProRock.Soapite.WsSecurity` on 10.3 and 10.4, `ProRock.Xmlite.Basic` and
   `ProRock.Xmlite.Spreadsheet` on 10.3. The samples behave as before
 - A hand-written class deriving directly from `TBasite`, in a unit that uses `ProRock.Xmlite`, crashed the compiler since 1.6.0

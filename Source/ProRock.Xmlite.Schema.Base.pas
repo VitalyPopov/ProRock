@@ -25,6 +25,7 @@ type
   TAnySimpleTypeST = type string;
   TBase64BinaryST = type string;
   TBooleanST = type boolean;
+  [TPlainNumber]
   TDecimalST = type double;
   TDoubleST = type double;
   TFloatST = type double;
@@ -32,58 +33,100 @@ type
   TIntegerST = type int64;
   TStringST = type string;
   TUnsignedLongST = type uint64;
+  [TBaseType('TAnySimpleTypeST')]
   TAnyURIST = type TAnySimpleTypeST;
+  [TBaseType('TAnySimpleTypeST')]
   TBlockSetST = type TAnySimpleTypeST;
+  [TBaseType('TAnySimpleTypeST')]
   TDateST = type TAnySimpleTypeST;
+  [TBaseType('TAnySimpleTypeST')]
   TDateTimeST = type TAnySimpleTypeST;
+  [TBaseType('TAnySimpleTypeST')]
   TDerivationSetST = type TAnySimpleTypeST;
+  [TBaseType('TAnySimpleTypeST')]
   TDurationST = type TAnySimpleTypeST;
+  [TBaseType('TAnySimpleTypeST')]
   [TNaming(TNaming.nUpperCase)]
   TEntitiesST = type TAnySimpleTypeST;
+  [TBaseType('TAnySimpleTypeST')]
   TFullDerivationSetST = type TAnySimpleTypeST;
+  [TBaseType('TAnySimpleTypeST')]
   TGDayST = type TAnySimpleTypeST;
+  [TBaseType('TAnySimpleTypeST')]
   TGMonthDayST = type TAnySimpleTypeST;
+  [TBaseType('TAnySimpleTypeST')]
   TGMonthST = type TAnySimpleTypeST;
+  [TBaseType('TAnySimpleTypeST')]
   TGYearMonthST = type TAnySimpleTypeST;
+  [TBaseType('TAnySimpleTypeST')]
   TGYearST = type TAnySimpleTypeST;
+  [TBaseType('TAnySimpleTypeST')]
   [TNaming(TNaming.nUpperCase)]
   TIdrefsST = type TAnySimpleTypeST;
+  [TBaseType('TIntegerST')]
   TLongST = type TIntegerST;
+  [TBaseType('TAnySimpleTypeST')]
   TNamespaceListST = type TAnySimpleTypeST;
+  [TBaseType('TAnySimpleTypeST')]
   [TNaming(TNaming.nUpperCase)]
   TNmtokensST = type TAnySimpleTypeST;
+  [TBaseType('TIntegerST')]
   TNonNegativeIntegerST = type TIntegerST;
+  [TBaseType('TIntegerST')]
   TNonPositiveIntegerST = type TIntegerST;
+  [TBaseType('TStringST')]
   TNormalizedStringST = type TStringST;
+  [TBaseType('TAnySimpleTypeST')]
   [TNaming(TNaming.nUpperCase)]
   TNotationST = type TAnySimpleTypeST;
+  [TBaseType('TAnySimpleTypeST')]
   [TNaming(TNaming.nPascalCase)]
   TQNameST = type TAnySimpleTypeST;
+  [TBaseType('TAnySimpleTypeST')]
   TSimpleDerivationSetST = type TAnySimpleTypeST;
+  [TBaseType('TAnySimpleTypeST')]
   TTimeST = type TAnySimpleTypeST;
+  [TBaseType('TUnsignedLongST')]
   TUnsignedIntST = type TUnsignedLongST;
+  [TBaseType('TNonNegativeIntegerST')]
   [TValueAlias(High(TNonNegativeIntegerST), 'unbounded')]
   TAllNNIST = type TNonNegativeIntegerST;
+  [TBaseType('TLongST')]
   TIntST = type TLongST;
+  [TBaseType('TNonPositiveIntegerST')]
   TNegativeIntegerST = type TNonPositiveIntegerST;
+  [TBaseType('TNonNegativeIntegerST')]
   TPositiveIntegerST = type TNonNegativeIntegerST;
+  [TBaseType('TNormalizedStringST')]
   TTokenST = type TNormalizedStringST;
+  [TBaseType('TUnsignedIntST')]
   TUnsignedShortST = type TUnsignedIntST;
+  [TBaseType('TTokenST')]
   TLanguageST = type TTokenST;
+  [TBaseType('TTokenST')]
   [TNaming(TNaming.nPascalCase)]
   TNameST = type TTokenST;
+  [TBaseType('TTokenST')]
   [TNaming(TNaming.nUpperCase)]
   TNmtokenST = type TTokenST;
+  [TBaseType('TTokenST')]
   TPublicST = type TTokenST;
+  [TBaseType('TIntST')]
   TShortST = type TIntST;
+  [TBaseType('TUnsignedShortST')]
   TUnsignedByteST = type TUnsignedShortST;
+  [TBaseType('TShortST')]
   TByteST = type TShortST;
+  [TBaseType('TNameST')]
   [TNaming(TNaming.nPascalCase)]
   TNCNameST = type TNameST;
+  [TBaseType('TNCNameST')]
   [TNaming(TNaming.nUpperCase)]
   TEntityST = type TNCNameST;
+  [TBaseType('TNCNameST')]
   [TNaming(TNaming.nUpperCase)]
   TIdST = type TNCNameST;
+  [TBaseType('TNCNameST')]
   [TNaming(TNaming.nUpperCase)]
   TIdrefST = type TNCNameST;
 
@@ -1376,6 +1419,7 @@ type
 
   TSelectorE = class(TAnnotatedCT)
   type
+    [TBaseType('TTokenST')]
     TXpath = type TTokenST;
   private
     fXpath: TXpath;
@@ -1386,6 +1430,7 @@ type
 
   TFieldE = class(TAnnotatedCT)
   type
+    [TBaseType('TTokenST')]
     TXpath = type TTokenST;
   private
     fXpath: TXpath;
@@ -1497,6 +1542,7 @@ type
 
   TUnionE = class(TAnnotatedCT)
   type
+    [TBaseType('TAnySimpleTypeST')]
     TMemberTypes = type TAnySimpleTypeST;
   private
     fMemberTypes: TMemberTypes;

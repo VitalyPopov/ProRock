@@ -19,6 +19,7 @@ uses
 type
   TMatchCodeST = (mc1, mc2, mc3);
 
+  [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   TCompanyTypeCodeST = type ProRock.Xmlite.Schema.Base.TStringST;
 
   TCheckVatE = class;

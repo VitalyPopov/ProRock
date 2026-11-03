@@ -26,6 +26,7 @@ type
   TNaming = ProRock.Utility.TNaming;
   TNamingAttribute = ProRock.Utility.TNamingAttribute;
   TBaseTypeAttribute = ProRock.Basite.TBaseTypeAttribute;
+  TPlainNumberAttribute = ProRock.Basite.TPlainNumberAttribute;
   TNameAttribute = ProRock.Basite.TNameAttribute;
   TDefaultAttribute = ProRock.Basite.TDefaultAttribute;
   TRequiredAttribute = ProRock.Basite.TRequiredAttribute;
@@ -49,13 +50,15 @@ type
   TMetaBank = ProRock.Basite.TMetaBank;
   {$ENDREGION}
 
-  // an element the schema does not describe, kept as its text, written back after the AfterCount-th item of After (nil:
-  // first); Namespaces - the prefixes ('' - default) it takes from its ancestors
+  // an element the schema does not describe, or one whose value does not fit its type, kept as its text, written back after
+  // the AfterCount-th item of After (nil: first); Namespaces - the prefixes ('' - default) it takes from its ancestors;
+  // Value - the single property it did not fill: once that property is set, this one is not written
   TXmliteUnknown = record
     Xml: string;
     After: TProperty;
     AfterCount: integer;
     Namespaces: TArray<TPair<string, string>>;
+    Value: TProperty;
   end;
 
   TXmliteNodeKind = (xnkText, xnkElement, xnkUnknown);
@@ -120,7 +123,10 @@ type
     fXmlAny: TBasiteList<TBasite>;
     fXmlUnknown: TList<TXmliteUnknown>; // created with the first one
     fXmlContent: TList<TXmliteNode>; // created with the first node
+    fXmlBadAttributes: TDictionary<string, TProperty>; // a name in XmlAttributes -> the property it did not fill; with the first one
     fXmlPosition: cardinal;
+    // a kept value stands in for this property
+    function HasBadValue(aProperty: TProperty): boolean;
     function GetXmlUnknown: TList<TXmliteUnknown>;
     function GetXmlContent: TList<TXmliteNode>;
     function GetXmlText: string;
@@ -200,6 +206,8 @@ type
 
   private
     function TagType: TTagType;
+    // written when present, or required - unless a kept value that did not fit its type stands in for it
+    function ValueIsWritten(aProperty: TProperty): boolean;
 
     function ReadTagContents(var aCursor: PChar; const aName: string; aXmlns: TXmlns): boolean;
 
@@ -544,14 +552,21 @@ begin
         var propertyData: TPropertyData := Meta.Xmlite.Attributes[TUriedName.Create(uri, attributeName)];
         if propertyData = nil then
           propertyData := Meta.Xmlite.Attributes[TUriedName.Create('', attributeName)];
-        if propertyData <> nil then
-          propertyData.Value[Self] := attributeValue
-        else if Meta.Xmlite.IsTXmlite and (attributePrefix = 'xmlns') then
+        if (propertyData <> nil) and propertyData.TrySetValue(Self, attributeValue) then
+          Continue;
+
+        if Meta.Xmlite.IsTXmlite and (attributePrefix = 'xmlns') and (propertyData = nil) then
           TXmlite(Self).XmlAttributeNamespaces.AddOrSetValue(attributeName, attributeValue)
         else if Meta.Xmlite.IsTXmlite then
           if (attributePrefix <> 'xmlns') and (not attributePrefix.IsEmpty or (attributeName <> 'xmlns')) then // pass xmlns stuff
           begin
             TXmlite(Self).XmlAttributes.AddOrSetValue(attributeFullName, attributeValue);
+            if propertyData <> nil then // does not fit its type: kept as it came
+            begin
+              if TXmlite(Self).fXmlBadAttributes = nil then
+                TXmlite(Self).fXmlBadAttributes := TDictionary<string, TProperty>.Create;
+              TXmlite(Self).fXmlBadAttributes.AddOrSetValue(attributeFullName, propertyData);
+            end;
             // its prefix, and for xsi:type the value's (dcterms:W3CDTF) - declared again on write
             if not attributePrefix.IsEmpty and not uri.IsEmpty then
               TXmlite(Self).XmlAttributeNamespaces.AddOrSetValue(attributePrefix, uri);
@@ -579,7 +594,11 @@ begin
       if Assigned(textProperty) then
       begin // simpleContent: the text is the value - whitespace included
         if aXmlCursor^ <> '<' then
-          textProperty.Value[Self] := TReaderXmlite.ReadUnescapeInPlace(aXmlCursor, '<');
+        begin
+          var text: string := TReaderXmlite.ReadUnescapeInPlace(aXmlCursor, '<');
+          if not textProperty.TrySetValue(Self, text) and Meta.Xmlite.IsTXmlite then
+            TXmlite(Self).fXmlText := text; // does not fit its type: kept as it came, written while the property is not present
+        end;
         if aXmlCursor^ = #0 then
           Exit;
       end
@@ -655,6 +674,46 @@ begin
 end;
 
 function TBasiteHelper.ReadTagContents(var aCursor: PChar; const aName: string; aXmlns: TXmlns): boolean;
+
+  // an element at aFragment kept as its text, passed - a well-formed one only
+  function KeepFragment(var aFragment: PChar; const aTagFullName: string; aAfter: TProperty; aAfterCount: integer;
+    aValue: TProperty): boolean;
+  begin
+    var namespaces: TDictionary<string, string> := TDictionary<string, string>.Create;
+    try
+      var unknown: TXmliteUnknown;
+      Result := TReaderXmlite.ReadFragment(aFragment, aXmlns, unknown.Xml, namespaces);
+      if not Result then
+        Exit;
+      unknown.After := aAfter;
+      unknown.AfterCount := aAfterCount;
+      unknown.Namespaces := namespaces.ToArray;
+      unknown.Value := aValue;
+      TXmlite(Self).XmlUnknown.Add(unknown);
+      if Meta.Xmlite.Ordered then
+        TXmlite(Self).AddNode(xnkUnknown, aTagFullName, nil, nil, TXmlite(Self).XmlUnknown.Count - 1);
+    finally
+      namespaces.Free;
+    end;
+  end;
+
+  // an element whose value does not fit its property's type; the read changed its text in the buffer, not its start tag
+  function KeepBadValue(aStart, aTagEnd: PChar; const aText, aTagFullName: string; aProperty: TProperty; aAfterCount: integer): boolean;
+  begin
+    if not Meta.Xmlite.IsTXmlite then
+      Exit(True);
+    var xml: string;
+    SetString(xml, aStart, aTagEnd - aStart);
+    if aTagEnd[-2] <> '/' then
+      xml := xml + aText.Replace('&', '&amp;').Replace('<', '&lt;').Replace('>', '&gt;').Replace(#13, '&#x0D;') +
+        '</' + aTagFullName + '>';
+    var fragment: PChar := PChar(xml);
+    var value: TProperty := nil;
+    if aProperty.PropertyType = ptData then
+      value := aProperty;
+    Result := KeepFragment(fragment, aTagFullName, aProperty, aAfterCount, value);
+  end;
+
 begin
   Result := False;
 
@@ -742,20 +801,8 @@ begin
     if (propertyElement = nil) and Meta.Xmlite.IsTXmlite then
     begin // not described: kept as its text, to be written back where it was - a well-formed element only
       aCursor := cursorStart;
-      var namespaces: TDictionary<string, string> := TDictionary<string, string>.Create;
-      try
-        var unknown: TXmliteUnknown;
-        if not TReaderXmlite.ReadFragment(aCursor, aXmlns, unknown.Xml, namespaces) then
-          Exit;
-        unknown.After := lastProperty;
-        unknown.AfterCount := lastCount;
-        unknown.Namespaces := namespaces.ToArray;
-        TXmlite(Self).XmlUnknown.Add(unknown);
-        if ordered then
-          TXmlite(Self).AddNode(xnkUnknown, tagFullName, nil, nil, TXmlite(Self).XmlUnknown.Count - 1);
-      finally
-        namespaces.Free;
-      end;
+      if not KeepFragment(aCursor, tagFullName, lastProperty, lastCount, nil) then
+        Exit;
     end
     else if propertyElement = nil then
     begin // no such name in elements list of the object - skip the whole node till it's end
@@ -770,11 +817,17 @@ begin
       case propertyElement.PropertyType of
         ptData:
           begin
-            TPropertyData(propertyElement).Value[Self] := TReaderXmlite.ReadTextNodeContents(aCursor);
-            if ordered then
-              TXmlite(Self).AddNode(xnkElement, '', nil, propertyElement, 0);
-            if not TReaderXmlite.PassNode(aCursor, tagFullName) then
+            var text: string;
+            var tagEnd: PChar;
+            if not TReaderXmlite.ReadValueNode(aCursor, tagFullName, text, tagEnd) then
               Exit;
+            if not TPropertyData(propertyElement).TrySetValue(Self, text) then
+            begin
+              if not KeepBadValue(cursorStart, tagEnd, text, tagFullName, propertyElement, 1) then
+                Exit;
+            end
+            else if ordered then
+              TXmlite(Self).AddNode(xnkElement, '', nil, propertyElement, 0);
           end;
         ptBasite:
           begin
@@ -811,16 +864,28 @@ begin
           end;
         ptDataList:
           begin
-            TPropertyDataList(propertyElement).AddText(Self, TReaderXmlite.ReadTextNodeContents(aCursor));
-            if not TReaderXmlite.PassNode(aCursor, tagFullName) then
+            var text: string;
+            var tagEnd: PChar;
+            if not TReaderXmlite.ReadValueNode(aCursor, tagFullName, text, tagEnd) then
               Exit;
+            var added: boolean := TPropertyDataList(propertyElement).TryAddText(Self, text);
             lastCount := TPropertyDataList(propertyElement).Count(Self);
-            if ordered then
+            if not added then
+            begin
+              if not KeepBadValue(cursorStart, tagEnd, text, tagFullName, propertyElement, lastCount) then
+                Exit;
+            end
+            else if ordered then
               TXmlite(Self).AddNode(xnkElement, '', nil, propertyElement, lastCount - 1);
           end;
       end;
     end;
   end;
+end;
+
+function TBasiteHelper.ValueIsWritten(aProperty: TProperty): boolean;
+begin
+  Result := IsPresent(aProperty) or (aProperty.Required and not (Meta.Xmlite.IsTXmlite and TXmlite(Self).HasBadValue(aProperty)));
 end;
 
 // the tag of an element that is written (its parent decided it is present): with content, or empty
@@ -869,6 +934,15 @@ var
       Result := aProperty.Xmlite.NamePrefixed;
   end;
 
+  // a kept element, once; a value that did not fit its type not when the property was set since
+  procedure WriteKept(aUnknowns: TList<TXmliteUnknown>; aIndex: integer);
+  begin
+    var unknown: TXmliteUnknown := aUnknowns[aIndex];
+    if (unknown.Value = nil) or not IsPresent(unknown.Value) then
+      aWriter.AddUnknown(unknown);
+    unknownWritten[aIndex] := True;
+  end;
+
   // the kept elements read after aAfter's aCount-th item (aAfter nil: before the first element); -1: all of aAfter's left
   procedure WriteUnknown(aAfter: TProperty; aCount: integer);
   begin
@@ -879,10 +953,7 @@ var
       SetLength(unknownWritten, unknowns.Count);
     for var i := 0 to unknowns.Count - 1 do
       if not unknownWritten[i] and (unknowns[i].After = aAfter) and ((aCount < 0) or (unknowns[i].AfterCount = aCount)) then
-      begin
-        aWriter.AddUnknown(unknowns[i]);
-        unknownWritten[i] := True;
-      end;
+        WriteKept(unknowns, i);
   end;
 
   // an ordered element's children in XmlContent's order, then the ones not in it in schema order; a node's object is written
@@ -911,7 +982,7 @@ var
       var count: integer := 1;
       if aProperty.PropertyType = ptDataList then
         count := TPropertyDataList(aProperty).Count(Self)
-      else if not aProperty.Required and not IsPresent(aProperty) then
+      else if not ValueIsWritten(aProperty) then
         Exit;
       var written: TArray<boolean>;
       if not valuesWritten.TryGetValue(aProperty, written) then
@@ -961,10 +1032,7 @@ var
               aWriter.AddTextEscape(node.Text);
           xnkUnknown:
             if (unknowns <> nil) and (node.Index >= 0) and (node.Index < unknowns.Count) and not unknownWritten[node.Index] then
-            begin
-              aWriter.AddUnknown(unknowns[node.Index]);
-              unknownWritten[node.Index] := True;
-            end;
+              WriteKept(unknowns, node.Index);
           xnkElement:
             if node.Element <> nil then
               WriteChild(node.Element)
@@ -997,7 +1065,7 @@ var
       if unknowns <> nil then
         for var i := 0 to unknowns.Count - 1 do
           if not unknownWritten[i] then
-            aWriter.AddUnknown(unknowns[i]);
+            WriteKept(unknowns, i);
     finally
       valuesWritten.Free;
       children.Free;
@@ -1028,7 +1096,10 @@ begin
       aWriter.AddTagEmpty(objectName, Self, aNamespaces);
     xttOpenClose:
       if Assigned(Meta.Xmlite.TextProperty) then
-        aWriter.AddTagText(objectName, Self, aNamespaces, Meta.Xmlite.TextProperty.Value[Self])
+        if Meta.Xmlite.IsTXmlite and not TXmlite(Self).fXmlText.IsEmpty and not IsPresent(Meta.Xmlite.TextProperty) then
+          aWriter.AddTagText(objectName, Self, aNamespaces, TXmlite(Self).fXmlText) // did not fit its type, not set since
+        else
+          aWriter.AddTagText(objectName, Self, aNamespaces, Meta.Xmlite.TextProperty.Value[Self])
       else
       begin
         // mixed content: no indentation inside - it would become a part of the text
@@ -1059,12 +1130,13 @@ begin
               ptData:
                 begin
                   var propertyData: TPropertyData := TPropertyData(propertyElement);
-                  if propertyData.Required or IsPresent(propertyData) then
+                  if ValueIsWritten(propertyData) then
                     aWriter.AddTextNode(elementName(propertyElement, scope), propertyData.Value[Self], propertyData);
                 end;
               ptDataList:
                 begin
                   var propertyDataList: TPropertyDataList := TPropertyDataList(propertyElement);
+                  WriteUnknown(propertyElement, 0); // a kept item that did not fit its type, before the first good one
                   for var i := 0 to propertyDataList.Count(Self) - 1 do
                   begin
                     aWriter.AddTextNode(elementName(propertyElement, scope), propertyDataList.ItemText(Self, i), propertyDataList);
@@ -1383,8 +1455,11 @@ begin
   var typeKind: TTypeKind := aFieldInfo.RttiProperty.PropertyType.TypeKind;
   if aFieldInfo.PropertyType = ptDataList then
     typeKind := TPropertyDataList(aFieldInfo).Meta.RttiType.TypeKind;
+  // for Office only: it trims text without this, also where its schema does not declare the attribute (SpreadsheetML's t). A
+  // simple type elsewhere has no attributes, a validating reader refuses it, and readers keep the spaces anyway
   if (typeKind in [tkString, tkLString, tkWString, tkUString]) and not aValue.IsEmpty and
-    ((aValue.Chars[0] <= ' ') or (aValue.Chars[aValue.Length - 1] <= ' ')) then
+    ((aValue.Chars[0] <= ' ') or (aValue.Chars[aValue.Length - 1] <= ' ')) and (aFieldInfo.Xmlite.Namespace <> nil) and
+    (StartsText(cOoxmlUriPrefix, aFieldInfo.Xmlite.Namespace.Uri) or StartsText(cOoxmlStrictUriPrefix, aFieldInfo.Xmlite.Namespace.Uri)) then
     WriteAttribute('xml:space', 'preserve');
   Write('>');
   AddXmlEscape(aValue);
@@ -1497,7 +1572,7 @@ begin
   end;
 
   for var attribute: TPropertyData in aObject.Meta.Xmlite.Attributes.Values do
-    if attribute.Required or aObject.IsPresent(attribute) then
+    if aObject.ValueIsWritten(attribute) then
       if (attribute.Xmlite.Namespace = attribute.ParentMeta.Xmlite.Namespace) and not attribute.Xmlite.Qualified then
         WriteAttribute(attribute.Xmlite.Name, attribute.Value[aObject])
       else
@@ -1505,13 +1580,20 @@ begin
 
   if aObject.Meta.Xmlite.IsTXmlite then
     for var attribute: TPair<string, string> in TXmlite(aObject).XmlAttributes do
-      WriteAttribute(attribute.Key, attribute.Value);
+    begin
+      var badOf: TProperty := nil;
+      if TXmlite(aObject).fXmlBadAttributes <> nil then
+        TXmlite(aObject).fXmlBadAttributes.TryGetValue(attribute.Key, badOf);
+      if (badOf = nil) or not aObject.IsPresent(badOf) then // did not fit its type, not set since
+        WriteAttribute(attribute.Key, attribute.Value);
+    end;
 end;
 
 { TXmlite }
 
 procedure TXmlite.Deinitialize;
 begin
+  fXmlBadAttributes.Free;
   fXmlContent.Free;
   fXmlUnknown.Free;
   fXmlAny.Free;
@@ -1554,10 +1636,25 @@ begin
   fXmlAny.Clear;
   fXmlAttributes.Clear;
   fXmlAttributeNamespaces.Clear;
+  if fXmlBadAttributes <> nil then
+    fXmlBadAttributes.Clear;
   if fXmlUnknown <> nil then
     fXmlUnknown.Clear;
   if fXmlContent <> nil then
     fXmlContent.Clear;
+end;
+
+function TXmlite.HasBadValue(aProperty: TProperty): boolean;
+begin
+  Result := False;
+  if fXmlUnknown <> nil then
+    for var unknown: TXmliteUnknown in fXmlUnknown do
+      if unknown.Value = aProperty then
+        Exit(True);
+  if fXmlBadAttributes <> nil then
+    for var badOf: TProperty in fXmlBadAttributes.Values do
+      if badOf = aProperty then
+        Exit(True);
 end;
 
 function TXmlite.GetXmlUnknown: TList<TXmliteUnknown>;

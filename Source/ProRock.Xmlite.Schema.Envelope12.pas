@@ -19,6 +19,7 @@ uses
 type
   [TNaming(TNaming.nCamelCase)]
   TEncodingStyleA = type ProRock.Xmlite.Schema.Base.TAnyURIST;
+  [TBaseType('ProRock.Xmlite.Schema.Base.TQNameST')]
   [TNaming(TNaming.nCamelCase)]
   TFaultcodeEnumST = type ProRock.Xmlite.Schema.Base.TQNameST;
   [TNaming(TNaming.nCamelCase)]

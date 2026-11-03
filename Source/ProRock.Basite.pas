@@ -28,6 +28,9 @@ type
     property BaseType: string read fBaseType;
   end;
 
+  // a number written without an exponent; types based on it inherit that (xs:decimal has none, xs:double may)
+  TPlainNumberAttribute = class(TCustomAttribute);
+
   TNameAttribute = class(TCustomAttribute)
   private
     fCustomName: string;
@@ -176,6 +179,7 @@ type
     Count: function(aList: TObject): integer;
     Item: function(aList: TObject; aIndex: integer): Pointer; // the item's memory
     Add: function(aList: TObject): Pointer; // a new item (zero, empty), its memory
+    Delete: procedure(aList: TObject; aIndex: integer);
     Clear: procedure(aList: TObject);
   end;
 
@@ -186,6 +190,7 @@ type
     class function DoCount(aList: TObject): integer; static;
     class function DoItem(aList: TObject; aIndex: integer): Pointer; static;
     class function DoAdd(aList: TObject): Pointer; static;
+    class procedure DoDelete(aList: TObject; aIndex: integer); static;
     class procedure DoClear(aList: TObject); static;
   public
     class function Access: TBasiteValueListAccess; static;
@@ -279,6 +284,8 @@ type
 
     property Meta: TMetaType read GetMeta;
     property Value[aObject: TBasite]: string read GetValue write SetValue; // a value set here is present
+    // as Value, but text that does not fit the type gives False, and the default, not present
+    function TrySetValue(aObject: TBasite; const aValue: string): boolean;
 
     procedure SetDefaultValue(aObject: TBasite);
     function ValueIsDefault(aObject: TBasite): boolean;
@@ -338,6 +345,8 @@ type
     function ItemText(aParentObject: TBasite; aIndex: integer): string;
     // a value from its text (as a property of the item type reads it); the list is created when missing, and present
     procedure AddText(aParentObject: TBasite; const aText: string);
+    // as AddText, but text that does not fit the item type gives False, nothing added
+    function TryAddText(aParentObject: TBasite; const aText: string): boolean;
     procedure ClearList(aParentObject: TBasite);
   end;
 
@@ -394,6 +403,7 @@ type
     fEnumNames: THashedStringList;
     fEnumExact: TDictionary<string, integer>; // text -> value, case-sensitive: true and True are two values (OOXML)
     fBaseType: TMetaType;
+    fPlainNumber: boolean;   // [TPlainNumber], its own or through BaseType
     function GetEnumName(aEnumValue: integer): string;
   public
     constructor Create(aType: PTypeInfo); reintroduce;
@@ -407,7 +417,8 @@ type
 
     // a value of this type in memory (a field, a list item) as text and back; text that does not fit gives aDefault
     function DataToText(aData: Pointer): string;
-    procedure TextToData(const aText: string; aData: Pointer; const aDefault: variant);
+    // False: the text does not fit the type - the default written
+    function TextToData(const aText: string; aData: Pointer; const aDefault: variant): boolean;
 
     function IsSystemType: boolean; inline;
   end;
@@ -603,41 +614,6 @@ begin
       Result := (aValue >= 0) and (aValue <= High(Cardinal));
   else
     Result := False;
-  end;
-end;
-
-// the shortest text that reads back to the same value: 0.1 stays 0.1, 0.79998168889431442 keeps its 17 digits
-// (FloatToStr stops at 15 - a different Double)
-function FloatText(aValue: Extended; aFloatType: TFloatType): string;
-begin
-  var precision, maxPrecision: integer;
-  case aFloatType of
-    ftSingle:
-      begin
-        precision := 7;
-        maxPrecision := 9;
-      end;
-    ftDouble:
-      begin
-        precision := 15;
-        maxPrecision := 17;
-      end;
-  else
-    Exit(FloatToStr(aValue, FormatSettings.Invariant));
-  end;
-  if IsNan(aValue) or IsInfinite(aValue) then
-    Exit(FloatToStr(aValue, FormatSettings.Invariant));
-
-  while True do
-  begin
-    Result := FloatToStrF(aValue, ffGeneral, precision, 0, FormatSettings.Invariant);
-    if precision >= maxPrecision then
-      Exit;
-    var readBack: Extended := StrToFloat(Result, FormatSettings.Invariant);
-    if ((aFloatType = ftSingle) and (Single(readBack) = Single(aValue))) or
-      ((aFloatType = ftDouble) and (Double(readBack) = Double(aValue))) then
-      Exit;
-    Inc(precision);
   end;
 end;
 
@@ -1085,6 +1061,7 @@ begin
   Result.Count := DoCount;
   Result.Item := DoItem;
   Result.Add := DoAdd;
+  Result.Delete := DoDelete;
   Result.Clear := DoClear;
 end;
 
@@ -1093,6 +1070,11 @@ begin
   var list: TBasiteValueList<T> := TBasiteValueList<T>(aList);
   list.Add(Default(T));
   Result := DoItem(aList, list.Count - 1);
+end;
+
+class procedure TBasiteValueList<T>.DoDelete(aList: TObject; aIndex: integer);
+begin
+  TBasiteValueList<T>(aList).Delete(aIndex);
 end;
 
 class procedure TBasiteValueList<T>.DoClear(aList: TObject);
@@ -1321,7 +1303,7 @@ begin
       begin
         var floatValue: Extended := ReadFloat(aObject, fieldData);
         if not TryGetAliasForValue(Meta.ValuesAliases, floatValue, Result) then
-          Result := FloatText(floatValue, Meta.fFloatType);
+          Result := FloatText(floatValue, Meta.fFloatType, Meta.fPlainNumber);
       end;
     tkUString:
       begin
@@ -1439,6 +1421,13 @@ end;
 
 procedure TPropertyData.SetValue(aObject: TBasite; const aValue: string);
 begin
+  if not TrySetValue(aObject, aValue) then
+    aObject.SetPresentBit(fIndex, True);
+end;
+
+function TPropertyData.TrySetValue(aObject: TBasite; const aValue: string): boolean;
+begin
+  Result := True;
   if (aObject = nil) or (fPropertyType <> ptData) or not fRttiProperty.IsWritable then
     Exit;
 
@@ -1447,17 +1436,19 @@ begin
   begin
     if fieldData = nil then
       Exit;
-    Meta.TextToData(aValue, fieldData, fDefault);
-    aObject.SetPresentBit(fIndex, True);
+    Result := Meta.TextToData(aValue, fieldData, fDefault);
+    aObject.SetPresentBit(fIndex, Result);
     Exit;
   end;
 
   var value: string := aValue;
+  if fRttiProperty.PropertyType.TypeKind <> tkUString then
+    value := Trim(value); // xs:whiteSpace collapse: <n> 12 </n> is 12
 
   if Meta.fValuesAliases.Count > 0 then
   begin
     var aliasValue: variant;
-    if Meta.fValuesAliases.TryGetKeyByValue(aValue, aliasValue) then
+    if Meta.fValuesAliases.TryGetKeyByValue(value, aliasValue) then
       value := VarToStr(aliasValue);
   end;
 
@@ -1466,7 +1457,8 @@ begin
     tkInteger:
       begin
         var ordinalValue: Int64;
-        if not TryStrToInt64(value, ordinalValue) or not OrdinalFitsType(ordinalValue, Meta.fOrdType) then
+        Result := TryStrToInt64(value, ordinalValue) and OrdinalFitsType(ordinalValue, Meta.fOrdType);
+        if not Result then
           ordinalValue := fDefault;
         WriteOrdinal(aObject, fieldData, ordinalValue);
       end;
@@ -1474,38 +1466,54 @@ begin
       if Meta.fUnsigned then
       begin
         var unsignedValue: UInt64;
-        if not TryStrToUInt64(value, unsignedValue) then
+        Result := TryStrToUInt64(value, unsignedValue);
+        if not Result then
           unsignedValue := UInt64(Int64(fDefault)); // the default holds the bits
         WriteOrdinal(aObject, fieldData, Int64(unsignedValue));
       end
       else
-        WriteOrdinal(aObject, fieldData, StrToInt64Def(value, fDefault));
+      begin
+        var ordinalValue: Int64;
+        Result := TryStrToInt64(value, ordinalValue);
+        if not Result then
+          ordinalValue := fDefault;
+        WriteOrdinal(aObject, fieldData, ordinalValue);
+      end;
     tkFloat:
       // parsed into the property's own type: a value out of its range fails here instead of overflowing on assignment
       case Meta.fFloatType of
         ftSingle:
           begin
             var singleValue: Single;
-            if not TryStrToFloat(value, singleValue, FormatSettings.Invariant) then
+            Result := TryStrToFloat(value, singleValue, FormatSettings.Invariant);
+            if not Result then
               singleValue := fDefault;
             WriteFloat(aObject, fieldData, singleValue);
           end;
         ftDouble:
           begin
             var doubleValue: Double;
-            if not TryStrToFloat(value, doubleValue, FormatSettings.Invariant) then
+            Result := TryStrToFloat(value, doubleValue, FormatSettings.Invariant);
+            if not Result then
               doubleValue := fDefault;
             WriteFloat(aObject, fieldData, doubleValue);
           end;
         ftCurr:
           begin
             var currencyValue: Currency;
-            if not TryStrToCurr(value, currencyValue, FormatSettings.Invariant) then
+            Result := TryStrToCurr(value, currencyValue, FormatSettings.Invariant);
+            if not Result then
               currencyValue := fDefault;
             WriteCurrency(aObject, fieldData, currencyValue);
           end;
       else
-        WriteFloat(aObject, fieldData, StrToFloatDef(value, fDefault, FormatSettings.Invariant));
+        begin
+          var floatValue: Extended;
+          Result := TryStrToFloat(value, floatValue, FormatSettings.Invariant);
+          if not Result then
+            floatValue := fDefault;
+          WriteFloat(aObject, fieldData, floatValue);
+        end;
       end;
     tkUString:
       begin
@@ -1515,10 +1523,16 @@ begin
           TSetterString(SetterMethod(aObject))(value);
       end;
     tkEnumeration:
-      WriteOrdinal(aObject, fieldData, Meta.EnumValueDef(value, fDefault));
+      begin
+        var enumValue: integer := Meta.EnumValueDef(value, -1);
+        Result := enumValue >= 0;
+        if not Result then
+          enumValue := fDefault;
+        WriteOrdinal(aObject, fieldData, enumValue);
+      end;
   end;
 
-  aObject.SetPresentBit(fIndex, True);
+  aObject.SetPresentBit(fIndex, Result);
 end;
 
 function TPropertyData.ValueIsDefault(aObject: TBasite): boolean;
@@ -1683,6 +1697,17 @@ begin
   CreateList(aParentObject);
   Meta.TextToData(aText, fAccess.Add(ObjectPointer(aParentObject)^), Null);
   aParentObject.SetPresentBit(fIndex, True);
+end;
+
+function TPropertyDataList.TryAddText(aParentObject: TBasite; const aText: string): boolean;
+begin
+  CreateList(aParentObject);
+  var list: TObject := ObjectPointer(aParentObject)^;
+  Result := Meta.TextToData(aText, fAccess.Add(list), Null);
+  if Result then
+    aParentObject.SetPresentBit(fIndex, True)
+  else
+    fAccess.Delete(list, fAccess.Count(list) - 1);
 end;
 
 procedure TPropertyDataList.ClearList(aParentObject: TBasite);
@@ -1923,18 +1948,20 @@ begin
   inherited Create(TMetaBank.RttiContext.GetType(aType));
 
   for var attribute: TCustomAttribute in RttiType.GetAttributes do
-    if attribute.ClassType.InheritsFrom(TBaseTypeAttribute) then
+    if attribute.ClassType.InheritsFrom(TPlainNumberAttribute) then
+      fPlainNumber := True
+    else if attribute.ClassType.InheritsFrom(TBaseTypeAttribute) then
     begin
-      var baseTypeAttribute: TBaseTypeAttribute := TBaseTypeAttribute(attribute);
-
-      var baseTypeQualifiedName: string := baseTypeAttribute.BaseType;
-      if Pos('.', baseTypeQualifiedName) = 0 then
-        baseTypeQualifiedName := UnitQualifiedName + '.' + baseTypeQualifiedName;
-
-      var rttiBaseType: TRttiType := TMetaBank.RttiContext.FindType(baseTypeQualifiedName);
+      // of another unit: its full name; of this one: its name, in a class TClass.TName
+      var baseTypeName: string := TBaseTypeAttribute(attribute).BaseType;
+      var rttiBaseType: TRttiType := TMetaBank.RttiContext.FindType(UnitQualifiedName + '.' + baseTypeName);
+      if rttiBaseType = nil then
+        rttiBaseType := TMetaBank.RttiContext.FindType(baseTypeName);
       if rttiBaseType <> nil then
+      begin
         fBaseType := TMetaBank.RegisterType(rttiBaseType.Handle);
-      break;
+        fPlainNumber := fPlainNumber or fBaseType.fPlainNumber;
+      end;
     end;
 
   if (fBaseType = nil) and (UnitQualifiedName <> 'System') then
@@ -2063,7 +2090,7 @@ begin
           floatValue := PExtended(aData)^;
         end;
         if not Alias(floatValue, Result) then
-          Result := FloatText(floatValue, fFloatType);
+          Result := FloatText(floatValue, fFloatType, fPlainNumber);
       end;
     tkUString:
       if not Alias(PUnicodeString(aData)^, Result) then
@@ -2077,13 +2104,17 @@ begin
   end;
 end;
 
-procedure TMetaType.TextToData(const aText: string; aData: Pointer; const aDefault: variant);
+function TMetaType.TextToData(const aText: string; aData: Pointer; const aDefault: variant): boolean;
 begin
+  Result := True;
   var value: string := aText;
+  if RttiType.TypeKind <> tkUString then
+    value := Trim(value); // xs:whiteSpace collapse: <n> 12 </n> is 12
+
   if fValuesAliases.Count > 0 then
   begin
     var aliasValue: variant;
-    if fValuesAliases.TryGetKeyByValue(aText, aliasValue) then
+    if fValuesAliases.TryGetKeyByValue(value, aliasValue) then
       value := VarToStr(aliasValue);
   end;
 
@@ -2099,7 +2130,8 @@ begin
     tkInteger:
       begin
         var ordinalValue: Int64;
-        if not TryStrToInt64(value, ordinalValue) or not OrdinalFitsType(ordinalValue, fOrdType) then
+        Result := TryStrToInt64(value, ordinalValue) and OrdinalFitsType(ordinalValue, fOrdType);
+        if not Result then
           ordinalValue := defaultValue;
         WriteOrdinalFieldValue(aData, fOrdType, ordinalValue);
       end;
@@ -2107,33 +2139,60 @@ begin
       if fUnsigned then
       begin
         var unsignedValue: UInt64;
-        if not TryStrToUInt64(value, unsignedValue) then
+        Result := TryStrToUInt64(value, unsignedValue);
+        if not Result then
           unsignedValue := UInt64(Int64(defaultValue)); // the default holds the bits
         PInt64(aData)^ := Int64(unsignedValue);
       end
       else
-        PInt64(aData)^ := StrToInt64Def(value, defaultValue);
+      begin
+        Result := TryStrToInt64(value, PInt64(aData)^);
+        if not Result then
+          PInt64(aData)^ := defaultValue;
+      end;
     tkFloat:
       // parsed into the type itself: a value out of its range fails here instead of overflowing on assignment
       case fFloatType of
         ftSingle:
-          if not TryStrToFloat(value, PSingle(aData)^, FormatSettings.Invariant) then
-            PSingle(aData)^ := defaultValue;
+          begin
+            Result := TryStrToFloat(value, PSingle(aData)^, FormatSettings.Invariant);
+            if not Result then
+              PSingle(aData)^ := defaultValue;
+          end;
         ftDouble:
-          if not TryStrToFloat(value, PDouble(aData)^, FormatSettings.Invariant) then
-            PDouble(aData)^ := defaultValue;
+          begin
+            Result := TryStrToFloat(value, PDouble(aData)^, FormatSettings.Invariant);
+            if not Result then
+              PDouble(aData)^ := defaultValue;
+          end;
         ftCurr:
-          if not TryStrToCurr(value, PCurrency(aData)^, FormatSettings.Invariant) then
-            PCurrency(aData)^ := defaultValue;
-        ftComp:
-          PComp(aData)^ := StrToFloatDef(value, defaultValue, FormatSettings.Invariant);
+          begin
+            Result := TryStrToCurr(value, PCurrency(aData)^, FormatSettings.Invariant);
+            if not Result then
+              PCurrency(aData)^ := defaultValue;
+          end;
       else
-        PExtended(aData)^ := StrToFloatDef(value, defaultValue, FormatSettings.Invariant);
+        begin
+          var floatValue: Extended;
+          Result := TryStrToFloat(value, floatValue, FormatSettings.Invariant);
+          if not Result then
+            floatValue := defaultValue;
+          if fFloatType = ftComp then
+            PComp(aData)^ := floatValue
+          else
+            PExtended(aData)^ := floatValue;
+        end;
       end;
     tkUString:
       PUnicodeString(aData)^ := value;
     tkEnumeration:
-      WriteOrdinalFieldValue(aData, fOrdType, EnumValueDef(value, defaultValue));
+      begin
+        var enumValue: integer := EnumValueDef(value, -1);
+        Result := enumValue >= 0;
+        if not Result then
+          enumValue := defaultValue;
+        WriteOrdinalFieldValue(aData, fOrdType, enumValue);
+      end;
   end;
 end;
 

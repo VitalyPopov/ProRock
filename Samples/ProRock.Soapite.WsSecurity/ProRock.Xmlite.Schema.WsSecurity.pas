@@ -17,6 +17,7 @@ uses
   ProRock.Xmlite, ProRock.Xmlite.Schema.Base, ProRock.Xmlite.Schema.WsSecurityUtility;
 
 type
+  [TBaseType('ProRock.Xmlite.Schema.Base.TQNameST')]
   TFaultcodeEnumST = type ProRock.Xmlite.Schema.Base.TQNameST;
   [TNaming(TNaming.nCamelCase)]
   TTUsageST = type string;

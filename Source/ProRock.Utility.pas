@@ -178,9 +178,142 @@ function GetEnumerationName(aEnumTypeInfo: PTypeInfo; aValue: cardinal): string;
 
 function SimplifiedGenericName(const aName: string): string; inline;
 
+// the shortest text that reads back to the same value: 0.1 stays 0.1, 0.79998168889431442 keeps its 17 digits
+// (FloatToStr stops at 15 - a different Double); aPlain: no exponent, 1E-5 -> 0.00001
+function FloatText(aValue: Extended; aFloatType: TFloatType; aPlain: boolean = False): string;
+
 implementation
 
 uses System.RegularExpressions, System.StrUtils;
+
+// the point moved to where the exponent puts it: 1.5E17 -> 150000000000000000
+function WithoutExponent(const aText: string): string;
+begin
+  var digitsStart: PChar := PChar(aText);
+  var negative: boolean := digitsStart^ = '-';
+  if negative then
+    Inc(digitsStart);
+
+  var exponentAt: PChar := digitsStart;
+  var digitCount: integer := 0;
+  var wholeDigits: integer := -1;
+  while (exponentAt^ <> 'E') and (exponentAt^ <> #0) do
+  begin
+    if exponentAt^ = '.' then
+      wholeDigits := digitCount
+    else
+      Inc(digitCount);
+    Inc(exponentAt);
+  end;
+  if exponentAt^ = #0 then // no exponent; NAN and INF have none to move either
+    Exit(aText);
+  if wholeDigits < 0 then
+    wholeDigits := digitCount;
+
+  var cursor: PChar := exponentAt + 1;
+  var negativeExponent: boolean := cursor^ = '-';
+  if CharInSet(cursor^, ['-', '+']) then
+    Inc(cursor);
+  var exponent: integer := 0;
+  while cursor^ <> #0 do
+  begin
+    exponent := exponent * 10 + Ord(cursor^) - Ord('0');
+    Inc(cursor);
+  end;
+  if negativeExponent then
+    exponent := -exponent;
+  Inc(wholeDigits, exponent);
+
+  var size: integer := Ord(negative);
+  if wholeDigits <= 0 then
+    Inc(size, 2 - wholeDigits + digitCount)
+  else if wholeDigits >= digitCount then
+    Inc(size, wholeDigits)
+  else
+    Inc(size, digitCount + 1);
+  SetLength(Result, size);
+
+  var output: PChar := PChar(Result);
+  if negative then
+  begin
+    output^ := '-';
+    Inc(output);
+  end;
+  if wholeDigits <= 0 then
+  begin
+    output^ := '0';
+    output[1] := '.';
+    Inc(output, 2);
+    for var i := 1 to -wholeDigits do
+    begin
+      output^ := '0';
+      Inc(output);
+    end;
+  end;
+
+  var written: integer := 0;
+  cursor := digitsStart;
+  while cursor < exponentAt do
+  begin
+    if cursor^ <> '.' then
+    begin
+      if (written = wholeDigits) and (written > 0) then
+      begin
+        output^ := '.';
+        Inc(output);
+      end;
+      output^ := cursor^;
+      Inc(output);
+      Inc(written);
+    end;
+    Inc(cursor);
+  end;
+  for var i := written + 1 to wholeDigits do
+  begin
+    output^ := '0';
+    Inc(output);
+  end;
+end;
+
+function ShortestFloatText(aValue: Extended; aFloatType: TFloatType): string;
+begin
+  var precision, maxPrecision: integer;
+  case aFloatType of
+    ftSingle:
+      begin
+        precision := 7;
+        maxPrecision := 9;
+      end;
+    ftDouble:
+      begin
+        precision := 15;
+        maxPrecision := 17;
+      end;
+  else
+    Exit(FloatToStr(aValue, FormatSettings.Invariant));
+  end;
+  if IsNan(aValue) or IsInfinite(aValue) then
+    Exit(FloatToStr(aValue, FormatSettings.Invariant));
+
+  while True do
+  begin
+    Result := FloatToStrF(aValue, ffGeneral, precision, 0, FormatSettings.Invariant);
+    if precision >= maxPrecision then
+      Exit;
+    var readBack: Extended := StrToFloat(Result, FormatSettings.Invariant);
+    if ((aFloatType = ftSingle) and (Single(readBack) = Single(aValue))) or
+      ((aFloatType = ftDouble) and (Double(readBack) = Double(aValue))) then
+      Exit;
+    Inc(precision);
+  end;
+end;
+
+function FloatText(aValue: Extended; aFloatType: TFloatType; aPlain: boolean): string;
+begin
+  Result := ShortestFloatText(aValue, aFloatType);
+  if aPlain then
+    Result := WithoutExponent(Result);
+end;
 
 function GetEnumerationName(aEnumTypeInfo: PTypeInfo; aValue: cardinal): string;
 begin
