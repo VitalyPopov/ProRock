@@ -18,7 +18,7 @@ uses
 
 type
   [TName('ST_FilterOperator')]
-  TSTFilterOperatorST = (stfoEqual, stfoLessThan, stfoLessThanOrEqual, stfoNotEqual, stfoGreaterThanOrEqual, stfoGreaterThan);
+  TFilterOperatorST = (stfoEqual, stfoLessThan, stfoLessThanOrEqual, stfoNotEqual, stfoGreaterThanOrEqual, stfoGreaterThan);
   [TEnumCaption('q1', 'Q1')]
   [TEnumCaption('q2', 'Q2')]
   [TEnumCaption('q3', 'Q3')]
@@ -36,61 +36,61 @@ type
   [TEnumCaption('m11', 'M11')]
   [TEnumCaption('m12', 'M12')]
   [TName('ST_DynamicFilterType')]
-  TSTDynamicFilterTypeST = (stdftNull, stdftAboveAverage, stdftBelowAverage, stdftTomorrow, stdftToday, stdftYesterday, stdftNextWeek,
+  TDynamicFilterTypeST = (stdftNull, stdftAboveAverage, stdftBelowAverage, stdftTomorrow, stdftToday, stdftYesterday, stdftNextWeek,
     stdftThisWeek, stdftLastWeek, stdftNextMonth, stdftThisMonth, stdftLastMonth, stdftNextQuarter, stdftThisQuarter, stdftLastQuarter,
     stdftNextYear, stdftThisYear, stdftLastYear, stdftYearToDate, stdftQ1, stdftQ2, stdftQ3, stdftQ4, stdftM1, stdftM2, stdftM3, stdftM4,
     stdftM5, stdftM6, stdftM7, stdftM8, stdftM9, stdftM10, stdftM11, stdftM12);
   [TName('ST_IconSetType')]
-  TSTIconSetTypeST = (stist3Arrows, stist3ArrowsGray, stist3Flags, stist3TrafficLights1, stist3TrafficLights2, stist3Signs, stist3Symbols,
+  TIconSetTypeST = (stist3Arrows, stist3ArrowsGray, stist3Flags, stist3TrafficLights1, stist3TrafficLights2, stist3Signs, stist3Symbols,
     stist3Symbols2, stist4Arrows, stist4ArrowsGray, stist4RedToBlack, stist4Rating, stist4TrafficLights, stist5Arrows, stist5ArrowsGray,
     stist5Rating, stist5Quarters);
   [TName('ST_SortBy')]
-  TSTSortByST = (stsbValue, stsbCellColor, stsbFontColor, stsbIcon);
+  TSortByST = (stsbValue, stsbCellColor, stsbFontColor, stsbIcon);
   [TName('ST_SortMethod')]
-  TSTSortMethodST = (stsmStroke, stsmPinYin, stsmNone);
+  TSortMethodST = (stsmStroke, stsmPinYin, stsmNone);
   [TName('ST_DateTimeGrouping')]
-  TSTDateTimeGroupingST = (stdtgYear, stdtgMonth, stdtgDay, stdtgHour, stdtgMinute, stdtgSecond);
+  TDateTimeGroupingST = (stdtgYear, stdtgMonth, stdtgDay, stdtgHour, stdtgMinute, stdtgSecond);
   [TName('ST_TextHAlign')]
-  TSTTextHAlignST = (stthaLeft, stthaCenter, stthaRight, stthaJustify, stthaDistributed);
+  TTextHAlignST = (stthaLeft, stthaCenter, stthaRight, stthaJustify, stthaDistributed);
   [TName('ST_TextVAlign')]
-  TSTTextVAlignST = (sttvaTop, sttvaCenter, sttvaBottom, sttvaJustify, sttvaDistributed);
+  TTextVAlignST = (sttvaTop, sttvaCenter, sttvaBottom, sttvaJustify, sttvaDistributed);
   [TName('ST_CredMethod')]
-  TSTCredMethodST = (stcmIntegrated, stcmNone, stcmStored, stcmPrompt);
+  TCredMethodST = (stcmIntegrated, stcmNone, stcmStored, stcmPrompt);
   [TName('ST_HtmlFmt')]
-  TSTHtmlFmtST = (sthfNone, sthfRtf, sthfAll);
+  THtmlFmtST = (sthfNone, sthfRtf, sthfAll);
   [TName('ST_ParameterType')]
-  TSTParameterTypeST = (stptPrompt, stptValue, stptCell);
+  TParameterTypeST = (stptPrompt, stptValue, stptCell);
   [TName('ST_FileType')]
-  TSTFileTypeST = (stftMac, stftWin, stftDos, stftLin, stftOther);
+  TFileTypeST = (stftMac, stftWin, stftDos, stftLin, stftOther);
   [TName('ST_Qualifier')]
-  TSTQualifierST = (stqDoubleQuote, stqSingleQuote, stqNone);
+  TQualifierST = (stqDoubleQuote, stqSingleQuote, stqNone);
   [TEnumNaming(TNaming.nUpperCase)]
   [TEnumCaption('GENERAL', 'general')]
   [TEnumCaption('TEXT', 'text')]
   [TEnumCaption('SKIP', 'skip')]
   [TName('ST_ExternalConnectionType')]
-  TSTExternalConnectionTypeST = (stectGeneral, stectText, stectMdy, stectDmy, stectYmd, stectMyd, stectDym, stectYdm, stectSkip, stectEmd);
+  TExternalConnectionTypeST = (stectGeneral, stectText, stectMdy, stectDmy, stectYmd, stectMyd, stectDym, stectYdm, stectSkip, stectEmd);
   [TName('ST_SourceType')]
-  TSTSourceTypeST = (ststWorksheet, ststExternal, ststConsolidation, ststScenario);
+  TSourceTypeST = (ststWorksheet, ststExternal, ststConsolidation, ststScenario);
   [TName('ST_GroupBy')]
-  TSTGroupByST = (stgbRange, stgbSeconds, stgbMinutes, stgbHours, stgbDays, stgbMonths, stgbQuarters, stgbYears);
+  TGroupByST = (stgbRange, stgbSeconds, stgbMinutes, stgbHours, stgbDays, stgbMonths, stgbQuarters, stgbYears);
   [TName('ST_SortType')]
-  TSTSortTypeST = (ststaNone, ststaAscending, ststaDescending, ststaAscendingAlpha, ststaDescendingAlpha, ststaAscendingNatural,
+  TSortTypeST = (ststaNone, ststaAscending, ststaDescending, ststaAscendingAlpha, ststaDescendingAlpha, ststaAscendingNatural,
     ststaDescendingNatural);
   [TName('ST_Scope')]
-  TSTScopeST = (stsSelection, stsData, stsField);
+  TScopeST = (stsSelection, stsData, stsField);
   [TName('ST_Type')]
-  TSTTypeST = (sttNone, sttAll, sttRow, sttColumn);
+  TTypeST = (sttNone, sttAll, sttRow, sttColumn);
   [TName('ST_ShowDataAs')]
-  TSTShowDataAsST = (stsdaNormal, stsdaDifference, stsdaPercent, stsdaPercentDiff, stsdaRunTotal, stsdaPercentOfRow, stsdaPercentOfCol,
+  TShowDataAsST = (stsdaNormal, stsdaDifference, stsdaPercent, stsdaPercentDiff, stsdaRunTotal, stsdaPercentOfRow, stsdaPercentOfCol,
     stsdaPercentOfTotal, stsdaIndex);
   [TName('ST_ItemType')]
-  TSTItemTypeST = (stitData, stitDefault, stitSum, stitCountA, stitAvg, stitMax, stitMin, stitProduct, stitCount, stitStdDev, stitStdDevP,
+  TItemTypeST = (stitData, stitDefault, stitSum, stitCountA, stitAvg, stitMax, stitMin, stitProduct, stitCount, stitStdDev, stitStdDevP,
     stitVar, stitVarP, stitGrand, stitBlank);
   [TName('ST_FormatAction')]
-  TSTFormatActionST = (stfaBlank, stfaFormatting, stfaDrill, stfaFormula);
+  TFormatActionST = (stfaBlank, stfaFormatting, stfaDrill, stfaFormula);
   [TName('ST_FieldSortType')]
-  TSTFieldSortTypeST = (stfstManual, stfstAscending, stfstDescending);
+  TFieldSortTypeST = (stfstManual, stfstAscending, stfstDescending);
   [TEnumCaption('q1', 'Q1')]
   [TEnumCaption('q2', 'Q2')]
   [TEnumCaption('q3', 'Q3')]
@@ -108,567 +108,567 @@ type
   [TEnumCaption('m11', 'M11')]
   [TEnumCaption('m12', 'M12')]
   [TName('ST_PivotFilterType')]
-  TSTPivotFilterTypeST = (stpftUnknown, stpftCount, stpftPercent, stpftSum, stpftCaptionEqual, stpftCaptionNotEqual,
-    stpftCaptionBeginsWith, stpftCaptionNotBeginsWith, stpftCaptionEndsWith, stpftCaptionNotEndsWith, stpftCaptionContains,
-    stpftCaptionNotContains, stpftCaptionGreaterThan, stpftCaptionGreaterThanOrEqual, stpftCaptionLessThan, stpftCaptionLessThanOrEqual,
-    stpftCaptionBetween, stpftCaptionNotBetween, stpftValueEqual, stpftValueNotEqual, stpftValueGreaterThan, stpftValueGreaterThanOrEqual,
-    stpftValueLessThan, stpftValueLessThanOrEqual, stpftValueBetween, stpftValueNotBetween, stpftDateEqual, stpftDateNotEqual,
-    stpftDateOlderThan, stpftDateOlderThanOrEqual, stpftDateNewerThan, stpftDateNewerThanOrEqual, stpftDateBetween, stpftDateNotBetween,
-    stpftTomorrow, stpftToday, stpftYesterday, stpftNextWeek, stpftThisWeek, stpftLastWeek, stpftNextMonth, stpftThisMonth, stpftLastMonth,
+  TPivotFilterTypeST = (stpftUnknown, stpftCount, stpftPercent, stpftSum, stpftCaptionEqual, stpftCaptionNotEqual, stpftCaptionBeginsWith,
+    stpftCaptionNotBeginsWith, stpftCaptionEndsWith, stpftCaptionNotEndsWith, stpftCaptionContains, stpftCaptionNotContains,
+    stpftCaptionGreaterThan, stpftCaptionGreaterThanOrEqual, stpftCaptionLessThan, stpftCaptionLessThanOrEqual, stpftCaptionBetween,
+    stpftCaptionNotBetween, stpftValueEqual, stpftValueNotEqual, stpftValueGreaterThan, stpftValueGreaterThanOrEqual, stpftValueLessThan,
+    stpftValueLessThanOrEqual, stpftValueBetween, stpftValueNotBetween, stpftDateEqual, stpftDateNotEqual, stpftDateOlderThan,
+    stpftDateOlderThanOrEqual, stpftDateNewerThan, stpftDateNewerThanOrEqual, stpftDateBetween, stpftDateNotBetween, stpftTomorrow,
+    stpftToday, stpftYesterday, stpftNextWeek, stpftThisWeek, stpftLastWeek, stpftNextMonth, stpftThisMonth, stpftLastMonth,
     stpftNextQuarter, stpftThisQuarter, stpftLastQuarter, stpftNextYear, stpftThisYear, stpftLastYear, stpftYearToDate, stpftQ1, stpftQ2,
     stpftQ3, stpftQ4, stpftM1, stpftM2, stpftM3, stpftM4, stpftM5, stpftM6, stpftM7, stpftM8, stpftM9, stpftM10, stpftM11, stpftM12);
   [TName('ST_PivotAreaType')]
-  TSTPivotAreaTypeST = (stpatNone, stpatNormal, stpatData, stpatAll, stpatOrigin, stpatButton, stpatTopEnd, stpatTopRight);
+  TPivotAreaTypeST = (stpatNone, stpatNormal, stpatData, stpatAll, stpatOrigin, stpatButton, stpatTopEnd, stpatTopRight);
   [TName('ST_Axis')]
-  TSTAxisST = (staAxisRow, staAxisCol, staAxisPage, staAxisValues);
+  TAxisST = (staAxisRow, staAxisCol, staAxisPage, staAxisValues);
   [TName('ST_GrowShrinkType')]
-  TSTGrowShrinkTypeST = (stgstInsertDelete, stgstInsertClear, stgstOverwriteClear);
+  TGrowShrinkTypeST = (stgstInsertDelete, stgstInsertClear, stgstOverwriteClear);
   [TEnumCaption('hiragana', 'Hiragana')]
   [TName('ST_PhoneticType')]
-  TSTPhoneticTypeST = (stptaHalfwidthKatakana, stptaFullwidthKatakana, stptaHiragana, stptaNoConversion);
+  TPhoneticTypeST = (stptaHalfwidthKatakana, stptaFullwidthKatakana, stptaHiragana, stptaNoConversion);
   [TName('ST_PhoneticAlignment')]
-  TSTPhoneticAlignmentST = (stpaNoControl, stpaLeft, stpaCenter, stpaDistributed);
+  TPhoneticAlignmentST = (stpaNoControl, stpaLeft, stpaCenter, stpaDistributed);
   [TName('ST_rwColActionType')]
-  TSTRwColActionTypeST = (strcatInsertRow, strcatDeleteRow, strcatInsertCol, strcatDeleteCol);
+  TRwColActionTypeST = (strcatInsertRow, strcatDeleteRow, strcatInsertCol, strcatDeleteCol);
   [TName('ST_RevisionAction')]
-  TSTRevisionActionST = (straAdd, straDelete);
+  TRevisionActionST = (straAdd, straDelete);
   [TName('ST_FormulaExpression')]
-  TSTFormulaExpressionST = (stfeRef, stfeRefError, stfeArea, stfeAreaError, stfeComputedArea);
+  TFormulaExpressionST = (stfeRef, stfeRefError, stfeArea, stfeAreaError, stfeComputedArea);
   [TName('ST_CellType')]
-  TSTCellTypeST = (stctB, stctN, stctE, stctS, stctStr, stctInlineStr);
+  TCellTypeST = (stctB, stctN, stctE, stctS, stctStr, stctInlineStr);
   [TName('ST_CellFormulaType')]
-  TSTCellFormulaTypeST = (stcftNormal, stcftArray, stcftDataTable, stcftShared);
+  TCellFormulaTypeST = (stcftNormal, stcftArray, stcftDataTable, stcftShared);
   [TName('ST_Pane')]
-  TSTPaneST = (stpBottomRight, stpTopRight, stpBottomLeft, stpTopLeft);
+  TPaneST = (stpBottomRight, stpTopRight, stpBottomLeft, stpTopLeft);
   [TName('ST_SheetViewType')]
-  TSTSheetViewTypeST = (stsvtNormal, stsvtPageBreakPreview, stsvtPageLayout);
+  TSheetViewTypeST = (stsvtNormal, stsvtPageBreakPreview, stsvtPageLayout);
   [TName('ST_DataConsolidateFunction')]
-  TSTDataConsolidateFunctionST = (stdcfAverage, stdcfCount, stdcfCountNums, stdcfMax, stdcfMin, stdcfProduct, stdcfStdDev, stdcfStdDevp,
+  TDataConsolidateFunctionST = (stdcfAverage, stdcfCount, stdcfCountNums, stdcfMax, stdcfMin, stdcfProduct, stdcfStdDev, stdcfStdDevp,
     stdcfSum, stdcfVar, stdcfVarp);
   [TName('ST_DataValidationType')]
-  TSTDataValidationTypeST = (stdvtNone, stdvtWhole, stdvtDecimal, stdvtList, stdvtDate, stdvtTime, stdvtTextLength, stdvtCustom);
+  TDataValidationTypeST = (stdvtNone, stdvtWhole, stdvtDecimal, stdvtList, stdvtDate, stdvtTime, stdvtTextLength, stdvtCustom);
   [TName('ST_DataValidationOperator')]
-  TSTDataValidationOperatorST = (stdvoBetween, stdvoNotBetween, stdvoEqual, stdvoNotEqual, stdvoLessThan, stdvoLessThanOrEqual,
+  TDataValidationOperatorST = (stdvoBetween, stdvoNotBetween, stdvoEqual, stdvoNotEqual, stdvoLessThan, stdvoLessThanOrEqual,
     stdvoGreaterThan, stdvoGreaterThanOrEqual);
   [TName('ST_DataValidationErrorStyle')]
-  TSTDataValidationErrorStyleST = (stdvesStop, stdvesWarning, stdvesInformation);
+  TDataValidationErrorStyleST = (stdvesStop, stdvesWarning, stdvesInformation);
   [TName('ST_DataValidationImeMode')]
-  TSTDataValidationImeModeST = (stdvimNoControl, stdvimOff, stdvimOn, stdvimDisabled, stdvimHiragana, stdvimFullKatakana,
-    stdvimHalfKatakana, stdvimFullAlpha, stdvimHalfAlpha, stdvimFullHangul, stdvimHalfHangul);
+  TDataValidationImeModeST = (stdvimNoControl, stdvimOff, stdvimOn, stdvimDisabled, stdvimHiragana, stdvimFullKatakana, stdvimHalfKatakana,
+    stdvimFullAlpha, stdvimHalfAlpha, stdvimFullHangul, stdvimHalfHangul);
   [TName('ST_CfType')]
-  TSTCfTypeST = (stctaExpression, stctaCellIs, stctaColorScale, stctaDataBar, stctaIconSet, stctaTop10, stctaUniqueValues,
+  TCfTypeST = (stctaExpression, stctaCellIs, stctaColorScale, stctaDataBar, stctaIconSet, stctaTop10, stctaUniqueValues,
     stctaDuplicateValues, stctaContainsText, stctaNotContainsText, stctaBeginsWith, stctaEndsWith, stctaContainsBlanks,
     stctaNotContainsBlanks, stctaContainsErrors, stctaNotContainsErrors, stctaTimePeriod, stctaAboveAverage);
   [TName('ST_TimePeriod')]
-  TSTTimePeriodST = (sttpToday, sttpYesterday, sttpTomorrow, sttpLast7Days, sttpThisMonth, sttpLastMonth, sttpNextMonth, sttpThisWeek,
+  TTimePeriodST = (sttpToday, sttpYesterday, sttpTomorrow, sttpLast7Days, sttpThisMonth, sttpLastMonth, sttpNextMonth, sttpThisWeek,
     sttpLastWeek, sttpNextWeek);
   [TName('ST_ConditionalFormattingOperator')]
-  TSTConditionalFormattingOperatorST = (stcfoLessThan, stcfoLessThanOrEqual, stcfoEqual, stcfoNotEqual, stcfoGreaterThanOrEqual,
+  TConditionalFormattingOperatorST = (stcfoLessThan, stcfoLessThanOrEqual, stcfoEqual, stcfoNotEqual, stcfoGreaterThanOrEqual,
     stcfoGreaterThan, stcfoBetween, stcfoNotBetween, stcfoContainsText, stcfoNotContains, stcfoBeginsWith, stcfoEndsWith);
   [TName('ST_CfvoType')]
-  TSTCfvoTypeST = (stctbNum, stctbPercent, stctbMax, stctbMin, stctbFormula, stctbPercentile);
+  TCfvoTypeST = (stctbNum, stctbPercent, stctbMax, stctbMin, stctbFormula, stctbPercentile);
   [TName('ST_PageOrder')]
-  TSTPageOrderST = (stpoDownThenOver, stpoOverThenDown);
+  TPageOrderST = (stpoDownThenOver, stpoOverThenDown);
   [TName('ST_Orientation')]
-  TSTOrientationST = (stoDefault, stoPortrait, stoLandscape);
+  TOrientationST = (stoDefault, stoPortrait, stoLandscape);
   [TName('ST_CellComments')]
-  TSTCellCommentsST = (stccNone, stccAsDisplayed, stccAtEnd);
+  TCellCommentsST = (stccNone, stccAsDisplayed, stccAtEnd);
   [TEnumCaption('na', 'NA')]
   [TName('ST_PrintError')]
-  TSTPrintErrorST = (stpeDisplayed, stpeBlank, stpeDash, stpeNa);
+  TPrintErrorST = (stpeDisplayed, stpeBlank, stpeDash, stpeNa);
   [TEnumNaming(TNaming.nCapsCase)]
   [TName('ST_DvAspect')]
-  TSTDvAspectST = (stdaDvaspectContent, stdaDvaspectIcon);
+  TDvAspectST = (stdaDvaspectContent, stdaDvaspectIcon);
   [TEnumNaming(TNaming.nCapsCase)]
   [TName('ST_OleUpdate')]
-  TSTOleUpdateST = (stouOleupdateAlways, stouOleupdateOncall);
+  TOleUpdateST = (stouOleupdateAlways, stouOleupdateOncall);
   [TName('ST_WebSourceType')]
-  TSTWebSourceTypeST = (stwstSheet, stwstPrintArea, stwstAutoFilter, stwstRange, stwstChart, stwstPivotTable, stwstQuery, stwstLabel);
+  TWebSourceTypeST = (stwstSheet, stwstPrintArea, stwstAutoFilter, stwstRange, stwstChart, stwstPivotTable, stwstQuery, stwstLabel);
   [TName('ST_PaneState')]
-  TSTPaneStateST = (stpsSplit, stpsFrozen, stpsFrozenSplit);
+  TPaneStateST = (stpsSplit, stpsFrozen, stpsFrozenSplit);
   [TName('ST_MdxFunctionType')]
-  TSTMdxFunctionTypeST = (stmftM, stmftV, stmftS, stmftC, stmftR, stmftP, stmftK);
+  TMdxFunctionTypeST = (stmftM, stmftV, stmftS, stmftC, stmftR, stmftP, stmftK);
   [TName('ST_MdxSetOrder')]
-  TSTMdxSetOrderST = (stmsoU, stmsoA, stmsoD, stmsoAa, stmsoAd, stmsoNa, stmsoNd);
+  TMdxSetOrderST = (stmsoU, stmsoA, stmsoD, stmsoAa, stmsoAd, stmsoNa, stmsoNd);
   [TName('ST_MdxKPIProperty')]
-  TSTMdxKPIPropertyST = (stmkpipV, stmkpipG, stmkpipS, stmkpipT, stmkpipW, stmkpipM);
+  TMdxKPIPropertyST = (stmkpipV, stmkpipG, stmkpipS, stmkpipT, stmkpipW, stmkpipM);
   [TName('ST_BorderStyle')]
-  TSTBorderStyleST = (stbsNone, stbsThin, stbsMedium, stbsDashed, stbsDotted, stbsThick, stbsDouble, stbsHair, stbsMediumDashed,
-    stbsDashDot, stbsMediumDashDot, stbsDashDotDot, stbsMediumDashDotDot, stbsSlantDashDot);
+  TBorderStyleST = (stbsNone, stbsThin, stbsMedium, stbsDashed, stbsDotted, stbsThick, stbsDouble, stbsHair, stbsMediumDashed, stbsDashDot,
+    stbsMediumDashDot, stbsDashDotDot, stbsMediumDashDotDot, stbsSlantDashDot);
   [TName('ST_PatternType')]
-  TSTPatternTypeST = (stptbNone, stptbSolid, stptbMediumGray, stptbDarkGray, stptbLightGray, stptbDarkHorizontal, stptbDarkVertical,
+  TPatternTypeST = (stptbNone, stptbSolid, stptbMediumGray, stptbDarkGray, stptbLightGray, stptbDarkHorizontal, stptbDarkVertical,
     stptbDarkDown, stptbDarkUp, stptbDarkGrid, stptbDarkTrellis, stptbLightHorizontal, stptbLightVertical, stptbLightDown, stptbLightUp,
     stptbLightGrid, stptbLightTrellis, stptbGray125, stptbGray0625);
   [TName('ST_GradientType')]
-  TSTGradientTypeST = (stgtLinear, stgtPath);
+  TGradientTypeST = (stgtLinear, stgtPath);
   [TName('ST_HorizontalAlignment')]
-  TSTHorizontalAlignmentST = (sthaGeneral, sthaLeft, sthaCenter, sthaRight, sthaFill, sthaJustify, sthaCenterContinuous, sthaDistributed);
+  THorizontalAlignmentST = (sthaGeneral, sthaLeft, sthaCenter, sthaRight, sthaFill, sthaJustify, sthaCenterContinuous, sthaDistributed);
   [TName('ST_VerticalAlignment')]
-  TSTVerticalAlignmentST = (stvaTop, stvaCenter, stvaBottom, stvaJustify, stvaDistributed);
+  TVerticalAlignmentST = (stvaTop, stvaCenter, stvaBottom, stvaJustify, stvaDistributed);
   [TName('ST_TableStyleType')]
-  TSTTableStyleTypeST = (sttstWholeTable, sttstHeaderRow, sttstTotalRow, sttstFirstColumn, sttstLastColumn, sttstFirstRowStripe,
+  TTableStyleTypeST = (sttstWholeTable, sttstHeaderRow, sttstTotalRow, sttstFirstColumn, sttstLastColumn, sttstFirstRowStripe,
     sttstSecondRowStripe, sttstFirstColumnStripe, sttstSecondColumnStripe, sttstFirstHeaderCell, sttstLastHeaderCell, sttstFirstTotalCell,
     sttstLastTotalCell, sttstFirstSubtotalColumn, sttstSecondSubtotalColumn, sttstThirdSubtotalColumn, sttstFirstSubtotalRow,
     sttstSecondSubtotalRow, sttstThirdSubtotalRow, sttstBlankRow, sttstFirstColumnSubheading, sttstSecondColumnSubheading,
     sttstThirdColumnSubheading, sttstFirstRowSubheading, sttstSecondRowSubheading, sttstThirdRowSubheading, sttstPageFieldLabels,
     sttstPageFieldValues);
   [TName('ST_FontScheme')]
-  TSTFontSchemeST = (stfsNone, stfsMajor, stfsMinor);
+  TFontSchemeST = (stfsNone, stfsMajor, stfsMinor);
   [TName('ST_UnderlineValues')]
-  TSTUnderlineValuesST = (stuvSingle, stuvDouble, stuvSingleAccounting, stuvDoubleAccounting, stuvNone);
+  TUnderlineValuesST = (stuvSingle, stuvDouble, stuvSingleAccounting, stuvDoubleAccounting, stuvNone);
   [TName('ST_DdeValueType')]
-  TSTDdeValueTypeST = (stdvtaNil, stdvtaB, stdvtaN, stdvtaE, stdvtaStr);
+  TDdeValueTypeST = (stdvtaNil, stdvtaB, stdvtaN, stdvtaE, stdvtaStr);
   [TName('ST_TableType')]
-  TSTTableTypeST = (stttWorksheet, stttXml, stttQueryTable);
+  TTableTypeST = (stttWorksheet, stttXml, stttQueryTable);
   [TName('ST_TotalsRowFunction')]
-  TSTTotalsRowFunctionST = (sttrfNone, sttrfSum, sttrfMin, sttrfMax, sttrfAverage, sttrfCount, sttrfCountNums, sttrfStdDev, sttrfVar,
+  TTotalsRowFunctionST = (sttrfNone, sttrfSum, sttrfMin, sttrfMax, sttrfAverage, sttrfCount, sttrfCountNums, sttrfStdDev, sttrfVar,
     sttrfCustom);
   [TName('ST_VolDepType')]
-  TSTVolDepTypeST = (stvdtRealTimeData, stvdtOlapFunctions);
+  TVolDepTypeST = (stvdtRealTimeData, stvdtOlapFunctions);
   [TName('ST_VolValueType')]
-  TSTVolValueTypeST = (stvvtB, stvvtN, stvvtE, stvvtS);
+  TVolValueTypeST = (stvvtB, stvvtN, stvvtE, stvvtS);
   [TName('ST_Visibility')]
-  TSTVisibilityST = (stvVisible, stvHidden, stvVeryHidden);
+  TVisibilityST = (stvVisible, stvHidden, stvVeryHidden);
   [TName('ST_Comments')]
-  TSTCommentsST = (stcCommNone, stcCommIndicator, stcCommIndAndComment);
+  TCommentsST = (stcCommNone, stcCommIndicator, stcCommIndAndComment);
   [TName('ST_Objects')]
-  TSTObjectsST = (stoaAll, stoaPlaceholders, stoaNone);
+  TObjectsST = (stoaAll, stoaPlaceholders, stoaNone);
   [TName('ST_SheetState')]
-  TSTSheetStateST = (stssVisible, stssHidden, stssVeryHidden);
+  TSheetStateST = (stssVisible, stssHidden, stssVeryHidden);
   [TName('ST_UpdateLinks')]
-  TSTUpdateLinksST = (stulUserSet, stulNever, stulAlways);
+  TUpdateLinksST = (stulUserSet, stulNever, stulAlways);
   [TName('ST_SmartTagShow')]
-  TSTSmartTagShowST = (ststsAll, ststsNone, ststsNoIndicator);
+  TSmartTagShowST = (ststsAll, ststsNone, ststsNoIndicator);
   [TName('ST_CalcMode')]
-  TSTCalcModeST = (stcmaManual, stcmaAuto, stcmaAutoNoTable);
+  TCalcModeST = (stcmaManual, stcmaAuto, stcmaAutoNoTable);
   [TEnumNaming(TNaming.nUpperCase)]
   [TName('ST_RefMode')]
-  TSTRefModeST = (strmA1, strmR1c1);
+  TRefModeST = (strmA1, strmR1c1);
   [TName('ST_TargetScreenSize')]
-  TSTTargetScreenSizeST = (sttss544x376, sttss640x480, sttss720x512, sttss800x600, sttss1024x768, sttss1152x882, sttss1152x900,
+  TTargetScreenSizeST = (sttss544x376, sttss640x480, sttss720x512, sttss800x600, sttss1024x768, sttss1152x882, sttss1152x900,
     sttss1280x1024, sttss1600x1200, sttss1800x1440, sttss1920x1200);
 
   [TBaseType('ProRock.Xmlite.Schema.Base.TUnsignedIntST')]
   [TName('ST_BorderId')]
-  TSTBorderIdST = type ProRock.Xmlite.Schema.Base.TUnsignedIntST;
+  TBorderIdST = type ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TName('ST_CellRef')]
-  TSTCellRefST = type ProRock.Xmlite.Schema.Base.TStringST;
+  TCellRefST = type ProRock.Xmlite.Schema.Base.TStringST;
   [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TName('ST_CellSpan')]
-  TSTCellSpanST = type ProRock.Xmlite.Schema.Base.TStringST;
+  TCellSpanST = type ProRock.Xmlite.Schema.Base.TStringST;
   [TName('ST_CellSpans')]
-  TSTCellSpansST = type string;
+  TCellSpansST = type string;
   [TBaseType('ProRock.Xmlite.Schema.Base.TUnsignedIntST')]
   [TName('ST_CellStyleXfId')]
-  TSTCellStyleXfIdST = type ProRock.Xmlite.Schema.Base.TUnsignedIntST;
+  TCellStyleXfIdST = type ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   [TBaseType('ProRock.Xmlite.Schema.Base.TUnsignedIntST')]
   [TName('ST_DxfId')]
-  TSTDxfIdST = type ProRock.Xmlite.Schema.Base.TUnsignedIntST;
+  TDxfIdST = type ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   [TBaseType('ProRock.Xmlite.Schema.Base.TUnsignedIntST')]
   [TName('ST_FillId')]
-  TSTFillIdST = type ProRock.Xmlite.Schema.Base.TUnsignedIntST;
+  TFillIdST = type ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   [TBaseType('ProRock.Xmlite.Schema.Base.TIntegerST')]
   [TName('ST_FontFamily')]
-  TSTFontFamilyST = type ProRock.Xmlite.Schema.Base.TIntegerST;
+  TFontFamilyST = type ProRock.Xmlite.Schema.Base.TIntegerST;
   [TBaseType('ProRock.Xmlite.Schema.Base.TUnsignedIntST')]
   [TName('ST_FontId')]
-  TSTFontIdST = type ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-  [TBaseType('ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST')]
+  TFontIdST = type ProRock.Xmlite.Schema.Base.TUnsignedIntST;
+  [TBaseType('ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST')]
   [TName('ST_Formula')]
-  TSTFormulaST = type ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+  TFormulaST = type ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
   [TBaseType('ProRock.Xmlite.Schema.Base.TUnsignedIntST')]
   [TName('ST_NumFmtId')]
-  TSTNumFmtIdST = type ProRock.Xmlite.Schema.Base.TUnsignedIntST;
+  TNumFmtIdST = type ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TName('ST_RefA')]
-  TSTRefAST = type ProRock.Xmlite.Schema.Base.TStringST;
+  TRefAST = type ProRock.Xmlite.Schema.Base.TStringST;
   [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TName('ST_Ref')]
-  TSTRefST = type ProRock.Xmlite.Schema.Base.TStringST;
+  TRefST = type ProRock.Xmlite.Schema.Base.TStringST;
   [TName('ST_Sqref')]
-  TSTSqrefST = type string;
+  TSqrefST = type string;
   [TName('ST_TextRotation')]
-  TSTTextRotationST = type string;
+  TTextRotationST = type string;
   [TBaseType('ProRock.Xmlite.Schema.Base.THexBinaryST')]
   [TName('ST_UnsignedIntHex')]
-  TSTUnsignedIntHexST = type ProRock.Xmlite.Schema.Base.THexBinaryST;
+  TUnsignedIntHexST = type ProRock.Xmlite.Schema.Base.THexBinaryST;
   [TBaseType('ProRock.Xmlite.Schema.Base.THexBinaryST')]
   [TName('ST_UnsignedShortHex')]
-  TSTUnsignedShortHexST = type ProRock.Xmlite.Schema.Base.THexBinaryST;
+  TUnsignedShortHexST = type ProRock.Xmlite.Schema.Base.THexBinaryST;
   [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TName('ST_XmlDataType')]
-  TSTXmlDataTypeST = type ProRock.Xmlite.Schema.Base.TStringST;
+  TXmlDataTypeST = type ProRock.Xmlite.Schema.Base.TStringST;
 
-  TCTAutoFilterCT = class;
-  TCTFilterColumnCT = class;
-  TCTFiltersCT = class;
-  TCTFilterCT = class;
-  TCTCustomFiltersCT = class;
-  TCTCustomFilterCT = class;
-  TCTTop10CT = class;
-  TCTColorFilterCT = class;
-  TCTIconFilterCT = class;
-  TCTDynamicFilterCT = class;
-  TCTSortStateCT = class;
-  TCTSortConditionCT = class;
-  TCTDateGroupItemCT = class;
-  TCTXStringElementCT = class;
-  TCTExtensionCT = class;
-  TCTObjectAnchorCT = class;
-  TCTExtensionListCT = class;
-  TCTCalcChainCT = class;
-  TCTCalcCellCT = class;
-  TCTCommentsCT = class;
-  TCTAuthorsCT = class;
-  TCTCommentListCT = class;
-  TCTCommentCT = class;
-  TCTCommentPrCT = class;
-  TCTMapInfoCT = class;
-  TCTSchemaCT = class;
-  TCTMapCT = class;
-  TCTDataBindingCT = class;
-  TCTConnectionsCT = class;
-  TCTConnectionCT = class;
-  TCTDbPrCT = class;
-  TCTOlapPrCT = class;
-  TCTWebPrCT = class;
-  TCTParametersCT = class;
-  TCTParameterCT = class;
-  TCTTablesCT = class;
-  TCTTableMissingCT = class;
-  TCTTextPrCT = class;
-  TCTTextFieldsCT = class;
-  TCTTextFieldCT = class;
-  TCTPivotCacheDefinitionCT = class;
-  TCTCacheFieldsCT = class;
-  TCTCacheFieldCT = class;
-  TCTCacheSourceCT = class;
-  TCTWorksheetSourceCT = class;
-  TCTConsolidationCT = class;
-  TCTPagesCT = class;
-  TCTPCDSCPageCT = class;
-  TCTPageItemCT = class;
-  TCTRangeSetsCT = class;
-  TCTRangeSetCT = class;
-  TCTSharedItemsCT = class;
-  TCTMissingCT = class;
-  TCTNumberCT = class;
-  TCTBooleanCT = class;
-  TCTErrorCT = class;
-  TCTStringCT = class;
-  TCTDateTimeCT = class;
-  TCTFieldGroupCT = class;
-  TCTRangePrCT = class;
-  TCTDiscretePrCT = class;
-  TCTGroupItemsCT = class;
-  TCTPivotCacheRecordsCT = class;
-  TCTRecordCT = class;
-  TCTPCDKPIsCT = class;
-  TCtPcdkpiCT = class;
-  TCTCacheHierarchiesCT = class;
-  TCTCacheHierarchyCT = class;
-  TCTFieldsUsageCT = class;
-  TCTFieldUsageCT = class;
-  TCTGroupLevelsCT = class;
-  TCTGroupLevelCT = class;
-  TCTGroupsCT = class;
-  TCTLevelGroupCT = class;
-  TCTGroupMembersCT = class;
-  TCTGroupMemberCT = class;
-  TCTTupleCacheCT = class;
-  TCTServerFormatCT = class;
-  TCTServerFormatsCT = class;
-  TCTPCDSDTCEntriesCT = class;
-  TCTTuplesCT = class;
-  TCTTupleCT = class;
-  TCTSetsCT = class;
-  TCTSetCT = class;
-  TCTQueryCacheCT = class;
-  TCTQueryCT = class;
-  TCTCalculatedItemsCT = class;
-  TCTCalculatedItemCT = class;
-  TCTCalculatedMembersCT = class;
-  TCTCalculatedMemberCT = class;
-  TCTPivotTableDefinitionCT = class;
-  TCTLocationCT = class;
-  TCTPivotFieldsCT = class;
-  TCTPivotFieldCT = class;
-  TCTAutoSortScopeCT = class;
-  TCTItemsCT = class;
-  TCTItemCT = class;
-  TCTPageFieldsCT = class;
-  TCTPageFieldCT = class;
-  TCTDataFieldsCT = class;
-  TCTDataFieldCT = class;
-  TCTRowItemsCT = class;
-  TCTColItemsCT = class;
-  TCtICT = class;
-  TCtXCT = class;
-  TCTRowFieldsCT = class;
-  TCTColFieldsCT = class;
-  TCTFieldCT = class;
-  TCTFormatsCT = class;
-  TCTFormatCT = class;
-  TCTConditionalFormatsCT = class;
-  TCTConditionalFormatCT = class;
-  TCTPivotAreasCT = class;
-  TCTChartFormatsCT = class;
-  TCTChartFormatCT = class;
-  TCTPivotHierarchiesCT = class;
-  TCTPivotHierarchyCT = class;
-  TCTRowHierarchiesUsageCT = class;
-  TCTColHierarchiesUsageCT = class;
-  TCTHierarchyUsageCT = class;
-  TCTMemberPropertiesCT = class;
-  TCTMemberPropertyCT = class;
-  TCTMembersCT = class;
-  TCTMemberCT = class;
-  TCTDimensionsCT = class;
-  TCTPivotDimensionCT = class;
-  TCTMeasureGroupsCT = class;
-  TCTMeasureDimensionMapsCT = class;
-  TCTMeasureGroupCT = class;
-  TCTMeasureDimensionMapCT = class;
-  TCTPivotTableStyleCT = class;
-  TCTPivotFiltersCT = class;
-  TCTPivotFilterCT = class;
-  TCTPivotAreaCT = class;
-  TCTPivotAreaReferencesCT = class;
-  TCTPivotAreaReferenceCT = class;
-  TCTIndexCT = class;
-  TCTQueryTableCT = class;
-  TCTQueryTableRefreshCT = class;
-  TCTQueryTableDeletedFieldsCT = class;
-  TCTDeletedFieldCT = class;
-  TCTQueryTableFieldsCT = class;
-  TCTQueryTableFieldCT = class;
-  TCTSstCT = class;
-  TCTPhoneticRunCT = class;
-  TCTREltCT = class;
-  TCTRPrEltCT = class;
-  TCTRstCT = class;
-  TCTPhoneticPrCT = class;
-  TCTRevisionHeadersCT = class;
-  TCTRevisionsCT = class;
-  TCTRevisionHeaderCT = class;
-  TCTSheetIdMapCT = class;
-  TCTSheetIdCT = class;
-  TCTReviewedRevisionsCT = class;
-  TCTReviewedCT = class;
-  TCTUndoInfoCT = class;
-  TCTRevisionRowColumnCT = class;
-  TCTRevisionMoveCT = class;
-  TCTRevisionCustomViewCT = class;
-  TCTRevisionSheetRenameCT = class;
-  TCTRevisionInsertSheetCT = class;
-  TCTRevisionCellChangeCT = class;
-  TCTRevisionFormattingCT = class;
-  TCTRevisionAutoFormattingCT = class;
-  TCTRevisionCommentCT = class;
-  TCTRevisionDefinedNameCT = class;
-  TCTRevisionConflictCT = class;
-  TCTRevisionQueryTableFieldCT = class;
-  TCTUsersCT = class;
-  TCTSharedUserCT = class;
-  TCTMacrosheetCT = class;
-  TCTDialogsheetCT = class;
-  TCTWorksheetCT = class;
-  TCTSheetDataCT = class;
-  TCTSheetCalcPrCT = class;
-  TCTSheetFormatPrCT = class;
-  TCTColsCT = class;
-  TCTColCT = class;
-  TCTRowCT = class;
-  TCTCellCT = class;
-  TCTSheetPrCT = class;
-  TCTSheetDimensionCT = class;
-  TCTSheetViewsCT = class;
-  TCTSheetViewCT = class;
-  TCTPaneCT = class;
-  TCTPivotSelectionCT = class;
-  TCTSelectionCT = class;
-  TCTPageBreakCT = class;
-  TCTBreakCT = class;
-  TCTOutlinePrCT = class;
-  TCTPageSetUpPrCT = class;
-  TCTDataConsolidateCT = class;
-  TCTDataRefsCT = class;
-  TCTDataRefCT = class;
-  TCTMergeCellsCT = class;
-  TCTMergeCellCT = class;
-  TCTSmartTagsCT = class;
-  TCTCellSmartTagsCT = class;
-  TCTCellSmartTagCT = class;
-  TCTCellSmartTagPrCT = class;
-  TCTDrawingCT = class;
-  TCTLegacyDrawingCT = class;
-  TCTDrawingHFCT = class;
-  TCTCustomSheetViewsCT = class;
-  TCTCustomSheetViewCT = class;
-  TCTDataValidationsCT = class;
-  TCTDataValidationCT = class;
-  TCTConditionalFormattingCT = class;
-  TCTCfRuleCT = class;
-  TCTHyperlinksCT = class;
-  TCTHyperlinkCT = class;
-  TCTCellFormulaCT = class;
-  TCTColorScaleCT = class;
-  TCTDataBarCT = class;
-  TCTIconSetCT = class;
-  TCTCfvoCT = class;
-  TCTPageMarginsCT = class;
-  TCTPrintOptionsCT = class;
-  TCTPageSetupCT = class;
-  TCTHeaderFooterCT = class;
-  TCTScenariosCT = class;
-  TCTSheetProtectionCT = class;
-  TCTProtectedRangesCT = class;
-  TCTProtectedRangeCT = class;
-  TCTScenarioCT = class;
-  TCTInputCellsCT = class;
-  TCTCellWatchesCT = class;
-  TCTCellWatchCT = class;
-  TCTChartsheetCT = class;
-  TCTChartsheetPrCT = class;
-  TCTChartsheetViewsCT = class;
-  TCTChartsheetViewCT = class;
-  TCTChartsheetProtectionCT = class;
-  TCTCsPageSetupCT = class;
-  TCTCustomChartsheetViewsCT = class;
-  TCTCustomChartsheetViewCT = class;
-  TCTCustomPropertiesCT = class;
-  TCTCustomPropertyCT = class;
-  TCTOleObjectsCT = class;
-  TCTOleObjectCT = class;
-  TCTObjectPrCT = class;
-  TCTWebPublishItemsCT = class;
-  TCTWebPublishItemCT = class;
-  TCTControlsCT = class;
-  TCTControlCT = class;
-  TCTControlPrCT = class;
-  TCTIgnoredErrorsCT = class;
-  TCTIgnoredErrorCT = class;
-  TCTTablePartsCT = class;
-  TCTTablePartCT = class;
-  TCTMetadataCT = class;
-  TCTMetadataTypesCT = class;
-  TCTMetadataTypeCT = class;
-  TCTMetadataBlocksCT = class;
-  TCTMetadataBlockCT = class;
-  TCTMetadataRecordCT = class;
-  TCTFutureMetadataCT = class;
-  TCTFutureMetadataBlockCT = class;
-  TCTMdxMetadataCT = class;
-  TCTMdxCT = class;
-  TCTMdxTupleCT = class;
-  TCTMdxSetCT = class;
-  TCTMdxMemeberPropCT = class;
-  TCTMdxKPICT = class;
-  TCTMetadataStringIndexCT = class;
-  TCTMetadataStringsCT = class;
-  TCTSingleXmlCellsCT = class;
-  TCTSingleXmlCellCT = class;
-  TCTXmlCellPrCT = class;
-  TCTXmlPrCT = class;
-  TCTStylesheetCT = class;
-  TCTCellAlignmentCT = class;
-  TCTBordersCT = class;
-  TCTBorderCT = class;
-  TCTBorderPrCT = class;
-  TCTCellProtectionCT = class;
-  TCTFontsCT = class;
-  TCTFillsCT = class;
-  TCTFillCT = class;
-  TCTPatternFillCT = class;
-  TCTColorCT = class;
-  TCTGradientFillCT = class;
-  TCTGradientStopCT = class;
-  TCTNumFmtsCT = class;
-  TCTNumFmtCT = class;
-  TCTCellStyleXfsCT = class;
-  TCTCellXfsCT = class;
-  TCTXfCT = class;
-  TCTCellStylesCT = class;
-  TCTCellStyleCT = class;
-  TCTDxfsCT = class;
-  TCTDxfCT = class;
-  TCTColorsCT = class;
-  TCTIndexedColorsCT = class;
-  TCTMRUColorsCT = class;
-  TCTRgbColorCT = class;
-  TCTTableStylesCT = class;
-  TCTTableStyleCT = class;
-  TCTTableStyleElementCT = class;
-  TCTBooleanPropertyCT = class;
-  TCTFontSizeCT = class;
-  TCTIntPropertyCT = class;
-  TCTFontNameCT = class;
-  TCTVerticalAlignFontPropertyCT = class;
-  TCTFontSchemeCT = class;
-  TCTUnderlinePropertyCT = class;
-  TCTFontCT = class;
-  TCTFontFamilyCT = class;
-  TCTExternalLinkCT = class;
-  TCTExternalBookCT = class;
-  TCTExternalSheetNamesCT = class;
-  TCTExternalSheetNameCT = class;
-  TCTExternalDefinedNamesCT = class;
-  TCTExternalDefinedNameCT = class;
-  TCTExternalSheetDataSetCT = class;
-  TCTExternalSheetDataCT = class;
-  TCTExternalRowCT = class;
-  TCTExternalCellCT = class;
-  TCTDdeLinkCT = class;
-  TCTDdeItemsCT = class;
-  TCTDdeItemCT = class;
-  TCTDdeValuesCT = class;
-  TCTDdeValueCT = class;
-  TCTOleLinkCT = class;
-  TCTOleItemsCT = class;
-  TCTOleItemCT = class;
-  TCTTableCT = class;
-  TCTTableStyleInfoCT = class;
-  TCTTableColumnsCT = class;
-  TCTTableColumnCT = class;
-  TCTTableFormulaCT = class;
-  TCTXmlColumnPrCT = class;
-  TCTVolTypesCT = class;
-  TCTVolTypeCT = class;
-  TCTVolMainCT = class;
-  TCTVolTopicCT = class;
-  TCTVolTopicRefCT = class;
-  TCTWorkbookCT = class;
-  TCTFileVersionCT = class;
-  TCTBookViewsCT = class;
-  TCTBookViewCT = class;
-  TCTCustomWorkbookViewsCT = class;
-  TCTCustomWorkbookViewCT = class;
-  TCTSheetsCT = class;
-  TCTSheetCT = class;
-  TCTWorkbookPrCT = class;
-  TCTSmartTagPrCT = class;
-  TCTSmartTagTypesCT = class;
-  TCTSmartTagTypeCT = class;
-  TCTFileRecoveryPrCT = class;
-  TCTCalcPrCT = class;
-  TCTDefinedNamesCT = class;
-  TCTDefinedNameCT = class;
-  TCTExternalReferencesCT = class;
-  TCTExternalReferenceCT = class;
-  TCTSheetBackgroundPictureCT = class;
-  TCTPivotCachesCT = class;
-  TCTPivotCacheCT = class;
-  TCTFileSharingCT = class;
-  TCTOleSizeCT = class;
-  TCTWorkbookProtectionCT = class;
-  TCTWebPublishingCT = class;
-  TCTFunctionGroupsCT = class;
-  TCTFunctionGroupCT = class;
-  TCTWebPublishObjectsCT = class;
-  TCTWebPublishObjectCT = class;
-  TAGRevDataAG = class;
-  TAGAutoFormatAG = class;
+  TAutoFilterCT = class;
+  TFilterColumnCT = class;
+  TFiltersCT = class;
+  TFilterCT = class;
+  TCustomFiltersCT = class;
+  TCustomFilterCT = class;
+  TTop10CT = class;
+  TColorFilterCT = class;
+  TIconFilterCT = class;
+  TDynamicFilterCT = class;
+  TSortStateCT = class;
+  TSortConditionCT = class;
+  TDateGroupItemCT = class;
+  TXStringElementCT = class;
+  TExtensionCT = class;
+  TObjectAnchorCT = class;
+  TExtensionListCT = class;
+  TCalcChainCT = class;
+  TCalcCellCT = class;
+  TCommentsCT = class;
+  TAuthorsCT = class;
+  TCommentListCT = class;
+  TCommentCT = class;
+  TCommentPrCT = class;
+  TMapInfoCT = class;
+  TSchemaCT = class;
+  TMapCT = class;
+  TDataBindingCT = class;
+  TConnectionsCT = class;
+  TConnectionCT = class;
+  TDbPrCT = class;
+  TOlapPrCT = class;
+  TWebPrCT = class;
+  TParametersCT = class;
+  TParameterCT = class;
+  TTablesCT = class;
+  TTableMissingCT = class;
+  TTextPrCT = class;
+  TTextFieldsCT = class;
+  TTextFieldCT = class;
+  TPivotCacheDefinitionCT = class;
+  TCacheFieldsCT = class;
+  TCacheFieldCT = class;
+  TCacheSourceCT = class;
+  TWorksheetSourceCT = class;
+  TConsolidationCT = class;
+  TPagesCT = class;
+  TPCDSCPageCT = class;
+  TPageItemCT = class;
+  TRangeSetsCT = class;
+  TRangeSetCT = class;
+  TSharedItemsCT = class;
+  TMissingCT = class;
+  TNumberCT = class;
+  TBooleanCT = class;
+  TErrorCT = class;
+  TStringCT = class;
+  TDateTimeCT = class;
+  TFieldGroupCT = class;
+  TRangePrCT = class;
+  TDiscretePrCT = class;
+  TGroupItemsCT = class;
+  TPivotCacheRecordsCT = class;
+  TRecordCT = class;
+  TPCDKPIsCT = class;
+  TPcdkpiCT = class;
+  TCacheHierarchiesCT = class;
+  TCacheHierarchyCT = class;
+  TFieldsUsageCT = class;
+  TFieldUsageCT = class;
+  TGroupLevelsCT = class;
+  TGroupLevelCT = class;
+  TGroupsCT = class;
+  TLevelGroupCT = class;
+  TGroupMembersCT = class;
+  TGroupMemberCT = class;
+  TTupleCacheCT = class;
+  TServerFormatCT = class;
+  TServerFormatsCT = class;
+  TPCDSDTCEntriesCT = class;
+  TTuplesCT = class;
+  TTupleCT = class;
+  TSetsCT = class;
+  TSetCT = class;
+  TQueryCacheCT = class;
+  TQueryCT = class;
+  TCalculatedItemsCT = class;
+  TCalculatedItemCT = class;
+  TCalculatedMembersCT = class;
+  TCalculatedMemberCT = class;
+  TPivotTableDefinitionCT = class;
+  TLocationCT = class;
+  TPivotFieldsCT = class;
+  TPivotFieldCT = class;
+  TAutoSortScopeCT = class;
+  TItemsCT = class;
+  TItemCT = class;
+  TPageFieldsCT = class;
+  TPageFieldCT = class;
+  TDataFieldsCT = class;
+  TDataFieldCT = class;
+  TRowItemsCT = class;
+  TColItemsCT = class;
+  TICT = class;
+  TXCT = class;
+  TRowFieldsCT = class;
+  TColFieldsCT = class;
+  TFieldCT = class;
+  TFormatsCT = class;
+  TFormatCT = class;
+  TConditionalFormatsCT = class;
+  TConditionalFormatCT = class;
+  TPivotAreasCT = class;
+  TChartFormatsCT = class;
+  TChartFormatCT = class;
+  TPivotHierarchiesCT = class;
+  TPivotHierarchyCT = class;
+  TRowHierarchiesUsageCT = class;
+  TColHierarchiesUsageCT = class;
+  THierarchyUsageCT = class;
+  TMemberPropertiesCT = class;
+  TMemberPropertyCT = class;
+  TMembersCT = class;
+  TMemberCT = class;
+  TDimensionsCT = class;
+  TPivotDimensionCT = class;
+  TMeasureGroupsCT = class;
+  TMeasureDimensionMapsCT = class;
+  TMeasureGroupCT = class;
+  TMeasureDimensionMapCT = class;
+  TPivotTableStyleCT = class;
+  TPivotFiltersCT = class;
+  TPivotFilterCT = class;
+  TPivotAreaCT = class;
+  TPivotAreaReferencesCT = class;
+  TPivotAreaReferenceCT = class;
+  TIndexCT = class;
+  TQueryTableCT = class;
+  TQueryTableRefreshCT = class;
+  TQueryTableDeletedFieldsCT = class;
+  TDeletedFieldCT = class;
+  TQueryTableFieldsCT = class;
+  TQueryTableFieldCT = class;
+  TSstCT = class;
+  TPhoneticRunCT = class;
+  TREltCT = class;
+  TRPrEltCT = class;
+  TRstCT = class;
+  TPhoneticPrCT = class;
+  TRevisionHeadersCT = class;
+  TRevisionsCT = class;
+  TRevisionHeaderCT = class;
+  TSheetIdMapCT = class;
+  TSheetIdCT = class;
+  TReviewedRevisionsCT = class;
+  TReviewedCT = class;
+  TUndoInfoCT = class;
+  TRevisionRowColumnCT = class;
+  TRevisionMoveCT = class;
+  TRevisionCustomViewCT = class;
+  TRevisionSheetRenameCT = class;
+  TRevisionInsertSheetCT = class;
+  TRevisionCellChangeCT = class;
+  TRevisionFormattingCT = class;
+  TRevisionAutoFormattingCT = class;
+  TRevisionCommentCT = class;
+  TRevisionDefinedNameCT = class;
+  TRevisionConflictCT = class;
+  TRevisionQueryTableFieldCT = class;
+  TUsersCT = class;
+  TSharedUserCT = class;
+  TMacrosheetCT = class;
+  TDialogsheetCT = class;
+  TWorksheetCT = class;
+  TSheetDataCT = class;
+  TSheetCalcPrCT = class;
+  TSheetFormatPrCT = class;
+  TColsCT = class;
+  TColCT = class;
+  TRowCT = class;
+  TCellCT = class;
+  TSheetPrCT = class;
+  TSheetDimensionCT = class;
+  TSheetViewsCT = class;
+  TSheetViewCT = class;
+  TPaneCT = class;
+  TPivotSelectionCT = class;
+  TSelectionCT = class;
+  TPageBreakCT = class;
+  TBreakCT = class;
+  TOutlinePrCT = class;
+  TPageSetUpPrCT = class;
+  TDataConsolidateCT = class;
+  TDataRefsCT = class;
+  TDataRefCT = class;
+  TMergeCellsCT = class;
+  TMergeCellCT = class;
+  TSmartTagsCT = class;
+  TCellSmartTagsCT = class;
+  TCellSmartTagCT = class;
+  TCellSmartTagPrCT = class;
+  TDrawingCT = class;
+  TLegacyDrawingCT = class;
+  TDrawingHFCT = class;
+  TCustomSheetViewsCT = class;
+  TCustomSheetViewCT = class;
+  TDataValidationsCT = class;
+  TDataValidationCT = class;
+  TConditionalFormattingCT = class;
+  TCfRuleCT = class;
+  THyperlinksCT = class;
+  THyperlinkCT = class;
+  TCellFormulaCT = class;
+  TColorScaleCT = class;
+  TDataBarCT = class;
+  TIconSetCT = class;
+  TCfvoCT = class;
+  TPageMarginsCT = class;
+  TPrintOptionsCT = class;
+  TPageSetupCT = class;
+  THeaderFooterCT = class;
+  TScenariosCT = class;
+  TSheetProtectionCT = class;
+  TProtectedRangesCT = class;
+  TProtectedRangeCT = class;
+  TScenarioCT = class;
+  TInputCellsCT = class;
+  TCellWatchesCT = class;
+  TCellWatchCT = class;
+  TChartsheetCT = class;
+  TChartsheetPrCT = class;
+  TChartsheetViewsCT = class;
+  TChartsheetViewCT = class;
+  TChartsheetProtectionCT = class;
+  TCsPageSetupCT = class;
+  TCustomChartsheetViewsCT = class;
+  TCustomChartsheetViewCT = class;
+  TCustomPropertiesCT = class;
+  TCustomPropertyCT = class;
+  TOleObjectsCT = class;
+  TOleObjectCT = class;
+  TObjectPrCT = class;
+  TWebPublishItemsCT = class;
+  TWebPublishItemCT = class;
+  TControlsCT = class;
+  TControlCT = class;
+  TControlPrCT = class;
+  TIgnoredErrorsCT = class;
+  TIgnoredErrorCT = class;
+  TTablePartsCT = class;
+  TTablePartCT = class;
+  TMetadataCT = class;
+  TMetadataTypesCT = class;
+  TMetadataTypeCT = class;
+  TMetadataBlocksCT = class;
+  TMetadataBlockCT = class;
+  TMetadataRecordCT = class;
+  TFutureMetadataCT = class;
+  TFutureMetadataBlockCT = class;
+  TMdxMetadataCT = class;
+  TMdxCT = class;
+  TMdxTupleCT = class;
+  TMdxSetCT = class;
+  TMdxMemeberPropCT = class;
+  TMdxKPICT = class;
+  TMetadataStringIndexCT = class;
+  TMetadataStringsCT = class;
+  TSingleXmlCellsCT = class;
+  TSingleXmlCellCT = class;
+  TXmlCellPrCT = class;
+  TXmlPrCT = class;
+  TStylesheetCT = class;
+  TCellAlignmentCT = class;
+  TBordersCT = class;
+  TBorderCT = class;
+  TBorderPrCT = class;
+  TCellProtectionCT = class;
+  TFontsCT = class;
+  TFillsCT = class;
+  TFillCT = class;
+  TPatternFillCT = class;
+  TColorCT = class;
+  TGradientFillCT = class;
+  TGradientStopCT = class;
+  TNumFmtsCT = class;
+  TNumFmtCT = class;
+  TCellStyleXfsCT = class;
+  TCellXfsCT = class;
+  TXfCT = class;
+  TCellStylesCT = class;
+  TCellStyleCT = class;
+  TDxfsCT = class;
+  TDxfCT = class;
+  TColorsCT = class;
+  TIndexedColorsCT = class;
+  TMRUColorsCT = class;
+  TRgbColorCT = class;
+  TTableStylesCT = class;
+  TTableStyleCT = class;
+  TTableStyleElementCT = class;
+  TBooleanPropertyCT = class;
+  TFontSizeCT = class;
+  TIntPropertyCT = class;
+  TFontNameCT = class;
+  TVerticalAlignFontPropertyCT = class;
+  TFontSchemeCT = class;
+  TUnderlinePropertyCT = class;
+  TFontCT = class;
+  TFontFamilyCT = class;
+  TExternalLinkCT = class;
+  TExternalBookCT = class;
+  TExternalSheetNamesCT = class;
+  TExternalSheetNameCT = class;
+  TExternalDefinedNamesCT = class;
+  TExternalDefinedNameCT = class;
+  TExternalSheetDataSetCT = class;
+  TExternalSheetDataCT = class;
+  TExternalRowCT = class;
+  TExternalCellCT = class;
+  TDdeLinkCT = class;
+  TDdeItemsCT = class;
+  TDdeItemCT = class;
+  TDdeValuesCT = class;
+  TDdeValueCT = class;
+  TOleLinkCT = class;
+  TOleItemsCT = class;
+  TOleItemCT = class;
+  TTableCT = class;
+  TTableStyleInfoCT = class;
+  TTableColumnsCT = class;
+  TTableColumnCT = class;
+  TTableFormulaCT = class;
+  TXmlColumnPrCT = class;
+  TVolTypesCT = class;
+  TVolTypeCT = class;
+  TVolMainCT = class;
+  TVolTopicCT = class;
+  TVolTopicRefCT = class;
+  TWorkbookCT = class;
+  TFileVersionCT = class;
+  TBookViewsCT = class;
+  TBookViewCT = class;
+  TCustomWorkbookViewsCT = class;
+  TCustomWorkbookViewCT = class;
+  TSheetsCT = class;
+  TSheetCT = class;
+  TWorkbookPrCT = class;
+  TSmartTagPrCT = class;
+  TSmartTagTypesCT = class;
+  TSmartTagTypeCT = class;
+  TFileRecoveryPrCT = class;
+  TCalcPrCT = class;
+  TDefinedNamesCT = class;
+  TDefinedNameCT = class;
+  TExternalReferencesCT = class;
+  TExternalReferenceCT = class;
+  TSheetBackgroundPictureCT = class;
+  TPivotCachesCT = class;
+  TPivotCacheCT = class;
+  TFileSharingCT = class;
+  TOleSizeCT = class;
+  TWorkbookProtectionCT = class;
+  TWebPublishingCT = class;
+  TFunctionGroupsCT = class;
+  TFunctionGroupCT = class;
+  TWebPublishObjectsCT = class;
+  TWebPublishObjectCT = class;
+  TRevDataAG = class;
+  TAutoFormatAG = class;
   TCalcChainE = class;
   TCommentsE = class;
   TMapInfoE = class;
@@ -693,210 +693,210 @@ type
   TWorkbookE = class;
   TEGExtensionListEG = class;
 
-  TCTFilterColumnCTList = class;
-  TCTFilterCTList = class;
-  TCTCustomFilterCTList = class;
-  TCTSortConditionCTList = class;
-  TCTDateGroupItemCTList = class;
-  TCTXStringElementCTList = class;
-  TCTExtensionCTList = class;
-  TCTCalcCellCTList = class;
-  TSTXstringSTList = class;
-  TCTCommentCTList = class;
-  TCTSchemaCTList = class;
-  TCTMapCTList = class;
-  TCTConnectionCTList = class;
-  TCTParameterCTList = class;
-  TCTTableMissingCTList = class;
-  TCTTextFieldCTList = class;
-  TCTCacheFieldCTList = class;
-  TCTPCDSCPageCTList = class;
-  TCTPageItemCTList = class;
-  TCTRangeSetCTList = class;
-  TCTMissingCTList = class;
-  TCTNumberCTList = class;
-  TCTBooleanCTList = class;
-  TCTErrorCTList = class;
-  TCTStringCTList = class;
-  TCTDateTimeCTList = class;
-  TCTRecordCTList = class;
-  TCtPcdkpiCTList = class;
-  TCTCacheHierarchyCTList = class;
-  TCTFieldUsageCTList = class;
-  TCTGroupLevelCTList = class;
-  TCTLevelGroupCTList = class;
-  TCTGroupMemberCTList = class;
-  TCTServerFormatCTList = class;
-  TCTTuplesCTList = class;
-  TCTTupleCTList = class;
-  TCTSetCTList = class;
-  TCTQueryCTList = class;
-  TCTCalculatedItemCTList = class;
-  TCTCalculatedMemberCTList = class;
-  TCTPivotFieldCTList = class;
-  TCTItemCTList = class;
-  TCTPageFieldCTList = class;
-  TCTDataFieldCTList = class;
-  TCtICTList = class;
-  TCtXCTList = class;
-  TCTFieldCTList = class;
-  TCTFormatCTList = class;
-  TCTConditionalFormatCTList = class;
-  TCTChartFormatCTList = class;
-  TCTPivotHierarchyCTList = class;
-  TCTHierarchyUsageCTList = class;
-  TCTMemberPropertyCTList = class;
-  TCTMembersCTList = class;
-  TCTMemberCTList = class;
-  TCTPivotDimensionCTList = class;
-  TCTMeasureGroupCTList = class;
-  TCTMeasureDimensionMapCTList = class;
-  TCTPivotFilterCTList = class;
-  TCTPivotAreaCTList = class;
-  TCTPivotAreaReferenceCTList = class;
-  TCTIndexCTList = class;
-  TCTDeletedFieldCTList = class;
-  TCTQueryTableFieldCTList = class;
-  TCTPhoneticRunCTList = class;
-  TCTREltCTList = class;
-  TCTRstCTList = class;
-  TCTRevisionHeaderCTList = class;
-  TCTSheetIdCTList = class;
-  TCTReviewedCTList = class;
-  TCTUndoInfoCTList = class;
-  TCTRevisionRowColumnCTList = class;
-  TCTRevisionMoveCTList = class;
-  TCTRevisionCustomViewCTList = class;
-  TCTRevisionSheetRenameCTList = class;
-  TCTRevisionInsertSheetCTList = class;
-  TCTRevisionCellChangeCTList = class;
-  TCTRevisionFormattingCTList = class;
-  TCTRevisionAutoFormattingCTList = class;
-  TCTRevisionCommentCTList = class;
-  TCTRevisionDefinedNameCTList = class;
-  TCTRevisionConflictCTList = class;
-  TCTRevisionQueryTableFieldCTList = class;
-  TCTSharedUserCTList = class;
-  TCTColsCTList = class;
-  TCTColCTList = class;
-  TCTRowCTList = class;
-  TCTCellCTList = class;
-  TCTSheetViewCTList = class;
-  TCTPivotSelectionCTList = class;
-  TCTSelectionCTList = class;
-  TCTBreakCTList = class;
-  TCTDataRefCTList = class;
-  TCTMergeCellCTList = class;
-  TCTCellSmartTagsCTList = class;
-  TCTCellSmartTagCTList = class;
-  TCTCellSmartTagPrCTList = class;
-  TCTCustomSheetViewCTList = class;
-  TCTDataValidationCTList = class;
-  TCTConditionalFormattingCTList = class;
-  TSTFormulaSTList = class;
-  TCTCfRuleCTList = class;
-  TCTHyperlinkCTList = class;
-  TCTCfvoCTList = class;
+  TFilterColumnCTList = class;
+  TFilterCTList = class;
+  TCustomFilterCTList = class;
+  TSortConditionCTList = class;
+  TDateGroupItemCTList = class;
+  TXStringElementCTList = class;
+  TExtensionCTList = class;
+  TCalcCellCTList = class;
+  TXstringSTList = class;
+  TCommentCTList = class;
+  TSchemaCTList = class;
+  TMapCTList = class;
+  TConnectionCTList = class;
+  TParameterCTList = class;
+  TTableMissingCTList = class;
+  TTextFieldCTList = class;
+  TCacheFieldCTList = class;
+  TPCDSCPageCTList = class;
+  TPageItemCTList = class;
+  TRangeSetCTList = class;
+  TMissingCTList = class;
+  TNumberCTList = class;
+  TBooleanCTList = class;
+  TErrorCTList = class;
+  TStringCTList = class;
+  TDateTimeCTList = class;
+  TRecordCTList = class;
+  TPcdkpiCTList = class;
+  TCacheHierarchyCTList = class;
+  TFieldUsageCTList = class;
+  TGroupLevelCTList = class;
+  TLevelGroupCTList = class;
+  TGroupMemberCTList = class;
+  TServerFormatCTList = class;
+  TTuplesCTList = class;
+  TTupleCTList = class;
+  TSetCTList = class;
+  TQueryCTList = class;
+  TCalculatedItemCTList = class;
+  TCalculatedMemberCTList = class;
+  TPivotFieldCTList = class;
+  TItemCTList = class;
+  TPageFieldCTList = class;
+  TDataFieldCTList = class;
+  TICTList = class;
+  TXCTList = class;
+  TFieldCTList = class;
+  TFormatCTList = class;
+  TConditionalFormatCTList = class;
+  TChartFormatCTList = class;
+  TPivotHierarchyCTList = class;
+  THierarchyUsageCTList = class;
+  TMemberPropertyCTList = class;
+  TMembersCTList = class;
+  TMemberCTList = class;
+  TPivotDimensionCTList = class;
+  TMeasureGroupCTList = class;
+  TMeasureDimensionMapCTList = class;
+  TPivotFilterCTList = class;
+  TPivotAreaCTList = class;
+  TPivotAreaReferenceCTList = class;
+  TIndexCTList = class;
+  TDeletedFieldCTList = class;
+  TQueryTableFieldCTList = class;
+  TPhoneticRunCTList = class;
+  TREltCTList = class;
+  TRstCTList = class;
+  TRevisionHeaderCTList = class;
+  TSheetIdCTList = class;
+  TReviewedCTList = class;
+  TUndoInfoCTList = class;
+  TRevisionRowColumnCTList = class;
+  TRevisionMoveCTList = class;
+  TRevisionCustomViewCTList = class;
+  TRevisionSheetRenameCTList = class;
+  TRevisionInsertSheetCTList = class;
+  TRevisionCellChangeCTList = class;
+  TRevisionFormattingCTList = class;
+  TRevisionAutoFormattingCTList = class;
+  TRevisionCommentCTList = class;
+  TRevisionDefinedNameCTList = class;
+  TRevisionConflictCTList = class;
+  TRevisionQueryTableFieldCTList = class;
+  TSharedUserCTList = class;
+  TColsCTList = class;
+  TColCTList = class;
+  TRowCTList = class;
+  TCellCTList = class;
+  TSheetViewCTList = class;
+  TPivotSelectionCTList = class;
+  TSelectionCTList = class;
+  TBreakCTList = class;
+  TDataRefCTList = class;
+  TMergeCellCTList = class;
+  TCellSmartTagsCTList = class;
+  TCellSmartTagCTList = class;
+  TCellSmartTagPrCTList = class;
+  TCustomSheetViewCTList = class;
+  TDataValidationCTList = class;
+  TConditionalFormattingCTList = class;
+  TFormulaSTList = class;
+  TCfRuleCTList = class;
+  THyperlinkCTList = class;
+  TCfvoCTList = class;
   TStringSTList = class;
-  TCTProtectedRangeCTList = class;
-  TCTScenarioCTList = class;
-  TCTInputCellsCTList = class;
-  TCTCellWatchCTList = class;
-  TCTChartsheetViewCTList = class;
-  TCTCustomChartsheetViewCTList = class;
-  TCTCustomPropertyCTList = class;
-  TCTOleObjectCTList = class;
-  TCTWebPublishItemCTList = class;
-  TCTControlCTList = class;
-  TCTIgnoredErrorCTList = class;
-  TCTTablePartCTList = class;
-  TCTMetadataTypeCTList = class;
-  TCTMetadataBlockCTList = class;
-  TCTMetadataRecordCTList = class;
-  TCTFutureMetadataCTList = class;
-  TCTFutureMetadataBlockCTList = class;
-  TCTMdxCTList = class;
-  TCTMetadataStringIndexCTList = class;
-  TCTSingleXmlCellCTList = class;
-  TCTBorderCTList = class;
-  TCTFillCTList = class;
-  TCTColorCTList = class;
-  TCTGradientStopCTList = class;
-  TCTNumFmtCTList = class;
-  TCTXfCTList = class;
-  TCTCellStyleCTList = class;
-  TCTDxfCTList = class;
-  TCTRgbColorCTList = class;
-  TCTTableStyleCTList = class;
-  TCTTableStyleElementCTList = class;
-  TCTBooleanPropertyCTList = class;
-  TCTFontSizeCTList = class;
-  TCTIntPropertyCTList = class;
-  TCTFontNameCTList = class;
-  TCTVerticalAlignFontPropertyCTList = class;
-  TCTFontSchemeCTList = class;
-  TCTUnderlinePropertyCTList = class;
-  TCTFontCTList = class;
-  TCTFontFamilyCTList = class;
-  TCTExternalSheetNameCTList = class;
-  TCTExternalDefinedNameCTList = class;
-  TCTExternalSheetDataCTList = class;
-  TCTExternalRowCTList = class;
-  TCTExternalCellCTList = class;
-  TCTDdeItemCTList = class;
-  TCTDdeValueCTList = class;
-  TCTOleItemCTList = class;
-  TCTTableColumnCTList = class;
-  TCTVolTypeCTList = class;
-  TCTVolMainCTList = class;
-  TCTVolTopicCTList = class;
-  TCTVolTopicRefCTList = class;
-  TCTBookViewCTList = class;
-  TCTCustomWorkbookViewCTList = class;
-  TCTSheetCTList = class;
-  TCTSmartTagTypeCTList = class;
-  TCTFileRecoveryPrCTList = class;
-  TCTDefinedNameCTList = class;
-  TCTExternalReferenceCTList = class;
-  TCTPivotCacheCTList = class;
-  TCTFunctionGroupCTList = class;
-  TCTWebPublishObjectCTList = class;
+  TProtectedRangeCTList = class;
+  TScenarioCTList = class;
+  TInputCellsCTList = class;
+  TCellWatchCTList = class;
+  TChartsheetViewCTList = class;
+  TCustomChartsheetViewCTList = class;
+  TCustomPropertyCTList = class;
+  TOleObjectCTList = class;
+  TWebPublishItemCTList = class;
+  TControlCTList = class;
+  TIgnoredErrorCTList = class;
+  TTablePartCTList = class;
+  TMetadataTypeCTList = class;
+  TMetadataBlockCTList = class;
+  TMetadataRecordCTList = class;
+  TFutureMetadataCTList = class;
+  TFutureMetadataBlockCTList = class;
+  TMdxCTList = class;
+  TMetadataStringIndexCTList = class;
+  TSingleXmlCellCTList = class;
+  TBorderCTList = class;
+  TFillCTList = class;
+  TColorCTList = class;
+  TGradientStopCTList = class;
+  TNumFmtCTList = class;
+  TXfCTList = class;
+  TCellStyleCTList = class;
+  TDxfCTList = class;
+  TRgbColorCTList = class;
+  TTableStyleCTList = class;
+  TTableStyleElementCTList = class;
+  TBooleanPropertyCTList = class;
+  TFontSizeCTList = class;
+  TIntPropertyCTList = class;
+  TFontNameCTList = class;
+  TVerticalAlignFontPropertyCTList = class;
+  TFontSchemeCTList = class;
+  TUnderlinePropertyCTList = class;
+  TFontCTList = class;
+  TFontFamilyCTList = class;
+  TExternalSheetNameCTList = class;
+  TExternalDefinedNameCTList = class;
+  TExternalSheetDataCTList = class;
+  TExternalRowCTList = class;
+  TExternalCellCTList = class;
+  TDdeItemCTList = class;
+  TDdeValueCTList = class;
+  TOleItemCTList = class;
+  TTableColumnCTList = class;
+  TVolTypeCTList = class;
+  TVolMainCTList = class;
+  TVolTopicCTList = class;
+  TVolTopicRefCTList = class;
+  TBookViewCTList = class;
+  TCustomWorkbookViewCTList = class;
+  TSheetCTList = class;
+  TSmartTagTypeCTList = class;
+  TFileRecoveryPrCTList = class;
+  TDefinedNameCTList = class;
+  TExternalReferenceCTList = class;
+  TPivotCacheCTList = class;
+  TFunctionGroupCTList = class;
+  TWebPublishObjectCTList = class;
 
   [TName('CT_AutoFilter')]
-  TCTAutoFilterCT = class(TXmliteComplexType)
+  TAutoFilterCT = class(TXmliteComplexType)
   private
-    fRef: TSTRefST;
-    fFilterColumn: TCTFilterColumnCTList;
-    fSortState: TCTSortStateCT;
-    fExtLst: TCTExtensionListCT;
+    fRef: TRefST;
+    fFilterColumn: TFilterColumnCTList;
+    fSortState: TSortStateCT;
+    fExtLst: TExtensionListCT;
   published
-    property Ref: TSTRefST read fRef write fRef;
-    property FilterColumn: TCTFilterColumnCTList read fFilterColumn;
-    property SortState: TCTSortStateCT read fSortState;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property Ref: TRefST read fRef write fRef;
+    property FilterColumn: TFilterColumnCTList read fFilterColumn;
+    property SortState: TSortStateCT read fSortState;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_FilterColumn')]
-  TCTFilterColumnCT = class(TXmliteComplexType)
+  TFilterColumnCT = class(TXmliteComplexType)
   private
     fColId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fHiddenButton: ProRock.Xmlite.Schema.Base.TBooleanST;
     fShowButton: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fFilters: TCTFiltersCT;
-    fTop10: TCTTop10CT;
-    fCustomFilters: TCTCustomFiltersCT;
-    fDynamicFilter: TCTDynamicFilterCT;
-    fColorFilter: TCTColorFilterCT;
-    fIconFilter: TCTIconFilterCT;
-    fExtLst: TCTExtensionListCT;
+    fFilters: TFiltersCT;
+    fTop10: TTop10CT;
+    fCustomFilters: TCustomFiltersCT;
+    fDynamicFilter: TDynamicFilterCT;
+    fColorFilter: TColorFilterCT;
+    fIconFilter: TIconFilterCT;
+    fExtLst: TExtensionListCT;
 
-    function GetFilters: TCTFiltersCT;
-    function GetTop10: TCTTop10CT;
-    function GetCustomFilters: TCTCustomFiltersCT;
-    function GetDynamicFilter: TCTDynamicFilterCT;
-    function GetColorFilter: TCTColorFilterCT;
-    function GetIconFilter: TCTIconFilterCT;
-    function GetExtLst: TCTExtensionListCT;
+    function GetFilters: TFiltersCT;
+    function GetTop10: TTop10CT;
+    function GetCustomFilters: TCustomFiltersCT;
+    function GetDynamicFilter: TDynamicFilterCT;
+    function GetColorFilter: TColorFilterCT;
+    function GetIconFilter: TIconFilterCT;
+    function GetExtLst: TExtensionListCT;
   published
     [TRequired]
     property ColId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fColId write fColId;
@@ -905,69 +905,69 @@ type
     [TDefault(True)]
     property ShowButton: ProRock.Xmlite.Schema.Base.TBooleanST read fShowButton write fShowButton;
     [TChoice('Filters')]
-    property Filters: TCTFiltersCT read GetFilters;
+    property Filters: TFiltersCT read GetFilters;
     [TChoice('Filters')]
-    property Top10: TCTTop10CT read GetTop10;
+    property Top10: TTop10CT read GetTop10;
     [TChoice('Filters')]
-    property CustomFilters: TCTCustomFiltersCT read GetCustomFilters;
+    property CustomFilters: TCustomFiltersCT read GetCustomFilters;
     [TChoice('Filters')]
-    property DynamicFilter: TCTDynamicFilterCT read GetDynamicFilter;
+    property DynamicFilter: TDynamicFilterCT read GetDynamicFilter;
     [TChoice('Filters')]
-    property ColorFilter: TCTColorFilterCT read GetColorFilter;
+    property ColorFilter: TColorFilterCT read GetColorFilter;
     [TChoice('Filters')]
-    property IconFilter: TCTIconFilterCT read GetIconFilter;
+    property IconFilter: TIconFilterCT read GetIconFilter;
     [TChoice('Filters')]
-    property ExtLst: TCTExtensionListCT read GetExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_Filters')]
-  TCTFiltersCT = class(TXmliteComplexType)
+  TFiltersCT = class(TXmliteComplexType)
   private
     fBlank: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fCalendarType: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTCalendarTypeST;
-    fFilter: TCTFilterCTList;
-    fDateGroupItem: TCTDateGroupItemCTList;
+    fCalendarType: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TCalendarTypeST;
+    fFilter: TFilterCTList;
+    fDateGroupItem: TDateGroupItemCTList;
   published
     [TDefault(False)]
     property Blank: ProRock.Xmlite.Schema.Base.TBooleanST read fBlank write fBlank;
     [TDefault('none')]
-    property CalendarType: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTCalendarTypeST read fCalendarType write fCalendarType;
-    property Filter: TCTFilterCTList read fFilter;
-    property DateGroupItem: TCTDateGroupItemCTList read fDateGroupItem;
+    property CalendarType: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TCalendarTypeST read fCalendarType write fCalendarType;
+    property Filter: TFilterCTList read fFilter;
+    property DateGroupItem: TDateGroupItemCTList read fDateGroupItem;
   end;
 
   [TName('CT_Filter')]
-  TCTFilterCT = class(TXmliteComplexType)
+  TFilterCT = class(TXmliteComplexType)
   private
-    fVal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fVal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
   published
-    property Val: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fVal write fVal;
+    property Val: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fVal write fVal;
   end;
 
   [TName('CT_CustomFilters')]
-  TCTCustomFiltersCT = class(TXmliteComplexType)
+  TCustomFiltersCT = class(TXmliteComplexType)
   private
     fAnd: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fCustomFilter: TCTCustomFilterCTList;
+    fCustomFilter: TCustomFilterCTList;
   published
     [TDefault(False)]
     property &And: ProRock.Xmlite.Schema.Base.TBooleanST read fAnd write fAnd;
-    property CustomFilter: TCTCustomFilterCTList read fCustomFilter;
+    property CustomFilter: TCustomFilterCTList read fCustomFilter;
   end;
 
   [TName('CT_CustomFilter')]
-  TCTCustomFilterCT = class(TXmliteComplexType)
+  TCustomFilterCT = class(TXmliteComplexType)
   private
-    fOperator: TSTFilterOperatorST;
-    fVal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fOperator: TFilterOperatorST;
+    fVal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
   published
     [TDefault(Ord(stfoEqual))]
-    property Operator: TSTFilterOperatorST read fOperator write fOperator;
-    property Val: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fVal write fVal;
+    property Operator: TFilterOperatorST read fOperator write fOperator;
+    property Val: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fVal write fVal;
   end;
 
   [TName('CT_Top10')]
-  TCTTop10CT = class(TXmliteComplexType)
+  TTop10CT = class(TXmliteComplexType)
   private
     fTop: ProRock.Xmlite.Schema.Base.TBooleanST;
     fPercent: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -984,38 +984,38 @@ type
   end;
 
   [TName('CT_ColorFilter')]
-  TCTColorFilterCT = class(TXmliteComplexType)
+  TColorFilterCT = class(TXmliteComplexType)
   private
-    fDxfId: TSTDxfIdST;
+    fDxfId: TDxfIdST;
     fCellColor: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
-    property DxfId: TSTDxfIdST read fDxfId write fDxfId;
+    property DxfId: TDxfIdST read fDxfId write fDxfId;
     [TDefault(True)]
     property CellColor: ProRock.Xmlite.Schema.Base.TBooleanST read fCellColor write fCellColor;
   end;
 
   [TName('CT_IconFilter')]
-  TCTIconFilterCT = class(TXmliteComplexType)
+  TIconFilterCT = class(TXmliteComplexType)
   private
-    fIconSet: TSTIconSetTypeST;
+    fIconSet: TIconSetTypeST;
     fIconId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
     [TRequired]
-    property IconSet: TSTIconSetTypeST read fIconSet write fIconSet;
+    property IconSet: TIconSetTypeST read fIconSet write fIconSet;
     property IconId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fIconId write fIconId;
   end;
 
   [TName('CT_DynamicFilter')]
-  TCTDynamicFilterCT = class(TXmliteComplexType)
+  TDynamicFilterCT = class(TXmliteComplexType)
   private
-    fType: TSTDynamicFilterTypeST;
+    fType: TDynamicFilterTypeST;
     fVal: ProRock.Xmlite.Schema.Base.TDoubleST;
     fValIso: ProRock.Xmlite.Schema.Base.TDateTimeST;
     fMaxVal: ProRock.Xmlite.Schema.Base.TDoubleST;
     fMaxValIso: ProRock.Xmlite.Schema.Base.TDateTimeST;
   published
     [TRequired]
-    property &Type: TSTDynamicFilterTypeST read fType write fType;
+    property &Type: TDynamicFilterTypeST read fType write fType;
     property Val: ProRock.Xmlite.Schema.Base.TDoubleST read fVal write fVal;
     property ValIso: ProRock.Xmlite.Schema.Base.TDateTimeST read fValIso write fValIso;
     property MaxVal: ProRock.Xmlite.Schema.Base.TDoubleST read fMaxVal write fMaxVal;
@@ -1023,53 +1023,53 @@ type
   end;
 
   [TName('CT_SortState')]
-  TCTSortStateCT = class(TXmliteComplexType)
+  TSortStateCT = class(TXmliteComplexType)
   private
     fColumnSort: ProRock.Xmlite.Schema.Base.TBooleanST;
     fCaseSensitive: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fSortMethod: TSTSortMethodST;
-    fRef: TSTRefST;
-    fSortCondition: TCTSortConditionCTList;
-    fExtLst: TCTExtensionListCT;
+    fSortMethod: TSortMethodST;
+    fRef: TRefST;
+    fSortCondition: TSortConditionCTList;
+    fExtLst: TExtensionListCT;
   published
     [TDefault(False)]
     property ColumnSort: ProRock.Xmlite.Schema.Base.TBooleanST read fColumnSort write fColumnSort;
     [TDefault(False)]
     property CaseSensitive: ProRock.Xmlite.Schema.Base.TBooleanST read fCaseSensitive write fCaseSensitive;
     [TDefault(Ord(stsmNone))]
-    property SortMethod: TSTSortMethodST read fSortMethod write fSortMethod;
+    property SortMethod: TSortMethodST read fSortMethod write fSortMethod;
     [TRequired]
-    property Ref: TSTRefST read fRef write fRef;
-    property SortCondition: TCTSortConditionCTList read fSortCondition;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property Ref: TRefST read fRef write fRef;
+    property SortCondition: TSortConditionCTList read fSortCondition;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_SortCondition')]
-  TCTSortConditionCT = class(TXmliteComplexType)
+  TSortConditionCT = class(TXmliteComplexType)
   private
     fDescending: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fSortBy: TSTSortByST;
-    fRef: TSTRefST;
-    fCustomList: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fDxfId: TSTDxfIdST;
-    fIconSet: TSTIconSetTypeST;
+    fSortBy: TSortByST;
+    fRef: TRefST;
+    fCustomList: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fDxfId: TDxfIdST;
+    fIconSet: TIconSetTypeST;
     fIconId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
     [TDefault(False)]
     property Descending: ProRock.Xmlite.Schema.Base.TBooleanST read fDescending write fDescending;
     [TDefault(Ord(stsbValue))]
-    property SortBy: TSTSortByST read fSortBy write fSortBy;
+    property SortBy: TSortByST read fSortBy write fSortBy;
     [TRequired]
-    property Ref: TSTRefST read fRef write fRef;
-    property CustomList: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fCustomList write fCustomList;
-    property DxfId: TSTDxfIdST read fDxfId write fDxfId;
+    property Ref: TRefST read fRef write fRef;
+    property CustomList: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fCustomList write fCustomList;
+    property DxfId: TDxfIdST read fDxfId write fDxfId;
     [TDefault(Ord(stist3Arrows))]
-    property IconSet: TSTIconSetTypeST read fIconSet write fIconSet;
+    property IconSet: TIconSetTypeST read fIconSet write fIconSet;
     property IconId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fIconId write fIconId;
   end;
 
   [TName('CT_DateGroupItem')]
-  TCTDateGroupItemCT = class(TXmliteComplexType)
+  TDateGroupItemCT = class(TXmliteComplexType)
   private
     fYear: ProRock.Xmlite.Schema.Base.TUnsignedShortST;
     fMonth: ProRock.Xmlite.Schema.Base.TUnsignedShortST;
@@ -1077,7 +1077,7 @@ type
     fHour: ProRock.Xmlite.Schema.Base.TUnsignedShortST;
     fMinute: ProRock.Xmlite.Schema.Base.TUnsignedShortST;
     fSecond: ProRock.Xmlite.Schema.Base.TUnsignedShortST;
-    fDateTimeGrouping: TSTDateTimeGroupingST;
+    fDateTimeGrouping: TDateTimeGroupingST;
   published
     [TRequired]
     property Year: ProRock.Xmlite.Schema.Base.TUnsignedShortST read fYear write fYear;
@@ -1087,21 +1087,21 @@ type
     property Minute: ProRock.Xmlite.Schema.Base.TUnsignedShortST read fMinute write fMinute;
     property Second: ProRock.Xmlite.Schema.Base.TUnsignedShortST read fSecond write fSecond;
     [TRequired]
-    property DateTimeGrouping: TSTDateTimeGroupingST read fDateTimeGrouping write fDateTimeGrouping;
+    property DateTimeGrouping: TDateTimeGroupingST read fDateTimeGrouping write fDateTimeGrouping;
   end;
 
   [TName('CT_XStringElement')]
-  TCTXStringElementCT = class(TXmliteComplexType)
+  TXStringElementCT = class(TXmliteComplexType)
   private
-    fV: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fV: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
   published
     [TRequired]
-    property V: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fV write fV;
+    property V: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fV write fV;
   end;
 
   [TXmliteAnyElement]
   [TName('CT_Extension')]
-  TCTExtensionCT = class(TXmliteComplexType)
+  TExtensionCT = class(TXmliteComplexType)
   private
     fUri: ProRock.Xmlite.Schema.Base.TTokenST;
   published
@@ -1109,7 +1109,7 @@ type
   end;
 
   [TName('CT_ObjectAnchor')]
-  TCTObjectAnchorCT = class(TXmliteComplexType)
+  TObjectAnchorCT = class(TXmliteComplexType)
   private
     fMoveWithCells: ProRock.Xmlite.Schema.Base.TBooleanST;
     fSizeWithCells: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -1129,36 +1129,36 @@ type
   end;
 
   [TName('CT_ExtensionList')]
-  TCTExtensionListCT = class(TXmliteComplexType)
+  TExtensionListCT = class(TXmliteComplexType)
   private
-    fExt: TCTExtensionCTList;
+    fExt: TExtensionCTList;
   published
-    property Ext: TCTExtensionCTList read fExt;
+    property Ext: TExtensionCTList read fExt;
   end;
 
   [TName('CT_CalcChain')]
-  TCTCalcChainCT = class(TXmliteComplexType)
+  TCalcChainCT = class(TXmliteComplexType)
   private
-    fC: TCTCalcCellCTList;
-    fExtLst: TCTExtensionListCT;
+    fC: TCalcCellCTList;
+    fExtLst: TExtensionListCT;
   published
-    property C: TCTCalcCellCTList read fC;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property C: TCalcCellCTList read fC;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_CalcCell')]
-  TCTCalcCellCT = class(TXmliteComplexType)
+  TCalcCellCT = class(TXmliteComplexType)
   private
-    fR: TSTCellRefST;
-    fRef: TSTCellRefST;
+    fR: TCellRefST;
+    fRef: TCellRefST;
     fI: ProRock.Xmlite.Schema.Base.TIntST;
     fS: ProRock.Xmlite.Schema.Base.TBooleanST;
     fL: ProRock.Xmlite.Schema.Base.TBooleanST;
     fT: ProRock.Xmlite.Schema.Base.TBooleanST;
     fA: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
-    property R: TSTCellRefST read fR write fR;
-    property Ref: TSTCellRefST read fRef write fRef;
+    property R: TCellRefST read fR write fR;
+    property Ref: TCellRefST read fRef write fRef;
     [TDefault(0)]
     property I: ProRock.Xmlite.Schema.Base.TIntST read fI write fI;
     [TDefault(False)]
@@ -1172,58 +1172,58 @@ type
   end;
 
   [TName('CT_Comments')]
-  TCTCommentsCT = class(TXmliteComplexType)
+  TCommentsCT = class(TXmliteComplexType)
   private
-    fAuthors: TCTAuthorsCT;
-    fCommentList: TCTCommentListCT;
-    fExtLst: TCTExtensionListCT;
+    fAuthors: TAuthorsCT;
+    fCommentList: TCommentListCT;
+    fExtLst: TExtensionListCT;
   published
     [TRequired]
-    property Authors: TCTAuthorsCT read fAuthors;
+    property Authors: TAuthorsCT read fAuthors;
     [TRequired]
-    property CommentList: TCTCommentListCT read fCommentList;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property CommentList: TCommentListCT read fCommentList;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_Authors')]
-  TCTAuthorsCT = class(TXmliteComplexType)
+  TAuthorsCT = class(TXmliteComplexType)
   private
-    fAuthor: TSTXstringSTList;
+    fAuthor: TXstringSTList;
   published
-    property Author: TSTXstringSTList read fAuthor;
+    property Author: TXstringSTList read fAuthor;
   end;
 
   [TName('CT_CommentList')]
-  TCTCommentListCT = class(TXmliteComplexType)
+  TCommentListCT = class(TXmliteComplexType)
   private
-    fComment: TCTCommentCTList;
+    fComment: TCommentCTList;
   published
-    property Comment: TCTCommentCTList read fComment;
+    property Comment: TCommentCTList read fComment;
   end;
 
   [TName('CT_Comment')]
-  TCTCommentCT = class(TXmliteComplexType)
+  TCommentCT = class(TXmliteComplexType)
   private
-    fRef: TSTRefST;
+    fRef: TRefST;
     fAuthorId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fGuid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST;
+    fGuid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST;
     fShapeId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fText: TCTRstCT;
-    fCommentPr: TCTCommentPrCT;
+    fText: TRstCT;
+    fCommentPr: TCommentPrCT;
   published
     [TRequired]
-    property Ref: TSTRefST read fRef write fRef;
+    property Ref: TRefST read fRef write fRef;
     [TRequired]
     property AuthorId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fAuthorId write fAuthorId;
-    property Guid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST read fGuid write fGuid;
+    property Guid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST read fGuid write fGuid;
     property ShapeId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fShapeId write fShapeId;
     [TRequired]
-    property Text: TCTRstCT read fText;
-    property CommentPr: TCTCommentPrCT read fCommentPr;
+    property Text: TRstCT read fText;
+    property CommentPr: TCommentPrCT read fCommentPr;
   end;
 
   [TName('CT_CommentPr')]
-  TCTCommentPrCT = class(TXmliteComplexType)
+  TCommentPrCT = class(TXmliteComplexType)
   private
     fLocked: ProRock.Xmlite.Schema.Base.TBooleanST;
     fDefaultSize: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -1231,13 +1231,13 @@ type
     fDisabled: ProRock.Xmlite.Schema.Base.TBooleanST;
     fAutoFill: ProRock.Xmlite.Schema.Base.TBooleanST;
     fAutoLine: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fAltText: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fTextHAlign: TSTTextHAlignST;
-    fTextVAlign: TSTTextVAlignST;
+    fAltText: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fTextHAlign: TTextHAlignST;
+    fTextVAlign: TTextVAlignST;
     fLockText: ProRock.Xmlite.Schema.Base.TBooleanST;
     fJustLastX: ProRock.Xmlite.Schema.Base.TBooleanST;
     fAutoScale: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fAnchor: TCTObjectAnchorCT;
+    fAnchor: TObjectAnchorCT;
   published
     [TDefault(True)]
     property Locked: ProRock.Xmlite.Schema.Base.TBooleanST read fLocked write fLocked;
@@ -1251,11 +1251,11 @@ type
     property AutoFill: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoFill write fAutoFill;
     [TDefault(True)]
     property AutoLine: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoLine write fAutoLine;
-    property AltText: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fAltText write fAltText;
+    property AltText: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fAltText write fAltText;
     [TDefault(Ord(stthaLeft))]
-    property TextHAlign: TSTTextHAlignST read fTextHAlign write fTextHAlign;
+    property TextHAlign: TTextHAlignST read fTextHAlign write fTextHAlign;
     [TDefault(Ord(sttvaTop))]
-    property TextVAlign: TSTTextVAlignST read fTextVAlign write fTextVAlign;
+    property TextVAlign: TTextVAlignST read fTextVAlign write fTextVAlign;
     [TDefault(True)]
     property LockText: ProRock.Xmlite.Schema.Base.TBooleanST read fLockText write fLockText;
     [TDefault(False)]
@@ -1263,28 +1263,28 @@ type
     [TDefault(False)]
     property AutoScale: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoScale write fAutoScale;
     [TRequired]
-    property Anchor: TCTObjectAnchorCT read fAnchor;
+    property Anchor: TObjectAnchorCT read fAnchor;
   end;
 
   [TName('CT_MapInfo')]
-  TCTMapInfoCT = class(TXmliteComplexType)
+  TMapInfoCT = class(TXmliteComplexType)
   private
     fSelectionNamespaces: ProRock.Xmlite.Schema.Base.TStringST;
-    fSchema: TCTSchemaCTList;
-    fMap: TCTMapCTList;
+    fSchema: TSchemaCTList;
+    fMap: TMapCTList;
   published
     [TRequired]
     [TNaming(TNaming.nPascalCase)]
     property SelectionNamespaces: ProRock.Xmlite.Schema.Base.TStringST read fSelectionNamespaces write fSelectionNamespaces;
     [TNaming(TNaming.nPascalCase)]
-    property Schema: TCTSchemaCTList read fSchema;
+    property Schema: TSchemaCTList read fSchema;
     [TNaming(TNaming.nPascalCase)]
-    property Map: TCTMapCTList read fMap;
+    property Map: TMapCTList read fMap;
   end;
 
   [TMixed]
   [TName('CT_Schema')]
-  TCTSchemaCT = class(TXmliteComplexType)
+  TSchemaCT = class(TXmliteComplexType)
   private
     fId: ProRock.Xmlite.Schema.Base.TStringST;
     fSchemaRef: ProRock.Xmlite.Schema.Base.TStringST;
@@ -1303,7 +1303,7 @@ type
   end;
 
   [TName('CT_Map')]
-  TCTMapCT = class(TXmliteComplexType)
+  TMapCT = class(TXmliteComplexType)
   private
     fId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fName: ProRock.Xmlite.Schema.Base.TStringST;
@@ -1314,7 +1314,7 @@ type
     fAppend: ProRock.Xmlite.Schema.Base.TBooleanST;
     fPreserveSortAFLayout: ProRock.Xmlite.Schema.Base.TBooleanST;
     fPreserveFormat: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fDataBinding: TCTDataBindingCT;
+    fDataBinding: TDataBindingCT;
   published
     [TRequired]
     [TNaming(TNaming.nUpperCase)]
@@ -1344,11 +1344,11 @@ type
     [TNaming(TNaming.nPascalCase)]
     property PreserveFormat: ProRock.Xmlite.Schema.Base.TBooleanST read fPreserveFormat write fPreserveFormat;
     [TNaming(TNaming.nPascalCase)]
-    property DataBinding: TCTDataBindingCT read fDataBinding;
+    property DataBinding: TDataBindingCT read fDataBinding;
   end;
 
   [TName('CT_DataBinding')]
-  TCTDataBindingCT = class(TXmliteComplexType)
+  TDataBindingCT = class(TXmliteComplexType)
   private
     fDataBindingName: ProRock.Xmlite.Schema.Base.TStringST;
     fFileBinding: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -1370,23 +1370,23 @@ type
   end;
 
   [TName('CT_Connections')]
-  TCTConnectionsCT = class(TXmliteComplexType)
+  TConnectionsCT = class(TXmliteComplexType)
   private
-    fConnection: TCTConnectionCTList;
+    fConnection: TConnectionCTList;
   published
-    property Connection: TCTConnectionCTList read fConnection;
+    property Connection: TConnectionCTList read fConnection;
   end;
 
   [TName('CT_Connection')]
-  TCTConnectionCT = class(TXmliteComplexType)
+  TConnectionCT = class(TXmliteComplexType)
   private
     fId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fSourceFile: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fOdcFile: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fSourceFile: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fOdcFile: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fKeepAlive: ProRock.Xmlite.Schema.Base.TBooleanST;
     fInterval: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fDescription: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fDescription: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fType: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fReconnectionMethod: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fRefreshedVersion: ProRock.Xmlite.Schema.Base.TUnsignedByteST;
@@ -1398,25 +1398,25 @@ type
     fBackground: ProRock.Xmlite.Schema.Base.TBooleanST;
     fRefreshOnLoad: ProRock.Xmlite.Schema.Base.TBooleanST;
     fSaveData: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fCredentials: TSTCredMethodST;
-    fSingleSignOnId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fDbPr: TCTDbPrCT;
-    fOlapPr: TCTOlapPrCT;
-    fWebPr: TCTWebPrCT;
-    fTextPr: TCTTextPrCT;
-    fParameters: TCTParametersCT;
-    fExtLst: TCTExtensionListCT;
+    fCredentials: TCredMethodST;
+    fSingleSignOnId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fDbPr: TDbPrCT;
+    fOlapPr: TOlapPrCT;
+    fWebPr: TWebPrCT;
+    fTextPr: TTextPrCT;
+    fParameters: TParametersCT;
+    fExtLst: TExtensionListCT;
   published
     [TRequired]
     property Id: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fId write fId;
-    property SourceFile: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fSourceFile write fSourceFile;
-    property OdcFile: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fOdcFile write fOdcFile;
+    property SourceFile: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fSourceFile write fSourceFile;
+    property OdcFile: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fOdcFile write fOdcFile;
     [TDefault(False)]
     property KeepAlive: ProRock.Xmlite.Schema.Base.TBooleanST read fKeepAlive write fKeepAlive;
     [TDefault(0)]
     property Interval: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fInterval write fInterval;
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
-    property Description: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDescription write fDescription;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
+    property Description: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fDescription write fDescription;
     property &Type: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fType write fType;
     [TDefault(1)]
     property ReconnectionMethod: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fReconnectionMethod write fReconnectionMethod;
@@ -1439,37 +1439,37 @@ type
     [TDefault(False)]
     property SaveData: ProRock.Xmlite.Schema.Base.TBooleanST read fSaveData write fSaveData;
     [TDefault(Ord(stcmIntegrated))]
-    property Credentials: TSTCredMethodST read fCredentials write fCredentials;
-    property SingleSignOnId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fSingleSignOnId write fSingleSignOnId;
-    property DbPr: TCTDbPrCT read fDbPr;
-    property OlapPr: TCTOlapPrCT read fOlapPr;
-    property WebPr: TCTWebPrCT read fWebPr;
-    property TextPr: TCTTextPrCT read fTextPr;
-    property Parameters: TCTParametersCT read fParameters;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property Credentials: TCredMethodST read fCredentials write fCredentials;
+    property SingleSignOnId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fSingleSignOnId write fSingleSignOnId;
+    property DbPr: TDbPrCT read fDbPr;
+    property OlapPr: TOlapPrCT read fOlapPr;
+    property WebPr: TWebPrCT read fWebPr;
+    property TextPr: TTextPrCT read fTextPr;
+    property Parameters: TParametersCT read fParameters;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_DbPr')]
-  TCTDbPrCT = class(TXmliteComplexType)
+  TDbPrCT = class(TXmliteComplexType)
   private
-    fConnection: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fCommand: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fServerCommand: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fConnection: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fCommand: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fServerCommand: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fCommandType: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
     [TRequired]
-    property Connection: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fConnection write fConnection;
-    property Command: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fCommand write fCommand;
-    property ServerCommand: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fServerCommand write fServerCommand;
+    property Connection: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fConnection write fConnection;
+    property Command: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fCommand write fCommand;
+    property ServerCommand: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fServerCommand write fServerCommand;
     [TDefault(2)]
     property CommandType: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCommandType write fCommandType;
   end;
 
   [TName('CT_OlapPr')]
-  TCTOlapPrCT = class(TXmliteComplexType)
+  TOlapPrCT = class(TXmliteComplexType)
   private
     fLocal: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fLocalConnection: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fLocalConnection: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fLocalRefresh: ProRock.Xmlite.Schema.Base.TBooleanST;
     fSendLocale: ProRock.Xmlite.Schema.Base.TBooleanST;
     fRowDrillCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
@@ -1480,7 +1480,7 @@ type
   published
     [TDefault(False)]
     property Local: ProRock.Xmlite.Schema.Base.TBooleanST read fLocal write fLocal;
-    property LocalConnection: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fLocalConnection write fLocalConnection;
+    property LocalConnection: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fLocalConnection write fLocalConnection;
     [TDefault(True)]
     property LocalRefresh: ProRock.Xmlite.Schema.Base.TBooleanST read fLocalRefresh write fLocalRefresh;
     [TDefault(False)]
@@ -1497,7 +1497,7 @@ type
   end;
 
   [TName('CT_WebPr')]
-  TCTWebPrCT = class(TXmliteComplexType)
+  TWebPrCT = class(TXmliteComplexType)
   private
     fXml: ProRock.Xmlite.Schema.Base.TBooleanST;
     fSourceData: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -1507,12 +1507,12 @@ type
     fXl97: ProRock.Xmlite.Schema.Base.TBooleanST;
     fTextDates: ProRock.Xmlite.Schema.Base.TBooleanST;
     fXl2000: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fUrl: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fPost: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fUrl: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fPost: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fHtmlTables: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fHtmlFormat: TSTHtmlFmtST;
-    fEditPage: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fTables: TCTTablesCT;
+    fHtmlFormat: THtmlFmtST;
+    fEditPage: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fTables: TTablesCT;
   published
     [TDefault(False)]
     property Xml: ProRock.Xmlite.Schema.Base.TBooleanST read fXml write fXml;
@@ -1530,110 +1530,110 @@ type
     property TextDates: ProRock.Xmlite.Schema.Base.TBooleanST read fTextDates write fTextDates;
     [TDefault(False)]
     property Xl2000: ProRock.Xmlite.Schema.Base.TBooleanST read fXl2000 write fXl2000;
-    property Url: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fUrl write fUrl;
-    property Post: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fPost write fPost;
+    property Url: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fUrl write fUrl;
+    property Post: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fPost write fPost;
     [TDefault(False)]
     property HtmlTables: ProRock.Xmlite.Schema.Base.TBooleanST read fHtmlTables write fHtmlTables;
     [TDefault(Ord(sthfNone))]
-    property HtmlFormat: TSTHtmlFmtST read fHtmlFormat write fHtmlFormat;
-    property EditPage: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fEditPage write fEditPage;
-    property Tables: TCTTablesCT read fTables;
+    property HtmlFormat: THtmlFmtST read fHtmlFormat write fHtmlFormat;
+    property EditPage: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fEditPage write fEditPage;
+    property Tables: TTablesCT read fTables;
   end;
 
   [TName('CT_Parameters')]
-  TCTParametersCT = class(TXmliteComplexType)
+  TParametersCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fParameter: TCTParameterCTList;
+    fParameter: TParameterCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property Parameter: TCTParameterCTList read fParameter;
+    property Parameter: TParameterCTList read fParameter;
   end;
 
   [TName('CT_Parameter')]
-  TCTParameterCT = class(TXmliteComplexType)
+  TParameterCT = class(TXmliteComplexType)
   private
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fSqlType: ProRock.Xmlite.Schema.Base.TIntST;
-    fParameterType: TSTParameterTypeST;
+    fParameterType: TParameterTypeST;
     fRefreshOnChange: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fPrompt: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fPrompt: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fBoolean: ProRock.Xmlite.Schema.Base.TBooleanST;
     fDouble: ProRock.Xmlite.Schema.Base.TDoubleST;
     fInteger: ProRock.Xmlite.Schema.Base.TIntST;
-    fString: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fCell: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fString: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fCell: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
   published
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
     [TDefault(0)]
     property SqlType: ProRock.Xmlite.Schema.Base.TIntST read fSqlType write fSqlType;
     [TDefault(Ord(stptPrompt))]
-    property ParameterType: TSTParameterTypeST read fParameterType write fParameterType;
+    property ParameterType: TParameterTypeST read fParameterType write fParameterType;
     [TDefault(False)]
     property RefreshOnChange: ProRock.Xmlite.Schema.Base.TBooleanST read fRefreshOnChange write fRefreshOnChange;
-    property Prompt: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fPrompt write fPrompt;
+    property Prompt: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fPrompt write fPrompt;
     property Boolean: ProRock.Xmlite.Schema.Base.TBooleanST read fBoolean write fBoolean;
     property Double: ProRock.Xmlite.Schema.Base.TDoubleST read fDouble write fDouble;
     property Integer: ProRock.Xmlite.Schema.Base.TIntST read fInteger write fInteger;
-    property &String: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fString write fString;
-    property Cell: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fCell write fCell;
+    property &String: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fString write fString;
+    property Cell: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fCell write fCell;
   end;
 
   [TOrdered]
   [TName('CT_Tables')]
-  TCTTablesCT = class(TXmliteComplexType)
+  TTablesCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fM: TCTTableMissingCTList;
-    fS: TCTXStringElementCTList;
-    fX: TCTIndexCTList;
+    fM: TTableMissingCTList;
+    fS: TXStringElementCTList;
+    fX: TIndexCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property M: TCTTableMissingCTList read fM;
-    property S: TCTXStringElementCTList read fS;
-    property X: TCTIndexCTList read fX;
+    property M: TTableMissingCTList read fM;
+    property S: TXStringElementCTList read fS;
+    property X: TIndexCTList read fX;
   end;
 
   [TName('CT_TableMissing')]
-  TCTTableMissingCT = class(TXmliteComplexType);
+  TTableMissingCT = class(TXmliteComplexType);
 
   [TName('CT_TextPr')]
-  TCTTextPrCT = class(TXmliteComplexType)
+  TTextPrCT = class(TXmliteComplexType)
   private
     fPrompt: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fFileType: TSTFileTypeST;
+    fFileType: TFileTypeST;
     fCodePage: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fCharacterSet: ProRock.Xmlite.Schema.Base.TStringST;
     fFirstRow: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fSourceFile: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fSourceFile: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fDelimited: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fDecimal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fThousands: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fDecimal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fThousands: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fTab: ProRock.Xmlite.Schema.Base.TBooleanST;
     fSpace: ProRock.Xmlite.Schema.Base.TBooleanST;
     fComma: ProRock.Xmlite.Schema.Base.TBooleanST;
     fSemicolon: ProRock.Xmlite.Schema.Base.TBooleanST;
     fConsecutive: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fQualifier: TSTQualifierST;
-    fDelimiter: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fTextFields: TCTTextFieldsCT;
+    fQualifier: TQualifierST;
+    fDelimiter: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fTextFields: TTextFieldsCT;
   published
     [TDefault(True)]
     property Prompt: ProRock.Xmlite.Schema.Base.TBooleanST read fPrompt write fPrompt;
     [TDefault(Ord(stftWin))]
-    property FileType: TSTFileTypeST read fFileType write fFileType;
+    property FileType: TFileTypeST read fFileType write fFileType;
     [TDefault(1252)]
     property CodePage: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCodePage write fCodePage;
     property CharacterSet: ProRock.Xmlite.Schema.Base.TStringST read fCharacterSet write fCharacterSet;
     [TDefault(1)]
     property FirstRow: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fFirstRow write fFirstRow;
-    property SourceFile: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fSourceFile write fSourceFile;
+    property SourceFile: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fSourceFile write fSourceFile;
     [TDefault(True)]
     property Delimited: ProRock.Xmlite.Schema.Base.TBooleanST read fDelimited write fDelimited;
     [TDefault('.')]
-    property Decimal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDecimal write fDecimal;
+    property Decimal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fDecimal write fDecimal;
     [TDefault(',')]
-    property Thousands: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fThousands write fThousands;
+    property Thousands: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fThousands write fThousands;
     [TDefault(True)]
     property Tab: ProRock.Xmlite.Schema.Base.TBooleanST read fTab write fTab;
     [TDefault(False)]
@@ -1645,36 +1645,36 @@ type
     [TDefault(False)]
     property Consecutive: ProRock.Xmlite.Schema.Base.TBooleanST read fConsecutive write fConsecutive;
     [TDefault(Ord(stqDoubleQuote))]
-    property Qualifier: TSTQualifierST read fQualifier write fQualifier;
-    property Delimiter: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDelimiter write fDelimiter;
-    property TextFields: TCTTextFieldsCT read fTextFields;
+    property Qualifier: TQualifierST read fQualifier write fQualifier;
+    property Delimiter: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fDelimiter write fDelimiter;
+    property TextFields: TTextFieldsCT read fTextFields;
   end;
 
   [TName('CT_TextFields')]
-  TCTTextFieldsCT = class(TXmliteComplexType)
+  TTextFieldsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fTextField: TCTTextFieldCTList;
+    fTextField: TTextFieldCTList;
   published
     [TDefault(1)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property TextField: TCTTextFieldCTList read fTextField;
+    property TextField: TTextFieldCTList read fTextField;
   end;
 
   [TName('CT_TextField')]
-  TCTTextFieldCT = class(TXmliteComplexType)
+  TTextFieldCT = class(TXmliteComplexType)
   private
-    fType: TSTExternalConnectionTypeST;
+    fType: TExternalConnectionTypeST;
     fPosition: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
     [TDefault(Ord(stectGeneral))]
-    property &Type: TSTExternalConnectionTypeST read fType write fType;
+    property &Type: TExternalConnectionTypeST read fType write fType;
     [TDefault(0)]
     property Position: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fPosition write fPosition;
   end;
 
   [TName('CT_PivotCacheDefinition')]
-  TCTPivotCacheDefinitionCT = class(TXmliteComplexType)
+  TPivotCacheDefinitionCT = class(TXmliteComplexType)
   private
     fId: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA;
     fInvalid: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -1682,7 +1682,7 @@ type
     fRefreshOnLoad: ProRock.Xmlite.Schema.Base.TBooleanST;
     fOptimizeMemory: ProRock.Xmlite.Schema.Base.TBooleanST;
     fEnableRefresh: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fRefreshedBy: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fRefreshedBy: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fRefreshedDate: ProRock.Xmlite.Schema.Base.TDoubleST;
     fRefreshedDateIso: ProRock.Xmlite.Schema.Base.TDateTimeST;
     fBackgroundQuery: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -1695,16 +1695,16 @@ type
     fTupleCache: ProRock.Xmlite.Schema.Base.TBooleanST;
     fSupportSubquery: ProRock.Xmlite.Schema.Base.TBooleanST;
     fSupportAdvancedDrill: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fCacheSource: TCTCacheSourceCT;
-    fCacheFields: TCTCacheFieldsCT;
-    fCacheHierarchies: TCTCacheHierarchiesCT;
-    fKpis: TCTPCDKPIsCT;
-    fCalculatedItems: TCTCalculatedItemsCT;
-    fCalculatedMembers: TCTCalculatedMembersCT;
-    fDimensions: TCTDimensionsCT;
-    fMeasureGroups: TCTMeasureGroupsCT;
-    fMaps: TCTMeasureDimensionMapsCT;
-    fExtLst: TCTExtensionListCT;
+    fCacheSource: TCacheSourceCT;
+    fCacheFields: TCacheFieldsCT;
+    fCacheHierarchies: TCacheHierarchiesCT;
+    fKpis: TPCDKPIsCT;
+    fCalculatedItems: TCalculatedItemsCT;
+    fCalculatedMembers: TCalculatedMembersCT;
+    fDimensions: TDimensionsCT;
+    fMeasureGroups: TMeasureGroupsCT;
+    fMaps: TMeasureDimensionMapsCT;
+    fExtLst: TExtensionListCT;
   published
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
@@ -1718,7 +1718,7 @@ type
     property OptimizeMemory: ProRock.Xmlite.Schema.Base.TBooleanST read fOptimizeMemory write fOptimizeMemory;
     [TDefault(True)]
     property EnableRefresh: ProRock.Xmlite.Schema.Base.TBooleanST read fEnableRefresh write fEnableRefresh;
-    property RefreshedBy: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fRefreshedBy write fRefreshedBy;
+    property RefreshedBy: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fRefreshedBy write fRefreshedBy;
     property RefreshedDate: ProRock.Xmlite.Schema.Base.TDoubleST read fRefreshedDate write fRefreshedDate;
     property RefreshedDateIso: ProRock.Xmlite.Schema.Base.TDateTimeST read fRefreshedDateIso write fRefreshedDateIso;
     [TDefault(False)]
@@ -1740,60 +1740,60 @@ type
     [TDefault(False)]
     property SupportAdvancedDrill: ProRock.Xmlite.Schema.Base.TBooleanST read fSupportAdvancedDrill write fSupportAdvancedDrill;
     [TRequired]
-    property CacheSource: TCTCacheSourceCT read fCacheSource;
+    property CacheSource: TCacheSourceCT read fCacheSource;
     [TRequired]
-    property CacheFields: TCTCacheFieldsCT read fCacheFields;
-    property CacheHierarchies: TCTCacheHierarchiesCT read fCacheHierarchies;
-    property Kpis: TCTPCDKPIsCT read fKpis;
-    property CalculatedItems: TCTCalculatedItemsCT read fCalculatedItems;
-    property CalculatedMembers: TCTCalculatedMembersCT read fCalculatedMembers;
-    property Dimensions: TCTDimensionsCT read fDimensions;
-    property MeasureGroups: TCTMeasureGroupsCT read fMeasureGroups;
-    property Maps: TCTMeasureDimensionMapsCT read fMaps;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property CacheFields: TCacheFieldsCT read fCacheFields;
+    property CacheHierarchies: TCacheHierarchiesCT read fCacheHierarchies;
+    property Kpis: TPCDKPIsCT read fKpis;
+    property CalculatedItems: TCalculatedItemsCT read fCalculatedItems;
+    property CalculatedMembers: TCalculatedMembersCT read fCalculatedMembers;
+    property Dimensions: TDimensionsCT read fDimensions;
+    property MeasureGroups: TMeasureGroupsCT read fMeasureGroups;
+    property Maps: TMeasureDimensionMapsCT read fMaps;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_CacheFields')]
-  TCTCacheFieldsCT = class(TXmliteComplexType)
+  TCacheFieldsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fCacheField: TCTCacheFieldCTList;
+    fCacheField: TCacheFieldCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property CacheField: TCTCacheFieldCTList read fCacheField;
+    property CacheField: TCacheFieldCTList read fCacheField;
   end;
 
   [TName('CT_CacheField')]
-  TCTCacheFieldCT = class(TXmliteComplexType)
+  TCacheFieldCT = class(TXmliteComplexType)
   private
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fPropertyName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fPropertyName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fServerField: ProRock.Xmlite.Schema.Base.TBooleanST;
     fUniqueList: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fNumFmtId: TSTNumFmtIdST;
-    fFormula: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fNumFmtId: TNumFmtIdST;
+    fFormula: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fSqlType: ProRock.Xmlite.Schema.Base.TIntST;
     fHierarchy: ProRock.Xmlite.Schema.Base.TIntST;
     fLevel: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fDatabaseField: ProRock.Xmlite.Schema.Base.TBooleanST;
     fMappingCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fMemberPropertyField: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fSharedItems: TCTSharedItemsCT;
-    fFieldGroup: TCTFieldGroupCT;
-    fMpMap: TCtXCTList;
-    fExtLst: TCTExtensionListCT;
+    fSharedItems: TSharedItemsCT;
+    fFieldGroup: TFieldGroupCT;
+    fMpMap: TXCTList;
+    fExtLst: TExtensionListCT;
   published
     [TRequired]
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
-    property Caption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fCaption write fCaption;
-    property PropertyName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fPropertyName write fPropertyName;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
+    property Caption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fCaption write fCaption;
+    property PropertyName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fPropertyName write fPropertyName;
     [TDefault(False)]
     property ServerField: ProRock.Xmlite.Schema.Base.TBooleanST read fServerField write fServerField;
     [TDefault(True)]
     property UniqueList: ProRock.Xmlite.Schema.Base.TBooleanST read fUniqueList write fUniqueList;
-    property NumFmtId: TSTNumFmtIdST read fNumFmtId write fNumFmtId;
-    property Formula: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fFormula write fFormula;
+    property NumFmtId: TNumFmtIdST read fNumFmtId write fNumFmtId;
+    property Formula: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fFormula write fFormula;
     [TDefault(0)]
     property SqlType: ProRock.Xmlite.Schema.Base.TIntST read fSqlType write fSqlType;
     [TDefault(0)]
@@ -1805,131 +1805,131 @@ type
     property MappingCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fMappingCount write fMappingCount;
     [TDefault(False)]
     property MemberPropertyField: ProRock.Xmlite.Schema.Base.TBooleanST read fMemberPropertyField write fMemberPropertyField;
-    property SharedItems: TCTSharedItemsCT read fSharedItems;
-    property FieldGroup: TCTFieldGroupCT read fFieldGroup;
-    property MpMap: TCtXCTList read fMpMap;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property SharedItems: TSharedItemsCT read fSharedItems;
+    property FieldGroup: TFieldGroupCT read fFieldGroup;
+    property MpMap: TXCTList read fMpMap;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_CacheSource')]
-  TCTCacheSourceCT = class(TXmliteComplexType)
+  TCacheSourceCT = class(TXmliteComplexType)
   private
-    fType: TSTSourceTypeST;
+    fType: TSourceTypeST;
     fConnectionId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fWorksheetSource: TCTWorksheetSourceCT;
-    fConsolidation: TCTConsolidationCT;
-    fExtLst: TCTExtensionListCT;
+    fWorksheetSource: TWorksheetSourceCT;
+    fConsolidation: TConsolidationCT;
+    fExtLst: TExtensionListCT;
 
-    function GetWorksheetSource: TCTWorksheetSourceCT;
-    function GetConsolidation: TCTConsolidationCT;
-    function GetExtLst: TCTExtensionListCT;
+    function GetWorksheetSource: TWorksheetSourceCT;
+    function GetConsolidation: TConsolidationCT;
+    function GetExtLst: TExtensionListCT;
   published
     [TRequired]
-    property &Type: TSTSourceTypeST read fType write fType;
+    property &Type: TSourceTypeST read fType write fType;
     [TDefault(0)]
     property ConnectionId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fConnectionId write fConnectionId;
     [TChoice('WorksheetSource')]
-    property WorksheetSource: TCTWorksheetSourceCT read GetWorksheetSource;
+    property WorksheetSource: TWorksheetSourceCT read GetWorksheetSource;
     [TChoice('WorksheetSource')]
-    property Consolidation: TCTConsolidationCT read GetConsolidation;
+    property Consolidation: TConsolidationCT read GetConsolidation;
     [TChoice('WorksheetSource')]
-    property ExtLst: TCTExtensionListCT read GetExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_WorksheetSource')]
-  TCTWorksheetSourceCT = class(TXmliteComplexType)
+  TWorksheetSourceCT = class(TXmliteComplexType)
   private
-    fRef: TSTRefST;
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fSheet: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fRef: TRefST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fSheet: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fId: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA;
   published
-    property Ref: TSTRefST read fRef write fRef;
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
-    property Sheet: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fSheet write fSheet;
+    property Ref: TRefST read fRef write fRef;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
+    property Sheet: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fSheet write fSheet;
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
   end;
 
   [TName('CT_Consolidation')]
-  TCTConsolidationCT = class(TXmliteComplexType)
+  TConsolidationCT = class(TXmliteComplexType)
   private
     fAutoPage: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fPages: TCTPagesCT;
-    fRangeSets: TCTRangeSetsCT;
+    fPages: TPagesCT;
+    fRangeSets: TRangeSetsCT;
   published
     [TDefault(True)]
     property AutoPage: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoPage write fAutoPage;
-    property Pages: TCTPagesCT read fPages;
+    property Pages: TPagesCT read fPages;
     [TRequired]
-    property RangeSets: TCTRangeSetsCT read fRangeSets;
+    property RangeSets: TRangeSetsCT read fRangeSets;
   end;
 
   [TName('CT_Pages')]
-  TCTPagesCT = class(TXmliteComplexType)
+  TPagesCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fPage: TCTPCDSCPageCTList;
+    fPage: TPCDSCPageCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property Page: TCTPCDSCPageCTList read fPage;
+    property Page: TPCDSCPageCTList read fPage;
   end;
 
   [TName('CT_PCDSCPage')]
-  TCTPCDSCPageCT = class(TXmliteComplexType)
+  TPCDSCPageCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fPageItem: TCTPageItemCTList;
+    fPageItem: TPageItemCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property PageItem: TCTPageItemCTList read fPageItem;
+    property PageItem: TPageItemCTList read fPageItem;
   end;
 
   [TName('CT_PageItem')]
-  TCTPageItemCT = class(TXmliteComplexType)
+  TPageItemCT = class(TXmliteComplexType)
   private
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
   published
     [TRequired]
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
   end;
 
   [TName('CT_RangeSets')]
-  TCTRangeSetsCT = class(TXmliteComplexType)
+  TRangeSetsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fRangeSet: TCTRangeSetCTList;
+    fRangeSet: TRangeSetCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property RangeSet: TCTRangeSetCTList read fRangeSet;
+    property RangeSet: TRangeSetCTList read fRangeSet;
   end;
 
   [TName('CT_RangeSet')]
-  TCTRangeSetCT = class(TXmliteComplexType)
+  TRangeSetCT = class(TXmliteComplexType)
   private
     fI1: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fI2: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fI3: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fI4: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fRef: TSTRefST;
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fSheet: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fRef: TRefST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fSheet: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fId: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA;
   published
     property I1: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fI1 write fI1;
     property I2: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fI2 write fI2;
     property I3: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fI3 write fI3;
     property I4: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fI4 write fI4;
-    property Ref: TSTRefST read fRef write fRef;
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
-    property Sheet: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fSheet write fSheet;
+    property Ref: TRefST read fRef write fRef;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
+    property Sheet: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fSheet write fSheet;
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
   end;
 
   [TOrdered]
   [TName('CT_SharedItems')]
-  TCTSharedItemsCT = class(TXmliteComplexType)
+  TSharedItemsCT = class(TXmliteComplexType)
   private
     fContainsSemiMixedTypes: ProRock.Xmlite.Schema.Base.TBooleanST;
     fContainsNonDate: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -1945,12 +1945,12 @@ type
     fMaxDate: ProRock.Xmlite.Schema.Base.TDateTimeST;
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fLongText: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fM: TCTMissingCTList;
-    fN: TCTNumberCTList;
-    fB: TCTBooleanCTList;
-    fE: TCTErrorCTList;
-    fS: TCTStringCTList;
-    fD: TCTDateTimeCTList;
+    fM: TMissingCTList;
+    fN: TNumberCTList;
+    fB: TBooleanCTList;
+    fE: TErrorCTList;
+    fS: TStringCTList;
+    fD: TDateTimeCTList;
   published
     [TDefault(True)]
     property ContainsSemiMixedTypes: ProRock.Xmlite.Schema.Base.TBooleanST read fContainsSemiMixedTypes write fContainsSemiMixedTypes;
@@ -1975,38 +1975,38 @@ type
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
     [TDefault(False)]
     property LongText: ProRock.Xmlite.Schema.Base.TBooleanST read fLongText write fLongText;
-    property M: TCTMissingCTList read fM;
-    property N: TCTNumberCTList read fN;
-    property B: TCTBooleanCTList read fB;
-    property E: TCTErrorCTList read fE;
-    property S: TCTStringCTList read fS;
-    property D: TCTDateTimeCTList read fD;
+    property M: TMissingCTList read fM;
+    property N: TNumberCTList read fN;
+    property B: TBooleanCTList read fB;
+    property E: TErrorCTList read fE;
+    property S: TStringCTList read fS;
+    property D: TDateTimeCTList read fD;
   end;
 
   [TName('CT_Missing')]
-  TCTMissingCT = class(TXmliteComplexType)
+  TMissingCT = class(TXmliteComplexType)
   private
     fU: ProRock.Xmlite.Schema.Base.TBooleanST;
     fF: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fC_: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fC_: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fCp: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fIn: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fBc: TSTUnsignedIntHexST;
-    fFc: TSTUnsignedIntHexST;
+    fBc: TUnsignedIntHexST;
+    fFc: TUnsignedIntHexST;
     fI: ProRock.Xmlite.Schema.Base.TBooleanST;
     fUn: ProRock.Xmlite.Schema.Base.TBooleanST;
     fSt: ProRock.Xmlite.Schema.Base.TBooleanST;
     fB: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fTpls: TCTTuplesCTList;
-    fX: TCtXCTList;
+    fTpls: TTuplesCTList;
+    fX: TXCTList;
   published
     property U: ProRock.Xmlite.Schema.Base.TBooleanST read fU write fU;
     property F: ProRock.Xmlite.Schema.Base.TBooleanST read fF write fF;
-    property C: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fC_ write fC_;
+    property C: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fC_ write fC_;
     property Cp: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCp write fCp;
     property &In: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fIn write fIn;
-    property Bc: TSTUnsignedIntHexST read fBc write fBc;
-    property Fc: TSTUnsignedIntHexST read fFc write fFc;
+    property Bc: TUnsignedIntHexST read fBc write fBc;
+    property Fc: TUnsignedIntHexST read fFc write fFc;
     [TDefault(False)]
     property I: ProRock.Xmlite.Schema.Base.TBooleanST read fI write fI;
     [TDefault(False)]
@@ -2015,37 +2015,37 @@ type
     property St: ProRock.Xmlite.Schema.Base.TBooleanST read fSt write fSt;
     [TDefault(False)]
     property B: ProRock.Xmlite.Schema.Base.TBooleanST read fB write fB;
-    property Tpls: TCTTuplesCTList read fTpls;
-    property X: TCtXCTList read fX;
+    property Tpls: TTuplesCTList read fTpls;
+    property X: TXCTList read fX;
   end;
 
   [TName('CT_Number')]
-  TCTNumberCT = class(TXmliteComplexType)
+  TNumberCT = class(TXmliteComplexType)
   private
     fV: ProRock.Xmlite.Schema.Base.TDoubleST;
     fU: ProRock.Xmlite.Schema.Base.TBooleanST;
     fF: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fC_: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fC_: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fCp: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fIn: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fBc: TSTUnsignedIntHexST;
-    fFc: TSTUnsignedIntHexST;
+    fBc: TUnsignedIntHexST;
+    fFc: TUnsignedIntHexST;
     fI: ProRock.Xmlite.Schema.Base.TBooleanST;
     fUn: ProRock.Xmlite.Schema.Base.TBooleanST;
     fSt: ProRock.Xmlite.Schema.Base.TBooleanST;
     fB: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fTpls: TCTTuplesCTList;
-    fX: TCtXCTList;
+    fTpls: TTuplesCTList;
+    fX: TXCTList;
   published
     [TRequired]
     property V: ProRock.Xmlite.Schema.Base.TDoubleST read fV write fV;
     property U: ProRock.Xmlite.Schema.Base.TBooleanST read fU write fU;
     property F: ProRock.Xmlite.Schema.Base.TBooleanST read fF write fF;
-    property C: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fC_ write fC_;
+    property C: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fC_ write fC_;
     property Cp: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCp write fCp;
     property &In: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fIn write fIn;
-    property Bc: TSTUnsignedIntHexST read fBc write fBc;
-    property Fc: TSTUnsignedIntHexST read fFc write fFc;
+    property Bc: TUnsignedIntHexST read fBc write fBc;
+    property Fc: TUnsignedIntHexST read fFc write fFc;
     [TDefault(False)]
     property I: ProRock.Xmlite.Schema.Base.TBooleanST read fI write fI;
     [TDefault(False)]
@@ -2054,56 +2054,56 @@ type
     property St: ProRock.Xmlite.Schema.Base.TBooleanST read fSt write fSt;
     [TDefault(False)]
     property B: ProRock.Xmlite.Schema.Base.TBooleanST read fB write fB;
-    property Tpls: TCTTuplesCTList read fTpls;
-    property X: TCtXCTList read fX;
+    property Tpls: TTuplesCTList read fTpls;
+    property X: TXCTList read fX;
   end;
 
   [TName('CT_Boolean')]
-  TCTBooleanCT = class(TXmliteComplexType)
+  TBooleanCT = class(TXmliteComplexType)
   private
     fV: ProRock.Xmlite.Schema.Base.TBooleanST;
     fU: ProRock.Xmlite.Schema.Base.TBooleanST;
     fF: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fC: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fC: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fCp: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fX: TCtXCTList;
+    fX: TXCTList;
   published
     [TRequired]
     property V: ProRock.Xmlite.Schema.Base.TBooleanST read fV write fV;
     property U: ProRock.Xmlite.Schema.Base.TBooleanST read fU write fU;
     property F: ProRock.Xmlite.Schema.Base.TBooleanST read fF write fF;
-    property C: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fC write fC;
+    property C: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fC write fC;
     property Cp: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCp write fCp;
-    property X: TCtXCTList read fX;
+    property X: TXCTList read fX;
   end;
 
   [TName('CT_Error')]
-  TCTErrorCT = class(TXmliteComplexType)
+  TErrorCT = class(TXmliteComplexType)
   private
-    fV: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fV: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fU: ProRock.Xmlite.Schema.Base.TBooleanST;
     fF: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fC_: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fC_: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fCp: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fIn: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fBc: TSTUnsignedIntHexST;
-    fFc: TSTUnsignedIntHexST;
+    fBc: TUnsignedIntHexST;
+    fFc: TUnsignedIntHexST;
     fI: ProRock.Xmlite.Schema.Base.TBooleanST;
     fUn: ProRock.Xmlite.Schema.Base.TBooleanST;
     fSt: ProRock.Xmlite.Schema.Base.TBooleanST;
     fB: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fTpls: TCTTuplesCT;
-    fX: TCtXCTList;
+    fTpls: TTuplesCT;
+    fX: TXCTList;
   published
     [TRequired]
-    property V: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fV write fV;
+    property V: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fV write fV;
     property U: ProRock.Xmlite.Schema.Base.TBooleanST read fU write fU;
     property F: ProRock.Xmlite.Schema.Base.TBooleanST read fF write fF;
-    property C: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fC_ write fC_;
+    property C: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fC_ write fC_;
     property Cp: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCp write fCp;
     property &In: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fIn write fIn;
-    property Bc: TSTUnsignedIntHexST read fBc write fBc;
-    property Fc: TSTUnsignedIntHexST read fFc write fFc;
+    property Bc: TUnsignedIntHexST read fBc write fBc;
+    property Fc: TUnsignedIntHexST read fFc write fFc;
     [TDefault(False)]
     property I: ProRock.Xmlite.Schema.Base.TBooleanST read fI write fI;
     [TDefault(False)]
@@ -2112,37 +2112,37 @@ type
     property St: ProRock.Xmlite.Schema.Base.TBooleanST read fSt write fSt;
     [TDefault(False)]
     property B: ProRock.Xmlite.Schema.Base.TBooleanST read fB write fB;
-    property Tpls: TCTTuplesCT read fTpls;
-    property X: TCtXCTList read fX;
+    property Tpls: TTuplesCT read fTpls;
+    property X: TXCTList read fX;
   end;
 
   [TName('CT_String')]
-  TCTStringCT = class(TXmliteComplexType)
+  TStringCT = class(TXmliteComplexType)
   private
-    fV: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fV: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fU: ProRock.Xmlite.Schema.Base.TBooleanST;
     fF: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fC_: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fC_: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fCp: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fIn: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fBc: TSTUnsignedIntHexST;
-    fFc: TSTUnsignedIntHexST;
+    fBc: TUnsignedIntHexST;
+    fFc: TUnsignedIntHexST;
     fI: ProRock.Xmlite.Schema.Base.TBooleanST;
     fUn: ProRock.Xmlite.Schema.Base.TBooleanST;
     fSt: ProRock.Xmlite.Schema.Base.TBooleanST;
     fB: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fTpls: TCTTuplesCTList;
-    fX: TCtXCTList;
+    fTpls: TTuplesCTList;
+    fX: TXCTList;
   published
     [TRequired]
-    property V: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fV write fV;
+    property V: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fV write fV;
     property U: ProRock.Xmlite.Schema.Base.TBooleanST read fU write fU;
     property F: ProRock.Xmlite.Schema.Base.TBooleanST read fF write fF;
-    property C: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fC_ write fC_;
+    property C: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fC_ write fC_;
     property Cp: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCp write fCp;
     property &In: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fIn write fIn;
-    property Bc: TSTUnsignedIntHexST read fBc write fBc;
-    property Fc: TSTUnsignedIntHexST read fFc write fFc;
+    property Bc: TUnsignedIntHexST read fBc write fBc;
+    property Fc: TUnsignedIntHexST read fFc write fFc;
     [TDefault(False)]
     property I: ProRock.Xmlite.Schema.Base.TBooleanST read fI write fI;
     [TDefault(False)]
@@ -2151,51 +2151,51 @@ type
     property St: ProRock.Xmlite.Schema.Base.TBooleanST read fSt write fSt;
     [TDefault(False)]
     property B: ProRock.Xmlite.Schema.Base.TBooleanST read fB write fB;
-    property Tpls: TCTTuplesCTList read fTpls;
-    property X: TCtXCTList read fX;
+    property Tpls: TTuplesCTList read fTpls;
+    property X: TXCTList read fX;
   end;
 
   [TName('CT_DateTime')]
-  TCTDateTimeCT = class(TXmliteComplexType)
+  TDateTimeCT = class(TXmliteComplexType)
   private
     fV: ProRock.Xmlite.Schema.Base.TDateTimeST;
     fU: ProRock.Xmlite.Schema.Base.TBooleanST;
     fF: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fC: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fC: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fCp: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fX: TCtXCTList;
+    fX: TXCTList;
   published
     [TRequired]
     property V: ProRock.Xmlite.Schema.Base.TDateTimeST read fV write fV;
     property U: ProRock.Xmlite.Schema.Base.TBooleanST read fU write fU;
     property F: ProRock.Xmlite.Schema.Base.TBooleanST read fF write fF;
-    property C: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fC write fC;
+    property C: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fC write fC;
     property Cp: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCp write fCp;
-    property X: TCtXCTList read fX;
+    property X: TXCTList read fX;
   end;
 
   [TName('CT_FieldGroup')]
-  TCTFieldGroupCT = class(TXmliteComplexType)
+  TFieldGroupCT = class(TXmliteComplexType)
   private
     fPar: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fBase: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fRangePr: TCTRangePrCT;
-    fDiscretePr: TCTDiscretePrCT;
-    fGroupItems: TCTGroupItemsCT;
+    fRangePr: TRangePrCT;
+    fDiscretePr: TDiscretePrCT;
+    fGroupItems: TGroupItemsCT;
   published
     property Par: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fPar write fPar;
     property Base: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fBase write fBase;
-    property RangePr: TCTRangePrCT read fRangePr;
-    property DiscretePr: TCTDiscretePrCT read fDiscretePr;
-    property GroupItems: TCTGroupItemsCT read fGroupItems;
+    property RangePr: TRangePrCT read fRangePr;
+    property DiscretePr: TDiscretePrCT read fDiscretePr;
+    property GroupItems: TGroupItemsCT read fGroupItems;
   end;
 
   [TName('CT_RangePr')]
-  TCTRangePrCT = class(TXmliteComplexType)
+  TRangePrCT = class(TXmliteComplexType)
   private
     fAutoStart: ProRock.Xmlite.Schema.Base.TBooleanST;
     fAutoEnd: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fGroupBy: TSTGroupByST;
+    fGroupBy: TGroupByST;
     fStartNum: ProRock.Xmlite.Schema.Base.TDoubleST;
     fEndNum: ProRock.Xmlite.Schema.Base.TDoubleST;
     fStartDate: ProRock.Xmlite.Schema.Base.TDateTimeST;
@@ -2207,7 +2207,7 @@ type
     [TDefault(True)]
     property AutoEnd: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoEnd write fAutoEnd;
     [TDefault(Ord(stgbRange))]
-    property GroupBy: TSTGroupByST read fGroupBy write fGroupBy;
+    property GroupBy: TGroupByST read fGroupBy write fGroupBy;
     property StartNum: ProRock.Xmlite.Schema.Base.TDoubleST read fStartNum write fStartNum;
     property EndNum: ProRock.Xmlite.Schema.Base.TDoubleST read fEndNum write fEndNum;
     property StartDate: ProRock.Xmlite.Schema.Base.TDateTimeST read fStartDate write fStartDate;
@@ -2217,124 +2217,124 @@ type
   end;
 
   [TName('CT_DiscretePr')]
-  TCTDiscretePrCT = class(TXmliteComplexType)
+  TDiscretePrCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fX: TCTIndexCTList;
+    fX: TIndexCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property X: TCTIndexCTList read fX;
+    property X: TIndexCTList read fX;
   end;
 
   [TOrdered]
   [TName('CT_GroupItems')]
-  TCTGroupItemsCT = class(TXmliteComplexType)
+  TGroupItemsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fM: TCTMissingCTList;
-    fN: TCTNumberCTList;
-    fB: TCTBooleanCTList;
-    fE: TCTErrorCTList;
-    fS: TCTStringCTList;
-    fD: TCTDateTimeCTList;
+    fM: TMissingCTList;
+    fN: TNumberCTList;
+    fB: TBooleanCTList;
+    fE: TErrorCTList;
+    fS: TStringCTList;
+    fD: TDateTimeCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property M: TCTMissingCTList read fM;
-    property N: TCTNumberCTList read fN;
-    property B: TCTBooleanCTList read fB;
-    property E: TCTErrorCTList read fE;
-    property S: TCTStringCTList read fS;
-    property D: TCTDateTimeCTList read fD;
+    property M: TMissingCTList read fM;
+    property N: TNumberCTList read fN;
+    property B: TBooleanCTList read fB;
+    property E: TErrorCTList read fE;
+    property S: TStringCTList read fS;
+    property D: TDateTimeCTList read fD;
   end;
 
   [TName('CT_PivotCacheRecords')]
-  TCTPivotCacheRecordsCT = class(TXmliteComplexType)
+  TPivotCacheRecordsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fR: TCTRecordCTList;
-    fExtLst: TCTExtensionListCT;
+    fR: TRecordCTList;
+    fExtLst: TExtensionListCT;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property R: TCTRecordCTList read fR;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property R: TRecordCTList read fR;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TOrdered]
   [TName('CT_Record')]
-  TCTRecordCT = class(TXmliteComplexType)
+  TRecordCT = class(TXmliteComplexType)
   private
-    fM: TCTMissingCTList;
-    fN: TCTNumberCTList;
-    fB: TCTBooleanCTList;
-    fE: TCTErrorCTList;
-    fS: TCTStringCTList;
-    fD: TCTDateTimeCTList;
-    fX: TCTIndexCTList;
+    fM: TMissingCTList;
+    fN: TNumberCTList;
+    fB: TBooleanCTList;
+    fE: TErrorCTList;
+    fS: TStringCTList;
+    fD: TDateTimeCTList;
+    fX: TIndexCTList;
   published
-    property M: TCTMissingCTList read fM;
-    property N: TCTNumberCTList read fN;
-    property B: TCTBooleanCTList read fB;
-    property E: TCTErrorCTList read fE;
-    property S: TCTStringCTList read fS;
-    property D: TCTDateTimeCTList read fD;
-    property X: TCTIndexCTList read fX;
+    property M: TMissingCTList read fM;
+    property N: TNumberCTList read fN;
+    property B: TBooleanCTList read fB;
+    property E: TErrorCTList read fE;
+    property S: TStringCTList read fS;
+    property D: TDateTimeCTList read fD;
+    property X: TIndexCTList read fX;
   end;
 
   [TName('CT_PCDKPIs')]
-  TCTPCDKPIsCT = class(TXmliteComplexType)
+  TPCDKPIsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fKpi: TCtPcdkpiCTList;
+    fKpi: TPcdkpiCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property Kpi: TCtPcdkpiCTList read fKpi;
+    property Kpi: TPcdkpiCTList read fKpi;
   end;
 
-  [TNaming(TNaming.nCapsCase)]
-  TCtPcdkpiCT = class(TXmliteComplexType)
+  [TName('CT_PCDKPI')]
+  TPcdkpiCT = class(TXmliteComplexType)
   private
-    fUniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fDisplayFolder: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fMeasureGroup: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fParent: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fValue: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fGoal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fStatus: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fTrend: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fWeight: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fTime: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fUniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fDisplayFolder: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fMeasureGroup: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fParent: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fValue: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fGoal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fStatus: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fTrend: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fWeight: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fTime: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
   published
     [TRequired]
-    property UniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fUniqueName write fUniqueName;
-    property Caption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fCaption write fCaption;
-    property DisplayFolder: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDisplayFolder write fDisplayFolder;
-    property MeasureGroup: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fMeasureGroup write fMeasureGroup;
-    property Parent: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fParent write fParent;
+    property UniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fUniqueName write fUniqueName;
+    property Caption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fCaption write fCaption;
+    property DisplayFolder: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fDisplayFolder write fDisplayFolder;
+    property MeasureGroup: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fMeasureGroup write fMeasureGroup;
+    property Parent: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fParent write fParent;
     [TRequired]
-    property Value: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fValue write fValue;
-    property Goal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fGoal write fGoal;
-    property Status: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fStatus write fStatus;
-    property Trend: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fTrend write fTrend;
-    property Weight: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fWeight write fWeight;
-    property Time: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fTime write fTime;
+    property Value: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fValue write fValue;
+    property Goal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fGoal write fGoal;
+    property Status: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fStatus write fStatus;
+    property Trend: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fTrend write fTrend;
+    property Weight: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fWeight write fWeight;
+    property Time: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fTime write fTime;
   end;
 
   [TName('CT_CacheHierarchies')]
-  TCTCacheHierarchiesCT = class(TXmliteComplexType)
+  TCacheHierarchiesCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fCacheHierarchy: TCTCacheHierarchyCTList;
+    fCacheHierarchy: TCacheHierarchyCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property CacheHierarchy: TCTCacheHierarchyCTList read fCacheHierarchy;
+    property CacheHierarchy: TCacheHierarchyCTList read fCacheHierarchy;
   end;
 
   [TName('CT_CacheHierarchy')]
-  TCTCacheHierarchyCT = class(TXmliteComplexType)
+  TCacheHierarchyCT = class(TXmliteComplexType)
   private
-    fUniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fUniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fMeasure: ProRock.Xmlite.Schema.Base.TBooleanST;
     fSet: ProRock.Xmlite.Schema.Base.TBooleanST;
     fParentSet: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
@@ -2342,12 +2342,12 @@ type
     fAttribute: ProRock.Xmlite.Schema.Base.TBooleanST;
     fTime: ProRock.Xmlite.Schema.Base.TBooleanST;
     fKeyAttribute: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fDefaultMemberUniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fAllUniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fAllCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fDimensionUniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fDisplayFolder: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fMeasureGroup: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fDefaultMemberUniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fAllUniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fAllCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fDimensionUniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fDisplayFolder: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fMeasureGroup: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fMeasures: ProRock.Xmlite.Schema.Base.TBooleanST;
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fOneField: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -2355,13 +2355,13 @@ type
     fUnbalanced: ProRock.Xmlite.Schema.Base.TBooleanST;
     fUnbalancedGroup: ProRock.Xmlite.Schema.Base.TBooleanST;
     fHidden: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fFieldsUsage: TCTFieldsUsageCT;
-    fGroupLevels: TCTGroupLevelsCT;
-    fExtLst: TCTExtensionListCT;
+    fFieldsUsage: TFieldsUsageCT;
+    fGroupLevels: TGroupLevelsCT;
+    fExtLst: TExtensionListCT;
   published
     [TRequired]
-    property UniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fUniqueName write fUniqueName;
-    property Caption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fCaption write fCaption;
+    property UniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fUniqueName write fUniqueName;
+    property Caption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fCaption write fCaption;
     [TDefault(False)]
     property Measure: ProRock.Xmlite.Schema.Base.TBooleanST read fMeasure write fMeasure;
     [TDefault(False)]
@@ -2375,12 +2375,12 @@ type
     property Time: ProRock.Xmlite.Schema.Base.TBooleanST read fTime write fTime;
     [TDefault(False)]
     property KeyAttribute: ProRock.Xmlite.Schema.Base.TBooleanST read fKeyAttribute write fKeyAttribute;
-    property DefaultMemberUniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDefaultMemberUniqueName write fDefaultMemberUniqueName;
-    property AllUniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fAllUniqueName write fAllUniqueName;
-    property AllCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fAllCaption write fAllCaption;
-    property DimensionUniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDimensionUniqueName write fDimensionUniqueName;
-    property DisplayFolder: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDisplayFolder write fDisplayFolder;
-    property MeasureGroup: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fMeasureGroup write fMeasureGroup;
+    property DefaultMemberUniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fDefaultMemberUniqueName write fDefaultMemberUniqueName;
+    property AllUniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fAllUniqueName write fAllUniqueName;
+    property AllCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fAllCaption write fAllCaption;
+    property DimensionUniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fDimensionUniqueName write fDimensionUniqueName;
+    property DisplayFolder: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fDisplayFolder write fDisplayFolder;
+    property MeasureGroup: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fMeasureGroup write fMeasureGroup;
     [TDefault(False)]
     property Measures: ProRock.Xmlite.Schema.Base.TBooleanST read fMeasures write fMeasures;
     [TRequired]
@@ -2392,23 +2392,23 @@ type
     property UnbalancedGroup: ProRock.Xmlite.Schema.Base.TBooleanST read fUnbalancedGroup write fUnbalancedGroup;
     [TDefault(False)]
     property Hidden: ProRock.Xmlite.Schema.Base.TBooleanST read fHidden write fHidden;
-    property FieldsUsage: TCTFieldsUsageCT read fFieldsUsage;
-    property GroupLevels: TCTGroupLevelsCT read fGroupLevels;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property FieldsUsage: TFieldsUsageCT read fFieldsUsage;
+    property GroupLevels: TGroupLevelsCT read fGroupLevels;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_FieldsUsage')]
-  TCTFieldsUsageCT = class(TXmliteComplexType)
+  TFieldsUsageCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fFieldUsage: TCTFieldUsageCTList;
+    fFieldUsage: TFieldUsageCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property FieldUsage: TCTFieldUsageCTList read fFieldUsage;
+    property FieldUsage: TFieldUsageCTList read fFieldUsage;
   end;
 
   [TName('CT_FieldUsage')]
-  TCTFieldUsageCT = class(TXmliteComplexType)
+  TFieldUsageCT = class(TXmliteComplexType)
   private
     fX: ProRock.Xmlite.Schema.Base.TIntST;
   published
@@ -2417,156 +2417,156 @@ type
   end;
 
   [TName('CT_GroupLevels')]
-  TCTGroupLevelsCT = class(TXmliteComplexType)
+  TGroupLevelsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fGroupLevel: TCTGroupLevelCTList;
+    fGroupLevel: TGroupLevelCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property GroupLevel: TCTGroupLevelCTList read fGroupLevel;
+    property GroupLevel: TGroupLevelCTList read fGroupLevel;
   end;
 
   [TName('CT_GroupLevel')]
-  TCTGroupLevelCT = class(TXmliteComplexType)
+  TGroupLevelCT = class(TXmliteComplexType)
   private
-    fUniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fUniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fUser: ProRock.Xmlite.Schema.Base.TBooleanST;
     fCustomRollUp: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fGroups: TCTGroupsCT;
-    fExtLst: TCTExtensionListCT;
+    fGroups: TGroupsCT;
+    fExtLst: TExtensionListCT;
   published
     [TRequired]
-    property UniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fUniqueName write fUniqueName;
+    property UniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fUniqueName write fUniqueName;
     [TRequired]
-    property Caption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fCaption write fCaption;
+    property Caption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fCaption write fCaption;
     [TDefault(False)]
     property User: ProRock.Xmlite.Schema.Base.TBooleanST read fUser write fUser;
     [TDefault(False)]
     property CustomRollUp: ProRock.Xmlite.Schema.Base.TBooleanST read fCustomRollUp write fCustomRollUp;
-    property Groups: TCTGroupsCT read fGroups;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property Groups: TGroupsCT read fGroups;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_Groups')]
-  TCTGroupsCT = class(TXmliteComplexType)
+  TGroupsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fGroup: TCTLevelGroupCTList;
+    fGroup: TLevelGroupCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property Group: TCTLevelGroupCTList read fGroup;
+    property Group: TLevelGroupCTList read fGroup;
   end;
 
   [TName('CT_LevelGroup')]
-  TCTLevelGroupCT = class(TXmliteComplexType)
+  TLevelGroupCT = class(TXmliteComplexType)
   private
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fUniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fUniqueParent: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fUniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fUniqueParent: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fId: ProRock.Xmlite.Schema.Base.TIntST;
-    fGroupMembers: TCTGroupMembersCT;
+    fGroupMembers: TGroupMembersCT;
   published
     [TRequired]
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
     [TRequired]
-    property UniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fUniqueName write fUniqueName;
+    property UniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fUniqueName write fUniqueName;
     [TRequired]
-    property Caption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fCaption write fCaption;
-    property UniqueParent: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fUniqueParent write fUniqueParent;
+    property Caption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fCaption write fCaption;
+    property UniqueParent: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fUniqueParent write fUniqueParent;
     property Id: ProRock.Xmlite.Schema.Base.TIntST read fId write fId;
     [TRequired]
-    property GroupMembers: TCTGroupMembersCT read fGroupMembers;
+    property GroupMembers: TGroupMembersCT read fGroupMembers;
   end;
 
   [TName('CT_GroupMembers')]
-  TCTGroupMembersCT = class(TXmliteComplexType)
+  TGroupMembersCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fGroupMember: TCTGroupMemberCTList;
+    fGroupMember: TGroupMemberCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property GroupMember: TCTGroupMemberCTList read fGroupMember;
+    property GroupMember: TGroupMemberCTList read fGroupMember;
   end;
 
   [TName('CT_GroupMember')]
-  TCTGroupMemberCT = class(TXmliteComplexType)
+  TGroupMemberCT = class(TXmliteComplexType)
   private
-    fUniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fUniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fGroup: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
     [TRequired]
-    property UniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fUniqueName write fUniqueName;
+    property UniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fUniqueName write fUniqueName;
     [TDefault(False)]
     property Group: ProRock.Xmlite.Schema.Base.TBooleanST read fGroup write fGroup;
   end;
 
   [TName('CT_TupleCache')]
-  TCTTupleCacheCT = class(TXmliteComplexType)
+  TTupleCacheCT = class(TXmliteComplexType)
   private
-    fEntries: TCTPCDSDTCEntriesCT;
-    fSets: TCTSetsCT;
-    fQueryCache: TCTQueryCacheCT;
-    fServerFormats: TCTServerFormatsCT;
-    fExtLst: TCTExtensionListCT;
+    fEntries: TPCDSDTCEntriesCT;
+    fSets: TSetsCT;
+    fQueryCache: TQueryCacheCT;
+    fServerFormats: TServerFormatsCT;
+    fExtLst: TExtensionListCT;
   published
-    property Entries: TCTPCDSDTCEntriesCT read fEntries;
-    property Sets: TCTSetsCT read fSets;
-    property QueryCache: TCTQueryCacheCT read fQueryCache;
-    property ServerFormats: TCTServerFormatsCT read fServerFormats;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property Entries: TPCDSDTCEntriesCT read fEntries;
+    property Sets: TSetsCT read fSets;
+    property QueryCache: TQueryCacheCT read fQueryCache;
+    property ServerFormats: TServerFormatsCT read fServerFormats;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_ServerFormat')]
-  TCTServerFormatCT = class(TXmliteComplexType)
+  TServerFormatCT = class(TXmliteComplexType)
   private
-    fCulture: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fFormat: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fCulture: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fFormat: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
   published
-    property Culture: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fCulture write fCulture;
-    property Format: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fFormat write fFormat;
+    property Culture: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fCulture write fCulture;
+    property Format: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fFormat write fFormat;
   end;
 
   [TName('CT_ServerFormats')]
-  TCTServerFormatsCT = class(TXmliteComplexType)
+  TServerFormatsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fServerFormat: TCTServerFormatCTList;
+    fServerFormat: TServerFormatCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property ServerFormat: TCTServerFormatCTList read fServerFormat;
+    property ServerFormat: TServerFormatCTList read fServerFormat;
   end;
 
   [TOrdered]
   [TName('CT_PCDSDTCEntries')]
-  TCTPCDSDTCEntriesCT = class(TXmliteComplexType)
+  TPCDSDTCEntriesCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fM: TCTMissingCTList;
-    fN: TCTNumberCTList;
-    fE: TCTErrorCTList;
-    fS: TCTStringCTList;
+    fM: TMissingCTList;
+    fN: TNumberCTList;
+    fE: TErrorCTList;
+    fS: TStringCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property M: TCTMissingCTList read fM;
-    property N: TCTNumberCTList read fN;
-    property E: TCTErrorCTList read fE;
-    property S: TCTStringCTList read fS;
+    property M: TMissingCTList read fM;
+    property N: TNumberCTList read fN;
+    property E: TErrorCTList read fE;
+    property S: TStringCTList read fS;
   end;
 
   [TName('CT_Tuples')]
-  TCTTuplesCT = class(TXmliteComplexType)
+  TTuplesCT = class(TXmliteComplexType)
   private
     fC: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fTpl: TCTTupleCTList;
+    fTpl: TTupleCTList;
   published
     property C: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fC write fC;
-    property Tpl: TCTTupleCTList read fTpl;
+    property Tpl: TTupleCTList read fTpl;
   end;
 
   [TName('CT_Tuple')]
-  TCTTupleCT = class(TXmliteComplexType)
+  TTupleCT = class(TXmliteComplexType)
   private
     fFld: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fHier: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
@@ -2579,138 +2579,138 @@ type
   end;
 
   [TName('CT_Sets')]
-  TCTSetsCT = class(TXmliteComplexType)
+  TSetsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fSet: TCTSetCTList;
+    fSet: TSetCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property &Set: TCTSetCTList read fSet;
+    property &Set: TSetCTList read fSet;
   end;
 
   [TName('CT_Set')]
-  TCTSetCT = class(TXmliteComplexType)
+  TSetCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fMaxRank: ProRock.Xmlite.Schema.Base.TIntST;
-    fSetDefinition: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fSortType: TSTSortTypeST;
+    fSetDefinition: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fSortType: TSortTypeST;
     fQueryFailed: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fTpls: TCTTuplesCTList;
-    fSortByTuple: TCTTuplesCT;
+    fTpls: TTuplesCTList;
+    fSortByTuple: TTuplesCT;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
     [TRequired]
     property MaxRank: ProRock.Xmlite.Schema.Base.TIntST read fMaxRank write fMaxRank;
     [TRequired]
-    property SetDefinition: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fSetDefinition write fSetDefinition;
+    property SetDefinition: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fSetDefinition write fSetDefinition;
     [TDefault(Ord(ststaNone))]
-    property SortType: TSTSortTypeST read fSortType write fSortType;
+    property SortType: TSortTypeST read fSortType write fSortType;
     [TDefault(False)]
     property QueryFailed: ProRock.Xmlite.Schema.Base.TBooleanST read fQueryFailed write fQueryFailed;
-    property Tpls: TCTTuplesCTList read fTpls;
-    property SortByTuple: TCTTuplesCT read fSortByTuple;
+    property Tpls: TTuplesCTList read fTpls;
+    property SortByTuple: TTuplesCT read fSortByTuple;
   end;
 
   [TName('CT_QueryCache')]
-  TCTQueryCacheCT = class(TXmliteComplexType)
+  TQueryCacheCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fQuery: TCTQueryCTList;
+    fQuery: TQueryCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property Query: TCTQueryCTList read fQuery;
+    property Query: TQueryCTList read fQuery;
   end;
 
   [TName('CT_Query')]
-  TCTQueryCT = class(TXmliteComplexType)
+  TQueryCT = class(TXmliteComplexType)
   private
-    fMdx: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fTpls: TCTTuplesCT;
+    fMdx: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fTpls: TTuplesCT;
   published
     [TRequired]
-    property Mdx: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fMdx write fMdx;
-    property Tpls: TCTTuplesCT read fTpls;
+    property Mdx: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fMdx write fMdx;
+    property Tpls: TTuplesCT read fTpls;
   end;
 
   [TName('CT_CalculatedItems')]
-  TCTCalculatedItemsCT = class(TXmliteComplexType)
+  TCalculatedItemsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fCalculatedItem: TCTCalculatedItemCTList;
+    fCalculatedItem: TCalculatedItemCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property CalculatedItem: TCTCalculatedItemCTList read fCalculatedItem;
+    property CalculatedItem: TCalculatedItemCTList read fCalculatedItem;
   end;
 
   [TName('CT_CalculatedItem')]
-  TCTCalculatedItemCT = class(TXmliteComplexType)
+  TCalculatedItemCT = class(TXmliteComplexType)
   private
     fField: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fFormula: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fPivotArea: TCTPivotAreaCT;
-    fExtLst: TCTExtensionListCT;
+    fFormula: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fPivotArea: TPivotAreaCT;
+    fExtLst: TExtensionListCT;
   published
     property Field: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fField write fField;
-    property Formula: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fFormula write fFormula;
+    property Formula: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fFormula write fFormula;
     [TRequired]
-    property PivotArea: TCTPivotAreaCT read fPivotArea;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property PivotArea: TPivotAreaCT read fPivotArea;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_CalculatedMembers')]
-  TCTCalculatedMembersCT = class(TXmliteComplexType)
+  TCalculatedMembersCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fCalculatedMember: TCTCalculatedMemberCTList;
+    fCalculatedMember: TCalculatedMemberCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property CalculatedMember: TCTCalculatedMemberCTList read fCalculatedMember;
+    property CalculatedMember: TCalculatedMemberCTList read fCalculatedMember;
   end;
 
   [TName('CT_CalculatedMember')]
-  TCTCalculatedMemberCT = class(TXmliteComplexType)
+  TCalculatedMemberCT = class(TXmliteComplexType)
   private
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fMdx: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fMemberName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fHierarchy: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fParent: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fMdx: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fMemberName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fHierarchy: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fParent: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fSolveOrder: ProRock.Xmlite.Schema.Base.TIntST;
     fSet: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fExtLst: TCTExtensionListCT;
+    fExtLst: TExtensionListCT;
   published
     [TRequired]
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
     [TRequired]
-    property Mdx: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fMdx write fMdx;
-    property MemberName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fMemberName write fMemberName;
-    property Hierarchy: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fHierarchy write fHierarchy;
-    property Parent: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fParent write fParent;
+    property Mdx: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fMdx write fMdx;
+    property MemberName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fMemberName write fMemberName;
+    property Hierarchy: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fHierarchy write fHierarchy;
+    property Parent: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fParent write fParent;
     [TDefault(0)]
     property SolveOrder: ProRock.Xmlite.Schema.Base.TIntST read fSolveOrder write fSolveOrder;
     [TDefault(False)]
     property &Set: ProRock.Xmlite.Schema.Base.TBooleanST read fSet write fSet;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_pivotTableDefinition')]
-  TCTPivotTableDefinitionCT = class(TXmliteComplexType)
+  TPivotTableDefinitionCT = class(TXmliteComplexType)
   private
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fCacheId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fDataOnRows: ProRock.Xmlite.Schema.Base.TBooleanST;
     fDataPosition: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fDataCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fGrandTotalCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fErrorCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fDataCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fGrandTotalCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fErrorCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fShowError: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fMissingCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fMissingCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fShowMissing: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fPageStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fPivotTableStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fVacatedStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fTag: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fPageStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fPivotTableStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fVacatedStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fTag: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fUpdatedVersion: ProRock.Xmlite.Schema.Base.TUnsignedByteST;
     fMinRefreshableVersion: ProRock.Xmlite.Schema.Base.TUnsignedByteST;
     fAsteriskTotals: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -2753,8 +2753,8 @@ type
     fImmersive: ProRock.Xmlite.Schema.Base.TBooleanST;
     fMultipleFieldFilters: ProRock.Xmlite.Schema.Base.TBooleanST;
     fChartFormat: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fRowHeaderCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fColHeaderCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fRowHeaderCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fColHeaderCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fFieldListSortAscending: ProRock.Xmlite.Schema.Base.TBooleanST;
     fMdxSubqueries: ProRock.Xmlite.Schema.Base.TBooleanST;
     fCustomListSort: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -2765,44 +2765,44 @@ type
     fApplyPatternFormats: ProRock.Xmlite.Schema.Base.TBooleanST;
     fApplyAlignmentFormats: ProRock.Xmlite.Schema.Base.TBooleanST;
     fApplyWidthHeightFormats: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fLocation: TCTLocationCT;
-    fPivotFields: TCTPivotFieldsCT;
-    fRowFields: TCTRowFieldsCT;
-    fRowItems: TCTRowItemsCT;
-    fColFields: TCTColFieldsCT;
-    fColItems: TCTColItemsCT;
-    fPageFields: TCTPageFieldsCT;
-    fDataFields: TCTDataFieldsCT;
-    fFormats: TCTFormatsCT;
-    fConditionalFormats: TCTConditionalFormatsCT;
-    fChartFormats: TCTChartFormatsCT;
-    fPivotHierarchies: TCTPivotHierarchiesCT;
-    fPivotTableStyleInfo: TCTPivotTableStyleCT;
-    fFilters: TCTPivotFiltersCT;
-    fRowHierarchiesUsage: TCTRowHierarchiesUsageCT;
-    fColHierarchiesUsage: TCTColHierarchiesUsageCT;
-    fExtLst: TCTExtensionListCT;
+    fLocation: TLocationCT;
+    fPivotFields: TPivotFieldsCT;
+    fRowFields: TRowFieldsCT;
+    fRowItems: TRowItemsCT;
+    fColFields: TColFieldsCT;
+    fColItems: TColItemsCT;
+    fPageFields: TPageFieldsCT;
+    fDataFields: TDataFieldsCT;
+    fFormats: TFormatsCT;
+    fConditionalFormats: TConditionalFormatsCT;
+    fChartFormats: TChartFormatsCT;
+    fPivotHierarchies: TPivotHierarchiesCT;
+    fPivotTableStyleInfo: TPivotTableStyleCT;
+    fFilters: TPivotFiltersCT;
+    fRowHierarchiesUsage: TRowHierarchiesUsageCT;
+    fColHierarchiesUsage: TColHierarchiesUsageCT;
+    fExtLst: TExtensionListCT;
   published
     [TRequired]
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
     [TRequired]
     property CacheId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCacheId write fCacheId;
     [TDefault(False)]
     property DataOnRows: ProRock.Xmlite.Schema.Base.TBooleanST read fDataOnRows write fDataOnRows;
     property DataPosition: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fDataPosition write fDataPosition;
     [TRequired]
-    property DataCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDataCaption write fDataCaption;
-    property GrandTotalCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fGrandTotalCaption write fGrandTotalCaption;
-    property ErrorCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fErrorCaption write fErrorCaption;
+    property DataCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fDataCaption write fDataCaption;
+    property GrandTotalCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fGrandTotalCaption write fGrandTotalCaption;
+    property ErrorCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fErrorCaption write fErrorCaption;
     [TDefault(False)]
     property ShowError: ProRock.Xmlite.Schema.Base.TBooleanST read fShowError write fShowError;
-    property MissingCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fMissingCaption write fMissingCaption;
+    property MissingCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fMissingCaption write fMissingCaption;
     [TDefault(True)]
     property ShowMissing: ProRock.Xmlite.Schema.Base.TBooleanST read fShowMissing write fShowMissing;
-    property PageStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fPageStyle write fPageStyle;
-    property PivotTableStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fPivotTableStyle write fPivotTableStyle;
-    property VacatedStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fVacatedStyle write fVacatedStyle;
-    property Tag: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fTag write fTag;
+    property PageStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fPageStyle write fPageStyle;
+    property PivotTableStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fPivotTableStyle write fPivotTableStyle;
+    property VacatedStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fVacatedStyle write fVacatedStyle;
+    property Tag: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fTag write fTag;
     [TDefault(0)]
     property UpdatedVersion: ProRock.Xmlite.Schema.Base.TUnsignedByteST read fUpdatedVersion write fUpdatedVersion;
     [TDefault(0)]
@@ -2887,8 +2887,8 @@ type
     property MultipleFieldFilters: ProRock.Xmlite.Schema.Base.TBooleanST read fMultipleFieldFilters write fMultipleFieldFilters;
     [TDefault(0)]
     property ChartFormat: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fChartFormat write fChartFormat;
-    property RowHeaderCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fRowHeaderCaption write fRowHeaderCaption;
-    property ColHeaderCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fColHeaderCaption write fColHeaderCaption;
+    property RowHeaderCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fRowHeaderCaption write fRowHeaderCaption;
+    property ColHeaderCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fColHeaderCaption write fColHeaderCaption;
     [TDefault(False)]
     property FieldListSortAscending: ProRock.Xmlite.Schema.Base.TBooleanST read fFieldListSortAscending write fFieldListSortAscending;
     [TDefault(False)]
@@ -2903,29 +2903,29 @@ type
     property ApplyAlignmentFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyAlignmentFormats write fApplyAlignmentFormats;
     property ApplyWidthHeightFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyWidthHeightFormats write fApplyWidthHeightFormats;
     [TRequired]
-    property Location: TCTLocationCT read fLocation;
-    property PivotFields: TCTPivotFieldsCT read fPivotFields;
-    property RowFields: TCTRowFieldsCT read fRowFields;
-    property RowItems: TCTRowItemsCT read fRowItems;
-    property ColFields: TCTColFieldsCT read fColFields;
-    property ColItems: TCTColItemsCT read fColItems;
-    property PageFields: TCTPageFieldsCT read fPageFields;
-    property DataFields: TCTDataFieldsCT read fDataFields;
-    property Formats: TCTFormatsCT read fFormats;
-    property ConditionalFormats: TCTConditionalFormatsCT read fConditionalFormats;
-    property ChartFormats: TCTChartFormatsCT read fChartFormats;
-    property PivotHierarchies: TCTPivotHierarchiesCT read fPivotHierarchies;
-    property PivotTableStyleInfo: TCTPivotTableStyleCT read fPivotTableStyleInfo;
-    property Filters: TCTPivotFiltersCT read fFilters;
-    property RowHierarchiesUsage: TCTRowHierarchiesUsageCT read fRowHierarchiesUsage;
-    property ColHierarchiesUsage: TCTColHierarchiesUsageCT read fColHierarchiesUsage;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property Location: TLocationCT read fLocation;
+    property PivotFields: TPivotFieldsCT read fPivotFields;
+    property RowFields: TRowFieldsCT read fRowFields;
+    property RowItems: TRowItemsCT read fRowItems;
+    property ColFields: TColFieldsCT read fColFields;
+    property ColItems: TColItemsCT read fColItems;
+    property PageFields: TPageFieldsCT read fPageFields;
+    property DataFields: TDataFieldsCT read fDataFields;
+    property Formats: TFormatsCT read fFormats;
+    property ConditionalFormats: TConditionalFormatsCT read fConditionalFormats;
+    property ChartFormats: TChartFormatsCT read fChartFormats;
+    property PivotHierarchies: TPivotHierarchiesCT read fPivotHierarchies;
+    property PivotTableStyleInfo: TPivotTableStyleCT read fPivotTableStyleInfo;
+    property Filters: TPivotFiltersCT read fFilters;
+    property RowHierarchiesUsage: TRowHierarchiesUsageCT read fRowHierarchiesUsage;
+    property ColHierarchiesUsage: TColHierarchiesUsageCT read fColHierarchiesUsage;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_Location')]
-  TCTLocationCT = class(TXmliteComplexType)
+  TLocationCT = class(TXmliteComplexType)
   private
-    fRef: TSTRefST;
+    fRef: TRefST;
     fFirstHeaderRow: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fFirstDataRow: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fFirstDataCol: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
@@ -2933,7 +2933,7 @@ type
     fColPageCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
     [TRequired]
-    property Ref: TSTRefST read fRef write fRef;
+    property Ref: TRefST read fRef write fRef;
     [TRequired]
     property FirstHeaderRow: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fFirstHeaderRow write fFirstHeaderRow;
     [TRequired]
@@ -2947,28 +2947,28 @@ type
   end;
 
   [TName('CT_PivotFields')]
-  TCTPivotFieldsCT = class(TXmliteComplexType)
+  TPivotFieldsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fPivotField: TCTPivotFieldCTList;
+    fPivotField: TPivotFieldCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property PivotField: TCTPivotFieldCTList read fPivotField;
+    property PivotField: TPivotFieldCTList read fPivotField;
   end;
 
   [TName('CT_PivotField')]
-  TCTPivotFieldCT = class(TXmliteComplexType)
+  TPivotFieldCT = class(TXmliteComplexType)
   private
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fAxis: TSTAxisST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fAxis: TAxisST;
     fDataField: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fSubtotalCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fSubtotalCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fShowDropDowns: ProRock.Xmlite.Schema.Base.TBooleanST;
     fHiddenLevel: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fUniqueMemberProperty: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fUniqueMemberProperty: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fCompact: ProRock.Xmlite.Schema.Base.TBooleanST;
     fAllDrilled: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fNumFmtId: TSTNumFmtIdST;
+    fNumFmtId: TNumFmtIdST;
     fOutline: ProRock.Xmlite.Schema.Base.TBooleanST;
     fSubtotalTop: ProRock.Xmlite.Schema.Base.TBooleanST;
     fDragToRow: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -2987,7 +2987,7 @@ type
     fMeasureFilter: ProRock.Xmlite.Schema.Base.TBooleanST;
     fIncludeNewItemsInFilter: ProRock.Xmlite.Schema.Base.TBooleanST;
     fItemPageCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fSortType: TSTFieldSortTypeST;
+    fSortType: TFieldSortTypeST;
     fDataSourceSort: ProRock.Xmlite.Schema.Base.TBooleanST;
     fNonAutoSortDefault: ProRock.Xmlite.Schema.Base.TBooleanST;
     fRankBy: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
@@ -3007,25 +3007,25 @@ type
     fShowPropTip: ProRock.Xmlite.Schema.Base.TBooleanST;
     fShowPropAsCaption: ProRock.Xmlite.Schema.Base.TBooleanST;
     fDefaultAttributeDrillState: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fItems: TCTItemsCT;
-    fAutoSortScope: TCTAutoSortScopeCT;
-    fExtLst: TCTExtensionListCT;
+    fItems: TItemsCT;
+    fAutoSortScope: TAutoSortScopeCT;
+    fExtLst: TExtensionListCT;
   published
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
-    property Axis: TSTAxisST read fAxis write fAxis;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
+    property Axis: TAxisST read fAxis write fAxis;
     [TDefault(False)]
     property DataField: ProRock.Xmlite.Schema.Base.TBooleanST read fDataField write fDataField;
-    property SubtotalCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fSubtotalCaption write fSubtotalCaption;
+    property SubtotalCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fSubtotalCaption write fSubtotalCaption;
     [TDefault(True)]
     property ShowDropDowns: ProRock.Xmlite.Schema.Base.TBooleanST read fShowDropDowns write fShowDropDowns;
     [TDefault(False)]
     property HiddenLevel: ProRock.Xmlite.Schema.Base.TBooleanST read fHiddenLevel write fHiddenLevel;
-    property UniqueMemberProperty: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fUniqueMemberProperty write fUniqueMemberProperty;
+    property UniqueMemberProperty: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fUniqueMemberProperty write fUniqueMemberProperty;
     [TDefault(True)]
     property Compact: ProRock.Xmlite.Schema.Base.TBooleanST read fCompact write fCompact;
     [TDefault(False)]
     property AllDrilled: ProRock.Xmlite.Schema.Base.TBooleanST read fAllDrilled write fAllDrilled;
-    property NumFmtId: TSTNumFmtIdST read fNumFmtId write fNumFmtId;
+    property NumFmtId: TNumFmtIdST read fNumFmtId write fNumFmtId;
     [TDefault(True)]
     property Outline: ProRock.Xmlite.Schema.Base.TBooleanST read fOutline write fOutline;
     [TDefault(True)]
@@ -3063,7 +3063,7 @@ type
     [TDefault(10)]
     property ItemPageCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fItemPageCount write fItemPageCount;
     [TDefault(Ord(stfstManual))]
-    property SortType: TSTFieldSortTypeST read fSortType write fSortType;
+    property SortType: TFieldSortTypeST read fSortType write fSortType;
     property DataSourceSort: ProRock.Xmlite.Schema.Base.TBooleanST read fDataSourceSort write fDataSourceSort;
     [TDefault(False)]
     property NonAutoSortDefault: ProRock.Xmlite.Schema.Base.TBooleanST read fNonAutoSortDefault write fNonAutoSortDefault;
@@ -3100,35 +3100,35 @@ type
     property ShowPropAsCaption: ProRock.Xmlite.Schema.Base.TBooleanST read fShowPropAsCaption write fShowPropAsCaption;
     [TDefault(False)]
     property DefaultAttributeDrillState: ProRock.Xmlite.Schema.Base.TBooleanST read fDefaultAttributeDrillState write fDefaultAttributeDrillState;
-    property Items: TCTItemsCT read fItems;
-    property AutoSortScope: TCTAutoSortScopeCT read fAutoSortScope;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property Items: TItemsCT read fItems;
+    property AutoSortScope: TAutoSortScopeCT read fAutoSortScope;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_AutoSortScope')]
-  TCTAutoSortScopeCT = class(TXmliteComplexType)
+  TAutoSortScopeCT = class(TXmliteComplexType)
   private
-    fPivotArea: TCTPivotAreaCT;
+    fPivotArea: TPivotAreaCT;
   published
     [TRequired]
-    property PivotArea: TCTPivotAreaCT read fPivotArea;
+    property PivotArea: TPivotAreaCT read fPivotArea;
   end;
 
   [TName('CT_Items')]
-  TCTItemsCT = class(TXmliteComplexType)
+  TItemsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fItem: TCTItemCTList;
+    fItem: TItemCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property Item: TCTItemCTList read fItem;
+    property Item: TItemCTList read fItem;
   end;
 
   [TName('CT_Item')]
-  TCTItemCT = class(TXmliteComplexType)
+  TItemCT = class(TXmliteComplexType)
   private
-    fN: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fT: TSTItemTypeST;
+    fN: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fT: TItemTypeST;
     fH: ProRock.Xmlite.Schema.Base.TBooleanST;
     fS: ProRock.Xmlite.Schema.Base.TBooleanST;
     fSd: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -3139,9 +3139,9 @@ type
     fD: ProRock.Xmlite.Schema.Base.TBooleanST;
     fE: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
-    property N: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fN write fN;
+    property N: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fN write fN;
     [TDefault(Ord(stitData))]
-    property T: TSTItemTypeST read fT write fT;
+    property T: TItemTypeST read fT write fT;
     [TDefault(False)]
     property H: ProRock.Xmlite.Schema.Base.TBooleanST read fH write fH;
     [TDefault(False)]
@@ -3162,110 +3162,110 @@ type
   end;
 
   [TName('CT_PageFields')]
-  TCTPageFieldsCT = class(TXmliteComplexType)
+  TPageFieldsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fPageField: TCTPageFieldCTList;
+    fPageField: TPageFieldCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property PageField: TCTPageFieldCTList read fPageField;
+    property PageField: TPageFieldCTList read fPageField;
   end;
 
   [TName('CT_PageField')]
-  TCTPageFieldCT = class(TXmliteComplexType)
+  TPageFieldCT = class(TXmliteComplexType)
   private
     fFld: ProRock.Xmlite.Schema.Base.TIntST;
     fItem: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fHier: ProRock.Xmlite.Schema.Base.TIntST;
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fCap: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fExtLst: TCTExtensionListCT;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fCap: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fExtLst: TExtensionListCT;
   published
     [TRequired]
     property Fld: ProRock.Xmlite.Schema.Base.TIntST read fFld write fFld;
     property Item: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fItem write fItem;
     property Hier: ProRock.Xmlite.Schema.Base.TIntST read fHier write fHier;
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
-    property Cap: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fCap write fCap;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
+    property Cap: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fCap write fCap;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_DataFields')]
-  TCTDataFieldsCT = class(TXmliteComplexType)
+  TDataFieldsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fDataField: TCTDataFieldCTList;
+    fDataField: TDataFieldCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property DataField: TCTDataFieldCTList read fDataField;
+    property DataField: TDataFieldCTList read fDataField;
   end;
 
   [TName('CT_DataField')]
-  TCTDataFieldCT = class(TXmliteComplexType)
+  TDataFieldCT = class(TXmliteComplexType)
   private
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fFld: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fSubtotal: TSTDataConsolidateFunctionST;
-    fShowDataAs: TSTShowDataAsST;
+    fSubtotal: TDataConsolidateFunctionST;
+    fShowDataAs: TShowDataAsST;
     fBaseField: ProRock.Xmlite.Schema.Base.TIntST;
     fBaseItem: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fNumFmtId: TSTNumFmtIdST;
-    fExtLst: TCTExtensionListCT;
+    fNumFmtId: TNumFmtIdST;
+    fExtLst: TExtensionListCT;
   published
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
     [TRequired]
     property Fld: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fFld write fFld;
     [TDefault(Ord(stdcfSum))]
-    property Subtotal: TSTDataConsolidateFunctionST read fSubtotal write fSubtotal;
+    property Subtotal: TDataConsolidateFunctionST read fSubtotal write fSubtotal;
     [TDefault(Ord(stsdaNormal))]
-    property ShowDataAs: TSTShowDataAsST read fShowDataAs write fShowDataAs;
+    property ShowDataAs: TShowDataAsST read fShowDataAs write fShowDataAs;
     [TDefault(-1)]
     property BaseField: ProRock.Xmlite.Schema.Base.TIntST read fBaseField write fBaseField;
     [TDefault(1048832)]
     property BaseItem: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fBaseItem write fBaseItem;
-    property NumFmtId: TSTNumFmtIdST read fNumFmtId write fNumFmtId;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property NumFmtId: TNumFmtIdST read fNumFmtId write fNumFmtId;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_rowItems')]
-  TCTRowItemsCT = class(TXmliteComplexType)
+  TRowItemsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fI: TCtICTList;
+    fI: TICTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property I: TCtICTList read fI;
+    property I: TICTList read fI;
   end;
 
   [TName('CT_colItems')]
-  TCTColItemsCT = class(TXmliteComplexType)
+  TColItemsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fI: TCtICTList;
+    fI: TICTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property I: TCtICTList read fI;
+    property I: TICTList read fI;
   end;
 
-  [TNaming(TNaming.nCapsCase)]
-  TCtICT = class(TXmliteComplexType)
+  [TName('CT_I')]
+  TICT = class(TXmliteComplexType)
   private
-    fT: TSTItemTypeST;
+    fT: TItemTypeST;
     fR: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fI: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fX: TCtXCTList;
+    fX: TXCTList;
   published
     [TDefault(Ord(stitData))]
-    property T: TSTItemTypeST read fT write fT;
+    property T: TItemTypeST read fT write fT;
     [TDefault(0)]
     property R: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fR write fR;
     [TDefault(0)]
     property I: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fI write fI;
-    property X: TCtXCTList read fX;
+    property X: TXCTList read fX;
   end;
 
-  [TNaming(TNaming.nCapsCase)]
-  TCtXCT = class(TXmliteComplexType)
+  [TName('CT_X')]
+  TXCT = class(TXmliteComplexType)
   private
     fV: ProRock.Xmlite.Schema.Base.TIntST;
   published
@@ -3274,29 +3274,29 @@ type
   end;
 
   [TName('CT_RowFields')]
-  TCTRowFieldsCT = class(TXmliteComplexType)
+  TRowFieldsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fField: TCTFieldCTList;
+    fField: TFieldCTList;
   published
     [TDefault(0)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property Field: TCTFieldCTList read fField;
+    property Field: TFieldCTList read fField;
   end;
 
   [TName('CT_ColFields')]
-  TCTColFieldsCT = class(TXmliteComplexType)
+  TColFieldsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fField: TCTFieldCTList;
+    fField: TFieldCTList;
   published
     [TDefault(0)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property Field: TCTFieldCTList read fField;
+    property Field: TFieldCTList read fField;
   end;
 
   [TName('CT_Field')]
-  TCTFieldCT = class(TXmliteComplexType)
+  TFieldCT = class(TXmliteComplexType)
   private
     fX: ProRock.Xmlite.Schema.Base.TIntST;
   published
@@ -3305,91 +3305,91 @@ type
   end;
 
   [TName('CT_Formats')]
-  TCTFormatsCT = class(TXmliteComplexType)
+  TFormatsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fFormat: TCTFormatCTList;
+    fFormat: TFormatCTList;
   published
     [TDefault(0)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property Format: TCTFormatCTList read fFormat;
+    property Format: TFormatCTList read fFormat;
   end;
 
   [TName('CT_Format')]
-  TCTFormatCT = class(TXmliteComplexType)
+  TFormatCT = class(TXmliteComplexType)
   private
-    fAction: TSTFormatActionST;
-    fDxfId: TSTDxfIdST;
-    fPivotArea: TCTPivotAreaCT;
-    fExtLst: TCTExtensionListCT;
+    fAction: TFormatActionST;
+    fDxfId: TDxfIdST;
+    fPivotArea: TPivotAreaCT;
+    fExtLst: TExtensionListCT;
   published
     [TDefault(Ord(stfaFormatting))]
-    property Action: TSTFormatActionST read fAction write fAction;
-    property DxfId: TSTDxfIdST read fDxfId write fDxfId;
+    property Action: TFormatActionST read fAction write fAction;
+    property DxfId: TDxfIdST read fDxfId write fDxfId;
     [TRequired]
-    property PivotArea: TCTPivotAreaCT read fPivotArea;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property PivotArea: TPivotAreaCT read fPivotArea;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_ConditionalFormats')]
-  TCTConditionalFormatsCT = class(TXmliteComplexType)
+  TConditionalFormatsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fConditionalFormat: TCTConditionalFormatCTList;
+    fConditionalFormat: TConditionalFormatCTList;
   published
     [TDefault(0)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property ConditionalFormat: TCTConditionalFormatCTList read fConditionalFormat;
+    property ConditionalFormat: TConditionalFormatCTList read fConditionalFormat;
   end;
 
   [TName('CT_ConditionalFormat')]
-  TCTConditionalFormatCT = class(TXmliteComplexType)
+  TConditionalFormatCT = class(TXmliteComplexType)
   private
-    fScope: TSTScopeST;
-    fType: TSTTypeST;
+    fScope: TScopeST;
+    fType: TTypeST;
     fPriority: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fPivotAreas: TCTPivotAreasCT;
-    fExtLst: TCTExtensionListCT;
+    fPivotAreas: TPivotAreasCT;
+    fExtLst: TExtensionListCT;
   published
     [TDefault(Ord(stsSelection))]
-    property Scope: TSTScopeST read fScope write fScope;
+    property Scope: TScopeST read fScope write fScope;
     [TDefault(Ord(sttNone))]
-    property &Type: TSTTypeST read fType write fType;
+    property &Type: TTypeST read fType write fType;
     [TRequired]
     property Priority: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fPriority write fPriority;
     [TRequired]
-    property PivotAreas: TCTPivotAreasCT read fPivotAreas;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property PivotAreas: TPivotAreasCT read fPivotAreas;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_PivotAreas')]
-  TCTPivotAreasCT = class(TXmliteComplexType)
+  TPivotAreasCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fPivotArea: TCTPivotAreaCTList;
+    fPivotArea: TPivotAreaCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property PivotArea: TCTPivotAreaCTList read fPivotArea;
+    property PivotArea: TPivotAreaCTList read fPivotArea;
   end;
 
   [TName('CT_ChartFormats')]
-  TCTChartFormatsCT = class(TXmliteComplexType)
+  TChartFormatsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fChartFormat: TCTChartFormatCTList;
+    fChartFormat: TChartFormatCTList;
   published
     [TDefault(0)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property ChartFormat: TCTChartFormatCTList read fChartFormat;
+    property ChartFormat: TChartFormatCTList read fChartFormat;
   end;
 
   [TName('CT_ChartFormat')]
-  TCTChartFormatCT = class(TXmliteComplexType)
+  TChartFormatCT = class(TXmliteComplexType)
   private
     fChart: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fFormat: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fSeries: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fPivotArea: TCTPivotAreaCT;
+    fPivotArea: TPivotAreaCT;
   published
     [TRequired]
     property Chart: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fChart write fChart;
@@ -3398,21 +3398,21 @@ type
     [TDefault(False)]
     property Series: ProRock.Xmlite.Schema.Base.TBooleanST read fSeries write fSeries;
     [TRequired]
-    property PivotArea: TCTPivotAreaCT read fPivotArea;
+    property PivotArea: TPivotAreaCT read fPivotArea;
   end;
 
   [TName('CT_PivotHierarchies')]
-  TCTPivotHierarchiesCT = class(TXmliteComplexType)
+  TPivotHierarchiesCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fPivotHierarchy: TCTPivotHierarchyCTList;
+    fPivotHierarchy: TPivotHierarchyCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property PivotHierarchy: TCTPivotHierarchyCTList read fPivotHierarchy;
+    property PivotHierarchy: TPivotHierarchyCTList read fPivotHierarchy;
   end;
 
   [TName('CT_PivotHierarchy')]
-  TCTPivotHierarchyCT = class(TXmliteComplexType)
+  TPivotHierarchyCT = class(TXmliteComplexType)
   private
     fOutline: ProRock.Xmlite.Schema.Base.TBooleanST;
     fMultipleItemSelectionAllowed: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -3424,10 +3424,10 @@ type
     fDragToData: ProRock.Xmlite.Schema.Base.TBooleanST;
     fDragOff: ProRock.Xmlite.Schema.Base.TBooleanST;
     fIncludeNewItemsInFilter: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fMps: TCTMemberPropertiesCT;
-    fMembers: TCTMembersCTList;
-    fExtLst: TCTExtensionListCT;
+    fCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fMps: TMemberPropertiesCT;
+    fMembers: TMembersCTList;
+    fExtLst: TExtensionListCT;
   published
     [TDefault(False)]
     property Outline: ProRock.Xmlite.Schema.Base.TBooleanST read fOutline write fOutline;
@@ -3449,34 +3449,34 @@ type
     property DragOff: ProRock.Xmlite.Schema.Base.TBooleanST read fDragOff write fDragOff;
     [TDefault(False)]
     property IncludeNewItemsInFilter: ProRock.Xmlite.Schema.Base.TBooleanST read fIncludeNewItemsInFilter write fIncludeNewItemsInFilter;
-    property Caption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fCaption write fCaption;
-    property Mps: TCTMemberPropertiesCT read fMps;
-    property Members: TCTMembersCTList read fMembers;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property Caption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fCaption write fCaption;
+    property Mps: TMemberPropertiesCT read fMps;
+    property Members: TMembersCTList read fMembers;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_RowHierarchiesUsage')]
-  TCTRowHierarchiesUsageCT = class(TXmliteComplexType)
+  TRowHierarchiesUsageCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fRowHierarchyUsage: TCTHierarchyUsageCTList;
+    fRowHierarchyUsage: THierarchyUsageCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property RowHierarchyUsage: TCTHierarchyUsageCTList read fRowHierarchyUsage;
+    property RowHierarchyUsage: THierarchyUsageCTList read fRowHierarchyUsage;
   end;
 
   [TName('CT_ColHierarchiesUsage')]
-  TCTColHierarchiesUsageCT = class(TXmliteComplexType)
+  TColHierarchiesUsageCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fColHierarchyUsage: TCTHierarchyUsageCTList;
+    fColHierarchyUsage: THierarchyUsageCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property ColHierarchyUsage: TCTHierarchyUsageCTList read fColHierarchyUsage;
+    property ColHierarchyUsage: THierarchyUsageCTList read fColHierarchyUsage;
   end;
 
   [TName('CT_HierarchyUsage')]
-  TCTHierarchyUsageCT = class(TXmliteComplexType)
+  THierarchyUsageCT = class(TXmliteComplexType)
   private
     fHierarchyUsage: ProRock.Xmlite.Schema.Base.TIntST;
   published
@@ -3485,19 +3485,19 @@ type
   end;
 
   [TName('CT_MemberProperties')]
-  TCTMemberPropertiesCT = class(TXmliteComplexType)
+  TMemberPropertiesCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fMp: TCTMemberPropertyCTList;
+    fMp: TMemberPropertyCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property Mp: TCTMemberPropertyCTList read fMp;
+    property Mp: TMemberPropertyCTList read fMp;
   end;
 
   [TName('CT_MemberProperty')]
-  TCTMemberPropertyCT = class(TXmliteComplexType)
+  TMemberPropertyCT = class(TXmliteComplexType)
   private
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fShowCell: ProRock.Xmlite.Schema.Base.TBooleanST;
     fShowTip: ProRock.Xmlite.Schema.Base.TBooleanST;
     fShowAsCaption: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -3507,7 +3507,7 @@ type
     fLevel: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fField: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
     [TDefault(False)]
     property ShowCell: ProRock.Xmlite.Schema.Base.TBooleanST read fShowCell write fShowCell;
     [TDefault(False)]
@@ -3523,88 +3523,88 @@ type
   end;
 
   [TName('CT_Members')]
-  TCTMembersCT = class(TXmliteComplexType)
+  TMembersCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fLevel: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fMember: TCTMemberCTList;
+    fMember: TMemberCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
     property Level: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fLevel write fLevel;
-    property Member: TCTMemberCTList read fMember;
+    property Member: TMemberCTList read fMember;
   end;
 
   [TName('CT_Member')]
-  TCTMemberCT = class(TXmliteComplexType)
+  TMemberCT = class(TXmliteComplexType)
   private
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
   published
     [TRequired]
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
   end;
 
   [TName('CT_Dimensions')]
-  TCTDimensionsCT = class(TXmliteComplexType)
+  TDimensionsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fDimension: TCTPivotDimensionCTList;
+    fDimension: TPivotDimensionCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property Dimension: TCTPivotDimensionCTList read fDimension;
+    property Dimension: TPivotDimensionCTList read fDimension;
   end;
 
   [TName('CT_PivotDimension')]
-  TCTPivotDimensionCT = class(TXmliteComplexType)
+  TPivotDimensionCT = class(TXmliteComplexType)
   private
     fMeasure: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fUniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fUniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
   published
     [TDefault(False)]
     property Measure: ProRock.Xmlite.Schema.Base.TBooleanST read fMeasure write fMeasure;
     [TRequired]
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
     [TRequired]
-    property UniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fUniqueName write fUniqueName;
+    property UniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fUniqueName write fUniqueName;
     [TRequired]
-    property Caption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fCaption write fCaption;
+    property Caption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fCaption write fCaption;
   end;
 
   [TName('CT_MeasureGroups')]
-  TCTMeasureGroupsCT = class(TXmliteComplexType)
+  TMeasureGroupsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fMeasureGroup: TCTMeasureGroupCTList;
+    fMeasureGroup: TMeasureGroupCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property MeasureGroup: TCTMeasureGroupCTList read fMeasureGroup;
+    property MeasureGroup: TMeasureGroupCTList read fMeasureGroup;
   end;
 
   [TName('CT_MeasureDimensionMaps')]
-  TCTMeasureDimensionMapsCT = class(TXmliteComplexType)
+  TMeasureDimensionMapsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fMap: TCTMeasureDimensionMapCTList;
+    fMap: TMeasureDimensionMapCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property Map: TCTMeasureDimensionMapCTList read fMap;
+    property Map: TMeasureDimensionMapCTList read fMap;
   end;
 
   [TName('CT_MeasureGroup')]
-  TCTMeasureGroupCT = class(TXmliteComplexType)
+  TMeasureGroupCT = class(TXmliteComplexType)
   private
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fCaption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
   published
     [TRequired]
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
     [TRequired]
-    property Caption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fCaption write fCaption;
+    property Caption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fCaption write fCaption;
   end;
 
   [TName('CT_MeasureDimensionMap')]
-  TCTMeasureDimensionMapCT = class(TXmliteComplexType)
+  TMeasureDimensionMapCT = class(TXmliteComplexType)
   private
     fMeasureGroup: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fDimension: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
@@ -3614,7 +3614,7 @@ type
   end;
 
   [TName('CT_PivotTableStyle')]
-  TCTPivotTableStyleCT = class(TXmliteComplexType)
+  TPivotTableStyleCT = class(TXmliteComplexType)
   private
     fName: ProRock.Xmlite.Schema.Base.TStringST;
     fShowRowHeaders: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -3632,74 +3632,74 @@ type
   end;
 
   [TName('CT_PivotFilters')]
-  TCTPivotFiltersCT = class(TXmliteComplexType)
+  TPivotFiltersCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fFilter: TCTPivotFilterCTList;
+    fFilter: TPivotFilterCTList;
   published
     [TDefault(0)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property Filter: TCTPivotFilterCTList read fFilter;
+    property Filter: TPivotFilterCTList read fFilter;
   end;
 
   [TName('CT_PivotFilter')]
-  TCTPivotFilterCT = class(TXmliteComplexType)
+  TPivotFilterCT = class(TXmliteComplexType)
   private
     fFld: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fMpFld: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fType: TSTPivotFilterTypeST;
+    fType: TPivotFilterTypeST;
     fEvalOrder: ProRock.Xmlite.Schema.Base.TIntST;
     fId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fIMeasureHier: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fIMeasureFld: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fDescription: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fStringValue1: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fStringValue2: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fAutoFilter: TCTAutoFilterCT;
-    fExtLst: TCTExtensionListCT;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fDescription: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fStringValue1: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fStringValue2: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fAutoFilter: TAutoFilterCT;
+    fExtLst: TExtensionListCT;
   published
     [TRequired]
     property Fld: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fFld write fFld;
     property MpFld: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fMpFld write fMpFld;
     [TRequired]
-    property &Type: TSTPivotFilterTypeST read fType write fType;
+    property &Type: TPivotFilterTypeST read fType write fType;
     [TDefault(0)]
     property EvalOrder: ProRock.Xmlite.Schema.Base.TIntST read fEvalOrder write fEvalOrder;
     [TRequired]
     property Id: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fId write fId;
     property IMeasureHier: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fIMeasureHier write fIMeasureHier;
     property IMeasureFld: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fIMeasureFld write fIMeasureFld;
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
-    property Description: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDescription write fDescription;
-    property StringValue1: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fStringValue1 write fStringValue1;
-    property StringValue2: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fStringValue2 write fStringValue2;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
+    property Description: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fDescription write fDescription;
+    property StringValue1: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fStringValue1 write fStringValue1;
+    property StringValue2: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fStringValue2 write fStringValue2;
     [TRequired]
-    property AutoFilter: TCTAutoFilterCT read fAutoFilter;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property AutoFilter: TAutoFilterCT read fAutoFilter;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_PivotArea')]
-  TCTPivotAreaCT = class(TXmliteComplexType)
+  TPivotAreaCT = class(TXmliteComplexType)
   private
     fField: ProRock.Xmlite.Schema.Base.TIntST;
-    fType: TSTPivotAreaTypeST;
+    fType: TPivotAreaTypeST;
     fDataOnly: ProRock.Xmlite.Schema.Base.TBooleanST;
     fLabelOnly: ProRock.Xmlite.Schema.Base.TBooleanST;
     fGrandRow: ProRock.Xmlite.Schema.Base.TBooleanST;
     fGrandCol: ProRock.Xmlite.Schema.Base.TBooleanST;
     fCacheIndex: ProRock.Xmlite.Schema.Base.TBooleanST;
     fOutline: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fOffset: TSTRefST;
+    fOffset: TRefST;
     fCollapsedLevelsAreSubtotals: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fAxis: TSTAxisST;
+    fAxis: TAxisST;
     fFieldPosition: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fReferences: TCTPivotAreaReferencesCT;
-    fExtLst: TCTExtensionListCT;
+    fReferences: TPivotAreaReferencesCT;
+    fExtLst: TExtensionListCT;
   published
     property Field: ProRock.Xmlite.Schema.Base.TIntST read fField write fField;
     [TDefault(Ord(stpatNormal))]
-    property &Type: TSTPivotAreaTypeST read fType write fType;
+    property &Type: TPivotAreaTypeST read fType write fType;
     [TDefault(True)]
     property DataOnly: ProRock.Xmlite.Schema.Base.TBooleanST read fDataOnly write fDataOnly;
     [TDefault(False)]
@@ -3712,27 +3712,27 @@ type
     property CacheIndex: ProRock.Xmlite.Schema.Base.TBooleanST read fCacheIndex write fCacheIndex;
     [TDefault(True)]
     property Outline: ProRock.Xmlite.Schema.Base.TBooleanST read fOutline write fOutline;
-    property Offset: TSTRefST read fOffset write fOffset;
+    property Offset: TRefST read fOffset write fOffset;
     [TDefault(False)]
     property CollapsedLevelsAreSubtotals: ProRock.Xmlite.Schema.Base.TBooleanST read fCollapsedLevelsAreSubtotals write fCollapsedLevelsAreSubtotals;
-    property Axis: TSTAxisST read fAxis write fAxis;
+    property Axis: TAxisST read fAxis write fAxis;
     property FieldPosition: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fFieldPosition write fFieldPosition;
-    property References: TCTPivotAreaReferencesCT read fReferences;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property References: TPivotAreaReferencesCT read fReferences;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_PivotAreaReferences')]
-  TCTPivotAreaReferencesCT = class(TXmliteComplexType)
+  TPivotAreaReferencesCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fReference: TCTPivotAreaReferenceCTList;
+    fReference: TPivotAreaReferenceCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property Reference: TCTPivotAreaReferenceCTList read fReference;
+    property Reference: TPivotAreaReferenceCTList read fReference;
   end;
 
   [TName('CT_PivotAreaReference')]
-  TCTPivotAreaReferenceCT = class(TXmliteComplexType)
+  TPivotAreaReferenceCT = class(TXmliteComplexType)
   private
     fField: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
@@ -3751,8 +3751,8 @@ type
     fStdDevPSubtotal: ProRock.Xmlite.Schema.Base.TBooleanST;
     fVarSubtotal: ProRock.Xmlite.Schema.Base.TBooleanST;
     fVarPSubtotal: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fX: TCTIndexCTList;
-    fExtLst: TCTExtensionListCT;
+    fX: TIndexCTList;
+    fExtLst: TExtensionListCT;
   published
     property Field: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fField write fField;
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
@@ -3786,12 +3786,12 @@ type
     property VarSubtotal: ProRock.Xmlite.Schema.Base.TBooleanST read fVarSubtotal write fVarSubtotal;
     [TDefault(False)]
     property VarPSubtotal: ProRock.Xmlite.Schema.Base.TBooleanST read fVarPSubtotal write fVarPSubtotal;
-    property X: TCTIndexCTList read fX;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property X: TIndexCTList read fX;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_Index')]
-  TCTIndexCT = class(TXmliteComplexType)
+  TIndexCT = class(TXmliteComplexType)
   private
     fV: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
@@ -3800,16 +3800,16 @@ type
   end;
 
   [TName('CT_QueryTable')]
-  TCTQueryTableCT = class(TXmliteComplexType)
+  TQueryTableCT = class(TXmliteComplexType)
   private
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fHeaders: ProRock.Xmlite.Schema.Base.TBooleanST;
     fRowNumbers: ProRock.Xmlite.Schema.Base.TBooleanST;
     fDisableRefresh: ProRock.Xmlite.Schema.Base.TBooleanST;
     fBackgroundRefresh: ProRock.Xmlite.Schema.Base.TBooleanST;
     fFirstBackgroundRefresh: ProRock.Xmlite.Schema.Base.TBooleanST;
     fRefreshOnLoad: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fGrowShrinkType: TSTGrowShrinkTypeST;
+    fGrowShrinkType: TGrowShrinkTypeST;
     fFillFormulas: ProRock.Xmlite.Schema.Base.TBooleanST;
     fRemoveDataOnSave: ProRock.Xmlite.Schema.Base.TBooleanST;
     fDisableEdit: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -3824,11 +3824,11 @@ type
     fApplyPatternFormats: ProRock.Xmlite.Schema.Base.TBooleanST;
     fApplyAlignmentFormats: ProRock.Xmlite.Schema.Base.TBooleanST;
     fApplyWidthHeightFormats: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fQueryTableRefresh: TCTQueryTableRefreshCT;
-    fExtLst: TCTExtensionListCT;
+    fQueryTableRefresh: TQueryTableRefreshCT;
+    fExtLst: TExtensionListCT;
   published
     [TRequired]
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
     [TDefault(True)]
     property Headers: ProRock.Xmlite.Schema.Base.TBooleanST read fHeaders write fHeaders;
     [TDefault(False)]
@@ -3842,7 +3842,7 @@ type
     [TDefault(False)]
     property RefreshOnLoad: ProRock.Xmlite.Schema.Base.TBooleanST read fRefreshOnLoad write fRefreshOnLoad;
     [TDefault(Ord(stgstInsertDelete))]
-    property GrowShrinkType: TSTGrowShrinkTypeST read fGrowShrinkType write fGrowShrinkType;
+    property GrowShrinkType: TGrowShrinkTypeST read fGrowShrinkType write fGrowShrinkType;
     [TDefault(False)]
     property FillFormulas: ProRock.Xmlite.Schema.Base.TBooleanST read fFillFormulas write fFillFormulas;
     [TDefault(False)]
@@ -3864,12 +3864,12 @@ type
     property ApplyPatternFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyPatternFormats write fApplyPatternFormats;
     property ApplyAlignmentFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyAlignmentFormats write fApplyAlignmentFormats;
     property ApplyWidthHeightFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyWidthHeightFormats write fApplyWidthHeightFormats;
-    property QueryTableRefresh: TCTQueryTableRefreshCT read fQueryTableRefresh;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property QueryTableRefresh: TQueryTableRefreshCT read fQueryTableRefresh;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_QueryTableRefresh')]
-  TCTQueryTableRefreshCT = class(TXmliteComplexType)
+  TQueryTableRefreshCT = class(TXmliteComplexType)
   private
     fPreserveSortFilterLayout: ProRock.Xmlite.Schema.Base.TBooleanST;
     fFieldIdWrapped: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -3878,10 +3878,10 @@ type
     fNextId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fUnboundColumnsLeft: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fUnboundColumnsRight: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fQueryTableFields: TCTQueryTableFieldsCT;
-    fQueryTableDeletedFields: TCTQueryTableDeletedFieldsCT;
-    fSortState: TCTSortStateCT;
-    fExtLst: TCTExtensionListCT;
+    fQueryTableFields: TQueryTableFieldsCT;
+    fQueryTableDeletedFields: TQueryTableDeletedFieldsCT;
+    fSortState: TSortStateCT;
+    fExtLst: TExtensionListCT;
   published
     [TDefault(True)]
     property PreserveSortFilterLayout: ProRock.Xmlite.Schema.Base.TBooleanST read fPreserveSortFilterLayout write fPreserveSortFilterLayout;
@@ -3898,57 +3898,57 @@ type
     [TDefault(0)]
     property UnboundColumnsRight: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fUnboundColumnsRight write fUnboundColumnsRight;
     [TRequired]
-    property QueryTableFields: TCTQueryTableFieldsCT read fQueryTableFields;
-    property QueryTableDeletedFields: TCTQueryTableDeletedFieldsCT read fQueryTableDeletedFields;
-    property SortState: TCTSortStateCT read fSortState;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property QueryTableFields: TQueryTableFieldsCT read fQueryTableFields;
+    property QueryTableDeletedFields: TQueryTableDeletedFieldsCT read fQueryTableDeletedFields;
+    property SortState: TSortStateCT read fSortState;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_QueryTableDeletedFields')]
-  TCTQueryTableDeletedFieldsCT = class(TXmliteComplexType)
+  TQueryTableDeletedFieldsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fDeletedField: TCTDeletedFieldCTList;
+    fDeletedField: TDeletedFieldCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property DeletedField: TCTDeletedFieldCTList read fDeletedField;
+    property DeletedField: TDeletedFieldCTList read fDeletedField;
   end;
 
   [TName('CT_DeletedField')]
-  TCTDeletedFieldCT = class(TXmliteComplexType)
+  TDeletedFieldCT = class(TXmliteComplexType)
   private
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
   published
     [TRequired]
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
   end;
 
   [TName('CT_QueryTableFields')]
-  TCTQueryTableFieldsCT = class(TXmliteComplexType)
+  TQueryTableFieldsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fQueryTableField: TCTQueryTableFieldCTList;
+    fQueryTableField: TQueryTableFieldCTList;
   published
     [TDefault(0)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property QueryTableField: TCTQueryTableFieldCTList read fQueryTableField;
+    property QueryTableField: TQueryTableFieldCTList read fQueryTableField;
   end;
 
   [TName('CT_QueryTableField')]
-  TCTQueryTableFieldCT = class(TXmliteComplexType)
+  TQueryTableFieldCT = class(TXmliteComplexType)
   private
     fId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fDataBound: ProRock.Xmlite.Schema.Base.TBooleanST;
     fRowNumbers: ProRock.Xmlite.Schema.Base.TBooleanST;
     fFillFormulas: ProRock.Xmlite.Schema.Base.TBooleanST;
     fClipped: ProRock.Xmlite.Schema.Base.TBooleanST;
     fTableColumnId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fExtLst: TCTExtensionListCT;
+    fExtLst: TExtensionListCT;
   published
     [TRequired]
     property Id: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fId write fId;
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
     [TDefault(True)]
     property DataBound: ProRock.Xmlite.Schema.Base.TBooleanST read fDataBound write fDataBound;
     [TDefault(False)]
@@ -3959,29 +3959,29 @@ type
     property Clipped: ProRock.Xmlite.Schema.Base.TBooleanST read fClipped write fClipped;
     [TDefault(0)]
     property TableColumnId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fTableColumnId write fTableColumnId;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_Sst')]
-  TCTSstCT = class(TXmliteComplexType)
+  TSstCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fUniqueCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fSi: TCTRstCTList;
-    fExtLst: TCTExtensionListCT;
+    fSi: TRstCTList;
+    fExtLst: TExtensionListCT;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
     property UniqueCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fUniqueCount write fUniqueCount;
-    property Si: TCTRstCTList read fSi;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property Si: TRstCTList read fSi;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_PhoneticRun')]
-  TCTPhoneticRunCT = class(TXmliteComplexType)
+  TPhoneticRunCT = class(TXmliteComplexType)
   private
     fSb: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fEb: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fT: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fT: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
   published
     [TRequired]
     property Sb: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSb write fSb;
@@ -3989,93 +3989,93 @@ type
     property Eb: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fEb write fEb;
     [TXmliteElement]
     [TRequired]
-    property T: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fT write fT;
+    property T: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fT write fT;
   end;
 
   [TName('CT_RElt')]
-  TCTREltCT = class(TXmliteComplexType)
+  TREltCT = class(TXmliteComplexType)
   private
-    fRPr: TCTRPrEltCT;
-    fT: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fRPr: TRPrEltCT;
+    fT: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
   published
-    property RPr: TCTRPrEltCT read fRPr;
+    property RPr: TRPrEltCT read fRPr;
     [TXmliteElement]
     [TRequired]
-    property T: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fT write fT;
+    property T: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fT write fT;
   end;
 
   [TOrdered]
   [TName('CT_RPrElt')]
-  TCTRPrEltCT = class(TXmliteComplexType)
+  TRPrEltCT = class(TXmliteComplexType)
   private
-    fRFont: TCTFontNameCTList;
-    fCharset: TCTIntPropertyCTList;
-    fFamily: TCTIntPropertyCTList;
-    fB: TCTBooleanPropertyCTList;
-    fI: TCTBooleanPropertyCTList;
-    fStrike: TCTBooleanPropertyCTList;
-    fOutline: TCTBooleanPropertyCTList;
-    fShadow: TCTBooleanPropertyCTList;
-    fCondense: TCTBooleanPropertyCTList;
-    fExtend: TCTBooleanPropertyCTList;
-    fColor: TCTColorCTList;
-    fSz: TCTFontSizeCTList;
-    fU: TCTUnderlinePropertyCTList;
-    fVertAlign: TCTVerticalAlignFontPropertyCTList;
-    fScheme: TCTFontSchemeCTList;
+    fRFont: TFontNameCTList;
+    fCharset: TIntPropertyCTList;
+    fFamily: TIntPropertyCTList;
+    fB: TBooleanPropertyCTList;
+    fI: TBooleanPropertyCTList;
+    fStrike: TBooleanPropertyCTList;
+    fOutline: TBooleanPropertyCTList;
+    fShadow: TBooleanPropertyCTList;
+    fCondense: TBooleanPropertyCTList;
+    fExtend: TBooleanPropertyCTList;
+    fColor: TColorCTList;
+    fSz: TFontSizeCTList;
+    fU: TUnderlinePropertyCTList;
+    fVertAlign: TVerticalAlignFontPropertyCTList;
+    fScheme: TFontSchemeCTList;
   published
-    property RFont: TCTFontNameCTList read fRFont;
-    property Charset: TCTIntPropertyCTList read fCharset;
-    property Family: TCTIntPropertyCTList read fFamily;
-    property B: TCTBooleanPropertyCTList read fB;
-    property I: TCTBooleanPropertyCTList read fI;
-    property Strike: TCTBooleanPropertyCTList read fStrike;
-    property Outline: TCTBooleanPropertyCTList read fOutline;
-    property Shadow: TCTBooleanPropertyCTList read fShadow;
-    property Condense: TCTBooleanPropertyCTList read fCondense;
-    property Extend: TCTBooleanPropertyCTList read fExtend;
-    property Color: TCTColorCTList read fColor;
-    property Sz: TCTFontSizeCTList read fSz;
-    property U: TCTUnderlinePropertyCTList read fU;
-    property VertAlign: TCTVerticalAlignFontPropertyCTList read fVertAlign;
-    property Scheme: TCTFontSchemeCTList read fScheme;
+    property RFont: TFontNameCTList read fRFont;
+    property Charset: TIntPropertyCTList read fCharset;
+    property Family: TIntPropertyCTList read fFamily;
+    property B: TBooleanPropertyCTList read fB;
+    property I: TBooleanPropertyCTList read fI;
+    property Strike: TBooleanPropertyCTList read fStrike;
+    property Outline: TBooleanPropertyCTList read fOutline;
+    property Shadow: TBooleanPropertyCTList read fShadow;
+    property Condense: TBooleanPropertyCTList read fCondense;
+    property Extend: TBooleanPropertyCTList read fExtend;
+    property Color: TColorCTList read fColor;
+    property Sz: TFontSizeCTList read fSz;
+    property U: TUnderlinePropertyCTList read fU;
+    property VertAlign: TVerticalAlignFontPropertyCTList read fVertAlign;
+    property Scheme: TFontSchemeCTList read fScheme;
   end;
 
   [TName('CT_Rst')]
-  TCTRstCT = class(TXmliteComplexType)
+  TRstCT = class(TXmliteComplexType)
   private
-    fT: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fR: TCTREltCTList;
-    fRPh: TCTPhoneticRunCTList;
-    fPhoneticPr: TCTPhoneticPrCT;
+    fT: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fR: TREltCTList;
+    fRPh: TPhoneticRunCTList;
+    fPhoneticPr: TPhoneticPrCT;
   published
     [TXmliteElement]
-    property T: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fT write fT;
-    property R: TCTREltCTList read fR;
-    property RPh: TCTPhoneticRunCTList read fRPh;
-    property PhoneticPr: TCTPhoneticPrCT read fPhoneticPr;
+    property T: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fT write fT;
+    property R: TREltCTList read fR;
+    property RPh: TPhoneticRunCTList read fRPh;
+    property PhoneticPr: TPhoneticPrCT read fPhoneticPr;
   end;
 
   [TName('CT_PhoneticPr')]
-  TCTPhoneticPrCT = class(TXmliteComplexType)
+  TPhoneticPrCT = class(TXmliteComplexType)
   private
-    fFontId: TSTFontIdST;
-    fType: TSTPhoneticTypeST;
-    fAlignment: TSTPhoneticAlignmentST;
+    fFontId: TFontIdST;
+    fType: TPhoneticTypeST;
+    fAlignment: TPhoneticAlignmentST;
   published
     [TRequired]
-    property FontId: TSTFontIdST read fFontId write fFontId;
+    property FontId: TFontIdST read fFontId write fFontId;
     [TDefault(Ord(stptaFullwidthKatakana))]
-    property &Type: TSTPhoneticTypeST read fType write fType;
+    property &Type: TPhoneticTypeST read fType write fType;
     [TDefault(Ord(stpaLeft))]
-    property Alignment: TSTPhoneticAlignmentST read fAlignment write fAlignment;
+    property Alignment: TPhoneticAlignmentST read fAlignment write fAlignment;
   end;
 
   [TName('CT_RevisionHeaders')]
-  TCTRevisionHeadersCT = class(TXmliteComplexType)
+  TRevisionHeadersCT = class(TXmliteComplexType)
   private
-    fGuid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST;
-    fLastGuid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST;
+    fGuid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST;
+    fLastGuid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST;
     fShared: ProRock.Xmlite.Schema.Base.TBooleanST;
     fDiskRevisions: ProRock.Xmlite.Schema.Base.TBooleanST;
     fHistory: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -4086,11 +4086,11 @@ type
     fKeepChangeHistory: ProRock.Xmlite.Schema.Base.TBooleanST;
     fProtected: ProRock.Xmlite.Schema.Base.TBooleanST;
     fPreserveHistory: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fHeader: TCTRevisionHeaderCTList;
+    fHeader: TRevisionHeaderCTList;
   published
     [TRequired]
-    property Guid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST read fGuid write fGuid;
-    property LastGuid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST read fLastGuid write fLastGuid;
+    property Guid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST read fGuid write fGuid;
+    property LastGuid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST read fLastGuid write fLastGuid;
     [TDefault(True)]
     property Shared: ProRock.Xmlite.Schema.Base.TBooleanST read fShared write fShared;
     [TDefault(False)]
@@ -4111,85 +4111,85 @@ type
     property Protected: ProRock.Xmlite.Schema.Base.TBooleanST read fProtected write fProtected;
     [TDefault(30)]
     property PreserveHistory: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fPreserveHistory write fPreserveHistory;
-    property Header: TCTRevisionHeaderCTList read fHeader;
+    property Header: TRevisionHeaderCTList read fHeader;
   end;
 
   [TOrdered]
   [TName('CT_Revisions')]
-  TCTRevisionsCT = class(TXmliteComplexType)
+  TRevisionsCT = class(TXmliteComplexType)
   private
-    fRrc: TCTRevisionRowColumnCTList;
-    fRm: TCTRevisionMoveCTList;
-    fRcv: TCTRevisionCustomViewCTList;
-    fRsnm: TCTRevisionSheetRenameCTList;
-    fRis: TCTRevisionInsertSheetCTList;
-    fRcc: TCTRevisionCellChangeCTList;
-    fRfmt: TCTRevisionFormattingCTList;
-    fRaf: TCTRevisionAutoFormattingCTList;
-    fRdn: TCTRevisionDefinedNameCTList;
-    fRcmt: TCTRevisionCommentCTList;
-    fRqt: TCTRevisionQueryTableFieldCTList;
-    fRcft: TCTRevisionConflictCTList;
+    fRrc: TRevisionRowColumnCTList;
+    fRm: TRevisionMoveCTList;
+    fRcv: TRevisionCustomViewCTList;
+    fRsnm: TRevisionSheetRenameCTList;
+    fRis: TRevisionInsertSheetCTList;
+    fRcc: TRevisionCellChangeCTList;
+    fRfmt: TRevisionFormattingCTList;
+    fRaf: TRevisionAutoFormattingCTList;
+    fRdn: TRevisionDefinedNameCTList;
+    fRcmt: TRevisionCommentCTList;
+    fRqt: TRevisionQueryTableFieldCTList;
+    fRcft: TRevisionConflictCTList;
   published
-    property Rrc: TCTRevisionRowColumnCTList read fRrc;
-    property Rm: TCTRevisionMoveCTList read fRm;
-    property Rcv: TCTRevisionCustomViewCTList read fRcv;
-    property Rsnm: TCTRevisionSheetRenameCTList read fRsnm;
-    property Ris: TCTRevisionInsertSheetCTList read fRis;
-    property Rcc: TCTRevisionCellChangeCTList read fRcc;
-    property Rfmt: TCTRevisionFormattingCTList read fRfmt;
-    property Raf: TCTRevisionAutoFormattingCTList read fRaf;
-    property Rdn: TCTRevisionDefinedNameCTList read fRdn;
-    property Rcmt: TCTRevisionCommentCTList read fRcmt;
-    property Rqt: TCTRevisionQueryTableFieldCTList read fRqt;
-    property Rcft: TCTRevisionConflictCTList read fRcft;
+    property Rrc: TRevisionRowColumnCTList read fRrc;
+    property Rm: TRevisionMoveCTList read fRm;
+    property Rcv: TRevisionCustomViewCTList read fRcv;
+    property Rsnm: TRevisionSheetRenameCTList read fRsnm;
+    property Ris: TRevisionInsertSheetCTList read fRis;
+    property Rcc: TRevisionCellChangeCTList read fRcc;
+    property Rfmt: TRevisionFormattingCTList read fRfmt;
+    property Raf: TRevisionAutoFormattingCTList read fRaf;
+    property Rdn: TRevisionDefinedNameCTList read fRdn;
+    property Rcmt: TRevisionCommentCTList read fRcmt;
+    property Rqt: TRevisionQueryTableFieldCTList read fRqt;
+    property Rcft: TRevisionConflictCTList read fRcft;
   end;
 
   [TName('CT_RevisionHeader')]
-  TCTRevisionHeaderCT = class(TXmliteComplexType)
+  TRevisionHeaderCT = class(TXmliteComplexType)
   private
-    fGuid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST;
+    fGuid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST;
     fDateTime: ProRock.Xmlite.Schema.Base.TDateTimeST;
     fMaxSheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fUserName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fUserName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fId: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA;
     fMinRId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fMaxRId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fSheetIdMap: TCTSheetIdMapCT;
-    fReviewedList: TCTReviewedRevisionsCT;
-    fExtLst: TCTExtensionListCT;
+    fSheetIdMap: TSheetIdMapCT;
+    fReviewedList: TReviewedRevisionsCT;
+    fExtLst: TExtensionListCT;
   published
     [TRequired]
-    property Guid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST read fGuid write fGuid;
+    property Guid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST read fGuid write fGuid;
     [TRequired]
     property DateTime: ProRock.Xmlite.Schema.Base.TDateTimeST read fDateTime write fDateTime;
     [TRequired]
     property MaxSheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fMaxSheetId write fMaxSheetId;
     [TRequired]
-    property UserName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fUserName write fUserName;
+    property UserName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fUserName write fUserName;
     [TRequired]
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
     property MinRId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fMinRId write fMinRId;
     property MaxRId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fMaxRId write fMaxRId;
     [TRequired]
-    property SheetIdMap: TCTSheetIdMapCT read fSheetIdMap;
-    property ReviewedList: TCTReviewedRevisionsCT read fReviewedList;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property SheetIdMap: TSheetIdMapCT read fSheetIdMap;
+    property ReviewedList: TReviewedRevisionsCT read fReviewedList;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_SheetIdMap')]
-  TCTSheetIdMapCT = class(TXmliteComplexType)
+  TSheetIdMapCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fSheetId: TCTSheetIdCTList;
+    fSheetId: TSheetIdCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property SheetId: TCTSheetIdCTList read fSheetId;
+    property SheetId: TSheetIdCTList read fSheetId;
   end;
 
   [TName('CT_SheetId')]
-  TCTSheetIdCT = class(TXmliteComplexType)
+  TSheetIdCT = class(TXmliteComplexType)
   private
     fVal: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
@@ -4198,17 +4198,17 @@ type
   end;
 
   [TName('CT_ReviewedRevisions')]
-  TCTReviewedRevisionsCT = class(TXmliteComplexType)
+  TReviewedRevisionsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fReviewed: TCTReviewedCTList;
+    fReviewed: TReviewedCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property Reviewed: TCTReviewedCTList read fReviewed;
+    property Reviewed: TReviewedCTList read fReviewed;
   end;
 
   [TName('CT_Reviewed')]
-  TCTReviewedCT = class(TXmliteComplexType)
+  TReviewedCT = class(TXmliteComplexType)
   private
     fRId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
@@ -4217,24 +4217,24 @@ type
   end;
 
   [TName('CT_UndoInfo')]
-  TCTUndoInfoCT = class(TXmliteComplexType)
+  TUndoInfoCT = class(TXmliteComplexType)
   private
     fIndex: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fExp: TSTFormulaExpressionST;
+    fExp: TFormulaExpressionST;
     fRef3D: ProRock.Xmlite.Schema.Base.TBooleanST;
     fArray: ProRock.Xmlite.Schema.Base.TBooleanST;
     fV: ProRock.Xmlite.Schema.Base.TBooleanST;
     fNf: ProRock.Xmlite.Schema.Base.TBooleanST;
     fCs: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fDr: TSTRefAST;
-    fDn: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fR: TSTCellRefST;
+    fDr: TRefAST;
+    fDn: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fR: TCellRefST;
     fSId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
     [TRequired]
     property Index: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fIndex write fIndex;
     [TRequired]
-    property Exp: TSTFormulaExpressionST read fExp write fExp;
+    property Exp: TFormulaExpressionST read fExp write fExp;
     [TDefault(False)]
     property Ref3D: ProRock.Xmlite.Schema.Base.TBooleanST read fRef3D write fRef3D;
     [TDefault(False)]
@@ -4246,36 +4246,36 @@ type
     [TDefault(False)]
     property Cs: ProRock.Xmlite.Schema.Base.TBooleanST read fCs write fCs;
     [TRequired]
-    property Dr: TSTRefAST read fDr write fDr;
-    property Dn: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDn write fDn;
-    property R: TSTCellRefST read fR write fR;
+    property Dr: TRefAST read fDr write fDr;
+    property Dn: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fDn write fDn;
+    property R: TCellRefST read fR write fR;
     property SId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSId write fSId;
   end;
 
   [TOrdered]
   [TName('CT_RevisionRowColumn')]
-  TCTRevisionRowColumnCT = class(TXmliteComplexType)
+  TRevisionRowColumnCT = class(TXmliteComplexType)
   private
     fSId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fEol: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fRef: TSTRefST;
-    fAction: TSTRwColActionTypeST;
+    fRef: TRefST;
+    fAction: TRwColActionTypeST;
     fEdge: ProRock.Xmlite.Schema.Base.TBooleanST;
     fRId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fUa: ProRock.Xmlite.Schema.Base.TBooleanST;
     fRa: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fUndo: TCTUndoInfoCTList;
-    fRcc: TCTRevisionCellChangeCTList;
-    fRfmt: TCTRevisionFormattingCTList;
+    fUndo: TUndoInfoCTList;
+    fRcc: TRevisionCellChangeCTList;
+    fRfmt: TRevisionFormattingCTList;
   published
     [TRequired]
     property SId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSId write fSId;
     [TDefault(False)]
     property Eol: ProRock.Xmlite.Schema.Base.TBooleanST read fEol write fEol;
     [TRequired]
-    property Ref: TSTRefST read fRef write fRef;
+    property Ref: TRefST read fRef write fRef;
     [TRequired]
-    property Action: TSTRwColActionTypeST read fAction write fAction;
+    property Action: TRwColActionTypeST read fAction write fAction;
     [TDefault(False)]
     property Edge: ProRock.Xmlite.Schema.Base.TBooleanST read fEdge write fEdge;
     [TRequired]
@@ -4284,32 +4284,32 @@ type
     property Ua: ProRock.Xmlite.Schema.Base.TBooleanST read fUa write fUa;
     [TDefault(False)]
     property Ra: ProRock.Xmlite.Schema.Base.TBooleanST read fRa write fRa;
-    property Undo: TCTUndoInfoCTList read fUndo;
-    property Rcc: TCTRevisionCellChangeCTList read fRcc;
-    property Rfmt: TCTRevisionFormattingCTList read fRfmt;
+    property Undo: TUndoInfoCTList read fUndo;
+    property Rcc: TRevisionCellChangeCTList read fRcc;
+    property Rfmt: TRevisionFormattingCTList read fRfmt;
   end;
 
   [TOrdered]
   [TName('CT_RevisionMove')]
-  TCTRevisionMoveCT = class(TXmliteComplexType)
+  TRevisionMoveCT = class(TXmliteComplexType)
   private
     fSheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fSource: TSTRefST;
-    fDestination: TSTRefST;
+    fSource: TRefST;
+    fDestination: TRefST;
     fSourceSheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fRId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fUa: ProRock.Xmlite.Schema.Base.TBooleanST;
     fRa: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fUndo: TCTUndoInfoCTList;
-    fRcc: TCTRevisionCellChangeCTList;
-    fRfmt: TCTRevisionFormattingCTList;
+    fUndo: TUndoInfoCTList;
+    fRcc: TRevisionCellChangeCTList;
+    fRfmt: TRevisionFormattingCTList;
   published
     [TRequired]
     property SheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSheetId write fSheetId;
     [TRequired]
-    property Source: TSTRefST read fSource write fSource;
+    property Source: TRefST read fSource write fSource;
     [TRequired]
-    property Destination: TSTRefST read fDestination write fDestination;
+    property Destination: TRefST read fDestination write fDestination;
     [TDefault(0)]
     property SourceSheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSourceSheetId write fSourceSheetId;
     [TRequired]
@@ -4318,54 +4318,54 @@ type
     property Ua: ProRock.Xmlite.Schema.Base.TBooleanST read fUa write fUa;
     [TDefault(False)]
     property Ra: ProRock.Xmlite.Schema.Base.TBooleanST read fRa write fRa;
-    property Undo: TCTUndoInfoCTList read fUndo;
-    property Rcc: TCTRevisionCellChangeCTList read fRcc;
-    property Rfmt: TCTRevisionFormattingCTList read fRfmt;
+    property Undo: TUndoInfoCTList read fUndo;
+    property Rcc: TRevisionCellChangeCTList read fRcc;
+    property Rfmt: TRevisionFormattingCTList read fRfmt;
   end;
 
   [TName('CT_RevisionCustomView')]
-  TCTRevisionCustomViewCT = class(TXmliteComplexType)
+  TRevisionCustomViewCT = class(TXmliteComplexType)
   private
-    fGuid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST;
-    fAction: TSTRevisionActionST;
+    fGuid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST;
+    fAction: TRevisionActionST;
   published
     [TRequired]
-    property Guid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST read fGuid write fGuid;
+    property Guid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST read fGuid write fGuid;
     [TRequired]
-    property Action: TSTRevisionActionST read fAction write fAction;
+    property Action: TRevisionActionST read fAction write fAction;
   end;
 
   [TName('CT_RevisionSheetRename')]
-  TCTRevisionSheetRenameCT = class(TXmliteComplexType)
+  TRevisionSheetRenameCT = class(TXmliteComplexType)
   private
     fSheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fOldName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fNewName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fOldName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fNewName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fRId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fUa: ProRock.Xmlite.Schema.Base.TBooleanST;
     fRa: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fExtLst: TCTExtensionListCT;
+    fExtLst: TExtensionListCT;
   published
     [TRequired]
     property SheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSheetId write fSheetId;
     [TRequired]
-    property OldName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fOldName write fOldName;
+    property OldName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fOldName write fOldName;
     [TRequired]
-    property NewName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fNewName write fNewName;
+    property NewName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fNewName write fNewName;
     [TRequired]
     property RId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fRId write fRId;
     [TDefault(False)]
     property Ua: ProRock.Xmlite.Schema.Base.TBooleanST read fUa write fUa;
     [TDefault(False)]
     property Ra: ProRock.Xmlite.Schema.Base.TBooleanST read fRa write fRa;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_RevisionInsertSheet')]
-  TCTRevisionInsertSheetCT = class(TXmliteComplexType)
+  TRevisionInsertSheetCT = class(TXmliteComplexType)
   private
     fSheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fSheetPosition: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fRId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fUa: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -4374,7 +4374,7 @@ type
     [TRequired]
     property SheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSheetId write fSheetId;
     [TRequired]
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
     [TRequired]
     property SheetPosition: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSheetPosition write fSheetPosition;
     [TRequired]
@@ -4386,14 +4386,14 @@ type
   end;
 
   [TName('CT_RevisionCellChange')]
-  TCTRevisionCellChangeCT = class(TXmliteComplexType)
+  TRevisionCellChangeCT = class(TXmliteComplexType)
   private
     fSId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fOdxf: ProRock.Xmlite.Schema.Base.TBooleanST;
     fXfDxf: ProRock.Xmlite.Schema.Base.TBooleanST;
     fS: ProRock.Xmlite.Schema.Base.TBooleanST;
     fDxf: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fNumFmtId: TSTNumFmtIdST;
+    fNumFmtId: TNumFmtIdST;
     fQuotePrefix: ProRock.Xmlite.Schema.Base.TBooleanST;
     fOldQuotePrefix: ProRock.Xmlite.Schema.Base.TBooleanST;
     fPh: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -4402,10 +4402,10 @@ type
     fRId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fUa: ProRock.Xmlite.Schema.Base.TBooleanST;
     fRa: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fOc: TCTCellCT;
-    fNc: TCTCellCT;
-    fNdxf: TCTDxfCT;
-    fExtLst: TCTExtensionListCT;
+    fOc: TCellCT;
+    fNc: TCellCT;
+    fNdxf: TDxfCT;
+    fExtLst: TExtensionListCT;
   published
     [TRequired]
     property SId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSId write fSId;
@@ -4417,7 +4417,7 @@ type
     property S: ProRock.Xmlite.Schema.Base.TBooleanST read fS write fS;
     [TDefault(False)]
     property Dxf: ProRock.Xmlite.Schema.Base.TBooleanST read fDxf write fDxf;
-    property NumFmtId: TSTNumFmtIdST read fNumFmtId write fNumFmtId;
+    property NumFmtId: TNumFmtIdST read fNumFmtId write fNumFmtId;
     [TDefault(False)]
     property QuotePrefix: ProRock.Xmlite.Schema.Base.TBooleanST read fQuotePrefix write fQuotePrefix;
     [TDefault(False)]
@@ -4434,24 +4434,24 @@ type
     property Ua: ProRock.Xmlite.Schema.Base.TBooleanST read fUa write fUa;
     [TDefault(False)]
     property Ra: ProRock.Xmlite.Schema.Base.TBooleanST read fRa write fRa;
-    property Oc: TCTCellCT read fOc;
+    property Oc: TCellCT read fOc;
     [TRequired]
-    property Nc: TCTCellCT read fNc;
-    property Ndxf: TCTDxfCT read fNdxf;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property Nc: TCellCT read fNc;
+    property Ndxf: TDxfCT read fNdxf;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_RevisionFormatting')]
-  TCTRevisionFormattingCT = class(TXmliteComplexType)
+  TRevisionFormattingCT = class(TXmliteComplexType)
   private
     fSheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fXfDxf: ProRock.Xmlite.Schema.Base.TBooleanST;
     fS: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fSqref: TSTSqrefST;
+    fSqref: TSqrefST;
     fStart: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fLength: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fDxf: TCTDxfCT;
-    fExtLst: TCTExtensionListCT;
+    fDxf: TDxfCT;
+    fExtLst: TExtensionListCT;
   published
     [TRequired]
     property SheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSheetId write fSheetId;
@@ -4460,18 +4460,18 @@ type
     [TDefault(False)]
     property S: ProRock.Xmlite.Schema.Base.TBooleanST read fS write fS;
     [TRequired]
-    property Sqref: TSTSqrefST read fSqref write fSqref;
+    property Sqref: TSqrefST read fSqref write fSqref;
     property Start: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fStart write fStart;
     property Length: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fLength write fLength;
-    property Dxf: TCTDxfCT read fDxf;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property Dxf: TDxfCT read fDxf;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_RevisionAutoFormatting')]
-  TCTRevisionAutoFormattingCT = class(TXmliteComplexType)
+  TRevisionAutoFormattingCT = class(TXmliteComplexType)
   private
     fSheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fRef: TSTRefST;
+    fRef: TRefST;
     fAutoFormatId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fApplyNumberFormats: ProRock.Xmlite.Schema.Base.TBooleanST;
     fApplyBorderFormats: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -4483,7 +4483,7 @@ type
     [TRequired]
     property SheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSheetId write fSheetId;
     [TRequired]
-    property Ref: TSTRefST read fRef write fRef;
+    property Ref: TRefST read fRef write fRef;
     property AutoFormatId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fAutoFormatId write fAutoFormatId;
     property ApplyNumberFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyNumberFormats write fApplyNumberFormats;
     property ApplyBorderFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyBorderFormats write fApplyBorderFormats;
@@ -4494,28 +4494,28 @@ type
   end;
 
   [TName('CT_RevisionComment')]
-  TCTRevisionCommentCT = class(TXmliteComplexType)
+  TRevisionCommentCT = class(TXmliteComplexType)
   private
     fSheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fCell: TSTCellRefST;
-    fGuid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST;
-    fAction: TSTRevisionActionST;
+    fCell: TCellRefST;
+    fGuid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST;
+    fAction: TRevisionActionST;
     fAlwaysShow: ProRock.Xmlite.Schema.Base.TBooleanST;
     fOld: ProRock.Xmlite.Schema.Base.TBooleanST;
     fHiddenRow: ProRock.Xmlite.Schema.Base.TBooleanST;
     fHiddenColumn: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fAuthor: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fAuthor: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fOldLength: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fNewLength: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
     [TRequired]
     property SheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSheetId write fSheetId;
     [TRequired]
-    property Cell: TSTCellRefST read fCell write fCell;
+    property Cell: TCellRefST read fCell write fCell;
     [TRequired]
-    property Guid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST read fGuid write fGuid;
+    property Guid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST read fGuid write fGuid;
     [TDefault(Ord(straAdd))]
-    property Action: TSTRevisionActionST read fAction write fAction;
+    property Action: TRevisionActionST read fAction write fAction;
     [TDefault(False)]
     property AlwaysShow: ProRock.Xmlite.Schema.Base.TBooleanST read fAlwaysShow write fAlwaysShow;
     [TDefault(False)]
@@ -4525,7 +4525,7 @@ type
     [TDefault(False)]
     property HiddenColumn: ProRock.Xmlite.Schema.Base.TBooleanST read fHiddenColumn write fHiddenColumn;
     [TRequired]
-    property Author: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fAuthor write fAuthor;
+    property Author: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fAuthor write fAuthor;
     [TDefault(0)]
     property OldLength: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fOldLength write fOldLength;
     [TDefault(0)]
@@ -4533,11 +4533,11 @@ type
   end;
 
   [TName('CT_RevisionDefinedName')]
-  TCTRevisionDefinedNameCT = class(TXmliteComplexType)
+  TRevisionDefinedNameCT = class(TXmliteComplexType)
   private
     fLocalSheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fCustomView: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fFunction: ProRock.Xmlite.Schema.Base.TBooleanST;
     fOldFunction: ProRock.Xmlite.Schema.Base.TBooleanST;
     fFunctionGroupId: ProRock.Xmlite.Schema.Base.TUnsignedByteST;
@@ -4546,28 +4546,28 @@ type
     fOldShortcutKey: ProRock.Xmlite.Schema.Base.TUnsignedByteST;
     fHidden: ProRock.Xmlite.Schema.Base.TBooleanST;
     fOldHidden: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fCustomMenu: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fOldCustomMenu: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fDescription: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fOldDescription: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fHelp: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fOldHelp: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fStatusBar: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fOldStatusBar: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fComment: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fOldComment: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fCustomMenu: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fOldCustomMenu: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fDescription: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fOldDescription: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fHelp: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fOldHelp: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fStatusBar: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fOldStatusBar: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fComment: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fOldComment: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fRId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fUa: ProRock.Xmlite.Schema.Base.TBooleanST;
     fRa: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fFormula: TSTFormulaST;
-    fOldFormula: TSTFormulaST;
-    fExtLst: TCTExtensionListCT;
+    fFormula: TFormulaST;
+    fOldFormula: TFormulaST;
+    fExtLst: TExtensionListCT;
   published
     property LocalSheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fLocalSheetId write fLocalSheetId;
     [TDefault(False)]
     property CustomView: ProRock.Xmlite.Schema.Base.TBooleanST read fCustomView write fCustomView;
     [TRequired]
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
     [TDefault(False)]
     property &Function: ProRock.Xmlite.Schema.Base.TBooleanST read fFunction write fFunction;
     [TDefault(False)]
@@ -4580,16 +4580,16 @@ type
     property Hidden: ProRock.Xmlite.Schema.Base.TBooleanST read fHidden write fHidden;
     [TDefault(False)]
     property OldHidden: ProRock.Xmlite.Schema.Base.TBooleanST read fOldHidden write fOldHidden;
-    property CustomMenu: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fCustomMenu write fCustomMenu;
-    property OldCustomMenu: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fOldCustomMenu write fOldCustomMenu;
-    property Description: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDescription write fDescription;
-    property OldDescription: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fOldDescription write fOldDescription;
-    property Help: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fHelp write fHelp;
-    property OldHelp: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fOldHelp write fOldHelp;
-    property StatusBar: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fStatusBar write fStatusBar;
-    property OldStatusBar: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fOldStatusBar write fOldStatusBar;
-    property Comment: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fComment write fComment;
-    property OldComment: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fOldComment write fOldComment;
+    property CustomMenu: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fCustomMenu write fCustomMenu;
+    property OldCustomMenu: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fOldCustomMenu write fOldCustomMenu;
+    property Description: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fDescription write fDescription;
+    property OldDescription: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fOldDescription write fOldDescription;
+    property Help: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fHelp write fHelp;
+    property OldHelp: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fOldHelp write fOldHelp;
+    property StatusBar: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fStatusBar write fStatusBar;
+    property OldStatusBar: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fOldStatusBar write fOldStatusBar;
+    property Comment: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fComment write fComment;
+    property OldComment: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fOldComment write fOldComment;
     [TRequired]
     property RId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fRId write fRId;
     [TDefault(False)]
@@ -4597,14 +4597,14 @@ type
     [TDefault(False)]
     property Ra: ProRock.Xmlite.Schema.Base.TBooleanST read fRa write fRa;
     [TXmliteElement]
-    property Formula: TSTFormulaST read fFormula write fFormula;
+    property Formula: TFormulaST read fFormula write fFormula;
     [TXmliteElement]
-    property OldFormula: TSTFormulaST read fOldFormula write fOldFormula;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property OldFormula: TFormulaST read fOldFormula write fOldFormula;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_RevisionConflict')]
-  TCTRevisionConflictCT = class(TXmliteComplexType)
+  TRevisionConflictCT = class(TXmliteComplexType)
   private
     fSheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fRId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
@@ -4621,244 +4621,244 @@ type
   end;
 
   [TName('CT_RevisionQueryTableField')]
-  TCTRevisionQueryTableFieldCT = class(TXmliteComplexType)
+  TRevisionQueryTableFieldCT = class(TXmliteComplexType)
   private
     fSheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fRef: TSTRefST;
+    fRef: TRefST;
     fFieldId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
     [TRequired]
     property SheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSheetId write fSheetId;
     [TRequired]
-    property Ref: TSTRefST read fRef write fRef;
+    property Ref: TRefST read fRef write fRef;
     [TRequired]
     property FieldId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fFieldId write fFieldId;
   end;
 
   [TName('CT_Users')]
-  TCTUsersCT = class(TXmliteComplexType)
+  TUsersCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fUserInfo: TCTSharedUserCTList;
+    fUserInfo: TSharedUserCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property UserInfo: TCTSharedUserCTList read fUserInfo;
+    property UserInfo: TSharedUserCTList read fUserInfo;
   end;
 
   [TName('CT_SharedUser')]
-  TCTSharedUserCT = class(TXmliteComplexType)
+  TSharedUserCT = class(TXmliteComplexType)
   private
-    fGuid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST;
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fGuid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fId: ProRock.Xmlite.Schema.Base.TIntST;
     fDateTime: ProRock.Xmlite.Schema.Base.TDateTimeST;
-    fExtLst: TCTExtensionListCT;
+    fExtLst: TExtensionListCT;
   published
     [TRequired]
-    property Guid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST read fGuid write fGuid;
+    property Guid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST read fGuid write fGuid;
     [TRequired]
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
     [TRequired]
     property Id: ProRock.Xmlite.Schema.Base.TIntST read fId write fId;
     [TRequired]
     property DateTime: ProRock.Xmlite.Schema.Base.TDateTimeST read fDateTime write fDateTime;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_Macrosheet')]
-  TCTMacrosheetCT = class(TXmliteComplexType)
+  TMacrosheetCT = class(TXmliteComplexType)
   private
-    fSheetPr: TCTSheetPrCT;
-    fDimension: TCTSheetDimensionCT;
-    fSheetViews: TCTSheetViewsCT;
-    fSheetFormatPr: TCTSheetFormatPrCT;
-    fCols: TCTColsCTList;
-    fSheetData: TCTSheetDataCT;
-    fSheetProtection: TCTSheetProtectionCT;
-    fAutoFilter: TCTAutoFilterCT;
-    fSortState: TCTSortStateCT;
-    fDataConsolidate: TCTDataConsolidateCT;
-    fCustomSheetViews: TCTCustomSheetViewsCT;
-    fPhoneticPr: TCTPhoneticPrCT;
-    fConditionalFormatting: TCTConditionalFormattingCTList;
-    fPrintOptions: TCTPrintOptionsCT;
-    fPageMargins: TCTPageMarginsCT;
-    fPageSetup: TCTPageSetupCT;
-    fHeaderFooter: TCTHeaderFooterCT;
-    fRowBreaks: TCTPageBreakCT;
-    fColBreaks: TCTPageBreakCT;
-    fCustomProperties: TCTCustomPropertiesCT;
-    fDrawing: TCTDrawingCT;
-    fLegacyDrawing: TCTLegacyDrawingCT;
-    fLegacyDrawingHF: TCTLegacyDrawingCT;
-    fDrawingHF: TCTDrawingHFCT;
-    fPicture: TCTSheetBackgroundPictureCT;
-    fOleObjects: TCTOleObjectsCT;
-    fExtLst: TCTExtensionListCT;
+    fSheetPr: TSheetPrCT;
+    fDimension: TSheetDimensionCT;
+    fSheetViews: TSheetViewsCT;
+    fSheetFormatPr: TSheetFormatPrCT;
+    fCols: TColsCTList;
+    fSheetData: TSheetDataCT;
+    fSheetProtection: TSheetProtectionCT;
+    fAutoFilter: TAutoFilterCT;
+    fSortState: TSortStateCT;
+    fDataConsolidate: TDataConsolidateCT;
+    fCustomSheetViews: TCustomSheetViewsCT;
+    fPhoneticPr: TPhoneticPrCT;
+    fConditionalFormatting: TConditionalFormattingCTList;
+    fPrintOptions: TPrintOptionsCT;
+    fPageMargins: TPageMarginsCT;
+    fPageSetup: TPageSetupCT;
+    fHeaderFooter: THeaderFooterCT;
+    fRowBreaks: TPageBreakCT;
+    fColBreaks: TPageBreakCT;
+    fCustomProperties: TCustomPropertiesCT;
+    fDrawing: TDrawingCT;
+    fLegacyDrawing: TLegacyDrawingCT;
+    fLegacyDrawingHF: TLegacyDrawingCT;
+    fDrawingHF: TDrawingHFCT;
+    fPicture: TSheetBackgroundPictureCT;
+    fOleObjects: TOleObjectsCT;
+    fExtLst: TExtensionListCT;
   published
-    property SheetPr: TCTSheetPrCT read fSheetPr;
-    property Dimension: TCTSheetDimensionCT read fDimension;
-    property SheetViews: TCTSheetViewsCT read fSheetViews;
-    property SheetFormatPr: TCTSheetFormatPrCT read fSheetFormatPr;
-    property Cols: TCTColsCTList read fCols;
+    property SheetPr: TSheetPrCT read fSheetPr;
+    property Dimension: TSheetDimensionCT read fDimension;
+    property SheetViews: TSheetViewsCT read fSheetViews;
+    property SheetFormatPr: TSheetFormatPrCT read fSheetFormatPr;
+    property Cols: TColsCTList read fCols;
     [TRequired]
-    property SheetData: TCTSheetDataCT read fSheetData;
-    property SheetProtection: TCTSheetProtectionCT read fSheetProtection;
-    property AutoFilter: TCTAutoFilterCT read fAutoFilter;
-    property SortState: TCTSortStateCT read fSortState;
-    property DataConsolidate: TCTDataConsolidateCT read fDataConsolidate;
-    property CustomSheetViews: TCTCustomSheetViewsCT read fCustomSheetViews;
-    property PhoneticPr: TCTPhoneticPrCT read fPhoneticPr;
-    property ConditionalFormatting: TCTConditionalFormattingCTList read fConditionalFormatting;
-    property PrintOptions: TCTPrintOptionsCT read fPrintOptions;
-    property PageMargins: TCTPageMarginsCT read fPageMargins;
-    property PageSetup: TCTPageSetupCT read fPageSetup;
-    property HeaderFooter: TCTHeaderFooterCT read fHeaderFooter;
-    property RowBreaks: TCTPageBreakCT read fRowBreaks;
-    property ColBreaks: TCTPageBreakCT read fColBreaks;
-    property CustomProperties: TCTCustomPropertiesCT read fCustomProperties;
-    property Drawing: TCTDrawingCT read fDrawing;
-    property LegacyDrawing: TCTLegacyDrawingCT read fLegacyDrawing;
-    property LegacyDrawingHF: TCTLegacyDrawingCT read fLegacyDrawingHF;
-    property DrawingHF: TCTDrawingHFCT read fDrawingHF;
-    property Picture: TCTSheetBackgroundPictureCT read fPicture;
-    property OleObjects: TCTOleObjectsCT read fOleObjects;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property SheetData: TSheetDataCT read fSheetData;
+    property SheetProtection: TSheetProtectionCT read fSheetProtection;
+    property AutoFilter: TAutoFilterCT read fAutoFilter;
+    property SortState: TSortStateCT read fSortState;
+    property DataConsolidate: TDataConsolidateCT read fDataConsolidate;
+    property CustomSheetViews: TCustomSheetViewsCT read fCustomSheetViews;
+    property PhoneticPr: TPhoneticPrCT read fPhoneticPr;
+    property ConditionalFormatting: TConditionalFormattingCTList read fConditionalFormatting;
+    property PrintOptions: TPrintOptionsCT read fPrintOptions;
+    property PageMargins: TPageMarginsCT read fPageMargins;
+    property PageSetup: TPageSetupCT read fPageSetup;
+    property HeaderFooter: THeaderFooterCT read fHeaderFooter;
+    property RowBreaks: TPageBreakCT read fRowBreaks;
+    property ColBreaks: TPageBreakCT read fColBreaks;
+    property CustomProperties: TCustomPropertiesCT read fCustomProperties;
+    property Drawing: TDrawingCT read fDrawing;
+    property LegacyDrawing: TLegacyDrawingCT read fLegacyDrawing;
+    property LegacyDrawingHF: TLegacyDrawingCT read fLegacyDrawingHF;
+    property DrawingHF: TDrawingHFCT read fDrawingHF;
+    property Picture: TSheetBackgroundPictureCT read fPicture;
+    property OleObjects: TOleObjectsCT read fOleObjects;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_Dialogsheet')]
-  TCTDialogsheetCT = class(TXmliteComplexType)
+  TDialogsheetCT = class(TXmliteComplexType)
   private
-    fSheetPr: TCTSheetPrCT;
-    fSheetViews: TCTSheetViewsCT;
-    fSheetFormatPr: TCTSheetFormatPrCT;
-    fSheetProtection: TCTSheetProtectionCT;
-    fCustomSheetViews: TCTCustomSheetViewsCT;
-    fPrintOptions: TCTPrintOptionsCT;
-    fPageMargins: TCTPageMarginsCT;
-    fPageSetup: TCTPageSetupCT;
-    fHeaderFooter: TCTHeaderFooterCT;
-    fDrawing: TCTDrawingCT;
-    fLegacyDrawing: TCTLegacyDrawingCT;
-    fLegacyDrawingHF: TCTLegacyDrawingCT;
-    fDrawingHF: TCTDrawingHFCT;
-    fOleObjects: TCTOleObjectsCT;
-    fControls: TCTControlsCT;
-    fExtLst: TCTExtensionListCT;
+    fSheetPr: TSheetPrCT;
+    fSheetViews: TSheetViewsCT;
+    fSheetFormatPr: TSheetFormatPrCT;
+    fSheetProtection: TSheetProtectionCT;
+    fCustomSheetViews: TCustomSheetViewsCT;
+    fPrintOptions: TPrintOptionsCT;
+    fPageMargins: TPageMarginsCT;
+    fPageSetup: TPageSetupCT;
+    fHeaderFooter: THeaderFooterCT;
+    fDrawing: TDrawingCT;
+    fLegacyDrawing: TLegacyDrawingCT;
+    fLegacyDrawingHF: TLegacyDrawingCT;
+    fDrawingHF: TDrawingHFCT;
+    fOleObjects: TOleObjectsCT;
+    fControls: TControlsCT;
+    fExtLst: TExtensionListCT;
   published
-    property SheetPr: TCTSheetPrCT read fSheetPr;
-    property SheetViews: TCTSheetViewsCT read fSheetViews;
-    property SheetFormatPr: TCTSheetFormatPrCT read fSheetFormatPr;
-    property SheetProtection: TCTSheetProtectionCT read fSheetProtection;
-    property CustomSheetViews: TCTCustomSheetViewsCT read fCustomSheetViews;
-    property PrintOptions: TCTPrintOptionsCT read fPrintOptions;
-    property PageMargins: TCTPageMarginsCT read fPageMargins;
-    property PageSetup: TCTPageSetupCT read fPageSetup;
-    property HeaderFooter: TCTHeaderFooterCT read fHeaderFooter;
-    property Drawing: TCTDrawingCT read fDrawing;
-    property LegacyDrawing: TCTLegacyDrawingCT read fLegacyDrawing;
-    property LegacyDrawingHF: TCTLegacyDrawingCT read fLegacyDrawingHF;
-    property DrawingHF: TCTDrawingHFCT read fDrawingHF;
-    property OleObjects: TCTOleObjectsCT read fOleObjects;
-    property Controls: TCTControlsCT read fControls;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property SheetPr: TSheetPrCT read fSheetPr;
+    property SheetViews: TSheetViewsCT read fSheetViews;
+    property SheetFormatPr: TSheetFormatPrCT read fSheetFormatPr;
+    property SheetProtection: TSheetProtectionCT read fSheetProtection;
+    property CustomSheetViews: TCustomSheetViewsCT read fCustomSheetViews;
+    property PrintOptions: TPrintOptionsCT read fPrintOptions;
+    property PageMargins: TPageMarginsCT read fPageMargins;
+    property PageSetup: TPageSetupCT read fPageSetup;
+    property HeaderFooter: THeaderFooterCT read fHeaderFooter;
+    property Drawing: TDrawingCT read fDrawing;
+    property LegacyDrawing: TLegacyDrawingCT read fLegacyDrawing;
+    property LegacyDrawingHF: TLegacyDrawingCT read fLegacyDrawingHF;
+    property DrawingHF: TDrawingHFCT read fDrawingHF;
+    property OleObjects: TOleObjectsCT read fOleObjects;
+    property Controls: TControlsCT read fControls;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_Worksheet')]
-  TCTWorksheetCT = class(TXmliteComplexType)
+  TWorksheetCT = class(TXmliteComplexType)
   private
-    fSheetPr: TCTSheetPrCT;
-    fDimension: TCTSheetDimensionCT;
-    fSheetViews: TCTSheetViewsCT;
-    fSheetFormatPr: TCTSheetFormatPrCT;
-    fCols: TCTColsCTList;
-    fSheetData: TCTSheetDataCT;
-    fSheetCalcPr: TCTSheetCalcPrCT;
-    fSheetProtection: TCTSheetProtectionCT;
-    fProtectedRanges: TCTProtectedRangesCT;
-    fScenarios: TCTScenariosCT;
-    fAutoFilter: TCTAutoFilterCT;
-    fSortState: TCTSortStateCT;
-    fDataConsolidate: TCTDataConsolidateCT;
-    fCustomSheetViews: TCTCustomSheetViewsCT;
-    fMergeCells: TCTMergeCellsCT;
-    fPhoneticPr: TCTPhoneticPrCT;
-    fConditionalFormatting: TCTConditionalFormattingCTList;
-    fDataValidations: TCTDataValidationsCT;
-    fHyperlinks: TCTHyperlinksCT;
-    fPrintOptions: TCTPrintOptionsCT;
-    fPageMargins: TCTPageMarginsCT;
-    fPageSetup: TCTPageSetupCT;
-    fHeaderFooter: TCTHeaderFooterCT;
-    fRowBreaks: TCTPageBreakCT;
-    fColBreaks: TCTPageBreakCT;
-    fCustomProperties: TCTCustomPropertiesCT;
-    fCellWatches: TCTCellWatchesCT;
-    fIgnoredErrors: TCTIgnoredErrorsCT;
-    fSmartTags: TCTSmartTagsCT;
-    fDrawing: TCTDrawingCT;
-    fLegacyDrawing: TCTLegacyDrawingCT;
-    fLegacyDrawingHF: TCTLegacyDrawingCT;
-    fDrawingHF: TCTDrawingHFCT;
-    fPicture: TCTSheetBackgroundPictureCT;
-    fOleObjects: TCTOleObjectsCT;
-    fControls: TCTControlsCT;
-    fWebPublishItems: TCTWebPublishItemsCT;
-    fTableParts: TCTTablePartsCT;
-    fExtLst: TCTExtensionListCT;
+    fSheetPr: TSheetPrCT;
+    fDimension: TSheetDimensionCT;
+    fSheetViews: TSheetViewsCT;
+    fSheetFormatPr: TSheetFormatPrCT;
+    fCols: TColsCTList;
+    fSheetData: TSheetDataCT;
+    fSheetCalcPr: TSheetCalcPrCT;
+    fSheetProtection: TSheetProtectionCT;
+    fProtectedRanges: TProtectedRangesCT;
+    fScenarios: TScenariosCT;
+    fAutoFilter: TAutoFilterCT;
+    fSortState: TSortStateCT;
+    fDataConsolidate: TDataConsolidateCT;
+    fCustomSheetViews: TCustomSheetViewsCT;
+    fMergeCells: TMergeCellsCT;
+    fPhoneticPr: TPhoneticPrCT;
+    fConditionalFormatting: TConditionalFormattingCTList;
+    fDataValidations: TDataValidationsCT;
+    fHyperlinks: THyperlinksCT;
+    fPrintOptions: TPrintOptionsCT;
+    fPageMargins: TPageMarginsCT;
+    fPageSetup: TPageSetupCT;
+    fHeaderFooter: THeaderFooterCT;
+    fRowBreaks: TPageBreakCT;
+    fColBreaks: TPageBreakCT;
+    fCustomProperties: TCustomPropertiesCT;
+    fCellWatches: TCellWatchesCT;
+    fIgnoredErrors: TIgnoredErrorsCT;
+    fSmartTags: TSmartTagsCT;
+    fDrawing: TDrawingCT;
+    fLegacyDrawing: TLegacyDrawingCT;
+    fLegacyDrawingHF: TLegacyDrawingCT;
+    fDrawingHF: TDrawingHFCT;
+    fPicture: TSheetBackgroundPictureCT;
+    fOleObjects: TOleObjectsCT;
+    fControls: TControlsCT;
+    fWebPublishItems: TWebPublishItemsCT;
+    fTableParts: TTablePartsCT;
+    fExtLst: TExtensionListCT;
   published
-    property SheetPr: TCTSheetPrCT read fSheetPr;
-    property Dimension: TCTSheetDimensionCT read fDimension;
-    property SheetViews: TCTSheetViewsCT read fSheetViews;
-    property SheetFormatPr: TCTSheetFormatPrCT read fSheetFormatPr;
-    property Cols: TCTColsCTList read fCols;
+    property SheetPr: TSheetPrCT read fSheetPr;
+    property Dimension: TSheetDimensionCT read fDimension;
+    property SheetViews: TSheetViewsCT read fSheetViews;
+    property SheetFormatPr: TSheetFormatPrCT read fSheetFormatPr;
+    property Cols: TColsCTList read fCols;
     [TRequired]
-    property SheetData: TCTSheetDataCT read fSheetData;
-    property SheetCalcPr: TCTSheetCalcPrCT read fSheetCalcPr;
-    property SheetProtection: TCTSheetProtectionCT read fSheetProtection;
-    property ProtectedRanges: TCTProtectedRangesCT read fProtectedRanges;
-    property Scenarios: TCTScenariosCT read fScenarios;
-    property AutoFilter: TCTAutoFilterCT read fAutoFilter;
-    property SortState: TCTSortStateCT read fSortState;
-    property DataConsolidate: TCTDataConsolidateCT read fDataConsolidate;
-    property CustomSheetViews: TCTCustomSheetViewsCT read fCustomSheetViews;
-    property MergeCells: TCTMergeCellsCT read fMergeCells;
-    property PhoneticPr: TCTPhoneticPrCT read fPhoneticPr;
-    property ConditionalFormatting: TCTConditionalFormattingCTList read fConditionalFormatting;
-    property DataValidations: TCTDataValidationsCT read fDataValidations;
-    property Hyperlinks: TCTHyperlinksCT read fHyperlinks;
-    property PrintOptions: TCTPrintOptionsCT read fPrintOptions;
-    property PageMargins: TCTPageMarginsCT read fPageMargins;
-    property PageSetup: TCTPageSetupCT read fPageSetup;
-    property HeaderFooter: TCTHeaderFooterCT read fHeaderFooter;
-    property RowBreaks: TCTPageBreakCT read fRowBreaks;
-    property ColBreaks: TCTPageBreakCT read fColBreaks;
-    property CustomProperties: TCTCustomPropertiesCT read fCustomProperties;
-    property CellWatches: TCTCellWatchesCT read fCellWatches;
-    property IgnoredErrors: TCTIgnoredErrorsCT read fIgnoredErrors;
-    property SmartTags: TCTSmartTagsCT read fSmartTags;
-    property Drawing: TCTDrawingCT read fDrawing;
-    property LegacyDrawing: TCTLegacyDrawingCT read fLegacyDrawing;
-    property LegacyDrawingHF: TCTLegacyDrawingCT read fLegacyDrawingHF;
-    property DrawingHF: TCTDrawingHFCT read fDrawingHF;
-    property Picture: TCTSheetBackgroundPictureCT read fPicture;
-    property OleObjects: TCTOleObjectsCT read fOleObjects;
-    property Controls: TCTControlsCT read fControls;
-    property WebPublishItems: TCTWebPublishItemsCT read fWebPublishItems;
-    property TableParts: TCTTablePartsCT read fTableParts;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property SheetData: TSheetDataCT read fSheetData;
+    property SheetCalcPr: TSheetCalcPrCT read fSheetCalcPr;
+    property SheetProtection: TSheetProtectionCT read fSheetProtection;
+    property ProtectedRanges: TProtectedRangesCT read fProtectedRanges;
+    property Scenarios: TScenariosCT read fScenarios;
+    property AutoFilter: TAutoFilterCT read fAutoFilter;
+    property SortState: TSortStateCT read fSortState;
+    property DataConsolidate: TDataConsolidateCT read fDataConsolidate;
+    property CustomSheetViews: TCustomSheetViewsCT read fCustomSheetViews;
+    property MergeCells: TMergeCellsCT read fMergeCells;
+    property PhoneticPr: TPhoneticPrCT read fPhoneticPr;
+    property ConditionalFormatting: TConditionalFormattingCTList read fConditionalFormatting;
+    property DataValidations: TDataValidationsCT read fDataValidations;
+    property Hyperlinks: THyperlinksCT read fHyperlinks;
+    property PrintOptions: TPrintOptionsCT read fPrintOptions;
+    property PageMargins: TPageMarginsCT read fPageMargins;
+    property PageSetup: TPageSetupCT read fPageSetup;
+    property HeaderFooter: THeaderFooterCT read fHeaderFooter;
+    property RowBreaks: TPageBreakCT read fRowBreaks;
+    property ColBreaks: TPageBreakCT read fColBreaks;
+    property CustomProperties: TCustomPropertiesCT read fCustomProperties;
+    property CellWatches: TCellWatchesCT read fCellWatches;
+    property IgnoredErrors: TIgnoredErrorsCT read fIgnoredErrors;
+    property SmartTags: TSmartTagsCT read fSmartTags;
+    property Drawing: TDrawingCT read fDrawing;
+    property LegacyDrawing: TLegacyDrawingCT read fLegacyDrawing;
+    property LegacyDrawingHF: TLegacyDrawingCT read fLegacyDrawingHF;
+    property DrawingHF: TDrawingHFCT read fDrawingHF;
+    property Picture: TSheetBackgroundPictureCT read fPicture;
+    property OleObjects: TOleObjectsCT read fOleObjects;
+    property Controls: TControlsCT read fControls;
+    property WebPublishItems: TWebPublishItemsCT read fWebPublishItems;
+    property TableParts: TTablePartsCT read fTableParts;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_SheetData')]
-  TCTSheetDataCT = class(TXmliteComplexType)
+  TSheetDataCT = class(TXmliteComplexType)
   private
-    fRow: TCTRowCTList;
+    fRow: TRowCTList;
   published
-    property Row: TCTRowCTList read fRow;
+    property Row: TRowCTList read fRow;
   end;
 
   [TName('CT_SheetCalcPr')]
-  TCTSheetCalcPrCT = class(TXmliteComplexType)
+  TSheetCalcPrCT = class(TXmliteComplexType)
   private
     fFullCalcOnLoad: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
@@ -4867,7 +4867,7 @@ type
   end;
 
   [TName('CT_SheetFormatPr')]
-  TCTSheetFormatPrCT = class(TXmliteComplexType)
+  TSheetFormatPrCT = class(TXmliteComplexType)
   private
     fBaseColWidth: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fDefaultColWidth: ProRock.Xmlite.Schema.Base.TDoubleST;
@@ -4899,15 +4899,15 @@ type
   end;
 
   [TName('CT_Cols')]
-  TCTColsCT = class(TXmliteComplexType)
+  TColsCT = class(TXmliteComplexType)
   private
-    fCol: TCTColCTList;
+    fCol: TColCTList;
   published
-    property Col: TCTColCTList read fCol;
+    property Col: TColCTList read fCol;
   end;
 
   [TName('CT_Col')]
-  TCTColCT = class(TXmliteComplexType)
+  TColCT = class(TXmliteComplexType)
   private
     fMin: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fMax: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
@@ -4942,10 +4942,10 @@ type
   end;
 
   [TName('CT_Row')]
-  TCTRowCT = class(TXmliteComplexType)
+  TRowCT = class(TXmliteComplexType)
   private
     fR: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fSpans: TSTCellSpansST;
+    fSpans: TCellSpansST;
     fS: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fCustomFormat: ProRock.Xmlite.Schema.Base.TBooleanST;
     fHt: ProRock.Xmlite.Schema.Base.TDoubleST;
@@ -4956,11 +4956,11 @@ type
     fThickTop: ProRock.Xmlite.Schema.Base.TBooleanST;
     fThickBot: ProRock.Xmlite.Schema.Base.TBooleanST;
     fPh: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fC: TCTCellCTList;
-    fExtLst: TCTExtensionListCT;
+    fC: TCellCTList;
+    fExtLst: TExtensionListCT;
   published
     property R: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fR write fR;
-    property Spans: TSTCellSpansST read fSpans write fSpans;
+    property Spans: TCellSpansST read fSpans write fSpans;
     [TDefault(0)]
     property S: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fS write fS;
     [TDefault(False)]
@@ -4980,63 +4980,63 @@ type
     property ThickBot: ProRock.Xmlite.Schema.Base.TBooleanST read fThickBot write fThickBot;
     [TDefault(False)]
     property Ph: ProRock.Xmlite.Schema.Base.TBooleanST read fPh write fPh;
-    property C: TCTCellCTList read fC;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property C: TCellCTList read fC;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_Cell')]
-  TCTCellCT = class(TXmliteComplexType)
+  TCellCT = class(TXmliteComplexType)
   private
-    fR: TSTCellRefST;
+    fR: TCellRefST;
     fS: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fT: TSTCellTypeST;
+    fT: TCellTypeST;
     fCm: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fVm: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fPh: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fF: TCTCellFormulaCT;
-    fV: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fIs: TCTRstCT;
-    fExtLst: TCTExtensionListCT;
+    fF: TCellFormulaCT;
+    fV: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fIs: TRstCT;
+    fExtLst: TExtensionListCT;
   published
-    property R: TSTCellRefST read fR write fR;
+    property R: TCellRefST read fR write fR;
     [TDefault(0)]
     property S: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fS write fS;
     [TDefault(Ord(stctN))]
-    property T: TSTCellTypeST read fT write fT;
+    property T: TCellTypeST read fT write fT;
     [TDefault(0)]
     property Cm: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCm write fCm;
     [TDefault(0)]
     property Vm: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fVm write fVm;
     [TDefault(False)]
     property Ph: ProRock.Xmlite.Schema.Base.TBooleanST read fPh write fPh;
-    property F: TCTCellFormulaCT read fF;
+    property F: TCellFormulaCT read fF;
     [TXmliteElement]
-    property V: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fV write fV;
-    property &Is: TCTRstCT read fIs;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property V: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fV write fV;
+    property &Is: TRstCT read fIs;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_SheetPr')]
-  TCTSheetPrCT = class(TXmliteComplexType)
+  TSheetPrCT = class(TXmliteComplexType)
   private
     fSyncHorizontal: ProRock.Xmlite.Schema.Base.TBooleanST;
     fSyncVertical: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fSyncRef: TSTRefST;
+    fSyncRef: TRefST;
     fTransitionEvaluation: ProRock.Xmlite.Schema.Base.TBooleanST;
     fTransitionEntry: ProRock.Xmlite.Schema.Base.TBooleanST;
     fPublished: ProRock.Xmlite.Schema.Base.TBooleanST;
     fCodeName: ProRock.Xmlite.Schema.Base.TStringST;
     fFilterMode: ProRock.Xmlite.Schema.Base.TBooleanST;
     fEnableFormatConditionsCalculation: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fTabColor: TCTColorCT;
-    fOutlinePr: TCTOutlinePrCT;
-    fPageSetUpPr: TCTPageSetUpPrCT;
+    fTabColor: TColorCT;
+    fOutlinePr: TOutlinePrCT;
+    fPageSetUpPr: TPageSetUpPrCT;
   published
     [TDefault(False)]
     property SyncHorizontal: ProRock.Xmlite.Schema.Base.TBooleanST read fSyncHorizontal write fSyncHorizontal;
     [TDefault(False)]
     property SyncVertical: ProRock.Xmlite.Schema.Base.TBooleanST read fSyncVertical write fSyncVertical;
-    property SyncRef: TSTRefST read fSyncRef write fSyncRef;
+    property SyncRef: TRefST read fSyncRef write fSyncRef;
     [TDefault(False)]
     property TransitionEvaluation: ProRock.Xmlite.Schema.Base.TBooleanST read fTransitionEvaluation write fTransitionEvaluation;
     [TDefault(False)]
@@ -5048,32 +5048,32 @@ type
     property FilterMode: ProRock.Xmlite.Schema.Base.TBooleanST read fFilterMode write fFilterMode;
     [TDefault(True)]
     property EnableFormatConditionsCalculation: ProRock.Xmlite.Schema.Base.TBooleanST read fEnableFormatConditionsCalculation write fEnableFormatConditionsCalculation;
-    property TabColor: TCTColorCT read fTabColor;
-    property OutlinePr: TCTOutlinePrCT read fOutlinePr;
-    property PageSetUpPr: TCTPageSetUpPrCT read fPageSetUpPr;
+    property TabColor: TColorCT read fTabColor;
+    property OutlinePr: TOutlinePrCT read fOutlinePr;
+    property PageSetUpPr: TPageSetUpPrCT read fPageSetUpPr;
   end;
 
   [TName('CT_SheetDimension')]
-  TCTSheetDimensionCT = class(TXmliteComplexType)
+  TSheetDimensionCT = class(TXmliteComplexType)
   private
-    fRef: TSTRefST;
+    fRef: TRefST;
   published
     [TRequired]
-    property Ref: TSTRefST read fRef write fRef;
+    property Ref: TRefST read fRef write fRef;
   end;
 
   [TName('CT_SheetViews')]
-  TCTSheetViewsCT = class(TXmliteComplexType)
+  TSheetViewsCT = class(TXmliteComplexType)
   private
-    fSheetView: TCTSheetViewCTList;
-    fExtLst: TCTExtensionListCT;
+    fSheetView: TSheetViewCTList;
+    fExtLst: TExtensionListCT;
   published
-    property SheetView: TCTSheetViewCTList read fSheetView;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property SheetView: TSheetViewCTList read fSheetView;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_SheetView')]
-  TCTSheetViewCT = class(TXmliteComplexType)
+  TSheetViewCT = class(TXmliteComplexType)
   private
     fWindowProtection: ProRock.Xmlite.Schema.Base.TBooleanST;
     fShowFormulas: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -5086,18 +5086,18 @@ type
     fShowOutlineSymbols: ProRock.Xmlite.Schema.Base.TBooleanST;
     fDefaultGridColor: ProRock.Xmlite.Schema.Base.TBooleanST;
     fShowWhiteSpace: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fView: TSTSheetViewTypeST;
-    fTopLeftCell: TSTCellRefST;
+    fView: TSheetViewTypeST;
+    fTopLeftCell: TCellRefST;
     fColorId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fZoomScale: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fZoomScaleNormal: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fZoomScaleSheetLayoutView: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fZoomScalePageLayoutView: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fWorkbookViewId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fPane: TCTPaneCT;
-    fSelection: TCTSelectionCTList;
-    fPivotSelection: TCTPivotSelectionCTList;
-    fExtLst: TCTExtensionListCT;
+    fPane: TPaneCT;
+    fSelection: TSelectionCTList;
+    fPivotSelection: TPivotSelectionCTList;
+    fExtLst: TExtensionListCT;
   published
     [TDefault(False)]
     property WindowProtection: ProRock.Xmlite.Schema.Base.TBooleanST read fWindowProtection write fWindowProtection;
@@ -5122,8 +5122,8 @@ type
     [TDefault(True)]
     property ShowWhiteSpace: ProRock.Xmlite.Schema.Base.TBooleanST read fShowWhiteSpace write fShowWhiteSpace;
     [TDefault(Ord(stsvtNormal))]
-    property View: TSTSheetViewTypeST read fView write fView;
-    property TopLeftCell: TSTCellRefST read fTopLeftCell write fTopLeftCell;
+    property View: TSheetViewTypeST read fView write fView;
+    property TopLeftCell: TCellRefST read fTopLeftCell write fTopLeftCell;
     [TDefault(64)]
     property ColorId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fColorId write fColorId;
     [TDefault(100)]
@@ -5136,42 +5136,42 @@ type
     property ZoomScalePageLayoutView: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fZoomScalePageLayoutView write fZoomScalePageLayoutView;
     [TRequired]
     property WorkbookViewId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fWorkbookViewId write fWorkbookViewId;
-    property Pane: TCTPaneCT read fPane;
-    property Selection: TCTSelectionCTList read fSelection;
-    property PivotSelection: TCTPivotSelectionCTList read fPivotSelection;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property Pane: TPaneCT read fPane;
+    property Selection: TSelectionCTList read fSelection;
+    property PivotSelection: TPivotSelectionCTList read fPivotSelection;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_Pane')]
-  TCTPaneCT = class(TXmliteComplexType)
+  TPaneCT = class(TXmliteComplexType)
   private
     fXSplit: ProRock.Xmlite.Schema.Base.TDoubleST;
     fYSplit: ProRock.Xmlite.Schema.Base.TDoubleST;
-    fTopLeftCell: TSTCellRefST;
-    fActivePane: TSTPaneST;
-    fState: TSTPaneStateST;
+    fTopLeftCell: TCellRefST;
+    fActivePane: TPaneST;
+    fState: TPaneStateST;
   published
     [TDefault(0)]
     property XSplit: ProRock.Xmlite.Schema.Base.TDoubleST read fXSplit write fXSplit;
     [TDefault(0)]
     property YSplit: ProRock.Xmlite.Schema.Base.TDoubleST read fYSplit write fYSplit;
-    property TopLeftCell: TSTCellRefST read fTopLeftCell write fTopLeftCell;
+    property TopLeftCell: TCellRefST read fTopLeftCell write fTopLeftCell;
     [TDefault(Ord(stpTopLeft))]
-    property ActivePane: TSTPaneST read fActivePane write fActivePane;
+    property ActivePane: TPaneST read fActivePane write fActivePane;
     [TDefault(Ord(stpsSplit))]
-    property State: TSTPaneStateST read fState write fState;
+    property State: TPaneStateST read fState write fState;
   end;
 
   [TName('CT_PivotSelection')]
-  TCTPivotSelectionCT = class(TXmliteComplexType)
+  TPivotSelectionCT = class(TXmliteComplexType)
   private
-    fPane: TSTPaneST;
+    fPane: TPaneST;
     fShowHeader: ProRock.Xmlite.Schema.Base.TBooleanST;
     fLabel: ProRock.Xmlite.Schema.Base.TBooleanST;
     fData: ProRock.Xmlite.Schema.Base.TBooleanST;
     fExtendable: ProRock.Xmlite.Schema.Base.TBooleanST;
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fAxis: TSTAxisST;
+    fAxis: TAxisST;
     fDimension: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fStart: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fMin: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
@@ -5182,10 +5182,10 @@ type
     fPreviousCol: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fClick: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fId: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA;
-    fPivotArea: TCTPivotAreaCT;
+    fPivotArea: TPivotAreaCT;
   published
     [TDefault(Ord(stpTopLeft))]
-    property Pane: TSTPaneST read fPane write fPane;
+    property Pane: TPaneST read fPane write fPane;
     [TDefault(False)]
     property ShowHeader: ProRock.Xmlite.Schema.Base.TBooleanST read fShowHeader write fShowHeader;
     [TDefault(False)]
@@ -5196,7 +5196,7 @@ type
     property Extendable: ProRock.Xmlite.Schema.Base.TBooleanST read fExtendable write fExtendable;
     [TDefault(0)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property Axis: TSTAxisST read fAxis write fAxis;
+    property Axis: TAxisST read fAxis write fAxis;
     [TDefault(0)]
     property Dimension: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fDimension write fDimension;
     [TDefault(0)]
@@ -5218,42 +5218,42 @@ type
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
     [TRequired]
-    property PivotArea: TCTPivotAreaCT read fPivotArea;
+    property PivotArea: TPivotAreaCT read fPivotArea;
   end;
 
   [TName('CT_Selection')]
-  TCTSelectionCT = class(TXmliteComplexType)
+  TSelectionCT = class(TXmliteComplexType)
   private
-    fPane: TSTPaneST;
-    fActiveCell: TSTCellRefST;
+    fPane: TPaneST;
+    fActiveCell: TCellRefST;
     fActiveCellId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fSqref: TSTSqrefST;
+    fSqref: TSqrefST;
   published
     [TDefault(Ord(stpTopLeft))]
-    property Pane: TSTPaneST read fPane write fPane;
-    property ActiveCell: TSTCellRefST read fActiveCell write fActiveCell;
+    property Pane: TPaneST read fPane write fPane;
+    property ActiveCell: TCellRefST read fActiveCell write fActiveCell;
     [TDefault(0)]
     property ActiveCellId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fActiveCellId write fActiveCellId;
     [TDefault('A1')]
-    property Sqref: TSTSqrefST read fSqref write fSqref;
+    property Sqref: TSqrefST read fSqref write fSqref;
   end;
 
   [TName('CT_PageBreak')]
-  TCTPageBreakCT = class(TXmliteComplexType)
+  TPageBreakCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fManualBreakCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fBrk: TCTBreakCTList;
+    fBrk: TBreakCTList;
   published
     [TDefault(0)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
     [TDefault(0)]
     property ManualBreakCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fManualBreakCount write fManualBreakCount;
-    property Brk: TCTBreakCTList read fBrk;
+    property Brk: TBreakCTList read fBrk;
   end;
 
   [TName('CT_Break')]
-  TCTBreakCT = class(TXmliteComplexType)
+  TBreakCT = class(TXmliteComplexType)
   private
     fId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fMin: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
@@ -5274,7 +5274,7 @@ type
   end;
 
   [TName('CT_OutlinePr')]
-  TCTOutlinePrCT = class(TXmliteComplexType)
+  TOutlinePrCT = class(TXmliteComplexType)
   private
     fApplyStyles: ProRock.Xmlite.Schema.Base.TBooleanST;
     fSummaryBelow: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -5292,7 +5292,7 @@ type
   end;
 
   [TName('CT_PageSetUpPr')]
-  TCTPageSetUpPrCT = class(TXmliteComplexType)
+  TPageSetUpPrCT = class(TXmliteComplexType)
   private
     fAutoPageBreaks: ProRock.Xmlite.Schema.Base.TBooleanST;
     fFitToPage: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -5304,17 +5304,17 @@ type
   end;
 
   [TName('CT_DataConsolidate')]
-  TCTDataConsolidateCT = class(TXmliteComplexType)
+  TDataConsolidateCT = class(TXmliteComplexType)
   private
-    fFunction: TSTDataConsolidateFunctionST;
+    fFunction: TDataConsolidateFunctionST;
     fStartLabels: ProRock.Xmlite.Schema.Base.TBooleanST;
     fLeftLabels: ProRock.Xmlite.Schema.Base.TBooleanST;
     fTopLabels: ProRock.Xmlite.Schema.Base.TBooleanST;
     fLink: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fDataRefs: TCTDataRefsCT;
+    fDataRefs: TDataRefsCT;
   published
     [TDefault(Ord(stdcfSum))]
-    property &Function: TSTDataConsolidateFunctionST read fFunction write fFunction;
+    property &Function: TDataConsolidateFunctionST read fFunction write fFunction;
     [TDefault(False)]
     property StartLabels: ProRock.Xmlite.Schema.Base.TBooleanST read fStartLabels write fStartLabels;
     [TDefault(False)]
@@ -5323,79 +5323,79 @@ type
     property TopLabels: ProRock.Xmlite.Schema.Base.TBooleanST read fTopLabels write fTopLabels;
     [TDefault(False)]
     property Link: ProRock.Xmlite.Schema.Base.TBooleanST read fLink write fLink;
-    property DataRefs: TCTDataRefsCT read fDataRefs;
+    property DataRefs: TDataRefsCT read fDataRefs;
   end;
 
   [TName('CT_DataRefs')]
-  TCTDataRefsCT = class(TXmliteComplexType)
+  TDataRefsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fDataRef: TCTDataRefCTList;
+    fDataRef: TDataRefCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property DataRef: TCTDataRefCTList read fDataRef;
+    property DataRef: TDataRefCTList read fDataRef;
   end;
 
   [TName('CT_DataRef')]
-  TCTDataRefCT = class(TXmliteComplexType)
+  TDataRefCT = class(TXmliteComplexType)
   private
-    fRef: TSTRefST;
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fSheet: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fRef: TRefST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fSheet: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fId: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA;
   published
-    property Ref: TSTRefST read fRef write fRef;
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
-    property Sheet: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fSheet write fSheet;
+    property Ref: TRefST read fRef write fRef;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
+    property Sheet: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fSheet write fSheet;
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
   end;
 
   [TName('CT_MergeCells')]
-  TCTMergeCellsCT = class(TXmliteComplexType)
+  TMergeCellsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fMergeCell: TCTMergeCellCTList;
+    fMergeCell: TMergeCellCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property MergeCell: TCTMergeCellCTList read fMergeCell;
+    property MergeCell: TMergeCellCTList read fMergeCell;
   end;
 
   [TName('CT_MergeCell')]
-  TCTMergeCellCT = class(TXmliteComplexType)
+  TMergeCellCT = class(TXmliteComplexType)
   private
-    fRef: TSTRefST;
+    fRef: TRefST;
   published
     [TRequired]
-    property Ref: TSTRefST read fRef write fRef;
+    property Ref: TRefST read fRef write fRef;
   end;
 
   [TName('CT_SmartTags')]
-  TCTSmartTagsCT = class(TXmliteComplexType)
+  TSmartTagsCT = class(TXmliteComplexType)
   private
-    fCellSmartTags: TCTCellSmartTagsCTList;
+    fCellSmartTags: TCellSmartTagsCTList;
   published
-    property CellSmartTags: TCTCellSmartTagsCTList read fCellSmartTags;
+    property CellSmartTags: TCellSmartTagsCTList read fCellSmartTags;
   end;
 
   [TName('CT_CellSmartTags')]
-  TCTCellSmartTagsCT = class(TXmliteComplexType)
+  TCellSmartTagsCT = class(TXmliteComplexType)
   private
-    fR: TSTCellRefST;
-    fCellSmartTag: TCTCellSmartTagCTList;
+    fR: TCellRefST;
+    fCellSmartTag: TCellSmartTagCTList;
   published
     [TRequired]
-    property R: TSTCellRefST read fR write fR;
-    property CellSmartTag: TCTCellSmartTagCTList read fCellSmartTag;
+    property R: TCellRefST read fR write fR;
+    property CellSmartTag: TCellSmartTagCTList read fCellSmartTag;
   end;
 
   [TName('CT_CellSmartTag')]
-  TCTCellSmartTagCT = class(TXmliteComplexType)
+  TCellSmartTagCT = class(TXmliteComplexType)
   private
     fType: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fDeleted: ProRock.Xmlite.Schema.Base.TBooleanST;
     fXmlBased: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fCellSmartTagPr: TCTCellSmartTagPrCTList;
+    fCellSmartTagPr: TCellSmartTagPrCTList;
   published
     [TRequired]
     property &Type: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fType write fType;
@@ -5403,23 +5403,23 @@ type
     property Deleted: ProRock.Xmlite.Schema.Base.TBooleanST read fDeleted write fDeleted;
     [TDefault(False)]
     property XmlBased: ProRock.Xmlite.Schema.Base.TBooleanST read fXmlBased write fXmlBased;
-    property CellSmartTagPr: TCTCellSmartTagPrCTList read fCellSmartTagPr;
+    property CellSmartTagPr: TCellSmartTagPrCTList read fCellSmartTagPr;
   end;
 
   [TName('CT_CellSmartTagPr')]
-  TCTCellSmartTagPrCT = class(TXmliteComplexType)
+  TCellSmartTagPrCT = class(TXmliteComplexType)
   private
-    fKey: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fVal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fKey: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fVal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
   published
     [TRequired]
-    property Key: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fKey write fKey;
+    property Key: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fKey write fKey;
     [TRequired]
-    property Val: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fVal write fVal;
+    property Val: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fVal write fVal;
   end;
 
   [TName('CT_Drawing')]
-  TCTDrawingCT = class(TXmliteComplexType)
+  TDrawingCT = class(TXmliteComplexType)
   private
     fId: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA;
   published
@@ -5429,7 +5429,7 @@ type
   end;
 
   [TName('CT_LegacyDrawing')]
-  TCTLegacyDrawingCT = class(TXmliteComplexType)
+  TLegacyDrawingCT = class(TXmliteComplexType)
   private
     fId: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA;
   published
@@ -5439,7 +5439,7 @@ type
   end;
 
   [TName('CT_DrawingHF')]
-  TCTDrawingHFCT = class(TXmliteComplexType)
+  TDrawingHFCT = class(TXmliteComplexType)
   private
     fId: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA;
     fLho: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
@@ -5485,17 +5485,17 @@ type
   end;
 
   [TName('CT_CustomSheetViews')]
-  TCTCustomSheetViewsCT = class(TXmliteComplexType)
+  TCustomSheetViewsCT = class(TXmliteComplexType)
   private
-    fCustomSheetView: TCTCustomSheetViewCTList;
+    fCustomSheetView: TCustomSheetViewCTList;
   published
-    property CustomSheetView: TCTCustomSheetViewCTList read fCustomSheetView;
+    property CustomSheetView: TCustomSheetViewCTList read fCustomSheetView;
   end;
 
   [TName('CT_CustomSheetView')]
-  TCTCustomSheetViewCT = class(TXmliteComplexType)
+  TCustomSheetViewCT = class(TXmliteComplexType)
   private
-    fGuid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST;
+    fGuid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST;
     fScale: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fColorId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fShowPageBreaks: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -5510,24 +5510,24 @@ type
     fShowAutoFilter: ProRock.Xmlite.Schema.Base.TBooleanST;
     fHiddenRows: ProRock.Xmlite.Schema.Base.TBooleanST;
     fHiddenColumns: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fState: TSTSheetStateST;
+    fState: TSheetStateST;
     fFilterUnique: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fView: TSTSheetViewTypeST;
+    fView: TSheetViewTypeST;
     fShowRuler: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fTopLeftCell: TSTCellRefST;
-    fPane: TCTPaneCT;
-    fSelection: TCTSelectionCT;
-    fRowBreaks: TCTPageBreakCT;
-    fColBreaks: TCTPageBreakCT;
-    fPageMargins: TCTPageMarginsCT;
-    fPrintOptions: TCTPrintOptionsCT;
-    fPageSetup: TCTPageSetupCT;
-    fHeaderFooter: TCTHeaderFooterCT;
-    fAutoFilter: TCTAutoFilterCT;
-    fExtLst: TCTExtensionListCT;
+    fTopLeftCell: TCellRefST;
+    fPane: TPaneCT;
+    fSelection: TSelectionCT;
+    fRowBreaks: TPageBreakCT;
+    fColBreaks: TPageBreakCT;
+    fPageMargins: TPageMarginsCT;
+    fPrintOptions: TPrintOptionsCT;
+    fPageSetup: TPageSetupCT;
+    fHeaderFooter: THeaderFooterCT;
+    fAutoFilter: TAutoFilterCT;
+    fExtLst: TExtensionListCT;
   published
     [TRequired]
-    property Guid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST read fGuid write fGuid;
+    property Guid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST read fGuid write fGuid;
     [TDefault(100)]
     property Scale: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fScale write fScale;
     [TDefault(64)]
@@ -5557,70 +5557,70 @@ type
     [TDefault(False)]
     property HiddenColumns: ProRock.Xmlite.Schema.Base.TBooleanST read fHiddenColumns write fHiddenColumns;
     [TDefault(Ord(stssVisible))]
-    property State: TSTSheetStateST read fState write fState;
+    property State: TSheetStateST read fState write fState;
     [TDefault(False)]
     property FilterUnique: ProRock.Xmlite.Schema.Base.TBooleanST read fFilterUnique write fFilterUnique;
     [TDefault(Ord(stsvtNormal))]
-    property View: TSTSheetViewTypeST read fView write fView;
+    property View: TSheetViewTypeST read fView write fView;
     [TDefault(True)]
     property ShowRuler: ProRock.Xmlite.Schema.Base.TBooleanST read fShowRuler write fShowRuler;
-    property TopLeftCell: TSTCellRefST read fTopLeftCell write fTopLeftCell;
-    property Pane: TCTPaneCT read fPane;
-    property Selection: TCTSelectionCT read fSelection;
-    property RowBreaks: TCTPageBreakCT read fRowBreaks;
-    property ColBreaks: TCTPageBreakCT read fColBreaks;
-    property PageMargins: TCTPageMarginsCT read fPageMargins;
-    property PrintOptions: TCTPrintOptionsCT read fPrintOptions;
-    property PageSetup: TCTPageSetupCT read fPageSetup;
-    property HeaderFooter: TCTHeaderFooterCT read fHeaderFooter;
-    property AutoFilter: TCTAutoFilterCT read fAutoFilter;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property TopLeftCell: TCellRefST read fTopLeftCell write fTopLeftCell;
+    property Pane: TPaneCT read fPane;
+    property Selection: TSelectionCT read fSelection;
+    property RowBreaks: TPageBreakCT read fRowBreaks;
+    property ColBreaks: TPageBreakCT read fColBreaks;
+    property PageMargins: TPageMarginsCT read fPageMargins;
+    property PrintOptions: TPrintOptionsCT read fPrintOptions;
+    property PageSetup: TPageSetupCT read fPageSetup;
+    property HeaderFooter: THeaderFooterCT read fHeaderFooter;
+    property AutoFilter: TAutoFilterCT read fAutoFilter;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_DataValidations')]
-  TCTDataValidationsCT = class(TXmliteComplexType)
+  TDataValidationsCT = class(TXmliteComplexType)
   private
     fDisablePrompts: ProRock.Xmlite.Schema.Base.TBooleanST;
     fXWindow: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fYWindow: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fDataValidation: TCTDataValidationCTList;
+    fDataValidation: TDataValidationCTList;
   published
     [TDefault(False)]
     property DisablePrompts: ProRock.Xmlite.Schema.Base.TBooleanST read fDisablePrompts write fDisablePrompts;
     property XWindow: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fXWindow write fXWindow;
     property YWindow: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fYWindow write fYWindow;
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property DataValidation: TCTDataValidationCTList read fDataValidation;
+    property DataValidation: TDataValidationCTList read fDataValidation;
   end;
 
   [TName('CT_DataValidation')]
-  TCTDataValidationCT = class(TXmliteComplexType)
+  TDataValidationCT = class(TXmliteComplexType)
   private
-    fType: TSTDataValidationTypeST;
-    fErrorStyle: TSTDataValidationErrorStyleST;
-    fImeMode: TSTDataValidationImeModeST;
-    fOperator: TSTDataValidationOperatorST;
+    fType: TDataValidationTypeST;
+    fErrorStyle: TDataValidationErrorStyleST;
+    fImeMode: TDataValidationImeModeST;
+    fOperator: TDataValidationOperatorST;
     fAllowBlank: ProRock.Xmlite.Schema.Base.TBooleanST;
     fShowDropDown: ProRock.Xmlite.Schema.Base.TBooleanST;
     fShowInputMessage: ProRock.Xmlite.Schema.Base.TBooleanST;
     fShowErrorMessage: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fErrorTitle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fError: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fPromptTitle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fPrompt: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fSqref: TSTSqrefST;
-    fFormula1: TSTFormulaST;
-    fFormula2: TSTFormulaST;
+    fErrorTitle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fError: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fPromptTitle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fPrompt: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fSqref: TSqrefST;
+    fFormula1: TFormulaST;
+    fFormula2: TFormulaST;
   published
     [TDefault(Ord(stdvtNone))]
-    property &Type: TSTDataValidationTypeST read fType write fType;
+    property &Type: TDataValidationTypeST read fType write fType;
     [TDefault(Ord(stdvesStop))]
-    property ErrorStyle: TSTDataValidationErrorStyleST read fErrorStyle write fErrorStyle;
+    property ErrorStyle: TDataValidationErrorStyleST read fErrorStyle write fErrorStyle;
     [TDefault(Ord(stdvimNoControl))]
-    property ImeMode: TSTDataValidationImeModeST read fImeMode write fImeMode;
+    property ImeMode: TDataValidationImeModeST read fImeMode write fImeMode;
     [TDefault(Ord(stdvoBetween))]
-    property Operator: TSTDataValidationOperatorST read fOperator write fOperator;
+    property Operator: TDataValidationOperatorST read fOperator write fOperator;
     [TDefault(False)]
     property AllowBlank: ProRock.Xmlite.Schema.Base.TBooleanST read fAllowBlank write fAllowBlank;
     [TDefault(False)]
@@ -5629,57 +5629,57 @@ type
     property ShowInputMessage: ProRock.Xmlite.Schema.Base.TBooleanST read fShowInputMessage write fShowInputMessage;
     [TDefault(False)]
     property ShowErrorMessage: ProRock.Xmlite.Schema.Base.TBooleanST read fShowErrorMessage write fShowErrorMessage;
-    property ErrorTitle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fErrorTitle write fErrorTitle;
-    property Error: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fError write fError;
-    property PromptTitle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fPromptTitle write fPromptTitle;
-    property Prompt: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fPrompt write fPrompt;
+    property ErrorTitle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fErrorTitle write fErrorTitle;
+    property Error: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fError write fError;
+    property PromptTitle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fPromptTitle write fPromptTitle;
+    property Prompt: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fPrompt write fPrompt;
     [TRequired]
-    property Sqref: TSTSqrefST read fSqref write fSqref;
+    property Sqref: TSqrefST read fSqref write fSqref;
     [TXmliteElement]
-    property Formula1: TSTFormulaST read fFormula1 write fFormula1;
+    property Formula1: TFormulaST read fFormula1 write fFormula1;
     [TXmliteElement]
-    property Formula2: TSTFormulaST read fFormula2 write fFormula2;
+    property Formula2: TFormulaST read fFormula2 write fFormula2;
   end;
 
   [TName('CT_ConditionalFormatting')]
-  TCTConditionalFormattingCT = class(TXmliteComplexType)
+  TConditionalFormattingCT = class(TXmliteComplexType)
   private
     fPivot: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fSqref: TSTSqrefST;
-    fCfRule: TCTCfRuleCTList;
-    fExtLst: TCTExtensionListCT;
+    fSqref: TSqrefST;
+    fCfRule: TCfRuleCTList;
+    fExtLst: TExtensionListCT;
   published
     [TDefault(False)]
     property Pivot: ProRock.Xmlite.Schema.Base.TBooleanST read fPivot write fPivot;
-    property Sqref: TSTSqrefST read fSqref write fSqref;
-    property CfRule: TCTCfRuleCTList read fCfRule;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property Sqref: TSqrefST read fSqref write fSqref;
+    property CfRule: TCfRuleCTList read fCfRule;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_CfRule')]
-  TCTCfRuleCT = class(TXmliteComplexType)
+  TCfRuleCT = class(TXmliteComplexType)
   private
-    fType: TSTCfTypeST;
-    fDxfId: TSTDxfIdST;
+    fType: TCfTypeST;
+    fDxfId: TDxfIdST;
     fPriority: ProRock.Xmlite.Schema.Base.TIntST;
     fStopIfTrue: ProRock.Xmlite.Schema.Base.TBooleanST;
     fAboveAverage: ProRock.Xmlite.Schema.Base.TBooleanST;
     fPercent: ProRock.Xmlite.Schema.Base.TBooleanST;
     fBottom: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fOperator: TSTConditionalFormattingOperatorST;
+    fOperator: TConditionalFormattingOperatorST;
     fText: ProRock.Xmlite.Schema.Base.TStringST;
-    fTimePeriod: TSTTimePeriodST;
+    fTimePeriod: TTimePeriodST;
     fRank: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fStdDev: ProRock.Xmlite.Schema.Base.TIntST;
     fEqualAverage: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fFormula: TSTFormulaSTList;
-    fColorScale: TCTColorScaleCT;
-    fDataBar: TCTDataBarCT;
-    fIconSet: TCTIconSetCT;
-    fExtLst: TCTExtensionListCT;
+    fFormula: TFormulaSTList;
+    fColorScale: TColorScaleCT;
+    fDataBar: TDataBarCT;
+    fIconSet: TIconSetCT;
+    fExtLst: TExtensionListCT;
   published
-    property &Type: TSTCfTypeST read fType write fType;
-    property DxfId: TSTDxfIdST read fDxfId write fDxfId;
+    property &Type: TCfTypeST read fType write fType;
+    property DxfId: TDxfIdST read fDxfId write fDxfId;
     [TRequired]
     property Priority: ProRock.Xmlite.Schema.Base.TIntST read fPriority write fPriority;
     [TDefault(False)]
@@ -5690,70 +5690,70 @@ type
     property Percent: ProRock.Xmlite.Schema.Base.TBooleanST read fPercent write fPercent;
     [TDefault(False)]
     property Bottom: ProRock.Xmlite.Schema.Base.TBooleanST read fBottom write fBottom;
-    property Operator: TSTConditionalFormattingOperatorST read fOperator write fOperator;
+    property Operator: TConditionalFormattingOperatorST read fOperator write fOperator;
     property Text: ProRock.Xmlite.Schema.Base.TStringST read fText write fText;
-    property TimePeriod: TSTTimePeriodST read fTimePeriod write fTimePeriod;
+    property TimePeriod: TTimePeriodST read fTimePeriod write fTimePeriod;
     property Rank: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fRank write fRank;
     property StdDev: ProRock.Xmlite.Schema.Base.TIntST read fStdDev write fStdDev;
     [TDefault(False)]
     property EqualAverage: ProRock.Xmlite.Schema.Base.TBooleanST read fEqualAverage write fEqualAverage;
-    property Formula: TSTFormulaSTList read fFormula;
-    property ColorScale: TCTColorScaleCT read fColorScale;
-    property DataBar: TCTDataBarCT read fDataBar;
-    property IconSet: TCTIconSetCT read fIconSet;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property Formula: TFormulaSTList read fFormula;
+    property ColorScale: TColorScaleCT read fColorScale;
+    property DataBar: TDataBarCT read fDataBar;
+    property IconSet: TIconSetCT read fIconSet;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_Hyperlinks')]
-  TCTHyperlinksCT = class(TXmliteComplexType)
+  THyperlinksCT = class(TXmliteComplexType)
   private
-    fHyperlink: TCTHyperlinkCTList;
+    fHyperlink: THyperlinkCTList;
   published
-    property Hyperlink: TCTHyperlinkCTList read fHyperlink;
+    property Hyperlink: THyperlinkCTList read fHyperlink;
   end;
 
   [TName('CT_Hyperlink')]
-  TCTHyperlinkCT = class(TXmliteComplexType)
+  THyperlinkCT = class(TXmliteComplexType)
   private
-    fRef: TSTRefST;
+    fRef: TRefST;
     fId: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA;
-    fLocation: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fTooltip: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fDisplay: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fLocation: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fTooltip: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fDisplay: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
   published
     [TRequired]
-    property Ref: TSTRefST read fRef write fRef;
+    property Ref: TRefST read fRef write fRef;
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
-    property Location: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fLocation write fLocation;
-    property Tooltip: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fTooltip write fTooltip;
-    property Display: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDisplay write fDisplay;
+    property Location: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fLocation write fLocation;
+    property Tooltip: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fTooltip write fTooltip;
+    property Display: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fDisplay write fDisplay;
   end;
 
   [TName('CT_CellFormula')]
-  TCTCellFormulaCT = class(TXmliteComplexType)
+  TCellFormulaCT = class(TXmliteComplexType)
   private
-    fXmlValue: TSTFormulaST;
-    fT: TSTCellFormulaTypeST;
+    fXmlValue: TFormulaST;
+    fT: TCellFormulaTypeST;
     fAca: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fRef: TSTRefST;
+    fRef: TRefST;
     fDt2D: ProRock.Xmlite.Schema.Base.TBooleanST;
     fDtr: ProRock.Xmlite.Schema.Base.TBooleanST;
     fDel1: ProRock.Xmlite.Schema.Base.TBooleanST;
     fDel2: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fR1: TSTCellRefST;
-    fR2: TSTCellRefST;
+    fR1: TCellRefST;
+    fR2: TCellRefST;
     fCa: ProRock.Xmlite.Schema.Base.TBooleanST;
     fSi: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fBx: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
     [TXmliteText]
-    property XmlValue: TSTFormulaST read fXmlValue write fXmlValue;
+    property XmlValue: TFormulaST read fXmlValue write fXmlValue;
     [TDefault(Ord(stcftNormal))]
-    property T: TSTCellFormulaTypeST read fT write fT;
+    property T: TCellFormulaTypeST read fT write fT;
     [TDefault(False)]
     property Aca: ProRock.Xmlite.Schema.Base.TBooleanST read fAca write fAca;
-    property Ref: TSTRefST read fRef write fRef;
+    property Ref: TRefST read fRef write fRef;
     [TDefault(False)]
     property Dt2D: ProRock.Xmlite.Schema.Base.TBooleanST read fDt2D write fDt2D;
     [TDefault(False)]
@@ -5762,8 +5762,8 @@ type
     property Del1: ProRock.Xmlite.Schema.Base.TBooleanST read fDel1 write fDel1;
     [TDefault(False)]
     property Del2: ProRock.Xmlite.Schema.Base.TBooleanST read fDel2 write fDel2;
-    property R1: TSTCellRefST read fR1 write fR1;
-    property R2: TSTCellRefST read fR2 write fR2;
+    property R1: TCellRefST read fR1 write fR1;
+    property R2: TCellRefST read fR2 write fR2;
     [TDefault(False)]
     property Ca: ProRock.Xmlite.Schema.Base.TBooleanST read fCa write fCa;
     property Si: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSi write fSi;
@@ -5772,23 +5772,23 @@ type
   end;
 
   [TName('CT_ColorScale')]
-  TCTColorScaleCT = class(TXmliteComplexType)
+  TColorScaleCT = class(TXmliteComplexType)
   private
-    fCfvo: TCTCfvoCTList;
-    fColor: TCTColorCTList;
+    fCfvo: TCfvoCTList;
+    fColor: TColorCTList;
   published
-    property Cfvo: TCTCfvoCTList read fCfvo;
-    property Color: TCTColorCTList read fColor;
+    property Cfvo: TCfvoCTList read fCfvo;
+    property Color: TColorCTList read fColor;
   end;
 
   [TName('CT_DataBar')]
-  TCTDataBarCT = class(TXmliteComplexType)
+  TDataBarCT = class(TXmliteComplexType)
   private
     fMinLength: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fMaxLength: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fShowValue: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fCfvo: TCTCfvoCTList;
-    fColor: TCTColorCT;
+    fCfvo: TCfvoCTList;
+    fColor: TColorCT;
   published
     [TDefault(10)]
     property MinLength: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fMinLength write fMinLength;
@@ -5796,49 +5796,49 @@ type
     property MaxLength: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fMaxLength write fMaxLength;
     [TDefault(True)]
     property ShowValue: ProRock.Xmlite.Schema.Base.TBooleanST read fShowValue write fShowValue;
-    property Cfvo: TCTCfvoCTList read fCfvo;
+    property Cfvo: TCfvoCTList read fCfvo;
     [TRequired]
-    property Color: TCTColorCT read fColor;
+    property Color: TColorCT read fColor;
   end;
 
   [TName('CT_IconSet')]
-  TCTIconSetCT = class(TXmliteComplexType)
+  TIconSetCT = class(TXmliteComplexType)
   private
-    fIconSet: TSTIconSetTypeST;
+    fIconSet: TIconSetTypeST;
     fShowValue: ProRock.Xmlite.Schema.Base.TBooleanST;
     fPercent: ProRock.Xmlite.Schema.Base.TBooleanST;
     fReverse: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fCfvo: TCTCfvoCTList;
+    fCfvo: TCfvoCTList;
   published
     [TDefault(Ord(stist3TrafficLights1))]
-    property IconSet: TSTIconSetTypeST read fIconSet write fIconSet;
+    property IconSet: TIconSetTypeST read fIconSet write fIconSet;
     [TDefault(True)]
     property ShowValue: ProRock.Xmlite.Schema.Base.TBooleanST read fShowValue write fShowValue;
     [TDefault(True)]
     property Percent: ProRock.Xmlite.Schema.Base.TBooleanST read fPercent write fPercent;
     [TDefault(False)]
     property Reverse: ProRock.Xmlite.Schema.Base.TBooleanST read fReverse write fReverse;
-    property Cfvo: TCTCfvoCTList read fCfvo;
+    property Cfvo: TCfvoCTList read fCfvo;
   end;
 
   [TName('CT_Cfvo')]
-  TCTCfvoCT = class(TXmliteComplexType)
+  TCfvoCT = class(TXmliteComplexType)
   private
-    fType: TSTCfvoTypeST;
-    fVal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fType: TCfvoTypeST;
+    fVal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fGte: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fExtLst: TCTExtensionListCT;
+    fExtLst: TExtensionListCT;
   published
     [TRequired]
-    property &Type: TSTCfvoTypeST read fType write fType;
-    property Val: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fVal write fVal;
+    property &Type: TCfvoTypeST read fType write fType;
+    property Val: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fVal write fVal;
     [TDefault(True)]
     property Gte: ProRock.Xmlite.Schema.Base.TBooleanST read fGte write fGte;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_PageMargins')]
-  TCTPageMarginsCT = class(TXmliteComplexType)
+  TPageMarginsCT = class(TXmliteComplexType)
   private
     fLeft: ProRock.Xmlite.Schema.Base.TDoubleST;
     fRight: ProRock.Xmlite.Schema.Base.TDoubleST;
@@ -5862,7 +5862,7 @@ type
   end;
 
   [TName('CT_PrintOptions')]
-  TCTPrintOptionsCT = class(TXmliteComplexType)
+  TPrintOptionsCT = class(TXmliteComplexType)
   private
     fHorizontalCentered: ProRock.Xmlite.Schema.Base.TBooleanST;
     fVerticalCentered: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -5883,23 +5883,23 @@ type
   end;
 
   [TName('CT_PageSetup')]
-  TCTPageSetupCT = class(TXmliteComplexType)
+  TPageSetupCT = class(TXmliteComplexType)
   private
     fPaperSize: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fPaperHeight: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTPositiveUniversalMeasureST;
-    fPaperWidth: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTPositiveUniversalMeasureST;
+    fPaperHeight: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TPositiveUniversalMeasureST;
+    fPaperWidth: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TPositiveUniversalMeasureST;
     fScale: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fFirstPageNumber: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fFitToWidth: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fFitToHeight: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fPageOrder: TSTPageOrderST;
-    fOrientation: TSTOrientationST;
+    fPageOrder: TPageOrderST;
+    fOrientation: TOrientationST;
     fUsePrinterDefaults: ProRock.Xmlite.Schema.Base.TBooleanST;
     fBlackAndWhite: ProRock.Xmlite.Schema.Base.TBooleanST;
     fDraft: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fCellComments: TSTCellCommentsST;
+    fCellComments: TCellCommentsST;
     fUseFirstPageNumber: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fErrors: TSTPrintErrorST;
+    fErrors: TPrintErrorST;
     fHorizontalDpi: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fVerticalDpi: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fCopies: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
@@ -5907,8 +5907,8 @@ type
   published
     [TDefault(1)]
     property PaperSize: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fPaperSize write fPaperSize;
-    property PaperHeight: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTPositiveUniversalMeasureST read fPaperHeight write fPaperHeight;
-    property PaperWidth: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTPositiveUniversalMeasureST read fPaperWidth write fPaperWidth;
+    property PaperHeight: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TPositiveUniversalMeasureST read fPaperHeight write fPaperHeight;
+    property PaperWidth: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TPositiveUniversalMeasureST read fPaperWidth write fPaperWidth;
     [TDefault(100)]
     property Scale: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fScale write fScale;
     [TDefault(1)]
@@ -5918,9 +5918,9 @@ type
     [TDefault(1)]
     property FitToHeight: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fFitToHeight write fFitToHeight;
     [TDefault(Ord(stpoDownThenOver))]
-    property PageOrder: TSTPageOrderST read fPageOrder write fPageOrder;
+    property PageOrder: TPageOrderST read fPageOrder write fPageOrder;
     [TDefault(Ord(stoDefault))]
-    property Orientation: TSTOrientationST read fOrientation write fOrientation;
+    property Orientation: TOrientationST read fOrientation write fOrientation;
     [TDefault(True)]
     property UsePrinterDefaults: ProRock.Xmlite.Schema.Base.TBooleanST read fUsePrinterDefaults write fUsePrinterDefaults;
     [TDefault(False)]
@@ -5928,11 +5928,11 @@ type
     [TDefault(False)]
     property Draft: ProRock.Xmlite.Schema.Base.TBooleanST read fDraft write fDraft;
     [TDefault(Ord(stccNone))]
-    property CellComments: TSTCellCommentsST read fCellComments write fCellComments;
+    property CellComments: TCellCommentsST read fCellComments write fCellComments;
     [TDefault(False)]
     property UseFirstPageNumber: ProRock.Xmlite.Schema.Base.TBooleanST read fUseFirstPageNumber write fUseFirstPageNumber;
     [TDefault(Ord(stpeDisplayed))]
-    property Errors: TSTPrintErrorST read fErrors write fErrors;
+    property Errors: TPrintErrorST read fErrors write fErrors;
     [TDefault(600)]
     property HorizontalDpi: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fHorizontalDpi write fHorizontalDpi;
     [TDefault(600)]
@@ -5944,18 +5944,18 @@ type
   end;
 
   [TName('CT_HeaderFooter')]
-  TCTHeaderFooterCT = class(TXmliteComplexType)
+  THeaderFooterCT = class(TXmliteComplexType)
   private
     fDifferentOddEven: ProRock.Xmlite.Schema.Base.TBooleanST;
     fDifferentFirst: ProRock.Xmlite.Schema.Base.TBooleanST;
     fScaleWithDoc: ProRock.Xmlite.Schema.Base.TBooleanST;
     fAlignWithMargins: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fOddHeader: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fOddFooter: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fEvenHeader: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fEvenFooter: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fFirstHeader: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fFirstFooter: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fOddHeader: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fOddFooter: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fEvenHeader: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fEvenFooter: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fFirstHeader: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fFirstFooter: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
   published
     [TDefault(False)]
     property DifferentOddEven: ProRock.Xmlite.Schema.Base.TBooleanST read fDifferentOddEven write fDifferentOddEven;
@@ -5966,38 +5966,38 @@ type
     [TDefault(True)]
     property AlignWithMargins: ProRock.Xmlite.Schema.Base.TBooleanST read fAlignWithMargins write fAlignWithMargins;
     [TXmliteElement]
-    property OddHeader: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fOddHeader write fOddHeader;
+    property OddHeader: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fOddHeader write fOddHeader;
     [TXmliteElement]
-    property OddFooter: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fOddFooter write fOddFooter;
+    property OddFooter: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fOddFooter write fOddFooter;
     [TXmliteElement]
-    property EvenHeader: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fEvenHeader write fEvenHeader;
+    property EvenHeader: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fEvenHeader write fEvenHeader;
     [TXmliteElement]
-    property EvenFooter: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fEvenFooter write fEvenFooter;
+    property EvenFooter: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fEvenFooter write fEvenFooter;
     [TXmliteElement]
-    property FirstHeader: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fFirstHeader write fFirstHeader;
+    property FirstHeader: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fFirstHeader write fFirstHeader;
     [TXmliteElement]
-    property FirstFooter: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fFirstFooter write fFirstFooter;
+    property FirstFooter: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fFirstFooter write fFirstFooter;
   end;
 
   [TName('CT_Scenarios')]
-  TCTScenariosCT = class(TXmliteComplexType)
+  TScenariosCT = class(TXmliteComplexType)
   private
     fCurrent: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fShow: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fSqref: TSTSqrefST;
-    fScenario: TCTScenarioCTList;
+    fSqref: TSqrefST;
+    fScenario: TScenarioCTList;
   published
     property Current: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCurrent write fCurrent;
     property Show: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fShow write fShow;
-    property Sqref: TSTSqrefST read fSqref write fSqref;
-    property Scenario: TCTScenarioCTList read fScenario;
+    property Sqref: TSqrefST read fSqref write fSqref;
+    property Scenario: TScenarioCTList read fScenario;
   end;
 
   [TName('CT_SheetProtection')]
-  TCTSheetProtectionCT = class(TXmliteComplexType)
+  TSheetProtectionCT = class(TXmliteComplexType)
   private
-    fPassword: TSTUnsignedShortHexST;
-    fAlgorithmName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fPassword: TUnsignedShortHexST;
+    fAlgorithmName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fHashValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST;
     fSaltValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST;
     fSpinCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
@@ -6018,8 +6018,8 @@ type
     fPivotTables: ProRock.Xmlite.Schema.Base.TBooleanST;
     fSelectUnlockedCells: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
-    property Password: TSTUnsignedShortHexST read fPassword write fPassword;
-    property AlgorithmName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fAlgorithmName write fAlgorithmName;
+    property Password: TUnsignedShortHexST read fPassword write fPassword;
+    property AlgorithmName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fAlgorithmName write fAlgorithmName;
     property HashValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST read fHashValue write fHashValue;
     property SaltValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST read fSaltValue write fSaltValue;
     property SpinCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSpinCount write fSpinCount;
@@ -6058,164 +6058,164 @@ type
   end;
 
   [TName('CT_ProtectedRanges')]
-  TCTProtectedRangesCT = class(TXmliteComplexType)
+  TProtectedRangesCT = class(TXmliteComplexType)
   private
-    fProtectedRange: TCTProtectedRangeCTList;
+    fProtectedRange: TProtectedRangeCTList;
   published
-    property ProtectedRange: TCTProtectedRangeCTList read fProtectedRange;
+    property ProtectedRange: TProtectedRangeCTList read fProtectedRange;
   end;
 
   [TName('CT_ProtectedRange')]
-  TCTProtectedRangeCT = class(TXmliteComplexType)
+  TProtectedRangeCT = class(TXmliteComplexType)
   private
-    fPassword: TSTUnsignedShortHexST;
-    fSqref: TSTSqrefST;
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fPassword: TUnsignedShortHexST;
+    fSqref: TSqrefST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fSecurityDescriptor: ProRock.Xmlite.Schema.Base.TStringST;
-    fAlgorithmName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fAlgorithmName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fHashValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST;
     fSaltValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST;
     fSpinCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
-    property Password: TSTUnsignedShortHexST read fPassword write fPassword;
+    property Password: TUnsignedShortHexST read fPassword write fPassword;
     [TRequired]
-    property Sqref: TSTSqrefST read fSqref write fSqref;
+    property Sqref: TSqrefST read fSqref write fSqref;
     [TRequired]
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
     property SecurityDescriptor: ProRock.Xmlite.Schema.Base.TStringST read fSecurityDescriptor write fSecurityDescriptor;
-    property AlgorithmName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fAlgorithmName write fAlgorithmName;
+    property AlgorithmName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fAlgorithmName write fAlgorithmName;
     property HashValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST read fHashValue write fHashValue;
     property SaltValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST read fSaltValue write fSaltValue;
     property SpinCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSpinCount write fSpinCount;
   end;
 
   [TName('CT_Scenario')]
-  TCTScenarioCT = class(TXmliteComplexType)
+  TScenarioCT = class(TXmliteComplexType)
   private
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fLocked: ProRock.Xmlite.Schema.Base.TBooleanST;
     fHidden: ProRock.Xmlite.Schema.Base.TBooleanST;
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fUser: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fComment: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fInputCells: TCTInputCellsCTList;
+    fUser: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fComment: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fInputCells: TInputCellsCTList;
   published
     [TRequired]
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
     [TDefault(False)]
     property Locked: ProRock.Xmlite.Schema.Base.TBooleanST read fLocked write fLocked;
     [TDefault(False)]
     property Hidden: ProRock.Xmlite.Schema.Base.TBooleanST read fHidden write fHidden;
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property User: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fUser write fUser;
-    property Comment: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fComment write fComment;
-    property InputCells: TCTInputCellsCTList read fInputCells;
+    property User: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fUser write fUser;
+    property Comment: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fComment write fComment;
+    property InputCells: TInputCellsCTList read fInputCells;
   end;
 
   [TName('CT_InputCells')]
-  TCTInputCellsCT = class(TXmliteComplexType)
+  TInputCellsCT = class(TXmliteComplexType)
   private
-    fR: TSTCellRefST;
+    fR: TCellRefST;
     fDeleted: ProRock.Xmlite.Schema.Base.TBooleanST;
     fUndone: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fVal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fNumFmtId: TSTNumFmtIdST;
+    fVal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fNumFmtId: TNumFmtIdST;
   published
     [TRequired]
-    property R: TSTCellRefST read fR write fR;
+    property R: TCellRefST read fR write fR;
     [TDefault(False)]
     property Deleted: ProRock.Xmlite.Schema.Base.TBooleanST read fDeleted write fDeleted;
     [TDefault(False)]
     property Undone: ProRock.Xmlite.Schema.Base.TBooleanST read fUndone write fUndone;
     [TRequired]
-    property Val: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fVal write fVal;
-    property NumFmtId: TSTNumFmtIdST read fNumFmtId write fNumFmtId;
+    property Val: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fVal write fVal;
+    property NumFmtId: TNumFmtIdST read fNumFmtId write fNumFmtId;
   end;
 
   [TName('CT_CellWatches')]
-  TCTCellWatchesCT = class(TXmliteComplexType)
+  TCellWatchesCT = class(TXmliteComplexType)
   private
-    fCellWatch: TCTCellWatchCTList;
+    fCellWatch: TCellWatchCTList;
   published
-    property CellWatch: TCTCellWatchCTList read fCellWatch;
+    property CellWatch: TCellWatchCTList read fCellWatch;
   end;
 
   [TName('CT_CellWatch')]
-  TCTCellWatchCT = class(TXmliteComplexType)
+  TCellWatchCT = class(TXmliteComplexType)
   private
-    fR: TSTCellRefST;
+    fR: TCellRefST;
   published
     [TRequired]
-    property R: TSTCellRefST read fR write fR;
+    property R: TCellRefST read fR write fR;
   end;
 
   [TName('CT_Chartsheet')]
-  TCTChartsheetCT = class(TXmliteComplexType)
+  TChartsheetCT = class(TXmliteComplexType)
   private
-    fSheetPr: TCTChartsheetPrCT;
-    fSheetViews: TCTChartsheetViewsCT;
-    fSheetProtection: TCTChartsheetProtectionCT;
-    fCustomSheetViews: TCTCustomChartsheetViewsCT;
-    fPageMargins: TCTPageMarginsCT;
-    fPageSetup: TCTCsPageSetupCT;
-    fHeaderFooter: TCTHeaderFooterCT;
-    fDrawing: TCTDrawingCT;
-    fLegacyDrawing: TCTLegacyDrawingCT;
-    fLegacyDrawingHF: TCTLegacyDrawingCT;
-    fDrawingHF: TCTDrawingHFCT;
-    fPicture: TCTSheetBackgroundPictureCT;
-    fWebPublishItems: TCTWebPublishItemsCT;
-    fExtLst: TCTExtensionListCT;
+    fSheetPr: TChartsheetPrCT;
+    fSheetViews: TChartsheetViewsCT;
+    fSheetProtection: TChartsheetProtectionCT;
+    fCustomSheetViews: TCustomChartsheetViewsCT;
+    fPageMargins: TPageMarginsCT;
+    fPageSetup: TCsPageSetupCT;
+    fHeaderFooter: THeaderFooterCT;
+    fDrawing: TDrawingCT;
+    fLegacyDrawing: TLegacyDrawingCT;
+    fLegacyDrawingHF: TLegacyDrawingCT;
+    fDrawingHF: TDrawingHFCT;
+    fPicture: TSheetBackgroundPictureCT;
+    fWebPublishItems: TWebPublishItemsCT;
+    fExtLst: TExtensionListCT;
   published
-    property SheetPr: TCTChartsheetPrCT read fSheetPr;
+    property SheetPr: TChartsheetPrCT read fSheetPr;
     [TRequired]
-    property SheetViews: TCTChartsheetViewsCT read fSheetViews;
-    property SheetProtection: TCTChartsheetProtectionCT read fSheetProtection;
-    property CustomSheetViews: TCTCustomChartsheetViewsCT read fCustomSheetViews;
-    property PageMargins: TCTPageMarginsCT read fPageMargins;
-    property PageSetup: TCTCsPageSetupCT read fPageSetup;
-    property HeaderFooter: TCTHeaderFooterCT read fHeaderFooter;
+    property SheetViews: TChartsheetViewsCT read fSheetViews;
+    property SheetProtection: TChartsheetProtectionCT read fSheetProtection;
+    property CustomSheetViews: TCustomChartsheetViewsCT read fCustomSheetViews;
+    property PageMargins: TPageMarginsCT read fPageMargins;
+    property PageSetup: TCsPageSetupCT read fPageSetup;
+    property HeaderFooter: THeaderFooterCT read fHeaderFooter;
     [TRequired]
-    property Drawing: TCTDrawingCT read fDrawing;
-    property LegacyDrawing: TCTLegacyDrawingCT read fLegacyDrawing;
-    property LegacyDrawingHF: TCTLegacyDrawingCT read fLegacyDrawingHF;
-    property DrawingHF: TCTDrawingHFCT read fDrawingHF;
-    property Picture: TCTSheetBackgroundPictureCT read fPicture;
-    property WebPublishItems: TCTWebPublishItemsCT read fWebPublishItems;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property Drawing: TDrawingCT read fDrawing;
+    property LegacyDrawing: TLegacyDrawingCT read fLegacyDrawing;
+    property LegacyDrawingHF: TLegacyDrawingCT read fLegacyDrawingHF;
+    property DrawingHF: TDrawingHFCT read fDrawingHF;
+    property Picture: TSheetBackgroundPictureCT read fPicture;
+    property WebPublishItems: TWebPublishItemsCT read fWebPublishItems;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_ChartsheetPr')]
-  TCTChartsheetPrCT = class(TXmliteComplexType)
+  TChartsheetPrCT = class(TXmliteComplexType)
   private
     fPublished: ProRock.Xmlite.Schema.Base.TBooleanST;
     fCodeName: ProRock.Xmlite.Schema.Base.TStringST;
-    fTabColor: TCTColorCT;
+    fTabColor: TColorCT;
   published
     [TDefault(True)]
     property Published: ProRock.Xmlite.Schema.Base.TBooleanST read fPublished write fPublished;
     property CodeName: ProRock.Xmlite.Schema.Base.TStringST read fCodeName write fCodeName;
-    property TabColor: TCTColorCT read fTabColor;
+    property TabColor: TColorCT read fTabColor;
   end;
 
   [TName('CT_ChartsheetViews')]
-  TCTChartsheetViewsCT = class(TXmliteComplexType)
+  TChartsheetViewsCT = class(TXmliteComplexType)
   private
-    fSheetView: TCTChartsheetViewCTList;
-    fExtLst: TCTExtensionListCT;
+    fSheetView: TChartsheetViewCTList;
+    fExtLst: TExtensionListCT;
   published
-    property SheetView: TCTChartsheetViewCTList read fSheetView;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property SheetView: TChartsheetViewCTList read fSheetView;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_ChartsheetView')]
-  TCTChartsheetViewCT = class(TXmliteComplexType)
+  TChartsheetViewCT = class(TXmliteComplexType)
   private
     fTabSelected: ProRock.Xmlite.Schema.Base.TBooleanST;
     fZoomScale: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fWorkbookViewId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fZoomToFit: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fExtLst: TCTExtensionListCT;
+    fExtLst: TExtensionListCT;
   published
     [TDefault(False)]
     property TabSelected: ProRock.Xmlite.Schema.Base.TBooleanST read fTabSelected write fTabSelected;
@@ -6225,22 +6225,22 @@ type
     property WorkbookViewId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fWorkbookViewId write fWorkbookViewId;
     [TDefault(False)]
     property ZoomToFit: ProRock.Xmlite.Schema.Base.TBooleanST read fZoomToFit write fZoomToFit;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_ChartsheetProtection')]
-  TCTChartsheetProtectionCT = class(TXmliteComplexType)
+  TChartsheetProtectionCT = class(TXmliteComplexType)
   private
-    fPassword: TSTUnsignedShortHexST;
-    fAlgorithmName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fPassword: TUnsignedShortHexST;
+    fAlgorithmName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fHashValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST;
     fSaltValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST;
     fSpinCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fContent: ProRock.Xmlite.Schema.Base.TBooleanST;
     fObjects: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
-    property Password: TSTUnsignedShortHexST read fPassword write fPassword;
-    property AlgorithmName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fAlgorithmName write fAlgorithmName;
+    property Password: TUnsignedShortHexST read fPassword write fPassword;
+    property AlgorithmName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fAlgorithmName write fAlgorithmName;
     property HashValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST read fHashValue write fHashValue;
     property SaltValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST read fSaltValue write fSaltValue;
     property SpinCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSpinCount write fSpinCount;
@@ -6251,13 +6251,13 @@ type
   end;
 
   [TName('CT_CsPageSetup')]
-  TCTCsPageSetupCT = class(TXmliteComplexType)
+  TCsPageSetupCT = class(TXmliteComplexType)
   private
     fPaperSize: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fPaperHeight: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTPositiveUniversalMeasureST;
-    fPaperWidth: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTPositiveUniversalMeasureST;
+    fPaperHeight: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TPositiveUniversalMeasureST;
+    fPaperWidth: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TPositiveUniversalMeasureST;
     fFirstPageNumber: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fOrientation: TSTOrientationST;
+    fOrientation: TOrientationST;
     fUsePrinterDefaults: ProRock.Xmlite.Schema.Base.TBooleanST;
     fBlackAndWhite: ProRock.Xmlite.Schema.Base.TBooleanST;
     fDraft: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -6269,12 +6269,12 @@ type
   published
     [TDefault(1)]
     property PaperSize: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fPaperSize write fPaperSize;
-    property PaperHeight: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTPositiveUniversalMeasureST read fPaperHeight write fPaperHeight;
-    property PaperWidth: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTPositiveUniversalMeasureST read fPaperWidth write fPaperWidth;
+    property PaperHeight: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TPositiveUniversalMeasureST read fPaperHeight write fPaperHeight;
+    property PaperWidth: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TPositiveUniversalMeasureST read fPaperWidth write fPaperWidth;
     [TDefault(1)]
     property FirstPageNumber: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fFirstPageNumber write fFirstPageNumber;
     [TDefault(Ord(stoDefault))]
-    property Orientation: TSTOrientationST read fOrientation write fOrientation;
+    property Orientation: TOrientationST read fOrientation write fOrientation;
     [TDefault(True)]
     property UsePrinterDefaults: ProRock.Xmlite.Schema.Base.TBooleanST read fUsePrinterDefaults write fUsePrinterDefaults;
     [TDefault(False)]
@@ -6294,94 +6294,94 @@ type
   end;
 
   [TName('CT_CustomChartsheetViews')]
-  TCTCustomChartsheetViewsCT = class(TXmliteComplexType)
+  TCustomChartsheetViewsCT = class(TXmliteComplexType)
   private
-    fCustomSheetView: TCTCustomChartsheetViewCTList;
+    fCustomSheetView: TCustomChartsheetViewCTList;
   published
-    property CustomSheetView: TCTCustomChartsheetViewCTList read fCustomSheetView;
+    property CustomSheetView: TCustomChartsheetViewCTList read fCustomSheetView;
   end;
 
   [TName('CT_CustomChartsheetView')]
-  TCTCustomChartsheetViewCT = class(TXmliteComplexType)
+  TCustomChartsheetViewCT = class(TXmliteComplexType)
   private
-    fGuid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST;
+    fGuid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST;
     fScale: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fState: TSTSheetStateST;
+    fState: TSheetStateST;
     fZoomToFit: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fPageMargins: TCTPageMarginsCT;
-    fPageSetup: TCTCsPageSetupCT;
-    fHeaderFooter: TCTHeaderFooterCT;
+    fPageMargins: TPageMarginsCT;
+    fPageSetup: TCsPageSetupCT;
+    fHeaderFooter: THeaderFooterCT;
   published
     [TRequired]
-    property Guid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST read fGuid write fGuid;
+    property Guid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST read fGuid write fGuid;
     [TDefault(100)]
     property Scale: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fScale write fScale;
     [TDefault(Ord(stssVisible))]
-    property State: TSTSheetStateST read fState write fState;
+    property State: TSheetStateST read fState write fState;
     [TDefault(False)]
     property ZoomToFit: ProRock.Xmlite.Schema.Base.TBooleanST read fZoomToFit write fZoomToFit;
-    property PageMargins: TCTPageMarginsCT read fPageMargins;
-    property PageSetup: TCTCsPageSetupCT read fPageSetup;
-    property HeaderFooter: TCTHeaderFooterCT read fHeaderFooter;
+    property PageMargins: TPageMarginsCT read fPageMargins;
+    property PageSetup: TCsPageSetupCT read fPageSetup;
+    property HeaderFooter: THeaderFooterCT read fHeaderFooter;
   end;
 
   [TName('CT_CustomProperties')]
-  TCTCustomPropertiesCT = class(TXmliteComplexType)
+  TCustomPropertiesCT = class(TXmliteComplexType)
   private
-    fCustomPr: TCTCustomPropertyCTList;
+    fCustomPr: TCustomPropertyCTList;
   published
-    property CustomPr: TCTCustomPropertyCTList read fCustomPr;
+    property CustomPr: TCustomPropertyCTList read fCustomPr;
   end;
 
   [TName('CT_CustomProperty')]
-  TCTCustomPropertyCT = class(TXmliteComplexType)
+  TCustomPropertyCT = class(TXmliteComplexType)
   private
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fId: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA;
   published
     [TRequired]
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
     [TRequired]
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
   end;
 
   [TName('CT_OleObjects')]
-  TCTOleObjectsCT = class(TXmliteComplexType)
+  TOleObjectsCT = class(TXmliteComplexType)
   private
-    fOleObject: TCTOleObjectCTList;
+    fOleObject: TOleObjectCTList;
   published
-    property OleObject: TCTOleObjectCTList read fOleObject;
+    property OleObject: TOleObjectCTList read fOleObject;
   end;
 
   [TName('CT_OleObject')]
-  TCTOleObjectCT = class(TXmliteComplexType)
+  TOleObjectCT = class(TXmliteComplexType)
   private
     fProgId: ProRock.Xmlite.Schema.Base.TStringST;
-    fDvAspect: TSTDvAspectST;
-    fLink: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fOleUpdate: TSTOleUpdateST;
+    fDvAspect: TDvAspectST;
+    fLink: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fOleUpdate: TOleUpdateST;
     fAutoLoad: ProRock.Xmlite.Schema.Base.TBooleanST;
     fShapeId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fId: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA;
-    fObjectPr: TCTObjectPrCT;
+    fObjectPr: TObjectPrCT;
   published
     property ProgId: ProRock.Xmlite.Schema.Base.TStringST read fProgId write fProgId;
     [TDefault(Ord(stdaDvaspectContent))]
-    property DvAspect: TSTDvAspectST read fDvAspect write fDvAspect;
-    property Link: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fLink write fLink;
-    property OleUpdate: TSTOleUpdateST read fOleUpdate write fOleUpdate;
+    property DvAspect: TDvAspectST read fDvAspect write fDvAspect;
+    property Link: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fLink write fLink;
+    property OleUpdate: TOleUpdateST read fOleUpdate write fOleUpdate;
     [TDefault(False)]
     property AutoLoad: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoLoad write fAutoLoad;
     [TRequired]
     property ShapeId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fShapeId write fShapeId;
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
-    property ObjectPr: TCTObjectPrCT read fObjectPr;
+    property ObjectPr: TObjectPrCT read fObjectPr;
   end;
 
   [TName('CT_ObjectPr')]
-  TCTObjectPrCT = class(TXmliteComplexType)
+  TObjectPrCT = class(TXmliteComplexType)
   private
     fLocked: ProRock.Xmlite.Schema.Base.TBooleanST;
     fDefaultSize: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -6391,11 +6391,11 @@ type
     fAutoFill: ProRock.Xmlite.Schema.Base.TBooleanST;
     fAutoLine: ProRock.Xmlite.Schema.Base.TBooleanST;
     fAutoPict: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fMacro: TSTFormulaST;
-    fAltText: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fMacro: TFormulaST;
+    fAltText: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fDde: ProRock.Xmlite.Schema.Base.TBooleanST;
     fId: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA;
-    fAnchor: TCTObjectAnchorCT;
+    fAnchor: TObjectAnchorCT;
   published
     [TDefault(True)]
     property Locked: ProRock.Xmlite.Schema.Base.TBooleanST read fLocked write fLocked;
@@ -6413,68 +6413,68 @@ type
     property AutoLine: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoLine write fAutoLine;
     [TDefault(True)]
     property AutoPict: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoPict write fAutoPict;
-    property Macro: TSTFormulaST read fMacro write fMacro;
-    property AltText: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fAltText write fAltText;
+    property Macro: TFormulaST read fMacro write fMacro;
+    property AltText: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fAltText write fAltText;
     [TDefault(False)]
     property Dde: ProRock.Xmlite.Schema.Base.TBooleanST read fDde write fDde;
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
     [TRequired]
-    property Anchor: TCTObjectAnchorCT read fAnchor;
+    property Anchor: TObjectAnchorCT read fAnchor;
   end;
 
   [TName('CT_WebPublishItems')]
-  TCTWebPublishItemsCT = class(TXmliteComplexType)
+  TWebPublishItemsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fWebPublishItem: TCTWebPublishItemCTList;
+    fWebPublishItem: TWebPublishItemCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property WebPublishItem: TCTWebPublishItemCTList read fWebPublishItem;
+    property WebPublishItem: TWebPublishItemCTList read fWebPublishItem;
   end;
 
   [TName('CT_WebPublishItem')]
-  TCTWebPublishItemCT = class(TXmliteComplexType)
+  TWebPublishItemCT = class(TXmliteComplexType)
   private
     fId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fDivId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fSourceType: TSTWebSourceTypeST;
-    fSourceRef: TSTRefST;
-    fSourceObject: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fDestinationFile: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fTitle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fDivId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fSourceType: TWebSourceTypeST;
+    fSourceRef: TRefST;
+    fSourceObject: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fDestinationFile: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fTitle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fAutoRepublish: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
     [TRequired]
     property Id: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fId write fId;
     [TRequired]
-    property DivId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDivId write fDivId;
+    property DivId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fDivId write fDivId;
     [TRequired]
-    property SourceType: TSTWebSourceTypeST read fSourceType write fSourceType;
-    property SourceRef: TSTRefST read fSourceRef write fSourceRef;
-    property SourceObject: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fSourceObject write fSourceObject;
+    property SourceType: TWebSourceTypeST read fSourceType write fSourceType;
+    property SourceRef: TRefST read fSourceRef write fSourceRef;
+    property SourceObject: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fSourceObject write fSourceObject;
     [TRequired]
-    property DestinationFile: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDestinationFile write fDestinationFile;
-    property Title: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fTitle write fTitle;
+    property DestinationFile: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fDestinationFile write fDestinationFile;
+    property Title: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fTitle write fTitle;
     [TDefault(False)]
     property AutoRepublish: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoRepublish write fAutoRepublish;
   end;
 
   [TName('CT_Controls')]
-  TCTControlsCT = class(TXmliteComplexType)
+  TControlsCT = class(TXmliteComplexType)
   private
-    fControl: TCTControlCTList;
+    fControl: TControlCTList;
   published
-    property Control: TCTControlCTList read fControl;
+    property Control: TControlCTList read fControl;
   end;
 
   [TName('CT_Control')]
-  TCTControlCT = class(TXmliteComplexType)
+  TControlCT = class(TXmliteComplexType)
   private
     fShapeId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fId: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA;
     fName: ProRock.Xmlite.Schema.Base.TStringST;
-    fControlPr: TCTControlPrCT;
+    fControlPr: TControlPrCT;
   published
     [TRequired]
     property ShapeId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fShapeId write fShapeId;
@@ -6482,11 +6482,11 @@ type
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
     property Name: ProRock.Xmlite.Schema.Base.TStringST read fName write fName;
-    property ControlPr: TCTControlPrCT read fControlPr;
+    property ControlPr: TControlPrCT read fControlPr;
   end;
 
   [TName('CT_ControlPr')]
-  TCTControlPrCT = class(TXmliteComplexType)
+  TControlPrCT = class(TXmliteComplexType)
   private
     fLocked: ProRock.Xmlite.Schema.Base.TBooleanST;
     fDefaultSize: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -6497,13 +6497,13 @@ type
     fAutoFill: ProRock.Xmlite.Schema.Base.TBooleanST;
     fAutoLine: ProRock.Xmlite.Schema.Base.TBooleanST;
     fAutoPict: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fMacro: TSTFormulaST;
-    fAltText: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fLinkedCell: TSTFormulaST;
-    fListFillRange: TSTFormulaST;
-    fCf: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fMacro: TFormulaST;
+    fAltText: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fLinkedCell: TFormulaST;
+    fListFillRange: TFormulaST;
+    fCf: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fId: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA;
-    fAnchor: TCTObjectAnchorCT;
+    fAnchor: TObjectAnchorCT;
   published
     [TDefault(True)]
     property Locked: ProRock.Xmlite.Schema.Base.TBooleanST read fLocked write fLocked;
@@ -6523,32 +6523,32 @@ type
     property AutoLine: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoLine write fAutoLine;
     [TDefault(True)]
     property AutoPict: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoPict write fAutoPict;
-    property Macro: TSTFormulaST read fMacro write fMacro;
-    property AltText: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fAltText write fAltText;
-    property LinkedCell: TSTFormulaST read fLinkedCell write fLinkedCell;
-    property ListFillRange: TSTFormulaST read fListFillRange write fListFillRange;
+    property Macro: TFormulaST read fMacro write fMacro;
+    property AltText: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fAltText write fAltText;
+    property LinkedCell: TFormulaST read fLinkedCell write fLinkedCell;
+    property ListFillRange: TFormulaST read fListFillRange write fListFillRange;
     [TDefault('pict')]
-    property Cf: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fCf write fCf;
+    property Cf: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fCf write fCf;
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
     [TRequired]
-    property Anchor: TCTObjectAnchorCT read fAnchor;
+    property Anchor: TObjectAnchorCT read fAnchor;
   end;
 
   [TName('CT_IgnoredErrors')]
-  TCTIgnoredErrorsCT = class(TXmliteComplexType)
+  TIgnoredErrorsCT = class(TXmliteComplexType)
   private
-    fIgnoredError: TCTIgnoredErrorCTList;
-    fExtLst: TCTExtensionListCT;
+    fIgnoredError: TIgnoredErrorCTList;
+    fExtLst: TExtensionListCT;
   published
-    property IgnoredError: TCTIgnoredErrorCTList read fIgnoredError;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property IgnoredError: TIgnoredErrorCTList read fIgnoredError;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_IgnoredError')]
-  TCTIgnoredErrorCT = class(TXmliteComplexType)
+  TIgnoredErrorCT = class(TXmliteComplexType)
   private
-    fSqref: TSTSqrefST;
+    fSqref: TSqrefST;
     fEvalError: ProRock.Xmlite.Schema.Base.TBooleanST;
     fTwoDigitTextYear: ProRock.Xmlite.Schema.Base.TBooleanST;
     fNumberStoredAsText: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -6560,7 +6560,7 @@ type
     fCalculatedColumn: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
     [TRequired]
-    property Sqref: TSTSqrefST read fSqref write fSqref;
+    property Sqref: TSqrefST read fSqref write fSqref;
     [TDefault(False)]
     property EvalError: ProRock.Xmlite.Schema.Base.TBooleanST read fEvalError write fEvalError;
     [TDefault(False)]
@@ -6582,17 +6582,17 @@ type
   end;
 
   [TName('CT_TableParts')]
-  TCTTablePartsCT = class(TXmliteComplexType)
+  TTablePartsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fTablePart: TCTTablePartCTList;
+    fTablePart: TTablePartCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property TablePart: TCTTablePartCTList read fTablePart;
+    property TablePart: TTablePartCTList read fTablePart;
   end;
 
   [TName('CT_TablePart')]
-  TCTTablePartCT = class(TXmliteComplexType)
+  TTablePartCT = class(TXmliteComplexType)
   private
     fId: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA;
   published
@@ -6602,40 +6602,40 @@ type
   end;
 
   [TName('CT_Metadata')]
-  TCTMetadataCT = class(TXmliteComplexType)
+  TMetadataCT = class(TXmliteComplexType)
   private
-    fMetadataTypes: TCTMetadataTypesCT;
-    fMetadataStrings: TCTMetadataStringsCT;
-    fMdxMetadata: TCTMdxMetadataCT;
-    fFutureMetadata: TCTFutureMetadataCTList;
-    fCellMetadata: TCTMetadataBlocksCT;
-    fValueMetadata: TCTMetadataBlocksCT;
-    fExtLst: TCTExtensionListCT;
+    fMetadataTypes: TMetadataTypesCT;
+    fMetadataStrings: TMetadataStringsCT;
+    fMdxMetadata: TMdxMetadataCT;
+    fFutureMetadata: TFutureMetadataCTList;
+    fCellMetadata: TMetadataBlocksCT;
+    fValueMetadata: TMetadataBlocksCT;
+    fExtLst: TExtensionListCT;
   published
-    property MetadataTypes: TCTMetadataTypesCT read fMetadataTypes;
-    property MetadataStrings: TCTMetadataStringsCT read fMetadataStrings;
-    property MdxMetadata: TCTMdxMetadataCT read fMdxMetadata;
-    property FutureMetadata: TCTFutureMetadataCTList read fFutureMetadata;
-    property CellMetadata: TCTMetadataBlocksCT read fCellMetadata;
-    property ValueMetadata: TCTMetadataBlocksCT read fValueMetadata;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property MetadataTypes: TMetadataTypesCT read fMetadataTypes;
+    property MetadataStrings: TMetadataStringsCT read fMetadataStrings;
+    property MdxMetadata: TMdxMetadataCT read fMdxMetadata;
+    property FutureMetadata: TFutureMetadataCTList read fFutureMetadata;
+    property CellMetadata: TMetadataBlocksCT read fCellMetadata;
+    property ValueMetadata: TMetadataBlocksCT read fValueMetadata;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_MetadataTypes')]
-  TCTMetadataTypesCT = class(TXmliteComplexType)
+  TMetadataTypesCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fMetadataType: TCTMetadataTypeCTList;
+    fMetadataType: TMetadataTypeCTList;
   published
     [TDefault(0)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property MetadataType: TCTMetadataTypeCTList read fMetadataType;
+    property MetadataType: TMetadataTypeCTList read fMetadataType;
   end;
 
   [TName('CT_MetadataType')]
-  TCTMetadataTypeCT = class(TXmliteComplexType)
+  TMetadataTypeCT = class(TXmliteComplexType)
   private
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fMinSupportedVersion: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fGhostRow: ProRock.Xmlite.Schema.Base.TBooleanST;
     fGhostCol: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -6665,7 +6665,7 @@ type
     fCellMeta: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
     [TRequired]
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
     [TRequired]
     property MinSupportedVersion: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fMinSupportedVersion write fMinSupportedVersion;
     [TDefault(False)]
@@ -6724,26 +6724,26 @@ type
   end;
 
   [TName('CT_MetadataBlocks')]
-  TCTMetadataBlocksCT = class(TXmliteComplexType)
+  TMetadataBlocksCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fBk: TCTMetadataBlockCTList;
+    fBk: TMetadataBlockCTList;
   published
     [TDefault(0)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property Bk: TCTMetadataBlockCTList read fBk;
+    property Bk: TMetadataBlockCTList read fBk;
   end;
 
   [TName('CT_MetadataBlock')]
-  TCTMetadataBlockCT = class(TXmliteComplexType)
+  TMetadataBlockCT = class(TXmliteComplexType)
   private
-    fRc: TCTMetadataRecordCTList;
+    fRc: TMetadataRecordCTList;
   published
-    property Rc: TCTMetadataRecordCTList read fRc;
+    property Rc: TMetadataRecordCTList read fRc;
   end;
 
   [TName('CT_MetadataRecord')]
-  TCTMetadataRecordCT = class(TXmliteComplexType)
+  TMetadataRecordCT = class(TXmliteComplexType)
   private
     fT: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fV: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
@@ -6755,91 +6755,91 @@ type
   end;
 
   [TName('CT_FutureMetadata')]
-  TCTFutureMetadataCT = class(TXmliteComplexType)
+  TFutureMetadataCT = class(TXmliteComplexType)
   private
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fBk: TCTFutureMetadataBlockCTList;
-    fExtLst: TCTExtensionListCT;
+    fBk: TFutureMetadataBlockCTList;
+    fExtLst: TExtensionListCT;
   published
     [TRequired]
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
     [TDefault(0)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property Bk: TCTFutureMetadataBlockCTList read fBk;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property Bk: TFutureMetadataBlockCTList read fBk;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_FutureMetadataBlock')]
-  TCTFutureMetadataBlockCT = class(TXmliteComplexType)
+  TFutureMetadataBlockCT = class(TXmliteComplexType)
   private
-    fExtLst: TCTExtensionListCT;
+    fExtLst: TExtensionListCT;
   published
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_MdxMetadata')]
-  TCTMdxMetadataCT = class(TXmliteComplexType)
+  TMdxMetadataCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fMdx: TCTMdxCTList;
+    fMdx: TMdxCTList;
   published
     [TDefault(0)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property Mdx: TCTMdxCTList read fMdx;
+    property Mdx: TMdxCTList read fMdx;
   end;
 
   [TName('CT_Mdx')]
-  TCTMdxCT = class(TXmliteComplexType)
+  TMdxCT = class(TXmliteComplexType)
   private
     fN: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fF: TSTMdxFunctionTypeST;
-    fT: TCTMdxTupleCT;
-    fMs: TCTMdxSetCT;
-    fP: TCTMdxMemeberPropCT;
-    fK: TCTMdxKPICT;
+    fF: TMdxFunctionTypeST;
+    fT: TMdxTupleCT;
+    fMs: TMdxSetCT;
+    fP: TMdxMemeberPropCT;
+    fK: TMdxKPICT;
 
-    function GetT: TCTMdxTupleCT;
-    function GetMs: TCTMdxSetCT;
-    function GetP: TCTMdxMemeberPropCT;
-    function GetK: TCTMdxKPICT;
+    function GetT: TMdxTupleCT;
+    function GetMs: TMdxSetCT;
+    function GetP: TMdxMemeberPropCT;
+    function GetK: TMdxKPICT;
   published
     [TRequired]
     property N: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fN write fN;
     [TRequired]
-    property F: TSTMdxFunctionTypeST read fF write fF;
+    property F: TMdxFunctionTypeST read fF write fF;
     [TChoice('T')]
-    property T: TCTMdxTupleCT read GetT;
+    property T: TMdxTupleCT read GetT;
     [TChoice('T')]
-    property Ms: TCTMdxSetCT read GetMs;
+    property Ms: TMdxSetCT read GetMs;
     [TChoice('T')]
-    property P: TCTMdxMemeberPropCT read GetP;
+    property P: TMdxMemeberPropCT read GetP;
     [TChoice('T')]
-    property K: TCTMdxKPICT read GetK;
+    property K: TMdxKPICT read GetK;
   end;
 
   [TName('CT_MdxTuple')]
-  TCTMdxTupleCT = class(TXmliteComplexType)
+  TMdxTupleCT = class(TXmliteComplexType)
   private
     fC_: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fCt: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fCt: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fSi: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fFi: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fBc: TSTUnsignedIntHexST;
-    fFc: TSTUnsignedIntHexST;
+    fBc: TUnsignedIntHexST;
+    fFc: TUnsignedIntHexST;
     fI_: ProRock.Xmlite.Schema.Base.TBooleanST;
     fU: ProRock.Xmlite.Schema.Base.TBooleanST;
     fSt: ProRock.Xmlite.Schema.Base.TBooleanST;
     fB: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fN: TCTMetadataStringIndexCTList;
+    fN: TMetadataStringIndexCTList;
   published
     [TDefault(0)]
     property C: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fC_ write fC_;
-    property Ct: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fCt write fCt;
+    property Ct: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fCt write fCt;
     property Si: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSi write fSi;
     property Fi: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fFi write fFi;
-    property Bc: TSTUnsignedIntHexST read fBc write fBc;
-    property Fc: TSTUnsignedIntHexST read fFc write fFc;
+    property Bc: TUnsignedIntHexST read fBc write fBc;
+    property Fc: TUnsignedIntHexST read fFc write fFc;
     [TDefault(False)]
     property I: ProRock.Xmlite.Schema.Base.TBooleanST read fI_ write fI_;
     [TDefault(False)]
@@ -6848,28 +6848,28 @@ type
     property St: ProRock.Xmlite.Schema.Base.TBooleanST read fSt write fSt;
     [TDefault(False)]
     property B: ProRock.Xmlite.Schema.Base.TBooleanST read fB write fB;
-    property N: TCTMetadataStringIndexCTList read fN;
+    property N: TMetadataStringIndexCTList read fN;
   end;
 
   [TName('CT_MdxSet')]
-  TCTMdxSetCT = class(TXmliteComplexType)
+  TMdxSetCT = class(TXmliteComplexType)
   private
     fNs: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fC: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fO: TSTMdxSetOrderST;
-    fN: TCTMetadataStringIndexCTList;
+    fO: TMdxSetOrderST;
+    fN: TMetadataStringIndexCTList;
   published
     [TRequired]
     property Ns: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fNs write fNs;
     [TDefault(0)]
     property C: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fC write fC;
     [TDefault(Ord(stmsoU))]
-    property O: TSTMdxSetOrderST read fO write fO;
-    property N: TCTMetadataStringIndexCTList read fN;
+    property O: TMdxSetOrderST read fO write fO;
+    property N: TMetadataStringIndexCTList read fN;
   end;
 
   [TName('CT_MdxMemeberProp')]
-  TCTMdxMemeberPropCT = class(TXmliteComplexType)
+  TMdxMemeberPropCT = class(TXmliteComplexType)
   private
     fN: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fNp: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
@@ -6881,22 +6881,22 @@ type
   end;
 
   [TName('CT_MdxKPI')]
-  TCTMdxKPICT = class(TXmliteComplexType)
+  TMdxKPICT = class(TXmliteComplexType)
   private
     fN: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fNp: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fP: TSTMdxKPIPropertyST;
+    fP: TMdxKPIPropertyST;
   published
     [TRequired]
     property N: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fN write fN;
     [TRequired]
     property Np: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fNp write fNp;
     [TRequired]
-    property P: TSTMdxKPIPropertyST read fP write fP;
+    property P: TMdxKPIPropertyST read fP write fP;
   end;
 
   [TName('CT_MetadataStringIndex')]
-  TCTMetadataStringIndexCT = class(TXmliteComplexType)
+  TMetadataStringIndexCT = class(TXmliteComplexType)
   private
     fX: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fS: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -6908,111 +6908,111 @@ type
   end;
 
   [TName('CT_MetadataStrings')]
-  TCTMetadataStringsCT = class(TXmliteComplexType)
+  TMetadataStringsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fS: TCTXStringElementCTList;
+    fS: TXStringElementCTList;
   published
     [TDefault(0)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property S: TCTXStringElementCTList read fS;
+    property S: TXStringElementCTList read fS;
   end;
 
   [TName('CT_SingleXmlCells')]
-  TCTSingleXmlCellsCT = class(TXmliteComplexType)
+  TSingleXmlCellsCT = class(TXmliteComplexType)
   private
-    fSingleXmlCell: TCTSingleXmlCellCTList;
+    fSingleXmlCell: TSingleXmlCellCTList;
   published
-    property SingleXmlCell: TCTSingleXmlCellCTList read fSingleXmlCell;
+    property SingleXmlCell: TSingleXmlCellCTList read fSingleXmlCell;
   end;
 
   [TName('CT_SingleXmlCell')]
-  TCTSingleXmlCellCT = class(TXmliteComplexType)
+  TSingleXmlCellCT = class(TXmliteComplexType)
   private
     fId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fR: TSTCellRefST;
+    fR: TCellRefST;
     fConnectionId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fXmlCellPr: TCTXmlCellPrCT;
-    fExtLst: TCTExtensionListCT;
+    fXmlCellPr: TXmlCellPrCT;
+    fExtLst: TExtensionListCT;
   published
     [TRequired]
     property Id: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fId write fId;
     [TRequired]
-    property R: TSTCellRefST read fR write fR;
+    property R: TCellRefST read fR write fR;
     [TRequired]
     property ConnectionId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fConnectionId write fConnectionId;
     [TRequired]
-    property XmlCellPr: TCTXmlCellPrCT read fXmlCellPr;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property XmlCellPr: TXmlCellPrCT read fXmlCellPr;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_XmlCellPr')]
-  TCTXmlCellPrCT = class(TXmliteComplexType)
+  TXmlCellPrCT = class(TXmliteComplexType)
   private
     fId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fUniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fXmlPr: TCTXmlPrCT;
-    fExtLst: TCTExtensionListCT;
+    fUniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fXmlPr: TXmlPrCT;
+    fExtLst: TExtensionListCT;
   published
     [TRequired]
     property Id: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fId write fId;
-    property UniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fUniqueName write fUniqueName;
+    property UniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fUniqueName write fUniqueName;
     [TRequired]
-    property XmlPr: TCTXmlPrCT read fXmlPr;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property XmlPr: TXmlPrCT read fXmlPr;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_XmlPr')]
-  TCTXmlPrCT = class(TXmliteComplexType)
+  TXmlPrCT = class(TXmliteComplexType)
   private
     fMapId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fXpath: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fXmlDataType: TSTXmlDataTypeST;
-    fExtLst: TCTExtensionListCT;
+    fXpath: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fXmlDataType: TXmlDataTypeST;
+    fExtLst: TExtensionListCT;
   published
     [TRequired]
     property MapId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fMapId write fMapId;
     [TRequired]
-    property Xpath: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fXpath write fXpath;
+    property Xpath: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fXpath write fXpath;
     [TRequired]
-    property XmlDataType: TSTXmlDataTypeST read fXmlDataType write fXmlDataType;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property XmlDataType: TXmlDataTypeST read fXmlDataType write fXmlDataType;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_Stylesheet')]
-  TCTStylesheetCT = class(TXmliteComplexType)
+  TStylesheetCT = class(TXmliteComplexType)
   private
-    fNumFmts: TCTNumFmtsCT;
-    fFonts: TCTFontsCT;
-    fFills: TCTFillsCT;
-    fBorders: TCTBordersCT;
-    fCellStyleXfs: TCTCellStyleXfsCT;
-    fCellXfs: TCTCellXfsCT;
-    fCellStyles: TCTCellStylesCT;
-    fDxfs: TCTDxfsCT;
-    fTableStyles: TCTTableStylesCT;
-    fColors: TCTColorsCT;
-    fExtLst: TCTExtensionListCT;
+    fNumFmts: TNumFmtsCT;
+    fFonts: TFontsCT;
+    fFills: TFillsCT;
+    fBorders: TBordersCT;
+    fCellStyleXfs: TCellStyleXfsCT;
+    fCellXfs: TCellXfsCT;
+    fCellStyles: TCellStylesCT;
+    fDxfs: TDxfsCT;
+    fTableStyles: TTableStylesCT;
+    fColors: TColorsCT;
+    fExtLst: TExtensionListCT;
   published
-    property NumFmts: TCTNumFmtsCT read fNumFmts;
-    property Fonts: TCTFontsCT read fFonts;
-    property Fills: TCTFillsCT read fFills;
-    property Borders: TCTBordersCT read fBorders;
-    property CellStyleXfs: TCTCellStyleXfsCT read fCellStyleXfs;
-    property CellXfs: TCTCellXfsCT read fCellXfs;
-    property CellStyles: TCTCellStylesCT read fCellStyles;
-    property Dxfs: TCTDxfsCT read fDxfs;
-    property TableStyles: TCTTableStylesCT read fTableStyles;
-    property Colors: TCTColorsCT read fColors;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property NumFmts: TNumFmtsCT read fNumFmts;
+    property Fonts: TFontsCT read fFonts;
+    property Fills: TFillsCT read fFills;
+    property Borders: TBordersCT read fBorders;
+    property CellStyleXfs: TCellStyleXfsCT read fCellStyleXfs;
+    property CellXfs: TCellXfsCT read fCellXfs;
+    property CellStyles: TCellStylesCT read fCellStyles;
+    property Dxfs: TDxfsCT read fDxfs;
+    property TableStyles: TTableStylesCT read fTableStyles;
+    property Colors: TColorsCT read fColors;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_CellAlignment')]
-  TCTCellAlignmentCT = class(TXmliteComplexType)
+  TCellAlignmentCT = class(TXmliteComplexType)
   private
-    fHorizontal: TSTHorizontalAlignmentST;
-    fVertical: TSTVerticalAlignmentST;
-    fTextRotation: TSTTextRotationST;
+    fHorizontal: THorizontalAlignmentST;
+    fVertical: TVerticalAlignmentST;
+    fTextRotation: TTextRotationST;
     fWrapText: ProRock.Xmlite.Schema.Base.TBooleanST;
     fIndent: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fRelativeIndent: ProRock.Xmlite.Schema.Base.TIntST;
@@ -7020,10 +7020,10 @@ type
     fShrinkToFit: ProRock.Xmlite.Schema.Base.TBooleanST;
     fReadingOrder: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
-    property Horizontal: TSTHorizontalAlignmentST read fHorizontal write fHorizontal;
+    property Horizontal: THorizontalAlignmentST read fHorizontal write fHorizontal;
     [TDefault(Ord(stvaBottom))]
-    property Vertical: TSTVerticalAlignmentST read fVertical write fVertical;
-    property TextRotation: TSTTextRotationST read fTextRotation write fTextRotation;
+    property Vertical: TVerticalAlignmentST read fVertical write fVertical;
+    property TextRotation: TTextRotationST read fTextRotation write fTextRotation;
     property WrapText: ProRock.Xmlite.Schema.Base.TBooleanST read fWrapText write fWrapText;
     property Indent: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fIndent write fIndent;
     property RelativeIndent: ProRock.Xmlite.Schema.Base.TIntST read fRelativeIndent write fRelativeIndent;
@@ -7033,59 +7033,59 @@ type
   end;
 
   [TName('CT_Borders')]
-  TCTBordersCT = class(TXmliteComplexType)
+  TBordersCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fBorder: TCTBorderCTList;
+    fBorder: TBorderCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property Border: TCTBorderCTList read fBorder;
+    property Border: TBorderCTList read fBorder;
   end;
 
   [TName('CT_Border')]
-  TCTBorderCT = class(TXmliteComplexType)
+  TBorderCT = class(TXmliteComplexType)
   private
     fDiagonalUp: ProRock.Xmlite.Schema.Base.TBooleanST;
     fDiagonalDown: ProRock.Xmlite.Schema.Base.TBooleanST;
     fOutline: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fStart: TCTBorderPrCT;
-    fEnd: TCTBorderPrCT;
-    fLeft: TCTBorderPrCT;
-    fRight: TCTBorderPrCT;
-    fTop: TCTBorderPrCT;
-    fBottom: TCTBorderPrCT;
-    fDiagonal: TCTBorderPrCT;
-    fVertical: TCTBorderPrCT;
-    fHorizontal: TCTBorderPrCT;
+    fStart: TBorderPrCT;
+    fEnd: TBorderPrCT;
+    fLeft: TBorderPrCT;
+    fRight: TBorderPrCT;
+    fTop: TBorderPrCT;
+    fBottom: TBorderPrCT;
+    fDiagonal: TBorderPrCT;
+    fVertical: TBorderPrCT;
+    fHorizontal: TBorderPrCT;
   published
     property DiagonalUp: ProRock.Xmlite.Schema.Base.TBooleanST read fDiagonalUp write fDiagonalUp;
     property DiagonalDown: ProRock.Xmlite.Schema.Base.TBooleanST read fDiagonalDown write fDiagonalDown;
     [TDefault(True)]
     property Outline: ProRock.Xmlite.Schema.Base.TBooleanST read fOutline write fOutline;
-    property Start: TCTBorderPrCT read fStart;
-    property &End: TCTBorderPrCT read fEnd;
-    property Left: TCTBorderPrCT read fLeft;
-    property Right: TCTBorderPrCT read fRight;
-    property Top: TCTBorderPrCT read fTop;
-    property Bottom: TCTBorderPrCT read fBottom;
-    property Diagonal: TCTBorderPrCT read fDiagonal;
-    property Vertical: TCTBorderPrCT read fVertical;
-    property Horizontal: TCTBorderPrCT read fHorizontal;
+    property Start: TBorderPrCT read fStart;
+    property &End: TBorderPrCT read fEnd;
+    property Left: TBorderPrCT read fLeft;
+    property Right: TBorderPrCT read fRight;
+    property Top: TBorderPrCT read fTop;
+    property Bottom: TBorderPrCT read fBottom;
+    property Diagonal: TBorderPrCT read fDiagonal;
+    property Vertical: TBorderPrCT read fVertical;
+    property Horizontal: TBorderPrCT read fHorizontal;
   end;
 
   [TName('CT_BorderPr')]
-  TCTBorderPrCT = class(TXmliteComplexType)
+  TBorderPrCT = class(TXmliteComplexType)
   private
-    fStyle: TSTBorderStyleST;
-    fColor: TCTColorCT;
+    fStyle: TBorderStyleST;
+    fColor: TColorCT;
   published
     [TDefault(Ord(stbsNone))]
-    property Style: TSTBorderStyleST read fStyle write fStyle;
-    property Color: TCTColorCT read fColor;
+    property Style: TBorderStyleST read fStyle write fStyle;
+    property Color: TColorCT read fColor;
   end;
 
   [TName('CT_CellProtection')]
-  TCTCellProtectionCT = class(TXmliteComplexType)
+  TCellProtectionCT = class(TXmliteComplexType)
   private
     fLocked: ProRock.Xmlite.Schema.Base.TBooleanST;
     fHidden: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -7095,82 +7095,82 @@ type
   end;
 
   [TName('CT_Fonts')]
-  TCTFontsCT = class(TXmliteComplexType)
+  TFontsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fFont: TCTFontCTList;
+    fFont: TFontCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property Font: TCTFontCTList read fFont;
+    property Font: TFontCTList read fFont;
   end;
 
   [TName('CT_Fills')]
-  TCTFillsCT = class(TXmliteComplexType)
+  TFillsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fFill: TCTFillCTList;
+    fFill: TFillCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property Fill: TCTFillCTList read fFill;
+    property Fill: TFillCTList read fFill;
   end;
 
   [TName('CT_Fill')]
-  TCTFillCT = class(TXmliteComplexType)
+  TFillCT = class(TXmliteComplexType)
   private
-    fPatternFill: TCTPatternFillCT;
-    fGradientFill: TCTGradientFillCT;
+    fPatternFill: TPatternFillCT;
+    fGradientFill: TGradientFillCT;
 
-    function GetPatternFill: TCTPatternFillCT;
-    function GetGradientFill: TCTGradientFillCT;
+    function GetPatternFill: TPatternFillCT;
+    function GetGradientFill: TGradientFillCT;
   published
     [TChoice('PatternFill')]
-    property PatternFill: TCTPatternFillCT read GetPatternFill;
+    property PatternFill: TPatternFillCT read GetPatternFill;
     [TChoice('PatternFill')]
-    property GradientFill: TCTGradientFillCT read GetGradientFill;
+    property GradientFill: TGradientFillCT read GetGradientFill;
   end;
 
   [TName('CT_PatternFill')]
-  TCTPatternFillCT = class(TXmliteComplexType)
+  TPatternFillCT = class(TXmliteComplexType)
   private
-    fPatternType: TSTPatternTypeST;
-    fFgColor: TCTColorCT;
-    fBgColor: TCTColorCT;
+    fPatternType: TPatternTypeST;
+    fFgColor: TColorCT;
+    fBgColor: TColorCT;
   published
-    property PatternType: TSTPatternTypeST read fPatternType write fPatternType;
-    property FgColor: TCTColorCT read fFgColor;
-    property BgColor: TCTColorCT read fBgColor;
+    property PatternType: TPatternTypeST read fPatternType write fPatternType;
+    property FgColor: TColorCT read fFgColor;
+    property BgColor: TColorCT read fBgColor;
   end;
 
   [TName('CT_Color')]
-  TCTColorCT = class(TXmliteComplexType)
+  TColorCT = class(TXmliteComplexType)
   private
     fAuto: ProRock.Xmlite.Schema.Base.TBooleanST;
     fIndexed: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fRgb: TSTUnsignedIntHexST;
+    fRgb: TUnsignedIntHexST;
     fTheme: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fTint: ProRock.Xmlite.Schema.Base.TDoubleST;
   published
     property Auto: ProRock.Xmlite.Schema.Base.TBooleanST read fAuto write fAuto;
     property Indexed: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fIndexed write fIndexed;
-    property Rgb: TSTUnsignedIntHexST read fRgb write fRgb;
+    property Rgb: TUnsignedIntHexST read fRgb write fRgb;
     property Theme: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fTheme write fTheme;
     [TDefault(0)]
     property Tint: ProRock.Xmlite.Schema.Base.TDoubleST read fTint write fTint;
   end;
 
   [TName('CT_GradientFill')]
-  TCTGradientFillCT = class(TXmliteComplexType)
+  TGradientFillCT = class(TXmliteComplexType)
   private
-    fType: TSTGradientTypeST;
+    fType: TGradientTypeST;
     fDegree: ProRock.Xmlite.Schema.Base.TDoubleST;
     fLeft: ProRock.Xmlite.Schema.Base.TDoubleST;
     fRight: ProRock.Xmlite.Schema.Base.TDoubleST;
     fTop: ProRock.Xmlite.Schema.Base.TDoubleST;
     fBottom: ProRock.Xmlite.Schema.Base.TDoubleST;
-    fStop: TCTGradientStopCTList;
+    fStop: TGradientStopCTList;
   published
     [TDefault(Ord(stgtLinear))]
-    property &Type: TSTGradientTypeST read fType write fType;
+    property &Type: TGradientTypeST read fType write fType;
     [TDefault(0)]
     property Degree: ProRock.Xmlite.Schema.Base.TDoubleST read fDegree write fDegree;
     [TDefault(0)]
@@ -7181,71 +7181,71 @@ type
     property Top: ProRock.Xmlite.Schema.Base.TDoubleST read fTop write fTop;
     [TDefault(0)]
     property Bottom: ProRock.Xmlite.Schema.Base.TDoubleST read fBottom write fBottom;
-    property Stop: TCTGradientStopCTList read fStop;
+    property Stop: TGradientStopCTList read fStop;
   end;
 
   [TName('CT_GradientStop')]
-  TCTGradientStopCT = class(TXmliteComplexType)
+  TGradientStopCT = class(TXmliteComplexType)
   private
     fPosition: ProRock.Xmlite.Schema.Base.TDoubleST;
-    fColor: TCTColorCT;
+    fColor: TColorCT;
   published
     [TRequired]
     property Position: ProRock.Xmlite.Schema.Base.TDoubleST read fPosition write fPosition;
     [TRequired]
-    property Color: TCTColorCT read fColor;
+    property Color: TColorCT read fColor;
   end;
 
   [TName('CT_NumFmts')]
-  TCTNumFmtsCT = class(TXmliteComplexType)
+  TNumFmtsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fNumFmt: TCTNumFmtCTList;
+    fNumFmt: TNumFmtCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property NumFmt: TCTNumFmtCTList read fNumFmt;
+    property NumFmt: TNumFmtCTList read fNumFmt;
   end;
 
   [TName('CT_NumFmt')]
-  TCTNumFmtCT = class(TXmliteComplexType)
+  TNumFmtCT = class(TXmliteComplexType)
   private
-    fNumFmtId: TSTNumFmtIdST;
-    fFormatCode: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fNumFmtId: TNumFmtIdST;
+    fFormatCode: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
   published
     [TRequired]
-    property NumFmtId: TSTNumFmtIdST read fNumFmtId write fNumFmtId;
+    property NumFmtId: TNumFmtIdST read fNumFmtId write fNumFmtId;
     [TRequired]
-    property FormatCode: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fFormatCode write fFormatCode;
+    property FormatCode: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fFormatCode write fFormatCode;
   end;
 
   [TName('CT_CellStyleXfs')]
-  TCTCellStyleXfsCT = class(TXmliteComplexType)
+  TCellStyleXfsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fXf: TCTXfCTList;
+    fXf: TXfCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property Xf: TCTXfCTList read fXf;
+    property Xf: TXfCTList read fXf;
   end;
 
   [TName('CT_CellXfs')]
-  TCTCellXfsCT = class(TXmliteComplexType)
+  TCellXfsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fXf: TCTXfCTList;
+    fXf: TXfCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property Xf: TCTXfCTList read fXf;
+    property Xf: TXfCTList read fXf;
   end;
 
   [TName('CT_Xf')]
-  TCTXfCT = class(TXmliteComplexType)
+  TXfCT = class(TXmliteComplexType)
   private
-    fNumFmtId: TSTNumFmtIdST;
-    fFontId: TSTFontIdST;
-    fFillId: TSTFillIdST;
-    fBorderId: TSTBorderIdST;
-    fXfId: TSTCellStyleXfIdST;
+    fNumFmtId: TNumFmtIdST;
+    fFontId: TFontIdST;
+    fFillId: TFillIdST;
+    fBorderId: TBorderIdST;
+    fXfId: TCellStyleXfIdST;
     fQuotePrefix: ProRock.Xmlite.Schema.Base.TBooleanST;
     fPivotButton: ProRock.Xmlite.Schema.Base.TBooleanST;
     fApplyNumberFormat: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -7254,15 +7254,15 @@ type
     fApplyBorder: ProRock.Xmlite.Schema.Base.TBooleanST;
     fApplyAlignment: ProRock.Xmlite.Schema.Base.TBooleanST;
     fApplyProtection: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fAlignment: TCTCellAlignmentCT;
-    fProtection: TCTCellProtectionCT;
-    fExtLst: TCTExtensionListCT;
+    fAlignment: TCellAlignmentCT;
+    fProtection: TCellProtectionCT;
+    fExtLst: TExtensionListCT;
   published
-    property NumFmtId: TSTNumFmtIdST read fNumFmtId write fNumFmtId;
-    property FontId: TSTFontIdST read fFontId write fFontId;
-    property FillId: TSTFillIdST read fFillId write fFillId;
-    property BorderId: TSTBorderIdST read fBorderId write fBorderId;
-    property XfId: TSTCellStyleXfIdST read fXfId write fXfId;
+    property NumFmtId: TNumFmtIdST read fNumFmtId write fNumFmtId;
+    property FontId: TFontIdST read fFontId write fFontId;
+    property FillId: TFillIdST read fFillId write fFillId;
+    property BorderId: TBorderIdST read fBorderId write fBorderId;
+    property XfId: TCellStyleXfIdST read fXfId write fXfId;
     [TDefault(False)]
     property QuotePrefix: ProRock.Xmlite.Schema.Base.TBooleanST read fQuotePrefix write fQuotePrefix;
     [TDefault(False)]
@@ -7273,128 +7273,128 @@ type
     property ApplyBorder: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyBorder write fApplyBorder;
     property ApplyAlignment: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyAlignment write fApplyAlignment;
     property ApplyProtection: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyProtection write fApplyProtection;
-    property Alignment: TCTCellAlignmentCT read fAlignment;
-    property Protection: TCTCellProtectionCT read fProtection;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property Alignment: TCellAlignmentCT read fAlignment;
+    property Protection: TCellProtectionCT read fProtection;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_CellStyles')]
-  TCTCellStylesCT = class(TXmliteComplexType)
+  TCellStylesCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fCellStyle: TCTCellStyleCTList;
+    fCellStyle: TCellStyleCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property CellStyle: TCTCellStyleCTList read fCellStyle;
+    property CellStyle: TCellStyleCTList read fCellStyle;
   end;
 
   [TName('CT_CellStyle')]
-  TCTCellStyleCT = class(TXmliteComplexType)
+  TCellStyleCT = class(TXmliteComplexType)
   private
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fXfId: TSTCellStyleXfIdST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fXfId: TCellStyleXfIdST;
     fBuiltinId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fILevel: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fHidden: ProRock.Xmlite.Schema.Base.TBooleanST;
     fCustomBuiltin: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fExtLst: TCTExtensionListCT;
+    fExtLst: TExtensionListCT;
   published
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
     [TRequired]
-    property XfId: TSTCellStyleXfIdST read fXfId write fXfId;
+    property XfId: TCellStyleXfIdST read fXfId write fXfId;
     property BuiltinId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fBuiltinId write fBuiltinId;
     property ILevel: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fILevel write fILevel;
     property Hidden: ProRock.Xmlite.Schema.Base.TBooleanST read fHidden write fHidden;
     property CustomBuiltin: ProRock.Xmlite.Schema.Base.TBooleanST read fCustomBuiltin write fCustomBuiltin;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_Dxfs')]
-  TCTDxfsCT = class(TXmliteComplexType)
+  TDxfsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fDxf: TCTDxfCTList;
+    fDxf: TDxfCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property Dxf: TCTDxfCTList read fDxf;
+    property Dxf: TDxfCTList read fDxf;
   end;
 
   [TName('CT_Dxf')]
-  TCTDxfCT = class(TXmliteComplexType)
+  TDxfCT = class(TXmliteComplexType)
   private
-    fFont: TCTFontCT;
-    fNumFmt: TCTNumFmtCT;
-    fFill: TCTFillCT;
-    fAlignment: TCTCellAlignmentCT;
-    fBorder: TCTBorderCT;
-    fProtection: TCTCellProtectionCT;
-    fExtLst: TCTExtensionListCT;
+    fFont: TFontCT;
+    fNumFmt: TNumFmtCT;
+    fFill: TFillCT;
+    fAlignment: TCellAlignmentCT;
+    fBorder: TBorderCT;
+    fProtection: TCellProtectionCT;
+    fExtLst: TExtensionListCT;
   published
-    property Font: TCTFontCT read fFont;
-    property NumFmt: TCTNumFmtCT read fNumFmt;
-    property Fill: TCTFillCT read fFill;
-    property Alignment: TCTCellAlignmentCT read fAlignment;
-    property Border: TCTBorderCT read fBorder;
-    property Protection: TCTCellProtectionCT read fProtection;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property Font: TFontCT read fFont;
+    property NumFmt: TNumFmtCT read fNumFmt;
+    property Fill: TFillCT read fFill;
+    property Alignment: TCellAlignmentCT read fAlignment;
+    property Border: TBorderCT read fBorder;
+    property Protection: TCellProtectionCT read fProtection;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_Colors')]
-  TCTColorsCT = class(TXmliteComplexType)
+  TColorsCT = class(TXmliteComplexType)
   private
-    fIndexedColors: TCTIndexedColorsCT;
-    fMruColors: TCTMRUColorsCT;
+    fIndexedColors: TIndexedColorsCT;
+    fMruColors: TMRUColorsCT;
   published
-    property IndexedColors: TCTIndexedColorsCT read fIndexedColors;
-    property MruColors: TCTMRUColorsCT read fMruColors;
+    property IndexedColors: TIndexedColorsCT read fIndexedColors;
+    property MruColors: TMRUColorsCT read fMruColors;
   end;
 
   [TName('CT_IndexedColors')]
-  TCTIndexedColorsCT = class(TXmliteComplexType)
+  TIndexedColorsCT = class(TXmliteComplexType)
   private
-    fRgbColor: TCTRgbColorCTList;
+    fRgbColor: TRgbColorCTList;
   published
-    property RgbColor: TCTRgbColorCTList read fRgbColor;
+    property RgbColor: TRgbColorCTList read fRgbColor;
   end;
 
   [TName('CT_MRUColors')]
-  TCTMRUColorsCT = class(TXmliteComplexType)
+  TMRUColorsCT = class(TXmliteComplexType)
   private
-    fColor: TCTColorCTList;
+    fColor: TColorCTList;
   published
-    property Color: TCTColorCTList read fColor;
+    property Color: TColorCTList read fColor;
   end;
 
   [TName('CT_RgbColor')]
-  TCTRgbColorCT = class(TXmliteComplexType)
+  TRgbColorCT = class(TXmliteComplexType)
   private
-    fRgb: TSTUnsignedIntHexST;
+    fRgb: TUnsignedIntHexST;
   published
-    property Rgb: TSTUnsignedIntHexST read fRgb write fRgb;
+    property Rgb: TUnsignedIntHexST read fRgb write fRgb;
   end;
 
   [TName('CT_TableStyles')]
-  TCTTableStylesCT = class(TXmliteComplexType)
+  TTableStylesCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fDefaultTableStyle: ProRock.Xmlite.Schema.Base.TStringST;
     fDefaultPivotStyle: ProRock.Xmlite.Schema.Base.TStringST;
-    fTableStyle: TCTTableStyleCTList;
+    fTableStyle: TTableStyleCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
     property DefaultTableStyle: ProRock.Xmlite.Schema.Base.TStringST read fDefaultTableStyle write fDefaultTableStyle;
     property DefaultPivotStyle: ProRock.Xmlite.Schema.Base.TStringST read fDefaultPivotStyle write fDefaultPivotStyle;
-    property TableStyle: TCTTableStyleCTList read fTableStyle;
+    property TableStyle: TTableStyleCTList read fTableStyle;
   end;
 
   [TName('CT_TableStyle')]
-  TCTTableStyleCT = class(TXmliteComplexType)
+  TTableStyleCT = class(TXmliteComplexType)
   private
     fName: ProRock.Xmlite.Schema.Base.TStringST;
     fPivot: ProRock.Xmlite.Schema.Base.TBooleanST;
     fTable: ProRock.Xmlite.Schema.Base.TBooleanST;
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fTableStyleElement: TCTTableStyleElementCTList;
+    fTableStyleElement: TTableStyleElementCTList;
   published
     [TRequired]
     property Name: ProRock.Xmlite.Schema.Base.TStringST read fName write fName;
@@ -7403,25 +7403,25 @@ type
     [TDefault(True)]
     property Table: ProRock.Xmlite.Schema.Base.TBooleanST read fTable write fTable;
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property TableStyleElement: TCTTableStyleElementCTList read fTableStyleElement;
+    property TableStyleElement: TTableStyleElementCTList read fTableStyleElement;
   end;
 
   [TName('CT_TableStyleElement')]
-  TCTTableStyleElementCT = class(TXmliteComplexType)
+  TTableStyleElementCT = class(TXmliteComplexType)
   private
-    fType: TSTTableStyleTypeST;
+    fType: TTableStyleTypeST;
     fSize: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fDxfId: TSTDxfIdST;
+    fDxfId: TDxfIdST;
   published
     [TRequired]
-    property &Type: TSTTableStyleTypeST read fType write fType;
+    property &Type: TTableStyleTypeST read fType write fType;
     [TDefault(1)]
     property Size: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSize write fSize;
-    property DxfId: TSTDxfIdST read fDxfId write fDxfId;
+    property DxfId: TDxfIdST read fDxfId write fDxfId;
   end;
 
   [TName('CT_BooleanProperty')]
-  TCTBooleanPropertyCT = class(TXmliteComplexType)
+  TBooleanPropertyCT = class(TXmliteComplexType)
   private
     fVal: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
@@ -7430,7 +7430,7 @@ type
   end;
 
   [TName('CT_FontSize')]
-  TCTFontSizeCT = class(TXmliteComplexType)
+  TFontSizeCT = class(TXmliteComplexType)
   private
     fVal: ProRock.Xmlite.Schema.Base.TDoubleST;
   published
@@ -7439,7 +7439,7 @@ type
   end;
 
   [TName('CT_IntProperty')]
-  TCTIntPropertyCT = class(TXmliteComplexType)
+  TIntPropertyCT = class(TXmliteComplexType)
   private
     fVal: ProRock.Xmlite.Schema.Base.TIntST;
   published
@@ -7448,313 +7448,313 @@ type
   end;
 
   [TName('CT_FontName')]
-  TCTFontNameCT = class(TXmliteComplexType)
+  TFontNameCT = class(TXmliteComplexType)
   private
-    fVal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fVal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
   published
     [TRequired]
-    property Val: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fVal write fVal;
+    property Val: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fVal write fVal;
   end;
 
   [TName('CT_VerticalAlignFontProperty')]
-  TCTVerticalAlignFontPropertyCT = class(TXmliteComplexType)
+  TVerticalAlignFontPropertyCT = class(TXmliteComplexType)
   private
-    fVal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTVerticalAlignRunST;
+    fVal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TVerticalAlignRunST;
   published
     [TRequired]
-    property Val: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTVerticalAlignRunST read fVal write fVal;
+    property Val: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TVerticalAlignRunST read fVal write fVal;
   end;
 
   [TName('CT_FontScheme')]
-  TCTFontSchemeCT = class(TXmliteComplexType)
+  TFontSchemeCT = class(TXmliteComplexType)
   private
-    fVal: TSTFontSchemeST;
+    fVal: TFontSchemeST;
   published
     [TRequired]
-    property Val: TSTFontSchemeST read fVal write fVal;
+    property Val: TFontSchemeST read fVal write fVal;
   end;
 
   [TName('CT_UnderlineProperty')]
-  TCTUnderlinePropertyCT = class(TXmliteComplexType)
+  TUnderlinePropertyCT = class(TXmliteComplexType)
   private
-    fVal: TSTUnderlineValuesST;
+    fVal: TUnderlineValuesST;
   published
     [TDefault(Ord(stuvSingle))]
-    property Val: TSTUnderlineValuesST read fVal write fVal;
+    property Val: TUnderlineValuesST read fVal write fVal;
   end;
 
   [TOrdered]
   [TName('CT_Font')]
-  TCTFontCT = class(TXmliteComplexType)
+  TFontCT = class(TXmliteComplexType)
   private
-    fName: TCTFontNameCTList;
-    fCharset: TCTIntPropertyCTList;
-    fFamily: TCTFontFamilyCTList;
-    fB: TCTBooleanPropertyCTList;
-    fI: TCTBooleanPropertyCTList;
-    fStrike: TCTBooleanPropertyCTList;
-    fOutline: TCTBooleanPropertyCTList;
-    fShadow: TCTBooleanPropertyCTList;
-    fCondense: TCTBooleanPropertyCTList;
-    fExtend: TCTBooleanPropertyCTList;
-    fColor: TCTColorCTList;
-    fSz: TCTFontSizeCTList;
-    fU: TCTUnderlinePropertyCTList;
-    fVertAlign: TCTVerticalAlignFontPropertyCTList;
-    fScheme: TCTFontSchemeCTList;
+    fName: TFontNameCTList;
+    fCharset: TIntPropertyCTList;
+    fFamily: TFontFamilyCTList;
+    fB: TBooleanPropertyCTList;
+    fI: TBooleanPropertyCTList;
+    fStrike: TBooleanPropertyCTList;
+    fOutline: TBooleanPropertyCTList;
+    fShadow: TBooleanPropertyCTList;
+    fCondense: TBooleanPropertyCTList;
+    fExtend: TBooleanPropertyCTList;
+    fColor: TColorCTList;
+    fSz: TFontSizeCTList;
+    fU: TUnderlinePropertyCTList;
+    fVertAlign: TVerticalAlignFontPropertyCTList;
+    fScheme: TFontSchemeCTList;
   published
-    property Name: TCTFontNameCTList read fName;
-    property Charset: TCTIntPropertyCTList read fCharset;
-    property Family: TCTFontFamilyCTList read fFamily;
-    property B: TCTBooleanPropertyCTList read fB;
-    property I: TCTBooleanPropertyCTList read fI;
-    property Strike: TCTBooleanPropertyCTList read fStrike;
-    property Outline: TCTBooleanPropertyCTList read fOutline;
-    property Shadow: TCTBooleanPropertyCTList read fShadow;
-    property Condense: TCTBooleanPropertyCTList read fCondense;
-    property Extend: TCTBooleanPropertyCTList read fExtend;
-    property Color: TCTColorCTList read fColor;
-    property Sz: TCTFontSizeCTList read fSz;
-    property U: TCTUnderlinePropertyCTList read fU;
-    property VertAlign: TCTVerticalAlignFontPropertyCTList read fVertAlign;
-    property Scheme: TCTFontSchemeCTList read fScheme;
+    property Name: TFontNameCTList read fName;
+    property Charset: TIntPropertyCTList read fCharset;
+    property Family: TFontFamilyCTList read fFamily;
+    property B: TBooleanPropertyCTList read fB;
+    property I: TBooleanPropertyCTList read fI;
+    property Strike: TBooleanPropertyCTList read fStrike;
+    property Outline: TBooleanPropertyCTList read fOutline;
+    property Shadow: TBooleanPropertyCTList read fShadow;
+    property Condense: TBooleanPropertyCTList read fCondense;
+    property Extend: TBooleanPropertyCTList read fExtend;
+    property Color: TColorCTList read fColor;
+    property Sz: TFontSizeCTList read fSz;
+    property U: TUnderlinePropertyCTList read fU;
+    property VertAlign: TVerticalAlignFontPropertyCTList read fVertAlign;
+    property Scheme: TFontSchemeCTList read fScheme;
   end;
 
   [TName('CT_FontFamily')]
-  TCTFontFamilyCT = class(TXmliteComplexType)
+  TFontFamilyCT = class(TXmliteComplexType)
   private
-    fVal: TSTFontFamilyST;
+    fVal: TFontFamilyST;
   published
     [TRequired]
-    property Val: TSTFontFamilyST read fVal write fVal;
+    property Val: TFontFamilyST read fVal write fVal;
   end;
 
   [TName('CT_ExternalLink')]
-  TCTExternalLinkCT = class(TXmliteComplexType)
+  TExternalLinkCT = class(TXmliteComplexType)
   private
-    fExternalBook: TCTExternalBookCT;
-    fDdeLink: TCTDdeLinkCT;
-    fOleLink: TCTOleLinkCT;
-    fExtLst: TCTExtensionListCT;
+    fExternalBook: TExternalBookCT;
+    fDdeLink: TDdeLinkCT;
+    fOleLink: TOleLinkCT;
+    fExtLst: TExtensionListCT;
 
-    function GetExternalBook: TCTExternalBookCT;
-    function GetDdeLink: TCTDdeLinkCT;
-    function GetOleLink: TCTOleLinkCT;
+    function GetExternalBook: TExternalBookCT;
+    function GetDdeLink: TDdeLinkCT;
+    function GetOleLink: TOleLinkCT;
   published
     [TChoice('ExternalBook')]
-    property ExternalBook: TCTExternalBookCT read GetExternalBook;
+    property ExternalBook: TExternalBookCT read GetExternalBook;
     [TChoice('ExternalBook')]
-    property DdeLink: TCTDdeLinkCT read GetDdeLink;
+    property DdeLink: TDdeLinkCT read GetDdeLink;
     [TChoice('ExternalBook')]
-    property OleLink: TCTOleLinkCT read GetOleLink;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property OleLink: TOleLinkCT read GetOleLink;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_ExternalBook')]
-  TCTExternalBookCT = class(TXmliteComplexType)
+  TExternalBookCT = class(TXmliteComplexType)
   private
     fId: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA;
-    fSheetNames: TCTExternalSheetNamesCT;
-    fDefinedNames: TCTExternalDefinedNamesCT;
-    fSheetDataSet: TCTExternalSheetDataSetCT;
+    fSheetNames: TExternalSheetNamesCT;
+    fDefinedNames: TExternalDefinedNamesCT;
+    fSheetDataSet: TExternalSheetDataSetCT;
   published
     [TRequired]
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
-    property SheetNames: TCTExternalSheetNamesCT read fSheetNames;
-    property DefinedNames: TCTExternalDefinedNamesCT read fDefinedNames;
-    property SheetDataSet: TCTExternalSheetDataSetCT read fSheetDataSet;
+    property SheetNames: TExternalSheetNamesCT read fSheetNames;
+    property DefinedNames: TExternalDefinedNamesCT read fDefinedNames;
+    property SheetDataSet: TExternalSheetDataSetCT read fSheetDataSet;
   end;
 
   [TName('CT_ExternalSheetNames')]
-  TCTExternalSheetNamesCT = class(TXmliteComplexType)
+  TExternalSheetNamesCT = class(TXmliteComplexType)
   private
-    fSheetName: TCTExternalSheetNameCTList;
+    fSheetName: TExternalSheetNameCTList;
   published
-    property SheetName: TCTExternalSheetNameCTList read fSheetName;
+    property SheetName: TExternalSheetNameCTList read fSheetName;
   end;
 
   [TName('CT_ExternalSheetName')]
-  TCTExternalSheetNameCT = class(TXmliteComplexType)
+  TExternalSheetNameCT = class(TXmliteComplexType)
   private
-    fVal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fVal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
   published
-    property Val: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fVal write fVal;
+    property Val: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fVal write fVal;
   end;
 
   [TName('CT_ExternalDefinedNames')]
-  TCTExternalDefinedNamesCT = class(TXmliteComplexType)
+  TExternalDefinedNamesCT = class(TXmliteComplexType)
   private
-    fDefinedName: TCTExternalDefinedNameCTList;
+    fDefinedName: TExternalDefinedNameCTList;
   published
-    property DefinedName: TCTExternalDefinedNameCTList read fDefinedName;
+    property DefinedName: TExternalDefinedNameCTList read fDefinedName;
   end;
 
   [TName('CT_ExternalDefinedName')]
-  TCTExternalDefinedNameCT = class(TXmliteComplexType)
+  TExternalDefinedNameCT = class(TXmliteComplexType)
   private
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fRefersTo: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fRefersTo: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fSheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
     [TRequired]
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
-    property RefersTo: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fRefersTo write fRefersTo;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
+    property RefersTo: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fRefersTo write fRefersTo;
     property SheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSheetId write fSheetId;
   end;
 
   [TName('CT_ExternalSheetDataSet')]
-  TCTExternalSheetDataSetCT = class(TXmliteComplexType)
+  TExternalSheetDataSetCT = class(TXmliteComplexType)
   private
-    fSheetData: TCTExternalSheetDataCTList;
+    fSheetData: TExternalSheetDataCTList;
   published
-    property SheetData: TCTExternalSheetDataCTList read fSheetData;
+    property SheetData: TExternalSheetDataCTList read fSheetData;
   end;
 
   [TName('CT_ExternalSheetData')]
-  TCTExternalSheetDataCT = class(TXmliteComplexType)
+  TExternalSheetDataCT = class(TXmliteComplexType)
   private
     fSheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fRefreshError: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fRow: TCTExternalRowCTList;
+    fRow: TExternalRowCTList;
   published
     [TRequired]
     property SheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSheetId write fSheetId;
     [TDefault(False)]
     property RefreshError: ProRock.Xmlite.Schema.Base.TBooleanST read fRefreshError write fRefreshError;
-    property Row: TCTExternalRowCTList read fRow;
+    property Row: TExternalRowCTList read fRow;
   end;
 
   [TName('CT_ExternalRow')]
-  TCTExternalRowCT = class(TXmliteComplexType)
+  TExternalRowCT = class(TXmliteComplexType)
   private
     fR: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fCell: TCTExternalCellCTList;
+    fCell: TExternalCellCTList;
   published
     [TRequired]
     property R: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fR write fR;
-    property Cell: TCTExternalCellCTList read fCell;
+    property Cell: TExternalCellCTList read fCell;
   end;
 
   [TName('CT_ExternalCell')]
-  TCTExternalCellCT = class(TXmliteComplexType)
+  TExternalCellCT = class(TXmliteComplexType)
   private
-    fR: TSTCellRefST;
-    fT: TSTCellTypeST;
+    fR: TCellRefST;
+    fT: TCellTypeST;
     fVm: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fV: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fV: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
   published
-    property R: TSTCellRefST read fR write fR;
+    property R: TCellRefST read fR write fR;
     [TDefault(Ord(stctN))]
-    property T: TSTCellTypeST read fT write fT;
+    property T: TCellTypeST read fT write fT;
     [TDefault(0)]
     property Vm: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fVm write fVm;
     [TXmliteElement]
-    property V: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fV write fV;
+    property V: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fV write fV;
   end;
 
   [TName('CT_DdeLink')]
-  TCTDdeLinkCT = class(TXmliteComplexType)
+  TDdeLinkCT = class(TXmliteComplexType)
   private
-    fDdeService: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fDdeTopic: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fDdeItems: TCTDdeItemsCT;
+    fDdeService: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fDdeTopic: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fDdeItems: TDdeItemsCT;
   published
     [TRequired]
-    property DdeService: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDdeService write fDdeService;
+    property DdeService: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fDdeService write fDdeService;
     [TRequired]
-    property DdeTopic: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDdeTopic write fDdeTopic;
-    property DdeItems: TCTDdeItemsCT read fDdeItems;
+    property DdeTopic: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fDdeTopic write fDdeTopic;
+    property DdeItems: TDdeItemsCT read fDdeItems;
   end;
 
   [TName('CT_DdeItems')]
-  TCTDdeItemsCT = class(TXmliteComplexType)
+  TDdeItemsCT = class(TXmliteComplexType)
   private
-    fDdeItem: TCTDdeItemCTList;
+    fDdeItem: TDdeItemCTList;
   published
-    property DdeItem: TCTDdeItemCTList read fDdeItem;
+    property DdeItem: TDdeItemCTList read fDdeItem;
   end;
 
   [TName('CT_DdeItem')]
-  TCTDdeItemCT = class(TXmliteComplexType)
+  TDdeItemCT = class(TXmliteComplexType)
   private
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fOle: ProRock.Xmlite.Schema.Base.TBooleanST;
     fAdvise: ProRock.Xmlite.Schema.Base.TBooleanST;
     fPreferPic: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fValues: TCTDdeValuesCT;
+    fValues: TDdeValuesCT;
   published
     [TDefault('0')]
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
     [TDefault(False)]
     property Ole: ProRock.Xmlite.Schema.Base.TBooleanST read fOle write fOle;
     [TDefault(False)]
     property Advise: ProRock.Xmlite.Schema.Base.TBooleanST read fAdvise write fAdvise;
     [TDefault(False)]
     property PreferPic: ProRock.Xmlite.Schema.Base.TBooleanST read fPreferPic write fPreferPic;
-    property Values: TCTDdeValuesCT read fValues;
+    property Values: TDdeValuesCT read fValues;
   end;
 
   [TName('CT_DdeValues')]
-  TCTDdeValuesCT = class(TXmliteComplexType)
+  TDdeValuesCT = class(TXmliteComplexType)
   private
     fRows: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fCols: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fValue: TCTDdeValueCTList;
+    fValue: TDdeValueCTList;
   published
     [TDefault(1)]
     property Rows: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fRows write fRows;
     [TDefault(1)]
     property Cols: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCols write fCols;
-    property Value: TCTDdeValueCTList read fValue;
+    property Value: TDdeValueCTList read fValue;
   end;
 
   [TName('CT_DdeValue')]
-  TCTDdeValueCT = class(TXmliteComplexType)
+  TDdeValueCT = class(TXmliteComplexType)
   private
-    fT: TSTDdeValueTypeST;
-    fVal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fT: TDdeValueTypeST;
+    fVal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
   published
     [TDefault(Ord(stdvtaN))]
-    property T: TSTDdeValueTypeST read fT write fT;
+    property T: TDdeValueTypeST read fT write fT;
     [TXmliteElement]
     [TRequired]
-    property Val: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fVal write fVal;
+    property Val: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fVal write fVal;
   end;
 
   [TName('CT_OleLink')]
-  TCTOleLinkCT = class(TXmliteComplexType)
+  TOleLinkCT = class(TXmliteComplexType)
   private
     fId: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA;
-    fProgId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fOleItems: TCTOleItemsCT;
+    fProgId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fOleItems: TOleItemsCT;
   published
     [TRequired]
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
     [TRequired]
-    property ProgId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fProgId write fProgId;
-    property OleItems: TCTOleItemsCT read fOleItems;
+    property ProgId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fProgId write fProgId;
+    property OleItems: TOleItemsCT read fOleItems;
   end;
 
   [TName('CT_OleItems')]
-  TCTOleItemsCT = class(TXmliteComplexType)
+  TOleItemsCT = class(TXmliteComplexType)
   private
-    fOleItem: TCTOleItemCTList;
+    fOleItem: TOleItemCTList;
   published
-    property OleItem: TCTOleItemCTList read fOleItem;
+    property OleItem: TOleItemCTList read fOleItem;
   end;
 
   [TName('CT_OleItem')]
-  TCTOleItemCT = class(TXmliteComplexType)
+  TOleItemCT = class(TXmliteComplexType)
   private
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fIcon: ProRock.Xmlite.Schema.Base.TBooleanST;
     fAdvise: ProRock.Xmlite.Schema.Base.TBooleanST;
     fPreferPic: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
     [TRequired]
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
     [TDefault(False)]
     property Icon: ProRock.Xmlite.Schema.Base.TBooleanST read fIcon write fIcon;
     [TDefault(False)]
@@ -7764,46 +7764,46 @@ type
   end;
 
   [TName('CT_Table')]
-  TCTTableCT = class(TXmliteComplexType)
+  TTableCT = class(TXmliteComplexType)
   private
     fId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fDisplayName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fComment: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fRef: TSTRefST;
-    fTableType: TSTTableTypeST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fDisplayName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fComment: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fRef: TRefST;
+    fTableType: TTableTypeST;
     fHeaderRowCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fInsertRow: ProRock.Xmlite.Schema.Base.TBooleanST;
     fInsertRowShift: ProRock.Xmlite.Schema.Base.TBooleanST;
     fTotalsRowCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fTotalsRowShown: ProRock.Xmlite.Schema.Base.TBooleanST;
     fPublished: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fHeaderRowDxfId: TSTDxfIdST;
-    fDataDxfId: TSTDxfIdST;
-    fTotalsRowDxfId: TSTDxfIdST;
-    fHeaderRowBorderDxfId: TSTDxfIdST;
-    fTableBorderDxfId: TSTDxfIdST;
-    fTotalsRowBorderDxfId: TSTDxfIdST;
-    fHeaderRowCellStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fDataCellStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fTotalsRowCellStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fHeaderRowDxfId: TDxfIdST;
+    fDataDxfId: TDxfIdST;
+    fTotalsRowDxfId: TDxfIdST;
+    fHeaderRowBorderDxfId: TDxfIdST;
+    fTableBorderDxfId: TDxfIdST;
+    fTotalsRowBorderDxfId: TDxfIdST;
+    fHeaderRowCellStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fDataCellStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fTotalsRowCellStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fConnectionId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fAutoFilter: TCTAutoFilterCT;
-    fSortState: TCTSortStateCT;
-    fTableColumns: TCTTableColumnsCT;
-    fTableStyleInfo: TCTTableStyleInfoCT;
-    fExtLst: TCTExtensionListCT;
+    fAutoFilter: TAutoFilterCT;
+    fSortState: TSortStateCT;
+    fTableColumns: TTableColumnsCT;
+    fTableStyleInfo: TTableStyleInfoCT;
+    fExtLst: TExtensionListCT;
   published
     [TRequired]
     property Id: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fId write fId;
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
     [TRequired]
-    property DisplayName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDisplayName write fDisplayName;
-    property Comment: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fComment write fComment;
+    property DisplayName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fDisplayName write fDisplayName;
+    property Comment: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fComment write fComment;
     [TRequired]
-    property Ref: TSTRefST read fRef write fRef;
+    property Ref: TRefST read fRef write fRef;
     [TDefault(Ord(stttWorksheet))]
-    property TableType: TSTTableTypeST read fTableType write fTableType;
+    property TableType: TTableTypeST read fTableType write fTableType;
     [TDefault(1)]
     property HeaderRowCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fHeaderRowCount write fHeaderRowCount;
     [TDefault(False)]
@@ -7816,34 +7816,34 @@ type
     property TotalsRowShown: ProRock.Xmlite.Schema.Base.TBooleanST read fTotalsRowShown write fTotalsRowShown;
     [TDefault(False)]
     property Published: ProRock.Xmlite.Schema.Base.TBooleanST read fPublished write fPublished;
-    property HeaderRowDxfId: TSTDxfIdST read fHeaderRowDxfId write fHeaderRowDxfId;
-    property DataDxfId: TSTDxfIdST read fDataDxfId write fDataDxfId;
-    property TotalsRowDxfId: TSTDxfIdST read fTotalsRowDxfId write fTotalsRowDxfId;
-    property HeaderRowBorderDxfId: TSTDxfIdST read fHeaderRowBorderDxfId write fHeaderRowBorderDxfId;
-    property TableBorderDxfId: TSTDxfIdST read fTableBorderDxfId write fTableBorderDxfId;
-    property TotalsRowBorderDxfId: TSTDxfIdST read fTotalsRowBorderDxfId write fTotalsRowBorderDxfId;
-    property HeaderRowCellStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fHeaderRowCellStyle write fHeaderRowCellStyle;
-    property DataCellStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDataCellStyle write fDataCellStyle;
-    property TotalsRowCellStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fTotalsRowCellStyle write fTotalsRowCellStyle;
+    property HeaderRowDxfId: TDxfIdST read fHeaderRowDxfId write fHeaderRowDxfId;
+    property DataDxfId: TDxfIdST read fDataDxfId write fDataDxfId;
+    property TotalsRowDxfId: TDxfIdST read fTotalsRowDxfId write fTotalsRowDxfId;
+    property HeaderRowBorderDxfId: TDxfIdST read fHeaderRowBorderDxfId write fHeaderRowBorderDxfId;
+    property TableBorderDxfId: TDxfIdST read fTableBorderDxfId write fTableBorderDxfId;
+    property TotalsRowBorderDxfId: TDxfIdST read fTotalsRowBorderDxfId write fTotalsRowBorderDxfId;
+    property HeaderRowCellStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fHeaderRowCellStyle write fHeaderRowCellStyle;
+    property DataCellStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fDataCellStyle write fDataCellStyle;
+    property TotalsRowCellStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fTotalsRowCellStyle write fTotalsRowCellStyle;
     property ConnectionId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fConnectionId write fConnectionId;
-    property AutoFilter: TCTAutoFilterCT read fAutoFilter;
-    property SortState: TCTSortStateCT read fSortState;
+    property AutoFilter: TAutoFilterCT read fAutoFilter;
+    property SortState: TSortStateCT read fSortState;
     [TRequired]
-    property TableColumns: TCTTableColumnsCT read fTableColumns;
-    property TableStyleInfo: TCTTableStyleInfoCT read fTableStyleInfo;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property TableColumns: TTableColumnsCT read fTableColumns;
+    property TableStyleInfo: TTableStyleInfoCT read fTableStyleInfo;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_TableStyleInfo')]
-  TCTTableStyleInfoCT = class(TXmliteComplexType)
+  TTableStyleInfoCT = class(TXmliteComplexType)
   private
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fShowFirstColumn: ProRock.Xmlite.Schema.Base.TBooleanST;
     fShowLastColumn: ProRock.Xmlite.Schema.Base.TBooleanST;
     fShowRowStripes: ProRock.Xmlite.Schema.Base.TBooleanST;
     fShowColumnStripes: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
     property ShowFirstColumn: ProRock.Xmlite.Schema.Base.TBooleanST read fShowFirstColumn write fShowFirstColumn;
     property ShowLastColumn: ProRock.Xmlite.Schema.Base.TBooleanST read fShowLastColumn write fShowLastColumn;
     property ShowRowStripes: ProRock.Xmlite.Schema.Base.TBooleanST read fShowRowStripes write fShowRowStripes;
@@ -7851,224 +7851,224 @@ type
   end;
 
   [TName('CT_TableColumns')]
-  TCTTableColumnsCT = class(TXmliteComplexType)
+  TTableColumnsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fTableColumn: TCTTableColumnCTList;
+    fTableColumn: TTableColumnCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property TableColumn: TCTTableColumnCTList read fTableColumn;
+    property TableColumn: TTableColumnCTList read fTableColumn;
   end;
 
   [TName('CT_TableColumn')]
-  TCTTableColumnCT = class(TXmliteComplexType)
+  TTableColumnCT = class(TXmliteComplexType)
   private
     fId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fUniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fTotalsRowFunction: TSTTotalsRowFunctionST;
-    fTotalsRowLabel: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fUniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fTotalsRowFunction: TTotalsRowFunctionST;
+    fTotalsRowLabel: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fQueryTableFieldId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fHeaderRowDxfId: TSTDxfIdST;
-    fDataDxfId: TSTDxfIdST;
-    fTotalsRowDxfId: TSTDxfIdST;
-    fHeaderRowCellStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fDataCellStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fTotalsRowCellStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fCalculatedColumnFormula: TCTTableFormulaCT;
-    fTotalsRowFormula: TCTTableFormulaCT;
-    fXmlColumnPr: TCTXmlColumnPrCT;
-    fExtLst: TCTExtensionListCT;
+    fHeaderRowDxfId: TDxfIdST;
+    fDataDxfId: TDxfIdST;
+    fTotalsRowDxfId: TDxfIdST;
+    fHeaderRowCellStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fDataCellStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fTotalsRowCellStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fCalculatedColumnFormula: TTableFormulaCT;
+    fTotalsRowFormula: TTableFormulaCT;
+    fXmlColumnPr: TXmlColumnPrCT;
+    fExtLst: TExtensionListCT;
   published
     [TRequired]
     property Id: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fId write fId;
-    property UniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fUniqueName write fUniqueName;
+    property UniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fUniqueName write fUniqueName;
     [TRequired]
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
     [TDefault(Ord(sttrfNone))]
-    property TotalsRowFunction: TSTTotalsRowFunctionST read fTotalsRowFunction write fTotalsRowFunction;
-    property TotalsRowLabel: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fTotalsRowLabel write fTotalsRowLabel;
+    property TotalsRowFunction: TTotalsRowFunctionST read fTotalsRowFunction write fTotalsRowFunction;
+    property TotalsRowLabel: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fTotalsRowLabel write fTotalsRowLabel;
     property QueryTableFieldId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fQueryTableFieldId write fQueryTableFieldId;
-    property HeaderRowDxfId: TSTDxfIdST read fHeaderRowDxfId write fHeaderRowDxfId;
-    property DataDxfId: TSTDxfIdST read fDataDxfId write fDataDxfId;
-    property TotalsRowDxfId: TSTDxfIdST read fTotalsRowDxfId write fTotalsRowDxfId;
-    property HeaderRowCellStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fHeaderRowCellStyle write fHeaderRowCellStyle;
-    property DataCellStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDataCellStyle write fDataCellStyle;
-    property TotalsRowCellStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fTotalsRowCellStyle write fTotalsRowCellStyle;
-    property CalculatedColumnFormula: TCTTableFormulaCT read fCalculatedColumnFormula;
-    property TotalsRowFormula: TCTTableFormulaCT read fTotalsRowFormula;
-    property XmlColumnPr: TCTXmlColumnPrCT read fXmlColumnPr;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property HeaderRowDxfId: TDxfIdST read fHeaderRowDxfId write fHeaderRowDxfId;
+    property DataDxfId: TDxfIdST read fDataDxfId write fDataDxfId;
+    property TotalsRowDxfId: TDxfIdST read fTotalsRowDxfId write fTotalsRowDxfId;
+    property HeaderRowCellStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fHeaderRowCellStyle write fHeaderRowCellStyle;
+    property DataCellStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fDataCellStyle write fDataCellStyle;
+    property TotalsRowCellStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fTotalsRowCellStyle write fTotalsRowCellStyle;
+    property CalculatedColumnFormula: TTableFormulaCT read fCalculatedColumnFormula;
+    property TotalsRowFormula: TTableFormulaCT read fTotalsRowFormula;
+    property XmlColumnPr: TXmlColumnPrCT read fXmlColumnPr;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_TableFormula')]
-  TCTTableFormulaCT = class(TXmliteComplexType)
+  TTableFormulaCT = class(TXmliteComplexType)
   private
-    fXmlValue: TSTFormulaST;
+    fXmlValue: TFormulaST;
     fArray: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
     [TXmliteText]
-    property XmlValue: TSTFormulaST read fXmlValue write fXmlValue;
+    property XmlValue: TFormulaST read fXmlValue write fXmlValue;
     [TDefault(False)]
     property &Array: ProRock.Xmlite.Schema.Base.TBooleanST read fArray write fArray;
   end;
 
   [TName('CT_XmlColumnPr')]
-  TCTXmlColumnPrCT = class(TXmliteComplexType)
+  TXmlColumnPrCT = class(TXmliteComplexType)
   private
     fMapId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fXpath: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fXpath: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fDenormalized: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fXmlDataType: TSTXmlDataTypeST;
-    fExtLst: TCTExtensionListCT;
+    fXmlDataType: TXmlDataTypeST;
+    fExtLst: TExtensionListCT;
   published
     [TRequired]
     property MapId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fMapId write fMapId;
     [TRequired]
-    property Xpath: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fXpath write fXpath;
+    property Xpath: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fXpath write fXpath;
     [TDefault(False)]
     property Denormalized: ProRock.Xmlite.Schema.Base.TBooleanST read fDenormalized write fDenormalized;
     [TRequired]
-    property XmlDataType: TSTXmlDataTypeST read fXmlDataType write fXmlDataType;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property XmlDataType: TXmlDataTypeST read fXmlDataType write fXmlDataType;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_VolTypes')]
-  TCTVolTypesCT = class(TXmliteComplexType)
+  TVolTypesCT = class(TXmliteComplexType)
   private
-    fVolType: TCTVolTypeCTList;
-    fExtLst: TCTExtensionListCT;
+    fVolType: TVolTypeCTList;
+    fExtLst: TExtensionListCT;
   published
-    property VolType: TCTVolTypeCTList read fVolType;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property VolType: TVolTypeCTList read fVolType;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_VolType')]
-  TCTVolTypeCT = class(TXmliteComplexType)
+  TVolTypeCT = class(TXmliteComplexType)
   private
-    fType: TSTVolDepTypeST;
-    fMain: TCTVolMainCTList;
+    fType: TVolDepTypeST;
+    fMain: TVolMainCTList;
   published
     [TRequired]
-    property &Type: TSTVolDepTypeST read fType write fType;
-    property Main: TCTVolMainCTList read fMain;
+    property &Type: TVolDepTypeST read fType write fType;
+    property Main: TVolMainCTList read fMain;
   end;
 
   [TName('CT_VolMain')]
-  TCTVolMainCT = class(TXmliteComplexType)
+  TVolMainCT = class(TXmliteComplexType)
   private
-    fFirst: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fTp: TCTVolTopicCTList;
+    fFirst: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fTp: TVolTopicCTList;
   published
     [TRequired]
-    property First: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fFirst write fFirst;
-    property Tp: TCTVolTopicCTList read fTp;
+    property First: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fFirst write fFirst;
+    property Tp: TVolTopicCTList read fTp;
   end;
 
   [TName('CT_VolTopic')]
-  TCTVolTopicCT = class(TXmliteComplexType)
+  TVolTopicCT = class(TXmliteComplexType)
   private
-    fT: TSTVolValueTypeST;
-    fV: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fStp: TSTXstringSTList;
-    fTr: TCTVolTopicRefCTList;
+    fT: TVolValueTypeST;
+    fV: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fStp: TXstringSTList;
+    fTr: TVolTopicRefCTList;
   published
     [TDefault(Ord(stvvtN))]
-    property T: TSTVolValueTypeST read fT write fT;
+    property T: TVolValueTypeST read fT write fT;
     [TXmliteElement]
     [TRequired]
-    property V: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fV write fV;
-    property Stp: TSTXstringSTList read fStp;
-    property Tr: TCTVolTopicRefCTList read fTr;
+    property V: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fV write fV;
+    property Stp: TXstringSTList read fStp;
+    property Tr: TVolTopicRefCTList read fTr;
   end;
 
   [TName('CT_VolTopicRef')]
-  TCTVolTopicRefCT = class(TXmliteComplexType)
+  TVolTopicRefCT = class(TXmliteComplexType)
   private
-    fR: TSTCellRefST;
+    fR: TCellRefST;
     fS: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
     [TRequired]
-    property R: TSTCellRefST read fR write fR;
+    property R: TCellRefST read fR write fR;
     [TRequired]
     property S: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fS write fS;
   end;
 
   [TName('CT_Workbook')]
-  TCTWorkbookCT = class(TXmliteComplexType)
+  TWorkbookCT = class(TXmliteComplexType)
   private
-    fConformance: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTConformanceClassST;
-    fFileVersion: TCTFileVersionCT;
-    fFileSharing: TCTFileSharingCT;
-    fWorkbookPr: TCTWorkbookPrCT;
-    fWorkbookProtection: TCTWorkbookProtectionCT;
-    fBookViews: TCTBookViewsCT;
-    fSheets: TCTSheetsCT;
-    fFunctionGroups: TCTFunctionGroupsCT;
-    fExternalReferences: TCTExternalReferencesCT;
-    fDefinedNames: TCTDefinedNamesCT;
-    fCalcPr: TCTCalcPrCT;
-    fOleSize: TCTOleSizeCT;
-    fCustomWorkbookViews: TCTCustomWorkbookViewsCT;
-    fPivotCaches: TCTPivotCachesCT;
-    fSmartTagPr: TCTSmartTagPrCT;
-    fSmartTagTypes: TCTSmartTagTypesCT;
-    fWebPublishing: TCTWebPublishingCT;
-    fFileRecoveryPr: TCTFileRecoveryPrCTList;
-    fWebPublishObjects: TCTWebPublishObjectsCT;
-    fExtLst: TCTExtensionListCT;
+    fConformance: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TConformanceClassST;
+    fFileVersion: TFileVersionCT;
+    fFileSharing: TFileSharingCT;
+    fWorkbookPr: TWorkbookPrCT;
+    fWorkbookProtection: TWorkbookProtectionCT;
+    fBookViews: TBookViewsCT;
+    fSheets: TSheetsCT;
+    fFunctionGroups: TFunctionGroupsCT;
+    fExternalReferences: TExternalReferencesCT;
+    fDefinedNames: TDefinedNamesCT;
+    fCalcPr: TCalcPrCT;
+    fOleSize: TOleSizeCT;
+    fCustomWorkbookViews: TCustomWorkbookViewsCT;
+    fPivotCaches: TPivotCachesCT;
+    fSmartTagPr: TSmartTagPrCT;
+    fSmartTagTypes: TSmartTagTypesCT;
+    fWebPublishing: TWebPublishingCT;
+    fFileRecoveryPr: TFileRecoveryPrCTList;
+    fWebPublishObjects: TWebPublishObjectsCT;
+    fExtLst: TExtensionListCT;
   published
-    property Conformance: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTConformanceClassST read fConformance write fConformance;
-    property FileVersion: TCTFileVersionCT read fFileVersion;
-    property FileSharing: TCTFileSharingCT read fFileSharing;
-    property WorkbookPr: TCTWorkbookPrCT read fWorkbookPr;
-    property WorkbookProtection: TCTWorkbookProtectionCT read fWorkbookProtection;
-    property BookViews: TCTBookViewsCT read fBookViews;
+    property Conformance: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TConformanceClassST read fConformance write fConformance;
+    property FileVersion: TFileVersionCT read fFileVersion;
+    property FileSharing: TFileSharingCT read fFileSharing;
+    property WorkbookPr: TWorkbookPrCT read fWorkbookPr;
+    property WorkbookProtection: TWorkbookProtectionCT read fWorkbookProtection;
+    property BookViews: TBookViewsCT read fBookViews;
     [TRequired]
-    property Sheets: TCTSheetsCT read fSheets;
-    property FunctionGroups: TCTFunctionGroupsCT read fFunctionGroups;
-    property ExternalReferences: TCTExternalReferencesCT read fExternalReferences;
-    property DefinedNames: TCTDefinedNamesCT read fDefinedNames;
-    property CalcPr: TCTCalcPrCT read fCalcPr;
-    property OleSize: TCTOleSizeCT read fOleSize;
-    property CustomWorkbookViews: TCTCustomWorkbookViewsCT read fCustomWorkbookViews;
-    property PivotCaches: TCTPivotCachesCT read fPivotCaches;
-    property SmartTagPr: TCTSmartTagPrCT read fSmartTagPr;
-    property SmartTagTypes: TCTSmartTagTypesCT read fSmartTagTypes;
-    property WebPublishing: TCTWebPublishingCT read fWebPublishing;
-    property FileRecoveryPr: TCTFileRecoveryPrCTList read fFileRecoveryPr;
-    property WebPublishObjects: TCTWebPublishObjectsCT read fWebPublishObjects;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property Sheets: TSheetsCT read fSheets;
+    property FunctionGroups: TFunctionGroupsCT read fFunctionGroups;
+    property ExternalReferences: TExternalReferencesCT read fExternalReferences;
+    property DefinedNames: TDefinedNamesCT read fDefinedNames;
+    property CalcPr: TCalcPrCT read fCalcPr;
+    property OleSize: TOleSizeCT read fOleSize;
+    property CustomWorkbookViews: TCustomWorkbookViewsCT read fCustomWorkbookViews;
+    property PivotCaches: TPivotCachesCT read fPivotCaches;
+    property SmartTagPr: TSmartTagPrCT read fSmartTagPr;
+    property SmartTagTypes: TSmartTagTypesCT read fSmartTagTypes;
+    property WebPublishing: TWebPublishingCT read fWebPublishing;
+    property FileRecoveryPr: TFileRecoveryPrCTList read fFileRecoveryPr;
+    property WebPublishObjects: TWebPublishObjectsCT read fWebPublishObjects;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_FileVersion')]
-  TCTFileVersionCT = class(TXmliteComplexType)
+  TFileVersionCT = class(TXmliteComplexType)
   private
     fAppName: ProRock.Xmlite.Schema.Base.TStringST;
     fLastEdited: ProRock.Xmlite.Schema.Base.TStringST;
     fLowestEdited: ProRock.Xmlite.Schema.Base.TStringST;
     fRupBuild: ProRock.Xmlite.Schema.Base.TStringST;
-    fCodeName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST;
+    fCodeName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST;
   published
     property AppName: ProRock.Xmlite.Schema.Base.TStringST read fAppName write fAppName;
     property LastEdited: ProRock.Xmlite.Schema.Base.TStringST read fLastEdited write fLastEdited;
     property LowestEdited: ProRock.Xmlite.Schema.Base.TStringST read fLowestEdited write fLowestEdited;
     property RupBuild: ProRock.Xmlite.Schema.Base.TStringST read fRupBuild write fRupBuild;
-    property CodeName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST read fCodeName write fCodeName;
+    property CodeName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST read fCodeName write fCodeName;
   end;
 
   [TName('CT_BookViews')]
-  TCTBookViewsCT = class(TXmliteComplexType)
+  TBookViewsCT = class(TXmliteComplexType)
   private
-    fWorkbookView: TCTBookViewCTList;
+    fWorkbookView: TBookViewCTList;
   published
-    property WorkbookView: TCTBookViewCTList read fWorkbookView;
+    property WorkbookView: TBookViewCTList read fWorkbookView;
   end;
 
   [TName('CT_BookView')]
-  TCTBookViewCT = class(TXmliteComplexType)
+  TBookViewCT = class(TXmliteComplexType)
   private
-    fVisibility: TSTVisibilityST;
+    fVisibility: TVisibilityST;
     fMinimized: ProRock.Xmlite.Schema.Base.TBooleanST;
     fShowHorizontalScroll: ProRock.Xmlite.Schema.Base.TBooleanST;
     fShowVerticalScroll: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -8081,10 +8081,10 @@ type
     fFirstSheet: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fActiveTab: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fAutoFilterDateGrouping: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fExtLst: TCTExtensionListCT;
+    fExtLst: TExtensionListCT;
   published
     [TDefault(Ord(stvVisible))]
-    property Visibility: TSTVisibilityST read fVisibility write fVisibility;
+    property Visibility: TVisibilityST read fVisibility write fVisibility;
     [TDefault(False)]
     property Minimized: ProRock.Xmlite.Schema.Base.TBooleanST read fMinimized write fMinimized;
     [TDefault(True)]
@@ -8105,22 +8105,22 @@ type
     property ActiveTab: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fActiveTab write fActiveTab;
     [TDefault(True)]
     property AutoFilterDateGrouping: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoFilterDateGrouping write fAutoFilterDateGrouping;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_CustomWorkbookViews')]
-  TCTCustomWorkbookViewsCT = class(TXmliteComplexType)
+  TCustomWorkbookViewsCT = class(TXmliteComplexType)
   private
-    fCustomWorkbookView: TCTCustomWorkbookViewCTList;
+    fCustomWorkbookView: TCustomWorkbookViewCTList;
   published
-    property CustomWorkbookView: TCTCustomWorkbookViewCTList read fCustomWorkbookView;
+    property CustomWorkbookView: TCustomWorkbookViewCTList read fCustomWorkbookView;
   end;
 
   [TName('CT_CustomWorkbookView')]
-  TCTCustomWorkbookViewCT = class(TXmliteComplexType)
+  TCustomWorkbookViewCT = class(TXmliteComplexType)
   private
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fGuid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fGuid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST;
     fAutoUpdate: ProRock.Xmlite.Schema.Base.TBooleanST;
     fMergeInterval: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fChangesSavedWin: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -8141,14 +8141,14 @@ type
     fActiveSheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fShowFormulaBar: ProRock.Xmlite.Schema.Base.TBooleanST;
     fShowStatusbar: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fShowComments: TSTCommentsST;
-    fShowObjects: TSTObjectsST;
-    fExtLst: TCTExtensionListCT;
+    fShowComments: TCommentsST;
+    fShowObjects: TObjectsST;
+    fExtLst: TExtensionListCT;
   published
     [TRequired]
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
     [TRequired]
-    property Guid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST read fGuid write fGuid;
+    property Guid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST read fGuid write fGuid;
     [TDefault(False)]
     property AutoUpdate: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoUpdate write fAutoUpdate;
     property MergeInterval: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fMergeInterval write fMergeInterval;
@@ -8189,51 +8189,51 @@ type
     [TDefault(True)]
     property ShowStatusbar: ProRock.Xmlite.Schema.Base.TBooleanST read fShowStatusbar write fShowStatusbar;
     [TDefault(Ord(stcCommIndicator))]
-    property ShowComments: TSTCommentsST read fShowComments write fShowComments;
+    property ShowComments: TCommentsST read fShowComments write fShowComments;
     [TDefault(Ord(stoaAll))]
-    property ShowObjects: TSTObjectsST read fShowObjects write fShowObjects;
-    property ExtLst: TCTExtensionListCT read fExtLst;
+    property ShowObjects: TObjectsST read fShowObjects write fShowObjects;
+    property ExtLst: TExtensionListCT read fExtLst;
   end;
 
   [TName('CT_Sheets')]
-  TCTSheetsCT = class(TXmliteComplexType)
+  TSheetsCT = class(TXmliteComplexType)
   private
-    fSheet: TCTSheetCTList;
+    fSheet: TSheetCTList;
   published
-    property Sheet: TCTSheetCTList read fSheet;
+    property Sheet: TSheetCTList read fSheet;
   end;
 
   [TName('CT_Sheet')]
-  TCTSheetCT = class(TXmliteComplexType)
+  TSheetCT = class(TXmliteComplexType)
   private
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fSheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fState: TSTSheetStateST;
+    fState: TSheetStateST;
     fId: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA;
   published
     [TRequired]
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
     [TRequired]
     property SheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSheetId write fSheetId;
     [TDefault(Ord(stssVisible))]
-    property State: TSTSheetStateST read fState write fState;
+    property State: TSheetStateST read fState write fState;
     [TRequired]
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
   end;
 
   [TName('CT_WorkbookPr')]
-  TCTWorkbookPrCT = class(TXmliteComplexType)
+  TWorkbookPrCT = class(TXmliteComplexType)
   private
     fDate1904: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fShowObjects: TSTObjectsST;
+    fShowObjects: TObjectsST;
     fShowBorderUnselectedTables: ProRock.Xmlite.Schema.Base.TBooleanST;
     fFilterPrivacy: ProRock.Xmlite.Schema.Base.TBooleanST;
     fPromptedSolutions: ProRock.Xmlite.Schema.Base.TBooleanST;
     fShowInkAnnotation: ProRock.Xmlite.Schema.Base.TBooleanST;
     fBackupFile: ProRock.Xmlite.Schema.Base.TBooleanST;
     fSaveExternalLinkValues: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fUpdateLinks: TSTUpdateLinksST;
+    fUpdateLinks: TUpdateLinksST;
     fCodeName: ProRock.Xmlite.Schema.Base.TStringST;
     fHidePivotFieldList: ProRock.Xmlite.Schema.Base.TBooleanST;
     fShowPivotChartFilter: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -8247,7 +8247,7 @@ type
     [TDefault(False)]
     property Date1904: ProRock.Xmlite.Schema.Base.TBooleanST read fDate1904 write fDate1904;
     [TDefault(Ord(stoaAll))]
-    property ShowObjects: TSTObjectsST read fShowObjects write fShowObjects;
+    property ShowObjects: TObjectsST read fShowObjects write fShowObjects;
     [TDefault(True)]
     property ShowBorderUnselectedTables: ProRock.Xmlite.Schema.Base.TBooleanST read fShowBorderUnselectedTables write fShowBorderUnselectedTables;
     [TDefault(False)]
@@ -8261,7 +8261,7 @@ type
     [TDefault(True)]
     property SaveExternalLinkValues: ProRock.Xmlite.Schema.Base.TBooleanST read fSaveExternalLinkValues write fSaveExternalLinkValues;
     [TDefault(Ord(stulUserSet))]
-    property UpdateLinks: TSTUpdateLinksST read fUpdateLinks write fUpdateLinks;
+    property UpdateLinks: TUpdateLinksST read fUpdateLinks write fUpdateLinks;
     property CodeName: ProRock.Xmlite.Schema.Base.TStringST read fCodeName write fCodeName;
     [TDefault(False)]
     property HidePivotFieldList: ProRock.Xmlite.Schema.Base.TBooleanST read fHidePivotFieldList write fHidePivotFieldList;
@@ -8281,39 +8281,39 @@ type
   end;
 
   [TName('CT_SmartTagPr')]
-  TCTSmartTagPrCT = class(TXmliteComplexType)
+  TSmartTagPrCT = class(TXmliteComplexType)
   private
     fEmbed: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fShow: TSTSmartTagShowST;
+    fShow: TSmartTagShowST;
   published
     [TDefault(False)]
     property Embed: ProRock.Xmlite.Schema.Base.TBooleanST read fEmbed write fEmbed;
     [TDefault(Ord(ststsAll))]
-    property Show: TSTSmartTagShowST read fShow write fShow;
+    property Show: TSmartTagShowST read fShow write fShow;
   end;
 
   [TName('CT_SmartTagTypes')]
-  TCTSmartTagTypesCT = class(TXmliteComplexType)
+  TSmartTagTypesCT = class(TXmliteComplexType)
   private
-    fSmartTagType: TCTSmartTagTypeCTList;
+    fSmartTagType: TSmartTagTypeCTList;
   published
-    property SmartTagType: TCTSmartTagTypeCTList read fSmartTagType;
+    property SmartTagType: TSmartTagTypeCTList read fSmartTagType;
   end;
 
   [TName('CT_SmartTagType')]
-  TCTSmartTagTypeCT = class(TXmliteComplexType)
+  TSmartTagTypeCT = class(TXmliteComplexType)
   private
-    fNamespaceUri: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fUrl: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fNamespaceUri: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fUrl: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
   published
-    property NamespaceUri: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fNamespaceUri write fNamespaceUri;
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
-    property Url: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fUrl write fUrl;
+    property NamespaceUri: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fNamespaceUri write fNamespaceUri;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
+    property Url: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fUrl write fUrl;
   end;
 
   [TName('CT_FileRecoveryPr')]
-  TCTFileRecoveryPrCT = class(TXmliteComplexType)
+  TFileRecoveryPrCT = class(TXmliteComplexType)
   private
     fAutoRecover: ProRock.Xmlite.Schema.Base.TBooleanST;
     fCrashSave: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -8331,12 +8331,12 @@ type
   end;
 
   [TName('CT_CalcPr')]
-  TCTCalcPrCT = class(TXmliteComplexType)
+  TCalcPrCT = class(TXmliteComplexType)
   private
     fCalcId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fCalcMode: TSTCalcModeST;
+    fCalcMode: TCalcModeST;
     fFullCalcOnLoad: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fRefMode: TSTRefModeST;
+    fRefMode: TRefModeST;
     fIterate: ProRock.Xmlite.Schema.Base.TBooleanST;
     fIterateCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fIterateDelta: ProRock.Xmlite.Schema.Base.TDoubleST;
@@ -8349,11 +8349,11 @@ type
   published
     property CalcId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCalcId write fCalcId;
     [TDefault(Ord(stcmaAuto))]
-    property CalcMode: TSTCalcModeST read fCalcMode write fCalcMode;
+    property CalcMode: TCalcModeST read fCalcMode write fCalcMode;
     [TDefault(False)]
     property FullCalcOnLoad: ProRock.Xmlite.Schema.Base.TBooleanST read fFullCalcOnLoad write fFullCalcOnLoad;
     [TDefault(Ord(strmA1))]
-    property RefMode: TSTRefModeST read fRefMode write fRefMode;
+    property RefMode: TRefModeST read fRefMode write fRefMode;
     [TDefault(False)]
     property Iterate: ProRock.Xmlite.Schema.Base.TBooleanST read fIterate write fIterate;
     [TDefault(100)]
@@ -8373,42 +8373,42 @@ type
   end;
 
   [TName('CT_DefinedNames')]
-  TCTDefinedNamesCT = class(TXmliteComplexType)
+  TDefinedNamesCT = class(TXmliteComplexType)
   private
-    fDefinedName: TCTDefinedNameCTList;
+    fDefinedName: TDefinedNameCTList;
   published
-    property DefinedName: TCTDefinedNameCTList read fDefinedName;
+    property DefinedName: TDefinedNameCTList read fDefinedName;
   end;
 
   [TName('CT_DefinedName')]
-  TCTDefinedNameCT = class(TXmliteComplexType)
+  TDefinedNameCT = class(TXmliteComplexType)
   private
-    fXmlValue: TSTFormulaST;
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fComment: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fCustomMenu: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fDescription: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fHelp: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fStatusBar: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fXmlValue: TFormulaST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fComment: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fCustomMenu: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fDescription: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fHelp: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fStatusBar: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fLocalSheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fHidden: ProRock.Xmlite.Schema.Base.TBooleanST;
     fFunction: ProRock.Xmlite.Schema.Base.TBooleanST;
     fVbProcedure: ProRock.Xmlite.Schema.Base.TBooleanST;
     fXlm: ProRock.Xmlite.Schema.Base.TBooleanST;
     fFunctionGroupId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fShortcutKey: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fShortcutKey: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fPublishToServer: ProRock.Xmlite.Schema.Base.TBooleanST;
     fWorkbookParameter: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
     [TXmliteText]
-    property XmlValue: TSTFormulaST read fXmlValue write fXmlValue;
+    property XmlValue: TFormulaST read fXmlValue write fXmlValue;
     [TRequired]
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
-    property Comment: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fComment write fComment;
-    property CustomMenu: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fCustomMenu write fCustomMenu;
-    property Description: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDescription write fDescription;
-    property Help: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fHelp write fHelp;
-    property StatusBar: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fStatusBar write fStatusBar;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
+    property Comment: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fComment write fComment;
+    property CustomMenu: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fCustomMenu write fCustomMenu;
+    property Description: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fDescription write fDescription;
+    property Help: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fHelp write fHelp;
+    property StatusBar: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fStatusBar write fStatusBar;
     property LocalSheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fLocalSheetId write fLocalSheetId;
     [TDefault(False)]
     property Hidden: ProRock.Xmlite.Schema.Base.TBooleanST read fHidden write fHidden;
@@ -8419,7 +8419,7 @@ type
     [TDefault(False)]
     property Xlm: ProRock.Xmlite.Schema.Base.TBooleanST read fXlm write fXlm;
     property FunctionGroupId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fFunctionGroupId write fFunctionGroupId;
-    property ShortcutKey: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fShortcutKey write fShortcutKey;
+    property ShortcutKey: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fShortcutKey write fShortcutKey;
     [TDefault(False)]
     property PublishToServer: ProRock.Xmlite.Schema.Base.TBooleanST read fPublishToServer write fPublishToServer;
     [TDefault(False)]
@@ -8427,15 +8427,15 @@ type
   end;
 
   [TName('CT_ExternalReferences')]
-  TCTExternalReferencesCT = class(TXmliteComplexType)
+  TExternalReferencesCT = class(TXmliteComplexType)
   private
-    fExternalReference: TCTExternalReferenceCTList;
+    fExternalReference: TExternalReferenceCTList;
   published
-    property ExternalReference: TCTExternalReferenceCTList read fExternalReference;
+    property ExternalReference: TExternalReferenceCTList read fExternalReference;
   end;
 
   [TName('CT_ExternalReference')]
-  TCTExternalReferenceCT = class(TXmliteComplexType)
+  TExternalReferenceCT = class(TXmliteComplexType)
   private
     fId: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA;
   published
@@ -8445,7 +8445,7 @@ type
   end;
 
   [TName('CT_SheetBackgroundPicture')]
-  TCTSheetBackgroundPictureCT = class(TXmliteComplexType)
+  TSheetBackgroundPictureCT = class(TXmliteComplexType)
   private
     fId: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA;
   published
@@ -8455,15 +8455,15 @@ type
   end;
 
   [TName('CT_PivotCaches')]
-  TCTPivotCachesCT = class(TXmliteComplexType)
+  TPivotCachesCT = class(TXmliteComplexType)
   private
-    fPivotCache: TCTPivotCacheCTList;
+    fPivotCache: TPivotCacheCTList;
   published
-    property PivotCache: TCTPivotCacheCTList read fPivotCache;
+    property PivotCache: TPivotCacheCTList read fPivotCache;
   end;
 
   [TName('CT_PivotCache')]
-  TCTPivotCacheCT = class(TXmliteComplexType)
+  TPivotCacheCT = class(TXmliteComplexType)
   private
     fCacheId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fId: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA;
@@ -8476,57 +8476,57 @@ type
   end;
 
   [TName('CT_FileSharing')]
-  TCTFileSharingCT = class(TXmliteComplexType)
+  TFileSharingCT = class(TXmliteComplexType)
   private
     fReadOnlyRecommended: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fUserName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fReservationPassword: TSTUnsignedShortHexST;
-    fAlgorithmName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fUserName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fReservationPassword: TUnsignedShortHexST;
+    fAlgorithmName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fHashValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST;
     fSaltValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST;
     fSpinCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
     [TDefault(False)]
     property ReadOnlyRecommended: ProRock.Xmlite.Schema.Base.TBooleanST read fReadOnlyRecommended write fReadOnlyRecommended;
-    property UserName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fUserName write fUserName;
-    property ReservationPassword: TSTUnsignedShortHexST read fReservationPassword write fReservationPassword;
-    property AlgorithmName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fAlgorithmName write fAlgorithmName;
+    property UserName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fUserName write fUserName;
+    property ReservationPassword: TUnsignedShortHexST read fReservationPassword write fReservationPassword;
+    property AlgorithmName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fAlgorithmName write fAlgorithmName;
     property HashValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST read fHashValue write fHashValue;
     property SaltValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST read fSaltValue write fSaltValue;
     property SpinCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSpinCount write fSpinCount;
   end;
 
   [TName('CT_OleSize')]
-  TCTOleSizeCT = class(TXmliteComplexType)
+  TOleSizeCT = class(TXmliteComplexType)
   private
-    fRef: TSTRefST;
+    fRef: TRefST;
   published
     [TRequired]
-    property Ref: TSTRefST read fRef write fRef;
+    property Ref: TRefST read fRef write fRef;
   end;
 
   [TName('CT_WorkbookProtection')]
-  TCTWorkbookProtectionCT = class(TXmliteComplexType)
+  TWorkbookProtectionCT = class(TXmliteComplexType)
   private
-    fWorkbookPassword: TSTUnsignedShortHexST;
+    fWorkbookPassword: TUnsignedShortHexST;
     fWorkbookPasswordCharacterSet: ProRock.Xmlite.Schema.Base.TStringST;
-    fRevisionsPassword: TSTUnsignedShortHexST;
+    fRevisionsPassword: TUnsignedShortHexST;
     fRevisionsPasswordCharacterSet: ProRock.Xmlite.Schema.Base.TStringST;
     fLockStructure: ProRock.Xmlite.Schema.Base.TBooleanST;
     fLockWindows: ProRock.Xmlite.Schema.Base.TBooleanST;
     fLockRevision: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fRevisionsAlgorithmName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fRevisionsAlgorithmName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fRevisionsHashValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST;
     fRevisionsSaltValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST;
     fRevisionsSpinCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fWorkbookAlgorithmName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fWorkbookAlgorithmName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fWorkbookHashValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST;
     fWorkbookSaltValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST;
     fWorkbookSpinCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
-    property WorkbookPassword: TSTUnsignedShortHexST read fWorkbookPassword write fWorkbookPassword;
+    property WorkbookPassword: TUnsignedShortHexST read fWorkbookPassword write fWorkbookPassword;
     property WorkbookPasswordCharacterSet: ProRock.Xmlite.Schema.Base.TStringST read fWorkbookPasswordCharacterSet write fWorkbookPasswordCharacterSet;
-    property RevisionsPassword: TSTUnsignedShortHexST read fRevisionsPassword write fRevisionsPassword;
+    property RevisionsPassword: TUnsignedShortHexST read fRevisionsPassword write fRevisionsPassword;
     property RevisionsPasswordCharacterSet: ProRock.Xmlite.Schema.Base.TStringST read fRevisionsPasswordCharacterSet write fRevisionsPasswordCharacterSet;
     [TDefault(False)]
     property LockStructure: ProRock.Xmlite.Schema.Base.TBooleanST read fLockStructure write fLockStructure;
@@ -8534,25 +8534,25 @@ type
     property LockWindows: ProRock.Xmlite.Schema.Base.TBooleanST read fLockWindows write fLockWindows;
     [TDefault(False)]
     property LockRevision: ProRock.Xmlite.Schema.Base.TBooleanST read fLockRevision write fLockRevision;
-    property RevisionsAlgorithmName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fRevisionsAlgorithmName write fRevisionsAlgorithmName;
+    property RevisionsAlgorithmName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fRevisionsAlgorithmName write fRevisionsAlgorithmName;
     property RevisionsHashValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST read fRevisionsHashValue write fRevisionsHashValue;
     property RevisionsSaltValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST read fRevisionsSaltValue write fRevisionsSaltValue;
     property RevisionsSpinCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fRevisionsSpinCount write fRevisionsSpinCount;
-    property WorkbookAlgorithmName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fWorkbookAlgorithmName write fWorkbookAlgorithmName;
+    property WorkbookAlgorithmName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fWorkbookAlgorithmName write fWorkbookAlgorithmName;
     property WorkbookHashValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST read fWorkbookHashValue write fWorkbookHashValue;
     property WorkbookSaltValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST read fWorkbookSaltValue write fWorkbookSaltValue;
     property WorkbookSpinCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fWorkbookSpinCount write fWorkbookSpinCount;
   end;
 
   [TName('CT_WebPublishing')]
-  TCTWebPublishingCT = class(TXmliteComplexType)
+  TWebPublishingCT = class(TXmliteComplexType)
   private
     fCss: ProRock.Xmlite.Schema.Base.TBooleanST;
     fThicket: ProRock.Xmlite.Schema.Base.TBooleanST;
     fLongFileNames: ProRock.Xmlite.Schema.Base.TBooleanST;
     fVml: ProRock.Xmlite.Schema.Base.TBooleanST;
     fAllowPng: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fTargetScreenSize: TSTTargetScreenSizeST;
+    fTargetScreenSize: TTargetScreenSizeST;
     fDpi: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fCodePage: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fCharacterSet: ProRock.Xmlite.Schema.Base.TStringST;
@@ -8568,7 +8568,7 @@ type
     [TDefault(False)]
     property AllowPng: ProRock.Xmlite.Schema.Base.TBooleanST read fAllowPng write fAllowPng;
     [TDefault(Ord(sttss800x600))]
-    property TargetScreenSize: TSTTargetScreenSizeST read fTargetScreenSize write fTargetScreenSize;
+    property TargetScreenSize: TTargetScreenSizeST read fTargetScreenSize write fTargetScreenSize;
     [TDefault(96)]
     property Dpi: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fDpi write fDpi;
     property CodePage: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCodePage write fCodePage;
@@ -8576,58 +8576,58 @@ type
   end;
 
   [TName('CT_FunctionGroups')]
-  TCTFunctionGroupsCT = class(TXmliteComplexType)
+  TFunctionGroupsCT = class(TXmliteComplexType)
   private
     fBuiltInGroupCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fFunctionGroup: TCTFunctionGroupCTList;
+    fFunctionGroup: TFunctionGroupCTList;
   published
     [TDefault(16)]
     property BuiltInGroupCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fBuiltInGroupCount write fBuiltInGroupCount;
-    property FunctionGroup: TCTFunctionGroupCTList read fFunctionGroup;
+    property FunctionGroup: TFunctionGroupCTList read fFunctionGroup;
   end;
 
   [TName('CT_FunctionGroup')]
-  TCTFunctionGroupCT = class(TXmliteComplexType)
+  TFunctionGroupCT = class(TXmliteComplexType)
   private
-    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
   published
-    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fName write fName;
+    property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
   end;
 
   [TName('CT_WebPublishObjects')]
-  TCTWebPublishObjectsCT = class(TXmliteComplexType)
+  TWebPublishObjectsCT = class(TXmliteComplexType)
   private
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fWebPublishObject: TCTWebPublishObjectCTList;
+    fWebPublishObject: TWebPublishObjectCTList;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
-    property WebPublishObject: TCTWebPublishObjectCTList read fWebPublishObject;
+    property WebPublishObject: TWebPublishObjectCTList read fWebPublishObject;
   end;
 
   [TName('CT_WebPublishObject')]
-  TCTWebPublishObjectCT = class(TXmliteComplexType)
+  TWebPublishObjectCT = class(TXmliteComplexType)
   private
     fId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fDivId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fSourceObject: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fDestinationFile: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
-    fTitle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST;
+    fDivId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fSourceObject: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fDestinationFile: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+    fTitle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fAutoRepublish: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
     [TRequired]
     property Id: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fId write fId;
     [TRequired]
-    property DivId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDivId write fDivId;
-    property SourceObject: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fSourceObject write fSourceObject;
+    property DivId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fDivId write fDivId;
+    property SourceObject: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fSourceObject write fSourceObject;
     [TRequired]
-    property DestinationFile: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fDestinationFile write fDestinationFile;
-    property Title: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST read fTitle write fTitle;
+    property DestinationFile: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fDestinationFile write fDestinationFile;
+    property Title: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fTitle write fTitle;
     [TDefault(False)]
     property AutoRepublish: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoRepublish write fAutoRepublish;
   end;
 
   [TName('AG_RevData')]
-  TAGRevDataAG = class(TXmliteAttributeGroup)
+  TRevDataAG = class(TXmliteAttributeGroup)
   private
     fRId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fUa: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -8642,7 +8642,7 @@ type
   end;
 
   [TName('AG_AutoFormat')]
-  TAGAutoFormatAG = class(TXmliteAttributeGroup)
+  TAutoFormatAG = class(TXmliteAttributeGroup)
   private
     fAutoFormatId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fApplyNumberFormats: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -8661,418 +8661,1042 @@ type
     property ApplyWidthHeightFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyWidthHeightFormats write fApplyWidthHeightFormats;
   end;
 
-  TCalcChainE = class(TCTCalcChainCT);
+  TCalcChainE = class(TCalcChainCT);
 
-  TCommentsE = class(TCTCommentsCT);
+  TCommentsE = class(TCommentsCT);
 
   [TNaming(TNaming.nPascalCase)]
-  TMapInfoE = class(TCTMapInfoCT);
+  TMapInfoE = class(TMapInfoCT);
 
-  TConnectionsE = class(TCTConnectionsCT);
+  TConnectionsE = class(TConnectionsCT);
 
-  TPivotCacheDefinitionE = class(TCTPivotCacheDefinitionCT);
+  TPivotCacheDefinitionE = class(TPivotCacheDefinitionCT);
 
-  TPivotCacheRecordsE = class(TCTPivotCacheRecordsCT);
+  TPivotCacheRecordsE = class(TPivotCacheRecordsCT);
 
-  TPivotTableDefinitionE = class(TCTPivotTableDefinitionCT);
+  TPivotTableDefinitionE = class(TPivotTableDefinitionCT);
 
-  TQueryTableE = class(TCTQueryTableCT);
+  TQueryTableE = class(TQueryTableCT);
 
-  TSstE = class(TCTSstCT);
+  TSstE = class(TSstCT);
 
-  THeadersE = class(TCTRevisionHeadersCT);
+  THeadersE = class(TRevisionHeadersCT);
 
-  TRevisionsE = class(TCTRevisionsCT);
+  TRevisionsE = class(TRevisionsCT);
 
-  TUsersE = class(TCTUsersCT);
+  TUsersE = class(TUsersCT);
 
-  TWorksheetE = class(TCTWorksheetCT);
+  TWorksheetE = class(TWorksheetCT);
 
-  TChartsheetE = class(TCTChartsheetCT);
+  TChartsheetE = class(TChartsheetCT);
 
-  TDialogsheetE = class(TCTDialogsheetCT);
+  TDialogsheetE = class(TDialogsheetCT);
 
-  TMetadataE = class(TCTMetadataCT);
+  TMetadataE = class(TMetadataCT);
 
-  TSingleXmlCellsE = class(TCTSingleXmlCellsCT);
+  TSingleXmlCellsE = class(TSingleXmlCellsCT);
 
-  TStyleSheetE = class(TCTStylesheetCT);
+  TStyleSheetE = class(TStylesheetCT);
 
-  TExternalLinkE = class(TCTExternalLinkCT);
+  TExternalLinkE = class(TExternalLinkCT);
 
-  TTableE = class(TCTTableCT);
+  TTableE = class(TTableCT);
 
-  TVolTypesE = class(TCTVolTypesCT);
+  TVolTypesE = class(TVolTypesCT);
 
-  TWorkbookE = class(TCTWorkbookCT);
+  TWorkbookE = class(TWorkbookCT);
 
   [TName('EG_ExtensionList')]
   TEGExtensionListEG = class(TXmliteElementGroup)
   private
-    fExt: TCTExtensionCTList;
+    fExt: TExtensionCTList;
   published
-    property Ext: TCTExtensionCTList read fExt;
+    property Ext: TExtensionCTList read fExt;
   end;
 
-  TCTFilterColumnCTList = class(TXmliteList<TCTFilterColumnCT>);
-  TCTFilterCTList = class(TXmliteList<TCTFilterCT>);
-  TCTCustomFilterCTList = class(TXmliteList<TCTCustomFilterCT>);
-  TCTSortConditionCTList = class(TXmliteList<TCTSortConditionCT>);
-  TCTDateGroupItemCTList = class(TXmliteList<TCTDateGroupItemCT>);
-  TCTXStringElementCTList = class(TXmliteList<TCTXStringElementCT>);
-  TCTExtensionCTList = class(TXmliteList<TCTExtensionCT>);
-  TCTCalcCellCTList = class(TXmliteList<TCTCalcCellCT>);
-  TSTXstringSTList = class(TXmliteValueList<ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTXstringST>);
-  TCTCommentCTList = class(TXmliteList<TCTCommentCT>);
-  TCTSchemaCTList = class(TXmliteList<TCTSchemaCT>);
-  TCTMapCTList = class(TXmliteList<TCTMapCT>);
-  TCTConnectionCTList = class(TXmliteList<TCTConnectionCT>);
-  TCTParameterCTList = class(TXmliteList<TCTParameterCT>);
-  TCTTableMissingCTList = class(TXmliteList<TCTTableMissingCT>);
-  TCTTextFieldCTList = class(TXmliteList<TCTTextFieldCT>);
-  TCTCacheFieldCTList = class(TXmliteList<TCTCacheFieldCT>);
-  TCTPCDSCPageCTList = class(TXmliteList<TCTPCDSCPageCT>);
-  TCTPageItemCTList = class(TXmliteList<TCTPageItemCT>);
-  TCTRangeSetCTList = class(TXmliteList<TCTRangeSetCT>);
-  TCTMissingCTList = class(TXmliteList<TCTMissingCT>);
-  TCTNumberCTList = class(TXmliteList<TCTNumberCT>);
-  TCTBooleanCTList = class(TXmliteList<TCTBooleanCT>);
-  TCTErrorCTList = class(TXmliteList<TCTErrorCT>);
-  TCTStringCTList = class(TXmliteList<TCTStringCT>);
-  TCTDateTimeCTList = class(TXmliteList<TCTDateTimeCT>);
-  TCTRecordCTList = class(TXmliteList<TCTRecordCT>);
-  TCtPcdkpiCTList = class(TXmliteList<TCtPcdkpiCT>);
-  TCTCacheHierarchyCTList = class(TXmliteList<TCTCacheHierarchyCT>);
-  TCTFieldUsageCTList = class(TXmliteList<TCTFieldUsageCT>);
-  TCTGroupLevelCTList = class(TXmliteList<TCTGroupLevelCT>);
-  TCTLevelGroupCTList = class(TXmliteList<TCTLevelGroupCT>);
-  TCTGroupMemberCTList = class(TXmliteList<TCTGroupMemberCT>);
-  TCTServerFormatCTList = class(TXmliteList<TCTServerFormatCT>);
-  TCTTuplesCTList = class(TXmliteList<TCTTuplesCT>);
-  TCTTupleCTList = class(TXmliteList<TCTTupleCT>);
-  TCTSetCTList = class(TXmliteList<TCTSetCT>);
-  TCTQueryCTList = class(TXmliteList<TCTQueryCT>);
-  TCTCalculatedItemCTList = class(TXmliteList<TCTCalculatedItemCT>);
-  TCTCalculatedMemberCTList = class(TXmliteList<TCTCalculatedMemberCT>);
-  TCTPivotFieldCTList = class(TXmliteList<TCTPivotFieldCT>);
-  TCTItemCTList = class(TXmliteList<TCTItemCT>);
-  TCTPageFieldCTList = class(TXmliteList<TCTPageFieldCT>);
-  TCTDataFieldCTList = class(TXmliteList<TCTDataFieldCT>);
-  TCtICTList = class(TXmliteList<TCtICT>);
-  TCtXCTList = class(TXmliteList<TCtXCT>);
-  TCTFieldCTList = class(TXmliteList<TCTFieldCT>);
-  TCTFormatCTList = class(TXmliteList<TCTFormatCT>);
-  TCTConditionalFormatCTList = class(TXmliteList<TCTConditionalFormatCT>);
-  TCTChartFormatCTList = class(TXmliteList<TCTChartFormatCT>);
-  TCTPivotHierarchyCTList = class(TXmliteList<TCTPivotHierarchyCT>);
-  TCTHierarchyUsageCTList = class(TXmliteList<TCTHierarchyUsageCT>);
-  TCTMemberPropertyCTList = class(TXmliteList<TCTMemberPropertyCT>);
-  TCTMembersCTList = class(TXmliteList<TCTMembersCT>);
-  TCTMemberCTList = class(TXmliteList<TCTMemberCT>);
-  TCTPivotDimensionCTList = class(TXmliteList<TCTPivotDimensionCT>);
-  TCTMeasureGroupCTList = class(TXmliteList<TCTMeasureGroupCT>);
-  TCTMeasureDimensionMapCTList = class(TXmliteList<TCTMeasureDimensionMapCT>);
-  TCTPivotFilterCTList = class(TXmliteList<TCTPivotFilterCT>);
-  TCTPivotAreaCTList = class(TXmliteList<TCTPivotAreaCT>);
-  TCTPivotAreaReferenceCTList = class(TXmliteList<TCTPivotAreaReferenceCT>);
-  TCTIndexCTList = class(TXmliteList<TCTIndexCT>);
-  TCTDeletedFieldCTList = class(TXmliteList<TCTDeletedFieldCT>);
-  TCTQueryTableFieldCTList = class(TXmliteList<TCTQueryTableFieldCT>);
-  TCTPhoneticRunCTList = class(TXmliteList<TCTPhoneticRunCT>);
-  TCTREltCTList = class(TXmliteList<TCTREltCT>);
-  TCTRstCTList = class(TXmliteList<TCTRstCT>);
-  TCTRevisionHeaderCTList = class(TXmliteList<TCTRevisionHeaderCT>);
-  TCTSheetIdCTList = class(TXmliteList<TCTSheetIdCT>);
-  TCTReviewedCTList = class(TXmliteList<TCTReviewedCT>);
-  TCTUndoInfoCTList = class(TXmliteList<TCTUndoInfoCT>);
-  TCTRevisionRowColumnCTList = class(TXmliteList<TCTRevisionRowColumnCT>);
-  TCTRevisionMoveCTList = class(TXmliteList<TCTRevisionMoveCT>);
-  TCTRevisionCustomViewCTList = class(TXmliteList<TCTRevisionCustomViewCT>);
-  TCTRevisionSheetRenameCTList = class(TXmliteList<TCTRevisionSheetRenameCT>);
-  TCTRevisionInsertSheetCTList = class(TXmliteList<TCTRevisionInsertSheetCT>);
-  TCTRevisionCellChangeCTList = class(TXmliteList<TCTRevisionCellChangeCT>);
-  TCTRevisionFormattingCTList = class(TXmliteList<TCTRevisionFormattingCT>);
-  TCTRevisionAutoFormattingCTList = class(TXmliteList<TCTRevisionAutoFormattingCT>);
-  TCTRevisionCommentCTList = class(TXmliteList<TCTRevisionCommentCT>);
-  TCTRevisionDefinedNameCTList = class(TXmliteList<TCTRevisionDefinedNameCT>);
-  TCTRevisionConflictCTList = class(TXmliteList<TCTRevisionConflictCT>);
-  TCTRevisionQueryTableFieldCTList = class(TXmliteList<TCTRevisionQueryTableFieldCT>);
-  TCTSharedUserCTList = class(TXmliteList<TCTSharedUserCT>);
-  TCTColsCTList = class(TXmliteList<TCTColsCT>);
-  TCTColCTList = class(TXmliteList<TCTColCT>);
-  TCTRowCTList = class(TXmliteList<TCTRowCT>);
-  TCTCellCTList = class(TXmliteList<TCTCellCT>);
-  TCTSheetViewCTList = class(TXmliteList<TCTSheetViewCT>);
-  TCTPivotSelectionCTList = class(TXmliteList<TCTPivotSelectionCT>);
-  TCTSelectionCTList = class(TXmliteList<TCTSelectionCT>);
-  TCTBreakCTList = class(TXmliteList<TCTBreakCT>);
-  TCTDataRefCTList = class(TXmliteList<TCTDataRefCT>);
-  TCTMergeCellCTList = class(TXmliteList<TCTMergeCellCT>);
-  TCTCellSmartTagsCTList = class(TXmliteList<TCTCellSmartTagsCT>);
-  TCTCellSmartTagCTList = class(TXmliteList<TCTCellSmartTagCT>);
-  TCTCellSmartTagPrCTList = class(TXmliteList<TCTCellSmartTagPrCT>);
-  TCTCustomSheetViewCTList = class(TXmliteList<TCTCustomSheetViewCT>);
-  TCTDataValidationCTList = class(TXmliteList<TCTDataValidationCT>);
-  TCTConditionalFormattingCTList = class(TXmliteList<TCTConditionalFormattingCT>);
-  TSTFormulaSTList = class(TXmliteValueList<TSTFormulaST>);
-  TCTCfRuleCTList = class(TXmliteList<TCTCfRuleCT>);
-  TCTHyperlinkCTList = class(TXmliteList<TCTHyperlinkCT>);
-  TCTCfvoCTList = class(TXmliteList<TCTCfvoCT>);
+  TFilterColumnCTList = class(TXmliteList<TFilterColumnCT>);
+  TFilterCTList = class(TXmliteList<TFilterCT>);
+  TCustomFilterCTList = class(TXmliteList<TCustomFilterCT>);
+  TSortConditionCTList = class(TXmliteList<TSortConditionCT>);
+  TDateGroupItemCTList = class(TXmliteList<TDateGroupItemCT>);
+  TXStringElementCTList = class(TXmliteList<TXStringElementCT>);
+  TExtensionCTList = class(TXmliteList<TExtensionCT>);
+  TCalcCellCTList = class(TXmliteList<TCalcCellCT>);
+  TXstringSTList = class(TXmliteValueList<ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST>);
+  TCommentCTList = class(TXmliteList<TCommentCT>);
+  TSchemaCTList = class(TXmliteList<TSchemaCT>);
+  TMapCTList = class(TXmliteList<TMapCT>);
+  TConnectionCTList = class(TXmliteList<TConnectionCT>);
+  TParameterCTList = class(TXmliteList<TParameterCT>);
+  TTableMissingCTList = class(TXmliteList<TTableMissingCT>);
+  TTextFieldCTList = class(TXmliteList<TTextFieldCT>);
+  TCacheFieldCTList = class(TXmliteList<TCacheFieldCT>);
+  TPCDSCPageCTList = class(TXmliteList<TPCDSCPageCT>);
+  TPageItemCTList = class(TXmliteList<TPageItemCT>);
+  TRangeSetCTList = class(TXmliteList<TRangeSetCT>);
+  TMissingCTList = class(TXmliteList<TMissingCT>);
+  TNumberCTList = class(TXmliteList<TNumberCT>);
+  TBooleanCTList = class(TXmliteList<TBooleanCT>);
+  TErrorCTList = class(TXmliteList<TErrorCT>);
+  TStringCTList = class(TXmliteList<TStringCT>);
+  TDateTimeCTList = class(TXmliteList<TDateTimeCT>);
+  TRecordCTList = class(TXmliteList<TRecordCT>);
+  TPcdkpiCTList = class(TXmliteList<TPcdkpiCT>);
+  TCacheHierarchyCTList = class(TXmliteList<TCacheHierarchyCT>);
+  TFieldUsageCTList = class(TXmliteList<TFieldUsageCT>);
+  TGroupLevelCTList = class(TXmliteList<TGroupLevelCT>);
+  TLevelGroupCTList = class(TXmliteList<TLevelGroupCT>);
+  TGroupMemberCTList = class(TXmliteList<TGroupMemberCT>);
+  TServerFormatCTList = class(TXmliteList<TServerFormatCT>);
+  TTuplesCTList = class(TXmliteList<TTuplesCT>);
+  TTupleCTList = class(TXmliteList<TTupleCT>);
+  TSetCTList = class(TXmliteList<TSetCT>);
+  TQueryCTList = class(TXmliteList<TQueryCT>);
+  TCalculatedItemCTList = class(TXmliteList<TCalculatedItemCT>);
+  TCalculatedMemberCTList = class(TXmliteList<TCalculatedMemberCT>);
+  TPivotFieldCTList = class(TXmliteList<TPivotFieldCT>);
+  TItemCTList = class(TXmliteList<TItemCT>);
+  TPageFieldCTList = class(TXmliteList<TPageFieldCT>);
+  TDataFieldCTList = class(TXmliteList<TDataFieldCT>);
+  TICTList = class(TXmliteList<TICT>);
+  TXCTList = class(TXmliteList<TXCT>);
+  TFieldCTList = class(TXmliteList<TFieldCT>);
+  TFormatCTList = class(TXmliteList<TFormatCT>);
+  TConditionalFormatCTList = class(TXmliteList<TConditionalFormatCT>);
+  TChartFormatCTList = class(TXmliteList<TChartFormatCT>);
+  TPivotHierarchyCTList = class(TXmliteList<TPivotHierarchyCT>);
+  THierarchyUsageCTList = class(TXmliteList<THierarchyUsageCT>);
+  TMemberPropertyCTList = class(TXmliteList<TMemberPropertyCT>);
+  TMembersCTList = class(TXmliteList<TMembersCT>);
+  TMemberCTList = class(TXmliteList<TMemberCT>);
+  TPivotDimensionCTList = class(TXmliteList<TPivotDimensionCT>);
+  TMeasureGroupCTList = class(TXmliteList<TMeasureGroupCT>);
+  TMeasureDimensionMapCTList = class(TXmliteList<TMeasureDimensionMapCT>);
+  TPivotFilterCTList = class(TXmliteList<TPivotFilterCT>);
+  TPivotAreaCTList = class(TXmliteList<TPivotAreaCT>);
+  TPivotAreaReferenceCTList = class(TXmliteList<TPivotAreaReferenceCT>);
+  TIndexCTList = class(TXmliteList<TIndexCT>);
+  TDeletedFieldCTList = class(TXmliteList<TDeletedFieldCT>);
+  TQueryTableFieldCTList = class(TXmliteList<TQueryTableFieldCT>);
+  TPhoneticRunCTList = class(TXmliteList<TPhoneticRunCT>);
+  TREltCTList = class(TXmliteList<TREltCT>);
+  TRstCTList = class(TXmliteList<TRstCT>);
+  TRevisionHeaderCTList = class(TXmliteList<TRevisionHeaderCT>);
+  TSheetIdCTList = class(TXmliteList<TSheetIdCT>);
+  TReviewedCTList = class(TXmliteList<TReviewedCT>);
+  TUndoInfoCTList = class(TXmliteList<TUndoInfoCT>);
+  TRevisionRowColumnCTList = class(TXmliteList<TRevisionRowColumnCT>);
+  TRevisionMoveCTList = class(TXmliteList<TRevisionMoveCT>);
+  TRevisionCustomViewCTList = class(TXmliteList<TRevisionCustomViewCT>);
+  TRevisionSheetRenameCTList = class(TXmliteList<TRevisionSheetRenameCT>);
+  TRevisionInsertSheetCTList = class(TXmliteList<TRevisionInsertSheetCT>);
+  TRevisionCellChangeCTList = class(TXmliteList<TRevisionCellChangeCT>);
+  TRevisionFormattingCTList = class(TXmliteList<TRevisionFormattingCT>);
+  TRevisionAutoFormattingCTList = class(TXmliteList<TRevisionAutoFormattingCT>);
+  TRevisionCommentCTList = class(TXmliteList<TRevisionCommentCT>);
+  TRevisionDefinedNameCTList = class(TXmliteList<TRevisionDefinedNameCT>);
+  TRevisionConflictCTList = class(TXmliteList<TRevisionConflictCT>);
+  TRevisionQueryTableFieldCTList = class(TXmliteList<TRevisionQueryTableFieldCT>);
+  TSharedUserCTList = class(TXmliteList<TSharedUserCT>);
+  TColsCTList = class(TXmliteList<TColsCT>);
+  TColCTList = class(TXmliteList<TColCT>);
+  TRowCTList = class(TXmliteList<TRowCT>);
+  TCellCTList = class(TXmliteList<TCellCT>);
+  TSheetViewCTList = class(TXmliteList<TSheetViewCT>);
+  TPivotSelectionCTList = class(TXmliteList<TPivotSelectionCT>);
+  TSelectionCTList = class(TXmliteList<TSelectionCT>);
+  TBreakCTList = class(TXmliteList<TBreakCT>);
+  TDataRefCTList = class(TXmliteList<TDataRefCT>);
+  TMergeCellCTList = class(TXmliteList<TMergeCellCT>);
+  TCellSmartTagsCTList = class(TXmliteList<TCellSmartTagsCT>);
+  TCellSmartTagCTList = class(TXmliteList<TCellSmartTagCT>);
+  TCellSmartTagPrCTList = class(TXmliteList<TCellSmartTagPrCT>);
+  TCustomSheetViewCTList = class(TXmliteList<TCustomSheetViewCT>);
+  TDataValidationCTList = class(TXmliteList<TDataValidationCT>);
+  TConditionalFormattingCTList = class(TXmliteList<TConditionalFormattingCT>);
+  TFormulaSTList = class(TXmliteValueList<TFormulaST>);
+  TCfRuleCTList = class(TXmliteList<TCfRuleCT>);
+  THyperlinkCTList = class(TXmliteList<THyperlinkCT>);
+  TCfvoCTList = class(TXmliteList<TCfvoCT>);
   TStringSTList = class(TXmliteValueList<ProRock.Xmlite.Schema.Base.TStringST>);
-  TCTProtectedRangeCTList = class(TXmliteList<TCTProtectedRangeCT>);
-  TCTScenarioCTList = class(TXmliteList<TCTScenarioCT>);
-  TCTInputCellsCTList = class(TXmliteList<TCTInputCellsCT>);
-  TCTCellWatchCTList = class(TXmliteList<TCTCellWatchCT>);
-  TCTChartsheetViewCTList = class(TXmliteList<TCTChartsheetViewCT>);
-  TCTCustomChartsheetViewCTList = class(TXmliteList<TCTCustomChartsheetViewCT>);
-  TCTCustomPropertyCTList = class(TXmliteList<TCTCustomPropertyCT>);
-  TCTOleObjectCTList = class(TXmliteList<TCTOleObjectCT>);
-  TCTWebPublishItemCTList = class(TXmliteList<TCTWebPublishItemCT>);
-  TCTControlCTList = class(TXmliteList<TCTControlCT>);
-  TCTIgnoredErrorCTList = class(TXmliteList<TCTIgnoredErrorCT>);
-  TCTTablePartCTList = class(TXmliteList<TCTTablePartCT>);
-  TCTMetadataTypeCTList = class(TXmliteList<TCTMetadataTypeCT>);
-  TCTMetadataBlockCTList = class(TXmliteList<TCTMetadataBlockCT>);
-  TCTMetadataRecordCTList = class(TXmliteList<TCTMetadataRecordCT>);
-  TCTFutureMetadataCTList = class(TXmliteList<TCTFutureMetadataCT>);
-  TCTFutureMetadataBlockCTList = class(TXmliteList<TCTFutureMetadataBlockCT>);
-  TCTMdxCTList = class(TXmliteList<TCTMdxCT>);
-  TCTMetadataStringIndexCTList = class(TXmliteList<TCTMetadataStringIndexCT>);
-  TCTSingleXmlCellCTList = class(TXmliteList<TCTSingleXmlCellCT>);
-  TCTBorderCTList = class(TXmliteList<TCTBorderCT>);
-  TCTFillCTList = class(TXmliteList<TCTFillCT>);
-  TCTColorCTList = class(TXmliteList<TCTColorCT>);
-  TCTGradientStopCTList = class(TXmliteList<TCTGradientStopCT>);
-  TCTNumFmtCTList = class(TXmliteList<TCTNumFmtCT>);
-  TCTXfCTList = class(TXmliteList<TCTXfCT>);
-  TCTCellStyleCTList = class(TXmliteList<TCTCellStyleCT>);
-  TCTDxfCTList = class(TXmliteList<TCTDxfCT>);
-  TCTRgbColorCTList = class(TXmliteList<TCTRgbColorCT>);
-  TCTTableStyleCTList = class(TXmliteList<TCTTableStyleCT>);
-  TCTTableStyleElementCTList = class(TXmliteList<TCTTableStyleElementCT>);
-  TCTBooleanPropertyCTList = class(TXmliteList<TCTBooleanPropertyCT>);
-  TCTFontSizeCTList = class(TXmliteList<TCTFontSizeCT>);
-  TCTIntPropertyCTList = class(TXmliteList<TCTIntPropertyCT>);
-  TCTFontNameCTList = class(TXmliteList<TCTFontNameCT>);
-  TCTVerticalAlignFontPropertyCTList = class(TXmliteList<TCTVerticalAlignFontPropertyCT>);
-  TCTFontSchemeCTList = class(TXmliteList<TCTFontSchemeCT>);
-  TCTUnderlinePropertyCTList = class(TXmliteList<TCTUnderlinePropertyCT>);
-  TCTFontCTList = class(TXmliteList<TCTFontCT>);
-  TCTFontFamilyCTList = class(TXmliteList<TCTFontFamilyCT>);
-  TCTExternalSheetNameCTList = class(TXmliteList<TCTExternalSheetNameCT>);
-  TCTExternalDefinedNameCTList = class(TXmliteList<TCTExternalDefinedNameCT>);
-  TCTExternalSheetDataCTList = class(TXmliteList<TCTExternalSheetDataCT>);
-  TCTExternalRowCTList = class(TXmliteList<TCTExternalRowCT>);
-  TCTExternalCellCTList = class(TXmliteList<TCTExternalCellCT>);
-  TCTDdeItemCTList = class(TXmliteList<TCTDdeItemCT>);
-  TCTDdeValueCTList = class(TXmliteList<TCTDdeValueCT>);
-  TCTOleItemCTList = class(TXmliteList<TCTOleItemCT>);
-  TCTTableColumnCTList = class(TXmliteList<TCTTableColumnCT>);
-  TCTVolTypeCTList = class(TXmliteList<TCTVolTypeCT>);
-  TCTVolMainCTList = class(TXmliteList<TCTVolMainCT>);
-  TCTVolTopicCTList = class(TXmliteList<TCTVolTopicCT>);
-  TCTVolTopicRefCTList = class(TXmliteList<TCTVolTopicRefCT>);
-  TCTBookViewCTList = class(TXmliteList<TCTBookViewCT>);
-  TCTCustomWorkbookViewCTList = class(TXmliteList<TCTCustomWorkbookViewCT>);
-  TCTSheetCTList = class(TXmliteList<TCTSheetCT>);
-  TCTSmartTagTypeCTList = class(TXmliteList<TCTSmartTagTypeCT>);
-  TCTFileRecoveryPrCTList = class(TXmliteList<TCTFileRecoveryPrCT>);
-  TCTDefinedNameCTList = class(TXmliteList<TCTDefinedNameCT>);
-  TCTExternalReferenceCTList = class(TXmliteList<TCTExternalReferenceCT>);
-  TCTPivotCacheCTList = class(TXmliteList<TCTPivotCacheCT>);
-  TCTFunctionGroupCTList = class(TXmliteList<TCTFunctionGroupCT>);
-  TCTWebPublishObjectCTList = class(TXmliteList<TCTWebPublishObjectCT>);
+  TProtectedRangeCTList = class(TXmliteList<TProtectedRangeCT>);
+  TScenarioCTList = class(TXmliteList<TScenarioCT>);
+  TInputCellsCTList = class(TXmliteList<TInputCellsCT>);
+  TCellWatchCTList = class(TXmliteList<TCellWatchCT>);
+  TChartsheetViewCTList = class(TXmliteList<TChartsheetViewCT>);
+  TCustomChartsheetViewCTList = class(TXmliteList<TCustomChartsheetViewCT>);
+  TCustomPropertyCTList = class(TXmliteList<TCustomPropertyCT>);
+  TOleObjectCTList = class(TXmliteList<TOleObjectCT>);
+  TWebPublishItemCTList = class(TXmliteList<TWebPublishItemCT>);
+  TControlCTList = class(TXmliteList<TControlCT>);
+  TIgnoredErrorCTList = class(TXmliteList<TIgnoredErrorCT>);
+  TTablePartCTList = class(TXmliteList<TTablePartCT>);
+  TMetadataTypeCTList = class(TXmliteList<TMetadataTypeCT>);
+  TMetadataBlockCTList = class(TXmliteList<TMetadataBlockCT>);
+  TMetadataRecordCTList = class(TXmliteList<TMetadataRecordCT>);
+  TFutureMetadataCTList = class(TXmliteList<TFutureMetadataCT>);
+  TFutureMetadataBlockCTList = class(TXmliteList<TFutureMetadataBlockCT>);
+  TMdxCTList = class(TXmliteList<TMdxCT>);
+  TMetadataStringIndexCTList = class(TXmliteList<TMetadataStringIndexCT>);
+  TSingleXmlCellCTList = class(TXmliteList<TSingleXmlCellCT>);
+  TBorderCTList = class(TXmliteList<TBorderCT>);
+  TFillCTList = class(TXmliteList<TFillCT>);
+  TColorCTList = class(TXmliteList<TColorCT>);
+  TGradientStopCTList = class(TXmliteList<TGradientStopCT>);
+  TNumFmtCTList = class(TXmliteList<TNumFmtCT>);
+  TXfCTList = class(TXmliteList<TXfCT>);
+  TCellStyleCTList = class(TXmliteList<TCellStyleCT>);
+  TDxfCTList = class(TXmliteList<TDxfCT>);
+  TRgbColorCTList = class(TXmliteList<TRgbColorCT>);
+  TTableStyleCTList = class(TXmliteList<TTableStyleCT>);
+  TTableStyleElementCTList = class(TXmliteList<TTableStyleElementCT>);
+  TBooleanPropertyCTList = class(TXmliteList<TBooleanPropertyCT>);
+  TFontSizeCTList = class(TXmliteList<TFontSizeCT>);
+  TIntPropertyCTList = class(TXmliteList<TIntPropertyCT>);
+  TFontNameCTList = class(TXmliteList<TFontNameCT>);
+  TVerticalAlignFontPropertyCTList = class(TXmliteList<TVerticalAlignFontPropertyCT>);
+  TFontSchemeCTList = class(TXmliteList<TFontSchemeCT>);
+  TUnderlinePropertyCTList = class(TXmliteList<TUnderlinePropertyCT>);
+  TFontCTList = class(TXmliteList<TFontCT>);
+  TFontFamilyCTList = class(TXmliteList<TFontFamilyCT>);
+  TExternalSheetNameCTList = class(TXmliteList<TExternalSheetNameCT>);
+  TExternalDefinedNameCTList = class(TXmliteList<TExternalDefinedNameCT>);
+  TExternalSheetDataCTList = class(TXmliteList<TExternalSheetDataCT>);
+  TExternalRowCTList = class(TXmliteList<TExternalRowCT>);
+  TExternalCellCTList = class(TXmliteList<TExternalCellCT>);
+  TDdeItemCTList = class(TXmliteList<TDdeItemCT>);
+  TDdeValueCTList = class(TXmliteList<TDdeValueCT>);
+  TOleItemCTList = class(TXmliteList<TOleItemCT>);
+  TTableColumnCTList = class(TXmliteList<TTableColumnCT>);
+  TVolTypeCTList = class(TXmliteList<TVolTypeCT>);
+  TVolMainCTList = class(TXmliteList<TVolMainCT>);
+  TVolTopicCTList = class(TXmliteList<TVolTopicCT>);
+  TVolTopicRefCTList = class(TXmliteList<TVolTopicRefCT>);
+  TBookViewCTList = class(TXmliteList<TBookViewCT>);
+  TCustomWorkbookViewCTList = class(TXmliteList<TCustomWorkbookViewCT>);
+  TSheetCTList = class(TXmliteList<TSheetCT>);
+  TSmartTagTypeCTList = class(TXmliteList<TSmartTagTypeCT>);
+  TFileRecoveryPrCTList = class(TXmliteList<TFileRecoveryPrCT>);
+  TDefinedNameCTList = class(TXmliteList<TDefinedNameCT>);
+  TExternalReferenceCTList = class(TXmliteList<TExternalReferenceCT>);
+  TPivotCacheCTList = class(TXmliteList<TPivotCacheCT>);
+  TFunctionGroupCTList = class(TXmliteList<TFunctionGroupCT>);
+  TWebPublishObjectCTList = class(TXmliteList<TWebPublishObjectCT>);
+
+  TCTAuthorsCT = TAuthorsCT deprecated 'use TAuthorsCT';
+  TCTAutoFilterCT = TAutoFilterCT deprecated 'use TAutoFilterCT';
+  TAGAutoFormatAG = TAutoFormatAG deprecated 'use TAutoFormatAG';
+  TCTAutoSortScopeCT = TAutoSortScopeCT deprecated 'use TAutoSortScopeCT';
+  TSTAxisST = TAxisST deprecated 'use TAxisST';
+  TCTBookViewCT = TBookViewCT deprecated 'use TBookViewCT';
+  TCTBookViewCTList = TBookViewCTList deprecated 'use TBookViewCTList';
+  TCTBookViewsCT = TBookViewsCT deprecated 'use TBookViewsCT';
+  TCTBooleanCT = TBooleanCT deprecated 'use TBooleanCT';
+  TCTBooleanCTList = TBooleanCTList deprecated 'use TBooleanCTList';
+  TCTBooleanPropertyCT = TBooleanPropertyCT deprecated 'use TBooleanPropertyCT';
+  TCTBooleanPropertyCTList = TBooleanPropertyCTList deprecated 'use TBooleanPropertyCTList';
+  TCTBorderCT = TBorderCT deprecated 'use TBorderCT';
+  TCTBorderCTList = TBorderCTList deprecated 'use TBorderCTList';
+  TSTBorderIdST = TBorderIdST deprecated 'use TBorderIdST';
+  TCTBorderPrCT = TBorderPrCT deprecated 'use TBorderPrCT';
+  TSTBorderStyleST = TBorderStyleST deprecated 'use TBorderStyleST';
+  TCTBordersCT = TBordersCT deprecated 'use TBordersCT';
+  TCTBreakCT = TBreakCT deprecated 'use TBreakCT';
+  TCTBreakCTList = TBreakCTList deprecated 'use TBreakCTList';
+  TCTCacheFieldCT = TCacheFieldCT deprecated 'use TCacheFieldCT';
+  TCTCacheFieldCTList = TCacheFieldCTList deprecated 'use TCacheFieldCTList';
+  TCTCacheFieldsCT = TCacheFieldsCT deprecated 'use TCacheFieldsCT';
+  TCTCacheHierarchiesCT = TCacheHierarchiesCT deprecated 'use TCacheHierarchiesCT';
+  TCTCacheHierarchyCT = TCacheHierarchyCT deprecated 'use TCacheHierarchyCT';
+  TCTCacheHierarchyCTList = TCacheHierarchyCTList deprecated 'use TCacheHierarchyCTList';
+  TCTCacheSourceCT = TCacheSourceCT deprecated 'use TCacheSourceCT';
+  TCTCalcCellCT = TCalcCellCT deprecated 'use TCalcCellCT';
+  TCTCalcCellCTList = TCalcCellCTList deprecated 'use TCalcCellCTList';
+  TCTCalcChainCT = TCalcChainCT deprecated 'use TCalcChainCT';
+  TSTCalcModeST = TCalcModeST deprecated 'use TCalcModeST';
+  TCTCalcPrCT = TCalcPrCT deprecated 'use TCalcPrCT';
+  TCTCalculatedItemCT = TCalculatedItemCT deprecated 'use TCalculatedItemCT';
+  TCTCalculatedItemCTList = TCalculatedItemCTList deprecated 'use TCalculatedItemCTList';
+  TCTCalculatedItemsCT = TCalculatedItemsCT deprecated 'use TCalculatedItemsCT';
+  TCTCalculatedMemberCT = TCalculatedMemberCT deprecated 'use TCalculatedMemberCT';
+  TCTCalculatedMemberCTList = TCalculatedMemberCTList deprecated 'use TCalculatedMemberCTList';
+  TCTCalculatedMembersCT = TCalculatedMembersCT deprecated 'use TCalculatedMembersCT';
+  TCTCellAlignmentCT = TCellAlignmentCT deprecated 'use TCellAlignmentCT';
+  TCTCellCT = TCellCT deprecated 'use TCellCT';
+  TCTCellCTList = TCellCTList deprecated 'use TCellCTList';
+  TSTCellCommentsST = TCellCommentsST deprecated 'use TCellCommentsST';
+  TCTCellFormulaCT = TCellFormulaCT deprecated 'use TCellFormulaCT';
+  TSTCellFormulaTypeST = TCellFormulaTypeST deprecated 'use TCellFormulaTypeST';
+  TCTCellProtectionCT = TCellProtectionCT deprecated 'use TCellProtectionCT';
+  TSTCellRefST = TCellRefST deprecated 'use TCellRefST';
+  TCTCellSmartTagCT = TCellSmartTagCT deprecated 'use TCellSmartTagCT';
+  TCTCellSmartTagCTList = TCellSmartTagCTList deprecated 'use TCellSmartTagCTList';
+  TCTCellSmartTagPrCT = TCellSmartTagPrCT deprecated 'use TCellSmartTagPrCT';
+  TCTCellSmartTagPrCTList = TCellSmartTagPrCTList deprecated 'use TCellSmartTagPrCTList';
+  TCTCellSmartTagsCT = TCellSmartTagsCT deprecated 'use TCellSmartTagsCT';
+  TCTCellSmartTagsCTList = TCellSmartTagsCTList deprecated 'use TCellSmartTagsCTList';
+  TSTCellSpanST = TCellSpanST deprecated 'use TCellSpanST';
+  TSTCellSpansST = TCellSpansST deprecated 'use TCellSpansST';
+  TCTCellStyleCT = TCellStyleCT deprecated 'use TCellStyleCT';
+  TCTCellStyleCTList = TCellStyleCTList deprecated 'use TCellStyleCTList';
+  TSTCellStyleXfIdST = TCellStyleXfIdST deprecated 'use TCellStyleXfIdST';
+  TCTCellStyleXfsCT = TCellStyleXfsCT deprecated 'use TCellStyleXfsCT';
+  TCTCellStylesCT = TCellStylesCT deprecated 'use TCellStylesCT';
+  TSTCellTypeST = TCellTypeST deprecated 'use TCellTypeST';
+  TCTCellWatchCT = TCellWatchCT deprecated 'use TCellWatchCT';
+  TCTCellWatchCTList = TCellWatchCTList deprecated 'use TCellWatchCTList';
+  TCTCellWatchesCT = TCellWatchesCT deprecated 'use TCellWatchesCT';
+  TCTCellXfsCT = TCellXfsCT deprecated 'use TCellXfsCT';
+  TCTCfRuleCT = TCfRuleCT deprecated 'use TCfRuleCT';
+  TCTCfRuleCTList = TCfRuleCTList deprecated 'use TCfRuleCTList';
+  TSTCfTypeST = TCfTypeST deprecated 'use TCfTypeST';
+  TCTCfvoCT = TCfvoCT deprecated 'use TCfvoCT';
+  TCTCfvoCTList = TCfvoCTList deprecated 'use TCfvoCTList';
+  TSTCfvoTypeST = TCfvoTypeST deprecated 'use TCfvoTypeST';
+  TCTChartFormatCT = TChartFormatCT deprecated 'use TChartFormatCT';
+  TCTChartFormatCTList = TChartFormatCTList deprecated 'use TChartFormatCTList';
+  TCTChartFormatsCT = TChartFormatsCT deprecated 'use TChartFormatsCT';
+  TCTChartsheetCT = TChartsheetCT deprecated 'use TChartsheetCT';
+  TCTChartsheetPrCT = TChartsheetPrCT deprecated 'use TChartsheetPrCT';
+  TCTChartsheetProtectionCT = TChartsheetProtectionCT deprecated 'use TChartsheetProtectionCT';
+  TCTChartsheetViewCT = TChartsheetViewCT deprecated 'use TChartsheetViewCT';
+  TCTChartsheetViewCTList = TChartsheetViewCTList deprecated 'use TChartsheetViewCTList';
+  TCTChartsheetViewsCT = TChartsheetViewsCT deprecated 'use TChartsheetViewsCT';
+  TCTColCT = TColCT deprecated 'use TColCT';
+  TCTColCTList = TColCTList deprecated 'use TColCTList';
+  TCTColFieldsCT = TColFieldsCT deprecated 'use TColFieldsCT';
+  TCTColHierarchiesUsageCT = TColHierarchiesUsageCT deprecated 'use TColHierarchiesUsageCT';
+  TCTColItemsCT = TColItemsCT deprecated 'use TColItemsCT';
+  TCTColorCT = TColorCT deprecated 'use TColorCT';
+  TCTColorCTList = TColorCTList deprecated 'use TColorCTList';
+  TCTColorFilterCT = TColorFilterCT deprecated 'use TColorFilterCT';
+  TCTColorScaleCT = TColorScaleCT deprecated 'use TColorScaleCT';
+  TCTColorsCT = TColorsCT deprecated 'use TColorsCT';
+  TCTColsCT = TColsCT deprecated 'use TColsCT';
+  TCTColsCTList = TColsCTList deprecated 'use TColsCTList';
+  TCTCommentCT = TCommentCT deprecated 'use TCommentCT';
+  TCTCommentCTList = TCommentCTList deprecated 'use TCommentCTList';
+  TCTCommentListCT = TCommentListCT deprecated 'use TCommentListCT';
+  TCTCommentPrCT = TCommentPrCT deprecated 'use TCommentPrCT';
+  TCTCommentsCT = TCommentsCT deprecated 'use TCommentsCT';
+  TSTCommentsST = TCommentsST deprecated 'use TCommentsST';
+  TCTConditionalFormatCT = TConditionalFormatCT deprecated 'use TConditionalFormatCT';
+  TCTConditionalFormatCTList = TConditionalFormatCTList deprecated 'use TConditionalFormatCTList';
+  TCTConditionalFormatsCT = TConditionalFormatsCT deprecated 'use TConditionalFormatsCT';
+  TCTConditionalFormattingCT = TConditionalFormattingCT deprecated 'use TConditionalFormattingCT';
+  TCTConditionalFormattingCTList = TConditionalFormattingCTList deprecated 'use TConditionalFormattingCTList';
+  TSTConditionalFormattingOperatorST = TConditionalFormattingOperatorST deprecated 'use TConditionalFormattingOperatorST';
+  TCTConnectionCT = TConnectionCT deprecated 'use TConnectionCT';
+  TCTConnectionCTList = TConnectionCTList deprecated 'use TConnectionCTList';
+  TCTConnectionsCT = TConnectionsCT deprecated 'use TConnectionsCT';
+  TCTConsolidationCT = TConsolidationCT deprecated 'use TConsolidationCT';
+  TCTControlCT = TControlCT deprecated 'use TControlCT';
+  TCTControlCTList = TControlCTList deprecated 'use TControlCTList';
+  TCTControlPrCT = TControlPrCT deprecated 'use TControlPrCT';
+  TCTControlsCT = TControlsCT deprecated 'use TControlsCT';
+  TSTCredMethodST = TCredMethodST deprecated 'use TCredMethodST';
+  TCTCsPageSetupCT = TCsPageSetupCT deprecated 'use TCsPageSetupCT';
+  TCTCustomChartsheetViewCT = TCustomChartsheetViewCT deprecated 'use TCustomChartsheetViewCT';
+  TCTCustomChartsheetViewCTList = TCustomChartsheetViewCTList deprecated 'use TCustomChartsheetViewCTList';
+  TCTCustomChartsheetViewsCT = TCustomChartsheetViewsCT deprecated 'use TCustomChartsheetViewsCT';
+  TCTCustomFilterCT = TCustomFilterCT deprecated 'use TCustomFilterCT';
+  TCTCustomFilterCTList = TCustomFilterCTList deprecated 'use TCustomFilterCTList';
+  TCTCustomFiltersCT = TCustomFiltersCT deprecated 'use TCustomFiltersCT';
+  TCTCustomPropertiesCT = TCustomPropertiesCT deprecated 'use TCustomPropertiesCT';
+  TCTCustomPropertyCT = TCustomPropertyCT deprecated 'use TCustomPropertyCT';
+  TCTCustomPropertyCTList = TCustomPropertyCTList deprecated 'use TCustomPropertyCTList';
+  TCTCustomSheetViewCT = TCustomSheetViewCT deprecated 'use TCustomSheetViewCT';
+  TCTCustomSheetViewCTList = TCustomSheetViewCTList deprecated 'use TCustomSheetViewCTList';
+  TCTCustomSheetViewsCT = TCustomSheetViewsCT deprecated 'use TCustomSheetViewsCT';
+  TCTCustomWorkbookViewCT = TCustomWorkbookViewCT deprecated 'use TCustomWorkbookViewCT';
+  TCTCustomWorkbookViewCTList = TCustomWorkbookViewCTList deprecated 'use TCustomWorkbookViewCTList';
+  TCTCustomWorkbookViewsCT = TCustomWorkbookViewsCT deprecated 'use TCustomWorkbookViewsCT';
+  TCTDataBarCT = TDataBarCT deprecated 'use TDataBarCT';
+  TCTDataBindingCT = TDataBindingCT deprecated 'use TDataBindingCT';
+  TCTDataConsolidateCT = TDataConsolidateCT deprecated 'use TDataConsolidateCT';
+  TSTDataConsolidateFunctionST = TDataConsolidateFunctionST deprecated 'use TDataConsolidateFunctionST';
+  TCTDataFieldCT = TDataFieldCT deprecated 'use TDataFieldCT';
+  TCTDataFieldCTList = TDataFieldCTList deprecated 'use TDataFieldCTList';
+  TCTDataFieldsCT = TDataFieldsCT deprecated 'use TDataFieldsCT';
+  TCTDataRefCT = TDataRefCT deprecated 'use TDataRefCT';
+  TCTDataRefCTList = TDataRefCTList deprecated 'use TDataRefCTList';
+  TCTDataRefsCT = TDataRefsCT deprecated 'use TDataRefsCT';
+  TCTDataValidationCT = TDataValidationCT deprecated 'use TDataValidationCT';
+  TCTDataValidationCTList = TDataValidationCTList deprecated 'use TDataValidationCTList';
+  TSTDataValidationErrorStyleST = TDataValidationErrorStyleST deprecated 'use TDataValidationErrorStyleST';
+  TSTDataValidationImeModeST = TDataValidationImeModeST deprecated 'use TDataValidationImeModeST';
+  TSTDataValidationOperatorST = TDataValidationOperatorST deprecated 'use TDataValidationOperatorST';
+  TSTDataValidationTypeST = TDataValidationTypeST deprecated 'use TDataValidationTypeST';
+  TCTDataValidationsCT = TDataValidationsCT deprecated 'use TDataValidationsCT';
+  TCTDateGroupItemCT = TDateGroupItemCT deprecated 'use TDateGroupItemCT';
+  TCTDateGroupItemCTList = TDateGroupItemCTList deprecated 'use TDateGroupItemCTList';
+  TCTDateTimeCT = TDateTimeCT deprecated 'use TDateTimeCT';
+  TCTDateTimeCTList = TDateTimeCTList deprecated 'use TDateTimeCTList';
+  TSTDateTimeGroupingST = TDateTimeGroupingST deprecated 'use TDateTimeGroupingST';
+  TCTDbPrCT = TDbPrCT deprecated 'use TDbPrCT';
+  TCTDdeItemCT = TDdeItemCT deprecated 'use TDdeItemCT';
+  TCTDdeItemCTList = TDdeItemCTList deprecated 'use TDdeItemCTList';
+  TCTDdeItemsCT = TDdeItemsCT deprecated 'use TDdeItemsCT';
+  TCTDdeLinkCT = TDdeLinkCT deprecated 'use TDdeLinkCT';
+  TCTDdeValueCT = TDdeValueCT deprecated 'use TDdeValueCT';
+  TCTDdeValueCTList = TDdeValueCTList deprecated 'use TDdeValueCTList';
+  TSTDdeValueTypeST = TDdeValueTypeST deprecated 'use TDdeValueTypeST';
+  TCTDdeValuesCT = TDdeValuesCT deprecated 'use TDdeValuesCT';
+  TCTDefinedNameCT = TDefinedNameCT deprecated 'use TDefinedNameCT';
+  TCTDefinedNameCTList = TDefinedNameCTList deprecated 'use TDefinedNameCTList';
+  TCTDefinedNamesCT = TDefinedNamesCT deprecated 'use TDefinedNamesCT';
+  TCTDeletedFieldCT = TDeletedFieldCT deprecated 'use TDeletedFieldCT';
+  TCTDeletedFieldCTList = TDeletedFieldCTList deprecated 'use TDeletedFieldCTList';
+  TCTDialogsheetCT = TDialogsheetCT deprecated 'use TDialogsheetCT';
+  TCTDimensionsCT = TDimensionsCT deprecated 'use TDimensionsCT';
+  TCTDiscretePrCT = TDiscretePrCT deprecated 'use TDiscretePrCT';
+  TCTDrawingCT = TDrawingCT deprecated 'use TDrawingCT';
+  TCTDrawingHFCT = TDrawingHFCT deprecated 'use TDrawingHFCT';
+  TSTDvAspectST = TDvAspectST deprecated 'use TDvAspectST';
+  TCTDxfCT = TDxfCT deprecated 'use TDxfCT';
+  TCTDxfCTList = TDxfCTList deprecated 'use TDxfCTList';
+  TSTDxfIdST = TDxfIdST deprecated 'use TDxfIdST';
+  TCTDxfsCT = TDxfsCT deprecated 'use TDxfsCT';
+  TCTDynamicFilterCT = TDynamicFilterCT deprecated 'use TDynamicFilterCT';
+  TSTDynamicFilterTypeST = TDynamicFilterTypeST deprecated 'use TDynamicFilterTypeST';
+  TCTErrorCT = TErrorCT deprecated 'use TErrorCT';
+  TCTErrorCTList = TErrorCTList deprecated 'use TErrorCTList';
+  TCTExtensionCT = TExtensionCT deprecated 'use TExtensionCT';
+  TCTExtensionCTList = TExtensionCTList deprecated 'use TExtensionCTList';
+  TCTExtensionListCT = TExtensionListCT deprecated 'use TExtensionListCT';
+  TCTExternalBookCT = TExternalBookCT deprecated 'use TExternalBookCT';
+  TCTExternalCellCT = TExternalCellCT deprecated 'use TExternalCellCT';
+  TCTExternalCellCTList = TExternalCellCTList deprecated 'use TExternalCellCTList';
+  TSTExternalConnectionTypeST = TExternalConnectionTypeST deprecated 'use TExternalConnectionTypeST';
+  TCTExternalDefinedNameCT = TExternalDefinedNameCT deprecated 'use TExternalDefinedNameCT';
+  TCTExternalDefinedNameCTList = TExternalDefinedNameCTList deprecated 'use TExternalDefinedNameCTList';
+  TCTExternalDefinedNamesCT = TExternalDefinedNamesCT deprecated 'use TExternalDefinedNamesCT';
+  TCTExternalLinkCT = TExternalLinkCT deprecated 'use TExternalLinkCT';
+  TCTExternalReferenceCT = TExternalReferenceCT deprecated 'use TExternalReferenceCT';
+  TCTExternalReferenceCTList = TExternalReferenceCTList deprecated 'use TExternalReferenceCTList';
+  TCTExternalReferencesCT = TExternalReferencesCT deprecated 'use TExternalReferencesCT';
+  TCTExternalRowCT = TExternalRowCT deprecated 'use TExternalRowCT';
+  TCTExternalRowCTList = TExternalRowCTList deprecated 'use TExternalRowCTList';
+  TCTExternalSheetDataCT = TExternalSheetDataCT deprecated 'use TExternalSheetDataCT';
+  TCTExternalSheetDataCTList = TExternalSheetDataCTList deprecated 'use TExternalSheetDataCTList';
+  TCTExternalSheetDataSetCT = TExternalSheetDataSetCT deprecated 'use TExternalSheetDataSetCT';
+  TCTExternalSheetNameCT = TExternalSheetNameCT deprecated 'use TExternalSheetNameCT';
+  TCTExternalSheetNameCTList = TExternalSheetNameCTList deprecated 'use TExternalSheetNameCTList';
+  TCTExternalSheetNamesCT = TExternalSheetNamesCT deprecated 'use TExternalSheetNamesCT';
+  TCTFieldCT = TFieldCT deprecated 'use TFieldCT';
+  TCTFieldCTList = TFieldCTList deprecated 'use TFieldCTList';
+  TCTFieldGroupCT = TFieldGroupCT deprecated 'use TFieldGroupCT';
+  TSTFieldSortTypeST = TFieldSortTypeST deprecated 'use TFieldSortTypeST';
+  TCTFieldUsageCT = TFieldUsageCT deprecated 'use TFieldUsageCT';
+  TCTFieldUsageCTList = TFieldUsageCTList deprecated 'use TFieldUsageCTList';
+  TCTFieldsUsageCT = TFieldsUsageCT deprecated 'use TFieldsUsageCT';
+  TCTFileRecoveryPrCT = TFileRecoveryPrCT deprecated 'use TFileRecoveryPrCT';
+  TCTFileRecoveryPrCTList = TFileRecoveryPrCTList deprecated 'use TFileRecoveryPrCTList';
+  TCTFileSharingCT = TFileSharingCT deprecated 'use TFileSharingCT';
+  TSTFileTypeST = TFileTypeST deprecated 'use TFileTypeST';
+  TCTFileVersionCT = TFileVersionCT deprecated 'use TFileVersionCT';
+  TCTFillCT = TFillCT deprecated 'use TFillCT';
+  TCTFillCTList = TFillCTList deprecated 'use TFillCTList';
+  TSTFillIdST = TFillIdST deprecated 'use TFillIdST';
+  TCTFillsCT = TFillsCT deprecated 'use TFillsCT';
+  TCTFilterCT = TFilterCT deprecated 'use TFilterCT';
+  TCTFilterCTList = TFilterCTList deprecated 'use TFilterCTList';
+  TCTFilterColumnCT = TFilterColumnCT deprecated 'use TFilterColumnCT';
+  TCTFilterColumnCTList = TFilterColumnCTList deprecated 'use TFilterColumnCTList';
+  TSTFilterOperatorST = TFilterOperatorST deprecated 'use TFilterOperatorST';
+  TCTFiltersCT = TFiltersCT deprecated 'use TFiltersCT';
+  TCTFontCT = TFontCT deprecated 'use TFontCT';
+  TCTFontCTList = TFontCTList deprecated 'use TFontCTList';
+  TCTFontFamilyCT = TFontFamilyCT deprecated 'use TFontFamilyCT';
+  TCTFontFamilyCTList = TFontFamilyCTList deprecated 'use TFontFamilyCTList';
+  TSTFontFamilyST = TFontFamilyST deprecated 'use TFontFamilyST';
+  TSTFontIdST = TFontIdST deprecated 'use TFontIdST';
+  TCTFontNameCT = TFontNameCT deprecated 'use TFontNameCT';
+  TCTFontNameCTList = TFontNameCTList deprecated 'use TFontNameCTList';
+  TCTFontSchemeCT = TFontSchemeCT deprecated 'use TFontSchemeCT';
+  TCTFontSchemeCTList = TFontSchemeCTList deprecated 'use TFontSchemeCTList';
+  TSTFontSchemeST = TFontSchemeST deprecated 'use TFontSchemeST';
+  TCTFontSizeCT = TFontSizeCT deprecated 'use TFontSizeCT';
+  TCTFontSizeCTList = TFontSizeCTList deprecated 'use TFontSizeCTList';
+  TCTFontsCT = TFontsCT deprecated 'use TFontsCT';
+  TSTFormatActionST = TFormatActionST deprecated 'use TFormatActionST';
+  TCTFormatCT = TFormatCT deprecated 'use TFormatCT';
+  TCTFormatCTList = TFormatCTList deprecated 'use TFormatCTList';
+  TCTFormatsCT = TFormatsCT deprecated 'use TFormatsCT';
+  TSTFormulaExpressionST = TFormulaExpressionST deprecated 'use TFormulaExpressionST';
+  TSTFormulaST = TFormulaST deprecated 'use TFormulaST';
+  TSTFormulaSTList = TFormulaSTList deprecated 'use TFormulaSTList';
+  TCTFunctionGroupCT = TFunctionGroupCT deprecated 'use TFunctionGroupCT';
+  TCTFunctionGroupCTList = TFunctionGroupCTList deprecated 'use TFunctionGroupCTList';
+  TCTFunctionGroupsCT = TFunctionGroupsCT deprecated 'use TFunctionGroupsCT';
+  TCTFutureMetadataBlockCT = TFutureMetadataBlockCT deprecated 'use TFutureMetadataBlockCT';
+  TCTFutureMetadataBlockCTList = TFutureMetadataBlockCTList deprecated 'use TFutureMetadataBlockCTList';
+  TCTFutureMetadataCT = TFutureMetadataCT deprecated 'use TFutureMetadataCT';
+  TCTFutureMetadataCTList = TFutureMetadataCTList deprecated 'use TFutureMetadataCTList';
+  TCTGradientFillCT = TGradientFillCT deprecated 'use TGradientFillCT';
+  TCTGradientStopCT = TGradientStopCT deprecated 'use TGradientStopCT';
+  TCTGradientStopCTList = TGradientStopCTList deprecated 'use TGradientStopCTList';
+  TSTGradientTypeST = TGradientTypeST deprecated 'use TGradientTypeST';
+  TSTGroupByST = TGroupByST deprecated 'use TGroupByST';
+  TCTGroupItemsCT = TGroupItemsCT deprecated 'use TGroupItemsCT';
+  TCTGroupLevelCT = TGroupLevelCT deprecated 'use TGroupLevelCT';
+  TCTGroupLevelCTList = TGroupLevelCTList deprecated 'use TGroupLevelCTList';
+  TCTGroupLevelsCT = TGroupLevelsCT deprecated 'use TGroupLevelsCT';
+  TCTGroupMemberCT = TGroupMemberCT deprecated 'use TGroupMemberCT';
+  TCTGroupMemberCTList = TGroupMemberCTList deprecated 'use TGroupMemberCTList';
+  TCTGroupMembersCT = TGroupMembersCT deprecated 'use TGroupMembersCT';
+  TCTGroupsCT = TGroupsCT deprecated 'use TGroupsCT';
+  TSTGrowShrinkTypeST = TGrowShrinkTypeST deprecated 'use TGrowShrinkTypeST';
+  TCTHeaderFooterCT = THeaderFooterCT deprecated 'use THeaderFooterCT';
+  TCTHierarchyUsageCT = THierarchyUsageCT deprecated 'use THierarchyUsageCT';
+  TCTHierarchyUsageCTList = THierarchyUsageCTList deprecated 'use THierarchyUsageCTList';
+  TSTHorizontalAlignmentST = THorizontalAlignmentST deprecated 'use THorizontalAlignmentST';
+  TSTHtmlFmtST = THtmlFmtST deprecated 'use THtmlFmtST';
+  TCTHyperlinkCT = THyperlinkCT deprecated 'use THyperlinkCT';
+  TCTHyperlinkCTList = THyperlinkCTList deprecated 'use THyperlinkCTList';
+  TCTHyperlinksCT = THyperlinksCT deprecated 'use THyperlinksCT';
+  TCtICT = TICT deprecated 'use TICT';
+  TCtICTList = TICTList deprecated 'use TICTList';
+  TCTIconFilterCT = TIconFilterCT deprecated 'use TIconFilterCT';
+  TCTIconSetCT = TIconSetCT deprecated 'use TIconSetCT';
+  TSTIconSetTypeST = TIconSetTypeST deprecated 'use TIconSetTypeST';
+  TCTIgnoredErrorCT = TIgnoredErrorCT deprecated 'use TIgnoredErrorCT';
+  TCTIgnoredErrorCTList = TIgnoredErrorCTList deprecated 'use TIgnoredErrorCTList';
+  TCTIgnoredErrorsCT = TIgnoredErrorsCT deprecated 'use TIgnoredErrorsCT';
+  TCTIndexCT = TIndexCT deprecated 'use TIndexCT';
+  TCTIndexCTList = TIndexCTList deprecated 'use TIndexCTList';
+  TCTIndexedColorsCT = TIndexedColorsCT deprecated 'use TIndexedColorsCT';
+  TCTInputCellsCT = TInputCellsCT deprecated 'use TInputCellsCT';
+  TCTInputCellsCTList = TInputCellsCTList deprecated 'use TInputCellsCTList';
+  TCTIntPropertyCT = TIntPropertyCT deprecated 'use TIntPropertyCT';
+  TCTIntPropertyCTList = TIntPropertyCTList deprecated 'use TIntPropertyCTList';
+  TCTItemCT = TItemCT deprecated 'use TItemCT';
+  TCTItemCTList = TItemCTList deprecated 'use TItemCTList';
+  TSTItemTypeST = TItemTypeST deprecated 'use TItemTypeST';
+  TCTItemsCT = TItemsCT deprecated 'use TItemsCT';
+  TCTLegacyDrawingCT = TLegacyDrawingCT deprecated 'use TLegacyDrawingCT';
+  TCTLevelGroupCT = TLevelGroupCT deprecated 'use TLevelGroupCT';
+  TCTLevelGroupCTList = TLevelGroupCTList deprecated 'use TLevelGroupCTList';
+  TCTLocationCT = TLocationCT deprecated 'use TLocationCT';
+  TCTMRUColorsCT = TMRUColorsCT deprecated 'use TMRUColorsCT';
+  TCTMacrosheetCT = TMacrosheetCT deprecated 'use TMacrosheetCT';
+  TCTMapCT = TMapCT deprecated 'use TMapCT';
+  TCTMapCTList = TMapCTList deprecated 'use TMapCTList';
+  TCTMapInfoCT = TMapInfoCT deprecated 'use TMapInfoCT';
+  TCTMdxCT = TMdxCT deprecated 'use TMdxCT';
+  TCTMdxCTList = TMdxCTList deprecated 'use TMdxCTList';
+  TSTMdxFunctionTypeST = TMdxFunctionTypeST deprecated 'use TMdxFunctionTypeST';
+  TCTMdxKPICT = TMdxKPICT deprecated 'use TMdxKPICT';
+  TSTMdxKPIPropertyST = TMdxKPIPropertyST deprecated 'use TMdxKPIPropertyST';
+  TCTMdxMemeberPropCT = TMdxMemeberPropCT deprecated 'use TMdxMemeberPropCT';
+  TCTMdxMetadataCT = TMdxMetadataCT deprecated 'use TMdxMetadataCT';
+  TCTMdxSetCT = TMdxSetCT deprecated 'use TMdxSetCT';
+  TSTMdxSetOrderST = TMdxSetOrderST deprecated 'use TMdxSetOrderST';
+  TCTMdxTupleCT = TMdxTupleCT deprecated 'use TMdxTupleCT';
+  TCTMeasureDimensionMapCT = TMeasureDimensionMapCT deprecated 'use TMeasureDimensionMapCT';
+  TCTMeasureDimensionMapCTList = TMeasureDimensionMapCTList deprecated 'use TMeasureDimensionMapCTList';
+  TCTMeasureDimensionMapsCT = TMeasureDimensionMapsCT deprecated 'use TMeasureDimensionMapsCT';
+  TCTMeasureGroupCT = TMeasureGroupCT deprecated 'use TMeasureGroupCT';
+  TCTMeasureGroupCTList = TMeasureGroupCTList deprecated 'use TMeasureGroupCTList';
+  TCTMeasureGroupsCT = TMeasureGroupsCT deprecated 'use TMeasureGroupsCT';
+  TCTMemberCT = TMemberCT deprecated 'use TMemberCT';
+  TCTMemberCTList = TMemberCTList deprecated 'use TMemberCTList';
+  TCTMemberPropertiesCT = TMemberPropertiesCT deprecated 'use TMemberPropertiesCT';
+  TCTMemberPropertyCT = TMemberPropertyCT deprecated 'use TMemberPropertyCT';
+  TCTMemberPropertyCTList = TMemberPropertyCTList deprecated 'use TMemberPropertyCTList';
+  TCTMembersCT = TMembersCT deprecated 'use TMembersCT';
+  TCTMembersCTList = TMembersCTList deprecated 'use TMembersCTList';
+  TCTMergeCellCT = TMergeCellCT deprecated 'use TMergeCellCT';
+  TCTMergeCellCTList = TMergeCellCTList deprecated 'use TMergeCellCTList';
+  TCTMergeCellsCT = TMergeCellsCT deprecated 'use TMergeCellsCT';
+  TCTMetadataBlockCT = TMetadataBlockCT deprecated 'use TMetadataBlockCT';
+  TCTMetadataBlockCTList = TMetadataBlockCTList deprecated 'use TMetadataBlockCTList';
+  TCTMetadataBlocksCT = TMetadataBlocksCT deprecated 'use TMetadataBlocksCT';
+  TCTMetadataCT = TMetadataCT deprecated 'use TMetadataCT';
+  TCTMetadataRecordCT = TMetadataRecordCT deprecated 'use TMetadataRecordCT';
+  TCTMetadataRecordCTList = TMetadataRecordCTList deprecated 'use TMetadataRecordCTList';
+  TCTMetadataStringIndexCT = TMetadataStringIndexCT deprecated 'use TMetadataStringIndexCT';
+  TCTMetadataStringIndexCTList = TMetadataStringIndexCTList deprecated 'use TMetadataStringIndexCTList';
+  TCTMetadataStringsCT = TMetadataStringsCT deprecated 'use TMetadataStringsCT';
+  TCTMetadataTypeCT = TMetadataTypeCT deprecated 'use TMetadataTypeCT';
+  TCTMetadataTypeCTList = TMetadataTypeCTList deprecated 'use TMetadataTypeCTList';
+  TCTMetadataTypesCT = TMetadataTypesCT deprecated 'use TMetadataTypesCT';
+  TCTMissingCT = TMissingCT deprecated 'use TMissingCT';
+  TCTMissingCTList = TMissingCTList deprecated 'use TMissingCTList';
+  TCTNumFmtCT = TNumFmtCT deprecated 'use TNumFmtCT';
+  TCTNumFmtCTList = TNumFmtCTList deprecated 'use TNumFmtCTList';
+  TSTNumFmtIdST = TNumFmtIdST deprecated 'use TNumFmtIdST';
+  TCTNumFmtsCT = TNumFmtsCT deprecated 'use TNumFmtsCT';
+  TCTNumberCT = TNumberCT deprecated 'use TNumberCT';
+  TCTNumberCTList = TNumberCTList deprecated 'use TNumberCTList';
+  TCTObjectAnchorCT = TObjectAnchorCT deprecated 'use TObjectAnchorCT';
+  TCTObjectPrCT = TObjectPrCT deprecated 'use TObjectPrCT';
+  TSTObjectsST = TObjectsST deprecated 'use TObjectsST';
+  TCTOlapPrCT = TOlapPrCT deprecated 'use TOlapPrCT';
+  TCTOleItemCT = TOleItemCT deprecated 'use TOleItemCT';
+  TCTOleItemCTList = TOleItemCTList deprecated 'use TOleItemCTList';
+  TCTOleItemsCT = TOleItemsCT deprecated 'use TOleItemsCT';
+  TCTOleLinkCT = TOleLinkCT deprecated 'use TOleLinkCT';
+  TCTOleObjectCT = TOleObjectCT deprecated 'use TOleObjectCT';
+  TCTOleObjectCTList = TOleObjectCTList deprecated 'use TOleObjectCTList';
+  TCTOleObjectsCT = TOleObjectsCT deprecated 'use TOleObjectsCT';
+  TCTOleSizeCT = TOleSizeCT deprecated 'use TOleSizeCT';
+  TSTOleUpdateST = TOleUpdateST deprecated 'use TOleUpdateST';
+  TSTOrientationST = TOrientationST deprecated 'use TOrientationST';
+  TCTOutlinePrCT = TOutlinePrCT deprecated 'use TOutlinePrCT';
+  TCTPCDKPIsCT = TPCDKPIsCT deprecated 'use TPCDKPIsCT';
+  TCTPCDSCPageCT = TPCDSCPageCT deprecated 'use TPCDSCPageCT';
+  TCTPCDSCPageCTList = TPCDSCPageCTList deprecated 'use TPCDSCPageCTList';
+  TCTPCDSDTCEntriesCT = TPCDSDTCEntriesCT deprecated 'use TPCDSDTCEntriesCT';
+  TCTPageBreakCT = TPageBreakCT deprecated 'use TPageBreakCT';
+  TCTPageFieldCT = TPageFieldCT deprecated 'use TPageFieldCT';
+  TCTPageFieldCTList = TPageFieldCTList deprecated 'use TPageFieldCTList';
+  TCTPageFieldsCT = TPageFieldsCT deprecated 'use TPageFieldsCT';
+  TCTPageItemCT = TPageItemCT deprecated 'use TPageItemCT';
+  TCTPageItemCTList = TPageItemCTList deprecated 'use TPageItemCTList';
+  TCTPageMarginsCT = TPageMarginsCT deprecated 'use TPageMarginsCT';
+  TSTPageOrderST = TPageOrderST deprecated 'use TPageOrderST';
+  TCTPageSetUpPrCT = TPageSetUpPrCT deprecated 'use TPageSetUpPrCT';
+  TCTPageSetupCT = TPageSetupCT deprecated 'use TPageSetupCT';
+  TCTPagesCT = TPagesCT deprecated 'use TPagesCT';
+  TCTPaneCT = TPaneCT deprecated 'use TPaneCT';
+  TSTPaneST = TPaneST deprecated 'use TPaneST';
+  TSTPaneStateST = TPaneStateST deprecated 'use TPaneStateST';
+  TCTParameterCT = TParameterCT deprecated 'use TParameterCT';
+  TCTParameterCTList = TParameterCTList deprecated 'use TParameterCTList';
+  TSTParameterTypeST = TParameterTypeST deprecated 'use TParameterTypeST';
+  TCTParametersCT = TParametersCT deprecated 'use TParametersCT';
+  TCTPatternFillCT = TPatternFillCT deprecated 'use TPatternFillCT';
+  TSTPatternTypeST = TPatternTypeST deprecated 'use TPatternTypeST';
+  TCtPcdkpiCT = TPcdkpiCT deprecated 'use TPcdkpiCT';
+  TCtPcdkpiCTList = TPcdkpiCTList deprecated 'use TPcdkpiCTList';
+  TSTPhoneticAlignmentST = TPhoneticAlignmentST deprecated 'use TPhoneticAlignmentST';
+  TCTPhoneticPrCT = TPhoneticPrCT deprecated 'use TPhoneticPrCT';
+  TCTPhoneticRunCT = TPhoneticRunCT deprecated 'use TPhoneticRunCT';
+  TCTPhoneticRunCTList = TPhoneticRunCTList deprecated 'use TPhoneticRunCTList';
+  TSTPhoneticTypeST = TPhoneticTypeST deprecated 'use TPhoneticTypeST';
+  TCTPivotAreaCT = TPivotAreaCT deprecated 'use TPivotAreaCT';
+  TCTPivotAreaCTList = TPivotAreaCTList deprecated 'use TPivotAreaCTList';
+  TCTPivotAreaReferenceCT = TPivotAreaReferenceCT deprecated 'use TPivotAreaReferenceCT';
+  TCTPivotAreaReferenceCTList = TPivotAreaReferenceCTList deprecated 'use TPivotAreaReferenceCTList';
+  TCTPivotAreaReferencesCT = TPivotAreaReferencesCT deprecated 'use TPivotAreaReferencesCT';
+  TSTPivotAreaTypeST = TPivotAreaTypeST deprecated 'use TPivotAreaTypeST';
+  TCTPivotAreasCT = TPivotAreasCT deprecated 'use TPivotAreasCT';
+  TCTPivotCacheCT = TPivotCacheCT deprecated 'use TPivotCacheCT';
+  TCTPivotCacheCTList = TPivotCacheCTList deprecated 'use TPivotCacheCTList';
+  TCTPivotCacheDefinitionCT = TPivotCacheDefinitionCT deprecated 'use TPivotCacheDefinitionCT';
+  TCTPivotCacheRecordsCT = TPivotCacheRecordsCT deprecated 'use TPivotCacheRecordsCT';
+  TCTPivotCachesCT = TPivotCachesCT deprecated 'use TPivotCachesCT';
+  TCTPivotDimensionCT = TPivotDimensionCT deprecated 'use TPivotDimensionCT';
+  TCTPivotDimensionCTList = TPivotDimensionCTList deprecated 'use TPivotDimensionCTList';
+  TCTPivotFieldCT = TPivotFieldCT deprecated 'use TPivotFieldCT';
+  TCTPivotFieldCTList = TPivotFieldCTList deprecated 'use TPivotFieldCTList';
+  TCTPivotFieldsCT = TPivotFieldsCT deprecated 'use TPivotFieldsCT';
+  TCTPivotFilterCT = TPivotFilterCT deprecated 'use TPivotFilterCT';
+  TCTPivotFilterCTList = TPivotFilterCTList deprecated 'use TPivotFilterCTList';
+  TSTPivotFilterTypeST = TPivotFilterTypeST deprecated 'use TPivotFilterTypeST';
+  TCTPivotFiltersCT = TPivotFiltersCT deprecated 'use TPivotFiltersCT';
+  TCTPivotHierarchiesCT = TPivotHierarchiesCT deprecated 'use TPivotHierarchiesCT';
+  TCTPivotHierarchyCT = TPivotHierarchyCT deprecated 'use TPivotHierarchyCT';
+  TCTPivotHierarchyCTList = TPivotHierarchyCTList deprecated 'use TPivotHierarchyCTList';
+  TCTPivotSelectionCT = TPivotSelectionCT deprecated 'use TPivotSelectionCT';
+  TCTPivotSelectionCTList = TPivotSelectionCTList deprecated 'use TPivotSelectionCTList';
+  TCTPivotTableDefinitionCT = TPivotTableDefinitionCT deprecated 'use TPivotTableDefinitionCT';
+  TCTPivotTableStyleCT = TPivotTableStyleCT deprecated 'use TPivotTableStyleCT';
+  TSTPrintErrorST = TPrintErrorST deprecated 'use TPrintErrorST';
+  TCTPrintOptionsCT = TPrintOptionsCT deprecated 'use TPrintOptionsCT';
+  TCTProtectedRangeCT = TProtectedRangeCT deprecated 'use TProtectedRangeCT';
+  TCTProtectedRangeCTList = TProtectedRangeCTList deprecated 'use TProtectedRangeCTList';
+  TCTProtectedRangesCT = TProtectedRangesCT deprecated 'use TProtectedRangesCT';
+  TSTQualifierST = TQualifierST deprecated 'use TQualifierST';
+  TCTQueryCT = TQueryCT deprecated 'use TQueryCT';
+  TCTQueryCTList = TQueryCTList deprecated 'use TQueryCTList';
+  TCTQueryCacheCT = TQueryCacheCT deprecated 'use TQueryCacheCT';
+  TCTQueryTableCT = TQueryTableCT deprecated 'use TQueryTableCT';
+  TCTQueryTableDeletedFieldsCT = TQueryTableDeletedFieldsCT deprecated 'use TQueryTableDeletedFieldsCT';
+  TCTQueryTableFieldCT = TQueryTableFieldCT deprecated 'use TQueryTableFieldCT';
+  TCTQueryTableFieldCTList = TQueryTableFieldCTList deprecated 'use TQueryTableFieldCTList';
+  TCTQueryTableFieldsCT = TQueryTableFieldsCT deprecated 'use TQueryTableFieldsCT';
+  TCTQueryTableRefreshCT = TQueryTableRefreshCT deprecated 'use TQueryTableRefreshCT';
+  TCTREltCT = TREltCT deprecated 'use TREltCT';
+  TCTREltCTList = TREltCTList deprecated 'use TREltCTList';
+  TCTRPrEltCT = TRPrEltCT deprecated 'use TRPrEltCT';
+  TCTRangePrCT = TRangePrCT deprecated 'use TRangePrCT';
+  TCTRangeSetCT = TRangeSetCT deprecated 'use TRangeSetCT';
+  TCTRangeSetCTList = TRangeSetCTList deprecated 'use TRangeSetCTList';
+  TCTRangeSetsCT = TRangeSetsCT deprecated 'use TRangeSetsCT';
+  TCTRecordCT = TRecordCT deprecated 'use TRecordCT';
+  TCTRecordCTList = TRecordCTList deprecated 'use TRecordCTList';
+  TSTRefAST = TRefAST deprecated 'use TRefAST';
+  TSTRefModeST = TRefModeST deprecated 'use TRefModeST';
+  TSTRefST = TRefST deprecated 'use TRefST';
+  TAGRevDataAG = TRevDataAG deprecated 'use TRevDataAG';
+  TCTReviewedCT = TReviewedCT deprecated 'use TReviewedCT';
+  TCTReviewedCTList = TReviewedCTList deprecated 'use TReviewedCTList';
+  TCTReviewedRevisionsCT = TReviewedRevisionsCT deprecated 'use TReviewedRevisionsCT';
+  TSTRevisionActionST = TRevisionActionST deprecated 'use TRevisionActionST';
+  TCTRevisionAutoFormattingCT = TRevisionAutoFormattingCT deprecated 'use TRevisionAutoFormattingCT';
+  TCTRevisionAutoFormattingCTList = TRevisionAutoFormattingCTList deprecated 'use TRevisionAutoFormattingCTList';
+  TCTRevisionCellChangeCT = TRevisionCellChangeCT deprecated 'use TRevisionCellChangeCT';
+  TCTRevisionCellChangeCTList = TRevisionCellChangeCTList deprecated 'use TRevisionCellChangeCTList';
+  TCTRevisionCommentCT = TRevisionCommentCT deprecated 'use TRevisionCommentCT';
+  TCTRevisionCommentCTList = TRevisionCommentCTList deprecated 'use TRevisionCommentCTList';
+  TCTRevisionConflictCT = TRevisionConflictCT deprecated 'use TRevisionConflictCT';
+  TCTRevisionConflictCTList = TRevisionConflictCTList deprecated 'use TRevisionConflictCTList';
+  TCTRevisionCustomViewCT = TRevisionCustomViewCT deprecated 'use TRevisionCustomViewCT';
+  TCTRevisionCustomViewCTList = TRevisionCustomViewCTList deprecated 'use TRevisionCustomViewCTList';
+  TCTRevisionDefinedNameCT = TRevisionDefinedNameCT deprecated 'use TRevisionDefinedNameCT';
+  TCTRevisionDefinedNameCTList = TRevisionDefinedNameCTList deprecated 'use TRevisionDefinedNameCTList';
+  TCTRevisionFormattingCT = TRevisionFormattingCT deprecated 'use TRevisionFormattingCT';
+  TCTRevisionFormattingCTList = TRevisionFormattingCTList deprecated 'use TRevisionFormattingCTList';
+  TCTRevisionHeaderCT = TRevisionHeaderCT deprecated 'use TRevisionHeaderCT';
+  TCTRevisionHeaderCTList = TRevisionHeaderCTList deprecated 'use TRevisionHeaderCTList';
+  TCTRevisionHeadersCT = TRevisionHeadersCT deprecated 'use TRevisionHeadersCT';
+  TCTRevisionInsertSheetCT = TRevisionInsertSheetCT deprecated 'use TRevisionInsertSheetCT';
+  TCTRevisionInsertSheetCTList = TRevisionInsertSheetCTList deprecated 'use TRevisionInsertSheetCTList';
+  TCTRevisionMoveCT = TRevisionMoveCT deprecated 'use TRevisionMoveCT';
+  TCTRevisionMoveCTList = TRevisionMoveCTList deprecated 'use TRevisionMoveCTList';
+  TCTRevisionQueryTableFieldCT = TRevisionQueryTableFieldCT deprecated 'use TRevisionQueryTableFieldCT';
+  TCTRevisionQueryTableFieldCTList = TRevisionQueryTableFieldCTList deprecated 'use TRevisionQueryTableFieldCTList';
+  TCTRevisionRowColumnCT = TRevisionRowColumnCT deprecated 'use TRevisionRowColumnCT';
+  TCTRevisionRowColumnCTList = TRevisionRowColumnCTList deprecated 'use TRevisionRowColumnCTList';
+  TCTRevisionSheetRenameCT = TRevisionSheetRenameCT deprecated 'use TRevisionSheetRenameCT';
+  TCTRevisionSheetRenameCTList = TRevisionSheetRenameCTList deprecated 'use TRevisionSheetRenameCTList';
+  TCTRevisionsCT = TRevisionsCT deprecated 'use TRevisionsCT';
+  TCTRgbColorCT = TRgbColorCT deprecated 'use TRgbColorCT';
+  TCTRgbColorCTList = TRgbColorCTList deprecated 'use TRgbColorCTList';
+  TCTRowCT = TRowCT deprecated 'use TRowCT';
+  TCTRowCTList = TRowCTList deprecated 'use TRowCTList';
+  TCTRowFieldsCT = TRowFieldsCT deprecated 'use TRowFieldsCT';
+  TCTRowHierarchiesUsageCT = TRowHierarchiesUsageCT deprecated 'use TRowHierarchiesUsageCT';
+  TCTRowItemsCT = TRowItemsCT deprecated 'use TRowItemsCT';
+  TCTRstCT = TRstCT deprecated 'use TRstCT';
+  TCTRstCTList = TRstCTList deprecated 'use TRstCTList';
+  TSTRwColActionTypeST = TRwColActionTypeST deprecated 'use TRwColActionTypeST';
+  TCTScenarioCT = TScenarioCT deprecated 'use TScenarioCT';
+  TCTScenarioCTList = TScenarioCTList deprecated 'use TScenarioCTList';
+  TCTScenariosCT = TScenariosCT deprecated 'use TScenariosCT';
+  TCTSchemaCT = TSchemaCT deprecated 'use TSchemaCT';
+  TCTSchemaCTList = TSchemaCTList deprecated 'use TSchemaCTList';
+  TSTScopeST = TScopeST deprecated 'use TScopeST';
+  TCTSelectionCT = TSelectionCT deprecated 'use TSelectionCT';
+  TCTSelectionCTList = TSelectionCTList deprecated 'use TSelectionCTList';
+  TCTServerFormatCT = TServerFormatCT deprecated 'use TServerFormatCT';
+  TCTServerFormatCTList = TServerFormatCTList deprecated 'use TServerFormatCTList';
+  TCTServerFormatsCT = TServerFormatsCT deprecated 'use TServerFormatsCT';
+  TCTSetCT = TSetCT deprecated 'use TSetCT';
+  TCTSetCTList = TSetCTList deprecated 'use TSetCTList';
+  TCTSetsCT = TSetsCT deprecated 'use TSetsCT';
+  TCTSharedItemsCT = TSharedItemsCT deprecated 'use TSharedItemsCT';
+  TCTSharedUserCT = TSharedUserCT deprecated 'use TSharedUserCT';
+  TCTSharedUserCTList = TSharedUserCTList deprecated 'use TSharedUserCTList';
+  TCTSheetBackgroundPictureCT = TSheetBackgroundPictureCT deprecated 'use TSheetBackgroundPictureCT';
+  TCTSheetCT = TSheetCT deprecated 'use TSheetCT';
+  TCTSheetCTList = TSheetCTList deprecated 'use TSheetCTList';
+  TCTSheetCalcPrCT = TSheetCalcPrCT deprecated 'use TSheetCalcPrCT';
+  TCTSheetDataCT = TSheetDataCT deprecated 'use TSheetDataCT';
+  TCTSheetDimensionCT = TSheetDimensionCT deprecated 'use TSheetDimensionCT';
+  TCTSheetFormatPrCT = TSheetFormatPrCT deprecated 'use TSheetFormatPrCT';
+  TCTSheetIdCT = TSheetIdCT deprecated 'use TSheetIdCT';
+  TCTSheetIdCTList = TSheetIdCTList deprecated 'use TSheetIdCTList';
+  TCTSheetIdMapCT = TSheetIdMapCT deprecated 'use TSheetIdMapCT';
+  TCTSheetPrCT = TSheetPrCT deprecated 'use TSheetPrCT';
+  TCTSheetProtectionCT = TSheetProtectionCT deprecated 'use TSheetProtectionCT';
+  TSTSheetStateST = TSheetStateST deprecated 'use TSheetStateST';
+  TCTSheetViewCT = TSheetViewCT deprecated 'use TSheetViewCT';
+  TCTSheetViewCTList = TSheetViewCTList deprecated 'use TSheetViewCTList';
+  TSTSheetViewTypeST = TSheetViewTypeST deprecated 'use TSheetViewTypeST';
+  TCTSheetViewsCT = TSheetViewsCT deprecated 'use TSheetViewsCT';
+  TCTSheetsCT = TSheetsCT deprecated 'use TSheetsCT';
+  TSTShowDataAsST = TShowDataAsST deprecated 'use TShowDataAsST';
+  TCTSingleXmlCellCT = TSingleXmlCellCT deprecated 'use TSingleXmlCellCT';
+  TCTSingleXmlCellCTList = TSingleXmlCellCTList deprecated 'use TSingleXmlCellCTList';
+  TCTSingleXmlCellsCT = TSingleXmlCellsCT deprecated 'use TSingleXmlCellsCT';
+  TCTSmartTagPrCT = TSmartTagPrCT deprecated 'use TSmartTagPrCT';
+  TSTSmartTagShowST = TSmartTagShowST deprecated 'use TSmartTagShowST';
+  TCTSmartTagTypeCT = TSmartTagTypeCT deprecated 'use TSmartTagTypeCT';
+  TCTSmartTagTypeCTList = TSmartTagTypeCTList deprecated 'use TSmartTagTypeCTList';
+  TCTSmartTagTypesCT = TSmartTagTypesCT deprecated 'use TSmartTagTypesCT';
+  TCTSmartTagsCT = TSmartTagsCT deprecated 'use TSmartTagsCT';
+  TSTSortByST = TSortByST deprecated 'use TSortByST';
+  TCTSortConditionCT = TSortConditionCT deprecated 'use TSortConditionCT';
+  TCTSortConditionCTList = TSortConditionCTList deprecated 'use TSortConditionCTList';
+  TSTSortMethodST = TSortMethodST deprecated 'use TSortMethodST';
+  TCTSortStateCT = TSortStateCT deprecated 'use TSortStateCT';
+  TSTSortTypeST = TSortTypeST deprecated 'use TSortTypeST';
+  TSTSourceTypeST = TSourceTypeST deprecated 'use TSourceTypeST';
+  TSTSqrefST = TSqrefST deprecated 'use TSqrefST';
+  TCTSstCT = TSstCT deprecated 'use TSstCT';
+  TCTStringCT = TStringCT deprecated 'use TStringCT';
+  TCTStringCTList = TStringCTList deprecated 'use TStringCTList';
+  TCTStylesheetCT = TStylesheetCT deprecated 'use TStylesheetCT';
+  TCTTableCT = TTableCT deprecated 'use TTableCT';
+  TCTTableColumnCT = TTableColumnCT deprecated 'use TTableColumnCT';
+  TCTTableColumnCTList = TTableColumnCTList deprecated 'use TTableColumnCTList';
+  TCTTableColumnsCT = TTableColumnsCT deprecated 'use TTableColumnsCT';
+  TCTTableFormulaCT = TTableFormulaCT deprecated 'use TTableFormulaCT';
+  TCTTableMissingCT = TTableMissingCT deprecated 'use TTableMissingCT';
+  TCTTableMissingCTList = TTableMissingCTList deprecated 'use TTableMissingCTList';
+  TCTTablePartCT = TTablePartCT deprecated 'use TTablePartCT';
+  TCTTablePartCTList = TTablePartCTList deprecated 'use TTablePartCTList';
+  TCTTablePartsCT = TTablePartsCT deprecated 'use TTablePartsCT';
+  TCTTableStyleCT = TTableStyleCT deprecated 'use TTableStyleCT';
+  TCTTableStyleCTList = TTableStyleCTList deprecated 'use TTableStyleCTList';
+  TCTTableStyleElementCT = TTableStyleElementCT deprecated 'use TTableStyleElementCT';
+  TCTTableStyleElementCTList = TTableStyleElementCTList deprecated 'use TTableStyleElementCTList';
+  TCTTableStyleInfoCT = TTableStyleInfoCT deprecated 'use TTableStyleInfoCT';
+  TSTTableStyleTypeST = TTableStyleTypeST deprecated 'use TTableStyleTypeST';
+  TCTTableStylesCT = TTableStylesCT deprecated 'use TTableStylesCT';
+  TSTTableTypeST = TTableTypeST deprecated 'use TTableTypeST';
+  TCTTablesCT = TTablesCT deprecated 'use TTablesCT';
+  TSTTargetScreenSizeST = TTargetScreenSizeST deprecated 'use TTargetScreenSizeST';
+  TCTTextFieldCT = TTextFieldCT deprecated 'use TTextFieldCT';
+  TCTTextFieldCTList = TTextFieldCTList deprecated 'use TTextFieldCTList';
+  TCTTextFieldsCT = TTextFieldsCT deprecated 'use TTextFieldsCT';
+  TSTTextHAlignST = TTextHAlignST deprecated 'use TTextHAlignST';
+  TCTTextPrCT = TTextPrCT deprecated 'use TTextPrCT';
+  TSTTextRotationST = TTextRotationST deprecated 'use TTextRotationST';
+  TSTTextVAlignST = TTextVAlignST deprecated 'use TTextVAlignST';
+  TSTTimePeriodST = TTimePeriodST deprecated 'use TTimePeriodST';
+  TCTTop10CT = TTop10CT deprecated 'use TTop10CT';
+  TSTTotalsRowFunctionST = TTotalsRowFunctionST deprecated 'use TTotalsRowFunctionST';
+  TCTTupleCT = TTupleCT deprecated 'use TTupleCT';
+  TCTTupleCTList = TTupleCTList deprecated 'use TTupleCTList';
+  TCTTupleCacheCT = TTupleCacheCT deprecated 'use TTupleCacheCT';
+  TCTTuplesCT = TTuplesCT deprecated 'use TTuplesCT';
+  TCTTuplesCTList = TTuplesCTList deprecated 'use TTuplesCTList';
+  TSTTypeST = TTypeST deprecated 'use TTypeST';
+  TCTUnderlinePropertyCT = TUnderlinePropertyCT deprecated 'use TUnderlinePropertyCT';
+  TCTUnderlinePropertyCTList = TUnderlinePropertyCTList deprecated 'use TUnderlinePropertyCTList';
+  TSTUnderlineValuesST = TUnderlineValuesST deprecated 'use TUnderlineValuesST';
+  TCTUndoInfoCT = TUndoInfoCT deprecated 'use TUndoInfoCT';
+  TCTUndoInfoCTList = TUndoInfoCTList deprecated 'use TUndoInfoCTList';
+  TSTUnsignedIntHexST = TUnsignedIntHexST deprecated 'use TUnsignedIntHexST';
+  TSTUnsignedShortHexST = TUnsignedShortHexST deprecated 'use TUnsignedShortHexST';
+  TSTUpdateLinksST = TUpdateLinksST deprecated 'use TUpdateLinksST';
+  TCTUsersCT = TUsersCT deprecated 'use TUsersCT';
+  TCTVerticalAlignFontPropertyCT = TVerticalAlignFontPropertyCT deprecated 'use TVerticalAlignFontPropertyCT';
+  TCTVerticalAlignFontPropertyCTList = TVerticalAlignFontPropertyCTList deprecated 'use TVerticalAlignFontPropertyCTList';
+  TSTVerticalAlignmentST = TVerticalAlignmentST deprecated 'use TVerticalAlignmentST';
+  TSTVisibilityST = TVisibilityST deprecated 'use TVisibilityST';
+  TSTVolDepTypeST = TVolDepTypeST deprecated 'use TVolDepTypeST';
+  TCTVolMainCT = TVolMainCT deprecated 'use TVolMainCT';
+  TCTVolMainCTList = TVolMainCTList deprecated 'use TVolMainCTList';
+  TCTVolTopicCT = TVolTopicCT deprecated 'use TVolTopicCT';
+  TCTVolTopicCTList = TVolTopicCTList deprecated 'use TVolTopicCTList';
+  TCTVolTopicRefCT = TVolTopicRefCT deprecated 'use TVolTopicRefCT';
+  TCTVolTopicRefCTList = TVolTopicRefCTList deprecated 'use TVolTopicRefCTList';
+  TCTVolTypeCT = TVolTypeCT deprecated 'use TVolTypeCT';
+  TCTVolTypeCTList = TVolTypeCTList deprecated 'use TVolTypeCTList';
+  TCTVolTypesCT = TVolTypesCT deprecated 'use TVolTypesCT';
+  TSTVolValueTypeST = TVolValueTypeST deprecated 'use TVolValueTypeST';
+  TCTWebPrCT = TWebPrCT deprecated 'use TWebPrCT';
+  TCTWebPublishItemCT = TWebPublishItemCT deprecated 'use TWebPublishItemCT';
+  TCTWebPublishItemCTList = TWebPublishItemCTList deprecated 'use TWebPublishItemCTList';
+  TCTWebPublishItemsCT = TWebPublishItemsCT deprecated 'use TWebPublishItemsCT';
+  TCTWebPublishObjectCT = TWebPublishObjectCT deprecated 'use TWebPublishObjectCT';
+  TCTWebPublishObjectCTList = TWebPublishObjectCTList deprecated 'use TWebPublishObjectCTList';
+  TCTWebPublishObjectsCT = TWebPublishObjectsCT deprecated 'use TWebPublishObjectsCT';
+  TCTWebPublishingCT = TWebPublishingCT deprecated 'use TWebPublishingCT';
+  TSTWebSourceTypeST = TWebSourceTypeST deprecated 'use TWebSourceTypeST';
+  TCTWorkbookCT = TWorkbookCT deprecated 'use TWorkbookCT';
+  TCTWorkbookPrCT = TWorkbookPrCT deprecated 'use TWorkbookPrCT';
+  TCTWorkbookProtectionCT = TWorkbookProtectionCT deprecated 'use TWorkbookProtectionCT';
+  TCTWorksheetCT = TWorksheetCT deprecated 'use TWorksheetCT';
+  TCTWorksheetSourceCT = TWorksheetSourceCT deprecated 'use TWorksheetSourceCT';
+  TCtXCT = TXCT deprecated 'use TXCT';
+  TCtXCTList = TXCTList deprecated 'use TXCTList';
+  TCTXStringElementCT = TXStringElementCT deprecated 'use TXStringElementCT';
+  TCTXStringElementCTList = TXStringElementCTList deprecated 'use TXStringElementCTList';
+  TCTXfCT = TXfCT deprecated 'use TXfCT';
+  TCTXfCTList = TXfCTList deprecated 'use TXfCTList';
+  TCTXmlCellPrCT = TXmlCellPrCT deprecated 'use TXmlCellPrCT';
+  TCTXmlColumnPrCT = TXmlColumnPrCT deprecated 'use TXmlColumnPrCT';
+  TSTXmlDataTypeST = TXmlDataTypeST deprecated 'use TXmlDataTypeST';
+  TCTXmlPrCT = TXmlPrCT deprecated 'use TXmlPrCT';
+  TSTXstringSTList = TXstringSTList deprecated 'use TXstringSTList';
 
 implementation
 
-{ TCTFilterColumnCT }
+{ TFilterColumnCT }
 
-function TCTFilterColumnCT.GetFilters: TCTFiltersCT;
+function TFilterColumnCT.GetFilters: TFiltersCT;
 begin
-  Result := TCTFiltersCT(Lazy(fFilters, TCTFiltersCT));
+  Result := TFiltersCT(Lazy(fFilters, TFiltersCT));
 end;
 
-function TCTFilterColumnCT.GetTop10: TCTTop10CT;
+function TFilterColumnCT.GetTop10: TTop10CT;
 begin
-  Result := TCTTop10CT(Lazy(fTop10, TCTTop10CT));
+  Result := TTop10CT(Lazy(fTop10, TTop10CT));
 end;
 
-function TCTFilterColumnCT.GetCustomFilters: TCTCustomFiltersCT;
+function TFilterColumnCT.GetCustomFilters: TCustomFiltersCT;
 begin
-  Result := TCTCustomFiltersCT(Lazy(fCustomFilters, TCTCustomFiltersCT));
+  Result := TCustomFiltersCT(Lazy(fCustomFilters, TCustomFiltersCT));
 end;
 
-function TCTFilterColumnCT.GetDynamicFilter: TCTDynamicFilterCT;
+function TFilterColumnCT.GetDynamicFilter: TDynamicFilterCT;
 begin
-  Result := TCTDynamicFilterCT(Lazy(fDynamicFilter, TCTDynamicFilterCT));
+  Result := TDynamicFilterCT(Lazy(fDynamicFilter, TDynamicFilterCT));
 end;
 
-function TCTFilterColumnCT.GetColorFilter: TCTColorFilterCT;
+function TFilterColumnCT.GetColorFilter: TColorFilterCT;
 begin
-  Result := TCTColorFilterCT(Lazy(fColorFilter, TCTColorFilterCT));
+  Result := TColorFilterCT(Lazy(fColorFilter, TColorFilterCT));
 end;
 
-function TCTFilterColumnCT.GetIconFilter: TCTIconFilterCT;
+function TFilterColumnCT.GetIconFilter: TIconFilterCT;
 begin
-  Result := TCTIconFilterCT(Lazy(fIconFilter, TCTIconFilterCT));
+  Result := TIconFilterCT(Lazy(fIconFilter, TIconFilterCT));
 end;
 
-function TCTFilterColumnCT.GetExtLst: TCTExtensionListCT;
+function TFilterColumnCT.GetExtLst: TExtensionListCT;
 begin
-  Result := TCTExtensionListCT(Lazy(fExtLst, TCTExtensionListCT));
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
 end;
 
-{ TCTCacheSourceCT }
+{ TCacheSourceCT }
 
-function TCTCacheSourceCT.GetWorksheetSource: TCTWorksheetSourceCT;
+function TCacheSourceCT.GetWorksheetSource: TWorksheetSourceCT;
 begin
-  Result := TCTWorksheetSourceCT(Lazy(fWorksheetSource, TCTWorksheetSourceCT));
+  Result := TWorksheetSourceCT(Lazy(fWorksheetSource, TWorksheetSourceCT));
 end;
 
-function TCTCacheSourceCT.GetConsolidation: TCTConsolidationCT;
+function TCacheSourceCT.GetConsolidation: TConsolidationCT;
 begin
-  Result := TCTConsolidationCT(Lazy(fConsolidation, TCTConsolidationCT));
+  Result := TConsolidationCT(Lazy(fConsolidation, TConsolidationCT));
 end;
 
-function TCTCacheSourceCT.GetExtLst: TCTExtensionListCT;
+function TCacheSourceCT.GetExtLst: TExtensionListCT;
 begin
-  Result := TCTExtensionListCT(Lazy(fExtLst, TCTExtensionListCT));
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
 end;
 
-{ TCTMdxCT }
+{ TMdxCT }
 
-function TCTMdxCT.GetT: TCTMdxTupleCT;
+function TMdxCT.GetT: TMdxTupleCT;
 begin
-  Result := TCTMdxTupleCT(Lazy(fT, TCTMdxTupleCT));
+  Result := TMdxTupleCT(Lazy(fT, TMdxTupleCT));
 end;
 
-function TCTMdxCT.GetMs: TCTMdxSetCT;
+function TMdxCT.GetMs: TMdxSetCT;
 begin
-  Result := TCTMdxSetCT(Lazy(fMs, TCTMdxSetCT));
+  Result := TMdxSetCT(Lazy(fMs, TMdxSetCT));
 end;
 
-function TCTMdxCT.GetP: TCTMdxMemeberPropCT;
+function TMdxCT.GetP: TMdxMemeberPropCT;
 begin
-  Result := TCTMdxMemeberPropCT(Lazy(fP, TCTMdxMemeberPropCT));
+  Result := TMdxMemeberPropCT(Lazy(fP, TMdxMemeberPropCT));
 end;
 
-function TCTMdxCT.GetK: TCTMdxKPICT;
+function TMdxCT.GetK: TMdxKPICT;
 begin
-  Result := TCTMdxKPICT(Lazy(fK, TCTMdxKPICT));
+  Result := TMdxKPICT(Lazy(fK, TMdxKPICT));
 end;
 
-{ TCTFillCT }
+{ TFillCT }
 
-function TCTFillCT.GetPatternFill: TCTPatternFillCT;
+function TFillCT.GetPatternFill: TPatternFillCT;
 begin
-  Result := TCTPatternFillCT(Lazy(fPatternFill, TCTPatternFillCT));
+  Result := TPatternFillCT(Lazy(fPatternFill, TPatternFillCT));
 end;
 
-function TCTFillCT.GetGradientFill: TCTGradientFillCT;
+function TFillCT.GetGradientFill: TGradientFillCT;
 begin
-  Result := TCTGradientFillCT(Lazy(fGradientFill, TCTGradientFillCT));
+  Result := TGradientFillCT(Lazy(fGradientFill, TGradientFillCT));
 end;
 
-{ TCTExternalLinkCT }
+{ TExternalLinkCT }
 
-function TCTExternalLinkCT.GetExternalBook: TCTExternalBookCT;
+function TExternalLinkCT.GetExternalBook: TExternalBookCT;
 begin
-  Result := TCTExternalBookCT(Lazy(fExternalBook, TCTExternalBookCT));
+  Result := TExternalBookCT(Lazy(fExternalBook, TExternalBookCT));
 end;
 
-function TCTExternalLinkCT.GetDdeLink: TCTDdeLinkCT;
+function TExternalLinkCT.GetDdeLink: TDdeLinkCT;
 begin
-  Result := TCTDdeLinkCT(Lazy(fDdeLink, TCTDdeLinkCT));
+  Result := TDdeLinkCT(Lazy(fDdeLink, TDdeLinkCT));
 end;
 
-function TCTExternalLinkCT.GetOleLink: TCTOleLinkCT;
+function TExternalLinkCT.GetOleLink: TOleLinkCT;
 begin
-  Result := TCTOleLinkCT(Lazy(fOleLink, TCTOleLinkCT));
+  Result := TOleLinkCT(Lazy(fOleLink, TOleLinkCT));
 end;
 
 initialization
 
 TMetaBankXmlite.RegisterNamespace('http://schemas.openxmlformats.org/spreadsheetml/2006/main',
   { simpleTypes }
-  [TypeInfo(TSTFilterOperatorST), TypeInfo(TSTDynamicFilterTypeST), TypeInfo(TSTIconSetTypeST), TypeInfo(TSTSortByST),
-  TypeInfo(TSTSortMethodST), TypeInfo(TSTDateTimeGroupingST), TypeInfo(TSTCellRefST), TypeInfo(TSTRefST), TypeInfo(TSTRefAST),
-  TypeInfo(TSTSqrefST), TypeInfo(TSTFormulaST), TypeInfo(TSTUnsignedIntHexST), TypeInfo(TSTUnsignedShortHexST), TypeInfo(TSTTextHAlignST),
-  TypeInfo(TSTTextVAlignST), TypeInfo(TSTCredMethodST), TypeInfo(TSTHtmlFmtST), TypeInfo(TSTParameterTypeST), TypeInfo(TSTFileTypeST),
-  TypeInfo(TSTQualifierST), TypeInfo(TSTExternalConnectionTypeST), TypeInfo(TSTSourceTypeST), TypeInfo(TSTGroupByST),
-  TypeInfo(TSTSortTypeST), TypeInfo(TSTScopeST), TypeInfo(TSTTypeST), TypeInfo(TSTShowDataAsST), TypeInfo(TSTItemTypeST),
-  TypeInfo(TSTFormatActionST), TypeInfo(TSTFieldSortTypeST), TypeInfo(TSTPivotFilterTypeST), TypeInfo(TSTPivotAreaTypeST),
-  TypeInfo(TSTAxisST), TypeInfo(TSTGrowShrinkTypeST), TypeInfo(TSTPhoneticTypeST), TypeInfo(TSTPhoneticAlignmentST),
-  TypeInfo(TSTRwColActionTypeST), TypeInfo(TSTRevisionActionST), TypeInfo(TSTFormulaExpressionST), TypeInfo(TSTCellSpanST),
-  TypeInfo(TSTCellSpansST), TypeInfo(TSTCellTypeST), TypeInfo(TSTCellFormulaTypeST), TypeInfo(TSTPaneST), TypeInfo(TSTSheetViewTypeST),
-  TypeInfo(TSTDataConsolidateFunctionST), TypeInfo(TSTDataValidationTypeST), TypeInfo(TSTDataValidationOperatorST),
-  TypeInfo(TSTDataValidationErrorStyleST), TypeInfo(TSTDataValidationImeModeST), TypeInfo(TSTCfTypeST), TypeInfo(TSTTimePeriodST),
-  TypeInfo(TSTConditionalFormattingOperatorST), TypeInfo(TSTCfvoTypeST), TypeInfo(TSTPageOrderST), TypeInfo(TSTOrientationST),
-  TypeInfo(TSTCellCommentsST), TypeInfo(TSTPrintErrorST), TypeInfo(TSTDvAspectST), TypeInfo(TSTOleUpdateST), TypeInfo(TSTWebSourceTypeST),
-  TypeInfo(TSTPaneStateST), TypeInfo(TSTMdxFunctionTypeST), TypeInfo(TSTMdxSetOrderST), TypeInfo(TSTMdxKPIPropertyST),
-  TypeInfo(TSTTextRotationST), TypeInfo(TSTBorderStyleST), TypeInfo(TSTPatternTypeST), TypeInfo(TSTGradientTypeST),
-  TypeInfo(TSTHorizontalAlignmentST), TypeInfo(TSTVerticalAlignmentST), TypeInfo(TSTNumFmtIdST), TypeInfo(TSTFontIdST),
-  TypeInfo(TSTFillIdST), TypeInfo(TSTBorderIdST), TypeInfo(TSTCellStyleXfIdST), TypeInfo(TSTDxfIdST), TypeInfo(TSTTableStyleTypeST),
-  TypeInfo(TSTFontSchemeST), TypeInfo(TSTUnderlineValuesST), TypeInfo(TSTFontFamilyST), TypeInfo(TSTDdeValueTypeST),
-  TypeInfo(TSTTableTypeST), TypeInfo(TSTTotalsRowFunctionST), TypeInfo(TSTXmlDataTypeST), TypeInfo(TSTVolDepTypeST),
-  TypeInfo(TSTVolValueTypeST), TypeInfo(TSTVisibilityST), TypeInfo(TSTCommentsST), TypeInfo(TSTObjectsST), TypeInfo(TSTSheetStateST),
-  TypeInfo(TSTUpdateLinksST), TypeInfo(TSTSmartTagShowST), TypeInfo(TSTCalcModeST), TypeInfo(TSTRefModeST),
-  TypeInfo(TSTTargetScreenSizeST)],
+  [TypeInfo(TFilterOperatorST), TypeInfo(TDynamicFilterTypeST), TypeInfo(TIconSetTypeST), TypeInfo(TSortByST), TypeInfo(TSortMethodST),
+  TypeInfo(TDateTimeGroupingST), TypeInfo(TCellRefST), TypeInfo(TRefST), TypeInfo(TRefAST), TypeInfo(TSqrefST), TypeInfo(TFormulaST),
+  TypeInfo(TUnsignedIntHexST), TypeInfo(TUnsignedShortHexST), TypeInfo(TTextHAlignST), TypeInfo(TTextVAlignST), TypeInfo(TCredMethodST),
+  TypeInfo(THtmlFmtST), TypeInfo(TParameterTypeST), TypeInfo(TFileTypeST), TypeInfo(TQualifierST), TypeInfo(TExternalConnectionTypeST),
+  TypeInfo(TSourceTypeST), TypeInfo(TGroupByST), TypeInfo(TSortTypeST), TypeInfo(TScopeST), TypeInfo(TTypeST), TypeInfo(TShowDataAsST),
+  TypeInfo(TItemTypeST), TypeInfo(TFormatActionST), TypeInfo(TFieldSortTypeST), TypeInfo(TPivotFilterTypeST), TypeInfo(TPivotAreaTypeST),
+  TypeInfo(TAxisST), TypeInfo(TGrowShrinkTypeST), TypeInfo(TPhoneticTypeST), TypeInfo(TPhoneticAlignmentST), TypeInfo(TRwColActionTypeST),
+  TypeInfo(TRevisionActionST), TypeInfo(TFormulaExpressionST), TypeInfo(TCellSpanST), TypeInfo(TCellSpansST), TypeInfo(TCellTypeST),
+  TypeInfo(TCellFormulaTypeST), TypeInfo(TPaneST), TypeInfo(TSheetViewTypeST), TypeInfo(TDataConsolidateFunctionST),
+  TypeInfo(TDataValidationTypeST), TypeInfo(TDataValidationOperatorST), TypeInfo(TDataValidationErrorStyleST),
+  TypeInfo(TDataValidationImeModeST), TypeInfo(TCfTypeST), TypeInfo(TTimePeriodST), TypeInfo(TConditionalFormattingOperatorST),
+  TypeInfo(TCfvoTypeST), TypeInfo(TPageOrderST), TypeInfo(TOrientationST), TypeInfo(TCellCommentsST), TypeInfo(TPrintErrorST),
+  TypeInfo(TDvAspectST), TypeInfo(TOleUpdateST), TypeInfo(TWebSourceTypeST), TypeInfo(TPaneStateST), TypeInfo(TMdxFunctionTypeST),
+  TypeInfo(TMdxSetOrderST), TypeInfo(TMdxKPIPropertyST), TypeInfo(TTextRotationST), TypeInfo(TBorderStyleST), TypeInfo(TPatternTypeST),
+  TypeInfo(TGradientTypeST), TypeInfo(THorizontalAlignmentST), TypeInfo(TVerticalAlignmentST), TypeInfo(TNumFmtIdST), TypeInfo(TFontIdST),
+  TypeInfo(TFillIdST), TypeInfo(TBorderIdST), TypeInfo(TCellStyleXfIdST), TypeInfo(TDxfIdST), TypeInfo(TTableStyleTypeST),
+  TypeInfo(TFontSchemeST), TypeInfo(TUnderlineValuesST), TypeInfo(TFontFamilyST), TypeInfo(TDdeValueTypeST), TypeInfo(TTableTypeST),
+  TypeInfo(TTotalsRowFunctionST), TypeInfo(TXmlDataTypeST), TypeInfo(TVolDepTypeST), TypeInfo(TVolValueTypeST), TypeInfo(TVisibilityST),
+  TypeInfo(TCommentsST), TypeInfo(TObjectsST), TypeInfo(TSheetStateST), TypeInfo(TUpdateLinksST), TypeInfo(TSmartTagShowST),
+  TypeInfo(TCalcModeST), TypeInfo(TRefModeST), TypeInfo(TTargetScreenSizeST)],
   { complexTypes }
-  [TCTAutoFilterCT, TCTFilterColumnCT, TCTFiltersCT, TCTFilterCT, TCTCustomFiltersCT, TCTCustomFilterCT, TCTTop10CT, TCTColorFilterCT,
-  TCTIconFilterCT, TCTDynamicFilterCT, TCTSortStateCT, TCTSortConditionCT, TCTDateGroupItemCT, TCTXStringElementCT, TCTExtensionCT,
-  TCTObjectAnchorCT, TCTExtensionListCT, TCTCalcChainCT, TCTCalcCellCT, TCTCommentsCT, TCTAuthorsCT, TCTCommentListCT, TCTCommentCT,
-  TCTCommentPrCT, TCTMapInfoCT, TCTSchemaCT, TCTMapCT, TCTDataBindingCT, TCTConnectionsCT, TCTConnectionCT, TCTDbPrCT, TCTOlapPrCT,
-  TCTWebPrCT, TCTParametersCT, TCTParameterCT, TCTTablesCT, TCTTableMissingCT, TCTTextPrCT, TCTTextFieldsCT, TCTTextFieldCT,
-  TCTPivotCacheDefinitionCT, TCTCacheFieldsCT, TCTCacheFieldCT, TCTCacheSourceCT, TCTWorksheetSourceCT, TCTConsolidationCT, TCTPagesCT,
-  TCTPCDSCPageCT, TCTPageItemCT, TCTRangeSetsCT, TCTRangeSetCT, TCTSharedItemsCT, TCTMissingCT, TCTNumberCT, TCTBooleanCT, TCTErrorCT,
-  TCTStringCT, TCTDateTimeCT, TCTFieldGroupCT, TCTRangePrCT, TCTDiscretePrCT, TCTGroupItemsCT, TCTPivotCacheRecordsCT, TCTRecordCT,
-  TCTPCDKPIsCT, TCtPcdkpiCT, TCTCacheHierarchiesCT, TCTCacheHierarchyCT, TCTFieldsUsageCT, TCTFieldUsageCT, TCTGroupLevelsCT,
-  TCTGroupLevelCT, TCTGroupsCT, TCTLevelGroupCT, TCTGroupMembersCT, TCTGroupMemberCT, TCTTupleCacheCT, TCTServerFormatCT,
-  TCTServerFormatsCT, TCTPCDSDTCEntriesCT, TCTTuplesCT, TCTTupleCT, TCTSetsCT, TCTSetCT, TCTQueryCacheCT, TCTQueryCT, TCTCalculatedItemsCT,
-  TCTCalculatedItemCT, TCTCalculatedMembersCT, TCTCalculatedMemberCT, TCTPivotTableDefinitionCT, TCTLocationCT, TCTPivotFieldsCT,
-  TCTPivotFieldCT, TCTAutoSortScopeCT, TCTItemsCT, TCTItemCT, TCTPageFieldsCT, TCTPageFieldCT, TCTDataFieldsCT, TCTDataFieldCT,
-  TCTRowItemsCT, TCTColItemsCT, TCtICT, TCtXCT, TCTRowFieldsCT, TCTColFieldsCT, TCTFieldCT, TCTFormatsCT, TCTFormatCT,
-  TCTConditionalFormatsCT, TCTConditionalFormatCT, TCTPivotAreasCT, TCTChartFormatsCT, TCTChartFormatCT, TCTPivotHierarchiesCT,
-  TCTPivotHierarchyCT, TCTRowHierarchiesUsageCT, TCTColHierarchiesUsageCT, TCTHierarchyUsageCT, TCTMemberPropertiesCT, TCTMemberPropertyCT,
-  TCTMembersCT, TCTMemberCT, TCTDimensionsCT, TCTPivotDimensionCT, TCTMeasureGroupsCT, TCTMeasureDimensionMapsCT, TCTMeasureGroupCT,
-  TCTMeasureDimensionMapCT, TCTPivotTableStyleCT, TCTPivotFiltersCT, TCTPivotFilterCT, TCTPivotAreaCT, TCTPivotAreaReferencesCT,
-  TCTPivotAreaReferenceCT, TCTIndexCT, TCTQueryTableCT, TCTQueryTableRefreshCT, TCTQueryTableDeletedFieldsCT, TCTDeletedFieldCT,
-  TCTQueryTableFieldsCT, TCTQueryTableFieldCT, TCTSstCT, TCTPhoneticRunCT, TCTREltCT, TCTRPrEltCT, TCTRstCT, TCTPhoneticPrCT,
-  TCTRevisionHeadersCT, TCTRevisionsCT, TCTRevisionHeaderCT, TCTSheetIdMapCT, TCTSheetIdCT, TCTReviewedRevisionsCT, TCTReviewedCT,
-  TCTUndoInfoCT, TCTRevisionRowColumnCT, TCTRevisionMoveCT, TCTRevisionCustomViewCT, TCTRevisionSheetRenameCT, TCTRevisionInsertSheetCT,
-  TCTRevisionCellChangeCT, TCTRevisionFormattingCT, TCTRevisionAutoFormattingCT, TCTRevisionCommentCT, TCTRevisionDefinedNameCT,
-  TCTRevisionConflictCT, TCTRevisionQueryTableFieldCT, TCTUsersCT, TCTSharedUserCT, TCTMacrosheetCT, TCTDialogsheetCT, TCTWorksheetCT,
-  TCTSheetDataCT, TCTSheetCalcPrCT, TCTSheetFormatPrCT, TCTColsCT, TCTColCT, TCTRowCT, TCTCellCT, TCTSheetPrCT, TCTSheetDimensionCT,
-  TCTSheetViewsCT, TCTSheetViewCT, TCTPaneCT, TCTPivotSelectionCT, TCTSelectionCT, TCTPageBreakCT, TCTBreakCT, TCTOutlinePrCT,
-  TCTPageSetUpPrCT, TCTDataConsolidateCT, TCTDataRefsCT, TCTDataRefCT, TCTMergeCellsCT, TCTMergeCellCT, TCTSmartTagsCT, TCTCellSmartTagsCT,
-  TCTCellSmartTagCT, TCTCellSmartTagPrCT, TCTDrawingCT, TCTLegacyDrawingCT, TCTDrawingHFCT, TCTCustomSheetViewsCT, TCTCustomSheetViewCT,
-  TCTDataValidationsCT, TCTDataValidationCT, TCTConditionalFormattingCT, TCTCfRuleCT, TCTHyperlinksCT, TCTHyperlinkCT, TCTCellFormulaCT,
-  TCTColorScaleCT, TCTDataBarCT, TCTIconSetCT, TCTCfvoCT, TCTPageMarginsCT, TCTPrintOptionsCT, TCTPageSetupCT, TCTHeaderFooterCT,
-  TCTScenariosCT, TCTSheetProtectionCT, TCTProtectedRangesCT, TCTProtectedRangeCT, TCTScenarioCT, TCTInputCellsCT, TCTCellWatchesCT,
-  TCTCellWatchCT, TCTChartsheetCT, TCTChartsheetPrCT, TCTChartsheetViewsCT, TCTChartsheetViewCT, TCTChartsheetProtectionCT,
-  TCTCsPageSetupCT, TCTCustomChartsheetViewsCT, TCTCustomChartsheetViewCT, TCTCustomPropertiesCT, TCTCustomPropertyCT, TCTOleObjectsCT,
-  TCTOleObjectCT, TCTObjectPrCT, TCTWebPublishItemsCT, TCTWebPublishItemCT, TCTControlsCT, TCTControlCT, TCTControlPrCT, TCTIgnoredErrorsCT,
-  TCTIgnoredErrorCT, TCTTablePartsCT, TCTTablePartCT, TCTMetadataCT, TCTMetadataTypesCT, TCTMetadataTypeCT, TCTMetadataBlocksCT,
-  TCTMetadataBlockCT, TCTMetadataRecordCT, TCTFutureMetadataCT, TCTFutureMetadataBlockCT, TCTMdxMetadataCT, TCTMdxCT, TCTMdxTupleCT,
-  TCTMdxSetCT, TCTMdxMemeberPropCT, TCTMdxKPICT, TCTMetadataStringIndexCT, TCTMetadataStringsCT, TCTSingleXmlCellsCT, TCTSingleXmlCellCT,
-  TCTXmlCellPrCT, TCTXmlPrCT, TCTStylesheetCT, TCTCellAlignmentCT, TCTBordersCT, TCTBorderCT, TCTBorderPrCT, TCTCellProtectionCT,
-  TCTFontsCT, TCTFillsCT, TCTFillCT, TCTPatternFillCT, TCTColorCT, TCTGradientFillCT, TCTGradientStopCT, TCTNumFmtsCT, TCTNumFmtCT,
-  TCTCellStyleXfsCT, TCTCellXfsCT, TCTXfCT, TCTCellStylesCT, TCTCellStyleCT, TCTDxfsCT, TCTDxfCT, TCTColorsCT, TCTIndexedColorsCT,
-  TCTMRUColorsCT, TCTRgbColorCT, TCTTableStylesCT, TCTTableStyleCT, TCTTableStyleElementCT, TCTBooleanPropertyCT, TCTFontSizeCT,
-  TCTIntPropertyCT, TCTFontNameCT, TCTVerticalAlignFontPropertyCT, TCTFontSchemeCT, TCTUnderlinePropertyCT, TCTFontCT, TCTFontFamilyCT,
-  TCTExternalLinkCT, TCTExternalBookCT, TCTExternalSheetNamesCT, TCTExternalSheetNameCT, TCTExternalDefinedNamesCT,
-  TCTExternalDefinedNameCT, TCTExternalSheetDataSetCT, TCTExternalSheetDataCT, TCTExternalRowCT, TCTExternalCellCT, TCTDdeLinkCT,
-  TCTDdeItemsCT, TCTDdeItemCT, TCTDdeValuesCT, TCTDdeValueCT, TCTOleLinkCT, TCTOleItemsCT, TCTOleItemCT, TCTTableCT, TCTTableStyleInfoCT,
-  TCTTableColumnsCT, TCTTableColumnCT, TCTTableFormulaCT, TCTXmlColumnPrCT, TCTVolTypesCT, TCTVolTypeCT, TCTVolMainCT, TCTVolTopicCT,
-  TCTVolTopicRefCT, TCTWorkbookCT, TCTFileVersionCT, TCTBookViewsCT, TCTBookViewCT, TCTCustomWorkbookViewsCT, TCTCustomWorkbookViewCT,
-  TCTSheetsCT, TCTSheetCT, TCTWorkbookPrCT, TCTSmartTagPrCT, TCTSmartTagTypesCT, TCTSmartTagTypeCT, TCTFileRecoveryPrCT, TCTCalcPrCT,
-  TCTDefinedNamesCT, TCTDefinedNameCT, TCTExternalReferencesCT, TCTExternalReferenceCT, TCTSheetBackgroundPictureCT, TCTPivotCachesCT,
-  TCTPivotCacheCT, TCTFileSharingCT, TCTOleSizeCT, TCTWorkbookProtectionCT, TCTWebPublishingCT, TCTFunctionGroupsCT, TCTFunctionGroupCT,
-  TCTWebPublishObjectsCT, TCTWebPublishObjectCT],
+  [TAutoFilterCT, TFilterColumnCT, TFiltersCT, TFilterCT, TCustomFiltersCT, TCustomFilterCT, TTop10CT, TColorFilterCT, TIconFilterCT,
+  TDynamicFilterCT, TSortStateCT, TSortConditionCT, TDateGroupItemCT, TXStringElementCT, TExtensionCT, TObjectAnchorCT, TExtensionListCT,
+  TCalcChainCT, TCalcCellCT, TCommentsCT, TAuthorsCT, TCommentListCT, TCommentCT, TCommentPrCT, TMapInfoCT, TSchemaCT, TMapCT,
+  TDataBindingCT, TConnectionsCT, TConnectionCT, TDbPrCT, TOlapPrCT, TWebPrCT, TParametersCT, TParameterCT, TTablesCT, TTableMissingCT,
+  TTextPrCT, TTextFieldsCT, TTextFieldCT, TPivotCacheDefinitionCT, TCacheFieldsCT, TCacheFieldCT, TCacheSourceCT, TWorksheetSourceCT,
+  TConsolidationCT, TPagesCT, TPCDSCPageCT, TPageItemCT, TRangeSetsCT, TRangeSetCT, TSharedItemsCT, TMissingCT, TNumberCT, TBooleanCT,
+  TErrorCT, TStringCT, TDateTimeCT, TFieldGroupCT, TRangePrCT, TDiscretePrCT, TGroupItemsCT, TPivotCacheRecordsCT, TRecordCT, TPCDKPIsCT,
+  TPcdkpiCT, TCacheHierarchiesCT, TCacheHierarchyCT, TFieldsUsageCT, TFieldUsageCT, TGroupLevelsCT, TGroupLevelCT, TGroupsCT, TLevelGroupCT,
+  TGroupMembersCT, TGroupMemberCT, TTupleCacheCT, TServerFormatCT, TServerFormatsCT, TPCDSDTCEntriesCT, TTuplesCT, TTupleCT, TSetsCT,
+  TSetCT, TQueryCacheCT, TQueryCT, TCalculatedItemsCT, TCalculatedItemCT, TCalculatedMembersCT, TCalculatedMemberCT,
+  TPivotTableDefinitionCT, TLocationCT, TPivotFieldsCT, TPivotFieldCT, TAutoSortScopeCT, TItemsCT, TItemCT, TPageFieldsCT, TPageFieldCT,
+  TDataFieldsCT, TDataFieldCT, TRowItemsCT, TColItemsCT, TICT, TXCT, TRowFieldsCT, TColFieldsCT, TFieldCT, TFormatsCT, TFormatCT,
+  TConditionalFormatsCT, TConditionalFormatCT, TPivotAreasCT, TChartFormatsCT, TChartFormatCT, TPivotHierarchiesCT, TPivotHierarchyCT,
+  TRowHierarchiesUsageCT, TColHierarchiesUsageCT, THierarchyUsageCT, TMemberPropertiesCT, TMemberPropertyCT, TMembersCT, TMemberCT,
+  TDimensionsCT, TPivotDimensionCT, TMeasureGroupsCT, TMeasureDimensionMapsCT, TMeasureGroupCT, TMeasureDimensionMapCT, TPivotTableStyleCT,
+  TPivotFiltersCT, TPivotFilterCT, TPivotAreaCT, TPivotAreaReferencesCT, TPivotAreaReferenceCT, TIndexCT, TQueryTableCT,
+  TQueryTableRefreshCT, TQueryTableDeletedFieldsCT, TDeletedFieldCT, TQueryTableFieldsCT, TQueryTableFieldCT, TSstCT, TPhoneticRunCT,
+  TREltCT, TRPrEltCT, TRstCT, TPhoneticPrCT, TRevisionHeadersCT, TRevisionsCT, TRevisionHeaderCT, TSheetIdMapCT, TSheetIdCT,
+  TReviewedRevisionsCT, TReviewedCT, TUndoInfoCT, TRevisionRowColumnCT, TRevisionMoveCT, TRevisionCustomViewCT, TRevisionSheetRenameCT,
+  TRevisionInsertSheetCT, TRevisionCellChangeCT, TRevisionFormattingCT, TRevisionAutoFormattingCT, TRevisionCommentCT,
+  TRevisionDefinedNameCT, TRevisionConflictCT, TRevisionQueryTableFieldCT, TUsersCT, TSharedUserCT, TMacrosheetCT, TDialogsheetCT,
+  TWorksheetCT, TSheetDataCT, TSheetCalcPrCT, TSheetFormatPrCT, TColsCT, TColCT, TRowCT, TCellCT, TSheetPrCT, TSheetDimensionCT,
+  TSheetViewsCT, TSheetViewCT, TPaneCT, TPivotSelectionCT, TSelectionCT, TPageBreakCT, TBreakCT, TOutlinePrCT, TPageSetUpPrCT,
+  TDataConsolidateCT, TDataRefsCT, TDataRefCT, TMergeCellsCT, TMergeCellCT, TSmartTagsCT, TCellSmartTagsCT, TCellSmartTagCT,
+  TCellSmartTagPrCT, TDrawingCT, TLegacyDrawingCT, TDrawingHFCT, TCustomSheetViewsCT, TCustomSheetViewCT, TDataValidationsCT,
+  TDataValidationCT, TConditionalFormattingCT, TCfRuleCT, THyperlinksCT, THyperlinkCT, TCellFormulaCT, TColorScaleCT, TDataBarCT,
+  TIconSetCT, TCfvoCT, TPageMarginsCT, TPrintOptionsCT, TPageSetupCT, THeaderFooterCT, TScenariosCT, TSheetProtectionCT, TProtectedRangesCT,
+  TProtectedRangeCT, TScenarioCT, TInputCellsCT, TCellWatchesCT, TCellWatchCT, TChartsheetCT, TChartsheetPrCT, TChartsheetViewsCT,
+  TChartsheetViewCT, TChartsheetProtectionCT, TCsPageSetupCT, TCustomChartsheetViewsCT, TCustomChartsheetViewCT, TCustomPropertiesCT,
+  TCustomPropertyCT, TOleObjectsCT, TOleObjectCT, TObjectPrCT, TWebPublishItemsCT, TWebPublishItemCT, TControlsCT, TControlCT, TControlPrCT,
+  TIgnoredErrorsCT, TIgnoredErrorCT, TTablePartsCT, TTablePartCT, TMetadataCT, TMetadataTypesCT, TMetadataTypeCT, TMetadataBlocksCT,
+  TMetadataBlockCT, TMetadataRecordCT, TFutureMetadataCT, TFutureMetadataBlockCT, TMdxMetadataCT, TMdxCT, TMdxTupleCT, TMdxSetCT,
+  TMdxMemeberPropCT, TMdxKPICT, TMetadataStringIndexCT, TMetadataStringsCT, TSingleXmlCellsCT, TSingleXmlCellCT, TXmlCellPrCT, TXmlPrCT,
+  TStylesheetCT, TCellAlignmentCT, TBordersCT, TBorderCT, TBorderPrCT, TCellProtectionCT, TFontsCT, TFillsCT, TFillCT, TPatternFillCT,
+  TColorCT, TGradientFillCT, TGradientStopCT, TNumFmtsCT, TNumFmtCT, TCellStyleXfsCT, TCellXfsCT, TXfCT, TCellStylesCT, TCellStyleCT,
+  TDxfsCT, TDxfCT, TColorsCT, TIndexedColorsCT, TMRUColorsCT, TRgbColorCT, TTableStylesCT, TTableStyleCT, TTableStyleElementCT,
+  TBooleanPropertyCT, TFontSizeCT, TIntPropertyCT, TFontNameCT, TVerticalAlignFontPropertyCT, TFontSchemeCT, TUnderlinePropertyCT, TFontCT,
+  TFontFamilyCT, TExternalLinkCT, TExternalBookCT, TExternalSheetNamesCT, TExternalSheetNameCT, TExternalDefinedNamesCT,
+  TExternalDefinedNameCT, TExternalSheetDataSetCT, TExternalSheetDataCT, TExternalRowCT, TExternalCellCT, TDdeLinkCT, TDdeItemsCT,
+  TDdeItemCT, TDdeValuesCT, TDdeValueCT, TOleLinkCT, TOleItemsCT, TOleItemCT, TTableCT, TTableStyleInfoCT, TTableColumnsCT, TTableColumnCT,
+  TTableFormulaCT, TXmlColumnPrCT, TVolTypesCT, TVolTypeCT, TVolMainCT, TVolTopicCT, TVolTopicRefCT, TWorkbookCT, TFileVersionCT,
+  TBookViewsCT, TBookViewCT, TCustomWorkbookViewsCT, TCustomWorkbookViewCT, TSheetsCT, TSheetCT, TWorkbookPrCT, TSmartTagPrCT,
+  TSmartTagTypesCT, TSmartTagTypeCT, TFileRecoveryPrCT, TCalcPrCT, TDefinedNamesCT, TDefinedNameCT, TExternalReferencesCT,
+  TExternalReferenceCT, TSheetBackgroundPictureCT, TPivotCachesCT, TPivotCacheCT, TFileSharingCT, TOleSizeCT, TWorkbookProtectionCT,
+  TWebPublishingCT, TFunctionGroupsCT, TFunctionGroupCT, TWebPublishObjectsCT, TWebPublishObjectCT],
   { attributes }
   [],
   { attributeGroups }
-  [TAGRevDataAG, TAGAutoFormatAG],
+  [TRevDataAG, TAutoFormatAG],
   { elements }
   [TCalcChainE, TCommentsE, TMapInfoE, TConnectionsE, TPivotCacheDefinitionE, TPivotCacheRecordsE, TPivotTableDefinitionE, TQueryTableE,
   TSstE, THeadersE, TRevisionsE, TUsersE, TWorksheetE, TChartsheetE, TDialogsheetE, TMetadataE, TSingleXmlCellsE, TStyleSheetE,

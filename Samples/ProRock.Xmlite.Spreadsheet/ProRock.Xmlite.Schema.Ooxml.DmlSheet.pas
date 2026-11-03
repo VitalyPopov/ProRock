@@ -18,49 +18,49 @@ uses
 
 type
   [TName('ST_EditAs')]
-  TSTEditAsST = (steaTwoCell, steaOneCell, steaAbsolute);
+  TEditAsST = (steaTwoCell, steaOneCell, steaAbsolute);
 
   [TBaseType('ProRock.Xmlite.Schema.Base.TIntST')]
   [TName('ST_ColID')]
-  TSTColIDST = type ProRock.Xmlite.Schema.Base.TIntST;
+  TColIDST = type ProRock.Xmlite.Schema.Base.TIntST;
   [TBaseType('ProRock.Xmlite.Schema.Base.TIntST')]
   [TName('ST_RowID')]
-  TSTRowIDST = type ProRock.Xmlite.Schema.Base.TIntST;
+  TRowIDST = type ProRock.Xmlite.Schema.Base.TIntST;
 
-  TCTAnchorClientDataCT = class;
-  TCTShapeNonVisualCT = class;
-  TCTShapeCT = class;
-  TCTConnectorNonVisualCT = class;
-  TCTConnectorCT = class;
-  TCTPictureNonVisualCT = class;
-  TCTPictureCT = class;
-  TCTGraphicalObjectFrameNonVisualCT = class;
-  TCTGraphicalObjectFrameCT = class;
-  TCTGroupShapeNonVisualCT = class;
-  TCTGroupShapeCT = class;
-  TCTRelCT = class;
-  TCTMarkerCT = class;
-  TCTTwoCellAnchorCT = class;
-  TCTOneCellAnchorCT = class;
-  TCTAbsoluteAnchorCT = class;
-  TCTDrawingCT = class;
+  TAnchorClientDataCT = class;
+  TShapeNonVisualCT = class;
+  TShapeCT = class;
+  TConnectorNonVisualCT = class;
+  TConnectorCT = class;
+  TPictureNonVisualCT = class;
+  TPictureCT = class;
+  TGraphicalObjectFrameNonVisualCT = class;
+  TGraphicalObjectFrameCT = class;
+  TGroupShapeNonVisualCT = class;
+  TGroupShapeCT = class;
+  TRelCT = class;
+  TMarkerCT = class;
+  TTwoCellAnchorCT = class;
+  TOneCellAnchorCT = class;
+  TAbsoluteAnchorCT = class;
+  TDrawingCT = class;
   TFromE = class;
   TToE = class;
   TWsDrE = class;
-  TEGObjectChoicesEG = class;
-  TEGAnchorEG = class;
+  TObjectChoicesEG = class;
+  TAnchorEG = class;
 
-  TCTShapeCTList = class;
-  TCTConnectorCTList = class;
-  TCTPictureCTList = class;
-  TCTGraphicalObjectFrameCTList = class;
-  TCTGroupShapeCTList = class;
-  TCTTwoCellAnchorCTList = class;
-  TCTOneCellAnchorCTList = class;
-  TCTAbsoluteAnchorCTList = class;
+  TShapeCTList = class;
+  TConnectorCTList = class;
+  TPictureCTList = class;
+  TGraphicalObjectFrameCTList = class;
+  TGroupShapeCTList = class;
+  TTwoCellAnchorCTList = class;
+  TOneCellAnchorCTList = class;
+  TAbsoluteAnchorCTList = class;
 
   [TName('CT_AnchorClientData')]
-  TCTAnchorClientDataCT = class(TXmliteComplexType)
+  TAnchorClientDataCT = class(TXmliteComplexType)
   private
     fFLocksWithSheet: ProRock.Xmlite.Schema.Base.TBooleanST;
     fFPrintsWithSheet: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -72,28 +72,28 @@ type
   end;
 
   [TName('CT_ShapeNonVisual')]
-  TCTShapeNonVisualCT = class(TXmliteComplexType)
+  TShapeNonVisualCT = class(TXmliteComplexType)
   private
-    fCNvPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTNonVisualDrawingPropsCT;
-    fCNvSpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTNonVisualDrawingShapePropsCT;
+    fCNvPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TNonVisualDrawingPropsCT;
+    fCNvSpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TNonVisualDrawingShapePropsCT;
   published
     [TRequired]
-    property CNvPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTNonVisualDrawingPropsCT read fCNvPr;
+    property CNvPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TNonVisualDrawingPropsCT read fCNvPr;
     [TRequired]
-    property CNvSpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTNonVisualDrawingShapePropsCT read fCNvSpPr;
+    property CNvSpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TNonVisualDrawingShapePropsCT read fCNvSpPr;
   end;
 
   [TName('CT_Shape')]
-  TCTShapeCT = class(TXmliteComplexType)
+  TShapeCT = class(TXmliteComplexType)
   private
     fMacro: ProRock.Xmlite.Schema.Base.TStringST;
     fTextlink: ProRock.Xmlite.Schema.Base.TStringST;
     fFLocksText: ProRock.Xmlite.Schema.Base.TBooleanST;
     fFPublished: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fNvSpPr: TCTShapeNonVisualCT;
-    fSpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTShapePropertiesCT;
-    fStyle: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTShapeStyleCT;
-    fTxBody: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTTextBodyCT;
+    fNvSpPr: TShapeNonVisualCT;
+    fSpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapePropertiesCT;
+    fStyle: ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapeStyleCT;
+    fTxBody: ProRock.Xmlite.Schema.Ooxml.DmlMain.TTextBodyCT;
   published
     property Macro: ProRock.Xmlite.Schema.Base.TStringST read fMacro write fMacro;
     property Textlink: ProRock.Xmlite.Schema.Base.TStringST read fTextlink write fTextlink;
@@ -102,148 +102,148 @@ type
     [TDefault(False)]
     property FPublished: ProRock.Xmlite.Schema.Base.TBooleanST read fFPublished write fFPublished;
     [TRequired]
-    property NvSpPr: TCTShapeNonVisualCT read fNvSpPr;
+    property NvSpPr: TShapeNonVisualCT read fNvSpPr;
     [TRequired]
-    property SpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTShapePropertiesCT read fSpPr;
-    property Style: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTShapeStyleCT read fStyle;
-    property TxBody: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTTextBodyCT read fTxBody;
+    property SpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapePropertiesCT read fSpPr;
+    property Style: ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapeStyleCT read fStyle;
+    property TxBody: ProRock.Xmlite.Schema.Ooxml.DmlMain.TTextBodyCT read fTxBody;
   end;
 
   [TName('CT_ConnectorNonVisual')]
-  TCTConnectorNonVisualCT = class(TXmliteComplexType)
+  TConnectorNonVisualCT = class(TXmliteComplexType)
   private
-    fCNvPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTNonVisualDrawingPropsCT;
-    fCNvCxnSpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTNonVisualConnectorPropertiesCT;
+    fCNvPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TNonVisualDrawingPropsCT;
+    fCNvCxnSpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TNonVisualConnectorPropertiesCT;
   published
     [TRequired]
-    property CNvPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTNonVisualDrawingPropsCT read fCNvPr;
+    property CNvPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TNonVisualDrawingPropsCT read fCNvPr;
     [TRequired]
-    property CNvCxnSpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTNonVisualConnectorPropertiesCT read fCNvCxnSpPr;
+    property CNvCxnSpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TNonVisualConnectorPropertiesCT read fCNvCxnSpPr;
   end;
 
   [TName('CT_Connector')]
-  TCTConnectorCT = class(TXmliteComplexType)
+  TConnectorCT = class(TXmliteComplexType)
   private
     fMacro: ProRock.Xmlite.Schema.Base.TStringST;
     fFPublished: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fNvCxnSpPr: TCTConnectorNonVisualCT;
-    fSpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTShapePropertiesCT;
-    fStyle: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTShapeStyleCT;
+    fNvCxnSpPr: TConnectorNonVisualCT;
+    fSpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapePropertiesCT;
+    fStyle: ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapeStyleCT;
   published
     property Macro: ProRock.Xmlite.Schema.Base.TStringST read fMacro write fMacro;
     [TDefault(False)]
     property FPublished: ProRock.Xmlite.Schema.Base.TBooleanST read fFPublished write fFPublished;
     [TRequired]
-    property NvCxnSpPr: TCTConnectorNonVisualCT read fNvCxnSpPr;
+    property NvCxnSpPr: TConnectorNonVisualCT read fNvCxnSpPr;
     [TRequired]
-    property SpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTShapePropertiesCT read fSpPr;
-    property Style: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTShapeStyleCT read fStyle;
+    property SpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapePropertiesCT read fSpPr;
+    property Style: ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapeStyleCT read fStyle;
   end;
 
   [TName('CT_PictureNonVisual')]
-  TCTPictureNonVisualCT = class(TXmliteComplexType)
+  TPictureNonVisualCT = class(TXmliteComplexType)
   private
-    fCNvPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTNonVisualDrawingPropsCT;
-    fCNvPicPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTNonVisualPicturePropertiesCT;
+    fCNvPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TNonVisualDrawingPropsCT;
+    fCNvPicPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TNonVisualPicturePropertiesCT;
   published
     [TRequired]
-    property CNvPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTNonVisualDrawingPropsCT read fCNvPr;
+    property CNvPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TNonVisualDrawingPropsCT read fCNvPr;
     [TRequired]
-    property CNvPicPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTNonVisualPicturePropertiesCT read fCNvPicPr;
+    property CNvPicPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TNonVisualPicturePropertiesCT read fCNvPicPr;
   end;
 
   [TName('CT_Picture')]
-  TCTPictureCT = class(TXmliteComplexType)
+  TPictureCT = class(TXmliteComplexType)
   private
     fMacro: ProRock.Xmlite.Schema.Base.TStringST;
     fFPublished: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fNvPicPr: TCTPictureNonVisualCT;
-    fBlipFill: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTBlipFillPropertiesCT;
-    fSpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTShapePropertiesCT;
-    fStyle: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTShapeStyleCT;
+    fNvPicPr: TPictureNonVisualCT;
+    fBlipFill: ProRock.Xmlite.Schema.Ooxml.DmlMain.TBlipFillPropertiesCT;
+    fSpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapePropertiesCT;
+    fStyle: ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapeStyleCT;
   published
     property Macro: ProRock.Xmlite.Schema.Base.TStringST read fMacro write fMacro;
     [TDefault(False)]
     property FPublished: ProRock.Xmlite.Schema.Base.TBooleanST read fFPublished write fFPublished;
     [TRequired]
-    property NvPicPr: TCTPictureNonVisualCT read fNvPicPr;
+    property NvPicPr: TPictureNonVisualCT read fNvPicPr;
     [TRequired]
-    property BlipFill: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTBlipFillPropertiesCT read fBlipFill;
+    property BlipFill: ProRock.Xmlite.Schema.Ooxml.DmlMain.TBlipFillPropertiesCT read fBlipFill;
     [TRequired]
-    property SpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTShapePropertiesCT read fSpPr;
-    property Style: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTShapeStyleCT read fStyle;
+    property SpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapePropertiesCT read fSpPr;
+    property Style: ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapeStyleCT read fStyle;
   end;
 
   [TName('CT_GraphicalObjectFrameNonVisual')]
-  TCTGraphicalObjectFrameNonVisualCT = class(TXmliteComplexType)
+  TGraphicalObjectFrameNonVisualCT = class(TXmliteComplexType)
   private
-    fCNvPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTNonVisualDrawingPropsCT;
-    fCNvGraphicFramePr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTNonVisualGraphicFramePropertiesCT;
+    fCNvPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TNonVisualDrawingPropsCT;
+    fCNvGraphicFramePr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TNonVisualGraphicFramePropertiesCT;
   published
     [TRequired]
-    property CNvPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTNonVisualDrawingPropsCT read fCNvPr;
+    property CNvPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TNonVisualDrawingPropsCT read fCNvPr;
     [TRequired]
-    property CNvGraphicFramePr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTNonVisualGraphicFramePropertiesCT read fCNvGraphicFramePr;
+    property CNvGraphicFramePr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TNonVisualGraphicFramePropertiesCT read fCNvGraphicFramePr;
   end;
 
   [TName('CT_GraphicalObjectFrame')]
-  TCTGraphicalObjectFrameCT = class(TXmliteComplexType)
+  TGraphicalObjectFrameCT = class(TXmliteComplexType)
   private
     fMacro: ProRock.Xmlite.Schema.Base.TStringST;
     fFPublished: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fNvGraphicFramePr: TCTGraphicalObjectFrameNonVisualCT;
-    fXfrm: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTTransform2DCT;
+    fNvGraphicFramePr: TGraphicalObjectFrameNonVisualCT;
+    fXfrm: ProRock.Xmlite.Schema.Ooxml.DmlMain.TTransform2DCT;
     fGraphic: ProRock.Xmlite.Schema.Ooxml.DmlMain.TGraphicE;
   published
     property Macro: ProRock.Xmlite.Schema.Base.TStringST read fMacro write fMacro;
     [TDefault(False)]
     property FPublished: ProRock.Xmlite.Schema.Base.TBooleanST read fFPublished write fFPublished;
     [TRequired]
-    property NvGraphicFramePr: TCTGraphicalObjectFrameNonVisualCT read fNvGraphicFramePr;
+    property NvGraphicFramePr: TGraphicalObjectFrameNonVisualCT read fNvGraphicFramePr;
     [TRequired]
-    property Xfrm: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTTransform2DCT read fXfrm;
+    property Xfrm: ProRock.Xmlite.Schema.Ooxml.DmlMain.TTransform2DCT read fXfrm;
     [TRequired]
     [TNaming(TNaming.nFlatCase)]
     property Graphic: ProRock.Xmlite.Schema.Ooxml.DmlMain.TGraphicE read fGraphic;
   end;
 
   [TName('CT_GroupShapeNonVisual')]
-  TCTGroupShapeNonVisualCT = class(TXmliteComplexType)
+  TGroupShapeNonVisualCT = class(TXmliteComplexType)
   private
-    fCNvPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTNonVisualDrawingPropsCT;
-    fCNvGrpSpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTNonVisualGroupDrawingShapePropsCT;
+    fCNvPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TNonVisualDrawingPropsCT;
+    fCNvGrpSpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TNonVisualGroupDrawingShapePropsCT;
   published
     [TRequired]
-    property CNvPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTNonVisualDrawingPropsCT read fCNvPr;
+    property CNvPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TNonVisualDrawingPropsCT read fCNvPr;
     [TRequired]
-    property CNvGrpSpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTNonVisualGroupDrawingShapePropsCT read fCNvGrpSpPr;
+    property CNvGrpSpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TNonVisualGroupDrawingShapePropsCT read fCNvGrpSpPr;
   end;
 
   [TOrdered]
   [TName('CT_GroupShape')]
-  TCTGroupShapeCT = class(TXmliteComplexType)
+  TGroupShapeCT = class(TXmliteComplexType)
   private
-    fNvGrpSpPr: TCTGroupShapeNonVisualCT;
-    fGrpSpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTGroupShapePropertiesCT;
-    fSp: TCTShapeCTList;
-    fGrpSp: TCTGroupShapeCTList;
-    fGraphicFrame: TCTGraphicalObjectFrameCTList;
-    fCxnSp: TCTConnectorCTList;
-    fPic: TCTPictureCTList;
+    fNvGrpSpPr: TGroupShapeNonVisualCT;
+    fGrpSpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TGroupShapePropertiesCT;
+    fSp: TShapeCTList;
+    fGrpSp: TGroupShapeCTList;
+    fGraphicFrame: TGraphicalObjectFrameCTList;
+    fCxnSp: TConnectorCTList;
+    fPic: TPictureCTList;
   published
     [TRequired]
-    property NvGrpSpPr: TCTGroupShapeNonVisualCT read fNvGrpSpPr;
+    property NvGrpSpPr: TGroupShapeNonVisualCT read fNvGrpSpPr;
     [TRequired]
-    property GrpSpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTGroupShapePropertiesCT read fGrpSpPr;
-    property Sp: TCTShapeCTList read fSp;
-    property GrpSp: TCTGroupShapeCTList read fGrpSp;
-    property GraphicFrame: TCTGraphicalObjectFrameCTList read fGraphicFrame;
-    property CxnSp: TCTConnectorCTList read fCxnSp;
-    property Pic: TCTPictureCTList read fPic;
+    property GrpSpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TGroupShapePropertiesCT read fGrpSpPr;
+    property Sp: TShapeCTList read fSp;
+    property GrpSp: TGroupShapeCTList read fGrpSp;
+    property GraphicFrame: TGraphicalObjectFrameCTList read fGraphicFrame;
+    property CxnSp: TConnectorCTList read fCxnSp;
+    property Pic: TPictureCTList read fPic;
   end;
 
   [TName('CT_Rel')]
-  TCTRelCT = class(TXmliteComplexType)
+  TRelCT = class(TXmliteComplexType)
   private
     fId: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA;
   published
@@ -253,324 +253,355 @@ type
   end;
 
   [TName('CT_Marker')]
-  TCTMarkerCT = class(TXmliteComplexType)
+  TMarkerCT = class(TXmliteComplexType)
   private
-    fCol: TSTColIDST;
-    fColOff: ProRock.Xmlite.Schema.Ooxml.DmlMain.TSTCoordinateST;
-    fRow: TSTRowIDST;
-    fRowOff: ProRock.Xmlite.Schema.Ooxml.DmlMain.TSTCoordinateST;
+    fCol: TColIDST;
+    fColOff: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCoordinateST;
+    fRow: TRowIDST;
+    fRowOff: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCoordinateST;
   published
     [TXmliteElement]
     [TRequired]
-    property Col: TSTColIDST read fCol write fCol;
+    property Col: TColIDST read fCol write fCol;
     [TXmliteElement]
     [TRequired]
-    property ColOff: ProRock.Xmlite.Schema.Ooxml.DmlMain.TSTCoordinateST read fColOff write fColOff;
+    property ColOff: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCoordinateST read fColOff write fColOff;
     [TXmliteElement]
     [TRequired]
-    property Row: TSTRowIDST read fRow write fRow;
+    property Row: TRowIDST read fRow write fRow;
     [TXmliteElement]
     [TRequired]
-    property RowOff: ProRock.Xmlite.Schema.Ooxml.DmlMain.TSTCoordinateST read fRowOff write fRowOff;
+    property RowOff: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCoordinateST read fRowOff write fRowOff;
   end;
 
   [TName('CT_TwoCellAnchor')]
-  TCTTwoCellAnchorCT = class(TXmliteComplexType)
+  TTwoCellAnchorCT = class(TXmliteComplexType)
   private
-    fEditAs: TSTEditAsST;
-    fFrom: TCTMarkerCT;
-    fTo: TCTMarkerCT;
-    fSp: TCTShapeCT;
-    fGrpSp: TCTGroupShapeCT;
-    fGraphicFrame: TCTGraphicalObjectFrameCT;
-    fCxnSp: TCTConnectorCT;
-    fPic: TCTPictureCT;
-    fContentPart: TCTRelCT;
-    fClientData: TCTAnchorClientDataCT;
+    fEditAs: TEditAsST;
+    fFrom: TMarkerCT;
+    fTo: TMarkerCT;
+    fSp: TShapeCT;
+    fGrpSp: TGroupShapeCT;
+    fGraphicFrame: TGraphicalObjectFrameCT;
+    fCxnSp: TConnectorCT;
+    fPic: TPictureCT;
+    fContentPart: TRelCT;
+    fClientData: TAnchorClientDataCT;
 
-    function GetSp: TCTShapeCT;
-    function GetGrpSp: TCTGroupShapeCT;
-    function GetGraphicFrame: TCTGraphicalObjectFrameCT;
-    function GetCxnSp: TCTConnectorCT;
-    function GetPic: TCTPictureCT;
-    function GetContentPart: TCTRelCT;
+    function GetSp: TShapeCT;
+    function GetGrpSp: TGroupShapeCT;
+    function GetGraphicFrame: TGraphicalObjectFrameCT;
+    function GetCxnSp: TConnectorCT;
+    function GetPic: TPictureCT;
+    function GetContentPart: TRelCT;
   published
     [TDefault(Ord(steaTwoCell))]
-    property EditAs: TSTEditAsST read fEditAs write fEditAs;
+    property EditAs: TEditAsST read fEditAs write fEditAs;
     [TRequired]
-    property From: TCTMarkerCT read fFrom;
+    property From: TMarkerCT read fFrom;
     [TRequired]
-    property &To: TCTMarkerCT read fTo;
+    property &To: TMarkerCT read fTo;
     [TChoice('Sp')]
-    property Sp: TCTShapeCT read GetSp;
+    property Sp: TShapeCT read GetSp;
     [TChoice('Sp')]
-    property GrpSp: TCTGroupShapeCT read GetGrpSp;
+    property GrpSp: TGroupShapeCT read GetGrpSp;
     [TChoice('Sp')]
-    property GraphicFrame: TCTGraphicalObjectFrameCT read GetGraphicFrame;
+    property GraphicFrame: TGraphicalObjectFrameCT read GetGraphicFrame;
     [TChoice('Sp')]
-    property CxnSp: TCTConnectorCT read GetCxnSp;
+    property CxnSp: TConnectorCT read GetCxnSp;
     [TChoice('Sp')]
-    property Pic: TCTPictureCT read GetPic;
+    property Pic: TPictureCT read GetPic;
     [TChoice('Sp')]
-    property ContentPart: TCTRelCT read GetContentPart;
+    property ContentPart: TRelCT read GetContentPart;
     [TRequired]
-    property ClientData: TCTAnchorClientDataCT read fClientData;
+    property ClientData: TAnchorClientDataCT read fClientData;
   end;
 
   [TName('CT_OneCellAnchor')]
-  TCTOneCellAnchorCT = class(TXmliteComplexType)
+  TOneCellAnchorCT = class(TXmliteComplexType)
   private
-    fFrom: TCTMarkerCT;
-    fExt: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTPositiveSize2DCT;
-    fSp: TCTShapeCT;
-    fGrpSp: TCTGroupShapeCT;
-    fGraphicFrame: TCTGraphicalObjectFrameCT;
-    fCxnSp: TCTConnectorCT;
-    fPic: TCTPictureCT;
-    fContentPart: TCTRelCT;
-    fClientData: TCTAnchorClientDataCT;
+    fFrom: TMarkerCT;
+    fExt: ProRock.Xmlite.Schema.Ooxml.DmlMain.TPositiveSize2DCT;
+    fSp: TShapeCT;
+    fGrpSp: TGroupShapeCT;
+    fGraphicFrame: TGraphicalObjectFrameCT;
+    fCxnSp: TConnectorCT;
+    fPic: TPictureCT;
+    fContentPart: TRelCT;
+    fClientData: TAnchorClientDataCT;
 
-    function GetSp: TCTShapeCT;
-    function GetGrpSp: TCTGroupShapeCT;
-    function GetGraphicFrame: TCTGraphicalObjectFrameCT;
-    function GetCxnSp: TCTConnectorCT;
-    function GetPic: TCTPictureCT;
-    function GetContentPart: TCTRelCT;
+    function GetSp: TShapeCT;
+    function GetGrpSp: TGroupShapeCT;
+    function GetGraphicFrame: TGraphicalObjectFrameCT;
+    function GetCxnSp: TConnectorCT;
+    function GetPic: TPictureCT;
+    function GetContentPart: TRelCT;
   published
     [TRequired]
-    property From: TCTMarkerCT read fFrom;
+    property From: TMarkerCT read fFrom;
     [TRequired]
-    property Ext: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTPositiveSize2DCT read fExt;
+    property Ext: ProRock.Xmlite.Schema.Ooxml.DmlMain.TPositiveSize2DCT read fExt;
     [TChoice('Sp')]
-    property Sp: TCTShapeCT read GetSp;
+    property Sp: TShapeCT read GetSp;
     [TChoice('Sp')]
-    property GrpSp: TCTGroupShapeCT read GetGrpSp;
+    property GrpSp: TGroupShapeCT read GetGrpSp;
     [TChoice('Sp')]
-    property GraphicFrame: TCTGraphicalObjectFrameCT read GetGraphicFrame;
+    property GraphicFrame: TGraphicalObjectFrameCT read GetGraphicFrame;
     [TChoice('Sp')]
-    property CxnSp: TCTConnectorCT read GetCxnSp;
+    property CxnSp: TConnectorCT read GetCxnSp;
     [TChoice('Sp')]
-    property Pic: TCTPictureCT read GetPic;
+    property Pic: TPictureCT read GetPic;
     [TChoice('Sp')]
-    property ContentPart: TCTRelCT read GetContentPart;
+    property ContentPart: TRelCT read GetContentPart;
     [TRequired]
-    property ClientData: TCTAnchorClientDataCT read fClientData;
+    property ClientData: TAnchorClientDataCT read fClientData;
   end;
 
   [TName('CT_AbsoluteAnchor')]
-  TCTAbsoluteAnchorCT = class(TXmliteComplexType)
+  TAbsoluteAnchorCT = class(TXmliteComplexType)
   private
-    fPos: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTPoint2DCT;
-    fExt: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTPositiveSize2DCT;
-    fSp: TCTShapeCT;
-    fGrpSp: TCTGroupShapeCT;
-    fGraphicFrame: TCTGraphicalObjectFrameCT;
-    fCxnSp: TCTConnectorCT;
-    fPic: TCTPictureCT;
-    fContentPart: TCTRelCT;
-    fClientData: TCTAnchorClientDataCT;
+    fPos: ProRock.Xmlite.Schema.Ooxml.DmlMain.TPoint2DCT;
+    fExt: ProRock.Xmlite.Schema.Ooxml.DmlMain.TPositiveSize2DCT;
+    fSp: TShapeCT;
+    fGrpSp: TGroupShapeCT;
+    fGraphicFrame: TGraphicalObjectFrameCT;
+    fCxnSp: TConnectorCT;
+    fPic: TPictureCT;
+    fContentPart: TRelCT;
+    fClientData: TAnchorClientDataCT;
 
-    function GetSp: TCTShapeCT;
-    function GetGrpSp: TCTGroupShapeCT;
-    function GetGraphicFrame: TCTGraphicalObjectFrameCT;
-    function GetCxnSp: TCTConnectorCT;
-    function GetPic: TCTPictureCT;
-    function GetContentPart: TCTRelCT;
+    function GetSp: TShapeCT;
+    function GetGrpSp: TGroupShapeCT;
+    function GetGraphicFrame: TGraphicalObjectFrameCT;
+    function GetCxnSp: TConnectorCT;
+    function GetPic: TPictureCT;
+    function GetContentPart: TRelCT;
   published
     [TRequired]
-    property Pos: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTPoint2DCT read fPos;
+    property Pos: ProRock.Xmlite.Schema.Ooxml.DmlMain.TPoint2DCT read fPos;
     [TRequired]
-    property Ext: ProRock.Xmlite.Schema.Ooxml.DmlMain.TCTPositiveSize2DCT read fExt;
+    property Ext: ProRock.Xmlite.Schema.Ooxml.DmlMain.TPositiveSize2DCT read fExt;
     [TChoice('Sp')]
-    property Sp: TCTShapeCT read GetSp;
+    property Sp: TShapeCT read GetSp;
     [TChoice('Sp')]
-    property GrpSp: TCTGroupShapeCT read GetGrpSp;
+    property GrpSp: TGroupShapeCT read GetGrpSp;
     [TChoice('Sp')]
-    property GraphicFrame: TCTGraphicalObjectFrameCT read GetGraphicFrame;
+    property GraphicFrame: TGraphicalObjectFrameCT read GetGraphicFrame;
     [TChoice('Sp')]
-    property CxnSp: TCTConnectorCT read GetCxnSp;
+    property CxnSp: TConnectorCT read GetCxnSp;
     [TChoice('Sp')]
-    property Pic: TCTPictureCT read GetPic;
+    property Pic: TPictureCT read GetPic;
     [TChoice('Sp')]
-    property ContentPart: TCTRelCT read GetContentPart;
+    property ContentPart: TRelCT read GetContentPart;
     [TRequired]
-    property ClientData: TCTAnchorClientDataCT read fClientData;
+    property ClientData: TAnchorClientDataCT read fClientData;
   end;
 
   [TOrdered]
   [TName('CT_Drawing')]
-  TCTDrawingCT = class(TXmliteComplexType)
+  TDrawingCT = class(TXmliteComplexType)
   private
-    fTwoCellAnchor: TCTTwoCellAnchorCTList;
-    fOneCellAnchor: TCTOneCellAnchorCTList;
-    fAbsoluteAnchor: TCTAbsoluteAnchorCTList;
+    fTwoCellAnchor: TTwoCellAnchorCTList;
+    fOneCellAnchor: TOneCellAnchorCTList;
+    fAbsoluteAnchor: TAbsoluteAnchorCTList;
   published
-    property TwoCellAnchor: TCTTwoCellAnchorCTList read fTwoCellAnchor;
-    property OneCellAnchor: TCTOneCellAnchorCTList read fOneCellAnchor;
-    property AbsoluteAnchor: TCTAbsoluteAnchorCTList read fAbsoluteAnchor;
+    property TwoCellAnchor: TTwoCellAnchorCTList read fTwoCellAnchor;
+    property OneCellAnchor: TOneCellAnchorCTList read fOneCellAnchor;
+    property AbsoluteAnchor: TAbsoluteAnchorCTList read fAbsoluteAnchor;
   end;
 
-  TFromE = class(TCTMarkerCT);
+  TFromE = class(TMarkerCT);
 
-  TToE = class(TCTMarkerCT);
+  TToE = class(TMarkerCT);
 
-  TWsDrE = class(TCTDrawingCT);
+  TWsDrE = class(TDrawingCT);
 
   [TName('EG_ObjectChoices')]
-  TEGObjectChoicesEG = class(TXmliteElementGroup);
+  TObjectChoicesEG = class(TXmliteElementGroup);
 
   [TName('EG_Anchor')]
-  TEGAnchorEG = class(TXmliteElementGroup)
+  TAnchorEG = class(TXmliteElementGroup)
   private
-    fTwoCellAnchor: TCTTwoCellAnchorCT;
-    fOneCellAnchor: TCTOneCellAnchorCT;
-    fAbsoluteAnchor: TCTAbsoluteAnchorCT;
+    fTwoCellAnchor: TTwoCellAnchorCT;
+    fOneCellAnchor: TOneCellAnchorCT;
+    fAbsoluteAnchor: TAbsoluteAnchorCT;
 
-    function GetTwoCellAnchor: TCTTwoCellAnchorCT;
-    function GetOneCellAnchor: TCTOneCellAnchorCT;
-    function GetAbsoluteAnchor: TCTAbsoluteAnchorCT;
+    function GetTwoCellAnchor: TTwoCellAnchorCT;
+    function GetOneCellAnchor: TOneCellAnchorCT;
+    function GetAbsoluteAnchor: TAbsoluteAnchorCT;
   published
     [TChoice('TwoCellAnchor')]
-    property TwoCellAnchor: TCTTwoCellAnchorCT read GetTwoCellAnchor;
+    property TwoCellAnchor: TTwoCellAnchorCT read GetTwoCellAnchor;
     [TChoice('TwoCellAnchor')]
-    property OneCellAnchor: TCTOneCellAnchorCT read GetOneCellAnchor;
+    property OneCellAnchor: TOneCellAnchorCT read GetOneCellAnchor;
     [TChoice('TwoCellAnchor')]
-    property AbsoluteAnchor: TCTAbsoluteAnchorCT read GetAbsoluteAnchor;
+    property AbsoluteAnchor: TAbsoluteAnchorCT read GetAbsoluteAnchor;
   end;
 
-  TCTShapeCTList = class(TXmliteList<TCTShapeCT>);
-  TCTConnectorCTList = class(TXmliteList<TCTConnectorCT>);
-  TCTPictureCTList = class(TXmliteList<TCTPictureCT>);
-  TCTGraphicalObjectFrameCTList = class(TXmliteList<TCTGraphicalObjectFrameCT>);
-  TCTGroupShapeCTList = class(TXmliteList<TCTGroupShapeCT>);
-  TCTTwoCellAnchorCTList = class(TXmliteList<TCTTwoCellAnchorCT>);
-  TCTOneCellAnchorCTList = class(TXmliteList<TCTOneCellAnchorCT>);
-  TCTAbsoluteAnchorCTList = class(TXmliteList<TCTAbsoluteAnchorCT>);
+  TShapeCTList = class(TXmliteList<TShapeCT>);
+  TConnectorCTList = class(TXmliteList<TConnectorCT>);
+  TPictureCTList = class(TXmliteList<TPictureCT>);
+  TGraphicalObjectFrameCTList = class(TXmliteList<TGraphicalObjectFrameCT>);
+  TGroupShapeCTList = class(TXmliteList<TGroupShapeCT>);
+  TTwoCellAnchorCTList = class(TXmliteList<TTwoCellAnchorCT>);
+  TOneCellAnchorCTList = class(TXmliteList<TOneCellAnchorCT>);
+  TAbsoluteAnchorCTList = class(TXmliteList<TAbsoluteAnchorCT>);
+
+  TCTAbsoluteAnchorCT = TAbsoluteAnchorCT deprecated 'use TAbsoluteAnchorCT';
+  TCTAbsoluteAnchorCTList = TAbsoluteAnchorCTList deprecated 'use TAbsoluteAnchorCTList';
+  TCTAnchorClientDataCT = TAnchorClientDataCT deprecated 'use TAnchorClientDataCT';
+  TEGAnchorEG = TAnchorEG deprecated 'use TAnchorEG';
+  TSTColIDST = TColIDST deprecated 'use TColIDST';
+  TCTConnectorCT = TConnectorCT deprecated 'use TConnectorCT';
+  TCTConnectorCTList = TConnectorCTList deprecated 'use TConnectorCTList';
+  TCTConnectorNonVisualCT = TConnectorNonVisualCT deprecated 'use TConnectorNonVisualCT';
+  TCTDrawingCT = TDrawingCT deprecated 'use TDrawingCT';
+  TSTEditAsST = TEditAsST deprecated 'use TEditAsST';
+  TCTGraphicalObjectFrameCT = TGraphicalObjectFrameCT deprecated 'use TGraphicalObjectFrameCT';
+  TCTGraphicalObjectFrameCTList = TGraphicalObjectFrameCTList deprecated 'use TGraphicalObjectFrameCTList';
+  TCTGraphicalObjectFrameNonVisualCT = TGraphicalObjectFrameNonVisualCT deprecated 'use TGraphicalObjectFrameNonVisualCT';
+  TCTGroupShapeCT = TGroupShapeCT deprecated 'use TGroupShapeCT';
+  TCTGroupShapeCTList = TGroupShapeCTList deprecated 'use TGroupShapeCTList';
+  TCTGroupShapeNonVisualCT = TGroupShapeNonVisualCT deprecated 'use TGroupShapeNonVisualCT';
+  TCTMarkerCT = TMarkerCT deprecated 'use TMarkerCT';
+  TEGObjectChoicesEG = TObjectChoicesEG deprecated 'use TObjectChoicesEG';
+  TCTOneCellAnchorCT = TOneCellAnchorCT deprecated 'use TOneCellAnchorCT';
+  TCTOneCellAnchorCTList = TOneCellAnchorCTList deprecated 'use TOneCellAnchorCTList';
+  TCTPictureCT = TPictureCT deprecated 'use TPictureCT';
+  TCTPictureCTList = TPictureCTList deprecated 'use TPictureCTList';
+  TCTPictureNonVisualCT = TPictureNonVisualCT deprecated 'use TPictureNonVisualCT';
+  TCTRelCT = TRelCT deprecated 'use TRelCT';
+  TSTRowIDST = TRowIDST deprecated 'use TRowIDST';
+  TCTShapeCT = TShapeCT deprecated 'use TShapeCT';
+  TCTShapeCTList = TShapeCTList deprecated 'use TShapeCTList';
+  TCTShapeNonVisualCT = TShapeNonVisualCT deprecated 'use TShapeNonVisualCT';
+  TCTTwoCellAnchorCT = TTwoCellAnchorCT deprecated 'use TTwoCellAnchorCT';
+  TCTTwoCellAnchorCTList = TTwoCellAnchorCTList deprecated 'use TTwoCellAnchorCTList';
 
 implementation
 
-{ TCTTwoCellAnchorCT }
+{ TTwoCellAnchorCT }
 
-function TCTTwoCellAnchorCT.GetSp: TCTShapeCT;
+function TTwoCellAnchorCT.GetSp: TShapeCT;
 begin
-  Result := TCTShapeCT(Lazy(fSp, TCTShapeCT));
+  Result := TShapeCT(Lazy(fSp, TShapeCT));
 end;
 
-function TCTTwoCellAnchorCT.GetGrpSp: TCTGroupShapeCT;
+function TTwoCellAnchorCT.GetGrpSp: TGroupShapeCT;
 begin
-  Result := TCTGroupShapeCT(Lazy(fGrpSp, TCTGroupShapeCT));
+  Result := TGroupShapeCT(Lazy(fGrpSp, TGroupShapeCT));
 end;
 
-function TCTTwoCellAnchorCT.GetGraphicFrame: TCTGraphicalObjectFrameCT;
+function TTwoCellAnchorCT.GetGraphicFrame: TGraphicalObjectFrameCT;
 begin
-  Result := TCTGraphicalObjectFrameCT(Lazy(fGraphicFrame, TCTGraphicalObjectFrameCT));
+  Result := TGraphicalObjectFrameCT(Lazy(fGraphicFrame, TGraphicalObjectFrameCT));
 end;
 
-function TCTTwoCellAnchorCT.GetCxnSp: TCTConnectorCT;
+function TTwoCellAnchorCT.GetCxnSp: TConnectorCT;
 begin
-  Result := TCTConnectorCT(Lazy(fCxnSp, TCTConnectorCT));
+  Result := TConnectorCT(Lazy(fCxnSp, TConnectorCT));
 end;
 
-function TCTTwoCellAnchorCT.GetPic: TCTPictureCT;
+function TTwoCellAnchorCT.GetPic: TPictureCT;
 begin
-  Result := TCTPictureCT(Lazy(fPic, TCTPictureCT));
+  Result := TPictureCT(Lazy(fPic, TPictureCT));
 end;
 
-function TCTTwoCellAnchorCT.GetContentPart: TCTRelCT;
+function TTwoCellAnchorCT.GetContentPart: TRelCT;
 begin
-  Result := TCTRelCT(Lazy(fContentPart, TCTRelCT));
+  Result := TRelCT(Lazy(fContentPart, TRelCT));
 end;
 
-{ TCTOneCellAnchorCT }
+{ TOneCellAnchorCT }
 
-function TCTOneCellAnchorCT.GetSp: TCTShapeCT;
+function TOneCellAnchorCT.GetSp: TShapeCT;
 begin
-  Result := TCTShapeCT(Lazy(fSp, TCTShapeCT));
+  Result := TShapeCT(Lazy(fSp, TShapeCT));
 end;
 
-function TCTOneCellAnchorCT.GetGrpSp: TCTGroupShapeCT;
+function TOneCellAnchorCT.GetGrpSp: TGroupShapeCT;
 begin
-  Result := TCTGroupShapeCT(Lazy(fGrpSp, TCTGroupShapeCT));
+  Result := TGroupShapeCT(Lazy(fGrpSp, TGroupShapeCT));
 end;
 
-function TCTOneCellAnchorCT.GetGraphicFrame: TCTGraphicalObjectFrameCT;
+function TOneCellAnchorCT.GetGraphicFrame: TGraphicalObjectFrameCT;
 begin
-  Result := TCTGraphicalObjectFrameCT(Lazy(fGraphicFrame, TCTGraphicalObjectFrameCT));
+  Result := TGraphicalObjectFrameCT(Lazy(fGraphicFrame, TGraphicalObjectFrameCT));
 end;
 
-function TCTOneCellAnchorCT.GetCxnSp: TCTConnectorCT;
+function TOneCellAnchorCT.GetCxnSp: TConnectorCT;
 begin
-  Result := TCTConnectorCT(Lazy(fCxnSp, TCTConnectorCT));
+  Result := TConnectorCT(Lazy(fCxnSp, TConnectorCT));
 end;
 
-function TCTOneCellAnchorCT.GetPic: TCTPictureCT;
+function TOneCellAnchorCT.GetPic: TPictureCT;
 begin
-  Result := TCTPictureCT(Lazy(fPic, TCTPictureCT));
+  Result := TPictureCT(Lazy(fPic, TPictureCT));
 end;
 
-function TCTOneCellAnchorCT.GetContentPart: TCTRelCT;
+function TOneCellAnchorCT.GetContentPart: TRelCT;
 begin
-  Result := TCTRelCT(Lazy(fContentPart, TCTRelCT));
+  Result := TRelCT(Lazy(fContentPart, TRelCT));
 end;
 
-{ TCTAbsoluteAnchorCT }
+{ TAbsoluteAnchorCT }
 
-function TCTAbsoluteAnchorCT.GetSp: TCTShapeCT;
+function TAbsoluteAnchorCT.GetSp: TShapeCT;
 begin
-  Result := TCTShapeCT(Lazy(fSp, TCTShapeCT));
+  Result := TShapeCT(Lazy(fSp, TShapeCT));
 end;
 
-function TCTAbsoluteAnchorCT.GetGrpSp: TCTGroupShapeCT;
+function TAbsoluteAnchorCT.GetGrpSp: TGroupShapeCT;
 begin
-  Result := TCTGroupShapeCT(Lazy(fGrpSp, TCTGroupShapeCT));
+  Result := TGroupShapeCT(Lazy(fGrpSp, TGroupShapeCT));
 end;
 
-function TCTAbsoluteAnchorCT.GetGraphicFrame: TCTGraphicalObjectFrameCT;
+function TAbsoluteAnchorCT.GetGraphicFrame: TGraphicalObjectFrameCT;
 begin
-  Result := TCTGraphicalObjectFrameCT(Lazy(fGraphicFrame, TCTGraphicalObjectFrameCT));
+  Result := TGraphicalObjectFrameCT(Lazy(fGraphicFrame, TGraphicalObjectFrameCT));
 end;
 
-function TCTAbsoluteAnchorCT.GetCxnSp: TCTConnectorCT;
+function TAbsoluteAnchorCT.GetCxnSp: TConnectorCT;
 begin
-  Result := TCTConnectorCT(Lazy(fCxnSp, TCTConnectorCT));
+  Result := TConnectorCT(Lazy(fCxnSp, TConnectorCT));
 end;
 
-function TCTAbsoluteAnchorCT.GetPic: TCTPictureCT;
+function TAbsoluteAnchorCT.GetPic: TPictureCT;
 begin
-  Result := TCTPictureCT(Lazy(fPic, TCTPictureCT));
+  Result := TPictureCT(Lazy(fPic, TPictureCT));
 end;
 
-function TCTAbsoluteAnchorCT.GetContentPart: TCTRelCT;
+function TAbsoluteAnchorCT.GetContentPart: TRelCT;
 begin
-  Result := TCTRelCT(Lazy(fContentPart, TCTRelCT));
+  Result := TRelCT(Lazy(fContentPart, TRelCT));
 end;
 
-{ TEGAnchorEG }
+{ TAnchorEG }
 
-function TEGAnchorEG.GetTwoCellAnchor: TCTTwoCellAnchorCT;
+function TAnchorEG.GetTwoCellAnchor: TTwoCellAnchorCT;
 begin
-  Result := TCTTwoCellAnchorCT(Lazy(fTwoCellAnchor, TCTTwoCellAnchorCT));
+  Result := TTwoCellAnchorCT(Lazy(fTwoCellAnchor, TTwoCellAnchorCT));
 end;
 
-function TEGAnchorEG.GetOneCellAnchor: TCTOneCellAnchorCT;
+function TAnchorEG.GetOneCellAnchor: TOneCellAnchorCT;
 begin
-  Result := TCTOneCellAnchorCT(Lazy(fOneCellAnchor, TCTOneCellAnchorCT));
+  Result := TOneCellAnchorCT(Lazy(fOneCellAnchor, TOneCellAnchorCT));
 end;
 
-function TEGAnchorEG.GetAbsoluteAnchor: TCTAbsoluteAnchorCT;
+function TAnchorEG.GetAbsoluteAnchor: TAbsoluteAnchorCT;
 begin
-  Result := TCTAbsoluteAnchorCT(Lazy(fAbsoluteAnchor, TCTAbsoluteAnchorCT));
+  Result := TAbsoluteAnchorCT(Lazy(fAbsoluteAnchor, TAbsoluteAnchorCT));
 end;
 
 initialization
 
 TMetaBankXmlite.RegisterNamespace('http://schemas.openxmlformats.org/drawingml/2006/spreadsheetDrawing',
   { simpleTypes }
-  [TypeInfo(TSTColIDST), TypeInfo(TSTRowIDST), TypeInfo(TSTEditAsST)],
+  [TypeInfo(TColIDST), TypeInfo(TRowIDST), TypeInfo(TEditAsST)],
   { complexTypes }
-  [TCTAnchorClientDataCT, TCTShapeNonVisualCT, TCTShapeCT, TCTConnectorNonVisualCT, TCTConnectorCT, TCTPictureNonVisualCT, TCTPictureCT,
-  TCTGraphicalObjectFrameNonVisualCT, TCTGraphicalObjectFrameCT, TCTGroupShapeNonVisualCT, TCTGroupShapeCT, TCTRelCT, TCTMarkerCT,
-  TCTTwoCellAnchorCT, TCTOneCellAnchorCT, TCTAbsoluteAnchorCT, TCTDrawingCT],
+  [TAnchorClientDataCT, TShapeNonVisualCT, TShapeCT, TConnectorNonVisualCT, TConnectorCT, TPictureNonVisualCT, TPictureCT,
+  TGraphicalObjectFrameNonVisualCT, TGraphicalObjectFrameCT, TGroupShapeNonVisualCT, TGroupShapeCT, TRelCT, TMarkerCT, TTwoCellAnchorCT,
+  TOneCellAnchorCT, TAbsoluteAnchorCT, TDrawingCT],
   { attributes }
   [],
   { attributeGroups }
@@ -578,7 +609,7 @@ TMetaBankXmlite.RegisterNamespace('http://schemas.openxmlformats.org/drawingml/2
   { elements }
   [TFromE, TToE, TWsDrE],
   { groups }
-  [TEGObjectChoicesEG, TEGAnchorEG],
+  [TObjectChoicesEG, TAnchorEG],
   'xdr');
 
 end.

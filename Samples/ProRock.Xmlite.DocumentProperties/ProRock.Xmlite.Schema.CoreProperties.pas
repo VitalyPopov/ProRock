@@ -17,15 +17,15 @@ uses
   ProRock.Xmlite, ProRock.Xmlite.Schema.Base, ProRock.Xmlite.Schema.Xml, ProRock.Xmlite.Schema.Dc.Elements, ProRock.Xmlite.Schema.Dc.Terms;
 
 type
-  TCTCorePropertiesCT = class;
-  TCTKeywordsCT = class;
-  TCTKeywordCT = class;
+  TCorePropertiesCT = class;
+  TKeywordsCT = class;
+  TKeywordCT = class;
   TCorePropertiesE = class;
 
-  TCTKeywordCTList = class;
+  TKeywordCTList = class;
 
   [TName('CT_CoreProperties')]
-  TCTCorePropertiesCT = class(TXmliteComplexType)
+  TCorePropertiesCT = class(TXmliteComplexType)
   private
     fCategory: ProRock.Xmlite.Schema.Base.TStringST;
     fContentStatus: ProRock.Xmlite.Schema.Base.TStringST;
@@ -33,7 +33,7 @@ type
     fCreator: ProRock.Xmlite.Schema.Dc.Elements.TCreatorE;
     fDescription: ProRock.Xmlite.Schema.Dc.Elements.TDescriptionE;
     fIdentifier: ProRock.Xmlite.Schema.Dc.Elements.TIdentifierE;
-    fKeywords: TCTKeywordsCT;
+    fKeywords: TKeywordsCT;
     fLanguage: ProRock.Xmlite.Schema.Dc.Elements.TLanguageE;
     fLastModifiedBy: ProRock.Xmlite.Schema.Base.TStringST;
     fLastPrinted: ProRock.Xmlite.Schema.Base.TDateTimeST;
@@ -55,7 +55,7 @@ type
     property Description: ProRock.Xmlite.Schema.Dc.Elements.TDescriptionE read fDescription;
     [TNaming(TNaming.nFlatCase)]
     property Identifier: ProRock.Xmlite.Schema.Dc.Elements.TIdentifierE read fIdentifier;
-    property Keywords: TCTKeywordsCT read fKeywords;
+    property Keywords: TKeywordsCT read fKeywords;
     [TNaming(TNaming.nFlatCase)]
     property Language: ProRock.Xmlite.Schema.Dc.Elements.TLanguageE read fLanguage;
     [TXmliteElement]
@@ -76,18 +76,18 @@ type
 
   [TMixed]
   [TName('CT_Keywords')]
-  TCTKeywordsCT = class(TXmliteComplexType)
+  TKeywordsCT = class(TXmliteComplexType)
   private
     fLang: ProRock.Xmlite.Schema.Xml.TLangA;
-    fValue: TCTKeywordCTList;
+    fValue: TKeywordCTList;
   published
     [TNaming(TNaming.nFlatCase)]
     property Lang: ProRock.Xmlite.Schema.Xml.TLangA read fLang write fLang;
-    property Value: TCTKeywordCTList read fValue;
+    property Value: TKeywordCTList read fValue;
   end;
 
   [TName('CT_Keyword')]
-  TCTKeywordCT = class(TXmliteComplexType)
+  TKeywordCT = class(TXmliteComplexType)
   private
     fXmlValue: ProRock.Xmlite.Schema.Base.TStringST;
     fLang: ProRock.Xmlite.Schema.Xml.TLangA;
@@ -98,9 +98,14 @@ type
     property Lang: ProRock.Xmlite.Schema.Xml.TLangA read fLang write fLang;
   end;
 
-  TCorePropertiesE = class(TCTCorePropertiesCT);
+  TCorePropertiesE = class(TCorePropertiesCT);
 
-  TCTKeywordCTList = class(TXmliteList<TCTKeywordCT>);
+  TKeywordCTList = class(TXmliteList<TKeywordCT>);
+
+  TCTCorePropertiesCT = TCorePropertiesCT deprecated 'use TCorePropertiesCT';
+  TCTKeywordCT = TKeywordCT deprecated 'use TKeywordCT';
+  TCTKeywordCTList = TKeywordCTList deprecated 'use TKeywordCTList';
+  TCTKeywordsCT = TKeywordsCT deprecated 'use TKeywordsCT';
 
 implementation
 
@@ -110,7 +115,7 @@ TMetaBankXmlite.RegisterNamespace('http://schemas.openxmlformats.org/package/200
   { simpleTypes }
   [],
   { complexTypes }
-  [TCTCorePropertiesCT, TCTKeywordsCT, TCTKeywordCT],
+  [TCorePropertiesCT, TKeywordsCT, TKeywordCT],
   { attributes }
   [],
   { attributeGroups }

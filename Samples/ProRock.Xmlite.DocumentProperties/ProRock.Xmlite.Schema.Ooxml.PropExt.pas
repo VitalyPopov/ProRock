@@ -17,14 +17,14 @@ uses
   ProRock.Xmlite, ProRock.Xmlite.Schema.Base, ProRock.Xmlite.Schema.Ooxml.PropVar;
 
 type
-  TCTPropertiesCT = class;
-  TCTVectorVariantCT = class;
-  TCTVectorLpstrCT = class;
-  TCTDigSigBlobCT = class;
+  TPropertiesCT = class;
+  TVectorVariantCT = class;
+  TVectorLpstrCT = class;
+  TDigSigBlobCT = class;
   TPropertiesE = class;
 
   [TName('CT_Properties')]
-  TCTPropertiesCT = class(TXmliteComplexType)
+  TPropertiesCT = class(TXmliteComplexType)
   private
     fTemplate: ProRock.Xmlite.Schema.Base.TStringST;
     fManager: ProRock.Xmlite.Schema.Base.TStringST;
@@ -41,15 +41,15 @@ type
     fHiddenSlides: ProRock.Xmlite.Schema.Base.TIntST;
     fMMClips: ProRock.Xmlite.Schema.Base.TIntST;
     fScaleCrop: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fHeadingPairs: TCTVectorVariantCT;
-    fTitlesOfParts: TCTVectorLpstrCT;
+    fHeadingPairs: TVectorVariantCT;
+    fTitlesOfParts: TVectorLpstrCT;
     fLinksUpToDate: ProRock.Xmlite.Schema.Base.TBooleanST;
     fCharactersWithSpaces: ProRock.Xmlite.Schema.Base.TIntST;
     fSharedDoc: ProRock.Xmlite.Schema.Base.TBooleanST;
     fHyperlinkBase: ProRock.Xmlite.Schema.Base.TStringST;
-    fHLinks: TCTVectorVariantCT;
+    fHLinks: TVectorVariantCT;
     fHyperlinksChanged: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fDigSig: TCTDigSigBlobCT;
+    fDigSig: TDigSigBlobCT;
     fApplication: ProRock.Xmlite.Schema.Base.TStringST;
     fAppVersion: ProRock.Xmlite.Schema.Base.TStringST;
     fDocSecurity: ProRock.Xmlite.Schema.Base.TIntST;
@@ -84,8 +84,8 @@ type
     property MMClips: ProRock.Xmlite.Schema.Base.TIntST read fMMClips write fMMClips;
     [TXmliteElement]
     property ScaleCrop: ProRock.Xmlite.Schema.Base.TBooleanST read fScaleCrop write fScaleCrop;
-    property HeadingPairs: TCTVectorVariantCT read fHeadingPairs;
-    property TitlesOfParts: TCTVectorLpstrCT read fTitlesOfParts;
+    property HeadingPairs: TVectorVariantCT read fHeadingPairs;
+    property TitlesOfParts: TVectorLpstrCT read fTitlesOfParts;
     [TXmliteElement]
     property LinksUpToDate: ProRock.Xmlite.Schema.Base.TBooleanST read fLinksUpToDate write fLinksUpToDate;
     [TXmliteElement]
@@ -94,10 +94,10 @@ type
     property SharedDoc: ProRock.Xmlite.Schema.Base.TBooleanST read fSharedDoc write fSharedDoc;
     [TXmliteElement]
     property HyperlinkBase: ProRock.Xmlite.Schema.Base.TStringST read fHyperlinkBase write fHyperlinkBase;
-    property HLinks: TCTVectorVariantCT read fHLinks;
+    property HLinks: TVectorVariantCT read fHLinks;
     [TXmliteElement]
     property HyperlinksChanged: ProRock.Xmlite.Schema.Base.TBooleanST read fHyperlinksChanged write fHyperlinksChanged;
-    property DigSig: TCTDigSigBlobCT read fDigSig;
+    property DigSig: TDigSigBlobCT read fDigSig;
     [TXmliteElement]
     property Application: ProRock.Xmlite.Schema.Base.TStringST read fApplication write fApplication;
     [TXmliteElement]
@@ -107,7 +107,7 @@ type
   end;
 
   [TName('CT_VectorVariant')]
-  TCTVectorVariantCT = class(TXmliteComplexType)
+  TVectorVariantCT = class(TXmliteComplexType)
   private
     fVector: ProRock.Xmlite.Schema.Ooxml.PropVar.TVectorE;
   published
@@ -117,7 +117,7 @@ type
   end;
 
   [TName('CT_VectorLpstr')]
-  TCTVectorLpstrCT = class(TXmliteComplexType)
+  TVectorLpstrCT = class(TXmliteComplexType)
   private
     fVector: ProRock.Xmlite.Schema.Ooxml.PropVar.TVectorE;
   published
@@ -127,7 +127,7 @@ type
   end;
 
   [TName('CT_DigSigBlob')]
-  TCTDigSigBlobCT = class(TXmliteComplexType)
+  TDigSigBlobCT = class(TXmliteComplexType)
   private
     fBlob: ProRock.Xmlite.Schema.Base.TBase64BinaryST;
   published
@@ -138,7 +138,12 @@ type
     property Blob: ProRock.Xmlite.Schema.Base.TBase64BinaryST read fBlob write fBlob;
   end;
 
-  TPropertiesE = class(TCTPropertiesCT);
+  TPropertiesE = class(TPropertiesCT);
+
+  TCTDigSigBlobCT = TDigSigBlobCT deprecated 'use TDigSigBlobCT';
+  TCTPropertiesCT = TPropertiesCT deprecated 'use TPropertiesCT';
+  TCTVectorLpstrCT = TVectorLpstrCT deprecated 'use TVectorLpstrCT';
+  TCTVectorVariantCT = TVectorVariantCT deprecated 'use TVectorVariantCT';
 
 implementation
 
@@ -148,7 +153,7 @@ TMetaBankXmlite.RegisterNamespace('http://schemas.openxmlformats.org/officeDocum
   { simpleTypes }
   [],
   { complexTypes }
-  [TCTPropertiesCT, TCTVectorVariantCT, TCTVectorLpstrCT, TCTDigSigBlobCT],
+  [TPropertiesCT, TVectorVariantCT, TVectorLpstrCT, TDigSigBlobCT],
   { attributes }
   [],
   { attributeGroups }

@@ -18,21 +18,21 @@ uses
 
 type
   [TName('ST_FontCollectionIndex')]
-  TSTFontCollectionIndexST = (stfciMajor, stfciMinor, stfciNone);
+  TFontCollectionIndexST = (stfciMajor, stfciMinor, stfciNone);
   [TName('ST_ColorSchemeIndex')]
-  TSTColorSchemeIndexST = (stcsiDk1, stcsiLt1, stcsiDk2, stcsiLt2, stcsiAccent1, stcsiAccent2, stcsiAccent3, stcsiAccent4, stcsiAccent5,
+  TColorSchemeIndexST = (stcsiDk1, stcsiLt1, stcsiDk2, stcsiLt2, stcsiAccent1, stcsiAccent2, stcsiAccent3, stcsiAccent4, stcsiAccent5,
     stcsiAccent6, stcsiHlink, stcsiFolHlink);
   [TName('ST_SystemColorVal')]
-  TSTSystemColorValST = (stscvScrollBar, stscvBackground, stscvActiveCaption, stscvInactiveCaption, stscvMenu, stscvWindow,
-    stscvWindowFrame, stscvMenuText, stscvWindowText, stscvCaptionText, stscvActiveBorder, stscvInactiveBorder, stscvAppWorkspace,
-    stscvHighlight, stscvHighlightText, stscvBtnFace, stscvBtnShadow, stscvGrayText, stscvBtnText, stscvInactiveCaptionText,
-    stscvBtnHighlight, stscv3dDkShadow, stscv3dLight, stscvInfoText, stscvInfoBk, stscvHotLight, stscvGradientActiveCaption,
-    stscvGradientInactiveCaption, stscvMenuHighlight, stscvMenuBar);
+  TSystemColorValST = (stscvScrollBar, stscvBackground, stscvActiveCaption, stscvInactiveCaption, stscvMenu, stscvWindow, stscvWindowFrame,
+    stscvMenuText, stscvWindowText, stscvCaptionText, stscvActiveBorder, stscvInactiveBorder, stscvAppWorkspace, stscvHighlight,
+    stscvHighlightText, stscvBtnFace, stscvBtnShadow, stscvGrayText, stscvBtnText, stscvInactiveCaptionText, stscvBtnHighlight,
+    stscv3dDkShadow, stscv3dLight, stscvInfoText, stscvInfoBk, stscvHotLight, stscvGradientActiveCaption, stscvGradientInactiveCaption,
+    stscvMenuHighlight, stscvMenuBar);
   [TName('ST_SchemeColorVal')]
-  TSTSchemeColorValST = (stscvaBg1, stscvaTx1, stscvaBg2, stscvaTx2, stscvaAccent1, stscvaAccent2, stscvaAccent3, stscvaAccent4,
+  TSchemeColorValST = (stscvaBg1, stscvaTx1, stscvaBg2, stscvaTx2, stscvaAccent1, stscvaAccent2, stscvaAccent3, stscvaAccent4,
     stscvaAccent5, stscvaAccent6, stscvaHlink, stscvaFolHlink, stscvaPhClr, stscvaDk1, stscvaLt1, stscvaDk2, stscvaLt2);
   [TName('ST_PresetColorVal')]
-  TSTPresetColorValST = (stpcvAliceBlue, stpcvAntiqueWhite, stpcvAqua, stpcvAquamarine, stpcvAzure, stpcvBeige, stpcvBisque, stpcvBlack,
+  TPresetColorValST = (stpcvAliceBlue, stpcvAntiqueWhite, stpcvAqua, stpcvAquamarine, stpcvAzure, stpcvBeige, stpcvBisque, stpcvBlack,
     stpcvBlanchedAlmond, stpcvBlue, stpcvBlueViolet, stpcvBrown, stpcvBurlyWood, stpcvCadetBlue, stpcvChartreuse, stpcvChocolate,
     stpcvCoral, stpcvCornflowerBlue, stpcvCornsilk, stpcvCrimson, stpcvCyan, stpcvDarkBlue, stpcvDarkCyan, stpcvDarkGoldenrod,
     stpcvDarkGray, stpcvDarkGrey, stpcvDarkGreen, stpcvDarkKhaki, stpcvDarkMagenta, stpcvDarkOliveGreen, stpcvDarkOrange, stpcvDarkOrchid,
@@ -57,22 +57,22 @@ type
     stpcvSlateBlue, stpcvSlateGray, stpcvSlateGrey, stpcvSnow, stpcvSpringGreen, stpcvSteelBlue, stpcvTan, stpcvTeal, stpcvThistle,
     stpcvTomato, stpcvTurquoise, stpcvViolet, stpcvWheat, stpcvWhite, stpcvWhiteSmoke, stpcvYellow, stpcvYellowGreen);
   [TName('ST_RectAlignment')]
-  TSTRectAlignmentST = (straTl, straT, straTr, straL, straCtr, straR, straBl, straB, straBr);
+  TRectAlignmentST = (straTl, straT, straTr, straL, straCtr, straR, straBl, straB, straBr);
   [TName('ST_BlackWhiteMode')]
-  TSTBlackWhiteModeST = (stbwmClr, stbwmAuto, stbwmGray, stbwmLtGray, stbwmInvGray, stbwmGrayWhite, stbwmBlackGray, stbwmBlackWhite,
+  TBlackWhiteModeST = (stbwmClr, stbwmAuto, stbwmGray, stbwmLtGray, stbwmInvGray, stbwmGrayWhite, stbwmBlackGray, stbwmBlackWhite,
     stbwmBlack, stbwmWhite, stbwmHidden);
   [TName('ST_ChartBuildStep')]
-  TSTChartBuildStepST = (stcbsCategory, stcbsPtInCategory, stcbsSeries, stcbsPtInSeries, stcbsAllPts, stcbsGridLegend);
+  TChartBuildStepST = (stcbsCategory, stcbsPtInCategory, stcbsSeries, stcbsPtInSeries, stcbsAllPts, stcbsGridLegend);
   [TName('ST_DgmBuildStep')]
-  TSTDgmBuildStepST = (stdbsSp, stdbsBg);
+  TDgmBuildStepST = (stdbsSp, stdbsBg);
   [TName('ST_AnimationBuildType')]
-  TSTAnimationBuildTypeST = (stabtAllAtOnce);
+  TAnimationBuildTypeST = (stabtAllAtOnce);
   [TName('ST_AnimationDgmOnlyBuildType')]
-  TSTAnimationDgmOnlyBuildTypeST = (stadobtOne, stadobtLvlOne, stadobtLvlAtOnce);
+  TAnimationDgmOnlyBuildTypeST = (stadobtOne, stadobtLvlOne, stadobtLvlAtOnce);
   [TName('ST_AnimationChartOnlyBuildType')]
-  TSTAnimationChartOnlyBuildTypeST = (stacobtSeries, stacobtCategory, stacobtSeriesEl, stacobtCategoryEl);
+  TAnimationChartOnlyBuildTypeST = (stacobtSeries, stacobtCategory, stacobtSeriesEl, stacobtCategoryEl);
   [TName('ST_PresetCameraType')]
-  TSTPresetCameraTypeST = (stpctLegacyObliqueTopLeft, stpctLegacyObliqueTop, stpctLegacyObliqueTopRight, stpctLegacyObliqueLeft,
+  TPresetCameraTypeST = (stpctLegacyObliqueTopLeft, stpctLegacyObliqueTop, stpctLegacyObliqueTopRight, stpctLegacyObliqueLeft,
     stpctLegacyObliqueFront, stpctLegacyObliqueRight, stpctLegacyObliqueBottomLeft, stpctLegacyObliqueBottom,
     stpctLegacyObliqueBottomRight, stpctLegacyPerspectiveTopLeft, stpctLegacyPerspectiveTop, stpctLegacyPerspectiveTopRight,
     stpctLegacyPerspectiveLeft, stpctLegacyPerspectiveFront, stpctLegacyPerspectiveRight, stpctLegacyPerspectiveBottomLeft,
@@ -88,41 +88,41 @@ type
     stpctPerspectiveHeroicRightFacing, stpctPerspectiveHeroicExtremeLeftFacing, stpctPerspectiveHeroicExtremeRightFacing,
     stpctPerspectiveRelaxed, stpctPerspectiveRelaxedModerately);
   [TName('ST_LightRigDirection')]
-  TSTLightRigDirectionST = (stlrdTl, stlrdT, stlrdTr, stlrdL, stlrdR, stlrdBl, stlrdB, stlrdBr);
+  TLightRigDirectionST = (stlrdTl, stlrdT, stlrdTr, stlrdL, stlrdR, stlrdBl, stlrdB, stlrdBr);
   [TName('ST_LightRigType')]
-  TSTLightRigTypeST = (stlrtLegacyFlat1, stlrtLegacyFlat2, stlrtLegacyFlat3, stlrtLegacyFlat4, stlrtLegacyNormal1, stlrtLegacyNormal2,
+  TLightRigTypeST = (stlrtLegacyFlat1, stlrtLegacyFlat2, stlrtLegacyFlat3, stlrtLegacyFlat4, stlrtLegacyNormal1, stlrtLegacyNormal2,
     stlrtLegacyNormal3, stlrtLegacyNormal4, stlrtLegacyHarsh1, stlrtLegacyHarsh2, stlrtLegacyHarsh3, stlrtLegacyHarsh4, stlrtThreePt,
     stlrtBalanced, stlrtSoft, stlrtHarsh, stlrtFlood, stlrtContrasting, stlrtMorning, stlrtSunrise, stlrtSunset, stlrtChilly,
     stlrtFreezing, stlrtFlat, stlrtTwoPt, stlrtGlow, stlrtBrightRoom);
   [TName('ST_BevelPresetType')]
-  TSTBevelPresetTypeST = (stbptRelaxedInset, stbptCircle, stbptSlope, stbptCross, stbptAngle, stbptSoftRound, stbptConvex, stbptCoolSlant,
+  TBevelPresetTypeST = (stbptRelaxedInset, stbptCircle, stbptSlope, stbptCross, stbptAngle, stbptSoftRound, stbptConvex, stbptCoolSlant,
     stbptDivot, stbptRiblet, stbptHardEdge, stbptArtDeco);
   [TName('ST_PresetMaterialType')]
-  TSTPresetMaterialTypeST = (stpmtLegacyMatte, stpmtLegacyPlastic, stpmtLegacyMetal, stpmtLegacyWireframe, stpmtMatte, stpmtPlastic,
+  TPresetMaterialTypeST = (stpmtLegacyMatte, stpmtLegacyPlastic, stpmtLegacyMetal, stpmtLegacyWireframe, stpmtMatte, stpmtPlastic,
     stpmtMetal, stpmtWarmMatte, stpmtTranslucentPowder, stpmtPowder, stpmtDkEdge, stpmtSoftEdge, stpmtClear, stpmtFlat, stpmtSoftmetal);
   [TName('ST_PresetShadowVal')]
-  TSTPresetShadowValST = (stpsvShdw1, stpsvShdw2, stpsvShdw3, stpsvShdw4, stpsvShdw5, stpsvShdw6, stpsvShdw7, stpsvShdw8, stpsvShdw9,
+  TPresetShadowValST = (stpsvShdw1, stpsvShdw2, stpsvShdw3, stpsvShdw4, stpsvShdw5, stpsvShdw6, stpsvShdw7, stpsvShdw8, stpsvShdw9,
     stpsvShdw10, stpsvShdw11, stpsvShdw12, stpsvShdw13, stpsvShdw14, stpsvShdw15, stpsvShdw16, stpsvShdw17, stpsvShdw18, stpsvShdw19,
     stpsvShdw20);
   [TName('ST_PathShadeType')]
-  TSTPathShadeTypeST = (stpstShape, stpstCircle, stpstRect);
+  TPathShadeTypeST = (stpstShape, stpstCircle, stpstRect);
   [TName('ST_TileFlipMode')]
-  TSTTileFlipModeST = (sttfmNone, sttfmX, sttfmY, sttfmXy);
+  TTileFlipModeST = (sttfmNone, sttfmX, sttfmY, sttfmXy);
   [TName('ST_BlipCompression')]
-  TSTBlipCompressionST = (stbcEmail, stbcScreen, stbcPrint, stbcHqprint, stbcNone);
+  TBlipCompressionST = (stbcEmail, stbcScreen, stbcPrint, stbcHqprint, stbcNone);
   [TName('ST_PresetPatternVal')]
-  TSTPresetPatternValST = (stppvPct5, stppvPct10, stppvPct20, stppvPct25, stppvPct30, stppvPct40, stppvPct50, stppvPct60, stppvPct70,
+  TPresetPatternValST = (stppvPct5, stppvPct10, stppvPct20, stppvPct25, stppvPct30, stppvPct40, stppvPct50, stppvPct60, stppvPct70,
     stppvPct75, stppvPct80, stppvPct90, stppvHorz, stppvVert, stppvLtHorz, stppvLtVert, stppvDkHorz, stppvDkVert, stppvNarHorz,
     stppvNarVert, stppvDashHorz, stppvDashVert, stppvCross, stppvDnDiag, stppvUpDiag, stppvLtDnDiag, stppvLtUpDiag, stppvDkDnDiag,
     stppvDkUpDiag, stppvWdDnDiag, stppvWdUpDiag, stppvDashDnDiag, stppvDashUpDiag, stppvDiagCross, stppvSmCheck, stppvLgCheck, stppvSmGrid,
     stppvLgGrid, stppvDotGrid, stppvSmConfetti, stppvLgConfetti, stppvHorzBrick, stppvDiagBrick, stppvSolidDmnd, stppvOpenDmnd,
     stppvDotDmnd, stppvPlaid, stppvSphere, stppvWeave, stppvDivot, stppvShingle, stppvWave, stppvTrellis, stppvZigZag);
   [TName('ST_BlendMode')]
-  TSTBlendModeST = (stbmOver, stbmMult, stbmScreen, stbmDarken, stbmLighten);
+  TBlendModeST = (stbmOver, stbmMult, stbmScreen, stbmDarken, stbmLighten);
   [TName('ST_EffectContainerType')]
-  TSTEffectContainerTypeST = (stectSib, stectTree);
+  TEffectContainerTypeST = (stectSib, stectTree);
   [TName('ST_ShapeType')]
-  TSTShapeTypeST = (ststLine, ststLineInv, ststTriangle, ststRtTriangle, ststRect, ststDiamond, ststParallelogram, ststTrapezoid,
+  TShapeTypeST = (ststLine, ststLineInv, ststTriangle, ststRtTriangle, ststRect, ststDiamond, ststParallelogram, ststTrapezoid,
     ststNonIsoscelesTrapezoid, ststPentagon, ststHexagon, ststHeptagon, ststOctagon, ststDecagon, ststDodecagon, ststStar4, ststStar5,
     ststStar6, ststStar7, ststStar8, ststStar10, ststStar12, ststStar16, ststStar24, ststStar32, ststRoundRect, ststRound1Rect,
     ststRound2SameRect, ststRound2DiagRect, ststSnipRoundRect, ststSnip1Rect, ststSnip2SameRect, ststSnip2DiagRect, ststPlaque,
@@ -151,7 +151,7 @@ type
     ststMathPlus, ststMathMinus, ststMathMultiply, ststMathDivide, ststMathEqual, ststMathNotEqual, ststCornerTabs, ststSquareTabs,
     ststPlaqueTabs, ststChartX, ststChartStar, ststChartPlus);
   [TName('ST_TextShapeType')]
-  TSTTextShapeTypeST = (sttstTextNoShape, sttstTextPlain, sttstTextStop, sttstTextTriangle, sttstTextTriangleInverted, sttstTextChevron,
+  TTextShapeTypeST = (sttstTextNoShape, sttstTextPlain, sttstTextStop, sttstTextTriangle, sttstTextTriangleInverted, sttstTextChevron,
     sttstTextChevronInverted, sttstTextRingInside, sttstTextRingOutside, sttstTextArchUp, sttstTextArchDown, sttstTextCircle,
     sttstTextButton, sttstTextArchUpPour, sttstTextArchDownPour, sttstTextCirclePour, sttstTextButtonPour, sttstTextCurveUp,
     sttstTextCurveDown, sttstTextCanUp, sttstTextCanDown, sttstTextWave1, sttstTextWave2, sttstTextDoubleWave1, sttstTextWave4,
@@ -159,36 +159,36 @@ type
     sttstTextDeflateInflate, sttstTextDeflateInflateDeflate, sttstTextFadeRight, sttstTextFadeLeft, sttstTextFadeUp, sttstTextFadeDown,
     sttstTextSlantUp, sttstTextSlantDown, sttstTextCascadeUp, sttstTextCascadeDown);
   [TName('ST_PathFillMode')]
-  TSTPathFillModeST = (stpfmNone, stpfmNorm, stpfmLighten, stpfmLightenLess, stpfmDarken, stpfmDarkenLess);
+  TPathFillModeST = (stpfmNone, stpfmNorm, stpfmLighten, stpfmLightenLess, stpfmDarken, stpfmDarkenLess);
   [TName('ST_LineEndType')]
-  TSTLineEndTypeST = (stletNone, stletTriangle, stletStealth, stletDiamond, stletOval, stletArrow);
+  TLineEndTypeST = (stletNone, stletTriangle, stletStealth, stletDiamond, stletOval, stletArrow);
   [TName('ST_LineEndWidth')]
-  TSTLineEndWidthST = (stlewSm, stlewMed, stlewLg);
+  TLineEndWidthST = (stlewSm, stlewMed, stlewLg);
   [TName('ST_LineEndLength')]
-  TSTLineEndLengthST = (stlelSm, stlelMed, stlelLg);
+  TLineEndLengthST = (stlelSm, stlelMed, stlelLg);
   [TName('ST_PresetLineDashVal')]
-  TSTPresetLineDashValST = (stpldvSolid, stpldvDot, stpldvDash, stpldvLgDash, stpldvDashDot, stpldvLgDashDot, stpldvLgDashDotDot,
+  TPresetLineDashValST = (stpldvSolid, stpldvDot, stpldvDash, stpldvLgDash, stpldvDashDot, stpldvLgDashDot, stpldvLgDashDotDot,
     stpldvSysDash, stpldvSysDot, stpldvSysDashDot, stpldvSysDashDotDot);
   [TName('ST_LineCap')]
-  TSTLineCapST = (stlcRnd, stlcSq, stlcFlat);
+  TLineCapST = (stlcRnd, stlcSq, stlcFlat);
   [TName('ST_PenAlignment')]
-  TSTPenAlignmentST = (stpaCtr, stpaIn);
+  TPenAlignmentST = (stpaCtr, stpaIn);
   [TName('ST_CompoundLine')]
-  TSTCompoundLineST = (stclSng, stclDbl, stclThickThin, stclThinThick, stclTri);
+  TCompoundLineST = (stclSng, stclDbl, stclThickThin, stclThinThick, stclTri);
   [TName('ST_OnOffStyleType')]
-  TSTOnOffStyleTypeST = (stoostOn, stoostOff, stoostDef);
+  TOnOffStyleTypeST = (stoostOn, stoostOff, stoostDef);
   [TName('ST_TextAnchoringType')]
-  TSTTextAnchoringTypeST = (sttatT, sttatCtr, sttatB, sttatJust, sttatDist);
+  TTextAnchoringTypeST = (sttatT, sttatCtr, sttatB, sttatJust, sttatDist);
   [TName('ST_TextVertOverflowType')]
-  TSTTextVertOverflowTypeST = (sttvotOverflow, sttvotEllipsis, sttvotClip);
+  TTextVertOverflowTypeST = (sttvotOverflow, sttvotEllipsis, sttvotClip);
   [TName('ST_TextHorzOverflowType')]
-  TSTTextHorzOverflowTypeST = (stthotOverflow, stthotClip);
+  TTextHorzOverflowTypeST = (stthotOverflow, stthotClip);
   [TName('ST_TextVerticalType')]
-  TSTTextVerticalTypeST = (sttvtHorz, sttvtVert, sttvtVert270, sttvtWordArtVert, sttvtEaVert, sttvtMongolianVert, sttvtWordArtVertRtl);
+  TTextVerticalTypeST = (sttvtHorz, sttvtVert, sttvtVert270, sttvtWordArtVert, sttvtEaVert, sttvtMongolianVert, sttvtWordArtVertRtl);
   [TName('ST_TextWrappingType')]
-  TSTTextWrappingTypeST = (sttwtNone, sttwtSquare);
+  TTextWrappingTypeST = (sttwtNone, sttwtSquare);
   [TName('ST_TextAutonumberScheme')]
-  TSTTextAutonumberSchemeST = (sttasAlphaLcParenBoth, sttasAlphaUcParenBoth, sttasAlphaLcParenR, sttasAlphaUcParenR, sttasAlphaLcPeriod,
+  TTextAutonumberSchemeST = (sttasAlphaLcParenBoth, sttasAlphaUcParenBoth, sttasAlphaLcParenR, sttasAlphaUcParenR, sttasAlphaLcPeriod,
     sttasAlphaUcPeriod, sttasArabicParenBoth, sttasArabicParenR, sttasArabicPeriod, sttasArabicPlain, sttasRomanLcParenBoth,
     sttasRomanUcParenBoth, sttasRomanLcParenR, sttasRomanUcParenR, sttasRomanLcPeriod, sttasRomanUcPeriod, sttasCircleNumDbPlain,
     sttasCircleNumWdBlackPlain, sttasCircleNumWdWhitePlain, sttasArabicDbPeriod, sttasArabicDbPlain, sttasEa1ChsPeriod, sttasEa1ChsPlain,
@@ -196,381 +196,381 @@ type
     sttasArabic2Minus, sttasHebrew2Minus, sttasThaiAlphaPeriod, sttasThaiAlphaParenR, sttasThaiAlphaParenBoth, sttasThaiNumPeriod,
     sttasThaiNumParenR, sttasThaiNumParenBoth, sttasHindiAlphaPeriod, sttasHindiNumPeriod, sttasHindiNumParenR, sttasHindiAlpha1Period);
   [TName('ST_PitchFamily')]
-  TSTPitchFamilyST = (stpf00, stpf01, stpf02, stpf16, stpf17, stpf18, stpf32, stpf33, stpf34, stpf48, stpf49, stpf50, stpf64, stpf65,
-    stpf66, stpf80, stpf81, stpf82);
+  TPitchFamilyST = (stpf00, stpf01, stpf02, stpf16, stpf17, stpf18, stpf32, stpf33, stpf34, stpf48, stpf49, stpf50, stpf64, stpf65, stpf66,
+    stpf80, stpf81, stpf82);
   [TName('ST_TextUnderlineType')]
-  TSTTextUnderlineTypeST = (sttutNone, sttutWords, sttutSng, sttutDbl, sttutHeavy, sttutDotted, sttutDottedHeavy, sttutDash,
-    sttutDashHeavy, sttutDashLong, sttutDashLongHeavy, sttutDotDash, sttutDotDashHeavy, sttutDotDotDash, sttutDotDotDashHeavy, sttutWavy,
-    sttutWavyHeavy, sttutWavyDbl);
+  TTextUnderlineTypeST = (sttutNone, sttutWords, sttutSng, sttutDbl, sttutHeavy, sttutDotted, sttutDottedHeavy, sttutDash, sttutDashHeavy,
+    sttutDashLong, sttutDashLongHeavy, sttutDotDash, sttutDotDashHeavy, sttutDotDotDash, sttutDotDotDashHeavy, sttutWavy, sttutWavyHeavy,
+    sttutWavyDbl);
   [TName('ST_TextStrikeType')]
-  TSTTextStrikeTypeST = (sttstaNoStrike, sttstaSngStrike, sttstaDblStrike);
+  TTextStrikeTypeST = (sttstaNoStrike, sttstaSngStrike, sttstaDblStrike);
   [TName('ST_TextCapsType')]
-  TSTTextCapsTypeST = (sttctNone, sttctSmall, sttctAll);
+  TTextCapsTypeST = (sttctNone, sttctSmall, sttctAll);
   [TName('ST_TextTabAlignType')]
-  TSTTextTabAlignTypeST = (stttatL, stttatCtr, stttatR, stttatDec);
+  TTextTabAlignTypeST = (stttatL, stttatCtr, stttatR, stttatDec);
   [TName('ST_TextAlignType')]
-  TSTTextAlignTypeST = (sttataL, sttataCtr, sttataR, sttataJust, sttataJustLow, sttataDist, sttataThaiDist);
+  TTextAlignTypeST = (sttataL, sttataCtr, sttataR, sttataJust, sttataJustLow, sttataDist, sttataThaiDist);
   [TName('ST_TextFontAlignType')]
-  TSTTextFontAlignTypeST = (sttfatAuto, sttfatT, sttfatCtr, sttfatBase, sttfatB);
+  TTextFontAlignTypeST = (sttfatAuto, sttfatT, sttfatCtr, sttfatBase, sttfatB);
 
   [TName('ST_AdjAngle')]
-  TSTAdjAngleST = type string;
+  TAdjAngleST = type string;
   [TName('ST_AdjCoordinate')]
-  TSTAdjCoordinateST = type string;
+  TAdjCoordinateST = type string;
   [TBaseType('ProRock.Xmlite.Schema.Base.TIntST')]
   [TName('ST_Angle')]
-  TSTAngleST = type ProRock.Xmlite.Schema.Base.TIntST;
+  TAngleST = type ProRock.Xmlite.Schema.Base.TIntST;
   [TName('ST_AnimationChartBuildType')]
-  TSTAnimationChartBuildTypeST = type string;
+  TAnimationChartBuildTypeST = type string;
   [TName('ST_AnimationDgmBuildType')]
-  TSTAnimationDgmBuildTypeST = type string;
+  TAnimationDgmBuildTypeST = type string;
   [TName('ST_Coordinate32')]
-  TSTCoordinate32ST = type string;
+  TCoordinate32ST = type string;
   [TBaseType('ProRock.Xmlite.Schema.Base.TIntST')]
   [TName('ST_Coordinate32Unqualified')]
-  TSTCoordinate32UnqualifiedST = type ProRock.Xmlite.Schema.Base.TIntST;
+  TCoordinate32UnqualifiedST = type ProRock.Xmlite.Schema.Base.TIntST;
   [TName('ST_Coordinate')]
-  TSTCoordinateST = type string;
+  TCoordinateST = type string;
   [TBaseType('ProRock.Xmlite.Schema.Base.TLongST')]
   [TName('ST_CoordinateUnqualified')]
-  TSTCoordinateUnqualifiedST = type ProRock.Xmlite.Schema.Base.TLongST;
+  TCoordinateUnqualifiedST = type ProRock.Xmlite.Schema.Base.TLongST;
   [TBaseType('ProRock.Xmlite.Schema.Base.TUnsignedIntST')]
   [TName('ST_DrawingElementId')]
-  TSTDrawingElementIdST = type ProRock.Xmlite.Schema.Base.TUnsignedIntST;
+  TDrawingElementIdST = type ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   [TName('ST_FixedPercentage')]
-  TSTFixedPercentageST = type string;
+  TFixedPercentageST = type string;
   [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TName('ST_GeomGuideFormula')]
-  TSTGeomGuideFormulaST = type ProRock.Xmlite.Schema.Base.TStringST;
+  TGeomGuideFormulaST = type ProRock.Xmlite.Schema.Base.TStringST;
   [TBaseType('ProRock.Xmlite.Schema.Base.TTokenST')]
   [TName('ST_GeomGuideName')]
-  TSTGeomGuideNameST = type ProRock.Xmlite.Schema.Base.TTokenST;
+  TGeomGuideNameST = type ProRock.Xmlite.Schema.Base.TTokenST;
   [TBaseType('ProRock.Xmlite.Schema.Base.TIntST')]
   [TName('ST_PercentageDecimal')]
-  TSTPercentageDecimalST = type ProRock.Xmlite.Schema.Base.TIntST;
+  TPercentageDecimalST = type ProRock.Xmlite.Schema.Base.TIntST;
   [TName('ST_Percentage')]
-  TSTPercentageST = type string;
+  TPercentageST = type string;
   [TBaseType('ProRock.Xmlite.Schema.Base.TLongST')]
   [TName('ST_PositiveCoordinate')]
-  TSTPositiveCoordinateST = type ProRock.Xmlite.Schema.Base.TLongST;
+  TPositiveCoordinateST = type ProRock.Xmlite.Schema.Base.TLongST;
   [TName('ST_PositiveFixedPercentage')]
-  TSTPositiveFixedPercentageST = type string;
+  TPositiveFixedPercentageST = type string;
   [TName('ST_PositivePercentage')]
-  TSTPositivePercentageST = type string;
+  TPositivePercentageST = type string;
   [TBaseType('ProRock.Xmlite.Schema.Base.TTokenST')]
   [TName('ST_ShapeID')]
-  TSTShapeIDST = type ProRock.Xmlite.Schema.Base.TTokenST;
+  TShapeIDST = type ProRock.Xmlite.Schema.Base.TTokenST;
   [TBaseType('ProRock.Xmlite.Schema.Base.TUnsignedIntST')]
   [TName('ST_StyleMatrixColumnIndex')]
-  TSTStyleMatrixColumnIndexST = type ProRock.Xmlite.Schema.Base.TUnsignedIntST;
+  TStyleMatrixColumnIndexST = type ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TName('ST_TextBulletSizePercent')]
-  TSTTextBulletSizePercentST = type ProRock.Xmlite.Schema.Base.TStringST;
+  TTextBulletSizePercentST = type ProRock.Xmlite.Schema.Base.TStringST;
   [TName('ST_TextBulletSize')]
-  TSTTextBulletSizeST = type string;
+  TTextBulletSizeST = type string;
   [TBaseType('ProRock.Xmlite.Schema.Base.TIntST')]
   [TName('ST_TextBulletStartAtNum')]
-  TSTTextBulletStartAtNumST = type ProRock.Xmlite.Schema.Base.TIntST;
+  TTextBulletStartAtNumST = type ProRock.Xmlite.Schema.Base.TIntST;
   [TBaseType('ProRock.Xmlite.Schema.Base.TIntST')]
   [TName('ST_TextColumnCount')]
-  TSTTextColumnCountST = type ProRock.Xmlite.Schema.Base.TIntST;
+  TTextColumnCountST = type ProRock.Xmlite.Schema.Base.TIntST;
   [TName('ST_TextFontScalePercentOrPercentString')]
-  TSTTextFontScalePercentOrPercentStringST = type string;
+  TTextFontScalePercentOrPercentStringST = type string;
   [TBaseType('ProRock.Xmlite.Schema.Base.TIntST')]
   [TName('ST_TextFontSize')]
-  TSTTextFontSizeST = type ProRock.Xmlite.Schema.Base.TIntST;
+  TTextFontSizeST = type ProRock.Xmlite.Schema.Base.TIntST;
   [TBaseType('ProRock.Xmlite.Schema.Base.TIntST')]
   [TName('ST_TextIndentLevelType')]
-  TSTTextIndentLevelTypeST = type ProRock.Xmlite.Schema.Base.TIntST;
+  TTextIndentLevelTypeST = type ProRock.Xmlite.Schema.Base.TIntST;
   [TBaseType('ProRock.Xmlite.Schema.Base.TIntST')]
   [TName('ST_TextNonNegativePoint')]
-  TSTTextNonNegativePointST = type ProRock.Xmlite.Schema.Base.TIntST;
+  TTextNonNegativePointST = type ProRock.Xmlite.Schema.Base.TIntST;
   [TName('ST_TextPoint')]
-  TSTTextPointST = type string;
+  TTextPointST = type string;
   [TBaseType('ProRock.Xmlite.Schema.Base.TIntST')]
   [TName('ST_TextPointUnqualified')]
-  TSTTextPointUnqualifiedST = type ProRock.Xmlite.Schema.Base.TIntST;
+  TTextPointUnqualifiedST = type ProRock.Xmlite.Schema.Base.TIntST;
   [TName('ST_TextSpacingPercentOrPercentString')]
-  TSTTextSpacingPercentOrPercentStringST = type string;
+  TTextSpacingPercentOrPercentStringST = type string;
   [TBaseType('ProRock.Xmlite.Schema.Base.TIntST')]
   [TName('ST_TextSpacingPoint')]
-  TSTTextSpacingPointST = type ProRock.Xmlite.Schema.Base.TIntST;
+  TTextSpacingPointST = type ProRock.Xmlite.Schema.Base.TIntST;
   [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TName('ST_TextTypeface')]
-  TSTTextTypefaceST = type ProRock.Xmlite.Schema.Base.TStringST;
-  [TBaseType('TSTAngleST')]
+  TTextTypefaceST = type ProRock.Xmlite.Schema.Base.TStringST;
+  [TBaseType('TAngleST')]
   [TName('ST_FOVAngle')]
-  TSTFOVAngleST = type TSTAngleST;
-  [TBaseType('TSTAngleST')]
+  TFOVAngleST = type TAngleST;
+  [TBaseType('TAngleST')]
   [TName('ST_FixedAngle')]
-  TSTFixedAngleST = type TSTAngleST;
-  [TBaseType('TSTPercentageDecimalST')]
+  TFixedAngleST = type TAngleST;
+  [TBaseType('TPercentageDecimalST')]
   [TName('ST_FixedPercentageDecimal')]
-  TSTFixedPercentageDecimalST = type TSTPercentageDecimalST;
-  [TBaseType('TSTCoordinate32UnqualifiedST')]
+  TFixedPercentageDecimalST = type TPercentageDecimalST;
+  [TBaseType('TCoordinate32UnqualifiedST')]
   [TName('ST_LineWidth')]
-  TSTLineWidthST = type TSTCoordinate32UnqualifiedST;
-  [TBaseType('TSTCoordinate32UnqualifiedST')]
+  TLineWidthST = type TCoordinate32UnqualifiedST;
+  [TBaseType('TCoordinate32UnqualifiedST')]
   [TName('ST_PositiveCoordinate32')]
-  TSTPositiveCoordinate32ST = type TSTCoordinate32UnqualifiedST;
-  [TBaseType('TSTAngleST')]
+  TPositiveCoordinate32ST = type TCoordinate32UnqualifiedST;
+  [TBaseType('TAngleST')]
   [TName('ST_PositiveFixedAngle')]
-  TSTPositiveFixedAngleST = type TSTAngleST;
-  [TBaseType('TSTPercentageDecimalST')]
+  TPositiveFixedAngleST = type TAngleST;
+  [TBaseType('TPercentageDecimalST')]
   [TName('ST_PositiveFixedPercentageDecimal')]
-  TSTPositiveFixedPercentageDecimalST = type TSTPercentageDecimalST;
-  [TBaseType('TSTPercentageDecimalST')]
+  TPositiveFixedPercentageDecimalST = type TPercentageDecimalST;
+  [TBaseType('TPercentageDecimalST')]
   [TName('ST_PositivePercentageDecimal')]
-  TSTPositivePercentageDecimalST = type TSTPercentageDecimalST;
-  [TBaseType('TSTPercentageDecimalST')]
+  TPositivePercentageDecimalST = type TPercentageDecimalST;
+  [TBaseType('TPercentageDecimalST')]
   [TName('ST_TextBulletSizeDecimal')]
-  TSTTextBulletSizeDecimalST = type TSTPercentageDecimalST;
-  [TBaseType('TSTPercentageDecimalST')]
+  TTextBulletSizeDecimalST = type TPercentageDecimalST;
+  [TBaseType('TPercentageDecimalST')]
   [TName('ST_TextFontScalePercent')]
-  TSTTextFontScalePercentST = type TSTPercentageDecimalST;
-  [TBaseType('TSTCoordinate32UnqualifiedST')]
+  TTextFontScalePercentST = type TPercentageDecimalST;
+  [TBaseType('TCoordinate32UnqualifiedST')]
   [TName('ST_TextIndent')]
-  TSTTextIndentST = type TSTCoordinate32UnqualifiedST;
-  [TBaseType('TSTCoordinate32UnqualifiedST')]
+  TTextIndentST = type TCoordinate32UnqualifiedST;
+  [TBaseType('TCoordinate32UnqualifiedST')]
   [TName('ST_TextMargin')]
-  TSTTextMarginST = type TSTCoordinate32UnqualifiedST;
-  [TBaseType('TSTPercentageDecimalST')]
+  TTextMarginST = type TCoordinate32UnqualifiedST;
+  [TBaseType('TPercentageDecimalST')]
   [TName('ST_TextSpacingPercent')]
-  TSTTextSpacingPercentST = type TSTPercentageDecimalST;
+  TTextSpacingPercentST = type TPercentageDecimalST;
 
-  TCTAudioFileCT = class;
-  TCTVideoFileCT = class;
-  TCTQuickTimeFileCT = class;
-  TCTAudioCDTimeCT = class;
-  TCTAudioCDCT = class;
-  TCTColorSchemeCT = class;
-  TCTCustomColorCT = class;
-  TCTSupplementalFontCT = class;
-  TCTCustomColorListCT = class;
-  TCTFontCollectionCT = class;
-  TCTEffectStyleItemCT = class;
-  TCTFontSchemeCT = class;
-  TCTFillStyleListCT = class;
-  TCTLineStyleListCT = class;
-  TCTEffectStyleListCT = class;
-  TCTBackgroundFillStyleListCT = class;
-  TCTStyleMatrixCT = class;
-  TCTBaseStylesCT = class;
-  TCTOfficeArtExtensionCT = class;
-  TCTAngleCT = class;
-  TCTPositiveFixedAngleCT = class;
-  TCTPercentageCT = class;
-  TCTPositivePercentageCT = class;
-  TCTFixedPercentageCT = class;
-  TCTPositiveFixedPercentageCT = class;
-  TCTRatioCT = class;
-  TCTPoint2DCT = class;
-  TCTPositiveSize2DCT = class;
-  TCTComplementTransformCT = class;
-  TCTInverseTransformCT = class;
-  TCTGrayscaleTransformCT = class;
-  TCTGammaTransformCT = class;
-  TCTInverseGammaTransformCT = class;
-  TCTScRgbColorCT = class;
-  TCTSRgbColorCT = class;
-  TCTHslColorCT = class;
-  TCTSystemColorCT = class;
-  TCTSchemeColorCT = class;
-  TCTPresetColorCT = class;
-  TCTOfficeArtExtensionListCT = class;
-  TCTScale2DCT = class;
-  TCTTransform2DCT = class;
-  TCTGroupTransform2DCT = class;
-  TCTPoint3DCT = class;
-  TCTVector3DCT = class;
-  TCTSphereCoordsCT = class;
-  TCTRelativeRectCT = class;
-  TCTColorCT = class;
-  TCTColorMRUCT = class;
-  TCTEmbeddedWAVAudioFileCT = class;
-  TCTHyperlinkCT = class;
-  TCTConnectorLockingCT = class;
-  TCTShapeLockingCT = class;
-  TCTPictureLockingCT = class;
-  TCTGroupLockingCT = class;
-  TCTGraphicalObjectFrameLockingCT = class;
-  TCTContentPartLockingCT = class;
-  TCTNonVisualDrawingPropsCT = class;
-  TCTNonVisualDrawingShapePropsCT = class;
-  TCTNonVisualConnectorPropertiesCT = class;
-  TCTNonVisualPicturePropertiesCT = class;
-  TCTNonVisualGroupDrawingShapePropsCT = class;
-  TCTNonVisualGraphicFramePropertiesCT = class;
-  TCTNonVisualContentPartPropertiesCT = class;
-  TCTGraphicalObjectDataCT = class;
-  TCTGraphicalObjectCT = class;
-  TCTAnimationDgmElementCT = class;
-  TCTAnimationChartElementCT = class;
-  TCTAnimationElementChoiceCT = class;
-  TCTAnimationDgmBuildPropertiesCT = class;
-  TCTAnimationChartBuildPropertiesCT = class;
-  TCTAnimationGraphicalObjectBuildPropertiesCT = class;
-  TCTBackgroundFormattingCT = class;
-  TCTWholeE2oFormattingCT = class;
-  TCTGvmlUseShapeRectangleCT = class;
-  TCTGvmlTextShapeCT = class;
-  TCTGvmlShapeNonVisualCT = class;
-  TCTGvmlShapeCT = class;
-  TCTGvmlConnectorNonVisualCT = class;
-  TCTGvmlConnectorCT = class;
-  TCTGvmlPictureNonVisualCT = class;
-  TCTGvmlPictureCT = class;
-  TCTGvmlGraphicFrameNonVisualCT = class;
-  TCTGvmlGraphicalObjectFrameCT = class;
-  TCTGvmlGroupShapeNonVisualCT = class;
-  TCTGvmlGroupShapeCT = class;
-  TCTCameraCT = class;
-  TCTLightRigCT = class;
-  TCTScene3DCT = class;
-  TCTBackdropCT = class;
-  TCTBevelCT = class;
-  TCTShape3DCT = class;
-  TCTFlatTextCT = class;
-  TCTAlphaBiLevelEffectCT = class;
-  TCTAlphaCeilingEffectCT = class;
-  TCTAlphaFloorEffectCT = class;
-  TCTAlphaInverseEffectCT = class;
-  TCTAlphaModulateFixedEffectCT = class;
-  TCTAlphaOutsetEffectCT = class;
-  TCTAlphaReplaceEffectCT = class;
-  TCTBiLevelEffectCT = class;
-  TCTBlurEffectCT = class;
-  TCTColorChangeEffectCT = class;
-  TCTColorReplaceEffectCT = class;
-  TCTDuotoneEffectCT = class;
-  TCTGlowEffectCT = class;
-  TCTGrayscaleEffectCT = class;
-  TCTHSLEffectCT = class;
-  TCTInnerShadowEffectCT = class;
-  TCTLuminanceEffectCT = class;
-  TCTOuterShadowEffectCT = class;
-  TCTPresetShadowEffectCT = class;
-  TCTReflectionEffectCT = class;
-  TCTRelativeOffsetEffectCT = class;
-  TCTSoftEdgesEffectCT = class;
-  TCTTintEffectCT = class;
-  TCTTransformEffectCT = class;
-  TCTNoFillPropertiesCT = class;
-  TCTSolidColorFillPropertiesCT = class;
-  TCTLinearShadePropertiesCT = class;
-  TCTPathShadePropertiesCT = class;
-  TCTGradientStopCT = class;
-  TCTGradientStopListCT = class;
-  TCTGradientFillPropertiesCT = class;
-  TCTTileInfoPropertiesCT = class;
-  TCTStretchInfoPropertiesCT = class;
-  TCTBlipCT = class;
-  TCTBlipFillPropertiesCT = class;
-  TCTPatternFillPropertiesCT = class;
-  TCTGroupFillPropertiesCT = class;
-  TCTFillPropertiesCT = class;
-  TCTFillEffectCT = class;
-  TCTFillOverlayEffectCT = class;
-  TCTEffectReferenceCT = class;
-  TCTEffectContainerCT = class;
-  TCTAlphaModulateEffectCT = class;
-  TCTBlendEffectCT = class;
-  TCTEffectListCT = class;
-  TCTEffectPropertiesCT = class;
-  TCTGeomGuideCT = class;
-  TCTGeomGuideListCT = class;
-  TCTAdjPoint2DCT = class;
-  TCTGeomRectCT = class;
-  TCTXYAdjustHandleCT = class;
-  TCTPolarAdjustHandleCT = class;
-  TCTConnectionSiteCT = class;
-  TCTAdjustHandleListCT = class;
-  TCTConnectionSiteListCT = class;
-  TCTConnectionCT = class;
-  TCTPath2DMoveToCT = class;
-  TCTPath2DLineToCT = class;
-  TCTPath2DArcToCT = class;
-  TCTPath2DQuadBezierToCT = class;
-  TCTPath2DCubicBezierToCT = class;
-  TCTPath2DCloseCT = class;
-  TCTPath2DCT = class;
-  TCTPath2DListCT = class;
-  TCTPresetGeometry2DCT = class;
-  TCTPresetTextShapeCT = class;
-  TCTCustomGeometry2DCT = class;
-  TCTLineEndPropertiesCT = class;
-  TCTLineJoinBevelCT = class;
-  TCTLineJoinRoundCT = class;
-  TCTLineJoinMiterPropertiesCT = class;
-  TCTPresetLineDashPropertiesCT = class;
-  TCTDashStopCT = class;
-  TCTDashStopListCT = class;
-  TCTLinePropertiesCT = class;
-  TCTShapePropertiesCT = class;
-  TCTGroupShapePropertiesCT = class;
-  TCTStyleMatrixReferenceCT = class;
-  TCTFontReferenceCT = class;
-  TCTShapeStyleCT = class;
-  TCTDefaultShapeDefinitionCT = class;
-  TCTObjectStyleDefaultsCT = class;
-  TCTEmptyElementCT = class;
-  TCTColorMappingCT = class;
-  TCTColorMappingOverrideCT = class;
-  TCTColorSchemeAndMappingCT = class;
-  TCTColorSchemeListCT = class;
-  TCTOfficeStyleSheetCT = class;
-  TCTBaseStylesOverrideCT = class;
-  TCTClipboardStyleSheetCT = class;
-  TCTTableCellPropertiesCT = class;
-  TCTHeadersCT = class;
-  TCTTableColCT = class;
-  TCTTableGridCT = class;
-  TCTTableCellCT = class;
-  TCTTableRowCT = class;
-  TCTTablePropertiesCT = class;
-  TCTTableCT = class;
-  TCTCell3DCT = class;
-  TCTThemeableLineStyleCT = class;
-  TCTTableStyleTextStyleCT = class;
-  TCTTableCellBorderStyleCT = class;
-  TCTTableBackgroundStyleCT = class;
-  TCTTableStyleCellStyleCT = class;
-  TCTTablePartStyleCT = class;
-  TCTTableStyleCT = class;
-  TCTTableStyleListCT = class;
-  TCTTextParagraphCT = class;
-  TCTTextListStyleCT = class;
-  TCTTextNormalAutofitCT = class;
-  TCTTextShapeAutofitCT = class;
-  TCTTextNoAutofitCT = class;
-  TCTTextBodyPropertiesCT = class;
-  TCTTextBodyCT = class;
-  TCTTextBulletColorFollowTextCT = class;
-  TCTTextBulletSizeFollowTextCT = class;
-  TCTTextBulletSizePercentCT = class;
-  TCTTextBulletSizePointCT = class;
-  TCTTextBulletTypefaceFollowTextCT = class;
-  TCTTextAutonumberBulletCT = class;
-  TCTTextCharBulletCT = class;
-  TCTTextBlipBulletCT = class;
-  TCTTextNoBulletCT = class;
-  TCTTextFontCT = class;
-  TCTTextUnderlineLineFollowTextCT = class;
-  TCTTextUnderlineFillFollowTextCT = class;
-  TCTTextUnderlineFillGroupWrapperCT = class;
-  TCTTextCharacterPropertiesCT = class;
-  TCTBooleanCT = class;
-  TCTTextSpacingPercentCT = class;
-  TCTTextSpacingPointCT = class;
-  TCTTextTabStopCT = class;
-  TCTTextTabStopListCT = class;
-  TCTTextLineBreakCT = class;
-  TCTTextSpacingCT = class;
-  TCTTextParagraphPropertiesCT = class;
-  TCTTextFieldCT = class;
-  TCTRegularTextRunCT = class;
-  TAGBlobAG = class;
-  TAGLockingAG = class;
+  TAudioFileCT = class;
+  TVideoFileCT = class;
+  TQuickTimeFileCT = class;
+  TAudioCDTimeCT = class;
+  TAudioCDCT = class;
+  TColorSchemeCT = class;
+  TCustomColorCT = class;
+  TSupplementalFontCT = class;
+  TCustomColorListCT = class;
+  TFontCollectionCT = class;
+  TEffectStyleItemCT = class;
+  TFontSchemeCT = class;
+  TFillStyleListCT = class;
+  TLineStyleListCT = class;
+  TEffectStyleListCT = class;
+  TBackgroundFillStyleListCT = class;
+  TStyleMatrixCT = class;
+  TBaseStylesCT = class;
+  TOfficeArtExtensionCT = class;
+  TAngleCT = class;
+  TPositiveFixedAngleCT = class;
+  TPercentageCT = class;
+  TPositivePercentageCT = class;
+  TFixedPercentageCT = class;
+  TPositiveFixedPercentageCT = class;
+  TRatioCT = class;
+  TPoint2DCT = class;
+  TPositiveSize2DCT = class;
+  TComplementTransformCT = class;
+  TInverseTransformCT = class;
+  TGrayscaleTransformCT = class;
+  TGammaTransformCT = class;
+  TInverseGammaTransformCT = class;
+  TScRgbColorCT = class;
+  TSRgbColorCT = class;
+  THslColorCT = class;
+  TSystemColorCT = class;
+  TSchemeColorCT = class;
+  TPresetColorCT = class;
+  TOfficeArtExtensionListCT = class;
+  TScale2DCT = class;
+  TTransform2DCT = class;
+  TGroupTransform2DCT = class;
+  TPoint3DCT = class;
+  TVector3DCT = class;
+  TSphereCoordsCT = class;
+  TRelativeRectCT = class;
+  TColorCT = class;
+  TColorMRUCT = class;
+  TEmbeddedWAVAudioFileCT = class;
+  THyperlinkCT = class;
+  TConnectorLockingCT = class;
+  TShapeLockingCT = class;
+  TPictureLockingCT = class;
+  TGroupLockingCT = class;
+  TGraphicalObjectFrameLockingCT = class;
+  TContentPartLockingCT = class;
+  TNonVisualDrawingPropsCT = class;
+  TNonVisualDrawingShapePropsCT = class;
+  TNonVisualConnectorPropertiesCT = class;
+  TNonVisualPicturePropertiesCT = class;
+  TNonVisualGroupDrawingShapePropsCT = class;
+  TNonVisualGraphicFramePropertiesCT = class;
+  TNonVisualContentPartPropertiesCT = class;
+  TGraphicalObjectDataCT = class;
+  TGraphicalObjectCT = class;
+  TAnimationDgmElementCT = class;
+  TAnimationChartElementCT = class;
+  TAnimationElementChoiceCT = class;
+  TAnimationDgmBuildPropertiesCT = class;
+  TAnimationChartBuildPropertiesCT = class;
+  TAnimationGraphicalObjectBuildPropertiesCT = class;
+  TBackgroundFormattingCT = class;
+  TWholeE2oFormattingCT = class;
+  TGvmlUseShapeRectangleCT = class;
+  TGvmlTextShapeCT = class;
+  TGvmlShapeNonVisualCT = class;
+  TGvmlShapeCT = class;
+  TGvmlConnectorNonVisualCT = class;
+  TGvmlConnectorCT = class;
+  TGvmlPictureNonVisualCT = class;
+  TGvmlPictureCT = class;
+  TGvmlGraphicFrameNonVisualCT = class;
+  TGvmlGraphicalObjectFrameCT = class;
+  TGvmlGroupShapeNonVisualCT = class;
+  TGvmlGroupShapeCT = class;
+  TCameraCT = class;
+  TLightRigCT = class;
+  TScene3DCT = class;
+  TBackdropCT = class;
+  TBevelCT = class;
+  TShape3DCT = class;
+  TFlatTextCT = class;
+  TAlphaBiLevelEffectCT = class;
+  TAlphaCeilingEffectCT = class;
+  TAlphaFloorEffectCT = class;
+  TAlphaInverseEffectCT = class;
+  TAlphaModulateFixedEffectCT = class;
+  TAlphaOutsetEffectCT = class;
+  TAlphaReplaceEffectCT = class;
+  TBiLevelEffectCT = class;
+  TBlurEffectCT = class;
+  TColorChangeEffectCT = class;
+  TColorReplaceEffectCT = class;
+  TDuotoneEffectCT = class;
+  TGlowEffectCT = class;
+  TGrayscaleEffectCT = class;
+  THSLEffectCT = class;
+  TInnerShadowEffectCT = class;
+  TLuminanceEffectCT = class;
+  TOuterShadowEffectCT = class;
+  TPresetShadowEffectCT = class;
+  TReflectionEffectCT = class;
+  TRelativeOffsetEffectCT = class;
+  TSoftEdgesEffectCT = class;
+  TTintEffectCT = class;
+  TTransformEffectCT = class;
+  TNoFillPropertiesCT = class;
+  TSolidColorFillPropertiesCT = class;
+  TLinearShadePropertiesCT = class;
+  TPathShadePropertiesCT = class;
+  TGradientStopCT = class;
+  TGradientStopListCT = class;
+  TGradientFillPropertiesCT = class;
+  TTileInfoPropertiesCT = class;
+  TStretchInfoPropertiesCT = class;
+  TBlipCT = class;
+  TBlipFillPropertiesCT = class;
+  TPatternFillPropertiesCT = class;
+  TGroupFillPropertiesCT = class;
+  TFillPropertiesCT = class;
+  TFillEffectCT = class;
+  TFillOverlayEffectCT = class;
+  TEffectReferenceCT = class;
+  TEffectContainerCT = class;
+  TAlphaModulateEffectCT = class;
+  TBlendEffectCT = class;
+  TEffectListCT = class;
+  TEffectPropertiesCT = class;
+  TGeomGuideCT = class;
+  TGeomGuideListCT = class;
+  TAdjPoint2DCT = class;
+  TGeomRectCT = class;
+  TXYAdjustHandleCT = class;
+  TPolarAdjustHandleCT = class;
+  TConnectionSiteCT = class;
+  TAdjustHandleListCT = class;
+  TConnectionSiteListCT = class;
+  TConnectionCT = class;
+  TPath2DMoveToCT = class;
+  TPath2DLineToCT = class;
+  TPath2DArcToCT = class;
+  TPath2DQuadBezierToCT = class;
+  TPath2DCubicBezierToCT = class;
+  TPath2DCloseCT = class;
+  TPath2DCT = class;
+  TPath2DListCT = class;
+  TPresetGeometry2DCT = class;
+  TPresetTextShapeCT = class;
+  TCustomGeometry2DCT = class;
+  TLineEndPropertiesCT = class;
+  TLineJoinBevelCT = class;
+  TLineJoinRoundCT = class;
+  TLineJoinMiterPropertiesCT = class;
+  TPresetLineDashPropertiesCT = class;
+  TDashStopCT = class;
+  TDashStopListCT = class;
+  TLinePropertiesCT = class;
+  TShapePropertiesCT = class;
+  TGroupShapePropertiesCT = class;
+  TStyleMatrixReferenceCT = class;
+  TFontReferenceCT = class;
+  TShapeStyleCT = class;
+  TDefaultShapeDefinitionCT = class;
+  TObjectStyleDefaultsCT = class;
+  TEmptyElementCT = class;
+  TColorMappingCT = class;
+  TColorMappingOverrideCT = class;
+  TColorSchemeAndMappingCT = class;
+  TColorSchemeListCT = class;
+  TOfficeStyleSheetCT = class;
+  TBaseStylesOverrideCT = class;
+  TClipboardStyleSheetCT = class;
+  TTableCellPropertiesCT = class;
+  THeadersCT = class;
+  TTableColCT = class;
+  TTableGridCT = class;
+  TTableCellCT = class;
+  TTableRowCT = class;
+  TTablePropertiesCT = class;
+  TTableCT = class;
+  TCell3DCT = class;
+  TThemeableLineStyleCT = class;
+  TTableStyleTextStyleCT = class;
+  TTableCellBorderStyleCT = class;
+  TTableBackgroundStyleCT = class;
+  TTableStyleCellStyleCT = class;
+  TTablePartStyleCT = class;
+  TTableStyleCT = class;
+  TTableStyleListCT = class;
+  TTextParagraphCT = class;
+  TTextListStyleCT = class;
+  TTextNormalAutofitCT = class;
+  TTextShapeAutofitCT = class;
+  TTextNoAutofitCT = class;
+  TTextBodyPropertiesCT = class;
+  TTextBodyCT = class;
+  TTextBulletColorFollowTextCT = class;
+  TTextBulletSizeFollowTextCT = class;
+  TTextBulletSizePercentCT = class;
+  TTextBulletSizePointCT = class;
+  TTextBulletTypefaceFollowTextCT = class;
+  TTextAutonumberBulletCT = class;
+  TTextCharBulletCT = class;
+  TTextBlipBulletCT = class;
+  TTextNoBulletCT = class;
+  TTextFontCT = class;
+  TTextUnderlineLineFollowTextCT = class;
+  TTextUnderlineFillFollowTextCT = class;
+  TTextUnderlineFillGroupWrapperCT = class;
+  TTextCharacterPropertiesCT = class;
+  TBooleanCT = class;
+  TTextSpacingPercentCT = class;
+  TTextSpacingPointCT = class;
+  TTextTabStopCT = class;
+  TTextTabStopListCT = class;
+  TTextLineBreakCT = class;
+  TTextSpacingCT = class;
+  TTextParagraphPropertiesCT = class;
+  TTextFieldCT = class;
+  TRegularTextRunCT = class;
+  TBlobAG = class;
+  TLockingAG = class;
   TVideoFileE = class;
   TGraphicE = class;
   TBlipE = class;
@@ -579,165 +579,165 @@ type
   TThemeManagerE = class;
   TTblE = class;
   TTblStyleLstE = class;
-  TEGMediaEG = class;
-  TEGColorTransformEG = class;
-  TEGOfficeArtExtensionListEG = class;
-  TEGColorChoiceEG = class;
-  TEGText3DEG = class;
-  TEGShadePropertiesEG = class;
-  TEGFillModePropertiesEG = class;
-  TEGFillPropertiesEG = class;
-  TEGEffectEG = class;
-  TEGEffectPropertiesEG = class;
-  TEGGeometryEG = class;
-  TEGTextGeometryEG = class;
-  TEGLineFillPropertiesEG = class;
-  TEGLineJoinPropertiesEG = class;
-  TEGLineDashPropertiesEG = class;
-  TEGThemeableFillStyleEG = class;
-  TEGThemeableEffectStyleEG = class;
-  TEGThemeableFontStylesEG = class;
-  TEGTextAutofitEG = class;
-  TEGTextBulletColorEG = class;
-  TEGTextBulletSizeEG = class;
-  TEGTextBulletTypefaceEG = class;
-  TEGTextBulletEG = class;
-  TEGTextUnderlineLineEG = class;
-  TEGTextUnderlineFillEG = class;
-  TEGTextRunEG = class;
+  TMediaEG = class;
+  TColorTransformEG = class;
+  TOfficeArtExtensionListEG = class;
+  TColorChoiceEG = class;
+  TText3DEG = class;
+  TShadePropertiesEG = class;
+  TFillModePropertiesEG = class;
+  TFillPropertiesEG = class;
+  TEffectEG = class;
+  TEffectPropertiesEG = class;
+  TGeometryEG = class;
+  TTextGeometryEG = class;
+  TLineFillPropertiesEG = class;
+  TLineJoinPropertiesEG = class;
+  TLineDashPropertiesEG = class;
+  TThemeableFillStyleEG = class;
+  TThemeableEffectStyleEG = class;
+  TThemeableFontStylesEG = class;
+  TTextAutofitEG = class;
+  TTextBulletColorEG = class;
+  TTextBulletSizeEG = class;
+  TTextBulletTypefaceEG = class;
+  TTextBulletEG = class;
+  TTextUnderlineLineEG = class;
+  TTextUnderlineFillEG = class;
+  TTextRunEG = class;
 
-  TCTCustomColorCTList = class;
-  TCTSupplementalFontCTList = class;
-  TCTEffectStyleItemCTList = class;
-  TCTOfficeArtExtensionCTList = class;
-  TCTAngleCTList = class;
-  TCTPositiveFixedAngleCTList = class;
-  TCTPercentageCTList = class;
-  TCTPositivePercentageCTList = class;
-  TCTFixedPercentageCTList = class;
-  TCTPositiveFixedPercentageCTList = class;
-  TCTComplementTransformCTList = class;
-  TCTInverseTransformCTList = class;
-  TCTGrayscaleTransformCTList = class;
-  TCTGammaTransformCTList = class;
-  TCTInverseGammaTransformCTList = class;
-  TCTScRgbColorCTList = class;
-  TCTSRgbColorCTList = class;
-  TCTHslColorCTList = class;
-  TCTSystemColorCTList = class;
-  TCTSchemeColorCTList = class;
-  TCTPresetColorCTList = class;
-  TCTGvmlTextShapeCTList = class;
-  TCTGvmlShapeCTList = class;
-  TCTGvmlConnectorCTList = class;
-  TCTGvmlPictureCTList = class;
-  TCTGvmlGraphicalObjectFrameCTList = class;
-  TCTGvmlGroupShapeCTList = class;
-  TCTAlphaBiLevelEffectCTList = class;
-  TCTAlphaCeilingEffectCTList = class;
-  TCTAlphaFloorEffectCTList = class;
-  TCTAlphaInverseEffectCTList = class;
-  TCTAlphaModulateFixedEffectCTList = class;
-  TCTAlphaOutsetEffectCTList = class;
-  TCTAlphaReplaceEffectCTList = class;
-  TCTBiLevelEffectCTList = class;
-  TCTBlurEffectCTList = class;
-  TCTColorChangeEffectCTList = class;
-  TCTColorReplaceEffectCTList = class;
-  TCTDuotoneEffectCTList = class;
-  TCTGlowEffectCTList = class;
-  TCTGrayscaleEffectCTList = class;
-  TCTHSLEffectCTList = class;
-  TCTInnerShadowEffectCTList = class;
-  TCTLuminanceEffectCTList = class;
-  TCTOuterShadowEffectCTList = class;
-  TCTPresetShadowEffectCTList = class;
-  TCTReflectionEffectCTList = class;
-  TCTRelativeOffsetEffectCTList = class;
-  TCTSoftEdgesEffectCTList = class;
-  TCTTintEffectCTList = class;
-  TCTTransformEffectCTList = class;
-  TCTNoFillPropertiesCTList = class;
-  TCTSolidColorFillPropertiesCTList = class;
-  TCTGradientStopCTList = class;
-  TCTGradientFillPropertiesCTList = class;
-  TCTBlipFillPropertiesCTList = class;
-  TCTPatternFillPropertiesCTList = class;
-  TCTGroupFillPropertiesCTList = class;
-  TCTFillEffectCTList = class;
-  TCTFillOverlayEffectCTList = class;
-  TCTEffectReferenceCTList = class;
-  TCTEffectContainerCTList = class;
-  TCTAlphaModulateEffectCTList = class;
-  TCTBlendEffectCTList = class;
-  TCTGeomGuideCTList = class;
-  TCTAdjPoint2DCTList = class;
-  TCTXYAdjustHandleCTList = class;
-  TCTPolarAdjustHandleCTList = class;
-  TCTConnectionSiteCTList = class;
-  TCTPath2DMoveToCTList = class;
-  TCTPath2DLineToCTList = class;
-  TCTPath2DArcToCTList = class;
-  TCTPath2DQuadBezierToCTList = class;
-  TCTPath2DCubicBezierToCTList = class;
-  TCTPath2DCloseCTList = class;
-  TCTPath2DCTList = class;
-  TCTDashStopCTList = class;
-  TCTLinePropertiesCTList = class;
-  TCTColorSchemeAndMappingCTList = class;
+  TCustomColorCTList = class;
+  TSupplementalFontCTList = class;
+  TEffectStyleItemCTList = class;
+  TOfficeArtExtensionCTList = class;
+  TAngleCTList = class;
+  TPositiveFixedAngleCTList = class;
+  TPercentageCTList = class;
+  TPositivePercentageCTList = class;
+  TFixedPercentageCTList = class;
+  TPositiveFixedPercentageCTList = class;
+  TComplementTransformCTList = class;
+  TInverseTransformCTList = class;
+  TGrayscaleTransformCTList = class;
+  TGammaTransformCTList = class;
+  TInverseGammaTransformCTList = class;
+  TScRgbColorCTList = class;
+  TSRgbColorCTList = class;
+  THslColorCTList = class;
+  TSystemColorCTList = class;
+  TSchemeColorCTList = class;
+  TPresetColorCTList = class;
+  TGvmlTextShapeCTList = class;
+  TGvmlShapeCTList = class;
+  TGvmlConnectorCTList = class;
+  TGvmlPictureCTList = class;
+  TGvmlGraphicalObjectFrameCTList = class;
+  TGvmlGroupShapeCTList = class;
+  TAlphaBiLevelEffectCTList = class;
+  TAlphaCeilingEffectCTList = class;
+  TAlphaFloorEffectCTList = class;
+  TAlphaInverseEffectCTList = class;
+  TAlphaModulateFixedEffectCTList = class;
+  TAlphaOutsetEffectCTList = class;
+  TAlphaReplaceEffectCTList = class;
+  TBiLevelEffectCTList = class;
+  TBlurEffectCTList = class;
+  TColorChangeEffectCTList = class;
+  TColorReplaceEffectCTList = class;
+  TDuotoneEffectCTList = class;
+  TGlowEffectCTList = class;
+  TGrayscaleEffectCTList = class;
+  THSLEffectCTList = class;
+  TInnerShadowEffectCTList = class;
+  TLuminanceEffectCTList = class;
+  TOuterShadowEffectCTList = class;
+  TPresetShadowEffectCTList = class;
+  TReflectionEffectCTList = class;
+  TRelativeOffsetEffectCTList = class;
+  TSoftEdgesEffectCTList = class;
+  TTintEffectCTList = class;
+  TTransformEffectCTList = class;
+  TNoFillPropertiesCTList = class;
+  TSolidColorFillPropertiesCTList = class;
+  TGradientStopCTList = class;
+  TGradientFillPropertiesCTList = class;
+  TBlipFillPropertiesCTList = class;
+  TPatternFillPropertiesCTList = class;
+  TGroupFillPropertiesCTList = class;
+  TFillEffectCTList = class;
+  TFillOverlayEffectCTList = class;
+  TEffectReferenceCTList = class;
+  TEffectContainerCTList = class;
+  TAlphaModulateEffectCTList = class;
+  TBlendEffectCTList = class;
+  TGeomGuideCTList = class;
+  TAdjPoint2DCTList = class;
+  TXYAdjustHandleCTList = class;
+  TPolarAdjustHandleCTList = class;
+  TConnectionSiteCTList = class;
+  TPath2DMoveToCTList = class;
+  TPath2DLineToCTList = class;
+  TPath2DArcToCTList = class;
+  TPath2DQuadBezierToCTList = class;
+  TPath2DCubicBezierToCTList = class;
+  TPath2DCloseCTList = class;
+  TPath2DCTList = class;
+  TDashStopCTList = class;
+  TLinePropertiesCTList = class;
+  TColorSchemeAndMappingCTList = class;
   TStringSTList = class;
-  TCTTableColCTList = class;
-  TCTTableCellCTList = class;
-  TCTTableRowCTList = class;
-  TCTTableStyleCTList = class;
-  TCTTextParagraphCTList = class;
-  TCTTextTabStopCTList = class;
-  TCTTextLineBreakCTList = class;
-  TCTTextFieldCTList = class;
-  TCTRegularTextRunCTList = class;
+  TTableColCTList = class;
+  TTableCellCTList = class;
+  TTableRowCTList = class;
+  TTableStyleCTList = class;
+  TTextParagraphCTList = class;
+  TTextTabStopCTList = class;
+  TTextLineBreakCTList = class;
+  TTextFieldCTList = class;
+  TRegularTextRunCTList = class;
 
   [TName('CT_AudioFile')]
-  TCTAudioFileCT = class(TXmliteComplexType)
+  TAudioFileCT = class(TXmliteComplexType)
   private
     fLink: ProRock.Xmlite.Schema.Ooxml.Rel.TLinkA;
     fContentType: ProRock.Xmlite.Schema.Base.TStringST;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
     [TNaming(TNaming.nFlatCase)]
     property Link: ProRock.Xmlite.Schema.Ooxml.Rel.TLinkA read fLink write fLink;
     property ContentType: ProRock.Xmlite.Schema.Base.TStringST read fContentType write fContentType;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_VideoFile')]
-  TCTVideoFileCT = class(TXmliteComplexType)
+  TVideoFileCT = class(TXmliteComplexType)
   private
     fLink: ProRock.Xmlite.Schema.Ooxml.Rel.TLinkA;
     fContentType: ProRock.Xmlite.Schema.Base.TStringST;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
     [TNaming(TNaming.nFlatCase)]
     property Link: ProRock.Xmlite.Schema.Ooxml.Rel.TLinkA read fLink write fLink;
     property ContentType: ProRock.Xmlite.Schema.Base.TStringST read fContentType write fContentType;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_QuickTimeFile')]
-  TCTQuickTimeFileCT = class(TXmliteComplexType)
+  TQuickTimeFileCT = class(TXmliteComplexType)
   private
     fLink: ProRock.Xmlite.Schema.Ooxml.Rel.TLinkA;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
     [TNaming(TNaming.nFlatCase)]
     property Link: ProRock.Xmlite.Schema.Ooxml.Rel.TLinkA read fLink write fLink;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_AudioCDTime')]
-  TCTAudioCDTimeCT = class(TXmliteComplexType)
+  TAudioCDTimeCT = class(TXmliteComplexType)
   private
     fTrack: ProRock.Xmlite.Schema.Base.TUnsignedByteST;
     fTime: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
@@ -749,271 +749,271 @@ type
   end;
 
   [TName('CT_AudioCD')]
-  TCTAudioCDCT = class(TXmliteComplexType)
+  TAudioCDCT = class(TXmliteComplexType)
   private
-    fSt: TCTAudioCDTimeCT;
-    fEnd: TCTAudioCDTimeCT;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fSt: TAudioCDTimeCT;
+    fEnd: TAudioCDTimeCT;
+    fExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
-    property St: TCTAudioCDTimeCT read fSt;
+    property St: TAudioCDTimeCT read fSt;
     [TRequired]
-    property &End: TCTAudioCDTimeCT read fEnd;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property &End: TAudioCDTimeCT read fEnd;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_ColorScheme')]
-  TCTColorSchemeCT = class(TXmliteComplexType)
+  TColorSchemeCT = class(TXmliteComplexType)
   private
     fName: ProRock.Xmlite.Schema.Base.TStringST;
-    fDk1: TCTColorCT;
-    fLt1: TCTColorCT;
-    fDk2: TCTColorCT;
-    fLt2: TCTColorCT;
-    fAccent1: TCTColorCT;
-    fAccent2: TCTColorCT;
-    fAccent3: TCTColorCT;
-    fAccent4: TCTColorCT;
-    fAccent5: TCTColorCT;
-    fAccent6: TCTColorCT;
-    fHlink: TCTColorCT;
-    fFolHlink: TCTColorCT;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fDk1: TColorCT;
+    fLt1: TColorCT;
+    fDk2: TColorCT;
+    fLt2: TColorCT;
+    fAccent1: TColorCT;
+    fAccent2: TColorCT;
+    fAccent3: TColorCT;
+    fAccent4: TColorCT;
+    fAccent5: TColorCT;
+    fAccent6: TColorCT;
+    fHlink: TColorCT;
+    fFolHlink: TColorCT;
+    fExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
     property Name: ProRock.Xmlite.Schema.Base.TStringST read fName write fName;
     [TRequired]
-    property Dk1: TCTColorCT read fDk1;
+    property Dk1: TColorCT read fDk1;
     [TRequired]
-    property Lt1: TCTColorCT read fLt1;
+    property Lt1: TColorCT read fLt1;
     [TRequired]
-    property Dk2: TCTColorCT read fDk2;
+    property Dk2: TColorCT read fDk2;
     [TRequired]
-    property Lt2: TCTColorCT read fLt2;
+    property Lt2: TColorCT read fLt2;
     [TRequired]
-    property Accent1: TCTColorCT read fAccent1;
+    property Accent1: TColorCT read fAccent1;
     [TRequired]
-    property Accent2: TCTColorCT read fAccent2;
+    property Accent2: TColorCT read fAccent2;
     [TRequired]
-    property Accent3: TCTColorCT read fAccent3;
+    property Accent3: TColorCT read fAccent3;
     [TRequired]
-    property Accent4: TCTColorCT read fAccent4;
+    property Accent4: TColorCT read fAccent4;
     [TRequired]
-    property Accent5: TCTColorCT read fAccent5;
+    property Accent5: TColorCT read fAccent5;
     [TRequired]
-    property Accent6: TCTColorCT read fAccent6;
+    property Accent6: TColorCT read fAccent6;
     [TRequired]
-    property Hlink: TCTColorCT read fHlink;
+    property Hlink: TColorCT read fHlink;
     [TRequired]
-    property FolHlink: TCTColorCT read fFolHlink;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property FolHlink: TColorCT read fFolHlink;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_CustomColor')]
-  TCTCustomColorCT = class(TXmliteComplexType)
+  TCustomColorCT = class(TXmliteComplexType)
   private
     fName: ProRock.Xmlite.Schema.Base.TStringST;
-    fScrgbClr: TCTScRgbColorCT;
-    fSrgbClr: TCTSRgbColorCT;
-    fHslClr: TCTHslColorCT;
-    fSysClr: TCTSystemColorCT;
-    fSchemeClr: TCTSchemeColorCT;
-    fPrstClr: TCTPresetColorCT;
+    fScrgbClr: TScRgbColorCT;
+    fSrgbClr: TSRgbColorCT;
+    fHslClr: THslColorCT;
+    fSysClr: TSystemColorCT;
+    fSchemeClr: TSchemeColorCT;
+    fPrstClr: TPresetColorCT;
 
-    function GetScrgbClr: TCTScRgbColorCT;
-    function GetSrgbClr: TCTSRgbColorCT;
-    function GetHslClr: TCTHslColorCT;
-    function GetSysClr: TCTSystemColorCT;
-    function GetSchemeClr: TCTSchemeColorCT;
-    function GetPrstClr: TCTPresetColorCT;
+    function GetScrgbClr: TScRgbColorCT;
+    function GetSrgbClr: TSRgbColorCT;
+    function GetHslClr: THslColorCT;
+    function GetSysClr: TSystemColorCT;
+    function GetSchemeClr: TSchemeColorCT;
+    function GetPrstClr: TPresetColorCT;
   published
     property Name: ProRock.Xmlite.Schema.Base.TStringST read fName write fName;
     [TChoice('ScrgbClr')]
-    property ScrgbClr: TCTScRgbColorCT read GetScrgbClr;
+    property ScrgbClr: TScRgbColorCT read GetScrgbClr;
     [TChoice('ScrgbClr')]
-    property SrgbClr: TCTSRgbColorCT read GetSrgbClr;
+    property SrgbClr: TSRgbColorCT read GetSrgbClr;
     [TChoice('ScrgbClr')]
-    property HslClr: TCTHslColorCT read GetHslClr;
+    property HslClr: THslColorCT read GetHslClr;
     [TChoice('ScrgbClr')]
-    property SysClr: TCTSystemColorCT read GetSysClr;
+    property SysClr: TSystemColorCT read GetSysClr;
     [TChoice('ScrgbClr')]
-    property SchemeClr: TCTSchemeColorCT read GetSchemeClr;
+    property SchemeClr: TSchemeColorCT read GetSchemeClr;
     [TChoice('ScrgbClr')]
-    property PrstClr: TCTPresetColorCT read GetPrstClr;
+    property PrstClr: TPresetColorCT read GetPrstClr;
   end;
 
   [TName('CT_SupplementalFont')]
-  TCTSupplementalFontCT = class(TXmliteComplexType)
+  TSupplementalFontCT = class(TXmliteComplexType)
   private
     fScript: ProRock.Xmlite.Schema.Base.TStringST;
-    fTypeface: TSTTextTypefaceST;
+    fTypeface: TTextTypefaceST;
   published
     [TRequired]
     property Script: ProRock.Xmlite.Schema.Base.TStringST read fScript write fScript;
     [TRequired]
-    property Typeface: TSTTextTypefaceST read fTypeface write fTypeface;
+    property Typeface: TTextTypefaceST read fTypeface write fTypeface;
   end;
 
   [TName('CT_CustomColorList')]
-  TCTCustomColorListCT = class(TXmliteComplexType)
+  TCustomColorListCT = class(TXmliteComplexType)
   private
-    fCustClr: TCTCustomColorCTList;
+    fCustClr: TCustomColorCTList;
   published
-    property CustClr: TCTCustomColorCTList read fCustClr;
+    property CustClr: TCustomColorCTList read fCustClr;
   end;
 
   [TName('CT_FontCollection')]
-  TCTFontCollectionCT = class(TXmliteComplexType)
+  TFontCollectionCT = class(TXmliteComplexType)
   private
-    fLatin: TCTTextFontCT;
-    fEa: TCTTextFontCT;
-    fCs: TCTTextFontCT;
-    fFont: TCTSupplementalFontCTList;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fLatin: TTextFontCT;
+    fEa: TTextFontCT;
+    fCs: TTextFontCT;
+    fFont: TSupplementalFontCTList;
+    fExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
-    property Latin: TCTTextFontCT read fLatin;
+    property Latin: TTextFontCT read fLatin;
     [TRequired]
-    property Ea: TCTTextFontCT read fEa;
+    property Ea: TTextFontCT read fEa;
     [TRequired]
-    property Cs: TCTTextFontCT read fCs;
-    property Font: TCTSupplementalFontCTList read fFont;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property Cs: TTextFontCT read fCs;
+    property Font: TSupplementalFontCTList read fFont;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_EffectStyleItem')]
-  TCTEffectStyleItemCT = class(TXmliteComplexType)
+  TEffectStyleItemCT = class(TXmliteComplexType)
   private
-    fEffectLst: TCTEffectListCT;
-    fEffectDag: TCTEffectContainerCT;
-    fScene3d: TCTScene3DCT;
-    fSp3d: TCTShape3DCT;
+    fEffectLst: TEffectListCT;
+    fEffectDag: TEffectContainerCT;
+    fScene3d: TScene3DCT;
+    fSp3d: TShape3DCT;
 
-    function GetEffectLst: TCTEffectListCT;
-    function GetEffectDag: TCTEffectContainerCT;
+    function GetEffectLst: TEffectListCT;
+    function GetEffectDag: TEffectContainerCT;
     function GetEffectChosen: TBasite;
   public
     property EffectChosen: TBasite read GetEffectChosen;
   published
     [TChoice('Effect')]
-    property EffectLst: TCTEffectListCT read GetEffectLst;
+    property EffectLst: TEffectListCT read GetEffectLst;
     [TChoice('Effect')]
-    property EffectDag: TCTEffectContainerCT read GetEffectDag;
-    property Scene3d: TCTScene3DCT read fScene3d;
-    property Sp3d: TCTShape3DCT read fSp3d;
+    property EffectDag: TEffectContainerCT read GetEffectDag;
+    property Scene3d: TScene3DCT read fScene3d;
+    property Sp3d: TShape3DCT read fSp3d;
   end;
 
   [TName('CT_FontScheme')]
-  TCTFontSchemeCT = class(TXmliteComplexType)
+  TFontSchemeCT = class(TXmliteComplexType)
   private
     fName: ProRock.Xmlite.Schema.Base.TStringST;
-    fMajorFont: TCTFontCollectionCT;
-    fMinorFont: TCTFontCollectionCT;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fMajorFont: TFontCollectionCT;
+    fMinorFont: TFontCollectionCT;
+    fExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
     property Name: ProRock.Xmlite.Schema.Base.TStringST read fName write fName;
     [TRequired]
-    property MajorFont: TCTFontCollectionCT read fMajorFont;
+    property MajorFont: TFontCollectionCT read fMajorFont;
     [TRequired]
-    property MinorFont: TCTFontCollectionCT read fMinorFont;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property MinorFont: TFontCollectionCT read fMinorFont;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TOrdered]
   [TName('CT_FillStyleList')]
-  TCTFillStyleListCT = class(TXmliteComplexType)
+  TFillStyleListCT = class(TXmliteComplexType)
   private
-    fNoFill: TCTNoFillPropertiesCTList;
-    fSolidFill: TCTSolidColorFillPropertiesCTList;
-    fGradFill: TCTGradientFillPropertiesCTList;
-    fBlipFill: TCTBlipFillPropertiesCTList;
-    fPattFill: TCTPatternFillPropertiesCTList;
-    fGrpFill: TCTGroupFillPropertiesCTList;
+    fNoFill: TNoFillPropertiesCTList;
+    fSolidFill: TSolidColorFillPropertiesCTList;
+    fGradFill: TGradientFillPropertiesCTList;
+    fBlipFill: TBlipFillPropertiesCTList;
+    fPattFill: TPatternFillPropertiesCTList;
+    fGrpFill: TGroupFillPropertiesCTList;
   published
-    property NoFill: TCTNoFillPropertiesCTList read fNoFill;
-    property SolidFill: TCTSolidColorFillPropertiesCTList read fSolidFill;
-    property GradFill: TCTGradientFillPropertiesCTList read fGradFill;
-    property BlipFill: TCTBlipFillPropertiesCTList read fBlipFill;
-    property PattFill: TCTPatternFillPropertiesCTList read fPattFill;
-    property GrpFill: TCTGroupFillPropertiesCTList read fGrpFill;
+    property NoFill: TNoFillPropertiesCTList read fNoFill;
+    property SolidFill: TSolidColorFillPropertiesCTList read fSolidFill;
+    property GradFill: TGradientFillPropertiesCTList read fGradFill;
+    property BlipFill: TBlipFillPropertiesCTList read fBlipFill;
+    property PattFill: TPatternFillPropertiesCTList read fPattFill;
+    property GrpFill: TGroupFillPropertiesCTList read fGrpFill;
   end;
 
   [TName('CT_LineStyleList')]
-  TCTLineStyleListCT = class(TXmliteComplexType)
+  TLineStyleListCT = class(TXmliteComplexType)
   private
-    fLn: TCTLinePropertiesCTList;
+    fLn: TLinePropertiesCTList;
   published
-    property Ln: TCTLinePropertiesCTList read fLn;
+    property Ln: TLinePropertiesCTList read fLn;
   end;
 
   [TName('CT_EffectStyleList')]
-  TCTEffectStyleListCT = class(TXmliteComplexType)
+  TEffectStyleListCT = class(TXmliteComplexType)
   private
-    fEffectStyle: TCTEffectStyleItemCTList;
+    fEffectStyle: TEffectStyleItemCTList;
   published
-    property EffectStyle: TCTEffectStyleItemCTList read fEffectStyle;
+    property EffectStyle: TEffectStyleItemCTList read fEffectStyle;
   end;
 
   [TOrdered]
   [TName('CT_BackgroundFillStyleList')]
-  TCTBackgroundFillStyleListCT = class(TXmliteComplexType)
+  TBackgroundFillStyleListCT = class(TXmliteComplexType)
   private
-    fNoFill: TCTNoFillPropertiesCTList;
-    fSolidFill: TCTSolidColorFillPropertiesCTList;
-    fGradFill: TCTGradientFillPropertiesCTList;
-    fBlipFill: TCTBlipFillPropertiesCTList;
-    fPattFill: TCTPatternFillPropertiesCTList;
-    fGrpFill: TCTGroupFillPropertiesCTList;
+    fNoFill: TNoFillPropertiesCTList;
+    fSolidFill: TSolidColorFillPropertiesCTList;
+    fGradFill: TGradientFillPropertiesCTList;
+    fBlipFill: TBlipFillPropertiesCTList;
+    fPattFill: TPatternFillPropertiesCTList;
+    fGrpFill: TGroupFillPropertiesCTList;
   published
-    property NoFill: TCTNoFillPropertiesCTList read fNoFill;
-    property SolidFill: TCTSolidColorFillPropertiesCTList read fSolidFill;
-    property GradFill: TCTGradientFillPropertiesCTList read fGradFill;
-    property BlipFill: TCTBlipFillPropertiesCTList read fBlipFill;
-    property PattFill: TCTPatternFillPropertiesCTList read fPattFill;
-    property GrpFill: TCTGroupFillPropertiesCTList read fGrpFill;
+    property NoFill: TNoFillPropertiesCTList read fNoFill;
+    property SolidFill: TSolidColorFillPropertiesCTList read fSolidFill;
+    property GradFill: TGradientFillPropertiesCTList read fGradFill;
+    property BlipFill: TBlipFillPropertiesCTList read fBlipFill;
+    property PattFill: TPatternFillPropertiesCTList read fPattFill;
+    property GrpFill: TGroupFillPropertiesCTList read fGrpFill;
   end;
 
   [TName('CT_StyleMatrix')]
-  TCTStyleMatrixCT = class(TXmliteComplexType)
+  TStyleMatrixCT = class(TXmliteComplexType)
   private
     fName: ProRock.Xmlite.Schema.Base.TStringST;
-    fFillStyleLst: TCTFillStyleListCT;
-    fLnStyleLst: TCTLineStyleListCT;
-    fEffectStyleLst: TCTEffectStyleListCT;
-    fBgFillStyleLst: TCTBackgroundFillStyleListCT;
+    fFillStyleLst: TFillStyleListCT;
+    fLnStyleLst: TLineStyleListCT;
+    fEffectStyleLst: TEffectStyleListCT;
+    fBgFillStyleLst: TBackgroundFillStyleListCT;
   published
     property Name: ProRock.Xmlite.Schema.Base.TStringST read fName write fName;
     [TRequired]
-    property FillStyleLst: TCTFillStyleListCT read fFillStyleLst;
+    property FillStyleLst: TFillStyleListCT read fFillStyleLst;
     [TRequired]
-    property LnStyleLst: TCTLineStyleListCT read fLnStyleLst;
+    property LnStyleLst: TLineStyleListCT read fLnStyleLst;
     [TRequired]
-    property EffectStyleLst: TCTEffectStyleListCT read fEffectStyleLst;
+    property EffectStyleLst: TEffectStyleListCT read fEffectStyleLst;
     [TRequired]
-    property BgFillStyleLst: TCTBackgroundFillStyleListCT read fBgFillStyleLst;
+    property BgFillStyleLst: TBackgroundFillStyleListCT read fBgFillStyleLst;
   end;
 
   [TName('CT_BaseStyles')]
-  TCTBaseStylesCT = class(TXmliteComplexType)
+  TBaseStylesCT = class(TXmliteComplexType)
   private
-    fClrScheme: TCTColorSchemeCT;
-    fFontScheme: TCTFontSchemeCT;
-    fFmtScheme: TCTStyleMatrixCT;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fClrScheme: TColorSchemeCT;
+    fFontScheme: TFontSchemeCT;
+    fFmtScheme: TStyleMatrixCT;
+    fExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
-    property ClrScheme: TCTColorSchemeCT read fClrScheme;
+    property ClrScheme: TColorSchemeCT read fClrScheme;
     [TRequired]
-    property FontScheme: TCTFontSchemeCT read fFontScheme;
+    property FontScheme: TFontSchemeCT read fFontScheme;
     [TRequired]
-    property FmtScheme: TCTStyleMatrixCT read fFmtScheme;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property FmtScheme: TStyleMatrixCT read fFmtScheme;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TXmliteAnyElement]
   [TName('CT_OfficeArtExtension')]
-  TCTOfficeArtExtensionCT = class(TXmliteComplexType)
+  TOfficeArtExtensionCT = class(TXmliteComplexType)
   private
     fUri: ProRock.Xmlite.Schema.Base.TTokenST;
   published
@@ -1022,61 +1022,61 @@ type
   end;
 
   [TName('CT_Angle')]
-  TCTAngleCT = class(TXmliteComplexType)
+  TAngleCT = class(TXmliteComplexType)
   private
-    fVal: TSTAngleST;
+    fVal: TAngleST;
   published
     [TRequired]
-    property Val: TSTAngleST read fVal write fVal;
+    property Val: TAngleST read fVal write fVal;
   end;
 
   [TName('CT_PositiveFixedAngle')]
-  TCTPositiveFixedAngleCT = class(TXmliteComplexType)
+  TPositiveFixedAngleCT = class(TXmliteComplexType)
   private
-    fVal: TSTPositiveFixedAngleST;
+    fVal: TPositiveFixedAngleST;
   published
     [TRequired]
-    property Val: TSTPositiveFixedAngleST read fVal write fVal;
+    property Val: TPositiveFixedAngleST read fVal write fVal;
   end;
 
   [TName('CT_Percentage')]
-  TCTPercentageCT = class(TXmliteComplexType)
+  TPercentageCT = class(TXmliteComplexType)
   private
-    fVal: TSTPercentageST;
+    fVal: TPercentageST;
   published
     [TRequired]
-    property Val: TSTPercentageST read fVal write fVal;
+    property Val: TPercentageST read fVal write fVal;
   end;
 
   [TName('CT_PositivePercentage')]
-  TCTPositivePercentageCT = class(TXmliteComplexType)
+  TPositivePercentageCT = class(TXmliteComplexType)
   private
-    fVal: TSTPositivePercentageST;
+    fVal: TPositivePercentageST;
   published
     [TRequired]
-    property Val: TSTPositivePercentageST read fVal write fVal;
+    property Val: TPositivePercentageST read fVal write fVal;
   end;
 
   [TName('CT_FixedPercentage')]
-  TCTFixedPercentageCT = class(TXmliteComplexType)
+  TFixedPercentageCT = class(TXmliteComplexType)
   private
-    fVal: TSTFixedPercentageST;
+    fVal: TFixedPercentageST;
   published
     [TRequired]
-    property Val: TSTFixedPercentageST read fVal write fVal;
+    property Val: TFixedPercentageST read fVal write fVal;
   end;
 
   [TName('CT_PositiveFixedPercentage')]
-  TCTPositiveFixedPercentageCT = class(TXmliteComplexType)
+  TPositiveFixedPercentageCT = class(TXmliteComplexType)
   private
-    fVal: TSTPositiveFixedPercentageST;
+    fVal: TPositiveFixedPercentageST;
   published
     [TRequired]
-    property Val: TSTPositiveFixedPercentageST read fVal write fVal;
+    property Val: TPositiveFixedPercentageST read fVal write fVal;
   end;
 
   [TName('CT_Ratio')]
-  TCTRatioCT = class(TXmliteComplexType)
+  TRatioCT = class(TXmliteComplexType)
   private
     fN: ProRock.Xmlite.Schema.Base.TLongST;
     fD: ProRock.Xmlite.Schema.Base.TLongST;
@@ -1088,625 +1088,625 @@ type
   end;
 
   [TName('CT_Point2D')]
-  TCTPoint2DCT = class(TXmliteComplexType)
+  TPoint2DCT = class(TXmliteComplexType)
   private
-    fX: TSTCoordinateST;
-    fY: TSTCoordinateST;
+    fX: TCoordinateST;
+    fY: TCoordinateST;
   published
     [TRequired]
-    property X: TSTCoordinateST read fX write fX;
+    property X: TCoordinateST read fX write fX;
     [TRequired]
-    property Y: TSTCoordinateST read fY write fY;
+    property Y: TCoordinateST read fY write fY;
   end;
 
   [TName('CT_PositiveSize2D')]
-  TCTPositiveSize2DCT = class(TXmliteComplexType)
+  TPositiveSize2DCT = class(TXmliteComplexType)
   private
-    fCx: TSTPositiveCoordinateST;
-    fCy: TSTPositiveCoordinateST;
+    fCx: TPositiveCoordinateST;
+    fCy: TPositiveCoordinateST;
   published
     [TRequired]
-    property Cx: TSTPositiveCoordinateST read fCx write fCx;
+    property Cx: TPositiveCoordinateST read fCx write fCx;
     [TRequired]
-    property Cy: TSTPositiveCoordinateST read fCy write fCy;
+    property Cy: TPositiveCoordinateST read fCy write fCy;
   end;
 
   [TName('CT_ComplementTransform')]
-  TCTComplementTransformCT = class(TXmliteComplexType);
+  TComplementTransformCT = class(TXmliteComplexType);
 
   [TName('CT_InverseTransform')]
-  TCTInverseTransformCT = class(TXmliteComplexType);
+  TInverseTransformCT = class(TXmliteComplexType);
 
   [TName('CT_GrayscaleTransform')]
-  TCTGrayscaleTransformCT = class(TXmliteComplexType);
+  TGrayscaleTransformCT = class(TXmliteComplexType);
 
   [TName('CT_GammaTransform')]
-  TCTGammaTransformCT = class(TXmliteComplexType);
+  TGammaTransformCT = class(TXmliteComplexType);
 
   [TName('CT_InverseGammaTransform')]
-  TCTInverseGammaTransformCT = class(TXmliteComplexType);
+  TInverseGammaTransformCT = class(TXmliteComplexType);
 
   [TOrdered]
   [TName('CT_ScRgbColor')]
-  TCTScRgbColorCT = class(TXmliteComplexType)
+  TScRgbColorCT = class(TXmliteComplexType)
   private
-    fR: TSTPercentageST;
-    fG: TSTPercentageST;
-    fB: TSTPercentageST;
-    fTint: TCTPositiveFixedPercentageCTList;
-    fShade: TCTPositiveFixedPercentageCTList;
-    fComp: TCTComplementTransformCTList;
-    fInv: TCTInverseTransformCTList;
-    fGray: TCTGrayscaleTransformCTList;
-    fAlpha: TCTPositiveFixedPercentageCTList;
-    fAlphaOff: TCTFixedPercentageCTList;
-    fAlphaMod: TCTPositivePercentageCTList;
-    fHue: TCTPositiveFixedAngleCTList;
-    fHueOff: TCTAngleCTList;
-    fHueMod: TCTPositivePercentageCTList;
-    fSat: TCTPercentageCTList;
-    fSatOff: TCTPercentageCTList;
-    fSatMod: TCTPercentageCTList;
-    fLum: TCTPercentageCTList;
-    fLumOff: TCTPercentageCTList;
-    fLumMod: TCTPercentageCTList;
-    fRed: TCTPercentageCTList;
-    fRedOff: TCTPercentageCTList;
-    fRedMod: TCTPercentageCTList;
-    fGreen: TCTPercentageCTList;
-    fGreenOff: TCTPercentageCTList;
-    fGreenMod: TCTPercentageCTList;
-    fBlue: TCTPercentageCTList;
-    fBlueOff: TCTPercentageCTList;
-    fBlueMod: TCTPercentageCTList;
-    fGamma: TCTGammaTransformCTList;
-    fInvGamma: TCTInverseGammaTransformCTList;
+    fR: TPercentageST;
+    fG: TPercentageST;
+    fB: TPercentageST;
+    fTint: TPositiveFixedPercentageCTList;
+    fShade: TPositiveFixedPercentageCTList;
+    fComp: TComplementTransformCTList;
+    fInv: TInverseTransformCTList;
+    fGray: TGrayscaleTransformCTList;
+    fAlpha: TPositiveFixedPercentageCTList;
+    fAlphaOff: TFixedPercentageCTList;
+    fAlphaMod: TPositivePercentageCTList;
+    fHue: TPositiveFixedAngleCTList;
+    fHueOff: TAngleCTList;
+    fHueMod: TPositivePercentageCTList;
+    fSat: TPercentageCTList;
+    fSatOff: TPercentageCTList;
+    fSatMod: TPercentageCTList;
+    fLum: TPercentageCTList;
+    fLumOff: TPercentageCTList;
+    fLumMod: TPercentageCTList;
+    fRed: TPercentageCTList;
+    fRedOff: TPercentageCTList;
+    fRedMod: TPercentageCTList;
+    fGreen: TPercentageCTList;
+    fGreenOff: TPercentageCTList;
+    fGreenMod: TPercentageCTList;
+    fBlue: TPercentageCTList;
+    fBlueOff: TPercentageCTList;
+    fBlueMod: TPercentageCTList;
+    fGamma: TGammaTransformCTList;
+    fInvGamma: TInverseGammaTransformCTList;
   published
     [TRequired]
-    property R: TSTPercentageST read fR write fR;
+    property R: TPercentageST read fR write fR;
     [TRequired]
-    property G: TSTPercentageST read fG write fG;
+    property G: TPercentageST read fG write fG;
     [TRequired]
-    property B: TSTPercentageST read fB write fB;
-    property Tint: TCTPositiveFixedPercentageCTList read fTint;
-    property Shade: TCTPositiveFixedPercentageCTList read fShade;
-    property Comp: TCTComplementTransformCTList read fComp;
-    property Inv: TCTInverseTransformCTList read fInv;
-    property Gray: TCTGrayscaleTransformCTList read fGray;
-    property Alpha: TCTPositiveFixedPercentageCTList read fAlpha;
-    property AlphaOff: TCTFixedPercentageCTList read fAlphaOff;
-    property AlphaMod: TCTPositivePercentageCTList read fAlphaMod;
-    property Hue: TCTPositiveFixedAngleCTList read fHue;
-    property HueOff: TCTAngleCTList read fHueOff;
-    property HueMod: TCTPositivePercentageCTList read fHueMod;
-    property Sat: TCTPercentageCTList read fSat;
-    property SatOff: TCTPercentageCTList read fSatOff;
-    property SatMod: TCTPercentageCTList read fSatMod;
-    property Lum: TCTPercentageCTList read fLum;
-    property LumOff: TCTPercentageCTList read fLumOff;
-    property LumMod: TCTPercentageCTList read fLumMod;
-    property Red: TCTPercentageCTList read fRed;
-    property RedOff: TCTPercentageCTList read fRedOff;
-    property RedMod: TCTPercentageCTList read fRedMod;
-    property Green: TCTPercentageCTList read fGreen;
-    property GreenOff: TCTPercentageCTList read fGreenOff;
-    property GreenMod: TCTPercentageCTList read fGreenMod;
-    property Blue: TCTPercentageCTList read fBlue;
-    property BlueOff: TCTPercentageCTList read fBlueOff;
-    property BlueMod: TCTPercentageCTList read fBlueMod;
-    property Gamma: TCTGammaTransformCTList read fGamma;
-    property InvGamma: TCTInverseGammaTransformCTList read fInvGamma;
+    property B: TPercentageST read fB write fB;
+    property Tint: TPositiveFixedPercentageCTList read fTint;
+    property Shade: TPositiveFixedPercentageCTList read fShade;
+    property Comp: TComplementTransformCTList read fComp;
+    property Inv: TInverseTransformCTList read fInv;
+    property Gray: TGrayscaleTransformCTList read fGray;
+    property Alpha: TPositiveFixedPercentageCTList read fAlpha;
+    property AlphaOff: TFixedPercentageCTList read fAlphaOff;
+    property AlphaMod: TPositivePercentageCTList read fAlphaMod;
+    property Hue: TPositiveFixedAngleCTList read fHue;
+    property HueOff: TAngleCTList read fHueOff;
+    property HueMod: TPositivePercentageCTList read fHueMod;
+    property Sat: TPercentageCTList read fSat;
+    property SatOff: TPercentageCTList read fSatOff;
+    property SatMod: TPercentageCTList read fSatMod;
+    property Lum: TPercentageCTList read fLum;
+    property LumOff: TPercentageCTList read fLumOff;
+    property LumMod: TPercentageCTList read fLumMod;
+    property Red: TPercentageCTList read fRed;
+    property RedOff: TPercentageCTList read fRedOff;
+    property RedMod: TPercentageCTList read fRedMod;
+    property Green: TPercentageCTList read fGreen;
+    property GreenOff: TPercentageCTList read fGreenOff;
+    property GreenMod: TPercentageCTList read fGreenMod;
+    property Blue: TPercentageCTList read fBlue;
+    property BlueOff: TPercentageCTList read fBlueOff;
+    property BlueMod: TPercentageCTList read fBlueMod;
+    property Gamma: TGammaTransformCTList read fGamma;
+    property InvGamma: TInverseGammaTransformCTList read fInvGamma;
   end;
 
   [TOrdered]
   [TName('CT_SRgbColor')]
-  TCTSRgbColorCT = class(TXmliteComplexType)
+  TSRgbColorCT = class(TXmliteComplexType)
   private
-    fVal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTHexColorRGBST;
-    fTint: TCTPositiveFixedPercentageCTList;
-    fShade: TCTPositiveFixedPercentageCTList;
-    fComp: TCTComplementTransformCTList;
-    fInv: TCTInverseTransformCTList;
-    fGray: TCTGrayscaleTransformCTList;
-    fAlpha: TCTPositiveFixedPercentageCTList;
-    fAlphaOff: TCTFixedPercentageCTList;
-    fAlphaMod: TCTPositivePercentageCTList;
-    fHue: TCTPositiveFixedAngleCTList;
-    fHueOff: TCTAngleCTList;
-    fHueMod: TCTPositivePercentageCTList;
-    fSat: TCTPercentageCTList;
-    fSatOff: TCTPercentageCTList;
-    fSatMod: TCTPercentageCTList;
-    fLum: TCTPercentageCTList;
-    fLumOff: TCTPercentageCTList;
-    fLumMod: TCTPercentageCTList;
-    fRed: TCTPercentageCTList;
-    fRedOff: TCTPercentageCTList;
-    fRedMod: TCTPercentageCTList;
-    fGreen: TCTPercentageCTList;
-    fGreenOff: TCTPercentageCTList;
-    fGreenMod: TCTPercentageCTList;
-    fBlue: TCTPercentageCTList;
-    fBlueOff: TCTPercentageCTList;
-    fBlueMod: TCTPercentageCTList;
-    fGamma: TCTGammaTransformCTList;
-    fInvGamma: TCTInverseGammaTransformCTList;
+    fVal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.THexColorRGBST;
+    fTint: TPositiveFixedPercentageCTList;
+    fShade: TPositiveFixedPercentageCTList;
+    fComp: TComplementTransformCTList;
+    fInv: TInverseTransformCTList;
+    fGray: TGrayscaleTransformCTList;
+    fAlpha: TPositiveFixedPercentageCTList;
+    fAlphaOff: TFixedPercentageCTList;
+    fAlphaMod: TPositivePercentageCTList;
+    fHue: TPositiveFixedAngleCTList;
+    fHueOff: TAngleCTList;
+    fHueMod: TPositivePercentageCTList;
+    fSat: TPercentageCTList;
+    fSatOff: TPercentageCTList;
+    fSatMod: TPercentageCTList;
+    fLum: TPercentageCTList;
+    fLumOff: TPercentageCTList;
+    fLumMod: TPercentageCTList;
+    fRed: TPercentageCTList;
+    fRedOff: TPercentageCTList;
+    fRedMod: TPercentageCTList;
+    fGreen: TPercentageCTList;
+    fGreenOff: TPercentageCTList;
+    fGreenMod: TPercentageCTList;
+    fBlue: TPercentageCTList;
+    fBlueOff: TPercentageCTList;
+    fBlueMod: TPercentageCTList;
+    fGamma: TGammaTransformCTList;
+    fInvGamma: TInverseGammaTransformCTList;
   published
     [TRequired]
-    property Val: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTHexColorRGBST read fVal write fVal;
-    property Tint: TCTPositiveFixedPercentageCTList read fTint;
-    property Shade: TCTPositiveFixedPercentageCTList read fShade;
-    property Comp: TCTComplementTransformCTList read fComp;
-    property Inv: TCTInverseTransformCTList read fInv;
-    property Gray: TCTGrayscaleTransformCTList read fGray;
-    property Alpha: TCTPositiveFixedPercentageCTList read fAlpha;
-    property AlphaOff: TCTFixedPercentageCTList read fAlphaOff;
-    property AlphaMod: TCTPositivePercentageCTList read fAlphaMod;
-    property Hue: TCTPositiveFixedAngleCTList read fHue;
-    property HueOff: TCTAngleCTList read fHueOff;
-    property HueMod: TCTPositivePercentageCTList read fHueMod;
-    property Sat: TCTPercentageCTList read fSat;
-    property SatOff: TCTPercentageCTList read fSatOff;
-    property SatMod: TCTPercentageCTList read fSatMod;
-    property Lum: TCTPercentageCTList read fLum;
-    property LumOff: TCTPercentageCTList read fLumOff;
-    property LumMod: TCTPercentageCTList read fLumMod;
-    property Red: TCTPercentageCTList read fRed;
-    property RedOff: TCTPercentageCTList read fRedOff;
-    property RedMod: TCTPercentageCTList read fRedMod;
-    property Green: TCTPercentageCTList read fGreen;
-    property GreenOff: TCTPercentageCTList read fGreenOff;
-    property GreenMod: TCTPercentageCTList read fGreenMod;
-    property Blue: TCTPercentageCTList read fBlue;
-    property BlueOff: TCTPercentageCTList read fBlueOff;
-    property BlueMod: TCTPercentageCTList read fBlueMod;
-    property Gamma: TCTGammaTransformCTList read fGamma;
-    property InvGamma: TCTInverseGammaTransformCTList read fInvGamma;
+    property Val: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.THexColorRGBST read fVal write fVal;
+    property Tint: TPositiveFixedPercentageCTList read fTint;
+    property Shade: TPositiveFixedPercentageCTList read fShade;
+    property Comp: TComplementTransformCTList read fComp;
+    property Inv: TInverseTransformCTList read fInv;
+    property Gray: TGrayscaleTransformCTList read fGray;
+    property Alpha: TPositiveFixedPercentageCTList read fAlpha;
+    property AlphaOff: TFixedPercentageCTList read fAlphaOff;
+    property AlphaMod: TPositivePercentageCTList read fAlphaMod;
+    property Hue: TPositiveFixedAngleCTList read fHue;
+    property HueOff: TAngleCTList read fHueOff;
+    property HueMod: TPositivePercentageCTList read fHueMod;
+    property Sat: TPercentageCTList read fSat;
+    property SatOff: TPercentageCTList read fSatOff;
+    property SatMod: TPercentageCTList read fSatMod;
+    property Lum: TPercentageCTList read fLum;
+    property LumOff: TPercentageCTList read fLumOff;
+    property LumMod: TPercentageCTList read fLumMod;
+    property Red: TPercentageCTList read fRed;
+    property RedOff: TPercentageCTList read fRedOff;
+    property RedMod: TPercentageCTList read fRedMod;
+    property Green: TPercentageCTList read fGreen;
+    property GreenOff: TPercentageCTList read fGreenOff;
+    property GreenMod: TPercentageCTList read fGreenMod;
+    property Blue: TPercentageCTList read fBlue;
+    property BlueOff: TPercentageCTList read fBlueOff;
+    property BlueMod: TPercentageCTList read fBlueMod;
+    property Gamma: TGammaTransformCTList read fGamma;
+    property InvGamma: TInverseGammaTransformCTList read fInvGamma;
   end;
 
   [TOrdered]
   [TName('CT_HslColor')]
-  TCTHslColorCT = class(TXmliteComplexType)
+  THslColorCT = class(TXmliteComplexType)
   private
-    fHue: TSTPositiveFixedAngleST;
-    fSat: TSTPercentageST;
-    fLum: TSTPercentageST;
-    fTint: TCTPositiveFixedPercentageCTList;
-    fShade: TCTPositiveFixedPercentageCTList;
-    fComp: TCTComplementTransformCTList;
-    fInv: TCTInverseTransformCTList;
-    fGray: TCTGrayscaleTransformCTList;
-    fAlpha: TCTPositiveFixedPercentageCTList;
-    fAlphaOff: TCTFixedPercentageCTList;
-    fAlphaMod: TCTPositivePercentageCTList;
-    fHueOff: TCTAngleCTList;
-    fHueMod: TCTPositivePercentageCTList;
-    fSatOff: TCTPercentageCTList;
-    fSatMod: TCTPercentageCTList;
-    fLumOff: TCTPercentageCTList;
-    fLumMod: TCTPercentageCTList;
-    fRed: TCTPercentageCTList;
-    fRedOff: TCTPercentageCTList;
-    fRedMod: TCTPercentageCTList;
-    fGreen: TCTPercentageCTList;
-    fGreenOff: TCTPercentageCTList;
-    fGreenMod: TCTPercentageCTList;
-    fBlue: TCTPercentageCTList;
-    fBlueOff: TCTPercentageCTList;
-    fBlueMod: TCTPercentageCTList;
-    fGamma: TCTGammaTransformCTList;
-    fInvGamma: TCTInverseGammaTransformCTList;
+    fHue: TPositiveFixedAngleST;
+    fSat: TPercentageST;
+    fLum: TPercentageST;
+    fTint: TPositiveFixedPercentageCTList;
+    fShade: TPositiveFixedPercentageCTList;
+    fComp: TComplementTransformCTList;
+    fInv: TInverseTransformCTList;
+    fGray: TGrayscaleTransformCTList;
+    fAlpha: TPositiveFixedPercentageCTList;
+    fAlphaOff: TFixedPercentageCTList;
+    fAlphaMod: TPositivePercentageCTList;
+    fHueOff: TAngleCTList;
+    fHueMod: TPositivePercentageCTList;
+    fSatOff: TPercentageCTList;
+    fSatMod: TPercentageCTList;
+    fLumOff: TPercentageCTList;
+    fLumMod: TPercentageCTList;
+    fRed: TPercentageCTList;
+    fRedOff: TPercentageCTList;
+    fRedMod: TPercentageCTList;
+    fGreen: TPercentageCTList;
+    fGreenOff: TPercentageCTList;
+    fGreenMod: TPercentageCTList;
+    fBlue: TPercentageCTList;
+    fBlueOff: TPercentageCTList;
+    fBlueMod: TPercentageCTList;
+    fGamma: TGammaTransformCTList;
+    fInvGamma: TInverseGammaTransformCTList;
   published
     [TRequired]
-    property Hue: TSTPositiveFixedAngleST read fHue write fHue;
+    property Hue: TPositiveFixedAngleST read fHue write fHue;
     [TRequired]
-    property Sat: TSTPercentageST read fSat write fSat;
+    property Sat: TPercentageST read fSat write fSat;
     [TRequired]
-    property Lum: TSTPercentageST read fLum write fLum;
-    property Tint: TCTPositiveFixedPercentageCTList read fTint;
-    property Shade: TCTPositiveFixedPercentageCTList read fShade;
-    property Comp: TCTComplementTransformCTList read fComp;
-    property Inv: TCTInverseTransformCTList read fInv;
-    property Gray: TCTGrayscaleTransformCTList read fGray;
-    property Alpha: TCTPositiveFixedPercentageCTList read fAlpha;
-    property AlphaOff: TCTFixedPercentageCTList read fAlphaOff;
-    property AlphaMod: TCTPositivePercentageCTList read fAlphaMod;
-    property HueOff: TCTAngleCTList read fHueOff;
-    property HueMod: TCTPositivePercentageCTList read fHueMod;
-    property SatOff: TCTPercentageCTList read fSatOff;
-    property SatMod: TCTPercentageCTList read fSatMod;
-    property LumOff: TCTPercentageCTList read fLumOff;
-    property LumMod: TCTPercentageCTList read fLumMod;
-    property Red: TCTPercentageCTList read fRed;
-    property RedOff: TCTPercentageCTList read fRedOff;
-    property RedMod: TCTPercentageCTList read fRedMod;
-    property Green: TCTPercentageCTList read fGreen;
-    property GreenOff: TCTPercentageCTList read fGreenOff;
-    property GreenMod: TCTPercentageCTList read fGreenMod;
-    property Blue: TCTPercentageCTList read fBlue;
-    property BlueOff: TCTPercentageCTList read fBlueOff;
-    property BlueMod: TCTPercentageCTList read fBlueMod;
-    property Gamma: TCTGammaTransformCTList read fGamma;
-    property InvGamma: TCTInverseGammaTransformCTList read fInvGamma;
+    property Lum: TPercentageST read fLum write fLum;
+    property Tint: TPositiveFixedPercentageCTList read fTint;
+    property Shade: TPositiveFixedPercentageCTList read fShade;
+    property Comp: TComplementTransformCTList read fComp;
+    property Inv: TInverseTransformCTList read fInv;
+    property Gray: TGrayscaleTransformCTList read fGray;
+    property Alpha: TPositiveFixedPercentageCTList read fAlpha;
+    property AlphaOff: TFixedPercentageCTList read fAlphaOff;
+    property AlphaMod: TPositivePercentageCTList read fAlphaMod;
+    property HueOff: TAngleCTList read fHueOff;
+    property HueMod: TPositivePercentageCTList read fHueMod;
+    property SatOff: TPercentageCTList read fSatOff;
+    property SatMod: TPercentageCTList read fSatMod;
+    property LumOff: TPercentageCTList read fLumOff;
+    property LumMod: TPercentageCTList read fLumMod;
+    property Red: TPercentageCTList read fRed;
+    property RedOff: TPercentageCTList read fRedOff;
+    property RedMod: TPercentageCTList read fRedMod;
+    property Green: TPercentageCTList read fGreen;
+    property GreenOff: TPercentageCTList read fGreenOff;
+    property GreenMod: TPercentageCTList read fGreenMod;
+    property Blue: TPercentageCTList read fBlue;
+    property BlueOff: TPercentageCTList read fBlueOff;
+    property BlueMod: TPercentageCTList read fBlueMod;
+    property Gamma: TGammaTransformCTList read fGamma;
+    property InvGamma: TInverseGammaTransformCTList read fInvGamma;
   end;
 
   [TOrdered]
   [TName('CT_SystemColor')]
-  TCTSystemColorCT = class(TXmliteComplexType)
+  TSystemColorCT = class(TXmliteComplexType)
   private
-    fVal: TSTSystemColorValST;
-    fLastClr: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTHexColorRGBST;
-    fTint: TCTPositiveFixedPercentageCTList;
-    fShade: TCTPositiveFixedPercentageCTList;
-    fComp: TCTComplementTransformCTList;
-    fInv: TCTInverseTransformCTList;
-    fGray: TCTGrayscaleTransformCTList;
-    fAlpha: TCTPositiveFixedPercentageCTList;
-    fAlphaOff: TCTFixedPercentageCTList;
-    fAlphaMod: TCTPositivePercentageCTList;
-    fHue: TCTPositiveFixedAngleCTList;
-    fHueOff: TCTAngleCTList;
-    fHueMod: TCTPositivePercentageCTList;
-    fSat: TCTPercentageCTList;
-    fSatOff: TCTPercentageCTList;
-    fSatMod: TCTPercentageCTList;
-    fLum: TCTPercentageCTList;
-    fLumOff: TCTPercentageCTList;
-    fLumMod: TCTPercentageCTList;
-    fRed: TCTPercentageCTList;
-    fRedOff: TCTPercentageCTList;
-    fRedMod: TCTPercentageCTList;
-    fGreen: TCTPercentageCTList;
-    fGreenOff: TCTPercentageCTList;
-    fGreenMod: TCTPercentageCTList;
-    fBlue: TCTPercentageCTList;
-    fBlueOff: TCTPercentageCTList;
-    fBlueMod: TCTPercentageCTList;
-    fGamma: TCTGammaTransformCTList;
-    fInvGamma: TCTInverseGammaTransformCTList;
+    fVal: TSystemColorValST;
+    fLastClr: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.THexColorRGBST;
+    fTint: TPositiveFixedPercentageCTList;
+    fShade: TPositiveFixedPercentageCTList;
+    fComp: TComplementTransformCTList;
+    fInv: TInverseTransformCTList;
+    fGray: TGrayscaleTransformCTList;
+    fAlpha: TPositiveFixedPercentageCTList;
+    fAlphaOff: TFixedPercentageCTList;
+    fAlphaMod: TPositivePercentageCTList;
+    fHue: TPositiveFixedAngleCTList;
+    fHueOff: TAngleCTList;
+    fHueMod: TPositivePercentageCTList;
+    fSat: TPercentageCTList;
+    fSatOff: TPercentageCTList;
+    fSatMod: TPercentageCTList;
+    fLum: TPercentageCTList;
+    fLumOff: TPercentageCTList;
+    fLumMod: TPercentageCTList;
+    fRed: TPercentageCTList;
+    fRedOff: TPercentageCTList;
+    fRedMod: TPercentageCTList;
+    fGreen: TPercentageCTList;
+    fGreenOff: TPercentageCTList;
+    fGreenMod: TPercentageCTList;
+    fBlue: TPercentageCTList;
+    fBlueOff: TPercentageCTList;
+    fBlueMod: TPercentageCTList;
+    fGamma: TGammaTransformCTList;
+    fInvGamma: TInverseGammaTransformCTList;
   published
     [TRequired]
-    property Val: TSTSystemColorValST read fVal write fVal;
-    property LastClr: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTHexColorRGBST read fLastClr write fLastClr;
-    property Tint: TCTPositiveFixedPercentageCTList read fTint;
-    property Shade: TCTPositiveFixedPercentageCTList read fShade;
-    property Comp: TCTComplementTransformCTList read fComp;
-    property Inv: TCTInverseTransformCTList read fInv;
-    property Gray: TCTGrayscaleTransformCTList read fGray;
-    property Alpha: TCTPositiveFixedPercentageCTList read fAlpha;
-    property AlphaOff: TCTFixedPercentageCTList read fAlphaOff;
-    property AlphaMod: TCTPositivePercentageCTList read fAlphaMod;
-    property Hue: TCTPositiveFixedAngleCTList read fHue;
-    property HueOff: TCTAngleCTList read fHueOff;
-    property HueMod: TCTPositivePercentageCTList read fHueMod;
-    property Sat: TCTPercentageCTList read fSat;
-    property SatOff: TCTPercentageCTList read fSatOff;
-    property SatMod: TCTPercentageCTList read fSatMod;
-    property Lum: TCTPercentageCTList read fLum;
-    property LumOff: TCTPercentageCTList read fLumOff;
-    property LumMod: TCTPercentageCTList read fLumMod;
-    property Red: TCTPercentageCTList read fRed;
-    property RedOff: TCTPercentageCTList read fRedOff;
-    property RedMod: TCTPercentageCTList read fRedMod;
-    property Green: TCTPercentageCTList read fGreen;
-    property GreenOff: TCTPercentageCTList read fGreenOff;
-    property GreenMod: TCTPercentageCTList read fGreenMod;
-    property Blue: TCTPercentageCTList read fBlue;
-    property BlueOff: TCTPercentageCTList read fBlueOff;
-    property BlueMod: TCTPercentageCTList read fBlueMod;
-    property Gamma: TCTGammaTransformCTList read fGamma;
-    property InvGamma: TCTInverseGammaTransformCTList read fInvGamma;
+    property Val: TSystemColorValST read fVal write fVal;
+    property LastClr: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.THexColorRGBST read fLastClr write fLastClr;
+    property Tint: TPositiveFixedPercentageCTList read fTint;
+    property Shade: TPositiveFixedPercentageCTList read fShade;
+    property Comp: TComplementTransformCTList read fComp;
+    property Inv: TInverseTransformCTList read fInv;
+    property Gray: TGrayscaleTransformCTList read fGray;
+    property Alpha: TPositiveFixedPercentageCTList read fAlpha;
+    property AlphaOff: TFixedPercentageCTList read fAlphaOff;
+    property AlphaMod: TPositivePercentageCTList read fAlphaMod;
+    property Hue: TPositiveFixedAngleCTList read fHue;
+    property HueOff: TAngleCTList read fHueOff;
+    property HueMod: TPositivePercentageCTList read fHueMod;
+    property Sat: TPercentageCTList read fSat;
+    property SatOff: TPercentageCTList read fSatOff;
+    property SatMod: TPercentageCTList read fSatMod;
+    property Lum: TPercentageCTList read fLum;
+    property LumOff: TPercentageCTList read fLumOff;
+    property LumMod: TPercentageCTList read fLumMod;
+    property Red: TPercentageCTList read fRed;
+    property RedOff: TPercentageCTList read fRedOff;
+    property RedMod: TPercentageCTList read fRedMod;
+    property Green: TPercentageCTList read fGreen;
+    property GreenOff: TPercentageCTList read fGreenOff;
+    property GreenMod: TPercentageCTList read fGreenMod;
+    property Blue: TPercentageCTList read fBlue;
+    property BlueOff: TPercentageCTList read fBlueOff;
+    property BlueMod: TPercentageCTList read fBlueMod;
+    property Gamma: TGammaTransformCTList read fGamma;
+    property InvGamma: TInverseGammaTransformCTList read fInvGamma;
   end;
 
   [TOrdered]
   [TName('CT_SchemeColor')]
-  TCTSchemeColorCT = class(TXmliteComplexType)
+  TSchemeColorCT = class(TXmliteComplexType)
   private
-    fVal: TSTSchemeColorValST;
-    fTint: TCTPositiveFixedPercentageCTList;
-    fShade: TCTPositiveFixedPercentageCTList;
-    fComp: TCTComplementTransformCTList;
-    fInv: TCTInverseTransformCTList;
-    fGray: TCTGrayscaleTransformCTList;
-    fAlpha: TCTPositiveFixedPercentageCTList;
-    fAlphaOff: TCTFixedPercentageCTList;
-    fAlphaMod: TCTPositivePercentageCTList;
-    fHue: TCTPositiveFixedAngleCTList;
-    fHueOff: TCTAngleCTList;
-    fHueMod: TCTPositivePercentageCTList;
-    fSat: TCTPercentageCTList;
-    fSatOff: TCTPercentageCTList;
-    fSatMod: TCTPercentageCTList;
-    fLum: TCTPercentageCTList;
-    fLumOff: TCTPercentageCTList;
-    fLumMod: TCTPercentageCTList;
-    fRed: TCTPercentageCTList;
-    fRedOff: TCTPercentageCTList;
-    fRedMod: TCTPercentageCTList;
-    fGreen: TCTPercentageCTList;
-    fGreenOff: TCTPercentageCTList;
-    fGreenMod: TCTPercentageCTList;
-    fBlue: TCTPercentageCTList;
-    fBlueOff: TCTPercentageCTList;
-    fBlueMod: TCTPercentageCTList;
-    fGamma: TCTGammaTransformCTList;
-    fInvGamma: TCTInverseGammaTransformCTList;
+    fVal: TSchemeColorValST;
+    fTint: TPositiveFixedPercentageCTList;
+    fShade: TPositiveFixedPercentageCTList;
+    fComp: TComplementTransformCTList;
+    fInv: TInverseTransformCTList;
+    fGray: TGrayscaleTransformCTList;
+    fAlpha: TPositiveFixedPercentageCTList;
+    fAlphaOff: TFixedPercentageCTList;
+    fAlphaMod: TPositivePercentageCTList;
+    fHue: TPositiveFixedAngleCTList;
+    fHueOff: TAngleCTList;
+    fHueMod: TPositivePercentageCTList;
+    fSat: TPercentageCTList;
+    fSatOff: TPercentageCTList;
+    fSatMod: TPercentageCTList;
+    fLum: TPercentageCTList;
+    fLumOff: TPercentageCTList;
+    fLumMod: TPercentageCTList;
+    fRed: TPercentageCTList;
+    fRedOff: TPercentageCTList;
+    fRedMod: TPercentageCTList;
+    fGreen: TPercentageCTList;
+    fGreenOff: TPercentageCTList;
+    fGreenMod: TPercentageCTList;
+    fBlue: TPercentageCTList;
+    fBlueOff: TPercentageCTList;
+    fBlueMod: TPercentageCTList;
+    fGamma: TGammaTransformCTList;
+    fInvGamma: TInverseGammaTransformCTList;
   published
     [TRequired]
-    property Val: TSTSchemeColorValST read fVal write fVal;
-    property Tint: TCTPositiveFixedPercentageCTList read fTint;
-    property Shade: TCTPositiveFixedPercentageCTList read fShade;
-    property Comp: TCTComplementTransformCTList read fComp;
-    property Inv: TCTInverseTransformCTList read fInv;
-    property Gray: TCTGrayscaleTransformCTList read fGray;
-    property Alpha: TCTPositiveFixedPercentageCTList read fAlpha;
-    property AlphaOff: TCTFixedPercentageCTList read fAlphaOff;
-    property AlphaMod: TCTPositivePercentageCTList read fAlphaMod;
-    property Hue: TCTPositiveFixedAngleCTList read fHue;
-    property HueOff: TCTAngleCTList read fHueOff;
-    property HueMod: TCTPositivePercentageCTList read fHueMod;
-    property Sat: TCTPercentageCTList read fSat;
-    property SatOff: TCTPercentageCTList read fSatOff;
-    property SatMod: TCTPercentageCTList read fSatMod;
-    property Lum: TCTPercentageCTList read fLum;
-    property LumOff: TCTPercentageCTList read fLumOff;
-    property LumMod: TCTPercentageCTList read fLumMod;
-    property Red: TCTPercentageCTList read fRed;
-    property RedOff: TCTPercentageCTList read fRedOff;
-    property RedMod: TCTPercentageCTList read fRedMod;
-    property Green: TCTPercentageCTList read fGreen;
-    property GreenOff: TCTPercentageCTList read fGreenOff;
-    property GreenMod: TCTPercentageCTList read fGreenMod;
-    property Blue: TCTPercentageCTList read fBlue;
-    property BlueOff: TCTPercentageCTList read fBlueOff;
-    property BlueMod: TCTPercentageCTList read fBlueMod;
-    property Gamma: TCTGammaTransformCTList read fGamma;
-    property InvGamma: TCTInverseGammaTransformCTList read fInvGamma;
+    property Val: TSchemeColorValST read fVal write fVal;
+    property Tint: TPositiveFixedPercentageCTList read fTint;
+    property Shade: TPositiveFixedPercentageCTList read fShade;
+    property Comp: TComplementTransformCTList read fComp;
+    property Inv: TInverseTransformCTList read fInv;
+    property Gray: TGrayscaleTransformCTList read fGray;
+    property Alpha: TPositiveFixedPercentageCTList read fAlpha;
+    property AlphaOff: TFixedPercentageCTList read fAlphaOff;
+    property AlphaMod: TPositivePercentageCTList read fAlphaMod;
+    property Hue: TPositiveFixedAngleCTList read fHue;
+    property HueOff: TAngleCTList read fHueOff;
+    property HueMod: TPositivePercentageCTList read fHueMod;
+    property Sat: TPercentageCTList read fSat;
+    property SatOff: TPercentageCTList read fSatOff;
+    property SatMod: TPercentageCTList read fSatMod;
+    property Lum: TPercentageCTList read fLum;
+    property LumOff: TPercentageCTList read fLumOff;
+    property LumMod: TPercentageCTList read fLumMod;
+    property Red: TPercentageCTList read fRed;
+    property RedOff: TPercentageCTList read fRedOff;
+    property RedMod: TPercentageCTList read fRedMod;
+    property Green: TPercentageCTList read fGreen;
+    property GreenOff: TPercentageCTList read fGreenOff;
+    property GreenMod: TPercentageCTList read fGreenMod;
+    property Blue: TPercentageCTList read fBlue;
+    property BlueOff: TPercentageCTList read fBlueOff;
+    property BlueMod: TPercentageCTList read fBlueMod;
+    property Gamma: TGammaTransformCTList read fGamma;
+    property InvGamma: TInverseGammaTransformCTList read fInvGamma;
   end;
 
   [TOrdered]
   [TName('CT_PresetColor')]
-  TCTPresetColorCT = class(TXmliteComplexType)
+  TPresetColorCT = class(TXmliteComplexType)
   private
-    fVal: TSTPresetColorValST;
-    fTint: TCTPositiveFixedPercentageCTList;
-    fShade: TCTPositiveFixedPercentageCTList;
-    fComp: TCTComplementTransformCTList;
-    fInv: TCTInverseTransformCTList;
-    fGray: TCTGrayscaleTransformCTList;
-    fAlpha: TCTPositiveFixedPercentageCTList;
-    fAlphaOff: TCTFixedPercentageCTList;
-    fAlphaMod: TCTPositivePercentageCTList;
-    fHue: TCTPositiveFixedAngleCTList;
-    fHueOff: TCTAngleCTList;
-    fHueMod: TCTPositivePercentageCTList;
-    fSat: TCTPercentageCTList;
-    fSatOff: TCTPercentageCTList;
-    fSatMod: TCTPercentageCTList;
-    fLum: TCTPercentageCTList;
-    fLumOff: TCTPercentageCTList;
-    fLumMod: TCTPercentageCTList;
-    fRed: TCTPercentageCTList;
-    fRedOff: TCTPercentageCTList;
-    fRedMod: TCTPercentageCTList;
-    fGreen: TCTPercentageCTList;
-    fGreenOff: TCTPercentageCTList;
-    fGreenMod: TCTPercentageCTList;
-    fBlue: TCTPercentageCTList;
-    fBlueOff: TCTPercentageCTList;
-    fBlueMod: TCTPercentageCTList;
-    fGamma: TCTGammaTransformCTList;
-    fInvGamma: TCTInverseGammaTransformCTList;
+    fVal: TPresetColorValST;
+    fTint: TPositiveFixedPercentageCTList;
+    fShade: TPositiveFixedPercentageCTList;
+    fComp: TComplementTransformCTList;
+    fInv: TInverseTransformCTList;
+    fGray: TGrayscaleTransformCTList;
+    fAlpha: TPositiveFixedPercentageCTList;
+    fAlphaOff: TFixedPercentageCTList;
+    fAlphaMod: TPositivePercentageCTList;
+    fHue: TPositiveFixedAngleCTList;
+    fHueOff: TAngleCTList;
+    fHueMod: TPositivePercentageCTList;
+    fSat: TPercentageCTList;
+    fSatOff: TPercentageCTList;
+    fSatMod: TPercentageCTList;
+    fLum: TPercentageCTList;
+    fLumOff: TPercentageCTList;
+    fLumMod: TPercentageCTList;
+    fRed: TPercentageCTList;
+    fRedOff: TPercentageCTList;
+    fRedMod: TPercentageCTList;
+    fGreen: TPercentageCTList;
+    fGreenOff: TPercentageCTList;
+    fGreenMod: TPercentageCTList;
+    fBlue: TPercentageCTList;
+    fBlueOff: TPercentageCTList;
+    fBlueMod: TPercentageCTList;
+    fGamma: TGammaTransformCTList;
+    fInvGamma: TInverseGammaTransformCTList;
   published
     [TRequired]
-    property Val: TSTPresetColorValST read fVal write fVal;
-    property Tint: TCTPositiveFixedPercentageCTList read fTint;
-    property Shade: TCTPositiveFixedPercentageCTList read fShade;
-    property Comp: TCTComplementTransformCTList read fComp;
-    property Inv: TCTInverseTransformCTList read fInv;
-    property Gray: TCTGrayscaleTransformCTList read fGray;
-    property Alpha: TCTPositiveFixedPercentageCTList read fAlpha;
-    property AlphaOff: TCTFixedPercentageCTList read fAlphaOff;
-    property AlphaMod: TCTPositivePercentageCTList read fAlphaMod;
-    property Hue: TCTPositiveFixedAngleCTList read fHue;
-    property HueOff: TCTAngleCTList read fHueOff;
-    property HueMod: TCTPositivePercentageCTList read fHueMod;
-    property Sat: TCTPercentageCTList read fSat;
-    property SatOff: TCTPercentageCTList read fSatOff;
-    property SatMod: TCTPercentageCTList read fSatMod;
-    property Lum: TCTPercentageCTList read fLum;
-    property LumOff: TCTPercentageCTList read fLumOff;
-    property LumMod: TCTPercentageCTList read fLumMod;
-    property Red: TCTPercentageCTList read fRed;
-    property RedOff: TCTPercentageCTList read fRedOff;
-    property RedMod: TCTPercentageCTList read fRedMod;
-    property Green: TCTPercentageCTList read fGreen;
-    property GreenOff: TCTPercentageCTList read fGreenOff;
-    property GreenMod: TCTPercentageCTList read fGreenMod;
-    property Blue: TCTPercentageCTList read fBlue;
-    property BlueOff: TCTPercentageCTList read fBlueOff;
-    property BlueMod: TCTPercentageCTList read fBlueMod;
-    property Gamma: TCTGammaTransformCTList read fGamma;
-    property InvGamma: TCTInverseGammaTransformCTList read fInvGamma;
+    property Val: TPresetColorValST read fVal write fVal;
+    property Tint: TPositiveFixedPercentageCTList read fTint;
+    property Shade: TPositiveFixedPercentageCTList read fShade;
+    property Comp: TComplementTransformCTList read fComp;
+    property Inv: TInverseTransformCTList read fInv;
+    property Gray: TGrayscaleTransformCTList read fGray;
+    property Alpha: TPositiveFixedPercentageCTList read fAlpha;
+    property AlphaOff: TFixedPercentageCTList read fAlphaOff;
+    property AlphaMod: TPositivePercentageCTList read fAlphaMod;
+    property Hue: TPositiveFixedAngleCTList read fHue;
+    property HueOff: TAngleCTList read fHueOff;
+    property HueMod: TPositivePercentageCTList read fHueMod;
+    property Sat: TPercentageCTList read fSat;
+    property SatOff: TPercentageCTList read fSatOff;
+    property SatMod: TPercentageCTList read fSatMod;
+    property Lum: TPercentageCTList read fLum;
+    property LumOff: TPercentageCTList read fLumOff;
+    property LumMod: TPercentageCTList read fLumMod;
+    property Red: TPercentageCTList read fRed;
+    property RedOff: TPercentageCTList read fRedOff;
+    property RedMod: TPercentageCTList read fRedMod;
+    property Green: TPercentageCTList read fGreen;
+    property GreenOff: TPercentageCTList read fGreenOff;
+    property GreenMod: TPercentageCTList read fGreenMod;
+    property Blue: TPercentageCTList read fBlue;
+    property BlueOff: TPercentageCTList read fBlueOff;
+    property BlueMod: TPercentageCTList read fBlueMod;
+    property Gamma: TGammaTransformCTList read fGamma;
+    property InvGamma: TInverseGammaTransformCTList read fInvGamma;
   end;
 
   [TName('CT_OfficeArtExtensionList')]
-  TCTOfficeArtExtensionListCT = class(TXmliteComplexType)
+  TOfficeArtExtensionListCT = class(TXmliteComplexType)
   private
-    fExt: TCTOfficeArtExtensionCTList;
+    fExt: TOfficeArtExtensionCTList;
   published
-    property Ext: TCTOfficeArtExtensionCTList read fExt;
+    property Ext: TOfficeArtExtensionCTList read fExt;
   end;
 
   [TName('CT_Scale2D')]
-  TCTScale2DCT = class(TXmliteComplexType)
+  TScale2DCT = class(TXmliteComplexType)
   private
-    fSx: TCTRatioCT;
-    fSy: TCTRatioCT;
+    fSx: TRatioCT;
+    fSy: TRatioCT;
   published
     [TRequired]
-    property Sx: TCTRatioCT read fSx;
+    property Sx: TRatioCT read fSx;
     [TRequired]
-    property Sy: TCTRatioCT read fSy;
+    property Sy: TRatioCT read fSy;
   end;
 
   [TName('CT_Transform2D')]
-  TCTTransform2DCT = class(TXmliteComplexType)
+  TTransform2DCT = class(TXmliteComplexType)
   private
-    fRot: TSTAngleST;
+    fRot: TAngleST;
     fFlipH: ProRock.Xmlite.Schema.Base.TBooleanST;
     fFlipV: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fOff: TCTPoint2DCT;
-    fExt: TCTPositiveSize2DCT;
+    fOff: TPoint2DCT;
+    fExt: TPositiveSize2DCT;
   published
     [TDefault(0)]
-    property Rot: TSTAngleST read fRot write fRot;
+    property Rot: TAngleST read fRot write fRot;
     [TDefault(False)]
     property FlipH: ProRock.Xmlite.Schema.Base.TBooleanST read fFlipH write fFlipH;
     [TDefault(False)]
     property FlipV: ProRock.Xmlite.Schema.Base.TBooleanST read fFlipV write fFlipV;
-    property Off: TCTPoint2DCT read fOff;
-    property Ext: TCTPositiveSize2DCT read fExt;
+    property Off: TPoint2DCT read fOff;
+    property Ext: TPositiveSize2DCT read fExt;
   end;
 
   [TName('CT_GroupTransform2D')]
-  TCTGroupTransform2DCT = class(TXmliteComplexType)
+  TGroupTransform2DCT = class(TXmliteComplexType)
   private
-    fRot: TSTAngleST;
+    fRot: TAngleST;
     fFlipH: ProRock.Xmlite.Schema.Base.TBooleanST;
     fFlipV: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fOff: TCTPoint2DCT;
-    fExt: TCTPositiveSize2DCT;
-    fChOff: TCTPoint2DCT;
-    fChExt: TCTPositiveSize2DCT;
+    fOff: TPoint2DCT;
+    fExt: TPositiveSize2DCT;
+    fChOff: TPoint2DCT;
+    fChExt: TPositiveSize2DCT;
   published
     [TDefault(0)]
-    property Rot: TSTAngleST read fRot write fRot;
+    property Rot: TAngleST read fRot write fRot;
     [TDefault(False)]
     property FlipH: ProRock.Xmlite.Schema.Base.TBooleanST read fFlipH write fFlipH;
     [TDefault(False)]
     property FlipV: ProRock.Xmlite.Schema.Base.TBooleanST read fFlipV write fFlipV;
-    property Off: TCTPoint2DCT read fOff;
-    property Ext: TCTPositiveSize2DCT read fExt;
-    property ChOff: TCTPoint2DCT read fChOff;
-    property ChExt: TCTPositiveSize2DCT read fChExt;
+    property Off: TPoint2DCT read fOff;
+    property Ext: TPositiveSize2DCT read fExt;
+    property ChOff: TPoint2DCT read fChOff;
+    property ChExt: TPositiveSize2DCT read fChExt;
   end;
 
   [TName('CT_Point3D')]
-  TCTPoint3DCT = class(TXmliteComplexType)
+  TPoint3DCT = class(TXmliteComplexType)
   private
-    fX: TSTCoordinateST;
-    fY: TSTCoordinateST;
-    fZ: TSTCoordinateST;
+    fX: TCoordinateST;
+    fY: TCoordinateST;
+    fZ: TCoordinateST;
   published
     [TRequired]
-    property X: TSTCoordinateST read fX write fX;
+    property X: TCoordinateST read fX write fX;
     [TRequired]
-    property Y: TSTCoordinateST read fY write fY;
+    property Y: TCoordinateST read fY write fY;
     [TRequired]
-    property Z: TSTCoordinateST read fZ write fZ;
+    property Z: TCoordinateST read fZ write fZ;
   end;
 
   [TName('CT_Vector3D')]
-  TCTVector3DCT = class(TXmliteComplexType)
+  TVector3DCT = class(TXmliteComplexType)
   private
-    fDx: TSTCoordinateST;
-    fDy: TSTCoordinateST;
-    fDz: TSTCoordinateST;
+    fDx: TCoordinateST;
+    fDy: TCoordinateST;
+    fDz: TCoordinateST;
   published
     [TRequired]
-    property Dx: TSTCoordinateST read fDx write fDx;
+    property Dx: TCoordinateST read fDx write fDx;
     [TRequired]
-    property Dy: TSTCoordinateST read fDy write fDy;
+    property Dy: TCoordinateST read fDy write fDy;
     [TRequired]
-    property Dz: TSTCoordinateST read fDz write fDz;
+    property Dz: TCoordinateST read fDz write fDz;
   end;
 
   [TName('CT_SphereCoords')]
-  TCTSphereCoordsCT = class(TXmliteComplexType)
+  TSphereCoordsCT = class(TXmliteComplexType)
   private
-    fLat: TSTPositiveFixedAngleST;
-    fLon: TSTPositiveFixedAngleST;
-    fRev: TSTPositiveFixedAngleST;
+    fLat: TPositiveFixedAngleST;
+    fLon: TPositiveFixedAngleST;
+    fRev: TPositiveFixedAngleST;
   published
     [TRequired]
-    property Lat: TSTPositiveFixedAngleST read fLat write fLat;
+    property Lat: TPositiveFixedAngleST read fLat write fLat;
     [TRequired]
-    property Lon: TSTPositiveFixedAngleST read fLon write fLon;
+    property Lon: TPositiveFixedAngleST read fLon write fLon;
     [TRequired]
-    property Rev: TSTPositiveFixedAngleST read fRev write fRev;
+    property Rev: TPositiveFixedAngleST read fRev write fRev;
   end;
 
   [TName('CT_RelativeRect')]
-  TCTRelativeRectCT = class(TXmliteComplexType)
+  TRelativeRectCT = class(TXmliteComplexType)
   private
-    fL: TSTPercentageST;
-    fT: TSTPercentageST;
-    fR: TSTPercentageST;
-    fB: TSTPercentageST;
+    fL: TPercentageST;
+    fT: TPercentageST;
+    fR: TPercentageST;
+    fB: TPercentageST;
   published
     [TDefault('0%')]
-    property L: TSTPercentageST read fL write fL;
+    property L: TPercentageST read fL write fL;
     [TDefault('0%')]
-    property T: TSTPercentageST read fT write fT;
+    property T: TPercentageST read fT write fT;
     [TDefault('0%')]
-    property R: TSTPercentageST read fR write fR;
+    property R: TPercentageST read fR write fR;
     [TDefault('0%')]
-    property B: TSTPercentageST read fB write fB;
+    property B: TPercentageST read fB write fB;
   end;
 
   [TName('CT_Color')]
-  TCTColorCT = class(TXmliteComplexType)
+  TColorCT = class(TXmliteComplexType)
   private
-    fScrgbClr: TCTScRgbColorCT;
-    fSrgbClr: TCTSRgbColorCT;
-    fHslClr: TCTHslColorCT;
-    fSysClr: TCTSystemColorCT;
-    fSchemeClr: TCTSchemeColorCT;
-    fPrstClr: TCTPresetColorCT;
+    fScrgbClr: TScRgbColorCT;
+    fSrgbClr: TSRgbColorCT;
+    fHslClr: THslColorCT;
+    fSysClr: TSystemColorCT;
+    fSchemeClr: TSchemeColorCT;
+    fPrstClr: TPresetColorCT;
 
-    function GetScrgbClr: TCTScRgbColorCT;
-    function GetSrgbClr: TCTSRgbColorCT;
-    function GetHslClr: TCTHslColorCT;
-    function GetSysClr: TCTSystemColorCT;
-    function GetSchemeClr: TCTSchemeColorCT;
-    function GetPrstClr: TCTPresetColorCT;
+    function GetScrgbClr: TScRgbColorCT;
+    function GetSrgbClr: TSRgbColorCT;
+    function GetHslClr: THslColorCT;
+    function GetSysClr: TSystemColorCT;
+    function GetSchemeClr: TSchemeColorCT;
+    function GetPrstClr: TPresetColorCT;
   published
     [TChoice('ScrgbClr')]
-    property ScrgbClr: TCTScRgbColorCT read GetScrgbClr;
+    property ScrgbClr: TScRgbColorCT read GetScrgbClr;
     [TChoice('ScrgbClr')]
-    property SrgbClr: TCTSRgbColorCT read GetSrgbClr;
+    property SrgbClr: TSRgbColorCT read GetSrgbClr;
     [TChoice('ScrgbClr')]
-    property HslClr: TCTHslColorCT read GetHslClr;
+    property HslClr: THslColorCT read GetHslClr;
     [TChoice('ScrgbClr')]
-    property SysClr: TCTSystemColorCT read GetSysClr;
+    property SysClr: TSystemColorCT read GetSysClr;
     [TChoice('ScrgbClr')]
-    property SchemeClr: TCTSchemeColorCT read GetSchemeClr;
+    property SchemeClr: TSchemeColorCT read GetSchemeClr;
     [TChoice('ScrgbClr')]
-    property PrstClr: TCTPresetColorCT read GetPrstClr;
+    property PrstClr: TPresetColorCT read GetPrstClr;
   end;
 
   [TOrdered]
   [TName('CT_ColorMRU')]
-  TCTColorMRUCT = class(TXmliteComplexType)
+  TColorMRUCT = class(TXmliteComplexType)
   private
-    fScrgbClr: TCTScRgbColorCTList;
-    fSrgbClr: TCTSRgbColorCTList;
-    fHslClr: TCTHslColorCTList;
-    fSysClr: TCTSystemColorCTList;
-    fSchemeClr: TCTSchemeColorCTList;
-    fPrstClr: TCTPresetColorCTList;
+    fScrgbClr: TScRgbColorCTList;
+    fSrgbClr: TSRgbColorCTList;
+    fHslClr: THslColorCTList;
+    fSysClr: TSystemColorCTList;
+    fSchemeClr: TSchemeColorCTList;
+    fPrstClr: TPresetColorCTList;
   published
-    property ScrgbClr: TCTScRgbColorCTList read fScrgbClr;
-    property SrgbClr: TCTSRgbColorCTList read fSrgbClr;
-    property HslClr: TCTHslColorCTList read fHslClr;
-    property SysClr: TCTSystemColorCTList read fSysClr;
-    property SchemeClr: TCTSchemeColorCTList read fSchemeClr;
-    property PrstClr: TCTPresetColorCTList read fPrstClr;
+    property ScrgbClr: TScRgbColorCTList read fScrgbClr;
+    property SrgbClr: TSRgbColorCTList read fSrgbClr;
+    property HslClr: THslColorCTList read fHslClr;
+    property SysClr: TSystemColorCTList read fSysClr;
+    property SchemeClr: TSchemeColorCTList read fSchemeClr;
+    property PrstClr: TPresetColorCTList read fPrstClr;
   end;
 
   [TName('CT_EmbeddedWAVAudioFile')]
-  TCTEmbeddedWAVAudioFileCT = class(TXmliteComplexType)
+  TEmbeddedWAVAudioFileCT = class(TXmliteComplexType)
   private
     fEmbed: ProRock.Xmlite.Schema.Ooxml.Rel.TEmbedA;
     fName: ProRock.Xmlite.Schema.Base.TStringST;
@@ -1718,7 +1718,7 @@ type
   end;
 
   [TName('CT_Hyperlink')]
-  TCTHyperlinkCT = class(TXmliteComplexType)
+  THyperlinkCT = class(TXmliteComplexType)
   private
     fId: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA;
     fInvalidUrl: ProRock.Xmlite.Schema.Base.TStringST;
@@ -1728,8 +1728,8 @@ type
     fHistory: ProRock.Xmlite.Schema.Base.TBooleanST;
     fHighlightClick: ProRock.Xmlite.Schema.Base.TBooleanST;
     fEndSnd: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fSnd: TCTEmbeddedWAVAudioFileCT;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fSnd: TEmbeddedWAVAudioFileCT;
+    fExtLst: TOfficeArtExtensionListCT;
   published
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
@@ -1743,12 +1743,12 @@ type
     property HighlightClick: ProRock.Xmlite.Schema.Base.TBooleanST read fHighlightClick write fHighlightClick;
     [TDefault(False)]
     property EndSnd: ProRock.Xmlite.Schema.Base.TBooleanST read fEndSnd write fEndSnd;
-    property Snd: TCTEmbeddedWAVAudioFileCT read fSnd;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property Snd: TEmbeddedWAVAudioFileCT read fSnd;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_ConnectorLocking')]
-  TCTConnectorLockingCT = class(TXmliteComplexType)
+  TConnectorLockingCT = class(TXmliteComplexType)
   private
     fNoGrp: ProRock.Xmlite.Schema.Base.TBooleanST;
     fNoSelect: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -1760,7 +1760,7 @@ type
     fNoAdjustHandles: ProRock.Xmlite.Schema.Base.TBooleanST;
     fNoChangeArrowheads: ProRock.Xmlite.Schema.Base.TBooleanST;
     fNoChangeShapeType: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fExtLst: TOfficeArtExtensionListCT;
   published
     [TDefault(False)]
     property NoGrp: ProRock.Xmlite.Schema.Base.TBooleanST read fNoGrp write fNoGrp;
@@ -1782,11 +1782,11 @@ type
     property NoChangeArrowheads: ProRock.Xmlite.Schema.Base.TBooleanST read fNoChangeArrowheads write fNoChangeArrowheads;
     [TDefault(False)]
     property NoChangeShapeType: ProRock.Xmlite.Schema.Base.TBooleanST read fNoChangeShapeType write fNoChangeShapeType;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_ShapeLocking')]
-  TCTShapeLockingCT = class(TXmliteComplexType)
+  TShapeLockingCT = class(TXmliteComplexType)
   private
     fNoTextEdit: ProRock.Xmlite.Schema.Base.TBooleanST;
     fNoGrp: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -1799,7 +1799,7 @@ type
     fNoAdjustHandles: ProRock.Xmlite.Schema.Base.TBooleanST;
     fNoChangeArrowheads: ProRock.Xmlite.Schema.Base.TBooleanST;
     fNoChangeShapeType: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fExtLst: TOfficeArtExtensionListCT;
   published
     [TDefault(False)]
     property NoTextEdit: ProRock.Xmlite.Schema.Base.TBooleanST read fNoTextEdit write fNoTextEdit;
@@ -1823,11 +1823,11 @@ type
     property NoChangeArrowheads: ProRock.Xmlite.Schema.Base.TBooleanST read fNoChangeArrowheads write fNoChangeArrowheads;
     [TDefault(False)]
     property NoChangeShapeType: ProRock.Xmlite.Schema.Base.TBooleanST read fNoChangeShapeType write fNoChangeShapeType;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_PictureLocking')]
-  TCTPictureLockingCT = class(TXmliteComplexType)
+  TPictureLockingCT = class(TXmliteComplexType)
   private
     fNoCrop: ProRock.Xmlite.Schema.Base.TBooleanST;
     fNoGrp: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -1840,7 +1840,7 @@ type
     fNoAdjustHandles: ProRock.Xmlite.Schema.Base.TBooleanST;
     fNoChangeArrowheads: ProRock.Xmlite.Schema.Base.TBooleanST;
     fNoChangeShapeType: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fExtLst: TOfficeArtExtensionListCT;
   published
     [TDefault(False)]
     property NoCrop: ProRock.Xmlite.Schema.Base.TBooleanST read fNoCrop write fNoCrop;
@@ -1864,11 +1864,11 @@ type
     property NoChangeArrowheads: ProRock.Xmlite.Schema.Base.TBooleanST read fNoChangeArrowheads write fNoChangeArrowheads;
     [TDefault(False)]
     property NoChangeShapeType: ProRock.Xmlite.Schema.Base.TBooleanST read fNoChangeShapeType write fNoChangeShapeType;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_GroupLocking')]
-  TCTGroupLockingCT = class(TXmliteComplexType)
+  TGroupLockingCT = class(TXmliteComplexType)
   private
     fNoGrp: ProRock.Xmlite.Schema.Base.TBooleanST;
     fNoUngrp: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -1877,7 +1877,7 @@ type
     fNoChangeAspect: ProRock.Xmlite.Schema.Base.TBooleanST;
     fNoMove: ProRock.Xmlite.Schema.Base.TBooleanST;
     fNoResize: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fExtLst: TOfficeArtExtensionListCT;
   published
     [TDefault(False)]
     property NoGrp: ProRock.Xmlite.Schema.Base.TBooleanST read fNoGrp write fNoGrp;
@@ -1893,11 +1893,11 @@ type
     property NoMove: ProRock.Xmlite.Schema.Base.TBooleanST read fNoMove write fNoMove;
     [TDefault(False)]
     property NoResize: ProRock.Xmlite.Schema.Base.TBooleanST read fNoResize write fNoResize;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_GraphicalObjectFrameLocking')]
-  TCTGraphicalObjectFrameLockingCT = class(TXmliteComplexType)
+  TGraphicalObjectFrameLockingCT = class(TXmliteComplexType)
   private
     fNoGrp: ProRock.Xmlite.Schema.Base.TBooleanST;
     fNoDrilldown: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -1905,7 +1905,7 @@ type
     fNoChangeAspect: ProRock.Xmlite.Schema.Base.TBooleanST;
     fNoMove: ProRock.Xmlite.Schema.Base.TBooleanST;
     fNoResize: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fExtLst: TOfficeArtExtensionListCT;
   published
     [TDefault(False)]
     property NoGrp: ProRock.Xmlite.Schema.Base.TBooleanST read fNoGrp write fNoGrp;
@@ -1919,11 +1919,11 @@ type
     property NoMove: ProRock.Xmlite.Schema.Base.TBooleanST read fNoMove write fNoMove;
     [TDefault(False)]
     property NoResize: ProRock.Xmlite.Schema.Base.TBooleanST read fNoResize write fNoResize;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_ContentPartLocking')]
-  TCTContentPartLockingCT = class(TXmliteComplexType)
+  TContentPartLockingCT = class(TXmliteComplexType)
   private
     fNoGrp: ProRock.Xmlite.Schema.Base.TBooleanST;
     fNoSelect: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -1935,7 +1935,7 @@ type
     fNoAdjustHandles: ProRock.Xmlite.Schema.Base.TBooleanST;
     fNoChangeArrowheads: ProRock.Xmlite.Schema.Base.TBooleanST;
     fNoChangeShapeType: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fExtLst: TOfficeArtExtensionListCT;
   published
     [TDefault(False)]
     property NoGrp: ProRock.Xmlite.Schema.Base.TBooleanST read fNoGrp write fNoGrp;
@@ -1957,109 +1957,109 @@ type
     property NoChangeArrowheads: ProRock.Xmlite.Schema.Base.TBooleanST read fNoChangeArrowheads write fNoChangeArrowheads;
     [TDefault(False)]
     property NoChangeShapeType: ProRock.Xmlite.Schema.Base.TBooleanST read fNoChangeShapeType write fNoChangeShapeType;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_NonVisualDrawingProps')]
-  TCTNonVisualDrawingPropsCT = class(TXmliteComplexType)
+  TNonVisualDrawingPropsCT = class(TXmliteComplexType)
   private
-    fId: TSTDrawingElementIdST;
+    fId: TDrawingElementIdST;
     fName: ProRock.Xmlite.Schema.Base.TStringST;
     fDescr: ProRock.Xmlite.Schema.Base.TStringST;
     fHidden: ProRock.Xmlite.Schema.Base.TBooleanST;
     fTitle: ProRock.Xmlite.Schema.Base.TStringST;
-    fHlinkClick: TCTHyperlinkCT;
-    fHlinkHover: TCTHyperlinkCT;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fHlinkClick: THyperlinkCT;
+    fHlinkHover: THyperlinkCT;
+    fExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
-    property Id: TSTDrawingElementIdST read fId write fId;
+    property Id: TDrawingElementIdST read fId write fId;
     [TRequired]
     property Name: ProRock.Xmlite.Schema.Base.TStringST read fName write fName;
     property Descr: ProRock.Xmlite.Schema.Base.TStringST read fDescr write fDescr;
     [TDefault(False)]
     property Hidden: ProRock.Xmlite.Schema.Base.TBooleanST read fHidden write fHidden;
     property Title: ProRock.Xmlite.Schema.Base.TStringST read fTitle write fTitle;
-    property HlinkClick: TCTHyperlinkCT read fHlinkClick;
-    property HlinkHover: TCTHyperlinkCT read fHlinkHover;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property HlinkClick: THyperlinkCT read fHlinkClick;
+    property HlinkHover: THyperlinkCT read fHlinkHover;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_NonVisualDrawingShapeProps')]
-  TCTNonVisualDrawingShapePropsCT = class(TXmliteComplexType)
+  TNonVisualDrawingShapePropsCT = class(TXmliteComplexType)
   private
     fTxBox: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fSpLocks: TCTShapeLockingCT;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fSpLocks: TShapeLockingCT;
+    fExtLst: TOfficeArtExtensionListCT;
   published
     [TDefault(False)]
     property TxBox: ProRock.Xmlite.Schema.Base.TBooleanST read fTxBox write fTxBox;
-    property SpLocks: TCTShapeLockingCT read fSpLocks;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property SpLocks: TShapeLockingCT read fSpLocks;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_NonVisualConnectorProperties')]
-  TCTNonVisualConnectorPropertiesCT = class(TXmliteComplexType)
+  TNonVisualConnectorPropertiesCT = class(TXmliteComplexType)
   private
-    fCxnSpLocks: TCTConnectorLockingCT;
-    fStCxn: TCTConnectionCT;
-    fEndCxn: TCTConnectionCT;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fCxnSpLocks: TConnectorLockingCT;
+    fStCxn: TConnectionCT;
+    fEndCxn: TConnectionCT;
+    fExtLst: TOfficeArtExtensionListCT;
   published
-    property CxnSpLocks: TCTConnectorLockingCT read fCxnSpLocks;
-    property StCxn: TCTConnectionCT read fStCxn;
-    property EndCxn: TCTConnectionCT read fEndCxn;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property CxnSpLocks: TConnectorLockingCT read fCxnSpLocks;
+    property StCxn: TConnectionCT read fStCxn;
+    property EndCxn: TConnectionCT read fEndCxn;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_NonVisualPictureProperties')]
-  TCTNonVisualPicturePropertiesCT = class(TXmliteComplexType)
+  TNonVisualPicturePropertiesCT = class(TXmliteComplexType)
   private
     fPreferRelativeResize: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fPicLocks: TCTPictureLockingCT;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fPicLocks: TPictureLockingCT;
+    fExtLst: TOfficeArtExtensionListCT;
   published
     [TDefault(True)]
     property PreferRelativeResize: ProRock.Xmlite.Schema.Base.TBooleanST read fPreferRelativeResize write fPreferRelativeResize;
-    property PicLocks: TCTPictureLockingCT read fPicLocks;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property PicLocks: TPictureLockingCT read fPicLocks;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_NonVisualGroupDrawingShapeProps')]
-  TCTNonVisualGroupDrawingShapePropsCT = class(TXmliteComplexType)
+  TNonVisualGroupDrawingShapePropsCT = class(TXmliteComplexType)
   private
-    fGrpSpLocks: TCTGroupLockingCT;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fGrpSpLocks: TGroupLockingCT;
+    fExtLst: TOfficeArtExtensionListCT;
   published
-    property GrpSpLocks: TCTGroupLockingCT read fGrpSpLocks;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property GrpSpLocks: TGroupLockingCT read fGrpSpLocks;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_NonVisualGraphicFrameProperties')]
-  TCTNonVisualGraphicFramePropertiesCT = class(TXmliteComplexType)
+  TNonVisualGraphicFramePropertiesCT = class(TXmliteComplexType)
   private
-    fGraphicFrameLocks: TCTGraphicalObjectFrameLockingCT;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fGraphicFrameLocks: TGraphicalObjectFrameLockingCT;
+    fExtLst: TOfficeArtExtensionListCT;
   published
-    property GraphicFrameLocks: TCTGraphicalObjectFrameLockingCT read fGraphicFrameLocks;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property GraphicFrameLocks: TGraphicalObjectFrameLockingCT read fGraphicFrameLocks;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_NonVisualContentPartProperties')]
-  TCTNonVisualContentPartPropertiesCT = class(TXmliteComplexType)
+  TNonVisualContentPartPropertiesCT = class(TXmliteComplexType)
   private
     fIsComment: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fCpLocks: TCTContentPartLockingCT;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fCpLocks: TContentPartLockingCT;
+    fExtLst: TOfficeArtExtensionListCT;
   published
     [TDefault(True)]
     property IsComment: ProRock.Xmlite.Schema.Base.TBooleanST read fIsComment write fIsComment;
-    property CpLocks: TCTContentPartLockingCT read fCpLocks;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property CpLocks: TContentPartLockingCT read fCpLocks;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_GraphicalObjectData')]
-  TCTGraphicalObjectDataCT = class(TXmliteComplexType)
+  TGraphicalObjectDataCT = class(TXmliteComplexType)
   private
     fUri: ProRock.Xmlite.Schema.Base.TTokenST;
   published
@@ -2068,1256 +2068,1256 @@ type
   end;
 
   [TName('CT_GraphicalObject')]
-  TCTGraphicalObjectCT = class(TXmliteComplexType)
+  TGraphicalObjectCT = class(TXmliteComplexType)
   private
-    fGraphicData: TCTGraphicalObjectDataCT;
+    fGraphicData: TGraphicalObjectDataCT;
   published
     [TRequired]
-    property GraphicData: TCTGraphicalObjectDataCT read fGraphicData;
+    property GraphicData: TGraphicalObjectDataCT read fGraphicData;
   end;
 
   [TName('CT_AnimationDgmElement')]
-  TCTAnimationDgmElementCT = class(TXmliteComplexType)
+  TAnimationDgmElementCT = class(TXmliteComplexType)
   private
-    fId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST;
-    fBldStep: TSTDgmBuildStepST;
+    fId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST;
+    fBldStep: TDgmBuildStepST;
   published
     [TDefault('{00000000-0000-0000-0000-000000000000}')]
-    property Id: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST read fId write fId;
+    property Id: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST read fId write fId;
     [TDefault(Ord(stdbsSp))]
-    property BldStep: TSTDgmBuildStepST read fBldStep write fBldStep;
+    property BldStep: TDgmBuildStepST read fBldStep write fBldStep;
   end;
 
   [TName('CT_AnimationChartElement')]
-  TCTAnimationChartElementCT = class(TXmliteComplexType)
+  TAnimationChartElementCT = class(TXmliteComplexType)
   private
     fSeriesIdx: ProRock.Xmlite.Schema.Base.TIntST;
     fCategoryIdx: ProRock.Xmlite.Schema.Base.TIntST;
-    fBldStep: TSTChartBuildStepST;
+    fBldStep: TChartBuildStepST;
   published
     [TDefault(-1)]
     property SeriesIdx: ProRock.Xmlite.Schema.Base.TIntST read fSeriesIdx write fSeriesIdx;
     [TDefault(-1)]
     property CategoryIdx: ProRock.Xmlite.Schema.Base.TIntST read fCategoryIdx write fCategoryIdx;
     [TRequired]
-    property BldStep: TSTChartBuildStepST read fBldStep write fBldStep;
+    property BldStep: TChartBuildStepST read fBldStep write fBldStep;
   end;
 
   [TName('CT_AnimationElementChoice')]
-  TCTAnimationElementChoiceCT = class(TXmliteComplexType)
+  TAnimationElementChoiceCT = class(TXmliteComplexType)
   private
-    fDgm: TCTAnimationDgmElementCT;
-    fChart: TCTAnimationChartElementCT;
+    fDgm: TAnimationDgmElementCT;
+    fChart: TAnimationChartElementCT;
 
-    function GetDgm: TCTAnimationDgmElementCT;
-    function GetChart: TCTAnimationChartElementCT;
+    function GetDgm: TAnimationDgmElementCT;
+    function GetChart: TAnimationChartElementCT;
   published
     [TChoice('Dgm')]
-    property Dgm: TCTAnimationDgmElementCT read GetDgm;
+    property Dgm: TAnimationDgmElementCT read GetDgm;
     [TChoice('Dgm')]
-    property Chart: TCTAnimationChartElementCT read GetChart;
+    property Chart: TAnimationChartElementCT read GetChart;
   end;
 
   [TName('CT_AnimationDgmBuildProperties')]
-  TCTAnimationDgmBuildPropertiesCT = class(TXmliteComplexType)
+  TAnimationDgmBuildPropertiesCT = class(TXmliteComplexType)
   private
-    fBld: TSTAnimationDgmBuildTypeST;
+    fBld: TAnimationDgmBuildTypeST;
     fRev: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
     [TDefault('allAtOnce')]
-    property Bld: TSTAnimationDgmBuildTypeST read fBld write fBld;
+    property Bld: TAnimationDgmBuildTypeST read fBld write fBld;
     [TDefault(False)]
     property Rev: ProRock.Xmlite.Schema.Base.TBooleanST read fRev write fRev;
   end;
 
   [TName('CT_AnimationChartBuildProperties')]
-  TCTAnimationChartBuildPropertiesCT = class(TXmliteComplexType)
+  TAnimationChartBuildPropertiesCT = class(TXmliteComplexType)
   private
-    fBld: TSTAnimationChartBuildTypeST;
+    fBld: TAnimationChartBuildTypeST;
     fAnimBg: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
     [TDefault('allAtOnce')]
-    property Bld: TSTAnimationChartBuildTypeST read fBld write fBld;
+    property Bld: TAnimationChartBuildTypeST read fBld write fBld;
     [TDefault(True)]
     property AnimBg: ProRock.Xmlite.Schema.Base.TBooleanST read fAnimBg write fAnimBg;
   end;
 
   [TName('CT_AnimationGraphicalObjectBuildProperties')]
-  TCTAnimationGraphicalObjectBuildPropertiesCT = class(TXmliteComplexType)
+  TAnimationGraphicalObjectBuildPropertiesCT = class(TXmliteComplexType)
   private
-    fBldDgm: TCTAnimationDgmBuildPropertiesCT;
-    fBldChart: TCTAnimationChartBuildPropertiesCT;
+    fBldDgm: TAnimationDgmBuildPropertiesCT;
+    fBldChart: TAnimationChartBuildPropertiesCT;
 
-    function GetBldDgm: TCTAnimationDgmBuildPropertiesCT;
-    function GetBldChart: TCTAnimationChartBuildPropertiesCT;
+    function GetBldDgm: TAnimationDgmBuildPropertiesCT;
+    function GetBldChart: TAnimationChartBuildPropertiesCT;
     function GetBldChosen: TBasite;
   public
     property BldChosen: TBasite read GetBldChosen;
   published
     [TChoice('Bld')]
-    property BldDgm: TCTAnimationDgmBuildPropertiesCT read GetBldDgm;
+    property BldDgm: TAnimationDgmBuildPropertiesCT read GetBldDgm;
     [TChoice('Bld')]
-    property BldChart: TCTAnimationChartBuildPropertiesCT read GetBldChart;
+    property BldChart: TAnimationChartBuildPropertiesCT read GetBldChart;
   end;
 
   [TName('CT_BackgroundFormatting')]
-  TCTBackgroundFormattingCT = class(TXmliteComplexType)
+  TBackgroundFormattingCT = class(TXmliteComplexType)
   private
-    fNoFill: TCTNoFillPropertiesCT;
-    fSolidFill: TCTSolidColorFillPropertiesCT;
-    fGradFill: TCTGradientFillPropertiesCT;
-    fBlipFill: TCTBlipFillPropertiesCT;
-    fPattFill: TCTPatternFillPropertiesCT;
-    fGrpFill: TCTGroupFillPropertiesCT;
-    fEffectLst: TCTEffectListCT;
-    fEffectDag: TCTEffectContainerCT;
+    fNoFill: TNoFillPropertiesCT;
+    fSolidFill: TSolidColorFillPropertiesCT;
+    fGradFill: TGradientFillPropertiesCT;
+    fBlipFill: TBlipFillPropertiesCT;
+    fPattFill: TPatternFillPropertiesCT;
+    fGrpFill: TGroupFillPropertiesCT;
+    fEffectLst: TEffectListCT;
+    fEffectDag: TEffectContainerCT;
 
-    function GetNoFill: TCTNoFillPropertiesCT;
-    function GetSolidFill: TCTSolidColorFillPropertiesCT;
-    function GetGradFill: TCTGradientFillPropertiesCT;
-    function GetBlipFill: TCTBlipFillPropertiesCT;
-    function GetPattFill: TCTPatternFillPropertiesCT;
-    function GetGrpFill: TCTGroupFillPropertiesCT;
-    function GetEffectLst: TCTEffectListCT;
-    function GetEffectDag: TCTEffectContainerCT;
+    function GetNoFill: TNoFillPropertiesCT;
+    function GetSolidFill: TSolidColorFillPropertiesCT;
+    function GetGradFill: TGradientFillPropertiesCT;
+    function GetBlipFill: TBlipFillPropertiesCT;
+    function GetPattFill: TPatternFillPropertiesCT;
+    function GetGrpFill: TGroupFillPropertiesCT;
+    function GetEffectLst: TEffectListCT;
+    function GetEffectDag: TEffectContainerCT;
     function GetEffectChosen: TBasite;
   public
     property EffectChosen: TBasite read GetEffectChosen;
   published
     [TChoice('NoFill')]
-    property NoFill: TCTNoFillPropertiesCT read GetNoFill;
+    property NoFill: TNoFillPropertiesCT read GetNoFill;
     [TChoice('NoFill')]
-    property SolidFill: TCTSolidColorFillPropertiesCT read GetSolidFill;
+    property SolidFill: TSolidColorFillPropertiesCT read GetSolidFill;
     [TChoice('NoFill')]
-    property GradFill: TCTGradientFillPropertiesCT read GetGradFill;
+    property GradFill: TGradientFillPropertiesCT read GetGradFill;
     [TChoice('NoFill')]
-    property BlipFill: TCTBlipFillPropertiesCT read GetBlipFill;
+    property BlipFill: TBlipFillPropertiesCT read GetBlipFill;
     [TChoice('NoFill')]
-    property PattFill: TCTPatternFillPropertiesCT read GetPattFill;
+    property PattFill: TPatternFillPropertiesCT read GetPattFill;
     [TChoice('NoFill')]
-    property GrpFill: TCTGroupFillPropertiesCT read GetGrpFill;
+    property GrpFill: TGroupFillPropertiesCT read GetGrpFill;
     [TChoice('Effect')]
-    property EffectLst: TCTEffectListCT read GetEffectLst;
+    property EffectLst: TEffectListCT read GetEffectLst;
     [TChoice('Effect')]
-    property EffectDag: TCTEffectContainerCT read GetEffectDag;
+    property EffectDag: TEffectContainerCT read GetEffectDag;
   end;
 
   [TName('CT_WholeE2oFormatting')]
-  TCTWholeE2oFormattingCT = class(TXmliteComplexType)
+  TWholeE2oFormattingCT = class(TXmliteComplexType)
   private
-    fLn: TCTLinePropertiesCT;
-    fEffectLst: TCTEffectListCT;
-    fEffectDag: TCTEffectContainerCT;
+    fLn: TLinePropertiesCT;
+    fEffectLst: TEffectListCT;
+    fEffectDag: TEffectContainerCT;
 
-    function GetEffectLst: TCTEffectListCT;
-    function GetEffectDag: TCTEffectContainerCT;
+    function GetEffectLst: TEffectListCT;
+    function GetEffectDag: TEffectContainerCT;
     function GetEffectChosen: TBasite;
   public
     property EffectChosen: TBasite read GetEffectChosen;
   published
-    property Ln: TCTLinePropertiesCT read fLn;
+    property Ln: TLinePropertiesCT read fLn;
     [TChoice('Effect')]
-    property EffectLst: TCTEffectListCT read GetEffectLst;
+    property EffectLst: TEffectListCT read GetEffectLst;
     [TChoice('Effect')]
-    property EffectDag: TCTEffectContainerCT read GetEffectDag;
+    property EffectDag: TEffectContainerCT read GetEffectDag;
   end;
 
   [TName('CT_GvmlUseShapeRectangle')]
-  TCTGvmlUseShapeRectangleCT = class(TXmliteComplexType);
+  TGvmlUseShapeRectangleCT = class(TXmliteComplexType);
 
   [TName('CT_GvmlTextShape')]
-  TCTGvmlTextShapeCT = class(TXmliteComplexType)
+  TGvmlTextShapeCT = class(TXmliteComplexType)
   private
-    fTxBody: TCTTextBodyCT;
-    fUseSpRect: TCTGvmlUseShapeRectangleCT;
-    fXfrm: TCTTransform2DCT;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fTxBody: TTextBodyCT;
+    fUseSpRect: TGvmlUseShapeRectangleCT;
+    fXfrm: TTransform2DCT;
+    fExtLst: TOfficeArtExtensionListCT;
 
-    function GetUseSpRect: TCTGvmlUseShapeRectangleCT;
-    function GetXfrm: TCTTransform2DCT;
+    function GetUseSpRect: TGvmlUseShapeRectangleCT;
+    function GetXfrm: TTransform2DCT;
   published
     [TRequired]
-    property TxBody: TCTTextBodyCT read fTxBody;
+    property TxBody: TTextBodyCT read fTxBody;
     [TChoice('UseSpRect')]
-    property UseSpRect: TCTGvmlUseShapeRectangleCT read GetUseSpRect;
+    property UseSpRect: TGvmlUseShapeRectangleCT read GetUseSpRect;
     [TChoice('UseSpRect')]
-    property Xfrm: TCTTransform2DCT read GetXfrm;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property Xfrm: TTransform2DCT read GetXfrm;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_GvmlShapeNonVisual')]
-  TCTGvmlShapeNonVisualCT = class(TXmliteComplexType)
+  TGvmlShapeNonVisualCT = class(TXmliteComplexType)
   private
-    fCNvPr: TCTNonVisualDrawingPropsCT;
-    fCNvSpPr: TCTNonVisualDrawingShapePropsCT;
+    fCNvPr: TNonVisualDrawingPropsCT;
+    fCNvSpPr: TNonVisualDrawingShapePropsCT;
   published
     [TRequired]
-    property CNvPr: TCTNonVisualDrawingPropsCT read fCNvPr;
+    property CNvPr: TNonVisualDrawingPropsCT read fCNvPr;
     [TRequired]
-    property CNvSpPr: TCTNonVisualDrawingShapePropsCT read fCNvSpPr;
+    property CNvSpPr: TNonVisualDrawingShapePropsCT read fCNvSpPr;
   end;
 
   [TName('CT_GvmlShape')]
-  TCTGvmlShapeCT = class(TXmliteComplexType)
+  TGvmlShapeCT = class(TXmliteComplexType)
   private
-    fNvSpPr: TCTGvmlShapeNonVisualCT;
-    fSpPr: TCTShapePropertiesCT;
-    fTxSp: TCTGvmlTextShapeCT;
-    fStyle: TCTShapeStyleCT;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fNvSpPr: TGvmlShapeNonVisualCT;
+    fSpPr: TShapePropertiesCT;
+    fTxSp: TGvmlTextShapeCT;
+    fStyle: TShapeStyleCT;
+    fExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
-    property NvSpPr: TCTGvmlShapeNonVisualCT read fNvSpPr;
+    property NvSpPr: TGvmlShapeNonVisualCT read fNvSpPr;
     [TRequired]
-    property SpPr: TCTShapePropertiesCT read fSpPr;
-    property TxSp: TCTGvmlTextShapeCT read fTxSp;
-    property Style: TCTShapeStyleCT read fStyle;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property SpPr: TShapePropertiesCT read fSpPr;
+    property TxSp: TGvmlTextShapeCT read fTxSp;
+    property Style: TShapeStyleCT read fStyle;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_GvmlConnectorNonVisual')]
-  TCTGvmlConnectorNonVisualCT = class(TXmliteComplexType)
+  TGvmlConnectorNonVisualCT = class(TXmliteComplexType)
   private
-    fCNvPr: TCTNonVisualDrawingPropsCT;
-    fCNvCxnSpPr: TCTNonVisualConnectorPropertiesCT;
+    fCNvPr: TNonVisualDrawingPropsCT;
+    fCNvCxnSpPr: TNonVisualConnectorPropertiesCT;
   published
     [TRequired]
-    property CNvPr: TCTNonVisualDrawingPropsCT read fCNvPr;
+    property CNvPr: TNonVisualDrawingPropsCT read fCNvPr;
     [TRequired]
-    property CNvCxnSpPr: TCTNonVisualConnectorPropertiesCT read fCNvCxnSpPr;
+    property CNvCxnSpPr: TNonVisualConnectorPropertiesCT read fCNvCxnSpPr;
   end;
 
   [TName('CT_GvmlConnector')]
-  TCTGvmlConnectorCT = class(TXmliteComplexType)
+  TGvmlConnectorCT = class(TXmliteComplexType)
   private
-    fNvCxnSpPr: TCTGvmlConnectorNonVisualCT;
-    fSpPr: TCTShapePropertiesCT;
-    fStyle: TCTShapeStyleCT;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fNvCxnSpPr: TGvmlConnectorNonVisualCT;
+    fSpPr: TShapePropertiesCT;
+    fStyle: TShapeStyleCT;
+    fExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
-    property NvCxnSpPr: TCTGvmlConnectorNonVisualCT read fNvCxnSpPr;
+    property NvCxnSpPr: TGvmlConnectorNonVisualCT read fNvCxnSpPr;
     [TRequired]
-    property SpPr: TCTShapePropertiesCT read fSpPr;
-    property Style: TCTShapeStyleCT read fStyle;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property SpPr: TShapePropertiesCT read fSpPr;
+    property Style: TShapeStyleCT read fStyle;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_GvmlPictureNonVisual')]
-  TCTGvmlPictureNonVisualCT = class(TXmliteComplexType)
+  TGvmlPictureNonVisualCT = class(TXmliteComplexType)
   private
-    fCNvPr: TCTNonVisualDrawingPropsCT;
-    fCNvPicPr: TCTNonVisualPicturePropertiesCT;
+    fCNvPr: TNonVisualDrawingPropsCT;
+    fCNvPicPr: TNonVisualPicturePropertiesCT;
   published
     [TRequired]
-    property CNvPr: TCTNonVisualDrawingPropsCT read fCNvPr;
+    property CNvPr: TNonVisualDrawingPropsCT read fCNvPr;
     [TRequired]
-    property CNvPicPr: TCTNonVisualPicturePropertiesCT read fCNvPicPr;
+    property CNvPicPr: TNonVisualPicturePropertiesCT read fCNvPicPr;
   end;
 
   [TName('CT_GvmlPicture')]
-  TCTGvmlPictureCT = class(TXmliteComplexType)
+  TGvmlPictureCT = class(TXmliteComplexType)
   private
-    fNvPicPr: TCTGvmlPictureNonVisualCT;
-    fBlipFill: TCTBlipFillPropertiesCT;
-    fSpPr: TCTShapePropertiesCT;
-    fStyle: TCTShapeStyleCT;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fNvPicPr: TGvmlPictureNonVisualCT;
+    fBlipFill: TBlipFillPropertiesCT;
+    fSpPr: TShapePropertiesCT;
+    fStyle: TShapeStyleCT;
+    fExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
-    property NvPicPr: TCTGvmlPictureNonVisualCT read fNvPicPr;
+    property NvPicPr: TGvmlPictureNonVisualCT read fNvPicPr;
     [TRequired]
-    property BlipFill: TCTBlipFillPropertiesCT read fBlipFill;
+    property BlipFill: TBlipFillPropertiesCT read fBlipFill;
     [TRequired]
-    property SpPr: TCTShapePropertiesCT read fSpPr;
-    property Style: TCTShapeStyleCT read fStyle;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property SpPr: TShapePropertiesCT read fSpPr;
+    property Style: TShapeStyleCT read fStyle;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_GvmlGraphicFrameNonVisual')]
-  TCTGvmlGraphicFrameNonVisualCT = class(TXmliteComplexType)
+  TGvmlGraphicFrameNonVisualCT = class(TXmliteComplexType)
   private
-    fCNvPr: TCTNonVisualDrawingPropsCT;
-    fCNvGraphicFramePr: TCTNonVisualGraphicFramePropertiesCT;
+    fCNvPr: TNonVisualDrawingPropsCT;
+    fCNvGraphicFramePr: TNonVisualGraphicFramePropertiesCT;
   published
     [TRequired]
-    property CNvPr: TCTNonVisualDrawingPropsCT read fCNvPr;
+    property CNvPr: TNonVisualDrawingPropsCT read fCNvPr;
     [TRequired]
-    property CNvGraphicFramePr: TCTNonVisualGraphicFramePropertiesCT read fCNvGraphicFramePr;
+    property CNvGraphicFramePr: TNonVisualGraphicFramePropertiesCT read fCNvGraphicFramePr;
   end;
 
   [TName('CT_GvmlGraphicalObjectFrame')]
-  TCTGvmlGraphicalObjectFrameCT = class(TXmliteComplexType)
+  TGvmlGraphicalObjectFrameCT = class(TXmliteComplexType)
   private
-    fNvGraphicFramePr: TCTGvmlGraphicFrameNonVisualCT;
+    fNvGraphicFramePr: TGvmlGraphicFrameNonVisualCT;
     fGraphic: TGraphicE;
-    fXfrm: TCTTransform2DCT;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fXfrm: TTransform2DCT;
+    fExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
-    property NvGraphicFramePr: TCTGvmlGraphicFrameNonVisualCT read fNvGraphicFramePr;
+    property NvGraphicFramePr: TGvmlGraphicFrameNonVisualCT read fNvGraphicFramePr;
     [TRequired]
     property Graphic: TGraphicE read fGraphic;
     [TRequired]
-    property Xfrm: TCTTransform2DCT read fXfrm;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property Xfrm: TTransform2DCT read fXfrm;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_GvmlGroupShapeNonVisual')]
-  TCTGvmlGroupShapeNonVisualCT = class(TXmliteComplexType)
+  TGvmlGroupShapeNonVisualCT = class(TXmliteComplexType)
   private
-    fCNvPr: TCTNonVisualDrawingPropsCT;
-    fCNvGrpSpPr: TCTNonVisualGroupDrawingShapePropsCT;
+    fCNvPr: TNonVisualDrawingPropsCT;
+    fCNvGrpSpPr: TNonVisualGroupDrawingShapePropsCT;
   published
     [TRequired]
-    property CNvPr: TCTNonVisualDrawingPropsCT read fCNvPr;
+    property CNvPr: TNonVisualDrawingPropsCT read fCNvPr;
     [TRequired]
-    property CNvGrpSpPr: TCTNonVisualGroupDrawingShapePropsCT read fCNvGrpSpPr;
+    property CNvGrpSpPr: TNonVisualGroupDrawingShapePropsCT read fCNvGrpSpPr;
   end;
 
   [TOrdered]
   [TName('CT_GvmlGroupShape')]
-  TCTGvmlGroupShapeCT = class(TXmliteComplexType)
+  TGvmlGroupShapeCT = class(TXmliteComplexType)
   private
-    fNvGrpSpPr: TCTGvmlGroupShapeNonVisualCT;
-    fGrpSpPr: TCTGroupShapePropertiesCT;
-    fTxSp: TCTGvmlTextShapeCTList;
-    fSp: TCTGvmlShapeCTList;
-    fCxnSp: TCTGvmlConnectorCTList;
-    fPic: TCTGvmlPictureCTList;
-    fGraphicFrame: TCTGvmlGraphicalObjectFrameCTList;
-    fGrpSp: TCTGvmlGroupShapeCTList;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fNvGrpSpPr: TGvmlGroupShapeNonVisualCT;
+    fGrpSpPr: TGroupShapePropertiesCT;
+    fTxSp: TGvmlTextShapeCTList;
+    fSp: TGvmlShapeCTList;
+    fCxnSp: TGvmlConnectorCTList;
+    fPic: TGvmlPictureCTList;
+    fGraphicFrame: TGvmlGraphicalObjectFrameCTList;
+    fGrpSp: TGvmlGroupShapeCTList;
+    fExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
-    property NvGrpSpPr: TCTGvmlGroupShapeNonVisualCT read fNvGrpSpPr;
+    property NvGrpSpPr: TGvmlGroupShapeNonVisualCT read fNvGrpSpPr;
     [TRequired]
-    property GrpSpPr: TCTGroupShapePropertiesCT read fGrpSpPr;
-    property TxSp: TCTGvmlTextShapeCTList read fTxSp;
-    property Sp: TCTGvmlShapeCTList read fSp;
-    property CxnSp: TCTGvmlConnectorCTList read fCxnSp;
-    property Pic: TCTGvmlPictureCTList read fPic;
-    property GraphicFrame: TCTGvmlGraphicalObjectFrameCTList read fGraphicFrame;
-    property GrpSp: TCTGvmlGroupShapeCTList read fGrpSp;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property GrpSpPr: TGroupShapePropertiesCT read fGrpSpPr;
+    property TxSp: TGvmlTextShapeCTList read fTxSp;
+    property Sp: TGvmlShapeCTList read fSp;
+    property CxnSp: TGvmlConnectorCTList read fCxnSp;
+    property Pic: TGvmlPictureCTList read fPic;
+    property GraphicFrame: TGvmlGraphicalObjectFrameCTList read fGraphicFrame;
+    property GrpSp: TGvmlGroupShapeCTList read fGrpSp;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_Camera')]
-  TCTCameraCT = class(TXmliteComplexType)
+  TCameraCT = class(TXmliteComplexType)
   private
-    fPrst: TSTPresetCameraTypeST;
-    fFov: TSTFOVAngleST;
-    fZoom: TSTPositivePercentageST;
-    fRot: TCTSphereCoordsCT;
+    fPrst: TPresetCameraTypeST;
+    fFov: TFOVAngleST;
+    fZoom: TPositivePercentageST;
+    fRot: TSphereCoordsCT;
   published
     [TRequired]
-    property Prst: TSTPresetCameraTypeST read fPrst write fPrst;
-    property Fov: TSTFOVAngleST read fFov write fFov;
+    property Prst: TPresetCameraTypeST read fPrst write fPrst;
+    property Fov: TFOVAngleST read fFov write fFov;
     [TDefault('100%')]
-    property Zoom: TSTPositivePercentageST read fZoom write fZoom;
-    property Rot: TCTSphereCoordsCT read fRot;
+    property Zoom: TPositivePercentageST read fZoom write fZoom;
+    property Rot: TSphereCoordsCT read fRot;
   end;
 
   [TName('CT_LightRig')]
-  TCTLightRigCT = class(TXmliteComplexType)
+  TLightRigCT = class(TXmliteComplexType)
   private
-    fRig: TSTLightRigTypeST;
-    fDir: TSTLightRigDirectionST;
-    fRot: TCTSphereCoordsCT;
+    fRig: TLightRigTypeST;
+    fDir: TLightRigDirectionST;
+    fRot: TSphereCoordsCT;
   published
     [TRequired]
-    property Rig: TSTLightRigTypeST read fRig write fRig;
+    property Rig: TLightRigTypeST read fRig write fRig;
     [TRequired]
-    property Dir: TSTLightRigDirectionST read fDir write fDir;
-    property Rot: TCTSphereCoordsCT read fRot;
+    property Dir: TLightRigDirectionST read fDir write fDir;
+    property Rot: TSphereCoordsCT read fRot;
   end;
 
   [TName('CT_Scene3D')]
-  TCTScene3DCT = class(TXmliteComplexType)
+  TScene3DCT = class(TXmliteComplexType)
   private
-    fCamera: TCTCameraCT;
-    fLightRig: TCTLightRigCT;
-    fBackdrop: TCTBackdropCT;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fCamera: TCameraCT;
+    fLightRig: TLightRigCT;
+    fBackdrop: TBackdropCT;
+    fExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
-    property Camera: TCTCameraCT read fCamera;
+    property Camera: TCameraCT read fCamera;
     [TRequired]
-    property LightRig: TCTLightRigCT read fLightRig;
-    property Backdrop: TCTBackdropCT read fBackdrop;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property LightRig: TLightRigCT read fLightRig;
+    property Backdrop: TBackdropCT read fBackdrop;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_Backdrop')]
-  TCTBackdropCT = class(TXmliteComplexType)
+  TBackdropCT = class(TXmliteComplexType)
   private
-    fAnchor: TCTPoint3DCT;
-    fNorm: TCTVector3DCT;
-    fUp: TCTVector3DCT;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fAnchor: TPoint3DCT;
+    fNorm: TVector3DCT;
+    fUp: TVector3DCT;
+    fExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
-    property Anchor: TCTPoint3DCT read fAnchor;
+    property Anchor: TPoint3DCT read fAnchor;
     [TRequired]
-    property Norm: TCTVector3DCT read fNorm;
+    property Norm: TVector3DCT read fNorm;
     [TRequired]
-    property Up: TCTVector3DCT read fUp;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property Up: TVector3DCT read fUp;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_Bevel')]
-  TCTBevelCT = class(TXmliteComplexType)
+  TBevelCT = class(TXmliteComplexType)
   private
-    fW: TSTPositiveCoordinateST;
-    fH: TSTPositiveCoordinateST;
-    fPrst: TSTBevelPresetTypeST;
+    fW: TPositiveCoordinateST;
+    fH: TPositiveCoordinateST;
+    fPrst: TBevelPresetTypeST;
   published
     [TDefault(76200)]
-    property W: TSTPositiveCoordinateST read fW write fW;
+    property W: TPositiveCoordinateST read fW write fW;
     [TDefault(76200)]
-    property H: TSTPositiveCoordinateST read fH write fH;
+    property H: TPositiveCoordinateST read fH write fH;
     [TDefault(Ord(stbptCircle))]
-    property Prst: TSTBevelPresetTypeST read fPrst write fPrst;
+    property Prst: TBevelPresetTypeST read fPrst write fPrst;
   end;
 
   [TName('CT_Shape3D')]
-  TCTShape3DCT = class(TXmliteComplexType)
+  TShape3DCT = class(TXmliteComplexType)
   private
-    fZ: TSTCoordinateST;
-    fExtrusionH: TSTPositiveCoordinateST;
-    fContourW: TSTPositiveCoordinateST;
-    fPrstMaterial: TSTPresetMaterialTypeST;
-    fBevelT: TCTBevelCT;
-    fBevelB: TCTBevelCT;
-    fExtrusionClr: TCTColorCT;
-    fContourClr: TCTColorCT;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fZ: TCoordinateST;
+    fExtrusionH: TPositiveCoordinateST;
+    fContourW: TPositiveCoordinateST;
+    fPrstMaterial: TPresetMaterialTypeST;
+    fBevelT: TBevelCT;
+    fBevelB: TBevelCT;
+    fExtrusionClr: TColorCT;
+    fContourClr: TColorCT;
+    fExtLst: TOfficeArtExtensionListCT;
   published
     [TDefault('0')]
-    property Z: TSTCoordinateST read fZ write fZ;
+    property Z: TCoordinateST read fZ write fZ;
     [TDefault(0)]
-    property ExtrusionH: TSTPositiveCoordinateST read fExtrusionH write fExtrusionH;
+    property ExtrusionH: TPositiveCoordinateST read fExtrusionH write fExtrusionH;
     [TDefault(0)]
-    property ContourW: TSTPositiveCoordinateST read fContourW write fContourW;
+    property ContourW: TPositiveCoordinateST read fContourW write fContourW;
     [TDefault(Ord(stpmtWarmMatte))]
-    property PrstMaterial: TSTPresetMaterialTypeST read fPrstMaterial write fPrstMaterial;
-    property BevelT: TCTBevelCT read fBevelT;
-    property BevelB: TCTBevelCT read fBevelB;
-    property ExtrusionClr: TCTColorCT read fExtrusionClr;
-    property ContourClr: TCTColorCT read fContourClr;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property PrstMaterial: TPresetMaterialTypeST read fPrstMaterial write fPrstMaterial;
+    property BevelT: TBevelCT read fBevelT;
+    property BevelB: TBevelCT read fBevelB;
+    property ExtrusionClr: TColorCT read fExtrusionClr;
+    property ContourClr: TColorCT read fContourClr;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_FlatText')]
-  TCTFlatTextCT = class(TXmliteComplexType)
+  TFlatTextCT = class(TXmliteComplexType)
   private
-    fZ: TSTCoordinateST;
+    fZ: TCoordinateST;
   published
     [TDefault('0')]
-    property Z: TSTCoordinateST read fZ write fZ;
+    property Z: TCoordinateST read fZ write fZ;
   end;
 
   [TName('CT_AlphaBiLevelEffect')]
-  TCTAlphaBiLevelEffectCT = class(TXmliteComplexType)
+  TAlphaBiLevelEffectCT = class(TXmliteComplexType)
   private
-    fThresh: TSTPositiveFixedPercentageST;
+    fThresh: TPositiveFixedPercentageST;
   published
     [TRequired]
-    property Thresh: TSTPositiveFixedPercentageST read fThresh write fThresh;
+    property Thresh: TPositiveFixedPercentageST read fThresh write fThresh;
   end;
 
   [TName('CT_AlphaCeilingEffect')]
-  TCTAlphaCeilingEffectCT = class(TXmliteComplexType);
+  TAlphaCeilingEffectCT = class(TXmliteComplexType);
 
   [TName('CT_AlphaFloorEffect')]
-  TCTAlphaFloorEffectCT = class(TXmliteComplexType);
+  TAlphaFloorEffectCT = class(TXmliteComplexType);
 
   [TName('CT_AlphaInverseEffect')]
-  TCTAlphaInverseEffectCT = class(TXmliteComplexType)
+  TAlphaInverseEffectCT = class(TXmliteComplexType)
   private
-    fScrgbClr: TCTScRgbColorCT;
-    fSrgbClr: TCTSRgbColorCT;
-    fHslClr: TCTHslColorCT;
-    fSysClr: TCTSystemColorCT;
-    fSchemeClr: TCTSchemeColorCT;
-    fPrstClr: TCTPresetColorCT;
+    fScrgbClr: TScRgbColorCT;
+    fSrgbClr: TSRgbColorCT;
+    fHslClr: THslColorCT;
+    fSysClr: TSystemColorCT;
+    fSchemeClr: TSchemeColorCT;
+    fPrstClr: TPresetColorCT;
 
-    function GetScrgbClr: TCTScRgbColorCT;
-    function GetSrgbClr: TCTSRgbColorCT;
-    function GetHslClr: TCTHslColorCT;
-    function GetSysClr: TCTSystemColorCT;
-    function GetSchemeClr: TCTSchemeColorCT;
-    function GetPrstClr: TCTPresetColorCT;
+    function GetScrgbClr: TScRgbColorCT;
+    function GetSrgbClr: TSRgbColorCT;
+    function GetHslClr: THslColorCT;
+    function GetSysClr: TSystemColorCT;
+    function GetSchemeClr: TSchemeColorCT;
+    function GetPrstClr: TPresetColorCT;
   published
     [TChoice('ScrgbClr')]
-    property ScrgbClr: TCTScRgbColorCT read GetScrgbClr;
+    property ScrgbClr: TScRgbColorCT read GetScrgbClr;
     [TChoice('ScrgbClr')]
-    property SrgbClr: TCTSRgbColorCT read GetSrgbClr;
+    property SrgbClr: TSRgbColorCT read GetSrgbClr;
     [TChoice('ScrgbClr')]
-    property HslClr: TCTHslColorCT read GetHslClr;
+    property HslClr: THslColorCT read GetHslClr;
     [TChoice('ScrgbClr')]
-    property SysClr: TCTSystemColorCT read GetSysClr;
+    property SysClr: TSystemColorCT read GetSysClr;
     [TChoice('ScrgbClr')]
-    property SchemeClr: TCTSchemeColorCT read GetSchemeClr;
+    property SchemeClr: TSchemeColorCT read GetSchemeClr;
     [TChoice('ScrgbClr')]
-    property PrstClr: TCTPresetColorCT read GetPrstClr;
+    property PrstClr: TPresetColorCT read GetPrstClr;
   end;
 
   [TName('CT_AlphaModulateFixedEffect')]
-  TCTAlphaModulateFixedEffectCT = class(TXmliteComplexType)
+  TAlphaModulateFixedEffectCT = class(TXmliteComplexType)
   private
-    fAmt: TSTPositivePercentageST;
+    fAmt: TPositivePercentageST;
   published
     [TDefault('100%')]
-    property Amt: TSTPositivePercentageST read fAmt write fAmt;
+    property Amt: TPositivePercentageST read fAmt write fAmt;
   end;
 
   [TName('CT_AlphaOutsetEffect')]
-  TCTAlphaOutsetEffectCT = class(TXmliteComplexType)
+  TAlphaOutsetEffectCT = class(TXmliteComplexType)
   private
-    fRad: TSTCoordinateST;
+    fRad: TCoordinateST;
   published
     [TDefault('0')]
-    property Rad: TSTCoordinateST read fRad write fRad;
+    property Rad: TCoordinateST read fRad write fRad;
   end;
 
   [TName('CT_AlphaReplaceEffect')]
-  TCTAlphaReplaceEffectCT = class(TXmliteComplexType)
+  TAlphaReplaceEffectCT = class(TXmliteComplexType)
   private
-    fA: TSTPositiveFixedPercentageST;
+    fA: TPositiveFixedPercentageST;
   published
     [TRequired]
-    property A: TSTPositiveFixedPercentageST read fA write fA;
+    property A: TPositiveFixedPercentageST read fA write fA;
   end;
 
   [TName('CT_BiLevelEffect')]
-  TCTBiLevelEffectCT = class(TXmliteComplexType)
+  TBiLevelEffectCT = class(TXmliteComplexType)
   private
-    fThresh: TSTPositiveFixedPercentageST;
+    fThresh: TPositiveFixedPercentageST;
   published
     [TRequired]
-    property Thresh: TSTPositiveFixedPercentageST read fThresh write fThresh;
+    property Thresh: TPositiveFixedPercentageST read fThresh write fThresh;
   end;
 
   [TName('CT_BlurEffect')]
-  TCTBlurEffectCT = class(TXmliteComplexType)
+  TBlurEffectCT = class(TXmliteComplexType)
   private
-    fRad: TSTPositiveCoordinateST;
+    fRad: TPositiveCoordinateST;
     fGrow: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
     [TDefault(0)]
-    property Rad: TSTPositiveCoordinateST read fRad write fRad;
+    property Rad: TPositiveCoordinateST read fRad write fRad;
     [TDefault(True)]
     property Grow: ProRock.Xmlite.Schema.Base.TBooleanST read fGrow write fGrow;
   end;
 
   [TName('CT_ColorChangeEffect')]
-  TCTColorChangeEffectCT = class(TXmliteComplexType)
+  TColorChangeEffectCT = class(TXmliteComplexType)
   private
     fUseA: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fClrFrom: TCTColorCT;
-    fClrTo: TCTColorCT;
+    fClrFrom: TColorCT;
+    fClrTo: TColorCT;
   published
     [TDefault(True)]
     property UseA: ProRock.Xmlite.Schema.Base.TBooleanST read fUseA write fUseA;
     [TRequired]
-    property ClrFrom: TCTColorCT read fClrFrom;
+    property ClrFrom: TColorCT read fClrFrom;
     [TRequired]
-    property ClrTo: TCTColorCT read fClrTo;
+    property ClrTo: TColorCT read fClrTo;
   end;
 
   [TName('CT_ColorReplaceEffect')]
-  TCTColorReplaceEffectCT = class(TXmliteComplexType)
+  TColorReplaceEffectCT = class(TXmliteComplexType)
   private
-    fScrgbClr: TCTScRgbColorCT;
-    fSrgbClr: TCTSRgbColorCT;
-    fHslClr: TCTHslColorCT;
-    fSysClr: TCTSystemColorCT;
-    fSchemeClr: TCTSchemeColorCT;
-    fPrstClr: TCTPresetColorCT;
+    fScrgbClr: TScRgbColorCT;
+    fSrgbClr: TSRgbColorCT;
+    fHslClr: THslColorCT;
+    fSysClr: TSystemColorCT;
+    fSchemeClr: TSchemeColorCT;
+    fPrstClr: TPresetColorCT;
 
-    function GetScrgbClr: TCTScRgbColorCT;
-    function GetSrgbClr: TCTSRgbColorCT;
-    function GetHslClr: TCTHslColorCT;
-    function GetSysClr: TCTSystemColorCT;
-    function GetSchemeClr: TCTSchemeColorCT;
-    function GetPrstClr: TCTPresetColorCT;
+    function GetScrgbClr: TScRgbColorCT;
+    function GetSrgbClr: TSRgbColorCT;
+    function GetHslClr: THslColorCT;
+    function GetSysClr: TSystemColorCT;
+    function GetSchemeClr: TSchemeColorCT;
+    function GetPrstClr: TPresetColorCT;
   published
     [TChoice('ScrgbClr')]
-    property ScrgbClr: TCTScRgbColorCT read GetScrgbClr;
+    property ScrgbClr: TScRgbColorCT read GetScrgbClr;
     [TChoice('ScrgbClr')]
-    property SrgbClr: TCTSRgbColorCT read GetSrgbClr;
+    property SrgbClr: TSRgbColorCT read GetSrgbClr;
     [TChoice('ScrgbClr')]
-    property HslClr: TCTHslColorCT read GetHslClr;
+    property HslClr: THslColorCT read GetHslClr;
     [TChoice('ScrgbClr')]
-    property SysClr: TCTSystemColorCT read GetSysClr;
+    property SysClr: TSystemColorCT read GetSysClr;
     [TChoice('ScrgbClr')]
-    property SchemeClr: TCTSchemeColorCT read GetSchemeClr;
+    property SchemeClr: TSchemeColorCT read GetSchemeClr;
     [TChoice('ScrgbClr')]
-    property PrstClr: TCTPresetColorCT read GetPrstClr;
+    property PrstClr: TPresetColorCT read GetPrstClr;
   end;
 
   [TOrdered]
   [TName('CT_DuotoneEffect')]
-  TCTDuotoneEffectCT = class(TXmliteComplexType)
+  TDuotoneEffectCT = class(TXmliteComplexType)
   private
-    fScrgbClr: TCTScRgbColorCTList;
-    fSrgbClr: TCTSRgbColorCTList;
-    fHslClr: TCTHslColorCTList;
-    fSysClr: TCTSystemColorCTList;
-    fSchemeClr: TCTSchemeColorCTList;
-    fPrstClr: TCTPresetColorCTList;
+    fScrgbClr: TScRgbColorCTList;
+    fSrgbClr: TSRgbColorCTList;
+    fHslClr: THslColorCTList;
+    fSysClr: TSystemColorCTList;
+    fSchemeClr: TSchemeColorCTList;
+    fPrstClr: TPresetColorCTList;
   published
-    property ScrgbClr: TCTScRgbColorCTList read fScrgbClr;
-    property SrgbClr: TCTSRgbColorCTList read fSrgbClr;
-    property HslClr: TCTHslColorCTList read fHslClr;
-    property SysClr: TCTSystemColorCTList read fSysClr;
-    property SchemeClr: TCTSchemeColorCTList read fSchemeClr;
-    property PrstClr: TCTPresetColorCTList read fPrstClr;
+    property ScrgbClr: TScRgbColorCTList read fScrgbClr;
+    property SrgbClr: TSRgbColorCTList read fSrgbClr;
+    property HslClr: THslColorCTList read fHslClr;
+    property SysClr: TSystemColorCTList read fSysClr;
+    property SchemeClr: TSchemeColorCTList read fSchemeClr;
+    property PrstClr: TPresetColorCTList read fPrstClr;
   end;
 
   [TName('CT_GlowEffect')]
-  TCTGlowEffectCT = class(TXmliteComplexType)
+  TGlowEffectCT = class(TXmliteComplexType)
   private
-    fRad: TSTPositiveCoordinateST;
-    fScrgbClr: TCTScRgbColorCT;
-    fSrgbClr: TCTSRgbColorCT;
-    fHslClr: TCTHslColorCT;
-    fSysClr: TCTSystemColorCT;
-    fSchemeClr: TCTSchemeColorCT;
-    fPrstClr: TCTPresetColorCT;
+    fRad: TPositiveCoordinateST;
+    fScrgbClr: TScRgbColorCT;
+    fSrgbClr: TSRgbColorCT;
+    fHslClr: THslColorCT;
+    fSysClr: TSystemColorCT;
+    fSchemeClr: TSchemeColorCT;
+    fPrstClr: TPresetColorCT;
 
-    function GetScrgbClr: TCTScRgbColorCT;
-    function GetSrgbClr: TCTSRgbColorCT;
-    function GetHslClr: TCTHslColorCT;
-    function GetSysClr: TCTSystemColorCT;
-    function GetSchemeClr: TCTSchemeColorCT;
-    function GetPrstClr: TCTPresetColorCT;
+    function GetScrgbClr: TScRgbColorCT;
+    function GetSrgbClr: TSRgbColorCT;
+    function GetHslClr: THslColorCT;
+    function GetSysClr: TSystemColorCT;
+    function GetSchemeClr: TSchemeColorCT;
+    function GetPrstClr: TPresetColorCT;
   published
     [TDefault(0)]
-    property Rad: TSTPositiveCoordinateST read fRad write fRad;
+    property Rad: TPositiveCoordinateST read fRad write fRad;
     [TChoice('ScrgbClr')]
-    property ScrgbClr: TCTScRgbColorCT read GetScrgbClr;
+    property ScrgbClr: TScRgbColorCT read GetScrgbClr;
     [TChoice('ScrgbClr')]
-    property SrgbClr: TCTSRgbColorCT read GetSrgbClr;
+    property SrgbClr: TSRgbColorCT read GetSrgbClr;
     [TChoice('ScrgbClr')]
-    property HslClr: TCTHslColorCT read GetHslClr;
+    property HslClr: THslColorCT read GetHslClr;
     [TChoice('ScrgbClr')]
-    property SysClr: TCTSystemColorCT read GetSysClr;
+    property SysClr: TSystemColorCT read GetSysClr;
     [TChoice('ScrgbClr')]
-    property SchemeClr: TCTSchemeColorCT read GetSchemeClr;
+    property SchemeClr: TSchemeColorCT read GetSchemeClr;
     [TChoice('ScrgbClr')]
-    property PrstClr: TCTPresetColorCT read GetPrstClr;
+    property PrstClr: TPresetColorCT read GetPrstClr;
   end;
 
   [TName('CT_GrayscaleEffect')]
-  TCTGrayscaleEffectCT = class(TXmliteComplexType);
+  TGrayscaleEffectCT = class(TXmliteComplexType);
 
   [TName('CT_HSLEffect')]
-  TCTHSLEffectCT = class(TXmliteComplexType)
+  THSLEffectCT = class(TXmliteComplexType)
   private
-    fHue: TSTPositiveFixedAngleST;
-    fSat: TSTFixedPercentageST;
-    fLum: TSTFixedPercentageST;
+    fHue: TPositiveFixedAngleST;
+    fSat: TFixedPercentageST;
+    fLum: TFixedPercentageST;
   published
     [TDefault(0)]
-    property Hue: TSTPositiveFixedAngleST read fHue write fHue;
+    property Hue: TPositiveFixedAngleST read fHue write fHue;
     [TDefault('0%')]
-    property Sat: TSTFixedPercentageST read fSat write fSat;
+    property Sat: TFixedPercentageST read fSat write fSat;
     [TDefault('0%')]
-    property Lum: TSTFixedPercentageST read fLum write fLum;
+    property Lum: TFixedPercentageST read fLum write fLum;
   end;
 
   [TName('CT_InnerShadowEffect')]
-  TCTInnerShadowEffectCT = class(TXmliteComplexType)
+  TInnerShadowEffectCT = class(TXmliteComplexType)
   private
-    fBlurRad: TSTPositiveCoordinateST;
-    fDist: TSTPositiveCoordinateST;
-    fDir: TSTPositiveFixedAngleST;
-    fScrgbClr: TCTScRgbColorCT;
-    fSrgbClr: TCTSRgbColorCT;
-    fHslClr: TCTHslColorCT;
-    fSysClr: TCTSystemColorCT;
-    fSchemeClr: TCTSchemeColorCT;
-    fPrstClr: TCTPresetColorCT;
+    fBlurRad: TPositiveCoordinateST;
+    fDist: TPositiveCoordinateST;
+    fDir: TPositiveFixedAngleST;
+    fScrgbClr: TScRgbColorCT;
+    fSrgbClr: TSRgbColorCT;
+    fHslClr: THslColorCT;
+    fSysClr: TSystemColorCT;
+    fSchemeClr: TSchemeColorCT;
+    fPrstClr: TPresetColorCT;
 
-    function GetScrgbClr: TCTScRgbColorCT;
-    function GetSrgbClr: TCTSRgbColorCT;
-    function GetHslClr: TCTHslColorCT;
-    function GetSysClr: TCTSystemColorCT;
-    function GetSchemeClr: TCTSchemeColorCT;
-    function GetPrstClr: TCTPresetColorCT;
+    function GetScrgbClr: TScRgbColorCT;
+    function GetSrgbClr: TSRgbColorCT;
+    function GetHslClr: THslColorCT;
+    function GetSysClr: TSystemColorCT;
+    function GetSchemeClr: TSchemeColorCT;
+    function GetPrstClr: TPresetColorCT;
   published
     [TDefault(0)]
-    property BlurRad: TSTPositiveCoordinateST read fBlurRad write fBlurRad;
+    property BlurRad: TPositiveCoordinateST read fBlurRad write fBlurRad;
     [TDefault(0)]
-    property Dist: TSTPositiveCoordinateST read fDist write fDist;
+    property Dist: TPositiveCoordinateST read fDist write fDist;
     [TDefault(0)]
-    property Dir: TSTPositiveFixedAngleST read fDir write fDir;
+    property Dir: TPositiveFixedAngleST read fDir write fDir;
     [TChoice('ScrgbClr')]
-    property ScrgbClr: TCTScRgbColorCT read GetScrgbClr;
+    property ScrgbClr: TScRgbColorCT read GetScrgbClr;
     [TChoice('ScrgbClr')]
-    property SrgbClr: TCTSRgbColorCT read GetSrgbClr;
+    property SrgbClr: TSRgbColorCT read GetSrgbClr;
     [TChoice('ScrgbClr')]
-    property HslClr: TCTHslColorCT read GetHslClr;
+    property HslClr: THslColorCT read GetHslClr;
     [TChoice('ScrgbClr')]
-    property SysClr: TCTSystemColorCT read GetSysClr;
+    property SysClr: TSystemColorCT read GetSysClr;
     [TChoice('ScrgbClr')]
-    property SchemeClr: TCTSchemeColorCT read GetSchemeClr;
+    property SchemeClr: TSchemeColorCT read GetSchemeClr;
     [TChoice('ScrgbClr')]
-    property PrstClr: TCTPresetColorCT read GetPrstClr;
+    property PrstClr: TPresetColorCT read GetPrstClr;
   end;
 
   [TName('CT_LuminanceEffect')]
-  TCTLuminanceEffectCT = class(TXmliteComplexType)
+  TLuminanceEffectCT = class(TXmliteComplexType)
   private
-    fBright: TSTFixedPercentageST;
-    fContrast: TSTFixedPercentageST;
+    fBright: TFixedPercentageST;
+    fContrast: TFixedPercentageST;
   published
     [TDefault('0%')]
-    property Bright: TSTFixedPercentageST read fBright write fBright;
+    property Bright: TFixedPercentageST read fBright write fBright;
     [TDefault('0%')]
-    property Contrast: TSTFixedPercentageST read fContrast write fContrast;
+    property Contrast: TFixedPercentageST read fContrast write fContrast;
   end;
 
   [TName('CT_OuterShadowEffect')]
-  TCTOuterShadowEffectCT = class(TXmliteComplexType)
+  TOuterShadowEffectCT = class(TXmliteComplexType)
   private
-    fBlurRad: TSTPositiveCoordinateST;
-    fDist: TSTPositiveCoordinateST;
-    fDir: TSTPositiveFixedAngleST;
-    fSx: TSTPercentageST;
-    fSy: TSTPercentageST;
-    fKx: TSTFixedAngleST;
-    fKy: TSTFixedAngleST;
-    fAlgn: TSTRectAlignmentST;
+    fBlurRad: TPositiveCoordinateST;
+    fDist: TPositiveCoordinateST;
+    fDir: TPositiveFixedAngleST;
+    fSx: TPercentageST;
+    fSy: TPercentageST;
+    fKx: TFixedAngleST;
+    fKy: TFixedAngleST;
+    fAlgn: TRectAlignmentST;
     fRotWithShape: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fScrgbClr: TCTScRgbColorCT;
-    fSrgbClr: TCTSRgbColorCT;
-    fHslClr: TCTHslColorCT;
-    fSysClr: TCTSystemColorCT;
-    fSchemeClr: TCTSchemeColorCT;
-    fPrstClr: TCTPresetColorCT;
+    fScrgbClr: TScRgbColorCT;
+    fSrgbClr: TSRgbColorCT;
+    fHslClr: THslColorCT;
+    fSysClr: TSystemColorCT;
+    fSchemeClr: TSchemeColorCT;
+    fPrstClr: TPresetColorCT;
 
-    function GetScrgbClr: TCTScRgbColorCT;
-    function GetSrgbClr: TCTSRgbColorCT;
-    function GetHslClr: TCTHslColorCT;
-    function GetSysClr: TCTSystemColorCT;
-    function GetSchemeClr: TCTSchemeColorCT;
-    function GetPrstClr: TCTPresetColorCT;
+    function GetScrgbClr: TScRgbColorCT;
+    function GetSrgbClr: TSRgbColorCT;
+    function GetHslClr: THslColorCT;
+    function GetSysClr: TSystemColorCT;
+    function GetSchemeClr: TSchemeColorCT;
+    function GetPrstClr: TPresetColorCT;
   published
     [TDefault(0)]
-    property BlurRad: TSTPositiveCoordinateST read fBlurRad write fBlurRad;
+    property BlurRad: TPositiveCoordinateST read fBlurRad write fBlurRad;
     [TDefault(0)]
-    property Dist: TSTPositiveCoordinateST read fDist write fDist;
+    property Dist: TPositiveCoordinateST read fDist write fDist;
     [TDefault(0)]
-    property Dir: TSTPositiveFixedAngleST read fDir write fDir;
+    property Dir: TPositiveFixedAngleST read fDir write fDir;
     [TDefault('100%')]
-    property Sx: TSTPercentageST read fSx write fSx;
+    property Sx: TPercentageST read fSx write fSx;
     [TDefault('100%')]
-    property Sy: TSTPercentageST read fSy write fSy;
+    property Sy: TPercentageST read fSy write fSy;
     [TDefault(0)]
-    property Kx: TSTFixedAngleST read fKx write fKx;
+    property Kx: TFixedAngleST read fKx write fKx;
     [TDefault(0)]
-    property Ky: TSTFixedAngleST read fKy write fKy;
+    property Ky: TFixedAngleST read fKy write fKy;
     [TDefault(Ord(straB))]
-    property Algn: TSTRectAlignmentST read fAlgn write fAlgn;
+    property Algn: TRectAlignmentST read fAlgn write fAlgn;
     [TDefault(True)]
     property RotWithShape: ProRock.Xmlite.Schema.Base.TBooleanST read fRotWithShape write fRotWithShape;
     [TChoice('ScrgbClr')]
-    property ScrgbClr: TCTScRgbColorCT read GetScrgbClr;
+    property ScrgbClr: TScRgbColorCT read GetScrgbClr;
     [TChoice('ScrgbClr')]
-    property SrgbClr: TCTSRgbColorCT read GetSrgbClr;
+    property SrgbClr: TSRgbColorCT read GetSrgbClr;
     [TChoice('ScrgbClr')]
-    property HslClr: TCTHslColorCT read GetHslClr;
+    property HslClr: THslColorCT read GetHslClr;
     [TChoice('ScrgbClr')]
-    property SysClr: TCTSystemColorCT read GetSysClr;
+    property SysClr: TSystemColorCT read GetSysClr;
     [TChoice('ScrgbClr')]
-    property SchemeClr: TCTSchemeColorCT read GetSchemeClr;
+    property SchemeClr: TSchemeColorCT read GetSchemeClr;
     [TChoice('ScrgbClr')]
-    property PrstClr: TCTPresetColorCT read GetPrstClr;
+    property PrstClr: TPresetColorCT read GetPrstClr;
   end;
 
   [TName('CT_PresetShadowEffect')]
-  TCTPresetShadowEffectCT = class(TXmliteComplexType)
+  TPresetShadowEffectCT = class(TXmliteComplexType)
   private
-    fPrst: TSTPresetShadowValST;
-    fDist: TSTPositiveCoordinateST;
-    fDir: TSTPositiveFixedAngleST;
-    fScrgbClr: TCTScRgbColorCT;
-    fSrgbClr: TCTSRgbColorCT;
-    fHslClr: TCTHslColorCT;
-    fSysClr: TCTSystemColorCT;
-    fSchemeClr: TCTSchemeColorCT;
-    fPrstClr: TCTPresetColorCT;
+    fPrst: TPresetShadowValST;
+    fDist: TPositiveCoordinateST;
+    fDir: TPositiveFixedAngleST;
+    fScrgbClr: TScRgbColorCT;
+    fSrgbClr: TSRgbColorCT;
+    fHslClr: THslColorCT;
+    fSysClr: TSystemColorCT;
+    fSchemeClr: TSchemeColorCT;
+    fPrstClr: TPresetColorCT;
 
-    function GetScrgbClr: TCTScRgbColorCT;
-    function GetSrgbClr: TCTSRgbColorCT;
-    function GetHslClr: TCTHslColorCT;
-    function GetSysClr: TCTSystemColorCT;
-    function GetSchemeClr: TCTSchemeColorCT;
-    function GetPrstClr: TCTPresetColorCT;
+    function GetScrgbClr: TScRgbColorCT;
+    function GetSrgbClr: TSRgbColorCT;
+    function GetHslClr: THslColorCT;
+    function GetSysClr: TSystemColorCT;
+    function GetSchemeClr: TSchemeColorCT;
+    function GetPrstClr: TPresetColorCT;
   published
     [TRequired]
-    property Prst: TSTPresetShadowValST read fPrst write fPrst;
+    property Prst: TPresetShadowValST read fPrst write fPrst;
     [TDefault(0)]
-    property Dist: TSTPositiveCoordinateST read fDist write fDist;
+    property Dist: TPositiveCoordinateST read fDist write fDist;
     [TDefault(0)]
-    property Dir: TSTPositiveFixedAngleST read fDir write fDir;
+    property Dir: TPositiveFixedAngleST read fDir write fDir;
     [TChoice('ScrgbClr')]
-    property ScrgbClr: TCTScRgbColorCT read GetScrgbClr;
+    property ScrgbClr: TScRgbColorCT read GetScrgbClr;
     [TChoice('ScrgbClr')]
-    property SrgbClr: TCTSRgbColorCT read GetSrgbClr;
+    property SrgbClr: TSRgbColorCT read GetSrgbClr;
     [TChoice('ScrgbClr')]
-    property HslClr: TCTHslColorCT read GetHslClr;
+    property HslClr: THslColorCT read GetHslClr;
     [TChoice('ScrgbClr')]
-    property SysClr: TCTSystemColorCT read GetSysClr;
+    property SysClr: TSystemColorCT read GetSysClr;
     [TChoice('ScrgbClr')]
-    property SchemeClr: TCTSchemeColorCT read GetSchemeClr;
+    property SchemeClr: TSchemeColorCT read GetSchemeClr;
     [TChoice('ScrgbClr')]
-    property PrstClr: TCTPresetColorCT read GetPrstClr;
+    property PrstClr: TPresetColorCT read GetPrstClr;
   end;
 
   [TName('CT_ReflectionEffect')]
-  TCTReflectionEffectCT = class(TXmliteComplexType)
+  TReflectionEffectCT = class(TXmliteComplexType)
   private
-    fBlurRad: TSTPositiveCoordinateST;
-    fStA: TSTPositiveFixedPercentageST;
-    fStPos: TSTPositiveFixedPercentageST;
-    fEndA: TSTPositiveFixedPercentageST;
-    fEndPos: TSTPositiveFixedPercentageST;
-    fDist: TSTPositiveCoordinateST;
-    fDir: TSTPositiveFixedAngleST;
-    fFadeDir: TSTPositiveFixedAngleST;
-    fSx: TSTPercentageST;
-    fSy: TSTPercentageST;
-    fKx: TSTFixedAngleST;
-    fKy: TSTFixedAngleST;
-    fAlgn: TSTRectAlignmentST;
+    fBlurRad: TPositiveCoordinateST;
+    fStA: TPositiveFixedPercentageST;
+    fStPos: TPositiveFixedPercentageST;
+    fEndA: TPositiveFixedPercentageST;
+    fEndPos: TPositiveFixedPercentageST;
+    fDist: TPositiveCoordinateST;
+    fDir: TPositiveFixedAngleST;
+    fFadeDir: TPositiveFixedAngleST;
+    fSx: TPercentageST;
+    fSy: TPercentageST;
+    fKx: TFixedAngleST;
+    fKy: TFixedAngleST;
+    fAlgn: TRectAlignmentST;
     fRotWithShape: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
     [TDefault(0)]
-    property BlurRad: TSTPositiveCoordinateST read fBlurRad write fBlurRad;
+    property BlurRad: TPositiveCoordinateST read fBlurRad write fBlurRad;
     [TDefault('100%')]
-    property StA: TSTPositiveFixedPercentageST read fStA write fStA;
+    property StA: TPositiveFixedPercentageST read fStA write fStA;
     [TDefault('0%')]
-    property StPos: TSTPositiveFixedPercentageST read fStPos write fStPos;
+    property StPos: TPositiveFixedPercentageST read fStPos write fStPos;
     [TDefault('0%')]
-    property EndA: TSTPositiveFixedPercentageST read fEndA write fEndA;
+    property EndA: TPositiveFixedPercentageST read fEndA write fEndA;
     [TDefault('100%')]
-    property EndPos: TSTPositiveFixedPercentageST read fEndPos write fEndPos;
+    property EndPos: TPositiveFixedPercentageST read fEndPos write fEndPos;
     [TDefault(0)]
-    property Dist: TSTPositiveCoordinateST read fDist write fDist;
+    property Dist: TPositiveCoordinateST read fDist write fDist;
     [TDefault(0)]
-    property Dir: TSTPositiveFixedAngleST read fDir write fDir;
+    property Dir: TPositiveFixedAngleST read fDir write fDir;
     [TDefault(5400000)]
-    property FadeDir: TSTPositiveFixedAngleST read fFadeDir write fFadeDir;
+    property FadeDir: TPositiveFixedAngleST read fFadeDir write fFadeDir;
     [TDefault('100%')]
-    property Sx: TSTPercentageST read fSx write fSx;
+    property Sx: TPercentageST read fSx write fSx;
     [TDefault('100%')]
-    property Sy: TSTPercentageST read fSy write fSy;
+    property Sy: TPercentageST read fSy write fSy;
     [TDefault(0)]
-    property Kx: TSTFixedAngleST read fKx write fKx;
+    property Kx: TFixedAngleST read fKx write fKx;
     [TDefault(0)]
-    property Ky: TSTFixedAngleST read fKy write fKy;
+    property Ky: TFixedAngleST read fKy write fKy;
     [TDefault(Ord(straB))]
-    property Algn: TSTRectAlignmentST read fAlgn write fAlgn;
+    property Algn: TRectAlignmentST read fAlgn write fAlgn;
     [TDefault(True)]
     property RotWithShape: ProRock.Xmlite.Schema.Base.TBooleanST read fRotWithShape write fRotWithShape;
   end;
 
   [TName('CT_RelativeOffsetEffect')]
-  TCTRelativeOffsetEffectCT = class(TXmliteComplexType)
+  TRelativeOffsetEffectCT = class(TXmliteComplexType)
   private
-    fTx: TSTPercentageST;
-    fTy: TSTPercentageST;
+    fTx: TPercentageST;
+    fTy: TPercentageST;
   published
     [TDefault('0%')]
-    property Tx: TSTPercentageST read fTx write fTx;
+    property Tx: TPercentageST read fTx write fTx;
     [TDefault('0%')]
-    property Ty: TSTPercentageST read fTy write fTy;
+    property Ty: TPercentageST read fTy write fTy;
   end;
 
   [TName('CT_SoftEdgesEffect')]
-  TCTSoftEdgesEffectCT = class(TXmliteComplexType)
+  TSoftEdgesEffectCT = class(TXmliteComplexType)
   private
-    fRad: TSTPositiveCoordinateST;
+    fRad: TPositiveCoordinateST;
   published
     [TRequired]
-    property Rad: TSTPositiveCoordinateST read fRad write fRad;
+    property Rad: TPositiveCoordinateST read fRad write fRad;
   end;
 
   [TName('CT_TintEffect')]
-  TCTTintEffectCT = class(TXmliteComplexType)
+  TTintEffectCT = class(TXmliteComplexType)
   private
-    fHue: TSTPositiveFixedAngleST;
-    fAmt: TSTFixedPercentageST;
+    fHue: TPositiveFixedAngleST;
+    fAmt: TFixedPercentageST;
   published
     [TDefault(0)]
-    property Hue: TSTPositiveFixedAngleST read fHue write fHue;
+    property Hue: TPositiveFixedAngleST read fHue write fHue;
     [TDefault('0%')]
-    property Amt: TSTFixedPercentageST read fAmt write fAmt;
+    property Amt: TFixedPercentageST read fAmt write fAmt;
   end;
 
   [TName('CT_TransformEffect')]
-  TCTTransformEffectCT = class(TXmliteComplexType)
+  TTransformEffectCT = class(TXmliteComplexType)
   private
-    fSx: TSTPercentageST;
-    fSy: TSTPercentageST;
-    fKx: TSTFixedAngleST;
-    fKy: TSTFixedAngleST;
-    fTx: TSTCoordinateST;
-    fTy: TSTCoordinateST;
+    fSx: TPercentageST;
+    fSy: TPercentageST;
+    fKx: TFixedAngleST;
+    fKy: TFixedAngleST;
+    fTx: TCoordinateST;
+    fTy: TCoordinateST;
   published
     [TDefault('100%')]
-    property Sx: TSTPercentageST read fSx write fSx;
+    property Sx: TPercentageST read fSx write fSx;
     [TDefault('100%')]
-    property Sy: TSTPercentageST read fSy write fSy;
+    property Sy: TPercentageST read fSy write fSy;
     [TDefault(0)]
-    property Kx: TSTFixedAngleST read fKx write fKx;
+    property Kx: TFixedAngleST read fKx write fKx;
     [TDefault(0)]
-    property Ky: TSTFixedAngleST read fKy write fKy;
+    property Ky: TFixedAngleST read fKy write fKy;
     [TDefault('0')]
-    property Tx: TSTCoordinateST read fTx write fTx;
+    property Tx: TCoordinateST read fTx write fTx;
     [TDefault('0')]
-    property Ty: TSTCoordinateST read fTy write fTy;
+    property Ty: TCoordinateST read fTy write fTy;
   end;
 
   [TName('CT_NoFillProperties')]
-  TCTNoFillPropertiesCT = class(TXmliteComplexType);
+  TNoFillPropertiesCT = class(TXmliteComplexType);
 
   [TName('CT_SolidColorFillProperties')]
-  TCTSolidColorFillPropertiesCT = class(TXmliteComplexType)
+  TSolidColorFillPropertiesCT = class(TXmliteComplexType)
   private
-    fScrgbClr: TCTScRgbColorCT;
-    fSrgbClr: TCTSRgbColorCT;
-    fHslClr: TCTHslColorCT;
-    fSysClr: TCTSystemColorCT;
-    fSchemeClr: TCTSchemeColorCT;
-    fPrstClr: TCTPresetColorCT;
+    fScrgbClr: TScRgbColorCT;
+    fSrgbClr: TSRgbColorCT;
+    fHslClr: THslColorCT;
+    fSysClr: TSystemColorCT;
+    fSchemeClr: TSchemeColorCT;
+    fPrstClr: TPresetColorCT;
 
-    function GetScrgbClr: TCTScRgbColorCT;
-    function GetSrgbClr: TCTSRgbColorCT;
-    function GetHslClr: TCTHslColorCT;
-    function GetSysClr: TCTSystemColorCT;
-    function GetSchemeClr: TCTSchemeColorCT;
-    function GetPrstClr: TCTPresetColorCT;
+    function GetScrgbClr: TScRgbColorCT;
+    function GetSrgbClr: TSRgbColorCT;
+    function GetHslClr: THslColorCT;
+    function GetSysClr: TSystemColorCT;
+    function GetSchemeClr: TSchemeColorCT;
+    function GetPrstClr: TPresetColorCT;
   published
     [TChoice('ScrgbClr')]
-    property ScrgbClr: TCTScRgbColorCT read GetScrgbClr;
+    property ScrgbClr: TScRgbColorCT read GetScrgbClr;
     [TChoice('ScrgbClr')]
-    property SrgbClr: TCTSRgbColorCT read GetSrgbClr;
+    property SrgbClr: TSRgbColorCT read GetSrgbClr;
     [TChoice('ScrgbClr')]
-    property HslClr: TCTHslColorCT read GetHslClr;
+    property HslClr: THslColorCT read GetHslClr;
     [TChoice('ScrgbClr')]
-    property SysClr: TCTSystemColorCT read GetSysClr;
+    property SysClr: TSystemColorCT read GetSysClr;
     [TChoice('ScrgbClr')]
-    property SchemeClr: TCTSchemeColorCT read GetSchemeClr;
+    property SchemeClr: TSchemeColorCT read GetSchemeClr;
     [TChoice('ScrgbClr')]
-    property PrstClr: TCTPresetColorCT read GetPrstClr;
+    property PrstClr: TPresetColorCT read GetPrstClr;
   end;
 
   [TName('CT_LinearShadeProperties')]
-  TCTLinearShadePropertiesCT = class(TXmliteComplexType)
+  TLinearShadePropertiesCT = class(TXmliteComplexType)
   private
-    fAng: TSTPositiveFixedAngleST;
+    fAng: TPositiveFixedAngleST;
     fScaled: ProRock.Xmlite.Schema.Base.TBooleanST;
   published
-    property Ang: TSTPositiveFixedAngleST read fAng write fAng;
+    property Ang: TPositiveFixedAngleST read fAng write fAng;
     property Scaled: ProRock.Xmlite.Schema.Base.TBooleanST read fScaled write fScaled;
   end;
 
   [TName('CT_PathShadeProperties')]
-  TCTPathShadePropertiesCT = class(TXmliteComplexType)
+  TPathShadePropertiesCT = class(TXmliteComplexType)
   private
-    fPath: TSTPathShadeTypeST;
-    fFillToRect: TCTRelativeRectCT;
+    fPath: TPathShadeTypeST;
+    fFillToRect: TRelativeRectCT;
   published
-    property Path: TSTPathShadeTypeST read fPath write fPath;
-    property FillToRect: TCTRelativeRectCT read fFillToRect;
+    property Path: TPathShadeTypeST read fPath write fPath;
+    property FillToRect: TRelativeRectCT read fFillToRect;
   end;
 
   [TName('CT_GradientStop')]
-  TCTGradientStopCT = class(TXmliteComplexType)
+  TGradientStopCT = class(TXmliteComplexType)
   private
-    fPos: TSTPositiveFixedPercentageST;
-    fScrgbClr: TCTScRgbColorCT;
-    fSrgbClr: TCTSRgbColorCT;
-    fHslClr: TCTHslColorCT;
-    fSysClr: TCTSystemColorCT;
-    fSchemeClr: TCTSchemeColorCT;
-    fPrstClr: TCTPresetColorCT;
+    fPos: TPositiveFixedPercentageST;
+    fScrgbClr: TScRgbColorCT;
+    fSrgbClr: TSRgbColorCT;
+    fHslClr: THslColorCT;
+    fSysClr: TSystemColorCT;
+    fSchemeClr: TSchemeColorCT;
+    fPrstClr: TPresetColorCT;
 
-    function GetScrgbClr: TCTScRgbColorCT;
-    function GetSrgbClr: TCTSRgbColorCT;
-    function GetHslClr: TCTHslColorCT;
-    function GetSysClr: TCTSystemColorCT;
-    function GetSchemeClr: TCTSchemeColorCT;
-    function GetPrstClr: TCTPresetColorCT;
+    function GetScrgbClr: TScRgbColorCT;
+    function GetSrgbClr: TSRgbColorCT;
+    function GetHslClr: THslColorCT;
+    function GetSysClr: TSystemColorCT;
+    function GetSchemeClr: TSchemeColorCT;
+    function GetPrstClr: TPresetColorCT;
   published
     [TRequired]
-    property Pos: TSTPositiveFixedPercentageST read fPos write fPos;
+    property Pos: TPositiveFixedPercentageST read fPos write fPos;
     [TChoice('ScrgbClr')]
-    property ScrgbClr: TCTScRgbColorCT read GetScrgbClr;
+    property ScrgbClr: TScRgbColorCT read GetScrgbClr;
     [TChoice('ScrgbClr')]
-    property SrgbClr: TCTSRgbColorCT read GetSrgbClr;
+    property SrgbClr: TSRgbColorCT read GetSrgbClr;
     [TChoice('ScrgbClr')]
-    property HslClr: TCTHslColorCT read GetHslClr;
+    property HslClr: THslColorCT read GetHslClr;
     [TChoice('ScrgbClr')]
-    property SysClr: TCTSystemColorCT read GetSysClr;
+    property SysClr: TSystemColorCT read GetSysClr;
     [TChoice('ScrgbClr')]
-    property SchemeClr: TCTSchemeColorCT read GetSchemeClr;
+    property SchemeClr: TSchemeColorCT read GetSchemeClr;
     [TChoice('ScrgbClr')]
-    property PrstClr: TCTPresetColorCT read GetPrstClr;
+    property PrstClr: TPresetColorCT read GetPrstClr;
   end;
 
   [TName('CT_GradientStopList')]
-  TCTGradientStopListCT = class(TXmliteComplexType)
+  TGradientStopListCT = class(TXmliteComplexType)
   private
-    fGs: TCTGradientStopCTList;
+    fGs: TGradientStopCTList;
   published
-    property Gs: TCTGradientStopCTList read fGs;
+    property Gs: TGradientStopCTList read fGs;
   end;
 
   [TName('CT_GradientFillProperties')]
-  TCTGradientFillPropertiesCT = class(TXmliteComplexType)
+  TGradientFillPropertiesCT = class(TXmliteComplexType)
   private
-    fFlip: TSTTileFlipModeST;
+    fFlip: TTileFlipModeST;
     fRotWithShape: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fGsLst: TCTGradientStopListCT;
-    fLin: TCTLinearShadePropertiesCT;
-    fPath: TCTPathShadePropertiesCT;
-    fTileRect: TCTRelativeRectCT;
+    fGsLst: TGradientStopListCT;
+    fLin: TLinearShadePropertiesCT;
+    fPath: TPathShadePropertiesCT;
+    fTileRect: TRelativeRectCT;
 
-    function GetLin: TCTLinearShadePropertiesCT;
-    function GetPath: TCTPathShadePropertiesCT;
+    function GetLin: TLinearShadePropertiesCT;
+    function GetPath: TPathShadePropertiesCT;
   published
     [TDefault(Ord(sttfmNone))]
-    property Flip: TSTTileFlipModeST read fFlip write fFlip;
+    property Flip: TTileFlipModeST read fFlip write fFlip;
     property RotWithShape: ProRock.Xmlite.Schema.Base.TBooleanST read fRotWithShape write fRotWithShape;
-    property GsLst: TCTGradientStopListCT read fGsLst;
+    property GsLst: TGradientStopListCT read fGsLst;
     [TChoice('Lin')]
-    property Lin: TCTLinearShadePropertiesCT read GetLin;
+    property Lin: TLinearShadePropertiesCT read GetLin;
     [TChoice('Lin')]
-    property Path: TCTPathShadePropertiesCT read GetPath;
-    property TileRect: TCTRelativeRectCT read fTileRect;
+    property Path: TPathShadePropertiesCT read GetPath;
+    property TileRect: TRelativeRectCT read fTileRect;
   end;
 
   [TName('CT_TileInfoProperties')]
-  TCTTileInfoPropertiesCT = class(TXmliteComplexType)
+  TTileInfoPropertiesCT = class(TXmliteComplexType)
   private
-    fTx: TSTCoordinateST;
-    fTy: TSTCoordinateST;
-    fSx: TSTPercentageST;
-    fSy: TSTPercentageST;
-    fFlip: TSTTileFlipModeST;
-    fAlgn: TSTRectAlignmentST;
+    fTx: TCoordinateST;
+    fTy: TCoordinateST;
+    fSx: TPercentageST;
+    fSy: TPercentageST;
+    fFlip: TTileFlipModeST;
+    fAlgn: TRectAlignmentST;
   published
-    property Tx: TSTCoordinateST read fTx write fTx;
-    property Ty: TSTCoordinateST read fTy write fTy;
-    property Sx: TSTPercentageST read fSx write fSx;
-    property Sy: TSTPercentageST read fSy write fSy;
+    property Tx: TCoordinateST read fTx write fTx;
+    property Ty: TCoordinateST read fTy write fTy;
+    property Sx: TPercentageST read fSx write fSx;
+    property Sy: TPercentageST read fSy write fSy;
     [TDefault(Ord(sttfmNone))]
-    property Flip: TSTTileFlipModeST read fFlip write fFlip;
-    property Algn: TSTRectAlignmentST read fAlgn write fAlgn;
+    property Flip: TTileFlipModeST read fFlip write fFlip;
+    property Algn: TRectAlignmentST read fAlgn write fAlgn;
   end;
 
   [TName('CT_StretchInfoProperties')]
-  TCTStretchInfoPropertiesCT = class(TXmliteComplexType)
+  TStretchInfoPropertiesCT = class(TXmliteComplexType)
   private
-    fFillRect: TCTRelativeRectCT;
+    fFillRect: TRelativeRectCT;
   published
-    property FillRect: TCTRelativeRectCT read fFillRect;
+    property FillRect: TRelativeRectCT read fFillRect;
   end;
 
   [TOrdered]
   [TName('CT_Blip')]
-  TCTBlipCT = class(TXmliteComplexType)
+  TBlipCT = class(TXmliteComplexType)
   private
-    fCstate: TSTBlipCompressionST;
+    fCstate: TBlipCompressionST;
     fEmbed: ProRock.Xmlite.Schema.Ooxml.Rel.TEmbedA;
     fLink: ProRock.Xmlite.Schema.Ooxml.Rel.TLinkA;
-    fAlphaBiLevel: TCTAlphaBiLevelEffectCTList;
-    fAlphaCeiling: TCTAlphaCeilingEffectCTList;
-    fAlphaFloor: TCTAlphaFloorEffectCTList;
-    fAlphaInv: TCTAlphaInverseEffectCTList;
-    fAlphaMod: TCTAlphaModulateEffectCTList;
-    fAlphaModFix: TCTAlphaModulateFixedEffectCTList;
-    fAlphaRepl: TCTAlphaReplaceEffectCTList;
-    fBiLevel: TCTBiLevelEffectCTList;
-    fBlur: TCTBlurEffectCTList;
-    fClrChange: TCTColorChangeEffectCTList;
-    fClrRepl: TCTColorReplaceEffectCTList;
-    fDuotone: TCTDuotoneEffectCTList;
-    fFillOverlay: TCTFillOverlayEffectCTList;
-    fGrayscl: TCTGrayscaleEffectCTList;
-    fHsl: TCTHSLEffectCTList;
-    fLum: TCTLuminanceEffectCTList;
-    fTint: TCTTintEffectCTList;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fAlphaBiLevel: TAlphaBiLevelEffectCTList;
+    fAlphaCeiling: TAlphaCeilingEffectCTList;
+    fAlphaFloor: TAlphaFloorEffectCTList;
+    fAlphaInv: TAlphaInverseEffectCTList;
+    fAlphaMod: TAlphaModulateEffectCTList;
+    fAlphaModFix: TAlphaModulateFixedEffectCTList;
+    fAlphaRepl: TAlphaReplaceEffectCTList;
+    fBiLevel: TBiLevelEffectCTList;
+    fBlur: TBlurEffectCTList;
+    fClrChange: TColorChangeEffectCTList;
+    fClrRepl: TColorReplaceEffectCTList;
+    fDuotone: TDuotoneEffectCTList;
+    fFillOverlay: TFillOverlayEffectCTList;
+    fGrayscl: TGrayscaleEffectCTList;
+    fHsl: THSLEffectCTList;
+    fLum: TLuminanceEffectCTList;
+    fTint: TTintEffectCTList;
+    fExtLst: TOfficeArtExtensionListCT;
   published
     [TDefault(Ord(stbcNone))]
-    property Cstate: TSTBlipCompressionST read fCstate write fCstate;
+    property Cstate: TBlipCompressionST read fCstate write fCstate;
     [TNaming(TNaming.nFlatCase)]
     property Embed: ProRock.Xmlite.Schema.Ooxml.Rel.TEmbedA read fEmbed write fEmbed;
     [TNaming(TNaming.nFlatCase)]
     property Link: ProRock.Xmlite.Schema.Ooxml.Rel.TLinkA read fLink write fLink;
-    property AlphaBiLevel: TCTAlphaBiLevelEffectCTList read fAlphaBiLevel;
-    property AlphaCeiling: TCTAlphaCeilingEffectCTList read fAlphaCeiling;
-    property AlphaFloor: TCTAlphaFloorEffectCTList read fAlphaFloor;
-    property AlphaInv: TCTAlphaInverseEffectCTList read fAlphaInv;
-    property AlphaMod: TCTAlphaModulateEffectCTList read fAlphaMod;
-    property AlphaModFix: TCTAlphaModulateFixedEffectCTList read fAlphaModFix;
-    property AlphaRepl: TCTAlphaReplaceEffectCTList read fAlphaRepl;
-    property BiLevel: TCTBiLevelEffectCTList read fBiLevel;
-    property Blur: TCTBlurEffectCTList read fBlur;
-    property ClrChange: TCTColorChangeEffectCTList read fClrChange;
-    property ClrRepl: TCTColorReplaceEffectCTList read fClrRepl;
-    property Duotone: TCTDuotoneEffectCTList read fDuotone;
-    property FillOverlay: TCTFillOverlayEffectCTList read fFillOverlay;
-    property Grayscl: TCTGrayscaleEffectCTList read fGrayscl;
-    property Hsl: TCTHSLEffectCTList read fHsl;
-    property Lum: TCTLuminanceEffectCTList read fLum;
-    property Tint: TCTTintEffectCTList read fTint;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property AlphaBiLevel: TAlphaBiLevelEffectCTList read fAlphaBiLevel;
+    property AlphaCeiling: TAlphaCeilingEffectCTList read fAlphaCeiling;
+    property AlphaFloor: TAlphaFloorEffectCTList read fAlphaFloor;
+    property AlphaInv: TAlphaInverseEffectCTList read fAlphaInv;
+    property AlphaMod: TAlphaModulateEffectCTList read fAlphaMod;
+    property AlphaModFix: TAlphaModulateFixedEffectCTList read fAlphaModFix;
+    property AlphaRepl: TAlphaReplaceEffectCTList read fAlphaRepl;
+    property BiLevel: TBiLevelEffectCTList read fBiLevel;
+    property Blur: TBlurEffectCTList read fBlur;
+    property ClrChange: TColorChangeEffectCTList read fClrChange;
+    property ClrRepl: TColorReplaceEffectCTList read fClrRepl;
+    property Duotone: TDuotoneEffectCTList read fDuotone;
+    property FillOverlay: TFillOverlayEffectCTList read fFillOverlay;
+    property Grayscl: TGrayscaleEffectCTList read fGrayscl;
+    property Hsl: THSLEffectCTList read fHsl;
+    property Lum: TLuminanceEffectCTList read fLum;
+    property Tint: TTintEffectCTList read fTint;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_BlipFillProperties')]
-  TCTBlipFillPropertiesCT = class(TXmliteComplexType)
+  TBlipFillPropertiesCT = class(TXmliteComplexType)
   private
     fDpi: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fRotWithShape: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fBlip: TCTBlipCT;
-    fSrcRect: TCTRelativeRectCT;
-    fTile: TCTTileInfoPropertiesCT;
-    fStretch: TCTStretchInfoPropertiesCT;
+    fBlip: TBlipCT;
+    fSrcRect: TRelativeRectCT;
+    fTile: TTileInfoPropertiesCT;
+    fStretch: TStretchInfoPropertiesCT;
 
-    function GetTile: TCTTileInfoPropertiesCT;
-    function GetStretch: TCTStretchInfoPropertiesCT;
+    function GetTile: TTileInfoPropertiesCT;
+    function GetStretch: TStretchInfoPropertiesCT;
   published
     property Dpi: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fDpi write fDpi;
     property RotWithShape: ProRock.Xmlite.Schema.Base.TBooleanST read fRotWithShape write fRotWithShape;
-    property Blip: TCTBlipCT read fBlip;
-    property SrcRect: TCTRelativeRectCT read fSrcRect;
+    property Blip: TBlipCT read fBlip;
+    property SrcRect: TRelativeRectCT read fSrcRect;
     [TChoice('Tile')]
-    property Tile: TCTTileInfoPropertiesCT read GetTile;
+    property Tile: TTileInfoPropertiesCT read GetTile;
     [TChoice('Tile')]
-    property Stretch: TCTStretchInfoPropertiesCT read GetStretch;
+    property Stretch: TStretchInfoPropertiesCT read GetStretch;
   end;
 
   [TName('CT_PatternFillProperties')]
-  TCTPatternFillPropertiesCT = class(TXmliteComplexType)
+  TPatternFillPropertiesCT = class(TXmliteComplexType)
   private
-    fPrst: TSTPresetPatternValST;
-    fFgClr: TCTColorCT;
-    fBgClr: TCTColorCT;
+    fPrst: TPresetPatternValST;
+    fFgClr: TColorCT;
+    fBgClr: TColorCT;
   published
-    property Prst: TSTPresetPatternValST read fPrst write fPrst;
-    property FgClr: TCTColorCT read fFgClr;
-    property BgClr: TCTColorCT read fBgClr;
+    property Prst: TPresetPatternValST read fPrst write fPrst;
+    property FgClr: TColorCT read fFgClr;
+    property BgClr: TColorCT read fBgClr;
   end;
 
   [TName('CT_GroupFillProperties')]
-  TCTGroupFillPropertiesCT = class(TXmliteComplexType);
+  TGroupFillPropertiesCT = class(TXmliteComplexType);
 
   [TName('CT_FillProperties')]
-  TCTFillPropertiesCT = class(TXmliteComplexType)
+  TFillPropertiesCT = class(TXmliteComplexType)
   private
-    fNoFill: TCTNoFillPropertiesCT;
-    fSolidFill: TCTSolidColorFillPropertiesCT;
-    fGradFill: TCTGradientFillPropertiesCT;
-    fBlipFill: TCTBlipFillPropertiesCT;
-    fPattFill: TCTPatternFillPropertiesCT;
-    fGrpFill: TCTGroupFillPropertiesCT;
+    fNoFill: TNoFillPropertiesCT;
+    fSolidFill: TSolidColorFillPropertiesCT;
+    fGradFill: TGradientFillPropertiesCT;
+    fBlipFill: TBlipFillPropertiesCT;
+    fPattFill: TPatternFillPropertiesCT;
+    fGrpFill: TGroupFillPropertiesCT;
 
-    function GetNoFill: TCTNoFillPropertiesCT;
-    function GetSolidFill: TCTSolidColorFillPropertiesCT;
-    function GetGradFill: TCTGradientFillPropertiesCT;
-    function GetBlipFill: TCTBlipFillPropertiesCT;
-    function GetPattFill: TCTPatternFillPropertiesCT;
-    function GetGrpFill: TCTGroupFillPropertiesCT;
+    function GetNoFill: TNoFillPropertiesCT;
+    function GetSolidFill: TSolidColorFillPropertiesCT;
+    function GetGradFill: TGradientFillPropertiesCT;
+    function GetBlipFill: TBlipFillPropertiesCT;
+    function GetPattFill: TPatternFillPropertiesCT;
+    function GetGrpFill: TGroupFillPropertiesCT;
   published
     [TChoice('NoFill')]
-    property NoFill: TCTNoFillPropertiesCT read GetNoFill;
+    property NoFill: TNoFillPropertiesCT read GetNoFill;
     [TChoice('NoFill')]
-    property SolidFill: TCTSolidColorFillPropertiesCT read GetSolidFill;
+    property SolidFill: TSolidColorFillPropertiesCT read GetSolidFill;
     [TChoice('NoFill')]
-    property GradFill: TCTGradientFillPropertiesCT read GetGradFill;
+    property GradFill: TGradientFillPropertiesCT read GetGradFill;
     [TChoice('NoFill')]
-    property BlipFill: TCTBlipFillPropertiesCT read GetBlipFill;
+    property BlipFill: TBlipFillPropertiesCT read GetBlipFill;
     [TChoice('NoFill')]
-    property PattFill: TCTPatternFillPropertiesCT read GetPattFill;
+    property PattFill: TPatternFillPropertiesCT read GetPattFill;
     [TChoice('NoFill')]
-    property GrpFill: TCTGroupFillPropertiesCT read GetGrpFill;
+    property GrpFill: TGroupFillPropertiesCT read GetGrpFill;
   end;
 
   [TName('CT_FillEffect')]
-  TCTFillEffectCT = class(TXmliteComplexType)
+  TFillEffectCT = class(TXmliteComplexType)
   private
-    fNoFill: TCTNoFillPropertiesCT;
-    fSolidFill: TCTSolidColorFillPropertiesCT;
-    fGradFill: TCTGradientFillPropertiesCT;
-    fBlipFill: TCTBlipFillPropertiesCT;
-    fPattFill: TCTPatternFillPropertiesCT;
-    fGrpFill: TCTGroupFillPropertiesCT;
+    fNoFill: TNoFillPropertiesCT;
+    fSolidFill: TSolidColorFillPropertiesCT;
+    fGradFill: TGradientFillPropertiesCT;
+    fBlipFill: TBlipFillPropertiesCT;
+    fPattFill: TPatternFillPropertiesCT;
+    fGrpFill: TGroupFillPropertiesCT;
 
-    function GetNoFill: TCTNoFillPropertiesCT;
-    function GetSolidFill: TCTSolidColorFillPropertiesCT;
-    function GetGradFill: TCTGradientFillPropertiesCT;
-    function GetBlipFill: TCTBlipFillPropertiesCT;
-    function GetPattFill: TCTPatternFillPropertiesCT;
-    function GetGrpFill: TCTGroupFillPropertiesCT;
+    function GetNoFill: TNoFillPropertiesCT;
+    function GetSolidFill: TSolidColorFillPropertiesCT;
+    function GetGradFill: TGradientFillPropertiesCT;
+    function GetBlipFill: TBlipFillPropertiesCT;
+    function GetPattFill: TPatternFillPropertiesCT;
+    function GetGrpFill: TGroupFillPropertiesCT;
   published
     [TChoice('NoFill')]
-    property NoFill: TCTNoFillPropertiesCT read GetNoFill;
+    property NoFill: TNoFillPropertiesCT read GetNoFill;
     [TChoice('NoFill')]
-    property SolidFill: TCTSolidColorFillPropertiesCT read GetSolidFill;
+    property SolidFill: TSolidColorFillPropertiesCT read GetSolidFill;
     [TChoice('NoFill')]
-    property GradFill: TCTGradientFillPropertiesCT read GetGradFill;
+    property GradFill: TGradientFillPropertiesCT read GetGradFill;
     [TChoice('NoFill')]
-    property BlipFill: TCTBlipFillPropertiesCT read GetBlipFill;
+    property BlipFill: TBlipFillPropertiesCT read GetBlipFill;
     [TChoice('NoFill')]
-    property PattFill: TCTPatternFillPropertiesCT read GetPattFill;
+    property PattFill: TPatternFillPropertiesCT read GetPattFill;
     [TChoice('NoFill')]
-    property GrpFill: TCTGroupFillPropertiesCT read GetGrpFill;
+    property GrpFill: TGroupFillPropertiesCT read GetGrpFill;
   end;
 
   [TName('CT_FillOverlayEffect')]
-  TCTFillOverlayEffectCT = class(TXmliteComplexType)
+  TFillOverlayEffectCT = class(TXmliteComplexType)
   private
-    fBlend: TSTBlendModeST;
-    fNoFill: TCTNoFillPropertiesCT;
-    fSolidFill: TCTSolidColorFillPropertiesCT;
-    fGradFill: TCTGradientFillPropertiesCT;
-    fBlipFill: TCTBlipFillPropertiesCT;
-    fPattFill: TCTPatternFillPropertiesCT;
-    fGrpFill: TCTGroupFillPropertiesCT;
+    fBlend: TBlendModeST;
+    fNoFill: TNoFillPropertiesCT;
+    fSolidFill: TSolidColorFillPropertiesCT;
+    fGradFill: TGradientFillPropertiesCT;
+    fBlipFill: TBlipFillPropertiesCT;
+    fPattFill: TPatternFillPropertiesCT;
+    fGrpFill: TGroupFillPropertiesCT;
 
-    function GetNoFill: TCTNoFillPropertiesCT;
-    function GetSolidFill: TCTSolidColorFillPropertiesCT;
-    function GetGradFill: TCTGradientFillPropertiesCT;
-    function GetBlipFill: TCTBlipFillPropertiesCT;
-    function GetPattFill: TCTPatternFillPropertiesCT;
-    function GetGrpFill: TCTGroupFillPropertiesCT;
+    function GetNoFill: TNoFillPropertiesCT;
+    function GetSolidFill: TSolidColorFillPropertiesCT;
+    function GetGradFill: TGradientFillPropertiesCT;
+    function GetBlipFill: TBlipFillPropertiesCT;
+    function GetPattFill: TPatternFillPropertiesCT;
+    function GetGrpFill: TGroupFillPropertiesCT;
   published
     [TRequired]
-    property Blend: TSTBlendModeST read fBlend write fBlend;
+    property Blend: TBlendModeST read fBlend write fBlend;
     [TChoice('NoFill')]
-    property NoFill: TCTNoFillPropertiesCT read GetNoFill;
+    property NoFill: TNoFillPropertiesCT read GetNoFill;
     [TChoice('NoFill')]
-    property SolidFill: TCTSolidColorFillPropertiesCT read GetSolidFill;
+    property SolidFill: TSolidColorFillPropertiesCT read GetSolidFill;
     [TChoice('NoFill')]
-    property GradFill: TCTGradientFillPropertiesCT read GetGradFill;
+    property GradFill: TGradientFillPropertiesCT read GetGradFill;
     [TChoice('NoFill')]
-    property BlipFill: TCTBlipFillPropertiesCT read GetBlipFill;
+    property BlipFill: TBlipFillPropertiesCT read GetBlipFill;
     [TChoice('NoFill')]
-    property PattFill: TCTPatternFillPropertiesCT read GetPattFill;
+    property PattFill: TPatternFillPropertiesCT read GetPattFill;
     [TChoice('NoFill')]
-    property GrpFill: TCTGroupFillPropertiesCT read GetGrpFill;
+    property GrpFill: TGroupFillPropertiesCT read GetGrpFill;
   end;
 
   [TName('CT_EffectReference')]
-  TCTEffectReferenceCT = class(TXmliteComplexType)
+  TEffectReferenceCT = class(TXmliteComplexType)
   private
     fRef: ProRock.Xmlite.Schema.Base.TTokenST;
   published
@@ -3327,954 +3327,954 @@ type
 
   [TOrdered]
   [TName('CT_EffectContainer')]
-  TCTEffectContainerCT = class(TXmliteComplexType)
+  TEffectContainerCT = class(TXmliteComplexType)
   private
-    fType: TSTEffectContainerTypeST;
+    fType: TEffectContainerTypeST;
     fName: ProRock.Xmlite.Schema.Base.TTokenST;
-    fCont: TCTEffectContainerCTList;
-    fEffect: TCTEffectReferenceCTList;
-    fAlphaBiLevel: TCTAlphaBiLevelEffectCTList;
-    fAlphaCeiling: TCTAlphaCeilingEffectCTList;
-    fAlphaFloor: TCTAlphaFloorEffectCTList;
-    fAlphaInv: TCTAlphaInverseEffectCTList;
-    fAlphaMod: TCTAlphaModulateEffectCTList;
-    fAlphaModFix: TCTAlphaModulateFixedEffectCTList;
-    fAlphaOutset: TCTAlphaOutsetEffectCTList;
-    fAlphaRepl: TCTAlphaReplaceEffectCTList;
-    fBiLevel: TCTBiLevelEffectCTList;
-    fBlend: TCTBlendEffectCTList;
-    fBlur: TCTBlurEffectCTList;
-    fClrChange: TCTColorChangeEffectCTList;
-    fClrRepl: TCTColorReplaceEffectCTList;
-    fDuotone: TCTDuotoneEffectCTList;
-    fFill: TCTFillEffectCTList;
-    fFillOverlay: TCTFillOverlayEffectCTList;
-    fGlow: TCTGlowEffectCTList;
-    fGrayscl: TCTGrayscaleEffectCTList;
-    fHsl: TCTHSLEffectCTList;
-    fInnerShdw: TCTInnerShadowEffectCTList;
-    fLum: TCTLuminanceEffectCTList;
-    fOuterShdw: TCTOuterShadowEffectCTList;
-    fPrstShdw: TCTPresetShadowEffectCTList;
-    fReflection: TCTReflectionEffectCTList;
-    fRelOff: TCTRelativeOffsetEffectCTList;
-    fSoftEdge: TCTSoftEdgesEffectCTList;
-    fTint: TCTTintEffectCTList;
-    fXfrm: TCTTransformEffectCTList;
+    fCont: TEffectContainerCTList;
+    fEffect: TEffectReferenceCTList;
+    fAlphaBiLevel: TAlphaBiLevelEffectCTList;
+    fAlphaCeiling: TAlphaCeilingEffectCTList;
+    fAlphaFloor: TAlphaFloorEffectCTList;
+    fAlphaInv: TAlphaInverseEffectCTList;
+    fAlphaMod: TAlphaModulateEffectCTList;
+    fAlphaModFix: TAlphaModulateFixedEffectCTList;
+    fAlphaOutset: TAlphaOutsetEffectCTList;
+    fAlphaRepl: TAlphaReplaceEffectCTList;
+    fBiLevel: TBiLevelEffectCTList;
+    fBlend: TBlendEffectCTList;
+    fBlur: TBlurEffectCTList;
+    fClrChange: TColorChangeEffectCTList;
+    fClrRepl: TColorReplaceEffectCTList;
+    fDuotone: TDuotoneEffectCTList;
+    fFill: TFillEffectCTList;
+    fFillOverlay: TFillOverlayEffectCTList;
+    fGlow: TGlowEffectCTList;
+    fGrayscl: TGrayscaleEffectCTList;
+    fHsl: THSLEffectCTList;
+    fInnerShdw: TInnerShadowEffectCTList;
+    fLum: TLuminanceEffectCTList;
+    fOuterShdw: TOuterShadowEffectCTList;
+    fPrstShdw: TPresetShadowEffectCTList;
+    fReflection: TReflectionEffectCTList;
+    fRelOff: TRelativeOffsetEffectCTList;
+    fSoftEdge: TSoftEdgesEffectCTList;
+    fTint: TTintEffectCTList;
+    fXfrm: TTransformEffectCTList;
   published
     [TDefault(Ord(stectSib))]
-    property &Type: TSTEffectContainerTypeST read fType write fType;
+    property &Type: TEffectContainerTypeST read fType write fType;
     property Name: ProRock.Xmlite.Schema.Base.TTokenST read fName write fName;
-    property Cont: TCTEffectContainerCTList read fCont;
-    property Effect: TCTEffectReferenceCTList read fEffect;
-    property AlphaBiLevel: TCTAlphaBiLevelEffectCTList read fAlphaBiLevel;
-    property AlphaCeiling: TCTAlphaCeilingEffectCTList read fAlphaCeiling;
-    property AlphaFloor: TCTAlphaFloorEffectCTList read fAlphaFloor;
-    property AlphaInv: TCTAlphaInverseEffectCTList read fAlphaInv;
-    property AlphaMod: TCTAlphaModulateEffectCTList read fAlphaMod;
-    property AlphaModFix: TCTAlphaModulateFixedEffectCTList read fAlphaModFix;
-    property AlphaOutset: TCTAlphaOutsetEffectCTList read fAlphaOutset;
-    property AlphaRepl: TCTAlphaReplaceEffectCTList read fAlphaRepl;
-    property BiLevel: TCTBiLevelEffectCTList read fBiLevel;
-    property Blend: TCTBlendEffectCTList read fBlend;
-    property Blur: TCTBlurEffectCTList read fBlur;
-    property ClrChange: TCTColorChangeEffectCTList read fClrChange;
-    property ClrRepl: TCTColorReplaceEffectCTList read fClrRepl;
-    property Duotone: TCTDuotoneEffectCTList read fDuotone;
-    property Fill: TCTFillEffectCTList read fFill;
-    property FillOverlay: TCTFillOverlayEffectCTList read fFillOverlay;
-    property Glow: TCTGlowEffectCTList read fGlow;
-    property Grayscl: TCTGrayscaleEffectCTList read fGrayscl;
-    property Hsl: TCTHSLEffectCTList read fHsl;
-    property InnerShdw: TCTInnerShadowEffectCTList read fInnerShdw;
-    property Lum: TCTLuminanceEffectCTList read fLum;
-    property OuterShdw: TCTOuterShadowEffectCTList read fOuterShdw;
-    property PrstShdw: TCTPresetShadowEffectCTList read fPrstShdw;
-    property Reflection: TCTReflectionEffectCTList read fReflection;
-    property RelOff: TCTRelativeOffsetEffectCTList read fRelOff;
-    property SoftEdge: TCTSoftEdgesEffectCTList read fSoftEdge;
-    property Tint: TCTTintEffectCTList read fTint;
-    property Xfrm: TCTTransformEffectCTList read fXfrm;
+    property Cont: TEffectContainerCTList read fCont;
+    property Effect: TEffectReferenceCTList read fEffect;
+    property AlphaBiLevel: TAlphaBiLevelEffectCTList read fAlphaBiLevel;
+    property AlphaCeiling: TAlphaCeilingEffectCTList read fAlphaCeiling;
+    property AlphaFloor: TAlphaFloorEffectCTList read fAlphaFloor;
+    property AlphaInv: TAlphaInverseEffectCTList read fAlphaInv;
+    property AlphaMod: TAlphaModulateEffectCTList read fAlphaMod;
+    property AlphaModFix: TAlphaModulateFixedEffectCTList read fAlphaModFix;
+    property AlphaOutset: TAlphaOutsetEffectCTList read fAlphaOutset;
+    property AlphaRepl: TAlphaReplaceEffectCTList read fAlphaRepl;
+    property BiLevel: TBiLevelEffectCTList read fBiLevel;
+    property Blend: TBlendEffectCTList read fBlend;
+    property Blur: TBlurEffectCTList read fBlur;
+    property ClrChange: TColorChangeEffectCTList read fClrChange;
+    property ClrRepl: TColorReplaceEffectCTList read fClrRepl;
+    property Duotone: TDuotoneEffectCTList read fDuotone;
+    property Fill: TFillEffectCTList read fFill;
+    property FillOverlay: TFillOverlayEffectCTList read fFillOverlay;
+    property Glow: TGlowEffectCTList read fGlow;
+    property Grayscl: TGrayscaleEffectCTList read fGrayscl;
+    property Hsl: THSLEffectCTList read fHsl;
+    property InnerShdw: TInnerShadowEffectCTList read fInnerShdw;
+    property Lum: TLuminanceEffectCTList read fLum;
+    property OuterShdw: TOuterShadowEffectCTList read fOuterShdw;
+    property PrstShdw: TPresetShadowEffectCTList read fPrstShdw;
+    property Reflection: TReflectionEffectCTList read fReflection;
+    property RelOff: TRelativeOffsetEffectCTList read fRelOff;
+    property SoftEdge: TSoftEdgesEffectCTList read fSoftEdge;
+    property Tint: TTintEffectCTList read fTint;
+    property Xfrm: TTransformEffectCTList read fXfrm;
   end;
 
   [TName('CT_AlphaModulateEffect')]
-  TCTAlphaModulateEffectCT = class(TXmliteComplexType)
+  TAlphaModulateEffectCT = class(TXmliteComplexType)
   private
-    fCont: TCTEffectContainerCT;
+    fCont: TEffectContainerCT;
   published
     [TRequired]
-    property Cont: TCTEffectContainerCT read fCont;
+    property Cont: TEffectContainerCT read fCont;
   end;
 
   [TName('CT_BlendEffect')]
-  TCTBlendEffectCT = class(TXmliteComplexType)
+  TBlendEffectCT = class(TXmliteComplexType)
   private
-    fBlend: TSTBlendModeST;
-    fCont: TCTEffectContainerCT;
+    fBlend: TBlendModeST;
+    fCont: TEffectContainerCT;
   published
     [TRequired]
-    property Blend: TSTBlendModeST read fBlend write fBlend;
+    property Blend: TBlendModeST read fBlend write fBlend;
     [TRequired]
-    property Cont: TCTEffectContainerCT read fCont;
+    property Cont: TEffectContainerCT read fCont;
   end;
 
   [TName('CT_EffectList')]
-  TCTEffectListCT = class(TXmliteComplexType)
+  TEffectListCT = class(TXmliteComplexType)
   private
-    fBlur: TCTBlurEffectCT;
-    fFillOverlay: TCTFillOverlayEffectCT;
-    fGlow: TCTGlowEffectCT;
-    fInnerShdw: TCTInnerShadowEffectCT;
-    fOuterShdw: TCTOuterShadowEffectCT;
-    fPrstShdw: TCTPresetShadowEffectCT;
-    fReflection: TCTReflectionEffectCT;
-    fSoftEdge: TCTSoftEdgesEffectCT;
+    fBlur: TBlurEffectCT;
+    fFillOverlay: TFillOverlayEffectCT;
+    fGlow: TGlowEffectCT;
+    fInnerShdw: TInnerShadowEffectCT;
+    fOuterShdw: TOuterShadowEffectCT;
+    fPrstShdw: TPresetShadowEffectCT;
+    fReflection: TReflectionEffectCT;
+    fSoftEdge: TSoftEdgesEffectCT;
   published
-    property Blur: TCTBlurEffectCT read fBlur;
-    property FillOverlay: TCTFillOverlayEffectCT read fFillOverlay;
-    property Glow: TCTGlowEffectCT read fGlow;
-    property InnerShdw: TCTInnerShadowEffectCT read fInnerShdw;
-    property OuterShdw: TCTOuterShadowEffectCT read fOuterShdw;
-    property PrstShdw: TCTPresetShadowEffectCT read fPrstShdw;
-    property Reflection: TCTReflectionEffectCT read fReflection;
-    property SoftEdge: TCTSoftEdgesEffectCT read fSoftEdge;
+    property Blur: TBlurEffectCT read fBlur;
+    property FillOverlay: TFillOverlayEffectCT read fFillOverlay;
+    property Glow: TGlowEffectCT read fGlow;
+    property InnerShdw: TInnerShadowEffectCT read fInnerShdw;
+    property OuterShdw: TOuterShadowEffectCT read fOuterShdw;
+    property PrstShdw: TPresetShadowEffectCT read fPrstShdw;
+    property Reflection: TReflectionEffectCT read fReflection;
+    property SoftEdge: TSoftEdgesEffectCT read fSoftEdge;
   end;
 
   [TName('CT_EffectProperties')]
-  TCTEffectPropertiesCT = class(TXmliteComplexType)
+  TEffectPropertiesCT = class(TXmliteComplexType)
   private
-    fEffectLst: TCTEffectListCT;
-    fEffectDag: TCTEffectContainerCT;
+    fEffectLst: TEffectListCT;
+    fEffectDag: TEffectContainerCT;
 
-    function GetEffectLst: TCTEffectListCT;
-    function GetEffectDag: TCTEffectContainerCT;
+    function GetEffectLst: TEffectListCT;
+    function GetEffectDag: TEffectContainerCT;
     function GetEffectChosen: TBasite;
   public
     property EffectChosen: TBasite read GetEffectChosen;
   published
     [TChoice('Effect')]
-    property EffectLst: TCTEffectListCT read GetEffectLst;
+    property EffectLst: TEffectListCT read GetEffectLst;
     [TChoice('Effect')]
-    property EffectDag: TCTEffectContainerCT read GetEffectDag;
+    property EffectDag: TEffectContainerCT read GetEffectDag;
   end;
 
   [TName('CT_GeomGuide')]
-  TCTGeomGuideCT = class(TXmliteComplexType)
+  TGeomGuideCT = class(TXmliteComplexType)
   private
-    fName: TSTGeomGuideNameST;
-    fFmla: TSTGeomGuideFormulaST;
+    fName: TGeomGuideNameST;
+    fFmla: TGeomGuideFormulaST;
   published
     [TRequired]
-    property Name: TSTGeomGuideNameST read fName write fName;
+    property Name: TGeomGuideNameST read fName write fName;
     [TRequired]
-    property Fmla: TSTGeomGuideFormulaST read fFmla write fFmla;
+    property Fmla: TGeomGuideFormulaST read fFmla write fFmla;
   end;
 
   [TName('CT_GeomGuideList')]
-  TCTGeomGuideListCT = class(TXmliteComplexType)
+  TGeomGuideListCT = class(TXmliteComplexType)
   private
-    fGd: TCTGeomGuideCTList;
+    fGd: TGeomGuideCTList;
   published
-    property Gd: TCTGeomGuideCTList read fGd;
+    property Gd: TGeomGuideCTList read fGd;
   end;
 
   [TName('CT_AdjPoint2D')]
-  TCTAdjPoint2DCT = class(TXmliteComplexType)
+  TAdjPoint2DCT = class(TXmliteComplexType)
   private
-    fX: TSTAdjCoordinateST;
-    fY: TSTAdjCoordinateST;
+    fX: TAdjCoordinateST;
+    fY: TAdjCoordinateST;
   published
     [TRequired]
-    property X: TSTAdjCoordinateST read fX write fX;
+    property X: TAdjCoordinateST read fX write fX;
     [TRequired]
-    property Y: TSTAdjCoordinateST read fY write fY;
+    property Y: TAdjCoordinateST read fY write fY;
   end;
 
   [TName('CT_GeomRect')]
-  TCTGeomRectCT = class(TXmliteComplexType)
+  TGeomRectCT = class(TXmliteComplexType)
   private
-    fL: TSTAdjCoordinateST;
-    fT: TSTAdjCoordinateST;
-    fR: TSTAdjCoordinateST;
-    fB: TSTAdjCoordinateST;
+    fL: TAdjCoordinateST;
+    fT: TAdjCoordinateST;
+    fR: TAdjCoordinateST;
+    fB: TAdjCoordinateST;
   published
     [TRequired]
-    property L: TSTAdjCoordinateST read fL write fL;
+    property L: TAdjCoordinateST read fL write fL;
     [TRequired]
-    property T: TSTAdjCoordinateST read fT write fT;
+    property T: TAdjCoordinateST read fT write fT;
     [TRequired]
-    property R: TSTAdjCoordinateST read fR write fR;
+    property R: TAdjCoordinateST read fR write fR;
     [TRequired]
-    property B: TSTAdjCoordinateST read fB write fB;
+    property B: TAdjCoordinateST read fB write fB;
   end;
 
   [TName('CT_XYAdjustHandle')]
-  TCTXYAdjustHandleCT = class(TXmliteComplexType)
+  TXYAdjustHandleCT = class(TXmliteComplexType)
   private
-    fGdRefX: TSTGeomGuideNameST;
-    fMinX: TSTAdjCoordinateST;
-    fMaxX: TSTAdjCoordinateST;
-    fGdRefY: TSTGeomGuideNameST;
-    fMinY: TSTAdjCoordinateST;
-    fMaxY: TSTAdjCoordinateST;
-    fPos: TCTAdjPoint2DCT;
+    fGdRefX: TGeomGuideNameST;
+    fMinX: TAdjCoordinateST;
+    fMaxX: TAdjCoordinateST;
+    fGdRefY: TGeomGuideNameST;
+    fMinY: TAdjCoordinateST;
+    fMaxY: TAdjCoordinateST;
+    fPos: TAdjPoint2DCT;
   published
-    property GdRefX: TSTGeomGuideNameST read fGdRefX write fGdRefX;
-    property MinX: TSTAdjCoordinateST read fMinX write fMinX;
-    property MaxX: TSTAdjCoordinateST read fMaxX write fMaxX;
-    property GdRefY: TSTGeomGuideNameST read fGdRefY write fGdRefY;
-    property MinY: TSTAdjCoordinateST read fMinY write fMinY;
-    property MaxY: TSTAdjCoordinateST read fMaxY write fMaxY;
+    property GdRefX: TGeomGuideNameST read fGdRefX write fGdRefX;
+    property MinX: TAdjCoordinateST read fMinX write fMinX;
+    property MaxX: TAdjCoordinateST read fMaxX write fMaxX;
+    property GdRefY: TGeomGuideNameST read fGdRefY write fGdRefY;
+    property MinY: TAdjCoordinateST read fMinY write fMinY;
+    property MaxY: TAdjCoordinateST read fMaxY write fMaxY;
     [TRequired]
-    property Pos: TCTAdjPoint2DCT read fPos;
+    property Pos: TAdjPoint2DCT read fPos;
   end;
 
   [TName('CT_PolarAdjustHandle')]
-  TCTPolarAdjustHandleCT = class(TXmliteComplexType)
+  TPolarAdjustHandleCT = class(TXmliteComplexType)
   private
-    fGdRefR: TSTGeomGuideNameST;
-    fMinR: TSTAdjCoordinateST;
-    fMaxR: TSTAdjCoordinateST;
-    fGdRefAng: TSTGeomGuideNameST;
-    fMinAng: TSTAdjAngleST;
-    fMaxAng: TSTAdjAngleST;
-    fPos: TCTAdjPoint2DCT;
+    fGdRefR: TGeomGuideNameST;
+    fMinR: TAdjCoordinateST;
+    fMaxR: TAdjCoordinateST;
+    fGdRefAng: TGeomGuideNameST;
+    fMinAng: TAdjAngleST;
+    fMaxAng: TAdjAngleST;
+    fPos: TAdjPoint2DCT;
   published
-    property GdRefR: TSTGeomGuideNameST read fGdRefR write fGdRefR;
-    property MinR: TSTAdjCoordinateST read fMinR write fMinR;
-    property MaxR: TSTAdjCoordinateST read fMaxR write fMaxR;
-    property GdRefAng: TSTGeomGuideNameST read fGdRefAng write fGdRefAng;
-    property MinAng: TSTAdjAngleST read fMinAng write fMinAng;
-    property MaxAng: TSTAdjAngleST read fMaxAng write fMaxAng;
+    property GdRefR: TGeomGuideNameST read fGdRefR write fGdRefR;
+    property MinR: TAdjCoordinateST read fMinR write fMinR;
+    property MaxR: TAdjCoordinateST read fMaxR write fMaxR;
+    property GdRefAng: TGeomGuideNameST read fGdRefAng write fGdRefAng;
+    property MinAng: TAdjAngleST read fMinAng write fMinAng;
+    property MaxAng: TAdjAngleST read fMaxAng write fMaxAng;
     [TRequired]
-    property Pos: TCTAdjPoint2DCT read fPos;
+    property Pos: TAdjPoint2DCT read fPos;
   end;
 
   [TName('CT_ConnectionSite')]
-  TCTConnectionSiteCT = class(TXmliteComplexType)
+  TConnectionSiteCT = class(TXmliteComplexType)
   private
-    fAng: TSTAdjAngleST;
-    fPos: TCTAdjPoint2DCT;
+    fAng: TAdjAngleST;
+    fPos: TAdjPoint2DCT;
   published
     [TRequired]
-    property Ang: TSTAdjAngleST read fAng write fAng;
+    property Ang: TAdjAngleST read fAng write fAng;
     [TRequired]
-    property Pos: TCTAdjPoint2DCT read fPos;
+    property Pos: TAdjPoint2DCT read fPos;
   end;
 
   [TOrdered]
   [TName('CT_AdjustHandleList')]
-  TCTAdjustHandleListCT = class(TXmliteComplexType)
+  TAdjustHandleListCT = class(TXmliteComplexType)
   private
-    fAhXY: TCTXYAdjustHandleCTList;
-    fAhPolar: TCTPolarAdjustHandleCTList;
+    fAhXY: TXYAdjustHandleCTList;
+    fAhPolar: TPolarAdjustHandleCTList;
   published
-    property AhXY: TCTXYAdjustHandleCTList read fAhXY;
-    property AhPolar: TCTPolarAdjustHandleCTList read fAhPolar;
+    property AhXY: TXYAdjustHandleCTList read fAhXY;
+    property AhPolar: TPolarAdjustHandleCTList read fAhPolar;
   end;
 
   [TName('CT_ConnectionSiteList')]
-  TCTConnectionSiteListCT = class(TXmliteComplexType)
+  TConnectionSiteListCT = class(TXmliteComplexType)
   private
-    fCxn: TCTConnectionSiteCTList;
+    fCxn: TConnectionSiteCTList;
   published
-    property Cxn: TCTConnectionSiteCTList read fCxn;
+    property Cxn: TConnectionSiteCTList read fCxn;
   end;
 
   [TName('CT_Connection')]
-  TCTConnectionCT = class(TXmliteComplexType)
+  TConnectionCT = class(TXmliteComplexType)
   private
-    fId: TSTDrawingElementIdST;
+    fId: TDrawingElementIdST;
     fIdx: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
   published
     [TRequired]
-    property Id: TSTDrawingElementIdST read fId write fId;
+    property Id: TDrawingElementIdST read fId write fId;
     [TRequired]
     property Idx: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fIdx write fIdx;
   end;
 
   [TName('CT_Path2DMoveTo')]
-  TCTPath2DMoveToCT = class(TXmliteComplexType)
+  TPath2DMoveToCT = class(TXmliteComplexType)
   private
-    fPt: TCTAdjPoint2DCT;
+    fPt: TAdjPoint2DCT;
   published
     [TRequired]
-    property Pt: TCTAdjPoint2DCT read fPt;
+    property Pt: TAdjPoint2DCT read fPt;
   end;
 
   [TName('CT_Path2DLineTo')]
-  TCTPath2DLineToCT = class(TXmliteComplexType)
+  TPath2DLineToCT = class(TXmliteComplexType)
   private
-    fPt: TCTAdjPoint2DCT;
+    fPt: TAdjPoint2DCT;
   published
     [TRequired]
-    property Pt: TCTAdjPoint2DCT read fPt;
+    property Pt: TAdjPoint2DCT read fPt;
   end;
 
   [TName('CT_Path2DArcTo')]
-  TCTPath2DArcToCT = class(TXmliteComplexType)
+  TPath2DArcToCT = class(TXmliteComplexType)
   private
-    fWr: TSTAdjCoordinateST;
-    fHr: TSTAdjCoordinateST;
-    fStAng: TSTAdjAngleST;
-    fSwAng: TSTAdjAngleST;
+    fWr: TAdjCoordinateST;
+    fHr: TAdjCoordinateST;
+    fStAng: TAdjAngleST;
+    fSwAng: TAdjAngleST;
   published
     [TRequired]
     [TName('wR')]
-    property WR: TSTAdjCoordinateST read fWr write fWr;
+    property WR: TAdjCoordinateST read fWr write fWr;
     [TRequired]
     [TName('hR')]
-    property HR: TSTAdjCoordinateST read fHr write fHr;
+    property HR: TAdjCoordinateST read fHr write fHr;
     [TRequired]
-    property StAng: TSTAdjAngleST read fStAng write fStAng;
+    property StAng: TAdjAngleST read fStAng write fStAng;
     [TRequired]
-    property SwAng: TSTAdjAngleST read fSwAng write fSwAng;
+    property SwAng: TAdjAngleST read fSwAng write fSwAng;
   end;
 
   [TName('CT_Path2DQuadBezierTo')]
-  TCTPath2DQuadBezierToCT = class(TXmliteComplexType)
+  TPath2DQuadBezierToCT = class(TXmliteComplexType)
   private
-    fPt: TCTAdjPoint2DCTList;
+    fPt: TAdjPoint2DCTList;
   published
-    property Pt: TCTAdjPoint2DCTList read fPt;
+    property Pt: TAdjPoint2DCTList read fPt;
   end;
 
   [TName('CT_Path2DCubicBezierTo')]
-  TCTPath2DCubicBezierToCT = class(TXmliteComplexType)
+  TPath2DCubicBezierToCT = class(TXmliteComplexType)
   private
-    fPt: TCTAdjPoint2DCTList;
+    fPt: TAdjPoint2DCTList;
   published
-    property Pt: TCTAdjPoint2DCTList read fPt;
+    property Pt: TAdjPoint2DCTList read fPt;
   end;
 
   [TName('CT_Path2DClose')]
-  TCTPath2DCloseCT = class(TXmliteComplexType);
+  TPath2DCloseCT = class(TXmliteComplexType);
 
   [TOrdered]
   [TName('CT_Path2D')]
-  TCTPath2DCT = class(TXmliteComplexType)
+  TPath2DCT = class(TXmliteComplexType)
   private
-    fW: TSTPositiveCoordinateST;
-    fH: TSTPositiveCoordinateST;
-    fFill: TSTPathFillModeST;
+    fW: TPositiveCoordinateST;
+    fH: TPositiveCoordinateST;
+    fFill: TPathFillModeST;
     fStroke: ProRock.Xmlite.Schema.Base.TBooleanST;
     fExtrusionOk: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fClose: TCTPath2DCloseCTList;
-    fMoveTo: TCTPath2DMoveToCTList;
-    fLnTo: TCTPath2DLineToCTList;
-    fArcTo: TCTPath2DArcToCTList;
-    fQuadBezTo: TCTPath2DQuadBezierToCTList;
-    fCubicBezTo: TCTPath2DCubicBezierToCTList;
+    fClose: TPath2DCloseCTList;
+    fMoveTo: TPath2DMoveToCTList;
+    fLnTo: TPath2DLineToCTList;
+    fArcTo: TPath2DArcToCTList;
+    fQuadBezTo: TPath2DQuadBezierToCTList;
+    fCubicBezTo: TPath2DCubicBezierToCTList;
   published
     [TDefault(0)]
-    property W: TSTPositiveCoordinateST read fW write fW;
+    property W: TPositiveCoordinateST read fW write fW;
     [TDefault(0)]
-    property H: TSTPositiveCoordinateST read fH write fH;
+    property H: TPositiveCoordinateST read fH write fH;
     [TDefault(Ord(stpfmNorm))]
-    property Fill: TSTPathFillModeST read fFill write fFill;
+    property Fill: TPathFillModeST read fFill write fFill;
     [TDefault(True)]
     property Stroke: ProRock.Xmlite.Schema.Base.TBooleanST read fStroke write fStroke;
     [TDefault(True)]
     property ExtrusionOk: ProRock.Xmlite.Schema.Base.TBooleanST read fExtrusionOk write fExtrusionOk;
-    property Close: TCTPath2DCloseCTList read fClose;
-    property MoveTo: TCTPath2DMoveToCTList read fMoveTo;
-    property LnTo: TCTPath2DLineToCTList read fLnTo;
-    property ArcTo: TCTPath2DArcToCTList read fArcTo;
-    property QuadBezTo: TCTPath2DQuadBezierToCTList read fQuadBezTo;
-    property CubicBezTo: TCTPath2DCubicBezierToCTList read fCubicBezTo;
+    property Close: TPath2DCloseCTList read fClose;
+    property MoveTo: TPath2DMoveToCTList read fMoveTo;
+    property LnTo: TPath2DLineToCTList read fLnTo;
+    property ArcTo: TPath2DArcToCTList read fArcTo;
+    property QuadBezTo: TPath2DQuadBezierToCTList read fQuadBezTo;
+    property CubicBezTo: TPath2DCubicBezierToCTList read fCubicBezTo;
   end;
 
   [TName('CT_Path2DList')]
-  TCTPath2DListCT = class(TXmliteComplexType)
+  TPath2DListCT = class(TXmliteComplexType)
   private
-    fPath: TCTPath2DCTList;
+    fPath: TPath2DCTList;
   published
-    property Path: TCTPath2DCTList read fPath;
+    property Path: TPath2DCTList read fPath;
   end;
 
   [TName('CT_PresetGeometry2D')]
-  TCTPresetGeometry2DCT = class(TXmliteComplexType)
+  TPresetGeometry2DCT = class(TXmliteComplexType)
   private
-    fPrst: TSTShapeTypeST;
-    fAvLst: TCTGeomGuideListCT;
+    fPrst: TShapeTypeST;
+    fAvLst: TGeomGuideListCT;
   published
     [TRequired]
-    property Prst: TSTShapeTypeST read fPrst write fPrst;
-    property AvLst: TCTGeomGuideListCT read fAvLst;
+    property Prst: TShapeTypeST read fPrst write fPrst;
+    property AvLst: TGeomGuideListCT read fAvLst;
   end;
 
   [TName('CT_PresetTextShape')]
-  TCTPresetTextShapeCT = class(TXmliteComplexType)
+  TPresetTextShapeCT = class(TXmliteComplexType)
   private
-    fPrst: TSTTextShapeTypeST;
-    fAvLst: TCTGeomGuideListCT;
+    fPrst: TTextShapeTypeST;
+    fAvLst: TGeomGuideListCT;
   published
     [TRequired]
-    property Prst: TSTTextShapeTypeST read fPrst write fPrst;
-    property AvLst: TCTGeomGuideListCT read fAvLst;
+    property Prst: TTextShapeTypeST read fPrst write fPrst;
+    property AvLst: TGeomGuideListCT read fAvLst;
   end;
 
   [TName('CT_CustomGeometry2D')]
-  TCTCustomGeometry2DCT = class(TXmliteComplexType)
+  TCustomGeometry2DCT = class(TXmliteComplexType)
   private
-    fAvLst: TCTGeomGuideListCT;
-    fGdLst: TCTGeomGuideListCT;
-    fAhLst: TCTAdjustHandleListCT;
-    fCxnLst: TCTConnectionSiteListCT;
-    fRect: TCTGeomRectCT;
-    fPathLst: TCTPath2DListCT;
+    fAvLst: TGeomGuideListCT;
+    fGdLst: TGeomGuideListCT;
+    fAhLst: TAdjustHandleListCT;
+    fCxnLst: TConnectionSiteListCT;
+    fRect: TGeomRectCT;
+    fPathLst: TPath2DListCT;
   published
-    property AvLst: TCTGeomGuideListCT read fAvLst;
-    property GdLst: TCTGeomGuideListCT read fGdLst;
-    property AhLst: TCTAdjustHandleListCT read fAhLst;
-    property CxnLst: TCTConnectionSiteListCT read fCxnLst;
-    property Rect: TCTGeomRectCT read fRect;
+    property AvLst: TGeomGuideListCT read fAvLst;
+    property GdLst: TGeomGuideListCT read fGdLst;
+    property AhLst: TAdjustHandleListCT read fAhLst;
+    property CxnLst: TConnectionSiteListCT read fCxnLst;
+    property Rect: TGeomRectCT read fRect;
     [TRequired]
-    property PathLst: TCTPath2DListCT read fPathLst;
+    property PathLst: TPath2DListCT read fPathLst;
   end;
 
   [TName('CT_LineEndProperties')]
-  TCTLineEndPropertiesCT = class(TXmliteComplexType)
+  TLineEndPropertiesCT = class(TXmliteComplexType)
   private
-    fType: TSTLineEndTypeST;
-    fW: TSTLineEndWidthST;
-    fLen: TSTLineEndLengthST;
+    fType: TLineEndTypeST;
+    fW: TLineEndWidthST;
+    fLen: TLineEndLengthST;
   published
     [TDefault(Ord(stletNone))]
-    property &Type: TSTLineEndTypeST read fType write fType;
-    property W: TSTLineEndWidthST read fW write fW;
-    property Len: TSTLineEndLengthST read fLen write fLen;
+    property &Type: TLineEndTypeST read fType write fType;
+    property W: TLineEndWidthST read fW write fW;
+    property Len: TLineEndLengthST read fLen write fLen;
   end;
 
   [TName('CT_LineJoinBevel')]
-  TCTLineJoinBevelCT = class(TXmliteComplexType);
+  TLineJoinBevelCT = class(TXmliteComplexType);
 
   [TName('CT_LineJoinRound')]
-  TCTLineJoinRoundCT = class(TXmliteComplexType);
+  TLineJoinRoundCT = class(TXmliteComplexType);
 
   [TName('CT_LineJoinMiterProperties')]
-  TCTLineJoinMiterPropertiesCT = class(TXmliteComplexType)
+  TLineJoinMiterPropertiesCT = class(TXmliteComplexType)
   private
-    fLim: TSTPositivePercentageST;
+    fLim: TPositivePercentageST;
   published
-    property Lim: TSTPositivePercentageST read fLim write fLim;
+    property Lim: TPositivePercentageST read fLim write fLim;
   end;
 
   [TName('CT_PresetLineDashProperties')]
-  TCTPresetLineDashPropertiesCT = class(TXmliteComplexType)
+  TPresetLineDashPropertiesCT = class(TXmliteComplexType)
   private
-    fVal: TSTPresetLineDashValST;
+    fVal: TPresetLineDashValST;
   published
-    property Val: TSTPresetLineDashValST read fVal write fVal;
+    property Val: TPresetLineDashValST read fVal write fVal;
   end;
 
   [TName('CT_DashStop')]
-  TCTDashStopCT = class(TXmliteComplexType)
+  TDashStopCT = class(TXmliteComplexType)
   private
-    fD: TSTPositivePercentageST;
-    fSp: TSTPositivePercentageST;
+    fD: TPositivePercentageST;
+    fSp: TPositivePercentageST;
   published
     [TRequired]
-    property D: TSTPositivePercentageST read fD write fD;
+    property D: TPositivePercentageST read fD write fD;
     [TRequired]
-    property Sp: TSTPositivePercentageST read fSp write fSp;
+    property Sp: TPositivePercentageST read fSp write fSp;
   end;
 
   [TName('CT_DashStopList')]
-  TCTDashStopListCT = class(TXmliteComplexType)
+  TDashStopListCT = class(TXmliteComplexType)
   private
-    fDs: TCTDashStopCTList;
+    fDs: TDashStopCTList;
   published
-    property Ds: TCTDashStopCTList read fDs;
+    property Ds: TDashStopCTList read fDs;
   end;
 
   [TName('CT_LineProperties')]
-  TCTLinePropertiesCT = class(TXmliteComplexType)
+  TLinePropertiesCT = class(TXmliteComplexType)
   private
-    fW: TSTLineWidthST;
-    fCap: TSTLineCapST;
-    fCmpd: TSTCompoundLineST;
-    fAlgn: TSTPenAlignmentST;
-    fNoFill: TCTNoFillPropertiesCT;
-    fSolidFill: TCTSolidColorFillPropertiesCT;
-    fGradFill: TCTGradientFillPropertiesCT;
-    fPattFill: TCTPatternFillPropertiesCT;
-    fPrstDash: TCTPresetLineDashPropertiesCT;
-    fCustDash: TCTDashStopListCT;
-    fRound: TCTLineJoinRoundCT;
-    fBevel: TCTLineJoinBevelCT;
-    fMiter: TCTLineJoinMiterPropertiesCT;
-    fHeadEnd: TCTLineEndPropertiesCT;
-    fTailEnd: TCTLineEndPropertiesCT;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fW: TLineWidthST;
+    fCap: TLineCapST;
+    fCmpd: TCompoundLineST;
+    fAlgn: TPenAlignmentST;
+    fNoFill: TNoFillPropertiesCT;
+    fSolidFill: TSolidColorFillPropertiesCT;
+    fGradFill: TGradientFillPropertiesCT;
+    fPattFill: TPatternFillPropertiesCT;
+    fPrstDash: TPresetLineDashPropertiesCT;
+    fCustDash: TDashStopListCT;
+    fRound: TLineJoinRoundCT;
+    fBevel: TLineJoinBevelCT;
+    fMiter: TLineJoinMiterPropertiesCT;
+    fHeadEnd: TLineEndPropertiesCT;
+    fTailEnd: TLineEndPropertiesCT;
+    fExtLst: TOfficeArtExtensionListCT;
 
-    function GetNoFill: TCTNoFillPropertiesCT;
-    function GetSolidFill: TCTSolidColorFillPropertiesCT;
-    function GetGradFill: TCTGradientFillPropertiesCT;
-    function GetPattFill: TCTPatternFillPropertiesCT;
-    function GetPrstDash: TCTPresetLineDashPropertiesCT;
-    function GetCustDash: TCTDashStopListCT;
-    function GetRound: TCTLineJoinRoundCT;
-    function GetBevel: TCTLineJoinBevelCT;
-    function GetMiter: TCTLineJoinMiterPropertiesCT;
+    function GetNoFill: TNoFillPropertiesCT;
+    function GetSolidFill: TSolidColorFillPropertiesCT;
+    function GetGradFill: TGradientFillPropertiesCT;
+    function GetPattFill: TPatternFillPropertiesCT;
+    function GetPrstDash: TPresetLineDashPropertiesCT;
+    function GetCustDash: TDashStopListCT;
+    function GetRound: TLineJoinRoundCT;
+    function GetBevel: TLineJoinBevelCT;
+    function GetMiter: TLineJoinMiterPropertiesCT;
   published
-    property W: TSTLineWidthST read fW write fW;
-    property Cap: TSTLineCapST read fCap write fCap;
-    property Cmpd: TSTCompoundLineST read fCmpd write fCmpd;
-    property Algn: TSTPenAlignmentST read fAlgn write fAlgn;
+    property W: TLineWidthST read fW write fW;
+    property Cap: TLineCapST read fCap write fCap;
+    property Cmpd: TCompoundLineST read fCmpd write fCmpd;
+    property Algn: TPenAlignmentST read fAlgn write fAlgn;
     [TChoice('NoFill')]
-    property NoFill: TCTNoFillPropertiesCT read GetNoFill;
+    property NoFill: TNoFillPropertiesCT read GetNoFill;
     [TChoice('NoFill')]
-    property SolidFill: TCTSolidColorFillPropertiesCT read GetSolidFill;
+    property SolidFill: TSolidColorFillPropertiesCT read GetSolidFill;
     [TChoice('NoFill')]
-    property GradFill: TCTGradientFillPropertiesCT read GetGradFill;
+    property GradFill: TGradientFillPropertiesCT read GetGradFill;
     [TChoice('NoFill')]
-    property PattFill: TCTPatternFillPropertiesCT read GetPattFill;
+    property PattFill: TPatternFillPropertiesCT read GetPattFill;
     [TChoice('PrstDash')]
-    property PrstDash: TCTPresetLineDashPropertiesCT read GetPrstDash;
+    property PrstDash: TPresetLineDashPropertiesCT read GetPrstDash;
     [TChoice('PrstDash')]
-    property CustDash: TCTDashStopListCT read GetCustDash;
+    property CustDash: TDashStopListCT read GetCustDash;
     [TChoice('Round')]
-    property Round: TCTLineJoinRoundCT read GetRound;
+    property Round: TLineJoinRoundCT read GetRound;
     [TChoice('Round')]
-    property Bevel: TCTLineJoinBevelCT read GetBevel;
+    property Bevel: TLineJoinBevelCT read GetBevel;
     [TChoice('Round')]
-    property Miter: TCTLineJoinMiterPropertiesCT read GetMiter;
-    property HeadEnd: TCTLineEndPropertiesCT read fHeadEnd;
-    property TailEnd: TCTLineEndPropertiesCT read fTailEnd;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property Miter: TLineJoinMiterPropertiesCT read GetMiter;
+    property HeadEnd: TLineEndPropertiesCT read fHeadEnd;
+    property TailEnd: TLineEndPropertiesCT read fTailEnd;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_ShapeProperties')]
-  TCTShapePropertiesCT = class(TXmliteComplexType)
+  TShapePropertiesCT = class(TXmliteComplexType)
   private
-    fBwMode: TSTBlackWhiteModeST;
-    fXfrm: TCTTransform2DCT;
-    fCustGeom: TCTCustomGeometry2DCT;
-    fPrstGeom: TCTPresetGeometry2DCT;
-    fNoFill: TCTNoFillPropertiesCT;
-    fSolidFill: TCTSolidColorFillPropertiesCT;
-    fGradFill: TCTGradientFillPropertiesCT;
-    fBlipFill: TCTBlipFillPropertiesCT;
-    fPattFill: TCTPatternFillPropertiesCT;
-    fGrpFill: TCTGroupFillPropertiesCT;
-    fLn: TCTLinePropertiesCT;
-    fEffectLst: TCTEffectListCT;
-    fEffectDag: TCTEffectContainerCT;
-    fScene3d: TCTScene3DCT;
-    fSp3d: TCTShape3DCT;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fBwMode: TBlackWhiteModeST;
+    fXfrm: TTransform2DCT;
+    fCustGeom: TCustomGeometry2DCT;
+    fPrstGeom: TPresetGeometry2DCT;
+    fNoFill: TNoFillPropertiesCT;
+    fSolidFill: TSolidColorFillPropertiesCT;
+    fGradFill: TGradientFillPropertiesCT;
+    fBlipFill: TBlipFillPropertiesCT;
+    fPattFill: TPatternFillPropertiesCT;
+    fGrpFill: TGroupFillPropertiesCT;
+    fLn: TLinePropertiesCT;
+    fEffectLst: TEffectListCT;
+    fEffectDag: TEffectContainerCT;
+    fScene3d: TScene3DCT;
+    fSp3d: TShape3DCT;
+    fExtLst: TOfficeArtExtensionListCT;
 
-    function GetCustGeom: TCTCustomGeometry2DCT;
-    function GetPrstGeom: TCTPresetGeometry2DCT;
-    function GetNoFill: TCTNoFillPropertiesCT;
-    function GetSolidFill: TCTSolidColorFillPropertiesCT;
-    function GetGradFill: TCTGradientFillPropertiesCT;
-    function GetBlipFill: TCTBlipFillPropertiesCT;
-    function GetPattFill: TCTPatternFillPropertiesCT;
-    function GetGrpFill: TCTGroupFillPropertiesCT;
-    function GetEffectLst: TCTEffectListCT;
-    function GetEffectDag: TCTEffectContainerCT;
+    function GetCustGeom: TCustomGeometry2DCT;
+    function GetPrstGeom: TPresetGeometry2DCT;
+    function GetNoFill: TNoFillPropertiesCT;
+    function GetSolidFill: TSolidColorFillPropertiesCT;
+    function GetGradFill: TGradientFillPropertiesCT;
+    function GetBlipFill: TBlipFillPropertiesCT;
+    function GetPattFill: TPatternFillPropertiesCT;
+    function GetGrpFill: TGroupFillPropertiesCT;
+    function GetEffectLst: TEffectListCT;
+    function GetEffectDag: TEffectContainerCT;
     function GetEffectChosen: TBasite;
   public
     property EffectChosen: TBasite read GetEffectChosen;
   published
-    property BwMode: TSTBlackWhiteModeST read fBwMode write fBwMode;
-    property Xfrm: TCTTransform2DCT read fXfrm;
+    property BwMode: TBlackWhiteModeST read fBwMode write fBwMode;
+    property Xfrm: TTransform2DCT read fXfrm;
     [TChoice('CustGeom')]
-    property CustGeom: TCTCustomGeometry2DCT read GetCustGeom;
+    property CustGeom: TCustomGeometry2DCT read GetCustGeom;
     [TChoice('CustGeom')]
-    property PrstGeom: TCTPresetGeometry2DCT read GetPrstGeom;
+    property PrstGeom: TPresetGeometry2DCT read GetPrstGeom;
     [TChoice('NoFill')]
-    property NoFill: TCTNoFillPropertiesCT read GetNoFill;
+    property NoFill: TNoFillPropertiesCT read GetNoFill;
     [TChoice('NoFill')]
-    property SolidFill: TCTSolidColorFillPropertiesCT read GetSolidFill;
+    property SolidFill: TSolidColorFillPropertiesCT read GetSolidFill;
     [TChoice('NoFill')]
-    property GradFill: TCTGradientFillPropertiesCT read GetGradFill;
+    property GradFill: TGradientFillPropertiesCT read GetGradFill;
     [TChoice('NoFill')]
-    property BlipFill: TCTBlipFillPropertiesCT read GetBlipFill;
+    property BlipFill: TBlipFillPropertiesCT read GetBlipFill;
     [TChoice('NoFill')]
-    property PattFill: TCTPatternFillPropertiesCT read GetPattFill;
+    property PattFill: TPatternFillPropertiesCT read GetPattFill;
     [TChoice('NoFill')]
-    property GrpFill: TCTGroupFillPropertiesCT read GetGrpFill;
-    property Ln: TCTLinePropertiesCT read fLn;
+    property GrpFill: TGroupFillPropertiesCT read GetGrpFill;
+    property Ln: TLinePropertiesCT read fLn;
     [TChoice('Effect')]
-    property EffectLst: TCTEffectListCT read GetEffectLst;
+    property EffectLst: TEffectListCT read GetEffectLst;
     [TChoice('Effect')]
-    property EffectDag: TCTEffectContainerCT read GetEffectDag;
-    property Scene3d: TCTScene3DCT read fScene3d;
-    property Sp3d: TCTShape3DCT read fSp3d;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property EffectDag: TEffectContainerCT read GetEffectDag;
+    property Scene3d: TScene3DCT read fScene3d;
+    property Sp3d: TShape3DCT read fSp3d;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_GroupShapeProperties')]
-  TCTGroupShapePropertiesCT = class(TXmliteComplexType)
+  TGroupShapePropertiesCT = class(TXmliteComplexType)
   private
-    fBwMode: TSTBlackWhiteModeST;
-    fXfrm: TCTGroupTransform2DCT;
-    fNoFill: TCTNoFillPropertiesCT;
-    fSolidFill: TCTSolidColorFillPropertiesCT;
-    fGradFill: TCTGradientFillPropertiesCT;
-    fBlipFill: TCTBlipFillPropertiesCT;
-    fPattFill: TCTPatternFillPropertiesCT;
-    fGrpFill: TCTGroupFillPropertiesCT;
-    fEffectLst: TCTEffectListCT;
-    fEffectDag: TCTEffectContainerCT;
-    fScene3d: TCTScene3DCT;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fBwMode: TBlackWhiteModeST;
+    fXfrm: TGroupTransform2DCT;
+    fNoFill: TNoFillPropertiesCT;
+    fSolidFill: TSolidColorFillPropertiesCT;
+    fGradFill: TGradientFillPropertiesCT;
+    fBlipFill: TBlipFillPropertiesCT;
+    fPattFill: TPatternFillPropertiesCT;
+    fGrpFill: TGroupFillPropertiesCT;
+    fEffectLst: TEffectListCT;
+    fEffectDag: TEffectContainerCT;
+    fScene3d: TScene3DCT;
+    fExtLst: TOfficeArtExtensionListCT;
 
-    function GetNoFill: TCTNoFillPropertiesCT;
-    function GetSolidFill: TCTSolidColorFillPropertiesCT;
-    function GetGradFill: TCTGradientFillPropertiesCT;
-    function GetBlipFill: TCTBlipFillPropertiesCT;
-    function GetPattFill: TCTPatternFillPropertiesCT;
-    function GetGrpFill: TCTGroupFillPropertiesCT;
-    function GetEffectLst: TCTEffectListCT;
-    function GetEffectDag: TCTEffectContainerCT;
+    function GetNoFill: TNoFillPropertiesCT;
+    function GetSolidFill: TSolidColorFillPropertiesCT;
+    function GetGradFill: TGradientFillPropertiesCT;
+    function GetBlipFill: TBlipFillPropertiesCT;
+    function GetPattFill: TPatternFillPropertiesCT;
+    function GetGrpFill: TGroupFillPropertiesCT;
+    function GetEffectLst: TEffectListCT;
+    function GetEffectDag: TEffectContainerCT;
     function GetEffectChosen: TBasite;
   public
     property EffectChosen: TBasite read GetEffectChosen;
   published
-    property BwMode: TSTBlackWhiteModeST read fBwMode write fBwMode;
-    property Xfrm: TCTGroupTransform2DCT read fXfrm;
+    property BwMode: TBlackWhiteModeST read fBwMode write fBwMode;
+    property Xfrm: TGroupTransform2DCT read fXfrm;
     [TChoice('NoFill')]
-    property NoFill: TCTNoFillPropertiesCT read GetNoFill;
+    property NoFill: TNoFillPropertiesCT read GetNoFill;
     [TChoice('NoFill')]
-    property SolidFill: TCTSolidColorFillPropertiesCT read GetSolidFill;
+    property SolidFill: TSolidColorFillPropertiesCT read GetSolidFill;
     [TChoice('NoFill')]
-    property GradFill: TCTGradientFillPropertiesCT read GetGradFill;
+    property GradFill: TGradientFillPropertiesCT read GetGradFill;
     [TChoice('NoFill')]
-    property BlipFill: TCTBlipFillPropertiesCT read GetBlipFill;
+    property BlipFill: TBlipFillPropertiesCT read GetBlipFill;
     [TChoice('NoFill')]
-    property PattFill: TCTPatternFillPropertiesCT read GetPattFill;
+    property PattFill: TPatternFillPropertiesCT read GetPattFill;
     [TChoice('NoFill')]
-    property GrpFill: TCTGroupFillPropertiesCT read GetGrpFill;
+    property GrpFill: TGroupFillPropertiesCT read GetGrpFill;
     [TChoice('Effect')]
-    property EffectLst: TCTEffectListCT read GetEffectLst;
+    property EffectLst: TEffectListCT read GetEffectLst;
     [TChoice('Effect')]
-    property EffectDag: TCTEffectContainerCT read GetEffectDag;
-    property Scene3d: TCTScene3DCT read fScene3d;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property EffectDag: TEffectContainerCT read GetEffectDag;
+    property Scene3d: TScene3DCT read fScene3d;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_StyleMatrixReference')]
-  TCTStyleMatrixReferenceCT = class(TXmliteComplexType)
+  TStyleMatrixReferenceCT = class(TXmliteComplexType)
   private
-    fIdx: TSTStyleMatrixColumnIndexST;
-    fScrgbClr: TCTScRgbColorCT;
-    fSrgbClr: TCTSRgbColorCT;
-    fHslClr: TCTHslColorCT;
-    fSysClr: TCTSystemColorCT;
-    fSchemeClr: TCTSchemeColorCT;
-    fPrstClr: TCTPresetColorCT;
+    fIdx: TStyleMatrixColumnIndexST;
+    fScrgbClr: TScRgbColorCT;
+    fSrgbClr: TSRgbColorCT;
+    fHslClr: THslColorCT;
+    fSysClr: TSystemColorCT;
+    fSchemeClr: TSchemeColorCT;
+    fPrstClr: TPresetColorCT;
 
-    function GetScrgbClr: TCTScRgbColorCT;
-    function GetSrgbClr: TCTSRgbColorCT;
-    function GetHslClr: TCTHslColorCT;
-    function GetSysClr: TCTSystemColorCT;
-    function GetSchemeClr: TCTSchemeColorCT;
-    function GetPrstClr: TCTPresetColorCT;
+    function GetScrgbClr: TScRgbColorCT;
+    function GetSrgbClr: TSRgbColorCT;
+    function GetHslClr: THslColorCT;
+    function GetSysClr: TSystemColorCT;
+    function GetSchemeClr: TSchemeColorCT;
+    function GetPrstClr: TPresetColorCT;
   published
     [TRequired]
-    property Idx: TSTStyleMatrixColumnIndexST read fIdx write fIdx;
+    property Idx: TStyleMatrixColumnIndexST read fIdx write fIdx;
     [TChoice('ScrgbClr')]
-    property ScrgbClr: TCTScRgbColorCT read GetScrgbClr;
+    property ScrgbClr: TScRgbColorCT read GetScrgbClr;
     [TChoice('ScrgbClr')]
-    property SrgbClr: TCTSRgbColorCT read GetSrgbClr;
+    property SrgbClr: TSRgbColorCT read GetSrgbClr;
     [TChoice('ScrgbClr')]
-    property HslClr: TCTHslColorCT read GetHslClr;
+    property HslClr: THslColorCT read GetHslClr;
     [TChoice('ScrgbClr')]
-    property SysClr: TCTSystemColorCT read GetSysClr;
+    property SysClr: TSystemColorCT read GetSysClr;
     [TChoice('ScrgbClr')]
-    property SchemeClr: TCTSchemeColorCT read GetSchemeClr;
+    property SchemeClr: TSchemeColorCT read GetSchemeClr;
     [TChoice('ScrgbClr')]
-    property PrstClr: TCTPresetColorCT read GetPrstClr;
+    property PrstClr: TPresetColorCT read GetPrstClr;
   end;
 
   [TName('CT_FontReference')]
-  TCTFontReferenceCT = class(TXmliteComplexType)
+  TFontReferenceCT = class(TXmliteComplexType)
   private
-    fIdx: TSTFontCollectionIndexST;
-    fScrgbClr: TCTScRgbColorCT;
-    fSrgbClr: TCTSRgbColorCT;
-    fHslClr: TCTHslColorCT;
-    fSysClr: TCTSystemColorCT;
-    fSchemeClr: TCTSchemeColorCT;
-    fPrstClr: TCTPresetColorCT;
+    fIdx: TFontCollectionIndexST;
+    fScrgbClr: TScRgbColorCT;
+    fSrgbClr: TSRgbColorCT;
+    fHslClr: THslColorCT;
+    fSysClr: TSystemColorCT;
+    fSchemeClr: TSchemeColorCT;
+    fPrstClr: TPresetColorCT;
 
-    function GetScrgbClr: TCTScRgbColorCT;
-    function GetSrgbClr: TCTSRgbColorCT;
-    function GetHslClr: TCTHslColorCT;
-    function GetSysClr: TCTSystemColorCT;
-    function GetSchemeClr: TCTSchemeColorCT;
-    function GetPrstClr: TCTPresetColorCT;
+    function GetScrgbClr: TScRgbColorCT;
+    function GetSrgbClr: TSRgbColorCT;
+    function GetHslClr: THslColorCT;
+    function GetSysClr: TSystemColorCT;
+    function GetSchemeClr: TSchemeColorCT;
+    function GetPrstClr: TPresetColorCT;
   published
     [TRequired]
-    property Idx: TSTFontCollectionIndexST read fIdx write fIdx;
+    property Idx: TFontCollectionIndexST read fIdx write fIdx;
     [TChoice('ScrgbClr')]
-    property ScrgbClr: TCTScRgbColorCT read GetScrgbClr;
+    property ScrgbClr: TScRgbColorCT read GetScrgbClr;
     [TChoice('ScrgbClr')]
-    property SrgbClr: TCTSRgbColorCT read GetSrgbClr;
+    property SrgbClr: TSRgbColorCT read GetSrgbClr;
     [TChoice('ScrgbClr')]
-    property HslClr: TCTHslColorCT read GetHslClr;
+    property HslClr: THslColorCT read GetHslClr;
     [TChoice('ScrgbClr')]
-    property SysClr: TCTSystemColorCT read GetSysClr;
+    property SysClr: TSystemColorCT read GetSysClr;
     [TChoice('ScrgbClr')]
-    property SchemeClr: TCTSchemeColorCT read GetSchemeClr;
+    property SchemeClr: TSchemeColorCT read GetSchemeClr;
     [TChoice('ScrgbClr')]
-    property PrstClr: TCTPresetColorCT read GetPrstClr;
+    property PrstClr: TPresetColorCT read GetPrstClr;
   end;
 
   [TName('CT_ShapeStyle')]
-  TCTShapeStyleCT = class(TXmliteComplexType)
+  TShapeStyleCT = class(TXmliteComplexType)
   private
-    fLnRef: TCTStyleMatrixReferenceCT;
-    fFillRef: TCTStyleMatrixReferenceCT;
-    fEffectRef: TCTStyleMatrixReferenceCT;
-    fFontRef: TCTFontReferenceCT;
+    fLnRef: TStyleMatrixReferenceCT;
+    fFillRef: TStyleMatrixReferenceCT;
+    fEffectRef: TStyleMatrixReferenceCT;
+    fFontRef: TFontReferenceCT;
   published
     [TRequired]
-    property LnRef: TCTStyleMatrixReferenceCT read fLnRef;
+    property LnRef: TStyleMatrixReferenceCT read fLnRef;
     [TRequired]
-    property FillRef: TCTStyleMatrixReferenceCT read fFillRef;
+    property FillRef: TStyleMatrixReferenceCT read fFillRef;
     [TRequired]
-    property EffectRef: TCTStyleMatrixReferenceCT read fEffectRef;
+    property EffectRef: TStyleMatrixReferenceCT read fEffectRef;
     [TRequired]
-    property FontRef: TCTFontReferenceCT read fFontRef;
+    property FontRef: TFontReferenceCT read fFontRef;
   end;
 
   [TName('CT_DefaultShapeDefinition')]
-  TCTDefaultShapeDefinitionCT = class(TXmliteComplexType)
+  TDefaultShapeDefinitionCT = class(TXmliteComplexType)
   private
-    fSpPr: TCTShapePropertiesCT;
-    fBodyPr: TCTTextBodyPropertiesCT;
-    fLstStyle: TCTTextListStyleCT;
-    fStyle: TCTShapeStyleCT;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fSpPr: TShapePropertiesCT;
+    fBodyPr: TTextBodyPropertiesCT;
+    fLstStyle: TTextListStyleCT;
+    fStyle: TShapeStyleCT;
+    fExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
-    property SpPr: TCTShapePropertiesCT read fSpPr;
+    property SpPr: TShapePropertiesCT read fSpPr;
     [TRequired]
-    property BodyPr: TCTTextBodyPropertiesCT read fBodyPr;
+    property BodyPr: TTextBodyPropertiesCT read fBodyPr;
     [TRequired]
-    property LstStyle: TCTTextListStyleCT read fLstStyle;
-    property Style: TCTShapeStyleCT read fStyle;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property LstStyle: TTextListStyleCT read fLstStyle;
+    property Style: TShapeStyleCT read fStyle;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_ObjectStyleDefaults')]
-  TCTObjectStyleDefaultsCT = class(TXmliteComplexType)
+  TObjectStyleDefaultsCT = class(TXmliteComplexType)
   private
-    fSpDef: TCTDefaultShapeDefinitionCT;
-    fLnDef: TCTDefaultShapeDefinitionCT;
-    fTxDef: TCTDefaultShapeDefinitionCT;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fSpDef: TDefaultShapeDefinitionCT;
+    fLnDef: TDefaultShapeDefinitionCT;
+    fTxDef: TDefaultShapeDefinitionCT;
+    fExtLst: TOfficeArtExtensionListCT;
   published
-    property SpDef: TCTDefaultShapeDefinitionCT read fSpDef;
-    property LnDef: TCTDefaultShapeDefinitionCT read fLnDef;
-    property TxDef: TCTDefaultShapeDefinitionCT read fTxDef;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property SpDef: TDefaultShapeDefinitionCT read fSpDef;
+    property LnDef: TDefaultShapeDefinitionCT read fLnDef;
+    property TxDef: TDefaultShapeDefinitionCT read fTxDef;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_EmptyElement')]
-  TCTEmptyElementCT = class(TXmliteComplexType);
+  TEmptyElementCT = class(TXmliteComplexType);
 
   [TName('CT_ColorMapping')]
-  TCTColorMappingCT = class(TXmliteComplexType)
+  TColorMappingCT = class(TXmliteComplexType)
   private
-    fBg1: TSTColorSchemeIndexST;
-    fTx1: TSTColorSchemeIndexST;
-    fBg2: TSTColorSchemeIndexST;
-    fTx2: TSTColorSchemeIndexST;
-    fAccent1: TSTColorSchemeIndexST;
-    fAccent2: TSTColorSchemeIndexST;
-    fAccent3: TSTColorSchemeIndexST;
-    fAccent4: TSTColorSchemeIndexST;
-    fAccent5: TSTColorSchemeIndexST;
-    fAccent6: TSTColorSchemeIndexST;
-    fHlink: TSTColorSchemeIndexST;
-    fFolHlink: TSTColorSchemeIndexST;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fBg1: TColorSchemeIndexST;
+    fTx1: TColorSchemeIndexST;
+    fBg2: TColorSchemeIndexST;
+    fTx2: TColorSchemeIndexST;
+    fAccent1: TColorSchemeIndexST;
+    fAccent2: TColorSchemeIndexST;
+    fAccent3: TColorSchemeIndexST;
+    fAccent4: TColorSchemeIndexST;
+    fAccent5: TColorSchemeIndexST;
+    fAccent6: TColorSchemeIndexST;
+    fHlink: TColorSchemeIndexST;
+    fFolHlink: TColorSchemeIndexST;
+    fExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
-    property Bg1: TSTColorSchemeIndexST read fBg1 write fBg1;
+    property Bg1: TColorSchemeIndexST read fBg1 write fBg1;
     [TRequired]
-    property Tx1: TSTColorSchemeIndexST read fTx1 write fTx1;
+    property Tx1: TColorSchemeIndexST read fTx1 write fTx1;
     [TRequired]
-    property Bg2: TSTColorSchemeIndexST read fBg2 write fBg2;
+    property Bg2: TColorSchemeIndexST read fBg2 write fBg2;
     [TRequired]
-    property Tx2: TSTColorSchemeIndexST read fTx2 write fTx2;
+    property Tx2: TColorSchemeIndexST read fTx2 write fTx2;
     [TRequired]
-    property Accent1: TSTColorSchemeIndexST read fAccent1 write fAccent1;
+    property Accent1: TColorSchemeIndexST read fAccent1 write fAccent1;
     [TRequired]
-    property Accent2: TSTColorSchemeIndexST read fAccent2 write fAccent2;
+    property Accent2: TColorSchemeIndexST read fAccent2 write fAccent2;
     [TRequired]
-    property Accent3: TSTColorSchemeIndexST read fAccent3 write fAccent3;
+    property Accent3: TColorSchemeIndexST read fAccent3 write fAccent3;
     [TRequired]
-    property Accent4: TSTColorSchemeIndexST read fAccent4 write fAccent4;
+    property Accent4: TColorSchemeIndexST read fAccent4 write fAccent4;
     [TRequired]
-    property Accent5: TSTColorSchemeIndexST read fAccent5 write fAccent5;
+    property Accent5: TColorSchemeIndexST read fAccent5 write fAccent5;
     [TRequired]
-    property Accent6: TSTColorSchemeIndexST read fAccent6 write fAccent6;
+    property Accent6: TColorSchemeIndexST read fAccent6 write fAccent6;
     [TRequired]
-    property Hlink: TSTColorSchemeIndexST read fHlink write fHlink;
+    property Hlink: TColorSchemeIndexST read fHlink write fHlink;
     [TRequired]
-    property FolHlink: TSTColorSchemeIndexST read fFolHlink write fFolHlink;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property FolHlink: TColorSchemeIndexST read fFolHlink write fFolHlink;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_ColorMappingOverride')]
-  TCTColorMappingOverrideCT = class(TXmliteComplexType)
+  TColorMappingOverrideCT = class(TXmliteComplexType)
   private
-    fMasterClrMapping: TCTEmptyElementCT;
-    fOverrideClrMapping: TCTColorMappingCT;
+    fMasterClrMapping: TEmptyElementCT;
+    fOverrideClrMapping: TColorMappingCT;
 
-    function GetMasterClrMapping: TCTEmptyElementCT;
-    function GetOverrideClrMapping: TCTColorMappingCT;
+    function GetMasterClrMapping: TEmptyElementCT;
+    function GetOverrideClrMapping: TColorMappingCT;
   published
     [TChoice('MasterClrMapping')]
-    property MasterClrMapping: TCTEmptyElementCT read GetMasterClrMapping;
+    property MasterClrMapping: TEmptyElementCT read GetMasterClrMapping;
     [TChoice('MasterClrMapping')]
-    property OverrideClrMapping: TCTColorMappingCT read GetOverrideClrMapping;
+    property OverrideClrMapping: TColorMappingCT read GetOverrideClrMapping;
   end;
 
   [TName('CT_ColorSchemeAndMapping')]
-  TCTColorSchemeAndMappingCT = class(TXmliteComplexType)
+  TColorSchemeAndMappingCT = class(TXmliteComplexType)
   private
-    fClrScheme: TCTColorSchemeCT;
-    fClrMap: TCTColorMappingCT;
+    fClrScheme: TColorSchemeCT;
+    fClrMap: TColorMappingCT;
   published
     [TRequired]
-    property ClrScheme: TCTColorSchemeCT read fClrScheme;
-    property ClrMap: TCTColorMappingCT read fClrMap;
+    property ClrScheme: TColorSchemeCT read fClrScheme;
+    property ClrMap: TColorMappingCT read fClrMap;
   end;
 
   [TName('CT_ColorSchemeList')]
-  TCTColorSchemeListCT = class(TXmliteComplexType)
+  TColorSchemeListCT = class(TXmliteComplexType)
   private
-    fExtraClrScheme: TCTColorSchemeAndMappingCTList;
+    fExtraClrScheme: TColorSchemeAndMappingCTList;
   published
-    property ExtraClrScheme: TCTColorSchemeAndMappingCTList read fExtraClrScheme;
+    property ExtraClrScheme: TColorSchemeAndMappingCTList read fExtraClrScheme;
   end;
 
   [TName('CT_OfficeStyleSheet')]
-  TCTOfficeStyleSheetCT = class(TXmliteComplexType)
+  TOfficeStyleSheetCT = class(TXmliteComplexType)
   private
     fName: ProRock.Xmlite.Schema.Base.TStringST;
-    fThemeElements: TCTBaseStylesCT;
-    fObjectDefaults: TCTObjectStyleDefaultsCT;
-    fExtraClrSchemeLst: TCTColorSchemeListCT;
-    fCustClrLst: TCTCustomColorListCT;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fThemeElements: TBaseStylesCT;
+    fObjectDefaults: TObjectStyleDefaultsCT;
+    fExtraClrSchemeLst: TColorSchemeListCT;
+    fCustClrLst: TCustomColorListCT;
+    fExtLst: TOfficeArtExtensionListCT;
   published
     property Name: ProRock.Xmlite.Schema.Base.TStringST read fName write fName;
     [TRequired]
-    property ThemeElements: TCTBaseStylesCT read fThemeElements;
-    property ObjectDefaults: TCTObjectStyleDefaultsCT read fObjectDefaults;
-    property ExtraClrSchemeLst: TCTColorSchemeListCT read fExtraClrSchemeLst;
-    property CustClrLst: TCTCustomColorListCT read fCustClrLst;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property ThemeElements: TBaseStylesCT read fThemeElements;
+    property ObjectDefaults: TObjectStyleDefaultsCT read fObjectDefaults;
+    property ExtraClrSchemeLst: TColorSchemeListCT read fExtraClrSchemeLst;
+    property CustClrLst: TCustomColorListCT read fCustClrLst;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_BaseStylesOverride')]
-  TCTBaseStylesOverrideCT = class(TXmliteComplexType)
+  TBaseStylesOverrideCT = class(TXmliteComplexType)
   private
-    fClrScheme: TCTColorSchemeCT;
-    fFontScheme: TCTFontSchemeCT;
-    fFmtScheme: TCTStyleMatrixCT;
+    fClrScheme: TColorSchemeCT;
+    fFontScheme: TFontSchemeCT;
+    fFmtScheme: TStyleMatrixCT;
   published
-    property ClrScheme: TCTColorSchemeCT read fClrScheme;
-    property FontScheme: TCTFontSchemeCT read fFontScheme;
-    property FmtScheme: TCTStyleMatrixCT read fFmtScheme;
+    property ClrScheme: TColorSchemeCT read fClrScheme;
+    property FontScheme: TFontSchemeCT read fFontScheme;
+    property FmtScheme: TStyleMatrixCT read fFmtScheme;
   end;
 
   [TName('CT_ClipboardStyleSheet')]
-  TCTClipboardStyleSheetCT = class(TXmliteComplexType)
+  TClipboardStyleSheetCT = class(TXmliteComplexType)
   private
-    fThemeElements: TCTBaseStylesCT;
-    fClrMap: TCTColorMappingCT;
+    fThemeElements: TBaseStylesCT;
+    fClrMap: TColorMappingCT;
   published
     [TRequired]
-    property ThemeElements: TCTBaseStylesCT read fThemeElements;
+    property ThemeElements: TBaseStylesCT read fThemeElements;
     [TRequired]
-    property ClrMap: TCTColorMappingCT read fClrMap;
+    property ClrMap: TColorMappingCT read fClrMap;
   end;
 
   [TName('CT_TableCellProperties')]
-  TCTTableCellPropertiesCT = class(TXmliteComplexType)
+  TTableCellPropertiesCT = class(TXmliteComplexType)
   private
-    fMarL: TSTCoordinate32ST;
-    fMarR: TSTCoordinate32ST;
-    fMarT: TSTCoordinate32ST;
-    fMarB: TSTCoordinate32ST;
-    fVert: TSTTextVerticalTypeST;
-    fAnchor: TSTTextAnchoringTypeST;
+    fMarL: TCoordinate32ST;
+    fMarR: TCoordinate32ST;
+    fMarT: TCoordinate32ST;
+    fMarB: TCoordinate32ST;
+    fVert: TTextVerticalTypeST;
+    fAnchor: TTextAnchoringTypeST;
     fAnchorCtr: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fHorzOverflow: TSTTextHorzOverflowTypeST;
-    fLnL: TCTLinePropertiesCT;
-    fLnR: TCTLinePropertiesCT;
-    fLnT: TCTLinePropertiesCT;
-    fLnB: TCTLinePropertiesCT;
-    fLnTlToBr: TCTLinePropertiesCT;
-    fLnBlToTr: TCTLinePropertiesCT;
-    fCell3D: TCTCell3DCT;
-    fNoFill: TCTNoFillPropertiesCT;
-    fSolidFill: TCTSolidColorFillPropertiesCT;
-    fGradFill: TCTGradientFillPropertiesCT;
-    fBlipFill: TCTBlipFillPropertiesCT;
-    fPattFill: TCTPatternFillPropertiesCT;
-    fGrpFill: TCTGroupFillPropertiesCT;
-    fHeaders: TCTHeadersCT;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fHorzOverflow: TTextHorzOverflowTypeST;
+    fLnL: TLinePropertiesCT;
+    fLnR: TLinePropertiesCT;
+    fLnT: TLinePropertiesCT;
+    fLnB: TLinePropertiesCT;
+    fLnTlToBr: TLinePropertiesCT;
+    fLnBlToTr: TLinePropertiesCT;
+    fCell3D: TCell3DCT;
+    fNoFill: TNoFillPropertiesCT;
+    fSolidFill: TSolidColorFillPropertiesCT;
+    fGradFill: TGradientFillPropertiesCT;
+    fBlipFill: TBlipFillPropertiesCT;
+    fPattFill: TPatternFillPropertiesCT;
+    fGrpFill: TGroupFillPropertiesCT;
+    fHeaders: THeadersCT;
+    fExtLst: TOfficeArtExtensionListCT;
 
-    function GetNoFill: TCTNoFillPropertiesCT;
-    function GetSolidFill: TCTSolidColorFillPropertiesCT;
-    function GetGradFill: TCTGradientFillPropertiesCT;
-    function GetBlipFill: TCTBlipFillPropertiesCT;
-    function GetPattFill: TCTPatternFillPropertiesCT;
-    function GetGrpFill: TCTGroupFillPropertiesCT;
+    function GetNoFill: TNoFillPropertiesCT;
+    function GetSolidFill: TSolidColorFillPropertiesCT;
+    function GetGradFill: TGradientFillPropertiesCT;
+    function GetBlipFill: TBlipFillPropertiesCT;
+    function GetPattFill: TPatternFillPropertiesCT;
+    function GetGrpFill: TGroupFillPropertiesCT;
   published
     [TDefault('91440')]
-    property MarL: TSTCoordinate32ST read fMarL write fMarL;
+    property MarL: TCoordinate32ST read fMarL write fMarL;
     [TDefault('91440')]
-    property MarR: TSTCoordinate32ST read fMarR write fMarR;
+    property MarR: TCoordinate32ST read fMarR write fMarR;
     [TDefault('45720')]
-    property MarT: TSTCoordinate32ST read fMarT write fMarT;
+    property MarT: TCoordinate32ST read fMarT write fMarT;
     [TDefault('45720')]
-    property MarB: TSTCoordinate32ST read fMarB write fMarB;
+    property MarB: TCoordinate32ST read fMarB write fMarB;
     [TDefault(Ord(sttvtHorz))]
-    property Vert: TSTTextVerticalTypeST read fVert write fVert;
+    property Vert: TTextVerticalTypeST read fVert write fVert;
     [TDefault(Ord(sttatT))]
-    property Anchor: TSTTextAnchoringTypeST read fAnchor write fAnchor;
+    property Anchor: TTextAnchoringTypeST read fAnchor write fAnchor;
     [TDefault(False)]
     property AnchorCtr: ProRock.Xmlite.Schema.Base.TBooleanST read fAnchorCtr write fAnchorCtr;
     [TDefault(Ord(stthotClip))]
-    property HorzOverflow: TSTTextHorzOverflowTypeST read fHorzOverflow write fHorzOverflow;
-    property LnL: TCTLinePropertiesCT read fLnL;
-    property LnR: TCTLinePropertiesCT read fLnR;
-    property LnT: TCTLinePropertiesCT read fLnT;
-    property LnB: TCTLinePropertiesCT read fLnB;
-    property LnTlToBr: TCTLinePropertiesCT read fLnTlToBr;
-    property LnBlToTr: TCTLinePropertiesCT read fLnBlToTr;
-    property Cell3D: TCTCell3DCT read fCell3D;
+    property HorzOverflow: TTextHorzOverflowTypeST read fHorzOverflow write fHorzOverflow;
+    property LnL: TLinePropertiesCT read fLnL;
+    property LnR: TLinePropertiesCT read fLnR;
+    property LnT: TLinePropertiesCT read fLnT;
+    property LnB: TLinePropertiesCT read fLnB;
+    property LnTlToBr: TLinePropertiesCT read fLnTlToBr;
+    property LnBlToTr: TLinePropertiesCT read fLnBlToTr;
+    property Cell3D: TCell3DCT read fCell3D;
     [TChoice('NoFill')]
-    property NoFill: TCTNoFillPropertiesCT read GetNoFill;
+    property NoFill: TNoFillPropertiesCT read GetNoFill;
     [TChoice('NoFill')]
-    property SolidFill: TCTSolidColorFillPropertiesCT read GetSolidFill;
+    property SolidFill: TSolidColorFillPropertiesCT read GetSolidFill;
     [TChoice('NoFill')]
-    property GradFill: TCTGradientFillPropertiesCT read GetGradFill;
+    property GradFill: TGradientFillPropertiesCT read GetGradFill;
     [TChoice('NoFill')]
-    property BlipFill: TCTBlipFillPropertiesCT read GetBlipFill;
+    property BlipFill: TBlipFillPropertiesCT read GetBlipFill;
     [TChoice('NoFill')]
-    property PattFill: TCTPatternFillPropertiesCT read GetPattFill;
+    property PattFill: TPatternFillPropertiesCT read GetPattFill;
     [TChoice('NoFill')]
-    property GrpFill: TCTGroupFillPropertiesCT read GetGrpFill;
-    property Headers: TCTHeadersCT read fHeaders;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property GrpFill: TGroupFillPropertiesCT read GetGrpFill;
+    property Headers: THeadersCT read fHeaders;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_Headers')]
-  TCTHeadersCT = class(TXmliteComplexType)
+  THeadersCT = class(TXmliteComplexType)
   private
     fHeader: TStringSTList;
   published
@@ -4282,35 +4282,35 @@ type
   end;
 
   [TName('CT_TableCol')]
-  TCTTableColCT = class(TXmliteComplexType)
+  TTableColCT = class(TXmliteComplexType)
   private
-    fW: TSTCoordinateST;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fW: TCoordinateST;
+    fExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
-    property W: TSTCoordinateST read fW write fW;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property W: TCoordinateST read fW write fW;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_TableGrid')]
-  TCTTableGridCT = class(TXmliteComplexType)
+  TTableGridCT = class(TXmliteComplexType)
   private
-    fGridCol: TCTTableColCTList;
+    fGridCol: TTableColCTList;
   published
-    property GridCol: TCTTableColCTList read fGridCol;
+    property GridCol: TTableColCTList read fGridCol;
   end;
 
   [TName('CT_TableCell')]
-  TCTTableCellCT = class(TXmliteComplexType)
+  TTableCellCT = class(TXmliteComplexType)
   private
     fRowSpan: ProRock.Xmlite.Schema.Base.TIntST;
     fGridSpan: ProRock.Xmlite.Schema.Base.TIntST;
     fHMerge: ProRock.Xmlite.Schema.Base.TBooleanST;
     fVMerge: ProRock.Xmlite.Schema.Base.TBooleanST;
     fId: ProRock.Xmlite.Schema.Base.TStringST;
-    fTxBody: TCTTextBodyCT;
-    fTcPr: TCTTableCellPropertiesCT;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fTxBody: TTextBodyCT;
+    fTcPr: TTableCellPropertiesCT;
+    fExtLst: TOfficeArtExtensionListCT;
   published
     [TDefault(1)]
     property RowSpan: ProRock.Xmlite.Schema.Base.TIntST read fRowSpan write fRowSpan;
@@ -4321,26 +4321,26 @@ type
     [TDefault(False)]
     property VMerge: ProRock.Xmlite.Schema.Base.TBooleanST read fVMerge write fVMerge;
     property Id: ProRock.Xmlite.Schema.Base.TStringST read fId write fId;
-    property TxBody: TCTTextBodyCT read fTxBody;
-    property TcPr: TCTTableCellPropertiesCT read fTcPr;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property TxBody: TTextBodyCT read fTxBody;
+    property TcPr: TTableCellPropertiesCT read fTcPr;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_TableRow')]
-  TCTTableRowCT = class(TXmliteComplexType)
+  TTableRowCT = class(TXmliteComplexType)
   private
-    fH: TSTCoordinateST;
-    fTc: TCTTableCellCTList;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fH: TCoordinateST;
+    fTc: TTableCellCTList;
+    fExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
-    property H: TSTCoordinateST read fH write fH;
-    property Tc: TCTTableCellCTList read fTc;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property H: TCoordinateST read fH write fH;
+    property Tc: TTableCellCTList read fTc;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_TableProperties')]
-  TCTTablePropertiesCT = class(TXmliteComplexType)
+  TTablePropertiesCT = class(TXmliteComplexType)
   private
     fRtl: ProRock.Xmlite.Schema.Base.TBooleanST;
     fFirstRow: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -4349,28 +4349,28 @@ type
     fLastCol: ProRock.Xmlite.Schema.Base.TBooleanST;
     fBandRow: ProRock.Xmlite.Schema.Base.TBooleanST;
     fBandCol: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fNoFill: TCTNoFillPropertiesCT;
-    fSolidFill: TCTSolidColorFillPropertiesCT;
-    fGradFill: TCTGradientFillPropertiesCT;
-    fBlipFill: TCTBlipFillPropertiesCT;
-    fPattFill: TCTPatternFillPropertiesCT;
-    fGrpFill: TCTGroupFillPropertiesCT;
-    fEffectLst: TCTEffectListCT;
-    fEffectDag: TCTEffectContainerCT;
-    fTableStyle: TCTTableStyleCT;
-    fTableStyleId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fNoFill: TNoFillPropertiesCT;
+    fSolidFill: TSolidColorFillPropertiesCT;
+    fGradFill: TGradientFillPropertiesCT;
+    fBlipFill: TBlipFillPropertiesCT;
+    fPattFill: TPatternFillPropertiesCT;
+    fGrpFill: TGroupFillPropertiesCT;
+    fEffectLst: TEffectListCT;
+    fEffectDag: TEffectContainerCT;
+    fTableStyle: TTableStyleCT;
+    fTableStyleId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST;
+    fExtLst: TOfficeArtExtensionListCT;
 
-    function GetNoFill: TCTNoFillPropertiesCT;
-    function GetSolidFill: TCTSolidColorFillPropertiesCT;
-    function GetGradFill: TCTGradientFillPropertiesCT;
-    function GetBlipFill: TCTBlipFillPropertiesCT;
-    function GetPattFill: TCTPatternFillPropertiesCT;
-    function GetGrpFill: TCTGroupFillPropertiesCT;
-    function GetEffectLst: TCTEffectListCT;
-    function GetEffectDag: TCTEffectContainerCT;
+    function GetNoFill: TNoFillPropertiesCT;
+    function GetSolidFill: TSolidColorFillPropertiesCT;
+    function GetGradFill: TGradientFillPropertiesCT;
+    function GetBlipFill: TBlipFillPropertiesCT;
+    function GetPattFill: TPatternFillPropertiesCT;
+    function GetGrpFill: TGroupFillPropertiesCT;
+    function GetEffectLst: TEffectListCT;
+    function GetEffectDag: TEffectContainerCT;
     function GetEffectChosen: TBasite;
-    function GetTableStyle: TCTTableStyleCT;
+    function GetTableStyle: TTableStyleCT;
     function GetTableStyleChosen: TBasite;
   public
     property EffectChosen: TBasite read GetEffectChosen;
@@ -4391,452 +4391,452 @@ type
     [TDefault(False)]
     property BandCol: ProRock.Xmlite.Schema.Base.TBooleanST read fBandCol write fBandCol;
     [TChoice('NoFill')]
-    property NoFill: TCTNoFillPropertiesCT read GetNoFill;
+    property NoFill: TNoFillPropertiesCT read GetNoFill;
     [TChoice('NoFill')]
-    property SolidFill: TCTSolidColorFillPropertiesCT read GetSolidFill;
+    property SolidFill: TSolidColorFillPropertiesCT read GetSolidFill;
     [TChoice('NoFill')]
-    property GradFill: TCTGradientFillPropertiesCT read GetGradFill;
+    property GradFill: TGradientFillPropertiesCT read GetGradFill;
     [TChoice('NoFill')]
-    property BlipFill: TCTBlipFillPropertiesCT read GetBlipFill;
+    property BlipFill: TBlipFillPropertiesCT read GetBlipFill;
     [TChoice('NoFill')]
-    property PattFill: TCTPatternFillPropertiesCT read GetPattFill;
+    property PattFill: TPatternFillPropertiesCT read GetPattFill;
     [TChoice('NoFill')]
-    property GrpFill: TCTGroupFillPropertiesCT read GetGrpFill;
+    property GrpFill: TGroupFillPropertiesCT read GetGrpFill;
     [TChoice('Effect')]
-    property EffectLst: TCTEffectListCT read GetEffectLst;
+    property EffectLst: TEffectListCT read GetEffectLst;
     [TChoice('Effect')]
-    property EffectDag: TCTEffectContainerCT read GetEffectDag;
+    property EffectDag: TEffectContainerCT read GetEffectDag;
     [TChoice('TableStyle')]
-    property TableStyle: TCTTableStyleCT read GetTableStyle;
+    property TableStyle: TTableStyleCT read GetTableStyle;
     [TXmliteElement]
     [TChoice('TableStyle')]
-    property TableStyleId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST read fTableStyleId write fTableStyleId;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property TableStyleId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST read fTableStyleId write fTableStyleId;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_Table')]
-  TCTTableCT = class(TXmliteComplexType)
+  TTableCT = class(TXmliteComplexType)
   private
-    fTblPr: TCTTablePropertiesCT;
-    fTblGrid: TCTTableGridCT;
-    fTr: TCTTableRowCTList;
+    fTblPr: TTablePropertiesCT;
+    fTblGrid: TTableGridCT;
+    fTr: TTableRowCTList;
   published
-    property TblPr: TCTTablePropertiesCT read fTblPr;
+    property TblPr: TTablePropertiesCT read fTblPr;
     [TRequired]
-    property TblGrid: TCTTableGridCT read fTblGrid;
-    property Tr: TCTTableRowCTList read fTr;
+    property TblGrid: TTableGridCT read fTblGrid;
+    property Tr: TTableRowCTList read fTr;
   end;
 
   [TName('CT_Cell3D')]
-  TCTCell3DCT = class(TXmliteComplexType)
+  TCell3DCT = class(TXmliteComplexType)
   private
-    fPrstMaterial: TSTPresetMaterialTypeST;
-    fBevel: TCTBevelCT;
-    fLightRig: TCTLightRigCT;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fPrstMaterial: TPresetMaterialTypeST;
+    fBevel: TBevelCT;
+    fLightRig: TLightRigCT;
+    fExtLst: TOfficeArtExtensionListCT;
   published
     [TDefault(Ord(stpmtPlastic))]
-    property PrstMaterial: TSTPresetMaterialTypeST read fPrstMaterial write fPrstMaterial;
+    property PrstMaterial: TPresetMaterialTypeST read fPrstMaterial write fPrstMaterial;
     [TRequired]
-    property Bevel: TCTBevelCT read fBevel;
-    property LightRig: TCTLightRigCT read fLightRig;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property Bevel: TBevelCT read fBevel;
+    property LightRig: TLightRigCT read fLightRig;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_ThemeableLineStyle')]
-  TCTThemeableLineStyleCT = class(TXmliteComplexType)
+  TThemeableLineStyleCT = class(TXmliteComplexType)
   private
-    fLn: TCTLinePropertiesCT;
-    fLnRef: TCTStyleMatrixReferenceCT;
+    fLn: TLinePropertiesCT;
+    fLnRef: TStyleMatrixReferenceCT;
 
-    function GetLn: TCTLinePropertiesCT;
-    function GetLnRef: TCTStyleMatrixReferenceCT;
+    function GetLn: TLinePropertiesCT;
+    function GetLnRef: TStyleMatrixReferenceCT;
     function GetLnChosen: TBasite;
   public
     property LnChosen: TBasite read GetLnChosen;
   published
     [TChoice('Ln')]
-    property Ln: TCTLinePropertiesCT read GetLn;
+    property Ln: TLinePropertiesCT read GetLn;
     [TChoice('Ln')]
-    property LnRef: TCTStyleMatrixReferenceCT read GetLnRef;
+    property LnRef: TStyleMatrixReferenceCT read GetLnRef;
   end;
 
   [TName('CT_TableStyleTextStyle')]
-  TCTTableStyleTextStyleCT = class(TXmliteComplexType)
+  TTableStyleTextStyleCT = class(TXmliteComplexType)
   private
-    fB: TSTOnOffStyleTypeST;
-    fI: TSTOnOffStyleTypeST;
-    fFont: TCTFontCollectionCT;
-    fFontRef: TCTFontReferenceCT;
-    fScrgbClr: TCTScRgbColorCT;
-    fSrgbClr: TCTSRgbColorCT;
-    fHslClr: TCTHslColorCT;
-    fSysClr: TCTSystemColorCT;
-    fSchemeClr: TCTSchemeColorCT;
-    fPrstClr: TCTPresetColorCT;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fB: TOnOffStyleTypeST;
+    fI: TOnOffStyleTypeST;
+    fFont: TFontCollectionCT;
+    fFontRef: TFontReferenceCT;
+    fScrgbClr: TScRgbColorCT;
+    fSrgbClr: TSRgbColorCT;
+    fHslClr: THslColorCT;
+    fSysClr: TSystemColorCT;
+    fSchemeClr: TSchemeColorCT;
+    fPrstClr: TPresetColorCT;
+    fExtLst: TOfficeArtExtensionListCT;
 
-    function GetFont: TCTFontCollectionCT;
-    function GetFontRef: TCTFontReferenceCT;
+    function GetFont: TFontCollectionCT;
+    function GetFontRef: TFontReferenceCT;
     function GetFontChosen: TBasite;
-    function GetScrgbClr: TCTScRgbColorCT;
-    function GetSrgbClr: TCTSRgbColorCT;
-    function GetHslClr: TCTHslColorCT;
-    function GetSysClr: TCTSystemColorCT;
-    function GetSchemeClr: TCTSchemeColorCT;
-    function GetPrstClr: TCTPresetColorCT;
+    function GetScrgbClr: TScRgbColorCT;
+    function GetSrgbClr: TSRgbColorCT;
+    function GetHslClr: THslColorCT;
+    function GetSysClr: TSystemColorCT;
+    function GetSchemeClr: TSchemeColorCT;
+    function GetPrstClr: TPresetColorCT;
   public
     property FontChosen: TBasite read GetFontChosen;
   published
     [TDefault(Ord(stoostDef))]
-    property B: TSTOnOffStyleTypeST read fB write fB;
+    property B: TOnOffStyleTypeST read fB write fB;
     [TDefault(Ord(stoostDef))]
-    property I: TSTOnOffStyleTypeST read fI write fI;
+    property I: TOnOffStyleTypeST read fI write fI;
     [TChoice('Font')]
-    property Font: TCTFontCollectionCT read GetFont;
+    property Font: TFontCollectionCT read GetFont;
     [TChoice('Font')]
-    property FontRef: TCTFontReferenceCT read GetFontRef;
+    property FontRef: TFontReferenceCT read GetFontRef;
     [TChoice('ScrgbClr')]
-    property ScrgbClr: TCTScRgbColorCT read GetScrgbClr;
+    property ScrgbClr: TScRgbColorCT read GetScrgbClr;
     [TChoice('ScrgbClr')]
-    property SrgbClr: TCTSRgbColorCT read GetSrgbClr;
+    property SrgbClr: TSRgbColorCT read GetSrgbClr;
     [TChoice('ScrgbClr')]
-    property HslClr: TCTHslColorCT read GetHslClr;
+    property HslClr: THslColorCT read GetHslClr;
     [TChoice('ScrgbClr')]
-    property SysClr: TCTSystemColorCT read GetSysClr;
+    property SysClr: TSystemColorCT read GetSysClr;
     [TChoice('ScrgbClr')]
-    property SchemeClr: TCTSchemeColorCT read GetSchemeClr;
+    property SchemeClr: TSchemeColorCT read GetSchemeClr;
     [TChoice('ScrgbClr')]
-    property PrstClr: TCTPresetColorCT read GetPrstClr;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property PrstClr: TPresetColorCT read GetPrstClr;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_TableCellBorderStyle')]
-  TCTTableCellBorderStyleCT = class(TXmliteComplexType)
+  TTableCellBorderStyleCT = class(TXmliteComplexType)
   private
-    fLeft: TCTThemeableLineStyleCT;
-    fRight: TCTThemeableLineStyleCT;
-    fTop: TCTThemeableLineStyleCT;
-    fBottom: TCTThemeableLineStyleCT;
-    fInsideH: TCTThemeableLineStyleCT;
-    fInsideV: TCTThemeableLineStyleCT;
-    fTl2br: TCTThemeableLineStyleCT;
-    fTr2bl: TCTThemeableLineStyleCT;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fLeft: TThemeableLineStyleCT;
+    fRight: TThemeableLineStyleCT;
+    fTop: TThemeableLineStyleCT;
+    fBottom: TThemeableLineStyleCT;
+    fInsideH: TThemeableLineStyleCT;
+    fInsideV: TThemeableLineStyleCT;
+    fTl2br: TThemeableLineStyleCT;
+    fTr2bl: TThemeableLineStyleCT;
+    fExtLst: TOfficeArtExtensionListCT;
   published
-    property Left: TCTThemeableLineStyleCT read fLeft;
-    property Right: TCTThemeableLineStyleCT read fRight;
-    property Top: TCTThemeableLineStyleCT read fTop;
-    property Bottom: TCTThemeableLineStyleCT read fBottom;
-    property InsideH: TCTThemeableLineStyleCT read fInsideH;
-    property InsideV: TCTThemeableLineStyleCT read fInsideV;
-    property Tl2br: TCTThemeableLineStyleCT read fTl2br;
-    property Tr2bl: TCTThemeableLineStyleCT read fTr2bl;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property Left: TThemeableLineStyleCT read fLeft;
+    property Right: TThemeableLineStyleCT read fRight;
+    property Top: TThemeableLineStyleCT read fTop;
+    property Bottom: TThemeableLineStyleCT read fBottom;
+    property InsideH: TThemeableLineStyleCT read fInsideH;
+    property InsideV: TThemeableLineStyleCT read fInsideV;
+    property Tl2br: TThemeableLineStyleCT read fTl2br;
+    property Tr2bl: TThemeableLineStyleCT read fTr2bl;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_TableBackgroundStyle')]
-  TCTTableBackgroundStyleCT = class(TXmliteComplexType)
+  TTableBackgroundStyleCT = class(TXmliteComplexType)
   private
-    fFill: TCTFillPropertiesCT;
-    fFillRef: TCTStyleMatrixReferenceCT;
-    fEffect: TCTEffectPropertiesCT;
-    fEffectRef: TCTStyleMatrixReferenceCT;
+    fFill: TFillPropertiesCT;
+    fFillRef: TStyleMatrixReferenceCT;
+    fEffect: TEffectPropertiesCT;
+    fEffectRef: TStyleMatrixReferenceCT;
 
-    function GetFill: TCTFillPropertiesCT;
-    function GetFillRef: TCTStyleMatrixReferenceCT;
+    function GetFill: TFillPropertiesCT;
+    function GetFillRef: TStyleMatrixReferenceCT;
     function GetFillChosen: TBasite;
-    function GetEffect: TCTEffectPropertiesCT;
-    function GetEffectRef: TCTStyleMatrixReferenceCT;
+    function GetEffect: TEffectPropertiesCT;
+    function GetEffectRef: TStyleMatrixReferenceCT;
     function GetEffectChosen: TBasite;
   public
     property FillChosen: TBasite read GetFillChosen;
     property EffectChosen: TBasite read GetEffectChosen;
   published
     [TChoice('Fill')]
-    property Fill: TCTFillPropertiesCT read GetFill;
+    property Fill: TFillPropertiesCT read GetFill;
     [TChoice('Fill')]
-    property FillRef: TCTStyleMatrixReferenceCT read GetFillRef;
+    property FillRef: TStyleMatrixReferenceCT read GetFillRef;
     [TChoice('Effect')]
-    property Effect: TCTEffectPropertiesCT read GetEffect;
+    property Effect: TEffectPropertiesCT read GetEffect;
     [TChoice('Effect')]
-    property EffectRef: TCTStyleMatrixReferenceCT read GetEffectRef;
+    property EffectRef: TStyleMatrixReferenceCT read GetEffectRef;
   end;
 
   [TName('CT_TableStyleCellStyle')]
-  TCTTableStyleCellStyleCT = class(TXmliteComplexType)
+  TTableStyleCellStyleCT = class(TXmliteComplexType)
   private
-    fTcBdr: TCTTableCellBorderStyleCT;
-    fFill: TCTFillPropertiesCT;
-    fFillRef: TCTStyleMatrixReferenceCT;
-    fCell3D: TCTCell3DCT;
+    fTcBdr: TTableCellBorderStyleCT;
+    fFill: TFillPropertiesCT;
+    fFillRef: TStyleMatrixReferenceCT;
+    fCell3D: TCell3DCT;
 
-    function GetFill: TCTFillPropertiesCT;
-    function GetFillRef: TCTStyleMatrixReferenceCT;
+    function GetFill: TFillPropertiesCT;
+    function GetFillRef: TStyleMatrixReferenceCT;
     function GetFillChosen: TBasite;
   public
     property FillChosen: TBasite read GetFillChosen;
   published
-    property TcBdr: TCTTableCellBorderStyleCT read fTcBdr;
+    property TcBdr: TTableCellBorderStyleCT read fTcBdr;
     [TChoice('Fill')]
-    property Fill: TCTFillPropertiesCT read GetFill;
+    property Fill: TFillPropertiesCT read GetFill;
     [TChoice('Fill')]
-    property FillRef: TCTStyleMatrixReferenceCT read GetFillRef;
-    property Cell3D: TCTCell3DCT read fCell3D;
+    property FillRef: TStyleMatrixReferenceCT read GetFillRef;
+    property Cell3D: TCell3DCT read fCell3D;
   end;
 
   [TName('CT_TablePartStyle')]
-  TCTTablePartStyleCT = class(TXmliteComplexType)
+  TTablePartStyleCT = class(TXmliteComplexType)
   private
-    fTcTxStyle: TCTTableStyleTextStyleCT;
-    fTcStyle: TCTTableStyleCellStyleCT;
+    fTcTxStyle: TTableStyleTextStyleCT;
+    fTcStyle: TTableStyleCellStyleCT;
   published
-    property TcTxStyle: TCTTableStyleTextStyleCT read fTcTxStyle;
-    property TcStyle: TCTTableStyleCellStyleCT read fTcStyle;
+    property TcTxStyle: TTableStyleTextStyleCT read fTcTxStyle;
+    property TcStyle: TTableStyleCellStyleCT read fTcStyle;
   end;
 
   [TName('CT_TableStyle')]
-  TCTTableStyleCT = class(TXmliteComplexType)
+  TTableStyleCT = class(TXmliteComplexType)
   private
-    fStyleId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST;
+    fStyleId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST;
     fStyleName: ProRock.Xmlite.Schema.Base.TStringST;
-    fTblBg: TCTTableBackgroundStyleCT;
-    fWholeTbl: TCTTablePartStyleCT;
-    fBand1H: TCTTablePartStyleCT;
-    fBand2H: TCTTablePartStyleCT;
-    fBand1V: TCTTablePartStyleCT;
-    fBand2V: TCTTablePartStyleCT;
-    fLastCol: TCTTablePartStyleCT;
-    fFirstCol: TCTTablePartStyleCT;
-    fLastRow: TCTTablePartStyleCT;
-    fSeCell: TCTTablePartStyleCT;
-    fSwCell: TCTTablePartStyleCT;
-    fFirstRow: TCTTablePartStyleCT;
-    fNeCell: TCTTablePartStyleCT;
-    fNwCell: TCTTablePartStyleCT;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fTblBg: TTableBackgroundStyleCT;
+    fWholeTbl: TTablePartStyleCT;
+    fBand1H: TTablePartStyleCT;
+    fBand2H: TTablePartStyleCT;
+    fBand1V: TTablePartStyleCT;
+    fBand2V: TTablePartStyleCT;
+    fLastCol: TTablePartStyleCT;
+    fFirstCol: TTablePartStyleCT;
+    fLastRow: TTablePartStyleCT;
+    fSeCell: TTablePartStyleCT;
+    fSwCell: TTablePartStyleCT;
+    fFirstRow: TTablePartStyleCT;
+    fNeCell: TTablePartStyleCT;
+    fNwCell: TTablePartStyleCT;
+    fExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
-    property StyleId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST read fStyleId write fStyleId;
+    property StyleId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST read fStyleId write fStyleId;
     [TRequired]
     property StyleName: ProRock.Xmlite.Schema.Base.TStringST read fStyleName write fStyleName;
-    property TblBg: TCTTableBackgroundStyleCT read fTblBg;
-    property WholeTbl: TCTTablePartStyleCT read fWholeTbl;
-    property Band1H: TCTTablePartStyleCT read fBand1H;
-    property Band2H: TCTTablePartStyleCT read fBand2H;
-    property Band1V: TCTTablePartStyleCT read fBand1V;
-    property Band2V: TCTTablePartStyleCT read fBand2V;
-    property LastCol: TCTTablePartStyleCT read fLastCol;
-    property FirstCol: TCTTablePartStyleCT read fFirstCol;
-    property LastRow: TCTTablePartStyleCT read fLastRow;
-    property SeCell: TCTTablePartStyleCT read fSeCell;
-    property SwCell: TCTTablePartStyleCT read fSwCell;
-    property FirstRow: TCTTablePartStyleCT read fFirstRow;
-    property NeCell: TCTTablePartStyleCT read fNeCell;
-    property NwCell: TCTTablePartStyleCT read fNwCell;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property TblBg: TTableBackgroundStyleCT read fTblBg;
+    property WholeTbl: TTablePartStyleCT read fWholeTbl;
+    property Band1H: TTablePartStyleCT read fBand1H;
+    property Band2H: TTablePartStyleCT read fBand2H;
+    property Band1V: TTablePartStyleCT read fBand1V;
+    property Band2V: TTablePartStyleCT read fBand2V;
+    property LastCol: TTablePartStyleCT read fLastCol;
+    property FirstCol: TTablePartStyleCT read fFirstCol;
+    property LastRow: TTablePartStyleCT read fLastRow;
+    property SeCell: TTablePartStyleCT read fSeCell;
+    property SwCell: TTablePartStyleCT read fSwCell;
+    property FirstRow: TTablePartStyleCT read fFirstRow;
+    property NeCell: TTablePartStyleCT read fNeCell;
+    property NwCell: TTablePartStyleCT read fNwCell;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_TableStyleList')]
-  TCTTableStyleListCT = class(TXmliteComplexType)
+  TTableStyleListCT = class(TXmliteComplexType)
   private
-    fDef: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST;
-    fTblStyle: TCTTableStyleCTList;
+    fDef: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST;
+    fTblStyle: TTableStyleCTList;
   published
     [TRequired]
-    property Def: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST read fDef write fDef;
-    property TblStyle: TCTTableStyleCTList read fTblStyle;
+    property Def: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST read fDef write fDef;
+    property TblStyle: TTableStyleCTList read fTblStyle;
   end;
 
   [TOrdered]
   [TName('CT_TextParagraph')]
-  TCTTextParagraphCT = class(TXmliteComplexType)
+  TTextParagraphCT = class(TXmliteComplexType)
   private
-    fPPr: TCTTextParagraphPropertiesCT;
-    fR: TCTRegularTextRunCTList;
-    fBr: TCTTextLineBreakCTList;
-    fFld: TCTTextFieldCTList;
-    fEndParaRPr: TCTTextCharacterPropertiesCT;
+    fPPr: TTextParagraphPropertiesCT;
+    fR: TRegularTextRunCTList;
+    fBr: TTextLineBreakCTList;
+    fFld: TTextFieldCTList;
+    fEndParaRPr: TTextCharacterPropertiesCT;
   published
-    property PPr: TCTTextParagraphPropertiesCT read fPPr;
-    property R: TCTRegularTextRunCTList read fR;
-    property Br: TCTTextLineBreakCTList read fBr;
-    property Fld: TCTTextFieldCTList read fFld;
-    property EndParaRPr: TCTTextCharacterPropertiesCT read fEndParaRPr;
+    property PPr: TTextParagraphPropertiesCT read fPPr;
+    property R: TRegularTextRunCTList read fR;
+    property Br: TTextLineBreakCTList read fBr;
+    property Fld: TTextFieldCTList read fFld;
+    property EndParaRPr: TTextCharacterPropertiesCT read fEndParaRPr;
   end;
 
   [TName('CT_TextListStyle')]
-  TCTTextListStyleCT = class(TXmliteComplexType)
+  TTextListStyleCT = class(TXmliteComplexType)
   private
-    fDefPPr: TCTTextParagraphPropertiesCT;
-    fLvl1pPr: TCTTextParagraphPropertiesCT;
-    fLvl2pPr: TCTTextParagraphPropertiesCT;
-    fLvl3pPr: TCTTextParagraphPropertiesCT;
-    fLvl4pPr: TCTTextParagraphPropertiesCT;
-    fLvl5pPr: TCTTextParagraphPropertiesCT;
-    fLvl6pPr: TCTTextParagraphPropertiesCT;
-    fLvl7pPr: TCTTextParagraphPropertiesCT;
-    fLvl8pPr: TCTTextParagraphPropertiesCT;
-    fLvl9pPr: TCTTextParagraphPropertiesCT;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fDefPPr: TTextParagraphPropertiesCT;
+    fLvl1pPr: TTextParagraphPropertiesCT;
+    fLvl2pPr: TTextParagraphPropertiesCT;
+    fLvl3pPr: TTextParagraphPropertiesCT;
+    fLvl4pPr: TTextParagraphPropertiesCT;
+    fLvl5pPr: TTextParagraphPropertiesCT;
+    fLvl6pPr: TTextParagraphPropertiesCT;
+    fLvl7pPr: TTextParagraphPropertiesCT;
+    fLvl8pPr: TTextParagraphPropertiesCT;
+    fLvl9pPr: TTextParagraphPropertiesCT;
+    fExtLst: TOfficeArtExtensionListCT;
   published
-    property DefPPr: TCTTextParagraphPropertiesCT read fDefPPr;
-    property Lvl1pPr: TCTTextParagraphPropertiesCT read fLvl1pPr;
-    property Lvl2pPr: TCTTextParagraphPropertiesCT read fLvl2pPr;
-    property Lvl3pPr: TCTTextParagraphPropertiesCT read fLvl3pPr;
-    property Lvl4pPr: TCTTextParagraphPropertiesCT read fLvl4pPr;
-    property Lvl5pPr: TCTTextParagraphPropertiesCT read fLvl5pPr;
-    property Lvl6pPr: TCTTextParagraphPropertiesCT read fLvl6pPr;
-    property Lvl7pPr: TCTTextParagraphPropertiesCT read fLvl7pPr;
-    property Lvl8pPr: TCTTextParagraphPropertiesCT read fLvl8pPr;
-    property Lvl9pPr: TCTTextParagraphPropertiesCT read fLvl9pPr;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property DefPPr: TTextParagraphPropertiesCT read fDefPPr;
+    property Lvl1pPr: TTextParagraphPropertiesCT read fLvl1pPr;
+    property Lvl2pPr: TTextParagraphPropertiesCT read fLvl2pPr;
+    property Lvl3pPr: TTextParagraphPropertiesCT read fLvl3pPr;
+    property Lvl4pPr: TTextParagraphPropertiesCT read fLvl4pPr;
+    property Lvl5pPr: TTextParagraphPropertiesCT read fLvl5pPr;
+    property Lvl6pPr: TTextParagraphPropertiesCT read fLvl6pPr;
+    property Lvl7pPr: TTextParagraphPropertiesCT read fLvl7pPr;
+    property Lvl8pPr: TTextParagraphPropertiesCT read fLvl8pPr;
+    property Lvl9pPr: TTextParagraphPropertiesCT read fLvl9pPr;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_TextNormalAutofit')]
-  TCTTextNormalAutofitCT = class(TXmliteComplexType)
+  TTextNormalAutofitCT = class(TXmliteComplexType)
   private
-    fFontScale: TSTTextFontScalePercentOrPercentStringST;
-    fLnSpcReduction: TSTTextSpacingPercentOrPercentStringST;
+    fFontScale: TTextFontScalePercentOrPercentStringST;
+    fLnSpcReduction: TTextSpacingPercentOrPercentStringST;
   published
     [TDefault('100%')]
-    property FontScale: TSTTextFontScalePercentOrPercentStringST read fFontScale write fFontScale;
+    property FontScale: TTextFontScalePercentOrPercentStringST read fFontScale write fFontScale;
     [TDefault('0%')]
-    property LnSpcReduction: TSTTextSpacingPercentOrPercentStringST read fLnSpcReduction write fLnSpcReduction;
+    property LnSpcReduction: TTextSpacingPercentOrPercentStringST read fLnSpcReduction write fLnSpcReduction;
   end;
 
   [TName('CT_TextShapeAutofit')]
-  TCTTextShapeAutofitCT = class(TXmliteComplexType);
+  TTextShapeAutofitCT = class(TXmliteComplexType);
 
   [TName('CT_TextNoAutofit')]
-  TCTTextNoAutofitCT = class(TXmliteComplexType);
+  TTextNoAutofitCT = class(TXmliteComplexType);
 
   [TName('CT_TextBodyProperties')]
-  TCTTextBodyPropertiesCT = class(TXmliteComplexType)
+  TTextBodyPropertiesCT = class(TXmliteComplexType)
   private
-    fRot: TSTAngleST;
+    fRot: TAngleST;
     fSpcFirstLastPara: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fVertOverflow: TSTTextVertOverflowTypeST;
-    fHorzOverflow: TSTTextHorzOverflowTypeST;
-    fVert: TSTTextVerticalTypeST;
-    fWrap: TSTTextWrappingTypeST;
-    fLIns: TSTCoordinate32ST;
-    fTIns: TSTCoordinate32ST;
-    fRIns: TSTCoordinate32ST;
-    fBIns: TSTCoordinate32ST;
-    fNumCol: TSTTextColumnCountST;
-    fSpcCol: TSTPositiveCoordinate32ST;
+    fVertOverflow: TTextVertOverflowTypeST;
+    fHorzOverflow: TTextHorzOverflowTypeST;
+    fVert: TTextVerticalTypeST;
+    fWrap: TTextWrappingTypeST;
+    fLIns: TCoordinate32ST;
+    fTIns: TCoordinate32ST;
+    fRIns: TCoordinate32ST;
+    fBIns: TCoordinate32ST;
+    fNumCol: TTextColumnCountST;
+    fSpcCol: TPositiveCoordinate32ST;
     fRtlCol: ProRock.Xmlite.Schema.Base.TBooleanST;
     fFromWordArt: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fAnchor: TSTTextAnchoringTypeST;
+    fAnchor: TTextAnchoringTypeST;
     fAnchorCtr: ProRock.Xmlite.Schema.Base.TBooleanST;
     fForceAA: ProRock.Xmlite.Schema.Base.TBooleanST;
     fUpright: ProRock.Xmlite.Schema.Base.TBooleanST;
     fCompatLnSpc: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fPrstTxWarp: TCTPresetTextShapeCT;
-    fNoAutofit: TCTTextNoAutofitCT;
-    fNormAutofit: TCTTextNormalAutofitCT;
-    fSpAutoFit: TCTTextShapeAutofitCT;
-    fScene3d: TCTScene3DCT;
-    fSp3d: TCTShape3DCT;
-    fFlatTx: TCTFlatTextCT;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fPrstTxWarp: TPresetTextShapeCT;
+    fNoAutofit: TTextNoAutofitCT;
+    fNormAutofit: TTextNormalAutofitCT;
+    fSpAutoFit: TTextShapeAutofitCT;
+    fScene3d: TScene3DCT;
+    fSp3d: TShape3DCT;
+    fFlatTx: TFlatTextCT;
+    fExtLst: TOfficeArtExtensionListCT;
 
-    function GetNoAutofit: TCTTextNoAutofitCT;
-    function GetNormAutofit: TCTTextNormalAutofitCT;
-    function GetSpAutoFit: TCTTextShapeAutofitCT;
-    function GetSp3d: TCTShape3DCT;
-    function GetFlatTx: TCTFlatTextCT;
+    function GetNoAutofit: TTextNoAutofitCT;
+    function GetNormAutofit: TTextNormalAutofitCT;
+    function GetSpAutoFit: TTextShapeAutofitCT;
+    function GetSp3d: TShape3DCT;
+    function GetFlatTx: TFlatTextCT;
   published
-    property Rot: TSTAngleST read fRot write fRot;
+    property Rot: TAngleST read fRot write fRot;
     property SpcFirstLastPara: ProRock.Xmlite.Schema.Base.TBooleanST read fSpcFirstLastPara write fSpcFirstLastPara;
-    property VertOverflow: TSTTextVertOverflowTypeST read fVertOverflow write fVertOverflow;
-    property HorzOverflow: TSTTextHorzOverflowTypeST read fHorzOverflow write fHorzOverflow;
-    property Vert: TSTTextVerticalTypeST read fVert write fVert;
-    property Wrap: TSTTextWrappingTypeST read fWrap write fWrap;
-    property LIns: TSTCoordinate32ST read fLIns write fLIns;
-    property TIns: TSTCoordinate32ST read fTIns write fTIns;
-    property RIns: TSTCoordinate32ST read fRIns write fRIns;
-    property BIns: TSTCoordinate32ST read fBIns write fBIns;
-    property NumCol: TSTTextColumnCountST read fNumCol write fNumCol;
-    property SpcCol: TSTPositiveCoordinate32ST read fSpcCol write fSpcCol;
+    property VertOverflow: TTextVertOverflowTypeST read fVertOverflow write fVertOverflow;
+    property HorzOverflow: TTextHorzOverflowTypeST read fHorzOverflow write fHorzOverflow;
+    property Vert: TTextVerticalTypeST read fVert write fVert;
+    property Wrap: TTextWrappingTypeST read fWrap write fWrap;
+    property LIns: TCoordinate32ST read fLIns write fLIns;
+    property TIns: TCoordinate32ST read fTIns write fTIns;
+    property RIns: TCoordinate32ST read fRIns write fRIns;
+    property BIns: TCoordinate32ST read fBIns write fBIns;
+    property NumCol: TTextColumnCountST read fNumCol write fNumCol;
+    property SpcCol: TPositiveCoordinate32ST read fSpcCol write fSpcCol;
     property RtlCol: ProRock.Xmlite.Schema.Base.TBooleanST read fRtlCol write fRtlCol;
     property FromWordArt: ProRock.Xmlite.Schema.Base.TBooleanST read fFromWordArt write fFromWordArt;
-    property Anchor: TSTTextAnchoringTypeST read fAnchor write fAnchor;
+    property Anchor: TTextAnchoringTypeST read fAnchor write fAnchor;
     property AnchorCtr: ProRock.Xmlite.Schema.Base.TBooleanST read fAnchorCtr write fAnchorCtr;
     property ForceAA: ProRock.Xmlite.Schema.Base.TBooleanST read fForceAA write fForceAA;
     [TDefault(False)]
     property Upright: ProRock.Xmlite.Schema.Base.TBooleanST read fUpright write fUpright;
     property CompatLnSpc: ProRock.Xmlite.Schema.Base.TBooleanST read fCompatLnSpc write fCompatLnSpc;
-    property PrstTxWarp: TCTPresetTextShapeCT read fPrstTxWarp;
+    property PrstTxWarp: TPresetTextShapeCT read fPrstTxWarp;
     [TChoice('NoAutofit')]
-    property NoAutofit: TCTTextNoAutofitCT read GetNoAutofit;
+    property NoAutofit: TTextNoAutofitCT read GetNoAutofit;
     [TChoice('NoAutofit')]
-    property NormAutofit: TCTTextNormalAutofitCT read GetNormAutofit;
+    property NormAutofit: TTextNormalAutofitCT read GetNormAutofit;
     [TChoice('NoAutofit')]
-    property SpAutoFit: TCTTextShapeAutofitCT read GetSpAutoFit;
-    property Scene3d: TCTScene3DCT read fScene3d;
+    property SpAutoFit: TTextShapeAutofitCT read GetSpAutoFit;
+    property Scene3d: TScene3DCT read fScene3d;
     [TChoice('Sp3d')]
-    property Sp3d: TCTShape3DCT read GetSp3d;
+    property Sp3d: TShape3DCT read GetSp3d;
     [TChoice('Sp3d')]
-    property FlatTx: TCTFlatTextCT read GetFlatTx;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property FlatTx: TFlatTextCT read GetFlatTx;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_TextBody')]
-  TCTTextBodyCT = class(TXmliteComplexType)
+  TTextBodyCT = class(TXmliteComplexType)
   private
-    fBodyPr: TCTTextBodyPropertiesCT;
-    fLstStyle: TCTTextListStyleCT;
-    fP: TCTTextParagraphCTList;
+    fBodyPr: TTextBodyPropertiesCT;
+    fLstStyle: TTextListStyleCT;
+    fP: TTextParagraphCTList;
   published
     [TRequired]
-    property BodyPr: TCTTextBodyPropertiesCT read fBodyPr;
-    property LstStyle: TCTTextListStyleCT read fLstStyle;
-    property P: TCTTextParagraphCTList read fP;
+    property BodyPr: TTextBodyPropertiesCT read fBodyPr;
+    property LstStyle: TTextListStyleCT read fLstStyle;
+    property P: TTextParagraphCTList read fP;
   end;
 
   [TName('CT_TextBulletColorFollowText')]
-  TCTTextBulletColorFollowTextCT = class(TXmliteComplexType);
+  TTextBulletColorFollowTextCT = class(TXmliteComplexType);
 
   [TName('CT_TextBulletSizeFollowText')]
-  TCTTextBulletSizeFollowTextCT = class(TXmliteComplexType);
+  TTextBulletSizeFollowTextCT = class(TXmliteComplexType);
 
   [TName('CT_TextBulletSizePercent')]
-  TCTTextBulletSizePercentCT = class(TXmliteComplexType)
+  TTextBulletSizePercentCT = class(TXmliteComplexType)
   private
-    fVal: TSTTextBulletSizePercentST;
+    fVal: TTextBulletSizePercentST;
   published
     [TRequired]
-    property Val: TSTTextBulletSizePercentST read fVal write fVal;
+    property Val: TTextBulletSizePercentST read fVal write fVal;
   end;
 
   [TName('CT_TextBulletSizePoint')]
-  TCTTextBulletSizePointCT = class(TXmliteComplexType)
+  TTextBulletSizePointCT = class(TXmliteComplexType)
   private
-    fVal: TSTTextFontSizeST;
+    fVal: TTextFontSizeST;
   published
     [TRequired]
-    property Val: TSTTextFontSizeST read fVal write fVal;
+    property Val: TTextFontSizeST read fVal write fVal;
   end;
 
   [TName('CT_TextBulletTypefaceFollowText')]
-  TCTTextBulletTypefaceFollowTextCT = class(TXmliteComplexType);
+  TTextBulletTypefaceFollowTextCT = class(TXmliteComplexType);
 
   [TName('CT_TextAutonumberBullet')]
-  TCTTextAutonumberBulletCT = class(TXmliteComplexType)
+  TTextAutonumberBulletCT = class(TXmliteComplexType)
   private
-    fType: TSTTextAutonumberSchemeST;
-    fStartAt: TSTTextBulletStartAtNumST;
+    fType: TTextAutonumberSchemeST;
+    fStartAt: TTextBulletStartAtNumST;
   published
     [TRequired]
-    property &Type: TSTTextAutonumberSchemeST read fType write fType;
+    property &Type: TTextAutonumberSchemeST read fType write fType;
     [TDefault(1)]
-    property StartAt: TSTTextBulletStartAtNumST read fStartAt write fStartAt;
+    property StartAt: TTextBulletStartAtNumST read fStartAt write fStartAt;
   end;
 
   [TName('CT_TextCharBullet')]
-  TCTTextCharBulletCT = class(TXmliteComplexType)
+  TTextCharBulletCT = class(TXmliteComplexType)
   private
     fChar: ProRock.Xmlite.Schema.Base.TStringST;
   published
@@ -4845,130 +4845,130 @@ type
   end;
 
   [TName('CT_TextBlipBullet')]
-  TCTTextBlipBulletCT = class(TXmliteComplexType)
+  TTextBlipBulletCT = class(TXmliteComplexType)
   private
-    fBlip: TCTBlipCT;
+    fBlip: TBlipCT;
   published
     [TRequired]
-    property Blip: TCTBlipCT read fBlip;
+    property Blip: TBlipCT read fBlip;
   end;
 
   [TName('CT_TextNoBullet')]
-  TCTTextNoBulletCT = class(TXmliteComplexType);
+  TTextNoBulletCT = class(TXmliteComplexType);
 
   [TName('CT_TextFont')]
-  TCTTextFontCT = class(TXmliteComplexType)
+  TTextFontCT = class(TXmliteComplexType)
   private
-    fTypeface: TSTTextTypefaceST;
-    fPanose: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTPanoseST;
-    fPitchFamily: TSTPitchFamilyST;
+    fTypeface: TTextTypefaceST;
+    fPanose: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TPanoseST;
+    fPitchFamily: TPitchFamilyST;
     fCharset: ProRock.Xmlite.Schema.Base.TByteST;
   published
     [TRequired]
-    property Typeface: TSTTextTypefaceST read fTypeface write fTypeface;
-    property Panose: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTPanoseST read fPanose write fPanose;
+    property Typeface: TTextTypefaceST read fTypeface write fTypeface;
+    property Panose: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TPanoseST read fPanose write fPanose;
     [TDefault('0')]
-    property PitchFamily: TSTPitchFamilyST read fPitchFamily write fPitchFamily;
+    property PitchFamily: TPitchFamilyST read fPitchFamily write fPitchFamily;
     [TDefault(1)]
     property Charset: ProRock.Xmlite.Schema.Base.TByteST read fCharset write fCharset;
   end;
 
   [TName('CT_TextUnderlineLineFollowText')]
-  TCTTextUnderlineLineFollowTextCT = class(TXmliteComplexType);
+  TTextUnderlineLineFollowTextCT = class(TXmliteComplexType);
 
   [TName('CT_TextUnderlineFillFollowText')]
-  TCTTextUnderlineFillFollowTextCT = class(TXmliteComplexType);
+  TTextUnderlineFillFollowTextCT = class(TXmliteComplexType);
 
   [TName('CT_TextUnderlineFillGroupWrapper')]
-  TCTTextUnderlineFillGroupWrapperCT = class(TXmliteComplexType)
+  TTextUnderlineFillGroupWrapperCT = class(TXmliteComplexType)
   private
-    fNoFill: TCTNoFillPropertiesCT;
-    fSolidFill: TCTSolidColorFillPropertiesCT;
-    fGradFill: TCTGradientFillPropertiesCT;
-    fBlipFill: TCTBlipFillPropertiesCT;
-    fPattFill: TCTPatternFillPropertiesCT;
-    fGrpFill: TCTGroupFillPropertiesCT;
+    fNoFill: TNoFillPropertiesCT;
+    fSolidFill: TSolidColorFillPropertiesCT;
+    fGradFill: TGradientFillPropertiesCT;
+    fBlipFill: TBlipFillPropertiesCT;
+    fPattFill: TPatternFillPropertiesCT;
+    fGrpFill: TGroupFillPropertiesCT;
 
-    function GetNoFill: TCTNoFillPropertiesCT;
-    function GetSolidFill: TCTSolidColorFillPropertiesCT;
-    function GetGradFill: TCTGradientFillPropertiesCT;
-    function GetBlipFill: TCTBlipFillPropertiesCT;
-    function GetPattFill: TCTPatternFillPropertiesCT;
-    function GetGrpFill: TCTGroupFillPropertiesCT;
+    function GetNoFill: TNoFillPropertiesCT;
+    function GetSolidFill: TSolidColorFillPropertiesCT;
+    function GetGradFill: TGradientFillPropertiesCT;
+    function GetBlipFill: TBlipFillPropertiesCT;
+    function GetPattFill: TPatternFillPropertiesCT;
+    function GetGrpFill: TGroupFillPropertiesCT;
   published
     [TChoice('NoFill')]
-    property NoFill: TCTNoFillPropertiesCT read GetNoFill;
+    property NoFill: TNoFillPropertiesCT read GetNoFill;
     [TChoice('NoFill')]
-    property SolidFill: TCTSolidColorFillPropertiesCT read GetSolidFill;
+    property SolidFill: TSolidColorFillPropertiesCT read GetSolidFill;
     [TChoice('NoFill')]
-    property GradFill: TCTGradientFillPropertiesCT read GetGradFill;
+    property GradFill: TGradientFillPropertiesCT read GetGradFill;
     [TChoice('NoFill')]
-    property BlipFill: TCTBlipFillPropertiesCT read GetBlipFill;
+    property BlipFill: TBlipFillPropertiesCT read GetBlipFill;
     [TChoice('NoFill')]
-    property PattFill: TCTPatternFillPropertiesCT read GetPattFill;
+    property PattFill: TPatternFillPropertiesCT read GetPattFill;
     [TChoice('NoFill')]
-    property GrpFill: TCTGroupFillPropertiesCT read GetGrpFill;
+    property GrpFill: TGroupFillPropertiesCT read GetGrpFill;
   end;
 
   [TName('CT_TextCharacterProperties')]
-  TCTTextCharacterPropertiesCT = class(TXmliteComplexType)
+  TTextCharacterPropertiesCT = class(TXmliteComplexType)
   private
     fKumimoji: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fLang: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTLangST;
-    fAltLang: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTLangST;
-    fSz: TSTTextFontSizeST;
+    fLang: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TLangST;
+    fAltLang: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TLangST;
+    fSz: TTextFontSizeST;
     fB: ProRock.Xmlite.Schema.Base.TBooleanST;
     fI: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fU: TSTTextUnderlineTypeST;
-    fStrike: TSTTextStrikeTypeST;
-    fKern: TSTTextNonNegativePointST;
-    fCap: TSTTextCapsTypeST;
-    fSpc: TSTTextPointST;
+    fU: TTextUnderlineTypeST;
+    fStrike: TTextStrikeTypeST;
+    fKern: TTextNonNegativePointST;
+    fCap: TTextCapsTypeST;
+    fSpc: TTextPointST;
     fNormalizeH: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fBaseline: TSTPercentageST;
+    fBaseline: TPercentageST;
     fNoProof: ProRock.Xmlite.Schema.Base.TBooleanST;
     fDirty: ProRock.Xmlite.Schema.Base.TBooleanST;
     fErr: ProRock.Xmlite.Schema.Base.TBooleanST;
     fSmtClean: ProRock.Xmlite.Schema.Base.TBooleanST;
     fSmtId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fBmk: ProRock.Xmlite.Schema.Base.TStringST;
-    fLn: TCTLinePropertiesCT;
-    fNoFill: TCTNoFillPropertiesCT;
-    fSolidFill: TCTSolidColorFillPropertiesCT;
-    fGradFill: TCTGradientFillPropertiesCT;
-    fBlipFill: TCTBlipFillPropertiesCT;
-    fPattFill: TCTPatternFillPropertiesCT;
-    fGrpFill: TCTGroupFillPropertiesCT;
-    fEffectLst: TCTEffectListCT;
-    fEffectDag: TCTEffectContainerCT;
-    fHighlight: TCTColorCT;
-    fULnTx: TCTTextUnderlineLineFollowTextCT;
-    fULn: TCTLinePropertiesCT;
-    fUFillTx: TCTTextUnderlineFillFollowTextCT;
-    fUFill: TCTTextUnderlineFillGroupWrapperCT;
-    fLatin: TCTTextFontCT;
-    fEa: TCTTextFontCT;
-    fCs: TCTTextFontCT;
-    fSym: TCTTextFontCT;
-    fHlinkClick: TCTHyperlinkCT;
-    fHlinkMouseOver: TCTHyperlinkCT;
-    fRtl: TCTBooleanCT;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fLn: TLinePropertiesCT;
+    fNoFill: TNoFillPropertiesCT;
+    fSolidFill: TSolidColorFillPropertiesCT;
+    fGradFill: TGradientFillPropertiesCT;
+    fBlipFill: TBlipFillPropertiesCT;
+    fPattFill: TPatternFillPropertiesCT;
+    fGrpFill: TGroupFillPropertiesCT;
+    fEffectLst: TEffectListCT;
+    fEffectDag: TEffectContainerCT;
+    fHighlight: TColorCT;
+    fULnTx: TTextUnderlineLineFollowTextCT;
+    fULn: TLinePropertiesCT;
+    fUFillTx: TTextUnderlineFillFollowTextCT;
+    fUFill: TTextUnderlineFillGroupWrapperCT;
+    fLatin: TTextFontCT;
+    fEa: TTextFontCT;
+    fCs: TTextFontCT;
+    fSym: TTextFontCT;
+    fHlinkClick: THyperlinkCT;
+    fHlinkMouseOver: THyperlinkCT;
+    fRtl: TBooleanCT;
+    fExtLst: TOfficeArtExtensionListCT;
 
-    function GetNoFill: TCTNoFillPropertiesCT;
-    function GetSolidFill: TCTSolidColorFillPropertiesCT;
-    function GetGradFill: TCTGradientFillPropertiesCT;
-    function GetBlipFill: TCTBlipFillPropertiesCT;
-    function GetPattFill: TCTPatternFillPropertiesCT;
-    function GetGrpFill: TCTGroupFillPropertiesCT;
-    function GetEffectLst: TCTEffectListCT;
-    function GetEffectDag: TCTEffectContainerCT;
+    function GetNoFill: TNoFillPropertiesCT;
+    function GetSolidFill: TSolidColorFillPropertiesCT;
+    function GetGradFill: TGradientFillPropertiesCT;
+    function GetBlipFill: TBlipFillPropertiesCT;
+    function GetPattFill: TPatternFillPropertiesCT;
+    function GetGrpFill: TGroupFillPropertiesCT;
+    function GetEffectLst: TEffectListCT;
+    function GetEffectDag: TEffectContainerCT;
     function GetEffectChosen: TBasite;
-    function GetULnTx: TCTTextUnderlineLineFollowTextCT;
-    function GetULn: TCTLinePropertiesCT;
+    function GetULnTx: TTextUnderlineLineFollowTextCT;
+    function GetULn: TLinePropertiesCT;
     function GetULnChosen: TBasite;
-    function GetUFillTx: TCTTextUnderlineFillFollowTextCT;
-    function GetUFill: TCTTextUnderlineFillGroupWrapperCT;
+    function GetUFillTx: TTextUnderlineFillFollowTextCT;
+    function GetUFill: TTextUnderlineFillGroupWrapperCT;
     function GetUFillChosen: TBasite;
   public
     property EffectChosen: TBasite read GetEffectChosen;
@@ -4976,19 +4976,19 @@ type
     property UFillChosen: TBasite read GetUFillChosen;
   published
     property Kumimoji: ProRock.Xmlite.Schema.Base.TBooleanST read fKumimoji write fKumimoji;
-    property Lang: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTLangST read fLang write fLang;
-    property AltLang: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTLangST read fAltLang write fAltLang;
-    property Sz: TSTTextFontSizeST read fSz write fSz;
+    property Lang: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TLangST read fLang write fLang;
+    property AltLang: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TLangST read fAltLang write fAltLang;
+    property Sz: TTextFontSizeST read fSz write fSz;
     property B: ProRock.Xmlite.Schema.Base.TBooleanST read fB write fB;
     property I: ProRock.Xmlite.Schema.Base.TBooleanST read fI write fI;
-    property U: TSTTextUnderlineTypeST read fU write fU;
-    property Strike: TSTTextStrikeTypeST read fStrike write fStrike;
-    property Kern: TSTTextNonNegativePointST read fKern write fKern;
+    property U: TTextUnderlineTypeST read fU write fU;
+    property Strike: TTextStrikeTypeST read fStrike write fStrike;
+    property Kern: TTextNonNegativePointST read fKern write fKern;
     [TDefault(Ord(sttctNone))]
-    property Cap: TSTTextCapsTypeST read fCap write fCap;
-    property Spc: TSTTextPointST read fSpc write fSpc;
+    property Cap: TTextCapsTypeST read fCap write fCap;
+    property Spc: TTextPointST read fSpc write fSpc;
     property NormalizeH: ProRock.Xmlite.Schema.Base.TBooleanST read fNormalizeH write fNormalizeH;
-    property Baseline: TSTPercentageST read fBaseline write fBaseline;
+    property Baseline: TPercentageST read fBaseline write fBaseline;
     property NoProof: ProRock.Xmlite.Schema.Base.TBooleanST read fNoProof write fNoProof;
     [TDefault(True)]
     property Dirty: ProRock.Xmlite.Schema.Base.TBooleanST read fDirty write fDirty;
@@ -4999,159 +4999,159 @@ type
     [TDefault(0)]
     property SmtId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSmtId write fSmtId;
     property Bmk: ProRock.Xmlite.Schema.Base.TStringST read fBmk write fBmk;
-    property Ln: TCTLinePropertiesCT read fLn;
+    property Ln: TLinePropertiesCT read fLn;
     [TChoice('NoFill')]
-    property NoFill: TCTNoFillPropertiesCT read GetNoFill;
+    property NoFill: TNoFillPropertiesCT read GetNoFill;
     [TChoice('NoFill')]
-    property SolidFill: TCTSolidColorFillPropertiesCT read GetSolidFill;
+    property SolidFill: TSolidColorFillPropertiesCT read GetSolidFill;
     [TChoice('NoFill')]
-    property GradFill: TCTGradientFillPropertiesCT read GetGradFill;
+    property GradFill: TGradientFillPropertiesCT read GetGradFill;
     [TChoice('NoFill')]
-    property BlipFill: TCTBlipFillPropertiesCT read GetBlipFill;
+    property BlipFill: TBlipFillPropertiesCT read GetBlipFill;
     [TChoice('NoFill')]
-    property PattFill: TCTPatternFillPropertiesCT read GetPattFill;
+    property PattFill: TPatternFillPropertiesCT read GetPattFill;
     [TChoice('NoFill')]
-    property GrpFill: TCTGroupFillPropertiesCT read GetGrpFill;
+    property GrpFill: TGroupFillPropertiesCT read GetGrpFill;
     [TChoice('Effect')]
-    property EffectLst: TCTEffectListCT read GetEffectLst;
+    property EffectLst: TEffectListCT read GetEffectLst;
     [TChoice('Effect')]
-    property EffectDag: TCTEffectContainerCT read GetEffectDag;
-    property Highlight: TCTColorCT read fHighlight;
+    property EffectDag: TEffectContainerCT read GetEffectDag;
+    property Highlight: TColorCT read fHighlight;
     [TChoice('ULn')]
-    property ULnTx: TCTTextUnderlineLineFollowTextCT read GetULnTx;
+    property ULnTx: TTextUnderlineLineFollowTextCT read GetULnTx;
     [TChoice('ULn')]
-    property ULn: TCTLinePropertiesCT read GetULn;
+    property ULn: TLinePropertiesCT read GetULn;
     [TChoice('UFill')]
-    property UFillTx: TCTTextUnderlineFillFollowTextCT read GetUFillTx;
+    property UFillTx: TTextUnderlineFillFollowTextCT read GetUFillTx;
     [TChoice('UFill')]
-    property UFill: TCTTextUnderlineFillGroupWrapperCT read GetUFill;
-    property Latin: TCTTextFontCT read fLatin;
-    property Ea: TCTTextFontCT read fEa;
-    property Cs: TCTTextFontCT read fCs;
-    property Sym: TCTTextFontCT read fSym;
-    property HlinkClick: TCTHyperlinkCT read fHlinkClick;
-    property HlinkMouseOver: TCTHyperlinkCT read fHlinkMouseOver;
-    property Rtl: TCTBooleanCT read fRtl;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property UFill: TTextUnderlineFillGroupWrapperCT read GetUFill;
+    property Latin: TTextFontCT read fLatin;
+    property Ea: TTextFontCT read fEa;
+    property Cs: TTextFontCT read fCs;
+    property Sym: TTextFontCT read fSym;
+    property HlinkClick: THyperlinkCT read fHlinkClick;
+    property HlinkMouseOver: THyperlinkCT read fHlinkMouseOver;
+    property Rtl: TBooleanCT read fRtl;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_Boolean')]
-  TCTBooleanCT = class(TXmliteComplexType)
+  TBooleanCT = class(TXmliteComplexType)
   private
-    fVal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTOnOffST;
+    fVal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TOnOffST;
   published
     [TDefault('0')]
-    property Val: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTOnOffST read fVal write fVal;
+    property Val: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TOnOffST read fVal write fVal;
   end;
 
   [TName('CT_TextSpacingPercent')]
-  TCTTextSpacingPercentCT = class(TXmliteComplexType)
+  TTextSpacingPercentCT = class(TXmliteComplexType)
   private
-    fVal: TSTTextSpacingPercentOrPercentStringST;
+    fVal: TTextSpacingPercentOrPercentStringST;
   published
     [TRequired]
-    property Val: TSTTextSpacingPercentOrPercentStringST read fVal write fVal;
+    property Val: TTextSpacingPercentOrPercentStringST read fVal write fVal;
   end;
 
   [TName('CT_TextSpacingPoint')]
-  TCTTextSpacingPointCT = class(TXmliteComplexType)
+  TTextSpacingPointCT = class(TXmliteComplexType)
   private
-    fVal: TSTTextSpacingPointST;
+    fVal: TTextSpacingPointST;
   published
     [TRequired]
-    property Val: TSTTextSpacingPointST read fVal write fVal;
+    property Val: TTextSpacingPointST read fVal write fVal;
   end;
 
   [TName('CT_TextTabStop')]
-  TCTTextTabStopCT = class(TXmliteComplexType)
+  TTextTabStopCT = class(TXmliteComplexType)
   private
-    fPos: TSTCoordinate32ST;
-    fAlgn: TSTTextTabAlignTypeST;
+    fPos: TCoordinate32ST;
+    fAlgn: TTextTabAlignTypeST;
   published
-    property Pos: TSTCoordinate32ST read fPos write fPos;
-    property Algn: TSTTextTabAlignTypeST read fAlgn write fAlgn;
+    property Pos: TCoordinate32ST read fPos write fPos;
+    property Algn: TTextTabAlignTypeST read fAlgn write fAlgn;
   end;
 
   [TName('CT_TextTabStopList')]
-  TCTTextTabStopListCT = class(TXmliteComplexType)
+  TTextTabStopListCT = class(TXmliteComplexType)
   private
-    fTab: TCTTextTabStopCTList;
+    fTab: TTextTabStopCTList;
   published
-    property Tab: TCTTextTabStopCTList read fTab;
+    property Tab: TTextTabStopCTList read fTab;
   end;
 
   [TName('CT_TextLineBreak')]
-  TCTTextLineBreakCT = class(TXmliteComplexType)
+  TTextLineBreakCT = class(TXmliteComplexType)
   private
-    fRPr: TCTTextCharacterPropertiesCT;
+    fRPr: TTextCharacterPropertiesCT;
   published
-    property RPr: TCTTextCharacterPropertiesCT read fRPr;
+    property RPr: TTextCharacterPropertiesCT read fRPr;
   end;
 
   [TName('CT_TextSpacing')]
-  TCTTextSpacingCT = class(TXmliteComplexType)
+  TTextSpacingCT = class(TXmliteComplexType)
   private
-    fSpcPct: TCTTextSpacingPercentCT;
-    fSpcPts: TCTTextSpacingPointCT;
+    fSpcPct: TTextSpacingPercentCT;
+    fSpcPts: TTextSpacingPointCT;
 
-    function GetSpcPct: TCTTextSpacingPercentCT;
-    function GetSpcPts: TCTTextSpacingPointCT;
+    function GetSpcPct: TTextSpacingPercentCT;
+    function GetSpcPts: TTextSpacingPointCT;
     function GetSpcChosen: TBasite;
   public
     property SpcChosen: TBasite read GetSpcChosen;
   published
     [TChoice('Spc')]
-    property SpcPct: TCTTextSpacingPercentCT read GetSpcPct;
+    property SpcPct: TTextSpacingPercentCT read GetSpcPct;
     [TChoice('Spc')]
-    property SpcPts: TCTTextSpacingPointCT read GetSpcPts;
+    property SpcPts: TTextSpacingPointCT read GetSpcPts;
   end;
 
   [TName('CT_TextParagraphProperties')]
-  TCTTextParagraphPropertiesCT = class(TXmliteComplexType)
+  TTextParagraphPropertiesCT = class(TXmliteComplexType)
   private
-    fMarL: TSTTextMarginST;
-    fMarR: TSTTextMarginST;
-    fLvl: TSTTextIndentLevelTypeST;
-    fIndent: TSTTextIndentST;
-    fAlgn: TSTTextAlignTypeST;
-    fDefTabSz: TSTCoordinate32ST;
+    fMarL: TTextMarginST;
+    fMarR: TTextMarginST;
+    fLvl: TTextIndentLevelTypeST;
+    fIndent: TTextIndentST;
+    fAlgn: TTextAlignTypeST;
+    fDefTabSz: TCoordinate32ST;
     fRtl: ProRock.Xmlite.Schema.Base.TBooleanST;
     fEaLnBrk: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fFontAlgn: TSTTextFontAlignTypeST;
+    fFontAlgn: TTextFontAlignTypeST;
     fLatinLnBrk: ProRock.Xmlite.Schema.Base.TBooleanST;
     fHangingPunct: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fLnSpc: TCTTextSpacingCT;
-    fSpcBef: TCTTextSpacingCT;
-    fSpcAft: TCTTextSpacingCT;
-    fBuClrTx: TCTTextBulletColorFollowTextCT;
-    fBuClr: TCTColorCT;
-    fBuSzTx: TCTTextBulletSizeFollowTextCT;
-    fBuSzPct: TCTTextBulletSizePercentCT;
-    fBuSzPts: TCTTextBulletSizePointCT;
-    fBuFontTx: TCTTextBulletTypefaceFollowTextCT;
-    fBuFont: TCTTextFontCT;
-    fBuNone: TCTTextNoBulletCT;
-    fBuAutoNum: TCTTextAutonumberBulletCT;
-    fBuChar: TCTTextCharBulletCT;
-    fBuBlip: TCTTextBlipBulletCT;
-    fTabLst: TCTTextTabStopListCT;
-    fDefRPr: TCTTextCharacterPropertiesCT;
-    fExtLst: TCTOfficeArtExtensionListCT;
+    fLnSpc: TTextSpacingCT;
+    fSpcBef: TTextSpacingCT;
+    fSpcAft: TTextSpacingCT;
+    fBuClrTx: TTextBulletColorFollowTextCT;
+    fBuClr: TColorCT;
+    fBuSzTx: TTextBulletSizeFollowTextCT;
+    fBuSzPct: TTextBulletSizePercentCT;
+    fBuSzPts: TTextBulletSizePointCT;
+    fBuFontTx: TTextBulletTypefaceFollowTextCT;
+    fBuFont: TTextFontCT;
+    fBuNone: TTextNoBulletCT;
+    fBuAutoNum: TTextAutonumberBulletCT;
+    fBuChar: TTextCharBulletCT;
+    fBuBlip: TTextBlipBulletCT;
+    fTabLst: TTextTabStopListCT;
+    fDefRPr: TTextCharacterPropertiesCT;
+    fExtLst: TOfficeArtExtensionListCT;
 
-    function GetBuClrTx: TCTTextBulletColorFollowTextCT;
-    function GetBuClr: TCTColorCT;
+    function GetBuClrTx: TTextBulletColorFollowTextCT;
+    function GetBuClr: TColorCT;
     function GetBuClrChosen: TBasite;
-    function GetBuSzTx: TCTTextBulletSizeFollowTextCT;
-    function GetBuSzPct: TCTTextBulletSizePercentCT;
-    function GetBuSzPts: TCTTextBulletSizePointCT;
+    function GetBuSzTx: TTextBulletSizeFollowTextCT;
+    function GetBuSzPct: TTextBulletSizePercentCT;
+    function GetBuSzPts: TTextBulletSizePointCT;
     function GetBuSzChosen: TBasite;
-    function GetBuFontTx: TCTTextBulletTypefaceFollowTextCT;
-    function GetBuFont: TCTTextFontCT;
+    function GetBuFontTx: TTextBulletTypefaceFollowTextCT;
+    function GetBuFont: TTextFontCT;
     function GetBuFontChosen: TBasite;
-    function GetBuNone: TCTTextNoBulletCT;
-    function GetBuAutoNum: TCTTextAutonumberBulletCT;
-    function GetBuChar: TCTTextCharBulletCT;
-    function GetBuBlip: TCTTextBlipBulletCT;
+    function GetBuNone: TTextNoBulletCT;
+    function GetBuAutoNum: TTextAutonumberBulletCT;
+    function GetBuChar: TTextCharBulletCT;
+    function GetBuBlip: TTextBlipBulletCT;
     function GetBuChosen: TBasite;
   public
     property BuClrChosen: TBasite read GetBuClrChosen;
@@ -5159,79 +5159,79 @@ type
     property BuFontChosen: TBasite read GetBuFontChosen;
     property BuChosen: TBasite read GetBuChosen;
   published
-    property MarL: TSTTextMarginST read fMarL write fMarL;
-    property MarR: TSTTextMarginST read fMarR write fMarR;
-    property Lvl: TSTTextIndentLevelTypeST read fLvl write fLvl;
-    property Indent: TSTTextIndentST read fIndent write fIndent;
-    property Algn: TSTTextAlignTypeST read fAlgn write fAlgn;
-    property DefTabSz: TSTCoordinate32ST read fDefTabSz write fDefTabSz;
+    property MarL: TTextMarginST read fMarL write fMarL;
+    property MarR: TTextMarginST read fMarR write fMarR;
+    property Lvl: TTextIndentLevelTypeST read fLvl write fLvl;
+    property Indent: TTextIndentST read fIndent write fIndent;
+    property Algn: TTextAlignTypeST read fAlgn write fAlgn;
+    property DefTabSz: TCoordinate32ST read fDefTabSz write fDefTabSz;
     property Rtl: ProRock.Xmlite.Schema.Base.TBooleanST read fRtl write fRtl;
     property EaLnBrk: ProRock.Xmlite.Schema.Base.TBooleanST read fEaLnBrk write fEaLnBrk;
-    property FontAlgn: TSTTextFontAlignTypeST read fFontAlgn write fFontAlgn;
+    property FontAlgn: TTextFontAlignTypeST read fFontAlgn write fFontAlgn;
     property LatinLnBrk: ProRock.Xmlite.Schema.Base.TBooleanST read fLatinLnBrk write fLatinLnBrk;
     property HangingPunct: ProRock.Xmlite.Schema.Base.TBooleanST read fHangingPunct write fHangingPunct;
-    property LnSpc: TCTTextSpacingCT read fLnSpc;
-    property SpcBef: TCTTextSpacingCT read fSpcBef;
-    property SpcAft: TCTTextSpacingCT read fSpcAft;
+    property LnSpc: TTextSpacingCT read fLnSpc;
+    property SpcBef: TTextSpacingCT read fSpcBef;
+    property SpcAft: TTextSpacingCT read fSpcAft;
     [TChoice('BuClr')]
-    property BuClrTx: TCTTextBulletColorFollowTextCT read GetBuClrTx;
+    property BuClrTx: TTextBulletColorFollowTextCT read GetBuClrTx;
     [TChoice('BuClr')]
-    property BuClr: TCTColorCT read GetBuClr;
+    property BuClr: TColorCT read GetBuClr;
     [TChoice('BuSz')]
-    property BuSzTx: TCTTextBulletSizeFollowTextCT read GetBuSzTx;
+    property BuSzTx: TTextBulletSizeFollowTextCT read GetBuSzTx;
     [TChoice('BuSz')]
-    property BuSzPct: TCTTextBulletSizePercentCT read GetBuSzPct;
+    property BuSzPct: TTextBulletSizePercentCT read GetBuSzPct;
     [TChoice('BuSz')]
-    property BuSzPts: TCTTextBulletSizePointCT read GetBuSzPts;
+    property BuSzPts: TTextBulletSizePointCT read GetBuSzPts;
     [TChoice('BuFont')]
-    property BuFontTx: TCTTextBulletTypefaceFollowTextCT read GetBuFontTx;
+    property BuFontTx: TTextBulletTypefaceFollowTextCT read GetBuFontTx;
     [TChoice('BuFont')]
-    property BuFont: TCTTextFontCT read GetBuFont;
+    property BuFont: TTextFontCT read GetBuFont;
     [TChoice('Bu')]
-    property BuNone: TCTTextNoBulletCT read GetBuNone;
+    property BuNone: TTextNoBulletCT read GetBuNone;
     [TChoice('Bu')]
-    property BuAutoNum: TCTTextAutonumberBulletCT read GetBuAutoNum;
+    property BuAutoNum: TTextAutonumberBulletCT read GetBuAutoNum;
     [TChoice('Bu')]
-    property BuChar: TCTTextCharBulletCT read GetBuChar;
+    property BuChar: TTextCharBulletCT read GetBuChar;
     [TChoice('Bu')]
-    property BuBlip: TCTTextBlipBulletCT read GetBuBlip;
-    property TabLst: TCTTextTabStopListCT read fTabLst;
-    property DefRPr: TCTTextCharacterPropertiesCT read fDefRPr;
-    property ExtLst: TCTOfficeArtExtensionListCT read fExtLst;
+    property BuBlip: TTextBlipBulletCT read GetBuBlip;
+    property TabLst: TTextTabStopListCT read fTabLst;
+    property DefRPr: TTextCharacterPropertiesCT read fDefRPr;
+    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
   end;
 
   [TName('CT_TextField')]
-  TCTTextFieldCT = class(TXmliteComplexType)
+  TTextFieldCT = class(TXmliteComplexType)
   private
-    fId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST;
+    fId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST;
     fType: ProRock.Xmlite.Schema.Base.TStringST;
-    fRPr: TCTTextCharacterPropertiesCT;
-    fPPr: TCTTextParagraphPropertiesCT;
+    fRPr: TTextCharacterPropertiesCT;
+    fPPr: TTextParagraphPropertiesCT;
     fT: ProRock.Xmlite.Schema.Base.TStringST;
   published
     [TRequired]
-    property Id: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST read fId write fId;
+    property Id: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST read fId write fId;
     property &Type: ProRock.Xmlite.Schema.Base.TStringST read fType write fType;
-    property RPr: TCTTextCharacterPropertiesCT read fRPr;
-    property PPr: TCTTextParagraphPropertiesCT read fPPr;
+    property RPr: TTextCharacterPropertiesCT read fRPr;
+    property PPr: TTextParagraphPropertiesCT read fPPr;
     [TXmliteElement]
     property T: ProRock.Xmlite.Schema.Base.TStringST read fT write fT;
   end;
 
   [TName('CT_RegularTextRun')]
-  TCTRegularTextRunCT = class(TXmliteComplexType)
+  TRegularTextRunCT = class(TXmliteComplexType)
   private
-    fRPr: TCTTextCharacterPropertiesCT;
+    fRPr: TTextCharacterPropertiesCT;
     fT: ProRock.Xmlite.Schema.Base.TStringST;
   published
-    property RPr: TCTTextCharacterPropertiesCT read fRPr;
+    property RPr: TTextCharacterPropertiesCT read fRPr;
     [TXmliteElement]
     [TRequired]
     property T: ProRock.Xmlite.Schema.Base.TStringST read fT write fT;
   end;
 
   [TName('AG_Blob')]
-  TAGBlobAG = class(TXmliteAttributeGroup)
+  TBlobAG = class(TXmliteAttributeGroup)
   private
     fEmbed: ProRock.Xmlite.Schema.Ooxml.Rel.TEmbedA;
     fLink: ProRock.Xmlite.Schema.Ooxml.Rel.TLinkA;
@@ -5243,7 +5243,7 @@ type
   end;
 
   [TName('AG_Locking')]
-  TAGLockingAG = class(TXmliteAttributeGroup)
+  TLockingAG = class(TXmliteAttributeGroup)
   private
     fNoGrp: ProRock.Xmlite.Schema.Base.TBooleanST;
     fNoSelect: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -5278,2856 +5278,3291 @@ type
     property NoChangeShapeType: ProRock.Xmlite.Schema.Base.TBooleanST read fNoChangeShapeType write fNoChangeShapeType;
   end;
 
-  TVideoFileE = class(TCTVideoFileCT);
+  TVideoFileE = class(TVideoFileCT);
 
-  TGraphicE = class(TCTGraphicalObjectCT);
+  TGraphicE = class(TGraphicalObjectCT);
 
-  TBlipE = class(TCTBlipCT);
+  TBlipE = class(TBlipCT);
 
-  TThemeE = class(TCTOfficeStyleSheetCT);
+  TThemeE = class(TOfficeStyleSheetCT);
 
-  TThemeOverrideE = class(TCTBaseStylesOverrideCT);
+  TThemeOverrideE = class(TBaseStylesOverrideCT);
 
-  TThemeManagerE = class(TCTEmptyElementCT);
+  TThemeManagerE = class(TEmptyElementCT);
 
-  TTblE = class(TCTTableCT);
+  TTblE = class(TTableCT);
 
-  TTblStyleLstE = class(TCTTableStyleListCT);
+  TTblStyleLstE = class(TTableStyleListCT);
 
   [TName('EG_Media')]
-  TEGMediaEG = class(TXmliteElementGroup)
+  TMediaEG = class(TXmliteElementGroup)
   private
-    fAudioCd: TCTAudioCDCT;
-    fWavAudioFile: TCTEmbeddedWAVAudioFileCT;
-    fAudioFile: TCTAudioFileCT;
-    fVideoFile: TCTVideoFileCT;
-    fQuickTimeFile: TCTQuickTimeFileCT;
+    fAudioCd: TAudioCDCT;
+    fWavAudioFile: TEmbeddedWAVAudioFileCT;
+    fAudioFile: TAudioFileCT;
+    fVideoFile: TVideoFileCT;
+    fQuickTimeFile: TQuickTimeFileCT;
 
-    function GetAudioCd: TCTAudioCDCT;
-    function GetWavAudioFile: TCTEmbeddedWAVAudioFileCT;
-    function GetAudioFile: TCTAudioFileCT;
-    function GetVideoFile: TCTVideoFileCT;
-    function GetQuickTimeFile: TCTQuickTimeFileCT;
+    function GetAudioCd: TAudioCDCT;
+    function GetWavAudioFile: TEmbeddedWAVAudioFileCT;
+    function GetAudioFile: TAudioFileCT;
+    function GetVideoFile: TVideoFileCT;
+    function GetQuickTimeFile: TQuickTimeFileCT;
   published
     [TChoice('AudioCd')]
-    property AudioCd: TCTAudioCDCT read GetAudioCd;
+    property AudioCd: TAudioCDCT read GetAudioCd;
     [TChoice('AudioCd')]
-    property WavAudioFile: TCTEmbeddedWAVAudioFileCT read GetWavAudioFile;
+    property WavAudioFile: TEmbeddedWAVAudioFileCT read GetWavAudioFile;
     [TChoice('AudioCd')]
-    property AudioFile: TCTAudioFileCT read GetAudioFile;
+    property AudioFile: TAudioFileCT read GetAudioFile;
     [TChoice('AudioCd')]
-    property VideoFile: TCTVideoFileCT read GetVideoFile;
+    property VideoFile: TVideoFileCT read GetVideoFile;
     [TChoice('AudioCd')]
-    property QuickTimeFile: TCTQuickTimeFileCT read GetQuickTimeFile;
+    property QuickTimeFile: TQuickTimeFileCT read GetQuickTimeFile;
   end;
 
   [TName('EG_ColorTransform')]
-  TEGColorTransformEG = class(TXmliteElementGroup)
+  TColorTransformEG = class(TXmliteElementGroup)
   private
-    fTint: TCTPositiveFixedPercentageCT;
-    fShade: TCTPositiveFixedPercentageCT;
-    fComp: TCTComplementTransformCT;
-    fInv: TCTInverseTransformCT;
-    fGray: TCTGrayscaleTransformCT;
-    fAlpha: TCTPositiveFixedPercentageCT;
-    fAlphaOff: TCTFixedPercentageCT;
-    fAlphaMod: TCTPositivePercentageCT;
-    fHue: TCTPositiveFixedAngleCT;
-    fHueOff: TCTAngleCT;
-    fHueMod: TCTPositivePercentageCT;
-    fSat: TCTPercentageCT;
-    fSatOff: TCTPercentageCT;
-    fSatMod: TCTPercentageCT;
-    fLum: TCTPercentageCT;
-    fLumOff: TCTPercentageCT;
-    fLumMod: TCTPercentageCT;
-    fRed: TCTPercentageCT;
-    fRedOff: TCTPercentageCT;
-    fRedMod: TCTPercentageCT;
-    fGreen: TCTPercentageCT;
-    fGreenOff: TCTPercentageCT;
-    fGreenMod: TCTPercentageCT;
-    fBlue: TCTPercentageCT;
-    fBlueOff: TCTPercentageCT;
-    fBlueMod: TCTPercentageCT;
-    fGamma: TCTGammaTransformCT;
-    fInvGamma: TCTInverseGammaTransformCT;
+    fTint: TPositiveFixedPercentageCT;
+    fShade: TPositiveFixedPercentageCT;
+    fComp: TComplementTransformCT;
+    fInv: TInverseTransformCT;
+    fGray: TGrayscaleTransformCT;
+    fAlpha: TPositiveFixedPercentageCT;
+    fAlphaOff: TFixedPercentageCT;
+    fAlphaMod: TPositivePercentageCT;
+    fHue: TPositiveFixedAngleCT;
+    fHueOff: TAngleCT;
+    fHueMod: TPositivePercentageCT;
+    fSat: TPercentageCT;
+    fSatOff: TPercentageCT;
+    fSatMod: TPercentageCT;
+    fLum: TPercentageCT;
+    fLumOff: TPercentageCT;
+    fLumMod: TPercentageCT;
+    fRed: TPercentageCT;
+    fRedOff: TPercentageCT;
+    fRedMod: TPercentageCT;
+    fGreen: TPercentageCT;
+    fGreenOff: TPercentageCT;
+    fGreenMod: TPercentageCT;
+    fBlue: TPercentageCT;
+    fBlueOff: TPercentageCT;
+    fBlueMod: TPercentageCT;
+    fGamma: TGammaTransformCT;
+    fInvGamma: TInverseGammaTransformCT;
 
-    function GetTint: TCTPositiveFixedPercentageCT;
-    function GetShade: TCTPositiveFixedPercentageCT;
-    function GetComp: TCTComplementTransformCT;
-    function GetInv: TCTInverseTransformCT;
-    function GetGray: TCTGrayscaleTransformCT;
-    function GetAlpha: TCTPositiveFixedPercentageCT;
-    function GetAlphaOff: TCTFixedPercentageCT;
-    function GetAlphaMod: TCTPositivePercentageCT;
-    function GetHue: TCTPositiveFixedAngleCT;
-    function GetHueOff: TCTAngleCT;
-    function GetHueMod: TCTPositivePercentageCT;
-    function GetSat: TCTPercentageCT;
-    function GetSatOff: TCTPercentageCT;
-    function GetSatMod: TCTPercentageCT;
-    function GetLum: TCTPercentageCT;
-    function GetLumOff: TCTPercentageCT;
-    function GetLumMod: TCTPercentageCT;
-    function GetRed: TCTPercentageCT;
-    function GetRedOff: TCTPercentageCT;
-    function GetRedMod: TCTPercentageCT;
-    function GetGreen: TCTPercentageCT;
-    function GetGreenOff: TCTPercentageCT;
-    function GetGreenMod: TCTPercentageCT;
-    function GetBlue: TCTPercentageCT;
-    function GetBlueOff: TCTPercentageCT;
-    function GetBlueMod: TCTPercentageCT;
-    function GetGamma: TCTGammaTransformCT;
-    function GetInvGamma: TCTInverseGammaTransformCT;
+    function GetTint: TPositiveFixedPercentageCT;
+    function GetShade: TPositiveFixedPercentageCT;
+    function GetComp: TComplementTransformCT;
+    function GetInv: TInverseTransformCT;
+    function GetGray: TGrayscaleTransformCT;
+    function GetAlpha: TPositiveFixedPercentageCT;
+    function GetAlphaOff: TFixedPercentageCT;
+    function GetAlphaMod: TPositivePercentageCT;
+    function GetHue: TPositiveFixedAngleCT;
+    function GetHueOff: TAngleCT;
+    function GetHueMod: TPositivePercentageCT;
+    function GetSat: TPercentageCT;
+    function GetSatOff: TPercentageCT;
+    function GetSatMod: TPercentageCT;
+    function GetLum: TPercentageCT;
+    function GetLumOff: TPercentageCT;
+    function GetLumMod: TPercentageCT;
+    function GetRed: TPercentageCT;
+    function GetRedOff: TPercentageCT;
+    function GetRedMod: TPercentageCT;
+    function GetGreen: TPercentageCT;
+    function GetGreenOff: TPercentageCT;
+    function GetGreenMod: TPercentageCT;
+    function GetBlue: TPercentageCT;
+    function GetBlueOff: TPercentageCT;
+    function GetBlueMod: TPercentageCT;
+    function GetGamma: TGammaTransformCT;
+    function GetInvGamma: TInverseGammaTransformCT;
   published
     [TChoice('Tint')]
-    property Tint: TCTPositiveFixedPercentageCT read GetTint;
+    property Tint: TPositiveFixedPercentageCT read GetTint;
     [TChoice('Tint')]
-    property Shade: TCTPositiveFixedPercentageCT read GetShade;
+    property Shade: TPositiveFixedPercentageCT read GetShade;
     [TChoice('Tint')]
-    property Comp: TCTComplementTransformCT read GetComp;
+    property Comp: TComplementTransformCT read GetComp;
     [TChoice('Tint')]
-    property Inv: TCTInverseTransformCT read GetInv;
+    property Inv: TInverseTransformCT read GetInv;
     [TChoice('Tint')]
-    property Gray: TCTGrayscaleTransformCT read GetGray;
+    property Gray: TGrayscaleTransformCT read GetGray;
     [TChoice('Tint')]
-    property Alpha: TCTPositiveFixedPercentageCT read GetAlpha;
+    property Alpha: TPositiveFixedPercentageCT read GetAlpha;
     [TChoice('Tint')]
-    property AlphaOff: TCTFixedPercentageCT read GetAlphaOff;
+    property AlphaOff: TFixedPercentageCT read GetAlphaOff;
     [TChoice('Tint')]
-    property AlphaMod: TCTPositivePercentageCT read GetAlphaMod;
+    property AlphaMod: TPositivePercentageCT read GetAlphaMod;
     [TChoice('Tint')]
-    property Hue: TCTPositiveFixedAngleCT read GetHue;
+    property Hue: TPositiveFixedAngleCT read GetHue;
     [TChoice('Tint')]
-    property HueOff: TCTAngleCT read GetHueOff;
+    property HueOff: TAngleCT read GetHueOff;
     [TChoice('Tint')]
-    property HueMod: TCTPositivePercentageCT read GetHueMod;
+    property HueMod: TPositivePercentageCT read GetHueMod;
     [TChoice('Tint')]
-    property Sat: TCTPercentageCT read GetSat;
+    property Sat: TPercentageCT read GetSat;
     [TChoice('Tint')]
-    property SatOff: TCTPercentageCT read GetSatOff;
+    property SatOff: TPercentageCT read GetSatOff;
     [TChoice('Tint')]
-    property SatMod: TCTPercentageCT read GetSatMod;
+    property SatMod: TPercentageCT read GetSatMod;
     [TChoice('Tint')]
-    property Lum: TCTPercentageCT read GetLum;
+    property Lum: TPercentageCT read GetLum;
     [TChoice('Tint')]
-    property LumOff: TCTPercentageCT read GetLumOff;
+    property LumOff: TPercentageCT read GetLumOff;
     [TChoice('Tint')]
-    property LumMod: TCTPercentageCT read GetLumMod;
+    property LumMod: TPercentageCT read GetLumMod;
     [TChoice('Tint')]
-    property Red: TCTPercentageCT read GetRed;
+    property Red: TPercentageCT read GetRed;
     [TChoice('Tint')]
-    property RedOff: TCTPercentageCT read GetRedOff;
+    property RedOff: TPercentageCT read GetRedOff;
     [TChoice('Tint')]
-    property RedMod: TCTPercentageCT read GetRedMod;
+    property RedMod: TPercentageCT read GetRedMod;
     [TChoice('Tint')]
-    property Green: TCTPercentageCT read GetGreen;
+    property Green: TPercentageCT read GetGreen;
     [TChoice('Tint')]
-    property GreenOff: TCTPercentageCT read GetGreenOff;
+    property GreenOff: TPercentageCT read GetGreenOff;
     [TChoice('Tint')]
-    property GreenMod: TCTPercentageCT read GetGreenMod;
+    property GreenMod: TPercentageCT read GetGreenMod;
     [TChoice('Tint')]
-    property Blue: TCTPercentageCT read GetBlue;
+    property Blue: TPercentageCT read GetBlue;
     [TChoice('Tint')]
-    property BlueOff: TCTPercentageCT read GetBlueOff;
+    property BlueOff: TPercentageCT read GetBlueOff;
     [TChoice('Tint')]
-    property BlueMod: TCTPercentageCT read GetBlueMod;
+    property BlueMod: TPercentageCT read GetBlueMod;
     [TChoice('Tint')]
-    property Gamma: TCTGammaTransformCT read GetGamma;
+    property Gamma: TGammaTransformCT read GetGamma;
     [TChoice('Tint')]
-    property InvGamma: TCTInverseGammaTransformCT read GetInvGamma;
+    property InvGamma: TInverseGammaTransformCT read GetInvGamma;
   end;
 
   [TName('EG_OfficeArtExtensionList')]
-  TEGOfficeArtExtensionListEG = class(TXmliteElementGroup)
+  TOfficeArtExtensionListEG = class(TXmliteElementGroup)
   private
-    fExt: TCTOfficeArtExtensionCTList;
+    fExt: TOfficeArtExtensionCTList;
   published
-    property Ext: TCTOfficeArtExtensionCTList read fExt;
+    property Ext: TOfficeArtExtensionCTList read fExt;
   end;
 
   [TName('EG_ColorChoice')]
-  TEGColorChoiceEG = class(TXmliteElementGroup)
+  TColorChoiceEG = class(TXmliteElementGroup)
   private
-    fScrgbClr: TCTScRgbColorCT;
-    fSrgbClr: TCTSRgbColorCT;
-    fHslClr: TCTHslColorCT;
-    fSysClr: TCTSystemColorCT;
-    fSchemeClr: TCTSchemeColorCT;
-    fPrstClr: TCTPresetColorCT;
+    fScrgbClr: TScRgbColorCT;
+    fSrgbClr: TSRgbColorCT;
+    fHslClr: THslColorCT;
+    fSysClr: TSystemColorCT;
+    fSchemeClr: TSchemeColorCT;
+    fPrstClr: TPresetColorCT;
 
-    function GetScrgbClr: TCTScRgbColorCT;
-    function GetSrgbClr: TCTSRgbColorCT;
-    function GetHslClr: TCTHslColorCT;
-    function GetSysClr: TCTSystemColorCT;
-    function GetSchemeClr: TCTSchemeColorCT;
-    function GetPrstClr: TCTPresetColorCT;
+    function GetScrgbClr: TScRgbColorCT;
+    function GetSrgbClr: TSRgbColorCT;
+    function GetHslClr: THslColorCT;
+    function GetSysClr: TSystemColorCT;
+    function GetSchemeClr: TSchemeColorCT;
+    function GetPrstClr: TPresetColorCT;
   published
     [TChoice('ScrgbClr')]
-    property ScrgbClr: TCTScRgbColorCT read GetScrgbClr;
+    property ScrgbClr: TScRgbColorCT read GetScrgbClr;
     [TChoice('ScrgbClr')]
-    property SrgbClr: TCTSRgbColorCT read GetSrgbClr;
+    property SrgbClr: TSRgbColorCT read GetSrgbClr;
     [TChoice('ScrgbClr')]
-    property HslClr: TCTHslColorCT read GetHslClr;
+    property HslClr: THslColorCT read GetHslClr;
     [TChoice('ScrgbClr')]
-    property SysClr: TCTSystemColorCT read GetSysClr;
+    property SysClr: TSystemColorCT read GetSysClr;
     [TChoice('ScrgbClr')]
-    property SchemeClr: TCTSchemeColorCT read GetSchemeClr;
+    property SchemeClr: TSchemeColorCT read GetSchemeClr;
     [TChoice('ScrgbClr')]
-    property PrstClr: TCTPresetColorCT read GetPrstClr;
+    property PrstClr: TPresetColorCT read GetPrstClr;
   end;
 
   [TName('EG_Text3D')]
-  TEGText3DEG = class(TXmliteElementGroup)
+  TText3DEG = class(TXmliteElementGroup)
   private
-    fSp3d: TCTShape3DCT;
-    fFlatTx: TCTFlatTextCT;
+    fSp3d: TShape3DCT;
+    fFlatTx: TFlatTextCT;
 
-    function GetSp3d: TCTShape3DCT;
-    function GetFlatTx: TCTFlatTextCT;
+    function GetSp3d: TShape3DCT;
+    function GetFlatTx: TFlatTextCT;
   published
     [TChoice('Sp3d')]
-    property Sp3d: TCTShape3DCT read GetSp3d;
+    property Sp3d: TShape3DCT read GetSp3d;
     [TChoice('Sp3d')]
-    property FlatTx: TCTFlatTextCT read GetFlatTx;
+    property FlatTx: TFlatTextCT read GetFlatTx;
   end;
 
   [TName('EG_ShadeProperties')]
-  TEGShadePropertiesEG = class(TXmliteElementGroup)
+  TShadePropertiesEG = class(TXmliteElementGroup)
   private
-    fLin: TCTLinearShadePropertiesCT;
-    fPath: TCTPathShadePropertiesCT;
+    fLin: TLinearShadePropertiesCT;
+    fPath: TPathShadePropertiesCT;
 
-    function GetLin: TCTLinearShadePropertiesCT;
-    function GetPath: TCTPathShadePropertiesCT;
+    function GetLin: TLinearShadePropertiesCT;
+    function GetPath: TPathShadePropertiesCT;
   published
     [TChoice('Lin')]
-    property Lin: TCTLinearShadePropertiesCT read GetLin;
+    property Lin: TLinearShadePropertiesCT read GetLin;
     [TChoice('Lin')]
-    property Path: TCTPathShadePropertiesCT read GetPath;
+    property Path: TPathShadePropertiesCT read GetPath;
   end;
 
   [TName('EG_FillModeProperties')]
-  TEGFillModePropertiesEG = class(TXmliteElementGroup)
+  TFillModePropertiesEG = class(TXmliteElementGroup)
   private
-    fTile: TCTTileInfoPropertiesCT;
-    fStretch: TCTStretchInfoPropertiesCT;
+    fTile: TTileInfoPropertiesCT;
+    fStretch: TStretchInfoPropertiesCT;
 
-    function GetTile: TCTTileInfoPropertiesCT;
-    function GetStretch: TCTStretchInfoPropertiesCT;
+    function GetTile: TTileInfoPropertiesCT;
+    function GetStretch: TStretchInfoPropertiesCT;
   published
     [TChoice('Tile')]
-    property Tile: TCTTileInfoPropertiesCT read GetTile;
+    property Tile: TTileInfoPropertiesCT read GetTile;
     [TChoice('Tile')]
-    property Stretch: TCTStretchInfoPropertiesCT read GetStretch;
+    property Stretch: TStretchInfoPropertiesCT read GetStretch;
   end;
 
   [TName('EG_FillProperties')]
-  TEGFillPropertiesEG = class(TXmliteElementGroup)
+  TFillPropertiesEG = class(TXmliteElementGroup)
   private
-    fNoFill: TCTNoFillPropertiesCT;
-    fSolidFill: TCTSolidColorFillPropertiesCT;
-    fGradFill: TCTGradientFillPropertiesCT;
-    fBlipFill: TCTBlipFillPropertiesCT;
-    fPattFill: TCTPatternFillPropertiesCT;
-    fGrpFill: TCTGroupFillPropertiesCT;
+    fNoFill: TNoFillPropertiesCT;
+    fSolidFill: TSolidColorFillPropertiesCT;
+    fGradFill: TGradientFillPropertiesCT;
+    fBlipFill: TBlipFillPropertiesCT;
+    fPattFill: TPatternFillPropertiesCT;
+    fGrpFill: TGroupFillPropertiesCT;
 
-    function GetNoFill: TCTNoFillPropertiesCT;
-    function GetSolidFill: TCTSolidColorFillPropertiesCT;
-    function GetGradFill: TCTGradientFillPropertiesCT;
-    function GetBlipFill: TCTBlipFillPropertiesCT;
-    function GetPattFill: TCTPatternFillPropertiesCT;
-    function GetGrpFill: TCTGroupFillPropertiesCT;
+    function GetNoFill: TNoFillPropertiesCT;
+    function GetSolidFill: TSolidColorFillPropertiesCT;
+    function GetGradFill: TGradientFillPropertiesCT;
+    function GetBlipFill: TBlipFillPropertiesCT;
+    function GetPattFill: TPatternFillPropertiesCT;
+    function GetGrpFill: TGroupFillPropertiesCT;
   published
     [TChoice('NoFill')]
-    property NoFill: TCTNoFillPropertiesCT read GetNoFill;
+    property NoFill: TNoFillPropertiesCT read GetNoFill;
     [TChoice('NoFill')]
-    property SolidFill: TCTSolidColorFillPropertiesCT read GetSolidFill;
+    property SolidFill: TSolidColorFillPropertiesCT read GetSolidFill;
     [TChoice('NoFill')]
-    property GradFill: TCTGradientFillPropertiesCT read GetGradFill;
+    property GradFill: TGradientFillPropertiesCT read GetGradFill;
     [TChoice('NoFill')]
-    property BlipFill: TCTBlipFillPropertiesCT read GetBlipFill;
+    property BlipFill: TBlipFillPropertiesCT read GetBlipFill;
     [TChoice('NoFill')]
-    property PattFill: TCTPatternFillPropertiesCT read GetPattFill;
+    property PattFill: TPatternFillPropertiesCT read GetPattFill;
     [TChoice('NoFill')]
-    property GrpFill: TCTGroupFillPropertiesCT read GetGrpFill;
+    property GrpFill: TGroupFillPropertiesCT read GetGrpFill;
   end;
 
   [TName('EG_Effect')]
-  TEGEffectEG = class(TXmliteElementGroup)
+  TEffectEG = class(TXmliteElementGroup)
   private
-    fCont: TCTEffectContainerCT;
-    fEffect: TCTEffectReferenceCT;
-    fAlphaBiLevel: TCTAlphaBiLevelEffectCT;
-    fAlphaCeiling: TCTAlphaCeilingEffectCT;
-    fAlphaFloor: TCTAlphaFloorEffectCT;
-    fAlphaInv: TCTAlphaInverseEffectCT;
-    fAlphaMod: TCTAlphaModulateEffectCT;
-    fAlphaModFix: TCTAlphaModulateFixedEffectCT;
-    fAlphaOutset: TCTAlphaOutsetEffectCT;
-    fAlphaRepl: TCTAlphaReplaceEffectCT;
-    fBiLevel: TCTBiLevelEffectCT;
-    fBlend: TCTBlendEffectCT;
-    fBlur: TCTBlurEffectCT;
-    fClrChange: TCTColorChangeEffectCT;
-    fClrRepl: TCTColorReplaceEffectCT;
-    fDuotone: TCTDuotoneEffectCT;
-    fFill: TCTFillEffectCT;
-    fFillOverlay: TCTFillOverlayEffectCT;
-    fGlow: TCTGlowEffectCT;
-    fGrayscl: TCTGrayscaleEffectCT;
-    fHsl: TCTHSLEffectCT;
-    fInnerShdw: TCTInnerShadowEffectCT;
-    fLum: TCTLuminanceEffectCT;
-    fOuterShdw: TCTOuterShadowEffectCT;
-    fPrstShdw: TCTPresetShadowEffectCT;
-    fReflection: TCTReflectionEffectCT;
-    fRelOff: TCTRelativeOffsetEffectCT;
-    fSoftEdge: TCTSoftEdgesEffectCT;
-    fTint: TCTTintEffectCT;
-    fXfrm: TCTTransformEffectCT;
+    fCont: TEffectContainerCT;
+    fEffect: TEffectReferenceCT;
+    fAlphaBiLevel: TAlphaBiLevelEffectCT;
+    fAlphaCeiling: TAlphaCeilingEffectCT;
+    fAlphaFloor: TAlphaFloorEffectCT;
+    fAlphaInv: TAlphaInverseEffectCT;
+    fAlphaMod: TAlphaModulateEffectCT;
+    fAlphaModFix: TAlphaModulateFixedEffectCT;
+    fAlphaOutset: TAlphaOutsetEffectCT;
+    fAlphaRepl: TAlphaReplaceEffectCT;
+    fBiLevel: TBiLevelEffectCT;
+    fBlend: TBlendEffectCT;
+    fBlur: TBlurEffectCT;
+    fClrChange: TColorChangeEffectCT;
+    fClrRepl: TColorReplaceEffectCT;
+    fDuotone: TDuotoneEffectCT;
+    fFill: TFillEffectCT;
+    fFillOverlay: TFillOverlayEffectCT;
+    fGlow: TGlowEffectCT;
+    fGrayscl: TGrayscaleEffectCT;
+    fHsl: THSLEffectCT;
+    fInnerShdw: TInnerShadowEffectCT;
+    fLum: TLuminanceEffectCT;
+    fOuterShdw: TOuterShadowEffectCT;
+    fPrstShdw: TPresetShadowEffectCT;
+    fReflection: TReflectionEffectCT;
+    fRelOff: TRelativeOffsetEffectCT;
+    fSoftEdge: TSoftEdgesEffectCT;
+    fTint: TTintEffectCT;
+    fXfrm: TTransformEffectCT;
 
-    function GetCont: TCTEffectContainerCT;
-    function GetEffect: TCTEffectReferenceCT;
-    function GetAlphaBiLevel: TCTAlphaBiLevelEffectCT;
-    function GetAlphaCeiling: TCTAlphaCeilingEffectCT;
-    function GetAlphaFloor: TCTAlphaFloorEffectCT;
-    function GetAlphaInv: TCTAlphaInverseEffectCT;
-    function GetAlphaMod: TCTAlphaModulateEffectCT;
-    function GetAlphaModFix: TCTAlphaModulateFixedEffectCT;
-    function GetAlphaOutset: TCTAlphaOutsetEffectCT;
-    function GetAlphaRepl: TCTAlphaReplaceEffectCT;
-    function GetBiLevel: TCTBiLevelEffectCT;
-    function GetBlend: TCTBlendEffectCT;
-    function GetBlur: TCTBlurEffectCT;
-    function GetClrChange: TCTColorChangeEffectCT;
-    function GetClrRepl: TCTColorReplaceEffectCT;
-    function GetDuotone: TCTDuotoneEffectCT;
-    function GetFill: TCTFillEffectCT;
-    function GetFillOverlay: TCTFillOverlayEffectCT;
-    function GetGlow: TCTGlowEffectCT;
-    function GetGrayscl: TCTGrayscaleEffectCT;
-    function GetHsl: TCTHSLEffectCT;
-    function GetInnerShdw: TCTInnerShadowEffectCT;
-    function GetLum: TCTLuminanceEffectCT;
-    function GetOuterShdw: TCTOuterShadowEffectCT;
-    function GetPrstShdw: TCTPresetShadowEffectCT;
-    function GetReflection: TCTReflectionEffectCT;
-    function GetRelOff: TCTRelativeOffsetEffectCT;
-    function GetSoftEdge: TCTSoftEdgesEffectCT;
-    function GetTint: TCTTintEffectCT;
-    function GetXfrm: TCTTransformEffectCT;
+    function GetCont: TEffectContainerCT;
+    function GetEffect: TEffectReferenceCT;
+    function GetAlphaBiLevel: TAlphaBiLevelEffectCT;
+    function GetAlphaCeiling: TAlphaCeilingEffectCT;
+    function GetAlphaFloor: TAlphaFloorEffectCT;
+    function GetAlphaInv: TAlphaInverseEffectCT;
+    function GetAlphaMod: TAlphaModulateEffectCT;
+    function GetAlphaModFix: TAlphaModulateFixedEffectCT;
+    function GetAlphaOutset: TAlphaOutsetEffectCT;
+    function GetAlphaRepl: TAlphaReplaceEffectCT;
+    function GetBiLevel: TBiLevelEffectCT;
+    function GetBlend: TBlendEffectCT;
+    function GetBlur: TBlurEffectCT;
+    function GetClrChange: TColorChangeEffectCT;
+    function GetClrRepl: TColorReplaceEffectCT;
+    function GetDuotone: TDuotoneEffectCT;
+    function GetFill: TFillEffectCT;
+    function GetFillOverlay: TFillOverlayEffectCT;
+    function GetGlow: TGlowEffectCT;
+    function GetGrayscl: TGrayscaleEffectCT;
+    function GetHsl: THSLEffectCT;
+    function GetInnerShdw: TInnerShadowEffectCT;
+    function GetLum: TLuminanceEffectCT;
+    function GetOuterShdw: TOuterShadowEffectCT;
+    function GetPrstShdw: TPresetShadowEffectCT;
+    function GetReflection: TReflectionEffectCT;
+    function GetRelOff: TRelativeOffsetEffectCT;
+    function GetSoftEdge: TSoftEdgesEffectCT;
+    function GetTint: TTintEffectCT;
+    function GetXfrm: TTransformEffectCT;
   published
     [TChoice('Cont')]
-    property Cont: TCTEffectContainerCT read GetCont;
+    property Cont: TEffectContainerCT read GetCont;
     [TChoice('Cont')]
-    property Effect: TCTEffectReferenceCT read GetEffect;
+    property Effect: TEffectReferenceCT read GetEffect;
     [TChoice('Cont')]
-    property AlphaBiLevel: TCTAlphaBiLevelEffectCT read GetAlphaBiLevel;
+    property AlphaBiLevel: TAlphaBiLevelEffectCT read GetAlphaBiLevel;
     [TChoice('Cont')]
-    property AlphaCeiling: TCTAlphaCeilingEffectCT read GetAlphaCeiling;
+    property AlphaCeiling: TAlphaCeilingEffectCT read GetAlphaCeiling;
     [TChoice('Cont')]
-    property AlphaFloor: TCTAlphaFloorEffectCT read GetAlphaFloor;
+    property AlphaFloor: TAlphaFloorEffectCT read GetAlphaFloor;
     [TChoice('Cont')]
-    property AlphaInv: TCTAlphaInverseEffectCT read GetAlphaInv;
+    property AlphaInv: TAlphaInverseEffectCT read GetAlphaInv;
     [TChoice('Cont')]
-    property AlphaMod: TCTAlphaModulateEffectCT read GetAlphaMod;
+    property AlphaMod: TAlphaModulateEffectCT read GetAlphaMod;
     [TChoice('Cont')]
-    property AlphaModFix: TCTAlphaModulateFixedEffectCT read GetAlphaModFix;
+    property AlphaModFix: TAlphaModulateFixedEffectCT read GetAlphaModFix;
     [TChoice('Cont')]
-    property AlphaOutset: TCTAlphaOutsetEffectCT read GetAlphaOutset;
+    property AlphaOutset: TAlphaOutsetEffectCT read GetAlphaOutset;
     [TChoice('Cont')]
-    property AlphaRepl: TCTAlphaReplaceEffectCT read GetAlphaRepl;
+    property AlphaRepl: TAlphaReplaceEffectCT read GetAlphaRepl;
     [TChoice('Cont')]
-    property BiLevel: TCTBiLevelEffectCT read GetBiLevel;
+    property BiLevel: TBiLevelEffectCT read GetBiLevel;
     [TChoice('Cont')]
-    property Blend: TCTBlendEffectCT read GetBlend;
+    property Blend: TBlendEffectCT read GetBlend;
     [TChoice('Cont')]
-    property Blur: TCTBlurEffectCT read GetBlur;
+    property Blur: TBlurEffectCT read GetBlur;
     [TChoice('Cont')]
-    property ClrChange: TCTColorChangeEffectCT read GetClrChange;
+    property ClrChange: TColorChangeEffectCT read GetClrChange;
     [TChoice('Cont')]
-    property ClrRepl: TCTColorReplaceEffectCT read GetClrRepl;
+    property ClrRepl: TColorReplaceEffectCT read GetClrRepl;
     [TChoice('Cont')]
-    property Duotone: TCTDuotoneEffectCT read GetDuotone;
+    property Duotone: TDuotoneEffectCT read GetDuotone;
     [TChoice('Cont')]
-    property Fill: TCTFillEffectCT read GetFill;
+    property Fill: TFillEffectCT read GetFill;
     [TChoice('Cont')]
-    property FillOverlay: TCTFillOverlayEffectCT read GetFillOverlay;
+    property FillOverlay: TFillOverlayEffectCT read GetFillOverlay;
     [TChoice('Cont')]
-    property Glow: TCTGlowEffectCT read GetGlow;
+    property Glow: TGlowEffectCT read GetGlow;
     [TChoice('Cont')]
-    property Grayscl: TCTGrayscaleEffectCT read GetGrayscl;
+    property Grayscl: TGrayscaleEffectCT read GetGrayscl;
     [TChoice('Cont')]
-    property Hsl: TCTHSLEffectCT read GetHsl;
+    property Hsl: THSLEffectCT read GetHsl;
     [TChoice('Cont')]
-    property InnerShdw: TCTInnerShadowEffectCT read GetInnerShdw;
+    property InnerShdw: TInnerShadowEffectCT read GetInnerShdw;
     [TChoice('Cont')]
-    property Lum: TCTLuminanceEffectCT read GetLum;
+    property Lum: TLuminanceEffectCT read GetLum;
     [TChoice('Cont')]
-    property OuterShdw: TCTOuterShadowEffectCT read GetOuterShdw;
+    property OuterShdw: TOuterShadowEffectCT read GetOuterShdw;
     [TChoice('Cont')]
-    property PrstShdw: TCTPresetShadowEffectCT read GetPrstShdw;
+    property PrstShdw: TPresetShadowEffectCT read GetPrstShdw;
     [TChoice('Cont')]
-    property Reflection: TCTReflectionEffectCT read GetReflection;
+    property Reflection: TReflectionEffectCT read GetReflection;
     [TChoice('Cont')]
-    property RelOff: TCTRelativeOffsetEffectCT read GetRelOff;
+    property RelOff: TRelativeOffsetEffectCT read GetRelOff;
     [TChoice('Cont')]
-    property SoftEdge: TCTSoftEdgesEffectCT read GetSoftEdge;
+    property SoftEdge: TSoftEdgesEffectCT read GetSoftEdge;
     [TChoice('Cont')]
-    property Tint: TCTTintEffectCT read GetTint;
+    property Tint: TTintEffectCT read GetTint;
     [TChoice('Cont')]
-    property Xfrm: TCTTransformEffectCT read GetXfrm;
+    property Xfrm: TTransformEffectCT read GetXfrm;
   end;
 
   [TName('EG_EffectProperties')]
-  TEGEffectPropertiesEG = class(TXmliteElementGroup)
+  TEffectPropertiesEG = class(TXmliteElementGroup)
   private
-    fEffectLst: TCTEffectListCT;
-    fEffectDag: TCTEffectContainerCT;
+    fEffectLst: TEffectListCT;
+    fEffectDag: TEffectContainerCT;
 
-    function GetEffectLst: TCTEffectListCT;
-    function GetEffectDag: TCTEffectContainerCT;
+    function GetEffectLst: TEffectListCT;
+    function GetEffectDag: TEffectContainerCT;
     function GetEffectChosen: TBasite;
   public
     property EffectChosen: TBasite read GetEffectChosen;
   published
     [TChoice('Effect')]
-    property EffectLst: TCTEffectListCT read GetEffectLst;
+    property EffectLst: TEffectListCT read GetEffectLst;
     [TChoice('Effect')]
-    property EffectDag: TCTEffectContainerCT read GetEffectDag;
+    property EffectDag: TEffectContainerCT read GetEffectDag;
   end;
 
   [TName('EG_Geometry')]
-  TEGGeometryEG = class(TXmliteElementGroup)
+  TGeometryEG = class(TXmliteElementGroup)
   private
-    fCustGeom: TCTCustomGeometry2DCT;
-    fPrstGeom: TCTPresetGeometry2DCT;
+    fCustGeom: TCustomGeometry2DCT;
+    fPrstGeom: TPresetGeometry2DCT;
 
-    function GetCustGeom: TCTCustomGeometry2DCT;
-    function GetPrstGeom: TCTPresetGeometry2DCT;
+    function GetCustGeom: TCustomGeometry2DCT;
+    function GetPrstGeom: TPresetGeometry2DCT;
   published
     [TChoice('CustGeom')]
-    property CustGeom: TCTCustomGeometry2DCT read GetCustGeom;
+    property CustGeom: TCustomGeometry2DCT read GetCustGeom;
     [TChoice('CustGeom')]
-    property PrstGeom: TCTPresetGeometry2DCT read GetPrstGeom;
+    property PrstGeom: TPresetGeometry2DCT read GetPrstGeom;
   end;
 
   [TName('EG_TextGeometry')]
-  TEGTextGeometryEG = class(TXmliteElementGroup)
+  TTextGeometryEG = class(TXmliteElementGroup)
   private
-    fCustGeom: TCTCustomGeometry2DCT;
-    fPrstTxWarp: TCTPresetTextShapeCT;
+    fCustGeom: TCustomGeometry2DCT;
+    fPrstTxWarp: TPresetTextShapeCT;
 
-    function GetCustGeom: TCTCustomGeometry2DCT;
-    function GetPrstTxWarp: TCTPresetTextShapeCT;
+    function GetCustGeom: TCustomGeometry2DCT;
+    function GetPrstTxWarp: TPresetTextShapeCT;
   published
     [TChoice('CustGeom')]
-    property CustGeom: TCTCustomGeometry2DCT read GetCustGeom;
+    property CustGeom: TCustomGeometry2DCT read GetCustGeom;
     [TChoice('CustGeom')]
-    property PrstTxWarp: TCTPresetTextShapeCT read GetPrstTxWarp;
+    property PrstTxWarp: TPresetTextShapeCT read GetPrstTxWarp;
   end;
 
   [TName('EG_LineFillProperties')]
-  TEGLineFillPropertiesEG = class(TXmliteElementGroup)
+  TLineFillPropertiesEG = class(TXmliteElementGroup)
   private
-    fNoFill: TCTNoFillPropertiesCT;
-    fSolidFill: TCTSolidColorFillPropertiesCT;
-    fGradFill: TCTGradientFillPropertiesCT;
-    fPattFill: TCTPatternFillPropertiesCT;
+    fNoFill: TNoFillPropertiesCT;
+    fSolidFill: TSolidColorFillPropertiesCT;
+    fGradFill: TGradientFillPropertiesCT;
+    fPattFill: TPatternFillPropertiesCT;
 
-    function GetNoFill: TCTNoFillPropertiesCT;
-    function GetSolidFill: TCTSolidColorFillPropertiesCT;
-    function GetGradFill: TCTGradientFillPropertiesCT;
-    function GetPattFill: TCTPatternFillPropertiesCT;
+    function GetNoFill: TNoFillPropertiesCT;
+    function GetSolidFill: TSolidColorFillPropertiesCT;
+    function GetGradFill: TGradientFillPropertiesCT;
+    function GetPattFill: TPatternFillPropertiesCT;
   published
     [TChoice('NoFill')]
-    property NoFill: TCTNoFillPropertiesCT read GetNoFill;
+    property NoFill: TNoFillPropertiesCT read GetNoFill;
     [TChoice('NoFill')]
-    property SolidFill: TCTSolidColorFillPropertiesCT read GetSolidFill;
+    property SolidFill: TSolidColorFillPropertiesCT read GetSolidFill;
     [TChoice('NoFill')]
-    property GradFill: TCTGradientFillPropertiesCT read GetGradFill;
+    property GradFill: TGradientFillPropertiesCT read GetGradFill;
     [TChoice('NoFill')]
-    property PattFill: TCTPatternFillPropertiesCT read GetPattFill;
+    property PattFill: TPatternFillPropertiesCT read GetPattFill;
   end;
 
   [TName('EG_LineJoinProperties')]
-  TEGLineJoinPropertiesEG = class(TXmliteElementGroup)
+  TLineJoinPropertiesEG = class(TXmliteElementGroup)
   private
-    fRound: TCTLineJoinRoundCT;
-    fBevel: TCTLineJoinBevelCT;
-    fMiter: TCTLineJoinMiterPropertiesCT;
+    fRound: TLineJoinRoundCT;
+    fBevel: TLineJoinBevelCT;
+    fMiter: TLineJoinMiterPropertiesCT;
 
-    function GetRound: TCTLineJoinRoundCT;
-    function GetBevel: TCTLineJoinBevelCT;
-    function GetMiter: TCTLineJoinMiterPropertiesCT;
+    function GetRound: TLineJoinRoundCT;
+    function GetBevel: TLineJoinBevelCT;
+    function GetMiter: TLineJoinMiterPropertiesCT;
   published
     [TChoice('Round')]
-    property Round: TCTLineJoinRoundCT read GetRound;
+    property Round: TLineJoinRoundCT read GetRound;
     [TChoice('Round')]
-    property Bevel: TCTLineJoinBevelCT read GetBevel;
+    property Bevel: TLineJoinBevelCT read GetBevel;
     [TChoice('Round')]
-    property Miter: TCTLineJoinMiterPropertiesCT read GetMiter;
+    property Miter: TLineJoinMiterPropertiesCT read GetMiter;
   end;
 
   [TName('EG_LineDashProperties')]
-  TEGLineDashPropertiesEG = class(TXmliteElementGroup)
+  TLineDashPropertiesEG = class(TXmliteElementGroup)
   private
-    fPrstDash: TCTPresetLineDashPropertiesCT;
-    fCustDash: TCTDashStopListCT;
+    fPrstDash: TPresetLineDashPropertiesCT;
+    fCustDash: TDashStopListCT;
 
-    function GetPrstDash: TCTPresetLineDashPropertiesCT;
-    function GetCustDash: TCTDashStopListCT;
+    function GetPrstDash: TPresetLineDashPropertiesCT;
+    function GetCustDash: TDashStopListCT;
   published
     [TChoice('PrstDash')]
-    property PrstDash: TCTPresetLineDashPropertiesCT read GetPrstDash;
+    property PrstDash: TPresetLineDashPropertiesCT read GetPrstDash;
     [TChoice('PrstDash')]
-    property CustDash: TCTDashStopListCT read GetCustDash;
+    property CustDash: TDashStopListCT read GetCustDash;
   end;
 
   [TName('EG_ThemeableFillStyle')]
-  TEGThemeableFillStyleEG = class(TXmliteElementGroup)
+  TThemeableFillStyleEG = class(TXmliteElementGroup)
   private
-    fFill: TCTFillPropertiesCT;
-    fFillRef: TCTStyleMatrixReferenceCT;
+    fFill: TFillPropertiesCT;
+    fFillRef: TStyleMatrixReferenceCT;
 
-    function GetFill: TCTFillPropertiesCT;
-    function GetFillRef: TCTStyleMatrixReferenceCT;
+    function GetFill: TFillPropertiesCT;
+    function GetFillRef: TStyleMatrixReferenceCT;
     function GetFillChosen: TBasite;
   public
     property FillChosen: TBasite read GetFillChosen;
   published
     [TChoice('Fill')]
-    property Fill: TCTFillPropertiesCT read GetFill;
+    property Fill: TFillPropertiesCT read GetFill;
     [TChoice('Fill')]
-    property FillRef: TCTStyleMatrixReferenceCT read GetFillRef;
+    property FillRef: TStyleMatrixReferenceCT read GetFillRef;
   end;
 
   [TName('EG_ThemeableEffectStyle')]
-  TEGThemeableEffectStyleEG = class(TXmliteElementGroup)
+  TThemeableEffectStyleEG = class(TXmliteElementGroup)
   private
-    fEffect: TCTEffectPropertiesCT;
-    fEffectRef: TCTStyleMatrixReferenceCT;
+    fEffect: TEffectPropertiesCT;
+    fEffectRef: TStyleMatrixReferenceCT;
 
-    function GetEffect: TCTEffectPropertiesCT;
-    function GetEffectRef: TCTStyleMatrixReferenceCT;
+    function GetEffect: TEffectPropertiesCT;
+    function GetEffectRef: TStyleMatrixReferenceCT;
     function GetEffectChosen: TBasite;
   public
     property EffectChosen: TBasite read GetEffectChosen;
   published
     [TChoice('Effect')]
-    property Effect: TCTEffectPropertiesCT read GetEffect;
+    property Effect: TEffectPropertiesCT read GetEffect;
     [TChoice('Effect')]
-    property EffectRef: TCTStyleMatrixReferenceCT read GetEffectRef;
+    property EffectRef: TStyleMatrixReferenceCT read GetEffectRef;
   end;
 
   [TName('EG_ThemeableFontStyles')]
-  TEGThemeableFontStylesEG = class(TXmliteElementGroup)
+  TThemeableFontStylesEG = class(TXmliteElementGroup)
   private
-    fFont: TCTFontCollectionCT;
-    fFontRef: TCTFontReferenceCT;
+    fFont: TFontCollectionCT;
+    fFontRef: TFontReferenceCT;
 
-    function GetFont: TCTFontCollectionCT;
-    function GetFontRef: TCTFontReferenceCT;
+    function GetFont: TFontCollectionCT;
+    function GetFontRef: TFontReferenceCT;
     function GetFontChosen: TBasite;
   public
     property FontChosen: TBasite read GetFontChosen;
   published
     [TChoice('Font')]
-    property Font: TCTFontCollectionCT read GetFont;
+    property Font: TFontCollectionCT read GetFont;
     [TChoice('Font')]
-    property FontRef: TCTFontReferenceCT read GetFontRef;
+    property FontRef: TFontReferenceCT read GetFontRef;
   end;
 
   [TName('EG_TextAutofit')]
-  TEGTextAutofitEG = class(TXmliteElementGroup)
+  TTextAutofitEG = class(TXmliteElementGroup)
   private
-    fNoAutofit: TCTTextNoAutofitCT;
-    fNormAutofit: TCTTextNormalAutofitCT;
-    fSpAutoFit: TCTTextShapeAutofitCT;
+    fNoAutofit: TTextNoAutofitCT;
+    fNormAutofit: TTextNormalAutofitCT;
+    fSpAutoFit: TTextShapeAutofitCT;
 
-    function GetNoAutofit: TCTTextNoAutofitCT;
-    function GetNormAutofit: TCTTextNormalAutofitCT;
-    function GetSpAutoFit: TCTTextShapeAutofitCT;
+    function GetNoAutofit: TTextNoAutofitCT;
+    function GetNormAutofit: TTextNormalAutofitCT;
+    function GetSpAutoFit: TTextShapeAutofitCT;
   published
     [TChoice('NoAutofit')]
-    property NoAutofit: TCTTextNoAutofitCT read GetNoAutofit;
+    property NoAutofit: TTextNoAutofitCT read GetNoAutofit;
     [TChoice('NoAutofit')]
-    property NormAutofit: TCTTextNormalAutofitCT read GetNormAutofit;
+    property NormAutofit: TTextNormalAutofitCT read GetNormAutofit;
     [TChoice('NoAutofit')]
-    property SpAutoFit: TCTTextShapeAutofitCT read GetSpAutoFit;
+    property SpAutoFit: TTextShapeAutofitCT read GetSpAutoFit;
   end;
 
   [TName('EG_TextBulletColor')]
-  TEGTextBulletColorEG = class(TXmliteElementGroup)
+  TTextBulletColorEG = class(TXmliteElementGroup)
   private
-    fBuClrTx: TCTTextBulletColorFollowTextCT;
-    fBuClr: TCTColorCT;
+    fBuClrTx: TTextBulletColorFollowTextCT;
+    fBuClr: TColorCT;
 
-    function GetBuClrTx: TCTTextBulletColorFollowTextCT;
-    function GetBuClr: TCTColorCT;
+    function GetBuClrTx: TTextBulletColorFollowTextCT;
+    function GetBuClr: TColorCT;
     function GetBuClrChosen: TBasite;
   public
     property BuClrChosen: TBasite read GetBuClrChosen;
   published
     [TChoice('BuClr')]
-    property BuClrTx: TCTTextBulletColorFollowTextCT read GetBuClrTx;
+    property BuClrTx: TTextBulletColorFollowTextCT read GetBuClrTx;
     [TChoice('BuClr')]
-    property BuClr: TCTColorCT read GetBuClr;
+    property BuClr: TColorCT read GetBuClr;
   end;
 
   [TName('EG_TextBulletSize')]
-  TEGTextBulletSizeEG = class(TXmliteElementGroup)
+  TTextBulletSizeEG = class(TXmliteElementGroup)
   private
-    fBuSzTx: TCTTextBulletSizeFollowTextCT;
-    fBuSzPct: TCTTextBulletSizePercentCT;
-    fBuSzPts: TCTTextBulletSizePointCT;
+    fBuSzTx: TTextBulletSizeFollowTextCT;
+    fBuSzPct: TTextBulletSizePercentCT;
+    fBuSzPts: TTextBulletSizePointCT;
 
-    function GetBuSzTx: TCTTextBulletSizeFollowTextCT;
-    function GetBuSzPct: TCTTextBulletSizePercentCT;
-    function GetBuSzPts: TCTTextBulletSizePointCT;
+    function GetBuSzTx: TTextBulletSizeFollowTextCT;
+    function GetBuSzPct: TTextBulletSizePercentCT;
+    function GetBuSzPts: TTextBulletSizePointCT;
     function GetBuSzChosen: TBasite;
   public
     property BuSzChosen: TBasite read GetBuSzChosen;
   published
     [TChoice('BuSz')]
-    property BuSzTx: TCTTextBulletSizeFollowTextCT read GetBuSzTx;
+    property BuSzTx: TTextBulletSizeFollowTextCT read GetBuSzTx;
     [TChoice('BuSz')]
-    property BuSzPct: TCTTextBulletSizePercentCT read GetBuSzPct;
+    property BuSzPct: TTextBulletSizePercentCT read GetBuSzPct;
     [TChoice('BuSz')]
-    property BuSzPts: TCTTextBulletSizePointCT read GetBuSzPts;
+    property BuSzPts: TTextBulletSizePointCT read GetBuSzPts;
   end;
 
   [TName('EG_TextBulletTypeface')]
-  TEGTextBulletTypefaceEG = class(TXmliteElementGroup)
+  TTextBulletTypefaceEG = class(TXmliteElementGroup)
   private
-    fBuFontTx: TCTTextBulletTypefaceFollowTextCT;
-    fBuFont: TCTTextFontCT;
+    fBuFontTx: TTextBulletTypefaceFollowTextCT;
+    fBuFont: TTextFontCT;
 
-    function GetBuFontTx: TCTTextBulletTypefaceFollowTextCT;
-    function GetBuFont: TCTTextFontCT;
+    function GetBuFontTx: TTextBulletTypefaceFollowTextCT;
+    function GetBuFont: TTextFontCT;
     function GetBuFontChosen: TBasite;
   public
     property BuFontChosen: TBasite read GetBuFontChosen;
   published
     [TChoice('BuFont')]
-    property BuFontTx: TCTTextBulletTypefaceFollowTextCT read GetBuFontTx;
+    property BuFontTx: TTextBulletTypefaceFollowTextCT read GetBuFontTx;
     [TChoice('BuFont')]
-    property BuFont: TCTTextFontCT read GetBuFont;
+    property BuFont: TTextFontCT read GetBuFont;
   end;
 
   [TName('EG_TextBullet')]
-  TEGTextBulletEG = class(TXmliteElementGroup)
+  TTextBulletEG = class(TXmliteElementGroup)
   private
-    fBuNone: TCTTextNoBulletCT;
-    fBuAutoNum: TCTTextAutonumberBulletCT;
-    fBuChar: TCTTextCharBulletCT;
-    fBuBlip: TCTTextBlipBulletCT;
+    fBuNone: TTextNoBulletCT;
+    fBuAutoNum: TTextAutonumberBulletCT;
+    fBuChar: TTextCharBulletCT;
+    fBuBlip: TTextBlipBulletCT;
 
-    function GetBuNone: TCTTextNoBulletCT;
-    function GetBuAutoNum: TCTTextAutonumberBulletCT;
-    function GetBuChar: TCTTextCharBulletCT;
-    function GetBuBlip: TCTTextBlipBulletCT;
+    function GetBuNone: TTextNoBulletCT;
+    function GetBuAutoNum: TTextAutonumberBulletCT;
+    function GetBuChar: TTextCharBulletCT;
+    function GetBuBlip: TTextBlipBulletCT;
     function GetBuChosen: TBasite;
   public
     property BuChosen: TBasite read GetBuChosen;
   published
     [TChoice('Bu')]
-    property BuNone: TCTTextNoBulletCT read GetBuNone;
+    property BuNone: TTextNoBulletCT read GetBuNone;
     [TChoice('Bu')]
-    property BuAutoNum: TCTTextAutonumberBulletCT read GetBuAutoNum;
+    property BuAutoNum: TTextAutonumberBulletCT read GetBuAutoNum;
     [TChoice('Bu')]
-    property BuChar: TCTTextCharBulletCT read GetBuChar;
+    property BuChar: TTextCharBulletCT read GetBuChar;
     [TChoice('Bu')]
-    property BuBlip: TCTTextBlipBulletCT read GetBuBlip;
+    property BuBlip: TTextBlipBulletCT read GetBuBlip;
   end;
 
   [TName('EG_TextUnderlineLine')]
-  TEGTextUnderlineLineEG = class(TXmliteElementGroup)
+  TTextUnderlineLineEG = class(TXmliteElementGroup)
   private
-    fULnTx: TCTTextUnderlineLineFollowTextCT;
-    fULn: TCTLinePropertiesCT;
+    fULnTx: TTextUnderlineLineFollowTextCT;
+    fULn: TLinePropertiesCT;
 
-    function GetULnTx: TCTTextUnderlineLineFollowTextCT;
-    function GetULn: TCTLinePropertiesCT;
+    function GetULnTx: TTextUnderlineLineFollowTextCT;
+    function GetULn: TLinePropertiesCT;
     function GetULnChosen: TBasite;
   public
     property ULnChosen: TBasite read GetULnChosen;
   published
     [TChoice('ULn')]
-    property ULnTx: TCTTextUnderlineLineFollowTextCT read GetULnTx;
+    property ULnTx: TTextUnderlineLineFollowTextCT read GetULnTx;
     [TChoice('ULn')]
-    property ULn: TCTLinePropertiesCT read GetULn;
+    property ULn: TLinePropertiesCT read GetULn;
   end;
 
   [TName('EG_TextUnderlineFill')]
-  TEGTextUnderlineFillEG = class(TXmliteElementGroup)
+  TTextUnderlineFillEG = class(TXmliteElementGroup)
   private
-    fUFillTx: TCTTextUnderlineFillFollowTextCT;
-    fUFill: TCTTextUnderlineFillGroupWrapperCT;
+    fUFillTx: TTextUnderlineFillFollowTextCT;
+    fUFill: TTextUnderlineFillGroupWrapperCT;
 
-    function GetUFillTx: TCTTextUnderlineFillFollowTextCT;
-    function GetUFill: TCTTextUnderlineFillGroupWrapperCT;
+    function GetUFillTx: TTextUnderlineFillFollowTextCT;
+    function GetUFill: TTextUnderlineFillGroupWrapperCT;
     function GetUFillChosen: TBasite;
   public
     property UFillChosen: TBasite read GetUFillChosen;
   published
     [TChoice('UFill')]
-    property UFillTx: TCTTextUnderlineFillFollowTextCT read GetUFillTx;
+    property UFillTx: TTextUnderlineFillFollowTextCT read GetUFillTx;
     [TChoice('UFill')]
-    property UFill: TCTTextUnderlineFillGroupWrapperCT read GetUFill;
+    property UFill: TTextUnderlineFillGroupWrapperCT read GetUFill;
   end;
 
   [TName('EG_TextRun')]
-  TEGTextRunEG = class(TXmliteElementGroup)
+  TTextRunEG = class(TXmliteElementGroup)
   private
-    fR: TCTRegularTextRunCT;
-    fBr: TCTTextLineBreakCT;
-    fFld: TCTTextFieldCT;
+    fR: TRegularTextRunCT;
+    fBr: TTextLineBreakCT;
+    fFld: TTextFieldCT;
 
-    function GetR: TCTRegularTextRunCT;
-    function GetBr: TCTTextLineBreakCT;
-    function GetFld: TCTTextFieldCT;
+    function GetR: TRegularTextRunCT;
+    function GetBr: TTextLineBreakCT;
+    function GetFld: TTextFieldCT;
   published
     [TChoice('R')]
-    property R: TCTRegularTextRunCT read GetR;
+    property R: TRegularTextRunCT read GetR;
     [TChoice('R')]
-    property Br: TCTTextLineBreakCT read GetBr;
+    property Br: TTextLineBreakCT read GetBr;
     [TChoice('R')]
-    property Fld: TCTTextFieldCT read GetFld;
+    property Fld: TTextFieldCT read GetFld;
   end;
 
-  TCTCustomColorCTList = class(TXmliteList<TCTCustomColorCT>);
-  TCTSupplementalFontCTList = class(TXmliteList<TCTSupplementalFontCT>);
-  TCTEffectStyleItemCTList = class(TXmliteList<TCTEffectStyleItemCT>);
-  TCTOfficeArtExtensionCTList = class(TXmliteList<TCTOfficeArtExtensionCT>);
-  TCTAngleCTList = class(TXmliteList<TCTAngleCT>);
-  TCTPositiveFixedAngleCTList = class(TXmliteList<TCTPositiveFixedAngleCT>);
-  TCTPercentageCTList = class(TXmliteList<TCTPercentageCT>);
-  TCTPositivePercentageCTList = class(TXmliteList<TCTPositivePercentageCT>);
-  TCTFixedPercentageCTList = class(TXmliteList<TCTFixedPercentageCT>);
-  TCTPositiveFixedPercentageCTList = class(TXmliteList<TCTPositiveFixedPercentageCT>);
-  TCTComplementTransformCTList = class(TXmliteList<TCTComplementTransformCT>);
-  TCTInverseTransformCTList = class(TXmliteList<TCTInverseTransformCT>);
-  TCTGrayscaleTransformCTList = class(TXmliteList<TCTGrayscaleTransformCT>);
-  TCTGammaTransformCTList = class(TXmliteList<TCTGammaTransformCT>);
-  TCTInverseGammaTransformCTList = class(TXmliteList<TCTInverseGammaTransformCT>);
-  TCTScRgbColorCTList = class(TXmliteList<TCTScRgbColorCT>);
-  TCTSRgbColorCTList = class(TXmliteList<TCTSRgbColorCT>);
-  TCTHslColorCTList = class(TXmliteList<TCTHslColorCT>);
-  TCTSystemColorCTList = class(TXmliteList<TCTSystemColorCT>);
-  TCTSchemeColorCTList = class(TXmliteList<TCTSchemeColorCT>);
-  TCTPresetColorCTList = class(TXmliteList<TCTPresetColorCT>);
-  TCTGvmlTextShapeCTList = class(TXmliteList<TCTGvmlTextShapeCT>);
-  TCTGvmlShapeCTList = class(TXmliteList<TCTGvmlShapeCT>);
-  TCTGvmlConnectorCTList = class(TXmliteList<TCTGvmlConnectorCT>);
-  TCTGvmlPictureCTList = class(TXmliteList<TCTGvmlPictureCT>);
-  TCTGvmlGraphicalObjectFrameCTList = class(TXmliteList<TCTGvmlGraphicalObjectFrameCT>);
-  TCTGvmlGroupShapeCTList = class(TXmliteList<TCTGvmlGroupShapeCT>);
-  TCTAlphaBiLevelEffectCTList = class(TXmliteList<TCTAlphaBiLevelEffectCT>);
-  TCTAlphaCeilingEffectCTList = class(TXmliteList<TCTAlphaCeilingEffectCT>);
-  TCTAlphaFloorEffectCTList = class(TXmliteList<TCTAlphaFloorEffectCT>);
-  TCTAlphaInverseEffectCTList = class(TXmliteList<TCTAlphaInverseEffectCT>);
-  TCTAlphaModulateFixedEffectCTList = class(TXmliteList<TCTAlphaModulateFixedEffectCT>);
-  TCTAlphaOutsetEffectCTList = class(TXmliteList<TCTAlphaOutsetEffectCT>);
-  TCTAlphaReplaceEffectCTList = class(TXmliteList<TCTAlphaReplaceEffectCT>);
-  TCTBiLevelEffectCTList = class(TXmliteList<TCTBiLevelEffectCT>);
-  TCTBlurEffectCTList = class(TXmliteList<TCTBlurEffectCT>);
-  TCTColorChangeEffectCTList = class(TXmliteList<TCTColorChangeEffectCT>);
-  TCTColorReplaceEffectCTList = class(TXmliteList<TCTColorReplaceEffectCT>);
-  TCTDuotoneEffectCTList = class(TXmliteList<TCTDuotoneEffectCT>);
-  TCTGlowEffectCTList = class(TXmliteList<TCTGlowEffectCT>);
-  TCTGrayscaleEffectCTList = class(TXmliteList<TCTGrayscaleEffectCT>);
-  TCTHSLEffectCTList = class(TXmliteList<TCTHSLEffectCT>);
-  TCTInnerShadowEffectCTList = class(TXmliteList<TCTInnerShadowEffectCT>);
-  TCTLuminanceEffectCTList = class(TXmliteList<TCTLuminanceEffectCT>);
-  TCTOuterShadowEffectCTList = class(TXmliteList<TCTOuterShadowEffectCT>);
-  TCTPresetShadowEffectCTList = class(TXmliteList<TCTPresetShadowEffectCT>);
-  TCTReflectionEffectCTList = class(TXmliteList<TCTReflectionEffectCT>);
-  TCTRelativeOffsetEffectCTList = class(TXmliteList<TCTRelativeOffsetEffectCT>);
-  TCTSoftEdgesEffectCTList = class(TXmliteList<TCTSoftEdgesEffectCT>);
-  TCTTintEffectCTList = class(TXmliteList<TCTTintEffectCT>);
-  TCTTransformEffectCTList = class(TXmliteList<TCTTransformEffectCT>);
-  TCTNoFillPropertiesCTList = class(TXmliteList<TCTNoFillPropertiesCT>);
-  TCTSolidColorFillPropertiesCTList = class(TXmliteList<TCTSolidColorFillPropertiesCT>);
-  TCTGradientStopCTList = class(TXmliteList<TCTGradientStopCT>);
-  TCTGradientFillPropertiesCTList = class(TXmliteList<TCTGradientFillPropertiesCT>);
-  TCTBlipFillPropertiesCTList = class(TXmliteList<TCTBlipFillPropertiesCT>);
-  TCTPatternFillPropertiesCTList = class(TXmliteList<TCTPatternFillPropertiesCT>);
-  TCTGroupFillPropertiesCTList = class(TXmliteList<TCTGroupFillPropertiesCT>);
-  TCTFillEffectCTList = class(TXmliteList<TCTFillEffectCT>);
-  TCTFillOverlayEffectCTList = class(TXmliteList<TCTFillOverlayEffectCT>);
-  TCTEffectReferenceCTList = class(TXmliteList<TCTEffectReferenceCT>);
-  TCTEffectContainerCTList = class(TXmliteList<TCTEffectContainerCT>);
-  TCTAlphaModulateEffectCTList = class(TXmliteList<TCTAlphaModulateEffectCT>);
-  TCTBlendEffectCTList = class(TXmliteList<TCTBlendEffectCT>);
-  TCTGeomGuideCTList = class(TXmliteList<TCTGeomGuideCT>);
-  TCTAdjPoint2DCTList = class(TXmliteList<TCTAdjPoint2DCT>);
-  TCTXYAdjustHandleCTList = class(TXmliteList<TCTXYAdjustHandleCT>);
-  TCTPolarAdjustHandleCTList = class(TXmliteList<TCTPolarAdjustHandleCT>);
-  TCTConnectionSiteCTList = class(TXmliteList<TCTConnectionSiteCT>);
-  TCTPath2DMoveToCTList = class(TXmliteList<TCTPath2DMoveToCT>);
-  TCTPath2DLineToCTList = class(TXmliteList<TCTPath2DLineToCT>);
-  TCTPath2DArcToCTList = class(TXmliteList<TCTPath2DArcToCT>);
-  TCTPath2DQuadBezierToCTList = class(TXmliteList<TCTPath2DQuadBezierToCT>);
-  TCTPath2DCubicBezierToCTList = class(TXmliteList<TCTPath2DCubicBezierToCT>);
-  TCTPath2DCloseCTList = class(TXmliteList<TCTPath2DCloseCT>);
-  TCTPath2DCTList = class(TXmliteList<TCTPath2DCT>);
-  TCTDashStopCTList = class(TXmliteList<TCTDashStopCT>);
-  TCTLinePropertiesCTList = class(TXmliteList<TCTLinePropertiesCT>);
-  TCTColorSchemeAndMappingCTList = class(TXmliteList<TCTColorSchemeAndMappingCT>);
+  TCustomColorCTList = class(TXmliteList<TCustomColorCT>);
+  TSupplementalFontCTList = class(TXmliteList<TSupplementalFontCT>);
+  TEffectStyleItemCTList = class(TXmliteList<TEffectStyleItemCT>);
+  TOfficeArtExtensionCTList = class(TXmliteList<TOfficeArtExtensionCT>);
+  TAngleCTList = class(TXmliteList<TAngleCT>);
+  TPositiveFixedAngleCTList = class(TXmliteList<TPositiveFixedAngleCT>);
+  TPercentageCTList = class(TXmliteList<TPercentageCT>);
+  TPositivePercentageCTList = class(TXmliteList<TPositivePercentageCT>);
+  TFixedPercentageCTList = class(TXmliteList<TFixedPercentageCT>);
+  TPositiveFixedPercentageCTList = class(TXmliteList<TPositiveFixedPercentageCT>);
+  TComplementTransformCTList = class(TXmliteList<TComplementTransformCT>);
+  TInverseTransformCTList = class(TXmliteList<TInverseTransformCT>);
+  TGrayscaleTransformCTList = class(TXmliteList<TGrayscaleTransformCT>);
+  TGammaTransformCTList = class(TXmliteList<TGammaTransformCT>);
+  TInverseGammaTransformCTList = class(TXmliteList<TInverseGammaTransformCT>);
+  TScRgbColorCTList = class(TXmliteList<TScRgbColorCT>);
+  TSRgbColorCTList = class(TXmliteList<TSRgbColorCT>);
+  THslColorCTList = class(TXmliteList<THslColorCT>);
+  TSystemColorCTList = class(TXmliteList<TSystemColorCT>);
+  TSchemeColorCTList = class(TXmliteList<TSchemeColorCT>);
+  TPresetColorCTList = class(TXmliteList<TPresetColorCT>);
+  TGvmlTextShapeCTList = class(TXmliteList<TGvmlTextShapeCT>);
+  TGvmlShapeCTList = class(TXmliteList<TGvmlShapeCT>);
+  TGvmlConnectorCTList = class(TXmliteList<TGvmlConnectorCT>);
+  TGvmlPictureCTList = class(TXmliteList<TGvmlPictureCT>);
+  TGvmlGraphicalObjectFrameCTList = class(TXmliteList<TGvmlGraphicalObjectFrameCT>);
+  TGvmlGroupShapeCTList = class(TXmliteList<TGvmlGroupShapeCT>);
+  TAlphaBiLevelEffectCTList = class(TXmliteList<TAlphaBiLevelEffectCT>);
+  TAlphaCeilingEffectCTList = class(TXmliteList<TAlphaCeilingEffectCT>);
+  TAlphaFloorEffectCTList = class(TXmliteList<TAlphaFloorEffectCT>);
+  TAlphaInverseEffectCTList = class(TXmliteList<TAlphaInverseEffectCT>);
+  TAlphaModulateFixedEffectCTList = class(TXmliteList<TAlphaModulateFixedEffectCT>);
+  TAlphaOutsetEffectCTList = class(TXmliteList<TAlphaOutsetEffectCT>);
+  TAlphaReplaceEffectCTList = class(TXmliteList<TAlphaReplaceEffectCT>);
+  TBiLevelEffectCTList = class(TXmliteList<TBiLevelEffectCT>);
+  TBlurEffectCTList = class(TXmliteList<TBlurEffectCT>);
+  TColorChangeEffectCTList = class(TXmliteList<TColorChangeEffectCT>);
+  TColorReplaceEffectCTList = class(TXmliteList<TColorReplaceEffectCT>);
+  TDuotoneEffectCTList = class(TXmliteList<TDuotoneEffectCT>);
+  TGlowEffectCTList = class(TXmliteList<TGlowEffectCT>);
+  TGrayscaleEffectCTList = class(TXmliteList<TGrayscaleEffectCT>);
+  THSLEffectCTList = class(TXmliteList<THSLEffectCT>);
+  TInnerShadowEffectCTList = class(TXmliteList<TInnerShadowEffectCT>);
+  TLuminanceEffectCTList = class(TXmliteList<TLuminanceEffectCT>);
+  TOuterShadowEffectCTList = class(TXmliteList<TOuterShadowEffectCT>);
+  TPresetShadowEffectCTList = class(TXmliteList<TPresetShadowEffectCT>);
+  TReflectionEffectCTList = class(TXmliteList<TReflectionEffectCT>);
+  TRelativeOffsetEffectCTList = class(TXmliteList<TRelativeOffsetEffectCT>);
+  TSoftEdgesEffectCTList = class(TXmliteList<TSoftEdgesEffectCT>);
+  TTintEffectCTList = class(TXmliteList<TTintEffectCT>);
+  TTransformEffectCTList = class(TXmliteList<TTransformEffectCT>);
+  TNoFillPropertiesCTList = class(TXmliteList<TNoFillPropertiesCT>);
+  TSolidColorFillPropertiesCTList = class(TXmliteList<TSolidColorFillPropertiesCT>);
+  TGradientStopCTList = class(TXmliteList<TGradientStopCT>);
+  TGradientFillPropertiesCTList = class(TXmliteList<TGradientFillPropertiesCT>);
+  TBlipFillPropertiesCTList = class(TXmliteList<TBlipFillPropertiesCT>);
+  TPatternFillPropertiesCTList = class(TXmliteList<TPatternFillPropertiesCT>);
+  TGroupFillPropertiesCTList = class(TXmliteList<TGroupFillPropertiesCT>);
+  TFillEffectCTList = class(TXmliteList<TFillEffectCT>);
+  TFillOverlayEffectCTList = class(TXmliteList<TFillOverlayEffectCT>);
+  TEffectReferenceCTList = class(TXmliteList<TEffectReferenceCT>);
+  TEffectContainerCTList = class(TXmliteList<TEffectContainerCT>);
+  TAlphaModulateEffectCTList = class(TXmliteList<TAlphaModulateEffectCT>);
+  TBlendEffectCTList = class(TXmliteList<TBlendEffectCT>);
+  TGeomGuideCTList = class(TXmliteList<TGeomGuideCT>);
+  TAdjPoint2DCTList = class(TXmliteList<TAdjPoint2DCT>);
+  TXYAdjustHandleCTList = class(TXmliteList<TXYAdjustHandleCT>);
+  TPolarAdjustHandleCTList = class(TXmliteList<TPolarAdjustHandleCT>);
+  TConnectionSiteCTList = class(TXmliteList<TConnectionSiteCT>);
+  TPath2DMoveToCTList = class(TXmliteList<TPath2DMoveToCT>);
+  TPath2DLineToCTList = class(TXmliteList<TPath2DLineToCT>);
+  TPath2DArcToCTList = class(TXmliteList<TPath2DArcToCT>);
+  TPath2DQuadBezierToCTList = class(TXmliteList<TPath2DQuadBezierToCT>);
+  TPath2DCubicBezierToCTList = class(TXmliteList<TPath2DCubicBezierToCT>);
+  TPath2DCloseCTList = class(TXmliteList<TPath2DCloseCT>);
+  TPath2DCTList = class(TXmliteList<TPath2DCT>);
+  TDashStopCTList = class(TXmliteList<TDashStopCT>);
+  TLinePropertiesCTList = class(TXmliteList<TLinePropertiesCT>);
+  TColorSchemeAndMappingCTList = class(TXmliteList<TColorSchemeAndMappingCT>);
   TStringSTList = class(TXmliteValueList<ProRock.Xmlite.Schema.Base.TStringST>);
-  TCTTableColCTList = class(TXmliteList<TCTTableColCT>);
-  TCTTableCellCTList = class(TXmliteList<TCTTableCellCT>);
-  TCTTableRowCTList = class(TXmliteList<TCTTableRowCT>);
-  TCTTableStyleCTList = class(TXmliteList<TCTTableStyleCT>);
-  TCTTextParagraphCTList = class(TXmliteList<TCTTextParagraphCT>);
-  TCTTextTabStopCTList = class(TXmliteList<TCTTextTabStopCT>);
-  TCTTextLineBreakCTList = class(TXmliteList<TCTTextLineBreakCT>);
-  TCTTextFieldCTList = class(TXmliteList<TCTTextFieldCT>);
-  TCTRegularTextRunCTList = class(TXmliteList<TCTRegularTextRunCT>);
+  TTableColCTList = class(TXmliteList<TTableColCT>);
+  TTableCellCTList = class(TXmliteList<TTableCellCT>);
+  TTableRowCTList = class(TXmliteList<TTableRowCT>);
+  TTableStyleCTList = class(TXmliteList<TTableStyleCT>);
+  TTextParagraphCTList = class(TXmliteList<TTextParagraphCT>);
+  TTextTabStopCTList = class(TXmliteList<TTextTabStopCT>);
+  TTextLineBreakCTList = class(TXmliteList<TTextLineBreakCT>);
+  TTextFieldCTList = class(TXmliteList<TTextFieldCT>);
+  TRegularTextRunCTList = class(TXmliteList<TRegularTextRunCT>);
+
+  TSTAdjAngleST = TAdjAngleST deprecated 'use TAdjAngleST';
+  TSTAdjCoordinateST = TAdjCoordinateST deprecated 'use TAdjCoordinateST';
+  TCTAdjPoint2DCT = TAdjPoint2DCT deprecated 'use TAdjPoint2DCT';
+  TCTAdjPoint2DCTList = TAdjPoint2DCTList deprecated 'use TAdjPoint2DCTList';
+  TCTAdjustHandleListCT = TAdjustHandleListCT deprecated 'use TAdjustHandleListCT';
+  TCTAlphaBiLevelEffectCT = TAlphaBiLevelEffectCT deprecated 'use TAlphaBiLevelEffectCT';
+  TCTAlphaBiLevelEffectCTList = TAlphaBiLevelEffectCTList deprecated 'use TAlphaBiLevelEffectCTList';
+  TCTAlphaCeilingEffectCT = TAlphaCeilingEffectCT deprecated 'use TAlphaCeilingEffectCT';
+  TCTAlphaCeilingEffectCTList = TAlphaCeilingEffectCTList deprecated 'use TAlphaCeilingEffectCTList';
+  TCTAlphaFloorEffectCT = TAlphaFloorEffectCT deprecated 'use TAlphaFloorEffectCT';
+  TCTAlphaFloorEffectCTList = TAlphaFloorEffectCTList deprecated 'use TAlphaFloorEffectCTList';
+  TCTAlphaInverseEffectCT = TAlphaInverseEffectCT deprecated 'use TAlphaInverseEffectCT';
+  TCTAlphaInverseEffectCTList = TAlphaInverseEffectCTList deprecated 'use TAlphaInverseEffectCTList';
+  TCTAlphaModulateEffectCT = TAlphaModulateEffectCT deprecated 'use TAlphaModulateEffectCT';
+  TCTAlphaModulateEffectCTList = TAlphaModulateEffectCTList deprecated 'use TAlphaModulateEffectCTList';
+  TCTAlphaModulateFixedEffectCT = TAlphaModulateFixedEffectCT deprecated 'use TAlphaModulateFixedEffectCT';
+  TCTAlphaModulateFixedEffectCTList = TAlphaModulateFixedEffectCTList deprecated 'use TAlphaModulateFixedEffectCTList';
+  TCTAlphaOutsetEffectCT = TAlphaOutsetEffectCT deprecated 'use TAlphaOutsetEffectCT';
+  TCTAlphaOutsetEffectCTList = TAlphaOutsetEffectCTList deprecated 'use TAlphaOutsetEffectCTList';
+  TCTAlphaReplaceEffectCT = TAlphaReplaceEffectCT deprecated 'use TAlphaReplaceEffectCT';
+  TCTAlphaReplaceEffectCTList = TAlphaReplaceEffectCTList deprecated 'use TAlphaReplaceEffectCTList';
+  TCTAngleCT = TAngleCT deprecated 'use TAngleCT';
+  TCTAngleCTList = TAngleCTList deprecated 'use TAngleCTList';
+  TSTAngleST = TAngleST deprecated 'use TAngleST';
+  TSTAnimationBuildTypeST = TAnimationBuildTypeST deprecated 'use TAnimationBuildTypeST';
+  TCTAnimationChartBuildPropertiesCT = TAnimationChartBuildPropertiesCT deprecated 'use TAnimationChartBuildPropertiesCT';
+  TSTAnimationChartBuildTypeST = TAnimationChartBuildTypeST deprecated 'use TAnimationChartBuildTypeST';
+  TCTAnimationChartElementCT = TAnimationChartElementCT deprecated 'use TAnimationChartElementCT';
+  TSTAnimationChartOnlyBuildTypeST = TAnimationChartOnlyBuildTypeST deprecated 'use TAnimationChartOnlyBuildTypeST';
+  TCTAnimationDgmBuildPropertiesCT = TAnimationDgmBuildPropertiesCT deprecated 'use TAnimationDgmBuildPropertiesCT';
+  TSTAnimationDgmBuildTypeST = TAnimationDgmBuildTypeST deprecated 'use TAnimationDgmBuildTypeST';
+  TCTAnimationDgmElementCT = TAnimationDgmElementCT deprecated 'use TAnimationDgmElementCT';
+  TSTAnimationDgmOnlyBuildTypeST = TAnimationDgmOnlyBuildTypeST deprecated 'use TAnimationDgmOnlyBuildTypeST';
+  TCTAnimationElementChoiceCT = TAnimationElementChoiceCT deprecated 'use TAnimationElementChoiceCT';
+  TCTAnimationGraphicalObjectBuildPropertiesCT = TAnimationGraphicalObjectBuildPropertiesCT deprecated 'use TAnimationGraphicalObjectBuildPropertiesCT';
+  TCTAudioCDCT = TAudioCDCT deprecated 'use TAudioCDCT';
+  TCTAudioCDTimeCT = TAudioCDTimeCT deprecated 'use TAudioCDTimeCT';
+  TCTAudioFileCT = TAudioFileCT deprecated 'use TAudioFileCT';
+  TCTBackdropCT = TBackdropCT deprecated 'use TBackdropCT';
+  TCTBackgroundFillStyleListCT = TBackgroundFillStyleListCT deprecated 'use TBackgroundFillStyleListCT';
+  TCTBackgroundFormattingCT = TBackgroundFormattingCT deprecated 'use TBackgroundFormattingCT';
+  TCTBaseStylesCT = TBaseStylesCT deprecated 'use TBaseStylesCT';
+  TCTBaseStylesOverrideCT = TBaseStylesOverrideCT deprecated 'use TBaseStylesOverrideCT';
+  TCTBevelCT = TBevelCT deprecated 'use TBevelCT';
+  TSTBevelPresetTypeST = TBevelPresetTypeST deprecated 'use TBevelPresetTypeST';
+  TCTBiLevelEffectCT = TBiLevelEffectCT deprecated 'use TBiLevelEffectCT';
+  TCTBiLevelEffectCTList = TBiLevelEffectCTList deprecated 'use TBiLevelEffectCTList';
+  TSTBlackWhiteModeST = TBlackWhiteModeST deprecated 'use TBlackWhiteModeST';
+  TCTBlendEffectCT = TBlendEffectCT deprecated 'use TBlendEffectCT';
+  TCTBlendEffectCTList = TBlendEffectCTList deprecated 'use TBlendEffectCTList';
+  TSTBlendModeST = TBlendModeST deprecated 'use TBlendModeST';
+  TCTBlipCT = TBlipCT deprecated 'use TBlipCT';
+  TSTBlipCompressionST = TBlipCompressionST deprecated 'use TBlipCompressionST';
+  TCTBlipFillPropertiesCT = TBlipFillPropertiesCT deprecated 'use TBlipFillPropertiesCT';
+  TCTBlipFillPropertiesCTList = TBlipFillPropertiesCTList deprecated 'use TBlipFillPropertiesCTList';
+  TAGBlobAG = TBlobAG deprecated 'use TBlobAG';
+  TCTBlurEffectCT = TBlurEffectCT deprecated 'use TBlurEffectCT';
+  TCTBlurEffectCTList = TBlurEffectCTList deprecated 'use TBlurEffectCTList';
+  TCTBooleanCT = TBooleanCT deprecated 'use TBooleanCT';
+  TCTCameraCT = TCameraCT deprecated 'use TCameraCT';
+  TCTCell3DCT = TCell3DCT deprecated 'use TCell3DCT';
+  TSTChartBuildStepST = TChartBuildStepST deprecated 'use TChartBuildStepST';
+  TCTClipboardStyleSheetCT = TClipboardStyleSheetCT deprecated 'use TClipboardStyleSheetCT';
+  TCTColorCT = TColorCT deprecated 'use TColorCT';
+  TCTColorChangeEffectCT = TColorChangeEffectCT deprecated 'use TColorChangeEffectCT';
+  TCTColorChangeEffectCTList = TColorChangeEffectCTList deprecated 'use TColorChangeEffectCTList';
+  TEGColorChoiceEG = TColorChoiceEG deprecated 'use TColorChoiceEG';
+  TCTColorMRUCT = TColorMRUCT deprecated 'use TColorMRUCT';
+  TCTColorMappingCT = TColorMappingCT deprecated 'use TColorMappingCT';
+  TCTColorMappingOverrideCT = TColorMappingOverrideCT deprecated 'use TColorMappingOverrideCT';
+  TCTColorReplaceEffectCT = TColorReplaceEffectCT deprecated 'use TColorReplaceEffectCT';
+  TCTColorReplaceEffectCTList = TColorReplaceEffectCTList deprecated 'use TColorReplaceEffectCTList';
+  TCTColorSchemeAndMappingCT = TColorSchemeAndMappingCT deprecated 'use TColorSchemeAndMappingCT';
+  TCTColorSchemeAndMappingCTList = TColorSchemeAndMappingCTList deprecated 'use TColorSchemeAndMappingCTList';
+  TCTColorSchemeCT = TColorSchemeCT deprecated 'use TColorSchemeCT';
+  TSTColorSchemeIndexST = TColorSchemeIndexST deprecated 'use TColorSchemeIndexST';
+  TCTColorSchemeListCT = TColorSchemeListCT deprecated 'use TColorSchemeListCT';
+  TEGColorTransformEG = TColorTransformEG deprecated 'use TColorTransformEG';
+  TCTComplementTransformCT = TComplementTransformCT deprecated 'use TComplementTransformCT';
+  TCTComplementTransformCTList = TComplementTransformCTList deprecated 'use TComplementTransformCTList';
+  TSTCompoundLineST = TCompoundLineST deprecated 'use TCompoundLineST';
+  TCTConnectionCT = TConnectionCT deprecated 'use TConnectionCT';
+  TCTConnectionSiteCT = TConnectionSiteCT deprecated 'use TConnectionSiteCT';
+  TCTConnectionSiteCTList = TConnectionSiteCTList deprecated 'use TConnectionSiteCTList';
+  TCTConnectionSiteListCT = TConnectionSiteListCT deprecated 'use TConnectionSiteListCT';
+  TCTConnectorLockingCT = TConnectorLockingCT deprecated 'use TConnectorLockingCT';
+  TCTContentPartLockingCT = TContentPartLockingCT deprecated 'use TContentPartLockingCT';
+  TSTCoordinate32ST = TCoordinate32ST deprecated 'use TCoordinate32ST';
+  TSTCoordinate32UnqualifiedST = TCoordinate32UnqualifiedST deprecated 'use TCoordinate32UnqualifiedST';
+  TSTCoordinateST = TCoordinateST deprecated 'use TCoordinateST';
+  TSTCoordinateUnqualifiedST = TCoordinateUnqualifiedST deprecated 'use TCoordinateUnqualifiedST';
+  TCTCustomColorCT = TCustomColorCT deprecated 'use TCustomColorCT';
+  TCTCustomColorCTList = TCustomColorCTList deprecated 'use TCustomColorCTList';
+  TCTCustomColorListCT = TCustomColorListCT deprecated 'use TCustomColorListCT';
+  TCTCustomGeometry2DCT = TCustomGeometry2DCT deprecated 'use TCustomGeometry2DCT';
+  TCTDashStopCT = TDashStopCT deprecated 'use TDashStopCT';
+  TCTDashStopCTList = TDashStopCTList deprecated 'use TDashStopCTList';
+  TCTDashStopListCT = TDashStopListCT deprecated 'use TDashStopListCT';
+  TCTDefaultShapeDefinitionCT = TDefaultShapeDefinitionCT deprecated 'use TDefaultShapeDefinitionCT';
+  TSTDgmBuildStepST = TDgmBuildStepST deprecated 'use TDgmBuildStepST';
+  TSTDrawingElementIdST = TDrawingElementIdST deprecated 'use TDrawingElementIdST';
+  TCTDuotoneEffectCT = TDuotoneEffectCT deprecated 'use TDuotoneEffectCT';
+  TCTDuotoneEffectCTList = TDuotoneEffectCTList deprecated 'use TDuotoneEffectCTList';
+  TCTEffectContainerCT = TEffectContainerCT deprecated 'use TEffectContainerCT';
+  TCTEffectContainerCTList = TEffectContainerCTList deprecated 'use TEffectContainerCTList';
+  TSTEffectContainerTypeST = TEffectContainerTypeST deprecated 'use TEffectContainerTypeST';
+  TEGEffectEG = TEffectEG deprecated 'use TEffectEG';
+  TCTEffectListCT = TEffectListCT deprecated 'use TEffectListCT';
+  TCTEffectPropertiesCT = TEffectPropertiesCT deprecated 'use TEffectPropertiesCT';
+  TEGEffectPropertiesEG = TEffectPropertiesEG deprecated 'use TEffectPropertiesEG';
+  TCTEffectReferenceCT = TEffectReferenceCT deprecated 'use TEffectReferenceCT';
+  TCTEffectReferenceCTList = TEffectReferenceCTList deprecated 'use TEffectReferenceCTList';
+  TCTEffectStyleItemCT = TEffectStyleItemCT deprecated 'use TEffectStyleItemCT';
+  TCTEffectStyleItemCTList = TEffectStyleItemCTList deprecated 'use TEffectStyleItemCTList';
+  TCTEffectStyleListCT = TEffectStyleListCT deprecated 'use TEffectStyleListCT';
+  TCTEmbeddedWAVAudioFileCT = TEmbeddedWAVAudioFileCT deprecated 'use TEmbeddedWAVAudioFileCT';
+  TCTEmptyElementCT = TEmptyElementCT deprecated 'use TEmptyElementCT';
+  TSTFOVAngleST = TFOVAngleST deprecated 'use TFOVAngleST';
+  TCTFillEffectCT = TFillEffectCT deprecated 'use TFillEffectCT';
+  TCTFillEffectCTList = TFillEffectCTList deprecated 'use TFillEffectCTList';
+  TEGFillModePropertiesEG = TFillModePropertiesEG deprecated 'use TFillModePropertiesEG';
+  TCTFillOverlayEffectCT = TFillOverlayEffectCT deprecated 'use TFillOverlayEffectCT';
+  TCTFillOverlayEffectCTList = TFillOverlayEffectCTList deprecated 'use TFillOverlayEffectCTList';
+  TCTFillPropertiesCT = TFillPropertiesCT deprecated 'use TFillPropertiesCT';
+  TEGFillPropertiesEG = TFillPropertiesEG deprecated 'use TFillPropertiesEG';
+  TCTFillStyleListCT = TFillStyleListCT deprecated 'use TFillStyleListCT';
+  TSTFixedAngleST = TFixedAngleST deprecated 'use TFixedAngleST';
+  TCTFixedPercentageCT = TFixedPercentageCT deprecated 'use TFixedPercentageCT';
+  TCTFixedPercentageCTList = TFixedPercentageCTList deprecated 'use TFixedPercentageCTList';
+  TSTFixedPercentageDecimalST = TFixedPercentageDecimalST deprecated 'use TFixedPercentageDecimalST';
+  TSTFixedPercentageST = TFixedPercentageST deprecated 'use TFixedPercentageST';
+  TCTFlatTextCT = TFlatTextCT deprecated 'use TFlatTextCT';
+  TCTFontCollectionCT = TFontCollectionCT deprecated 'use TFontCollectionCT';
+  TSTFontCollectionIndexST = TFontCollectionIndexST deprecated 'use TFontCollectionIndexST';
+  TCTFontReferenceCT = TFontReferenceCT deprecated 'use TFontReferenceCT';
+  TCTFontSchemeCT = TFontSchemeCT deprecated 'use TFontSchemeCT';
+  TCTGammaTransformCT = TGammaTransformCT deprecated 'use TGammaTransformCT';
+  TCTGammaTransformCTList = TGammaTransformCTList deprecated 'use TGammaTransformCTList';
+  TCTGeomGuideCT = TGeomGuideCT deprecated 'use TGeomGuideCT';
+  TCTGeomGuideCTList = TGeomGuideCTList deprecated 'use TGeomGuideCTList';
+  TSTGeomGuideFormulaST = TGeomGuideFormulaST deprecated 'use TGeomGuideFormulaST';
+  TCTGeomGuideListCT = TGeomGuideListCT deprecated 'use TGeomGuideListCT';
+  TSTGeomGuideNameST = TGeomGuideNameST deprecated 'use TGeomGuideNameST';
+  TCTGeomRectCT = TGeomRectCT deprecated 'use TGeomRectCT';
+  TEGGeometryEG = TGeometryEG deprecated 'use TGeometryEG';
+  TCTGlowEffectCT = TGlowEffectCT deprecated 'use TGlowEffectCT';
+  TCTGlowEffectCTList = TGlowEffectCTList deprecated 'use TGlowEffectCTList';
+  TCTGradientFillPropertiesCT = TGradientFillPropertiesCT deprecated 'use TGradientFillPropertiesCT';
+  TCTGradientFillPropertiesCTList = TGradientFillPropertiesCTList deprecated 'use TGradientFillPropertiesCTList';
+  TCTGradientStopCT = TGradientStopCT deprecated 'use TGradientStopCT';
+  TCTGradientStopCTList = TGradientStopCTList deprecated 'use TGradientStopCTList';
+  TCTGradientStopListCT = TGradientStopListCT deprecated 'use TGradientStopListCT';
+  TCTGraphicalObjectCT = TGraphicalObjectCT deprecated 'use TGraphicalObjectCT';
+  TCTGraphicalObjectDataCT = TGraphicalObjectDataCT deprecated 'use TGraphicalObjectDataCT';
+  TCTGraphicalObjectFrameLockingCT = TGraphicalObjectFrameLockingCT deprecated 'use TGraphicalObjectFrameLockingCT';
+  TCTGrayscaleEffectCT = TGrayscaleEffectCT deprecated 'use TGrayscaleEffectCT';
+  TCTGrayscaleEffectCTList = TGrayscaleEffectCTList deprecated 'use TGrayscaleEffectCTList';
+  TCTGrayscaleTransformCT = TGrayscaleTransformCT deprecated 'use TGrayscaleTransformCT';
+  TCTGrayscaleTransformCTList = TGrayscaleTransformCTList deprecated 'use TGrayscaleTransformCTList';
+  TCTGroupFillPropertiesCT = TGroupFillPropertiesCT deprecated 'use TGroupFillPropertiesCT';
+  TCTGroupFillPropertiesCTList = TGroupFillPropertiesCTList deprecated 'use TGroupFillPropertiesCTList';
+  TCTGroupLockingCT = TGroupLockingCT deprecated 'use TGroupLockingCT';
+  TCTGroupShapePropertiesCT = TGroupShapePropertiesCT deprecated 'use TGroupShapePropertiesCT';
+  TCTGroupTransform2DCT = TGroupTransform2DCT deprecated 'use TGroupTransform2DCT';
+  TCTGvmlConnectorCT = TGvmlConnectorCT deprecated 'use TGvmlConnectorCT';
+  TCTGvmlConnectorCTList = TGvmlConnectorCTList deprecated 'use TGvmlConnectorCTList';
+  TCTGvmlConnectorNonVisualCT = TGvmlConnectorNonVisualCT deprecated 'use TGvmlConnectorNonVisualCT';
+  TCTGvmlGraphicFrameNonVisualCT = TGvmlGraphicFrameNonVisualCT deprecated 'use TGvmlGraphicFrameNonVisualCT';
+  TCTGvmlGraphicalObjectFrameCT = TGvmlGraphicalObjectFrameCT deprecated 'use TGvmlGraphicalObjectFrameCT';
+  TCTGvmlGraphicalObjectFrameCTList = TGvmlGraphicalObjectFrameCTList deprecated 'use TGvmlGraphicalObjectFrameCTList';
+  TCTGvmlGroupShapeCT = TGvmlGroupShapeCT deprecated 'use TGvmlGroupShapeCT';
+  TCTGvmlGroupShapeCTList = TGvmlGroupShapeCTList deprecated 'use TGvmlGroupShapeCTList';
+  TCTGvmlGroupShapeNonVisualCT = TGvmlGroupShapeNonVisualCT deprecated 'use TGvmlGroupShapeNonVisualCT';
+  TCTGvmlPictureCT = TGvmlPictureCT deprecated 'use TGvmlPictureCT';
+  TCTGvmlPictureCTList = TGvmlPictureCTList deprecated 'use TGvmlPictureCTList';
+  TCTGvmlPictureNonVisualCT = TGvmlPictureNonVisualCT deprecated 'use TGvmlPictureNonVisualCT';
+  TCTGvmlShapeCT = TGvmlShapeCT deprecated 'use TGvmlShapeCT';
+  TCTGvmlShapeCTList = TGvmlShapeCTList deprecated 'use TGvmlShapeCTList';
+  TCTGvmlShapeNonVisualCT = TGvmlShapeNonVisualCT deprecated 'use TGvmlShapeNonVisualCT';
+  TCTGvmlTextShapeCT = TGvmlTextShapeCT deprecated 'use TGvmlTextShapeCT';
+  TCTGvmlTextShapeCTList = TGvmlTextShapeCTList deprecated 'use TGvmlTextShapeCTList';
+  TCTGvmlUseShapeRectangleCT = TGvmlUseShapeRectangleCT deprecated 'use TGvmlUseShapeRectangleCT';
+  TCTHSLEffectCT = THSLEffectCT deprecated 'use THSLEffectCT';
+  TCTHSLEffectCTList = THSLEffectCTList deprecated 'use THSLEffectCTList';
+  TCTHeadersCT = THeadersCT deprecated 'use THeadersCT';
+  TCTHslColorCT = THslColorCT deprecated 'use THslColorCT';
+  TCTHslColorCTList = THslColorCTList deprecated 'use THslColorCTList';
+  TCTHyperlinkCT = THyperlinkCT deprecated 'use THyperlinkCT';
+  TCTInnerShadowEffectCT = TInnerShadowEffectCT deprecated 'use TInnerShadowEffectCT';
+  TCTInnerShadowEffectCTList = TInnerShadowEffectCTList deprecated 'use TInnerShadowEffectCTList';
+  TCTInverseGammaTransformCT = TInverseGammaTransformCT deprecated 'use TInverseGammaTransformCT';
+  TCTInverseGammaTransformCTList = TInverseGammaTransformCTList deprecated 'use TInverseGammaTransformCTList';
+  TCTInverseTransformCT = TInverseTransformCT deprecated 'use TInverseTransformCT';
+  TCTInverseTransformCTList = TInverseTransformCTList deprecated 'use TInverseTransformCTList';
+  TCTLightRigCT = TLightRigCT deprecated 'use TLightRigCT';
+  TSTLightRigDirectionST = TLightRigDirectionST deprecated 'use TLightRigDirectionST';
+  TSTLightRigTypeST = TLightRigTypeST deprecated 'use TLightRigTypeST';
+  TSTLineCapST = TLineCapST deprecated 'use TLineCapST';
+  TEGLineDashPropertiesEG = TLineDashPropertiesEG deprecated 'use TLineDashPropertiesEG';
+  TSTLineEndLengthST = TLineEndLengthST deprecated 'use TLineEndLengthST';
+  TCTLineEndPropertiesCT = TLineEndPropertiesCT deprecated 'use TLineEndPropertiesCT';
+  TSTLineEndTypeST = TLineEndTypeST deprecated 'use TLineEndTypeST';
+  TSTLineEndWidthST = TLineEndWidthST deprecated 'use TLineEndWidthST';
+  TEGLineFillPropertiesEG = TLineFillPropertiesEG deprecated 'use TLineFillPropertiesEG';
+  TCTLineJoinBevelCT = TLineJoinBevelCT deprecated 'use TLineJoinBevelCT';
+  TCTLineJoinMiterPropertiesCT = TLineJoinMiterPropertiesCT deprecated 'use TLineJoinMiterPropertiesCT';
+  TEGLineJoinPropertiesEG = TLineJoinPropertiesEG deprecated 'use TLineJoinPropertiesEG';
+  TCTLineJoinRoundCT = TLineJoinRoundCT deprecated 'use TLineJoinRoundCT';
+  TCTLinePropertiesCT = TLinePropertiesCT deprecated 'use TLinePropertiesCT';
+  TCTLinePropertiesCTList = TLinePropertiesCTList deprecated 'use TLinePropertiesCTList';
+  TCTLineStyleListCT = TLineStyleListCT deprecated 'use TLineStyleListCT';
+  TSTLineWidthST = TLineWidthST deprecated 'use TLineWidthST';
+  TCTLinearShadePropertiesCT = TLinearShadePropertiesCT deprecated 'use TLinearShadePropertiesCT';
+  TAGLockingAG = TLockingAG deprecated 'use TLockingAG';
+  TCTLuminanceEffectCT = TLuminanceEffectCT deprecated 'use TLuminanceEffectCT';
+  TCTLuminanceEffectCTList = TLuminanceEffectCTList deprecated 'use TLuminanceEffectCTList';
+  TEGMediaEG = TMediaEG deprecated 'use TMediaEG';
+  TCTNoFillPropertiesCT = TNoFillPropertiesCT deprecated 'use TNoFillPropertiesCT';
+  TCTNoFillPropertiesCTList = TNoFillPropertiesCTList deprecated 'use TNoFillPropertiesCTList';
+  TCTNonVisualConnectorPropertiesCT = TNonVisualConnectorPropertiesCT deprecated 'use TNonVisualConnectorPropertiesCT';
+  TCTNonVisualContentPartPropertiesCT = TNonVisualContentPartPropertiesCT deprecated 'use TNonVisualContentPartPropertiesCT';
+  TCTNonVisualDrawingPropsCT = TNonVisualDrawingPropsCT deprecated 'use TNonVisualDrawingPropsCT';
+  TCTNonVisualDrawingShapePropsCT = TNonVisualDrawingShapePropsCT deprecated 'use TNonVisualDrawingShapePropsCT';
+  TCTNonVisualGraphicFramePropertiesCT = TNonVisualGraphicFramePropertiesCT deprecated 'use TNonVisualGraphicFramePropertiesCT';
+  TCTNonVisualGroupDrawingShapePropsCT = TNonVisualGroupDrawingShapePropsCT deprecated 'use TNonVisualGroupDrawingShapePropsCT';
+  TCTNonVisualPicturePropertiesCT = TNonVisualPicturePropertiesCT deprecated 'use TNonVisualPicturePropertiesCT';
+  TCTObjectStyleDefaultsCT = TObjectStyleDefaultsCT deprecated 'use TObjectStyleDefaultsCT';
+  TCTOfficeArtExtensionCT = TOfficeArtExtensionCT deprecated 'use TOfficeArtExtensionCT';
+  TCTOfficeArtExtensionCTList = TOfficeArtExtensionCTList deprecated 'use TOfficeArtExtensionCTList';
+  TCTOfficeArtExtensionListCT = TOfficeArtExtensionListCT deprecated 'use TOfficeArtExtensionListCT';
+  TEGOfficeArtExtensionListEG = TOfficeArtExtensionListEG deprecated 'use TOfficeArtExtensionListEG';
+  TCTOfficeStyleSheetCT = TOfficeStyleSheetCT deprecated 'use TOfficeStyleSheetCT';
+  TSTOnOffStyleTypeST = TOnOffStyleTypeST deprecated 'use TOnOffStyleTypeST';
+  TCTOuterShadowEffectCT = TOuterShadowEffectCT deprecated 'use TOuterShadowEffectCT';
+  TCTOuterShadowEffectCTList = TOuterShadowEffectCTList deprecated 'use TOuterShadowEffectCTList';
+  TCTPath2DArcToCT = TPath2DArcToCT deprecated 'use TPath2DArcToCT';
+  TCTPath2DArcToCTList = TPath2DArcToCTList deprecated 'use TPath2DArcToCTList';
+  TCTPath2DCT = TPath2DCT deprecated 'use TPath2DCT';
+  TCTPath2DCTList = TPath2DCTList deprecated 'use TPath2DCTList';
+  TCTPath2DCloseCT = TPath2DCloseCT deprecated 'use TPath2DCloseCT';
+  TCTPath2DCloseCTList = TPath2DCloseCTList deprecated 'use TPath2DCloseCTList';
+  TCTPath2DCubicBezierToCT = TPath2DCubicBezierToCT deprecated 'use TPath2DCubicBezierToCT';
+  TCTPath2DCubicBezierToCTList = TPath2DCubicBezierToCTList deprecated 'use TPath2DCubicBezierToCTList';
+  TCTPath2DLineToCT = TPath2DLineToCT deprecated 'use TPath2DLineToCT';
+  TCTPath2DLineToCTList = TPath2DLineToCTList deprecated 'use TPath2DLineToCTList';
+  TCTPath2DListCT = TPath2DListCT deprecated 'use TPath2DListCT';
+  TCTPath2DMoveToCT = TPath2DMoveToCT deprecated 'use TPath2DMoveToCT';
+  TCTPath2DMoveToCTList = TPath2DMoveToCTList deprecated 'use TPath2DMoveToCTList';
+  TCTPath2DQuadBezierToCT = TPath2DQuadBezierToCT deprecated 'use TPath2DQuadBezierToCT';
+  TCTPath2DQuadBezierToCTList = TPath2DQuadBezierToCTList deprecated 'use TPath2DQuadBezierToCTList';
+  TSTPathFillModeST = TPathFillModeST deprecated 'use TPathFillModeST';
+  TCTPathShadePropertiesCT = TPathShadePropertiesCT deprecated 'use TPathShadePropertiesCT';
+  TSTPathShadeTypeST = TPathShadeTypeST deprecated 'use TPathShadeTypeST';
+  TCTPatternFillPropertiesCT = TPatternFillPropertiesCT deprecated 'use TPatternFillPropertiesCT';
+  TCTPatternFillPropertiesCTList = TPatternFillPropertiesCTList deprecated 'use TPatternFillPropertiesCTList';
+  TSTPenAlignmentST = TPenAlignmentST deprecated 'use TPenAlignmentST';
+  TCTPercentageCT = TPercentageCT deprecated 'use TPercentageCT';
+  TCTPercentageCTList = TPercentageCTList deprecated 'use TPercentageCTList';
+  TSTPercentageDecimalST = TPercentageDecimalST deprecated 'use TPercentageDecimalST';
+  TSTPercentageST = TPercentageST deprecated 'use TPercentageST';
+  TCTPictureLockingCT = TPictureLockingCT deprecated 'use TPictureLockingCT';
+  TSTPitchFamilyST = TPitchFamilyST deprecated 'use TPitchFamilyST';
+  TCTPoint2DCT = TPoint2DCT deprecated 'use TPoint2DCT';
+  TCTPoint3DCT = TPoint3DCT deprecated 'use TPoint3DCT';
+  TCTPolarAdjustHandleCT = TPolarAdjustHandleCT deprecated 'use TPolarAdjustHandleCT';
+  TCTPolarAdjustHandleCTList = TPolarAdjustHandleCTList deprecated 'use TPolarAdjustHandleCTList';
+  TSTPositiveCoordinate32ST = TPositiveCoordinate32ST deprecated 'use TPositiveCoordinate32ST';
+  TSTPositiveCoordinateST = TPositiveCoordinateST deprecated 'use TPositiveCoordinateST';
+  TCTPositiveFixedAngleCT = TPositiveFixedAngleCT deprecated 'use TPositiveFixedAngleCT';
+  TCTPositiveFixedAngleCTList = TPositiveFixedAngleCTList deprecated 'use TPositiveFixedAngleCTList';
+  TSTPositiveFixedAngleST = TPositiveFixedAngleST deprecated 'use TPositiveFixedAngleST';
+  TCTPositiveFixedPercentageCT = TPositiveFixedPercentageCT deprecated 'use TPositiveFixedPercentageCT';
+  TCTPositiveFixedPercentageCTList = TPositiveFixedPercentageCTList deprecated 'use TPositiveFixedPercentageCTList';
+  TSTPositiveFixedPercentageDecimalST = TPositiveFixedPercentageDecimalST deprecated 'use TPositiveFixedPercentageDecimalST';
+  TSTPositiveFixedPercentageST = TPositiveFixedPercentageST deprecated 'use TPositiveFixedPercentageST';
+  TCTPositivePercentageCT = TPositivePercentageCT deprecated 'use TPositivePercentageCT';
+  TCTPositivePercentageCTList = TPositivePercentageCTList deprecated 'use TPositivePercentageCTList';
+  TSTPositivePercentageDecimalST = TPositivePercentageDecimalST deprecated 'use TPositivePercentageDecimalST';
+  TSTPositivePercentageST = TPositivePercentageST deprecated 'use TPositivePercentageST';
+  TCTPositiveSize2DCT = TPositiveSize2DCT deprecated 'use TPositiveSize2DCT';
+  TSTPresetCameraTypeST = TPresetCameraTypeST deprecated 'use TPresetCameraTypeST';
+  TCTPresetColorCT = TPresetColorCT deprecated 'use TPresetColorCT';
+  TCTPresetColorCTList = TPresetColorCTList deprecated 'use TPresetColorCTList';
+  TSTPresetColorValST = TPresetColorValST deprecated 'use TPresetColorValST';
+  TCTPresetGeometry2DCT = TPresetGeometry2DCT deprecated 'use TPresetGeometry2DCT';
+  TCTPresetLineDashPropertiesCT = TPresetLineDashPropertiesCT deprecated 'use TPresetLineDashPropertiesCT';
+  TSTPresetLineDashValST = TPresetLineDashValST deprecated 'use TPresetLineDashValST';
+  TSTPresetMaterialTypeST = TPresetMaterialTypeST deprecated 'use TPresetMaterialTypeST';
+  TSTPresetPatternValST = TPresetPatternValST deprecated 'use TPresetPatternValST';
+  TCTPresetShadowEffectCT = TPresetShadowEffectCT deprecated 'use TPresetShadowEffectCT';
+  TCTPresetShadowEffectCTList = TPresetShadowEffectCTList deprecated 'use TPresetShadowEffectCTList';
+  TSTPresetShadowValST = TPresetShadowValST deprecated 'use TPresetShadowValST';
+  TCTPresetTextShapeCT = TPresetTextShapeCT deprecated 'use TPresetTextShapeCT';
+  TCTQuickTimeFileCT = TQuickTimeFileCT deprecated 'use TQuickTimeFileCT';
+  TCTRatioCT = TRatioCT deprecated 'use TRatioCT';
+  TSTRectAlignmentST = TRectAlignmentST deprecated 'use TRectAlignmentST';
+  TCTReflectionEffectCT = TReflectionEffectCT deprecated 'use TReflectionEffectCT';
+  TCTReflectionEffectCTList = TReflectionEffectCTList deprecated 'use TReflectionEffectCTList';
+  TCTRegularTextRunCT = TRegularTextRunCT deprecated 'use TRegularTextRunCT';
+  TCTRegularTextRunCTList = TRegularTextRunCTList deprecated 'use TRegularTextRunCTList';
+  TCTRelativeOffsetEffectCT = TRelativeOffsetEffectCT deprecated 'use TRelativeOffsetEffectCT';
+  TCTRelativeOffsetEffectCTList = TRelativeOffsetEffectCTList deprecated 'use TRelativeOffsetEffectCTList';
+  TCTRelativeRectCT = TRelativeRectCT deprecated 'use TRelativeRectCT';
+  TCTSRgbColorCT = TSRgbColorCT deprecated 'use TSRgbColorCT';
+  TCTSRgbColorCTList = TSRgbColorCTList deprecated 'use TSRgbColorCTList';
+  TCTScRgbColorCT = TScRgbColorCT deprecated 'use TScRgbColorCT';
+  TCTScRgbColorCTList = TScRgbColorCTList deprecated 'use TScRgbColorCTList';
+  TCTScale2DCT = TScale2DCT deprecated 'use TScale2DCT';
+  TCTScene3DCT = TScene3DCT deprecated 'use TScene3DCT';
+  TCTSchemeColorCT = TSchemeColorCT deprecated 'use TSchemeColorCT';
+  TCTSchemeColorCTList = TSchemeColorCTList deprecated 'use TSchemeColorCTList';
+  TSTSchemeColorValST = TSchemeColorValST deprecated 'use TSchemeColorValST';
+  TEGShadePropertiesEG = TShadePropertiesEG deprecated 'use TShadePropertiesEG';
+  TCTShape3DCT = TShape3DCT deprecated 'use TShape3DCT';
+  TSTShapeIDST = TShapeIDST deprecated 'use TShapeIDST';
+  TCTShapeLockingCT = TShapeLockingCT deprecated 'use TShapeLockingCT';
+  TCTShapePropertiesCT = TShapePropertiesCT deprecated 'use TShapePropertiesCT';
+  TCTShapeStyleCT = TShapeStyleCT deprecated 'use TShapeStyleCT';
+  TSTShapeTypeST = TShapeTypeST deprecated 'use TShapeTypeST';
+  TCTSoftEdgesEffectCT = TSoftEdgesEffectCT deprecated 'use TSoftEdgesEffectCT';
+  TCTSoftEdgesEffectCTList = TSoftEdgesEffectCTList deprecated 'use TSoftEdgesEffectCTList';
+  TCTSolidColorFillPropertiesCT = TSolidColorFillPropertiesCT deprecated 'use TSolidColorFillPropertiesCT';
+  TCTSolidColorFillPropertiesCTList = TSolidColorFillPropertiesCTList deprecated 'use TSolidColorFillPropertiesCTList';
+  TCTSphereCoordsCT = TSphereCoordsCT deprecated 'use TSphereCoordsCT';
+  TCTStretchInfoPropertiesCT = TStretchInfoPropertiesCT deprecated 'use TStretchInfoPropertiesCT';
+  TCTStyleMatrixCT = TStyleMatrixCT deprecated 'use TStyleMatrixCT';
+  TSTStyleMatrixColumnIndexST = TStyleMatrixColumnIndexST deprecated 'use TStyleMatrixColumnIndexST';
+  TCTStyleMatrixReferenceCT = TStyleMatrixReferenceCT deprecated 'use TStyleMatrixReferenceCT';
+  TCTSupplementalFontCT = TSupplementalFontCT deprecated 'use TSupplementalFontCT';
+  TCTSupplementalFontCTList = TSupplementalFontCTList deprecated 'use TSupplementalFontCTList';
+  TCTSystemColorCT = TSystemColorCT deprecated 'use TSystemColorCT';
+  TCTSystemColorCTList = TSystemColorCTList deprecated 'use TSystemColorCTList';
+  TSTSystemColorValST = TSystemColorValST deprecated 'use TSystemColorValST';
+  TCTTableBackgroundStyleCT = TTableBackgroundStyleCT deprecated 'use TTableBackgroundStyleCT';
+  TCTTableCT = TTableCT deprecated 'use TTableCT';
+  TCTTableCellBorderStyleCT = TTableCellBorderStyleCT deprecated 'use TTableCellBorderStyleCT';
+  TCTTableCellCT = TTableCellCT deprecated 'use TTableCellCT';
+  TCTTableCellCTList = TTableCellCTList deprecated 'use TTableCellCTList';
+  TCTTableCellPropertiesCT = TTableCellPropertiesCT deprecated 'use TTableCellPropertiesCT';
+  TCTTableColCT = TTableColCT deprecated 'use TTableColCT';
+  TCTTableColCTList = TTableColCTList deprecated 'use TTableColCTList';
+  TCTTableGridCT = TTableGridCT deprecated 'use TTableGridCT';
+  TCTTablePartStyleCT = TTablePartStyleCT deprecated 'use TTablePartStyleCT';
+  TCTTablePropertiesCT = TTablePropertiesCT deprecated 'use TTablePropertiesCT';
+  TCTTableRowCT = TTableRowCT deprecated 'use TTableRowCT';
+  TCTTableRowCTList = TTableRowCTList deprecated 'use TTableRowCTList';
+  TCTTableStyleCT = TTableStyleCT deprecated 'use TTableStyleCT';
+  TCTTableStyleCTList = TTableStyleCTList deprecated 'use TTableStyleCTList';
+  TCTTableStyleCellStyleCT = TTableStyleCellStyleCT deprecated 'use TTableStyleCellStyleCT';
+  TCTTableStyleListCT = TTableStyleListCT deprecated 'use TTableStyleListCT';
+  TCTTableStyleTextStyleCT = TTableStyleTextStyleCT deprecated 'use TTableStyleTextStyleCT';
+  TEGText3DEG = TText3DEG deprecated 'use TText3DEG';
+  TSTTextAlignTypeST = TTextAlignTypeST deprecated 'use TTextAlignTypeST';
+  TSTTextAnchoringTypeST = TTextAnchoringTypeST deprecated 'use TTextAnchoringTypeST';
+  TEGTextAutofitEG = TTextAutofitEG deprecated 'use TTextAutofitEG';
+  TCTTextAutonumberBulletCT = TTextAutonumberBulletCT deprecated 'use TTextAutonumberBulletCT';
+  TSTTextAutonumberSchemeST = TTextAutonumberSchemeST deprecated 'use TTextAutonumberSchemeST';
+  TCTTextBlipBulletCT = TTextBlipBulletCT deprecated 'use TTextBlipBulletCT';
+  TCTTextBodyCT = TTextBodyCT deprecated 'use TTextBodyCT';
+  TCTTextBodyPropertiesCT = TTextBodyPropertiesCT deprecated 'use TTextBodyPropertiesCT';
+  TEGTextBulletColorEG = TTextBulletColorEG deprecated 'use TTextBulletColorEG';
+  TCTTextBulletColorFollowTextCT = TTextBulletColorFollowTextCT deprecated 'use TTextBulletColorFollowTextCT';
+  TEGTextBulletEG = TTextBulletEG deprecated 'use TTextBulletEG';
+  TSTTextBulletSizeDecimalST = TTextBulletSizeDecimalST deprecated 'use TTextBulletSizeDecimalST';
+  TEGTextBulletSizeEG = TTextBulletSizeEG deprecated 'use TTextBulletSizeEG';
+  TCTTextBulletSizeFollowTextCT = TTextBulletSizeFollowTextCT deprecated 'use TTextBulletSizeFollowTextCT';
+  TCTTextBulletSizePercentCT = TTextBulletSizePercentCT deprecated 'use TTextBulletSizePercentCT';
+  TSTTextBulletSizePercentST = TTextBulletSizePercentST deprecated 'use TTextBulletSizePercentST';
+  TCTTextBulletSizePointCT = TTextBulletSizePointCT deprecated 'use TTextBulletSizePointCT';
+  TSTTextBulletSizeST = TTextBulletSizeST deprecated 'use TTextBulletSizeST';
+  TSTTextBulletStartAtNumST = TTextBulletStartAtNumST deprecated 'use TTextBulletStartAtNumST';
+  TEGTextBulletTypefaceEG = TTextBulletTypefaceEG deprecated 'use TTextBulletTypefaceEG';
+  TCTTextBulletTypefaceFollowTextCT = TTextBulletTypefaceFollowTextCT deprecated 'use TTextBulletTypefaceFollowTextCT';
+  TSTTextCapsTypeST = TTextCapsTypeST deprecated 'use TTextCapsTypeST';
+  TCTTextCharBulletCT = TTextCharBulletCT deprecated 'use TTextCharBulletCT';
+  TCTTextCharacterPropertiesCT = TTextCharacterPropertiesCT deprecated 'use TTextCharacterPropertiesCT';
+  TSTTextColumnCountST = TTextColumnCountST deprecated 'use TTextColumnCountST';
+  TCTTextFieldCT = TTextFieldCT deprecated 'use TTextFieldCT';
+  TCTTextFieldCTList = TTextFieldCTList deprecated 'use TTextFieldCTList';
+  TSTTextFontAlignTypeST = TTextFontAlignTypeST deprecated 'use TTextFontAlignTypeST';
+  TCTTextFontCT = TTextFontCT deprecated 'use TTextFontCT';
+  TSTTextFontScalePercentOrPercentStringST = TTextFontScalePercentOrPercentStringST deprecated 'use TTextFontScalePercentOrPercentStringST';
+  TSTTextFontScalePercentST = TTextFontScalePercentST deprecated 'use TTextFontScalePercentST';
+  TSTTextFontSizeST = TTextFontSizeST deprecated 'use TTextFontSizeST';
+  TEGTextGeometryEG = TTextGeometryEG deprecated 'use TTextGeometryEG';
+  TSTTextHorzOverflowTypeST = TTextHorzOverflowTypeST deprecated 'use TTextHorzOverflowTypeST';
+  TSTTextIndentLevelTypeST = TTextIndentLevelTypeST deprecated 'use TTextIndentLevelTypeST';
+  TSTTextIndentST = TTextIndentST deprecated 'use TTextIndentST';
+  TCTTextLineBreakCT = TTextLineBreakCT deprecated 'use TTextLineBreakCT';
+  TCTTextLineBreakCTList = TTextLineBreakCTList deprecated 'use TTextLineBreakCTList';
+  TCTTextListStyleCT = TTextListStyleCT deprecated 'use TTextListStyleCT';
+  TSTTextMarginST = TTextMarginST deprecated 'use TTextMarginST';
+  TCTTextNoAutofitCT = TTextNoAutofitCT deprecated 'use TTextNoAutofitCT';
+  TCTTextNoBulletCT = TTextNoBulletCT deprecated 'use TTextNoBulletCT';
+  TSTTextNonNegativePointST = TTextNonNegativePointST deprecated 'use TTextNonNegativePointST';
+  TCTTextNormalAutofitCT = TTextNormalAutofitCT deprecated 'use TTextNormalAutofitCT';
+  TCTTextParagraphCT = TTextParagraphCT deprecated 'use TTextParagraphCT';
+  TCTTextParagraphCTList = TTextParagraphCTList deprecated 'use TTextParagraphCTList';
+  TCTTextParagraphPropertiesCT = TTextParagraphPropertiesCT deprecated 'use TTextParagraphPropertiesCT';
+  TSTTextPointST = TTextPointST deprecated 'use TTextPointST';
+  TSTTextPointUnqualifiedST = TTextPointUnqualifiedST deprecated 'use TTextPointUnqualifiedST';
+  TEGTextRunEG = TTextRunEG deprecated 'use TTextRunEG';
+  TCTTextShapeAutofitCT = TTextShapeAutofitCT deprecated 'use TTextShapeAutofitCT';
+  TSTTextShapeTypeST = TTextShapeTypeST deprecated 'use TTextShapeTypeST';
+  TCTTextSpacingCT = TTextSpacingCT deprecated 'use TTextSpacingCT';
+  TCTTextSpacingPercentCT = TTextSpacingPercentCT deprecated 'use TTextSpacingPercentCT';
+  TSTTextSpacingPercentOrPercentStringST = TTextSpacingPercentOrPercentStringST deprecated 'use TTextSpacingPercentOrPercentStringST';
+  TSTTextSpacingPercentST = TTextSpacingPercentST deprecated 'use TTextSpacingPercentST';
+  TCTTextSpacingPointCT = TTextSpacingPointCT deprecated 'use TTextSpacingPointCT';
+  TSTTextSpacingPointST = TTextSpacingPointST deprecated 'use TTextSpacingPointST';
+  TSTTextStrikeTypeST = TTextStrikeTypeST deprecated 'use TTextStrikeTypeST';
+  TSTTextTabAlignTypeST = TTextTabAlignTypeST deprecated 'use TTextTabAlignTypeST';
+  TCTTextTabStopCT = TTextTabStopCT deprecated 'use TTextTabStopCT';
+  TCTTextTabStopCTList = TTextTabStopCTList deprecated 'use TTextTabStopCTList';
+  TCTTextTabStopListCT = TTextTabStopListCT deprecated 'use TTextTabStopListCT';
+  TSTTextTypefaceST = TTextTypefaceST deprecated 'use TTextTypefaceST';
+  TEGTextUnderlineFillEG = TTextUnderlineFillEG deprecated 'use TTextUnderlineFillEG';
+  TCTTextUnderlineFillFollowTextCT = TTextUnderlineFillFollowTextCT deprecated 'use TTextUnderlineFillFollowTextCT';
+  TCTTextUnderlineFillGroupWrapperCT = TTextUnderlineFillGroupWrapperCT deprecated 'use TTextUnderlineFillGroupWrapperCT';
+  TEGTextUnderlineLineEG = TTextUnderlineLineEG deprecated 'use TTextUnderlineLineEG';
+  TCTTextUnderlineLineFollowTextCT = TTextUnderlineLineFollowTextCT deprecated 'use TTextUnderlineLineFollowTextCT';
+  TSTTextUnderlineTypeST = TTextUnderlineTypeST deprecated 'use TTextUnderlineTypeST';
+  TSTTextVertOverflowTypeST = TTextVertOverflowTypeST deprecated 'use TTextVertOverflowTypeST';
+  TSTTextVerticalTypeST = TTextVerticalTypeST deprecated 'use TTextVerticalTypeST';
+  TSTTextWrappingTypeST = TTextWrappingTypeST deprecated 'use TTextWrappingTypeST';
+  TEGThemeableEffectStyleEG = TThemeableEffectStyleEG deprecated 'use TThemeableEffectStyleEG';
+  TEGThemeableFillStyleEG = TThemeableFillStyleEG deprecated 'use TThemeableFillStyleEG';
+  TEGThemeableFontStylesEG = TThemeableFontStylesEG deprecated 'use TThemeableFontStylesEG';
+  TCTThemeableLineStyleCT = TThemeableLineStyleCT deprecated 'use TThemeableLineStyleCT';
+  TSTTileFlipModeST = TTileFlipModeST deprecated 'use TTileFlipModeST';
+  TCTTileInfoPropertiesCT = TTileInfoPropertiesCT deprecated 'use TTileInfoPropertiesCT';
+  TCTTintEffectCT = TTintEffectCT deprecated 'use TTintEffectCT';
+  TCTTintEffectCTList = TTintEffectCTList deprecated 'use TTintEffectCTList';
+  TCTTransform2DCT = TTransform2DCT deprecated 'use TTransform2DCT';
+  TCTTransformEffectCT = TTransformEffectCT deprecated 'use TTransformEffectCT';
+  TCTTransformEffectCTList = TTransformEffectCTList deprecated 'use TTransformEffectCTList';
+  TCTVector3DCT = TVector3DCT deprecated 'use TVector3DCT';
+  TCTVideoFileCT = TVideoFileCT deprecated 'use TVideoFileCT';
+  TCTWholeE2oFormattingCT = TWholeE2oFormattingCT deprecated 'use TWholeE2oFormattingCT';
+  TCTXYAdjustHandleCT = TXYAdjustHandleCT deprecated 'use TXYAdjustHandleCT';
+  TCTXYAdjustHandleCTList = TXYAdjustHandleCTList deprecated 'use TXYAdjustHandleCTList';
 
 implementation
 
-{ TCTCustomColorCT }
+{ TCustomColorCT }
 
-function TCTCustomColorCT.GetScrgbClr: TCTScRgbColorCT;
+function TCustomColorCT.GetScrgbClr: TScRgbColorCT;
 begin
-  Result := TCTScRgbColorCT(Lazy(fScrgbClr, TCTScRgbColorCT));
+  Result := TScRgbColorCT(Lazy(fScrgbClr, TScRgbColorCT));
 end;
 
-function TCTCustomColorCT.GetSrgbClr: TCTSRgbColorCT;
+function TCustomColorCT.GetSrgbClr: TSRgbColorCT;
 begin
-  Result := TCTSRgbColorCT(Lazy(fSrgbClr, TCTSRgbColorCT));
+  Result := TSRgbColorCT(Lazy(fSrgbClr, TSRgbColorCT));
 end;
 
-function TCTCustomColorCT.GetHslClr: TCTHslColorCT;
+function TCustomColorCT.GetHslClr: THslColorCT;
 begin
-  Result := TCTHslColorCT(Lazy(fHslClr, TCTHslColorCT));
+  Result := THslColorCT(Lazy(fHslClr, THslColorCT));
 end;
 
-function TCTCustomColorCT.GetSysClr: TCTSystemColorCT;
+function TCustomColorCT.GetSysClr: TSystemColorCT;
 begin
-  Result := TCTSystemColorCT(Lazy(fSysClr, TCTSystemColorCT));
+  Result := TSystemColorCT(Lazy(fSysClr, TSystemColorCT));
 end;
 
-function TCTCustomColorCT.GetSchemeClr: TCTSchemeColorCT;
+function TCustomColorCT.GetSchemeClr: TSchemeColorCT;
 begin
-  Result := TCTSchemeColorCT(Lazy(fSchemeClr, TCTSchemeColorCT));
+  Result := TSchemeColorCT(Lazy(fSchemeClr, TSchemeColorCT));
 end;
 
-function TCTCustomColorCT.GetPrstClr: TCTPresetColorCT;
+function TCustomColorCT.GetPrstClr: TPresetColorCT;
 begin
-  Result := TCTPresetColorCT(Lazy(fPrstClr, TCTPresetColorCT));
+  Result := TPresetColorCT(Lazy(fPrstClr, TPresetColorCT));
 end;
 
-{ TCTEffectStyleItemCT }
+{ TEffectStyleItemCT }
 
-function TCTEffectStyleItemCT.GetEffectLst: TCTEffectListCT;
+function TEffectStyleItemCT.GetEffectLst: TEffectListCT;
 begin
-  Result := TCTEffectListCT(Lazy(fEffectLst, TCTEffectListCT));
+  Result := TEffectListCT(Lazy(fEffectLst, TEffectListCT));
 end;
 
-function TCTEffectStyleItemCT.GetEffectDag: TCTEffectContainerCT;
+function TEffectStyleItemCT.GetEffectDag: TEffectContainerCT;
 begin
-  Result := TCTEffectContainerCT(Lazy(fEffectDag, TCTEffectContainerCT));
+  Result := TEffectContainerCT(Lazy(fEffectDag, TEffectContainerCT));
 end;
 
-function TCTEffectStyleItemCT.GetEffectChosen: TBasite;
+function TEffectStyleItemCT.GetEffectChosen: TBasite;
 begin
   Result := Chosen('Effect');
 end;
 
-{ TCTColorCT }
+{ TColorCT }
 
-function TCTColorCT.GetScrgbClr: TCTScRgbColorCT;
+function TColorCT.GetScrgbClr: TScRgbColorCT;
 begin
-  Result := TCTScRgbColorCT(Lazy(fScrgbClr, TCTScRgbColorCT));
+  Result := TScRgbColorCT(Lazy(fScrgbClr, TScRgbColorCT));
 end;
 
-function TCTColorCT.GetSrgbClr: TCTSRgbColorCT;
+function TColorCT.GetSrgbClr: TSRgbColorCT;
 begin
-  Result := TCTSRgbColorCT(Lazy(fSrgbClr, TCTSRgbColorCT));
+  Result := TSRgbColorCT(Lazy(fSrgbClr, TSRgbColorCT));
 end;
 
-function TCTColorCT.GetHslClr: TCTHslColorCT;
+function TColorCT.GetHslClr: THslColorCT;
 begin
-  Result := TCTHslColorCT(Lazy(fHslClr, TCTHslColorCT));
+  Result := THslColorCT(Lazy(fHslClr, THslColorCT));
 end;
 
-function TCTColorCT.GetSysClr: TCTSystemColorCT;
+function TColorCT.GetSysClr: TSystemColorCT;
 begin
-  Result := TCTSystemColorCT(Lazy(fSysClr, TCTSystemColorCT));
+  Result := TSystemColorCT(Lazy(fSysClr, TSystemColorCT));
 end;
 
-function TCTColorCT.GetSchemeClr: TCTSchemeColorCT;
+function TColorCT.GetSchemeClr: TSchemeColorCT;
 begin
-  Result := TCTSchemeColorCT(Lazy(fSchemeClr, TCTSchemeColorCT));
+  Result := TSchemeColorCT(Lazy(fSchemeClr, TSchemeColorCT));
 end;
 
-function TCTColorCT.GetPrstClr: TCTPresetColorCT;
+function TColorCT.GetPrstClr: TPresetColorCT;
 begin
-  Result := TCTPresetColorCT(Lazy(fPrstClr, TCTPresetColorCT));
+  Result := TPresetColorCT(Lazy(fPrstClr, TPresetColorCT));
 end;
 
-{ TCTAnimationElementChoiceCT }
+{ TAnimationElementChoiceCT }
 
-function TCTAnimationElementChoiceCT.GetDgm: TCTAnimationDgmElementCT;
+function TAnimationElementChoiceCT.GetDgm: TAnimationDgmElementCT;
 begin
-  Result := TCTAnimationDgmElementCT(Lazy(fDgm, TCTAnimationDgmElementCT));
+  Result := TAnimationDgmElementCT(Lazy(fDgm, TAnimationDgmElementCT));
 end;
 
-function TCTAnimationElementChoiceCT.GetChart: TCTAnimationChartElementCT;
+function TAnimationElementChoiceCT.GetChart: TAnimationChartElementCT;
 begin
-  Result := TCTAnimationChartElementCT(Lazy(fChart, TCTAnimationChartElementCT));
+  Result := TAnimationChartElementCT(Lazy(fChart, TAnimationChartElementCT));
 end;
 
-{ TCTAnimationGraphicalObjectBuildPropertiesCT }
+{ TAnimationGraphicalObjectBuildPropertiesCT }
 
-function TCTAnimationGraphicalObjectBuildPropertiesCT.GetBldDgm: TCTAnimationDgmBuildPropertiesCT;
+function TAnimationGraphicalObjectBuildPropertiesCT.GetBldDgm: TAnimationDgmBuildPropertiesCT;
 begin
-  Result := TCTAnimationDgmBuildPropertiesCT(Lazy(fBldDgm, TCTAnimationDgmBuildPropertiesCT));
+  Result := TAnimationDgmBuildPropertiesCT(Lazy(fBldDgm, TAnimationDgmBuildPropertiesCT));
 end;
 
-function TCTAnimationGraphicalObjectBuildPropertiesCT.GetBldChart: TCTAnimationChartBuildPropertiesCT;
+function TAnimationGraphicalObjectBuildPropertiesCT.GetBldChart: TAnimationChartBuildPropertiesCT;
 begin
-  Result := TCTAnimationChartBuildPropertiesCT(Lazy(fBldChart, TCTAnimationChartBuildPropertiesCT));
+  Result := TAnimationChartBuildPropertiesCT(Lazy(fBldChart, TAnimationChartBuildPropertiesCT));
 end;
 
-function TCTAnimationGraphicalObjectBuildPropertiesCT.GetBldChosen: TBasite;
+function TAnimationGraphicalObjectBuildPropertiesCT.GetBldChosen: TBasite;
 begin
   Result := Chosen('Bld');
 end;
 
-{ TCTBackgroundFormattingCT }
+{ TBackgroundFormattingCT }
 
-function TCTBackgroundFormattingCT.GetNoFill: TCTNoFillPropertiesCT;
+function TBackgroundFormattingCT.GetNoFill: TNoFillPropertiesCT;
 begin
-  Result := TCTNoFillPropertiesCT(Lazy(fNoFill, TCTNoFillPropertiesCT));
+  Result := TNoFillPropertiesCT(Lazy(fNoFill, TNoFillPropertiesCT));
 end;
 
-function TCTBackgroundFormattingCT.GetSolidFill: TCTSolidColorFillPropertiesCT;
+function TBackgroundFormattingCT.GetSolidFill: TSolidColorFillPropertiesCT;
 begin
-  Result := TCTSolidColorFillPropertiesCT(Lazy(fSolidFill, TCTSolidColorFillPropertiesCT));
+  Result := TSolidColorFillPropertiesCT(Lazy(fSolidFill, TSolidColorFillPropertiesCT));
 end;
 
-function TCTBackgroundFormattingCT.GetGradFill: TCTGradientFillPropertiesCT;
+function TBackgroundFormattingCT.GetGradFill: TGradientFillPropertiesCT;
 begin
-  Result := TCTGradientFillPropertiesCT(Lazy(fGradFill, TCTGradientFillPropertiesCT));
+  Result := TGradientFillPropertiesCT(Lazy(fGradFill, TGradientFillPropertiesCT));
 end;
 
-function TCTBackgroundFormattingCT.GetBlipFill: TCTBlipFillPropertiesCT;
+function TBackgroundFormattingCT.GetBlipFill: TBlipFillPropertiesCT;
 begin
-  Result := TCTBlipFillPropertiesCT(Lazy(fBlipFill, TCTBlipFillPropertiesCT));
+  Result := TBlipFillPropertiesCT(Lazy(fBlipFill, TBlipFillPropertiesCT));
 end;
 
-function TCTBackgroundFormattingCT.GetPattFill: TCTPatternFillPropertiesCT;
+function TBackgroundFormattingCT.GetPattFill: TPatternFillPropertiesCT;
 begin
-  Result := TCTPatternFillPropertiesCT(Lazy(fPattFill, TCTPatternFillPropertiesCT));
+  Result := TPatternFillPropertiesCT(Lazy(fPattFill, TPatternFillPropertiesCT));
 end;
 
-function TCTBackgroundFormattingCT.GetGrpFill: TCTGroupFillPropertiesCT;
+function TBackgroundFormattingCT.GetGrpFill: TGroupFillPropertiesCT;
 begin
-  Result := TCTGroupFillPropertiesCT(Lazy(fGrpFill, TCTGroupFillPropertiesCT));
+  Result := TGroupFillPropertiesCT(Lazy(fGrpFill, TGroupFillPropertiesCT));
 end;
 
-function TCTBackgroundFormattingCT.GetEffectLst: TCTEffectListCT;
+function TBackgroundFormattingCT.GetEffectLst: TEffectListCT;
 begin
-  Result := TCTEffectListCT(Lazy(fEffectLst, TCTEffectListCT));
+  Result := TEffectListCT(Lazy(fEffectLst, TEffectListCT));
 end;
 
-function TCTBackgroundFormattingCT.GetEffectDag: TCTEffectContainerCT;
+function TBackgroundFormattingCT.GetEffectDag: TEffectContainerCT;
 begin
-  Result := TCTEffectContainerCT(Lazy(fEffectDag, TCTEffectContainerCT));
+  Result := TEffectContainerCT(Lazy(fEffectDag, TEffectContainerCT));
 end;
 
-function TCTBackgroundFormattingCT.GetEffectChosen: TBasite;
-begin
-  Result := Chosen('Effect');
-end;
-
-{ TCTWholeE2oFormattingCT }
-
-function TCTWholeE2oFormattingCT.GetEffectLst: TCTEffectListCT;
-begin
-  Result := TCTEffectListCT(Lazy(fEffectLst, TCTEffectListCT));
-end;
-
-function TCTWholeE2oFormattingCT.GetEffectDag: TCTEffectContainerCT;
-begin
-  Result := TCTEffectContainerCT(Lazy(fEffectDag, TCTEffectContainerCT));
-end;
-
-function TCTWholeE2oFormattingCT.GetEffectChosen: TBasite;
+function TBackgroundFormattingCT.GetEffectChosen: TBasite;
 begin
   Result := Chosen('Effect');
 end;
 
-{ TCTGvmlTextShapeCT }
+{ TWholeE2oFormattingCT }
 
-function TCTGvmlTextShapeCT.GetUseSpRect: TCTGvmlUseShapeRectangleCT;
+function TWholeE2oFormattingCT.GetEffectLst: TEffectListCT;
 begin
-  Result := TCTGvmlUseShapeRectangleCT(Lazy(fUseSpRect, TCTGvmlUseShapeRectangleCT));
+  Result := TEffectListCT(Lazy(fEffectLst, TEffectListCT));
 end;
 
-function TCTGvmlTextShapeCT.GetXfrm: TCTTransform2DCT;
+function TWholeE2oFormattingCT.GetEffectDag: TEffectContainerCT;
 begin
-  Result := TCTTransform2DCT(Lazy(fXfrm, TCTTransform2DCT));
+  Result := TEffectContainerCT(Lazy(fEffectDag, TEffectContainerCT));
 end;
 
-{ TCTAlphaInverseEffectCT }
-
-function TCTAlphaInverseEffectCT.GetScrgbClr: TCTScRgbColorCT;
-begin
-  Result := TCTScRgbColorCT(Lazy(fScrgbClr, TCTScRgbColorCT));
-end;
-
-function TCTAlphaInverseEffectCT.GetSrgbClr: TCTSRgbColorCT;
-begin
-  Result := TCTSRgbColorCT(Lazy(fSrgbClr, TCTSRgbColorCT));
-end;
-
-function TCTAlphaInverseEffectCT.GetHslClr: TCTHslColorCT;
-begin
-  Result := TCTHslColorCT(Lazy(fHslClr, TCTHslColorCT));
-end;
-
-function TCTAlphaInverseEffectCT.GetSysClr: TCTSystemColorCT;
-begin
-  Result := TCTSystemColorCT(Lazy(fSysClr, TCTSystemColorCT));
-end;
-
-function TCTAlphaInverseEffectCT.GetSchemeClr: TCTSchemeColorCT;
-begin
-  Result := TCTSchemeColorCT(Lazy(fSchemeClr, TCTSchemeColorCT));
-end;
-
-function TCTAlphaInverseEffectCT.GetPrstClr: TCTPresetColorCT;
-begin
-  Result := TCTPresetColorCT(Lazy(fPrstClr, TCTPresetColorCT));
-end;
-
-{ TCTColorReplaceEffectCT }
-
-function TCTColorReplaceEffectCT.GetScrgbClr: TCTScRgbColorCT;
-begin
-  Result := TCTScRgbColorCT(Lazy(fScrgbClr, TCTScRgbColorCT));
-end;
-
-function TCTColorReplaceEffectCT.GetSrgbClr: TCTSRgbColorCT;
-begin
-  Result := TCTSRgbColorCT(Lazy(fSrgbClr, TCTSRgbColorCT));
-end;
-
-function TCTColorReplaceEffectCT.GetHslClr: TCTHslColorCT;
-begin
-  Result := TCTHslColorCT(Lazy(fHslClr, TCTHslColorCT));
-end;
-
-function TCTColorReplaceEffectCT.GetSysClr: TCTSystemColorCT;
-begin
-  Result := TCTSystemColorCT(Lazy(fSysClr, TCTSystemColorCT));
-end;
-
-function TCTColorReplaceEffectCT.GetSchemeClr: TCTSchemeColorCT;
-begin
-  Result := TCTSchemeColorCT(Lazy(fSchemeClr, TCTSchemeColorCT));
-end;
-
-function TCTColorReplaceEffectCT.GetPrstClr: TCTPresetColorCT;
-begin
-  Result := TCTPresetColorCT(Lazy(fPrstClr, TCTPresetColorCT));
-end;
-
-{ TCTGlowEffectCT }
-
-function TCTGlowEffectCT.GetScrgbClr: TCTScRgbColorCT;
-begin
-  Result := TCTScRgbColorCT(Lazy(fScrgbClr, TCTScRgbColorCT));
-end;
-
-function TCTGlowEffectCT.GetSrgbClr: TCTSRgbColorCT;
-begin
-  Result := TCTSRgbColorCT(Lazy(fSrgbClr, TCTSRgbColorCT));
-end;
-
-function TCTGlowEffectCT.GetHslClr: TCTHslColorCT;
-begin
-  Result := TCTHslColorCT(Lazy(fHslClr, TCTHslColorCT));
-end;
-
-function TCTGlowEffectCT.GetSysClr: TCTSystemColorCT;
-begin
-  Result := TCTSystemColorCT(Lazy(fSysClr, TCTSystemColorCT));
-end;
-
-function TCTGlowEffectCT.GetSchemeClr: TCTSchemeColorCT;
-begin
-  Result := TCTSchemeColorCT(Lazy(fSchemeClr, TCTSchemeColorCT));
-end;
-
-function TCTGlowEffectCT.GetPrstClr: TCTPresetColorCT;
-begin
-  Result := TCTPresetColorCT(Lazy(fPrstClr, TCTPresetColorCT));
-end;
-
-{ TCTInnerShadowEffectCT }
-
-function TCTInnerShadowEffectCT.GetScrgbClr: TCTScRgbColorCT;
-begin
-  Result := TCTScRgbColorCT(Lazy(fScrgbClr, TCTScRgbColorCT));
-end;
-
-function TCTInnerShadowEffectCT.GetSrgbClr: TCTSRgbColorCT;
-begin
-  Result := TCTSRgbColorCT(Lazy(fSrgbClr, TCTSRgbColorCT));
-end;
-
-function TCTInnerShadowEffectCT.GetHslClr: TCTHslColorCT;
-begin
-  Result := TCTHslColorCT(Lazy(fHslClr, TCTHslColorCT));
-end;
-
-function TCTInnerShadowEffectCT.GetSysClr: TCTSystemColorCT;
-begin
-  Result := TCTSystemColorCT(Lazy(fSysClr, TCTSystemColorCT));
-end;
-
-function TCTInnerShadowEffectCT.GetSchemeClr: TCTSchemeColorCT;
-begin
-  Result := TCTSchemeColorCT(Lazy(fSchemeClr, TCTSchemeColorCT));
-end;
-
-function TCTInnerShadowEffectCT.GetPrstClr: TCTPresetColorCT;
-begin
-  Result := TCTPresetColorCT(Lazy(fPrstClr, TCTPresetColorCT));
-end;
-
-{ TCTOuterShadowEffectCT }
-
-function TCTOuterShadowEffectCT.GetScrgbClr: TCTScRgbColorCT;
-begin
-  Result := TCTScRgbColorCT(Lazy(fScrgbClr, TCTScRgbColorCT));
-end;
-
-function TCTOuterShadowEffectCT.GetSrgbClr: TCTSRgbColorCT;
-begin
-  Result := TCTSRgbColorCT(Lazy(fSrgbClr, TCTSRgbColorCT));
-end;
-
-function TCTOuterShadowEffectCT.GetHslClr: TCTHslColorCT;
-begin
-  Result := TCTHslColorCT(Lazy(fHslClr, TCTHslColorCT));
-end;
-
-function TCTOuterShadowEffectCT.GetSysClr: TCTSystemColorCT;
-begin
-  Result := TCTSystemColorCT(Lazy(fSysClr, TCTSystemColorCT));
-end;
-
-function TCTOuterShadowEffectCT.GetSchemeClr: TCTSchemeColorCT;
-begin
-  Result := TCTSchemeColorCT(Lazy(fSchemeClr, TCTSchemeColorCT));
-end;
-
-function TCTOuterShadowEffectCT.GetPrstClr: TCTPresetColorCT;
-begin
-  Result := TCTPresetColorCT(Lazy(fPrstClr, TCTPresetColorCT));
-end;
-
-{ TCTPresetShadowEffectCT }
-
-function TCTPresetShadowEffectCT.GetScrgbClr: TCTScRgbColorCT;
-begin
-  Result := TCTScRgbColorCT(Lazy(fScrgbClr, TCTScRgbColorCT));
-end;
-
-function TCTPresetShadowEffectCT.GetSrgbClr: TCTSRgbColorCT;
-begin
-  Result := TCTSRgbColorCT(Lazy(fSrgbClr, TCTSRgbColorCT));
-end;
-
-function TCTPresetShadowEffectCT.GetHslClr: TCTHslColorCT;
-begin
-  Result := TCTHslColorCT(Lazy(fHslClr, TCTHslColorCT));
-end;
-
-function TCTPresetShadowEffectCT.GetSysClr: TCTSystemColorCT;
-begin
-  Result := TCTSystemColorCT(Lazy(fSysClr, TCTSystemColorCT));
-end;
-
-function TCTPresetShadowEffectCT.GetSchemeClr: TCTSchemeColorCT;
-begin
-  Result := TCTSchemeColorCT(Lazy(fSchemeClr, TCTSchemeColorCT));
-end;
-
-function TCTPresetShadowEffectCT.GetPrstClr: TCTPresetColorCT;
-begin
-  Result := TCTPresetColorCT(Lazy(fPrstClr, TCTPresetColorCT));
-end;
-
-{ TCTSolidColorFillPropertiesCT }
-
-function TCTSolidColorFillPropertiesCT.GetScrgbClr: TCTScRgbColorCT;
-begin
-  Result := TCTScRgbColorCT(Lazy(fScrgbClr, TCTScRgbColorCT));
-end;
-
-function TCTSolidColorFillPropertiesCT.GetSrgbClr: TCTSRgbColorCT;
-begin
-  Result := TCTSRgbColorCT(Lazy(fSrgbClr, TCTSRgbColorCT));
-end;
-
-function TCTSolidColorFillPropertiesCT.GetHslClr: TCTHslColorCT;
-begin
-  Result := TCTHslColorCT(Lazy(fHslClr, TCTHslColorCT));
-end;
-
-function TCTSolidColorFillPropertiesCT.GetSysClr: TCTSystemColorCT;
-begin
-  Result := TCTSystemColorCT(Lazy(fSysClr, TCTSystemColorCT));
-end;
-
-function TCTSolidColorFillPropertiesCT.GetSchemeClr: TCTSchemeColorCT;
-begin
-  Result := TCTSchemeColorCT(Lazy(fSchemeClr, TCTSchemeColorCT));
-end;
-
-function TCTSolidColorFillPropertiesCT.GetPrstClr: TCTPresetColorCT;
-begin
-  Result := TCTPresetColorCT(Lazy(fPrstClr, TCTPresetColorCT));
-end;
-
-{ TCTGradientStopCT }
-
-function TCTGradientStopCT.GetScrgbClr: TCTScRgbColorCT;
-begin
-  Result := TCTScRgbColorCT(Lazy(fScrgbClr, TCTScRgbColorCT));
-end;
-
-function TCTGradientStopCT.GetSrgbClr: TCTSRgbColorCT;
-begin
-  Result := TCTSRgbColorCT(Lazy(fSrgbClr, TCTSRgbColorCT));
-end;
-
-function TCTGradientStopCT.GetHslClr: TCTHslColorCT;
-begin
-  Result := TCTHslColorCT(Lazy(fHslClr, TCTHslColorCT));
-end;
-
-function TCTGradientStopCT.GetSysClr: TCTSystemColorCT;
-begin
-  Result := TCTSystemColorCT(Lazy(fSysClr, TCTSystemColorCT));
-end;
-
-function TCTGradientStopCT.GetSchemeClr: TCTSchemeColorCT;
-begin
-  Result := TCTSchemeColorCT(Lazy(fSchemeClr, TCTSchemeColorCT));
-end;
-
-function TCTGradientStopCT.GetPrstClr: TCTPresetColorCT;
-begin
-  Result := TCTPresetColorCT(Lazy(fPrstClr, TCTPresetColorCT));
-end;
-
-{ TCTGradientFillPropertiesCT }
-
-function TCTGradientFillPropertiesCT.GetLin: TCTLinearShadePropertiesCT;
-begin
-  Result := TCTLinearShadePropertiesCT(Lazy(fLin, TCTLinearShadePropertiesCT));
-end;
-
-function TCTGradientFillPropertiesCT.GetPath: TCTPathShadePropertiesCT;
-begin
-  Result := TCTPathShadePropertiesCT(Lazy(fPath, TCTPathShadePropertiesCT));
-end;
-
-{ TCTBlipFillPropertiesCT }
-
-function TCTBlipFillPropertiesCT.GetTile: TCTTileInfoPropertiesCT;
-begin
-  Result := TCTTileInfoPropertiesCT(Lazy(fTile, TCTTileInfoPropertiesCT));
-end;
-
-function TCTBlipFillPropertiesCT.GetStretch: TCTStretchInfoPropertiesCT;
-begin
-  Result := TCTStretchInfoPropertiesCT(Lazy(fStretch, TCTStretchInfoPropertiesCT));
-end;
-
-{ TCTFillPropertiesCT }
-
-function TCTFillPropertiesCT.GetNoFill: TCTNoFillPropertiesCT;
-begin
-  Result := TCTNoFillPropertiesCT(Lazy(fNoFill, TCTNoFillPropertiesCT));
-end;
-
-function TCTFillPropertiesCT.GetSolidFill: TCTSolidColorFillPropertiesCT;
-begin
-  Result := TCTSolidColorFillPropertiesCT(Lazy(fSolidFill, TCTSolidColorFillPropertiesCT));
-end;
-
-function TCTFillPropertiesCT.GetGradFill: TCTGradientFillPropertiesCT;
-begin
-  Result := TCTGradientFillPropertiesCT(Lazy(fGradFill, TCTGradientFillPropertiesCT));
-end;
-
-function TCTFillPropertiesCT.GetBlipFill: TCTBlipFillPropertiesCT;
-begin
-  Result := TCTBlipFillPropertiesCT(Lazy(fBlipFill, TCTBlipFillPropertiesCT));
-end;
-
-function TCTFillPropertiesCT.GetPattFill: TCTPatternFillPropertiesCT;
-begin
-  Result := TCTPatternFillPropertiesCT(Lazy(fPattFill, TCTPatternFillPropertiesCT));
-end;
-
-function TCTFillPropertiesCT.GetGrpFill: TCTGroupFillPropertiesCT;
-begin
-  Result := TCTGroupFillPropertiesCT(Lazy(fGrpFill, TCTGroupFillPropertiesCT));
-end;
-
-{ TCTFillEffectCT }
-
-function TCTFillEffectCT.GetNoFill: TCTNoFillPropertiesCT;
-begin
-  Result := TCTNoFillPropertiesCT(Lazy(fNoFill, TCTNoFillPropertiesCT));
-end;
-
-function TCTFillEffectCT.GetSolidFill: TCTSolidColorFillPropertiesCT;
-begin
-  Result := TCTSolidColorFillPropertiesCT(Lazy(fSolidFill, TCTSolidColorFillPropertiesCT));
-end;
-
-function TCTFillEffectCT.GetGradFill: TCTGradientFillPropertiesCT;
-begin
-  Result := TCTGradientFillPropertiesCT(Lazy(fGradFill, TCTGradientFillPropertiesCT));
-end;
-
-function TCTFillEffectCT.GetBlipFill: TCTBlipFillPropertiesCT;
-begin
-  Result := TCTBlipFillPropertiesCT(Lazy(fBlipFill, TCTBlipFillPropertiesCT));
-end;
-
-function TCTFillEffectCT.GetPattFill: TCTPatternFillPropertiesCT;
-begin
-  Result := TCTPatternFillPropertiesCT(Lazy(fPattFill, TCTPatternFillPropertiesCT));
-end;
-
-function TCTFillEffectCT.GetGrpFill: TCTGroupFillPropertiesCT;
-begin
-  Result := TCTGroupFillPropertiesCT(Lazy(fGrpFill, TCTGroupFillPropertiesCT));
-end;
-
-{ TCTFillOverlayEffectCT }
-
-function TCTFillOverlayEffectCT.GetNoFill: TCTNoFillPropertiesCT;
-begin
-  Result := TCTNoFillPropertiesCT(Lazy(fNoFill, TCTNoFillPropertiesCT));
-end;
-
-function TCTFillOverlayEffectCT.GetSolidFill: TCTSolidColorFillPropertiesCT;
-begin
-  Result := TCTSolidColorFillPropertiesCT(Lazy(fSolidFill, TCTSolidColorFillPropertiesCT));
-end;
-
-function TCTFillOverlayEffectCT.GetGradFill: TCTGradientFillPropertiesCT;
-begin
-  Result := TCTGradientFillPropertiesCT(Lazy(fGradFill, TCTGradientFillPropertiesCT));
-end;
-
-function TCTFillOverlayEffectCT.GetBlipFill: TCTBlipFillPropertiesCT;
-begin
-  Result := TCTBlipFillPropertiesCT(Lazy(fBlipFill, TCTBlipFillPropertiesCT));
-end;
-
-function TCTFillOverlayEffectCT.GetPattFill: TCTPatternFillPropertiesCT;
-begin
-  Result := TCTPatternFillPropertiesCT(Lazy(fPattFill, TCTPatternFillPropertiesCT));
-end;
-
-function TCTFillOverlayEffectCT.GetGrpFill: TCTGroupFillPropertiesCT;
-begin
-  Result := TCTGroupFillPropertiesCT(Lazy(fGrpFill, TCTGroupFillPropertiesCT));
-end;
-
-{ TCTEffectPropertiesCT }
-
-function TCTEffectPropertiesCT.GetEffectLst: TCTEffectListCT;
-begin
-  Result := TCTEffectListCT(Lazy(fEffectLst, TCTEffectListCT));
-end;
-
-function TCTEffectPropertiesCT.GetEffectDag: TCTEffectContainerCT;
-begin
-  Result := TCTEffectContainerCT(Lazy(fEffectDag, TCTEffectContainerCT));
-end;
-
-function TCTEffectPropertiesCT.GetEffectChosen: TBasite;
+function TWholeE2oFormattingCT.GetEffectChosen: TBasite;
 begin
   Result := Chosen('Effect');
 end;
 
-{ TCTLinePropertiesCT }
+{ TGvmlTextShapeCT }
 
-function TCTLinePropertiesCT.GetNoFill: TCTNoFillPropertiesCT;
+function TGvmlTextShapeCT.GetUseSpRect: TGvmlUseShapeRectangleCT;
 begin
-  Result := TCTNoFillPropertiesCT(Lazy(fNoFill, TCTNoFillPropertiesCT));
+  Result := TGvmlUseShapeRectangleCT(Lazy(fUseSpRect, TGvmlUseShapeRectangleCT));
 end;
 
-function TCTLinePropertiesCT.GetSolidFill: TCTSolidColorFillPropertiesCT;
+function TGvmlTextShapeCT.GetXfrm: TTransform2DCT;
 begin
-  Result := TCTSolidColorFillPropertiesCT(Lazy(fSolidFill, TCTSolidColorFillPropertiesCT));
+  Result := TTransform2DCT(Lazy(fXfrm, TTransform2DCT));
 end;
 
-function TCTLinePropertiesCT.GetGradFill: TCTGradientFillPropertiesCT;
+{ TAlphaInverseEffectCT }
+
+function TAlphaInverseEffectCT.GetScrgbClr: TScRgbColorCT;
 begin
-  Result := TCTGradientFillPropertiesCT(Lazy(fGradFill, TCTGradientFillPropertiesCT));
+  Result := TScRgbColorCT(Lazy(fScrgbClr, TScRgbColorCT));
 end;
 
-function TCTLinePropertiesCT.GetPattFill: TCTPatternFillPropertiesCT;
+function TAlphaInverseEffectCT.GetSrgbClr: TSRgbColorCT;
 begin
-  Result := TCTPatternFillPropertiesCT(Lazy(fPattFill, TCTPatternFillPropertiesCT));
+  Result := TSRgbColorCT(Lazy(fSrgbClr, TSRgbColorCT));
 end;
 
-function TCTLinePropertiesCT.GetPrstDash: TCTPresetLineDashPropertiesCT;
+function TAlphaInverseEffectCT.GetHslClr: THslColorCT;
 begin
-  Result := TCTPresetLineDashPropertiesCT(Lazy(fPrstDash, TCTPresetLineDashPropertiesCT));
+  Result := THslColorCT(Lazy(fHslClr, THslColorCT));
 end;
 
-function TCTLinePropertiesCT.GetCustDash: TCTDashStopListCT;
+function TAlphaInverseEffectCT.GetSysClr: TSystemColorCT;
 begin
-  Result := TCTDashStopListCT(Lazy(fCustDash, TCTDashStopListCT));
+  Result := TSystemColorCT(Lazy(fSysClr, TSystemColorCT));
 end;
 
-function TCTLinePropertiesCT.GetRound: TCTLineJoinRoundCT;
+function TAlphaInverseEffectCT.GetSchemeClr: TSchemeColorCT;
 begin
-  Result := TCTLineJoinRoundCT(Lazy(fRound, TCTLineJoinRoundCT));
+  Result := TSchemeColorCT(Lazy(fSchemeClr, TSchemeColorCT));
 end;
 
-function TCTLinePropertiesCT.GetBevel: TCTLineJoinBevelCT;
+function TAlphaInverseEffectCT.GetPrstClr: TPresetColorCT;
 begin
-  Result := TCTLineJoinBevelCT(Lazy(fBevel, TCTLineJoinBevelCT));
+  Result := TPresetColorCT(Lazy(fPrstClr, TPresetColorCT));
 end;
 
-function TCTLinePropertiesCT.GetMiter: TCTLineJoinMiterPropertiesCT;
+{ TColorReplaceEffectCT }
+
+function TColorReplaceEffectCT.GetScrgbClr: TScRgbColorCT;
 begin
-  Result := TCTLineJoinMiterPropertiesCT(Lazy(fMiter, TCTLineJoinMiterPropertiesCT));
+  Result := TScRgbColorCT(Lazy(fScrgbClr, TScRgbColorCT));
 end;
 
-{ TCTShapePropertiesCT }
-
-function TCTShapePropertiesCT.GetCustGeom: TCTCustomGeometry2DCT;
+function TColorReplaceEffectCT.GetSrgbClr: TSRgbColorCT;
 begin
-  Result := TCTCustomGeometry2DCT(Lazy(fCustGeom, TCTCustomGeometry2DCT));
+  Result := TSRgbColorCT(Lazy(fSrgbClr, TSRgbColorCT));
 end;
 
-function TCTShapePropertiesCT.GetPrstGeom: TCTPresetGeometry2DCT;
+function TColorReplaceEffectCT.GetHslClr: THslColorCT;
 begin
-  Result := TCTPresetGeometry2DCT(Lazy(fPrstGeom, TCTPresetGeometry2DCT));
+  Result := THslColorCT(Lazy(fHslClr, THslColorCT));
 end;
 
-function TCTShapePropertiesCT.GetNoFill: TCTNoFillPropertiesCT;
+function TColorReplaceEffectCT.GetSysClr: TSystemColorCT;
 begin
-  Result := TCTNoFillPropertiesCT(Lazy(fNoFill, TCTNoFillPropertiesCT));
+  Result := TSystemColorCT(Lazy(fSysClr, TSystemColorCT));
 end;
 
-function TCTShapePropertiesCT.GetSolidFill: TCTSolidColorFillPropertiesCT;
+function TColorReplaceEffectCT.GetSchemeClr: TSchemeColorCT;
 begin
-  Result := TCTSolidColorFillPropertiesCT(Lazy(fSolidFill, TCTSolidColorFillPropertiesCT));
+  Result := TSchemeColorCT(Lazy(fSchemeClr, TSchemeColorCT));
 end;
 
-function TCTShapePropertiesCT.GetGradFill: TCTGradientFillPropertiesCT;
+function TColorReplaceEffectCT.GetPrstClr: TPresetColorCT;
 begin
-  Result := TCTGradientFillPropertiesCT(Lazy(fGradFill, TCTGradientFillPropertiesCT));
+  Result := TPresetColorCT(Lazy(fPrstClr, TPresetColorCT));
 end;
 
-function TCTShapePropertiesCT.GetBlipFill: TCTBlipFillPropertiesCT;
+{ TGlowEffectCT }
+
+function TGlowEffectCT.GetScrgbClr: TScRgbColorCT;
 begin
-  Result := TCTBlipFillPropertiesCT(Lazy(fBlipFill, TCTBlipFillPropertiesCT));
+  Result := TScRgbColorCT(Lazy(fScrgbClr, TScRgbColorCT));
 end;
 
-function TCTShapePropertiesCT.GetPattFill: TCTPatternFillPropertiesCT;
+function TGlowEffectCT.GetSrgbClr: TSRgbColorCT;
 begin
-  Result := TCTPatternFillPropertiesCT(Lazy(fPattFill, TCTPatternFillPropertiesCT));
+  Result := TSRgbColorCT(Lazy(fSrgbClr, TSRgbColorCT));
 end;
 
-function TCTShapePropertiesCT.GetGrpFill: TCTGroupFillPropertiesCT;
+function TGlowEffectCT.GetHslClr: THslColorCT;
 begin
-  Result := TCTGroupFillPropertiesCT(Lazy(fGrpFill, TCTGroupFillPropertiesCT));
+  Result := THslColorCT(Lazy(fHslClr, THslColorCT));
 end;
 
-function TCTShapePropertiesCT.GetEffectLst: TCTEffectListCT;
+function TGlowEffectCT.GetSysClr: TSystemColorCT;
 begin
-  Result := TCTEffectListCT(Lazy(fEffectLst, TCTEffectListCT));
+  Result := TSystemColorCT(Lazy(fSysClr, TSystemColorCT));
 end;
 
-function TCTShapePropertiesCT.GetEffectDag: TCTEffectContainerCT;
+function TGlowEffectCT.GetSchemeClr: TSchemeColorCT;
 begin
-  Result := TCTEffectContainerCT(Lazy(fEffectDag, TCTEffectContainerCT));
+  Result := TSchemeColorCT(Lazy(fSchemeClr, TSchemeColorCT));
 end;
 
-function TCTShapePropertiesCT.GetEffectChosen: TBasite;
+function TGlowEffectCT.GetPrstClr: TPresetColorCT;
+begin
+  Result := TPresetColorCT(Lazy(fPrstClr, TPresetColorCT));
+end;
+
+{ TInnerShadowEffectCT }
+
+function TInnerShadowEffectCT.GetScrgbClr: TScRgbColorCT;
+begin
+  Result := TScRgbColorCT(Lazy(fScrgbClr, TScRgbColorCT));
+end;
+
+function TInnerShadowEffectCT.GetSrgbClr: TSRgbColorCT;
+begin
+  Result := TSRgbColorCT(Lazy(fSrgbClr, TSRgbColorCT));
+end;
+
+function TInnerShadowEffectCT.GetHslClr: THslColorCT;
+begin
+  Result := THslColorCT(Lazy(fHslClr, THslColorCT));
+end;
+
+function TInnerShadowEffectCT.GetSysClr: TSystemColorCT;
+begin
+  Result := TSystemColorCT(Lazy(fSysClr, TSystemColorCT));
+end;
+
+function TInnerShadowEffectCT.GetSchemeClr: TSchemeColorCT;
+begin
+  Result := TSchemeColorCT(Lazy(fSchemeClr, TSchemeColorCT));
+end;
+
+function TInnerShadowEffectCT.GetPrstClr: TPresetColorCT;
+begin
+  Result := TPresetColorCT(Lazy(fPrstClr, TPresetColorCT));
+end;
+
+{ TOuterShadowEffectCT }
+
+function TOuterShadowEffectCT.GetScrgbClr: TScRgbColorCT;
+begin
+  Result := TScRgbColorCT(Lazy(fScrgbClr, TScRgbColorCT));
+end;
+
+function TOuterShadowEffectCT.GetSrgbClr: TSRgbColorCT;
+begin
+  Result := TSRgbColorCT(Lazy(fSrgbClr, TSRgbColorCT));
+end;
+
+function TOuterShadowEffectCT.GetHslClr: THslColorCT;
+begin
+  Result := THslColorCT(Lazy(fHslClr, THslColorCT));
+end;
+
+function TOuterShadowEffectCT.GetSysClr: TSystemColorCT;
+begin
+  Result := TSystemColorCT(Lazy(fSysClr, TSystemColorCT));
+end;
+
+function TOuterShadowEffectCT.GetSchemeClr: TSchemeColorCT;
+begin
+  Result := TSchemeColorCT(Lazy(fSchemeClr, TSchemeColorCT));
+end;
+
+function TOuterShadowEffectCT.GetPrstClr: TPresetColorCT;
+begin
+  Result := TPresetColorCT(Lazy(fPrstClr, TPresetColorCT));
+end;
+
+{ TPresetShadowEffectCT }
+
+function TPresetShadowEffectCT.GetScrgbClr: TScRgbColorCT;
+begin
+  Result := TScRgbColorCT(Lazy(fScrgbClr, TScRgbColorCT));
+end;
+
+function TPresetShadowEffectCT.GetSrgbClr: TSRgbColorCT;
+begin
+  Result := TSRgbColorCT(Lazy(fSrgbClr, TSRgbColorCT));
+end;
+
+function TPresetShadowEffectCT.GetHslClr: THslColorCT;
+begin
+  Result := THslColorCT(Lazy(fHslClr, THslColorCT));
+end;
+
+function TPresetShadowEffectCT.GetSysClr: TSystemColorCT;
+begin
+  Result := TSystemColorCT(Lazy(fSysClr, TSystemColorCT));
+end;
+
+function TPresetShadowEffectCT.GetSchemeClr: TSchemeColorCT;
+begin
+  Result := TSchemeColorCT(Lazy(fSchemeClr, TSchemeColorCT));
+end;
+
+function TPresetShadowEffectCT.GetPrstClr: TPresetColorCT;
+begin
+  Result := TPresetColorCT(Lazy(fPrstClr, TPresetColorCT));
+end;
+
+{ TSolidColorFillPropertiesCT }
+
+function TSolidColorFillPropertiesCT.GetScrgbClr: TScRgbColorCT;
+begin
+  Result := TScRgbColorCT(Lazy(fScrgbClr, TScRgbColorCT));
+end;
+
+function TSolidColorFillPropertiesCT.GetSrgbClr: TSRgbColorCT;
+begin
+  Result := TSRgbColorCT(Lazy(fSrgbClr, TSRgbColorCT));
+end;
+
+function TSolidColorFillPropertiesCT.GetHslClr: THslColorCT;
+begin
+  Result := THslColorCT(Lazy(fHslClr, THslColorCT));
+end;
+
+function TSolidColorFillPropertiesCT.GetSysClr: TSystemColorCT;
+begin
+  Result := TSystemColorCT(Lazy(fSysClr, TSystemColorCT));
+end;
+
+function TSolidColorFillPropertiesCT.GetSchemeClr: TSchemeColorCT;
+begin
+  Result := TSchemeColorCT(Lazy(fSchemeClr, TSchemeColorCT));
+end;
+
+function TSolidColorFillPropertiesCT.GetPrstClr: TPresetColorCT;
+begin
+  Result := TPresetColorCT(Lazy(fPrstClr, TPresetColorCT));
+end;
+
+{ TGradientStopCT }
+
+function TGradientStopCT.GetScrgbClr: TScRgbColorCT;
+begin
+  Result := TScRgbColorCT(Lazy(fScrgbClr, TScRgbColorCT));
+end;
+
+function TGradientStopCT.GetSrgbClr: TSRgbColorCT;
+begin
+  Result := TSRgbColorCT(Lazy(fSrgbClr, TSRgbColorCT));
+end;
+
+function TGradientStopCT.GetHslClr: THslColorCT;
+begin
+  Result := THslColorCT(Lazy(fHslClr, THslColorCT));
+end;
+
+function TGradientStopCT.GetSysClr: TSystemColorCT;
+begin
+  Result := TSystemColorCT(Lazy(fSysClr, TSystemColorCT));
+end;
+
+function TGradientStopCT.GetSchemeClr: TSchemeColorCT;
+begin
+  Result := TSchemeColorCT(Lazy(fSchemeClr, TSchemeColorCT));
+end;
+
+function TGradientStopCT.GetPrstClr: TPresetColorCT;
+begin
+  Result := TPresetColorCT(Lazy(fPrstClr, TPresetColorCT));
+end;
+
+{ TGradientFillPropertiesCT }
+
+function TGradientFillPropertiesCT.GetLin: TLinearShadePropertiesCT;
+begin
+  Result := TLinearShadePropertiesCT(Lazy(fLin, TLinearShadePropertiesCT));
+end;
+
+function TGradientFillPropertiesCT.GetPath: TPathShadePropertiesCT;
+begin
+  Result := TPathShadePropertiesCT(Lazy(fPath, TPathShadePropertiesCT));
+end;
+
+{ TBlipFillPropertiesCT }
+
+function TBlipFillPropertiesCT.GetTile: TTileInfoPropertiesCT;
+begin
+  Result := TTileInfoPropertiesCT(Lazy(fTile, TTileInfoPropertiesCT));
+end;
+
+function TBlipFillPropertiesCT.GetStretch: TStretchInfoPropertiesCT;
+begin
+  Result := TStretchInfoPropertiesCT(Lazy(fStretch, TStretchInfoPropertiesCT));
+end;
+
+{ TFillPropertiesCT }
+
+function TFillPropertiesCT.GetNoFill: TNoFillPropertiesCT;
+begin
+  Result := TNoFillPropertiesCT(Lazy(fNoFill, TNoFillPropertiesCT));
+end;
+
+function TFillPropertiesCT.GetSolidFill: TSolidColorFillPropertiesCT;
+begin
+  Result := TSolidColorFillPropertiesCT(Lazy(fSolidFill, TSolidColorFillPropertiesCT));
+end;
+
+function TFillPropertiesCT.GetGradFill: TGradientFillPropertiesCT;
+begin
+  Result := TGradientFillPropertiesCT(Lazy(fGradFill, TGradientFillPropertiesCT));
+end;
+
+function TFillPropertiesCT.GetBlipFill: TBlipFillPropertiesCT;
+begin
+  Result := TBlipFillPropertiesCT(Lazy(fBlipFill, TBlipFillPropertiesCT));
+end;
+
+function TFillPropertiesCT.GetPattFill: TPatternFillPropertiesCT;
+begin
+  Result := TPatternFillPropertiesCT(Lazy(fPattFill, TPatternFillPropertiesCT));
+end;
+
+function TFillPropertiesCT.GetGrpFill: TGroupFillPropertiesCT;
+begin
+  Result := TGroupFillPropertiesCT(Lazy(fGrpFill, TGroupFillPropertiesCT));
+end;
+
+{ TFillEffectCT }
+
+function TFillEffectCT.GetNoFill: TNoFillPropertiesCT;
+begin
+  Result := TNoFillPropertiesCT(Lazy(fNoFill, TNoFillPropertiesCT));
+end;
+
+function TFillEffectCT.GetSolidFill: TSolidColorFillPropertiesCT;
+begin
+  Result := TSolidColorFillPropertiesCT(Lazy(fSolidFill, TSolidColorFillPropertiesCT));
+end;
+
+function TFillEffectCT.GetGradFill: TGradientFillPropertiesCT;
+begin
+  Result := TGradientFillPropertiesCT(Lazy(fGradFill, TGradientFillPropertiesCT));
+end;
+
+function TFillEffectCT.GetBlipFill: TBlipFillPropertiesCT;
+begin
+  Result := TBlipFillPropertiesCT(Lazy(fBlipFill, TBlipFillPropertiesCT));
+end;
+
+function TFillEffectCT.GetPattFill: TPatternFillPropertiesCT;
+begin
+  Result := TPatternFillPropertiesCT(Lazy(fPattFill, TPatternFillPropertiesCT));
+end;
+
+function TFillEffectCT.GetGrpFill: TGroupFillPropertiesCT;
+begin
+  Result := TGroupFillPropertiesCT(Lazy(fGrpFill, TGroupFillPropertiesCT));
+end;
+
+{ TFillOverlayEffectCT }
+
+function TFillOverlayEffectCT.GetNoFill: TNoFillPropertiesCT;
+begin
+  Result := TNoFillPropertiesCT(Lazy(fNoFill, TNoFillPropertiesCT));
+end;
+
+function TFillOverlayEffectCT.GetSolidFill: TSolidColorFillPropertiesCT;
+begin
+  Result := TSolidColorFillPropertiesCT(Lazy(fSolidFill, TSolidColorFillPropertiesCT));
+end;
+
+function TFillOverlayEffectCT.GetGradFill: TGradientFillPropertiesCT;
+begin
+  Result := TGradientFillPropertiesCT(Lazy(fGradFill, TGradientFillPropertiesCT));
+end;
+
+function TFillOverlayEffectCT.GetBlipFill: TBlipFillPropertiesCT;
+begin
+  Result := TBlipFillPropertiesCT(Lazy(fBlipFill, TBlipFillPropertiesCT));
+end;
+
+function TFillOverlayEffectCT.GetPattFill: TPatternFillPropertiesCT;
+begin
+  Result := TPatternFillPropertiesCT(Lazy(fPattFill, TPatternFillPropertiesCT));
+end;
+
+function TFillOverlayEffectCT.GetGrpFill: TGroupFillPropertiesCT;
+begin
+  Result := TGroupFillPropertiesCT(Lazy(fGrpFill, TGroupFillPropertiesCT));
+end;
+
+{ TEffectPropertiesCT }
+
+function TEffectPropertiesCT.GetEffectLst: TEffectListCT;
+begin
+  Result := TEffectListCT(Lazy(fEffectLst, TEffectListCT));
+end;
+
+function TEffectPropertiesCT.GetEffectDag: TEffectContainerCT;
+begin
+  Result := TEffectContainerCT(Lazy(fEffectDag, TEffectContainerCT));
+end;
+
+function TEffectPropertiesCT.GetEffectChosen: TBasite;
 begin
   Result := Chosen('Effect');
 end;
 
-{ TCTGroupShapePropertiesCT }
+{ TLinePropertiesCT }
 
-function TCTGroupShapePropertiesCT.GetNoFill: TCTNoFillPropertiesCT;
+function TLinePropertiesCT.GetNoFill: TNoFillPropertiesCT;
 begin
-  Result := TCTNoFillPropertiesCT(Lazy(fNoFill, TCTNoFillPropertiesCT));
+  Result := TNoFillPropertiesCT(Lazy(fNoFill, TNoFillPropertiesCT));
 end;
 
-function TCTGroupShapePropertiesCT.GetSolidFill: TCTSolidColorFillPropertiesCT;
+function TLinePropertiesCT.GetSolidFill: TSolidColorFillPropertiesCT;
 begin
-  Result := TCTSolidColorFillPropertiesCT(Lazy(fSolidFill, TCTSolidColorFillPropertiesCT));
+  Result := TSolidColorFillPropertiesCT(Lazy(fSolidFill, TSolidColorFillPropertiesCT));
 end;
 
-function TCTGroupShapePropertiesCT.GetGradFill: TCTGradientFillPropertiesCT;
+function TLinePropertiesCT.GetGradFill: TGradientFillPropertiesCT;
 begin
-  Result := TCTGradientFillPropertiesCT(Lazy(fGradFill, TCTGradientFillPropertiesCT));
+  Result := TGradientFillPropertiesCT(Lazy(fGradFill, TGradientFillPropertiesCT));
 end;
 
-function TCTGroupShapePropertiesCT.GetBlipFill: TCTBlipFillPropertiesCT;
+function TLinePropertiesCT.GetPattFill: TPatternFillPropertiesCT;
 begin
-  Result := TCTBlipFillPropertiesCT(Lazy(fBlipFill, TCTBlipFillPropertiesCT));
+  Result := TPatternFillPropertiesCT(Lazy(fPattFill, TPatternFillPropertiesCT));
 end;
 
-function TCTGroupShapePropertiesCT.GetPattFill: TCTPatternFillPropertiesCT;
+function TLinePropertiesCT.GetPrstDash: TPresetLineDashPropertiesCT;
 begin
-  Result := TCTPatternFillPropertiesCT(Lazy(fPattFill, TCTPatternFillPropertiesCT));
+  Result := TPresetLineDashPropertiesCT(Lazy(fPrstDash, TPresetLineDashPropertiesCT));
 end;
 
-function TCTGroupShapePropertiesCT.GetGrpFill: TCTGroupFillPropertiesCT;
+function TLinePropertiesCT.GetCustDash: TDashStopListCT;
 begin
-  Result := TCTGroupFillPropertiesCT(Lazy(fGrpFill, TCTGroupFillPropertiesCT));
+  Result := TDashStopListCT(Lazy(fCustDash, TDashStopListCT));
 end;
 
-function TCTGroupShapePropertiesCT.GetEffectLst: TCTEffectListCT;
+function TLinePropertiesCT.GetRound: TLineJoinRoundCT;
 begin
-  Result := TCTEffectListCT(Lazy(fEffectLst, TCTEffectListCT));
+  Result := TLineJoinRoundCT(Lazy(fRound, TLineJoinRoundCT));
 end;
 
-function TCTGroupShapePropertiesCT.GetEffectDag: TCTEffectContainerCT;
+function TLinePropertiesCT.GetBevel: TLineJoinBevelCT;
 begin
-  Result := TCTEffectContainerCT(Lazy(fEffectDag, TCTEffectContainerCT));
+  Result := TLineJoinBevelCT(Lazy(fBevel, TLineJoinBevelCT));
 end;
 
-function TCTGroupShapePropertiesCT.GetEffectChosen: TBasite;
+function TLinePropertiesCT.GetMiter: TLineJoinMiterPropertiesCT;
 begin
-  Result := Chosen('Effect');
+  Result := TLineJoinMiterPropertiesCT(Lazy(fMiter, TLineJoinMiterPropertiesCT));
 end;
 
-{ TCTStyleMatrixReferenceCT }
+{ TShapePropertiesCT }
 
-function TCTStyleMatrixReferenceCT.GetScrgbClr: TCTScRgbColorCT;
+function TShapePropertiesCT.GetCustGeom: TCustomGeometry2DCT;
 begin
-  Result := TCTScRgbColorCT(Lazy(fScrgbClr, TCTScRgbColorCT));
+  Result := TCustomGeometry2DCT(Lazy(fCustGeom, TCustomGeometry2DCT));
 end;
 
-function TCTStyleMatrixReferenceCT.GetSrgbClr: TCTSRgbColorCT;
+function TShapePropertiesCT.GetPrstGeom: TPresetGeometry2DCT;
 begin
-  Result := TCTSRgbColorCT(Lazy(fSrgbClr, TCTSRgbColorCT));
+  Result := TPresetGeometry2DCT(Lazy(fPrstGeom, TPresetGeometry2DCT));
 end;
 
-function TCTStyleMatrixReferenceCT.GetHslClr: TCTHslColorCT;
+function TShapePropertiesCT.GetNoFill: TNoFillPropertiesCT;
 begin
-  Result := TCTHslColorCT(Lazy(fHslClr, TCTHslColorCT));
+  Result := TNoFillPropertiesCT(Lazy(fNoFill, TNoFillPropertiesCT));
 end;
 
-function TCTStyleMatrixReferenceCT.GetSysClr: TCTSystemColorCT;
+function TShapePropertiesCT.GetSolidFill: TSolidColorFillPropertiesCT;
 begin
-  Result := TCTSystemColorCT(Lazy(fSysClr, TCTSystemColorCT));
+  Result := TSolidColorFillPropertiesCT(Lazy(fSolidFill, TSolidColorFillPropertiesCT));
 end;
 
-function TCTStyleMatrixReferenceCT.GetSchemeClr: TCTSchemeColorCT;
+function TShapePropertiesCT.GetGradFill: TGradientFillPropertiesCT;
 begin
-  Result := TCTSchemeColorCT(Lazy(fSchemeClr, TCTSchemeColorCT));
+  Result := TGradientFillPropertiesCT(Lazy(fGradFill, TGradientFillPropertiesCT));
 end;
 
-function TCTStyleMatrixReferenceCT.GetPrstClr: TCTPresetColorCT;
+function TShapePropertiesCT.GetBlipFill: TBlipFillPropertiesCT;
 begin
-  Result := TCTPresetColorCT(Lazy(fPrstClr, TCTPresetColorCT));
+  Result := TBlipFillPropertiesCT(Lazy(fBlipFill, TBlipFillPropertiesCT));
 end;
 
-{ TCTFontReferenceCT }
-
-function TCTFontReferenceCT.GetScrgbClr: TCTScRgbColorCT;
+function TShapePropertiesCT.GetPattFill: TPatternFillPropertiesCT;
 begin
-  Result := TCTScRgbColorCT(Lazy(fScrgbClr, TCTScRgbColorCT));
+  Result := TPatternFillPropertiesCT(Lazy(fPattFill, TPatternFillPropertiesCT));
 end;
 
-function TCTFontReferenceCT.GetSrgbClr: TCTSRgbColorCT;
+function TShapePropertiesCT.GetGrpFill: TGroupFillPropertiesCT;
 begin
-  Result := TCTSRgbColorCT(Lazy(fSrgbClr, TCTSRgbColorCT));
+  Result := TGroupFillPropertiesCT(Lazy(fGrpFill, TGroupFillPropertiesCT));
 end;
 
-function TCTFontReferenceCT.GetHslClr: TCTHslColorCT;
+function TShapePropertiesCT.GetEffectLst: TEffectListCT;
 begin
-  Result := TCTHslColorCT(Lazy(fHslClr, TCTHslColorCT));
+  Result := TEffectListCT(Lazy(fEffectLst, TEffectListCT));
 end;
 
-function TCTFontReferenceCT.GetSysClr: TCTSystemColorCT;
+function TShapePropertiesCT.GetEffectDag: TEffectContainerCT;
 begin
-  Result := TCTSystemColorCT(Lazy(fSysClr, TCTSystemColorCT));
+  Result := TEffectContainerCT(Lazy(fEffectDag, TEffectContainerCT));
 end;
 
-function TCTFontReferenceCT.GetSchemeClr: TCTSchemeColorCT;
-begin
-  Result := TCTSchemeColorCT(Lazy(fSchemeClr, TCTSchemeColorCT));
-end;
-
-function TCTFontReferenceCT.GetPrstClr: TCTPresetColorCT;
-begin
-  Result := TCTPresetColorCT(Lazy(fPrstClr, TCTPresetColorCT));
-end;
-
-{ TCTColorMappingOverrideCT }
-
-function TCTColorMappingOverrideCT.GetMasterClrMapping: TCTEmptyElementCT;
-begin
-  Result := TCTEmptyElementCT(Lazy(fMasterClrMapping, TCTEmptyElementCT));
-end;
-
-function TCTColorMappingOverrideCT.GetOverrideClrMapping: TCTColorMappingCT;
-begin
-  Result := TCTColorMappingCT(Lazy(fOverrideClrMapping, TCTColorMappingCT));
-end;
-
-{ TCTTableCellPropertiesCT }
-
-function TCTTableCellPropertiesCT.GetNoFill: TCTNoFillPropertiesCT;
-begin
-  Result := TCTNoFillPropertiesCT(Lazy(fNoFill, TCTNoFillPropertiesCT));
-end;
-
-function TCTTableCellPropertiesCT.GetSolidFill: TCTSolidColorFillPropertiesCT;
-begin
-  Result := TCTSolidColorFillPropertiesCT(Lazy(fSolidFill, TCTSolidColorFillPropertiesCT));
-end;
-
-function TCTTableCellPropertiesCT.GetGradFill: TCTGradientFillPropertiesCT;
-begin
-  Result := TCTGradientFillPropertiesCT(Lazy(fGradFill, TCTGradientFillPropertiesCT));
-end;
-
-function TCTTableCellPropertiesCT.GetBlipFill: TCTBlipFillPropertiesCT;
-begin
-  Result := TCTBlipFillPropertiesCT(Lazy(fBlipFill, TCTBlipFillPropertiesCT));
-end;
-
-function TCTTableCellPropertiesCT.GetPattFill: TCTPatternFillPropertiesCT;
-begin
-  Result := TCTPatternFillPropertiesCT(Lazy(fPattFill, TCTPatternFillPropertiesCT));
-end;
-
-function TCTTableCellPropertiesCT.GetGrpFill: TCTGroupFillPropertiesCT;
-begin
-  Result := TCTGroupFillPropertiesCT(Lazy(fGrpFill, TCTGroupFillPropertiesCT));
-end;
-
-{ TCTTablePropertiesCT }
-
-function TCTTablePropertiesCT.GetNoFill: TCTNoFillPropertiesCT;
-begin
-  Result := TCTNoFillPropertiesCT(Lazy(fNoFill, TCTNoFillPropertiesCT));
-end;
-
-function TCTTablePropertiesCT.GetSolidFill: TCTSolidColorFillPropertiesCT;
-begin
-  Result := TCTSolidColorFillPropertiesCT(Lazy(fSolidFill, TCTSolidColorFillPropertiesCT));
-end;
-
-function TCTTablePropertiesCT.GetGradFill: TCTGradientFillPropertiesCT;
-begin
-  Result := TCTGradientFillPropertiesCT(Lazy(fGradFill, TCTGradientFillPropertiesCT));
-end;
-
-function TCTTablePropertiesCT.GetBlipFill: TCTBlipFillPropertiesCT;
-begin
-  Result := TCTBlipFillPropertiesCT(Lazy(fBlipFill, TCTBlipFillPropertiesCT));
-end;
-
-function TCTTablePropertiesCT.GetPattFill: TCTPatternFillPropertiesCT;
-begin
-  Result := TCTPatternFillPropertiesCT(Lazy(fPattFill, TCTPatternFillPropertiesCT));
-end;
-
-function TCTTablePropertiesCT.GetGrpFill: TCTGroupFillPropertiesCT;
-begin
-  Result := TCTGroupFillPropertiesCT(Lazy(fGrpFill, TCTGroupFillPropertiesCT));
-end;
-
-function TCTTablePropertiesCT.GetEffectLst: TCTEffectListCT;
-begin
-  Result := TCTEffectListCT(Lazy(fEffectLst, TCTEffectListCT));
-end;
-
-function TCTTablePropertiesCT.GetEffectDag: TCTEffectContainerCT;
-begin
-  Result := TCTEffectContainerCT(Lazy(fEffectDag, TCTEffectContainerCT));
-end;
-
-function TCTTablePropertiesCT.GetEffectChosen: TBasite;
+function TShapePropertiesCT.GetEffectChosen: TBasite;
 begin
   Result := Chosen('Effect');
 end;
 
-function TCTTablePropertiesCT.GetTableStyle: TCTTableStyleCT;
+{ TGroupShapePropertiesCT }
+
+function TGroupShapePropertiesCT.GetNoFill: TNoFillPropertiesCT;
 begin
-  Result := TCTTableStyleCT(Lazy(fTableStyle, TCTTableStyleCT));
+  Result := TNoFillPropertiesCT(Lazy(fNoFill, TNoFillPropertiesCT));
 end;
 
-function TCTTablePropertiesCT.GetTableStyleChosen: TBasite;
+function TGroupShapePropertiesCT.GetSolidFill: TSolidColorFillPropertiesCT;
+begin
+  Result := TSolidColorFillPropertiesCT(Lazy(fSolidFill, TSolidColorFillPropertiesCT));
+end;
+
+function TGroupShapePropertiesCT.GetGradFill: TGradientFillPropertiesCT;
+begin
+  Result := TGradientFillPropertiesCT(Lazy(fGradFill, TGradientFillPropertiesCT));
+end;
+
+function TGroupShapePropertiesCT.GetBlipFill: TBlipFillPropertiesCT;
+begin
+  Result := TBlipFillPropertiesCT(Lazy(fBlipFill, TBlipFillPropertiesCT));
+end;
+
+function TGroupShapePropertiesCT.GetPattFill: TPatternFillPropertiesCT;
+begin
+  Result := TPatternFillPropertiesCT(Lazy(fPattFill, TPatternFillPropertiesCT));
+end;
+
+function TGroupShapePropertiesCT.GetGrpFill: TGroupFillPropertiesCT;
+begin
+  Result := TGroupFillPropertiesCT(Lazy(fGrpFill, TGroupFillPropertiesCT));
+end;
+
+function TGroupShapePropertiesCT.GetEffectLst: TEffectListCT;
+begin
+  Result := TEffectListCT(Lazy(fEffectLst, TEffectListCT));
+end;
+
+function TGroupShapePropertiesCT.GetEffectDag: TEffectContainerCT;
+begin
+  Result := TEffectContainerCT(Lazy(fEffectDag, TEffectContainerCT));
+end;
+
+function TGroupShapePropertiesCT.GetEffectChosen: TBasite;
+begin
+  Result := Chosen('Effect');
+end;
+
+{ TStyleMatrixReferenceCT }
+
+function TStyleMatrixReferenceCT.GetScrgbClr: TScRgbColorCT;
+begin
+  Result := TScRgbColorCT(Lazy(fScrgbClr, TScRgbColorCT));
+end;
+
+function TStyleMatrixReferenceCT.GetSrgbClr: TSRgbColorCT;
+begin
+  Result := TSRgbColorCT(Lazy(fSrgbClr, TSRgbColorCT));
+end;
+
+function TStyleMatrixReferenceCT.GetHslClr: THslColorCT;
+begin
+  Result := THslColorCT(Lazy(fHslClr, THslColorCT));
+end;
+
+function TStyleMatrixReferenceCT.GetSysClr: TSystemColorCT;
+begin
+  Result := TSystemColorCT(Lazy(fSysClr, TSystemColorCT));
+end;
+
+function TStyleMatrixReferenceCT.GetSchemeClr: TSchemeColorCT;
+begin
+  Result := TSchemeColorCT(Lazy(fSchemeClr, TSchemeColorCT));
+end;
+
+function TStyleMatrixReferenceCT.GetPrstClr: TPresetColorCT;
+begin
+  Result := TPresetColorCT(Lazy(fPrstClr, TPresetColorCT));
+end;
+
+{ TFontReferenceCT }
+
+function TFontReferenceCT.GetScrgbClr: TScRgbColorCT;
+begin
+  Result := TScRgbColorCT(Lazy(fScrgbClr, TScRgbColorCT));
+end;
+
+function TFontReferenceCT.GetSrgbClr: TSRgbColorCT;
+begin
+  Result := TSRgbColorCT(Lazy(fSrgbClr, TSRgbColorCT));
+end;
+
+function TFontReferenceCT.GetHslClr: THslColorCT;
+begin
+  Result := THslColorCT(Lazy(fHslClr, THslColorCT));
+end;
+
+function TFontReferenceCT.GetSysClr: TSystemColorCT;
+begin
+  Result := TSystemColorCT(Lazy(fSysClr, TSystemColorCT));
+end;
+
+function TFontReferenceCT.GetSchemeClr: TSchemeColorCT;
+begin
+  Result := TSchemeColorCT(Lazy(fSchemeClr, TSchemeColorCT));
+end;
+
+function TFontReferenceCT.GetPrstClr: TPresetColorCT;
+begin
+  Result := TPresetColorCT(Lazy(fPrstClr, TPresetColorCT));
+end;
+
+{ TColorMappingOverrideCT }
+
+function TColorMappingOverrideCT.GetMasterClrMapping: TEmptyElementCT;
+begin
+  Result := TEmptyElementCT(Lazy(fMasterClrMapping, TEmptyElementCT));
+end;
+
+function TColorMappingOverrideCT.GetOverrideClrMapping: TColorMappingCT;
+begin
+  Result := TColorMappingCT(Lazy(fOverrideClrMapping, TColorMappingCT));
+end;
+
+{ TTableCellPropertiesCT }
+
+function TTableCellPropertiesCT.GetNoFill: TNoFillPropertiesCT;
+begin
+  Result := TNoFillPropertiesCT(Lazy(fNoFill, TNoFillPropertiesCT));
+end;
+
+function TTableCellPropertiesCT.GetSolidFill: TSolidColorFillPropertiesCT;
+begin
+  Result := TSolidColorFillPropertiesCT(Lazy(fSolidFill, TSolidColorFillPropertiesCT));
+end;
+
+function TTableCellPropertiesCT.GetGradFill: TGradientFillPropertiesCT;
+begin
+  Result := TGradientFillPropertiesCT(Lazy(fGradFill, TGradientFillPropertiesCT));
+end;
+
+function TTableCellPropertiesCT.GetBlipFill: TBlipFillPropertiesCT;
+begin
+  Result := TBlipFillPropertiesCT(Lazy(fBlipFill, TBlipFillPropertiesCT));
+end;
+
+function TTableCellPropertiesCT.GetPattFill: TPatternFillPropertiesCT;
+begin
+  Result := TPatternFillPropertiesCT(Lazy(fPattFill, TPatternFillPropertiesCT));
+end;
+
+function TTableCellPropertiesCT.GetGrpFill: TGroupFillPropertiesCT;
+begin
+  Result := TGroupFillPropertiesCT(Lazy(fGrpFill, TGroupFillPropertiesCT));
+end;
+
+{ TTablePropertiesCT }
+
+function TTablePropertiesCT.GetNoFill: TNoFillPropertiesCT;
+begin
+  Result := TNoFillPropertiesCT(Lazy(fNoFill, TNoFillPropertiesCT));
+end;
+
+function TTablePropertiesCT.GetSolidFill: TSolidColorFillPropertiesCT;
+begin
+  Result := TSolidColorFillPropertiesCT(Lazy(fSolidFill, TSolidColorFillPropertiesCT));
+end;
+
+function TTablePropertiesCT.GetGradFill: TGradientFillPropertiesCT;
+begin
+  Result := TGradientFillPropertiesCT(Lazy(fGradFill, TGradientFillPropertiesCT));
+end;
+
+function TTablePropertiesCT.GetBlipFill: TBlipFillPropertiesCT;
+begin
+  Result := TBlipFillPropertiesCT(Lazy(fBlipFill, TBlipFillPropertiesCT));
+end;
+
+function TTablePropertiesCT.GetPattFill: TPatternFillPropertiesCT;
+begin
+  Result := TPatternFillPropertiesCT(Lazy(fPattFill, TPatternFillPropertiesCT));
+end;
+
+function TTablePropertiesCT.GetGrpFill: TGroupFillPropertiesCT;
+begin
+  Result := TGroupFillPropertiesCT(Lazy(fGrpFill, TGroupFillPropertiesCT));
+end;
+
+function TTablePropertiesCT.GetEffectLst: TEffectListCT;
+begin
+  Result := TEffectListCT(Lazy(fEffectLst, TEffectListCT));
+end;
+
+function TTablePropertiesCT.GetEffectDag: TEffectContainerCT;
+begin
+  Result := TEffectContainerCT(Lazy(fEffectDag, TEffectContainerCT));
+end;
+
+function TTablePropertiesCT.GetEffectChosen: TBasite;
+begin
+  Result := Chosen('Effect');
+end;
+
+function TTablePropertiesCT.GetTableStyle: TTableStyleCT;
+begin
+  Result := TTableStyleCT(Lazy(fTableStyle, TTableStyleCT));
+end;
+
+function TTablePropertiesCT.GetTableStyleChosen: TBasite;
 begin
   Result := Chosen('TableStyle');
 end;
 
-{ TCTThemeableLineStyleCT }
+{ TThemeableLineStyleCT }
 
-function TCTThemeableLineStyleCT.GetLn: TCTLinePropertiesCT;
+function TThemeableLineStyleCT.GetLn: TLinePropertiesCT;
 begin
-  Result := TCTLinePropertiesCT(Lazy(fLn, TCTLinePropertiesCT));
+  Result := TLinePropertiesCT(Lazy(fLn, TLinePropertiesCT));
 end;
 
-function TCTThemeableLineStyleCT.GetLnRef: TCTStyleMatrixReferenceCT;
+function TThemeableLineStyleCT.GetLnRef: TStyleMatrixReferenceCT;
 begin
-  Result := TCTStyleMatrixReferenceCT(Lazy(fLnRef, TCTStyleMatrixReferenceCT));
+  Result := TStyleMatrixReferenceCT(Lazy(fLnRef, TStyleMatrixReferenceCT));
 end;
 
-function TCTThemeableLineStyleCT.GetLnChosen: TBasite;
+function TThemeableLineStyleCT.GetLnChosen: TBasite;
 begin
   Result := Chosen('Ln');
 end;
 
-{ TCTTableStyleTextStyleCT }
+{ TTableStyleTextStyleCT }
 
-function TCTTableStyleTextStyleCT.GetFont: TCTFontCollectionCT;
+function TTableStyleTextStyleCT.GetFont: TFontCollectionCT;
 begin
-  Result := TCTFontCollectionCT(Lazy(fFont, TCTFontCollectionCT));
+  Result := TFontCollectionCT(Lazy(fFont, TFontCollectionCT));
 end;
 
-function TCTTableStyleTextStyleCT.GetFontRef: TCTFontReferenceCT;
+function TTableStyleTextStyleCT.GetFontRef: TFontReferenceCT;
 begin
-  Result := TCTFontReferenceCT(Lazy(fFontRef, TCTFontReferenceCT));
+  Result := TFontReferenceCT(Lazy(fFontRef, TFontReferenceCT));
 end;
 
-function TCTTableStyleTextStyleCT.GetFontChosen: TBasite;
+function TTableStyleTextStyleCT.GetFontChosen: TBasite;
 begin
   Result := Chosen('Font');
 end;
 
-function TCTTableStyleTextStyleCT.GetScrgbClr: TCTScRgbColorCT;
+function TTableStyleTextStyleCT.GetScrgbClr: TScRgbColorCT;
 begin
-  Result := TCTScRgbColorCT(Lazy(fScrgbClr, TCTScRgbColorCT));
+  Result := TScRgbColorCT(Lazy(fScrgbClr, TScRgbColorCT));
 end;
 
-function TCTTableStyleTextStyleCT.GetSrgbClr: TCTSRgbColorCT;
+function TTableStyleTextStyleCT.GetSrgbClr: TSRgbColorCT;
 begin
-  Result := TCTSRgbColorCT(Lazy(fSrgbClr, TCTSRgbColorCT));
+  Result := TSRgbColorCT(Lazy(fSrgbClr, TSRgbColorCT));
 end;
 
-function TCTTableStyleTextStyleCT.GetHslClr: TCTHslColorCT;
+function TTableStyleTextStyleCT.GetHslClr: THslColorCT;
 begin
-  Result := TCTHslColorCT(Lazy(fHslClr, TCTHslColorCT));
+  Result := THslColorCT(Lazy(fHslClr, THslColorCT));
 end;
 
-function TCTTableStyleTextStyleCT.GetSysClr: TCTSystemColorCT;
+function TTableStyleTextStyleCT.GetSysClr: TSystemColorCT;
 begin
-  Result := TCTSystemColorCT(Lazy(fSysClr, TCTSystemColorCT));
+  Result := TSystemColorCT(Lazy(fSysClr, TSystemColorCT));
 end;
 
-function TCTTableStyleTextStyleCT.GetSchemeClr: TCTSchemeColorCT;
+function TTableStyleTextStyleCT.GetSchemeClr: TSchemeColorCT;
 begin
-  Result := TCTSchemeColorCT(Lazy(fSchemeClr, TCTSchemeColorCT));
+  Result := TSchemeColorCT(Lazy(fSchemeClr, TSchemeColorCT));
 end;
 
-function TCTTableStyleTextStyleCT.GetPrstClr: TCTPresetColorCT;
+function TTableStyleTextStyleCT.GetPrstClr: TPresetColorCT;
 begin
-  Result := TCTPresetColorCT(Lazy(fPrstClr, TCTPresetColorCT));
+  Result := TPresetColorCT(Lazy(fPrstClr, TPresetColorCT));
 end;
 
-{ TCTTableBackgroundStyleCT }
+{ TTableBackgroundStyleCT }
 
-function TCTTableBackgroundStyleCT.GetFill: TCTFillPropertiesCT;
+function TTableBackgroundStyleCT.GetFill: TFillPropertiesCT;
 begin
-  Result := TCTFillPropertiesCT(Lazy(fFill, TCTFillPropertiesCT));
+  Result := TFillPropertiesCT(Lazy(fFill, TFillPropertiesCT));
 end;
 
-function TCTTableBackgroundStyleCT.GetFillRef: TCTStyleMatrixReferenceCT;
+function TTableBackgroundStyleCT.GetFillRef: TStyleMatrixReferenceCT;
 begin
-  Result := TCTStyleMatrixReferenceCT(Lazy(fFillRef, TCTStyleMatrixReferenceCT));
+  Result := TStyleMatrixReferenceCT(Lazy(fFillRef, TStyleMatrixReferenceCT));
 end;
 
-function TCTTableBackgroundStyleCT.GetFillChosen: TBasite;
-begin
-  Result := Chosen('Fill');
-end;
-
-function TCTTableBackgroundStyleCT.GetEffect: TCTEffectPropertiesCT;
-begin
-  Result := TCTEffectPropertiesCT(Lazy(fEffect, TCTEffectPropertiesCT));
-end;
-
-function TCTTableBackgroundStyleCT.GetEffectRef: TCTStyleMatrixReferenceCT;
-begin
-  Result := TCTStyleMatrixReferenceCT(Lazy(fEffectRef, TCTStyleMatrixReferenceCT));
-end;
-
-function TCTTableBackgroundStyleCT.GetEffectChosen: TBasite;
-begin
-  Result := Chosen('Effect');
-end;
-
-{ TCTTableStyleCellStyleCT }
-
-function TCTTableStyleCellStyleCT.GetFill: TCTFillPropertiesCT;
-begin
-  Result := TCTFillPropertiesCT(Lazy(fFill, TCTFillPropertiesCT));
-end;
-
-function TCTTableStyleCellStyleCT.GetFillRef: TCTStyleMatrixReferenceCT;
-begin
-  Result := TCTStyleMatrixReferenceCT(Lazy(fFillRef, TCTStyleMatrixReferenceCT));
-end;
-
-function TCTTableStyleCellStyleCT.GetFillChosen: TBasite;
+function TTableBackgroundStyleCT.GetFillChosen: TBasite;
 begin
   Result := Chosen('Fill');
 end;
 
-{ TCTTextBodyPropertiesCT }
-
-function TCTTextBodyPropertiesCT.GetNoAutofit: TCTTextNoAutofitCT;
+function TTableBackgroundStyleCT.GetEffect: TEffectPropertiesCT;
 begin
-  Result := TCTTextNoAutofitCT(Lazy(fNoAutofit, TCTTextNoAutofitCT));
+  Result := TEffectPropertiesCT(Lazy(fEffect, TEffectPropertiesCT));
 end;
 
-function TCTTextBodyPropertiesCT.GetNormAutofit: TCTTextNormalAutofitCT;
+function TTableBackgroundStyleCT.GetEffectRef: TStyleMatrixReferenceCT;
 begin
-  Result := TCTTextNormalAutofitCT(Lazy(fNormAutofit, TCTTextNormalAutofitCT));
+  Result := TStyleMatrixReferenceCT(Lazy(fEffectRef, TStyleMatrixReferenceCT));
 end;
 
-function TCTTextBodyPropertiesCT.GetSpAutoFit: TCTTextShapeAutofitCT;
-begin
-  Result := TCTTextShapeAutofitCT(Lazy(fSpAutoFit, TCTTextShapeAutofitCT));
-end;
-
-function TCTTextBodyPropertiesCT.GetSp3d: TCTShape3DCT;
-begin
-  Result := TCTShape3DCT(Lazy(fSp3d, TCTShape3DCT));
-end;
-
-function TCTTextBodyPropertiesCT.GetFlatTx: TCTFlatTextCT;
-begin
-  Result := TCTFlatTextCT(Lazy(fFlatTx, TCTFlatTextCT));
-end;
-
-{ TCTTextUnderlineFillGroupWrapperCT }
-
-function TCTTextUnderlineFillGroupWrapperCT.GetNoFill: TCTNoFillPropertiesCT;
-begin
-  Result := TCTNoFillPropertiesCT(Lazy(fNoFill, TCTNoFillPropertiesCT));
-end;
-
-function TCTTextUnderlineFillGroupWrapperCT.GetSolidFill: TCTSolidColorFillPropertiesCT;
-begin
-  Result := TCTSolidColorFillPropertiesCT(Lazy(fSolidFill, TCTSolidColorFillPropertiesCT));
-end;
-
-function TCTTextUnderlineFillGroupWrapperCT.GetGradFill: TCTGradientFillPropertiesCT;
-begin
-  Result := TCTGradientFillPropertiesCT(Lazy(fGradFill, TCTGradientFillPropertiesCT));
-end;
-
-function TCTTextUnderlineFillGroupWrapperCT.GetBlipFill: TCTBlipFillPropertiesCT;
-begin
-  Result := TCTBlipFillPropertiesCT(Lazy(fBlipFill, TCTBlipFillPropertiesCT));
-end;
-
-function TCTTextUnderlineFillGroupWrapperCT.GetPattFill: TCTPatternFillPropertiesCT;
-begin
-  Result := TCTPatternFillPropertiesCT(Lazy(fPattFill, TCTPatternFillPropertiesCT));
-end;
-
-function TCTTextUnderlineFillGroupWrapperCT.GetGrpFill: TCTGroupFillPropertiesCT;
-begin
-  Result := TCTGroupFillPropertiesCT(Lazy(fGrpFill, TCTGroupFillPropertiesCT));
-end;
-
-{ TCTTextCharacterPropertiesCT }
-
-function TCTTextCharacterPropertiesCT.GetNoFill: TCTNoFillPropertiesCT;
-begin
-  Result := TCTNoFillPropertiesCT(Lazy(fNoFill, TCTNoFillPropertiesCT));
-end;
-
-function TCTTextCharacterPropertiesCT.GetSolidFill: TCTSolidColorFillPropertiesCT;
-begin
-  Result := TCTSolidColorFillPropertiesCT(Lazy(fSolidFill, TCTSolidColorFillPropertiesCT));
-end;
-
-function TCTTextCharacterPropertiesCT.GetGradFill: TCTGradientFillPropertiesCT;
-begin
-  Result := TCTGradientFillPropertiesCT(Lazy(fGradFill, TCTGradientFillPropertiesCT));
-end;
-
-function TCTTextCharacterPropertiesCT.GetBlipFill: TCTBlipFillPropertiesCT;
-begin
-  Result := TCTBlipFillPropertiesCT(Lazy(fBlipFill, TCTBlipFillPropertiesCT));
-end;
-
-function TCTTextCharacterPropertiesCT.GetPattFill: TCTPatternFillPropertiesCT;
-begin
-  Result := TCTPatternFillPropertiesCT(Lazy(fPattFill, TCTPatternFillPropertiesCT));
-end;
-
-function TCTTextCharacterPropertiesCT.GetGrpFill: TCTGroupFillPropertiesCT;
-begin
-  Result := TCTGroupFillPropertiesCT(Lazy(fGrpFill, TCTGroupFillPropertiesCT));
-end;
-
-function TCTTextCharacterPropertiesCT.GetEffectLst: TCTEffectListCT;
-begin
-  Result := TCTEffectListCT(Lazy(fEffectLst, TCTEffectListCT));
-end;
-
-function TCTTextCharacterPropertiesCT.GetEffectDag: TCTEffectContainerCT;
-begin
-  Result := TCTEffectContainerCT(Lazy(fEffectDag, TCTEffectContainerCT));
-end;
-
-function TCTTextCharacterPropertiesCT.GetEffectChosen: TBasite;
+function TTableBackgroundStyleCT.GetEffectChosen: TBasite;
 begin
   Result := Chosen('Effect');
 end;
 
-function TCTTextCharacterPropertiesCT.GetULnTx: TCTTextUnderlineLineFollowTextCT;
+{ TTableStyleCellStyleCT }
+
+function TTableStyleCellStyleCT.GetFill: TFillPropertiesCT;
 begin
-  Result := TCTTextUnderlineLineFollowTextCT(Lazy(fULnTx, TCTTextUnderlineLineFollowTextCT));
+  Result := TFillPropertiesCT(Lazy(fFill, TFillPropertiesCT));
 end;
 
-function TCTTextCharacterPropertiesCT.GetULn: TCTLinePropertiesCT;
+function TTableStyleCellStyleCT.GetFillRef: TStyleMatrixReferenceCT;
 begin
-  Result := TCTLinePropertiesCT(Lazy(fULn, TCTLinePropertiesCT));
+  Result := TStyleMatrixReferenceCT(Lazy(fFillRef, TStyleMatrixReferenceCT));
 end;
 
-function TCTTextCharacterPropertiesCT.GetULnChosen: TBasite;
+function TTableStyleCellStyleCT.GetFillChosen: TBasite;
+begin
+  Result := Chosen('Fill');
+end;
+
+{ TTextBodyPropertiesCT }
+
+function TTextBodyPropertiesCT.GetNoAutofit: TTextNoAutofitCT;
+begin
+  Result := TTextNoAutofitCT(Lazy(fNoAutofit, TTextNoAutofitCT));
+end;
+
+function TTextBodyPropertiesCT.GetNormAutofit: TTextNormalAutofitCT;
+begin
+  Result := TTextNormalAutofitCT(Lazy(fNormAutofit, TTextNormalAutofitCT));
+end;
+
+function TTextBodyPropertiesCT.GetSpAutoFit: TTextShapeAutofitCT;
+begin
+  Result := TTextShapeAutofitCT(Lazy(fSpAutoFit, TTextShapeAutofitCT));
+end;
+
+function TTextBodyPropertiesCT.GetSp3d: TShape3DCT;
+begin
+  Result := TShape3DCT(Lazy(fSp3d, TShape3DCT));
+end;
+
+function TTextBodyPropertiesCT.GetFlatTx: TFlatTextCT;
+begin
+  Result := TFlatTextCT(Lazy(fFlatTx, TFlatTextCT));
+end;
+
+{ TTextUnderlineFillGroupWrapperCT }
+
+function TTextUnderlineFillGroupWrapperCT.GetNoFill: TNoFillPropertiesCT;
+begin
+  Result := TNoFillPropertiesCT(Lazy(fNoFill, TNoFillPropertiesCT));
+end;
+
+function TTextUnderlineFillGroupWrapperCT.GetSolidFill: TSolidColorFillPropertiesCT;
+begin
+  Result := TSolidColorFillPropertiesCT(Lazy(fSolidFill, TSolidColorFillPropertiesCT));
+end;
+
+function TTextUnderlineFillGroupWrapperCT.GetGradFill: TGradientFillPropertiesCT;
+begin
+  Result := TGradientFillPropertiesCT(Lazy(fGradFill, TGradientFillPropertiesCT));
+end;
+
+function TTextUnderlineFillGroupWrapperCT.GetBlipFill: TBlipFillPropertiesCT;
+begin
+  Result := TBlipFillPropertiesCT(Lazy(fBlipFill, TBlipFillPropertiesCT));
+end;
+
+function TTextUnderlineFillGroupWrapperCT.GetPattFill: TPatternFillPropertiesCT;
+begin
+  Result := TPatternFillPropertiesCT(Lazy(fPattFill, TPatternFillPropertiesCT));
+end;
+
+function TTextUnderlineFillGroupWrapperCT.GetGrpFill: TGroupFillPropertiesCT;
+begin
+  Result := TGroupFillPropertiesCT(Lazy(fGrpFill, TGroupFillPropertiesCT));
+end;
+
+{ TTextCharacterPropertiesCT }
+
+function TTextCharacterPropertiesCT.GetNoFill: TNoFillPropertiesCT;
+begin
+  Result := TNoFillPropertiesCT(Lazy(fNoFill, TNoFillPropertiesCT));
+end;
+
+function TTextCharacterPropertiesCT.GetSolidFill: TSolidColorFillPropertiesCT;
+begin
+  Result := TSolidColorFillPropertiesCT(Lazy(fSolidFill, TSolidColorFillPropertiesCT));
+end;
+
+function TTextCharacterPropertiesCT.GetGradFill: TGradientFillPropertiesCT;
+begin
+  Result := TGradientFillPropertiesCT(Lazy(fGradFill, TGradientFillPropertiesCT));
+end;
+
+function TTextCharacterPropertiesCT.GetBlipFill: TBlipFillPropertiesCT;
+begin
+  Result := TBlipFillPropertiesCT(Lazy(fBlipFill, TBlipFillPropertiesCT));
+end;
+
+function TTextCharacterPropertiesCT.GetPattFill: TPatternFillPropertiesCT;
+begin
+  Result := TPatternFillPropertiesCT(Lazy(fPattFill, TPatternFillPropertiesCT));
+end;
+
+function TTextCharacterPropertiesCT.GetGrpFill: TGroupFillPropertiesCT;
+begin
+  Result := TGroupFillPropertiesCT(Lazy(fGrpFill, TGroupFillPropertiesCT));
+end;
+
+function TTextCharacterPropertiesCT.GetEffectLst: TEffectListCT;
+begin
+  Result := TEffectListCT(Lazy(fEffectLst, TEffectListCT));
+end;
+
+function TTextCharacterPropertiesCT.GetEffectDag: TEffectContainerCT;
+begin
+  Result := TEffectContainerCT(Lazy(fEffectDag, TEffectContainerCT));
+end;
+
+function TTextCharacterPropertiesCT.GetEffectChosen: TBasite;
+begin
+  Result := Chosen('Effect');
+end;
+
+function TTextCharacterPropertiesCT.GetULnTx: TTextUnderlineLineFollowTextCT;
+begin
+  Result := TTextUnderlineLineFollowTextCT(Lazy(fULnTx, TTextUnderlineLineFollowTextCT));
+end;
+
+function TTextCharacterPropertiesCT.GetULn: TLinePropertiesCT;
+begin
+  Result := TLinePropertiesCT(Lazy(fULn, TLinePropertiesCT));
+end;
+
+function TTextCharacterPropertiesCT.GetULnChosen: TBasite;
 begin
   Result := Chosen('ULn');
 end;
 
-function TCTTextCharacterPropertiesCT.GetUFillTx: TCTTextUnderlineFillFollowTextCT;
+function TTextCharacterPropertiesCT.GetUFillTx: TTextUnderlineFillFollowTextCT;
 begin
-  Result := TCTTextUnderlineFillFollowTextCT(Lazy(fUFillTx, TCTTextUnderlineFillFollowTextCT));
+  Result := TTextUnderlineFillFollowTextCT(Lazy(fUFillTx, TTextUnderlineFillFollowTextCT));
 end;
 
-function TCTTextCharacterPropertiesCT.GetUFill: TCTTextUnderlineFillGroupWrapperCT;
+function TTextCharacterPropertiesCT.GetUFill: TTextUnderlineFillGroupWrapperCT;
 begin
-  Result := TCTTextUnderlineFillGroupWrapperCT(Lazy(fUFill, TCTTextUnderlineFillGroupWrapperCT));
+  Result := TTextUnderlineFillGroupWrapperCT(Lazy(fUFill, TTextUnderlineFillGroupWrapperCT));
 end;
 
-function TCTTextCharacterPropertiesCT.GetUFillChosen: TBasite;
+function TTextCharacterPropertiesCT.GetUFillChosen: TBasite;
 begin
   Result := Chosen('UFill');
 end;
 
-{ TCTTextSpacingCT }
+{ TTextSpacingCT }
 
-function TCTTextSpacingCT.GetSpcPct: TCTTextSpacingPercentCT;
+function TTextSpacingCT.GetSpcPct: TTextSpacingPercentCT;
 begin
-  Result := TCTTextSpacingPercentCT(Lazy(fSpcPct, TCTTextSpacingPercentCT));
+  Result := TTextSpacingPercentCT(Lazy(fSpcPct, TTextSpacingPercentCT));
 end;
 
-function TCTTextSpacingCT.GetSpcPts: TCTTextSpacingPointCT;
+function TTextSpacingCT.GetSpcPts: TTextSpacingPointCT;
 begin
-  Result := TCTTextSpacingPointCT(Lazy(fSpcPts, TCTTextSpacingPointCT));
+  Result := TTextSpacingPointCT(Lazy(fSpcPts, TTextSpacingPointCT));
 end;
 
-function TCTTextSpacingCT.GetSpcChosen: TBasite;
+function TTextSpacingCT.GetSpcChosen: TBasite;
 begin
   Result := Chosen('Spc');
 end;
 
-{ TCTTextParagraphPropertiesCT }
+{ TTextParagraphPropertiesCT }
 
-function TCTTextParagraphPropertiesCT.GetBuClrTx: TCTTextBulletColorFollowTextCT;
+function TTextParagraphPropertiesCT.GetBuClrTx: TTextBulletColorFollowTextCT;
 begin
-  Result := TCTTextBulletColorFollowTextCT(Lazy(fBuClrTx, TCTTextBulletColorFollowTextCT));
+  Result := TTextBulletColorFollowTextCT(Lazy(fBuClrTx, TTextBulletColorFollowTextCT));
 end;
 
-function TCTTextParagraphPropertiesCT.GetBuClr: TCTColorCT;
+function TTextParagraphPropertiesCT.GetBuClr: TColorCT;
 begin
-  Result := TCTColorCT(Lazy(fBuClr, TCTColorCT));
+  Result := TColorCT(Lazy(fBuClr, TColorCT));
 end;
 
-function TCTTextParagraphPropertiesCT.GetBuClrChosen: TBasite;
+function TTextParagraphPropertiesCT.GetBuClrChosen: TBasite;
 begin
   Result := Chosen('BuClr');
 end;
 
-function TCTTextParagraphPropertiesCT.GetBuSzTx: TCTTextBulletSizeFollowTextCT;
+function TTextParagraphPropertiesCT.GetBuSzTx: TTextBulletSizeFollowTextCT;
 begin
-  Result := TCTTextBulletSizeFollowTextCT(Lazy(fBuSzTx, TCTTextBulletSizeFollowTextCT));
+  Result := TTextBulletSizeFollowTextCT(Lazy(fBuSzTx, TTextBulletSizeFollowTextCT));
 end;
 
-function TCTTextParagraphPropertiesCT.GetBuSzPct: TCTTextBulletSizePercentCT;
+function TTextParagraphPropertiesCT.GetBuSzPct: TTextBulletSizePercentCT;
 begin
-  Result := TCTTextBulletSizePercentCT(Lazy(fBuSzPct, TCTTextBulletSizePercentCT));
+  Result := TTextBulletSizePercentCT(Lazy(fBuSzPct, TTextBulletSizePercentCT));
 end;
 
-function TCTTextParagraphPropertiesCT.GetBuSzPts: TCTTextBulletSizePointCT;
+function TTextParagraphPropertiesCT.GetBuSzPts: TTextBulletSizePointCT;
 begin
-  Result := TCTTextBulletSizePointCT(Lazy(fBuSzPts, TCTTextBulletSizePointCT));
+  Result := TTextBulletSizePointCT(Lazy(fBuSzPts, TTextBulletSizePointCT));
 end;
 
-function TCTTextParagraphPropertiesCT.GetBuSzChosen: TBasite;
+function TTextParagraphPropertiesCT.GetBuSzChosen: TBasite;
 begin
   Result := Chosen('BuSz');
 end;
 
-function TCTTextParagraphPropertiesCT.GetBuFontTx: TCTTextBulletTypefaceFollowTextCT;
+function TTextParagraphPropertiesCT.GetBuFontTx: TTextBulletTypefaceFollowTextCT;
 begin
-  Result := TCTTextBulletTypefaceFollowTextCT(Lazy(fBuFontTx, TCTTextBulletTypefaceFollowTextCT));
+  Result := TTextBulletTypefaceFollowTextCT(Lazy(fBuFontTx, TTextBulletTypefaceFollowTextCT));
 end;
 
-function TCTTextParagraphPropertiesCT.GetBuFont: TCTTextFontCT;
+function TTextParagraphPropertiesCT.GetBuFont: TTextFontCT;
 begin
-  Result := TCTTextFontCT(Lazy(fBuFont, TCTTextFontCT));
+  Result := TTextFontCT(Lazy(fBuFont, TTextFontCT));
 end;
 
-function TCTTextParagraphPropertiesCT.GetBuFontChosen: TBasite;
+function TTextParagraphPropertiesCT.GetBuFontChosen: TBasite;
 begin
   Result := Chosen('BuFont');
 end;
 
-function TCTTextParagraphPropertiesCT.GetBuNone: TCTTextNoBulletCT;
+function TTextParagraphPropertiesCT.GetBuNone: TTextNoBulletCT;
 begin
-  Result := TCTTextNoBulletCT(Lazy(fBuNone, TCTTextNoBulletCT));
+  Result := TTextNoBulletCT(Lazy(fBuNone, TTextNoBulletCT));
 end;
 
-function TCTTextParagraphPropertiesCT.GetBuAutoNum: TCTTextAutonumberBulletCT;
+function TTextParagraphPropertiesCT.GetBuAutoNum: TTextAutonumberBulletCT;
 begin
-  Result := TCTTextAutonumberBulletCT(Lazy(fBuAutoNum, TCTTextAutonumberBulletCT));
+  Result := TTextAutonumberBulletCT(Lazy(fBuAutoNum, TTextAutonumberBulletCT));
 end;
 
-function TCTTextParagraphPropertiesCT.GetBuChar: TCTTextCharBulletCT;
+function TTextParagraphPropertiesCT.GetBuChar: TTextCharBulletCT;
 begin
-  Result := TCTTextCharBulletCT(Lazy(fBuChar, TCTTextCharBulletCT));
+  Result := TTextCharBulletCT(Lazy(fBuChar, TTextCharBulletCT));
 end;
 
-function TCTTextParagraphPropertiesCT.GetBuBlip: TCTTextBlipBulletCT;
+function TTextParagraphPropertiesCT.GetBuBlip: TTextBlipBulletCT;
 begin
-  Result := TCTTextBlipBulletCT(Lazy(fBuBlip, TCTTextBlipBulletCT));
+  Result := TTextBlipBulletCT(Lazy(fBuBlip, TTextBlipBulletCT));
 end;
 
-function TCTTextParagraphPropertiesCT.GetBuChosen: TBasite;
+function TTextParagraphPropertiesCT.GetBuChosen: TBasite;
 begin
   Result := Chosen('Bu');
 end;
 
-{ TEGMediaEG }
+{ TMediaEG }
 
-function TEGMediaEG.GetAudioCd: TCTAudioCDCT;
+function TMediaEG.GetAudioCd: TAudioCDCT;
 begin
-  Result := TCTAudioCDCT(Lazy(fAudioCd, TCTAudioCDCT));
+  Result := TAudioCDCT(Lazy(fAudioCd, TAudioCDCT));
 end;
 
-function TEGMediaEG.GetWavAudioFile: TCTEmbeddedWAVAudioFileCT;
+function TMediaEG.GetWavAudioFile: TEmbeddedWAVAudioFileCT;
 begin
-  Result := TCTEmbeddedWAVAudioFileCT(Lazy(fWavAudioFile, TCTEmbeddedWAVAudioFileCT));
+  Result := TEmbeddedWAVAudioFileCT(Lazy(fWavAudioFile, TEmbeddedWAVAudioFileCT));
 end;
 
-function TEGMediaEG.GetAudioFile: TCTAudioFileCT;
+function TMediaEG.GetAudioFile: TAudioFileCT;
 begin
-  Result := TCTAudioFileCT(Lazy(fAudioFile, TCTAudioFileCT));
+  Result := TAudioFileCT(Lazy(fAudioFile, TAudioFileCT));
 end;
 
-function TEGMediaEG.GetVideoFile: TCTVideoFileCT;
+function TMediaEG.GetVideoFile: TVideoFileCT;
 begin
-  Result := TCTVideoFileCT(Lazy(fVideoFile, TCTVideoFileCT));
+  Result := TVideoFileCT(Lazy(fVideoFile, TVideoFileCT));
 end;
 
-function TEGMediaEG.GetQuickTimeFile: TCTQuickTimeFileCT;
+function TMediaEG.GetQuickTimeFile: TQuickTimeFileCT;
 begin
-  Result := TCTQuickTimeFileCT(Lazy(fQuickTimeFile, TCTQuickTimeFileCT));
+  Result := TQuickTimeFileCT(Lazy(fQuickTimeFile, TQuickTimeFileCT));
 end;
 
-{ TEGColorTransformEG }
+{ TColorTransformEG }
 
-function TEGColorTransformEG.GetTint: TCTPositiveFixedPercentageCT;
+function TColorTransformEG.GetTint: TPositiveFixedPercentageCT;
 begin
-  Result := TCTPositiveFixedPercentageCT(Lazy(fTint, TCTPositiveFixedPercentageCT));
+  Result := TPositiveFixedPercentageCT(Lazy(fTint, TPositiveFixedPercentageCT));
 end;
 
-function TEGColorTransformEG.GetShade: TCTPositiveFixedPercentageCT;
+function TColorTransformEG.GetShade: TPositiveFixedPercentageCT;
 begin
-  Result := TCTPositiveFixedPercentageCT(Lazy(fShade, TCTPositiveFixedPercentageCT));
+  Result := TPositiveFixedPercentageCT(Lazy(fShade, TPositiveFixedPercentageCT));
 end;
 
-function TEGColorTransformEG.GetComp: TCTComplementTransformCT;
+function TColorTransformEG.GetComp: TComplementTransformCT;
 begin
-  Result := TCTComplementTransformCT(Lazy(fComp, TCTComplementTransformCT));
+  Result := TComplementTransformCT(Lazy(fComp, TComplementTransformCT));
 end;
 
-function TEGColorTransformEG.GetInv: TCTInverseTransformCT;
+function TColorTransformEG.GetInv: TInverseTransformCT;
 begin
-  Result := TCTInverseTransformCT(Lazy(fInv, TCTInverseTransformCT));
+  Result := TInverseTransformCT(Lazy(fInv, TInverseTransformCT));
 end;
 
-function TEGColorTransformEG.GetGray: TCTGrayscaleTransformCT;
+function TColorTransformEG.GetGray: TGrayscaleTransformCT;
 begin
-  Result := TCTGrayscaleTransformCT(Lazy(fGray, TCTGrayscaleTransformCT));
+  Result := TGrayscaleTransformCT(Lazy(fGray, TGrayscaleTransformCT));
 end;
 
-function TEGColorTransformEG.GetAlpha: TCTPositiveFixedPercentageCT;
+function TColorTransformEG.GetAlpha: TPositiveFixedPercentageCT;
 begin
-  Result := TCTPositiveFixedPercentageCT(Lazy(fAlpha, TCTPositiveFixedPercentageCT));
+  Result := TPositiveFixedPercentageCT(Lazy(fAlpha, TPositiveFixedPercentageCT));
 end;
 
-function TEGColorTransformEG.GetAlphaOff: TCTFixedPercentageCT;
+function TColorTransformEG.GetAlphaOff: TFixedPercentageCT;
 begin
-  Result := TCTFixedPercentageCT(Lazy(fAlphaOff, TCTFixedPercentageCT));
+  Result := TFixedPercentageCT(Lazy(fAlphaOff, TFixedPercentageCT));
 end;
 
-function TEGColorTransformEG.GetAlphaMod: TCTPositivePercentageCT;
+function TColorTransformEG.GetAlphaMod: TPositivePercentageCT;
 begin
-  Result := TCTPositivePercentageCT(Lazy(fAlphaMod, TCTPositivePercentageCT));
+  Result := TPositivePercentageCT(Lazy(fAlphaMod, TPositivePercentageCT));
 end;
 
-function TEGColorTransformEG.GetHue: TCTPositiveFixedAngleCT;
+function TColorTransformEG.GetHue: TPositiveFixedAngleCT;
 begin
-  Result := TCTPositiveFixedAngleCT(Lazy(fHue, TCTPositiveFixedAngleCT));
+  Result := TPositiveFixedAngleCT(Lazy(fHue, TPositiveFixedAngleCT));
 end;
 
-function TEGColorTransformEG.GetHueOff: TCTAngleCT;
+function TColorTransformEG.GetHueOff: TAngleCT;
 begin
-  Result := TCTAngleCT(Lazy(fHueOff, TCTAngleCT));
+  Result := TAngleCT(Lazy(fHueOff, TAngleCT));
 end;
 
-function TEGColorTransformEG.GetHueMod: TCTPositivePercentageCT;
+function TColorTransformEG.GetHueMod: TPositivePercentageCT;
 begin
-  Result := TCTPositivePercentageCT(Lazy(fHueMod, TCTPositivePercentageCT));
+  Result := TPositivePercentageCT(Lazy(fHueMod, TPositivePercentageCT));
 end;
 
-function TEGColorTransformEG.GetSat: TCTPercentageCT;
+function TColorTransformEG.GetSat: TPercentageCT;
 begin
-  Result := TCTPercentageCT(Lazy(fSat, TCTPercentageCT));
+  Result := TPercentageCT(Lazy(fSat, TPercentageCT));
 end;
 
-function TEGColorTransformEG.GetSatOff: TCTPercentageCT;
+function TColorTransformEG.GetSatOff: TPercentageCT;
 begin
-  Result := TCTPercentageCT(Lazy(fSatOff, TCTPercentageCT));
+  Result := TPercentageCT(Lazy(fSatOff, TPercentageCT));
 end;
 
-function TEGColorTransformEG.GetSatMod: TCTPercentageCT;
+function TColorTransformEG.GetSatMod: TPercentageCT;
 begin
-  Result := TCTPercentageCT(Lazy(fSatMod, TCTPercentageCT));
+  Result := TPercentageCT(Lazy(fSatMod, TPercentageCT));
 end;
 
-function TEGColorTransformEG.GetLum: TCTPercentageCT;
+function TColorTransformEG.GetLum: TPercentageCT;
 begin
-  Result := TCTPercentageCT(Lazy(fLum, TCTPercentageCT));
+  Result := TPercentageCT(Lazy(fLum, TPercentageCT));
 end;
 
-function TEGColorTransformEG.GetLumOff: TCTPercentageCT;
+function TColorTransformEG.GetLumOff: TPercentageCT;
 begin
-  Result := TCTPercentageCT(Lazy(fLumOff, TCTPercentageCT));
+  Result := TPercentageCT(Lazy(fLumOff, TPercentageCT));
 end;
 
-function TEGColorTransformEG.GetLumMod: TCTPercentageCT;
+function TColorTransformEG.GetLumMod: TPercentageCT;
 begin
-  Result := TCTPercentageCT(Lazy(fLumMod, TCTPercentageCT));
+  Result := TPercentageCT(Lazy(fLumMod, TPercentageCT));
 end;
 
-function TEGColorTransformEG.GetRed: TCTPercentageCT;
+function TColorTransformEG.GetRed: TPercentageCT;
 begin
-  Result := TCTPercentageCT(Lazy(fRed, TCTPercentageCT));
+  Result := TPercentageCT(Lazy(fRed, TPercentageCT));
 end;
 
-function TEGColorTransformEG.GetRedOff: TCTPercentageCT;
+function TColorTransformEG.GetRedOff: TPercentageCT;
 begin
-  Result := TCTPercentageCT(Lazy(fRedOff, TCTPercentageCT));
+  Result := TPercentageCT(Lazy(fRedOff, TPercentageCT));
 end;
 
-function TEGColorTransformEG.GetRedMod: TCTPercentageCT;
+function TColorTransformEG.GetRedMod: TPercentageCT;
 begin
-  Result := TCTPercentageCT(Lazy(fRedMod, TCTPercentageCT));
+  Result := TPercentageCT(Lazy(fRedMod, TPercentageCT));
 end;
 
-function TEGColorTransformEG.GetGreen: TCTPercentageCT;
+function TColorTransformEG.GetGreen: TPercentageCT;
 begin
-  Result := TCTPercentageCT(Lazy(fGreen, TCTPercentageCT));
+  Result := TPercentageCT(Lazy(fGreen, TPercentageCT));
 end;
 
-function TEGColorTransformEG.GetGreenOff: TCTPercentageCT;
+function TColorTransformEG.GetGreenOff: TPercentageCT;
 begin
-  Result := TCTPercentageCT(Lazy(fGreenOff, TCTPercentageCT));
+  Result := TPercentageCT(Lazy(fGreenOff, TPercentageCT));
 end;
 
-function TEGColorTransformEG.GetGreenMod: TCTPercentageCT;
+function TColorTransformEG.GetGreenMod: TPercentageCT;
 begin
-  Result := TCTPercentageCT(Lazy(fGreenMod, TCTPercentageCT));
+  Result := TPercentageCT(Lazy(fGreenMod, TPercentageCT));
 end;
 
-function TEGColorTransformEG.GetBlue: TCTPercentageCT;
+function TColorTransformEG.GetBlue: TPercentageCT;
 begin
-  Result := TCTPercentageCT(Lazy(fBlue, TCTPercentageCT));
+  Result := TPercentageCT(Lazy(fBlue, TPercentageCT));
 end;
 
-function TEGColorTransformEG.GetBlueOff: TCTPercentageCT;
+function TColorTransformEG.GetBlueOff: TPercentageCT;
 begin
-  Result := TCTPercentageCT(Lazy(fBlueOff, TCTPercentageCT));
+  Result := TPercentageCT(Lazy(fBlueOff, TPercentageCT));
 end;
 
-function TEGColorTransformEG.GetBlueMod: TCTPercentageCT;
+function TColorTransformEG.GetBlueMod: TPercentageCT;
 begin
-  Result := TCTPercentageCT(Lazy(fBlueMod, TCTPercentageCT));
+  Result := TPercentageCT(Lazy(fBlueMod, TPercentageCT));
 end;
 
-function TEGColorTransformEG.GetGamma: TCTGammaTransformCT;
+function TColorTransformEG.GetGamma: TGammaTransformCT;
 begin
-  Result := TCTGammaTransformCT(Lazy(fGamma, TCTGammaTransformCT));
+  Result := TGammaTransformCT(Lazy(fGamma, TGammaTransformCT));
 end;
 
-function TEGColorTransformEG.GetInvGamma: TCTInverseGammaTransformCT;
+function TColorTransformEG.GetInvGamma: TInverseGammaTransformCT;
 begin
-  Result := TCTInverseGammaTransformCT(Lazy(fInvGamma, TCTInverseGammaTransformCT));
+  Result := TInverseGammaTransformCT(Lazy(fInvGamma, TInverseGammaTransformCT));
 end;
 
-{ TEGColorChoiceEG }
+{ TColorChoiceEG }
 
-function TEGColorChoiceEG.GetScrgbClr: TCTScRgbColorCT;
+function TColorChoiceEG.GetScrgbClr: TScRgbColorCT;
 begin
-  Result := TCTScRgbColorCT(Lazy(fScrgbClr, TCTScRgbColorCT));
+  Result := TScRgbColorCT(Lazy(fScrgbClr, TScRgbColorCT));
 end;
 
-function TEGColorChoiceEG.GetSrgbClr: TCTSRgbColorCT;
+function TColorChoiceEG.GetSrgbClr: TSRgbColorCT;
 begin
-  Result := TCTSRgbColorCT(Lazy(fSrgbClr, TCTSRgbColorCT));
+  Result := TSRgbColorCT(Lazy(fSrgbClr, TSRgbColorCT));
 end;
 
-function TEGColorChoiceEG.GetHslClr: TCTHslColorCT;
+function TColorChoiceEG.GetHslClr: THslColorCT;
 begin
-  Result := TCTHslColorCT(Lazy(fHslClr, TCTHslColorCT));
+  Result := THslColorCT(Lazy(fHslClr, THslColorCT));
 end;
 
-function TEGColorChoiceEG.GetSysClr: TCTSystemColorCT;
+function TColorChoiceEG.GetSysClr: TSystemColorCT;
 begin
-  Result := TCTSystemColorCT(Lazy(fSysClr, TCTSystemColorCT));
+  Result := TSystemColorCT(Lazy(fSysClr, TSystemColorCT));
 end;
 
-function TEGColorChoiceEG.GetSchemeClr: TCTSchemeColorCT;
+function TColorChoiceEG.GetSchemeClr: TSchemeColorCT;
 begin
-  Result := TCTSchemeColorCT(Lazy(fSchemeClr, TCTSchemeColorCT));
+  Result := TSchemeColorCT(Lazy(fSchemeClr, TSchemeColorCT));
 end;
 
-function TEGColorChoiceEG.GetPrstClr: TCTPresetColorCT;
+function TColorChoiceEG.GetPrstClr: TPresetColorCT;
 begin
-  Result := TCTPresetColorCT(Lazy(fPrstClr, TCTPresetColorCT));
+  Result := TPresetColorCT(Lazy(fPrstClr, TPresetColorCT));
 end;
 
-{ TEGText3DEG }
+{ TText3DEG }
 
-function TEGText3DEG.GetSp3d: TCTShape3DCT;
+function TText3DEG.GetSp3d: TShape3DCT;
 begin
-  Result := TCTShape3DCT(Lazy(fSp3d, TCTShape3DCT));
+  Result := TShape3DCT(Lazy(fSp3d, TShape3DCT));
 end;
 
-function TEGText3DEG.GetFlatTx: TCTFlatTextCT;
+function TText3DEG.GetFlatTx: TFlatTextCT;
 begin
-  Result := TCTFlatTextCT(Lazy(fFlatTx, TCTFlatTextCT));
+  Result := TFlatTextCT(Lazy(fFlatTx, TFlatTextCT));
 end;
 
-{ TEGShadePropertiesEG }
+{ TShadePropertiesEG }
 
-function TEGShadePropertiesEG.GetLin: TCTLinearShadePropertiesCT;
+function TShadePropertiesEG.GetLin: TLinearShadePropertiesCT;
 begin
-  Result := TCTLinearShadePropertiesCT(Lazy(fLin, TCTLinearShadePropertiesCT));
+  Result := TLinearShadePropertiesCT(Lazy(fLin, TLinearShadePropertiesCT));
 end;
 
-function TEGShadePropertiesEG.GetPath: TCTPathShadePropertiesCT;
+function TShadePropertiesEG.GetPath: TPathShadePropertiesCT;
 begin
-  Result := TCTPathShadePropertiesCT(Lazy(fPath, TCTPathShadePropertiesCT));
+  Result := TPathShadePropertiesCT(Lazy(fPath, TPathShadePropertiesCT));
 end;
 
-{ TEGFillModePropertiesEG }
+{ TFillModePropertiesEG }
 
-function TEGFillModePropertiesEG.GetTile: TCTTileInfoPropertiesCT;
+function TFillModePropertiesEG.GetTile: TTileInfoPropertiesCT;
 begin
-  Result := TCTTileInfoPropertiesCT(Lazy(fTile, TCTTileInfoPropertiesCT));
+  Result := TTileInfoPropertiesCT(Lazy(fTile, TTileInfoPropertiesCT));
 end;
 
-function TEGFillModePropertiesEG.GetStretch: TCTStretchInfoPropertiesCT;
+function TFillModePropertiesEG.GetStretch: TStretchInfoPropertiesCT;
 begin
-  Result := TCTStretchInfoPropertiesCT(Lazy(fStretch, TCTStretchInfoPropertiesCT));
+  Result := TStretchInfoPropertiesCT(Lazy(fStretch, TStretchInfoPropertiesCT));
 end;
 
-{ TEGFillPropertiesEG }
+{ TFillPropertiesEG }
 
-function TEGFillPropertiesEG.GetNoFill: TCTNoFillPropertiesCT;
+function TFillPropertiesEG.GetNoFill: TNoFillPropertiesCT;
 begin
-  Result := TCTNoFillPropertiesCT(Lazy(fNoFill, TCTNoFillPropertiesCT));
+  Result := TNoFillPropertiesCT(Lazy(fNoFill, TNoFillPropertiesCT));
 end;
 
-function TEGFillPropertiesEG.GetSolidFill: TCTSolidColorFillPropertiesCT;
+function TFillPropertiesEG.GetSolidFill: TSolidColorFillPropertiesCT;
 begin
-  Result := TCTSolidColorFillPropertiesCT(Lazy(fSolidFill, TCTSolidColorFillPropertiesCT));
+  Result := TSolidColorFillPropertiesCT(Lazy(fSolidFill, TSolidColorFillPropertiesCT));
 end;
 
-function TEGFillPropertiesEG.GetGradFill: TCTGradientFillPropertiesCT;
+function TFillPropertiesEG.GetGradFill: TGradientFillPropertiesCT;
 begin
-  Result := TCTGradientFillPropertiesCT(Lazy(fGradFill, TCTGradientFillPropertiesCT));
+  Result := TGradientFillPropertiesCT(Lazy(fGradFill, TGradientFillPropertiesCT));
 end;
 
-function TEGFillPropertiesEG.GetBlipFill: TCTBlipFillPropertiesCT;
+function TFillPropertiesEG.GetBlipFill: TBlipFillPropertiesCT;
 begin
-  Result := TCTBlipFillPropertiesCT(Lazy(fBlipFill, TCTBlipFillPropertiesCT));
+  Result := TBlipFillPropertiesCT(Lazy(fBlipFill, TBlipFillPropertiesCT));
 end;
 
-function TEGFillPropertiesEG.GetPattFill: TCTPatternFillPropertiesCT;
+function TFillPropertiesEG.GetPattFill: TPatternFillPropertiesCT;
 begin
-  Result := TCTPatternFillPropertiesCT(Lazy(fPattFill, TCTPatternFillPropertiesCT));
+  Result := TPatternFillPropertiesCT(Lazy(fPattFill, TPatternFillPropertiesCT));
 end;
 
-function TEGFillPropertiesEG.GetGrpFill: TCTGroupFillPropertiesCT;
+function TFillPropertiesEG.GetGrpFill: TGroupFillPropertiesCT;
 begin
-  Result := TCTGroupFillPropertiesCT(Lazy(fGrpFill, TCTGroupFillPropertiesCT));
+  Result := TGroupFillPropertiesCT(Lazy(fGrpFill, TGroupFillPropertiesCT));
 end;
 
-{ TEGEffectEG }
+{ TEffectEG }
 
-function TEGEffectEG.GetCont: TCTEffectContainerCT;
+function TEffectEG.GetCont: TEffectContainerCT;
 begin
-  Result := TCTEffectContainerCT(Lazy(fCont, TCTEffectContainerCT));
+  Result := TEffectContainerCT(Lazy(fCont, TEffectContainerCT));
 end;
 
-function TEGEffectEG.GetEffect: TCTEffectReferenceCT;
+function TEffectEG.GetEffect: TEffectReferenceCT;
 begin
-  Result := TCTEffectReferenceCT(Lazy(fEffect, TCTEffectReferenceCT));
+  Result := TEffectReferenceCT(Lazy(fEffect, TEffectReferenceCT));
 end;
 
-function TEGEffectEG.GetAlphaBiLevel: TCTAlphaBiLevelEffectCT;
+function TEffectEG.GetAlphaBiLevel: TAlphaBiLevelEffectCT;
 begin
-  Result := TCTAlphaBiLevelEffectCT(Lazy(fAlphaBiLevel, TCTAlphaBiLevelEffectCT));
+  Result := TAlphaBiLevelEffectCT(Lazy(fAlphaBiLevel, TAlphaBiLevelEffectCT));
 end;
 
-function TEGEffectEG.GetAlphaCeiling: TCTAlphaCeilingEffectCT;
+function TEffectEG.GetAlphaCeiling: TAlphaCeilingEffectCT;
 begin
-  Result := TCTAlphaCeilingEffectCT(Lazy(fAlphaCeiling, TCTAlphaCeilingEffectCT));
+  Result := TAlphaCeilingEffectCT(Lazy(fAlphaCeiling, TAlphaCeilingEffectCT));
 end;
 
-function TEGEffectEG.GetAlphaFloor: TCTAlphaFloorEffectCT;
+function TEffectEG.GetAlphaFloor: TAlphaFloorEffectCT;
 begin
-  Result := TCTAlphaFloorEffectCT(Lazy(fAlphaFloor, TCTAlphaFloorEffectCT));
+  Result := TAlphaFloorEffectCT(Lazy(fAlphaFloor, TAlphaFloorEffectCT));
 end;
 
-function TEGEffectEG.GetAlphaInv: TCTAlphaInverseEffectCT;
+function TEffectEG.GetAlphaInv: TAlphaInverseEffectCT;
 begin
-  Result := TCTAlphaInverseEffectCT(Lazy(fAlphaInv, TCTAlphaInverseEffectCT));
+  Result := TAlphaInverseEffectCT(Lazy(fAlphaInv, TAlphaInverseEffectCT));
 end;
 
-function TEGEffectEG.GetAlphaMod: TCTAlphaModulateEffectCT;
+function TEffectEG.GetAlphaMod: TAlphaModulateEffectCT;
 begin
-  Result := TCTAlphaModulateEffectCT(Lazy(fAlphaMod, TCTAlphaModulateEffectCT));
+  Result := TAlphaModulateEffectCT(Lazy(fAlphaMod, TAlphaModulateEffectCT));
 end;
 
-function TEGEffectEG.GetAlphaModFix: TCTAlphaModulateFixedEffectCT;
+function TEffectEG.GetAlphaModFix: TAlphaModulateFixedEffectCT;
 begin
-  Result := TCTAlphaModulateFixedEffectCT(Lazy(fAlphaModFix, TCTAlphaModulateFixedEffectCT));
+  Result := TAlphaModulateFixedEffectCT(Lazy(fAlphaModFix, TAlphaModulateFixedEffectCT));
 end;
 
-function TEGEffectEG.GetAlphaOutset: TCTAlphaOutsetEffectCT;
+function TEffectEG.GetAlphaOutset: TAlphaOutsetEffectCT;
 begin
-  Result := TCTAlphaOutsetEffectCT(Lazy(fAlphaOutset, TCTAlphaOutsetEffectCT));
+  Result := TAlphaOutsetEffectCT(Lazy(fAlphaOutset, TAlphaOutsetEffectCT));
 end;
 
-function TEGEffectEG.GetAlphaRepl: TCTAlphaReplaceEffectCT;
+function TEffectEG.GetAlphaRepl: TAlphaReplaceEffectCT;
 begin
-  Result := TCTAlphaReplaceEffectCT(Lazy(fAlphaRepl, TCTAlphaReplaceEffectCT));
+  Result := TAlphaReplaceEffectCT(Lazy(fAlphaRepl, TAlphaReplaceEffectCT));
 end;
 
-function TEGEffectEG.GetBiLevel: TCTBiLevelEffectCT;
+function TEffectEG.GetBiLevel: TBiLevelEffectCT;
 begin
-  Result := TCTBiLevelEffectCT(Lazy(fBiLevel, TCTBiLevelEffectCT));
+  Result := TBiLevelEffectCT(Lazy(fBiLevel, TBiLevelEffectCT));
 end;
 
-function TEGEffectEG.GetBlend: TCTBlendEffectCT;
+function TEffectEG.GetBlend: TBlendEffectCT;
 begin
-  Result := TCTBlendEffectCT(Lazy(fBlend, TCTBlendEffectCT));
+  Result := TBlendEffectCT(Lazy(fBlend, TBlendEffectCT));
 end;
 
-function TEGEffectEG.GetBlur: TCTBlurEffectCT;
+function TEffectEG.GetBlur: TBlurEffectCT;
 begin
-  Result := TCTBlurEffectCT(Lazy(fBlur, TCTBlurEffectCT));
+  Result := TBlurEffectCT(Lazy(fBlur, TBlurEffectCT));
 end;
 
-function TEGEffectEG.GetClrChange: TCTColorChangeEffectCT;
+function TEffectEG.GetClrChange: TColorChangeEffectCT;
 begin
-  Result := TCTColorChangeEffectCT(Lazy(fClrChange, TCTColorChangeEffectCT));
+  Result := TColorChangeEffectCT(Lazy(fClrChange, TColorChangeEffectCT));
 end;
 
-function TEGEffectEG.GetClrRepl: TCTColorReplaceEffectCT;
+function TEffectEG.GetClrRepl: TColorReplaceEffectCT;
 begin
-  Result := TCTColorReplaceEffectCT(Lazy(fClrRepl, TCTColorReplaceEffectCT));
+  Result := TColorReplaceEffectCT(Lazy(fClrRepl, TColorReplaceEffectCT));
 end;
 
-function TEGEffectEG.GetDuotone: TCTDuotoneEffectCT;
+function TEffectEG.GetDuotone: TDuotoneEffectCT;
 begin
-  Result := TCTDuotoneEffectCT(Lazy(fDuotone, TCTDuotoneEffectCT));
+  Result := TDuotoneEffectCT(Lazy(fDuotone, TDuotoneEffectCT));
 end;
 
-function TEGEffectEG.GetFill: TCTFillEffectCT;
+function TEffectEG.GetFill: TFillEffectCT;
 begin
-  Result := TCTFillEffectCT(Lazy(fFill, TCTFillEffectCT));
+  Result := TFillEffectCT(Lazy(fFill, TFillEffectCT));
 end;
 
-function TEGEffectEG.GetFillOverlay: TCTFillOverlayEffectCT;
+function TEffectEG.GetFillOverlay: TFillOverlayEffectCT;
 begin
-  Result := TCTFillOverlayEffectCT(Lazy(fFillOverlay, TCTFillOverlayEffectCT));
+  Result := TFillOverlayEffectCT(Lazy(fFillOverlay, TFillOverlayEffectCT));
 end;
 
-function TEGEffectEG.GetGlow: TCTGlowEffectCT;
+function TEffectEG.GetGlow: TGlowEffectCT;
 begin
-  Result := TCTGlowEffectCT(Lazy(fGlow, TCTGlowEffectCT));
+  Result := TGlowEffectCT(Lazy(fGlow, TGlowEffectCT));
 end;
 
-function TEGEffectEG.GetGrayscl: TCTGrayscaleEffectCT;
+function TEffectEG.GetGrayscl: TGrayscaleEffectCT;
 begin
-  Result := TCTGrayscaleEffectCT(Lazy(fGrayscl, TCTGrayscaleEffectCT));
+  Result := TGrayscaleEffectCT(Lazy(fGrayscl, TGrayscaleEffectCT));
 end;
 
-function TEGEffectEG.GetHsl: TCTHSLEffectCT;
+function TEffectEG.GetHsl: THSLEffectCT;
 begin
-  Result := TCTHSLEffectCT(Lazy(fHsl, TCTHSLEffectCT));
+  Result := THSLEffectCT(Lazy(fHsl, THSLEffectCT));
 end;
 
-function TEGEffectEG.GetInnerShdw: TCTInnerShadowEffectCT;
+function TEffectEG.GetInnerShdw: TInnerShadowEffectCT;
 begin
-  Result := TCTInnerShadowEffectCT(Lazy(fInnerShdw, TCTInnerShadowEffectCT));
+  Result := TInnerShadowEffectCT(Lazy(fInnerShdw, TInnerShadowEffectCT));
 end;
 
-function TEGEffectEG.GetLum: TCTLuminanceEffectCT;
+function TEffectEG.GetLum: TLuminanceEffectCT;
 begin
-  Result := TCTLuminanceEffectCT(Lazy(fLum, TCTLuminanceEffectCT));
+  Result := TLuminanceEffectCT(Lazy(fLum, TLuminanceEffectCT));
 end;
 
-function TEGEffectEG.GetOuterShdw: TCTOuterShadowEffectCT;
+function TEffectEG.GetOuterShdw: TOuterShadowEffectCT;
 begin
-  Result := TCTOuterShadowEffectCT(Lazy(fOuterShdw, TCTOuterShadowEffectCT));
+  Result := TOuterShadowEffectCT(Lazy(fOuterShdw, TOuterShadowEffectCT));
 end;
 
-function TEGEffectEG.GetPrstShdw: TCTPresetShadowEffectCT;
+function TEffectEG.GetPrstShdw: TPresetShadowEffectCT;
 begin
-  Result := TCTPresetShadowEffectCT(Lazy(fPrstShdw, TCTPresetShadowEffectCT));
+  Result := TPresetShadowEffectCT(Lazy(fPrstShdw, TPresetShadowEffectCT));
 end;
 
-function TEGEffectEG.GetReflection: TCTReflectionEffectCT;
+function TEffectEG.GetReflection: TReflectionEffectCT;
 begin
-  Result := TCTReflectionEffectCT(Lazy(fReflection, TCTReflectionEffectCT));
+  Result := TReflectionEffectCT(Lazy(fReflection, TReflectionEffectCT));
 end;
 
-function TEGEffectEG.GetRelOff: TCTRelativeOffsetEffectCT;
+function TEffectEG.GetRelOff: TRelativeOffsetEffectCT;
 begin
-  Result := TCTRelativeOffsetEffectCT(Lazy(fRelOff, TCTRelativeOffsetEffectCT));
+  Result := TRelativeOffsetEffectCT(Lazy(fRelOff, TRelativeOffsetEffectCT));
 end;
 
-function TEGEffectEG.GetSoftEdge: TCTSoftEdgesEffectCT;
+function TEffectEG.GetSoftEdge: TSoftEdgesEffectCT;
 begin
-  Result := TCTSoftEdgesEffectCT(Lazy(fSoftEdge, TCTSoftEdgesEffectCT));
+  Result := TSoftEdgesEffectCT(Lazy(fSoftEdge, TSoftEdgesEffectCT));
 end;
 
-function TEGEffectEG.GetTint: TCTTintEffectCT;
+function TEffectEG.GetTint: TTintEffectCT;
 begin
-  Result := TCTTintEffectCT(Lazy(fTint, TCTTintEffectCT));
+  Result := TTintEffectCT(Lazy(fTint, TTintEffectCT));
 end;
 
-function TEGEffectEG.GetXfrm: TCTTransformEffectCT;
+function TEffectEG.GetXfrm: TTransformEffectCT;
 begin
-  Result := TCTTransformEffectCT(Lazy(fXfrm, TCTTransformEffectCT));
+  Result := TTransformEffectCT(Lazy(fXfrm, TTransformEffectCT));
 end;
 
-{ TEGEffectPropertiesEG }
+{ TEffectPropertiesEG }
 
-function TEGEffectPropertiesEG.GetEffectLst: TCTEffectListCT;
+function TEffectPropertiesEG.GetEffectLst: TEffectListCT;
 begin
-  Result := TCTEffectListCT(Lazy(fEffectLst, TCTEffectListCT));
+  Result := TEffectListCT(Lazy(fEffectLst, TEffectListCT));
 end;
 
-function TEGEffectPropertiesEG.GetEffectDag: TCTEffectContainerCT;
+function TEffectPropertiesEG.GetEffectDag: TEffectContainerCT;
 begin
-  Result := TCTEffectContainerCT(Lazy(fEffectDag, TCTEffectContainerCT));
+  Result := TEffectContainerCT(Lazy(fEffectDag, TEffectContainerCT));
 end;
 
-function TEGEffectPropertiesEG.GetEffectChosen: TBasite;
+function TEffectPropertiesEG.GetEffectChosen: TBasite;
 begin
   Result := Chosen('Effect');
 end;
 
-{ TEGGeometryEG }
+{ TGeometryEG }
 
-function TEGGeometryEG.GetCustGeom: TCTCustomGeometry2DCT;
+function TGeometryEG.GetCustGeom: TCustomGeometry2DCT;
 begin
-  Result := TCTCustomGeometry2DCT(Lazy(fCustGeom, TCTCustomGeometry2DCT));
+  Result := TCustomGeometry2DCT(Lazy(fCustGeom, TCustomGeometry2DCT));
 end;
 
-function TEGGeometryEG.GetPrstGeom: TCTPresetGeometry2DCT;
+function TGeometryEG.GetPrstGeom: TPresetGeometry2DCT;
 begin
-  Result := TCTPresetGeometry2DCT(Lazy(fPrstGeom, TCTPresetGeometry2DCT));
+  Result := TPresetGeometry2DCT(Lazy(fPrstGeom, TPresetGeometry2DCT));
 end;
 
-{ TEGTextGeometryEG }
+{ TTextGeometryEG }
 
-function TEGTextGeometryEG.GetCustGeom: TCTCustomGeometry2DCT;
+function TTextGeometryEG.GetCustGeom: TCustomGeometry2DCT;
 begin
-  Result := TCTCustomGeometry2DCT(Lazy(fCustGeom, TCTCustomGeometry2DCT));
+  Result := TCustomGeometry2DCT(Lazy(fCustGeom, TCustomGeometry2DCT));
 end;
 
-function TEGTextGeometryEG.GetPrstTxWarp: TCTPresetTextShapeCT;
+function TTextGeometryEG.GetPrstTxWarp: TPresetTextShapeCT;
 begin
-  Result := TCTPresetTextShapeCT(Lazy(fPrstTxWarp, TCTPresetTextShapeCT));
+  Result := TPresetTextShapeCT(Lazy(fPrstTxWarp, TPresetTextShapeCT));
 end;
 
-{ TEGLineFillPropertiesEG }
+{ TLineFillPropertiesEG }
 
-function TEGLineFillPropertiesEG.GetNoFill: TCTNoFillPropertiesCT;
+function TLineFillPropertiesEG.GetNoFill: TNoFillPropertiesCT;
 begin
-  Result := TCTNoFillPropertiesCT(Lazy(fNoFill, TCTNoFillPropertiesCT));
+  Result := TNoFillPropertiesCT(Lazy(fNoFill, TNoFillPropertiesCT));
 end;
 
-function TEGLineFillPropertiesEG.GetSolidFill: TCTSolidColorFillPropertiesCT;
+function TLineFillPropertiesEG.GetSolidFill: TSolidColorFillPropertiesCT;
 begin
-  Result := TCTSolidColorFillPropertiesCT(Lazy(fSolidFill, TCTSolidColorFillPropertiesCT));
+  Result := TSolidColorFillPropertiesCT(Lazy(fSolidFill, TSolidColorFillPropertiesCT));
 end;
 
-function TEGLineFillPropertiesEG.GetGradFill: TCTGradientFillPropertiesCT;
+function TLineFillPropertiesEG.GetGradFill: TGradientFillPropertiesCT;
 begin
-  Result := TCTGradientFillPropertiesCT(Lazy(fGradFill, TCTGradientFillPropertiesCT));
+  Result := TGradientFillPropertiesCT(Lazy(fGradFill, TGradientFillPropertiesCT));
 end;
 
-function TEGLineFillPropertiesEG.GetPattFill: TCTPatternFillPropertiesCT;
+function TLineFillPropertiesEG.GetPattFill: TPatternFillPropertiesCT;
 begin
-  Result := TCTPatternFillPropertiesCT(Lazy(fPattFill, TCTPatternFillPropertiesCT));
+  Result := TPatternFillPropertiesCT(Lazy(fPattFill, TPatternFillPropertiesCT));
 end;
 
-{ TEGLineJoinPropertiesEG }
+{ TLineJoinPropertiesEG }
 
-function TEGLineJoinPropertiesEG.GetRound: TCTLineJoinRoundCT;
+function TLineJoinPropertiesEG.GetRound: TLineJoinRoundCT;
 begin
-  Result := TCTLineJoinRoundCT(Lazy(fRound, TCTLineJoinRoundCT));
+  Result := TLineJoinRoundCT(Lazy(fRound, TLineJoinRoundCT));
 end;
 
-function TEGLineJoinPropertiesEG.GetBevel: TCTLineJoinBevelCT;
+function TLineJoinPropertiesEG.GetBevel: TLineJoinBevelCT;
 begin
-  Result := TCTLineJoinBevelCT(Lazy(fBevel, TCTLineJoinBevelCT));
+  Result := TLineJoinBevelCT(Lazy(fBevel, TLineJoinBevelCT));
 end;
 
-function TEGLineJoinPropertiesEG.GetMiter: TCTLineJoinMiterPropertiesCT;
+function TLineJoinPropertiesEG.GetMiter: TLineJoinMiterPropertiesCT;
 begin
-  Result := TCTLineJoinMiterPropertiesCT(Lazy(fMiter, TCTLineJoinMiterPropertiesCT));
+  Result := TLineJoinMiterPropertiesCT(Lazy(fMiter, TLineJoinMiterPropertiesCT));
 end;
 
-{ TEGLineDashPropertiesEG }
+{ TLineDashPropertiesEG }
 
-function TEGLineDashPropertiesEG.GetPrstDash: TCTPresetLineDashPropertiesCT;
+function TLineDashPropertiesEG.GetPrstDash: TPresetLineDashPropertiesCT;
 begin
-  Result := TCTPresetLineDashPropertiesCT(Lazy(fPrstDash, TCTPresetLineDashPropertiesCT));
+  Result := TPresetLineDashPropertiesCT(Lazy(fPrstDash, TPresetLineDashPropertiesCT));
 end;
 
-function TEGLineDashPropertiesEG.GetCustDash: TCTDashStopListCT;
+function TLineDashPropertiesEG.GetCustDash: TDashStopListCT;
 begin
-  Result := TCTDashStopListCT(Lazy(fCustDash, TCTDashStopListCT));
+  Result := TDashStopListCT(Lazy(fCustDash, TDashStopListCT));
 end;
 
-{ TEGThemeableFillStyleEG }
+{ TThemeableFillStyleEG }
 
-function TEGThemeableFillStyleEG.GetFill: TCTFillPropertiesCT;
+function TThemeableFillStyleEG.GetFill: TFillPropertiesCT;
 begin
-  Result := TCTFillPropertiesCT(Lazy(fFill, TCTFillPropertiesCT));
+  Result := TFillPropertiesCT(Lazy(fFill, TFillPropertiesCT));
 end;
 
-function TEGThemeableFillStyleEG.GetFillRef: TCTStyleMatrixReferenceCT;
+function TThemeableFillStyleEG.GetFillRef: TStyleMatrixReferenceCT;
 begin
-  Result := TCTStyleMatrixReferenceCT(Lazy(fFillRef, TCTStyleMatrixReferenceCT));
+  Result := TStyleMatrixReferenceCT(Lazy(fFillRef, TStyleMatrixReferenceCT));
 end;
 
-function TEGThemeableFillStyleEG.GetFillChosen: TBasite;
+function TThemeableFillStyleEG.GetFillChosen: TBasite;
 begin
   Result := Chosen('Fill');
 end;
 
-{ TEGThemeableEffectStyleEG }
+{ TThemeableEffectStyleEG }
 
-function TEGThemeableEffectStyleEG.GetEffect: TCTEffectPropertiesCT;
+function TThemeableEffectStyleEG.GetEffect: TEffectPropertiesCT;
 begin
-  Result := TCTEffectPropertiesCT(Lazy(fEffect, TCTEffectPropertiesCT));
+  Result := TEffectPropertiesCT(Lazy(fEffect, TEffectPropertiesCT));
 end;
 
-function TEGThemeableEffectStyleEG.GetEffectRef: TCTStyleMatrixReferenceCT;
+function TThemeableEffectStyleEG.GetEffectRef: TStyleMatrixReferenceCT;
 begin
-  Result := TCTStyleMatrixReferenceCT(Lazy(fEffectRef, TCTStyleMatrixReferenceCT));
+  Result := TStyleMatrixReferenceCT(Lazy(fEffectRef, TStyleMatrixReferenceCT));
 end;
 
-function TEGThemeableEffectStyleEG.GetEffectChosen: TBasite;
+function TThemeableEffectStyleEG.GetEffectChosen: TBasite;
 begin
   Result := Chosen('Effect');
 end;
 
-{ TEGThemeableFontStylesEG }
+{ TThemeableFontStylesEG }
 
-function TEGThemeableFontStylesEG.GetFont: TCTFontCollectionCT;
+function TThemeableFontStylesEG.GetFont: TFontCollectionCT;
 begin
-  Result := TCTFontCollectionCT(Lazy(fFont, TCTFontCollectionCT));
+  Result := TFontCollectionCT(Lazy(fFont, TFontCollectionCT));
 end;
 
-function TEGThemeableFontStylesEG.GetFontRef: TCTFontReferenceCT;
+function TThemeableFontStylesEG.GetFontRef: TFontReferenceCT;
 begin
-  Result := TCTFontReferenceCT(Lazy(fFontRef, TCTFontReferenceCT));
+  Result := TFontReferenceCT(Lazy(fFontRef, TFontReferenceCT));
 end;
 
-function TEGThemeableFontStylesEG.GetFontChosen: TBasite;
+function TThemeableFontStylesEG.GetFontChosen: TBasite;
 begin
   Result := Chosen('Font');
 end;
 
-{ TEGTextAutofitEG }
+{ TTextAutofitEG }
 
-function TEGTextAutofitEG.GetNoAutofit: TCTTextNoAutofitCT;
+function TTextAutofitEG.GetNoAutofit: TTextNoAutofitCT;
 begin
-  Result := TCTTextNoAutofitCT(Lazy(fNoAutofit, TCTTextNoAutofitCT));
+  Result := TTextNoAutofitCT(Lazy(fNoAutofit, TTextNoAutofitCT));
 end;
 
-function TEGTextAutofitEG.GetNormAutofit: TCTTextNormalAutofitCT;
+function TTextAutofitEG.GetNormAutofit: TTextNormalAutofitCT;
 begin
-  Result := TCTTextNormalAutofitCT(Lazy(fNormAutofit, TCTTextNormalAutofitCT));
+  Result := TTextNormalAutofitCT(Lazy(fNormAutofit, TTextNormalAutofitCT));
 end;
 
-function TEGTextAutofitEG.GetSpAutoFit: TCTTextShapeAutofitCT;
+function TTextAutofitEG.GetSpAutoFit: TTextShapeAutofitCT;
 begin
-  Result := TCTTextShapeAutofitCT(Lazy(fSpAutoFit, TCTTextShapeAutofitCT));
+  Result := TTextShapeAutofitCT(Lazy(fSpAutoFit, TTextShapeAutofitCT));
 end;
 
-{ TEGTextBulletColorEG }
+{ TTextBulletColorEG }
 
-function TEGTextBulletColorEG.GetBuClrTx: TCTTextBulletColorFollowTextCT;
+function TTextBulletColorEG.GetBuClrTx: TTextBulletColorFollowTextCT;
 begin
-  Result := TCTTextBulletColorFollowTextCT(Lazy(fBuClrTx, TCTTextBulletColorFollowTextCT));
+  Result := TTextBulletColorFollowTextCT(Lazy(fBuClrTx, TTextBulletColorFollowTextCT));
 end;
 
-function TEGTextBulletColorEG.GetBuClr: TCTColorCT;
+function TTextBulletColorEG.GetBuClr: TColorCT;
 begin
-  Result := TCTColorCT(Lazy(fBuClr, TCTColorCT));
+  Result := TColorCT(Lazy(fBuClr, TColorCT));
 end;
 
-function TEGTextBulletColorEG.GetBuClrChosen: TBasite;
+function TTextBulletColorEG.GetBuClrChosen: TBasite;
 begin
   Result := Chosen('BuClr');
 end;
 
-{ TEGTextBulletSizeEG }
+{ TTextBulletSizeEG }
 
-function TEGTextBulletSizeEG.GetBuSzTx: TCTTextBulletSizeFollowTextCT;
+function TTextBulletSizeEG.GetBuSzTx: TTextBulletSizeFollowTextCT;
 begin
-  Result := TCTTextBulletSizeFollowTextCT(Lazy(fBuSzTx, TCTTextBulletSizeFollowTextCT));
+  Result := TTextBulletSizeFollowTextCT(Lazy(fBuSzTx, TTextBulletSizeFollowTextCT));
 end;
 
-function TEGTextBulletSizeEG.GetBuSzPct: TCTTextBulletSizePercentCT;
+function TTextBulletSizeEG.GetBuSzPct: TTextBulletSizePercentCT;
 begin
-  Result := TCTTextBulletSizePercentCT(Lazy(fBuSzPct, TCTTextBulletSizePercentCT));
+  Result := TTextBulletSizePercentCT(Lazy(fBuSzPct, TTextBulletSizePercentCT));
 end;
 
-function TEGTextBulletSizeEG.GetBuSzPts: TCTTextBulletSizePointCT;
+function TTextBulletSizeEG.GetBuSzPts: TTextBulletSizePointCT;
 begin
-  Result := TCTTextBulletSizePointCT(Lazy(fBuSzPts, TCTTextBulletSizePointCT));
+  Result := TTextBulletSizePointCT(Lazy(fBuSzPts, TTextBulletSizePointCT));
 end;
 
-function TEGTextBulletSizeEG.GetBuSzChosen: TBasite;
+function TTextBulletSizeEG.GetBuSzChosen: TBasite;
 begin
   Result := Chosen('BuSz');
 end;
 
-{ TEGTextBulletTypefaceEG }
+{ TTextBulletTypefaceEG }
 
-function TEGTextBulletTypefaceEG.GetBuFontTx: TCTTextBulletTypefaceFollowTextCT;
+function TTextBulletTypefaceEG.GetBuFontTx: TTextBulletTypefaceFollowTextCT;
 begin
-  Result := TCTTextBulletTypefaceFollowTextCT(Lazy(fBuFontTx, TCTTextBulletTypefaceFollowTextCT));
+  Result := TTextBulletTypefaceFollowTextCT(Lazy(fBuFontTx, TTextBulletTypefaceFollowTextCT));
 end;
 
-function TEGTextBulletTypefaceEG.GetBuFont: TCTTextFontCT;
+function TTextBulletTypefaceEG.GetBuFont: TTextFontCT;
 begin
-  Result := TCTTextFontCT(Lazy(fBuFont, TCTTextFontCT));
+  Result := TTextFontCT(Lazy(fBuFont, TTextFontCT));
 end;
 
-function TEGTextBulletTypefaceEG.GetBuFontChosen: TBasite;
+function TTextBulletTypefaceEG.GetBuFontChosen: TBasite;
 begin
   Result := Chosen('BuFont');
 end;
 
-{ TEGTextBulletEG }
+{ TTextBulletEG }
 
-function TEGTextBulletEG.GetBuNone: TCTTextNoBulletCT;
+function TTextBulletEG.GetBuNone: TTextNoBulletCT;
 begin
-  Result := TCTTextNoBulletCT(Lazy(fBuNone, TCTTextNoBulletCT));
+  Result := TTextNoBulletCT(Lazy(fBuNone, TTextNoBulletCT));
 end;
 
-function TEGTextBulletEG.GetBuAutoNum: TCTTextAutonumberBulletCT;
+function TTextBulletEG.GetBuAutoNum: TTextAutonumberBulletCT;
 begin
-  Result := TCTTextAutonumberBulletCT(Lazy(fBuAutoNum, TCTTextAutonumberBulletCT));
+  Result := TTextAutonumberBulletCT(Lazy(fBuAutoNum, TTextAutonumberBulletCT));
 end;
 
-function TEGTextBulletEG.GetBuChar: TCTTextCharBulletCT;
+function TTextBulletEG.GetBuChar: TTextCharBulletCT;
 begin
-  Result := TCTTextCharBulletCT(Lazy(fBuChar, TCTTextCharBulletCT));
+  Result := TTextCharBulletCT(Lazy(fBuChar, TTextCharBulletCT));
 end;
 
-function TEGTextBulletEG.GetBuBlip: TCTTextBlipBulletCT;
+function TTextBulletEG.GetBuBlip: TTextBlipBulletCT;
 begin
-  Result := TCTTextBlipBulletCT(Lazy(fBuBlip, TCTTextBlipBulletCT));
+  Result := TTextBlipBulletCT(Lazy(fBuBlip, TTextBlipBulletCT));
 end;
 
-function TEGTextBulletEG.GetBuChosen: TBasite;
+function TTextBulletEG.GetBuChosen: TBasite;
 begin
   Result := Chosen('Bu');
 end;
 
-{ TEGTextUnderlineLineEG }
+{ TTextUnderlineLineEG }
 
-function TEGTextUnderlineLineEG.GetULnTx: TCTTextUnderlineLineFollowTextCT;
+function TTextUnderlineLineEG.GetULnTx: TTextUnderlineLineFollowTextCT;
 begin
-  Result := TCTTextUnderlineLineFollowTextCT(Lazy(fULnTx, TCTTextUnderlineLineFollowTextCT));
+  Result := TTextUnderlineLineFollowTextCT(Lazy(fULnTx, TTextUnderlineLineFollowTextCT));
 end;
 
-function TEGTextUnderlineLineEG.GetULn: TCTLinePropertiesCT;
+function TTextUnderlineLineEG.GetULn: TLinePropertiesCT;
 begin
-  Result := TCTLinePropertiesCT(Lazy(fULn, TCTLinePropertiesCT));
+  Result := TLinePropertiesCT(Lazy(fULn, TLinePropertiesCT));
 end;
 
-function TEGTextUnderlineLineEG.GetULnChosen: TBasite;
+function TTextUnderlineLineEG.GetULnChosen: TBasite;
 begin
   Result := Chosen('ULn');
 end;
 
-{ TEGTextUnderlineFillEG }
+{ TTextUnderlineFillEG }
 
-function TEGTextUnderlineFillEG.GetUFillTx: TCTTextUnderlineFillFollowTextCT;
+function TTextUnderlineFillEG.GetUFillTx: TTextUnderlineFillFollowTextCT;
 begin
-  Result := TCTTextUnderlineFillFollowTextCT(Lazy(fUFillTx, TCTTextUnderlineFillFollowTextCT));
+  Result := TTextUnderlineFillFollowTextCT(Lazy(fUFillTx, TTextUnderlineFillFollowTextCT));
 end;
 
-function TEGTextUnderlineFillEG.GetUFill: TCTTextUnderlineFillGroupWrapperCT;
+function TTextUnderlineFillEG.GetUFill: TTextUnderlineFillGroupWrapperCT;
 begin
-  Result := TCTTextUnderlineFillGroupWrapperCT(Lazy(fUFill, TCTTextUnderlineFillGroupWrapperCT));
+  Result := TTextUnderlineFillGroupWrapperCT(Lazy(fUFill, TTextUnderlineFillGroupWrapperCT));
 end;
 
-function TEGTextUnderlineFillEG.GetUFillChosen: TBasite;
+function TTextUnderlineFillEG.GetUFillChosen: TBasite;
 begin
   Result := Chosen('UFill');
 end;
 
-{ TEGTextRunEG }
+{ TTextRunEG }
 
-function TEGTextRunEG.GetR: TCTRegularTextRunCT;
+function TTextRunEG.GetR: TRegularTextRunCT;
 begin
-  Result := TCTRegularTextRunCT(Lazy(fR, TCTRegularTextRunCT));
+  Result := TRegularTextRunCT(Lazy(fR, TRegularTextRunCT));
 end;
 
-function TEGTextRunEG.GetBr: TCTTextLineBreakCT;
+function TTextRunEG.GetBr: TTextLineBreakCT;
 begin
-  Result := TCTTextLineBreakCT(Lazy(fBr, TCTTextLineBreakCT));
+  Result := TTextLineBreakCT(Lazy(fBr, TTextLineBreakCT));
 end;
 
-function TEGTextRunEG.GetFld: TCTTextFieldCT;
+function TTextRunEG.GetFld: TTextFieldCT;
 begin
-  Result := TCTTextFieldCT(Lazy(fFld, TCTTextFieldCT));
+  Result := TTextFieldCT(Lazy(fFld, TTextFieldCT));
 end;
 
 initialization
 
 TMetaBankXmlite.RegisterNamespace('http://schemas.openxmlformats.org/drawingml/2006/main',
   { simpleTypes }
-  [TypeInfo(TSTStyleMatrixColumnIndexST), TypeInfo(TSTFontCollectionIndexST), TypeInfo(TSTColorSchemeIndexST), TypeInfo(TSTCoordinateST),
-  TypeInfo(TSTCoordinateUnqualifiedST), TypeInfo(TSTCoordinate32ST), TypeInfo(TSTCoordinate32UnqualifiedST),
-  TypeInfo(TSTPositiveCoordinateST), TypeInfo(TSTPositiveCoordinate32ST), TypeInfo(TSTAngleST), TypeInfo(TSTFixedAngleST),
-  TypeInfo(TSTPositiveFixedAngleST), TypeInfo(TSTPercentageST), TypeInfo(TSTPercentageDecimalST), TypeInfo(TSTPositivePercentageST),
-  TypeInfo(TSTPositivePercentageDecimalST), TypeInfo(TSTFixedPercentageST), TypeInfo(TSTFixedPercentageDecimalST),
-  TypeInfo(TSTPositiveFixedPercentageST), TypeInfo(TSTPositiveFixedPercentageDecimalST), TypeInfo(TSTSystemColorValST),
-  TypeInfo(TSTSchemeColorValST), TypeInfo(TSTPresetColorValST), TypeInfo(TSTRectAlignmentST), TypeInfo(TSTBlackWhiteModeST),
-  TypeInfo(TSTDrawingElementIdST), TypeInfo(TSTChartBuildStepST), TypeInfo(TSTDgmBuildStepST), TypeInfo(TSTAnimationBuildTypeST),
-  TypeInfo(TSTAnimationDgmOnlyBuildTypeST), TypeInfo(TSTAnimationDgmBuildTypeST), TypeInfo(TSTAnimationChartOnlyBuildTypeST),
-  TypeInfo(TSTAnimationChartBuildTypeST), TypeInfo(TSTPresetCameraTypeST), TypeInfo(TSTFOVAngleST), TypeInfo(TSTLightRigDirectionST),
-  TypeInfo(TSTLightRigTypeST), TypeInfo(TSTBevelPresetTypeST), TypeInfo(TSTPresetMaterialTypeST), TypeInfo(TSTPresetShadowValST),
-  TypeInfo(TSTPathShadeTypeST), TypeInfo(TSTTileFlipModeST), TypeInfo(TSTBlipCompressionST), TypeInfo(TSTPresetPatternValST),
-  TypeInfo(TSTBlendModeST), TypeInfo(TSTEffectContainerTypeST), TypeInfo(TSTShapeTypeST), TypeInfo(TSTTextShapeTypeST),
-  TypeInfo(TSTGeomGuideNameST), TypeInfo(TSTGeomGuideFormulaST), TypeInfo(TSTAdjCoordinateST), TypeInfo(TSTAdjAngleST),
-  TypeInfo(TSTPathFillModeST), TypeInfo(TSTLineEndTypeST), TypeInfo(TSTLineEndWidthST), TypeInfo(TSTLineEndLengthST),
-  TypeInfo(TSTPresetLineDashValST), TypeInfo(TSTLineCapST), TypeInfo(TSTLineWidthST), TypeInfo(TSTPenAlignmentST),
-  TypeInfo(TSTCompoundLineST), TypeInfo(TSTShapeIDST), TypeInfo(TSTOnOffStyleTypeST), TypeInfo(TSTTextAnchoringTypeST),
-  TypeInfo(TSTTextVertOverflowTypeST), TypeInfo(TSTTextHorzOverflowTypeST), TypeInfo(TSTTextVerticalTypeST),
-  TypeInfo(TSTTextWrappingTypeST), TypeInfo(TSTTextColumnCountST), TypeInfo(TSTTextFontScalePercentOrPercentStringST),
-  TypeInfo(TSTTextFontScalePercentST), TypeInfo(TSTTextBulletStartAtNumST), TypeInfo(TSTTextAutonumberSchemeST),
-  TypeInfo(TSTTextBulletSizeST), TypeInfo(TSTTextBulletSizePercentST), TypeInfo(TSTTextBulletSizeDecimalST), TypeInfo(TSTTextPointST),
-  TypeInfo(TSTTextPointUnqualifiedST), TypeInfo(TSTTextNonNegativePointST), TypeInfo(TSTTextFontSizeST), TypeInfo(TSTTextTypefaceST),
-  TypeInfo(TSTPitchFamilyST), TypeInfo(TSTTextUnderlineTypeST), TypeInfo(TSTTextStrikeTypeST), TypeInfo(TSTTextCapsTypeST),
-  TypeInfo(TSTTextSpacingPointST), TypeInfo(TSTTextSpacingPercentOrPercentStringST), TypeInfo(TSTTextSpacingPercentST),
-  TypeInfo(TSTTextMarginST), TypeInfo(TSTTextIndentST), TypeInfo(TSTTextTabAlignTypeST), TypeInfo(TSTTextAlignTypeST),
-  TypeInfo(TSTTextFontAlignTypeST), TypeInfo(TSTTextIndentLevelTypeST)],
+  [TypeInfo(TStyleMatrixColumnIndexST), TypeInfo(TFontCollectionIndexST), TypeInfo(TColorSchemeIndexST), TypeInfo(TCoordinateST),
+  TypeInfo(TCoordinateUnqualifiedST), TypeInfo(TCoordinate32ST), TypeInfo(TCoordinate32UnqualifiedST), TypeInfo(TPositiveCoordinateST),
+  TypeInfo(TPositiveCoordinate32ST), TypeInfo(TAngleST), TypeInfo(TFixedAngleST), TypeInfo(TPositiveFixedAngleST), TypeInfo(TPercentageST),
+  TypeInfo(TPercentageDecimalST), TypeInfo(TPositivePercentageST), TypeInfo(TPositivePercentageDecimalST), TypeInfo(TFixedPercentageST),
+  TypeInfo(TFixedPercentageDecimalST), TypeInfo(TPositiveFixedPercentageST), TypeInfo(TPositiveFixedPercentageDecimalST),
+  TypeInfo(TSystemColorValST), TypeInfo(TSchemeColorValST), TypeInfo(TPresetColorValST), TypeInfo(TRectAlignmentST),
+  TypeInfo(TBlackWhiteModeST), TypeInfo(TDrawingElementIdST), TypeInfo(TChartBuildStepST), TypeInfo(TDgmBuildStepST),
+  TypeInfo(TAnimationBuildTypeST), TypeInfo(TAnimationDgmOnlyBuildTypeST), TypeInfo(TAnimationDgmBuildTypeST),
+  TypeInfo(TAnimationChartOnlyBuildTypeST), TypeInfo(TAnimationChartBuildTypeST), TypeInfo(TPresetCameraTypeST), TypeInfo(TFOVAngleST),
+  TypeInfo(TLightRigDirectionST), TypeInfo(TLightRigTypeST), TypeInfo(TBevelPresetTypeST), TypeInfo(TPresetMaterialTypeST),
+  TypeInfo(TPresetShadowValST), TypeInfo(TPathShadeTypeST), TypeInfo(TTileFlipModeST), TypeInfo(TBlipCompressionST),
+  TypeInfo(TPresetPatternValST), TypeInfo(TBlendModeST), TypeInfo(TEffectContainerTypeST), TypeInfo(TShapeTypeST),
+  TypeInfo(TTextShapeTypeST), TypeInfo(TGeomGuideNameST), TypeInfo(TGeomGuideFormulaST), TypeInfo(TAdjCoordinateST), TypeInfo(TAdjAngleST),
+  TypeInfo(TPathFillModeST), TypeInfo(TLineEndTypeST), TypeInfo(TLineEndWidthST), TypeInfo(TLineEndLengthST),
+  TypeInfo(TPresetLineDashValST), TypeInfo(TLineCapST), TypeInfo(TLineWidthST), TypeInfo(TPenAlignmentST), TypeInfo(TCompoundLineST),
+  TypeInfo(TShapeIDST), TypeInfo(TOnOffStyleTypeST), TypeInfo(TTextAnchoringTypeST), TypeInfo(TTextVertOverflowTypeST),
+  TypeInfo(TTextHorzOverflowTypeST), TypeInfo(TTextVerticalTypeST), TypeInfo(TTextWrappingTypeST), TypeInfo(TTextColumnCountST),
+  TypeInfo(TTextFontScalePercentOrPercentStringST), TypeInfo(TTextFontScalePercentST), TypeInfo(TTextBulletStartAtNumST),
+  TypeInfo(TTextAutonumberSchemeST), TypeInfo(TTextBulletSizeST), TypeInfo(TTextBulletSizePercentST), TypeInfo(TTextBulletSizeDecimalST),
+  TypeInfo(TTextPointST), TypeInfo(TTextPointUnqualifiedST), TypeInfo(TTextNonNegativePointST), TypeInfo(TTextFontSizeST),
+  TypeInfo(TTextTypefaceST), TypeInfo(TPitchFamilyST), TypeInfo(TTextUnderlineTypeST), TypeInfo(TTextStrikeTypeST),
+  TypeInfo(TTextCapsTypeST), TypeInfo(TTextSpacingPointST), TypeInfo(TTextSpacingPercentOrPercentStringST), TypeInfo(TTextSpacingPercentST),
+  TypeInfo(TTextMarginST), TypeInfo(TTextIndentST), TypeInfo(TTextTabAlignTypeST), TypeInfo(TTextAlignTypeST),
+  TypeInfo(TTextFontAlignTypeST), TypeInfo(TTextIndentLevelTypeST)],
   { complexTypes }
-  [TCTAudioFileCT, TCTVideoFileCT, TCTQuickTimeFileCT, TCTAudioCDTimeCT, TCTAudioCDCT, TCTColorSchemeCT, TCTCustomColorCT,
-  TCTSupplementalFontCT, TCTCustomColorListCT, TCTFontCollectionCT, TCTEffectStyleItemCT, TCTFontSchemeCT, TCTFillStyleListCT,
-  TCTLineStyleListCT, TCTEffectStyleListCT, TCTBackgroundFillStyleListCT, TCTStyleMatrixCT, TCTBaseStylesCT, TCTOfficeArtExtensionCT,
-  TCTAngleCT, TCTPositiveFixedAngleCT, TCTPercentageCT, TCTPositivePercentageCT, TCTFixedPercentageCT, TCTPositiveFixedPercentageCT,
-  TCTRatioCT, TCTPoint2DCT, TCTPositiveSize2DCT, TCTComplementTransformCT, TCTInverseTransformCT, TCTGrayscaleTransformCT,
-  TCTGammaTransformCT, TCTInverseGammaTransformCT, TCTScRgbColorCT, TCTSRgbColorCT, TCTHslColorCT, TCTSystemColorCT, TCTSchemeColorCT,
-  TCTPresetColorCT, TCTOfficeArtExtensionListCT, TCTScale2DCT, TCTTransform2DCT, TCTGroupTransform2DCT, TCTPoint3DCT, TCTVector3DCT,
-  TCTSphereCoordsCT, TCTRelativeRectCT, TCTColorCT, TCTColorMRUCT, TCTEmbeddedWAVAudioFileCT, TCTHyperlinkCT, TCTConnectorLockingCT,
-  TCTShapeLockingCT, TCTPictureLockingCT, TCTGroupLockingCT, TCTGraphicalObjectFrameLockingCT, TCTContentPartLockingCT,
-  TCTNonVisualDrawingPropsCT, TCTNonVisualDrawingShapePropsCT, TCTNonVisualConnectorPropertiesCT, TCTNonVisualPicturePropertiesCT,
-  TCTNonVisualGroupDrawingShapePropsCT, TCTNonVisualGraphicFramePropertiesCT, TCTNonVisualContentPartPropertiesCT, TCTGraphicalObjectDataCT,
-  TCTGraphicalObjectCT, TCTAnimationDgmElementCT, TCTAnimationChartElementCT, TCTAnimationElementChoiceCT, TCTAnimationDgmBuildPropertiesCT,
-  TCTAnimationChartBuildPropertiesCT, TCTAnimationGraphicalObjectBuildPropertiesCT, TCTBackgroundFormattingCT, TCTWholeE2oFormattingCT,
-  TCTGvmlUseShapeRectangleCT, TCTGvmlTextShapeCT, TCTGvmlShapeNonVisualCT, TCTGvmlShapeCT, TCTGvmlConnectorNonVisualCT, TCTGvmlConnectorCT,
-  TCTGvmlPictureNonVisualCT, TCTGvmlPictureCT, TCTGvmlGraphicFrameNonVisualCT, TCTGvmlGraphicalObjectFrameCT, TCTGvmlGroupShapeNonVisualCT,
-  TCTGvmlGroupShapeCT, TCTCameraCT, TCTLightRigCT, TCTScene3DCT, TCTBackdropCT, TCTBevelCT, TCTShape3DCT, TCTFlatTextCT,
-  TCTAlphaBiLevelEffectCT, TCTAlphaCeilingEffectCT, TCTAlphaFloorEffectCT, TCTAlphaInverseEffectCT, TCTAlphaModulateFixedEffectCT,
-  TCTAlphaOutsetEffectCT, TCTAlphaReplaceEffectCT, TCTBiLevelEffectCT, TCTBlurEffectCT, TCTColorChangeEffectCT, TCTColorReplaceEffectCT,
-  TCTDuotoneEffectCT, TCTGlowEffectCT, TCTGrayscaleEffectCT, TCTHSLEffectCT, TCTInnerShadowEffectCT, TCTLuminanceEffectCT,
-  TCTOuterShadowEffectCT, TCTPresetShadowEffectCT, TCTReflectionEffectCT, TCTRelativeOffsetEffectCT, TCTSoftEdgesEffectCT, TCTTintEffectCT,
-  TCTTransformEffectCT, TCTNoFillPropertiesCT, TCTSolidColorFillPropertiesCT, TCTLinearShadePropertiesCT, TCTPathShadePropertiesCT,
-  TCTGradientStopCT, TCTGradientStopListCT, TCTGradientFillPropertiesCT, TCTTileInfoPropertiesCT, TCTStretchInfoPropertiesCT, TCTBlipCT,
-  TCTBlipFillPropertiesCT, TCTPatternFillPropertiesCT, TCTGroupFillPropertiesCT, TCTFillPropertiesCT, TCTFillEffectCT,
-  TCTFillOverlayEffectCT, TCTEffectReferenceCT, TCTEffectContainerCT, TCTAlphaModulateEffectCT, TCTBlendEffectCT, TCTEffectListCT,
-  TCTEffectPropertiesCT, TCTGeomGuideCT, TCTGeomGuideListCT, TCTAdjPoint2DCT, TCTGeomRectCT, TCTXYAdjustHandleCT, TCTPolarAdjustHandleCT,
-  TCTConnectionSiteCT, TCTAdjustHandleListCT, TCTConnectionSiteListCT, TCTConnectionCT, TCTPath2DMoveToCT, TCTPath2DLineToCT,
-  TCTPath2DArcToCT, TCTPath2DQuadBezierToCT, TCTPath2DCubicBezierToCT, TCTPath2DCloseCT, TCTPath2DCT, TCTPath2DListCT,
-  TCTPresetGeometry2DCT, TCTPresetTextShapeCT, TCTCustomGeometry2DCT, TCTLineEndPropertiesCT, TCTLineJoinBevelCT, TCTLineJoinRoundCT,
-  TCTLineJoinMiterPropertiesCT, TCTPresetLineDashPropertiesCT, TCTDashStopCT, TCTDashStopListCT, TCTLinePropertiesCT, TCTShapePropertiesCT,
-  TCTGroupShapePropertiesCT, TCTStyleMatrixReferenceCT, TCTFontReferenceCT, TCTShapeStyleCT, TCTDefaultShapeDefinitionCT,
-  TCTObjectStyleDefaultsCT, TCTEmptyElementCT, TCTColorMappingCT, TCTColorMappingOverrideCT, TCTColorSchemeAndMappingCT,
-  TCTColorSchemeListCT, TCTOfficeStyleSheetCT, TCTBaseStylesOverrideCT, TCTClipboardStyleSheetCT, TCTTableCellPropertiesCT, TCTHeadersCT,
-  TCTTableColCT, TCTTableGridCT, TCTTableCellCT, TCTTableRowCT, TCTTablePropertiesCT, TCTTableCT, TCTCell3DCT, TCTThemeableLineStyleCT,
-  TCTTableStyleTextStyleCT, TCTTableCellBorderStyleCT, TCTTableBackgroundStyleCT, TCTTableStyleCellStyleCT, TCTTablePartStyleCT,
-  TCTTableStyleCT, TCTTableStyleListCT, TCTTextParagraphCT, TCTTextListStyleCT, TCTTextNormalAutofitCT, TCTTextShapeAutofitCT,
-  TCTTextNoAutofitCT, TCTTextBodyPropertiesCT, TCTTextBodyCT, TCTTextBulletColorFollowTextCT, TCTTextBulletSizeFollowTextCT,
-  TCTTextBulletSizePercentCT, TCTTextBulletSizePointCT, TCTTextBulletTypefaceFollowTextCT, TCTTextAutonumberBulletCT, TCTTextCharBulletCT,
-  TCTTextBlipBulletCT, TCTTextNoBulletCT, TCTTextFontCT, TCTTextUnderlineLineFollowTextCT, TCTTextUnderlineFillFollowTextCT,
-  TCTTextUnderlineFillGroupWrapperCT, TCTTextCharacterPropertiesCT, TCTBooleanCT, TCTTextSpacingPercentCT, TCTTextSpacingPointCT,
-  TCTTextTabStopCT, TCTTextTabStopListCT, TCTTextLineBreakCT, TCTTextSpacingCT, TCTTextParagraphPropertiesCT, TCTTextFieldCT,
-  TCTRegularTextRunCT],
+  [TAudioFileCT, TVideoFileCT, TQuickTimeFileCT, TAudioCDTimeCT, TAudioCDCT, TColorSchemeCT, TCustomColorCT, TSupplementalFontCT,
+  TCustomColorListCT, TFontCollectionCT, TEffectStyleItemCT, TFontSchemeCT, TFillStyleListCT, TLineStyleListCT, TEffectStyleListCT,
+  TBackgroundFillStyleListCT, TStyleMatrixCT, TBaseStylesCT, TOfficeArtExtensionCT, TAngleCT, TPositiveFixedAngleCT, TPercentageCT,
+  TPositivePercentageCT, TFixedPercentageCT, TPositiveFixedPercentageCT, TRatioCT, TPoint2DCT, TPositiveSize2DCT, TComplementTransformCT,
+  TInverseTransformCT, TGrayscaleTransformCT, TGammaTransformCT, TInverseGammaTransformCT, TScRgbColorCT, TSRgbColorCT, THslColorCT,
+  TSystemColorCT, TSchemeColorCT, TPresetColorCT, TOfficeArtExtensionListCT, TScale2DCT, TTransform2DCT, TGroupTransform2DCT, TPoint3DCT,
+  TVector3DCT, TSphereCoordsCT, TRelativeRectCT, TColorCT, TColorMRUCT, TEmbeddedWAVAudioFileCT, THyperlinkCT, TConnectorLockingCT,
+  TShapeLockingCT, TPictureLockingCT, TGroupLockingCT, TGraphicalObjectFrameLockingCT, TContentPartLockingCT, TNonVisualDrawingPropsCT,
+  TNonVisualDrawingShapePropsCT, TNonVisualConnectorPropertiesCT, TNonVisualPicturePropertiesCT, TNonVisualGroupDrawingShapePropsCT,
+  TNonVisualGraphicFramePropertiesCT, TNonVisualContentPartPropertiesCT, TGraphicalObjectDataCT, TGraphicalObjectCT, TAnimationDgmElementCT,
+  TAnimationChartElementCT, TAnimationElementChoiceCT, TAnimationDgmBuildPropertiesCT, TAnimationChartBuildPropertiesCT,
+  TAnimationGraphicalObjectBuildPropertiesCT, TBackgroundFormattingCT, TWholeE2oFormattingCT, TGvmlUseShapeRectangleCT, TGvmlTextShapeCT,
+  TGvmlShapeNonVisualCT, TGvmlShapeCT, TGvmlConnectorNonVisualCT, TGvmlConnectorCT, TGvmlPictureNonVisualCT, TGvmlPictureCT,
+  TGvmlGraphicFrameNonVisualCT, TGvmlGraphicalObjectFrameCT, TGvmlGroupShapeNonVisualCT, TGvmlGroupShapeCT, TCameraCT, TLightRigCT,
+  TScene3DCT, TBackdropCT, TBevelCT, TShape3DCT, TFlatTextCT, TAlphaBiLevelEffectCT, TAlphaCeilingEffectCT, TAlphaFloorEffectCT,
+  TAlphaInverseEffectCT, TAlphaModulateFixedEffectCT, TAlphaOutsetEffectCT, TAlphaReplaceEffectCT, TBiLevelEffectCT, TBlurEffectCT,
+  TColorChangeEffectCT, TColorReplaceEffectCT, TDuotoneEffectCT, TGlowEffectCT, TGrayscaleEffectCT, THSLEffectCT, TInnerShadowEffectCT,
+  TLuminanceEffectCT, TOuterShadowEffectCT, TPresetShadowEffectCT, TReflectionEffectCT, TRelativeOffsetEffectCT, TSoftEdgesEffectCT,
+  TTintEffectCT, TTransformEffectCT, TNoFillPropertiesCT, TSolidColorFillPropertiesCT, TLinearShadePropertiesCT, TPathShadePropertiesCT,
+  TGradientStopCT, TGradientStopListCT, TGradientFillPropertiesCT, TTileInfoPropertiesCT, TStretchInfoPropertiesCT, TBlipCT,
+  TBlipFillPropertiesCT, TPatternFillPropertiesCT, TGroupFillPropertiesCT, TFillPropertiesCT, TFillEffectCT, TFillOverlayEffectCT,
+  TEffectReferenceCT, TEffectContainerCT, TAlphaModulateEffectCT, TBlendEffectCT, TEffectListCT, TEffectPropertiesCT, TGeomGuideCT,
+  TGeomGuideListCT, TAdjPoint2DCT, TGeomRectCT, TXYAdjustHandleCT, TPolarAdjustHandleCT, TConnectionSiteCT, TAdjustHandleListCT,
+  TConnectionSiteListCT, TConnectionCT, TPath2DMoveToCT, TPath2DLineToCT, TPath2DArcToCT, TPath2DQuadBezierToCT, TPath2DCubicBezierToCT,
+  TPath2DCloseCT, TPath2DCT, TPath2DListCT, TPresetGeometry2DCT, TPresetTextShapeCT, TCustomGeometry2DCT, TLineEndPropertiesCT,
+  TLineJoinBevelCT, TLineJoinRoundCT, TLineJoinMiterPropertiesCT, TPresetLineDashPropertiesCT, TDashStopCT, TDashStopListCT,
+  TLinePropertiesCT, TShapePropertiesCT, TGroupShapePropertiesCT, TStyleMatrixReferenceCT, TFontReferenceCT, TShapeStyleCT,
+  TDefaultShapeDefinitionCT, TObjectStyleDefaultsCT, TEmptyElementCT, TColorMappingCT, TColorMappingOverrideCT, TColorSchemeAndMappingCT,
+  TColorSchemeListCT, TOfficeStyleSheetCT, TBaseStylesOverrideCT, TClipboardStyleSheetCT, TTableCellPropertiesCT, THeadersCT, TTableColCT,
+  TTableGridCT, TTableCellCT, TTableRowCT, TTablePropertiesCT, TTableCT, TCell3DCT, TThemeableLineStyleCT, TTableStyleTextStyleCT,
+  TTableCellBorderStyleCT, TTableBackgroundStyleCT, TTableStyleCellStyleCT, TTablePartStyleCT, TTableStyleCT, TTableStyleListCT,
+  TTextParagraphCT, TTextListStyleCT, TTextNormalAutofitCT, TTextShapeAutofitCT, TTextNoAutofitCT, TTextBodyPropertiesCT, TTextBodyCT,
+  TTextBulletColorFollowTextCT, TTextBulletSizeFollowTextCT, TTextBulletSizePercentCT, TTextBulletSizePointCT,
+  TTextBulletTypefaceFollowTextCT, TTextAutonumberBulletCT, TTextCharBulletCT, TTextBlipBulletCT, TTextNoBulletCT, TTextFontCT,
+  TTextUnderlineLineFollowTextCT, TTextUnderlineFillFollowTextCT, TTextUnderlineFillGroupWrapperCT, TTextCharacterPropertiesCT, TBooleanCT,
+  TTextSpacingPercentCT, TTextSpacingPointCT, TTextTabStopCT, TTextTabStopListCT, TTextLineBreakCT, TTextSpacingCT,
+  TTextParagraphPropertiesCT, TTextFieldCT, TRegularTextRunCT],
   { attributes }
   [],
   { attributeGroups }
-  [TAGBlobAG, TAGLockingAG],
+  [TBlobAG, TLockingAG],
   { elements }
   [TVideoFileE, TGraphicE, TBlipE, TThemeE, TThemeOverrideE, TThemeManagerE, TTblE, TTblStyleLstE],
   { groups }
-  [TEGMediaEG, TEGColorTransformEG, TEGOfficeArtExtensionListEG, TEGColorChoiceEG, TEGText3DEG, TEGShadePropertiesEG,
-  TEGFillModePropertiesEG, TEGFillPropertiesEG, TEGEffectEG, TEGEffectPropertiesEG, TEGGeometryEG, TEGTextGeometryEG,
-  TEGLineFillPropertiesEG, TEGLineJoinPropertiesEG, TEGLineDashPropertiesEG, TEGThemeableFillStyleEG, TEGThemeableEffectStyleEG,
-  TEGThemeableFontStylesEG, TEGTextAutofitEG, TEGTextBulletColorEG, TEGTextBulletSizeEG, TEGTextBulletTypefaceEG, TEGTextBulletEG,
-  TEGTextUnderlineLineEG, TEGTextUnderlineFillEG, TEGTextRunEG],
+  [TMediaEG, TColorTransformEG, TOfficeArtExtensionListEG, TColorChoiceEG, TText3DEG, TShadePropertiesEG, TFillModePropertiesEG,
+  TFillPropertiesEG, TEffectEG, TEffectPropertiesEG, TGeometryEG, TTextGeometryEG, TLineFillPropertiesEG, TLineJoinPropertiesEG,
+  TLineDashPropertiesEG, TThemeableFillStyleEG, TThemeableEffectStyleEG, TThemeableFontStylesEG, TTextAutofitEG, TTextBulletColorEG,
+  TTextBulletSizeEG, TTextBulletTypefaceEG, TTextBulletEG, TTextUnderlineLineEG, TTextUnderlineFillEG, TTextRunEG],
   'a', TNaming.nCamelCase, TNaming.nCamelCase, TNaming.nCamelCase);
 
 end.

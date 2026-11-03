@@ -186,7 +186,7 @@ type
   end;
 
   TXmliteList<T: TXmlite, constructor> = class(TBasiteList<T>);
-  // a list of plain values: TSTXstringSTList = class(TXmliteValueList<TSTXstringST>) - Authors.Author.Add('Ann')
+  // a list of plain values: TXstringSTList = class(TXmliteValueList<TXstringST>) - Authors.Author.Add('Ann')
   TXmliteValueList<T> = class(TBasiteValueList<T>);
   TXmliteList = TXmliteList<TXmlite>;
 

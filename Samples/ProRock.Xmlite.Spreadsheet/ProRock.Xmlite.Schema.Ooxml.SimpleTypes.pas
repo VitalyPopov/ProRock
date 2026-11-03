@@ -18,81 +18,110 @@ uses
 
 type
   [TName('ST_CalendarType')]
-  TSTCalendarTypeST = (stctGregorian, stctGregorianUs, stctGregorianMeFrench, stctGregorianArabic, stctHijri, stctHebrew, stctTaiwan,
+  TCalendarTypeST = (stctGregorian, stctGregorianUs, stctGregorianMeFrench, stctGregorianArabic, stctHijri, stctHebrew, stctTaiwan,
     stctJapan, stctThai, stctKorea, stctSaka, stctGregorianXlitEnglish, stctGregorianXlitFrench, stctNone);
   [TName('ST_AlgClass')]
-  TSTAlgClassST = (stacHash, stacCustom);
+  TAlgClassST = (stacHash, stacCustom);
   [TName('ST_CryptProv')]
-  TSTCryptProvST = (stcpRsaAES, stcpRsaFull, stcpCustom);
+  TCryptProvST = (stcpRsaAES, stcpRsaFull, stcpCustom);
   [TName('ST_AlgType')]
-  TSTAlgTypeST = (statTypeAny, statCustom);
+  TAlgTypeST = (statTypeAny, statCustom);
   [TName('ST_OnOff1')]
-  TSTOnOff1ST = (stooOn, stooOff);
+  TOnOff1ST = (stooOn, stooOff);
   [TName('ST_TrueFalse')]
-  TSTTrueFalseST = (sttfT, sttfF, sttfTrue, sttfFalse);
+  TTrueFalseST = (sttfT, sttfF, sttfTrue, sttfFalse);
   [TEnumCaption('empty', '')]
   [TEnumCaption('true2', 'True')]
   [TEnumCaption('false2', 'False')]
   [TName('ST_TrueFalseBlank')]
-  TSTTrueFalseBlankST = (sttfbT, sttfbF, sttfbTrue, sttfbFalse, sttfbEmpty, sttfbTrue2, sttfbFalse2);
+  TTrueFalseBlankST = (sttfbT, sttfbF, sttfbTrue, sttfbFalse, sttfbEmpty, sttfbTrue2, sttfbFalse2);
   [TName('ST_VerticalAlignRun')]
-  TSTVerticalAlignRunST = (stvarBaseline, stvarSuperscript, stvarSubscript);
+  TVerticalAlignRunST = (stvarBaseline, stvarSuperscript, stvarSubscript);
   [TName('ST_XAlign')]
-  TSTXAlignST = (stxaLeft, stxaCenter, stxaRight, stxaInside, stxaOutside);
+  TXAlignST = (stxaLeft, stxaCenter, stxaRight, stxaInside, stxaOutside);
   [TName('ST_YAlign')]
-  TSTYAlignST = (styaInline, styaTop, styaCenter, styaBottom, styaInside, styaOutside);
+  TYAlignST = (styaInline, styaTop, styaCenter, styaBottom, styaInside, styaOutside);
   [TName('ST_ConformanceClass')]
-  TSTConformanceClassST = (stccStrict, stccTransitional);
+  TConformanceClassST = (stccStrict, stccTransitional);
 
   [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TName('ST_ColorType')]
-  TSTColorTypeST = type ProRock.Xmlite.Schema.Base.TStringST;
+  TColorTypeST = type ProRock.Xmlite.Schema.Base.TStringST;
   [TBaseType('ProRock.Xmlite.Schema.Base.TTokenST')]
   [TName('ST_Guid')]
-  TSTGuidST = type ProRock.Xmlite.Schema.Base.TTokenST;
+  TGuidST = type ProRock.Xmlite.Schema.Base.TTokenST;
   [TBaseType('ProRock.Xmlite.Schema.Base.THexBinaryST')]
   [TName('ST_HexColorRGB')]
-  TSTHexColorRGBST = type ProRock.Xmlite.Schema.Base.THexBinaryST;
+  THexColorRGBST = type ProRock.Xmlite.Schema.Base.THexBinaryST;
   [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TName('ST_Lang')]
-  TSTLangST = type ProRock.Xmlite.Schema.Base.TStringST;
+  TLangST = type ProRock.Xmlite.Schema.Base.TStringST;
   [TName('ST_OnOff')]
-  TSTOnOffST = type string;
+  TOnOffST = type string;
   [TBaseType('ProRock.Xmlite.Schema.Base.THexBinaryST')]
   [TName('ST_Panose')]
-  TSTPanoseST = type ProRock.Xmlite.Schema.Base.THexBinaryST;
+  TPanoseST = type ProRock.Xmlite.Schema.Base.THexBinaryST;
   [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TName('ST_Percentage')]
-  TSTPercentageST = type ProRock.Xmlite.Schema.Base.TStringST;
+  TPercentageST = type ProRock.Xmlite.Schema.Base.TStringST;
   [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TName('ST_String')]
-  TSTStringST = type ProRock.Xmlite.Schema.Base.TStringST;
+  TStringST = type ProRock.Xmlite.Schema.Base.TStringST;
   [TName('ST_TwipsMeasure')]
-  TSTTwipsMeasureST = type string;
+  TTwipsMeasureST = type string;
   [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TName('ST_UniversalMeasure')]
-  TSTUniversalMeasureST = type ProRock.Xmlite.Schema.Base.TStringST;
+  TUniversalMeasureST = type ProRock.Xmlite.Schema.Base.TStringST;
   [TBaseType('ProRock.Xmlite.Schema.Base.TUnsignedLongST')]
   [TName('ST_UnsignedDecimalNumber')]
-  TSTUnsignedDecimalNumberST = type ProRock.Xmlite.Schema.Base.TUnsignedLongST;
+  TUnsignedDecimalNumberST = type ProRock.Xmlite.Schema.Base.TUnsignedLongST;
   [TBaseType('ProRock.Xmlite.Schema.Base.TNCNameST')]
   [TName('ST_XmlName')]
-  TSTXmlNameST = type ProRock.Xmlite.Schema.Base.TNCNameST;
+  TXmlNameST = type ProRock.Xmlite.Schema.Base.TNCNameST;
   [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TName('ST_Xstring')]
-  TSTXstringST = type ProRock.Xmlite.Schema.Base.TStringST;
-  [TBaseType('TSTPercentageST')]
+  TXstringST = type ProRock.Xmlite.Schema.Base.TStringST;
+  [TBaseType('TPercentageST')]
   [TName('ST_FixedPercentage')]
-  TSTFixedPercentageST = type TSTPercentageST;
-  [TBaseType('TSTPercentageST')]
+  TFixedPercentageST = type TPercentageST;
+  [TBaseType('TPercentageST')]
   [TName('ST_PositiveFixedPercentage')]
-  TSTPositiveFixedPercentageST = type TSTPercentageST;
-  [TBaseType('TSTPercentageST')]
+  TPositiveFixedPercentageST = type TPercentageST;
+  [TBaseType('TPercentageST')]
   [TName('ST_PositivePercentage')]
-  TSTPositivePercentageST = type TSTPercentageST;
-  [TBaseType('TSTUniversalMeasureST')]
+  TPositivePercentageST = type TPercentageST;
+  [TBaseType('TUniversalMeasureST')]
   [TName('ST_PositiveUniversalMeasure')]
-  TSTPositiveUniversalMeasureST = type TSTUniversalMeasureST;
+  TPositiveUniversalMeasureST = type TUniversalMeasureST;
+
+  TSTAlgClassST = TAlgClassST deprecated 'use TAlgClassST';
+  TSTAlgTypeST = TAlgTypeST deprecated 'use TAlgTypeST';
+  TSTCalendarTypeST = TCalendarTypeST deprecated 'use TCalendarTypeST';
+  TSTColorTypeST = TColorTypeST deprecated 'use TColorTypeST';
+  TSTConformanceClassST = TConformanceClassST deprecated 'use TConformanceClassST';
+  TSTCryptProvST = TCryptProvST deprecated 'use TCryptProvST';
+  TSTFixedPercentageST = TFixedPercentageST deprecated 'use TFixedPercentageST';
+  TSTGuidST = TGuidST deprecated 'use TGuidST';
+  TSTHexColorRGBST = THexColorRGBST deprecated 'use THexColorRGBST';
+  TSTLangST = TLangST deprecated 'use TLangST';
+  TSTOnOff1ST = TOnOff1ST deprecated 'use TOnOff1ST';
+  TSTOnOffST = TOnOffST deprecated 'use TOnOffST';
+  TSTPanoseST = TPanoseST deprecated 'use TPanoseST';
+  TSTPercentageST = TPercentageST deprecated 'use TPercentageST';
+  TSTPositiveFixedPercentageST = TPositiveFixedPercentageST deprecated 'use TPositiveFixedPercentageST';
+  TSTPositivePercentageST = TPositivePercentageST deprecated 'use TPositivePercentageST';
+  TSTPositiveUniversalMeasureST = TPositiveUniversalMeasureST deprecated 'use TPositiveUniversalMeasureST';
+  TSTStringST = TStringST deprecated 'use TStringST';
+  TSTTrueFalseBlankST = TTrueFalseBlankST deprecated 'use TTrueFalseBlankST';
+  TSTTrueFalseST = TTrueFalseST deprecated 'use TTrueFalseST';
+  TSTTwipsMeasureST = TTwipsMeasureST deprecated 'use TTwipsMeasureST';
+  TSTUniversalMeasureST = TUniversalMeasureST deprecated 'use TUniversalMeasureST';
+  TSTUnsignedDecimalNumberST = TUnsignedDecimalNumberST deprecated 'use TUnsignedDecimalNumberST';
+  TSTVerticalAlignRunST = TVerticalAlignRunST deprecated 'use TVerticalAlignRunST';
+  TSTXAlignST = TXAlignST deprecated 'use TXAlignST';
+  TSTXmlNameST = TXmlNameST deprecated 'use TXmlNameST';
+  TSTXstringST = TXstringST deprecated 'use TXstringST';
+  TSTYAlignST = TYAlignST deprecated 'use TYAlignST';
 
 implementation
 
@@ -100,13 +129,12 @@ initialization
 
 TMetaBankXmlite.RegisterNamespace('http://schemas.openxmlformats.org/officeDocument/2006/sharedTypes',
   { simpleTypes }
-  [TypeInfo(TSTLangST), TypeInfo(TSTHexColorRGBST), TypeInfo(TSTPanoseST), TypeInfo(TSTCalendarTypeST), TypeInfo(TSTAlgClassST),
-  TypeInfo(TSTCryptProvST), TypeInfo(TSTAlgTypeST), TypeInfo(TSTColorTypeST), TypeInfo(TSTGuidST), TypeInfo(TSTOnOffST),
-  TypeInfo(TSTOnOff1ST), TypeInfo(TSTStringST), TypeInfo(TSTXmlNameST), TypeInfo(TSTTrueFalseST), TypeInfo(TSTTrueFalseBlankST),
-  TypeInfo(TSTUnsignedDecimalNumberST), TypeInfo(TSTTwipsMeasureST), TypeInfo(TSTVerticalAlignRunST), TypeInfo(TSTXstringST),
-  TypeInfo(TSTXAlignST), TypeInfo(TSTYAlignST), TypeInfo(TSTConformanceClassST), TypeInfo(TSTUniversalMeasureST),
-  TypeInfo(TSTPositiveUniversalMeasureST), TypeInfo(TSTPercentageST), TypeInfo(TSTFixedPercentageST), TypeInfo(TSTPositivePercentageST),
-  TypeInfo(TSTPositiveFixedPercentageST)],
+  [TypeInfo(TLangST), TypeInfo(THexColorRGBST), TypeInfo(TPanoseST), TypeInfo(TCalendarTypeST), TypeInfo(TAlgClassST),
+  TypeInfo(TCryptProvST), TypeInfo(TAlgTypeST), TypeInfo(TColorTypeST), TypeInfo(TGuidST), TypeInfo(TOnOffST), TypeInfo(TOnOff1ST),
+  TypeInfo(TStringST), TypeInfo(TXmlNameST), TypeInfo(TTrueFalseST), TypeInfo(TTrueFalseBlankST), TypeInfo(TUnsignedDecimalNumberST),
+  TypeInfo(TTwipsMeasureST), TypeInfo(TVerticalAlignRunST), TypeInfo(TXstringST), TypeInfo(TXAlignST), TypeInfo(TYAlignST),
+  TypeInfo(TConformanceClassST), TypeInfo(TUniversalMeasureST), TypeInfo(TPositiveUniversalMeasureST), TypeInfo(TPercentageST),
+  TypeInfo(TFixedPercentageST), TypeInfo(TPositivePercentageST), TypeInfo(TPositiveFixedPercentageST)],
   { complexTypes }
   [],
   { attributes }

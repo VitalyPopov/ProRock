@@ -20,15 +20,15 @@ type
   [TName('ST_TargetMode')]
   TSTTargetModeST = (sttmExternal, sttmInternal);
 
-  TCTRelationshipsCT = class;
-  TCTRelationshipCT = class;
+  TRelationshipsCT = class;
+  TRelationshipCT = class;
   TRelationshipsE = class;
   TRelationshipE = class;
 
   TRelationshipEList = class;
 
   [TName('CT_Relationships')]
-  TCTRelationshipsCT = class(TXmliteComplexType)
+  TRelationshipsCT = class(TXmliteComplexType)
   private
     fRelationship: TRelationshipEList;
   published
@@ -36,7 +36,7 @@ type
   end;
 
   [TName('CT_Relationship')]
-  TCTRelationshipCT = class(TXmliteComplexType)
+  TRelationshipCT = class(TXmliteComplexType)
   private
     fXmlValue: ProRock.Xmlite.Schema.Base.TStringST;
     fTargetMode: TSTTargetModeST;
@@ -55,11 +55,14 @@ type
     property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
   end;
 
-  TRelationshipsE = class(TCTRelationshipsCT);
+  TRelationshipsE = class(TRelationshipsCT);
 
-  TRelationshipE = class(TCTRelationshipCT);
+  TRelationshipE = class(TRelationshipCT);
 
   TRelationshipEList = class(TXmliteList<TRelationshipE>);
+
+  TCTRelationshipCT = TRelationshipCT deprecated 'use TRelationshipCT';
+  TCTRelationshipsCT = TRelationshipsCT deprecated 'use TRelationshipsCT';
 
 implementation
 
@@ -69,7 +72,7 @@ TMetaBankXmlite.RegisterNamespace('http://schemas.openxmlformats.org/package/200
   { simpleTypes }
   [TypeInfo(TSTTargetModeST)],
   { complexTypes }
-  [TCTRelationshipsCT, TCTRelationshipCT],
+  [TRelationshipsCT, TRelationshipCT],
   { attributes }
   [],
   { attributeGroups }

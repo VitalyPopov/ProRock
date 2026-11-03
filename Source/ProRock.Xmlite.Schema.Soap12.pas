@@ -22,15 +22,15 @@ type
 
   TTPartsST = type string;
 
-  TTExtensibilityElementOpenAttrsCT = class;
-  TTBindingCT = class;
-  TTOperationCT = class;
-  TTBodyCT = class;
-  TTFaultResCT = class;
-  TTFaultCT = class;
-  TTHeaderCT = class;
-  TTHeaderFaultCT = class;
-  TTAddressCT = class;
+  TExtensibilityElementOpenAttrsCT = class;
+  TBindingCT = class;
+  TOperationCT = class;
+  TBodyCT = class;
+  TFaultResCT = class;
+  TFaultCT = class;
+  THeaderCT = class;
+  THeaderFaultCT = class;
+  TAddressCT = class;
   TTBodyAttributesAG = class;
   TTHeaderAttributesAG = class;
   TBindingE = class;
@@ -43,9 +43,11 @@ type
 
   THeaderfaultEList = class;
 
-  TTExtensibilityElementOpenAttrsCT = class(ProRock.Xmlite.Schema.Wsdl.TTExtensibilityElementCT);
+  [TName('tExtensibilityElementOpenAttrs')]
+  TExtensibilityElementOpenAttrsCT = class(ProRock.Xmlite.Schema.Wsdl.TExtensibilityElementCT);
 
-  TTBindingCT = class(TTExtensibilityElementOpenAttrsCT)
+  [TName('tBinding')]
+  TBindingCT = class(TExtensibilityElementOpenAttrsCT)
   private
     fTransport: ProRock.Xmlite.Schema.Base.TAnyURIST;
     fStyle: TTStyleChoiceST;
@@ -55,7 +57,8 @@ type
     property Style: TTStyleChoiceST read fStyle write fStyle;
   end;
 
-  TTOperationCT = class(TTExtensibilityElementOpenAttrsCT)
+  [TName('tOperation')]
+  TOperationCT = class(TExtensibilityElementOpenAttrsCT)
   private
     fSoapAction: ProRock.Xmlite.Schema.Base.TAnyURIST;
     fSoapActionRequired: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -66,7 +69,8 @@ type
     property Style: TTStyleChoiceST read fStyle write fStyle;
   end;
 
-  TTBodyCT = class(TTExtensibilityElementOpenAttrsCT)
+  [TName('tBody')]
+  TBodyCT = class(TExtensibilityElementOpenAttrsCT)
   private
     fParts: TTPartsST;
     fEncodingStyle: ProRock.Xmlite.Schema.Base.TAnyURIST;
@@ -79,7 +83,8 @@ type
     property Namespace: ProRock.Xmlite.Schema.Base.TAnyURIST read fNamespace write fNamespace;
   end;
 
-  TTFaultResCT = class(TXmliteComplexTypeRestricted)
+  [TName('tFaultRes')]
+  TFaultResCT = class(TXmliteComplexTypeRestricted)
   private
     fRequired: ProRock.Xmlite.Schema.Wsdl.TRequiredA;
     fEncodingStyle: ProRock.Xmlite.Schema.Base.TAnyURIST;
@@ -93,7 +98,8 @@ type
     property Namespace: ProRock.Xmlite.Schema.Base.TAnyURIST read fNamespace write fNamespace;
   end;
 
-  TTFaultCT = class(TTFaultResCT)
+  [TName('tFault')]
+  TFaultCT = class(TFaultResCT)
   private
     fName: ProRock.Xmlite.Schema.Base.TNCNameST;
   published
@@ -101,7 +107,8 @@ type
     property Name: ProRock.Xmlite.Schema.Base.TNCNameST read fName write fName;
   end;
 
-  TTHeaderCT = class(TTExtensibilityElementOpenAttrsCT)
+  [TName('tHeader')]
+  THeaderCT = class(TExtensibilityElementOpenAttrsCT)
   private
     fMessage: ProRock.Xmlite.Schema.Base.TQNameST;
     fPart: ProRock.Xmlite.Schema.Base.TNmtokenST;
@@ -121,7 +128,8 @@ type
     property Headerfault: THeaderfaultEList read fHeaderfault;
   end;
 
-  TTHeaderFaultCT = class(TXmliteComplexType)
+  [TName('tHeaderFault')]
+  THeaderFaultCT = class(TXmliteComplexType)
   private
     fMessage: ProRock.Xmlite.Schema.Base.TQNameST;
     fPart: ProRock.Xmlite.Schema.Base.TNmtokenST;
@@ -139,7 +147,8 @@ type
     property Namespace: ProRock.Xmlite.Schema.Base.TAnyURIST read fNamespace write fNamespace;
   end;
 
-  TTAddressCT = class(TTExtensibilityElementOpenAttrsCT)
+  [TName('tAddress')]
+  TAddressCT = class(TExtensibilityElementOpenAttrsCT)
   private
     fLocation: ProRock.Xmlite.Schema.Base.TAnyURIST;
   published
@@ -176,21 +185,31 @@ type
     property Namespace: ProRock.Xmlite.Schema.Base.TAnyURIST read fNamespace write fNamespace;
   end;
 
-  TBindingE = class(TTBindingCT);
+  TBindingE = class(TBindingCT);
 
-  TOperationE = class(TTOperationCT);
+  TOperationE = class(TOperationCT);
 
-  TBodyE = class(TTBodyCT);
+  TBodyE = class(TBodyCT);
 
-  TFaultE = class(TTFaultCT);
+  TFaultE = class(TFaultCT);
 
-  THeaderE = class(TTHeaderCT);
+  THeaderE = class(THeaderCT);
 
-  THeaderfaultE = class(TTHeaderFaultCT);
+  THeaderfaultE = class(THeaderFaultCT);
 
-  TAddressE = class(TTAddressCT);
+  TAddressE = class(TAddressCT);
 
   THeaderfaultEList = class(TXmliteList<THeaderfaultE>);
+
+  TTAddressCT = TAddressCT deprecated 'use TAddressCT';
+  TTBindingCT = TBindingCT deprecated 'use TBindingCT';
+  TTBodyCT = TBodyCT deprecated 'use TBodyCT';
+  TTExtensibilityElementOpenAttrsCT = TExtensibilityElementOpenAttrsCT deprecated 'use TExtensibilityElementOpenAttrsCT';
+  TTFaultCT = TFaultCT deprecated 'use TFaultCT';
+  TTFaultResCT = TFaultResCT deprecated 'use TFaultResCT';
+  TTHeaderCT = THeaderCT deprecated 'use THeaderCT';
+  TTHeaderFaultCT = THeaderFaultCT deprecated 'use THeaderFaultCT';
+  TTOperationCT = TOperationCT deprecated 'use TOperationCT';
 
 implementation
 
@@ -200,8 +219,7 @@ TMetaBankXmlite.RegisterNamespace('http://schemas.xmlsoap.org/wsdl/soap12/',
   { simpleTypes }
   [TypeInfo(TTStyleChoiceST), TypeInfo(TTPartsST), TypeInfo(TUseChoiceST)],
   { complexTypes }
-  [TTExtensibilityElementOpenAttrsCT, TTBindingCT, TTOperationCT, TTBodyCT, TTFaultResCT, TTFaultCT, TTHeaderCT, TTHeaderFaultCT,
-  TTAddressCT],
+  [TExtensibilityElementOpenAttrsCT, TBindingCT, TOperationCT, TBodyCT, TFaultResCT, TFaultCT, THeaderCT, THeaderFaultCT, TAddressCT],
   { attributes }
   [],
   { attributeGroups }

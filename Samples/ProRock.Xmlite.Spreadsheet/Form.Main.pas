@@ -107,7 +107,7 @@ begin
   for var table: TTableE in fDocument.Tables do
   begin
     var columns: TArray<string> := [];
-    for var column: TCTTableColumnCT in table.TableColumns.TableColumn do
+    for var column: TTableColumnCT in table.TableColumns.TableColumn do
       columns := columns + [string(column.Name)];
     tables := tables + Format('%s (%s): %s%s.  ', [string(table.DisplayName), string(table.Ref), string.Join(', ', columns),
       IfThen(table.TotalsRowCount > 0, ' + a total row', '')]);
@@ -129,8 +129,8 @@ begin
   // the grid as large as the sheet's cells, and a little more to type into
   var lastCol: integer := 4;
   var lastRow: integer := 19;
-  for var row: TCTRowCT in sheet.Worksheet.SheetData.Row do
-    for var cell: TCTCellCT in row.C do
+  for var row: TRowCT in sheet.Worksheet.SheetData.Row do
+    for var cell: TCellCT in row.C do
     begin
       var col, rowIndex: integer;
       if ParseRef(cell.R, col, rowIndex) then
@@ -180,7 +180,7 @@ begin
 
   // a formula is shown, not edited: Excel recalculates its value
   var ref: string := CellRef(ACol - 1, ARow - 1);
-  var cell: TCTCellCT := fDocument.Cell(sheet, ref);
+  var cell: TCellCT := fDocument.Cell(sheet, ref);
   if (cell <> nil) and (cell.F.XmlValue <> '') then
   begin
     CellLabel.Caption := Format('%s  =%s', [ref, string(cell.F.XmlValue)]);

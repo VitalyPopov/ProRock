@@ -45,9 +45,9 @@ type
     procedure Save(const aFileName: string);
 
     // the cell at a reference (B2), nil when there is none
-    function Cell(aSheet: TSheet; const aRef: string): TCTCellCT;
+    function Cell(aSheet: TSheet; const aRef: string): TCellCT;
     // the text a cell shows: a shared string resolved, a date as a date, a number or a formula's last value as written
-    function CellText(aCell: TCTCellCT): string;
+    function CellText(aCell: TCellCT): string;
     // a new value for a cell, created when missing: a number, a date (yyyy-mm-dd) or text (a shared string)
     procedure SetCellText(aSheet: TSheet; const aRef, aText: string);
 
@@ -243,7 +243,7 @@ begin
           fStyles := TStyleSheetE(Keep(ResolveTarget(workbookPart, relationship.Target), TStyleSheetE.Create));
 
       // the sheets in the workbook's order, each found by its relationship id (r:id)
-      for var sheetEntry: TCTSheetCT in fWorkbook.Sheets.Sheet do
+      for var sheetEntry: TSheetCT in fWorkbook.Sheets.Sheet do
         for var relationship: TRelationshipE in workbookRelationships.Relationship do
           if (relationship.Id = sheetEntry.Id) and string(relationship.&Type).EndsWith(cWorksheet) then
           begin
@@ -327,9 +327,9 @@ begin
   if (fSharedStrings = nil) or (aIndex < 0) or (aIndex >= fSharedStrings.Si.Count) then
     Exit;
   // plain text, or rich text: runs, each with its own formatting
-  var item: TCTRstCT := fSharedStrings.Si[aIndex];
+  var item: TRstCT := fSharedStrings.Si[aIndex];
   Result := item.T;
-  for var run: TCTREltCT in item.R do
+  for var run: TREltCT in item.R do
     Result := Result + string(run.T);
 end;
 
@@ -341,20 +341,20 @@ begin
     (fStyles.CellXfs.Xf[aStyle].NumFmtId >= 45) and (fStyles.CellXfs.Xf[aStyle].NumFmtId <= 47));
 end;
 
-function TSpreadsheetDocument.Cell(aSheet: TSheet; const aRef: string): TCTCellCT;
+function TSpreadsheetDocument.Cell(aSheet: TSheet; const aRef: string): TCellCT;
 begin
   Result := nil;
   var col, row: integer;
   if not ParseRef(aRef, col, row) then
     Exit;
-  for var sheetRow: TCTRowCT in aSheet.Worksheet.SheetData.Row do
+  for var sheetRow: TRowCT in aSheet.Worksheet.SheetData.Row do
     if sheetRow.R = cardinal(row + 1) then
-      for var sheetCell: TCTCellCT in sheetRow.C do
+      for var sheetCell: TCellCT in sheetRow.C do
         if sheetCell.R = aRef then
           Exit(sheetCell);
 end;
 
-function TSpreadsheetDocument.CellText(aCell: TCTCellCT): string;
+function TSpreadsheetDocument.CellText(aCell: TCellCT): string;
 begin
   Result := '';
   if aCell = nil then
@@ -384,25 +384,25 @@ begin
     Exit;
 
   // the cell, created where Excel expects it: rows in order, cells in a row in column order
-  var cell: TCTCellCT := Self.Cell(aSheet, aRef); // Self: in Delphi 10.3 the new variable already hides the method here
+  var cell: TCellCT := Self.Cell(aSheet, aRef); // Self: in Delphi 10.3 the new variable already hides the method here
   if cell = nil then
   begin
-    var rows: TCTRowCTList := aSheet.Worksheet.SheetData.Row;
+    var rows: TRowCTList := aSheet.Worksheet.SheetData.Row;
     var rowIndex: integer := 0;
     while (rowIndex < rows.Count) and (rows[rowIndex].R < cardinal(row + 1)) do
       Inc(rowIndex);
     if (rowIndex = rows.Count) or (rows[rowIndex].R <> cardinal(row + 1)) then
     begin
-      var newRow: TCTRowCT := TCTRowCT.Create;
+      var newRow: TRowCT := TRowCT.Create;
       newRow.R := row + 1;
       rows.Insert(rowIndex, newRow);
     end;
-    var cells: TCTCellCTList := rows[rowIndex].C;
+    var cells: TCellCTList := rows[rowIndex].C;
     var cellIndex: integer := 0;
     var cellCol, cellRow: integer;
     while (cellIndex < cells.Count) and ParseRef(cells[cellIndex].R, cellCol, cellRow) and (cellCol < col) do
       Inc(cellIndex);
-    cell := TCTCellCT.Create;
+    cell := TCellCT.Create;
     cell.R := aRef;
     cells.Insert(cellIndex, cell);
   end;
@@ -424,7 +424,7 @@ begin
   begin
     if fSharedStrings = nil then
       raise ESpreadsheetDocument.Create('The workbook has no shared strings: only numbers can be entered');
-    var item: TCTRstCT := TCTRstCT.Create;
+    var item: TRstCT := TRstCT.Create;
     item.T := aText;
     fSharedStrings.Si.Add(item);
     fSharedStrings.Count := fSharedStrings.Count + 1;

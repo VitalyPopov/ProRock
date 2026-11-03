@@ -20,83 +20,89 @@ type
   TArrayTypeA = type ProRock.Xmlite.Schema.Base.TStringST;
   TRequiredA = type ProRock.Xmlite.Schema.Base.TBooleanST;
 
-  TTDocumentationCT = class;
-  TTDocumentedCT = class;
-  TTExtensibleAttributesDocumentedCT = class;
-  TTExtensibleDocumentedCT = class;
-  TTDefinitionsCT = class;
-  TTImportCT = class;
-  TTTypesCT = class;
-  TTMessageCT = class;
-  TTPartCT = class;
-  TTPortTypeCT = class;
-  TTOperationCT = class;
-  TTParamCT = class;
-  TTFaultCT = class;
-  TTBindingCT = class;
-  TTBindingOperationMessageCT = class;
-  TTBindingOperationFaultCT = class;
-  TTBindingOperationCT = class;
-  TTServiceCT = class;
-  TTPortCT = class;
-  TTExtensibilityElementCT = class;
+  TDocumentationCT = class;
+  TDocumentedCT = class;
+  TExtensibleAttributesDocumentedCT = class;
+  TExtensibleDocumentedCT = class;
+  TDefinitionsCT = class;
+  TImportCT = class;
+  TTypesCT = class;
+  TMessageCT = class;
+  TPartCT = class;
+  TPortTypeCT = class;
+  TOperationCT = class;
+  TParamCT = class;
+  TFaultCT = class;
+  TBindingCT = class;
+  TBindingOperationMessageCT = class;
+  TBindingOperationFaultCT = class;
+  TBindingOperationCT = class;
+  TServiceCT = class;
+  TPortCT = class;
+  TExtensibilityElementCT = class;
   TDefinitionsE = class;
   TAnyTopLevelOptionalElementEG = class;
   TRequestResponseOrOneWayOperationEG = class;
   TSolicitResponseOrNotificationOperationEG = class;
 
-  TTImportCTList = class;
-  TTTypesCTList = class;
-  TTMessageCTList = class;
-  TTPartCTList = class;
-  TTPortTypeCTList = class;
-  TTOperationCTList = class;
-  TTFaultCTList = class;
-  TTBindingCTList = class;
-  TTBindingOperationFaultCTList = class;
-  TTBindingOperationCTList = class;
-  TTServiceCTList = class;
-  TTPortCTList = class;
+  TImportCTList = class;
+  TTypesCTList = class;
+  TMessageCTList = class;
+  TPartCTList = class;
+  TPortTypeCTList = class;
+  TOperationCTList = class;
+  TFaultCTList = class;
+  TBindingCTList = class;
+  TBindingOperationFaultCTList = class;
+  TBindingOperationCTList = class;
+  TServiceCTList = class;
+  TPortCTList = class;
 
   [TXmliteAnyElement]
   [TMixed]
-  TTDocumentationCT = class(TXmliteComplexType);
+  [TName('tDocumentation')]
+  TDocumentationCT = class(TXmliteComplexType);
 
-  TTDocumentedCT = class(TXmliteComplexType)
+  [TName('tDocumented')]
+  TDocumentedCT = class(TXmliteComplexType)
   private
-    fDocumentation: TTDocumentationCT;
+    fDocumentation: TDocumentationCT;
   published
-    property Documentation: TTDocumentationCT read fDocumentation;
+    property Documentation: TDocumentationCT read fDocumentation;
   end;
 
-  TTExtensibleAttributesDocumentedCT = class(TTDocumentedCT);
+  [TName('tExtensibleAttributesDocumented')]
+  TExtensibleAttributesDocumentedCT = class(TDocumentedCT);
 
   [TXmliteAnyElement]
-  TTExtensibleDocumentedCT = class(TTDocumentedCT);
+  [TName('tExtensibleDocumented')]
+  TExtensibleDocumentedCT = class(TDocumentedCT);
 
   [TOrdered]
-  TTDefinitionsCT = class(TTExtensibleDocumentedCT)
+  [TName('tDefinitions')]
+  TDefinitionsCT = class(TExtensibleDocumentedCT)
   private
     fTargetNamespace: ProRock.Xmlite.Schema.Base.TAnyURIST;
     fName: ProRock.Xmlite.Schema.Base.TNCNameST;
-    fImport: TTImportCTList;
-    fTypes: TTTypesCTList;
-    fMessage: TTMessageCTList;
-    fPortType: TTPortTypeCTList;
-    fBinding: TTBindingCTList;
-    fService: TTServiceCTList;
+    fImport: TImportCTList;
+    fTypes: TTypesCTList;
+    fMessage: TMessageCTList;
+    fPortType: TPortTypeCTList;
+    fBinding: TBindingCTList;
+    fService: TServiceCTList;
   published
     property TargetNamespace: ProRock.Xmlite.Schema.Base.TAnyURIST read fTargetNamespace write fTargetNamespace;
     property Name: ProRock.Xmlite.Schema.Base.TNCNameST read fName write fName;
-    property Import: TTImportCTList read fImport;
-    property Types: TTTypesCTList read fTypes;
-    property Message: TTMessageCTList read fMessage;
-    property PortType: TTPortTypeCTList read fPortType;
-    property Binding: TTBindingCTList read fBinding;
-    property Service: TTServiceCTList read fService;
+    property Import: TImportCTList read fImport;
+    property Types: TTypesCTList read fTypes;
+    property Message: TMessageCTList read fMessage;
+    property PortType: TPortTypeCTList read fPortType;
+    property Binding: TBindingCTList read fBinding;
+    property Service: TServiceCTList read fService;
   end;
 
-  TTImportCT = class(TTExtensibleAttributesDocumentedCT)
+  [TName('tImport')]
+  TImportCT = class(TExtensibleAttributesDocumentedCT)
   private
     fNamespace: ProRock.Xmlite.Schema.Base.TAnyURIST;
     fLocation: ProRock.Xmlite.Schema.Base.TAnyURIST;
@@ -107,19 +113,22 @@ type
     property Location: ProRock.Xmlite.Schema.Base.TAnyURIST read fLocation write fLocation;
   end;
 
-  TTTypesCT = class(TTExtensibleDocumentedCT);
+  [TName('tTypes')]
+  TTypesCT = class(TExtensibleDocumentedCT);
 
-  TTMessageCT = class(TTExtensibleDocumentedCT)
+  [TName('tMessage')]
+  TMessageCT = class(TExtensibleDocumentedCT)
   private
     fName: ProRock.Xmlite.Schema.Base.TNCNameST;
-    fPart: TTPartCTList;
+    fPart: TPartCTList;
   published
     [TRequired]
     property Name: ProRock.Xmlite.Schema.Base.TNCNameST read fName write fName;
-    property Part: TTPartCTList read fPart;
+    property Part: TPartCTList read fPart;
   end;
 
-  TTPartCT = class(TTExtensibleAttributesDocumentedCT)
+  [TName('tPart')]
+  TPartCT = class(TExtensibleAttributesDocumentedCT)
   private
     fName: ProRock.Xmlite.Schema.Base.TNCNameST;
     fElement: ProRock.Xmlite.Schema.Base.TQNameST;
@@ -131,39 +140,42 @@ type
     property &Type: ProRock.Xmlite.Schema.Base.TQNameST read fType write fType;
   end;
 
-  TTPortTypeCT = class(TTExtensibleAttributesDocumentedCT)
+  [TName('tPortType')]
+  TPortTypeCT = class(TExtensibleAttributesDocumentedCT)
   private
     fName: ProRock.Xmlite.Schema.Base.TNCNameST;
-    fOperation: TTOperationCTList;
+    fOperation: TOperationCTList;
   published
     [TRequired]
     property Name: ProRock.Xmlite.Schema.Base.TNCNameST read fName write fName;
-    property Operation: TTOperationCTList read fOperation;
+    property Operation: TOperationCTList read fOperation;
   end;
 
-  TTOperationCT = class(TTExtensibleDocumentedCT)
+  [TName('tOperation')]
+  TOperationCT = class(TExtensibleDocumentedCT)
   private
     fName: ProRock.Xmlite.Schema.Base.TNCNameST;
     fParameterOrder: ProRock.Xmlite.Schema.Base.TNmtokensST;
-    fInput: TTParamCT;
-    fOutput: TTParamCT;
-    fFault: TTFaultCTList;
+    fInput: TParamCT;
+    fOutput: TParamCT;
+    fFault: TFaultCTList;
 
-    function GetInput: TTParamCT;
-    function GetOutput: TTParamCT;
+    function GetInput: TParamCT;
+    function GetOutput: TParamCT;
   published
     [TRequired]
     property Name: ProRock.Xmlite.Schema.Base.TNCNameST read fName write fName;
     property ParameterOrder: ProRock.Xmlite.Schema.Base.TNmtokensST read fParameterOrder write fParameterOrder;
     [TChoice('Input')]
-    property Input: TTParamCT read GetInput;
+    property Input: TParamCT read GetInput;
     [TChoice('Input')]
-    property Output: TTParamCT read GetOutput;
+    property Output: TParamCT read GetOutput;
     [TChoice('Input')]
-    property Fault: TTFaultCTList read fFault;
+    property Fault: TFaultCTList read fFault;
   end;
 
-  TTParamCT = class(TTExtensibleAttributesDocumentedCT)
+  [TName('tParam')]
+  TParamCT = class(TExtensibleAttributesDocumentedCT)
   private
     fName: ProRock.Xmlite.Schema.Base.TNCNameST;
     fMessage: ProRock.Xmlite.Schema.Base.TQNameST;
@@ -173,7 +185,8 @@ type
     property Message: ProRock.Xmlite.Schema.Base.TQNameST read fMessage write fMessage;
   end;
 
-  TTFaultCT = class(TTExtensibleAttributesDocumentedCT)
+  [TName('tFault')]
+  TFaultCT = class(TExtensibleAttributesDocumentedCT)
   private
     fName: ProRock.Xmlite.Schema.Base.TNCNameST;
     fMessage: ProRock.Xmlite.Schema.Base.TQNameST;
@@ -184,27 +197,30 @@ type
     property Message: ProRock.Xmlite.Schema.Base.TQNameST read fMessage write fMessage;
   end;
 
-  TTBindingCT = class(TTExtensibleDocumentedCT)
+  [TName('tBinding')]
+  TBindingCT = class(TExtensibleDocumentedCT)
   private
     fName: ProRock.Xmlite.Schema.Base.TNCNameST;
     fType: ProRock.Xmlite.Schema.Base.TQNameST;
-    fOperation: TTBindingOperationCTList;
+    fOperation: TBindingOperationCTList;
   published
     [TRequired]
     property Name: ProRock.Xmlite.Schema.Base.TNCNameST read fName write fName;
     [TRequired]
     property &Type: ProRock.Xmlite.Schema.Base.TQNameST read fType write fType;
-    property Operation: TTBindingOperationCTList read fOperation;
+    property Operation: TBindingOperationCTList read fOperation;
   end;
 
-  TTBindingOperationMessageCT = class(TTExtensibleDocumentedCT)
+  [TName('tBindingOperationMessage')]
+  TBindingOperationMessageCT = class(TExtensibleDocumentedCT)
   private
     fName: ProRock.Xmlite.Schema.Base.TNCNameST;
   published
     property Name: ProRock.Xmlite.Schema.Base.TNCNameST read fName write fName;
   end;
 
-  TTBindingOperationFaultCT = class(TTExtensibleDocumentedCT)
+  [TName('tBindingOperationFault')]
+  TBindingOperationFaultCT = class(TExtensibleDocumentedCT)
   private
     fName: ProRock.Xmlite.Schema.Base.TNCNameST;
   published
@@ -212,31 +228,34 @@ type
     property Name: ProRock.Xmlite.Schema.Base.TNCNameST read fName write fName;
   end;
 
-  TTBindingOperationCT = class(TTExtensibleDocumentedCT)
+  [TName('tBindingOperation')]
+  TBindingOperationCT = class(TExtensibleDocumentedCT)
   private
     fName: ProRock.Xmlite.Schema.Base.TNCNameST;
-    fInput: TTBindingOperationMessageCT;
-    fOutput: TTBindingOperationMessageCT;
-    fFault: TTBindingOperationFaultCTList;
+    fInput: TBindingOperationMessageCT;
+    fOutput: TBindingOperationMessageCT;
+    fFault: TBindingOperationFaultCTList;
   published
     [TRequired]
     property Name: ProRock.Xmlite.Schema.Base.TNCNameST read fName write fName;
-    property Input: TTBindingOperationMessageCT read fInput;
-    property Output: TTBindingOperationMessageCT read fOutput;
-    property Fault: TTBindingOperationFaultCTList read fFault;
+    property Input: TBindingOperationMessageCT read fInput;
+    property Output: TBindingOperationMessageCT read fOutput;
+    property Fault: TBindingOperationFaultCTList read fFault;
   end;
 
-  TTServiceCT = class(TTExtensibleDocumentedCT)
+  [TName('tService')]
+  TServiceCT = class(TExtensibleDocumentedCT)
   private
     fName: ProRock.Xmlite.Schema.Base.TNCNameST;
-    fPort: TTPortCTList;
+    fPort: TPortCTList;
   published
     [TRequired]
     property Name: ProRock.Xmlite.Schema.Base.TNCNameST read fName write fName;
-    property Port: TTPortCTList read fPort;
+    property Port: TPortCTList read fPort;
   end;
 
-  TTPortCT = class(TTExtensibleDocumentedCT)
+  [TName('tPort')]
+  TPortCT = class(TExtensibleDocumentedCT)
   private
     fName: ProRock.Xmlite.Schema.Base.TNCNameST;
     fBinding: ProRock.Xmlite.Schema.Base.TQNameST;
@@ -247,120 +266,154 @@ type
     property Binding: ProRock.Xmlite.Schema.Base.TQNameST read fBinding write fBinding;
   end;
 
-  TTExtensibilityElementCT = class(TXmliteComplexType)
+  [TName('tExtensibilityElement')]
+  TExtensibilityElementCT = class(TXmliteComplexType)
   private
     fRequired: TRequiredA;
   published
     property Required: TRequiredA read fRequired write fRequired;
   end;
 
-  TDefinitionsE = class(TTDefinitionsCT);
+  TDefinitionsE = class(TDefinitionsCT);
 
   TAnyTopLevelOptionalElementEG = class(TXmliteElementGroup)
   private
-    fImport: TTImportCT;
-    fTypes: TTTypesCT;
-    fMessage: TTMessageCT;
-    fPortType: TTPortTypeCT;
-    fBinding: TTBindingCT;
-    fService: TTServiceCT;
+    fImport: TImportCT;
+    fTypes: TTypesCT;
+    fMessage: TMessageCT;
+    fPortType: TPortTypeCT;
+    fBinding: TBindingCT;
+    fService: TServiceCT;
 
-    function GetImport: TTImportCT;
-    function GetTypes: TTTypesCT;
-    function GetMessage: TTMessageCT;
-    function GetPortType: TTPortTypeCT;
-    function GetBinding: TTBindingCT;
-    function GetService: TTServiceCT;
+    function GetImport: TImportCT;
+    function GetTypes: TTypesCT;
+    function GetMessage: TMessageCT;
+    function GetPortType: TPortTypeCT;
+    function GetBinding: TBindingCT;
+    function GetService: TServiceCT;
   published
     [TChoice('Import')]
-    property Import: TTImportCT read GetImport;
+    property Import: TImportCT read GetImport;
     [TChoice('Import')]
-    property Types: TTTypesCT read GetTypes;
+    property Types: TTypesCT read GetTypes;
     [TChoice('Import')]
-    property Message: TTMessageCT read GetMessage;
+    property Message: TMessageCT read GetMessage;
     [TChoice('Import')]
-    property PortType: TTPortTypeCT read GetPortType;
+    property PortType: TPortTypeCT read GetPortType;
     [TChoice('Import')]
-    property Binding: TTBindingCT read GetBinding;
+    property Binding: TBindingCT read GetBinding;
     [TChoice('Import')]
-    property Service: TTServiceCT read GetService;
+    property Service: TServiceCT read GetService;
   end;
 
   [TNaming(TNaming.nKebabCase)]
   TRequestResponseOrOneWayOperationEG = class(TXmliteElementGroup)
   private
-    fInput: TTParamCT;
+    fInput: TParamCT;
   published
     [TRequired]
-    property Input: TTParamCT read fInput;
+    property Input: TParamCT read fInput;
   end;
 
   [TNaming(TNaming.nKebabCase)]
   TSolicitResponseOrNotificationOperationEG = class(TXmliteElementGroup)
   private
-    fOutput: TTParamCT;
+    fOutput: TParamCT;
   published
     [TRequired]
-    property Output: TTParamCT read fOutput;
+    property Output: TParamCT read fOutput;
   end;
 
-  TTImportCTList = class(TXmliteList<TTImportCT>);
-  TTTypesCTList = class(TXmliteList<TTTypesCT>);
-  TTMessageCTList = class(TXmliteList<TTMessageCT>);
-  TTPartCTList = class(TXmliteList<TTPartCT>);
-  TTPortTypeCTList = class(TXmliteList<TTPortTypeCT>);
-  TTOperationCTList = class(TXmliteList<TTOperationCT>);
-  TTFaultCTList = class(TXmliteList<TTFaultCT>);
-  TTBindingCTList = class(TXmliteList<TTBindingCT>);
-  TTBindingOperationFaultCTList = class(TXmliteList<TTBindingOperationFaultCT>);
-  TTBindingOperationCTList = class(TXmliteList<TTBindingOperationCT>);
-  TTServiceCTList = class(TXmliteList<TTServiceCT>);
-  TTPortCTList = class(TXmliteList<TTPortCT>);
+  TImportCTList = class(TXmliteList<TImportCT>);
+  TTypesCTList = class(TXmliteList<TTypesCT>);
+  TMessageCTList = class(TXmliteList<TMessageCT>);
+  TPartCTList = class(TXmliteList<TPartCT>);
+  TPortTypeCTList = class(TXmliteList<TPortTypeCT>);
+  TOperationCTList = class(TXmliteList<TOperationCT>);
+  TFaultCTList = class(TXmliteList<TFaultCT>);
+  TBindingCTList = class(TXmliteList<TBindingCT>);
+  TBindingOperationFaultCTList = class(TXmliteList<TBindingOperationFaultCT>);
+  TBindingOperationCTList = class(TXmliteList<TBindingOperationCT>);
+  TServiceCTList = class(TXmliteList<TServiceCT>);
+  TPortCTList = class(TXmliteList<TPortCT>);
+
+  TTBindingCT = TBindingCT deprecated 'use TBindingCT';
+  TTBindingCTList = TBindingCTList deprecated 'use TBindingCTList';
+  TTBindingOperationCT = TBindingOperationCT deprecated 'use TBindingOperationCT';
+  TTBindingOperationCTList = TBindingOperationCTList deprecated 'use TBindingOperationCTList';
+  TTBindingOperationFaultCT = TBindingOperationFaultCT deprecated 'use TBindingOperationFaultCT';
+  TTBindingOperationFaultCTList = TBindingOperationFaultCTList deprecated 'use TBindingOperationFaultCTList';
+  TTBindingOperationMessageCT = TBindingOperationMessageCT deprecated 'use TBindingOperationMessageCT';
+  TTDefinitionsCT = TDefinitionsCT deprecated 'use TDefinitionsCT';
+  TTDocumentationCT = TDocumentationCT deprecated 'use TDocumentationCT';
+  TTDocumentedCT = TDocumentedCT deprecated 'use TDocumentedCT';
+  TTExtensibilityElementCT = TExtensibilityElementCT deprecated 'use TExtensibilityElementCT';
+  TTExtensibleAttributesDocumentedCT = TExtensibleAttributesDocumentedCT deprecated 'use TExtensibleAttributesDocumentedCT';
+  TTExtensibleDocumentedCT = TExtensibleDocumentedCT deprecated 'use TExtensibleDocumentedCT';
+  TTFaultCT = TFaultCT deprecated 'use TFaultCT';
+  TTFaultCTList = TFaultCTList deprecated 'use TFaultCTList';
+  TTImportCT = TImportCT deprecated 'use TImportCT';
+  TTImportCTList = TImportCTList deprecated 'use TImportCTList';
+  TTMessageCT = TMessageCT deprecated 'use TMessageCT';
+  TTMessageCTList = TMessageCTList deprecated 'use TMessageCTList';
+  TTOperationCT = TOperationCT deprecated 'use TOperationCT';
+  TTOperationCTList = TOperationCTList deprecated 'use TOperationCTList';
+  TTParamCT = TParamCT deprecated 'use TParamCT';
+  TTPartCT = TPartCT deprecated 'use TPartCT';
+  TTPartCTList = TPartCTList deprecated 'use TPartCTList';
+  TTPortCT = TPortCT deprecated 'use TPortCT';
+  TTPortCTList = TPortCTList deprecated 'use TPortCTList';
+  TTPortTypeCT = TPortTypeCT deprecated 'use TPortTypeCT';
+  TTPortTypeCTList = TPortTypeCTList deprecated 'use TPortTypeCTList';
+  TTServiceCT = TServiceCT deprecated 'use TServiceCT';
+  TTServiceCTList = TServiceCTList deprecated 'use TServiceCTList';
+  TTTypesCT = TTypesCT deprecated 'use TTypesCT';
+  TTTypesCTList = TTypesCTList deprecated 'use TTypesCTList';
 
 implementation
 
-{ TTOperationCT }
+{ TOperationCT }
 
-function TTOperationCT.GetInput: TTParamCT;
+function TOperationCT.GetInput: TParamCT;
 begin
-  Result := TTParamCT(Lazy(fInput, TTParamCT));
+  Result := TParamCT(Lazy(fInput, TParamCT));
 end;
 
-function TTOperationCT.GetOutput: TTParamCT;
+function TOperationCT.GetOutput: TParamCT;
 begin
-  Result := TTParamCT(Lazy(fOutput, TTParamCT));
+  Result := TParamCT(Lazy(fOutput, TParamCT));
 end;
 
 { TAnyTopLevelOptionalElementEG }
 
-function TAnyTopLevelOptionalElementEG.GetImport: TTImportCT;
+function TAnyTopLevelOptionalElementEG.GetImport: TImportCT;
 begin
-  Result := TTImportCT(Lazy(fImport, TTImportCT));
+  Result := TImportCT(Lazy(fImport, TImportCT));
 end;
 
-function TAnyTopLevelOptionalElementEG.GetTypes: TTTypesCT;
+function TAnyTopLevelOptionalElementEG.GetTypes: TTypesCT;
 begin
-  Result := TTTypesCT(Lazy(fTypes, TTTypesCT));
+  Result := TTypesCT(Lazy(fTypes, TTypesCT));
 end;
 
-function TAnyTopLevelOptionalElementEG.GetMessage: TTMessageCT;
+function TAnyTopLevelOptionalElementEG.GetMessage: TMessageCT;
 begin
-  Result := TTMessageCT(Lazy(fMessage, TTMessageCT));
+  Result := TMessageCT(Lazy(fMessage, TMessageCT));
 end;
 
-function TAnyTopLevelOptionalElementEG.GetPortType: TTPortTypeCT;
+function TAnyTopLevelOptionalElementEG.GetPortType: TPortTypeCT;
 begin
-  Result := TTPortTypeCT(Lazy(fPortType, TTPortTypeCT));
+  Result := TPortTypeCT(Lazy(fPortType, TPortTypeCT));
 end;
 
-function TAnyTopLevelOptionalElementEG.GetBinding: TTBindingCT;
+function TAnyTopLevelOptionalElementEG.GetBinding: TBindingCT;
 begin
-  Result := TTBindingCT(Lazy(fBinding, TTBindingCT));
+  Result := TBindingCT(Lazy(fBinding, TBindingCT));
 end;
 
-function TAnyTopLevelOptionalElementEG.GetService: TTServiceCT;
+function TAnyTopLevelOptionalElementEG.GetService: TServiceCT;
 begin
-  Result := TTServiceCT(Lazy(fService, TTServiceCT));
+  Result := TServiceCT(Lazy(fService, TServiceCT));
 end;
 
 initialization
@@ -369,9 +422,9 @@ TMetaBankXmlite.RegisterNamespace('http://schemas.xmlsoap.org/wsdl/',
   { simpleTypes }
   [],
   { complexTypes }
-  [TTDocumentationCT, TTDocumentedCT, TTExtensibleAttributesDocumentedCT, TTExtensibleDocumentedCT, TTDefinitionsCT, TTImportCT,
-  TTTypesCT, TTMessageCT, TTPartCT, TTPortTypeCT, TTOperationCT, TTParamCT, TTFaultCT, TTBindingCT, TTBindingOperationMessageCT,
-  TTBindingOperationFaultCT, TTBindingOperationCT, TTServiceCT, TTPortCT, TTExtensibilityElementCT],
+  [TDocumentationCT, TDocumentedCT, TExtensibleAttributesDocumentedCT, TExtensibleDocumentedCT, TDefinitionsCT, TImportCT, TTypesCT,
+  TMessageCT, TPartCT, TPortTypeCT, TOperationCT, TParamCT, TFaultCT, TBindingCT, TBindingOperationMessageCT, TBindingOperationFaultCT,
+  TBindingOperationCT, TServiceCT, TPortCT, TExtensibilityElementCT],
   { attributes }
   [TypeInfo(TArrayTypeA), TypeInfo(TRequiredA)],
   { attributeGroups }

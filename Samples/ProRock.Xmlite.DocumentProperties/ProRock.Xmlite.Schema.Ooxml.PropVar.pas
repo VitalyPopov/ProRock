@@ -18,25 +18,25 @@ uses
 
 type
   [TName('ST_VectorBaseType')]
-  TSTVectorBaseTypeST = (stvbtVariant, stvbtI1, stvbtI2, stvbtI4, stvbtI8, stvbtUi1, stvbtUi2, stvbtUi4, stvbtUi8, stvbtR4, stvbtR8,
+  TVectorBaseTypeST = (stvbtVariant, stvbtI1, stvbtI2, stvbtI4, stvbtI8, stvbtUi1, stvbtUi2, stvbtUi4, stvbtUi8, stvbtR4, stvbtR8,
     stvbtLpstr, stvbtLpwstr, stvbtBstr, stvbtDate, stvbtFiletime, stvbtBool, stvbtCy, stvbtError, stvbtClsid);
   [TName('ST_ArrayBaseType')]
-  TSTArrayBaseTypeST = (stabtVariant, stabtI1, stabtI2, stabtI4, stabtInt, stabtUi1, stabtUi2, stabtUi4, stabtUint, stabtR4, stabtR8,
+  TArrayBaseTypeST = (stabtVariant, stabtI1, stabtI2, stabtI4, stabtInt, stabtUi1, stabtUi2, stabtUi4, stabtUint, stabtR4, stabtR8,
     stabtDecimal, stabtBstr, stabtDate, stabtBool, stabtCy, stabtError);
 
   [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TName('ST_Cy')]
-  TSTCyST = type ProRock.Xmlite.Schema.Base.TStringST;
+  TCyST = type ProRock.Xmlite.Schema.Base.TStringST;
   [TBaseType('ProRock.Xmlite.Schema.Base.TStringST')]
   [TName('ST_Error')]
-  TSTErrorST = type ProRock.Xmlite.Schema.Base.TStringST;
+  TErrorST = type ProRock.Xmlite.Schema.Base.TStringST;
 
-  TCTEmptyCT = class;
-  TCTNullCT = class;
-  TCTVectorCT = class;
-  TCTArrayCT = class;
-  TCTVariantCT = class;
-  TCTVstreamCT = class;
+  TEmptyCT = class;
+  TNullCT = class;
+  TVectorCT = class;
+  TArrayCT = class;
+  TVariantCT = class;
+  TVstreamCT = class;
   TVariantE = class;
   TVectorE = class;
   TArrayE = class;
@@ -85,23 +85,23 @@ type
   TStringSTList = class;
   TDateTimeSTList = class;
   TBooleanSTList = class;
-  TSTCySTList = class;
-  TSTErrorSTList = class;
-  TSTGuidSTList = class;
+  TCySTList = class;
+  TErrorSTList = class;
+  TGuidSTList = class;
   TDecimalSTList = class;
   TVariantEList = class;
 
   [TName('CT_Empty')]
-  TCTEmptyCT = class(TXmliteComplexType);
+  TEmptyCT = class(TXmliteComplexType);
 
   [TName('CT_Null')]
-  TCTNullCT = class(TXmliteComplexType);
+  TNullCT = class(TXmliteComplexType);
 
   [TOrdered]
   [TName('CT_Vector')]
-  TCTVectorCT = class(TXmliteComplexType)
+  TVectorCT = class(TXmliteComplexType)
   private
-    fBaseType: TSTVectorBaseTypeST;
+    fBaseType: TVectorBaseTypeST;
     fSize: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fVariant: TVariantEList;
     fI1: TByteSTList;
@@ -120,12 +120,12 @@ type
     fDate: TDateTimeSTList;
     fFiletime: TDateTimeSTList;
     fBool: TBooleanSTList;
-    fCy: TSTCySTList;
-    fError: TSTErrorSTList;
-    fClsid: TSTGuidSTList;
+    fCy: TCySTList;
+    fError: TErrorSTList;
+    fClsid: TGuidSTList;
   published
     [TRequired]
-    property BaseType: TSTVectorBaseTypeST read fBaseType write fBaseType;
+    property BaseType: TVectorBaseTypeST read fBaseType write fBaseType;
     [TRequired]
     property Size: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSize write fSize;
     property Variant: TVariantEList read fVariant;
@@ -145,18 +145,18 @@ type
     property Date: TDateTimeSTList read fDate;
     property Filetime: TDateTimeSTList read fFiletime;
     property Bool: TBooleanSTList read fBool;
-    property Cy: TSTCySTList read fCy;
-    property Error: TSTErrorSTList read fError;
-    property Clsid: TSTGuidSTList read fClsid;
+    property Cy: TCySTList read fCy;
+    property Error: TErrorSTList read fError;
+    property Clsid: TGuidSTList read fClsid;
   end;
 
   [TOrdered]
   [TName('CT_Array')]
-  TCTArrayCT = class(TXmliteComplexType)
+  TArrayCT = class(TXmliteComplexType)
   private
     fLBounds: ProRock.Xmlite.Schema.Base.TIntST;
     fUBounds: ProRock.Xmlite.Schema.Base.TIntST;
-    fBaseType: TSTArrayBaseTypeST;
+    fBaseType: TArrayBaseTypeST;
     fVariant: TVariantEList;
     fI1: TByteSTList;
     fI2: TShortSTList;
@@ -172,15 +172,15 @@ type
     fBstr: TStringSTList;
     fDate: TDateTimeSTList;
     fBool: TBooleanSTList;
-    fError: TSTErrorSTList;
-    fCy: TSTCySTList;
+    fError: TErrorSTList;
+    fCy: TCySTList;
   published
     [TRequired]
     property LBounds: ProRock.Xmlite.Schema.Base.TIntST read fLBounds write fLBounds;
     [TRequired]
     property UBounds: ProRock.Xmlite.Schema.Base.TIntST read fUBounds write fUBounds;
     [TRequired]
-    property BaseType: TSTArrayBaseTypeST read fBaseType write fBaseType;
+    property BaseType: TArrayBaseTypeST read fBaseType write fBaseType;
     property Variant: TVariantEList read fVariant;
     property I1: TByteSTList read fI1;
     property I2: TShortSTList read fI2;
@@ -196,12 +196,12 @@ type
     property Bstr: TStringSTList read fBstr;
     property Date: TDateTimeSTList read fDate;
     property Bool: TBooleanSTList read fBool;
-    property Error: TSTErrorSTList read fError;
-    property Cy: TSTCySTList read fCy;
+    property Error: TErrorSTList read fError;
+    property Cy: TCySTList read fCy;
   end;
 
   [TName('CT_Variant')]
-  TCTVariantCT = class(TXmliteComplexType)
+  TVariantCT = class(TXmliteComplexType)
   private
     fVariant: TVariantE;
     fVector: TVectorE;
@@ -229,14 +229,14 @@ type
     fDate: ProRock.Xmlite.Schema.Base.TDateTimeST;
     fFiletime: ProRock.Xmlite.Schema.Base.TDateTimeST;
     fBool: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fCy: TSTCyST;
-    fError: TSTErrorST;
+    fCy: TCyST;
+    fError: TErrorST;
     fStream: ProRock.Xmlite.Schema.Base.TBase64BinaryST;
     fOstream: ProRock.Xmlite.Schema.Base.TBase64BinaryST;
     fStorage: ProRock.Xmlite.Schema.Base.TBase64BinaryST;
     fOstorage: ProRock.Xmlite.Schema.Base.TBase64BinaryST;
     fVstream: TVstreamE;
-    fClsid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST;
+    fClsid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST;
 
     function GetVariant: TVariantE;
     function GetVector: TVectorE;
@@ -320,10 +320,10 @@ type
     property Bool: ProRock.Xmlite.Schema.Base.TBooleanST read fBool write fBool;
     [TXmliteElement]
     [TChoice('Variant')]
-    property Cy: TSTCyST read fCy write fCy;
+    property Cy: TCyST read fCy write fCy;
     [TXmliteElement]
     [TChoice('Variant')]
-    property Error: TSTErrorST read fError write fError;
+    property Error: TErrorST read fError write fError;
     [TXmliteElement]
     [TChoice('Variant')]
     property Stream: ProRock.Xmlite.Schema.Base.TBase64BinaryST read fStream write fStream;
@@ -340,33 +340,33 @@ type
     property Vstream: TVstreamE read GetVstream;
     [TXmliteElement]
     [TChoice('Variant')]
-    property Clsid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST read fClsid write fClsid;
+    property Clsid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST read fClsid write fClsid;
   end;
 
   [TName('CT_Vstream')]
-  TCTVstreamCT = class(TXmliteComplexType)
+  TVstreamCT = class(TXmliteComplexType)
   private
     fXmlValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST;
-    fVersion: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST;
+    fVersion: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST;
   published
     [TXmliteText]
     property XmlValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST read fXmlValue write fXmlValue;
-    property Version: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST read fVersion write fVersion;
+    property Version: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST read fVersion write fVersion;
   end;
 
-  TVariantE = class(TCTVariantCT);
+  TVariantE = class(TVariantCT);
 
-  TVectorE = class(TCTVectorCT);
+  TVectorE = class(TVectorCT);
 
-  TArrayE = class(TCTArrayCT);
+  TArrayE = class(TArrayCT);
 
   TBlobE = class(TXmliteElement);
 
   TOblobE = class(TXmliteElement);
 
-  TEmptyE = class(TCTEmptyCT);
+  TEmptyE = class(TEmptyCT);
 
-  TNullE = class(TCTNullCT);
+  TNullE = class(TNullCT);
 
   [TName('i1')]
   TI1E = class(TXmliteElement);
@@ -424,7 +424,7 @@ type
 
   TOstorageE = class(TXmliteElement);
 
-  TVstreamE = class(TCTVstreamCT);
+  TVstreamE = class(TVstreamCT);
 
   TClsidE = class(TXmliteElement);
 
@@ -441,42 +441,56 @@ type
   TStringSTList = class(TXmliteValueList<ProRock.Xmlite.Schema.Base.TStringST>);
   TDateTimeSTList = class(TXmliteValueList<ProRock.Xmlite.Schema.Base.TDateTimeST>);
   TBooleanSTList = class(TXmliteValueList<ProRock.Xmlite.Schema.Base.TBooleanST>);
-  TSTCySTList = class(TXmliteValueList<TSTCyST>);
-  TSTErrorSTList = class(TXmliteValueList<TSTErrorST>);
-  TSTGuidSTList = class(TXmliteValueList<ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TSTGuidST>);
+  TCySTList = class(TXmliteValueList<TCyST>);
+  TErrorSTList = class(TXmliteValueList<TErrorST>);
+  TGuidSTList = class(TXmliteValueList<ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST>);
   TDecimalSTList = class(TXmliteValueList<ProRock.Xmlite.Schema.Base.TDecimalST>);
   TVariantEList = class(TXmliteList<TVariantE>);
 
+  TSTArrayBaseTypeST = TArrayBaseTypeST deprecated 'use TArrayBaseTypeST';
+  TCTArrayCT = TArrayCT deprecated 'use TArrayCT';
+  TSTCyST = TCyST deprecated 'use TCyST';
+  TSTCySTList = TCySTList deprecated 'use TCySTList';
+  TCTEmptyCT = TEmptyCT deprecated 'use TEmptyCT';
+  TSTErrorST = TErrorST deprecated 'use TErrorST';
+  TSTErrorSTList = TErrorSTList deprecated 'use TErrorSTList';
+  TSTGuidSTList = TGuidSTList deprecated 'use TGuidSTList';
+  TCTNullCT = TNullCT deprecated 'use TNullCT';
+  TCTVariantCT = TVariantCT deprecated 'use TVariantCT';
+  TSTVectorBaseTypeST = TVectorBaseTypeST deprecated 'use TVectorBaseTypeST';
+  TCTVectorCT = TVectorCT deprecated 'use TVectorCT';
+  TCTVstreamCT = TVstreamCT deprecated 'use TVstreamCT';
+
 implementation
 
-{ TCTVariantCT }
+{ TVariantCT }
 
-function TCTVariantCT.GetVariant: TVariantE;
+function TVariantCT.GetVariant: TVariantE;
 begin
   Result := TVariantE(Lazy(fVariant, TVariantE));
 end;
 
-function TCTVariantCT.GetVector: TVectorE;
+function TVariantCT.GetVector: TVectorE;
 begin
   Result := TVectorE(Lazy(fVector, TVectorE));
 end;
 
-function TCTVariantCT.GetArray: TArrayE;
+function TVariantCT.GetArray: TArrayE;
 begin
   Result := TArrayE(Lazy(fArray, TArrayE));
 end;
 
-function TCTVariantCT.GetEmpty: TEmptyE;
+function TVariantCT.GetEmpty: TEmptyE;
 begin
   Result := TEmptyE(Lazy(fEmpty, TEmptyE));
 end;
 
-function TCTVariantCT.GetNull: TNullE;
+function TVariantCT.GetNull: TNullE;
 begin
   Result := TNullE(Lazy(fNull, TNullE));
 end;
 
-function TCTVariantCT.GetVstream: TVstreamE;
+function TVariantCT.GetVstream: TVstreamE;
 begin
   Result := TVstreamE(Lazy(fVstream, TVstreamE));
 end;
@@ -485,9 +499,9 @@ initialization
 
 TMetaBankXmlite.RegisterNamespace('http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes',
   { simpleTypes }
-  [TypeInfo(TSTVectorBaseTypeST), TypeInfo(TSTArrayBaseTypeST), TypeInfo(TSTCyST), TypeInfo(TSTErrorST)],
+  [TypeInfo(TVectorBaseTypeST), TypeInfo(TArrayBaseTypeST), TypeInfo(TCyST), TypeInfo(TErrorST)],
   { complexTypes }
-  [TCTEmptyCT, TCTNullCT, TCTVectorCT, TCTArrayCT, TCTVariantCT, TCTVstreamCT],
+  [TEmptyCT, TNullCT, TVectorCT, TArrayCT, TVariantCT, TVstreamCT],
   { attributes }
   [],
   { attributeGroups }
