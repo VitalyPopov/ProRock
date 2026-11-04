@@ -14,6 +14,10 @@ and order ([mixed content](xmlite.md#mixed-content-and-element-order)).
 A value set in code that equals its default is written only when marked present (`SetPresent`) - see
 [presence](xmlite.md#absent-or-default-presence).
 
+ProRock reads and writes documents, it does not validate them. A required element you don't set is written all the same, empty, or
+as `0` for a number, so a forgotten amount looks like a real `0`: validate what you send where it matters. In a document that
+has a second element where the schema allows one, the last one is read and the others are lost, and `FromXml` still returns `True`.
+
 ## Large schemas
 
 FHIR R4 and the OOXML SpreadsheetML/DrawingML schemas generate units that compile unchanged. Very large units compile slowly:
