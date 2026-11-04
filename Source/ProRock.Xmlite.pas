@@ -478,10 +478,36 @@ begin
   Result := FromXmlInPlace(xml); // shared now: copied there
 end;
 
+// XML 1.0, 2.11: a raw CRLF or CR is a line feed before anything is read; a reference (&#xD;) stays a carriage return
+procedure NormalizeLineEnds(var aXml: string);
+begin
+  var first: integer := Pos(#13, aXml);
+  if first = 0 then
+    Exit;
+  var source: PChar := PChar(aXml) + first - 1;
+  var target: PChar := source;
+  var stop: PChar := PChar(aXml) + aXml.Length;
+  while source < stop do
+  begin
+    if source^ = #13 then
+    begin
+      target^ := #10;
+      if source[1] = #10 then
+        Inc(source);
+    end
+    else
+      target^ := source^;
+    Inc(source);
+    Inc(target);
+  end;
+  SetLength(aXml, target - PChar(aXml));
+end;
+
 function TBasiteHelper.FromXmlInPlace(var aXml: string): boolean;
 begin
   // the parser writes into the text: a shared string gets its own copy first, so only aXml changes
   UniqueString(aXml);
+  NormalizeLineEnds(aXml);
   var xmlCursor: PChar := PChar(aXml);
   if not TReaderXmlite.MoveToChar(xmlCursor, '<') then
     Exit(False);

@@ -40,6 +40,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 - `xs:decimal` values are written without an exponent: `1E-5` and `1E15` are not valid decimals, `0.00001` and
   `1000000000000000` are. `xs:double` keeps its exponent
 - Whitespace around a number or an enumeration value is ignored, as XML Schema says: `<n> 12 </n>` is 12, it used to read as 0
+- A raw line end in a document saved on Windows reads as a line feed, as XML says. It kept its carriage return, in the value and in
+  what was written back (`a&#x0D;&#x0A;b`), which every other reader took for a different text. `&#13;` is still a carriage return
 - Not a number is written `NaN`, as XML Schema spells it, not `NAN`; `NaN`, `INF` and `-INF` are read as numbers on every Delphi,
   10.3 - 11 did not
 - A number too large for a `Comp` property, or `NaN` or `INF` in one, silently became -9223372036854775808; now it is a value that
