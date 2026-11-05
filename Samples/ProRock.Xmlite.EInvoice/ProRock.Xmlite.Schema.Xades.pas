@@ -164,12 +164,14 @@ type
     fIdentifier: TIdentifierTypeCT;
     fDescription: ProRock.Xmlite.Schema.Base.TStringST;
     fDocumentationReferences: TDocumentationReferencesTypeCT;
+
+    function GetDocumentationReferences: TDocumentationReferencesTypeCT;
   published
     [TRequired]
     property Identifier: TIdentifierTypeCT read fIdentifier;
     [TXmliteElement]
     property Description: ProRock.Xmlite.Schema.Base.TStringST read fDescription write fDescription;
-    property DocumentationReferences: TDocumentationReferencesTypeCT read fDocumentationReferences;
+    property DocumentationReferences: TDocumentationReferencesTypeCT read GetDocumentationReferences;
   end;
 
   TIdentifierTypeCT = class(TXmliteComplexType)
@@ -242,6 +244,8 @@ type
     fCanonicalizationMethod: ProRock.Xmlite.Schema.Xmldsig.TCanonicalizationMethodE;
     fEncapsulatedTimeStamp: TEncapsulatedPKIDataTypeCTList;
     fXMLTimeStamp: TAnyTypeCTList;
+
+    function GetCanonicalizationMethod: ProRock.Xmlite.Schema.Xmldsig.TCanonicalizationMethodE;
   published
     property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
     [TChoice('Include')]
@@ -249,7 +253,7 @@ type
     [TChoice('Include')]
     property ReferenceInfo: TReferenceInfoEList read fReferenceInfo;
     [TNaming(TNaming.nPascalCase)]
-    property CanonicalizationMethod: ProRock.Xmlite.Schema.Xmldsig.TCanonicalizationMethodE read fCanonicalizationMethod;
+    property CanonicalizationMethod: ProRock.Xmlite.Schema.Xmldsig.TCanonicalizationMethodE read GetCanonicalizationMethod;
     property EncapsulatedTimeStamp: TEncapsulatedPKIDataTypeCTList read fEncapsulatedTimeStamp;
     property XMLTimeStamp: TAnyTypeCTList read fXMLTimeStamp;
   end;
@@ -262,11 +266,13 @@ type
     fCanonicalizationMethod: ProRock.Xmlite.Schema.Xmldsig.TCanonicalizationMethodE;
     fEncapsulatedTimeStamp: TEncapsulatedPKIDataTypeCTList;
     fXMLTimeStamp: TAnyTypeCTList;
+
+    function GetCanonicalizationMethod: ProRock.Xmlite.Schema.Xmldsig.TCanonicalizationMethodE;
   published
     property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
     property Include: TIncludeEList read fInclude;
     [TNaming(TNaming.nPascalCase)]
-    property CanonicalizationMethod: ProRock.Xmlite.Schema.Xmldsig.TCanonicalizationMethodE read fCanonicalizationMethod;
+    property CanonicalizationMethod: ProRock.Xmlite.Schema.Xmldsig.TCanonicalizationMethodE read GetCanonicalizationMethod;
     property EncapsulatedTimeStamp: TEncapsulatedPKIDataTypeCTList read fEncapsulatedTimeStamp;
     property XMLTimeStamp: TAnyTypeCTList read fXMLTimeStamp;
   end;
@@ -279,13 +285,14 @@ type
     fEncapsulatedTimeStamp: TEncapsulatedPKIDataTypeCT;
     fXMLTimeStamp: TAnyTypeCT;
 
+    function GetCanonicalizationMethod: ProRock.Xmlite.Schema.Xmldsig.TCanonicalizationMethodE;
     function GetEncapsulatedTimeStamp: TEncapsulatedPKIDataTypeCT;
     function GetXMLTimeStamp: TAnyTypeCT;
   published
     property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
     property ReferenceInfo: TReferenceInfoEList read fReferenceInfo;
     [TNaming(TNaming.nPascalCase)]
-    property CanonicalizationMethod: ProRock.Xmlite.Schema.Xmldsig.TCanonicalizationMethodE read fCanonicalizationMethod;
+    property CanonicalizationMethod: ProRock.Xmlite.Schema.Xmldsig.TCanonicalizationMethodE read GetCanonicalizationMethod;
     [TChoice('EncapsulatedTimeStamp')]
     property EncapsulatedTimeStamp: TEncapsulatedPKIDataTypeCT read GetEncapsulatedTimeStamp;
     [TChoice('EncapsulatedTimeStamp')]
@@ -298,12 +305,15 @@ type
     fId: ProRock.Xmlite.Schema.Base.TIdST;
     fSignedProperties: TSignedPropertiesE;
     fUnsignedProperties: TUnsignedPropertiesE;
+
+    function GetSignedProperties: TSignedPropertiesE;
+    function GetUnsignedProperties: TUnsignedPropertiesE;
   published
     [TRequired]
     property Target: ProRock.Xmlite.Schema.Base.TAnyURIST read fTarget write fTarget;
     property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
-    property SignedProperties: TSignedPropertiesE read fSignedProperties;
-    property UnsignedProperties: TUnsignedPropertiesE read fUnsignedProperties;
+    property SignedProperties: TSignedPropertiesE read GetSignedProperties;
+    property UnsignedProperties: TUnsignedPropertiesE read GetUnsignedProperties;
   end;
 
   TSignedPropertiesTypeCT = class(TXmliteComplexType)
@@ -311,10 +321,13 @@ type
     fId: ProRock.Xmlite.Schema.Base.TIdST;
     fSignedSignatureProperties: TSignedSignaturePropertiesE;
     fSignedDataObjectProperties: TSignedDataObjectPropertiesE;
+
+    function GetSignedSignatureProperties: TSignedSignaturePropertiesE;
+    function GetSignedDataObjectProperties: TSignedDataObjectPropertiesE;
   published
     property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
-    property SignedSignatureProperties: TSignedSignaturePropertiesE read fSignedSignatureProperties;
-    property SignedDataObjectProperties: TSignedDataObjectPropertiesE read fSignedDataObjectProperties;
+    property SignedSignatureProperties: TSignedSignaturePropertiesE read GetSignedSignatureProperties;
+    property SignedDataObjectProperties: TSignedDataObjectPropertiesE read GetSignedDataObjectProperties;
   end;
 
   TUnsignedPropertiesTypeCT = class(TXmliteComplexType)
@@ -322,10 +335,13 @@ type
     fId: ProRock.Xmlite.Schema.Base.TIdST;
     fUnsignedSignatureProperties: TUnsignedSignaturePropertiesE;
     fUnsignedDataObjectProperties: TUnsignedDataObjectPropertiesE;
+
+    function GetUnsignedSignatureProperties: TUnsignedSignaturePropertiesE;
+    function GetUnsignedDataObjectProperties: TUnsignedDataObjectPropertiesE;
   published
     property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
-    property UnsignedSignatureProperties: TUnsignedSignaturePropertiesE read fUnsignedSignatureProperties;
-    property UnsignedDataObjectProperties: TUnsignedDataObjectPropertiesE read fUnsignedDataObjectProperties;
+    property UnsignedSignatureProperties: TUnsignedSignaturePropertiesE read GetUnsignedSignatureProperties;
+    property UnsignedDataObjectProperties: TUnsignedDataObjectPropertiesE read GetUnsignedDataObjectProperties;
   end;
 
   TSignedSignaturePropertiesTypeCT = class(TXmliteComplexType)
@@ -339,17 +355,25 @@ type
     fSignatureProductionPlaceV2: TSignatureProductionPlaceV2E;
     fSignerRole: TSignerRoleE;
     fSignerRoleV2: TSignerRoleV2E;
+
+    function GetSigningCertificate: TSigningCertificateE;
+    function GetSigningCertificateV2: TSigningCertificateV2E;
+    function GetSignaturePolicyIdentifier: TSignaturePolicyIdentifierE;
+    function GetSignatureProductionPlace: TSignatureProductionPlaceE;
+    function GetSignatureProductionPlaceV2: TSignatureProductionPlaceV2E;
+    function GetSignerRole: TSignerRoleE;
+    function GetSignerRoleV2: TSignerRoleV2E;
   published
     property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
     [TXmliteElement]
     property SigningTime: ProRock.Xmlite.Schema.Base.TDateTimeST read fSigningTime write fSigningTime;
-    property SigningCertificate: TSigningCertificateE read fSigningCertificate;
-    property SigningCertificateV2: TSigningCertificateV2E read fSigningCertificateV2;
-    property SignaturePolicyIdentifier: TSignaturePolicyIdentifierE read fSignaturePolicyIdentifier;
-    property SignatureProductionPlace: TSignatureProductionPlaceE read fSignatureProductionPlace;
-    property SignatureProductionPlaceV2: TSignatureProductionPlaceV2E read fSignatureProductionPlaceV2;
-    property SignerRole: TSignerRoleE read fSignerRole;
-    property SignerRoleV2: TSignerRoleV2E read fSignerRoleV2;
+    property SigningCertificate: TSigningCertificateE read GetSigningCertificate;
+    property SigningCertificateV2: TSigningCertificateV2E read GetSigningCertificateV2;
+    property SignaturePolicyIdentifier: TSignaturePolicyIdentifierE read GetSignaturePolicyIdentifier;
+    property SignatureProductionPlace: TSignatureProductionPlaceE read GetSignatureProductionPlace;
+    property SignatureProductionPlaceV2: TSignatureProductionPlaceV2E read GetSignatureProductionPlaceV2;
+    property SignerRole: TSignerRoleE read GetSignerRole;
+    property SignerRoleV2: TSignerRoleV2E read GetSignerRoleV2;
   end;
 
   TSignedDataObjectPropertiesTypeCT = class(TXmliteComplexType)
@@ -481,8 +505,10 @@ type
   TSignaturePolicyIdentifierTypeCT = class(TXmliteComplexType)
   private
     fSignaturePolicyId: TSignaturePolicyIdTypeCT;
+
+    function GetSignaturePolicyId: TSignaturePolicyIdTypeCT;
   published
-    property SignaturePolicyId: TSignaturePolicyIdTypeCT read fSignaturePolicyId;
+    property SignaturePolicyId: TSignaturePolicyIdTypeCT read GetSignaturePolicyId;
   end;
 
   TSignaturePolicyIdTypeCT = class(TXmliteComplexType)
@@ -491,14 +517,17 @@ type
     fTransforms: ProRock.Xmlite.Schema.Xmldsig.TTransformsE;
     fSigPolicyHash: TDigestAlgAndValueTypeCT;
     fSigPolicyQualifiers: TSigPolicyQualifiersListTypeCT;
+
+    function GetTransforms: ProRock.Xmlite.Schema.Xmldsig.TTransformsE;
+    function GetSigPolicyQualifiers: TSigPolicyQualifiersListTypeCT;
   published
     [TRequired]
     property SigPolicyId: TObjectIdentifierTypeCT read fSigPolicyId;
     [TNaming(TNaming.nPascalCase)]
-    property Transforms: ProRock.Xmlite.Schema.Xmldsig.TTransformsE read fTransforms;
+    property Transforms: ProRock.Xmlite.Schema.Xmldsig.TTransformsE read GetTransforms;
     [TRequired]
     property SigPolicyHash: TDigestAlgAndValueTypeCT read fSigPolicyHash;
-    property SigPolicyQualifiers: TSigPolicyQualifiersListTypeCT read fSigPolicyQualifiers;
+    property SigPolicyQualifiers: TSigPolicyQualifiersListTypeCT read GetSigPolicyQualifiers;
   end;
 
   TSigPolicyQualifiersListTypeCT = class(TXmliteComplexType)
@@ -512,8 +541,10 @@ type
   private
     fNoticeRef: TNoticeReferenceTypeCT;
     fExplicitText: ProRock.Xmlite.Schema.Base.TStringST;
+
+    function GetNoticeRef: TNoticeReferenceTypeCT;
   published
-    property NoticeRef: TNoticeReferenceTypeCT read fNoticeRef;
+    property NoticeRef: TNoticeReferenceTypeCT read GetNoticeRef;
     [TXmliteElement]
     property ExplicitText: ProRock.Xmlite.Schema.Base.TStringST read fExplicitText write fExplicitText;
   end;
@@ -556,12 +587,14 @@ type
     fObjectIdentifier: TObjectIdentifierTypeCT;
     fMimeType: ProRock.Xmlite.Schema.Base.TStringST;
     fEncoding: ProRock.Xmlite.Schema.Base.TAnyURIST;
+
+    function GetObjectIdentifier: TObjectIdentifierTypeCT;
   published
     [TRequired]
     property ObjectReference: ProRock.Xmlite.Schema.Base.TAnyURIST read fObjectReference write fObjectReference;
     [TXmliteElement]
     property Description: ProRock.Xmlite.Schema.Base.TStringST read fDescription write fDescription;
-    property ObjectIdentifier: TObjectIdentifierTypeCT read fObjectIdentifier;
+    property ObjectIdentifier: TObjectIdentifierTypeCT read GetObjectIdentifier;
     [TXmliteElement]
     property MimeType: ProRock.Xmlite.Schema.Base.TStringST read fMimeType write fMimeType;
     [TXmliteElement]
@@ -573,11 +606,13 @@ type
     fCommitmentTypeId: TObjectIdentifierTypeCT;
     fObjectReference: TAnyURISTList;
     fCommitmentTypeQualifiers: TCommitmentTypeQualifiersListTypeCT;
+
+    function GetCommitmentTypeQualifiers: TCommitmentTypeQualifiersListTypeCT;
   published
     [TRequired]
     property CommitmentTypeId: TObjectIdentifierTypeCT read fCommitmentTypeId;
     property ObjectReference: TAnyURISTList read fObjectReference;
-    property CommitmentTypeQualifiers: TCommitmentTypeQualifiersListTypeCT read fCommitmentTypeQualifiers;
+    property CommitmentTypeQualifiers: TCommitmentTypeQualifiersListTypeCT read GetCommitmentTypeQualifiers;
   end;
 
   TCommitmentTypeQualifiersListTypeCT = class(TXmliteComplexType)
@@ -628,9 +663,12 @@ type
   private
     fClaimedRoles: TClaimedRolesListTypeCT;
     fCertifiedRoles: TCertifiedRolesListTypeCT;
+
+    function GetClaimedRoles: TClaimedRolesListTypeCT;
+    function GetCertifiedRoles: TCertifiedRolesListTypeCT;
   published
-    property ClaimedRoles: TClaimedRolesListTypeCT read fClaimedRoles;
-    property CertifiedRoles: TCertifiedRolesListTypeCT read fCertifiedRoles;
+    property ClaimedRoles: TClaimedRolesListTypeCT read GetClaimedRoles;
+    property CertifiedRoles: TCertifiedRolesListTypeCT read GetCertifiedRoles;
   end;
 
   TClaimedRolesListTypeCT = class(TXmliteComplexType)
@@ -652,10 +690,14 @@ type
     fClaimedRoles: TClaimedRolesE;
     fCertifiedRolesV2: TCertifiedRolesV2E;
     fSignedAssertions: TSignedAssertionsE;
+
+    function GetClaimedRoles: TClaimedRolesE;
+    function GetCertifiedRolesV2: TCertifiedRolesV2E;
+    function GetSignedAssertions: TSignedAssertionsE;
   published
-    property ClaimedRoles: TClaimedRolesE read fClaimedRoles;
-    property CertifiedRolesV2: TCertifiedRolesV2E read fCertifiedRolesV2;
-    property SignedAssertions: TSignedAssertionsE read fSignedAssertions;
+    property ClaimedRoles: TClaimedRolesE read GetClaimedRoles;
+    property CertifiedRolesV2: TCertifiedRolesV2E read GetCertifiedRolesV2;
+    property SignedAssertions: TSignedAssertionsE read GetSignedAssertions;
   end;
 
   TCertifiedRolesListTypeV2CT = class(TXmliteComplexType)
@@ -702,11 +744,15 @@ type
     fCRLRefs: TCRLRefsTypeCT;
     fOCSPRefs: TOCSPRefsTypeCT;
     fOtherRefs: TOtherCertStatusRefsTypeCT;
+
+    function GetCRLRefs: TCRLRefsTypeCT;
+    function GetOCSPRefs: TOCSPRefsTypeCT;
+    function GetOtherRefs: TOtherCertStatusRefsTypeCT;
   published
     property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
-    property CRLRefs: TCRLRefsTypeCT read fCRLRefs;
-    property OCSPRefs: TOCSPRefsTypeCT read fOCSPRefs;
-    property OtherRefs: TOtherCertStatusRefsTypeCT read fOtherRefs;
+    property CRLRefs: TCRLRefsTypeCT read GetCRLRefs;
+    property OCSPRefs: TOCSPRefsTypeCT read GetOCSPRefs;
+    property OtherRefs: TOtherCertStatusRefsTypeCT read GetOtherRefs;
   end;
 
   TCRLRefsTypeCT = class(TXmliteComplexType)
@@ -720,10 +766,12 @@ type
   private
     fDigestAlgAndValue: TDigestAlgAndValueTypeCT;
     fCRLIdentifier: TCRLIdentifierTypeCT;
+
+    function GetCRLIdentifier: TCRLIdentifierTypeCT;
   published
     [TRequired]
     property DigestAlgAndValue: TDigestAlgAndValueTypeCT read fDigestAlgAndValue;
-    property CRLIdentifier: TCRLIdentifierTypeCT read fCRLIdentifier;
+    property CRLIdentifier: TCRLIdentifierTypeCT read GetCRLIdentifier;
   end;
 
   TCRLIdentifierTypeCT = class(TXmliteComplexType)
@@ -756,10 +804,12 @@ type
   private
     fOCSPIdentifier: TOCSPIdentifierTypeCT;
     fDigestAlgAndValue: TDigestAlgAndValueTypeCT;
+
+    function GetDigestAlgAndValue: TDigestAlgAndValueTypeCT;
   published
     [TRequired]
     property OCSPIdentifier: TOCSPIdentifierTypeCT read fOCSPIdentifier;
-    property DigestAlgAndValue: TDigestAlgAndValueTypeCT read fDigestAlgAndValue;
+    property DigestAlgAndValue: TDigestAlgAndValueTypeCT read GetDigestAlgAndValue;
   end;
 
   TResponderIDTypeCT = class(TXmliteComplexType)
@@ -815,11 +865,15 @@ type
     fCRLValues: TCRLValuesTypeCT;
     fOCSPValues: TOCSPValuesTypeCT;
     fOtherValues: TOtherCertStatusValuesTypeCT;
+
+    function GetCRLValues: TCRLValuesTypeCT;
+    function GetOCSPValues: TOCSPValuesTypeCT;
+    function GetOtherValues: TOtherCertStatusValuesTypeCT;
   published
     property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
-    property CRLValues: TCRLValuesTypeCT read fCRLValues;
-    property OCSPValues: TOCSPValuesTypeCT read fOCSPValues;
-    property OtherValues: TOtherCertStatusValuesTypeCT read fOtherValues;
+    property CRLValues: TCRLValuesTypeCT read GetCRLValues;
+    property OCSPValues: TOCSPValuesTypeCT read GetOCSPValues;
+    property OtherValues: TOtherCertStatusValuesTypeCT read GetOtherValues;
   end;
 
   TCRLValuesTypeCT = class(TXmliteComplexType)
@@ -972,7 +1026,36 @@ type
 
 implementation
 
+{ TObjectIdentifierTypeCT }
+
+function TObjectIdentifierTypeCT.GetDocumentationReferences: TDocumentationReferencesTypeCT;
+begin
+  Result := TDocumentationReferencesTypeCT(Lazy(fDocumentationReferences, TDocumentationReferencesTypeCT));
+end;
+
+{ TGenericTimeStampTypeCT }
+
+function TGenericTimeStampTypeCT.GetCanonicalizationMethod: ProRock.Xmlite.Schema.Xmldsig.TCanonicalizationMethodE;
+begin
+  Result := ProRock.Xmlite.Schema.Xmldsig.TCanonicalizationMethodE(Lazy(fCanonicalizationMethod,
+    ProRock.Xmlite.Schema.Xmldsig.TCanonicalizationMethodE));
+end;
+
+{ TXAdESTimeStampTypeCT }
+
+function TXAdESTimeStampTypeCT.GetCanonicalizationMethod: ProRock.Xmlite.Schema.Xmldsig.TCanonicalizationMethodE;
+begin
+  Result := ProRock.Xmlite.Schema.Xmldsig.TCanonicalizationMethodE(Lazy(fCanonicalizationMethod,
+    ProRock.Xmlite.Schema.Xmldsig.TCanonicalizationMethodE));
+end;
+
 { TOtherTimeStampTypeCT }
+
+function TOtherTimeStampTypeCT.GetCanonicalizationMethod: ProRock.Xmlite.Schema.Xmldsig.TCanonicalizationMethodE;
+begin
+  Result := ProRock.Xmlite.Schema.Xmldsig.TCanonicalizationMethodE(Lazy(fCanonicalizationMethod,
+    ProRock.Xmlite.Schema.Xmldsig.TCanonicalizationMethodE));
+end;
 
 function TOtherTimeStampTypeCT.GetEncapsulatedTimeStamp: TEncapsulatedPKIDataTypeCT;
 begin
@@ -982,6 +1065,148 @@ end;
 function TOtherTimeStampTypeCT.GetXMLTimeStamp: TAnyTypeCT;
 begin
   Result := TAnyTypeCT(Lazy(fXMLTimeStamp, TAnyTypeCT));
+end;
+
+{ TQualifyingPropertiesTypeCT }
+
+function TQualifyingPropertiesTypeCT.GetSignedProperties: TSignedPropertiesE;
+begin
+  Result := TSignedPropertiesE(Lazy(fSignedProperties, TSignedPropertiesE));
+end;
+
+function TQualifyingPropertiesTypeCT.GetUnsignedProperties: TUnsignedPropertiesE;
+begin
+  Result := TUnsignedPropertiesE(Lazy(fUnsignedProperties, TUnsignedPropertiesE));
+end;
+
+{ TSignedPropertiesTypeCT }
+
+function TSignedPropertiesTypeCT.GetSignedSignatureProperties: TSignedSignaturePropertiesE;
+begin
+  Result := TSignedSignaturePropertiesE(Lazy(fSignedSignatureProperties, TSignedSignaturePropertiesE));
+end;
+
+function TSignedPropertiesTypeCT.GetSignedDataObjectProperties: TSignedDataObjectPropertiesE;
+begin
+  Result := TSignedDataObjectPropertiesE(Lazy(fSignedDataObjectProperties, TSignedDataObjectPropertiesE));
+end;
+
+{ TUnsignedPropertiesTypeCT }
+
+function TUnsignedPropertiesTypeCT.GetUnsignedSignatureProperties: TUnsignedSignaturePropertiesE;
+begin
+  Result := TUnsignedSignaturePropertiesE(Lazy(fUnsignedSignatureProperties, TUnsignedSignaturePropertiesE));
+end;
+
+function TUnsignedPropertiesTypeCT.GetUnsignedDataObjectProperties: TUnsignedDataObjectPropertiesE;
+begin
+  Result := TUnsignedDataObjectPropertiesE(Lazy(fUnsignedDataObjectProperties, TUnsignedDataObjectPropertiesE));
+end;
+
+{ TSignedSignaturePropertiesTypeCT }
+
+function TSignedSignaturePropertiesTypeCT.GetSigningCertificate: TSigningCertificateE;
+begin
+  Result := TSigningCertificateE(Lazy(fSigningCertificate, TSigningCertificateE));
+end;
+
+function TSignedSignaturePropertiesTypeCT.GetSigningCertificateV2: TSigningCertificateV2E;
+begin
+  Result := TSigningCertificateV2E(Lazy(fSigningCertificateV2, TSigningCertificateV2E));
+end;
+
+function TSignedSignaturePropertiesTypeCT.GetSignaturePolicyIdentifier: TSignaturePolicyIdentifierE;
+begin
+  Result := TSignaturePolicyIdentifierE(Lazy(fSignaturePolicyIdentifier, TSignaturePolicyIdentifierE));
+end;
+
+function TSignedSignaturePropertiesTypeCT.GetSignatureProductionPlace: TSignatureProductionPlaceE;
+begin
+  Result := TSignatureProductionPlaceE(Lazy(fSignatureProductionPlace, TSignatureProductionPlaceE));
+end;
+
+function TSignedSignaturePropertiesTypeCT.GetSignatureProductionPlaceV2: TSignatureProductionPlaceV2E;
+begin
+  Result := TSignatureProductionPlaceV2E(Lazy(fSignatureProductionPlaceV2, TSignatureProductionPlaceV2E));
+end;
+
+function TSignedSignaturePropertiesTypeCT.GetSignerRole: TSignerRoleE;
+begin
+  Result := TSignerRoleE(Lazy(fSignerRole, TSignerRoleE));
+end;
+
+function TSignedSignaturePropertiesTypeCT.GetSignerRoleV2: TSignerRoleV2E;
+begin
+  Result := TSignerRoleV2E(Lazy(fSignerRoleV2, TSignerRoleV2E));
+end;
+
+{ TSignaturePolicyIdentifierTypeCT }
+
+function TSignaturePolicyIdentifierTypeCT.GetSignaturePolicyId: TSignaturePolicyIdTypeCT;
+begin
+  Result := TSignaturePolicyIdTypeCT(Lazy(fSignaturePolicyId, TSignaturePolicyIdTypeCT));
+end;
+
+{ TSignaturePolicyIdTypeCT }
+
+function TSignaturePolicyIdTypeCT.GetTransforms: ProRock.Xmlite.Schema.Xmldsig.TTransformsE;
+begin
+  Result := ProRock.Xmlite.Schema.Xmldsig.TTransformsE(Lazy(fTransforms, ProRock.Xmlite.Schema.Xmldsig.TTransformsE));
+end;
+
+function TSignaturePolicyIdTypeCT.GetSigPolicyQualifiers: TSigPolicyQualifiersListTypeCT;
+begin
+  Result := TSigPolicyQualifiersListTypeCT(Lazy(fSigPolicyQualifiers, TSigPolicyQualifiersListTypeCT));
+end;
+
+{ TSPUserNoticeTypeCT }
+
+function TSPUserNoticeTypeCT.GetNoticeRef: TNoticeReferenceTypeCT;
+begin
+  Result := TNoticeReferenceTypeCT(Lazy(fNoticeRef, TNoticeReferenceTypeCT));
+end;
+
+{ TDataObjectFormatTypeCT }
+
+function TDataObjectFormatTypeCT.GetObjectIdentifier: TObjectIdentifierTypeCT;
+begin
+  Result := TObjectIdentifierTypeCT(Lazy(fObjectIdentifier, TObjectIdentifierTypeCT));
+end;
+
+{ TCommitmentTypeIndicationTypeCT }
+
+function TCommitmentTypeIndicationTypeCT.GetCommitmentTypeQualifiers: TCommitmentTypeQualifiersListTypeCT;
+begin
+  Result := TCommitmentTypeQualifiersListTypeCT(Lazy(fCommitmentTypeQualifiers, TCommitmentTypeQualifiersListTypeCT));
+end;
+
+{ TSignerRoleTypeCT }
+
+function TSignerRoleTypeCT.GetClaimedRoles: TClaimedRolesListTypeCT;
+begin
+  Result := TClaimedRolesListTypeCT(Lazy(fClaimedRoles, TClaimedRolesListTypeCT));
+end;
+
+function TSignerRoleTypeCT.GetCertifiedRoles: TCertifiedRolesListTypeCT;
+begin
+  Result := TCertifiedRolesListTypeCT(Lazy(fCertifiedRoles, TCertifiedRolesListTypeCT));
+end;
+
+{ TSignerRoleV2TypeCT }
+
+function TSignerRoleV2TypeCT.GetClaimedRoles: TClaimedRolesE;
+begin
+  Result := TClaimedRolesE(Lazy(fClaimedRoles, TClaimedRolesE));
+end;
+
+function TSignerRoleV2TypeCT.GetCertifiedRolesV2: TCertifiedRolesV2E;
+begin
+  Result := TCertifiedRolesV2E(Lazy(fCertifiedRolesV2, TCertifiedRolesV2E));
+end;
+
+function TSignerRoleV2TypeCT.GetSignedAssertions: TSignedAssertionsE;
+begin
+  Result := TSignedAssertionsE(Lazy(fSignedAssertions, TSignedAssertionsE));
 end;
 
 { TCertifiedRoleTypeV2CT }
@@ -994,6 +1219,54 @@ end;
 function TCertifiedRoleTypeV2CT.GetOtherAttributeCertificate: TOtherAttributeCertificateE;
 begin
   Result := TOtherAttributeCertificateE(Lazy(fOtherAttributeCertificate, TOtherAttributeCertificateE));
+end;
+
+{ TCompleteRevocationRefsTypeCT }
+
+function TCompleteRevocationRefsTypeCT.GetCRLRefs: TCRLRefsTypeCT;
+begin
+  Result := TCRLRefsTypeCT(Lazy(fCRLRefs, TCRLRefsTypeCT));
+end;
+
+function TCompleteRevocationRefsTypeCT.GetOCSPRefs: TOCSPRefsTypeCT;
+begin
+  Result := TOCSPRefsTypeCT(Lazy(fOCSPRefs, TOCSPRefsTypeCT));
+end;
+
+function TCompleteRevocationRefsTypeCT.GetOtherRefs: TOtherCertStatusRefsTypeCT;
+begin
+  Result := TOtherCertStatusRefsTypeCT(Lazy(fOtherRefs, TOtherCertStatusRefsTypeCT));
+end;
+
+{ TCRLRefTypeCT }
+
+function TCRLRefTypeCT.GetCRLIdentifier: TCRLIdentifierTypeCT;
+begin
+  Result := TCRLIdentifierTypeCT(Lazy(fCRLIdentifier, TCRLIdentifierTypeCT));
+end;
+
+{ TOCSPRefTypeCT }
+
+function TOCSPRefTypeCT.GetDigestAlgAndValue: TDigestAlgAndValueTypeCT;
+begin
+  Result := TDigestAlgAndValueTypeCT(Lazy(fDigestAlgAndValue, TDigestAlgAndValueTypeCT));
+end;
+
+{ TRevocationValuesTypeCT }
+
+function TRevocationValuesTypeCT.GetCRLValues: TCRLValuesTypeCT;
+begin
+  Result := TCRLValuesTypeCT(Lazy(fCRLValues, TCRLValuesTypeCT));
+end;
+
+function TRevocationValuesTypeCT.GetOCSPValues: TOCSPValuesTypeCT;
+begin
+  Result := TOCSPValuesTypeCT(Lazy(fOCSPValues, TOCSPValuesTypeCT));
+end;
+
+function TRevocationValuesTypeCT.GetOtherValues: TOtherCertStatusValuesTypeCT;
+begin
+  Result := TOtherCertStatusValuesTypeCT(Lazy(fOtherValues, TOtherCertStatusValuesTypeCT));
 end;
 
 initialization

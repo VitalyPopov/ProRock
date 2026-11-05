@@ -43,9 +43,11 @@ type
   private
     fHeader: THeaderE;
     fBody: TBodyE;
+
+    function GetHeader: THeaderE;
   published
     [TNaming(TNaming.nPascalCase)]
-    property Header: THeaderE read fHeader;
+    property Header: THeaderE read GetHeader;
     [TRequired]
     [TNaming(TNaming.nPascalCase)]
     property Body: TBodyE read fBody;
@@ -63,6 +65,8 @@ type
     fFaultstring: ProRock.Xmlite.Schema.Base.TStringST;
     fFaultactor: ProRock.Xmlite.Schema.Base.TAnyURIST;
     fDetail: TDetailCT;
+
+    function GetDetail: TDetailCT;
   published
     [TXmliteElement]
     [TRequired]
@@ -72,7 +76,7 @@ type
     property Faultstring: ProRock.Xmlite.Schema.Base.TStringST read fFaultstring write fFaultstring;
     [TXmliteElement]
     property Faultactor: ProRock.Xmlite.Schema.Base.TAnyURIST read fFaultactor write fFaultactor;
-    property Detail: TDetailCT read fDetail;
+    property Detail: TDetailCT read GetDetail;
   end;
 
   [TXmliteAnyElement]
@@ -96,6 +100,20 @@ type
   TFaultE = class(TFaultCT);
 
 implementation
+
+{ TEnvelopeCT }
+
+function TEnvelopeCT.GetHeader: THeaderE;
+begin
+  Result := THeaderE(Lazy(fHeader, THeaderE));
+end;
+
+{ TFaultCT }
+
+function TFaultCT.GetDetail: TDetailCT;
+begin
+  Result := TDetailCT(Lazy(fDetail, TDetailCT));
+end;
 
 initialization
 

@@ -702,12 +702,14 @@ type
     fLink: ProRock.Xmlite.Schema.Ooxml.Rel.TLinkA;
     fContentType: ProRock.Xmlite.Schema.Base.TStringST;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
     [TNaming(TNaming.nFlatCase)]
     property Link: ProRock.Xmlite.Schema.Ooxml.Rel.TLinkA read fLink write fLink;
     property ContentType: ProRock.Xmlite.Schema.Base.TStringST read fContentType write fContentType;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_VideoFile')]
@@ -716,12 +718,14 @@ type
     fLink: ProRock.Xmlite.Schema.Ooxml.Rel.TLinkA;
     fContentType: ProRock.Xmlite.Schema.Base.TStringST;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
     [TNaming(TNaming.nFlatCase)]
     property Link: ProRock.Xmlite.Schema.Ooxml.Rel.TLinkA read fLink write fLink;
     property ContentType: ProRock.Xmlite.Schema.Base.TStringST read fContentType write fContentType;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_QuickTimeFile')]
@@ -729,11 +733,13 @@ type
   private
     fLink: ProRock.Xmlite.Schema.Ooxml.Rel.TLinkA;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
     [TNaming(TNaming.nFlatCase)]
     property Link: ProRock.Xmlite.Schema.Ooxml.Rel.TLinkA read fLink write fLink;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_AudioCDTime')]
@@ -754,12 +760,14 @@ type
     fSt: TAudioCDTimeCT;
     fEnd: TAudioCDTimeCT;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
     property St: TAudioCDTimeCT read fSt;
     [TRequired]
     property &End: TAudioCDTimeCT read fEnd;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_ColorScheme')]
@@ -779,6 +787,8 @@ type
     fHlink: TColorCT;
     fFolHlink: TColorCT;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
     property Name: ProRock.Xmlite.Schema.Base.TStringST read fName write fName;
@@ -806,7 +816,7 @@ type
     property Hlink: TColorCT read fHlink;
     [TRequired]
     property FolHlink: TColorCT read fFolHlink;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_CustomColor')]
@@ -870,6 +880,8 @@ type
     fCs: TTextFontCT;
     fFont: TSupplementalFontCTList;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
     property Latin: TTextFontCT read fLatin;
@@ -878,7 +890,7 @@ type
     [TRequired]
     property Cs: TTextFontCT read fCs;
     property Font: TSupplementalFontCTList read fFont;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_EffectStyleItem')]
@@ -892,6 +904,8 @@ type
     function GetEffectLst: TEffectListCT;
     function GetEffectDag: TEffectContainerCT;
     function GetEffectChosen: TBasite;
+    function GetScene3d: TScene3DCT;
+    function GetSp3d: TShape3DCT;
   public
     property EffectChosen: TBasite read GetEffectChosen;
   published
@@ -899,8 +913,8 @@ type
     property EffectLst: TEffectListCT read GetEffectLst;
     [TChoice('Effect')]
     property EffectDag: TEffectContainerCT read GetEffectDag;
-    property Scene3d: TScene3DCT read fScene3d;
-    property Sp3d: TShape3DCT read fSp3d;
+    property Scene3d: TScene3DCT read GetScene3d;
+    property Sp3d: TShape3DCT read GetSp3d;
   end;
 
   [TName('CT_FontScheme')]
@@ -910,6 +924,8 @@ type
     fMajorFont: TFontCollectionCT;
     fMinorFont: TFontCollectionCT;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
     property Name: ProRock.Xmlite.Schema.Base.TStringST read fName write fName;
@@ -917,7 +933,7 @@ type
     property MajorFont: TFontCollectionCT read fMajorFont;
     [TRequired]
     property MinorFont: TFontCollectionCT read fMinorFont;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TOrdered]
@@ -1001,6 +1017,8 @@ type
     fFontScheme: TFontSchemeCT;
     fFmtScheme: TStyleMatrixCT;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
     property ClrScheme: TColorSchemeCT read fClrScheme;
@@ -1008,7 +1026,7 @@ type
     property FontScheme: TFontSchemeCT read fFontScheme;
     [TRequired]
     property FmtScheme: TStyleMatrixCT read fFmtScheme;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TXmliteAnyElement]
@@ -1558,6 +1576,9 @@ type
     fFlipV: ProRock.Xmlite.Schema.Base.TBooleanST;
     fOff: TPoint2DCT;
     fExt: TPositiveSize2DCT;
+
+    function GetOff: TPoint2DCT;
+    function GetExt: TPositiveSize2DCT;
   published
     [TDefault(0)]
     property Rot: TAngleST read fRot write fRot;
@@ -1565,8 +1586,8 @@ type
     property FlipH: ProRock.Xmlite.Schema.Base.TBooleanST read fFlipH write fFlipH;
     [TDefault(False)]
     property FlipV: ProRock.Xmlite.Schema.Base.TBooleanST read fFlipV write fFlipV;
-    property Off: TPoint2DCT read fOff;
-    property Ext: TPositiveSize2DCT read fExt;
+    property Off: TPoint2DCT read GetOff;
+    property Ext: TPositiveSize2DCT read GetExt;
   end;
 
   [TName('CT_GroupTransform2D')]
@@ -1579,6 +1600,11 @@ type
     fExt: TPositiveSize2DCT;
     fChOff: TPoint2DCT;
     fChExt: TPositiveSize2DCT;
+
+    function GetOff: TPoint2DCT;
+    function GetExt: TPositiveSize2DCT;
+    function GetChOff: TPoint2DCT;
+    function GetChExt: TPositiveSize2DCT;
   published
     [TDefault(0)]
     property Rot: TAngleST read fRot write fRot;
@@ -1586,10 +1612,10 @@ type
     property FlipH: ProRock.Xmlite.Schema.Base.TBooleanST read fFlipH write fFlipH;
     [TDefault(False)]
     property FlipV: ProRock.Xmlite.Schema.Base.TBooleanST read fFlipV write fFlipV;
-    property Off: TPoint2DCT read fOff;
-    property Ext: TPositiveSize2DCT read fExt;
-    property ChOff: TPoint2DCT read fChOff;
-    property ChExt: TPositiveSize2DCT read fChExt;
+    property Off: TPoint2DCT read GetOff;
+    property Ext: TPositiveSize2DCT read GetExt;
+    property ChOff: TPoint2DCT read GetChOff;
+    property ChExt: TPositiveSize2DCT read GetChExt;
   end;
 
   [TName('CT_Point3D')]
@@ -1730,6 +1756,9 @@ type
     fEndSnd: ProRock.Xmlite.Schema.Base.TBooleanST;
     fSnd: TEmbeddedWAVAudioFileCT;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetSnd: TEmbeddedWAVAudioFileCT;
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
@@ -1743,8 +1772,8 @@ type
     property HighlightClick: ProRock.Xmlite.Schema.Base.TBooleanST read fHighlightClick write fHighlightClick;
     [TDefault(False)]
     property EndSnd: ProRock.Xmlite.Schema.Base.TBooleanST read fEndSnd write fEndSnd;
-    property Snd: TEmbeddedWAVAudioFileCT read fSnd;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property Snd: TEmbeddedWAVAudioFileCT read GetSnd;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_ConnectorLocking')]
@@ -1761,6 +1790,8 @@ type
     fNoChangeArrowheads: ProRock.Xmlite.Schema.Base.TBooleanST;
     fNoChangeShapeType: ProRock.Xmlite.Schema.Base.TBooleanST;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     [TDefault(False)]
     property NoGrp: ProRock.Xmlite.Schema.Base.TBooleanST read fNoGrp write fNoGrp;
@@ -1782,7 +1813,7 @@ type
     property NoChangeArrowheads: ProRock.Xmlite.Schema.Base.TBooleanST read fNoChangeArrowheads write fNoChangeArrowheads;
     [TDefault(False)]
     property NoChangeShapeType: ProRock.Xmlite.Schema.Base.TBooleanST read fNoChangeShapeType write fNoChangeShapeType;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_ShapeLocking')]
@@ -1800,6 +1831,8 @@ type
     fNoChangeArrowheads: ProRock.Xmlite.Schema.Base.TBooleanST;
     fNoChangeShapeType: ProRock.Xmlite.Schema.Base.TBooleanST;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     [TDefault(False)]
     property NoTextEdit: ProRock.Xmlite.Schema.Base.TBooleanST read fNoTextEdit write fNoTextEdit;
@@ -1823,7 +1856,7 @@ type
     property NoChangeArrowheads: ProRock.Xmlite.Schema.Base.TBooleanST read fNoChangeArrowheads write fNoChangeArrowheads;
     [TDefault(False)]
     property NoChangeShapeType: ProRock.Xmlite.Schema.Base.TBooleanST read fNoChangeShapeType write fNoChangeShapeType;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_PictureLocking')]
@@ -1841,6 +1874,8 @@ type
     fNoChangeArrowheads: ProRock.Xmlite.Schema.Base.TBooleanST;
     fNoChangeShapeType: ProRock.Xmlite.Schema.Base.TBooleanST;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     [TDefault(False)]
     property NoCrop: ProRock.Xmlite.Schema.Base.TBooleanST read fNoCrop write fNoCrop;
@@ -1864,7 +1899,7 @@ type
     property NoChangeArrowheads: ProRock.Xmlite.Schema.Base.TBooleanST read fNoChangeArrowheads write fNoChangeArrowheads;
     [TDefault(False)]
     property NoChangeShapeType: ProRock.Xmlite.Schema.Base.TBooleanST read fNoChangeShapeType write fNoChangeShapeType;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_GroupLocking')]
@@ -1878,6 +1913,8 @@ type
     fNoMove: ProRock.Xmlite.Schema.Base.TBooleanST;
     fNoResize: ProRock.Xmlite.Schema.Base.TBooleanST;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     [TDefault(False)]
     property NoGrp: ProRock.Xmlite.Schema.Base.TBooleanST read fNoGrp write fNoGrp;
@@ -1893,7 +1930,7 @@ type
     property NoMove: ProRock.Xmlite.Schema.Base.TBooleanST read fNoMove write fNoMove;
     [TDefault(False)]
     property NoResize: ProRock.Xmlite.Schema.Base.TBooleanST read fNoResize write fNoResize;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_GraphicalObjectFrameLocking')]
@@ -1906,6 +1943,8 @@ type
     fNoMove: ProRock.Xmlite.Schema.Base.TBooleanST;
     fNoResize: ProRock.Xmlite.Schema.Base.TBooleanST;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     [TDefault(False)]
     property NoGrp: ProRock.Xmlite.Schema.Base.TBooleanST read fNoGrp write fNoGrp;
@@ -1919,7 +1958,7 @@ type
     property NoMove: ProRock.Xmlite.Schema.Base.TBooleanST read fNoMove write fNoMove;
     [TDefault(False)]
     property NoResize: ProRock.Xmlite.Schema.Base.TBooleanST read fNoResize write fNoResize;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_ContentPartLocking')]
@@ -1936,6 +1975,8 @@ type
     fNoChangeArrowheads: ProRock.Xmlite.Schema.Base.TBooleanST;
     fNoChangeShapeType: ProRock.Xmlite.Schema.Base.TBooleanST;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     [TDefault(False)]
     property NoGrp: ProRock.Xmlite.Schema.Base.TBooleanST read fNoGrp write fNoGrp;
@@ -1957,7 +1998,7 @@ type
     property NoChangeArrowheads: ProRock.Xmlite.Schema.Base.TBooleanST read fNoChangeArrowheads write fNoChangeArrowheads;
     [TDefault(False)]
     property NoChangeShapeType: ProRock.Xmlite.Schema.Base.TBooleanST read fNoChangeShapeType write fNoChangeShapeType;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_NonVisualDrawingProps')]
@@ -1971,6 +2012,10 @@ type
     fHlinkClick: THyperlinkCT;
     fHlinkHover: THyperlinkCT;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetHlinkClick: THyperlinkCT;
+    function GetHlinkHover: THyperlinkCT;
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
     property Id: TDrawingElementIdST read fId write fId;
@@ -1980,9 +2025,9 @@ type
     [TDefault(False)]
     property Hidden: ProRock.Xmlite.Schema.Base.TBooleanST read fHidden write fHidden;
     property Title: ProRock.Xmlite.Schema.Base.TStringST read fTitle write fTitle;
-    property HlinkClick: THyperlinkCT read fHlinkClick;
-    property HlinkHover: THyperlinkCT read fHlinkHover;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property HlinkClick: THyperlinkCT read GetHlinkClick;
+    property HlinkHover: THyperlinkCT read GetHlinkHover;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_NonVisualDrawingShapeProps')]
@@ -1991,11 +2036,14 @@ type
     fTxBox: ProRock.Xmlite.Schema.Base.TBooleanST;
     fSpLocks: TShapeLockingCT;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetSpLocks: TShapeLockingCT;
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     [TDefault(False)]
     property TxBox: ProRock.Xmlite.Schema.Base.TBooleanST read fTxBox write fTxBox;
-    property SpLocks: TShapeLockingCT read fSpLocks;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property SpLocks: TShapeLockingCT read GetSpLocks;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_NonVisualConnectorProperties')]
@@ -2005,11 +2053,16 @@ type
     fStCxn: TConnectionCT;
     fEndCxn: TConnectionCT;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetCxnSpLocks: TConnectorLockingCT;
+    function GetStCxn: TConnectionCT;
+    function GetEndCxn: TConnectionCT;
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
-    property CxnSpLocks: TConnectorLockingCT read fCxnSpLocks;
-    property StCxn: TConnectionCT read fStCxn;
-    property EndCxn: TConnectionCT read fEndCxn;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property CxnSpLocks: TConnectorLockingCT read GetCxnSpLocks;
+    property StCxn: TConnectionCT read GetStCxn;
+    property EndCxn: TConnectionCT read GetEndCxn;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_NonVisualPictureProperties')]
@@ -2018,11 +2071,14 @@ type
     fPreferRelativeResize: ProRock.Xmlite.Schema.Base.TBooleanST;
     fPicLocks: TPictureLockingCT;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetPicLocks: TPictureLockingCT;
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     [TDefault(True)]
     property PreferRelativeResize: ProRock.Xmlite.Schema.Base.TBooleanST read fPreferRelativeResize write fPreferRelativeResize;
-    property PicLocks: TPictureLockingCT read fPicLocks;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property PicLocks: TPictureLockingCT read GetPicLocks;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_NonVisualGroupDrawingShapeProps')]
@@ -2030,9 +2086,12 @@ type
   private
     fGrpSpLocks: TGroupLockingCT;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetGrpSpLocks: TGroupLockingCT;
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
-    property GrpSpLocks: TGroupLockingCT read fGrpSpLocks;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property GrpSpLocks: TGroupLockingCT read GetGrpSpLocks;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_NonVisualGraphicFrameProperties')]
@@ -2040,9 +2099,12 @@ type
   private
     fGraphicFrameLocks: TGraphicalObjectFrameLockingCT;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetGraphicFrameLocks: TGraphicalObjectFrameLockingCT;
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
-    property GraphicFrameLocks: TGraphicalObjectFrameLockingCT read fGraphicFrameLocks;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property GraphicFrameLocks: TGraphicalObjectFrameLockingCT read GetGraphicFrameLocks;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_NonVisualContentPartProperties')]
@@ -2051,11 +2113,14 @@ type
     fIsComment: ProRock.Xmlite.Schema.Base.TBooleanST;
     fCpLocks: TContentPartLockingCT;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetCpLocks: TContentPartLockingCT;
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     [TDefault(True)]
     property IsComment: ProRock.Xmlite.Schema.Base.TBooleanST read fIsComment write fIsComment;
-    property CpLocks: TContentPartLockingCT read fCpLocks;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property CpLocks: TContentPartLockingCT read GetCpLocks;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_GraphicalObjectData')]
@@ -2209,13 +2274,14 @@ type
     fEffectLst: TEffectListCT;
     fEffectDag: TEffectContainerCT;
 
+    function GetLn: TLinePropertiesCT;
     function GetEffectLst: TEffectListCT;
     function GetEffectDag: TEffectContainerCT;
     function GetEffectChosen: TBasite;
   public
     property EffectChosen: TBasite read GetEffectChosen;
   published
-    property Ln: TLinePropertiesCT read fLn;
+    property Ln: TLinePropertiesCT read GetLn;
     [TChoice('Effect')]
     property EffectLst: TEffectListCT read GetEffectLst;
     [TChoice('Effect')]
@@ -2235,6 +2301,7 @@ type
 
     function GetUseSpRect: TGvmlUseShapeRectangleCT;
     function GetXfrm: TTransform2DCT;
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
     property TxBody: TTextBodyCT read fTxBody;
@@ -2242,7 +2309,7 @@ type
     property UseSpRect: TGvmlUseShapeRectangleCT read GetUseSpRect;
     [TChoice('UseSpRect')]
     property Xfrm: TTransform2DCT read GetXfrm;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_GvmlShapeNonVisual')]
@@ -2265,14 +2332,18 @@ type
     fTxSp: TGvmlTextShapeCT;
     fStyle: TShapeStyleCT;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetTxSp: TGvmlTextShapeCT;
+    function GetStyle: TShapeStyleCT;
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
     property NvSpPr: TGvmlShapeNonVisualCT read fNvSpPr;
     [TRequired]
     property SpPr: TShapePropertiesCT read fSpPr;
-    property TxSp: TGvmlTextShapeCT read fTxSp;
-    property Style: TShapeStyleCT read fStyle;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property TxSp: TGvmlTextShapeCT read GetTxSp;
+    property Style: TShapeStyleCT read GetStyle;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_GvmlConnectorNonVisual')]
@@ -2294,13 +2365,16 @@ type
     fSpPr: TShapePropertiesCT;
     fStyle: TShapeStyleCT;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetStyle: TShapeStyleCT;
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
     property NvCxnSpPr: TGvmlConnectorNonVisualCT read fNvCxnSpPr;
     [TRequired]
     property SpPr: TShapePropertiesCT read fSpPr;
-    property Style: TShapeStyleCT read fStyle;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property Style: TShapeStyleCT read GetStyle;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_GvmlPictureNonVisual')]
@@ -2323,6 +2397,9 @@ type
     fSpPr: TShapePropertiesCT;
     fStyle: TShapeStyleCT;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetStyle: TShapeStyleCT;
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
     property NvPicPr: TGvmlPictureNonVisualCT read fNvPicPr;
@@ -2330,8 +2407,8 @@ type
     property BlipFill: TBlipFillPropertiesCT read fBlipFill;
     [TRequired]
     property SpPr: TShapePropertiesCT read fSpPr;
-    property Style: TShapeStyleCT read fStyle;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property Style: TShapeStyleCT read GetStyle;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_GvmlGraphicFrameNonVisual')]
@@ -2353,6 +2430,8 @@ type
     fGraphic: TGraphicE;
     fXfrm: TTransform2DCT;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
     property NvGraphicFramePr: TGvmlGraphicFrameNonVisualCT read fNvGraphicFramePr;
@@ -2360,7 +2439,7 @@ type
     property Graphic: TGraphicE read fGraphic;
     [TRequired]
     property Xfrm: TTransform2DCT read fXfrm;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_GvmlGroupShapeNonVisual')]
@@ -2388,6 +2467,8 @@ type
     fGraphicFrame: TGvmlGraphicalObjectFrameCTList;
     fGrpSp: TGvmlGroupShapeCTList;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
     property NvGrpSpPr: TGvmlGroupShapeNonVisualCT read fNvGrpSpPr;
@@ -2399,7 +2480,7 @@ type
     property Pic: TGvmlPictureCTList read fPic;
     property GraphicFrame: TGvmlGraphicalObjectFrameCTList read fGraphicFrame;
     property GrpSp: TGvmlGroupShapeCTList read fGrpSp;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_Camera')]
@@ -2409,13 +2490,15 @@ type
     fFov: TFOVAngleST;
     fZoom: TPositivePercentageST;
     fRot: TSphereCoordsCT;
+
+    function GetRot: TSphereCoordsCT;
   published
     [TRequired]
     property Prst: TPresetCameraTypeST read fPrst write fPrst;
     property Fov: TFOVAngleST read fFov write fFov;
     [TDefault('100%')]
     property Zoom: TPositivePercentageST read fZoom write fZoom;
-    property Rot: TSphereCoordsCT read fRot;
+    property Rot: TSphereCoordsCT read GetRot;
   end;
 
   [TName('CT_LightRig')]
@@ -2424,12 +2507,14 @@ type
     fRig: TLightRigTypeST;
     fDir: TLightRigDirectionST;
     fRot: TSphereCoordsCT;
+
+    function GetRot: TSphereCoordsCT;
   published
     [TRequired]
     property Rig: TLightRigTypeST read fRig write fRig;
     [TRequired]
     property Dir: TLightRigDirectionST read fDir write fDir;
-    property Rot: TSphereCoordsCT read fRot;
+    property Rot: TSphereCoordsCT read GetRot;
   end;
 
   [TName('CT_Scene3D')]
@@ -2439,13 +2524,16 @@ type
     fLightRig: TLightRigCT;
     fBackdrop: TBackdropCT;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetBackdrop: TBackdropCT;
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
     property Camera: TCameraCT read fCamera;
     [TRequired]
     property LightRig: TLightRigCT read fLightRig;
-    property Backdrop: TBackdropCT read fBackdrop;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property Backdrop: TBackdropCT read GetBackdrop;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_Backdrop')]
@@ -2455,6 +2543,8 @@ type
     fNorm: TVector3DCT;
     fUp: TVector3DCT;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
     property Anchor: TPoint3DCT read fAnchor;
@@ -2462,7 +2552,7 @@ type
     property Norm: TVector3DCT read fNorm;
     [TRequired]
     property Up: TVector3DCT read fUp;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_Bevel')]
@@ -2492,6 +2582,12 @@ type
     fExtrusionClr: TColorCT;
     fContourClr: TColorCT;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetBevelT: TBevelCT;
+    function GetBevelB: TBevelCT;
+    function GetExtrusionClr: TColorCT;
+    function GetContourClr: TColorCT;
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     [TDefault('0')]
     property Z: TCoordinateST read fZ write fZ;
@@ -2501,11 +2597,11 @@ type
     property ContourW: TPositiveCoordinateST read fContourW write fContourW;
     [TDefault(Ord(stpmtWarmMatte))]
     property PrstMaterial: TPresetMaterialTypeST read fPrstMaterial write fPrstMaterial;
-    property BevelT: TBevelCT read fBevelT;
-    property BevelB: TBevelCT read fBevelB;
-    property ExtrusionClr: TColorCT read fExtrusionClr;
-    property ContourClr: TColorCT read fContourClr;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property BevelT: TBevelCT read GetBevelT;
+    property BevelB: TBevelCT read GetBevelB;
+    property ExtrusionClr: TColorCT read GetExtrusionClr;
+    property ContourClr: TColorCT read GetContourClr;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_FlatText')]
@@ -3032,9 +3128,11 @@ type
   private
     fPath: TPathShadeTypeST;
     fFillToRect: TRelativeRectCT;
+
+    function GetFillToRect: TRelativeRectCT;
   published
     property Path: TPathShadeTypeST read fPath write fPath;
-    property FillToRect: TRelativeRectCT read fFillToRect;
+    property FillToRect: TRelativeRectCT read GetFillToRect;
   end;
 
   [TName('CT_GradientStop')]
@@ -3089,18 +3187,20 @@ type
     fPath: TPathShadePropertiesCT;
     fTileRect: TRelativeRectCT;
 
+    function GetGsLst: TGradientStopListCT;
     function GetLin: TLinearShadePropertiesCT;
     function GetPath: TPathShadePropertiesCT;
+    function GetTileRect: TRelativeRectCT;
   published
     [TDefault(Ord(sttfmNone))]
     property Flip: TTileFlipModeST read fFlip write fFlip;
     property RotWithShape: ProRock.Xmlite.Schema.Base.TBooleanST read fRotWithShape write fRotWithShape;
-    property GsLst: TGradientStopListCT read fGsLst;
+    property GsLst: TGradientStopListCT read GetGsLst;
     [TChoice('Lin')]
     property Lin: TLinearShadePropertiesCT read GetLin;
     [TChoice('Lin')]
     property Path: TPathShadePropertiesCT read GetPath;
-    property TileRect: TRelativeRectCT read fTileRect;
+    property TileRect: TRelativeRectCT read GetTileRect;
   end;
 
   [TName('CT_TileInfoProperties')]
@@ -3126,8 +3226,10 @@ type
   TStretchInfoPropertiesCT = class(TXmliteComplexType)
   private
     fFillRect: TRelativeRectCT;
+
+    function GetFillRect: TRelativeRectCT;
   published
-    property FillRect: TRelativeRectCT read fFillRect;
+    property FillRect: TRelativeRectCT read GetFillRect;
   end;
 
   [TOrdered]
@@ -3155,6 +3257,8 @@ type
     fLum: TLuminanceEffectCTList;
     fTint: TTintEffectCTList;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     [TDefault(Ord(stbcNone))]
     property Cstate: TBlipCompressionST read fCstate write fCstate;
@@ -3179,7 +3283,7 @@ type
     property Hsl: THSLEffectCTList read fHsl;
     property Lum: TLuminanceEffectCTList read fLum;
     property Tint: TTintEffectCTList read fTint;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_BlipFillProperties')]
@@ -3192,13 +3296,15 @@ type
     fTile: TTileInfoPropertiesCT;
     fStretch: TStretchInfoPropertiesCT;
 
+    function GetBlip: TBlipCT;
+    function GetSrcRect: TRelativeRectCT;
     function GetTile: TTileInfoPropertiesCT;
     function GetStretch: TStretchInfoPropertiesCT;
   published
     property Dpi: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fDpi write fDpi;
     property RotWithShape: ProRock.Xmlite.Schema.Base.TBooleanST read fRotWithShape write fRotWithShape;
-    property Blip: TBlipCT read fBlip;
-    property SrcRect: TRelativeRectCT read fSrcRect;
+    property Blip: TBlipCT read GetBlip;
+    property SrcRect: TRelativeRectCT read GetSrcRect;
     [TChoice('Tile')]
     property Tile: TTileInfoPropertiesCT read GetTile;
     [TChoice('Tile')]
@@ -3211,10 +3317,13 @@ type
     fPrst: TPresetPatternValST;
     fFgClr: TColorCT;
     fBgClr: TColorCT;
+
+    function GetFgClr: TColorCT;
+    function GetBgClr: TColorCT;
   published
     property Prst: TPresetPatternValST read fPrst write fPrst;
-    property FgClr: TColorCT read fFgClr;
-    property BgClr: TColorCT read fBgClr;
+    property FgClr: TColorCT read GetFgClr;
+    property BgClr: TColorCT read GetBgClr;
   end;
 
   [TName('CT_GroupFillProperties')]
@@ -3429,15 +3538,24 @@ type
     fPrstShdw: TPresetShadowEffectCT;
     fReflection: TReflectionEffectCT;
     fSoftEdge: TSoftEdgesEffectCT;
+
+    function GetBlur: TBlurEffectCT;
+    function GetFillOverlay: TFillOverlayEffectCT;
+    function GetGlow: TGlowEffectCT;
+    function GetInnerShdw: TInnerShadowEffectCT;
+    function GetOuterShdw: TOuterShadowEffectCT;
+    function GetPrstShdw: TPresetShadowEffectCT;
+    function GetReflection: TReflectionEffectCT;
+    function GetSoftEdge: TSoftEdgesEffectCT;
   published
-    property Blur: TBlurEffectCT read fBlur;
-    property FillOverlay: TFillOverlayEffectCT read fFillOverlay;
-    property Glow: TGlowEffectCT read fGlow;
-    property InnerShdw: TInnerShadowEffectCT read fInnerShdw;
-    property OuterShdw: TOuterShadowEffectCT read fOuterShdw;
-    property PrstShdw: TPresetShadowEffectCT read fPrstShdw;
-    property Reflection: TReflectionEffectCT read fReflection;
-    property SoftEdge: TSoftEdgesEffectCT read fSoftEdge;
+    property Blur: TBlurEffectCT read GetBlur;
+    property FillOverlay: TFillOverlayEffectCT read GetFillOverlay;
+    property Glow: TGlowEffectCT read GetGlow;
+    property InnerShdw: TInnerShadowEffectCT read GetInnerShdw;
+    property OuterShdw: TOuterShadowEffectCT read GetOuterShdw;
+    property PrstShdw: TPresetShadowEffectCT read GetPrstShdw;
+    property Reflection: TReflectionEffectCT read GetReflection;
+    property SoftEdge: TSoftEdgesEffectCT read GetSoftEdge;
   end;
 
   [TName('CT_EffectProperties')]
@@ -3697,10 +3815,12 @@ type
   private
     fPrst: TShapeTypeST;
     fAvLst: TGeomGuideListCT;
+
+    function GetAvLst: TGeomGuideListCT;
   published
     [TRequired]
     property Prst: TShapeTypeST read fPrst write fPrst;
-    property AvLst: TGeomGuideListCT read fAvLst;
+    property AvLst: TGeomGuideListCT read GetAvLst;
   end;
 
   [TName('CT_PresetTextShape')]
@@ -3708,10 +3828,12 @@ type
   private
     fPrst: TTextShapeTypeST;
     fAvLst: TGeomGuideListCT;
+
+    function GetAvLst: TGeomGuideListCT;
   published
     [TRequired]
     property Prst: TTextShapeTypeST read fPrst write fPrst;
-    property AvLst: TGeomGuideListCT read fAvLst;
+    property AvLst: TGeomGuideListCT read GetAvLst;
   end;
 
   [TName('CT_CustomGeometry2D')]
@@ -3723,12 +3845,18 @@ type
     fCxnLst: TConnectionSiteListCT;
     fRect: TGeomRectCT;
     fPathLst: TPath2DListCT;
+
+    function GetAvLst: TGeomGuideListCT;
+    function GetGdLst: TGeomGuideListCT;
+    function GetAhLst: TAdjustHandleListCT;
+    function GetCxnLst: TConnectionSiteListCT;
+    function GetRect: TGeomRectCT;
   published
-    property AvLst: TGeomGuideListCT read fAvLst;
-    property GdLst: TGeomGuideListCT read fGdLst;
-    property AhLst: TAdjustHandleListCT read fAhLst;
-    property CxnLst: TConnectionSiteListCT read fCxnLst;
-    property Rect: TGeomRectCT read fRect;
+    property AvLst: TGeomGuideListCT read GetAvLst;
+    property GdLst: TGeomGuideListCT read GetGdLst;
+    property AhLst: TAdjustHandleListCT read GetAhLst;
+    property CxnLst: TConnectionSiteListCT read GetCxnLst;
+    property Rect: TGeomRectCT read GetRect;
     [TRequired]
     property PathLst: TPath2DListCT read fPathLst;
   end;
@@ -3817,6 +3945,9 @@ type
     function GetRound: TLineJoinRoundCT;
     function GetBevel: TLineJoinBevelCT;
     function GetMiter: TLineJoinMiterPropertiesCT;
+    function GetHeadEnd: TLineEndPropertiesCT;
+    function GetTailEnd: TLineEndPropertiesCT;
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     property W: TLineWidthST read fW write fW;
     property Cap: TLineCapST read fCap write fCap;
@@ -3840,9 +3971,9 @@ type
     property Bevel: TLineJoinBevelCT read GetBevel;
     [TChoice('Round')]
     property Miter: TLineJoinMiterPropertiesCT read GetMiter;
-    property HeadEnd: TLineEndPropertiesCT read fHeadEnd;
-    property TailEnd: TLineEndPropertiesCT read fTailEnd;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property HeadEnd: TLineEndPropertiesCT read GetHeadEnd;
+    property TailEnd: TLineEndPropertiesCT read GetTailEnd;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_ShapeProperties')]
@@ -3865,6 +3996,7 @@ type
     fSp3d: TShape3DCT;
     fExtLst: TOfficeArtExtensionListCT;
 
+    function GetXfrm: TTransform2DCT;
     function GetCustGeom: TCustomGeometry2DCT;
     function GetPrstGeom: TPresetGeometry2DCT;
     function GetNoFill: TNoFillPropertiesCT;
@@ -3873,14 +4005,18 @@ type
     function GetBlipFill: TBlipFillPropertiesCT;
     function GetPattFill: TPatternFillPropertiesCT;
     function GetGrpFill: TGroupFillPropertiesCT;
+    function GetLn: TLinePropertiesCT;
     function GetEffectLst: TEffectListCT;
     function GetEffectDag: TEffectContainerCT;
     function GetEffectChosen: TBasite;
+    function GetScene3d: TScene3DCT;
+    function GetSp3d: TShape3DCT;
+    function GetExtLst: TOfficeArtExtensionListCT;
   public
     property EffectChosen: TBasite read GetEffectChosen;
   published
     property BwMode: TBlackWhiteModeST read fBwMode write fBwMode;
-    property Xfrm: TTransform2DCT read fXfrm;
+    property Xfrm: TTransform2DCT read GetXfrm;
     [TChoice('CustGeom')]
     property CustGeom: TCustomGeometry2DCT read GetCustGeom;
     [TChoice('CustGeom')]
@@ -3897,14 +4033,14 @@ type
     property PattFill: TPatternFillPropertiesCT read GetPattFill;
     [TChoice('NoFill')]
     property GrpFill: TGroupFillPropertiesCT read GetGrpFill;
-    property Ln: TLinePropertiesCT read fLn;
+    property Ln: TLinePropertiesCT read GetLn;
     [TChoice('Effect')]
     property EffectLst: TEffectListCT read GetEffectLst;
     [TChoice('Effect')]
     property EffectDag: TEffectContainerCT read GetEffectDag;
-    property Scene3d: TScene3DCT read fScene3d;
-    property Sp3d: TShape3DCT read fSp3d;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property Scene3d: TScene3DCT read GetScene3d;
+    property Sp3d: TShape3DCT read GetSp3d;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_GroupShapeProperties')]
@@ -3923,6 +4059,7 @@ type
     fScene3d: TScene3DCT;
     fExtLst: TOfficeArtExtensionListCT;
 
+    function GetXfrm: TGroupTransform2DCT;
     function GetNoFill: TNoFillPropertiesCT;
     function GetSolidFill: TSolidColorFillPropertiesCT;
     function GetGradFill: TGradientFillPropertiesCT;
@@ -3932,11 +4069,13 @@ type
     function GetEffectLst: TEffectListCT;
     function GetEffectDag: TEffectContainerCT;
     function GetEffectChosen: TBasite;
+    function GetScene3d: TScene3DCT;
+    function GetExtLst: TOfficeArtExtensionListCT;
   public
     property EffectChosen: TBasite read GetEffectChosen;
   published
     property BwMode: TBlackWhiteModeST read fBwMode write fBwMode;
-    property Xfrm: TGroupTransform2DCT read fXfrm;
+    property Xfrm: TGroupTransform2DCT read GetXfrm;
     [TChoice('NoFill')]
     property NoFill: TNoFillPropertiesCT read GetNoFill;
     [TChoice('NoFill')]
@@ -3953,8 +4092,8 @@ type
     property EffectLst: TEffectListCT read GetEffectLst;
     [TChoice('Effect')]
     property EffectDag: TEffectContainerCT read GetEffectDag;
-    property Scene3d: TScene3DCT read fScene3d;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property Scene3d: TScene3DCT read GetScene3d;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_StyleMatrixReference')]
@@ -4051,6 +4190,9 @@ type
     fLstStyle: TTextListStyleCT;
     fStyle: TShapeStyleCT;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetStyle: TShapeStyleCT;
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
     property SpPr: TShapePropertiesCT read fSpPr;
@@ -4058,8 +4200,8 @@ type
     property BodyPr: TTextBodyPropertiesCT read fBodyPr;
     [TRequired]
     property LstStyle: TTextListStyleCT read fLstStyle;
-    property Style: TShapeStyleCT read fStyle;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property Style: TShapeStyleCT read GetStyle;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_ObjectStyleDefaults')]
@@ -4069,11 +4211,16 @@ type
     fLnDef: TDefaultShapeDefinitionCT;
     fTxDef: TDefaultShapeDefinitionCT;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetSpDef: TDefaultShapeDefinitionCT;
+    function GetLnDef: TDefaultShapeDefinitionCT;
+    function GetTxDef: TDefaultShapeDefinitionCT;
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
-    property SpDef: TDefaultShapeDefinitionCT read fSpDef;
-    property LnDef: TDefaultShapeDefinitionCT read fLnDef;
-    property TxDef: TDefaultShapeDefinitionCT read fTxDef;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property SpDef: TDefaultShapeDefinitionCT read GetSpDef;
+    property LnDef: TDefaultShapeDefinitionCT read GetLnDef;
+    property TxDef: TDefaultShapeDefinitionCT read GetTxDef;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_EmptyElement')]
@@ -4095,6 +4242,8 @@ type
     fHlink: TColorSchemeIndexST;
     fFolHlink: TColorSchemeIndexST;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
     property Bg1: TColorSchemeIndexST read fBg1 write fBg1;
@@ -4120,7 +4269,7 @@ type
     property Hlink: TColorSchemeIndexST read fHlink write fHlink;
     [TRequired]
     property FolHlink: TColorSchemeIndexST read fFolHlink write fFolHlink;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_ColorMappingOverride')]
@@ -4143,10 +4292,12 @@ type
   private
     fClrScheme: TColorSchemeCT;
     fClrMap: TColorMappingCT;
+
+    function GetClrMap: TColorMappingCT;
   published
     [TRequired]
     property ClrScheme: TColorSchemeCT read fClrScheme;
-    property ClrMap: TColorMappingCT read fClrMap;
+    property ClrMap: TColorMappingCT read GetClrMap;
   end;
 
   [TName('CT_ColorSchemeList')]
@@ -4166,14 +4317,19 @@ type
     fExtraClrSchemeLst: TColorSchemeListCT;
     fCustClrLst: TCustomColorListCT;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetObjectDefaults: TObjectStyleDefaultsCT;
+    function GetExtraClrSchemeLst: TColorSchemeListCT;
+    function GetCustClrLst: TCustomColorListCT;
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     property Name: ProRock.Xmlite.Schema.Base.TStringST read fName write fName;
     [TRequired]
     property ThemeElements: TBaseStylesCT read fThemeElements;
-    property ObjectDefaults: TObjectStyleDefaultsCT read fObjectDefaults;
-    property ExtraClrSchemeLst: TColorSchemeListCT read fExtraClrSchemeLst;
-    property CustClrLst: TCustomColorListCT read fCustClrLst;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property ObjectDefaults: TObjectStyleDefaultsCT read GetObjectDefaults;
+    property ExtraClrSchemeLst: TColorSchemeListCT read GetExtraClrSchemeLst;
+    property CustClrLst: TCustomColorListCT read GetCustClrLst;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_BaseStylesOverride')]
@@ -4182,10 +4338,14 @@ type
     fClrScheme: TColorSchemeCT;
     fFontScheme: TFontSchemeCT;
     fFmtScheme: TStyleMatrixCT;
+
+    function GetClrScheme: TColorSchemeCT;
+    function GetFontScheme: TFontSchemeCT;
+    function GetFmtScheme: TStyleMatrixCT;
   published
-    property ClrScheme: TColorSchemeCT read fClrScheme;
-    property FontScheme: TFontSchemeCT read fFontScheme;
-    property FmtScheme: TStyleMatrixCT read fFmtScheme;
+    property ClrScheme: TColorSchemeCT read GetClrScheme;
+    property FontScheme: TFontSchemeCT read GetFontScheme;
+    property FmtScheme: TStyleMatrixCT read GetFmtScheme;
   end;
 
   [TName('CT_ClipboardStyleSheet')]
@@ -4227,12 +4387,21 @@ type
     fHeaders: THeadersCT;
     fExtLst: TOfficeArtExtensionListCT;
 
+    function GetLnL: TLinePropertiesCT;
+    function GetLnR: TLinePropertiesCT;
+    function GetLnT: TLinePropertiesCT;
+    function GetLnB: TLinePropertiesCT;
+    function GetLnTlToBr: TLinePropertiesCT;
+    function GetLnBlToTr: TLinePropertiesCT;
+    function GetCell3D: TCell3DCT;
     function GetNoFill: TNoFillPropertiesCT;
     function GetSolidFill: TSolidColorFillPropertiesCT;
     function GetGradFill: TGradientFillPropertiesCT;
     function GetBlipFill: TBlipFillPropertiesCT;
     function GetPattFill: TPatternFillPropertiesCT;
     function GetGrpFill: TGroupFillPropertiesCT;
+    function GetHeaders: THeadersCT;
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     [TDefault('91440')]
     property MarL: TCoordinate32ST read fMarL write fMarL;
@@ -4250,13 +4419,13 @@ type
     property AnchorCtr: ProRock.Xmlite.Schema.Base.TBooleanST read fAnchorCtr write fAnchorCtr;
     [TDefault(Ord(stthotClip))]
     property HorzOverflow: TTextHorzOverflowTypeST read fHorzOverflow write fHorzOverflow;
-    property LnL: TLinePropertiesCT read fLnL;
-    property LnR: TLinePropertiesCT read fLnR;
-    property LnT: TLinePropertiesCT read fLnT;
-    property LnB: TLinePropertiesCT read fLnB;
-    property LnTlToBr: TLinePropertiesCT read fLnTlToBr;
-    property LnBlToTr: TLinePropertiesCT read fLnBlToTr;
-    property Cell3D: TCell3DCT read fCell3D;
+    property LnL: TLinePropertiesCT read GetLnL;
+    property LnR: TLinePropertiesCT read GetLnR;
+    property LnT: TLinePropertiesCT read GetLnT;
+    property LnB: TLinePropertiesCT read GetLnB;
+    property LnTlToBr: TLinePropertiesCT read GetLnTlToBr;
+    property LnBlToTr: TLinePropertiesCT read GetLnBlToTr;
+    property Cell3D: TCell3DCT read GetCell3D;
     [TChoice('NoFill')]
     property NoFill: TNoFillPropertiesCT read GetNoFill;
     [TChoice('NoFill')]
@@ -4269,8 +4438,8 @@ type
     property PattFill: TPatternFillPropertiesCT read GetPattFill;
     [TChoice('NoFill')]
     property GrpFill: TGroupFillPropertiesCT read GetGrpFill;
-    property Headers: THeadersCT read fHeaders;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property Headers: THeadersCT read GetHeaders;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_Headers')]
@@ -4286,10 +4455,12 @@ type
   private
     fW: TCoordinateST;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
     property W: TCoordinateST read fW write fW;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_TableGrid')]
@@ -4311,6 +4482,10 @@ type
     fTxBody: TTextBodyCT;
     fTcPr: TTableCellPropertiesCT;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetTxBody: TTextBodyCT;
+    function GetTcPr: TTableCellPropertiesCT;
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     [TDefault(1)]
     property RowSpan: ProRock.Xmlite.Schema.Base.TIntST read fRowSpan write fRowSpan;
@@ -4321,9 +4496,9 @@ type
     [TDefault(False)]
     property VMerge: ProRock.Xmlite.Schema.Base.TBooleanST read fVMerge write fVMerge;
     property Id: ProRock.Xmlite.Schema.Base.TStringST read fId write fId;
-    property TxBody: TTextBodyCT read fTxBody;
-    property TcPr: TTableCellPropertiesCT read fTcPr;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property TxBody: TTextBodyCT read GetTxBody;
+    property TcPr: TTableCellPropertiesCT read GetTcPr;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_TableRow')]
@@ -4332,11 +4507,13 @@ type
     fH: TCoordinateST;
     fTc: TTableCellCTList;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
     property H: TCoordinateST read fH write fH;
     property Tc: TTableCellCTList read fTc;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_TableProperties')]
@@ -4372,6 +4549,7 @@ type
     function GetEffectChosen: TBasite;
     function GetTableStyle: TTableStyleCT;
     function GetTableStyleChosen: TBasite;
+    function GetExtLst: TOfficeArtExtensionListCT;
   public
     property EffectChosen: TBasite read GetEffectChosen;
     property TableStyleChosen: TBasite read GetTableStyleChosen;
@@ -4411,7 +4589,7 @@ type
     [TXmliteElement]
     [TChoice('TableStyle')]
     property TableStyleId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST read fTableStyleId write fTableStyleId;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_Table')]
@@ -4420,8 +4598,10 @@ type
     fTblPr: TTablePropertiesCT;
     fTblGrid: TTableGridCT;
     fTr: TTableRowCTList;
+
+    function GetTblPr: TTablePropertiesCT;
   published
-    property TblPr: TTablePropertiesCT read fTblPr;
+    property TblPr: TTablePropertiesCT read GetTblPr;
     [TRequired]
     property TblGrid: TTableGridCT read fTblGrid;
     property Tr: TTableRowCTList read fTr;
@@ -4434,13 +4614,16 @@ type
     fBevel: TBevelCT;
     fLightRig: TLightRigCT;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetLightRig: TLightRigCT;
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     [TDefault(Ord(stpmtPlastic))]
     property PrstMaterial: TPresetMaterialTypeST read fPrstMaterial write fPrstMaterial;
     [TRequired]
     property Bevel: TBevelCT read fBevel;
-    property LightRig: TLightRigCT read fLightRig;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property LightRig: TLightRigCT read GetLightRig;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_ThemeableLineStyle')]
@@ -4485,6 +4668,7 @@ type
     function GetSysClr: TSystemColorCT;
     function GetSchemeClr: TSchemeColorCT;
     function GetPrstClr: TPresetColorCT;
+    function GetExtLst: TOfficeArtExtensionListCT;
   public
     property FontChosen: TBasite read GetFontChosen;
   published
@@ -4508,7 +4692,7 @@ type
     property SchemeClr: TSchemeColorCT read GetSchemeClr;
     [TChoice('ScrgbClr')]
     property PrstClr: TPresetColorCT read GetPrstClr;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_TableCellBorderStyle')]
@@ -4523,16 +4707,26 @@ type
     fTl2br: TThemeableLineStyleCT;
     fTr2bl: TThemeableLineStyleCT;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetLeft: TThemeableLineStyleCT;
+    function GetRight: TThemeableLineStyleCT;
+    function GetTop: TThemeableLineStyleCT;
+    function GetBottom: TThemeableLineStyleCT;
+    function GetInsideH: TThemeableLineStyleCT;
+    function GetInsideV: TThemeableLineStyleCT;
+    function GetTl2br: TThemeableLineStyleCT;
+    function GetTr2bl: TThemeableLineStyleCT;
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
-    property Left: TThemeableLineStyleCT read fLeft;
-    property Right: TThemeableLineStyleCT read fRight;
-    property Top: TThemeableLineStyleCT read fTop;
-    property Bottom: TThemeableLineStyleCT read fBottom;
-    property InsideH: TThemeableLineStyleCT read fInsideH;
-    property InsideV: TThemeableLineStyleCT read fInsideV;
-    property Tl2br: TThemeableLineStyleCT read fTl2br;
-    property Tr2bl: TThemeableLineStyleCT read fTr2bl;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property Left: TThemeableLineStyleCT read GetLeft;
+    property Right: TThemeableLineStyleCT read GetRight;
+    property Top: TThemeableLineStyleCT read GetTop;
+    property Bottom: TThemeableLineStyleCT read GetBottom;
+    property InsideH: TThemeableLineStyleCT read GetInsideH;
+    property InsideV: TThemeableLineStyleCT read GetInsideV;
+    property Tl2br: TThemeableLineStyleCT read GetTl2br;
+    property Tr2bl: TThemeableLineStyleCT read GetTr2bl;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_TableBackgroundStyle')]
@@ -4571,18 +4765,20 @@ type
     fFillRef: TStyleMatrixReferenceCT;
     fCell3D: TCell3DCT;
 
+    function GetTcBdr: TTableCellBorderStyleCT;
     function GetFill: TFillPropertiesCT;
     function GetFillRef: TStyleMatrixReferenceCT;
     function GetFillChosen: TBasite;
+    function GetCell3D: TCell3DCT;
   public
     property FillChosen: TBasite read GetFillChosen;
   published
-    property TcBdr: TTableCellBorderStyleCT read fTcBdr;
+    property TcBdr: TTableCellBorderStyleCT read GetTcBdr;
     [TChoice('Fill')]
     property Fill: TFillPropertiesCT read GetFill;
     [TChoice('Fill')]
     property FillRef: TStyleMatrixReferenceCT read GetFillRef;
-    property Cell3D: TCell3DCT read fCell3D;
+    property Cell3D: TCell3DCT read GetCell3D;
   end;
 
   [TName('CT_TablePartStyle')]
@@ -4590,9 +4786,12 @@ type
   private
     fTcTxStyle: TTableStyleTextStyleCT;
     fTcStyle: TTableStyleCellStyleCT;
+
+    function GetTcTxStyle: TTableStyleTextStyleCT;
+    function GetTcStyle: TTableStyleCellStyleCT;
   published
-    property TcTxStyle: TTableStyleTextStyleCT read fTcTxStyle;
-    property TcStyle: TTableStyleCellStyleCT read fTcStyle;
+    property TcTxStyle: TTableStyleTextStyleCT read GetTcTxStyle;
+    property TcStyle: TTableStyleCellStyleCT read GetTcStyle;
   end;
 
   [TName('CT_TableStyle')]
@@ -4615,26 +4814,42 @@ type
     fNeCell: TTablePartStyleCT;
     fNwCell: TTablePartStyleCT;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetTblBg: TTableBackgroundStyleCT;
+    function GetWholeTbl: TTablePartStyleCT;
+    function GetBand1H: TTablePartStyleCT;
+    function GetBand2H: TTablePartStyleCT;
+    function GetBand1V: TTablePartStyleCT;
+    function GetBand2V: TTablePartStyleCT;
+    function GetLastCol: TTablePartStyleCT;
+    function GetFirstCol: TTablePartStyleCT;
+    function GetLastRow: TTablePartStyleCT;
+    function GetSeCell: TTablePartStyleCT;
+    function GetSwCell: TTablePartStyleCT;
+    function GetFirstRow: TTablePartStyleCT;
+    function GetNeCell: TTablePartStyleCT;
+    function GetNwCell: TTablePartStyleCT;
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     [TRequired]
     property StyleId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST read fStyleId write fStyleId;
     [TRequired]
     property StyleName: ProRock.Xmlite.Schema.Base.TStringST read fStyleName write fStyleName;
-    property TblBg: TTableBackgroundStyleCT read fTblBg;
-    property WholeTbl: TTablePartStyleCT read fWholeTbl;
-    property Band1H: TTablePartStyleCT read fBand1H;
-    property Band2H: TTablePartStyleCT read fBand2H;
-    property Band1V: TTablePartStyleCT read fBand1V;
-    property Band2V: TTablePartStyleCT read fBand2V;
-    property LastCol: TTablePartStyleCT read fLastCol;
-    property FirstCol: TTablePartStyleCT read fFirstCol;
-    property LastRow: TTablePartStyleCT read fLastRow;
-    property SeCell: TTablePartStyleCT read fSeCell;
-    property SwCell: TTablePartStyleCT read fSwCell;
-    property FirstRow: TTablePartStyleCT read fFirstRow;
-    property NeCell: TTablePartStyleCT read fNeCell;
-    property NwCell: TTablePartStyleCT read fNwCell;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property TblBg: TTableBackgroundStyleCT read GetTblBg;
+    property WholeTbl: TTablePartStyleCT read GetWholeTbl;
+    property Band1H: TTablePartStyleCT read GetBand1H;
+    property Band2H: TTablePartStyleCT read GetBand2H;
+    property Band1V: TTablePartStyleCT read GetBand1V;
+    property Band2V: TTablePartStyleCT read GetBand2V;
+    property LastCol: TTablePartStyleCT read GetLastCol;
+    property FirstCol: TTablePartStyleCT read GetFirstCol;
+    property LastRow: TTablePartStyleCT read GetLastRow;
+    property SeCell: TTablePartStyleCT read GetSeCell;
+    property SwCell: TTablePartStyleCT read GetSwCell;
+    property FirstRow: TTablePartStyleCT read GetFirstRow;
+    property NeCell: TTablePartStyleCT read GetNeCell;
+    property NwCell: TTablePartStyleCT read GetNwCell;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_TableStyleList')]
@@ -4657,12 +4872,15 @@ type
     fBr: TTextLineBreakCTList;
     fFld: TTextFieldCTList;
     fEndParaRPr: TTextCharacterPropertiesCT;
+
+    function GetPPr: TTextParagraphPropertiesCT;
+    function GetEndParaRPr: TTextCharacterPropertiesCT;
   published
-    property PPr: TTextParagraphPropertiesCT read fPPr;
+    property PPr: TTextParagraphPropertiesCT read GetPPr;
     property R: TRegularTextRunCTList read fR;
     property Br: TTextLineBreakCTList read fBr;
     property Fld: TTextFieldCTList read fFld;
-    property EndParaRPr: TTextCharacterPropertiesCT read fEndParaRPr;
+    property EndParaRPr: TTextCharacterPropertiesCT read GetEndParaRPr;
   end;
 
   [TName('CT_TextListStyle')]
@@ -4679,18 +4897,30 @@ type
     fLvl8pPr: TTextParagraphPropertiesCT;
     fLvl9pPr: TTextParagraphPropertiesCT;
     fExtLst: TOfficeArtExtensionListCT;
+
+    function GetDefPPr: TTextParagraphPropertiesCT;
+    function GetLvl1pPr: TTextParagraphPropertiesCT;
+    function GetLvl2pPr: TTextParagraphPropertiesCT;
+    function GetLvl3pPr: TTextParagraphPropertiesCT;
+    function GetLvl4pPr: TTextParagraphPropertiesCT;
+    function GetLvl5pPr: TTextParagraphPropertiesCT;
+    function GetLvl6pPr: TTextParagraphPropertiesCT;
+    function GetLvl7pPr: TTextParagraphPropertiesCT;
+    function GetLvl8pPr: TTextParagraphPropertiesCT;
+    function GetLvl9pPr: TTextParagraphPropertiesCT;
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
-    property DefPPr: TTextParagraphPropertiesCT read fDefPPr;
-    property Lvl1pPr: TTextParagraphPropertiesCT read fLvl1pPr;
-    property Lvl2pPr: TTextParagraphPropertiesCT read fLvl2pPr;
-    property Lvl3pPr: TTextParagraphPropertiesCT read fLvl3pPr;
-    property Lvl4pPr: TTextParagraphPropertiesCT read fLvl4pPr;
-    property Lvl5pPr: TTextParagraphPropertiesCT read fLvl5pPr;
-    property Lvl6pPr: TTextParagraphPropertiesCT read fLvl6pPr;
-    property Lvl7pPr: TTextParagraphPropertiesCT read fLvl7pPr;
-    property Lvl8pPr: TTextParagraphPropertiesCT read fLvl8pPr;
-    property Lvl9pPr: TTextParagraphPropertiesCT read fLvl9pPr;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property DefPPr: TTextParagraphPropertiesCT read GetDefPPr;
+    property Lvl1pPr: TTextParagraphPropertiesCT read GetLvl1pPr;
+    property Lvl2pPr: TTextParagraphPropertiesCT read GetLvl2pPr;
+    property Lvl3pPr: TTextParagraphPropertiesCT read GetLvl3pPr;
+    property Lvl4pPr: TTextParagraphPropertiesCT read GetLvl4pPr;
+    property Lvl5pPr: TTextParagraphPropertiesCT read GetLvl5pPr;
+    property Lvl6pPr: TTextParagraphPropertiesCT read GetLvl6pPr;
+    property Lvl7pPr: TTextParagraphPropertiesCT read GetLvl7pPr;
+    property Lvl8pPr: TTextParagraphPropertiesCT read GetLvl8pPr;
+    property Lvl9pPr: TTextParagraphPropertiesCT read GetLvl9pPr;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_TextNormalAutofit')]
@@ -4742,11 +4972,14 @@ type
     fFlatTx: TFlatTextCT;
     fExtLst: TOfficeArtExtensionListCT;
 
+    function GetPrstTxWarp: TPresetTextShapeCT;
     function GetNoAutofit: TTextNoAutofitCT;
     function GetNormAutofit: TTextNormalAutofitCT;
     function GetSpAutoFit: TTextShapeAutofitCT;
+    function GetScene3d: TScene3DCT;
     function GetSp3d: TShape3DCT;
     function GetFlatTx: TFlatTextCT;
+    function GetExtLst: TOfficeArtExtensionListCT;
   published
     property Rot: TAngleST read fRot write fRot;
     property SpcFirstLastPara: ProRock.Xmlite.Schema.Base.TBooleanST read fSpcFirstLastPara write fSpcFirstLastPara;
@@ -4768,19 +5001,19 @@ type
     [TDefault(False)]
     property Upright: ProRock.Xmlite.Schema.Base.TBooleanST read fUpright write fUpright;
     property CompatLnSpc: ProRock.Xmlite.Schema.Base.TBooleanST read fCompatLnSpc write fCompatLnSpc;
-    property PrstTxWarp: TPresetTextShapeCT read fPrstTxWarp;
+    property PrstTxWarp: TPresetTextShapeCT read GetPrstTxWarp;
     [TChoice('NoAutofit')]
     property NoAutofit: TTextNoAutofitCT read GetNoAutofit;
     [TChoice('NoAutofit')]
     property NormAutofit: TTextNormalAutofitCT read GetNormAutofit;
     [TChoice('NoAutofit')]
     property SpAutoFit: TTextShapeAutofitCT read GetSpAutoFit;
-    property Scene3d: TScene3DCT read fScene3d;
+    property Scene3d: TScene3DCT read GetScene3d;
     [TChoice('Sp3d')]
     property Sp3d: TShape3DCT read GetSp3d;
     [TChoice('Sp3d')]
     property FlatTx: TFlatTextCT read GetFlatTx;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_TextBody')]
@@ -4789,10 +5022,12 @@ type
     fBodyPr: TTextBodyPropertiesCT;
     fLstStyle: TTextListStyleCT;
     fP: TTextParagraphCTList;
+
+    function GetLstStyle: TTextListStyleCT;
   published
     [TRequired]
     property BodyPr: TTextBodyPropertiesCT read fBodyPr;
-    property LstStyle: TTextListStyleCT read fLstStyle;
+    property LstStyle: TTextListStyleCT read GetLstStyle;
     property P: TTextParagraphCTList read fP;
   end;
 
@@ -4955,6 +5190,7 @@ type
     fRtl: TBooleanCT;
     fExtLst: TOfficeArtExtensionListCT;
 
+    function GetLn: TLinePropertiesCT;
     function GetNoFill: TNoFillPropertiesCT;
     function GetSolidFill: TSolidColorFillPropertiesCT;
     function GetGradFill: TGradientFillPropertiesCT;
@@ -4964,12 +5200,21 @@ type
     function GetEffectLst: TEffectListCT;
     function GetEffectDag: TEffectContainerCT;
     function GetEffectChosen: TBasite;
+    function GetHighlight: TColorCT;
     function GetULnTx: TTextUnderlineLineFollowTextCT;
     function GetULn: TLinePropertiesCT;
     function GetULnChosen: TBasite;
     function GetUFillTx: TTextUnderlineFillFollowTextCT;
     function GetUFill: TTextUnderlineFillGroupWrapperCT;
     function GetUFillChosen: TBasite;
+    function GetLatin: TTextFontCT;
+    function GetEa: TTextFontCT;
+    function GetCs: TTextFontCT;
+    function GetSym: TTextFontCT;
+    function GetHlinkClick: THyperlinkCT;
+    function GetHlinkMouseOver: THyperlinkCT;
+    function GetRtl: TBooleanCT;
+    function GetExtLst: TOfficeArtExtensionListCT;
   public
     property EffectChosen: TBasite read GetEffectChosen;
     property ULnChosen: TBasite read GetULnChosen;
@@ -4999,7 +5244,7 @@ type
     [TDefault(0)]
     property SmtId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSmtId write fSmtId;
     property Bmk: ProRock.Xmlite.Schema.Base.TStringST read fBmk write fBmk;
-    property Ln: TLinePropertiesCT read fLn;
+    property Ln: TLinePropertiesCT read GetLn;
     [TChoice('NoFill')]
     property NoFill: TNoFillPropertiesCT read GetNoFill;
     [TChoice('NoFill')]
@@ -5016,7 +5261,7 @@ type
     property EffectLst: TEffectListCT read GetEffectLst;
     [TChoice('Effect')]
     property EffectDag: TEffectContainerCT read GetEffectDag;
-    property Highlight: TColorCT read fHighlight;
+    property Highlight: TColorCT read GetHighlight;
     [TChoice('ULn')]
     property ULnTx: TTextUnderlineLineFollowTextCT read GetULnTx;
     [TChoice('ULn')]
@@ -5025,14 +5270,14 @@ type
     property UFillTx: TTextUnderlineFillFollowTextCT read GetUFillTx;
     [TChoice('UFill')]
     property UFill: TTextUnderlineFillGroupWrapperCT read GetUFill;
-    property Latin: TTextFontCT read fLatin;
-    property Ea: TTextFontCT read fEa;
-    property Cs: TTextFontCT read fCs;
-    property Sym: TTextFontCT read fSym;
-    property HlinkClick: THyperlinkCT read fHlinkClick;
-    property HlinkMouseOver: THyperlinkCT read fHlinkMouseOver;
-    property Rtl: TBooleanCT read fRtl;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property Latin: TTextFontCT read GetLatin;
+    property Ea: TTextFontCT read GetEa;
+    property Cs: TTextFontCT read GetCs;
+    property Sym: TTextFontCT read GetSym;
+    property HlinkClick: THyperlinkCT read GetHlinkClick;
+    property HlinkMouseOver: THyperlinkCT read GetHlinkMouseOver;
+    property Rtl: TBooleanCT read GetRtl;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_Boolean')]
@@ -5084,8 +5329,10 @@ type
   TTextLineBreakCT = class(TXmliteComplexType)
   private
     fRPr: TTextCharacterPropertiesCT;
+
+    function GetRPr: TTextCharacterPropertiesCT;
   published
-    property RPr: TTextCharacterPropertiesCT read fRPr;
+    property RPr: TTextCharacterPropertiesCT read GetRPr;
   end;
 
   [TName('CT_TextSpacing')]
@@ -5138,6 +5385,9 @@ type
     fDefRPr: TTextCharacterPropertiesCT;
     fExtLst: TOfficeArtExtensionListCT;
 
+    function GetLnSpc: TTextSpacingCT;
+    function GetSpcBef: TTextSpacingCT;
+    function GetSpcAft: TTextSpacingCT;
     function GetBuClrTx: TTextBulletColorFollowTextCT;
     function GetBuClr: TColorCT;
     function GetBuClrChosen: TBasite;
@@ -5153,6 +5403,9 @@ type
     function GetBuChar: TTextCharBulletCT;
     function GetBuBlip: TTextBlipBulletCT;
     function GetBuChosen: TBasite;
+    function GetTabLst: TTextTabStopListCT;
+    function GetDefRPr: TTextCharacterPropertiesCT;
+    function GetExtLst: TOfficeArtExtensionListCT;
   public
     property BuClrChosen: TBasite read GetBuClrChosen;
     property BuSzChosen: TBasite read GetBuSzChosen;
@@ -5170,9 +5423,9 @@ type
     property FontAlgn: TTextFontAlignTypeST read fFontAlgn write fFontAlgn;
     property LatinLnBrk: ProRock.Xmlite.Schema.Base.TBooleanST read fLatinLnBrk write fLatinLnBrk;
     property HangingPunct: ProRock.Xmlite.Schema.Base.TBooleanST read fHangingPunct write fHangingPunct;
-    property LnSpc: TTextSpacingCT read fLnSpc;
-    property SpcBef: TTextSpacingCT read fSpcBef;
-    property SpcAft: TTextSpacingCT read fSpcAft;
+    property LnSpc: TTextSpacingCT read GetLnSpc;
+    property SpcBef: TTextSpacingCT read GetSpcBef;
+    property SpcAft: TTextSpacingCT read GetSpcAft;
     [TChoice('BuClr')]
     property BuClrTx: TTextBulletColorFollowTextCT read GetBuClrTx;
     [TChoice('BuClr')]
@@ -5195,9 +5448,9 @@ type
     property BuChar: TTextCharBulletCT read GetBuChar;
     [TChoice('Bu')]
     property BuBlip: TTextBlipBulletCT read GetBuBlip;
-    property TabLst: TTextTabStopListCT read fTabLst;
-    property DefRPr: TTextCharacterPropertiesCT read fDefRPr;
-    property ExtLst: TOfficeArtExtensionListCT read fExtLst;
+    property TabLst: TTextTabStopListCT read GetTabLst;
+    property DefRPr: TTextCharacterPropertiesCT read GetDefRPr;
+    property ExtLst: TOfficeArtExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_TextField')]
@@ -5208,12 +5461,15 @@ type
     fRPr: TTextCharacterPropertiesCT;
     fPPr: TTextParagraphPropertiesCT;
     fT: ProRock.Xmlite.Schema.Base.TStringST;
+
+    function GetRPr: TTextCharacterPropertiesCT;
+    function GetPPr: TTextParagraphPropertiesCT;
   published
     [TRequired]
     property Id: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST read fId write fId;
     property &Type: ProRock.Xmlite.Schema.Base.TStringST read fType write fType;
-    property RPr: TTextCharacterPropertiesCT read fRPr;
-    property PPr: TTextParagraphPropertiesCT read fPPr;
+    property RPr: TTextCharacterPropertiesCT read GetRPr;
+    property PPr: TTextParagraphPropertiesCT read GetPPr;
     [TXmliteElement]
     property T: ProRock.Xmlite.Schema.Base.TStringST read fT write fT;
   end;
@@ -5223,8 +5479,10 @@ type
   private
     fRPr: TTextCharacterPropertiesCT;
     fT: ProRock.Xmlite.Schema.Base.TStringST;
+
+    function GetRPr: TTextCharacterPropertiesCT;
   published
-    property RPr: TTextCharacterPropertiesCT read fRPr;
+    property RPr: TTextCharacterPropertiesCT read GetRPr;
     [TXmliteElement]
     [TRequired]
     property T: ProRock.Xmlite.Schema.Base.TStringST read fT write fT;
@@ -6533,6 +6791,41 @@ type
 
 implementation
 
+{ TAudioFileCT }
+
+function TAudioFileCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TVideoFileCT }
+
+function TVideoFileCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TQuickTimeFileCT }
+
+function TQuickTimeFileCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TAudioCDCT }
+
+function TAudioCDCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TColorSchemeCT }
+
+function TColorSchemeCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
 { TCustomColorCT }
 
 function TCustomColorCT.GetScrgbClr: TScRgbColorCT;
@@ -6565,6 +6858,13 @@ begin
   Result := TPresetColorCT(Lazy(fPrstClr, TPresetColorCT));
 end;
 
+{ TFontCollectionCT }
+
+function TFontCollectionCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
 { TEffectStyleItemCT }
 
 function TEffectStyleItemCT.GetEffectLst: TEffectListCT;
@@ -6580,6 +6880,64 @@ end;
 function TEffectStyleItemCT.GetEffectChosen: TBasite;
 begin
   Result := Chosen('Effect');
+end;
+
+function TEffectStyleItemCT.GetScene3d: TScene3DCT;
+begin
+  Result := TScene3DCT(Lazy(fScene3d, TScene3DCT));
+end;
+
+function TEffectStyleItemCT.GetSp3d: TShape3DCT;
+begin
+  Result := TShape3DCT(Lazy(fSp3d, TShape3DCT));
+end;
+
+{ TFontSchemeCT }
+
+function TFontSchemeCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TBaseStylesCT }
+
+function TBaseStylesCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TTransform2DCT }
+
+function TTransform2DCT.GetOff: TPoint2DCT;
+begin
+  Result := TPoint2DCT(Lazy(fOff, TPoint2DCT));
+end;
+
+function TTransform2DCT.GetExt: TPositiveSize2DCT;
+begin
+  Result := TPositiveSize2DCT(Lazy(fExt, TPositiveSize2DCT));
+end;
+
+{ TGroupTransform2DCT }
+
+function TGroupTransform2DCT.GetOff: TPoint2DCT;
+begin
+  Result := TPoint2DCT(Lazy(fOff, TPoint2DCT));
+end;
+
+function TGroupTransform2DCT.GetExt: TPositiveSize2DCT;
+begin
+  Result := TPositiveSize2DCT(Lazy(fExt, TPositiveSize2DCT));
+end;
+
+function TGroupTransform2DCT.GetChOff: TPoint2DCT;
+begin
+  Result := TPoint2DCT(Lazy(fChOff, TPoint2DCT));
+end;
+
+function TGroupTransform2DCT.GetChExt: TPositiveSize2DCT;
+begin
+  Result := TPositiveSize2DCT(Lazy(fChExt, TPositiveSize2DCT));
 end;
 
 { TColorCT }
@@ -6612,6 +6970,159 @@ end;
 function TColorCT.GetPrstClr: TPresetColorCT;
 begin
   Result := TPresetColorCT(Lazy(fPrstClr, TPresetColorCT));
+end;
+
+{ THyperlinkCT }
+
+function THyperlinkCT.GetSnd: TEmbeddedWAVAudioFileCT;
+begin
+  Result := TEmbeddedWAVAudioFileCT(Lazy(fSnd, TEmbeddedWAVAudioFileCT));
+end;
+
+function THyperlinkCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TConnectorLockingCT }
+
+function TConnectorLockingCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TShapeLockingCT }
+
+function TShapeLockingCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TPictureLockingCT }
+
+function TPictureLockingCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TGroupLockingCT }
+
+function TGroupLockingCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TGraphicalObjectFrameLockingCT }
+
+function TGraphicalObjectFrameLockingCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TContentPartLockingCT }
+
+function TContentPartLockingCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TNonVisualDrawingPropsCT }
+
+function TNonVisualDrawingPropsCT.GetHlinkClick: THyperlinkCT;
+begin
+  Result := THyperlinkCT(Lazy(fHlinkClick, THyperlinkCT));
+end;
+
+function TNonVisualDrawingPropsCT.GetHlinkHover: THyperlinkCT;
+begin
+  Result := THyperlinkCT(Lazy(fHlinkHover, THyperlinkCT));
+end;
+
+function TNonVisualDrawingPropsCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TNonVisualDrawingShapePropsCT }
+
+function TNonVisualDrawingShapePropsCT.GetSpLocks: TShapeLockingCT;
+begin
+  Result := TShapeLockingCT(Lazy(fSpLocks, TShapeLockingCT));
+end;
+
+function TNonVisualDrawingShapePropsCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TNonVisualConnectorPropertiesCT }
+
+function TNonVisualConnectorPropertiesCT.GetCxnSpLocks: TConnectorLockingCT;
+begin
+  Result := TConnectorLockingCT(Lazy(fCxnSpLocks, TConnectorLockingCT));
+end;
+
+function TNonVisualConnectorPropertiesCT.GetStCxn: TConnectionCT;
+begin
+  Result := TConnectionCT(Lazy(fStCxn, TConnectionCT));
+end;
+
+function TNonVisualConnectorPropertiesCT.GetEndCxn: TConnectionCT;
+begin
+  Result := TConnectionCT(Lazy(fEndCxn, TConnectionCT));
+end;
+
+function TNonVisualConnectorPropertiesCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TNonVisualPicturePropertiesCT }
+
+function TNonVisualPicturePropertiesCT.GetPicLocks: TPictureLockingCT;
+begin
+  Result := TPictureLockingCT(Lazy(fPicLocks, TPictureLockingCT));
+end;
+
+function TNonVisualPicturePropertiesCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TNonVisualGroupDrawingShapePropsCT }
+
+function TNonVisualGroupDrawingShapePropsCT.GetGrpSpLocks: TGroupLockingCT;
+begin
+  Result := TGroupLockingCT(Lazy(fGrpSpLocks, TGroupLockingCT));
+end;
+
+function TNonVisualGroupDrawingShapePropsCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TNonVisualGraphicFramePropertiesCT }
+
+function TNonVisualGraphicFramePropertiesCT.GetGraphicFrameLocks: TGraphicalObjectFrameLockingCT;
+begin
+  Result := TGraphicalObjectFrameLockingCT(Lazy(fGraphicFrameLocks, TGraphicalObjectFrameLockingCT));
+end;
+
+function TNonVisualGraphicFramePropertiesCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TNonVisualContentPartPropertiesCT }
+
+function TNonVisualContentPartPropertiesCT.GetCpLocks: TContentPartLockingCT;
+begin
+  Result := TContentPartLockingCT(Lazy(fCpLocks, TContentPartLockingCT));
+end;
+
+function TNonVisualContentPartPropertiesCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
 end;
 
 { TAnimationElementChoiceCT }
@@ -6692,6 +7203,11 @@ end;
 
 { TWholeE2oFormattingCT }
 
+function TWholeE2oFormattingCT.GetLn: TLinePropertiesCT;
+begin
+  Result := TLinePropertiesCT(Lazy(fLn, TLinePropertiesCT));
+end;
+
 function TWholeE2oFormattingCT.GetEffectLst: TEffectListCT;
 begin
   Result := TEffectListCT(Lazy(fEffectLst, TEffectListCT));
@@ -6717,6 +7233,126 @@ end;
 function TGvmlTextShapeCT.GetXfrm: TTransform2DCT;
 begin
   Result := TTransform2DCT(Lazy(fXfrm, TTransform2DCT));
+end;
+
+function TGvmlTextShapeCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TGvmlShapeCT }
+
+function TGvmlShapeCT.GetTxSp: TGvmlTextShapeCT;
+begin
+  Result := TGvmlTextShapeCT(Lazy(fTxSp, TGvmlTextShapeCT));
+end;
+
+function TGvmlShapeCT.GetStyle: TShapeStyleCT;
+begin
+  Result := TShapeStyleCT(Lazy(fStyle, TShapeStyleCT));
+end;
+
+function TGvmlShapeCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TGvmlConnectorCT }
+
+function TGvmlConnectorCT.GetStyle: TShapeStyleCT;
+begin
+  Result := TShapeStyleCT(Lazy(fStyle, TShapeStyleCT));
+end;
+
+function TGvmlConnectorCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TGvmlPictureCT }
+
+function TGvmlPictureCT.GetStyle: TShapeStyleCT;
+begin
+  Result := TShapeStyleCT(Lazy(fStyle, TShapeStyleCT));
+end;
+
+function TGvmlPictureCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TGvmlGraphicalObjectFrameCT }
+
+function TGvmlGraphicalObjectFrameCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TGvmlGroupShapeCT }
+
+function TGvmlGroupShapeCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TCameraCT }
+
+function TCameraCT.GetRot: TSphereCoordsCT;
+begin
+  Result := TSphereCoordsCT(Lazy(fRot, TSphereCoordsCT));
+end;
+
+{ TLightRigCT }
+
+function TLightRigCT.GetRot: TSphereCoordsCT;
+begin
+  Result := TSphereCoordsCT(Lazy(fRot, TSphereCoordsCT));
+end;
+
+{ TScene3DCT }
+
+function TScene3DCT.GetBackdrop: TBackdropCT;
+begin
+  Result := TBackdropCT(Lazy(fBackdrop, TBackdropCT));
+end;
+
+function TScene3DCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TBackdropCT }
+
+function TBackdropCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TShape3DCT }
+
+function TShape3DCT.GetBevelT: TBevelCT;
+begin
+  Result := TBevelCT(Lazy(fBevelT, TBevelCT));
+end;
+
+function TShape3DCT.GetBevelB: TBevelCT;
+begin
+  Result := TBevelCT(Lazy(fBevelB, TBevelCT));
+end;
+
+function TShape3DCT.GetExtrusionClr: TColorCT;
+begin
+  Result := TColorCT(Lazy(fExtrusionClr, TColorCT));
+end;
+
+function TShape3DCT.GetContourClr: TColorCT;
+begin
+  Result := TColorCT(Lazy(fContourClr, TColorCT));
+end;
+
+function TShape3DCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
 end;
 
 { TAlphaInverseEffectCT }
@@ -6943,6 +7579,13 @@ begin
   Result := TPresetColorCT(Lazy(fPrstClr, TPresetColorCT));
 end;
 
+{ TPathShadePropertiesCT }
+
+function TPathShadePropertiesCT.GetFillToRect: TRelativeRectCT;
+begin
+  Result := TRelativeRectCT(Lazy(fFillToRect, TRelativeRectCT));
+end;
+
 { TGradientStopCT }
 
 function TGradientStopCT.GetScrgbClr: TScRgbColorCT;
@@ -6977,6 +7620,11 @@ end;
 
 { TGradientFillPropertiesCT }
 
+function TGradientFillPropertiesCT.GetGsLst: TGradientStopListCT;
+begin
+  Result := TGradientStopListCT(Lazy(fGsLst, TGradientStopListCT));
+end;
+
 function TGradientFillPropertiesCT.GetLin: TLinearShadePropertiesCT;
 begin
   Result := TLinearShadePropertiesCT(Lazy(fLin, TLinearShadePropertiesCT));
@@ -6987,7 +7635,36 @@ begin
   Result := TPathShadePropertiesCT(Lazy(fPath, TPathShadePropertiesCT));
 end;
 
+function TGradientFillPropertiesCT.GetTileRect: TRelativeRectCT;
+begin
+  Result := TRelativeRectCT(Lazy(fTileRect, TRelativeRectCT));
+end;
+
+{ TStretchInfoPropertiesCT }
+
+function TStretchInfoPropertiesCT.GetFillRect: TRelativeRectCT;
+begin
+  Result := TRelativeRectCT(Lazy(fFillRect, TRelativeRectCT));
+end;
+
+{ TBlipCT }
+
+function TBlipCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
 { TBlipFillPropertiesCT }
+
+function TBlipFillPropertiesCT.GetBlip: TBlipCT;
+begin
+  Result := TBlipCT(Lazy(fBlip, TBlipCT));
+end;
+
+function TBlipFillPropertiesCT.GetSrcRect: TRelativeRectCT;
+begin
+  Result := TRelativeRectCT(Lazy(fSrcRect, TRelativeRectCT));
+end;
 
 function TBlipFillPropertiesCT.GetTile: TTileInfoPropertiesCT;
 begin
@@ -6997,6 +7674,18 @@ end;
 function TBlipFillPropertiesCT.GetStretch: TStretchInfoPropertiesCT;
 begin
   Result := TStretchInfoPropertiesCT(Lazy(fStretch, TStretchInfoPropertiesCT));
+end;
+
+{ TPatternFillPropertiesCT }
+
+function TPatternFillPropertiesCT.GetFgClr: TColorCT;
+begin
+  Result := TColorCT(Lazy(fFgClr, TColorCT));
+end;
+
+function TPatternFillPropertiesCT.GetBgClr: TColorCT;
+begin
+  Result := TColorCT(Lazy(fBgClr, TColorCT));
 end;
 
 { TFillPropertiesCT }
@@ -7095,6 +7784,48 @@ begin
   Result := TGroupFillPropertiesCT(Lazy(fGrpFill, TGroupFillPropertiesCT));
 end;
 
+{ TEffectListCT }
+
+function TEffectListCT.GetBlur: TBlurEffectCT;
+begin
+  Result := TBlurEffectCT(Lazy(fBlur, TBlurEffectCT));
+end;
+
+function TEffectListCT.GetFillOverlay: TFillOverlayEffectCT;
+begin
+  Result := TFillOverlayEffectCT(Lazy(fFillOverlay, TFillOverlayEffectCT));
+end;
+
+function TEffectListCT.GetGlow: TGlowEffectCT;
+begin
+  Result := TGlowEffectCT(Lazy(fGlow, TGlowEffectCT));
+end;
+
+function TEffectListCT.GetInnerShdw: TInnerShadowEffectCT;
+begin
+  Result := TInnerShadowEffectCT(Lazy(fInnerShdw, TInnerShadowEffectCT));
+end;
+
+function TEffectListCT.GetOuterShdw: TOuterShadowEffectCT;
+begin
+  Result := TOuterShadowEffectCT(Lazy(fOuterShdw, TOuterShadowEffectCT));
+end;
+
+function TEffectListCT.GetPrstShdw: TPresetShadowEffectCT;
+begin
+  Result := TPresetShadowEffectCT(Lazy(fPrstShdw, TPresetShadowEffectCT));
+end;
+
+function TEffectListCT.GetReflection: TReflectionEffectCT;
+begin
+  Result := TReflectionEffectCT(Lazy(fReflection, TReflectionEffectCT));
+end;
+
+function TEffectListCT.GetSoftEdge: TSoftEdgesEffectCT;
+begin
+  Result := TSoftEdgesEffectCT(Lazy(fSoftEdge, TSoftEdgesEffectCT));
+end;
+
 { TEffectPropertiesCT }
 
 function TEffectPropertiesCT.GetEffectLst: TEffectListCT;
@@ -7110,6 +7841,47 @@ end;
 function TEffectPropertiesCT.GetEffectChosen: TBasite;
 begin
   Result := Chosen('Effect');
+end;
+
+{ TPresetGeometry2DCT }
+
+function TPresetGeometry2DCT.GetAvLst: TGeomGuideListCT;
+begin
+  Result := TGeomGuideListCT(Lazy(fAvLst, TGeomGuideListCT));
+end;
+
+{ TPresetTextShapeCT }
+
+function TPresetTextShapeCT.GetAvLst: TGeomGuideListCT;
+begin
+  Result := TGeomGuideListCT(Lazy(fAvLst, TGeomGuideListCT));
+end;
+
+{ TCustomGeometry2DCT }
+
+function TCustomGeometry2DCT.GetAvLst: TGeomGuideListCT;
+begin
+  Result := TGeomGuideListCT(Lazy(fAvLst, TGeomGuideListCT));
+end;
+
+function TCustomGeometry2DCT.GetGdLst: TGeomGuideListCT;
+begin
+  Result := TGeomGuideListCT(Lazy(fGdLst, TGeomGuideListCT));
+end;
+
+function TCustomGeometry2DCT.GetAhLst: TAdjustHandleListCT;
+begin
+  Result := TAdjustHandleListCT(Lazy(fAhLst, TAdjustHandleListCT));
+end;
+
+function TCustomGeometry2DCT.GetCxnLst: TConnectionSiteListCT;
+begin
+  Result := TConnectionSiteListCT(Lazy(fCxnLst, TConnectionSiteListCT));
+end;
+
+function TCustomGeometry2DCT.GetRect: TGeomRectCT;
+begin
+  Result := TGeomRectCT(Lazy(fRect, TGeomRectCT));
 end;
 
 { TLinePropertiesCT }
@@ -7159,7 +7931,27 @@ begin
   Result := TLineJoinMiterPropertiesCT(Lazy(fMiter, TLineJoinMiterPropertiesCT));
 end;
 
+function TLinePropertiesCT.GetHeadEnd: TLineEndPropertiesCT;
+begin
+  Result := TLineEndPropertiesCT(Lazy(fHeadEnd, TLineEndPropertiesCT));
+end;
+
+function TLinePropertiesCT.GetTailEnd: TLineEndPropertiesCT;
+begin
+  Result := TLineEndPropertiesCT(Lazy(fTailEnd, TLineEndPropertiesCT));
+end;
+
+function TLinePropertiesCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
 { TShapePropertiesCT }
+
+function TShapePropertiesCT.GetXfrm: TTransform2DCT;
+begin
+  Result := TTransform2DCT(Lazy(fXfrm, TTransform2DCT));
+end;
 
 function TShapePropertiesCT.GetCustGeom: TCustomGeometry2DCT;
 begin
@@ -7201,6 +7993,11 @@ begin
   Result := TGroupFillPropertiesCT(Lazy(fGrpFill, TGroupFillPropertiesCT));
 end;
 
+function TShapePropertiesCT.GetLn: TLinePropertiesCT;
+begin
+  Result := TLinePropertiesCT(Lazy(fLn, TLinePropertiesCT));
+end;
+
 function TShapePropertiesCT.GetEffectLst: TEffectListCT;
 begin
   Result := TEffectListCT(Lazy(fEffectLst, TEffectListCT));
@@ -7216,7 +8013,27 @@ begin
   Result := Chosen('Effect');
 end;
 
+function TShapePropertiesCT.GetScene3d: TScene3DCT;
+begin
+  Result := TScene3DCT(Lazy(fScene3d, TScene3DCT));
+end;
+
+function TShapePropertiesCT.GetSp3d: TShape3DCT;
+begin
+  Result := TShape3DCT(Lazy(fSp3d, TShape3DCT));
+end;
+
+function TShapePropertiesCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
 { TGroupShapePropertiesCT }
+
+function TGroupShapePropertiesCT.GetXfrm: TGroupTransform2DCT;
+begin
+  Result := TGroupTransform2DCT(Lazy(fXfrm, TGroupTransform2DCT));
+end;
 
 function TGroupShapePropertiesCT.GetNoFill: TNoFillPropertiesCT;
 begin
@@ -7261,6 +8078,16 @@ end;
 function TGroupShapePropertiesCT.GetEffectChosen: TBasite;
 begin
   Result := Chosen('Effect');
+end;
+
+function TGroupShapePropertiesCT.GetScene3d: TScene3DCT;
+begin
+  Result := TScene3DCT(Lazy(fScene3d, TScene3DCT));
+end;
+
+function TGroupShapePropertiesCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
 end;
 
 { TStyleMatrixReferenceCT }
@@ -7327,6 +8154,47 @@ begin
   Result := TPresetColorCT(Lazy(fPrstClr, TPresetColorCT));
 end;
 
+{ TDefaultShapeDefinitionCT }
+
+function TDefaultShapeDefinitionCT.GetStyle: TShapeStyleCT;
+begin
+  Result := TShapeStyleCT(Lazy(fStyle, TShapeStyleCT));
+end;
+
+function TDefaultShapeDefinitionCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TObjectStyleDefaultsCT }
+
+function TObjectStyleDefaultsCT.GetSpDef: TDefaultShapeDefinitionCT;
+begin
+  Result := TDefaultShapeDefinitionCT(Lazy(fSpDef, TDefaultShapeDefinitionCT));
+end;
+
+function TObjectStyleDefaultsCT.GetLnDef: TDefaultShapeDefinitionCT;
+begin
+  Result := TDefaultShapeDefinitionCT(Lazy(fLnDef, TDefaultShapeDefinitionCT));
+end;
+
+function TObjectStyleDefaultsCT.GetTxDef: TDefaultShapeDefinitionCT;
+begin
+  Result := TDefaultShapeDefinitionCT(Lazy(fTxDef, TDefaultShapeDefinitionCT));
+end;
+
+function TObjectStyleDefaultsCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TColorMappingCT }
+
+function TColorMappingCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
 { TColorMappingOverrideCT }
 
 function TColorMappingOverrideCT.GetMasterClrMapping: TEmptyElementCT;
@@ -7339,7 +8207,88 @@ begin
   Result := TColorMappingCT(Lazy(fOverrideClrMapping, TColorMappingCT));
 end;
 
+{ TColorSchemeAndMappingCT }
+
+function TColorSchemeAndMappingCT.GetClrMap: TColorMappingCT;
+begin
+  Result := TColorMappingCT(Lazy(fClrMap, TColorMappingCT));
+end;
+
+{ TOfficeStyleSheetCT }
+
+function TOfficeStyleSheetCT.GetObjectDefaults: TObjectStyleDefaultsCT;
+begin
+  Result := TObjectStyleDefaultsCT(Lazy(fObjectDefaults, TObjectStyleDefaultsCT));
+end;
+
+function TOfficeStyleSheetCT.GetExtraClrSchemeLst: TColorSchemeListCT;
+begin
+  Result := TColorSchemeListCT(Lazy(fExtraClrSchemeLst, TColorSchemeListCT));
+end;
+
+function TOfficeStyleSheetCT.GetCustClrLst: TCustomColorListCT;
+begin
+  Result := TCustomColorListCT(Lazy(fCustClrLst, TCustomColorListCT));
+end;
+
+function TOfficeStyleSheetCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TBaseStylesOverrideCT }
+
+function TBaseStylesOverrideCT.GetClrScheme: TColorSchemeCT;
+begin
+  Result := TColorSchemeCT(Lazy(fClrScheme, TColorSchemeCT));
+end;
+
+function TBaseStylesOverrideCT.GetFontScheme: TFontSchemeCT;
+begin
+  Result := TFontSchemeCT(Lazy(fFontScheme, TFontSchemeCT));
+end;
+
+function TBaseStylesOverrideCT.GetFmtScheme: TStyleMatrixCT;
+begin
+  Result := TStyleMatrixCT(Lazy(fFmtScheme, TStyleMatrixCT));
+end;
+
 { TTableCellPropertiesCT }
+
+function TTableCellPropertiesCT.GetLnL: TLinePropertiesCT;
+begin
+  Result := TLinePropertiesCT(Lazy(fLnL, TLinePropertiesCT));
+end;
+
+function TTableCellPropertiesCT.GetLnR: TLinePropertiesCT;
+begin
+  Result := TLinePropertiesCT(Lazy(fLnR, TLinePropertiesCT));
+end;
+
+function TTableCellPropertiesCT.GetLnT: TLinePropertiesCT;
+begin
+  Result := TLinePropertiesCT(Lazy(fLnT, TLinePropertiesCT));
+end;
+
+function TTableCellPropertiesCT.GetLnB: TLinePropertiesCT;
+begin
+  Result := TLinePropertiesCT(Lazy(fLnB, TLinePropertiesCT));
+end;
+
+function TTableCellPropertiesCT.GetLnTlToBr: TLinePropertiesCT;
+begin
+  Result := TLinePropertiesCT(Lazy(fLnTlToBr, TLinePropertiesCT));
+end;
+
+function TTableCellPropertiesCT.GetLnBlToTr: TLinePropertiesCT;
+begin
+  Result := TLinePropertiesCT(Lazy(fLnBlToTr, TLinePropertiesCT));
+end;
+
+function TTableCellPropertiesCT.GetCell3D: TCell3DCT;
+begin
+  Result := TCell3DCT(Lazy(fCell3D, TCell3DCT));
+end;
 
 function TTableCellPropertiesCT.GetNoFill: TNoFillPropertiesCT;
 begin
@@ -7369,6 +8318,47 @@ end;
 function TTableCellPropertiesCT.GetGrpFill: TGroupFillPropertiesCT;
 begin
   Result := TGroupFillPropertiesCT(Lazy(fGrpFill, TGroupFillPropertiesCT));
+end;
+
+function TTableCellPropertiesCT.GetHeaders: THeadersCT;
+begin
+  Result := THeadersCT(Lazy(fHeaders, THeadersCT));
+end;
+
+function TTableCellPropertiesCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TTableColCT }
+
+function TTableColCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TTableCellCT }
+
+function TTableCellCT.GetTxBody: TTextBodyCT;
+begin
+  Result := TTextBodyCT(Lazy(fTxBody, TTextBodyCT));
+end;
+
+function TTableCellCT.GetTcPr: TTableCellPropertiesCT;
+begin
+  Result := TTableCellPropertiesCT(Lazy(fTcPr, TTableCellPropertiesCT));
+end;
+
+function TTableCellCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TTableRowCT }
+
+function TTableRowCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
 end;
 
 { TTablePropertiesCT }
@@ -7426,6 +8416,30 @@ end;
 function TTablePropertiesCT.GetTableStyleChosen: TBasite;
 begin
   Result := Chosen('TableStyle');
+end;
+
+function TTablePropertiesCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TTableCT }
+
+function TTableCT.GetTblPr: TTablePropertiesCT;
+begin
+  Result := TTablePropertiesCT(Lazy(fTblPr, TTablePropertiesCT));
+end;
+
+{ TCell3DCT }
+
+function TCell3DCT.GetLightRig: TLightRigCT;
+begin
+  Result := TLightRigCT(Lazy(fLightRig, TLightRigCT));
+end;
+
+function TCell3DCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
 end;
 
 { TThemeableLineStyleCT }
@@ -7492,6 +8506,58 @@ begin
   Result := TPresetColorCT(Lazy(fPrstClr, TPresetColorCT));
 end;
 
+function TTableStyleTextStyleCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TTableCellBorderStyleCT }
+
+function TTableCellBorderStyleCT.GetLeft: TThemeableLineStyleCT;
+begin
+  Result := TThemeableLineStyleCT(Lazy(fLeft, TThemeableLineStyleCT));
+end;
+
+function TTableCellBorderStyleCT.GetRight: TThemeableLineStyleCT;
+begin
+  Result := TThemeableLineStyleCT(Lazy(fRight, TThemeableLineStyleCT));
+end;
+
+function TTableCellBorderStyleCT.GetTop: TThemeableLineStyleCT;
+begin
+  Result := TThemeableLineStyleCT(Lazy(fTop, TThemeableLineStyleCT));
+end;
+
+function TTableCellBorderStyleCT.GetBottom: TThemeableLineStyleCT;
+begin
+  Result := TThemeableLineStyleCT(Lazy(fBottom, TThemeableLineStyleCT));
+end;
+
+function TTableCellBorderStyleCT.GetInsideH: TThemeableLineStyleCT;
+begin
+  Result := TThemeableLineStyleCT(Lazy(fInsideH, TThemeableLineStyleCT));
+end;
+
+function TTableCellBorderStyleCT.GetInsideV: TThemeableLineStyleCT;
+begin
+  Result := TThemeableLineStyleCT(Lazy(fInsideV, TThemeableLineStyleCT));
+end;
+
+function TTableCellBorderStyleCT.GetTl2br: TThemeableLineStyleCT;
+begin
+  Result := TThemeableLineStyleCT(Lazy(fTl2br, TThemeableLineStyleCT));
+end;
+
+function TTableCellBorderStyleCT.GetTr2bl: TThemeableLineStyleCT;
+begin
+  Result := TThemeableLineStyleCT(Lazy(fTr2bl, TThemeableLineStyleCT));
+end;
+
+function TTableCellBorderStyleCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
 { TTableBackgroundStyleCT }
 
 function TTableBackgroundStyleCT.GetFill: TFillPropertiesCT;
@@ -7526,6 +8592,11 @@ end;
 
 { TTableStyleCellStyleCT }
 
+function TTableStyleCellStyleCT.GetTcBdr: TTableCellBorderStyleCT;
+begin
+  Result := TTableCellBorderStyleCT(Lazy(fTcBdr, TTableCellBorderStyleCT));
+end;
+
 function TTableStyleCellStyleCT.GetFill: TFillPropertiesCT;
 begin
   Result := TFillPropertiesCT(Lazy(fFill, TFillPropertiesCT));
@@ -7541,7 +8612,175 @@ begin
   Result := Chosen('Fill');
 end;
 
+function TTableStyleCellStyleCT.GetCell3D: TCell3DCT;
+begin
+  Result := TCell3DCT(Lazy(fCell3D, TCell3DCT));
+end;
+
+{ TTablePartStyleCT }
+
+function TTablePartStyleCT.GetTcTxStyle: TTableStyleTextStyleCT;
+begin
+  Result := TTableStyleTextStyleCT(Lazy(fTcTxStyle, TTableStyleTextStyleCT));
+end;
+
+function TTablePartStyleCT.GetTcStyle: TTableStyleCellStyleCT;
+begin
+  Result := TTableStyleCellStyleCT(Lazy(fTcStyle, TTableStyleCellStyleCT));
+end;
+
+{ TTableStyleCT }
+
+function TTableStyleCT.GetTblBg: TTableBackgroundStyleCT;
+begin
+  Result := TTableBackgroundStyleCT(Lazy(fTblBg, TTableBackgroundStyleCT));
+end;
+
+function TTableStyleCT.GetWholeTbl: TTablePartStyleCT;
+begin
+  Result := TTablePartStyleCT(Lazy(fWholeTbl, TTablePartStyleCT));
+end;
+
+function TTableStyleCT.GetBand1H: TTablePartStyleCT;
+begin
+  Result := TTablePartStyleCT(Lazy(fBand1H, TTablePartStyleCT));
+end;
+
+function TTableStyleCT.GetBand2H: TTablePartStyleCT;
+begin
+  Result := TTablePartStyleCT(Lazy(fBand2H, TTablePartStyleCT));
+end;
+
+function TTableStyleCT.GetBand1V: TTablePartStyleCT;
+begin
+  Result := TTablePartStyleCT(Lazy(fBand1V, TTablePartStyleCT));
+end;
+
+function TTableStyleCT.GetBand2V: TTablePartStyleCT;
+begin
+  Result := TTablePartStyleCT(Lazy(fBand2V, TTablePartStyleCT));
+end;
+
+function TTableStyleCT.GetLastCol: TTablePartStyleCT;
+begin
+  Result := TTablePartStyleCT(Lazy(fLastCol, TTablePartStyleCT));
+end;
+
+function TTableStyleCT.GetFirstCol: TTablePartStyleCT;
+begin
+  Result := TTablePartStyleCT(Lazy(fFirstCol, TTablePartStyleCT));
+end;
+
+function TTableStyleCT.GetLastRow: TTablePartStyleCT;
+begin
+  Result := TTablePartStyleCT(Lazy(fLastRow, TTablePartStyleCT));
+end;
+
+function TTableStyleCT.GetSeCell: TTablePartStyleCT;
+begin
+  Result := TTablePartStyleCT(Lazy(fSeCell, TTablePartStyleCT));
+end;
+
+function TTableStyleCT.GetSwCell: TTablePartStyleCT;
+begin
+  Result := TTablePartStyleCT(Lazy(fSwCell, TTablePartStyleCT));
+end;
+
+function TTableStyleCT.GetFirstRow: TTablePartStyleCT;
+begin
+  Result := TTablePartStyleCT(Lazy(fFirstRow, TTablePartStyleCT));
+end;
+
+function TTableStyleCT.GetNeCell: TTablePartStyleCT;
+begin
+  Result := TTablePartStyleCT(Lazy(fNeCell, TTablePartStyleCT));
+end;
+
+function TTableStyleCT.GetNwCell: TTablePartStyleCT;
+begin
+  Result := TTablePartStyleCT(Lazy(fNwCell, TTablePartStyleCT));
+end;
+
+function TTableStyleCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TTextParagraphCT }
+
+function TTextParagraphCT.GetPPr: TTextParagraphPropertiesCT;
+begin
+  Result := TTextParagraphPropertiesCT(Lazy(fPPr, TTextParagraphPropertiesCT));
+end;
+
+function TTextParagraphCT.GetEndParaRPr: TTextCharacterPropertiesCT;
+begin
+  Result := TTextCharacterPropertiesCT(Lazy(fEndParaRPr, TTextCharacterPropertiesCT));
+end;
+
+{ TTextListStyleCT }
+
+function TTextListStyleCT.GetDefPPr: TTextParagraphPropertiesCT;
+begin
+  Result := TTextParagraphPropertiesCT(Lazy(fDefPPr, TTextParagraphPropertiesCT));
+end;
+
+function TTextListStyleCT.GetLvl1pPr: TTextParagraphPropertiesCT;
+begin
+  Result := TTextParagraphPropertiesCT(Lazy(fLvl1pPr, TTextParagraphPropertiesCT));
+end;
+
+function TTextListStyleCT.GetLvl2pPr: TTextParagraphPropertiesCT;
+begin
+  Result := TTextParagraphPropertiesCT(Lazy(fLvl2pPr, TTextParagraphPropertiesCT));
+end;
+
+function TTextListStyleCT.GetLvl3pPr: TTextParagraphPropertiesCT;
+begin
+  Result := TTextParagraphPropertiesCT(Lazy(fLvl3pPr, TTextParagraphPropertiesCT));
+end;
+
+function TTextListStyleCT.GetLvl4pPr: TTextParagraphPropertiesCT;
+begin
+  Result := TTextParagraphPropertiesCT(Lazy(fLvl4pPr, TTextParagraphPropertiesCT));
+end;
+
+function TTextListStyleCT.GetLvl5pPr: TTextParagraphPropertiesCT;
+begin
+  Result := TTextParagraphPropertiesCT(Lazy(fLvl5pPr, TTextParagraphPropertiesCT));
+end;
+
+function TTextListStyleCT.GetLvl6pPr: TTextParagraphPropertiesCT;
+begin
+  Result := TTextParagraphPropertiesCT(Lazy(fLvl6pPr, TTextParagraphPropertiesCT));
+end;
+
+function TTextListStyleCT.GetLvl7pPr: TTextParagraphPropertiesCT;
+begin
+  Result := TTextParagraphPropertiesCT(Lazy(fLvl7pPr, TTextParagraphPropertiesCT));
+end;
+
+function TTextListStyleCT.GetLvl8pPr: TTextParagraphPropertiesCT;
+begin
+  Result := TTextParagraphPropertiesCT(Lazy(fLvl8pPr, TTextParagraphPropertiesCT));
+end;
+
+function TTextListStyleCT.GetLvl9pPr: TTextParagraphPropertiesCT;
+begin
+  Result := TTextParagraphPropertiesCT(Lazy(fLvl9pPr, TTextParagraphPropertiesCT));
+end;
+
+function TTextListStyleCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
 { TTextBodyPropertiesCT }
+
+function TTextBodyPropertiesCT.GetPrstTxWarp: TPresetTextShapeCT;
+begin
+  Result := TPresetTextShapeCT(Lazy(fPrstTxWarp, TPresetTextShapeCT));
+end;
 
 function TTextBodyPropertiesCT.GetNoAutofit: TTextNoAutofitCT;
 begin
@@ -7558,6 +8797,11 @@ begin
   Result := TTextShapeAutofitCT(Lazy(fSpAutoFit, TTextShapeAutofitCT));
 end;
 
+function TTextBodyPropertiesCT.GetScene3d: TScene3DCT;
+begin
+  Result := TScene3DCT(Lazy(fScene3d, TScene3DCT));
+end;
+
 function TTextBodyPropertiesCT.GetSp3d: TShape3DCT;
 begin
   Result := TShape3DCT(Lazy(fSp3d, TShape3DCT));
@@ -7566,6 +8810,18 @@ end;
 function TTextBodyPropertiesCT.GetFlatTx: TFlatTextCT;
 begin
   Result := TFlatTextCT(Lazy(fFlatTx, TFlatTextCT));
+end;
+
+function TTextBodyPropertiesCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TTextBodyCT }
+
+function TTextBodyCT.GetLstStyle: TTextListStyleCT;
+begin
+  Result := TTextListStyleCT(Lazy(fLstStyle, TTextListStyleCT));
 end;
 
 { TTextUnderlineFillGroupWrapperCT }
@@ -7601,6 +8857,11 @@ begin
 end;
 
 { TTextCharacterPropertiesCT }
+
+function TTextCharacterPropertiesCT.GetLn: TLinePropertiesCT;
+begin
+  Result := TLinePropertiesCT(Lazy(fLn, TLinePropertiesCT));
+end;
 
 function TTextCharacterPropertiesCT.GetNoFill: TNoFillPropertiesCT;
 begin
@@ -7647,6 +8908,11 @@ begin
   Result := Chosen('Effect');
 end;
 
+function TTextCharacterPropertiesCT.GetHighlight: TColorCT;
+begin
+  Result := TColorCT(Lazy(fHighlight, TColorCT));
+end;
+
 function TTextCharacterPropertiesCT.GetULnTx: TTextUnderlineLineFollowTextCT;
 begin
   Result := TTextUnderlineLineFollowTextCT(Lazy(fULnTx, TTextUnderlineLineFollowTextCT));
@@ -7677,6 +8943,53 @@ begin
   Result := Chosen('UFill');
 end;
 
+function TTextCharacterPropertiesCT.GetLatin: TTextFontCT;
+begin
+  Result := TTextFontCT(Lazy(fLatin, TTextFontCT));
+end;
+
+function TTextCharacterPropertiesCT.GetEa: TTextFontCT;
+begin
+  Result := TTextFontCT(Lazy(fEa, TTextFontCT));
+end;
+
+function TTextCharacterPropertiesCT.GetCs: TTextFontCT;
+begin
+  Result := TTextFontCT(Lazy(fCs, TTextFontCT));
+end;
+
+function TTextCharacterPropertiesCT.GetSym: TTextFontCT;
+begin
+  Result := TTextFontCT(Lazy(fSym, TTextFontCT));
+end;
+
+function TTextCharacterPropertiesCT.GetHlinkClick: THyperlinkCT;
+begin
+  Result := THyperlinkCT(Lazy(fHlinkClick, THyperlinkCT));
+end;
+
+function TTextCharacterPropertiesCT.GetHlinkMouseOver: THyperlinkCT;
+begin
+  Result := THyperlinkCT(Lazy(fHlinkMouseOver, THyperlinkCT));
+end;
+
+function TTextCharacterPropertiesCT.GetRtl: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fRtl, TBooleanCT));
+end;
+
+function TTextCharacterPropertiesCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TTextLineBreakCT }
+
+function TTextLineBreakCT.GetRPr: TTextCharacterPropertiesCT;
+begin
+  Result := TTextCharacterPropertiesCT(Lazy(fRPr, TTextCharacterPropertiesCT));
+end;
+
 { TTextSpacingCT }
 
 function TTextSpacingCT.GetSpcPct: TTextSpacingPercentCT;
@@ -7695,6 +9008,21 @@ begin
 end;
 
 { TTextParagraphPropertiesCT }
+
+function TTextParagraphPropertiesCT.GetLnSpc: TTextSpacingCT;
+begin
+  Result := TTextSpacingCT(Lazy(fLnSpc, TTextSpacingCT));
+end;
+
+function TTextParagraphPropertiesCT.GetSpcBef: TTextSpacingCT;
+begin
+  Result := TTextSpacingCT(Lazy(fSpcBef, TTextSpacingCT));
+end;
+
+function TTextParagraphPropertiesCT.GetSpcAft: TTextSpacingCT;
+begin
+  Result := TTextSpacingCT(Lazy(fSpcAft, TTextSpacingCT));
+end;
 
 function TTextParagraphPropertiesCT.GetBuClrTx: TTextBulletColorFollowTextCT;
 begin
@@ -7769,6 +9097,40 @@ end;
 function TTextParagraphPropertiesCT.GetBuChosen: TBasite;
 begin
   Result := Chosen('Bu');
+end;
+
+function TTextParagraphPropertiesCT.GetTabLst: TTextTabStopListCT;
+begin
+  Result := TTextTabStopListCT(Lazy(fTabLst, TTextTabStopListCT));
+end;
+
+function TTextParagraphPropertiesCT.GetDefRPr: TTextCharacterPropertiesCT;
+begin
+  Result := TTextCharacterPropertiesCT(Lazy(fDefRPr, TTextCharacterPropertiesCT));
+end;
+
+function TTextParagraphPropertiesCT.GetExtLst: TOfficeArtExtensionListCT;
+begin
+  Result := TOfficeArtExtensionListCT(Lazy(fExtLst, TOfficeArtExtensionListCT));
+end;
+
+{ TTextFieldCT }
+
+function TTextFieldCT.GetRPr: TTextCharacterPropertiesCT;
+begin
+  Result := TTextCharacterPropertiesCT(Lazy(fRPr, TTextCharacterPropertiesCT));
+end;
+
+function TTextFieldCT.GetPPr: TTextParagraphPropertiesCT;
+begin
+  Result := TTextParagraphPropertiesCT(Lazy(fPPr, TTextParagraphPropertiesCT));
+end;
+
+{ TRegularTextRunCT }
+
+function TRegularTextRunCT.GetRPr: TTextCharacterPropertiesCT;
+begin
+  Result := TTextCharacterPropertiesCT(Lazy(fRPr, TTextCharacterPropertiesCT));
 end;
 
 { TMediaEG }

@@ -92,13 +92,15 @@ type
     fSignatureValue: TSignatureValueE;
     fKeyInfo: TKeyInfoE;
     fObject: TObjectEList;
+
+    function GetKeyInfo: TKeyInfoE;
   published
     property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
     [TRequired]
     property SignedInfo: TSignedInfoE read fSignedInfo;
     [TRequired]
     property SignatureValue: TSignatureValueE read fSignatureValue;
-    property KeyInfo: TKeyInfoE read fKeyInfo;
+    property KeyInfo: TKeyInfoE read GetKeyInfo;
     property &Object: TObjectEList read fObject;
   end;
 
@@ -161,12 +163,14 @@ type
     fTransforms: TTransformsE;
     fDigestMethod: TDigestMethodE;
     fDigestValue: TDigestValueTypeST;
+
+    function GetTransforms: TTransformsE;
   published
     property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
     [TNaming(TNaming.nUpperCase)]
     property Uri: ProRock.Xmlite.Schema.Base.TAnyURIST read fUri write fUri;
     property &Type: ProRock.Xmlite.Schema.Base.TAnyURIST read fType write fType;
-    property Transforms: TTransformsE read fTransforms;
+    property Transforms: TTransformsE read GetTransforms;
     [TRequired]
     property DigestMethod: TDigestMethodE read fDigestMethod;
     [TXmliteElement]
@@ -254,11 +258,13 @@ type
     fUri: ProRock.Xmlite.Schema.Base.TAnyURIST;
     fType: ProRock.Xmlite.Schema.Base.TAnyURIST;
     fTransforms: TTransformsE;
+
+    function GetTransforms: TTransformsE;
   published
     [TNaming(TNaming.nUpperCase)]
     property Uri: ProRock.Xmlite.Schema.Base.TAnyURIST read fUri write fUri;
     property &Type: ProRock.Xmlite.Schema.Base.TAnyURIST read fType write fType;
-    property Transforms: TTransformsE read fTransforms;
+    property Transforms: TTransformsE read GetTransforms;
   end;
 
   [TXmliteAnyElement]
@@ -496,6 +502,20 @@ type
 
 implementation
 
+{ TSignatureCT }
+
+function TSignatureCT.GetKeyInfo: TKeyInfoE;
+begin
+  Result := TKeyInfoE(Lazy(fKeyInfo, TKeyInfoE));
+end;
+
+{ TReferenceCT }
+
+function TReferenceCT.GetTransforms: TTransformsE;
+begin
+  Result := TTransformsE(Lazy(fTransforms, TTransformsE));
+end;
+
 { TKeyValueCT }
 
 function TKeyValueCT.GetDSAKeyValue: TDSAKeyValueE;
@@ -506,6 +526,13 @@ end;
 function TKeyValueCT.GetRSAKeyValue: TRSAKeyValueE;
 begin
   Result := TRSAKeyValueE(Lazy(fRSAKeyValue, TRSAKeyValueE));
+end;
+
+{ TRetrievalMethodCT }
+
+function TRetrievalMethodCT.GetTransforms: TTransformsE;
+begin
+  Result := TTransformsE(Lazy(fTransforms, TTransformsE));
 end;
 
 initialization

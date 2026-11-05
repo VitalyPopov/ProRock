@@ -240,7 +240,7 @@ type
     property IsInherited: boolean read fIsInherited;
     property Required: boolean read fRequired; // [TRequired]: written even when absent
     property Choice: string read fChoice; // [TChoice] group, '' - not a choice member
-    // an object property with a getter: not pre-created, its getter creates it (TBasite.Lazy); the runtime uses its field
+    // an object property with a getter: not pre-created unless required, its getter creates it (TBasite.Lazy); the runtime uses its field
     property Lazy: boolean read fLazy;
     property Extensions: TObjectList<TPropertyExtension> read fExtensions;
 
@@ -763,7 +763,7 @@ begin
       ptBasite:
         begin
           var propertyBasite: TPropertyBasite := TPropertyBasite(propertyInfo);
-          if propertyBasite.fLazy then
+          if propertyBasite.fLazy and not propertyBasite.fRequired then // a required one is always written, so it needs its object
             Continue;
           if aBreadcrumbs.Increase(propertyBasite.Meta) <= fAutoInitMaxDepth then
             propertyBasite.ObjectPointer(Self)^ := propertyBasite.Meta.ClassItself.CreateNested(aBreadcrumbs);
@@ -886,6 +886,16 @@ end;
 function TBasite.FindProperty(const aName: string; out aProperty: TProperty): boolean;
 begin
   Result := Meta.Properties.Get(aName, aProperty);
+  if Result then
+    Exit;
+
+  // the name in the code too: a UBL member's key is priceList, the property PriceList
+  for var propertyInfo: TProperty in Meta.Properties do
+    if propertyInfo.RttiProperty.Name = aName then
+    begin
+      aProperty := propertyInfo;
+      Exit(True);
+    end;
 end;
 
 function TBasite.GetPresent(aField: Pointer): boolean;
@@ -940,8 +950,13 @@ end;
 function TBasite.SetPresent(aProperty: TProperty): boolean;
 begin
   Result := aProperty <> nil;
-  if Result then
-    SetPresentBit(aProperty.fIndex, True);
+  if not Result then
+    Exit;
+
+  // the writer writes an object, so one not created yet comes into being here
+  if (aProperty.PropertyType = ptBasite) and (TPropertyBasite(aProperty).ObjectPointer(Self)^ = nil) then
+    TPropertyBasite(aProperty).ObjectPointer(Self)^ := TPropertyBasite(aProperty).Meta.ClassItself.Create;
+  SetPresentBit(aProperty.fIndex, True);
 end;
 
 function TBasite.Clear(aField: Pointer): boolean;
@@ -1012,9 +1027,17 @@ end;
 
 function TBasite.Lazy(var aField; aClass: TBasiteClass): TBasite;
 begin
-  if TBasite(aField) = nil then
-    TBasite(aField) := aClass.Create;
   Result := TBasite(aField);
+  if Result <> nil then
+    Exit;
+
+  // two threads reading may both get here: the first one's object stays
+  var created: TBasite := aClass.Create;
+  Result := TBasite(AtomicCmpExchange(Pointer(aField), Pointer(created), nil));
+  if Result = nil then
+    Result := created
+  else
+    created.Free;
 end;
 
 function TBasite.HasContent: boolean;
@@ -1155,9 +1178,12 @@ begin
 
   if (fPropertyType in [ptBasite, ptBasiteList, ptDataList]) and not fGetterIsField then
   begin
-    // a lazy object: the runtime reads and writes its field (f + the property name), never the getter that would create it
+    // a lazy object: the runtime reads and writes its field (f + the property name), never the getter that would create it;
+    // a trailing _ where f + name would be another member: Score's fScore_, next to the property FScore
     fLazy := True;
     var field: TRttiField := aProperty.Parent.GetField('f' + aProperty.Name);
+    if field = nil then
+      field := aProperty.Parent.GetField('f' + aProperty.Name + '_');
     if (field = nil) or (field.FieldType = nil) or (field.FieldType.Handle <> aProperty.PropertyType.Handle) then
       raise ENotSupportedException.CreateFmt('%s.%s: a property with a getter needs the field f%s of its type',
         [aProperty.Parent.Name, aProperty.Name, aProperty.Name]);

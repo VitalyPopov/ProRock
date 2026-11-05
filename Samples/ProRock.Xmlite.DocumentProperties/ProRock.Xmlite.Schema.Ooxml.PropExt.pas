@@ -53,6 +53,11 @@ type
     fApplication: ProRock.Xmlite.Schema.Base.TStringST;
     fAppVersion: ProRock.Xmlite.Schema.Base.TStringST;
     fDocSecurity: ProRock.Xmlite.Schema.Base.TIntST;
+
+    function GetHeadingPairs: TVectorVariantCT;
+    function GetTitlesOfParts: TVectorLpstrCT;
+    function GetHLinks: TVectorVariantCT;
+    function GetDigSig: TDigSigBlobCT;
   published
     [TXmliteElement]
     property Template: ProRock.Xmlite.Schema.Base.TStringST read fTemplate write fTemplate;
@@ -84,8 +89,8 @@ type
     property MMClips: ProRock.Xmlite.Schema.Base.TIntST read fMMClips write fMMClips;
     [TXmliteElement]
     property ScaleCrop: ProRock.Xmlite.Schema.Base.TBooleanST read fScaleCrop write fScaleCrop;
-    property HeadingPairs: TVectorVariantCT read fHeadingPairs;
-    property TitlesOfParts: TVectorLpstrCT read fTitlesOfParts;
+    property HeadingPairs: TVectorVariantCT read GetHeadingPairs;
+    property TitlesOfParts: TVectorLpstrCT read GetTitlesOfParts;
     [TXmliteElement]
     property LinksUpToDate: ProRock.Xmlite.Schema.Base.TBooleanST read fLinksUpToDate write fLinksUpToDate;
     [TXmliteElement]
@@ -94,10 +99,10 @@ type
     property SharedDoc: ProRock.Xmlite.Schema.Base.TBooleanST read fSharedDoc write fSharedDoc;
     [TXmliteElement]
     property HyperlinkBase: ProRock.Xmlite.Schema.Base.TStringST read fHyperlinkBase write fHyperlinkBase;
-    property HLinks: TVectorVariantCT read fHLinks;
+    property HLinks: TVectorVariantCT read GetHLinks;
     [TXmliteElement]
     property HyperlinksChanged: ProRock.Xmlite.Schema.Base.TBooleanST read fHyperlinksChanged write fHyperlinksChanged;
-    property DigSig: TDigSigBlobCT read fDigSig;
+    property DigSig: TDigSigBlobCT read GetDigSig;
     [TXmliteElement]
     property Application: ProRock.Xmlite.Schema.Base.TStringST read fApplication write fApplication;
     [TXmliteElement]
@@ -146,6 +151,28 @@ type
   TCTVectorVariantCT = TVectorVariantCT deprecated 'use TVectorVariantCT';
 
 implementation
+
+{ TPropertiesCT }
+
+function TPropertiesCT.GetHeadingPairs: TVectorVariantCT;
+begin
+  Result := TVectorVariantCT(Lazy(fHeadingPairs, TVectorVariantCT));
+end;
+
+function TPropertiesCT.GetTitlesOfParts: TVectorLpstrCT;
+begin
+  Result := TVectorLpstrCT(Lazy(fTitlesOfParts, TVectorLpstrCT));
+end;
+
+function TPropertiesCT.GetHLinks: TVectorVariantCT;
+begin
+  Result := TVectorVariantCT(Lazy(fHLinks, TVectorVariantCT));
+end;
+
+function TPropertiesCT.GetDigSig: TDigSigBlobCT;
+begin
+  Result := TDigSigBlobCT(Lazy(fDigSig, TDigSigBlobCT));
+end;
 
 initialization
 

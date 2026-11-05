@@ -41,14 +41,17 @@ type
     fUri: ProRock.Xmlite.Schema.Base.TAnyURIST;
     fCertificateValues: ProRock.Xmlite.Schema.Xades.TCertificateValuesE;
     fRevocationValues: ProRock.Xmlite.Schema.Xades.TRevocationValuesE;
+
+    function GetCertificateValues: ProRock.Xmlite.Schema.Xades.TCertificateValuesE;
+    function GetRevocationValues: ProRock.Xmlite.Schema.Xades.TRevocationValuesE;
   published
     property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
     [TNaming(TNaming.nUpperCase)]
     property Uri: ProRock.Xmlite.Schema.Base.TAnyURIST read fUri write fUri;
     [TNaming(TNaming.nPascalCase)]
-    property CertificateValues: ProRock.Xmlite.Schema.Xades.TCertificateValuesE read fCertificateValues;
+    property CertificateValues: ProRock.Xmlite.Schema.Xades.TCertificateValuesE read GetCertificateValues;
     [TNaming(TNaming.nPascalCase)]
-    property RevocationValues: ProRock.Xmlite.Schema.Xades.TRevocationValuesE read fRevocationValues;
+    property RevocationValues: ProRock.Xmlite.Schema.Xades.TRevocationValuesE read GetRevocationValues;
   end;
 
   TSignaturePolicyStoreTypeCT = class(TXmliteComplexType)
@@ -126,6 +129,18 @@ type
   TRecomputedDigestValueEList = class(TXmliteList<TRecomputedDigestValueE>);
 
 implementation
+
+{ TValidationDataTypeCT }
+
+function TValidationDataTypeCT.GetCertificateValues: ProRock.Xmlite.Schema.Xades.TCertificateValuesE;
+begin
+  Result := ProRock.Xmlite.Schema.Xades.TCertificateValuesE(Lazy(fCertificateValues, ProRock.Xmlite.Schema.Xades.TCertificateValuesE));
+end;
+
+function TValidationDataTypeCT.GetRevocationValues: ProRock.Xmlite.Schema.Xades.TRevocationValuesE;
+begin
+  Result := ProRock.Xmlite.Schema.Xades.TRevocationValuesE(Lazy(fRevocationValues, ProRock.Xmlite.Schema.Xades.TRevocationValuesE));
+end;
 
 initialization
 

@@ -184,10 +184,12 @@ type
     fPaidAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
     fFormattedReceivedDateTime: ProRock.Xmlite.Schema.QualifiedDataType100.TFormattedDateTimeCT;
     fIncludedTradeTax: TTradeTaxCTList;
+
+    function GetFormattedReceivedDateTime: ProRock.Xmlite.Schema.QualifiedDataType100.TFormattedDateTimeCT;
   published
     [TRequired]
     property PaidAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT read fPaidAmount;
-    property FormattedReceivedDateTime: ProRock.Xmlite.Schema.QualifiedDataType100.TFormattedDateTimeCT read fFormattedReceivedDateTime;
+    property FormattedReceivedDateTime: ProRock.Xmlite.Schema.QualifiedDataType100.TFormattedDateTimeCT read GetFormattedReceivedDateTime;
     property IncludedTradeTax: TTradeTaxCTList read fIncludedTradeTax;
   end;
 
@@ -201,15 +203,22 @@ type
     fBasisAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
     fChargeIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT;
     fCategoryAppliedTax: TAppliedTaxCT;
+
+    function GetActualAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
+    function GetDescription: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetReasonCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetCalculationPercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT;
+    function GetBasisAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
+    function GetCategoryAppliedTax: TAppliedTaxCT;
   published
-    property ActualAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT read fActualAmount;
-    property Description: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fDescription;
-    property ReasonCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fReasonCode;
-    property CalculationPercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT read fCalculationPercent;
-    property BasisAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT read fBasisAmount;
+    property ActualAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT read GetActualAmount;
+    property Description: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetDescription;
+    property ReasonCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetReasonCode;
+    property CalculationPercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT read GetCalculationPercent;
+    property BasisAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT read GetBasisAmount;
     [TRequired]
     property ChargeIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT read fChargeIndicator;
-    property CategoryAppliedTax: TAppliedTaxCT read fCategoryAppliedTax;
+    property CategoryAppliedTax: TAppliedTaxCT read GetCategoryAppliedTax;
   end;
 
   [TName('AppliedTaxType')]
@@ -220,12 +229,18 @@ type
     fCalculatedRate: ProRock.Xmlite.Schema.UnqualifiedDataType100.TRateCT;
     fBasisAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
     fTaxPointDate: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateCT;
+
+    function GetCalculatedAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
+    function GetTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetCalculatedRate: ProRock.Xmlite.Schema.UnqualifiedDataType100.TRateCT;
+    function GetBasisAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
+    function GetTaxPointDate: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateCT;
   published
-    property CalculatedAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT read fCalculatedAmount;
-    property TypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fTypeCode;
-    property CalculatedRate: ProRock.Xmlite.Schema.UnqualifiedDataType100.TRateCT read fCalculatedRate;
-    property BasisAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT read fBasisAmount;
-    property TaxPointDate: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateCT read fTaxPointDate;
+    property CalculatedAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT read GetCalculatedAmount;
+    property TypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetTypeCode;
+    property CalculatedRate: ProRock.Xmlite.Schema.UnqualifiedDataType100.TRateCT read GetCalculatedRate;
+    property BasisAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT read GetBasisAmount;
+    property TaxPointDate: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateCT read GetTaxPointDate;
   end;
 
   [TName('AvailablePeriodType')]
@@ -234,10 +249,14 @@ type
     fStartDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
     fEndDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
     fDescription: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+
+    function GetStartDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+    function GetEndDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+    function GetDescription: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
   published
-    property StartDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read fStartDateTime;
-    property EndDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read fEndDateTime;
-    property Description: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fDescription;
+    property StartDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read GetStartDateTime;
+    property EndDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read GetEndDateTime;
+    property Description: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetDescription;
   end;
 
   [TName('BasicWorkItemType')]
@@ -266,24 +285,32 @@ type
     fChangedRecordedStatus: TRecordedStatusCTList;
     fItemBasicWorkItem: TBasicWorkItemCTList;
     fReferencedSpecifiedBinaryFile: TSpecifiedBinaryFileCTList;
+
+    function GetReferenceID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetTotalQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+    function GetTotalQuantityClassificationCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetIndexValue: ProRock.Xmlite.Schema.UnqualifiedDataType100.TValueCT;
+    function GetIndex: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetPriceListItemID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetContractualLanguageCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
   published
     [TRequired]
     [TNaming(TNaming.nUpperCase)]
     property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fId;
-    property ReferenceID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fReferenceID;
+    property ReferenceID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetReferenceID;
     property PrimaryClassificationCode: TCodeCTList read fPrimaryClassificationCode;
     property AlternativeClassificationCode: TCodeCTList read fAlternativeClassificationCode;
     property TypeCode: TCodeCTList read fTypeCode;
     property Comment: TTextCTList read fComment;
-    property TotalQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read fTotalQuantity;
-    property TotalQuantityClassificationCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fTotalQuantityClassificationCode;
-    property IndexValue: ProRock.Xmlite.Schema.UnqualifiedDataType100.TValueCT read fIndexValue;
+    property TotalQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read GetTotalQuantity;
+    property TotalQuantityClassificationCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetTotalQuantityClassificationCode;
+    property IndexValue: ProRock.Xmlite.Schema.UnqualifiedDataType100.TValueCT read GetIndexValue;
     property StatusCode: TCodeCTList read fStatusCode;
     property ReferenceFileBinaryObject: TBinaryObjectCTList read fReferenceFileBinaryObject;
-    property Index: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fIndex;
+    property Index: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetIndex;
     property RequestedActionCode: TCodeCTList read fRequestedActionCode;
-    property PriceListItemID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fPriceListItemID;
-    property ContractualLanguageCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fContractualLanguageCode;
+    property PriceListItemID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetPriceListItemID;
+    property ContractualLanguageCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetContractualLanguageCode;
     property ActualWorkItemComplexDescription: TWorkItemComplexDescriptionCTList read fActualWorkItemComplexDescription;
     property TotalQuantityWorkItemQuantityAnalysis: TWorkItemQuantityAnalysisCTList read fTotalQuantityWorkItemQuantityAnalysis;
     property UnitCalculatedPrice: TCalculatedPriceCTList read fUnitCalculatedPrice;
@@ -300,11 +327,15 @@ type
     fId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
     fName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
     fLocationFinancialInstitutionAddress: TFinancialInstitutionAddressCT;
+
+    function GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetLocationFinancialInstitutionAddress: TFinancialInstitutionAddressCT;
   published
     [TNaming(TNaming.nUpperCase)]
-    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fId;
-    property Name: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fName;
-    property LocationFinancialInstitutionAddress: TFinancialInstitutionAddressCT read fLocationFinancialInstitutionAddress;
+    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetId;
+    property Name: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetName;
+    property LocationFinancialInstitutionAddress: TFinancialInstitutionAddressCT read GetLocationFinancialInstitutionAddress;
   end;
 
   [TName('CalculatedPriceType')]
@@ -325,10 +356,14 @@ type
     fGivenName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
     fMiddleName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
     fFamilyName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+
+    function GetGivenName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetMiddleName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetFamilyName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
   published
-    property GivenName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fGivenName;
-    property MiddleName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fMiddleName;
-    property FamilyName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fFamilyName;
+    property GivenName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetGivenName;
+    property MiddleName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetMiddleName;
+    property FamilyName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetFamilyName;
   end;
 
   [TName('CreditorFinancialAccountType')]
@@ -337,11 +372,15 @@ type
     fIbanid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
     fAccountName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
     fProprietaryID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+
+    function GetIbanid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetAccountName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetProprietaryID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
   published
     [TNaming(TNaming.nUpperCase)]
-    property Ibanid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fIbanid;
-    property AccountName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fAccountName;
-    property ProprietaryID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fProprietaryID;
+    property Ibanid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetIbanid;
+    property AccountName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetAccountName;
+    property ProprietaryID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetProprietaryID;
   end;
 
   [TName('CreditorFinancialInstitutionType')]
@@ -374,36 +413,64 @@ type
     fJapanFinancialInstitutionCommonID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
     fLocationFinancialInstitutionAddress: TFinancialInstitutionAddressCT;
     fSubDivisionBranchFinancialInstitution: TBranchFinancialInstitutionCT;
+
+    function GetBicid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetCHIPSUniversalID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetNewZealandNCCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetIrishNSCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetUKSortCodeID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetCHIPSParticipantID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetSwissBCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetFedwireRoutingNumberID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetPortugueseNCCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetRussianCentralBankID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetItalianDomesticID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetAustrianBankleitzahlID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetCanadianPaymentsAssociationID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetSicid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetGermanBankleitzahlID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetSpanishDomesticInterbankingID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetSouthAfricanNCCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetHongKongBankID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetAustralianBSBID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetIndianFinancialSystemID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetHellenicBankID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetPolishNationalClearingID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetClearingSystemName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetJapanFinancialInstitutionCommonID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetLocationFinancialInstitutionAddress: TFinancialInstitutionAddressCT;
+    function GetSubDivisionBranchFinancialInstitution: TBranchFinancialInstitutionCT;
   published
     [TNaming(TNaming.nUpperCase)]
-    property Bicid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fBicid;
-    property CHIPSUniversalID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fCHIPSUniversalID;
-    property NewZealandNCCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fNewZealandNCCID;
-    property IrishNSCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fIrishNSCID;
-    property UKSortCodeID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fUKSortCodeID;
-    property CHIPSParticipantID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fCHIPSParticipantID;
-    property SwissBCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fSwissBCID;
-    property FedwireRoutingNumberID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fFedwireRoutingNumberID;
-    property PortugueseNCCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fPortugueseNCCID;
-    property RussianCentralBankID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fRussianCentralBankID;
-    property ItalianDomesticID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fItalianDomesticID;
-    property AustrianBankleitzahlID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fAustrianBankleitzahlID;
-    property CanadianPaymentsAssociationID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fCanadianPaymentsAssociationID;
+    property Bicid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetBicid;
+    property CHIPSUniversalID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetCHIPSUniversalID;
+    property NewZealandNCCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetNewZealandNCCID;
+    property IrishNSCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetIrishNSCID;
+    property UKSortCodeID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetUKSortCodeID;
+    property CHIPSParticipantID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetCHIPSParticipantID;
+    property SwissBCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetSwissBCID;
+    property FedwireRoutingNumberID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetFedwireRoutingNumberID;
+    property PortugueseNCCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetPortugueseNCCID;
+    property RussianCentralBankID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetRussianCentralBankID;
+    property ItalianDomesticID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetItalianDomesticID;
+    property AustrianBankleitzahlID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetAustrianBankleitzahlID;
+    property CanadianPaymentsAssociationID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetCanadianPaymentsAssociationID;
     [TNaming(TNaming.nUpperCase)]
-    property Sicid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fSicid;
-    property GermanBankleitzahlID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fGermanBankleitzahlID;
-    property SpanishDomesticInterbankingID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fSpanishDomesticInterbankingID;
-    property SouthAfricanNCCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fSouthAfricanNCCID;
-    property HongKongBankID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fHongKongBankID;
-    property AustralianBSBID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fAustralianBSBID;
-    property IndianFinancialSystemID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fIndianFinancialSystemID;
-    property HellenicBankID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fHellenicBankID;
-    property PolishNationalClearingID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fPolishNationalClearingID;
-    property Name: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fName;
-    property ClearingSystemName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fClearingSystemName;
-    property JapanFinancialInstitutionCommonID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fJapanFinancialInstitutionCommonID;
-    property LocationFinancialInstitutionAddress: TFinancialInstitutionAddressCT read fLocationFinancialInstitutionAddress;
-    property SubDivisionBranchFinancialInstitution: TBranchFinancialInstitutionCT read fSubDivisionBranchFinancialInstitution;
+    property Sicid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetSicid;
+    property GermanBankleitzahlID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetGermanBankleitzahlID;
+    property SpanishDomesticInterbankingID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetSpanishDomesticInterbankingID;
+    property SouthAfricanNCCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetSouthAfricanNCCID;
+    property HongKongBankID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetHongKongBankID;
+    property AustralianBSBID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetAustralianBSBID;
+    property IndianFinancialSystemID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetIndianFinancialSystemID;
+    property HellenicBankID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetHellenicBankID;
+    property PolishNationalClearingID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetPolishNationalClearingID;
+    property Name: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetName;
+    property ClearingSystemName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetClearingSystemName;
+    property JapanFinancialInstitutionCommonID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetJapanFinancialInstitutionCommonID;
+    property LocationFinancialInstitutionAddress: TFinancialInstitutionAddressCT read GetLocationFinancialInstitutionAddress;
+    property SubDivisionBranchFinancialInstitution: TBranchFinancialInstitutionCT read GetSubDivisionBranchFinancialInstitution;
   end;
 
   [TName('DebtorFinancialAccountType')]
@@ -412,11 +479,15 @@ type
     fIbanid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
     fAccountName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
     fProprietaryID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+
+    function GetIbanid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetAccountName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetProprietaryID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
   published
     [TNaming(TNaming.nUpperCase)]
-    property Ibanid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fIbanid;
-    property AccountName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fAccountName;
-    property ProprietaryID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fProprietaryID;
+    property Ibanid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetIbanid;
+    property AccountName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetAccountName;
+    property ProprietaryID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetProprietaryID;
   end;
 
   [TName('DebtorFinancialInstitutionType')]
@@ -449,36 +520,64 @@ type
     fJapanFinancialInstitutionCommonID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
     fLocationFinancialInstitutionAddress: TFinancialInstitutionAddressCT;
     fSubDivisionBranchFinancialInstitution: TBranchFinancialInstitutionCT;
+
+    function GetBicid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetClearingSystemName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetCHIPSUniversalID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetNewZealandNCCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetIrishNSCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetUKSortCodeID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetCHIPSParticipantID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetSwissBCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetFedwireRoutingNumberID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetPortugueseNCCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetRussianCentralBankID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetItalianDomesticID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetAustrianBankleitzahlID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetCanadianPaymentsAssociationID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetSicid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetGermanBankleitzahlID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetSpanishDomesticInterbankingID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetSouthAfricanNCCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetHongKongBankID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetAustralianBSBID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetIndianFinancialSystemID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetHellenicBankID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetPolishNationalClearingID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetJapanFinancialInstitutionCommonID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetLocationFinancialInstitutionAddress: TFinancialInstitutionAddressCT;
+    function GetSubDivisionBranchFinancialInstitution: TBranchFinancialInstitutionCT;
   published
     [TNaming(TNaming.nUpperCase)]
-    property Bicid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fBicid;
-    property ClearingSystemName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fClearingSystemName;
-    property CHIPSUniversalID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fCHIPSUniversalID;
-    property NewZealandNCCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fNewZealandNCCID;
-    property IrishNSCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fIrishNSCID;
-    property UKSortCodeID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fUKSortCodeID;
-    property CHIPSParticipantID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fCHIPSParticipantID;
-    property SwissBCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fSwissBCID;
-    property FedwireRoutingNumberID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fFedwireRoutingNumberID;
-    property PortugueseNCCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fPortugueseNCCID;
-    property RussianCentralBankID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fRussianCentralBankID;
-    property ItalianDomesticID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fItalianDomesticID;
-    property AustrianBankleitzahlID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fAustrianBankleitzahlID;
-    property CanadianPaymentsAssociationID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fCanadianPaymentsAssociationID;
+    property Bicid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetBicid;
+    property ClearingSystemName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetClearingSystemName;
+    property CHIPSUniversalID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetCHIPSUniversalID;
+    property NewZealandNCCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetNewZealandNCCID;
+    property IrishNSCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetIrishNSCID;
+    property UKSortCodeID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetUKSortCodeID;
+    property CHIPSParticipantID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetCHIPSParticipantID;
+    property SwissBCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetSwissBCID;
+    property FedwireRoutingNumberID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetFedwireRoutingNumberID;
+    property PortugueseNCCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetPortugueseNCCID;
+    property RussianCentralBankID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetRussianCentralBankID;
+    property ItalianDomesticID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetItalianDomesticID;
+    property AustrianBankleitzahlID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetAustrianBankleitzahlID;
+    property CanadianPaymentsAssociationID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetCanadianPaymentsAssociationID;
     [TNaming(TNaming.nUpperCase)]
-    property Sicid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fSicid;
-    property GermanBankleitzahlID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fGermanBankleitzahlID;
-    property SpanishDomesticInterbankingID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fSpanishDomesticInterbankingID;
-    property SouthAfricanNCCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fSouthAfricanNCCID;
-    property HongKongBankID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fHongKongBankID;
-    property AustralianBSBID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fAustralianBSBID;
-    property IndianFinancialSystemID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fIndianFinancialSystemID;
-    property HellenicBankID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fHellenicBankID;
-    property PolishNationalClearingID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fPolishNationalClearingID;
-    property Name: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fName;
-    property JapanFinancialInstitutionCommonID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fJapanFinancialInstitutionCommonID;
-    property LocationFinancialInstitutionAddress: TFinancialInstitutionAddressCT read fLocationFinancialInstitutionAddress;
-    property SubDivisionBranchFinancialInstitution: TBranchFinancialInstitutionCT read fSubDivisionBranchFinancialInstitution;
+    property Sicid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetSicid;
+    property GermanBankleitzahlID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetGermanBankleitzahlID;
+    property SpanishDomesticInterbankingID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetSpanishDomesticInterbankingID;
+    property SouthAfricanNCCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetSouthAfricanNCCID;
+    property HongKongBankID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetHongKongBankID;
+    property AustralianBSBID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetAustralianBSBID;
+    property IndianFinancialSystemID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetIndianFinancialSystemID;
+    property HellenicBankID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetHellenicBankID;
+    property PolishNationalClearingID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetPolishNationalClearingID;
+    property Name: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetName;
+    property JapanFinancialInstitutionCommonID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetJapanFinancialInstitutionCommonID;
+    property LocationFinancialInstitutionAddress: TFinancialInstitutionAddressCT read GetLocationFinancialInstitutionAddress;
+    property SubDivisionBranchFinancialInstitution: TBranchFinancialInstitutionCT read GetSubDivisionBranchFinancialInstitution;
   end;
 
   [TName('DeliveryAdjustmentType')]
@@ -489,12 +588,16 @@ type
     fActualAmount: TAmountCTList;
     fActualQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
     fActualDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+
+    function GetReasonCode: ProRock.Xmlite.Schema.QualifiedDataType100.TAdjustmentReasonCodeCT;
+    function GetActualQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+    function GetActualDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
   published
-    property ReasonCode: ProRock.Xmlite.Schema.QualifiedDataType100.TAdjustmentReasonCodeCT read fReasonCode;
+    property ReasonCode: ProRock.Xmlite.Schema.QualifiedDataType100.TAdjustmentReasonCodeCT read GetReasonCode;
     property Reason: TTextCTList read fReason;
     property ActualAmount: TAmountCTList read fActualAmount;
-    property ActualQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read fActualQuantity;
-    property ActualDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read fActualDateTime;
+    property ActualQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read GetActualQuantity;
+    property ActualDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read GetActualDateTime;
   end;
 
   [TName('DisposalInstructionsType')]
@@ -504,8 +607,10 @@ type
     fRecyclingDescriptionCode: TCodeCTList;
     fDescription: TTextCTList;
     fRecyclingProcedure: TTextCTList;
+
+    function GetMaterialID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
   published
-    property MaterialID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fMaterialID;
+    property MaterialID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetMaterialID;
     property RecyclingDescriptionCode: TCodeCTList read fRecyclingDescriptionCode;
     property Description: TTextCTList read fDescription;
     property RecyclingProcedure: TTextCTList read fRecyclingProcedure;
@@ -517,11 +622,15 @@ type
     fId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
     fValue: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
     fSpecifiedDocumentVersion: TDocumentVersionCT;
+
+    function GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetValue: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetSpecifiedDocumentVersion: TDocumentVersionCT;
   published
     [TNaming(TNaming.nUpperCase)]
-    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fId;
-    property Value: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fValue;
-    property SpecifiedDocumentVersion: TDocumentVersionCT read fSpecifiedDocumentVersion;
+    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetId;
+    property Value: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetValue;
+    property SpecifiedDocumentVersion: TDocumentVersionCT read GetSpecifiedDocumentVersion;
   end;
 
   [TName('DocumentLineDocumentType')]
@@ -532,11 +641,16 @@ type
     fLineStatusCode: ProRock.Xmlite.Schema.QualifiedDataType100.TLineStatusCodeCT;
     fLineStatusReasonCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
     fIncludedNote: TNoteCTList;
+
+    function GetLineID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetParentLineID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetLineStatusCode: ProRock.Xmlite.Schema.QualifiedDataType100.TLineStatusCodeCT;
+    function GetLineStatusReasonCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
   published
-    property LineID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fLineID;
-    property ParentLineID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fParentLineID;
-    property LineStatusCode: ProRock.Xmlite.Schema.QualifiedDataType100.TLineStatusCodeCT read fLineStatusCode;
-    property LineStatusReasonCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fLineStatusReasonCode;
+    property LineID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetLineID;
+    property ParentLineID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetParentLineID;
+    property LineStatusCode: ProRock.Xmlite.Schema.QualifiedDataType100.TLineStatusCodeCT read GetLineStatusCode;
+    property LineStatusReasonCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetLineStatusReasonCode;
     property IncludedNote: TNoteCTList read fIncludedNote;
   end;
 
@@ -546,11 +660,15 @@ type
     fId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
     fName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
     fIssueDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+
+    function GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetIssueDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
   published
     [TNaming(TNaming.nUpperCase)]
-    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fId;
-    property Name: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fName;
-    property IssueDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read fIssueDateTime;
+    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetId;
+    property Name: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetName;
+    property IssueDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read GetIssueDateTime;
   end;
 
   [TName('ExchangedDocumentContextType')]
@@ -565,16 +683,20 @@ type
     fGuidelineSpecifiedDocumentContextParameter: TDocumentContextParameterCTList;
     fSubsetSpecifiedDocumentContextParameter: TDocumentContextParameterCTList;
     fMessageStandardSpecifiedDocumentContextParameter: TDocumentContextParameterCT;
+
+    function GetSpecifiedTransactionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetTestIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT;
+    function GetMessageStandardSpecifiedDocumentContextParameter: TDocumentContextParameterCT;
   published
-    property SpecifiedTransactionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fSpecifiedTransactionID;
-    property TestIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT read fTestIndicator;
+    property SpecifiedTransactionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetSpecifiedTransactionID;
+    property TestIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT read GetTestIndicator;
     property BusinessProcessSpecifiedDocumentContextParameter: TDocumentContextParameterCTList read fBusinessProcessSpecifiedDocumentContextParameter;
     property BIMSpecifiedDocumentContextParameter: TDocumentContextParameterCTList read fBIMSpecifiedDocumentContextParameter;
     property ScenarioSpecifiedDocumentContextParameter: TDocumentContextParameterCTList read fScenarioSpecifiedDocumentContextParameter;
     property ApplicationSpecifiedDocumentContextParameter: TDocumentContextParameterCTList read fApplicationSpecifiedDocumentContextParameter;
     property GuidelineSpecifiedDocumentContextParameter: TDocumentContextParameterCTList read fGuidelineSpecifiedDocumentContextParameter;
     property SubsetSpecifiedDocumentContextParameter: TDocumentContextParameterCTList read fSubsetSpecifiedDocumentContextParameter;
-    property MessageStandardSpecifiedDocumentContextParameter: TDocumentContextParameterCT read fMessageStandardSpecifiedDocumentContextParameter;
+    property MessageStandardSpecifiedDocumentContextParameter: TDocumentContextParameterCT read GetMessageStandardSpecifiedDocumentContextParameter;
   end;
 
   [TName('ExchangedDocumentType')]
@@ -598,28 +720,42 @@ type
     fIncludedNote: TNoteCTList;
     fEffectiveSpecifiedPeriod: TSpecifiedPeriodCT;
     fIssuerTradeParty: TTradePartyCT;
+
+    function GetTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TDocumentCodeCT;
+    function GetCopyIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT;
+    function GetPurpose: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetControlRequirementIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT;
+    function GetPurposeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TMessageFunctionCodeCT;
+    function GetRevisionDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+    function GetVersionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetGlobalID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetRevisionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetPreviousRevisionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetCategoryCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetEffectiveSpecifiedPeriod: TSpecifiedPeriodCT;
+    function GetIssuerTradeParty: TTradePartyCT;
   published
     [TRequired]
     [TNaming(TNaming.nUpperCase)]
     property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fId;
     property Name: TTextCTList read fName;
-    property TypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TDocumentCodeCT read fTypeCode;
+    property TypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TDocumentCodeCT read GetTypeCode;
     [TRequired]
     property IssueDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read fIssueDateTime;
-    property CopyIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT read fCopyIndicator;
-    property Purpose: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fPurpose;
-    property ControlRequirementIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT read fControlRequirementIndicator;
+    property CopyIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT read GetCopyIndicator;
+    property Purpose: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetPurpose;
+    property ControlRequirementIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT read GetControlRequirementIndicator;
     property LanguageID: TIdCTList read fLanguageID;
-    property PurposeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TMessageFunctionCodeCT read fPurposeCode;
-    property RevisionDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read fRevisionDateTime;
-    property VersionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fVersionID;
-    property GlobalID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fGlobalID;
-    property RevisionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fRevisionID;
-    property PreviousRevisionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fPreviousRevisionID;
-    property CategoryCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fCategoryCode;
+    property PurposeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TMessageFunctionCodeCT read GetPurposeCode;
+    property RevisionDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read GetRevisionDateTime;
+    property VersionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetVersionID;
+    property GlobalID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetGlobalID;
+    property RevisionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetRevisionID;
+    property PreviousRevisionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetPreviousRevisionID;
+    property CategoryCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetCategoryCode;
     property IncludedNote: TNoteCTList read fIncludedNote;
-    property EffectiveSpecifiedPeriod: TSpecifiedPeriodCT read fEffectiveSpecifiedPeriod;
-    property IssuerTradeParty: TTradePartyCT read fIssuerTradeParty;
+    property EffectiveSpecifiedPeriod: TSpecifiedPeriodCT read GetEffectiveSpecifiedPeriod;
+    property IssuerTradeParty: TTradePartyCT read GetIssuerTradeParty;
   end;
 
   [TName('FinancialAdjustmentType')]
@@ -632,14 +768,20 @@ type
     fActualDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
     fClaimRelatedTradeParty: TTradePartyCT;
     fInvoiceReferenceReferencedDocument: TReferencedDocumentCT;
+
+    function GetReasonCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetActualQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+    function GetActualDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+    function GetClaimRelatedTradeParty: TTradePartyCT;
+    function GetInvoiceReferenceReferencedDocument: TReferencedDocumentCT;
   published
-    property ReasonCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fReasonCode;
+    property ReasonCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetReasonCode;
     property Reason: TTextCTList read fReason;
     property ActualAmount: TAmountCTList read fActualAmount;
-    property ActualQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read fActualQuantity;
-    property ActualDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read fActualDateTime;
-    property ClaimRelatedTradeParty: TTradePartyCT read fClaimRelatedTradeParty;
-    property InvoiceReferenceReferencedDocument: TReferencedDocumentCT read fInvoiceReferenceReferencedDocument;
+    property ActualQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read GetActualQuantity;
+    property ActualDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read GetActualDateTime;
+    property ClaimRelatedTradeParty: TTradePartyCT read GetClaimRelatedTradeParty;
+    property InvoiceReferenceReferencedDocument: TReferencedDocumentCT read GetInvoiceReferenceReferencedDocument;
   end;
 
   [TName('FinancialInstitutionAddressType')]
@@ -662,24 +804,42 @@ type
     fCityID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
     fCountrySubDivisionName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
     fCountryName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+
+    function GetPostcodeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetBuildingNumber: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetLineOne: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetLineTwo: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetLineThree: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetLineFour: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetLineFive: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetStreetName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetCityName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetCountrySubDivisionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetCountryID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetDepartmentName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetPostOfficeBox: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetCityID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetCountrySubDivisionName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetCountryName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
   published
-    property PostcodeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fPostcodeCode;
-    property BuildingNumber: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fBuildingNumber;
-    property LineOne: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fLineOne;
-    property LineTwo: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fLineTwo;
-    property LineThree: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fLineThree;
-    property LineFour: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fLineFour;
-    property LineFive: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fLineFive;
-    property StreetName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fStreetName;
-    property CityName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fCityName;
-    property CountrySubDivisionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fCountrySubDivisionID;
-    property CountryID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fCountryID;
-    property TypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fTypeCode;
-    property DepartmentName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fDepartmentName;
-    property PostOfficeBox: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fPostOfficeBox;
-    property CityID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fCityID;
-    property CountrySubDivisionName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fCountrySubDivisionName;
-    property CountryName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fCountryName;
+    property PostcodeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetPostcodeCode;
+    property BuildingNumber: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetBuildingNumber;
+    property LineOne: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetLineOne;
+    property LineTwo: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetLineTwo;
+    property LineThree: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetLineThree;
+    property LineFour: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetLineFour;
+    property LineFive: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetLineFive;
+    property StreetName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetStreetName;
+    property CityName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetCityName;
+    property CountrySubDivisionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetCountrySubDivisionID;
+    property CountryID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetCountryID;
+    property TypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetTypeCode;
+    property DepartmentName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetDepartmentName;
+    property PostOfficeBox: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetPostOfficeBox;
+    property CityID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetCityID;
+    property CountrySubDivisionName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetCountrySubDivisionName;
+    property CountryName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetCountryName;
   end;
 
   [TName('GeographicalCoordinateType')]
@@ -689,11 +849,16 @@ type
     fLatitudeMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
     fLongitudeMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
     fSystemID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+
+    function GetAltitudeMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+    function GetLatitudeMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+    function GetLongitudeMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+    function GetSystemID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
   published
-    property AltitudeMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read fAltitudeMeasure;
-    property LatitudeMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read fLatitudeMeasure;
-    property LongitudeMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read fLongitudeMeasure;
-    property SystemID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fSystemID;
+    property AltitudeMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read GetAltitudeMeasure;
+    property LatitudeMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read GetLatitudeMeasure;
+    property LongitudeMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read GetLongitudeMeasure;
+    property SystemID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetSystemID;
   end;
 
   [TName('GroupedWorkItemType')]
@@ -715,6 +880,11 @@ type
     fChangedRecordedStatus: TRecordedStatusCTList;
     fActualWorkItemComplexDescription: TWorkItemComplexDescriptionCTList;
     fReferencedSpecifiedBinaryFile: TSpecifiedBinaryFileCTList;
+
+    function GetTotalQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+    function GetIndex: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetPriceListItemID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetContractualLanguageCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
   published
     [TRequired]
     [TNaming(TNaming.nUpperCase)]
@@ -723,11 +893,11 @@ type
     property AlternativeClassificationCode: TCodeCTList read fAlternativeClassificationCode;
     property TypeCode: TCodeCTList read fTypeCode;
     property Comment: TTextCTList read fComment;
-    property TotalQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read fTotalQuantity;
-    property Index: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fIndex;
+    property TotalQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read GetTotalQuantity;
+    property Index: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetIndex;
     property RequestedActionCode: TCodeCTList read fRequestedActionCode;
-    property PriceListItemID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fPriceListItemID;
-    property ContractualLanguageCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fContractualLanguageCode;
+    property PriceListItemID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetPriceListItemID;
+    property ContractualLanguageCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetContractualLanguageCode;
     property TotalCalculatedPrice: TCalculatedPriceCTList read fTotalCalculatedPrice;
     property ItemGroupedWorkItem: TGroupedWorkItemCTList read fItemGroupedWorkItem;
     property ItemBasicWorkItem: TBasicWorkItemCTList read fItemBasicWorkItem;
@@ -766,33 +936,55 @@ type
     fPurchaseConditionsReferencedDocument: TReferencedDocumentCTList;
     fSpecifiedProcuringProject: TProcuringProjectCT;
     fUltimateCustomerOrderReferencedDocument: TReferencedDocumentCTList;
+
+    function GetBuyerReference: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetSellerTradeParty: TTradePartyCT;
+    function GetBuyerTradeParty: TTradePartyCT;
+    function GetSalesAgentTradeParty: TTradePartyCT;
+    function GetBuyerAssignedAccountantTradeParty: TTradePartyCT;
+    function GetSellerAssignedAccountantTradeParty: TTradePartyCT;
+    function GetBuyerTaxRepresentativeTradeParty: TTradePartyCT;
+    function GetSellerTaxRepresentativeTradeParty: TTradePartyCT;
+    function GetProductEndUserTradeParty: TTradePartyCT;
+    function GetApplicableTradeDeliveryTerms: TTradeDeliveryTermsCT;
+    function GetSellerOrderReferencedDocument: TReferencedDocumentCT;
+    function GetBuyerOrderReferencedDocument: TReferencedDocumentCT;
+    function GetQuotationReferencedDocument: TReferencedDocumentCT;
+    function GetOrderResponseReferencedDocument: TReferencedDocumentCT;
+    function GetContractReferencedDocument: TReferencedDocumentCT;
+    function GetDemandForecastReferencedDocument: TReferencedDocumentCT;
+    function GetSupplyInstructionReferencedDocument: TReferencedDocumentCT;
+    function GetPromotionalDealReferencedDocument: TReferencedDocumentCT;
+    function GetPriceListReferencedDocument: TReferencedDocumentCT;
+    function GetBuyerAgentTradeParty: TTradePartyCT;
+    function GetSpecifiedProcuringProject: TProcuringProjectCT;
   published
     property Reference: TTextCTList read fReference;
-    property BuyerReference: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fBuyerReference;
-    property SellerTradeParty: TTradePartyCT read fSellerTradeParty;
-    property BuyerTradeParty: TTradePartyCT read fBuyerTradeParty;
-    property SalesAgentTradeParty: TTradePartyCT read fSalesAgentTradeParty;
+    property BuyerReference: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetBuyerReference;
+    property SellerTradeParty: TTradePartyCT read GetSellerTradeParty;
+    property BuyerTradeParty: TTradePartyCT read GetBuyerTradeParty;
+    property SalesAgentTradeParty: TTradePartyCT read GetSalesAgentTradeParty;
     property BuyerRequisitionerTradeParty: TTradePartyCTList read fBuyerRequisitionerTradeParty;
-    property BuyerAssignedAccountantTradeParty: TTradePartyCT read fBuyerAssignedAccountantTradeParty;
-    property SellerAssignedAccountantTradeParty: TTradePartyCT read fSellerAssignedAccountantTradeParty;
-    property BuyerTaxRepresentativeTradeParty: TTradePartyCT read fBuyerTaxRepresentativeTradeParty;
-    property SellerTaxRepresentativeTradeParty: TTradePartyCT read fSellerTaxRepresentativeTradeParty;
-    property ProductEndUserTradeParty: TTradePartyCT read fProductEndUserTradeParty;
-    property ApplicableTradeDeliveryTerms: TTradeDeliveryTermsCT read fApplicableTradeDeliveryTerms;
-    property SellerOrderReferencedDocument: TReferencedDocumentCT read fSellerOrderReferencedDocument;
-    property BuyerOrderReferencedDocument: TReferencedDocumentCT read fBuyerOrderReferencedDocument;
-    property QuotationReferencedDocument: TReferencedDocumentCT read fQuotationReferencedDocument;
-    property OrderResponseReferencedDocument: TReferencedDocumentCT read fOrderResponseReferencedDocument;
-    property ContractReferencedDocument: TReferencedDocumentCT read fContractReferencedDocument;
-    property DemandForecastReferencedDocument: TReferencedDocumentCT read fDemandForecastReferencedDocument;
-    property SupplyInstructionReferencedDocument: TReferencedDocumentCT read fSupplyInstructionReferencedDocument;
-    property PromotionalDealReferencedDocument: TReferencedDocumentCT read fPromotionalDealReferencedDocument;
-    property PriceListReferencedDocument: TReferencedDocumentCT read fPriceListReferencedDocument;
+    property BuyerAssignedAccountantTradeParty: TTradePartyCT read GetBuyerAssignedAccountantTradeParty;
+    property SellerAssignedAccountantTradeParty: TTradePartyCT read GetSellerAssignedAccountantTradeParty;
+    property BuyerTaxRepresentativeTradeParty: TTradePartyCT read GetBuyerTaxRepresentativeTradeParty;
+    property SellerTaxRepresentativeTradeParty: TTradePartyCT read GetSellerTaxRepresentativeTradeParty;
+    property ProductEndUserTradeParty: TTradePartyCT read GetProductEndUserTradeParty;
+    property ApplicableTradeDeliveryTerms: TTradeDeliveryTermsCT read GetApplicableTradeDeliveryTerms;
+    property SellerOrderReferencedDocument: TReferencedDocumentCT read GetSellerOrderReferencedDocument;
+    property BuyerOrderReferencedDocument: TReferencedDocumentCT read GetBuyerOrderReferencedDocument;
+    property QuotationReferencedDocument: TReferencedDocumentCT read GetQuotationReferencedDocument;
+    property OrderResponseReferencedDocument: TReferencedDocumentCT read GetOrderResponseReferencedDocument;
+    property ContractReferencedDocument: TReferencedDocumentCT read GetContractReferencedDocument;
+    property DemandForecastReferencedDocument: TReferencedDocumentCT read GetDemandForecastReferencedDocument;
+    property SupplyInstructionReferencedDocument: TReferencedDocumentCT read GetSupplyInstructionReferencedDocument;
+    property PromotionalDealReferencedDocument: TReferencedDocumentCT read GetPromotionalDealReferencedDocument;
+    property PriceListReferencedDocument: TReferencedDocumentCT read GetPriceListReferencedDocument;
     property AdditionalReferencedDocument: TReferencedDocumentCTList read fAdditionalReferencedDocument;
     property RequisitionerReferencedDocument: TReferencedDocumentCTList read fRequisitionerReferencedDocument;
-    property BuyerAgentTradeParty: TTradePartyCT read fBuyerAgentTradeParty;
+    property BuyerAgentTradeParty: TTradePartyCT read GetBuyerAgentTradeParty;
     property PurchaseConditionsReferencedDocument: TReferencedDocumentCTList read fPurchaseConditionsReferencedDocument;
-    property SpecifiedProcuringProject: TProcuringProjectCT read fSpecifiedProcuringProject;
+    property SpecifiedProcuringProject: TProcuringProjectCT read GetSpecifiedProcuringProject;
     property UltimateCustomerOrderReferencedDocument: TReferencedDocumentCTList read fUltimateCustomerOrderReferencedDocument;
   end;
 
@@ -814,22 +1006,36 @@ type
     fConsumptionReportReferencedDocument: TReferencedDocumentCT;
     fPreviousDeliverySupplyChainEvent: TSupplyChainEventCTList;
     fPackingListReferencedDocument: TReferencedDocumentCT;
+
+    function GetRelatedSupplyChainConsignment: TSupplyChainConsignmentCT;
+    function GetShipToTradeParty: TTradePartyCT;
+    function GetUltimateShipToTradeParty: TTradePartyCT;
+    function GetShipFromTradeParty: TTradePartyCT;
+    function GetActualDespatchSupplyChainEvent: TSupplyChainEventCT;
+    function GetActualPickUpSupplyChainEvent: TSupplyChainEventCT;
+    function GetActualDeliverySupplyChainEvent: TSupplyChainEventCT;
+    function GetActualReceiptSupplyChainEvent: TSupplyChainEventCT;
+    function GetDespatchAdviceReferencedDocument: TReferencedDocumentCT;
+    function GetReceivingAdviceReferencedDocument: TReferencedDocumentCT;
+    function GetDeliveryNoteReferencedDocument: TReferencedDocumentCT;
+    function GetConsumptionReportReferencedDocument: TReferencedDocumentCT;
+    function GetPackingListReferencedDocument: TReferencedDocumentCT;
   published
-    property RelatedSupplyChainConsignment: TSupplyChainConsignmentCT read fRelatedSupplyChainConsignment;
-    property ShipToTradeParty: TTradePartyCT read fShipToTradeParty;
-    property UltimateShipToTradeParty: TTradePartyCT read fUltimateShipToTradeParty;
-    property ShipFromTradeParty: TTradePartyCT read fShipFromTradeParty;
-    property ActualDespatchSupplyChainEvent: TSupplyChainEventCT read fActualDespatchSupplyChainEvent;
-    property ActualPickUpSupplyChainEvent: TSupplyChainEventCT read fActualPickUpSupplyChainEvent;
-    property ActualDeliverySupplyChainEvent: TSupplyChainEventCT read fActualDeliverySupplyChainEvent;
-    property ActualReceiptSupplyChainEvent: TSupplyChainEventCT read fActualReceiptSupplyChainEvent;
+    property RelatedSupplyChainConsignment: TSupplyChainConsignmentCT read GetRelatedSupplyChainConsignment;
+    property ShipToTradeParty: TTradePartyCT read GetShipToTradeParty;
+    property UltimateShipToTradeParty: TTradePartyCT read GetUltimateShipToTradeParty;
+    property ShipFromTradeParty: TTradePartyCT read GetShipFromTradeParty;
+    property ActualDespatchSupplyChainEvent: TSupplyChainEventCT read GetActualDespatchSupplyChainEvent;
+    property ActualPickUpSupplyChainEvent: TSupplyChainEventCT read GetActualPickUpSupplyChainEvent;
+    property ActualDeliverySupplyChainEvent: TSupplyChainEventCT read GetActualDeliverySupplyChainEvent;
+    property ActualReceiptSupplyChainEvent: TSupplyChainEventCT read GetActualReceiptSupplyChainEvent;
     property AdditionalReferencedDocument: TReferencedDocumentCTList read fAdditionalReferencedDocument;
-    property DespatchAdviceReferencedDocument: TReferencedDocumentCT read fDespatchAdviceReferencedDocument;
-    property ReceivingAdviceReferencedDocument: TReferencedDocumentCT read fReceivingAdviceReferencedDocument;
-    property DeliveryNoteReferencedDocument: TReferencedDocumentCT read fDeliveryNoteReferencedDocument;
-    property ConsumptionReportReferencedDocument: TReferencedDocumentCT read fConsumptionReportReferencedDocument;
+    property DespatchAdviceReferencedDocument: TReferencedDocumentCT read GetDespatchAdviceReferencedDocument;
+    property ReceivingAdviceReferencedDocument: TReferencedDocumentCT read GetReceivingAdviceReferencedDocument;
+    property DeliveryNoteReferencedDocument: TReferencedDocumentCT read GetDeliveryNoteReferencedDocument;
+    property ConsumptionReportReferencedDocument: TReferencedDocumentCT read GetConsumptionReportReferencedDocument;
     property PreviousDeliverySupplyChainEvent: TSupplyChainEventCTList read fPreviousDeliverySupplyChainEvent;
-    property PackingListReferencedDocument: TReferencedDocumentCT read fPackingListReferencedDocument;
+    property PackingListReferencedDocument: TReferencedDocumentCT read GetPackingListReferencedDocument;
   end;
 
   [TName('HeaderTradeSettlementType')]
@@ -877,40 +1083,61 @@ type
     fSpecifiedTradeSettlementFinancialCard: TTradeSettlementFinancialCardCTList;
     fSpecifiedAdvancePayment: TAdvancePaymentCTList;
     fUltimatePayeeTradeParty: TTradePartyCT;
+
+    function GetCreditorReferenceID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetTaxCurrencyCode: ProRock.Xmlite.Schema.QualifiedDataType100.TCurrencyCodeCT;
+    function GetInvoiceCurrencyCode: ProRock.Xmlite.Schema.QualifiedDataType100.TCurrencyCodeCT;
+    function GetPaymentCurrencyCode: ProRock.Xmlite.Schema.QualifiedDataType100.TCurrencyCodeCT;
+    function GetInvoiceIssuerReference: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetInvoiceDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+    function GetCreditReasonCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetInvoicerTradeParty: TTradePartyCT;
+    function GetInvoiceeTradeParty: TTradePartyCT;
+    function GetPayeeTradeParty: TTradePartyCT;
+    function GetPayerTradeParty: TTradePartyCT;
+    function GetTaxApplicableTradeCurrencyExchange: TTradeCurrencyExchangeCT;
+    function GetInvoiceApplicableTradeCurrencyExchange: TTradeCurrencyExchangeCT;
+    function GetPaymentApplicableTradeCurrencyExchange: TTradeCurrencyExchangeCT;
+    function GetBillingSpecifiedPeriod: TSpecifiedPeriodCT;
+    function GetSpecifiedTradeSettlementHeaderMonetarySummation: TTradeSettlementHeaderMonetarySummationCT;
+    function GetInvoiceReferencedDocument: TReferencedDocumentCT;
+    function GetProFormaInvoiceReferencedDocument: TReferencedDocumentCT;
+    function GetLetterOfCreditReferencedDocument: TReferencedDocumentCT;
+    function GetUltimatePayeeTradeParty: TTradePartyCT;
   published
     property DuePayableAmount: TAmountCTList read fDuePayableAmount;
     property CreditorReferenceTypeCode: TCodeCTList read fCreditorReferenceTypeCode;
     property CreditorReferenceType: TTextCTList read fCreditorReferenceType;
     property CreditorReferenceIssuerID: TIdCTList read fCreditorReferenceIssuerID;
-    property CreditorReferenceID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fCreditorReferenceID;
+    property CreditorReferenceID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetCreditorReferenceID;
     property PaymentReference: TTextCTList read fPaymentReference;
-    property TaxCurrencyCode: ProRock.Xmlite.Schema.QualifiedDataType100.TCurrencyCodeCT read fTaxCurrencyCode;
-    property InvoiceCurrencyCode: ProRock.Xmlite.Schema.QualifiedDataType100.TCurrencyCodeCT read fInvoiceCurrencyCode;
-    property PaymentCurrencyCode: ProRock.Xmlite.Schema.QualifiedDataType100.TCurrencyCodeCT read fPaymentCurrencyCode;
-    property InvoiceIssuerReference: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fInvoiceIssuerReference;
-    property InvoiceDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read fInvoiceDateTime;
+    property TaxCurrencyCode: ProRock.Xmlite.Schema.QualifiedDataType100.TCurrencyCodeCT read GetTaxCurrencyCode;
+    property InvoiceCurrencyCode: ProRock.Xmlite.Schema.QualifiedDataType100.TCurrencyCodeCT read GetInvoiceCurrencyCode;
+    property PaymentCurrencyCode: ProRock.Xmlite.Schema.QualifiedDataType100.TCurrencyCodeCT read GetPaymentCurrencyCode;
+    property InvoiceIssuerReference: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetInvoiceIssuerReference;
+    property InvoiceDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read GetInvoiceDateTime;
     property NextInvoiceDateTime: TDateTimeCTList read fNextInvoiceDateTime;
-    property CreditReasonCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fCreditReasonCode;
+    property CreditReasonCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetCreditReasonCode;
     property CreditReason: TTextCTList read fCreditReason;
-    property InvoicerTradeParty: TTradePartyCT read fInvoicerTradeParty;
-    property InvoiceeTradeParty: TTradePartyCT read fInvoiceeTradeParty;
-    property PayeeTradeParty: TTradePartyCT read fPayeeTradeParty;
-    property PayerTradeParty: TTradePartyCT read fPayerTradeParty;
-    property TaxApplicableTradeCurrencyExchange: TTradeCurrencyExchangeCT read fTaxApplicableTradeCurrencyExchange;
-    property InvoiceApplicableTradeCurrencyExchange: TTradeCurrencyExchangeCT read fInvoiceApplicableTradeCurrencyExchange;
-    property PaymentApplicableTradeCurrencyExchange: TTradeCurrencyExchangeCT read fPaymentApplicableTradeCurrencyExchange;
+    property InvoicerTradeParty: TTradePartyCT read GetInvoicerTradeParty;
+    property InvoiceeTradeParty: TTradePartyCT read GetInvoiceeTradeParty;
+    property PayeeTradeParty: TTradePartyCT read GetPayeeTradeParty;
+    property PayerTradeParty: TTradePartyCT read GetPayerTradeParty;
+    property TaxApplicableTradeCurrencyExchange: TTradeCurrencyExchangeCT read GetTaxApplicableTradeCurrencyExchange;
+    property InvoiceApplicableTradeCurrencyExchange: TTradeCurrencyExchangeCT read GetInvoiceApplicableTradeCurrencyExchange;
+    property PaymentApplicableTradeCurrencyExchange: TTradeCurrencyExchangeCT read GetPaymentApplicableTradeCurrencyExchange;
     property SpecifiedTradeSettlementPaymentMeans: TTradeSettlementPaymentMeansCTList read fSpecifiedTradeSettlementPaymentMeans;
     property ApplicableTradeTax: TTradeTaxCTList read fApplicableTradeTax;
-    property BillingSpecifiedPeriod: TSpecifiedPeriodCT read fBillingSpecifiedPeriod;
+    property BillingSpecifiedPeriod: TSpecifiedPeriodCT read GetBillingSpecifiedPeriod;
     property SpecifiedTradeAllowanceCharge: TTradeAllowanceChargeCTList read fSpecifiedTradeAllowanceCharge;
     property SubtotalCalculatedTradeTax: TTradeTaxCTList read fSubtotalCalculatedTradeTax;
     property SpecifiedLogisticsServiceCharge: TLogisticsServiceChargeCTList read fSpecifiedLogisticsServiceCharge;
     property SpecifiedTradePaymentTerms: TTradePaymentTermsCTList read fSpecifiedTradePaymentTerms;
-    property SpecifiedTradeSettlementHeaderMonetarySummation: TTradeSettlementHeaderMonetarySummationCT read fSpecifiedTradeSettlementHeaderMonetarySummation;
+    property SpecifiedTradeSettlementHeaderMonetarySummation: TTradeSettlementHeaderMonetarySummationCT read GetSpecifiedTradeSettlementHeaderMonetarySummation;
     property SpecifiedFinancialAdjustment: TFinancialAdjustmentCTList read fSpecifiedFinancialAdjustment;
-    property InvoiceReferencedDocument: TReferencedDocumentCT read fInvoiceReferencedDocument;
-    property ProFormaInvoiceReferencedDocument: TReferencedDocumentCT read fProFormaInvoiceReferencedDocument;
-    property LetterOfCreditReferencedDocument: TReferencedDocumentCT read fLetterOfCreditReferencedDocument;
+    property InvoiceReferencedDocument: TReferencedDocumentCT read GetInvoiceReferencedDocument;
+    property ProFormaInvoiceReferencedDocument: TReferencedDocumentCT read GetProFormaInvoiceReferencedDocument;
+    property LetterOfCreditReferencedDocument: TReferencedDocumentCT read GetLetterOfCreditReferencedDocument;
     property FactoringAgreementReferencedDocument: TReferencedDocumentCTList read fFactoringAgreementReferencedDocument;
     property FactoringListReferencedDocument: TReferencedDocumentCTList read fFactoringListReferencedDocument;
     property PayableSpecifiedTradeAccountingAccount: TTradeAccountingAccountCTList read fPayableSpecifiedTradeAccountingAccount;
@@ -919,7 +1146,7 @@ type
     property SalesSpecifiedTradeAccountingAccount: TTradeAccountingAccountCTList read fSalesSpecifiedTradeAccountingAccount;
     property SpecifiedTradeSettlementFinancialCard: TTradeSettlementFinancialCardCTList read fSpecifiedTradeSettlementFinancialCard;
     property SpecifiedAdvancePayment: TAdvancePaymentCTList read fSpecifiedAdvancePayment;
-    property UltimatePayeeTradeParty: TTradePartyCT read fUltimatePayeeTradeParty;
+    property UltimatePayeeTradeParty: TTradePartyCT read GetUltimatePayeeTradeParty;
   end;
 
   [TName('LegalOrganizationType')]
@@ -931,13 +1158,19 @@ type
     fTradingBusinessName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
     fPostalTradeAddress: TTradeAddressCT;
     fAuthorizedLegalRegistration: TLegalRegistrationCTList;
+
+    function GetLegalClassificationCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetTradingBusinessName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetPostalTradeAddress: TTradeAddressCT;
   published
-    property LegalClassificationCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fLegalClassificationCode;
-    property Name: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fName;
+    property LegalClassificationCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetLegalClassificationCode;
+    property Name: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetName;
     [TNaming(TNaming.nUpperCase)]
-    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fId;
-    property TradingBusinessName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fTradingBusinessName;
-    property PostalTradeAddress: TTradeAddressCT read fPostalTradeAddress;
+    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetId;
+    property TradingBusinessName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetTradingBusinessName;
+    property PostalTradeAddress: TTradeAddressCT read GetPostalTradeAddress;
     property AuthorizedLegalRegistration: TLegalRegistrationCTList read fAuthorizedLegalRegistration;
   end;
 
@@ -946,10 +1179,13 @@ type
   private
     fTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
     fId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+
+    function GetTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
   published
-    property TypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fTypeCode;
+    property TypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetTypeCode;
     [TNaming(TNaming.nUpperCase)]
-    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fId;
+    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetId;
   end;
 
   [TName('LineTradeAgreementType')]
@@ -972,23 +1208,37 @@ type
     fItemBuyerTradeParty: TTradePartyCT;
     fIncludedSpecifiedMarketplace: TSpecifiedMarketplaceCT;
     fUltimateCustomerOrderReferencedDocument: TReferencedDocumentCTList;
+
+    function GetBuyerReference: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetApplicableTradeDeliveryTerms: TTradeDeliveryTermsCT;
+    function GetSellerOrderReferencedDocument: TReferencedDocumentCT;
+    function GetBuyerOrderReferencedDocument: TReferencedDocumentCT;
+    function GetQuotationReferencedDocument: TReferencedDocumentCT;
+    function GetContractReferencedDocument: TReferencedDocumentCT;
+    function GetDemandForecastReferencedDocument: TReferencedDocumentCT;
+    function GetPromotionalDealReferencedDocument: TReferencedDocumentCT;
+    function GetGrossPriceProductTradePrice: TTradePriceCT;
+    function GetNetPriceProductTradePrice: TTradePriceCT;
+    function GetItemSellerTradeParty: TTradePartyCT;
+    function GetItemBuyerTradeParty: TTradePartyCT;
+    function GetIncludedSpecifiedMarketplace: TSpecifiedMarketplaceCT;
   published
-    property BuyerReference: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fBuyerReference;
+    property BuyerReference: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetBuyerReference;
     property BuyerRequisitionerTradeParty: TTradePartyCTList read fBuyerRequisitionerTradeParty;
-    property ApplicableTradeDeliveryTerms: TTradeDeliveryTermsCT read fApplicableTradeDeliveryTerms;
-    property SellerOrderReferencedDocument: TReferencedDocumentCT read fSellerOrderReferencedDocument;
-    property BuyerOrderReferencedDocument: TReferencedDocumentCT read fBuyerOrderReferencedDocument;
-    property QuotationReferencedDocument: TReferencedDocumentCT read fQuotationReferencedDocument;
-    property ContractReferencedDocument: TReferencedDocumentCT read fContractReferencedDocument;
-    property DemandForecastReferencedDocument: TReferencedDocumentCT read fDemandForecastReferencedDocument;
-    property PromotionalDealReferencedDocument: TReferencedDocumentCT read fPromotionalDealReferencedDocument;
+    property ApplicableTradeDeliveryTerms: TTradeDeliveryTermsCT read GetApplicableTradeDeliveryTerms;
+    property SellerOrderReferencedDocument: TReferencedDocumentCT read GetSellerOrderReferencedDocument;
+    property BuyerOrderReferencedDocument: TReferencedDocumentCT read GetBuyerOrderReferencedDocument;
+    property QuotationReferencedDocument: TReferencedDocumentCT read GetQuotationReferencedDocument;
+    property ContractReferencedDocument: TReferencedDocumentCT read GetContractReferencedDocument;
+    property DemandForecastReferencedDocument: TReferencedDocumentCT read GetDemandForecastReferencedDocument;
+    property PromotionalDealReferencedDocument: TReferencedDocumentCT read GetPromotionalDealReferencedDocument;
     property AdditionalReferencedDocument: TReferencedDocumentCTList read fAdditionalReferencedDocument;
-    property GrossPriceProductTradePrice: TTradePriceCT read fGrossPriceProductTradePrice;
-    property NetPriceProductTradePrice: TTradePriceCT read fNetPriceProductTradePrice;
+    property GrossPriceProductTradePrice: TTradePriceCT read GetGrossPriceProductTradePrice;
+    property NetPriceProductTradePrice: TTradePriceCT read GetNetPriceProductTradePrice;
     property RequisitionerReferencedDocument: TReferencedDocumentCTList read fRequisitionerReferencedDocument;
-    property ItemSellerTradeParty: TTradePartyCT read fItemSellerTradeParty;
-    property ItemBuyerTradeParty: TTradePartyCT read fItemBuyerTradeParty;
-    property IncludedSpecifiedMarketplace: TSpecifiedMarketplaceCT read fIncludedSpecifiedMarketplace;
+    property ItemSellerTradeParty: TTradePartyCT read GetItemSellerTradeParty;
+    property ItemBuyerTradeParty: TTradePartyCT read GetItemBuyerTradeParty;
+    property IncludedSpecifiedMarketplace: TSpecifiedMarketplaceCT read GetIncludedSpecifiedMarketplace;
     property UltimateCustomerOrderReferencedDocument: TReferencedDocumentCTList read fUltimateCustomerOrderReferencedDocument;
   end;
 
@@ -1023,35 +1273,61 @@ type
     fDeliveryNoteReferencedDocument: TReferencedDocumentCT;
     fConsumptionReportReferencedDocument: TReferencedDocumentCT;
     fPackingListReferencedDocument: TReferencedDocumentCT;
+
+    function GetRequestedQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+    function GetReceivedQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+    function GetBilledQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+    function GetChargeFreeQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+    function GetPackageQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+    function GetProductUnitQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+    function GetPerPackageUnitQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+    function GetNetWeightMeasure: ProRock.Xmlite.Schema.QualifiedDataType100.TWeightUnitMeasureCT;
+    function GetGrossWeightMeasure: ProRock.Xmlite.Schema.QualifiedDataType100.TWeightUnitMeasureCT;
+    function GetTheoreticalWeightMeasure: ProRock.Xmlite.Schema.QualifiedDataType100.TWeightUnitMeasureCT;
+    function GetDespatchedQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+    function GetRelatedSupplyChainConsignment: TSupplyChainConsignmentCT;
+    function GetShipToTradeParty: TTradePartyCT;
+    function GetUltimateShipToTradeParty: TTradePartyCT;
+    function GetShipFromTradeParty: TTradePartyCT;
+    function GetActualDespatchSupplyChainEvent: TSupplyChainEventCT;
+    function GetActualPickUpSupplyChainEvent: TSupplyChainEventCT;
+    function GetRequestedDeliverySupplyChainEvent: TSupplyChainEventCT;
+    function GetActualDeliverySupplyChainEvent: TSupplyChainEventCT;
+    function GetActualReceiptSupplyChainEvent: TSupplyChainEventCT;
+    function GetDespatchAdviceReferencedDocument: TReferencedDocumentCT;
+    function GetReceivingAdviceReferencedDocument: TReferencedDocumentCT;
+    function GetDeliveryNoteReferencedDocument: TReferencedDocumentCT;
+    function GetConsumptionReportReferencedDocument: TReferencedDocumentCT;
+    function GetPackingListReferencedDocument: TReferencedDocumentCT;
   published
-    property RequestedQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read fRequestedQuantity;
-    property ReceivedQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read fReceivedQuantity;
-    property BilledQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read fBilledQuantity;
-    property ChargeFreeQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read fChargeFreeQuantity;
-    property PackageQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read fPackageQuantity;
-    property ProductUnitQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read fProductUnitQuantity;
-    property PerPackageUnitQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read fPerPackageUnitQuantity;
-    property NetWeightMeasure: ProRock.Xmlite.Schema.QualifiedDataType100.TWeightUnitMeasureCT read fNetWeightMeasure;
-    property GrossWeightMeasure: ProRock.Xmlite.Schema.QualifiedDataType100.TWeightUnitMeasureCT read fGrossWeightMeasure;
-    property TheoreticalWeightMeasure: ProRock.Xmlite.Schema.QualifiedDataType100.TWeightUnitMeasureCT read fTheoreticalWeightMeasure;
-    property DespatchedQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read fDespatchedQuantity;
+    property RequestedQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read GetRequestedQuantity;
+    property ReceivedQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read GetReceivedQuantity;
+    property BilledQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read GetBilledQuantity;
+    property ChargeFreeQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read GetChargeFreeQuantity;
+    property PackageQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read GetPackageQuantity;
+    property ProductUnitQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read GetProductUnitQuantity;
+    property PerPackageUnitQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read GetPerPackageUnitQuantity;
+    property NetWeightMeasure: ProRock.Xmlite.Schema.QualifiedDataType100.TWeightUnitMeasureCT read GetNetWeightMeasure;
+    property GrossWeightMeasure: ProRock.Xmlite.Schema.QualifiedDataType100.TWeightUnitMeasureCT read GetGrossWeightMeasure;
+    property TheoreticalWeightMeasure: ProRock.Xmlite.Schema.QualifiedDataType100.TWeightUnitMeasureCT read GetTheoreticalWeightMeasure;
+    property DespatchedQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read GetDespatchedQuantity;
     property SpecifiedDeliveryAdjustment: TDeliveryAdjustmentCTList read fSpecifiedDeliveryAdjustment;
     property IncludedSupplyChainPackaging: TSupplyChainPackagingCTList read fIncludedSupplyChainPackaging;
-    property RelatedSupplyChainConsignment: TSupplyChainConsignmentCT read fRelatedSupplyChainConsignment;
-    property ShipToTradeParty: TTradePartyCT read fShipToTradeParty;
-    property UltimateShipToTradeParty: TTradePartyCT read fUltimateShipToTradeParty;
-    property ShipFromTradeParty: TTradePartyCT read fShipFromTradeParty;
-    property ActualDespatchSupplyChainEvent: TSupplyChainEventCT read fActualDespatchSupplyChainEvent;
-    property ActualPickUpSupplyChainEvent: TSupplyChainEventCT read fActualPickUpSupplyChainEvent;
-    property RequestedDeliverySupplyChainEvent: TSupplyChainEventCT read fRequestedDeliverySupplyChainEvent;
-    property ActualDeliverySupplyChainEvent: TSupplyChainEventCT read fActualDeliverySupplyChainEvent;
-    property ActualReceiptSupplyChainEvent: TSupplyChainEventCT read fActualReceiptSupplyChainEvent;
+    property RelatedSupplyChainConsignment: TSupplyChainConsignmentCT read GetRelatedSupplyChainConsignment;
+    property ShipToTradeParty: TTradePartyCT read GetShipToTradeParty;
+    property UltimateShipToTradeParty: TTradePartyCT read GetUltimateShipToTradeParty;
+    property ShipFromTradeParty: TTradePartyCT read GetShipFromTradeParty;
+    property ActualDespatchSupplyChainEvent: TSupplyChainEventCT read GetActualDespatchSupplyChainEvent;
+    property ActualPickUpSupplyChainEvent: TSupplyChainEventCT read GetActualPickUpSupplyChainEvent;
+    property RequestedDeliverySupplyChainEvent: TSupplyChainEventCT read GetRequestedDeliverySupplyChainEvent;
+    property ActualDeliverySupplyChainEvent: TSupplyChainEventCT read GetActualDeliverySupplyChainEvent;
+    property ActualReceiptSupplyChainEvent: TSupplyChainEventCT read GetActualReceiptSupplyChainEvent;
     property AdditionalReferencedDocument: TReferencedDocumentCTList read fAdditionalReferencedDocument;
-    property DespatchAdviceReferencedDocument: TReferencedDocumentCT read fDespatchAdviceReferencedDocument;
-    property ReceivingAdviceReferencedDocument: TReferencedDocumentCT read fReceivingAdviceReferencedDocument;
-    property DeliveryNoteReferencedDocument: TReferencedDocumentCT read fDeliveryNoteReferencedDocument;
-    property ConsumptionReportReferencedDocument: TReferencedDocumentCT read fConsumptionReportReferencedDocument;
-    property PackingListReferencedDocument: TReferencedDocumentCT read fPackingListReferencedDocument;
+    property DespatchAdviceReferencedDocument: TReferencedDocumentCT read GetDespatchAdviceReferencedDocument;
+    property ReceivingAdviceReferencedDocument: TReferencedDocumentCT read GetReceivingAdviceReferencedDocument;
+    property DeliveryNoteReferencedDocument: TReferencedDocumentCT read GetDeliveryNoteReferencedDocument;
+    property ConsumptionReportReferencedDocument: TReferencedDocumentCT read GetConsumptionReportReferencedDocument;
+    property PackingListReferencedDocument: TReferencedDocumentCT read GetPackingListReferencedDocument;
   end;
 
   [TName('LineTradeSettlementType')]
@@ -1076,26 +1352,34 @@ type
     fPurchaseSpecifiedTradeAccountingAccount: TTradeAccountingAccountCTList;
     fSalesSpecifiedTradeAccountingAccount: TTradeAccountingAccountCTList;
     fSpecifiedTradeSettlementFinancialCard: TTradeSettlementFinancialCardCT;
+
+    function GetInvoiceIssuerReference: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetTotalAdjustmentAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
+    function GetDiscountIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT;
+    function GetBillingSpecifiedPeriod: TSpecifiedPeriodCT;
+    function GetSpecifiedTradeSettlementLineMonetarySummation: TTradeSettlementLineMonetarySummationCT;
+    function GetInvoiceReferencedDocument: TReferencedDocumentCT;
+    function GetSpecifiedTradeSettlementFinancialCard: TTradeSettlementFinancialCardCT;
   published
     property PaymentReference: TTextCTList read fPaymentReference;
-    property InvoiceIssuerReference: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fInvoiceIssuerReference;
-    property TotalAdjustmentAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT read fTotalAdjustmentAmount;
-    property DiscountIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT read fDiscountIndicator;
+    property InvoiceIssuerReference: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetInvoiceIssuerReference;
+    property TotalAdjustmentAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT read GetTotalAdjustmentAmount;
+    property DiscountIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT read GetDiscountIndicator;
     property ApplicableTradeTax: TTradeTaxCTList read fApplicableTradeTax;
-    property BillingSpecifiedPeriod: TSpecifiedPeriodCT read fBillingSpecifiedPeriod;
+    property BillingSpecifiedPeriod: TSpecifiedPeriodCT read GetBillingSpecifiedPeriod;
     property SpecifiedTradeAllowanceCharge: TTradeAllowanceChargeCTList read fSpecifiedTradeAllowanceCharge;
     property SubtotalCalculatedTradeTax: TTradeTaxCTList read fSubtotalCalculatedTradeTax;
     property SpecifiedLogisticsServiceCharge: TLogisticsServiceChargeCTList read fSpecifiedLogisticsServiceCharge;
     property SpecifiedTradePaymentTerms: TTradePaymentTermsCTList read fSpecifiedTradePaymentTerms;
-    property SpecifiedTradeSettlementLineMonetarySummation: TTradeSettlementLineMonetarySummationCT read fSpecifiedTradeSettlementLineMonetarySummation;
+    property SpecifiedTradeSettlementLineMonetarySummation: TTradeSettlementLineMonetarySummationCT read GetSpecifiedTradeSettlementLineMonetarySummation;
     property SpecifiedFinancialAdjustment: TFinancialAdjustmentCTList read fSpecifiedFinancialAdjustment;
-    property InvoiceReferencedDocument: TReferencedDocumentCT read fInvoiceReferencedDocument;
+    property InvoiceReferencedDocument: TReferencedDocumentCT read GetInvoiceReferencedDocument;
     property AdditionalReferencedDocument: TReferencedDocumentCTList read fAdditionalReferencedDocument;
     property PayableSpecifiedTradeAccountingAccount: TTradeAccountingAccountCTList read fPayableSpecifiedTradeAccountingAccount;
     property ReceivableSpecifiedTradeAccountingAccount: TTradeAccountingAccountCTList read fReceivableSpecifiedTradeAccountingAccount;
     property PurchaseSpecifiedTradeAccountingAccount: TTradeAccountingAccountCTList read fPurchaseSpecifiedTradeAccountingAccount;
     property SalesSpecifiedTradeAccountingAccount: TTradeAccountingAccountCTList read fSalesSpecifiedTradeAccountingAccount;
-    property SpecifiedTradeSettlementFinancialCard: TTradeSettlementFinancialCardCT read fSpecifiedTradeSettlementFinancialCard;
+    property SpecifiedTradeSettlementFinancialCard: TTradeSettlementFinancialCardCT read GetSpecifiedTradeSettlementFinancialCard;
   end;
 
   [TName('LogisticsLocationType')]
@@ -1107,14 +1391,19 @@ type
     fDescription: TTextCTList;
     fPhysicalGeographicalCoordinate: TGeographicalCoordinateCT;
     fPostalTradeAddress: TTradeAddressCT;
+
+    function GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetPhysicalGeographicalCoordinate: TGeographicalCoordinateCT;
+    function GetPostalTradeAddress: TTradeAddressCT;
   published
     [TNaming(TNaming.nUpperCase)]
-    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fId;
+    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetId;
     property Name: TTextCTList read fName;
-    property TypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fTypeCode;
+    property TypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetTypeCode;
     property Description: TTextCTList read fDescription;
-    property PhysicalGeographicalCoordinate: TGeographicalCoordinateCT read fPhysicalGeographicalCoordinate;
-    property PostalTradeAddress: TTradeAddressCT read fPostalTradeAddress;
+    property PhysicalGeographicalCoordinate: TGeographicalCoordinateCT read GetPhysicalGeographicalCoordinate;
+    property PostalTradeAddress: TTradeAddressCT read GetPostalTradeAddress;
   end;
 
   [TName('LogisticsServiceChargeType')]
@@ -1137,24 +1426,38 @@ type
     fAppliedFromLogisticsLocation: TLogisticsLocationCT;
     fAppliedToLogisticsLocation: TLogisticsLocationCT;
     fAppliedTradeTax: TTradeTaxCTList;
+
+    function GetId: ProRock.Xmlite.Schema.QualifiedDataType100.TFreightChargeTypeIDCT;
+    function GetPaymentArrangementCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetTariffClassCode: ProRock.Xmlite.Schema.QualifiedDataType100.TFreightChargeTariffClassCodeCT;
+    function GetChargeCategoryCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetServiceCategoryCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetAllowanceCharge: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetPayingPartyRoleCode: ProRock.Xmlite.Schema.QualifiedDataType100.TChargePayingPartyRoleCodeCT;
+    function GetCalculationBasisCode: ProRock.Xmlite.Schema.QualifiedDataType100.TLogisticsChargeCalculationBasisCodeCT;
+    function GetCalculationBasis: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetTransportPaymentMethodCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetPaymentPlaceLogisticsLocation: TLogisticsLocationCT;
+    function GetAppliedFromLogisticsLocation: TLogisticsLocationCT;
+    function GetAppliedToLogisticsLocation: TLogisticsLocationCT;
   published
     [TNaming(TNaming.nUpperCase)]
-    property Id: ProRock.Xmlite.Schema.QualifiedDataType100.TFreightChargeTypeIDCT read fId;
+    property Id: ProRock.Xmlite.Schema.QualifiedDataType100.TFreightChargeTypeIDCT read GetId;
     property Description: TTextCTList read fDescription;
-    property PaymentArrangementCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fPaymentArrangementCode;
-    property TariffClassCode: ProRock.Xmlite.Schema.QualifiedDataType100.TFreightChargeTariffClassCodeCT read fTariffClassCode;
-    property ChargeCategoryCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fChargeCategoryCode;
-    property ServiceCategoryCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fServiceCategoryCode;
+    property PaymentArrangementCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetPaymentArrangementCode;
+    property TariffClassCode: ProRock.Xmlite.Schema.QualifiedDataType100.TFreightChargeTariffClassCodeCT read GetTariffClassCode;
+    property ChargeCategoryCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetChargeCategoryCode;
+    property ServiceCategoryCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetServiceCategoryCode;
     property DisbursementAmount: TAmountCTList read fDisbursementAmount;
     property AppliedAmount: TAmountCTList read fAppliedAmount;
-    property AllowanceCharge: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fAllowanceCharge;
-    property PayingPartyRoleCode: ProRock.Xmlite.Schema.QualifiedDataType100.TChargePayingPartyRoleCodeCT read fPayingPartyRoleCode;
-    property CalculationBasisCode: ProRock.Xmlite.Schema.QualifiedDataType100.TLogisticsChargeCalculationBasisCodeCT read fCalculationBasisCode;
-    property CalculationBasis: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fCalculationBasis;
-    property TransportPaymentMethodCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fTransportPaymentMethodCode;
-    property PaymentPlaceLogisticsLocation: TLogisticsLocationCT read fPaymentPlaceLogisticsLocation;
-    property AppliedFromLogisticsLocation: TLogisticsLocationCT read fAppliedFromLogisticsLocation;
-    property AppliedToLogisticsLocation: TLogisticsLocationCT read fAppliedToLogisticsLocation;
+    property AllowanceCharge: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetAllowanceCharge;
+    property PayingPartyRoleCode: ProRock.Xmlite.Schema.QualifiedDataType100.TChargePayingPartyRoleCodeCT read GetPayingPartyRoleCode;
+    property CalculationBasisCode: ProRock.Xmlite.Schema.QualifiedDataType100.TLogisticsChargeCalculationBasisCodeCT read GetCalculationBasisCode;
+    property CalculationBasis: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetCalculationBasis;
+    property TransportPaymentMethodCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetTransportPaymentMethodCode;
+    property PaymentPlaceLogisticsLocation: TLogisticsLocationCT read GetPaymentPlaceLogisticsLocation;
+    property AppliedFromLogisticsLocation: TLogisticsLocationCT read GetAppliedFromLogisticsLocation;
+    property AppliedToLogisticsLocation: TLogisticsLocationCT read GetAppliedToLogisticsLocation;
     property AppliedTradeTax: TTradeTaxCTList read fAppliedTradeTax;
   end;
 
@@ -1167,14 +1470,21 @@ type
     fCharacteristicCode: ProRock.Xmlite.Schema.QualifiedDataType100.TTransportEquipmentSizeTypeCodeCT;
     fUsedCapacityCode: ProRock.Xmlite.Schema.QualifiedDataType100.TTransportEquipmentFullnessCodeCT;
     fLinearSpatialDimension: TSpatialDimensionCT;
+
+    function GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetLoadingLengthMeasure: ProRock.Xmlite.Schema.QualifiedDataType100.TLinearUnitMeasureCT;
+    function GetCategoryCode: ProRock.Xmlite.Schema.QualifiedDataType100.TTransportEquipmentCategoryCodeCT;
+    function GetCharacteristicCode: ProRock.Xmlite.Schema.QualifiedDataType100.TTransportEquipmentSizeTypeCodeCT;
+    function GetUsedCapacityCode: ProRock.Xmlite.Schema.QualifiedDataType100.TTransportEquipmentFullnessCodeCT;
+    function GetLinearSpatialDimension: TSpatialDimensionCT;
   published
     [TNaming(TNaming.nUpperCase)]
-    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fId;
-    property LoadingLengthMeasure: ProRock.Xmlite.Schema.QualifiedDataType100.TLinearUnitMeasureCT read fLoadingLengthMeasure;
-    property CategoryCode: ProRock.Xmlite.Schema.QualifiedDataType100.TTransportEquipmentCategoryCodeCT read fCategoryCode;
-    property CharacteristicCode: ProRock.Xmlite.Schema.QualifiedDataType100.TTransportEquipmentSizeTypeCodeCT read fCharacteristicCode;
-    property UsedCapacityCode: ProRock.Xmlite.Schema.QualifiedDataType100.TTransportEquipmentFullnessCodeCT read fUsedCapacityCode;
-    property LinearSpatialDimension: TSpatialDimensionCT read fLinearSpatialDimension;
+    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetId;
+    property LoadingLengthMeasure: ProRock.Xmlite.Schema.QualifiedDataType100.TLinearUnitMeasureCT read GetLoadingLengthMeasure;
+    property CategoryCode: ProRock.Xmlite.Schema.QualifiedDataType100.TTransportEquipmentCategoryCodeCT read GetCategoryCode;
+    property CharacteristicCode: ProRock.Xmlite.Schema.QualifiedDataType100.TTransportEquipmentSizeTypeCodeCT read GetCharacteristicCode;
+    property UsedCapacityCode: ProRock.Xmlite.Schema.QualifiedDataType100.TTransportEquipmentFullnessCodeCT read GetUsedCapacityCode;
+    property LinearSpatialDimension: TSpatialDimensionCT read GetLinearSpatialDimension;
   end;
 
   [TName('LogisticsTransportMeansType')]
@@ -1185,13 +1495,19 @@ type
     fId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
     fName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
     fOwnerTradeParty: TTradePartyCT;
+
+    function GetTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TTransportMeansTypeCodeCT;
+    function GetType: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetOwnerTradeParty: TTradePartyCT;
   published
-    property TypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TTransportMeansTypeCodeCT read fTypeCode;
-    property &Type: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fType;
+    property TypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TTransportMeansTypeCodeCT read GetTypeCode;
+    property &Type: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetType;
     [TNaming(TNaming.nUpperCase)]
-    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fId;
-    property Name: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fName;
-    property OwnerTradeParty: TTradePartyCT read fOwnerTradeParty;
+    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetId;
+    property Name: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetName;
+    property OwnerTradeParty: TTradePartyCT read GetOwnerTradeParty;
   end;
 
   [TName('LogisticsTransportMovementType')]
@@ -1201,11 +1517,16 @@ type
     fModeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TTransportModeCodeCT;
     fMode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
     fUsedLogisticsTransportMeans: TLogisticsTransportMeansCT;
+
+    function GetStageCode: ProRock.Xmlite.Schema.QualifiedDataType100.TTransportMovementStageCodeCT;
+    function GetModeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TTransportModeCodeCT;
+    function GetMode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetUsedLogisticsTransportMeans: TLogisticsTransportMeansCT;
   published
-    property StageCode: ProRock.Xmlite.Schema.QualifiedDataType100.TTransportMovementStageCodeCT read fStageCode;
-    property ModeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TTransportModeCodeCT read fModeCode;
-    property Mode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fMode;
-    property UsedLogisticsTransportMeans: TLogisticsTransportMeansCT read fUsedLogisticsTransportMeans;
+    property StageCode: ProRock.Xmlite.Schema.QualifiedDataType100.TTransportMovementStageCodeCT read GetStageCode;
+    property ModeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TTransportModeCodeCT read GetModeCode;
+    property Mode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetMode;
+    property UsedLogisticsTransportMeans: TLogisticsTransportMeansCT read GetUsedLogisticsTransportMeans;
   end;
 
   [TName('MaterialGoodsCharacteristicType')]
@@ -1216,12 +1537,17 @@ type
     fProportionalConstituentPercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT;
     fAbsolutePresenceWeightMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
     fAbsolutePresenceVolumeMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+
+    function GetTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetProportionalConstituentPercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT;
+    function GetAbsolutePresenceWeightMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+    function GetAbsolutePresenceVolumeMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
   published
     property Description: TTextCTList read fDescription;
-    property TypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fTypeCode;
-    property ProportionalConstituentPercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT read fProportionalConstituentPercent;
-    property AbsolutePresenceWeightMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read fAbsolutePresenceWeightMeasure;
-    property AbsolutePresenceVolumeMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read fAbsolutePresenceVolumeMeasure;
+    property TypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetTypeCode;
+    property ProportionalConstituentPercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT read GetProportionalConstituentPercent;
+    property AbsolutePresenceWeightMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read GetAbsolutePresenceWeightMeasure;
+    property AbsolutePresenceVolumeMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read GetAbsolutePresenceVolumeMeasure;
   end;
 
   [TName('NoteType')]
@@ -1232,13 +1558,18 @@ type
     fContent: TTextCTList;
     fSubjectCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
     fId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+
+    function GetSubject: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetContentCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetSubjectCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
   published
-    property Subject: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fSubject;
-    property ContentCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fContentCode;
+    property Subject: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetSubject;
+    property ContentCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetContentCode;
     property Content: TTextCTList read fContent;
-    property SubjectCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fSubjectCode;
+    property SubjectCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetSubjectCode;
     [TNaming(TNaming.nUpperCase)]
-    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fId;
+    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetId;
   end;
 
   [TName('PackagingMarkingType')]
@@ -1251,10 +1582,12 @@ type
     fBarcodeTypeCode: TCodeCTList;
     fContentCode: TCodeCTList;
     fAutomaticDataCaptureMethodTypeCode: TAutomaticDataCaptureMethodCodeCTList;
+
+    function GetContentDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
   published
     property TypeCode: TPackagingMarkingCodeCTList read fTypeCode;
     property Content: TTextCTList read fContent;
-    property ContentDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read fContentDateTime;
+    property ContentDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read GetContentDateTime;
     property ContentAmount: TAmountCTList read fContentAmount;
     property BarcodeTypeCode: TCodeCTList read fBarcodeTypeCode;
     property ContentCode: TCodeCTList read fContentCode;
@@ -1267,11 +1600,13 @@ type
     fId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
     fDescription: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
     fName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+
+    function GetDescription: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
   published
     [TRequired]
     [TNaming(TNaming.nUpperCase)]
     property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fId;
-    property Description: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fDescription;
+    property Description: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetDescription;
     [TRequired]
     property Name: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fName;
   end;
@@ -1282,10 +1617,13 @@ type
     fTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
     fName: TTextCTList;
     fValueMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+
+    function GetTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetValueMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
   published
-    property TypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fTypeCode;
+    property TypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetTypeCode;
     property Name: TTextCTList read fName;
-    property ValueMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read fValueMeasure;
+    property ValueMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read GetValueMeasure;
   end;
 
   [TName('ProductCharacteristicType')]
@@ -1304,21 +1642,31 @@ type
     fValueSpecifiedBinaryFile: TSpecifiedBinaryFileCT;
     fApplicableProductCharacteristicCondition: TProductCharacteristicConditionCTList;
     fApplicableReferencedStandard: TReferencedStandardCT;
+
+    function GetTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetValueMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+    function GetMeasurementMethodCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetValueCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetValueDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+    function GetValueIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT;
+    function GetContentTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetValueSpecifiedBinaryFile: TSpecifiedBinaryFileCT;
+    function GetApplicableReferencedStandard: TReferencedStandardCT;
   published
     [TNaming(TNaming.nUpperCase)]
     property Id: TIdCTList read fId;
-    property TypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fTypeCode;
+    property TypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetTypeCode;
     property Description: TTextCTList read fDescription;
-    property ValueMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read fValueMeasure;
-    property MeasurementMethodCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fMeasurementMethodCode;
+    property ValueMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read GetValueMeasure;
+    property MeasurementMethodCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetMeasurementMethodCode;
     property Value: TTextCTList read fValue;
-    property ValueCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fValueCode;
-    property ValueDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read fValueDateTime;
-    property ValueIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT read fValueIndicator;
-    property ContentTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fContentTypeCode;
-    property ValueSpecifiedBinaryFile: TSpecifiedBinaryFileCT read fValueSpecifiedBinaryFile;
+    property ValueCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetValueCode;
+    property ValueDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read GetValueDateTime;
+    property ValueIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT read GetValueIndicator;
+    property ContentTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetContentTypeCode;
+    property ValueSpecifiedBinaryFile: TSpecifiedBinaryFileCT read GetValueSpecifiedBinaryFile;
     property ApplicableProductCharacteristicCondition: TProductCharacteristicConditionCTList read fApplicableProductCharacteristicCondition;
-    property ApplicableReferencedStandard: TReferencedStandardCT read fApplicableReferencedStandard;
+    property ApplicableReferencedStandard: TReferencedStandardCT read GetApplicableReferencedStandard;
   end;
 
   [TName('ProductClassificationType')]
@@ -1331,14 +1679,19 @@ type
     fSubClassCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
     fClassProductCharacteristic: TProductCharacteristicCTList;
     fApplicableReferencedStandard: TReferencedStandardCT;
+
+    function GetSystemID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetClassCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetSubClassCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetApplicableReferencedStandard: TReferencedStandardCT;
   published
-    property SystemID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fSystemID;
+    property SystemID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetSystemID;
     property SystemName: TTextCTList read fSystemName;
-    property ClassCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fClassCode;
+    property ClassCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetClassCode;
     property ClassName: TTextCTList read fClassName;
-    property SubClassCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fSubClassCode;
+    property SubClassCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetSubClassCode;
     property ClassProductCharacteristic: TProductCharacteristicCTList read fClassProductCharacteristic;
-    property ApplicableReferencedStandard: TReferencedStandardCT read fApplicableReferencedStandard;
+    property ApplicableReferencedStandard: TReferencedStandardCT read GetApplicableReferencedStandard;
   end;
 
   [TName('RecordedStatusType')]
@@ -1347,10 +1700,12 @@ type
     fConditionCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
     fChangerName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
     fChangedDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+
+    function GetChangerName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
   published
     [TRequired]
     property ConditionCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fConditionCode;
-    property ChangerName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fChangerName;
+    property ChangerName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetChangerName;
     [TRequired]
     property ChangedDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read fChangedDateTime;
   end;
@@ -1376,25 +1731,38 @@ type
     fEffectiveSpecifiedPeriod: TSpecifiedPeriodCT;
     fIssuerTradeParty: TTradePartyCT;
     fAttachedSpecifiedBinaryFile: TSpecifiedBinaryFileCTList;
+
+    function GetIssuerAssignedID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetUriid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetStatusCode: ProRock.Xmlite.Schema.QualifiedDataType100.TDocumentStatusCodeCT;
+    function GetCopyIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT;
+    function GetLineID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TDocumentCodeCT;
+    function GetGlobalID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetRevisionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetReferenceTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TReferenceCodeCT;
+    function GetFormattedIssueDateTime: ProRock.Xmlite.Schema.QualifiedDataType100.TFormattedDateTimeCT;
+    function GetEffectiveSpecifiedPeriod: TSpecifiedPeriodCT;
+    function GetIssuerTradeParty: TTradePartyCT;
   published
-    property IssuerAssignedID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fIssuerAssignedID;
+    property IssuerAssignedID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetIssuerAssignedID;
     [TNaming(TNaming.nUpperCase)]
-    property Uriid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fUriid;
-    property StatusCode: ProRock.Xmlite.Schema.QualifiedDataType100.TDocumentStatusCodeCT read fStatusCode;
-    property CopyIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT read fCopyIndicator;
-    property LineID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fLineID;
-    property TypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TDocumentCodeCT read fTypeCode;
-    property GlobalID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fGlobalID;
-    property RevisionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fRevisionID;
+    property Uriid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetUriid;
+    property StatusCode: ProRock.Xmlite.Schema.QualifiedDataType100.TDocumentStatusCodeCT read GetStatusCode;
+    property CopyIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT read GetCopyIndicator;
+    property LineID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetLineID;
+    property TypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TDocumentCodeCT read GetTypeCode;
+    property GlobalID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetGlobalID;
+    property RevisionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetRevisionID;
     property Name: TTextCTList read fName;
     property AttachmentBinaryObject: TBinaryObjectCTList read fAttachmentBinaryObject;
     property Information: TTextCTList read fInformation;
-    property ReferenceTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TReferenceCodeCT read fReferenceTypeCode;
+    property ReferenceTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TReferenceCodeCT read GetReferenceTypeCode;
     property SectionName: TTextCTList read fSectionName;
     property PreviousRevisionID: TIdCTList read fPreviousRevisionID;
-    property FormattedIssueDateTime: ProRock.Xmlite.Schema.QualifiedDataType100.TFormattedDateTimeCT read fFormattedIssueDateTime;
-    property EffectiveSpecifiedPeriod: TSpecifiedPeriodCT read fEffectiveSpecifiedPeriod;
-    property IssuerTradeParty: TTradePartyCT read fIssuerTradeParty;
+    property FormattedIssueDateTime: ProRock.Xmlite.Schema.QualifiedDataType100.TFormattedDateTimeCT read GetFormattedIssueDateTime;
+    property EffectiveSpecifiedPeriod: TSpecifiedPeriodCT read GetEffectiveSpecifiedPeriod;
+    property IssuerTradeParty: TTradePartyCT read GetIssuerTradeParty;
     property AttachedSpecifiedBinaryFile: TSpecifiedBinaryFileCTList read fAttachedSpecifiedBinaryFile;
   end;
 
@@ -1411,12 +1779,15 @@ type
     fDescription: TTextCTList;
     fRelationshipTypeCode: TCodeCTList;
     fUnitQuantity: TQuantityCTList;
+
+    function GetSellerAssignedID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetBuyerAssignedID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
   published
     [TNaming(TNaming.nUpperCase)]
     property Id: TIdCTList read fId;
     property GlobalID: TIdCTList read fGlobalID;
-    property SellerAssignedID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fSellerAssignedID;
-    property BuyerAssignedID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fBuyerAssignedID;
+    property SellerAssignedID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetSellerAssignedID;
+    property BuyerAssignedID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetBuyerAssignedID;
     property ManufacturerAssignedID: TIdCTList read fManufacturerAssignedID;
     property IndustryAssignedID: TIdCTList read fIndustryAssignedID;
     property Name: TTextCTList read fName;
@@ -1434,15 +1805,22 @@ type
     fUriid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
     fPartID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
     fAgencyID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+
+    function GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetVersionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetElementVersionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetUriid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetPartID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetAgencyID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
   published
     [TNaming(TNaming.nUpperCase)]
-    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fId;
-    property VersionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fVersionID;
-    property ElementVersionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fElementVersionID;
+    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetId;
+    property VersionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetVersionID;
+    property ElementVersionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetElementVersionID;
     [TNaming(TNaming.nUpperCase)]
-    property Uriid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fUriid;
-    property PartID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fPartID;
-    property AgencyID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fAgencyID;
+    property Uriid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetUriid;
+    property PartID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetPartID;
+    property AgencyID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetAgencyID;
   end;
 
   [TName('ReferencePriceType')]
@@ -1452,11 +1830,14 @@ type
     fBasisQuantity: TQuantityCTList;
     fNetPriceIndicator: TIndicatorCTList;
     fComparisonMethodCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+
+    function GetChargeAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
+    function GetComparisonMethodCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
   published
-    property ChargeAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT read fChargeAmount;
+    property ChargeAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT read GetChargeAmount;
     property BasisQuantity: TQuantityCTList read fBasisQuantity;
     property NetPriceIndicator: TIndicatorCTList read fNetPriceIndicator;
-    property ComparisonMethodCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fComparisonMethodCode;
+    property ComparisonMethodCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetComparisonMethodCode;
   end;
 
   [TName('RegisteredTaxType')]
@@ -1469,14 +1850,19 @@ type
     fJurisdiction: TTextCTList;
     fDescription: TTextCTList;
     fCustomsDutyIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT;
+
+    function GetTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetExemptionReasonCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetCurrencyCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetCustomsDutyIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT;
   published
-    property TypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fTypeCode;
-    property ExemptionReasonCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fExemptionReasonCode;
+    property TypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetTypeCode;
+    property ExemptionReasonCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetExemptionReasonCode;
     property ExemptionReason: TTextCTList read fExemptionReason;
-    property CurrencyCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fCurrencyCode;
+    property CurrencyCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetCurrencyCode;
     property Jurisdiction: TTextCTList read fJurisdiction;
     property Description: TTextCTList read fDescription;
-    property CustomsDutyIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT read fCustomsDutyIndicator;
+    property CustomsDutyIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT read GetCustomsDutyIndicator;
   end;
 
   [TName('ReturnableAssetInstructionsType')]
@@ -1487,12 +1873,15 @@ type
     fTermsAndConditionsDescriptionCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
     fDepositValueSpecifiedAmount: TAmountCTList;
     fDepositValueValiditySpecifiedPeriod: TSpecifiedPeriodCT;
+
+    function GetTermsAndConditionsDescriptionCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetDepositValueValiditySpecifiedPeriod: TSpecifiedPeriodCT;
   published
     property MaterialID: TIdCTList read fMaterialID;
     property TermsAndConditionsDescription: TTextCTList read fTermsAndConditionsDescription;
-    property TermsAndConditionsDescriptionCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fTermsAndConditionsDescriptionCode;
+    property TermsAndConditionsDescriptionCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetTermsAndConditionsDescriptionCode;
     property DepositValueSpecifiedAmount: TAmountCTList read fDepositValueSpecifiedAmount;
-    property DepositValueValiditySpecifiedPeriod: TSpecifiedPeriodCT read fDepositValueValiditySpecifiedPeriod;
+    property DepositValueValiditySpecifiedPeriod: TSpecifiedPeriodCT read GetDepositValueValiditySpecifiedPeriod;
   end;
 
   [TName('SpatialDimensionType')]
@@ -1506,16 +1895,24 @@ type
     fHeightMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
     fId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
     fDiameterMeasure: ProRock.Xmlite.Schema.QualifiedDataType100.TLinearUnitMeasureCT;
+
+    function GetValueMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+    function GetTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TDimensionTypeCodeCT;
+    function GetWidthMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+    function GetLengthMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+    function GetHeightMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+    function GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetDiameterMeasure: ProRock.Xmlite.Schema.QualifiedDataType100.TLinearUnitMeasureCT;
   published
-    property ValueMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read fValueMeasure;
-    property TypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TDimensionTypeCodeCT read fTypeCode;
+    property ValueMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read GetValueMeasure;
+    property TypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TDimensionTypeCodeCT read GetTypeCode;
     property Description: TTextCTList read fDescription;
-    property WidthMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read fWidthMeasure;
-    property LengthMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read fLengthMeasure;
-    property HeightMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read fHeightMeasure;
+    property WidthMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read GetWidthMeasure;
+    property LengthMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read GetLengthMeasure;
+    property HeightMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read GetHeightMeasure;
     [TNaming(TNaming.nUpperCase)]
-    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fId;
-    property DiameterMeasure: ProRock.Xmlite.Schema.QualifiedDataType100.TLinearUnitMeasureCT read fDiameterMeasure;
+    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetId;
+    property DiameterMeasure: ProRock.Xmlite.Schema.QualifiedDataType100.TLinearUnitMeasureCT read GetDiameterMeasure;
   end;
 
   [TName('SpecificationQueryType')]
@@ -1525,14 +1922,17 @@ type
     fTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
     fContent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
     fContractualLanguageCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+
+    function GetTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetContractualLanguageCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
   published
     [TRequired]
     [TNaming(TNaming.nUpperCase)]
     property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fId;
-    property TypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fTypeCode;
+    property TypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetTypeCode;
     [TRequired]
     property Content: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fContent;
-    property ContractualLanguageCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fContractualLanguageCode;
+    property ContractualLanguageCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetContractualLanguageCode;
   end;
 
   [TName('SpecificationResponseType')]
@@ -1543,15 +1943,19 @@ type
     fTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
     fContent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
     fContractualLanguageCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+
+    function GetQueryID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetContractualLanguageCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
   published
     [TRequired]
     [TNaming(TNaming.nUpperCase)]
     property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fId;
-    property QueryID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fQueryID;
-    property TypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fTypeCode;
+    property QueryID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetQueryID;
+    property TypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetTypeCode;
     [TRequired]
     property Content: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fContent;
-    property ContractualLanguageCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fContractualLanguageCode;
+    property ContractualLanguageCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetContractualLanguageCode;
   end;
 
   [TName('SpecifiedBinaryFileType')]
@@ -1571,23 +1975,32 @@ type
     fDescription: TTextCTList;
     fSizeMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
     fAccessAvailabilitySpecifiedPeriod: TSpecifiedPeriodCT;
+
+    function GetVersionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetFileName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetUriid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetMIMECode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetEncodingCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetCharacterSetCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetSizeMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+    function GetAccessAvailabilitySpecifiedPeriod: TSpecifiedPeriodCT;
   published
     [TNaming(TNaming.nUpperCase)]
     property Id: TIdCTList read fId;
     property Title: TTextCTList read fTitle;
     property AuthorName: TTextCTList read fAuthorName;
-    property VersionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fVersionID;
-    property FileName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fFileName;
+    property VersionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetVersionID;
+    property FileName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetFileName;
     [TNaming(TNaming.nUpperCase)]
-    property Uriid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fUriid;
-    property MIMECode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fMIMECode;
-    property EncodingCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fEncodingCode;
-    property CharacterSetCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fCharacterSetCode;
+    property Uriid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetUriid;
+    property MIMECode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetMIMECode;
+    property EncodingCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetEncodingCode;
+    property CharacterSetCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetCharacterSetCode;
     property IncludedBinaryObject: TBinaryObjectCTList read fIncludedBinaryObject;
     property Access: TTextCTList read fAccess;
     property Description: TTextCTList read fDescription;
-    property SizeMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read fSizeMeasure;
-    property AccessAvailabilitySpecifiedPeriod: TSpecifiedPeriodCT read fAccessAvailabilitySpecifiedPeriod;
+    property SizeMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read GetSizeMeasure;
+    property AccessAvailabilitySpecifiedPeriod: TSpecifiedPeriodCT read GetAccessAvailabilitySpecifiedPeriod;
   end;
 
   [TName('SpecifiedMarketplaceType')]
@@ -1599,13 +2012,18 @@ type
     fWebsiteURIID: TIdCTList;
     fSalesMethodCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
     fOrderingAvailablePeriod: TAvailablePeriodCTList;
+
+    function GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetVirtualIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT;
+    function GetSalesMethodCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
   published
     [TNaming(TNaming.nUpperCase)]
-    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fId;
-    property Name: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fName;
-    property VirtualIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT read fVirtualIndicator;
+    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetId;
+    property Name: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetName;
+    property VirtualIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT read GetVirtualIndicator;
     property WebsiteURIID: TIdCTList read fWebsiteURIID;
-    property SalesMethodCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fSalesMethodCode;
+    property SalesMethodCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetSalesMethodCode;
     property OrderingAvailablePeriod: TAvailablePeriodCTList read fOrderingAvailablePeriod;
   end;
 
@@ -1626,22 +2044,34 @@ type
     fStartDateFlexibilityCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
     fContinuousIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT;
     fPurposeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+
+    function GetInclusiveIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT;
+    function GetStartDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+    function GetEndDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+    function GetCompleteDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+    function GetOpenIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT;
+    function GetSeasonCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetSequenceNumeric: ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT;
+    function GetStartDateFlexibilityCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetContinuousIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT;
+    function GetPurposeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
   published
     property DurationMeasure: TMeasureCTList read fDurationMeasure;
-    property InclusiveIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT read fInclusiveIndicator;
+    property InclusiveIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT read GetInclusiveIndicator;
     property Description: TTextCTList read fDescription;
-    property StartDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read fStartDateTime;
-    property EndDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read fEndDateTime;
-    property CompleteDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read fCompleteDateTime;
-    property OpenIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT read fOpenIndicator;
-    property SeasonCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fSeasonCode;
+    property StartDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read GetStartDateTime;
+    property EndDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read GetEndDateTime;
+    property CompleteDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read GetCompleteDateTime;
+    property OpenIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT read GetOpenIndicator;
+    property SeasonCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetSeasonCode;
     [TNaming(TNaming.nUpperCase)]
-    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fId;
+    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetId;
     property Name: TTextCTList read fName;
-    property SequenceNumeric: ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT read fSequenceNumeric;
-    property StartDateFlexibilityCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fStartDateFlexibilityCode;
-    property ContinuousIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT read fContinuousIndicator;
-    property PurposeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fPurposeCode;
+    property SequenceNumeric: ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT read GetSequenceNumeric;
+    property StartDateFlexibilityCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetStartDateFlexibilityCode;
+    property ContinuousIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT read GetContinuousIndicator;
+    property PurposeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetPurposeCode;
   end;
 
   [TName('SubordinateLineTradeAgreementType')]
@@ -1652,12 +2082,17 @@ type
     fAdditionalReferencedDocument: TReferencedDocumentCTList;
     fGrossPriceProductTradePrice: TTradePriceCT;
     fNetPriceProductTradePrice: TTradePriceCT;
+
+    function GetSellerOrderReferencedDocument: TReferencedDocumentCT;
+    function GetBuyerOrderReferencedDocument: TReferencedDocumentCT;
+    function GetGrossPriceProductTradePrice: TTradePriceCT;
+    function GetNetPriceProductTradePrice: TTradePriceCT;
   published
-    property SellerOrderReferencedDocument: TReferencedDocumentCT read fSellerOrderReferencedDocument;
-    property BuyerOrderReferencedDocument: TReferencedDocumentCT read fBuyerOrderReferencedDocument;
+    property SellerOrderReferencedDocument: TReferencedDocumentCT read GetSellerOrderReferencedDocument;
+    property BuyerOrderReferencedDocument: TReferencedDocumentCT read GetBuyerOrderReferencedDocument;
     property AdditionalReferencedDocument: TReferencedDocumentCTList read fAdditionalReferencedDocument;
-    property GrossPriceProductTradePrice: TTradePriceCT read fGrossPriceProductTradePrice;
-    property NetPriceProductTradePrice: TTradePriceCT read fNetPriceProductTradePrice;
+    property GrossPriceProductTradePrice: TTradePriceCT read GetGrossPriceProductTradePrice;
+    property NetPriceProductTradePrice: TTradePriceCT read GetNetPriceProductTradePrice;
   end;
 
   [TName('SubordinateLineTradeDeliveryType')]
@@ -1667,10 +2102,14 @@ type
     fProductUnitQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
     fPerPackageUnitQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
     fIncludedSupplyChainPackaging: TSupplyChainPackagingCTList;
+
+    function GetPackageQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+    function GetProductUnitQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+    function GetPerPackageUnitQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
   published
-    property PackageQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read fPackageQuantity;
-    property ProductUnitQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read fProductUnitQuantity;
-    property PerPackageUnitQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read fPerPackageUnitQuantity;
+    property PackageQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read GetPackageQuantity;
+    property ProductUnitQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read GetProductUnitQuantity;
+    property PerPackageUnitQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read GetPerPackageUnitQuantity;
     property IncludedSupplyChainPackaging: TSupplyChainPackagingCTList read fIncludedSupplyChainPackaging;
   end;
 
@@ -1678,8 +2117,10 @@ type
   TSubordinateLineTradeSettlementCT = class(TXmliteComplexType)
   private
     fApplicableTradeTax: TTradeTaxCT;
+
+    function GetApplicableTradeTax: TTradeTaxCT;
   published
-    property ApplicableTradeTax: TTradeTaxCT read fApplicableTradeTax;
+    property ApplicableTradeTax: TTradeTaxCT read GetApplicableTradeTax;
   end;
 
   [TName('SubordinateTradeLineItemType')]
@@ -1691,14 +2132,19 @@ type
     fSpecifiedSubordinateLineTradeAgreement: TSubordinateLineTradeAgreementCT;
     fSpecifiedSubordinateLineTradeDelivery: TSubordinateLineTradeDeliveryCT;
     fSpecifiedSubordinateLineTradeSettlement: TSubordinateLineTradeSettlementCT;
+
+    function GetSpecifiedReferencedProduct: TReferencedProductCT;
+    function GetSpecifiedSubordinateLineTradeAgreement: TSubordinateLineTradeAgreementCT;
+    function GetSpecifiedSubordinateLineTradeDelivery: TSubordinateLineTradeDeliveryCT;
+    function GetSpecifiedSubordinateLineTradeSettlement: TSubordinateLineTradeSettlementCT;
   published
     [TNaming(TNaming.nUpperCase)]
     property Id: TIdCTList read fId;
-    property SpecifiedReferencedProduct: TReferencedProductCT read fSpecifiedReferencedProduct;
+    property SpecifiedReferencedProduct: TReferencedProductCT read GetSpecifiedReferencedProduct;
     property ApplicableTradeProduct: TTradeProductCTList read fApplicableTradeProduct;
-    property SpecifiedSubordinateLineTradeAgreement: TSubordinateLineTradeAgreementCT read fSpecifiedSubordinateLineTradeAgreement;
-    property SpecifiedSubordinateLineTradeDelivery: TSubordinateLineTradeDeliveryCT read fSpecifiedSubordinateLineTradeDelivery;
-    property SpecifiedSubordinateLineTradeSettlement: TSubordinateLineTradeSettlementCT read fSpecifiedSubordinateLineTradeSettlement;
+    property SpecifiedSubordinateLineTradeAgreement: TSubordinateLineTradeAgreementCT read GetSpecifiedSubordinateLineTradeAgreement;
+    property SpecifiedSubordinateLineTradeDelivery: TSubordinateLineTradeDeliveryCT read GetSpecifiedSubordinateLineTradeDelivery;
+    property SpecifiedSubordinateLineTradeSettlement: TSubordinateLineTradeSettlementCT read GetSpecifiedSubordinateLineTradeSettlement;
   end;
 
   [TName('SupplyChainConsignmentItemType')]
@@ -1713,16 +2159,25 @@ type
     fNetWeightMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
     fTariffQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
     fNatureIdentificationTransportCargo: TTransportCargoCT;
+
+    function GetTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TGoodsTypeCodeCT;
+    function GetTypeExtensionCode: ProRock.Xmlite.Schema.QualifiedDataType100.TGoodsTypeExtensionCodeCT;
+    function GetDeclaredValueForCustomsAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
+    function GetDeclaredValueForStatisticsAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
+    function GetGrossWeightMeasure: ProRock.Xmlite.Schema.QualifiedDataType100.TWeightUnitMeasureCT;
+    function GetNetWeightMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+    function GetTariffQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+    function GetNatureIdentificationTransportCargo: TTransportCargoCT;
   published
-    property TypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TGoodsTypeCodeCT read fTypeCode;
-    property TypeExtensionCode: ProRock.Xmlite.Schema.QualifiedDataType100.TGoodsTypeExtensionCodeCT read fTypeExtensionCode;
-    property DeclaredValueForCustomsAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT read fDeclaredValueForCustomsAmount;
-    property DeclaredValueForStatisticsAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT read fDeclaredValueForStatisticsAmount;
+    property TypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TGoodsTypeCodeCT read GetTypeCode;
+    property TypeExtensionCode: ProRock.Xmlite.Schema.QualifiedDataType100.TGoodsTypeExtensionCodeCT read GetTypeExtensionCode;
+    property DeclaredValueForCustomsAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT read GetDeclaredValueForCustomsAmount;
+    property DeclaredValueForStatisticsAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT read GetDeclaredValueForStatisticsAmount;
     property InvoiceAmount: TAmountCTList read fInvoiceAmount;
-    property GrossWeightMeasure: ProRock.Xmlite.Schema.QualifiedDataType100.TWeightUnitMeasureCT read fGrossWeightMeasure;
-    property NetWeightMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read fNetWeightMeasure;
-    property TariffQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read fTariffQuantity;
-    property NatureIdentificationTransportCargo: TTransportCargoCT read fNatureIdentificationTransportCargo;
+    property GrossWeightMeasure: ProRock.Xmlite.Schema.QualifiedDataType100.TWeightUnitMeasureCT read GetGrossWeightMeasure;
+    property NetWeightMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read GetNetWeightMeasure;
+    property TariffQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read GetTariffQuantity;
+    property NatureIdentificationTransportCargo: TTransportCargoCT read GetNatureIdentificationTransportCargo;
   end;
 
   [TName('SupplyChainConsignmentType')]
@@ -1749,24 +2204,37 @@ type
     fIncludedSupplyChainConsignmentItem: TSupplyChainConsignmentItemCTList;
     fUtilizedLogisticsTransportEquipment: TLogisticsTransportEquipmentCTList;
     fSpecifiedLogisticsTransportMovement: TLogisticsTransportMovementCTList;
+
+    function GetInsurancePremiumAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
+    function GetTotalChargeAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
+    function GetDeclaredValueForCustomsAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
+    function GetPackageQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+    function GetConsignorTradeParty: TTradePartyCT;
+    function GetConsigneeTradeParty: TTradePartyCT;
+    function GetCarrierTradeParty: TTradePartyCT;
+    function GetFreightForwarderTradeParty: TTradePartyCT;
+    function GetDeliveryTradeParty: TTradePartyCT;
+    function GetCustomsImportAgentTradeParty: TTradePartyCT;
+    function GetCustomsExportAgentTradeParty: TTradePartyCT;
+    function GetTransportContractReferencedDocument: TReferencedDocumentCT;
   published
     property GrossWeightMeasure: TWeightUnitMeasureCTList read fGrossWeightMeasure;
     property NetWeightMeasure: TMeasureCTList read fNetWeightMeasure;
     property GrossVolumeMeasure: TVolumeUnitMeasureCTList read fGrossVolumeMeasure;
-    property InsurancePremiumAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT read fInsurancePremiumAmount;
+    property InsurancePremiumAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT read GetInsurancePremiumAmount;
     property AssociatedInvoiceAmount: TAmountCTList read fAssociatedInvoiceAmount;
-    property TotalChargeAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT read fTotalChargeAmount;
-    property DeclaredValueForCustomsAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT read fDeclaredValueForCustomsAmount;
-    property PackageQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read fPackageQuantity;
-    property ConsignorTradeParty: TTradePartyCT read fConsignorTradeParty;
-    property ConsigneeTradeParty: TTradePartyCT read fConsigneeTradeParty;
-    property CarrierTradeParty: TTradePartyCT read fCarrierTradeParty;
-    property FreightForwarderTradeParty: TTradePartyCT read fFreightForwarderTradeParty;
-    property DeliveryTradeParty: TTradePartyCT read fDeliveryTradeParty;
-    property CustomsImportAgentTradeParty: TTradePartyCT read fCustomsImportAgentTradeParty;
-    property CustomsExportAgentTradeParty: TTradePartyCT read fCustomsExportAgentTradeParty;
+    property TotalChargeAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT read GetTotalChargeAmount;
+    property DeclaredValueForCustomsAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT read GetDeclaredValueForCustomsAmount;
+    property PackageQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read GetPackageQuantity;
+    property ConsignorTradeParty: TTradePartyCT read GetConsignorTradeParty;
+    property ConsigneeTradeParty: TTradePartyCT read GetConsigneeTradeParty;
+    property CarrierTradeParty: TTradePartyCT read GetCarrierTradeParty;
+    property FreightForwarderTradeParty: TTradePartyCT read GetFreightForwarderTradeParty;
+    property DeliveryTradeParty: TTradePartyCT read GetDeliveryTradeParty;
+    property CustomsImportAgentTradeParty: TTradePartyCT read GetCustomsImportAgentTradeParty;
+    property CustomsExportAgentTradeParty: TTradePartyCT read GetCustomsExportAgentTradeParty;
     property GroupingCentreTradeParty: TTradePartyCTList read fGroupingCentreTradeParty;
-    property TransportContractReferencedDocument: TReferencedDocumentCT read fTransportContractReferencedDocument;
+    property TransportContractReferencedDocument: TReferencedDocumentCT read GetTransportContractReferencedDocument;
     property AssociatedReferencedDocument: TReferencedDocumentCTList read fAssociatedReferencedDocument;
     property IncludedSupplyChainConsignmentItem: TSupplyChainConsignmentItemCTList read fIncludedSupplyChainConsignmentItem;
     property UtilizedLogisticsTransportEquipment: TLogisticsTransportEquipmentCTList read fUtilizedLogisticsTransportEquipment;
@@ -1786,18 +2254,27 @@ type
     fEarliestOccurrenceDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
     fOccurrenceSpecifiedPeriod: TSpecifiedPeriodCT;
     fOccurrenceLogisticsLocation: TLogisticsLocationCT;
+
+    function GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetOccurrenceDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+    function GetTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetUnitQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+    function GetLatestOccurrenceDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+    function GetEarliestOccurrenceDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+    function GetOccurrenceSpecifiedPeriod: TSpecifiedPeriodCT;
+    function GetOccurrenceLogisticsLocation: TLogisticsLocationCT;
   published
     [TNaming(TNaming.nUpperCase)]
-    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fId;
-    property OccurrenceDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read fOccurrenceDateTime;
-    property TypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fTypeCode;
+    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetId;
+    property OccurrenceDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read GetOccurrenceDateTime;
+    property TypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetTypeCode;
     property Description: TTextCTList read fDescription;
     property DescriptionBinaryObject: TBinaryObjectCTList read fDescriptionBinaryObject;
-    property UnitQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read fUnitQuantity;
-    property LatestOccurrenceDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read fLatestOccurrenceDateTime;
-    property EarliestOccurrenceDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read fEarliestOccurrenceDateTime;
-    property OccurrenceSpecifiedPeriod: TSpecifiedPeriodCT read fOccurrenceSpecifiedPeriod;
-    property OccurrenceLogisticsLocation: TLogisticsLocationCT read fOccurrenceLogisticsLocation;
+    property UnitQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read GetUnitQuantity;
+    property LatestOccurrenceDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read GetLatestOccurrenceDateTime;
+    property EarliestOccurrenceDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read GetEarliestOccurrenceDateTime;
+    property OccurrenceSpecifiedPeriod: TSpecifiedPeriodCT read GetOccurrenceSpecifiedPeriod;
+    property OccurrenceLogisticsLocation: TLogisticsLocationCT read GetOccurrenceLogisticsLocation;
   end;
 
   [TName('SupplyChainPackagingType')]
@@ -1821,21 +2298,33 @@ type
     fApplicableMaterialGoodsCharacteristic: TMaterialGoodsCharacteristicCTList;
     fApplicableDisposalInstructions: TDisposalInstructionsCTList;
     fApplicableReturnableAssetInstructions: TReturnableAssetInstructionsCTList;
+
+    function GetTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TPackageTypeCodeCT;
+    function GetType: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetConditionCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetMaximumStackabilityQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+    function GetMaximumStackabilityWeightMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+    function GetCustomerFacingTotalUnitQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+    function GetLayerTotalUnitQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+    function GetContentLayerQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+    function GetLinearSpatialDimension: TSpatialDimensionCT;
+    function GetMinimumLinearSpatialDimension: TSpatialDimensionCT;
+    function GetMaximumLinearSpatialDimension: TSpatialDimensionCT;
   published
-    property TypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TPackageTypeCodeCT read fTypeCode;
-    property &Type: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fType;
+    property TypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TPackageTypeCodeCT read GetTypeCode;
+    property &Type: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetType;
     property Description: TTextCTList read fDescription;
-    property ConditionCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fConditionCode;
+    property ConditionCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetConditionCode;
     property DisposalMethodCode: TCodeCTList read fDisposalMethodCode;
     property WeightMeasure: TMeasureCTList read fWeightMeasure;
-    property MaximumStackabilityQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read fMaximumStackabilityQuantity;
-    property MaximumStackabilityWeightMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read fMaximumStackabilityWeightMeasure;
-    property CustomerFacingTotalUnitQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read fCustomerFacingTotalUnitQuantity;
-    property LayerTotalUnitQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read fLayerTotalUnitQuantity;
-    property ContentLayerQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read fContentLayerQuantity;
-    property LinearSpatialDimension: TSpatialDimensionCT read fLinearSpatialDimension;
-    property MinimumLinearSpatialDimension: TSpatialDimensionCT read fMinimumLinearSpatialDimension;
-    property MaximumLinearSpatialDimension: TSpatialDimensionCT read fMaximumLinearSpatialDimension;
+    property MaximumStackabilityQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read GetMaximumStackabilityQuantity;
+    property MaximumStackabilityWeightMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read GetMaximumStackabilityWeightMeasure;
+    property CustomerFacingTotalUnitQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read GetCustomerFacingTotalUnitQuantity;
+    property LayerTotalUnitQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read GetLayerTotalUnitQuantity;
+    property ContentLayerQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read GetContentLayerQuantity;
+    property LinearSpatialDimension: TSpatialDimensionCT read GetLinearSpatialDimension;
+    property MinimumLinearSpatialDimension: TSpatialDimensionCT read GetMinimumLinearSpatialDimension;
+    property MaximumLinearSpatialDimension: TSpatialDimensionCT read GetMaximumLinearSpatialDimension;
     property SpecifiedPackagingMarking: TPackagingMarkingCTList read fSpecifiedPackagingMarking;
     property ApplicableMaterialGoodsCharacteristic: TMaterialGoodsCharacteristicCTList read fApplicableMaterialGoodsCharacteristic;
     property ApplicableDisposalInstructions: TDisposalInstructionsCTList read fApplicableDisposalInstructions;
@@ -1852,13 +2341,18 @@ type
     fSpecifiedLineTradeDelivery: TLineTradeDeliveryCT;
     fSpecifiedLineTradeSettlement: TLineTradeSettlementCT;
     fIncludedSubordinateTradeLineItem: TSubordinateTradeLineItemCTList;
+
+    function GetDescriptionCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetSpecifiedTradeProduct: TTradeProductCT;
+    function GetSpecifiedLineTradeAgreement: TLineTradeAgreementCT;
+    function GetSpecifiedLineTradeDelivery: TLineTradeDeliveryCT;
   published
-    property DescriptionCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fDescriptionCode;
+    property DescriptionCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetDescriptionCode;
     [TRequired]
     property AssociatedDocumentLineDocument: TDocumentLineDocumentCT read fAssociatedDocumentLineDocument;
-    property SpecifiedTradeProduct: TTradeProductCT read fSpecifiedTradeProduct;
-    property SpecifiedLineTradeAgreement: TLineTradeAgreementCT read fSpecifiedLineTradeAgreement;
-    property SpecifiedLineTradeDelivery: TLineTradeDeliveryCT read fSpecifiedLineTradeDelivery;
+    property SpecifiedTradeProduct: TTradeProductCT read GetSpecifiedTradeProduct;
+    property SpecifiedLineTradeAgreement: TLineTradeAgreementCT read GetSpecifiedLineTradeAgreement;
+    property SpecifiedLineTradeDelivery: TLineTradeDeliveryCT read GetSpecifiedLineTradeDelivery;
     [TRequired]
     property SpecifiedLineTradeSettlement: TLineTradeSettlementCT read fSpecifiedLineTradeSettlement;
     property IncludedSubordinateTradeLineItem: TSubordinateTradeLineItemCTList read fIncludedSubordinateTradeLineItem;
@@ -1886,10 +2380,13 @@ type
   private
     fId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
     fAssociatedRegisteredTax: TRegisteredTaxCT;
+
+    function GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetAssociatedRegisteredTax: TRegisteredTaxCT;
   published
     [TNaming(TNaming.nUpperCase)]
-    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fId;
-    property AssociatedRegisteredTax: TRegisteredTaxCT read fAssociatedRegisteredTax;
+    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetId;
+    property AssociatedRegisteredTax: TRegisteredTaxCT read GetAssociatedRegisteredTax;
   end;
 
   [TName('TradeAccountingAccountType')]
@@ -1901,15 +2398,21 @@ type
     fAmountTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TAccountingAmountTypeCodeCT;
     fName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
     fCostReferenceDimensionPattern: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+
+    function GetSetTriggerCode: ProRock.Xmlite.Schema.QualifiedDataType100.TAccountingDocumentCodeCT;
+    function GetTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TAccountingAccountTypeCodeCT;
+    function GetAmountTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TAccountingAmountTypeCodeCT;
+    function GetName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetCostReferenceDimensionPattern: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
   published
     [TRequired]
     [TNaming(TNaming.nUpperCase)]
     property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fId;
-    property SetTriggerCode: ProRock.Xmlite.Schema.QualifiedDataType100.TAccountingDocumentCodeCT read fSetTriggerCode;
-    property TypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TAccountingAccountTypeCodeCT read fTypeCode;
-    property AmountTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TAccountingAmountTypeCodeCT read fAmountTypeCode;
-    property Name: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fName;
-    property CostReferenceDimensionPattern: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fCostReferenceDimensionPattern;
+    property SetTriggerCode: ProRock.Xmlite.Schema.QualifiedDataType100.TAccountingDocumentCodeCT read GetSetTriggerCode;
+    property TypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TAccountingAccountTypeCodeCT read GetTypeCode;
+    property AmountTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TAccountingAmountTypeCodeCT read GetAmountTypeCode;
+    property Name: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetName;
+    property CostReferenceDimensionPattern: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetCostReferenceDimensionPattern;
   end;
 
   [TName('TradeAddressType')]
@@ -1936,29 +2439,49 @@ type
     fBuildingNumber: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
     fDepartmentName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
     fAdditionalStreetName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+
+    function GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetPostcodeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetPostOfficeBox: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetBuildingName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetLineOne: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetLineTwo: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetLineThree: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetLineFour: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetLineFive: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetStreetName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetCityName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetCitySubDivisionName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetCountryID: ProRock.Xmlite.Schema.QualifiedDataType100.TCountryIDCT;
+    function GetCountrySubDivisionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetAttentionOf: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetCareOf: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetBuildingNumber: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetDepartmentName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetAdditionalStreetName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
   published
     [TNaming(TNaming.nUpperCase)]
-    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fId;
-    property PostcodeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fPostcodeCode;
-    property PostOfficeBox: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fPostOfficeBox;
-    property BuildingName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fBuildingName;
-    property LineOne: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fLineOne;
-    property LineTwo: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fLineTwo;
-    property LineThree: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fLineThree;
-    property LineFour: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fLineFour;
-    property LineFive: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fLineFive;
-    property StreetName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fStreetName;
-    property CityName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fCityName;
-    property CitySubDivisionName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fCitySubDivisionName;
-    property CountryID: ProRock.Xmlite.Schema.QualifiedDataType100.TCountryIDCT read fCountryID;
+    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetId;
+    property PostcodeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetPostcodeCode;
+    property PostOfficeBox: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetPostOfficeBox;
+    property BuildingName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetBuildingName;
+    property LineOne: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetLineOne;
+    property LineTwo: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetLineTwo;
+    property LineThree: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetLineThree;
+    property LineFour: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetLineFour;
+    property LineFive: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetLineFive;
+    property StreetName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetStreetName;
+    property CityName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetCityName;
+    property CitySubDivisionName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetCitySubDivisionName;
+    property CountryID: ProRock.Xmlite.Schema.QualifiedDataType100.TCountryIDCT read GetCountryID;
     property CountryName: TTextCTList read fCountryName;
-    property CountrySubDivisionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fCountrySubDivisionID;
+    property CountrySubDivisionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetCountrySubDivisionID;
     property CountrySubDivisionName: TTextCTList read fCountrySubDivisionName;
-    property AttentionOf: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fAttentionOf;
-    property CareOf: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fCareOf;
-    property BuildingNumber: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fBuildingNumber;
-    property DepartmentName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fDepartmentName;
-    property AdditionalStreetName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fAdditionalStreetName;
+    property AttentionOf: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetAttentionOf;
+    property CareOf: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetCareOf;
+    property BuildingNumber: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetBuildingNumber;
+    property DepartmentName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetDepartmentName;
+    property AdditionalStreetName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetAdditionalStreetName;
   end;
 
   [TName('TradeAllowanceChargeType')]
@@ -1978,22 +2501,35 @@ type
     fTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TAllowanceChargeIdentificationCodeCT;
     fCategoryTradeTax: TTradeTaxCTList;
     fActualTradeCurrencyExchange: TTradeCurrencyExchangeCT;
+
+    function GetChargeIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT;
+    function GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetSequenceNumeric: ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT;
+    function GetCalculationPercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT;
+    function GetBasisAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
+    function GetBasisQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+    function GetPrepaidIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT;
+    function GetUnitBasisAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
+    function GetReasonCode: ProRock.Xmlite.Schema.QualifiedDataType100.TAllowanceChargeReasonCodeCT;
+    function GetReason: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TAllowanceChargeIdentificationCodeCT;
+    function GetActualTradeCurrencyExchange: TTradeCurrencyExchangeCT;
   published
-    property ChargeIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT read fChargeIndicator;
+    property ChargeIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT read GetChargeIndicator;
     [TNaming(TNaming.nUpperCase)]
-    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fId;
-    property SequenceNumeric: ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT read fSequenceNumeric;
-    property CalculationPercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT read fCalculationPercent;
-    property BasisAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT read fBasisAmount;
-    property BasisQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read fBasisQuantity;
-    property PrepaidIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT read fPrepaidIndicator;
+    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetId;
+    property SequenceNumeric: ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT read GetSequenceNumeric;
+    property CalculationPercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT read GetCalculationPercent;
+    property BasisAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT read GetBasisAmount;
+    property BasisQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read GetBasisQuantity;
+    property PrepaidIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT read GetPrepaidIndicator;
     property ActualAmount: TAmountCTList read fActualAmount;
-    property UnitBasisAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT read fUnitBasisAmount;
-    property ReasonCode: ProRock.Xmlite.Schema.QualifiedDataType100.TAllowanceChargeReasonCodeCT read fReasonCode;
-    property Reason: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fReason;
-    property TypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TAllowanceChargeIdentificationCodeCT read fTypeCode;
+    property UnitBasisAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT read GetUnitBasisAmount;
+    property ReasonCode: ProRock.Xmlite.Schema.QualifiedDataType100.TAllowanceChargeReasonCodeCT read GetReasonCode;
+    property Reason: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetReason;
+    property TypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TAllowanceChargeIdentificationCodeCT read GetTypeCode;
     property CategoryTradeTax: TTradeTaxCTList read fCategoryTradeTax;
-    property ActualTradeCurrencyExchange: TTradeCurrencyExchangeCT read fActualTradeCurrencyExchange;
+    property ActualTradeCurrencyExchange: TTradeCurrencyExchangeCT read GetActualTradeCurrencyExchange;
   end;
 
   [TName('TradeContactType')]
@@ -2016,25 +2552,41 @@ type
     fInstantMessagingUniversalCommunication: TUniversalCommunicationCT;
     fSpecifiedNote: TNoteCTList;
     fSpecifiedContactPerson: TContactPersonCT;
+
+    function GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetPersonName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetDepartmentName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TContactTypeCodeCT;
+    function GetJobTitle: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetResponsibility: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetTelephoneUniversalCommunication: TUniversalCommunicationCT;
+    function GetDirectTelephoneUniversalCommunication: TUniversalCommunicationCT;
+    function GetMobileTelephoneUniversalCommunication: TUniversalCommunicationCT;
+    function GetFaxUniversalCommunication: TUniversalCommunicationCT;
+    function GetEmailURIUniversalCommunication: TUniversalCommunicationCT;
+    function GetTelexUniversalCommunication: TUniversalCommunicationCT;
+    function GetVOIPUniversalCommunication: TUniversalCommunicationCT;
+    function GetInstantMessagingUniversalCommunication: TUniversalCommunicationCT;
+    function GetSpecifiedContactPerson: TContactPersonCT;
   published
     [TNaming(TNaming.nUpperCase)]
-    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fId;
-    property PersonName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fPersonName;
-    property DepartmentName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fDepartmentName;
-    property TypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TContactTypeCodeCT read fTypeCode;
-    property JobTitle: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fJobTitle;
-    property Responsibility: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fResponsibility;
+    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetId;
+    property PersonName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetPersonName;
+    property DepartmentName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetDepartmentName;
+    property TypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TContactTypeCodeCT read GetTypeCode;
+    property JobTitle: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetJobTitle;
+    property Responsibility: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetResponsibility;
     property PersonID: TIdCTList read fPersonID;
-    property TelephoneUniversalCommunication: TUniversalCommunicationCT read fTelephoneUniversalCommunication;
-    property DirectTelephoneUniversalCommunication: TUniversalCommunicationCT read fDirectTelephoneUniversalCommunication;
-    property MobileTelephoneUniversalCommunication: TUniversalCommunicationCT read fMobileTelephoneUniversalCommunication;
-    property FaxUniversalCommunication: TUniversalCommunicationCT read fFaxUniversalCommunication;
-    property EmailURIUniversalCommunication: TUniversalCommunicationCT read fEmailURIUniversalCommunication;
-    property TelexUniversalCommunication: TUniversalCommunicationCT read fTelexUniversalCommunication;
-    property VOIPUniversalCommunication: TUniversalCommunicationCT read fVOIPUniversalCommunication;
-    property InstantMessagingUniversalCommunication: TUniversalCommunicationCT read fInstantMessagingUniversalCommunication;
+    property TelephoneUniversalCommunication: TUniversalCommunicationCT read GetTelephoneUniversalCommunication;
+    property DirectTelephoneUniversalCommunication: TUniversalCommunicationCT read GetDirectTelephoneUniversalCommunication;
+    property MobileTelephoneUniversalCommunication: TUniversalCommunicationCT read GetMobileTelephoneUniversalCommunication;
+    property FaxUniversalCommunication: TUniversalCommunicationCT read GetFaxUniversalCommunication;
+    property EmailURIUniversalCommunication: TUniversalCommunicationCT read GetEmailURIUniversalCommunication;
+    property TelexUniversalCommunication: TUniversalCommunicationCT read GetTelexUniversalCommunication;
+    property VOIPUniversalCommunication: TUniversalCommunicationCT read GetVOIPUniversalCommunication;
+    property InstantMessagingUniversalCommunication: TUniversalCommunicationCT read GetInstantMessagingUniversalCommunication;
     property SpecifiedNote: TNoteCTList read fSpecifiedNote;
-    property SpecifiedContactPerson: TContactPersonCT read fSpecifiedContactPerson;
+    property SpecifiedContactPerson: TContactPersonCT read GetSpecifiedContactPerson;
   end;
 
   [TName('TradeCountrySubDivisionType')]
@@ -2042,9 +2594,11 @@ type
   private
     fId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
     fName: TTextCTList;
+
+    function GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
   published
     [TNaming(TNaming.nUpperCase)]
-    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fId;
+    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetId;
     property Name: TTextCTList read fName;
   end;
 
@@ -2054,9 +2608,11 @@ type
     fId: ProRock.Xmlite.Schema.QualifiedDataType100.TCountryIDCT;
     fName: TTextCTList;
     fSubordinateTradeCountrySubDivision: TTradeCountrySubDivisionCTList;
+
+    function GetId: ProRock.Xmlite.Schema.QualifiedDataType100.TCountryIDCT;
   published
     [TNaming(TNaming.nUpperCase)]
-    property Id: ProRock.Xmlite.Schema.QualifiedDataType100.TCountryIDCT read fId;
+    property Id: ProRock.Xmlite.Schema.QualifiedDataType100.TCountryIDCT read GetId;
     property Name: TTextCTList read fName;
     property SubordinateTradeCountrySubDivision: TTradeCountrySubDivisionCTList read fSubordinateTradeCountrySubDivision;
   end;
@@ -2072,17 +2628,22 @@ type
     fConversionRate: ProRock.Xmlite.Schema.UnqualifiedDataType100.TRateCT;
     fConversionRateDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
     fAssociatedReferencedDocument: TReferencedDocumentCTList;
+
+    function GetSourceUnitBasisNumeric: ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT;
+    function GetTargetUnitBaseNumeric: ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT;
+    function GetMarketID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetConversionRateDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
   published
     [TRequired]
     property SourceCurrencyCode: ProRock.Xmlite.Schema.QualifiedDataType100.TCurrencyCodeCT read fSourceCurrencyCode;
-    property SourceUnitBasisNumeric: ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT read fSourceUnitBasisNumeric;
+    property SourceUnitBasisNumeric: ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT read GetSourceUnitBasisNumeric;
     [TRequired]
     property TargetCurrencyCode: ProRock.Xmlite.Schema.QualifiedDataType100.TCurrencyCodeCT read fTargetCurrencyCode;
-    property TargetUnitBaseNumeric: ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT read fTargetUnitBaseNumeric;
-    property MarketID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fMarketID;
+    property TargetUnitBaseNumeric: ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT read GetTargetUnitBaseNumeric;
+    property MarketID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetMarketID;
     [TRequired]
     property ConversionRate: ProRock.Xmlite.Schema.UnqualifiedDataType100.TRateCT read fConversionRate;
-    property ConversionRateDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read fConversionRateDateTime;
+    property ConversionRateDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read GetConversionRateDateTime;
     property AssociatedReferencedDocument: TReferencedDocumentCTList read fAssociatedReferencedDocument;
   end;
 
@@ -2092,10 +2653,13 @@ type
     fDeliveryTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TDeliveryTermsCodeCT;
     fDescription: TTextCTList;
     fRelevantTradeLocation: TTradeLocationCT;
+
+    function GetDeliveryTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TDeliveryTermsCodeCT;
+    function GetRelevantTradeLocation: TTradeLocationCT;
   published
-    property DeliveryTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TDeliveryTermsCodeCT read fDeliveryTypeCode;
+    property DeliveryTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TDeliveryTermsCodeCT read GetDeliveryTypeCode;
     property Description: TTextCTList read fDescription;
-    property RelevantTradeLocation: TTradeLocationCT read fRelevantTradeLocation;
+    property RelevantTradeLocation: TTradeLocationCT read GetRelevantTradeLocation;
   end;
 
   [TName('TradeLocationType')]
@@ -2105,12 +2669,17 @@ type
     fCountryName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
     fId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
     fName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+
+    function GetCountryID: ProRock.Xmlite.Schema.QualifiedDataType100.TCountryIDCT;
+    function GetCountryName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
   published
-    property CountryID: ProRock.Xmlite.Schema.QualifiedDataType100.TCountryIDCT read fCountryID;
-    property CountryName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fCountryName;
+    property CountryID: ProRock.Xmlite.Schema.QualifiedDataType100.TCountryIDCT read GetCountryID;
+    property CountryName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetCountryName;
     [TNaming(TNaming.nUpperCase)]
-    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fId;
-    property Name: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fName;
+    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetId;
+    property Name: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetName;
   end;
 
   [TName('TradePartyType')]
@@ -2128,19 +2697,24 @@ type
     fSpecifiedTaxRegistration: TTaxRegistrationCTList;
     fEndPointURIUniversalCommunication: TUniversalCommunicationCT;
     fLogoAssociatedSpecifiedBinaryFile: TSpecifiedBinaryFileCTList;
+
+    function GetName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetSpecifiedLegalOrganization: TLegalOrganizationCT;
+    function GetPostalTradeAddress: TTradeAddressCT;
+    function GetEndPointURIUniversalCommunication: TUniversalCommunicationCT;
   published
     [TNaming(TNaming.nUpperCase)]
     property Id: TIdCTList read fId;
     property GlobalID: TIdCTList read fGlobalID;
-    property Name: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fName;
+    property Name: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetName;
     property RoleCode: TPartyRoleCodeCTList read fRoleCode;
     property Description: TTextCTList read fDescription;
-    property SpecifiedLegalOrganization: TLegalOrganizationCT read fSpecifiedLegalOrganization;
+    property SpecifiedLegalOrganization: TLegalOrganizationCT read GetSpecifiedLegalOrganization;
     property DefinedTradeContact: TTradeContactCTList read fDefinedTradeContact;
-    property PostalTradeAddress: TTradeAddressCT read fPostalTradeAddress;
+    property PostalTradeAddress: TTradeAddressCT read GetPostalTradeAddress;
     property URIUniversalCommunication: TUniversalCommunicationCTList read fURIUniversalCommunication;
     property SpecifiedTaxRegistration: TTaxRegistrationCTList read fSpecifiedTaxRegistration;
-    property EndPointURIUniversalCommunication: TUniversalCommunicationCT read fEndPointURIUniversalCommunication;
+    property EndPointURIUniversalCommunication: TUniversalCommunicationCT read GetEndPointURIUniversalCommunication;
     property LogoAssociatedSpecifiedBinaryFile: TSpecifiedBinaryFileCTList read fLogoAssociatedSpecifiedBinaryFile;
   end;
 
@@ -2152,12 +2726,18 @@ type
     fBasisAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
     fCalculationPercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT;
     fActualDiscountAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
+
+    function GetBasisDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+    function GetBasisPeriodMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+    function GetBasisAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
+    function GetCalculationPercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT;
+    function GetActualDiscountAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
   published
-    property BasisDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read fBasisDateTime;
-    property BasisPeriodMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read fBasisPeriodMeasure;
-    property BasisAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT read fBasisAmount;
-    property CalculationPercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT read fCalculationPercent;
-    property ActualDiscountAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT read fActualDiscountAmount;
+    property BasisDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read GetBasisDateTime;
+    property BasisPeriodMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read GetBasisPeriodMeasure;
+    property BasisAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT read GetBasisAmount;
+    property CalculationPercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT read GetCalculationPercent;
+    property ActualDiscountAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT read GetActualDiscountAmount;
   end;
 
   [TName('TradePaymentPenaltyTermsType')]
@@ -2168,12 +2748,18 @@ type
     fBasisAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
     fCalculationPercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT;
     fActualPenaltyAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
+
+    function GetBasisDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+    function GetBasisPeriodMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+    function GetBasisAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
+    function GetCalculationPercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT;
+    function GetActualPenaltyAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
   published
-    property BasisDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read fBasisDateTime;
-    property BasisPeriodMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read fBasisPeriodMeasure;
-    property BasisAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT read fBasisAmount;
-    property CalculationPercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT read fCalculationPercent;
-    property ActualPenaltyAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT read fActualPenaltyAmount;
+    property BasisDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read GetBasisDateTime;
+    property BasisPeriodMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read GetBasisPeriodMeasure;
+    property BasisAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT read GetBasisAmount;
+    property CalculationPercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT read GetCalculationPercent;
+    property ActualPenaltyAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT read GetActualPenaltyAmount;
   end;
 
   [TName('TradePaymentTermsType')]
@@ -2193,21 +2779,31 @@ type
     fApplicableTradePaymentPenaltyTerms: TTradePaymentPenaltyTermsCT;
     fApplicableTradePaymentDiscountTerms: TTradePaymentDiscountTermsCT;
     fPayeeTradeParty: TTradePartyCTList;
+
+    function GetId: ProRock.Xmlite.Schema.QualifiedDataType100.TPaymentTermsIDCT;
+    function GetFromEventCode: ProRock.Xmlite.Schema.QualifiedDataType100.TPaymentTermsEventTimeReferenceCodeCT;
+    function GetSettlementPeriodMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+    function GetDueDateDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+    function GetTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TPaymentTermsTypeCodeCT;
+    function GetInstructionTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetPartialPaymentPercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT;
+    function GetApplicableTradePaymentPenaltyTerms: TTradePaymentPenaltyTermsCT;
+    function GetApplicableTradePaymentDiscountTerms: TTradePaymentDiscountTermsCT;
   published
     [TNaming(TNaming.nUpperCase)]
-    property Id: ProRock.Xmlite.Schema.QualifiedDataType100.TPaymentTermsIDCT read fId;
-    property FromEventCode: ProRock.Xmlite.Schema.QualifiedDataType100.TPaymentTermsEventTimeReferenceCodeCT read fFromEventCode;
-    property SettlementPeriodMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read fSettlementPeriodMeasure;
+    property Id: ProRock.Xmlite.Schema.QualifiedDataType100.TPaymentTermsIDCT read GetId;
+    property FromEventCode: ProRock.Xmlite.Schema.QualifiedDataType100.TPaymentTermsEventTimeReferenceCodeCT read GetFromEventCode;
+    property SettlementPeriodMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read GetSettlementPeriodMeasure;
     property Description: TTextCTList read fDescription;
-    property DueDateDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read fDueDateDateTime;
-    property TypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TPaymentTermsTypeCodeCT read fTypeCode;
-    property InstructionTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fInstructionTypeCode;
+    property DueDateDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read GetDueDateDateTime;
+    property TypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TPaymentTermsTypeCodeCT read GetTypeCode;
+    property InstructionTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetInstructionTypeCode;
     property DirectDebitMandateID: TIdCTList read fDirectDebitMandateID;
-    property PartialPaymentPercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT read fPartialPaymentPercent;
+    property PartialPaymentPercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT read GetPartialPaymentPercent;
     property PaymentMeansID: TIdCTList read fPaymentMeansID;
     property PartialPaymentAmount: TAmountCTList read fPartialPaymentAmount;
-    property ApplicableTradePaymentPenaltyTerms: TTradePaymentPenaltyTermsCT read fApplicableTradePaymentPenaltyTerms;
-    property ApplicableTradePaymentDiscountTerms: TTradePaymentDiscountTermsCT read fApplicableTradePaymentDiscountTerms;
+    property ApplicableTradePaymentPenaltyTerms: TTradePaymentPenaltyTermsCT read GetApplicableTradePaymentPenaltyTerms;
+    property ApplicableTradePaymentDiscountTerms: TTradePaymentDiscountTermsCT read GetApplicableTradePaymentDiscountTerms;
     property PayeeTradeParty: TTradePartyCTList read fPayeeTradeParty;
   end;
 
@@ -2227,16 +2823,23 @@ type
     fDeliveryTradeLocation: TTradeLocationCTList;
     fTradeComparisonReferencePrice: TReferencePriceCTList;
     fAssociatedReferencedDocument: TReferencedDocumentCTList;
+
+    function GetTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TPriceTypeCodeCT;
+    function GetBasisQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+    function GetMinimumQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+    function GetMaximumQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+    function GetOrderUnitConversionFactorNumeric: ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT;
+    function GetValiditySpecifiedPeriod: TSpecifiedPeriodCT;
   published
-    property TypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TPriceTypeCodeCT read fTypeCode;
+    property TypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TPriceTypeCodeCT read GetTypeCode;
     property ChargeAmount: TAmountCTList read fChargeAmount;
-    property BasisQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read fBasisQuantity;
-    property MinimumQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read fMinimumQuantity;
-    property MaximumQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read fMaximumQuantity;
+    property BasisQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read GetBasisQuantity;
+    property MinimumQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read GetMinimumQuantity;
+    property MaximumQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read GetMaximumQuantity;
     property ChangeReason: TTextCTList read fChangeReason;
-    property OrderUnitConversionFactorNumeric: ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT read fOrderUnitConversionFactorNumeric;
+    property OrderUnitConversionFactorNumeric: ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT read GetOrderUnitConversionFactorNumeric;
     property AppliedTradeAllowanceCharge: TTradeAllowanceChargeCTList read fAppliedTradeAllowanceCharge;
-    property ValiditySpecifiedPeriod: TSpecifiedPeriodCT read fValiditySpecifiedPeriod;
+    property ValiditySpecifiedPeriod: TSpecifiedPeriodCT read GetValiditySpecifiedPeriod;
     property IncludedTradeTax: TTradeTaxCTList read fIncludedTradeTax;
     property DeliveryTradeLocation: TTradeLocationCTList read fDeliveryTradeLocation;
     property TradeComparisonReferencePrice: TReferencePriceCTList read fTradeComparisonReferencePrice;
@@ -2259,18 +2862,28 @@ type
     fPackagingSupplyChainEvent: TSupplyChainEventCT;
     fApplicableMaterialGoodsCharacteristic: TMaterialGoodsCharacteristicCTList;
     fApplicableProductCharacteristic: TProductCharacteristicCTList;
+
+    function GetGlobalSerialID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetBatchID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetKanbanID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetSupplierAssignedSerialID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetBestBeforeDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+    function GetExpiryDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+    function GetSellByDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+    function GetProductionSupplyChainEvent: TSupplyChainEventCT;
+    function GetPackagingSupplyChainEvent: TSupplyChainEventCT;
   published
-    property GlobalSerialID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fGlobalSerialID;
-    property BatchID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fBatchID;
-    property KanbanID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fKanbanID;
-    property SupplierAssignedSerialID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fSupplierAssignedSerialID;
-    property BestBeforeDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read fBestBeforeDateTime;
-    property ExpiryDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read fExpiryDateTime;
-    property SellByDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read fSellByDateTime;
+    property GlobalSerialID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetGlobalSerialID;
+    property BatchID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetBatchID;
+    property KanbanID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetKanbanID;
+    property SupplierAssignedSerialID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetSupplierAssignedSerialID;
+    property BestBeforeDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read GetBestBeforeDateTime;
+    property ExpiryDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read GetExpiryDateTime;
+    property SellByDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read GetSellByDateTime;
     property SerialID: TIdCTList read fSerialID;
     property RegistrationID: TIdCTList read fRegistrationID;
-    property ProductionSupplyChainEvent: TSupplyChainEventCT read fProductionSupplyChainEvent;
-    property PackagingSupplyChainEvent: TSupplyChainEventCT read fPackagingSupplyChainEvent;
+    property ProductionSupplyChainEvent: TSupplyChainEventCT read GetProductionSupplyChainEvent;
+    property PackagingSupplyChainEvent: TSupplyChainEventCT read GetPackagingSupplyChainEvent;
     property ApplicableMaterialGoodsCharacteristic: TMaterialGoodsCharacteristicCTList read fApplicableMaterialGoodsCharacteristic;
     property ApplicableProductCharacteristic: TProductCharacteristicCTList read fApplicableProductCharacteristic;
   end;
@@ -2321,49 +2934,76 @@ type
     fBrandOwnerTradeParty: TTradePartyCT;
     fIncludedReferencedProduct: TReferencedProductCTList;
     fInformationNote: TNoteCTList;
+
+    function GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetGlobalID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetSellerAssignedID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetBuyerAssignedID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetManufacturerAssignedID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetTradeName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetDescription: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetNetWeightMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+    function GetGrossWeightMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+    function GetAreaDensityMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+    function GetBrandName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetSubBrandName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetDrainedNetWeightMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+    function GetVariableMeasureIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT;
+    function GetColourCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetFormattedCancellationAnnouncedLaunchDateTime: ProRock.Xmlite.Schema.QualifiedDataType100.TFormattedDateTimeCT;
+    function GetFormattedLatestProductDataChangeDateTime: ProRock.Xmlite.Schema.QualifiedDataType100.TFormattedDateTimeCT;
+    function GetOriginTradeCountry: TTradeCountryCT;
+    function GetLinearSpatialDimension: TSpatialDimensionCT;
+    function GetMinimumLinearSpatialDimension: TSpatialDimensionCT;
+    function GetMaximumLinearSpatialDimension: TSpatialDimensionCT;
+    function GetManufacturerTradeParty: TTradePartyCT;
+    function GetMSDSReferenceReferencedDocument: TReferencedDocumentCT;
+    function GetLegalRightsOwnerTradeParty: TTradePartyCT;
+    function GetBrandOwnerTradeParty: TTradePartyCT;
   published
     [TNaming(TNaming.nUpperCase)]
-    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fId;
-    property GlobalID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fGlobalID;
-    property SellerAssignedID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fSellerAssignedID;
-    property BuyerAssignedID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fBuyerAssignedID;
-    property ManufacturerAssignedID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fManufacturerAssignedID;
+    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetId;
+    property GlobalID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetGlobalID;
+    property SellerAssignedID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetSellerAssignedID;
+    property BuyerAssignedID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetBuyerAssignedID;
+    property ManufacturerAssignedID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetManufacturerAssignedID;
     property Name: TTextCTList read fName;
-    property TradeName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fTradeName;
-    property Description: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fDescription;
-    property TypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fTypeCode;
-    property NetWeightMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read fNetWeightMeasure;
-    property GrossWeightMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read fGrossWeightMeasure;
+    property TradeName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetTradeName;
+    property Description: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetDescription;
+    property TypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetTypeCode;
+    property NetWeightMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read GetNetWeightMeasure;
+    property GrossWeightMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read GetGrossWeightMeasure;
     property ProductGroupID: TIdCTList read fProductGroupID;
     property EndItemTypeCode: TCodeCTList read fEndItemTypeCode;
     property EndItemName: TTextCTList read fEndItemName;
-    property AreaDensityMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read fAreaDensityMeasure;
+    property AreaDensityMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read GetAreaDensityMeasure;
     property UseDescription: TTextCTList read fUseDescription;
-    property BrandName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fBrandName;
-    property SubBrandName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fSubBrandName;
-    property DrainedNetWeightMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read fDrainedNetWeightMeasure;
-    property VariableMeasureIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT read fVariableMeasureIndicator;
-    property ColourCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fColourCode;
+    property BrandName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetBrandName;
+    property SubBrandName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetSubBrandName;
+    property DrainedNetWeightMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read GetDrainedNetWeightMeasure;
+    property VariableMeasureIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT read GetVariableMeasureIndicator;
+    property ColourCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetColourCode;
     property ColourDescription: TTextCTList read fColourDescription;
     property Designation: TTextCTList read fDesignation;
-    property FormattedCancellationAnnouncedLaunchDateTime: ProRock.Xmlite.Schema.QualifiedDataType100.TFormattedDateTimeCT read fFormattedCancellationAnnouncedLaunchDateTime;
-    property FormattedLatestProductDataChangeDateTime: ProRock.Xmlite.Schema.QualifiedDataType100.TFormattedDateTimeCT read fFormattedLatestProductDataChangeDateTime;
+    property FormattedCancellationAnnouncedLaunchDateTime: ProRock.Xmlite.Schema.QualifiedDataType100.TFormattedDateTimeCT read GetFormattedCancellationAnnouncedLaunchDateTime;
+    property FormattedLatestProductDataChangeDateTime: ProRock.Xmlite.Schema.QualifiedDataType100.TFormattedDateTimeCT read GetFormattedLatestProductDataChangeDateTime;
     property ApplicableProductCharacteristic: TProductCharacteristicCTList read fApplicableProductCharacteristic;
     property ApplicableMaterialGoodsCharacteristic: TMaterialGoodsCharacteristicCTList read fApplicableMaterialGoodsCharacteristic;
     property DesignatedProductClassification: TProductClassificationCTList read fDesignatedProductClassification;
     property IndividualTradeProductInstance: TTradeProductInstanceCTList read fIndividualTradeProductInstance;
     property CertificationEvidenceReferenceReferencedDocument: TReferencedDocumentCTList read fCertificationEvidenceReferenceReferencedDocument;
     property InspectionReferenceReferencedDocument: TReferencedDocumentCTList read fInspectionReferenceReferencedDocument;
-    property OriginTradeCountry: TTradeCountryCT read fOriginTradeCountry;
-    property LinearSpatialDimension: TSpatialDimensionCT read fLinearSpatialDimension;
-    property MinimumLinearSpatialDimension: TSpatialDimensionCT read fMinimumLinearSpatialDimension;
-    property MaximumLinearSpatialDimension: TSpatialDimensionCT read fMaximumLinearSpatialDimension;
-    property ManufacturerTradeParty: TTradePartyCT read fManufacturerTradeParty;
+    property OriginTradeCountry: TTradeCountryCT read GetOriginTradeCountry;
+    property LinearSpatialDimension: TSpatialDimensionCT read GetLinearSpatialDimension;
+    property MinimumLinearSpatialDimension: TSpatialDimensionCT read GetMinimumLinearSpatialDimension;
+    property MaximumLinearSpatialDimension: TSpatialDimensionCT read GetMaximumLinearSpatialDimension;
+    property ManufacturerTradeParty: TTradePartyCT read GetManufacturerTradeParty;
     property PresentationSpecifiedBinaryFile: TSpecifiedBinaryFileCTList read fPresentationSpecifiedBinaryFile;
-    property MSDSReferenceReferencedDocument: TReferencedDocumentCT read fMSDSReferenceReferencedDocument;
+    property MSDSReferenceReferencedDocument: TReferencedDocumentCT read GetMSDSReferenceReferencedDocument;
     property AdditionalReferenceReferencedDocument: TReferencedDocumentCTList read fAdditionalReferenceReferencedDocument;
-    property LegalRightsOwnerTradeParty: TTradePartyCT read fLegalRightsOwnerTradeParty;
-    property BrandOwnerTradeParty: TTradePartyCT read fBrandOwnerTradeParty;
+    property LegalRightsOwnerTradeParty: TTradePartyCT read GetLegalRightsOwnerTradeParty;
+    property BrandOwnerTradeParty: TTradePartyCT read GetBrandOwnerTradeParty;
     property IncludedReferencedProduct: TReferencedProductCTList read fIncludedReferencedProduct;
     property InformationNote: TNoteCTList read fInformationNote;
   end;
@@ -2383,20 +3023,31 @@ type
     fInterestRatePercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT;
     fIssuingCompanyName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
     fDescription: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+
+    function GetMicrochipIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT;
+    function GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetCardholderName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetExpiryDate: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateCT;
+    function GetVerificationNumeric: ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT;
+    function GetValidFromDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+    function GetInterestRatePercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT;
+    function GetIssuingCompanyName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetDescription: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
   published
-    property MicrochipIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT read fMicrochipIndicator;
+    property MicrochipIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT read GetMicrochipIndicator;
     [TNaming(TNaming.nUpperCase)]
-    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fId;
-    property TypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fTypeCode;
-    property CardholderName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fCardholderName;
-    property ExpiryDate: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateCT read fExpiryDate;
-    property VerificationNumeric: ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT read fVerificationNumeric;
-    property ValidFromDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read fValidFromDateTime;
+    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetId;
+    property TypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetTypeCode;
+    property CardholderName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetCardholderName;
+    property ExpiryDate: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateCT read GetExpiryDate;
+    property VerificationNumeric: ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT read GetVerificationNumeric;
+    property ValidFromDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT read GetValidFromDateTime;
     property CreditLimitAmount: TAmountCTList read fCreditLimitAmount;
     property CreditAvailableAmount: TAmountCTList read fCreditAvailableAmount;
-    property InterestRatePercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT read fInterestRatePercent;
-    property IssuingCompanyName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fIssuingCompanyName;
-    property Description: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fDescription;
+    property InterestRatePercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT read GetInterestRatePercent;
+    property IssuingCompanyName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetIssuingCompanyName;
+    property Description: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetDescription;
   end;
 
   [TName('TradeSettlementHeaderMonetarySummationType')]
@@ -2489,19 +3140,29 @@ type
     fPayeePartyCreditorFinancialAccount: TCreditorFinancialAccountCT;
     fPayerSpecifiedDebtorFinancialInstitution: TDebtorFinancialInstitutionCT;
     fPayeeSpecifiedCreditorFinancialInstitution: TCreditorFinancialInstitutionCT;
+
+    function GetPaymentChannelCode: ProRock.Xmlite.Schema.QualifiedDataType100.TPaymentMeansChannelCodeCT;
+    function GetTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TPaymentMeansCodeCT;
+    function GetGuaranteeMethodCode: ProRock.Xmlite.Schema.QualifiedDataType100.TPaymentGuaranteeMeansCodeCT;
+    function GetPaymentMethodCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetApplicableTradeSettlementFinancialCard: TTradeSettlementFinancialCardCT;
+    function GetPayerPartyDebtorFinancialAccount: TDebtorFinancialAccountCT;
+    function GetPayeePartyCreditorFinancialAccount: TCreditorFinancialAccountCT;
+    function GetPayerSpecifiedDebtorFinancialInstitution: TDebtorFinancialInstitutionCT;
+    function GetPayeeSpecifiedCreditorFinancialInstitution: TCreditorFinancialInstitutionCT;
   published
-    property PaymentChannelCode: ProRock.Xmlite.Schema.QualifiedDataType100.TPaymentMeansChannelCodeCT read fPaymentChannelCode;
-    property TypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TPaymentMeansCodeCT read fTypeCode;
-    property GuaranteeMethodCode: ProRock.Xmlite.Schema.QualifiedDataType100.TPaymentGuaranteeMeansCodeCT read fGuaranteeMethodCode;
-    property PaymentMethodCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fPaymentMethodCode;
+    property PaymentChannelCode: ProRock.Xmlite.Schema.QualifiedDataType100.TPaymentMeansChannelCodeCT read GetPaymentChannelCode;
+    property TypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TPaymentMeansCodeCT read GetTypeCode;
+    property GuaranteeMethodCode: ProRock.Xmlite.Schema.QualifiedDataType100.TPaymentGuaranteeMeansCodeCT read GetGuaranteeMethodCode;
+    property PaymentMethodCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetPaymentMethodCode;
     property Information: TTextCTList read fInformation;
     [TNaming(TNaming.nUpperCase)]
     property Id: TIdCTList read fId;
-    property ApplicableTradeSettlementFinancialCard: TTradeSettlementFinancialCardCT read fApplicableTradeSettlementFinancialCard;
-    property PayerPartyDebtorFinancialAccount: TDebtorFinancialAccountCT read fPayerPartyDebtorFinancialAccount;
-    property PayeePartyCreditorFinancialAccount: TCreditorFinancialAccountCT read fPayeePartyCreditorFinancialAccount;
-    property PayerSpecifiedDebtorFinancialInstitution: TDebtorFinancialInstitutionCT read fPayerSpecifiedDebtorFinancialInstitution;
-    property PayeeSpecifiedCreditorFinancialInstitution: TCreditorFinancialInstitutionCT read fPayeeSpecifiedCreditorFinancialInstitution;
+    property ApplicableTradeSettlementFinancialCard: TTradeSettlementFinancialCardCT read GetApplicableTradeSettlementFinancialCard;
+    property PayerPartyDebtorFinancialAccount: TDebtorFinancialAccountCT read GetPayerPartyDebtorFinancialAccount;
+    property PayeePartyCreditorFinancialAccount: TCreditorFinancialAccountCT read GetPayeePartyCreditorFinancialAccount;
+    property PayerSpecifiedDebtorFinancialInstitution: TDebtorFinancialInstitutionCT read GetPayerSpecifiedDebtorFinancialInstitution;
+    property PayeeSpecifiedCreditorFinancialInstitution: TCreditorFinancialInstitutionCT read GetPayeeSpecifiedCreditorFinancialInstitution;
   end;
 
   [TName('TradeTaxType')]
@@ -2537,36 +3198,57 @@ type
     fBuyerDeductibleTaxSpecifiedTradeAccountingAccount: TTradeAccountingAccountCT;
     fBuyerNonDeductibleTaxSpecifiedTradeAccountingAccount: TTradeAccountingAccountCT;
     fPlaceApplicableTradeLocation: TTradeLocationCTList;
+
+    function GetTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TTaxTypeCodeCT;
+    function GetExemptionReason: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetCalculatedRate: ProRock.Xmlite.Schema.UnqualifiedDataType100.TRateCT;
+    function GetCalculationSequenceNumeric: ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT;
+    function GetBasisQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+    function GetCategoryCode: ProRock.Xmlite.Schema.QualifiedDataType100.TTaxCategoryCodeCT;
+    function GetCurrencyCode: ProRock.Xmlite.Schema.QualifiedDataType100.TCurrencyCodeCT;
+    function GetCustomsDutyIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT;
+    function GetExemptionReasonCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetTaxBasisAllowanceRate: ProRock.Xmlite.Schema.UnqualifiedDataType100.TRateCT;
+    function GetTaxPointDate: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateCT;
+    function GetType: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetDueDateTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TTimeReferenceCodeCT;
+    function GetRateApplicablePercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT;
+    function GetServiceSupplyTradeCountry: TTradeCountryCT;
+    function GetBuyerRepayableTaxSpecifiedTradeAccountingAccount: TTradeAccountingAccountCT;
+    function GetSellerPayableTaxSpecifiedTradeAccountingAccount: TTradeAccountingAccountCT;
+    function GetSellerRefundableTaxSpecifiedTradeAccountingAccount: TTradeAccountingAccountCT;
+    function GetBuyerDeductibleTaxSpecifiedTradeAccountingAccount: TTradeAccountingAccountCT;
+    function GetBuyerNonDeductibleTaxSpecifiedTradeAccountingAccount: TTradeAccountingAccountCT;
   published
     property CalculatedAmount: TAmountCTList read fCalculatedAmount;
-    property TypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TTaxTypeCodeCT read fTypeCode;
-    property ExemptionReason: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fExemptionReason;
-    property CalculatedRate: ProRock.Xmlite.Schema.UnqualifiedDataType100.TRateCT read fCalculatedRate;
-    property CalculationSequenceNumeric: ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT read fCalculationSequenceNumeric;
-    property BasisQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read fBasisQuantity;
+    property TypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TTaxTypeCodeCT read GetTypeCode;
+    property ExemptionReason: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetExemptionReason;
+    property CalculatedRate: ProRock.Xmlite.Schema.UnqualifiedDataType100.TRateCT read GetCalculatedRate;
+    property CalculationSequenceNumeric: ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT read GetCalculationSequenceNumeric;
+    property BasisQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read GetBasisQuantity;
     property BasisAmount: TAmountCTList read fBasisAmount;
     property UnitBasisAmount: TAmountCTList read fUnitBasisAmount;
     property LineTotalBasisAmount: TAmountCTList read fLineTotalBasisAmount;
     property AllowanceChargeBasisAmount: TAmountCTList read fAllowanceChargeBasisAmount;
-    property CategoryCode: ProRock.Xmlite.Schema.QualifiedDataType100.TTaxCategoryCodeCT read fCategoryCode;
-    property CurrencyCode: ProRock.Xmlite.Schema.QualifiedDataType100.TCurrencyCodeCT read fCurrencyCode;
+    property CategoryCode: ProRock.Xmlite.Schema.QualifiedDataType100.TTaxCategoryCodeCT read GetCategoryCode;
+    property CurrencyCode: ProRock.Xmlite.Schema.QualifiedDataType100.TCurrencyCodeCT read GetCurrencyCode;
     property Jurisdiction: TTextCTList read fJurisdiction;
-    property CustomsDutyIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT read fCustomsDutyIndicator;
-    property ExemptionReasonCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fExemptionReasonCode;
-    property TaxBasisAllowanceRate: ProRock.Xmlite.Schema.UnqualifiedDataType100.TRateCT read fTaxBasisAllowanceRate;
-    property TaxPointDate: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateCT read fTaxPointDate;
-    property &Type: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fType;
+    property CustomsDutyIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT read GetCustomsDutyIndicator;
+    property ExemptionReasonCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetExemptionReasonCode;
+    property TaxBasisAllowanceRate: ProRock.Xmlite.Schema.UnqualifiedDataType100.TRateCT read GetTaxBasisAllowanceRate;
+    property TaxPointDate: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateCT read GetTaxPointDate;
+    property &Type: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetType;
     property InformationAmount: TAmountCTList read fInformationAmount;
     property CategoryName: TTextCTList read fCategoryName;
-    property DueDateTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TTimeReferenceCodeCT read fDueDateTypeCode;
-    property RateApplicablePercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT read fRateApplicablePercent;
+    property DueDateTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TTimeReferenceCodeCT read GetDueDateTypeCode;
+    property RateApplicablePercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT read GetRateApplicablePercent;
     property SpecifiedTradeAccountingAccount: TTradeAccountingAccountCTList read fSpecifiedTradeAccountingAccount;
-    property ServiceSupplyTradeCountry: TTradeCountryCT read fServiceSupplyTradeCountry;
-    property BuyerRepayableTaxSpecifiedTradeAccountingAccount: TTradeAccountingAccountCT read fBuyerRepayableTaxSpecifiedTradeAccountingAccount;
-    property SellerPayableTaxSpecifiedTradeAccountingAccount: TTradeAccountingAccountCT read fSellerPayableTaxSpecifiedTradeAccountingAccount;
-    property SellerRefundableTaxSpecifiedTradeAccountingAccount: TTradeAccountingAccountCT read fSellerRefundableTaxSpecifiedTradeAccountingAccount;
-    property BuyerDeductibleTaxSpecifiedTradeAccountingAccount: TTradeAccountingAccountCT read fBuyerDeductibleTaxSpecifiedTradeAccountingAccount;
-    property BuyerNonDeductibleTaxSpecifiedTradeAccountingAccount: TTradeAccountingAccountCT read fBuyerNonDeductibleTaxSpecifiedTradeAccountingAccount;
+    property ServiceSupplyTradeCountry: TTradeCountryCT read GetServiceSupplyTradeCountry;
+    property BuyerRepayableTaxSpecifiedTradeAccountingAccount: TTradeAccountingAccountCT read GetBuyerRepayableTaxSpecifiedTradeAccountingAccount;
+    property SellerPayableTaxSpecifiedTradeAccountingAccount: TTradeAccountingAccountCT read GetSellerPayableTaxSpecifiedTradeAccountingAccount;
+    property SellerRefundableTaxSpecifiedTradeAccountingAccount: TTradeAccountingAccountCT read GetSellerRefundableTaxSpecifiedTradeAccountingAccount;
+    property BuyerDeductibleTaxSpecifiedTradeAccountingAccount: TTradeAccountingAccountCT read GetBuyerDeductibleTaxSpecifiedTradeAccountingAccount;
+    property BuyerNonDeductibleTaxSpecifiedTradeAccountingAccount: TTradeAccountingAccountCT read GetBuyerNonDeductibleTaxSpecifiedTradeAccountingAccount;
     property PlaceApplicableTradeLocation: TTradeLocationCTList read fPlaceApplicableTradeLocation;
   end;
 
@@ -2577,11 +3259,16 @@ type
     fIdentification: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
     fOperationalCategoryCode: ProRock.Xmlite.Schema.QualifiedDataType100.TCargoOperationalCategoryCodeCT;
     fStatisticalClassificationCode: ProRock.Xmlite.Schema.QualifiedDataType100.TCargoCommodityCategoryCodeCT;
+
+    function GetTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TCargoCategoryCodeCT;
+    function GetIdentification: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetOperationalCategoryCode: ProRock.Xmlite.Schema.QualifiedDataType100.TCargoOperationalCategoryCodeCT;
+    function GetStatisticalClassificationCode: ProRock.Xmlite.Schema.QualifiedDataType100.TCargoCommodityCategoryCodeCT;
   published
-    property TypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TCargoCategoryCodeCT read fTypeCode;
-    property Identification: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fIdentification;
-    property OperationalCategoryCode: ProRock.Xmlite.Schema.QualifiedDataType100.TCargoOperationalCategoryCodeCT read fOperationalCategoryCode;
-    property StatisticalClassificationCode: ProRock.Xmlite.Schema.QualifiedDataType100.TCargoCommodityCategoryCodeCT read fStatisticalClassificationCode;
+    property TypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TCargoCategoryCodeCT read GetTypeCode;
+    property Identification: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetIdentification;
+    property OperationalCategoryCode: ProRock.Xmlite.Schema.QualifiedDataType100.TCargoOperationalCategoryCodeCT read GetOperationalCategoryCode;
+    property StatisticalClassificationCode: ProRock.Xmlite.Schema.QualifiedDataType100.TCargoCommodityCategoryCodeCT read GetStatisticalClassificationCode;
   end;
 
   [TName('UniversalCommunicationType')]
@@ -2590,11 +3277,15 @@ type
     fUriid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
     fChannelCode: ProRock.Xmlite.Schema.QualifiedDataType100.TCommunicationChannelCodeCT;
     fCompleteNumber: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+
+    function GetUriid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetChannelCode: ProRock.Xmlite.Schema.QualifiedDataType100.TCommunicationChannelCodeCT;
+    function GetCompleteNumber: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
   published
     [TNaming(TNaming.nUpperCase)]
-    property Uriid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fUriid;
-    property ChannelCode: ProRock.Xmlite.Schema.QualifiedDataType100.TCommunicationChannelCodeCT read fChannelCode;
-    property CompleteNumber: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fCompleteNumber;
+    property Uriid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetUriid;
+    property ChannelCode: ProRock.Xmlite.Schema.QualifiedDataType100.TCommunicationChannelCodeCT read GetChannelCode;
+    property CompleteNumber: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetCompleteNumber;
   end;
 
   [TName('ValuationBreakdownStatementType')]
@@ -2619,6 +3310,9 @@ type
     fCreationSpecifiedBinaryFile: TSpecifiedBinaryFileCTList;
     fReaderSpecifiedBinaryFile: TSpecifiedBinaryFileCTList;
     fReferencedSpecifiedBinaryFile: TSpecifiedBinaryFileCTList;
+
+    function GetPriceListID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetContractualLanguageCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
   published
     [TRequired]
     [TNaming(TNaming.nUpperCase)]
@@ -2636,8 +3330,8 @@ type
     property Comment: TTextCTList read fComment;
     property TypeCode: TCodeCTList read fTypeCode;
     property RequestedActionCode: TCodeCTList read fRequestedActionCode;
-    property PriceListID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fPriceListID;
-    property ContractualLanguageCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fContractualLanguageCode;
+    property PriceListID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetPriceListID;
+    property ContractualLanguageCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetContractualLanguageCode;
     property ItemGroupedWorkItem: TGroupedWorkItemCTList read fItemGroupedWorkItem;
     property ItemBasicWorkItem: TBasicWorkItemCTList read fItemBasicWorkItem;
     property TotalCalculatedPrice: TCalculatedPriceCTList read fTotalCalculatedPrice;
@@ -2656,13 +3350,16 @@ type
     fRequestingSpecificationQuery: TSpecificationQueryCTList;
     fRespondingSpecificationResponse: TSpecificationResponseCTList;
     fSubsetWorkItemComplexDescription: TWorkItemComplexDescriptionCT;
+
+    function GetContractualLanguageCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetSubsetWorkItemComplexDescription: TWorkItemComplexDescriptionCT;
   published
     property Abstract: TTextCTList read fAbstract;
     property Content: TTextCTList read fContent;
-    property ContractualLanguageCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fContractualLanguageCode;
+    property ContractualLanguageCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetContractualLanguageCode;
     property RequestingSpecificationQuery: TSpecificationQueryCTList read fRequestingSpecificationQuery;
     property RespondingSpecificationResponse: TSpecificationResponseCTList read fRespondingSpecificationResponse;
-    property SubsetWorkItemComplexDescription: TWorkItemComplexDescriptionCT read fSubsetWorkItemComplexDescription;
+    property SubsetWorkItemComplexDescription: TWorkItemComplexDescriptionCT read GetSubsetWorkItemComplexDescription;
   end;
 
   [TName('WorkItemDimensionType')]
@@ -2674,15 +3371,19 @@ type
     fTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
     fContractualLanguageCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
     fComponentWorkItemDimension: TWorkItemDimensionCTList;
+
+    function GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+    function GetDescription: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetContractualLanguageCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
   published
     [TNaming(TNaming.nUpperCase)]
-    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fId;
+    property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetId;
     [TRequired]
     property ValueMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT read fValueMeasure;
-    property Description: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fDescription;
+    property Description: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetDescription;
     [TRequired]
     property TypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fTypeCode;
-    property ContractualLanguageCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fContractualLanguageCode;
+    property ContractualLanguageCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetContractualLanguageCode;
     property ComponentWorkItemDimension: TWorkItemDimensionCTList read fComponentWorkItemDimension;
   end;
 
@@ -2701,18 +3402,25 @@ type
     fActualQuantityWorkItemDimension: TWorkItemDimensionCTList;
     fBreakdownWorkItemQuantityAnalysis: TWorkItemQuantityAnalysisCTList;
     fChangedRecordedStatus: TRecordedStatusCTList;
+
+    function GetActualQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+    function GetDescription: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+    function GetActualQuantityPercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT;
+    function GetStatusCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+    function GetContractualLanguageCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
   published
     [TRequired]
     [TNaming(TNaming.nUpperCase)]
     property Id: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read fId;
-    property ActualQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read fActualQuantity;
-    property Description: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read fDescription;
-    property ActualQuantityPercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT read fActualQuantityPercent;
-    property StatusCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fStatusCode;
-    property TypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fTypeCode;
+    property ActualQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT read GetActualQuantity;
+    property Description: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT read GetDescription;
+    property ActualQuantityPercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT read GetActualQuantityPercent;
+    property StatusCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetStatusCode;
+    property TypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetTypeCode;
     property PrimaryClassificationCode: TCodeCTList read fPrimaryClassificationCode;
     property AlternativeClassificationCode: TCodeCTList read fAlternativeClassificationCode;
-    property ContractualLanguageCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read fContractualLanguageCode;
+    property ContractualLanguageCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetContractualLanguageCode;
     property ActualQuantityWorkItemDimension: TWorkItemDimensionCTList read fActualQuantityWorkItemDimension;
     property BreakdownWorkItemQuantityAnalysis: TWorkItemQuantityAnalysisCTList read fBreakdownWorkItemQuantityAnalysis;
     property ChangedRecordedStatus: TRecordedStatusCTList read fChangedRecordedStatus;
@@ -2929,6 +3637,3548 @@ type
   TWorkItemQuantityAnalysisTypeCTList = TWorkItemQuantityAnalysisCTList deprecated 'use TWorkItemQuantityAnalysisCTList';
 
 implementation
+
+{ TAdvancePaymentCT }
+
+function TAdvancePaymentCT.GetFormattedReceivedDateTime: ProRock.Xmlite.Schema.QualifiedDataType100.TFormattedDateTimeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TFormattedDateTimeCT(Lazy(fFormattedReceivedDateTime,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TFormattedDateTimeCT));
+end;
+
+{ TAppliedAllowanceChargeCT }
+
+function TAppliedAllowanceChargeCT.GetActualAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT(Lazy(fActualAmount,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT));
+end;
+
+function TAppliedAllowanceChargeCT.GetDescription: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fDescription, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TAppliedAllowanceChargeCT.GetReasonCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fReasonCode, ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TAppliedAllowanceChargeCT.GetCalculationPercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT(Lazy(fCalculationPercent,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT));
+end;
+
+function TAppliedAllowanceChargeCT.GetBasisAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT(Lazy(fBasisAmount,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT));
+end;
+
+function TAppliedAllowanceChargeCT.GetCategoryAppliedTax: TAppliedTaxCT;
+begin
+  Result := TAppliedTaxCT(Lazy(fCategoryAppliedTax, TAppliedTaxCT));
+end;
+
+{ TAppliedTaxCT }
+
+function TAppliedTaxCT.GetCalculatedAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT(Lazy(fCalculatedAmount,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT));
+end;
+
+function TAppliedTaxCT.GetTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fTypeCode, ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TAppliedTaxCT.GetCalculatedRate: ProRock.Xmlite.Schema.UnqualifiedDataType100.TRateCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TRateCT(Lazy(fCalculatedRate,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TRateCT));
+end;
+
+function TAppliedTaxCT.GetBasisAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT(Lazy(fBasisAmount,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT));
+end;
+
+function TAppliedTaxCT.GetTaxPointDate: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateCT(Lazy(fTaxPointDate, ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateCT));
+end;
+
+{ TAvailablePeriodCT }
+
+function TAvailablePeriodCT.GetStartDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT(Lazy(fStartDateTime,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT));
+end;
+
+function TAvailablePeriodCT.GetEndDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT(Lazy(fEndDateTime,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT));
+end;
+
+function TAvailablePeriodCT.GetDescription: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fDescription, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+{ TBasicWorkItemCT }
+
+function TBasicWorkItemCT.GetReferenceID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fReferenceID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TBasicWorkItemCT.GetTotalQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT(Lazy(fTotalQuantity,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT));
+end;
+
+function TBasicWorkItemCT.GetTotalQuantityClassificationCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fTotalQuantityClassificationCode,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TBasicWorkItemCT.GetIndexValue: ProRock.Xmlite.Schema.UnqualifiedDataType100.TValueCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TValueCT(Lazy(fIndexValue, ProRock.Xmlite.Schema.UnqualifiedDataType100.TValueCT));
+end;
+
+function TBasicWorkItemCT.GetIndex: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fIndex, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TBasicWorkItemCT.GetPriceListItemID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fPriceListItemID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TBasicWorkItemCT.GetContractualLanguageCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fContractualLanguageCode,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+{ TBranchFinancialInstitutionCT }
+
+function TBranchFinancialInstitutionCT.GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fId, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TBranchFinancialInstitutionCT.GetName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fName, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TBranchFinancialInstitutionCT.GetLocationFinancialInstitutionAddress: TFinancialInstitutionAddressCT;
+begin
+  Result := TFinancialInstitutionAddressCT(Lazy(fLocationFinancialInstitutionAddress, TFinancialInstitutionAddressCT));
+end;
+
+{ TContactPersonCT }
+
+function TContactPersonCT.GetGivenName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fGivenName, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TContactPersonCT.GetMiddleName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fMiddleName, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TContactPersonCT.GetFamilyName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fFamilyName, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+{ TCreditorFinancialAccountCT }
+
+function TCreditorFinancialAccountCT.GetIbanid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fIbanid, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TCreditorFinancialAccountCT.GetAccountName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fAccountName, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TCreditorFinancialAccountCT.GetProprietaryID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fProprietaryID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+{ TCreditorFinancialInstitutionCT }
+
+function TCreditorFinancialInstitutionCT.GetBicid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fBicid, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TCreditorFinancialInstitutionCT.GetCHIPSUniversalID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fCHIPSUniversalID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TCreditorFinancialInstitutionCT.GetNewZealandNCCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fNewZealandNCCID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TCreditorFinancialInstitutionCT.GetIrishNSCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fIrishNSCID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TCreditorFinancialInstitutionCT.GetUKSortCodeID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fUKSortCodeID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TCreditorFinancialInstitutionCT.GetCHIPSParticipantID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fCHIPSParticipantID,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TCreditorFinancialInstitutionCT.GetSwissBCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fSwissBCID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TCreditorFinancialInstitutionCT.GetFedwireRoutingNumberID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fFedwireRoutingNumberID,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TCreditorFinancialInstitutionCT.GetPortugueseNCCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fPortugueseNCCID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TCreditorFinancialInstitutionCT.GetRussianCentralBankID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fRussianCentralBankID,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TCreditorFinancialInstitutionCT.GetItalianDomesticID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fItalianDomesticID,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TCreditorFinancialInstitutionCT.GetAustrianBankleitzahlID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fAustrianBankleitzahlID,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TCreditorFinancialInstitutionCT.GetCanadianPaymentsAssociationID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fCanadianPaymentsAssociationID,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TCreditorFinancialInstitutionCT.GetSicid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fSicid, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TCreditorFinancialInstitutionCT.GetGermanBankleitzahlID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fGermanBankleitzahlID,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TCreditorFinancialInstitutionCT.GetSpanishDomesticInterbankingID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fSpanishDomesticInterbankingID,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TCreditorFinancialInstitutionCT.GetSouthAfricanNCCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fSouthAfricanNCCID,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TCreditorFinancialInstitutionCT.GetHongKongBankID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fHongKongBankID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TCreditorFinancialInstitutionCT.GetAustralianBSBID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fAustralianBSBID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TCreditorFinancialInstitutionCT.GetIndianFinancialSystemID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fIndianFinancialSystemID,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TCreditorFinancialInstitutionCT.GetHellenicBankID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fHellenicBankID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TCreditorFinancialInstitutionCT.GetPolishNationalClearingID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fPolishNationalClearingID,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TCreditorFinancialInstitutionCT.GetName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fName, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TCreditorFinancialInstitutionCT.GetClearingSystemName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fClearingSystemName,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TCreditorFinancialInstitutionCT.GetJapanFinancialInstitutionCommonID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fJapanFinancialInstitutionCommonID,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TCreditorFinancialInstitutionCT.GetLocationFinancialInstitutionAddress: TFinancialInstitutionAddressCT;
+begin
+  Result := TFinancialInstitutionAddressCT(Lazy(fLocationFinancialInstitutionAddress, TFinancialInstitutionAddressCT));
+end;
+
+function TCreditorFinancialInstitutionCT.GetSubDivisionBranchFinancialInstitution: TBranchFinancialInstitutionCT;
+begin
+  Result := TBranchFinancialInstitutionCT(Lazy(fSubDivisionBranchFinancialInstitution, TBranchFinancialInstitutionCT));
+end;
+
+{ TDebtorFinancialAccountCT }
+
+function TDebtorFinancialAccountCT.GetIbanid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fIbanid, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TDebtorFinancialAccountCT.GetAccountName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fAccountName, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TDebtorFinancialAccountCT.GetProprietaryID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fProprietaryID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+{ TDebtorFinancialInstitutionCT }
+
+function TDebtorFinancialInstitutionCT.GetBicid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fBicid, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TDebtorFinancialInstitutionCT.GetClearingSystemName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fClearingSystemName,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TDebtorFinancialInstitutionCT.GetCHIPSUniversalID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fCHIPSUniversalID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TDebtorFinancialInstitutionCT.GetNewZealandNCCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fNewZealandNCCID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TDebtorFinancialInstitutionCT.GetIrishNSCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fIrishNSCID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TDebtorFinancialInstitutionCT.GetUKSortCodeID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fUKSortCodeID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TDebtorFinancialInstitutionCT.GetCHIPSParticipantID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fCHIPSParticipantID,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TDebtorFinancialInstitutionCT.GetSwissBCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fSwissBCID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TDebtorFinancialInstitutionCT.GetFedwireRoutingNumberID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fFedwireRoutingNumberID,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TDebtorFinancialInstitutionCT.GetPortugueseNCCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fPortugueseNCCID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TDebtorFinancialInstitutionCT.GetRussianCentralBankID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fRussianCentralBankID,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TDebtorFinancialInstitutionCT.GetItalianDomesticID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fItalianDomesticID,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TDebtorFinancialInstitutionCT.GetAustrianBankleitzahlID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fAustrianBankleitzahlID,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TDebtorFinancialInstitutionCT.GetCanadianPaymentsAssociationID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fCanadianPaymentsAssociationID,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TDebtorFinancialInstitutionCT.GetSicid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fSicid, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TDebtorFinancialInstitutionCT.GetGermanBankleitzahlID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fGermanBankleitzahlID,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TDebtorFinancialInstitutionCT.GetSpanishDomesticInterbankingID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fSpanishDomesticInterbankingID,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TDebtorFinancialInstitutionCT.GetSouthAfricanNCCID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fSouthAfricanNCCID,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TDebtorFinancialInstitutionCT.GetHongKongBankID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fHongKongBankID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TDebtorFinancialInstitutionCT.GetAustralianBSBID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fAustralianBSBID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TDebtorFinancialInstitutionCT.GetIndianFinancialSystemID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fIndianFinancialSystemID,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TDebtorFinancialInstitutionCT.GetHellenicBankID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fHellenicBankID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TDebtorFinancialInstitutionCT.GetPolishNationalClearingID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fPolishNationalClearingID,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TDebtorFinancialInstitutionCT.GetName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fName, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TDebtorFinancialInstitutionCT.GetJapanFinancialInstitutionCommonID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fJapanFinancialInstitutionCommonID,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TDebtorFinancialInstitutionCT.GetLocationFinancialInstitutionAddress: TFinancialInstitutionAddressCT;
+begin
+  Result := TFinancialInstitutionAddressCT(Lazy(fLocationFinancialInstitutionAddress, TFinancialInstitutionAddressCT));
+end;
+
+function TDebtorFinancialInstitutionCT.GetSubDivisionBranchFinancialInstitution: TBranchFinancialInstitutionCT;
+begin
+  Result := TBranchFinancialInstitutionCT(Lazy(fSubDivisionBranchFinancialInstitution, TBranchFinancialInstitutionCT));
+end;
+
+{ TDeliveryAdjustmentCT }
+
+function TDeliveryAdjustmentCT.GetReasonCode: ProRock.Xmlite.Schema.QualifiedDataType100.TAdjustmentReasonCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TAdjustmentReasonCodeCT(Lazy(fReasonCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TAdjustmentReasonCodeCT));
+end;
+
+function TDeliveryAdjustmentCT.GetActualQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT(Lazy(fActualQuantity,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT));
+end;
+
+function TDeliveryAdjustmentCT.GetActualDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT(Lazy(fActualDateTime,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT));
+end;
+
+{ TDisposalInstructionsCT }
+
+function TDisposalInstructionsCT.GetMaterialID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fMaterialID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+{ TDocumentContextParameterCT }
+
+function TDocumentContextParameterCT.GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fId, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TDocumentContextParameterCT.GetValue: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fValue, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TDocumentContextParameterCT.GetSpecifiedDocumentVersion: TDocumentVersionCT;
+begin
+  Result := TDocumentVersionCT(Lazy(fSpecifiedDocumentVersion, TDocumentVersionCT));
+end;
+
+{ TDocumentLineDocumentCT }
+
+function TDocumentLineDocumentCT.GetLineID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fLineID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TDocumentLineDocumentCT.GetParentLineID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fParentLineID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TDocumentLineDocumentCT.GetLineStatusCode: ProRock.Xmlite.Schema.QualifiedDataType100.TLineStatusCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TLineStatusCodeCT(Lazy(fLineStatusCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TLineStatusCodeCT));
+end;
+
+function TDocumentLineDocumentCT.GetLineStatusReasonCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fLineStatusReasonCode,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+{ TDocumentVersionCT }
+
+function TDocumentVersionCT.GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fId, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TDocumentVersionCT.GetName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fName, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TDocumentVersionCT.GetIssueDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT(Lazy(fIssueDateTime,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT));
+end;
+
+{ TExchangedDocumentContextCT }
+
+function TExchangedDocumentContextCT.GetSpecifiedTransactionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fSpecifiedTransactionID,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TExchangedDocumentContextCT.GetTestIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT(Lazy(fTestIndicator,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT));
+end;
+
+function TExchangedDocumentContextCT.GetMessageStandardSpecifiedDocumentContextParameter: TDocumentContextParameterCT;
+begin
+  Result := TDocumentContextParameterCT(Lazy(fMessageStandardSpecifiedDocumentContextParameter, TDocumentContextParameterCT));
+end;
+
+{ TExchangedDocumentCT }
+
+function TExchangedDocumentCT.GetTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TDocumentCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TDocumentCodeCT(Lazy(fTypeCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TDocumentCodeCT));
+end;
+
+function TExchangedDocumentCT.GetCopyIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT(Lazy(fCopyIndicator,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT));
+end;
+
+function TExchangedDocumentCT.GetPurpose: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fPurpose, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TExchangedDocumentCT.GetControlRequirementIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT(Lazy(fControlRequirementIndicator,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT));
+end;
+
+function TExchangedDocumentCT.GetPurposeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TMessageFunctionCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TMessageFunctionCodeCT(Lazy(fPurposeCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TMessageFunctionCodeCT));
+end;
+
+function TExchangedDocumentCT.GetRevisionDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT(Lazy(fRevisionDateTime,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT));
+end;
+
+function TExchangedDocumentCT.GetVersionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fVersionID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TExchangedDocumentCT.GetGlobalID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fGlobalID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TExchangedDocumentCT.GetRevisionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fRevisionID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TExchangedDocumentCT.GetPreviousRevisionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fPreviousRevisionID,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TExchangedDocumentCT.GetCategoryCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fCategoryCode, ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TExchangedDocumentCT.GetEffectiveSpecifiedPeriod: TSpecifiedPeriodCT;
+begin
+  Result := TSpecifiedPeriodCT(Lazy(fEffectiveSpecifiedPeriod, TSpecifiedPeriodCT));
+end;
+
+function TExchangedDocumentCT.GetIssuerTradeParty: TTradePartyCT;
+begin
+  Result := TTradePartyCT(Lazy(fIssuerTradeParty, TTradePartyCT));
+end;
+
+{ TFinancialAdjustmentCT }
+
+function TFinancialAdjustmentCT.GetReasonCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fReasonCode, ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TFinancialAdjustmentCT.GetActualQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT(Lazy(fActualQuantity,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT));
+end;
+
+function TFinancialAdjustmentCT.GetActualDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT(Lazy(fActualDateTime,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT));
+end;
+
+function TFinancialAdjustmentCT.GetClaimRelatedTradeParty: TTradePartyCT;
+begin
+  Result := TTradePartyCT(Lazy(fClaimRelatedTradeParty, TTradePartyCT));
+end;
+
+function TFinancialAdjustmentCT.GetInvoiceReferenceReferencedDocument: TReferencedDocumentCT;
+begin
+  Result := TReferencedDocumentCT(Lazy(fInvoiceReferenceReferencedDocument, TReferencedDocumentCT));
+end;
+
+{ TFinancialInstitutionAddressCT }
+
+function TFinancialInstitutionAddressCT.GetPostcodeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fPostcodeCode, ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TFinancialInstitutionAddressCT.GetBuildingNumber: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fBuildingNumber,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TFinancialInstitutionAddressCT.GetLineOne: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fLineOne, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TFinancialInstitutionAddressCT.GetLineTwo: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fLineTwo, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TFinancialInstitutionAddressCT.GetLineThree: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fLineThree, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TFinancialInstitutionAddressCT.GetLineFour: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fLineFour, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TFinancialInstitutionAddressCT.GetLineFive: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fLineFive, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TFinancialInstitutionAddressCT.GetStreetName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fStreetName, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TFinancialInstitutionAddressCT.GetCityName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fCityName, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TFinancialInstitutionAddressCT.GetCountrySubDivisionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fCountrySubDivisionID,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TFinancialInstitutionAddressCT.GetCountryID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fCountryID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TFinancialInstitutionAddressCT.GetTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fTypeCode, ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TFinancialInstitutionAddressCT.GetDepartmentName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fDepartmentName,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TFinancialInstitutionAddressCT.GetPostOfficeBox: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fPostOfficeBox,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TFinancialInstitutionAddressCT.GetCityID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fCityID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TFinancialInstitutionAddressCT.GetCountrySubDivisionName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fCountrySubDivisionName,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TFinancialInstitutionAddressCT.GetCountryName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fCountryName, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+{ TGeographicalCoordinateCT }
+
+function TGeographicalCoordinateCT.GetAltitudeMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT(Lazy(fAltitudeMeasure,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT));
+end;
+
+function TGeographicalCoordinateCT.GetLatitudeMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT(Lazy(fLatitudeMeasure,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT));
+end;
+
+function TGeographicalCoordinateCT.GetLongitudeMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT(Lazy(fLongitudeMeasure,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT));
+end;
+
+function TGeographicalCoordinateCT.GetSystemID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fSystemID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+{ TGroupedWorkItemCT }
+
+function TGroupedWorkItemCT.GetTotalQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT(Lazy(fTotalQuantity,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT));
+end;
+
+function TGroupedWorkItemCT.GetIndex: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fIndex, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TGroupedWorkItemCT.GetPriceListItemID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fPriceListItemID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TGroupedWorkItemCT.GetContractualLanguageCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fContractualLanguageCode,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+{ THeaderTradeAgreementCT }
+
+function THeaderTradeAgreementCT.GetBuyerReference: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fBuyerReference,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function THeaderTradeAgreementCT.GetSellerTradeParty: TTradePartyCT;
+begin
+  Result := TTradePartyCT(Lazy(fSellerTradeParty, TTradePartyCT));
+end;
+
+function THeaderTradeAgreementCT.GetBuyerTradeParty: TTradePartyCT;
+begin
+  Result := TTradePartyCT(Lazy(fBuyerTradeParty, TTradePartyCT));
+end;
+
+function THeaderTradeAgreementCT.GetSalesAgentTradeParty: TTradePartyCT;
+begin
+  Result := TTradePartyCT(Lazy(fSalesAgentTradeParty, TTradePartyCT));
+end;
+
+function THeaderTradeAgreementCT.GetBuyerAssignedAccountantTradeParty: TTradePartyCT;
+begin
+  Result := TTradePartyCT(Lazy(fBuyerAssignedAccountantTradeParty, TTradePartyCT));
+end;
+
+function THeaderTradeAgreementCT.GetSellerAssignedAccountantTradeParty: TTradePartyCT;
+begin
+  Result := TTradePartyCT(Lazy(fSellerAssignedAccountantTradeParty, TTradePartyCT));
+end;
+
+function THeaderTradeAgreementCT.GetBuyerTaxRepresentativeTradeParty: TTradePartyCT;
+begin
+  Result := TTradePartyCT(Lazy(fBuyerTaxRepresentativeTradeParty, TTradePartyCT));
+end;
+
+function THeaderTradeAgreementCT.GetSellerTaxRepresentativeTradeParty: TTradePartyCT;
+begin
+  Result := TTradePartyCT(Lazy(fSellerTaxRepresentativeTradeParty, TTradePartyCT));
+end;
+
+function THeaderTradeAgreementCT.GetProductEndUserTradeParty: TTradePartyCT;
+begin
+  Result := TTradePartyCT(Lazy(fProductEndUserTradeParty, TTradePartyCT));
+end;
+
+function THeaderTradeAgreementCT.GetApplicableTradeDeliveryTerms: TTradeDeliveryTermsCT;
+begin
+  Result := TTradeDeliveryTermsCT(Lazy(fApplicableTradeDeliveryTerms, TTradeDeliveryTermsCT));
+end;
+
+function THeaderTradeAgreementCT.GetSellerOrderReferencedDocument: TReferencedDocumentCT;
+begin
+  Result := TReferencedDocumentCT(Lazy(fSellerOrderReferencedDocument, TReferencedDocumentCT));
+end;
+
+function THeaderTradeAgreementCT.GetBuyerOrderReferencedDocument: TReferencedDocumentCT;
+begin
+  Result := TReferencedDocumentCT(Lazy(fBuyerOrderReferencedDocument, TReferencedDocumentCT));
+end;
+
+function THeaderTradeAgreementCT.GetQuotationReferencedDocument: TReferencedDocumentCT;
+begin
+  Result := TReferencedDocumentCT(Lazy(fQuotationReferencedDocument, TReferencedDocumentCT));
+end;
+
+function THeaderTradeAgreementCT.GetOrderResponseReferencedDocument: TReferencedDocumentCT;
+begin
+  Result := TReferencedDocumentCT(Lazy(fOrderResponseReferencedDocument, TReferencedDocumentCT));
+end;
+
+function THeaderTradeAgreementCT.GetContractReferencedDocument: TReferencedDocumentCT;
+begin
+  Result := TReferencedDocumentCT(Lazy(fContractReferencedDocument, TReferencedDocumentCT));
+end;
+
+function THeaderTradeAgreementCT.GetDemandForecastReferencedDocument: TReferencedDocumentCT;
+begin
+  Result := TReferencedDocumentCT(Lazy(fDemandForecastReferencedDocument, TReferencedDocumentCT));
+end;
+
+function THeaderTradeAgreementCT.GetSupplyInstructionReferencedDocument: TReferencedDocumentCT;
+begin
+  Result := TReferencedDocumentCT(Lazy(fSupplyInstructionReferencedDocument, TReferencedDocumentCT));
+end;
+
+function THeaderTradeAgreementCT.GetPromotionalDealReferencedDocument: TReferencedDocumentCT;
+begin
+  Result := TReferencedDocumentCT(Lazy(fPromotionalDealReferencedDocument, TReferencedDocumentCT));
+end;
+
+function THeaderTradeAgreementCT.GetPriceListReferencedDocument: TReferencedDocumentCT;
+begin
+  Result := TReferencedDocumentCT(Lazy(fPriceListReferencedDocument, TReferencedDocumentCT));
+end;
+
+function THeaderTradeAgreementCT.GetBuyerAgentTradeParty: TTradePartyCT;
+begin
+  Result := TTradePartyCT(Lazy(fBuyerAgentTradeParty, TTradePartyCT));
+end;
+
+function THeaderTradeAgreementCT.GetSpecifiedProcuringProject: TProcuringProjectCT;
+begin
+  Result := TProcuringProjectCT(Lazy(fSpecifiedProcuringProject, TProcuringProjectCT));
+end;
+
+{ THeaderTradeDeliveryCT }
+
+function THeaderTradeDeliveryCT.GetRelatedSupplyChainConsignment: TSupplyChainConsignmentCT;
+begin
+  Result := TSupplyChainConsignmentCT(Lazy(fRelatedSupplyChainConsignment, TSupplyChainConsignmentCT));
+end;
+
+function THeaderTradeDeliveryCT.GetShipToTradeParty: TTradePartyCT;
+begin
+  Result := TTradePartyCT(Lazy(fShipToTradeParty, TTradePartyCT));
+end;
+
+function THeaderTradeDeliveryCT.GetUltimateShipToTradeParty: TTradePartyCT;
+begin
+  Result := TTradePartyCT(Lazy(fUltimateShipToTradeParty, TTradePartyCT));
+end;
+
+function THeaderTradeDeliveryCT.GetShipFromTradeParty: TTradePartyCT;
+begin
+  Result := TTradePartyCT(Lazy(fShipFromTradeParty, TTradePartyCT));
+end;
+
+function THeaderTradeDeliveryCT.GetActualDespatchSupplyChainEvent: TSupplyChainEventCT;
+begin
+  Result := TSupplyChainEventCT(Lazy(fActualDespatchSupplyChainEvent, TSupplyChainEventCT));
+end;
+
+function THeaderTradeDeliveryCT.GetActualPickUpSupplyChainEvent: TSupplyChainEventCT;
+begin
+  Result := TSupplyChainEventCT(Lazy(fActualPickUpSupplyChainEvent, TSupplyChainEventCT));
+end;
+
+function THeaderTradeDeliveryCT.GetActualDeliverySupplyChainEvent: TSupplyChainEventCT;
+begin
+  Result := TSupplyChainEventCT(Lazy(fActualDeliverySupplyChainEvent, TSupplyChainEventCT));
+end;
+
+function THeaderTradeDeliveryCT.GetActualReceiptSupplyChainEvent: TSupplyChainEventCT;
+begin
+  Result := TSupplyChainEventCT(Lazy(fActualReceiptSupplyChainEvent, TSupplyChainEventCT));
+end;
+
+function THeaderTradeDeliveryCT.GetDespatchAdviceReferencedDocument: TReferencedDocumentCT;
+begin
+  Result := TReferencedDocumentCT(Lazy(fDespatchAdviceReferencedDocument, TReferencedDocumentCT));
+end;
+
+function THeaderTradeDeliveryCT.GetReceivingAdviceReferencedDocument: TReferencedDocumentCT;
+begin
+  Result := TReferencedDocumentCT(Lazy(fReceivingAdviceReferencedDocument, TReferencedDocumentCT));
+end;
+
+function THeaderTradeDeliveryCT.GetDeliveryNoteReferencedDocument: TReferencedDocumentCT;
+begin
+  Result := TReferencedDocumentCT(Lazy(fDeliveryNoteReferencedDocument, TReferencedDocumentCT));
+end;
+
+function THeaderTradeDeliveryCT.GetConsumptionReportReferencedDocument: TReferencedDocumentCT;
+begin
+  Result := TReferencedDocumentCT(Lazy(fConsumptionReportReferencedDocument, TReferencedDocumentCT));
+end;
+
+function THeaderTradeDeliveryCT.GetPackingListReferencedDocument: TReferencedDocumentCT;
+begin
+  Result := TReferencedDocumentCT(Lazy(fPackingListReferencedDocument, TReferencedDocumentCT));
+end;
+
+{ THeaderTradeSettlementCT }
+
+function THeaderTradeSettlementCT.GetCreditorReferenceID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fCreditorReferenceID,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function THeaderTradeSettlementCT.GetTaxCurrencyCode: ProRock.Xmlite.Schema.QualifiedDataType100.TCurrencyCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TCurrencyCodeCT(Lazy(fTaxCurrencyCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TCurrencyCodeCT));
+end;
+
+function THeaderTradeSettlementCT.GetInvoiceCurrencyCode: ProRock.Xmlite.Schema.QualifiedDataType100.TCurrencyCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TCurrencyCodeCT(Lazy(fInvoiceCurrencyCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TCurrencyCodeCT));
+end;
+
+function THeaderTradeSettlementCT.GetPaymentCurrencyCode: ProRock.Xmlite.Schema.QualifiedDataType100.TCurrencyCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TCurrencyCodeCT(Lazy(fPaymentCurrencyCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TCurrencyCodeCT));
+end;
+
+function THeaderTradeSettlementCT.GetInvoiceIssuerReference: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fInvoiceIssuerReference,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function THeaderTradeSettlementCT.GetInvoiceDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT(Lazy(fInvoiceDateTime,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT));
+end;
+
+function THeaderTradeSettlementCT.GetCreditReasonCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fCreditReasonCode,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function THeaderTradeSettlementCT.GetInvoicerTradeParty: TTradePartyCT;
+begin
+  Result := TTradePartyCT(Lazy(fInvoicerTradeParty, TTradePartyCT));
+end;
+
+function THeaderTradeSettlementCT.GetInvoiceeTradeParty: TTradePartyCT;
+begin
+  Result := TTradePartyCT(Lazy(fInvoiceeTradeParty, TTradePartyCT));
+end;
+
+function THeaderTradeSettlementCT.GetPayeeTradeParty: TTradePartyCT;
+begin
+  Result := TTradePartyCT(Lazy(fPayeeTradeParty, TTradePartyCT));
+end;
+
+function THeaderTradeSettlementCT.GetPayerTradeParty: TTradePartyCT;
+begin
+  Result := TTradePartyCT(Lazy(fPayerTradeParty, TTradePartyCT));
+end;
+
+function THeaderTradeSettlementCT.GetTaxApplicableTradeCurrencyExchange: TTradeCurrencyExchangeCT;
+begin
+  Result := TTradeCurrencyExchangeCT(Lazy(fTaxApplicableTradeCurrencyExchange, TTradeCurrencyExchangeCT));
+end;
+
+function THeaderTradeSettlementCT.GetInvoiceApplicableTradeCurrencyExchange: TTradeCurrencyExchangeCT;
+begin
+  Result := TTradeCurrencyExchangeCT(Lazy(fInvoiceApplicableTradeCurrencyExchange, TTradeCurrencyExchangeCT));
+end;
+
+function THeaderTradeSettlementCT.GetPaymentApplicableTradeCurrencyExchange: TTradeCurrencyExchangeCT;
+begin
+  Result := TTradeCurrencyExchangeCT(Lazy(fPaymentApplicableTradeCurrencyExchange, TTradeCurrencyExchangeCT));
+end;
+
+function THeaderTradeSettlementCT.GetBillingSpecifiedPeriod: TSpecifiedPeriodCT;
+begin
+  Result := TSpecifiedPeriodCT(Lazy(fBillingSpecifiedPeriod, TSpecifiedPeriodCT));
+end;
+
+function THeaderTradeSettlementCT.GetSpecifiedTradeSettlementHeaderMonetarySummation: TTradeSettlementHeaderMonetarySummationCT;
+begin
+  Result := TTradeSettlementHeaderMonetarySummationCT(Lazy(fSpecifiedTradeSettlementHeaderMonetarySummation,
+    TTradeSettlementHeaderMonetarySummationCT));
+end;
+
+function THeaderTradeSettlementCT.GetInvoiceReferencedDocument: TReferencedDocumentCT;
+begin
+  Result := TReferencedDocumentCT(Lazy(fInvoiceReferencedDocument, TReferencedDocumentCT));
+end;
+
+function THeaderTradeSettlementCT.GetProFormaInvoiceReferencedDocument: TReferencedDocumentCT;
+begin
+  Result := TReferencedDocumentCT(Lazy(fProFormaInvoiceReferencedDocument, TReferencedDocumentCT));
+end;
+
+function THeaderTradeSettlementCT.GetLetterOfCreditReferencedDocument: TReferencedDocumentCT;
+begin
+  Result := TReferencedDocumentCT(Lazy(fLetterOfCreditReferencedDocument, TReferencedDocumentCT));
+end;
+
+function THeaderTradeSettlementCT.GetUltimatePayeeTradeParty: TTradePartyCT;
+begin
+  Result := TTradePartyCT(Lazy(fUltimatePayeeTradeParty, TTradePartyCT));
+end;
+
+{ TLegalOrganizationCT }
+
+function TLegalOrganizationCT.GetLegalClassificationCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fLegalClassificationCode,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TLegalOrganizationCT.GetName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fName, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TLegalOrganizationCT.GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fId, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TLegalOrganizationCT.GetTradingBusinessName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fTradingBusinessName,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TLegalOrganizationCT.GetPostalTradeAddress: TTradeAddressCT;
+begin
+  Result := TTradeAddressCT(Lazy(fPostalTradeAddress, TTradeAddressCT));
+end;
+
+{ TLegalRegistrationCT }
+
+function TLegalRegistrationCT.GetTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fTypeCode, ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TLegalRegistrationCT.GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fId, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+{ TLineTradeAgreementCT }
+
+function TLineTradeAgreementCT.GetBuyerReference: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fBuyerReference,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TLineTradeAgreementCT.GetApplicableTradeDeliveryTerms: TTradeDeliveryTermsCT;
+begin
+  Result := TTradeDeliveryTermsCT(Lazy(fApplicableTradeDeliveryTerms, TTradeDeliveryTermsCT));
+end;
+
+function TLineTradeAgreementCT.GetSellerOrderReferencedDocument: TReferencedDocumentCT;
+begin
+  Result := TReferencedDocumentCT(Lazy(fSellerOrderReferencedDocument, TReferencedDocumentCT));
+end;
+
+function TLineTradeAgreementCT.GetBuyerOrderReferencedDocument: TReferencedDocumentCT;
+begin
+  Result := TReferencedDocumentCT(Lazy(fBuyerOrderReferencedDocument, TReferencedDocumentCT));
+end;
+
+function TLineTradeAgreementCT.GetQuotationReferencedDocument: TReferencedDocumentCT;
+begin
+  Result := TReferencedDocumentCT(Lazy(fQuotationReferencedDocument, TReferencedDocumentCT));
+end;
+
+function TLineTradeAgreementCT.GetContractReferencedDocument: TReferencedDocumentCT;
+begin
+  Result := TReferencedDocumentCT(Lazy(fContractReferencedDocument, TReferencedDocumentCT));
+end;
+
+function TLineTradeAgreementCT.GetDemandForecastReferencedDocument: TReferencedDocumentCT;
+begin
+  Result := TReferencedDocumentCT(Lazy(fDemandForecastReferencedDocument, TReferencedDocumentCT));
+end;
+
+function TLineTradeAgreementCT.GetPromotionalDealReferencedDocument: TReferencedDocumentCT;
+begin
+  Result := TReferencedDocumentCT(Lazy(fPromotionalDealReferencedDocument, TReferencedDocumentCT));
+end;
+
+function TLineTradeAgreementCT.GetGrossPriceProductTradePrice: TTradePriceCT;
+begin
+  Result := TTradePriceCT(Lazy(fGrossPriceProductTradePrice, TTradePriceCT));
+end;
+
+function TLineTradeAgreementCT.GetNetPriceProductTradePrice: TTradePriceCT;
+begin
+  Result := TTradePriceCT(Lazy(fNetPriceProductTradePrice, TTradePriceCT));
+end;
+
+function TLineTradeAgreementCT.GetItemSellerTradeParty: TTradePartyCT;
+begin
+  Result := TTradePartyCT(Lazy(fItemSellerTradeParty, TTradePartyCT));
+end;
+
+function TLineTradeAgreementCT.GetItemBuyerTradeParty: TTradePartyCT;
+begin
+  Result := TTradePartyCT(Lazy(fItemBuyerTradeParty, TTradePartyCT));
+end;
+
+function TLineTradeAgreementCT.GetIncludedSpecifiedMarketplace: TSpecifiedMarketplaceCT;
+begin
+  Result := TSpecifiedMarketplaceCT(Lazy(fIncludedSpecifiedMarketplace, TSpecifiedMarketplaceCT));
+end;
+
+{ TLineTradeDeliveryCT }
+
+function TLineTradeDeliveryCT.GetRequestedQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT(Lazy(fRequestedQuantity,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT));
+end;
+
+function TLineTradeDeliveryCT.GetReceivedQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT(Lazy(fReceivedQuantity,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT));
+end;
+
+function TLineTradeDeliveryCT.GetBilledQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT(Lazy(fBilledQuantity,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT));
+end;
+
+function TLineTradeDeliveryCT.GetChargeFreeQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT(Lazy(fChargeFreeQuantity,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT));
+end;
+
+function TLineTradeDeliveryCT.GetPackageQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT(Lazy(fPackageQuantity,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT));
+end;
+
+function TLineTradeDeliveryCT.GetProductUnitQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT(Lazy(fProductUnitQuantity,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT));
+end;
+
+function TLineTradeDeliveryCT.GetPerPackageUnitQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT(Lazy(fPerPackageUnitQuantity,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT));
+end;
+
+function TLineTradeDeliveryCT.GetNetWeightMeasure: ProRock.Xmlite.Schema.QualifiedDataType100.TWeightUnitMeasureCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TWeightUnitMeasureCT(Lazy(fNetWeightMeasure,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TWeightUnitMeasureCT));
+end;
+
+function TLineTradeDeliveryCT.GetGrossWeightMeasure: ProRock.Xmlite.Schema.QualifiedDataType100.TWeightUnitMeasureCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TWeightUnitMeasureCT(Lazy(fGrossWeightMeasure,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TWeightUnitMeasureCT));
+end;
+
+function TLineTradeDeliveryCT.GetTheoreticalWeightMeasure: ProRock.Xmlite.Schema.QualifiedDataType100.TWeightUnitMeasureCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TWeightUnitMeasureCT(Lazy(fTheoreticalWeightMeasure,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TWeightUnitMeasureCT));
+end;
+
+function TLineTradeDeliveryCT.GetDespatchedQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT(Lazy(fDespatchedQuantity,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT));
+end;
+
+function TLineTradeDeliveryCT.GetRelatedSupplyChainConsignment: TSupplyChainConsignmentCT;
+begin
+  Result := TSupplyChainConsignmentCT(Lazy(fRelatedSupplyChainConsignment, TSupplyChainConsignmentCT));
+end;
+
+function TLineTradeDeliveryCT.GetShipToTradeParty: TTradePartyCT;
+begin
+  Result := TTradePartyCT(Lazy(fShipToTradeParty, TTradePartyCT));
+end;
+
+function TLineTradeDeliveryCT.GetUltimateShipToTradeParty: TTradePartyCT;
+begin
+  Result := TTradePartyCT(Lazy(fUltimateShipToTradeParty, TTradePartyCT));
+end;
+
+function TLineTradeDeliveryCT.GetShipFromTradeParty: TTradePartyCT;
+begin
+  Result := TTradePartyCT(Lazy(fShipFromTradeParty, TTradePartyCT));
+end;
+
+function TLineTradeDeliveryCT.GetActualDespatchSupplyChainEvent: TSupplyChainEventCT;
+begin
+  Result := TSupplyChainEventCT(Lazy(fActualDespatchSupplyChainEvent, TSupplyChainEventCT));
+end;
+
+function TLineTradeDeliveryCT.GetActualPickUpSupplyChainEvent: TSupplyChainEventCT;
+begin
+  Result := TSupplyChainEventCT(Lazy(fActualPickUpSupplyChainEvent, TSupplyChainEventCT));
+end;
+
+function TLineTradeDeliveryCT.GetRequestedDeliverySupplyChainEvent: TSupplyChainEventCT;
+begin
+  Result := TSupplyChainEventCT(Lazy(fRequestedDeliverySupplyChainEvent, TSupplyChainEventCT));
+end;
+
+function TLineTradeDeliveryCT.GetActualDeliverySupplyChainEvent: TSupplyChainEventCT;
+begin
+  Result := TSupplyChainEventCT(Lazy(fActualDeliverySupplyChainEvent, TSupplyChainEventCT));
+end;
+
+function TLineTradeDeliveryCT.GetActualReceiptSupplyChainEvent: TSupplyChainEventCT;
+begin
+  Result := TSupplyChainEventCT(Lazy(fActualReceiptSupplyChainEvent, TSupplyChainEventCT));
+end;
+
+function TLineTradeDeliveryCT.GetDespatchAdviceReferencedDocument: TReferencedDocumentCT;
+begin
+  Result := TReferencedDocumentCT(Lazy(fDespatchAdviceReferencedDocument, TReferencedDocumentCT));
+end;
+
+function TLineTradeDeliveryCT.GetReceivingAdviceReferencedDocument: TReferencedDocumentCT;
+begin
+  Result := TReferencedDocumentCT(Lazy(fReceivingAdviceReferencedDocument, TReferencedDocumentCT));
+end;
+
+function TLineTradeDeliveryCT.GetDeliveryNoteReferencedDocument: TReferencedDocumentCT;
+begin
+  Result := TReferencedDocumentCT(Lazy(fDeliveryNoteReferencedDocument, TReferencedDocumentCT));
+end;
+
+function TLineTradeDeliveryCT.GetConsumptionReportReferencedDocument: TReferencedDocumentCT;
+begin
+  Result := TReferencedDocumentCT(Lazy(fConsumptionReportReferencedDocument, TReferencedDocumentCT));
+end;
+
+function TLineTradeDeliveryCT.GetPackingListReferencedDocument: TReferencedDocumentCT;
+begin
+  Result := TReferencedDocumentCT(Lazy(fPackingListReferencedDocument, TReferencedDocumentCT));
+end;
+
+{ TLineTradeSettlementCT }
+
+function TLineTradeSettlementCT.GetInvoiceIssuerReference: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fInvoiceIssuerReference,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TLineTradeSettlementCT.GetTotalAdjustmentAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT(Lazy(fTotalAdjustmentAmount,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT));
+end;
+
+function TLineTradeSettlementCT.GetDiscountIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT(Lazy(fDiscountIndicator,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT));
+end;
+
+function TLineTradeSettlementCT.GetBillingSpecifiedPeriod: TSpecifiedPeriodCT;
+begin
+  Result := TSpecifiedPeriodCT(Lazy(fBillingSpecifiedPeriod, TSpecifiedPeriodCT));
+end;
+
+function TLineTradeSettlementCT.GetSpecifiedTradeSettlementLineMonetarySummation: TTradeSettlementLineMonetarySummationCT;
+begin
+  Result := TTradeSettlementLineMonetarySummationCT(Lazy(fSpecifiedTradeSettlementLineMonetarySummation,
+    TTradeSettlementLineMonetarySummationCT));
+end;
+
+function TLineTradeSettlementCT.GetInvoiceReferencedDocument: TReferencedDocumentCT;
+begin
+  Result := TReferencedDocumentCT(Lazy(fInvoiceReferencedDocument, TReferencedDocumentCT));
+end;
+
+function TLineTradeSettlementCT.GetSpecifiedTradeSettlementFinancialCard: TTradeSettlementFinancialCardCT;
+begin
+  Result := TTradeSettlementFinancialCardCT(Lazy(fSpecifiedTradeSettlementFinancialCard, TTradeSettlementFinancialCardCT));
+end;
+
+{ TLogisticsLocationCT }
+
+function TLogisticsLocationCT.GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fId, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TLogisticsLocationCT.GetTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fTypeCode, ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TLogisticsLocationCT.GetPhysicalGeographicalCoordinate: TGeographicalCoordinateCT;
+begin
+  Result := TGeographicalCoordinateCT(Lazy(fPhysicalGeographicalCoordinate, TGeographicalCoordinateCT));
+end;
+
+function TLogisticsLocationCT.GetPostalTradeAddress: TTradeAddressCT;
+begin
+  Result := TTradeAddressCT(Lazy(fPostalTradeAddress, TTradeAddressCT));
+end;
+
+{ TLogisticsServiceChargeCT }
+
+function TLogisticsServiceChargeCT.GetId: ProRock.Xmlite.Schema.QualifiedDataType100.TFreightChargeTypeIDCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TFreightChargeTypeIDCT(Lazy(fId,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TFreightChargeTypeIDCT));
+end;
+
+function TLogisticsServiceChargeCT.GetPaymentArrangementCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fPaymentArrangementCode,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TLogisticsServiceChargeCT.GetTariffClassCode: ProRock.Xmlite.Schema.QualifiedDataType100.TFreightChargeTariffClassCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TFreightChargeTariffClassCodeCT(Lazy(fTariffClassCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TFreightChargeTariffClassCodeCT));
+end;
+
+function TLogisticsServiceChargeCT.GetChargeCategoryCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fChargeCategoryCode,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TLogisticsServiceChargeCT.GetServiceCategoryCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fServiceCategoryCode,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TLogisticsServiceChargeCT.GetAllowanceCharge: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fAllowanceCharge,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TLogisticsServiceChargeCT.GetPayingPartyRoleCode: ProRock.Xmlite.Schema.QualifiedDataType100.TChargePayingPartyRoleCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TChargePayingPartyRoleCodeCT(Lazy(fPayingPartyRoleCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TChargePayingPartyRoleCodeCT));
+end;
+
+function TLogisticsServiceChargeCT.GetCalculationBasisCode:
+  ProRock.Xmlite.Schema.QualifiedDataType100.TLogisticsChargeCalculationBasisCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TLogisticsChargeCalculationBasisCodeCT(Lazy(fCalculationBasisCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TLogisticsChargeCalculationBasisCodeCT));
+end;
+
+function TLogisticsServiceChargeCT.GetCalculationBasis: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fCalculationBasis,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TLogisticsServiceChargeCT.GetTransportPaymentMethodCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fTransportPaymentMethodCode,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TLogisticsServiceChargeCT.GetPaymentPlaceLogisticsLocation: TLogisticsLocationCT;
+begin
+  Result := TLogisticsLocationCT(Lazy(fPaymentPlaceLogisticsLocation, TLogisticsLocationCT));
+end;
+
+function TLogisticsServiceChargeCT.GetAppliedFromLogisticsLocation: TLogisticsLocationCT;
+begin
+  Result := TLogisticsLocationCT(Lazy(fAppliedFromLogisticsLocation, TLogisticsLocationCT));
+end;
+
+function TLogisticsServiceChargeCT.GetAppliedToLogisticsLocation: TLogisticsLocationCT;
+begin
+  Result := TLogisticsLocationCT(Lazy(fAppliedToLogisticsLocation, TLogisticsLocationCT));
+end;
+
+{ TLogisticsTransportEquipmentCT }
+
+function TLogisticsTransportEquipmentCT.GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fId, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TLogisticsTransportEquipmentCT.GetLoadingLengthMeasure: ProRock.Xmlite.Schema.QualifiedDataType100.TLinearUnitMeasureCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TLinearUnitMeasureCT(Lazy(fLoadingLengthMeasure,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TLinearUnitMeasureCT));
+end;
+
+function TLogisticsTransportEquipmentCT.GetCategoryCode: ProRock.Xmlite.Schema.QualifiedDataType100.TTransportEquipmentCategoryCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TTransportEquipmentCategoryCodeCT(Lazy(fCategoryCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TTransportEquipmentCategoryCodeCT));
+end;
+
+function TLogisticsTransportEquipmentCT.GetCharacteristicCode:
+  ProRock.Xmlite.Schema.QualifiedDataType100.TTransportEquipmentSizeTypeCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TTransportEquipmentSizeTypeCodeCT(Lazy(fCharacteristicCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TTransportEquipmentSizeTypeCodeCT));
+end;
+
+function TLogisticsTransportEquipmentCT.GetUsedCapacityCode: ProRock.Xmlite.Schema.QualifiedDataType100.TTransportEquipmentFullnessCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TTransportEquipmentFullnessCodeCT(Lazy(fUsedCapacityCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TTransportEquipmentFullnessCodeCT));
+end;
+
+function TLogisticsTransportEquipmentCT.GetLinearSpatialDimension: TSpatialDimensionCT;
+begin
+  Result := TSpatialDimensionCT(Lazy(fLinearSpatialDimension, TSpatialDimensionCT));
+end;
+
+{ TLogisticsTransportMeansCT }
+
+function TLogisticsTransportMeansCT.GetTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TTransportMeansTypeCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TTransportMeansTypeCodeCT(Lazy(fTypeCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TTransportMeansTypeCodeCT));
+end;
+
+function TLogisticsTransportMeansCT.GetType: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fType, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TLogisticsTransportMeansCT.GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fId, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TLogisticsTransportMeansCT.GetName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fName, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TLogisticsTransportMeansCT.GetOwnerTradeParty: TTradePartyCT;
+begin
+  Result := TTradePartyCT(Lazy(fOwnerTradeParty, TTradePartyCT));
+end;
+
+{ TLogisticsTransportMovementCT }
+
+function TLogisticsTransportMovementCT.GetStageCode: ProRock.Xmlite.Schema.QualifiedDataType100.TTransportMovementStageCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TTransportMovementStageCodeCT(Lazy(fStageCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TTransportMovementStageCodeCT));
+end;
+
+function TLogisticsTransportMovementCT.GetModeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TTransportModeCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TTransportModeCodeCT(Lazy(fModeCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TTransportModeCodeCT));
+end;
+
+function TLogisticsTransportMovementCT.GetMode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fMode, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TLogisticsTransportMovementCT.GetUsedLogisticsTransportMeans: TLogisticsTransportMeansCT;
+begin
+  Result := TLogisticsTransportMeansCT(Lazy(fUsedLogisticsTransportMeans, TLogisticsTransportMeansCT));
+end;
+
+{ TMaterialGoodsCharacteristicCT }
+
+function TMaterialGoodsCharacteristicCT.GetTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fTypeCode, ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TMaterialGoodsCharacteristicCT.GetProportionalConstituentPercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT(Lazy(fProportionalConstituentPercent,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT));
+end;
+
+function TMaterialGoodsCharacteristicCT.GetAbsolutePresenceWeightMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT(Lazy(fAbsolutePresenceWeightMeasure,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT));
+end;
+
+function TMaterialGoodsCharacteristicCT.GetAbsolutePresenceVolumeMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT(Lazy(fAbsolutePresenceVolumeMeasure,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT));
+end;
+
+{ TNoteCT }
+
+function TNoteCT.GetSubject: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fSubject, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TNoteCT.GetContentCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fContentCode, ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TNoteCT.GetSubjectCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fSubjectCode, ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TNoteCT.GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fId, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+{ TPackagingMarkingCT }
+
+function TPackagingMarkingCT.GetContentDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT(Lazy(fContentDateTime,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT));
+end;
+
+{ TProcuringProjectCT }
+
+function TProcuringProjectCT.GetDescription: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fDescription, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+{ TProductCharacteristicConditionCT }
+
+function TProductCharacteristicConditionCT.GetTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fTypeCode, ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TProductCharacteristicConditionCT.GetValueMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT(Lazy(fValueMeasure,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT));
+end;
+
+{ TProductCharacteristicCT }
+
+function TProductCharacteristicCT.GetTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fTypeCode, ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TProductCharacteristicCT.GetValueMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT(Lazy(fValueMeasure,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT));
+end;
+
+function TProductCharacteristicCT.GetMeasurementMethodCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fMeasurementMethodCode,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TProductCharacteristicCT.GetValueCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fValueCode, ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TProductCharacteristicCT.GetValueDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT(Lazy(fValueDateTime,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT));
+end;
+
+function TProductCharacteristicCT.GetValueIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT(Lazy(fValueIndicator,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT));
+end;
+
+function TProductCharacteristicCT.GetContentTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fContentTypeCode,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TProductCharacteristicCT.GetValueSpecifiedBinaryFile: TSpecifiedBinaryFileCT;
+begin
+  Result := TSpecifiedBinaryFileCT(Lazy(fValueSpecifiedBinaryFile, TSpecifiedBinaryFileCT));
+end;
+
+function TProductCharacteristicCT.GetApplicableReferencedStandard: TReferencedStandardCT;
+begin
+  Result := TReferencedStandardCT(Lazy(fApplicableReferencedStandard, TReferencedStandardCT));
+end;
+
+{ TProductClassificationCT }
+
+function TProductClassificationCT.GetSystemID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fSystemID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TProductClassificationCT.GetClassCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fClassCode, ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TProductClassificationCT.GetSubClassCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fSubClassCode, ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TProductClassificationCT.GetApplicableReferencedStandard: TReferencedStandardCT;
+begin
+  Result := TReferencedStandardCT(Lazy(fApplicableReferencedStandard, TReferencedStandardCT));
+end;
+
+{ TRecordedStatusCT }
+
+function TRecordedStatusCT.GetChangerName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fChangerName, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+{ TReferencedDocumentCT }
+
+function TReferencedDocumentCT.GetIssuerAssignedID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fIssuerAssignedID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TReferencedDocumentCT.GetUriid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fUriid, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TReferencedDocumentCT.GetStatusCode: ProRock.Xmlite.Schema.QualifiedDataType100.TDocumentStatusCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TDocumentStatusCodeCT(Lazy(fStatusCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TDocumentStatusCodeCT));
+end;
+
+function TReferencedDocumentCT.GetCopyIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT(Lazy(fCopyIndicator,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT));
+end;
+
+function TReferencedDocumentCT.GetLineID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fLineID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TReferencedDocumentCT.GetTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TDocumentCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TDocumentCodeCT(Lazy(fTypeCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TDocumentCodeCT));
+end;
+
+function TReferencedDocumentCT.GetGlobalID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fGlobalID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TReferencedDocumentCT.GetRevisionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fRevisionID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TReferencedDocumentCT.GetReferenceTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TReferenceCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TReferenceCodeCT(Lazy(fReferenceTypeCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TReferenceCodeCT));
+end;
+
+function TReferencedDocumentCT.GetFormattedIssueDateTime: ProRock.Xmlite.Schema.QualifiedDataType100.TFormattedDateTimeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TFormattedDateTimeCT(Lazy(fFormattedIssueDateTime,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TFormattedDateTimeCT));
+end;
+
+function TReferencedDocumentCT.GetEffectiveSpecifiedPeriod: TSpecifiedPeriodCT;
+begin
+  Result := TSpecifiedPeriodCT(Lazy(fEffectiveSpecifiedPeriod, TSpecifiedPeriodCT));
+end;
+
+function TReferencedDocumentCT.GetIssuerTradeParty: TTradePartyCT;
+begin
+  Result := TTradePartyCT(Lazy(fIssuerTradeParty, TTradePartyCT));
+end;
+
+{ TReferencedProductCT }
+
+function TReferencedProductCT.GetSellerAssignedID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fSellerAssignedID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TReferencedProductCT.GetBuyerAssignedID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fBuyerAssignedID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+{ TReferencedStandardCT }
+
+function TReferencedStandardCT.GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fId, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TReferencedStandardCT.GetVersionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fVersionID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TReferencedStandardCT.GetElementVersionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fElementVersionID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TReferencedStandardCT.GetUriid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fUriid, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TReferencedStandardCT.GetPartID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fPartID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TReferencedStandardCT.GetAgencyID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fAgencyID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+{ TReferencePriceCT }
+
+function TReferencePriceCT.GetChargeAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT(Lazy(fChargeAmount,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT));
+end;
+
+function TReferencePriceCT.GetComparisonMethodCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fComparisonMethodCode,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+{ TRegisteredTaxCT }
+
+function TRegisteredTaxCT.GetTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fTypeCode, ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TRegisteredTaxCT.GetExemptionReasonCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fExemptionReasonCode,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TRegisteredTaxCT.GetCurrencyCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fCurrencyCode, ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TRegisteredTaxCT.GetCustomsDutyIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT(Lazy(fCustomsDutyIndicator,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT));
+end;
+
+{ TReturnableAssetInstructionsCT }
+
+function TReturnableAssetInstructionsCT.GetTermsAndConditionsDescriptionCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fTermsAndConditionsDescriptionCode,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TReturnableAssetInstructionsCT.GetDepositValueValiditySpecifiedPeriod: TSpecifiedPeriodCT;
+begin
+  Result := TSpecifiedPeriodCT(Lazy(fDepositValueValiditySpecifiedPeriod, TSpecifiedPeriodCT));
+end;
+
+{ TSpatialDimensionCT }
+
+function TSpatialDimensionCT.GetValueMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT(Lazy(fValueMeasure,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT));
+end;
+
+function TSpatialDimensionCT.GetTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TDimensionTypeCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TDimensionTypeCodeCT(Lazy(fTypeCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TDimensionTypeCodeCT));
+end;
+
+function TSpatialDimensionCT.GetWidthMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT(Lazy(fWidthMeasure,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT));
+end;
+
+function TSpatialDimensionCT.GetLengthMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT(Lazy(fLengthMeasure,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT));
+end;
+
+function TSpatialDimensionCT.GetHeightMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT(Lazy(fHeightMeasure,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT));
+end;
+
+function TSpatialDimensionCT.GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fId, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TSpatialDimensionCT.GetDiameterMeasure: ProRock.Xmlite.Schema.QualifiedDataType100.TLinearUnitMeasureCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TLinearUnitMeasureCT(Lazy(fDiameterMeasure,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TLinearUnitMeasureCT));
+end;
+
+{ TSpecificationQueryCT }
+
+function TSpecificationQueryCT.GetTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fTypeCode, ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TSpecificationQueryCT.GetContractualLanguageCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fContractualLanguageCode,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+{ TSpecificationResponseCT }
+
+function TSpecificationResponseCT.GetQueryID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fQueryID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TSpecificationResponseCT.GetTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fTypeCode, ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TSpecificationResponseCT.GetContractualLanguageCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fContractualLanguageCode,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+{ TSpecifiedBinaryFileCT }
+
+function TSpecifiedBinaryFileCT.GetVersionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fVersionID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TSpecifiedBinaryFileCT.GetFileName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fFileName, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TSpecifiedBinaryFileCT.GetUriid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fUriid, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TSpecifiedBinaryFileCT.GetMIMECode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fMIMECode, ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TSpecifiedBinaryFileCT.GetEncodingCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fEncodingCode, ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TSpecifiedBinaryFileCT.GetCharacterSetCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fCharacterSetCode,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TSpecifiedBinaryFileCT.GetSizeMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT(Lazy(fSizeMeasure,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT));
+end;
+
+function TSpecifiedBinaryFileCT.GetAccessAvailabilitySpecifiedPeriod: TSpecifiedPeriodCT;
+begin
+  Result := TSpecifiedPeriodCT(Lazy(fAccessAvailabilitySpecifiedPeriod, TSpecifiedPeriodCT));
+end;
+
+{ TSpecifiedMarketplaceCT }
+
+function TSpecifiedMarketplaceCT.GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fId, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TSpecifiedMarketplaceCT.GetName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fName, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TSpecifiedMarketplaceCT.GetVirtualIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT(Lazy(fVirtualIndicator,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT));
+end;
+
+function TSpecifiedMarketplaceCT.GetSalesMethodCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fSalesMethodCode,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+{ TSpecifiedPeriodCT }
+
+function TSpecifiedPeriodCT.GetInclusiveIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT(Lazy(fInclusiveIndicator,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT));
+end;
+
+function TSpecifiedPeriodCT.GetStartDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT(Lazy(fStartDateTime,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT));
+end;
+
+function TSpecifiedPeriodCT.GetEndDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT(Lazy(fEndDateTime,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT));
+end;
+
+function TSpecifiedPeriodCT.GetCompleteDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT(Lazy(fCompleteDateTime,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT));
+end;
+
+function TSpecifiedPeriodCT.GetOpenIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT(Lazy(fOpenIndicator,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT));
+end;
+
+function TSpecifiedPeriodCT.GetSeasonCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fSeasonCode, ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TSpecifiedPeriodCT.GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fId, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TSpecifiedPeriodCT.GetSequenceNumeric: ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT(Lazy(fSequenceNumeric,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT));
+end;
+
+function TSpecifiedPeriodCT.GetStartDateFlexibilityCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fStartDateFlexibilityCode,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TSpecifiedPeriodCT.GetContinuousIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT(Lazy(fContinuousIndicator,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT));
+end;
+
+function TSpecifiedPeriodCT.GetPurposeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fPurposeCode, ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+{ TSubordinateLineTradeAgreementCT }
+
+function TSubordinateLineTradeAgreementCT.GetSellerOrderReferencedDocument: TReferencedDocumentCT;
+begin
+  Result := TReferencedDocumentCT(Lazy(fSellerOrderReferencedDocument, TReferencedDocumentCT));
+end;
+
+function TSubordinateLineTradeAgreementCT.GetBuyerOrderReferencedDocument: TReferencedDocumentCT;
+begin
+  Result := TReferencedDocumentCT(Lazy(fBuyerOrderReferencedDocument, TReferencedDocumentCT));
+end;
+
+function TSubordinateLineTradeAgreementCT.GetGrossPriceProductTradePrice: TTradePriceCT;
+begin
+  Result := TTradePriceCT(Lazy(fGrossPriceProductTradePrice, TTradePriceCT));
+end;
+
+function TSubordinateLineTradeAgreementCT.GetNetPriceProductTradePrice: TTradePriceCT;
+begin
+  Result := TTradePriceCT(Lazy(fNetPriceProductTradePrice, TTradePriceCT));
+end;
+
+{ TSubordinateLineTradeDeliveryCT }
+
+function TSubordinateLineTradeDeliveryCT.GetPackageQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT(Lazy(fPackageQuantity,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT));
+end;
+
+function TSubordinateLineTradeDeliveryCT.GetProductUnitQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT(Lazy(fProductUnitQuantity,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT));
+end;
+
+function TSubordinateLineTradeDeliveryCT.GetPerPackageUnitQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT(Lazy(fPerPackageUnitQuantity,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT));
+end;
+
+{ TSubordinateLineTradeSettlementCT }
+
+function TSubordinateLineTradeSettlementCT.GetApplicableTradeTax: TTradeTaxCT;
+begin
+  Result := TTradeTaxCT(Lazy(fApplicableTradeTax, TTradeTaxCT));
+end;
+
+{ TSubordinateTradeLineItemCT }
+
+function TSubordinateTradeLineItemCT.GetSpecifiedReferencedProduct: TReferencedProductCT;
+begin
+  Result := TReferencedProductCT(Lazy(fSpecifiedReferencedProduct, TReferencedProductCT));
+end;
+
+function TSubordinateTradeLineItemCT.GetSpecifiedSubordinateLineTradeAgreement: TSubordinateLineTradeAgreementCT;
+begin
+  Result := TSubordinateLineTradeAgreementCT(Lazy(fSpecifiedSubordinateLineTradeAgreement, TSubordinateLineTradeAgreementCT));
+end;
+
+function TSubordinateTradeLineItemCT.GetSpecifiedSubordinateLineTradeDelivery: TSubordinateLineTradeDeliveryCT;
+begin
+  Result := TSubordinateLineTradeDeliveryCT(Lazy(fSpecifiedSubordinateLineTradeDelivery, TSubordinateLineTradeDeliveryCT));
+end;
+
+function TSubordinateTradeLineItemCT.GetSpecifiedSubordinateLineTradeSettlement: TSubordinateLineTradeSettlementCT;
+begin
+  Result := TSubordinateLineTradeSettlementCT(Lazy(fSpecifiedSubordinateLineTradeSettlement, TSubordinateLineTradeSettlementCT));
+end;
+
+{ TSupplyChainConsignmentItemCT }
+
+function TSupplyChainConsignmentItemCT.GetTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TGoodsTypeCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TGoodsTypeCodeCT(Lazy(fTypeCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TGoodsTypeCodeCT));
+end;
+
+function TSupplyChainConsignmentItemCT.GetTypeExtensionCode: ProRock.Xmlite.Schema.QualifiedDataType100.TGoodsTypeExtensionCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TGoodsTypeExtensionCodeCT(Lazy(fTypeExtensionCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TGoodsTypeExtensionCodeCT));
+end;
+
+function TSupplyChainConsignmentItemCT.GetDeclaredValueForCustomsAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT(Lazy(fDeclaredValueForCustomsAmount,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT));
+end;
+
+function TSupplyChainConsignmentItemCT.GetDeclaredValueForStatisticsAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT(Lazy(fDeclaredValueForStatisticsAmount,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT));
+end;
+
+function TSupplyChainConsignmentItemCT.GetGrossWeightMeasure: ProRock.Xmlite.Schema.QualifiedDataType100.TWeightUnitMeasureCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TWeightUnitMeasureCT(Lazy(fGrossWeightMeasure,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TWeightUnitMeasureCT));
+end;
+
+function TSupplyChainConsignmentItemCT.GetNetWeightMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT(Lazy(fNetWeightMeasure,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT));
+end;
+
+function TSupplyChainConsignmentItemCT.GetTariffQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT(Lazy(fTariffQuantity,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT));
+end;
+
+function TSupplyChainConsignmentItemCT.GetNatureIdentificationTransportCargo: TTransportCargoCT;
+begin
+  Result := TTransportCargoCT(Lazy(fNatureIdentificationTransportCargo, TTransportCargoCT));
+end;
+
+{ TSupplyChainConsignmentCT }
+
+function TSupplyChainConsignmentCT.GetInsurancePremiumAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT(Lazy(fInsurancePremiumAmount,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT));
+end;
+
+function TSupplyChainConsignmentCT.GetTotalChargeAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT(Lazy(fTotalChargeAmount,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT));
+end;
+
+function TSupplyChainConsignmentCT.GetDeclaredValueForCustomsAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT(Lazy(fDeclaredValueForCustomsAmount,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT));
+end;
+
+function TSupplyChainConsignmentCT.GetPackageQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT(Lazy(fPackageQuantity,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT));
+end;
+
+function TSupplyChainConsignmentCT.GetConsignorTradeParty: TTradePartyCT;
+begin
+  Result := TTradePartyCT(Lazy(fConsignorTradeParty, TTradePartyCT));
+end;
+
+function TSupplyChainConsignmentCT.GetConsigneeTradeParty: TTradePartyCT;
+begin
+  Result := TTradePartyCT(Lazy(fConsigneeTradeParty, TTradePartyCT));
+end;
+
+function TSupplyChainConsignmentCT.GetCarrierTradeParty: TTradePartyCT;
+begin
+  Result := TTradePartyCT(Lazy(fCarrierTradeParty, TTradePartyCT));
+end;
+
+function TSupplyChainConsignmentCT.GetFreightForwarderTradeParty: TTradePartyCT;
+begin
+  Result := TTradePartyCT(Lazy(fFreightForwarderTradeParty, TTradePartyCT));
+end;
+
+function TSupplyChainConsignmentCT.GetDeliveryTradeParty: TTradePartyCT;
+begin
+  Result := TTradePartyCT(Lazy(fDeliveryTradeParty, TTradePartyCT));
+end;
+
+function TSupplyChainConsignmentCT.GetCustomsImportAgentTradeParty: TTradePartyCT;
+begin
+  Result := TTradePartyCT(Lazy(fCustomsImportAgentTradeParty, TTradePartyCT));
+end;
+
+function TSupplyChainConsignmentCT.GetCustomsExportAgentTradeParty: TTradePartyCT;
+begin
+  Result := TTradePartyCT(Lazy(fCustomsExportAgentTradeParty, TTradePartyCT));
+end;
+
+function TSupplyChainConsignmentCT.GetTransportContractReferencedDocument: TReferencedDocumentCT;
+begin
+  Result := TReferencedDocumentCT(Lazy(fTransportContractReferencedDocument, TReferencedDocumentCT));
+end;
+
+{ TSupplyChainEventCT }
+
+function TSupplyChainEventCT.GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fId, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TSupplyChainEventCT.GetOccurrenceDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT(Lazy(fOccurrenceDateTime,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT));
+end;
+
+function TSupplyChainEventCT.GetTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fTypeCode, ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TSupplyChainEventCT.GetUnitQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT(Lazy(fUnitQuantity,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT));
+end;
+
+function TSupplyChainEventCT.GetLatestOccurrenceDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT(Lazy(fLatestOccurrenceDateTime,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT));
+end;
+
+function TSupplyChainEventCT.GetEarliestOccurrenceDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT(Lazy(fEarliestOccurrenceDateTime,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT));
+end;
+
+function TSupplyChainEventCT.GetOccurrenceSpecifiedPeriod: TSpecifiedPeriodCT;
+begin
+  Result := TSpecifiedPeriodCT(Lazy(fOccurrenceSpecifiedPeriod, TSpecifiedPeriodCT));
+end;
+
+function TSupplyChainEventCT.GetOccurrenceLogisticsLocation: TLogisticsLocationCT;
+begin
+  Result := TLogisticsLocationCT(Lazy(fOccurrenceLogisticsLocation, TLogisticsLocationCT));
+end;
+
+{ TSupplyChainPackagingCT }
+
+function TSupplyChainPackagingCT.GetTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TPackageTypeCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TPackageTypeCodeCT(Lazy(fTypeCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TPackageTypeCodeCT));
+end;
+
+function TSupplyChainPackagingCT.GetType: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fType, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TSupplyChainPackagingCT.GetConditionCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fConditionCode,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TSupplyChainPackagingCT.GetMaximumStackabilityQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT(Lazy(fMaximumStackabilityQuantity,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT));
+end;
+
+function TSupplyChainPackagingCT.GetMaximumStackabilityWeightMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT(Lazy(fMaximumStackabilityWeightMeasure,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT));
+end;
+
+function TSupplyChainPackagingCT.GetCustomerFacingTotalUnitQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT(Lazy(fCustomerFacingTotalUnitQuantity,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT));
+end;
+
+function TSupplyChainPackagingCT.GetLayerTotalUnitQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT(Lazy(fLayerTotalUnitQuantity,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT));
+end;
+
+function TSupplyChainPackagingCT.GetContentLayerQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT(Lazy(fContentLayerQuantity,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT));
+end;
+
+function TSupplyChainPackagingCT.GetLinearSpatialDimension: TSpatialDimensionCT;
+begin
+  Result := TSpatialDimensionCT(Lazy(fLinearSpatialDimension, TSpatialDimensionCT));
+end;
+
+function TSupplyChainPackagingCT.GetMinimumLinearSpatialDimension: TSpatialDimensionCT;
+begin
+  Result := TSpatialDimensionCT(Lazy(fMinimumLinearSpatialDimension, TSpatialDimensionCT));
+end;
+
+function TSupplyChainPackagingCT.GetMaximumLinearSpatialDimension: TSpatialDimensionCT;
+begin
+  Result := TSpatialDimensionCT(Lazy(fMaximumLinearSpatialDimension, TSpatialDimensionCT));
+end;
+
+{ TSupplyChainTradeLineItemCT }
+
+function TSupplyChainTradeLineItemCT.GetDescriptionCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fDescriptionCode,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TSupplyChainTradeLineItemCT.GetSpecifiedTradeProduct: TTradeProductCT;
+begin
+  Result := TTradeProductCT(Lazy(fSpecifiedTradeProduct, TTradeProductCT));
+end;
+
+function TSupplyChainTradeLineItemCT.GetSpecifiedLineTradeAgreement: TLineTradeAgreementCT;
+begin
+  Result := TLineTradeAgreementCT(Lazy(fSpecifiedLineTradeAgreement, TLineTradeAgreementCT));
+end;
+
+function TSupplyChainTradeLineItemCT.GetSpecifiedLineTradeDelivery: TLineTradeDeliveryCT;
+begin
+  Result := TLineTradeDeliveryCT(Lazy(fSpecifiedLineTradeDelivery, TLineTradeDeliveryCT));
+end;
+
+{ TTaxRegistrationCT }
+
+function TTaxRegistrationCT.GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fId, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TTaxRegistrationCT.GetAssociatedRegisteredTax: TRegisteredTaxCT;
+begin
+  Result := TRegisteredTaxCT(Lazy(fAssociatedRegisteredTax, TRegisteredTaxCT));
+end;
+
+{ TTradeAccountingAccountCT }
+
+function TTradeAccountingAccountCT.GetSetTriggerCode: ProRock.Xmlite.Schema.QualifiedDataType100.TAccountingDocumentCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TAccountingDocumentCodeCT(Lazy(fSetTriggerCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TAccountingDocumentCodeCT));
+end;
+
+function TTradeAccountingAccountCT.GetTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TAccountingAccountTypeCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TAccountingAccountTypeCodeCT(Lazy(fTypeCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TAccountingAccountTypeCodeCT));
+end;
+
+function TTradeAccountingAccountCT.GetAmountTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TAccountingAmountTypeCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TAccountingAmountTypeCodeCT(Lazy(fAmountTypeCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TAccountingAmountTypeCodeCT));
+end;
+
+function TTradeAccountingAccountCT.GetName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fName, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TTradeAccountingAccountCT.GetCostReferenceDimensionPattern: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fCostReferenceDimensionPattern,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+{ TTradeAddressCT }
+
+function TTradeAddressCT.GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fId, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TTradeAddressCT.GetPostcodeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fPostcodeCode, ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TTradeAddressCT.GetPostOfficeBox: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fPostOfficeBox,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TTradeAddressCT.GetBuildingName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fBuildingName, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TTradeAddressCT.GetLineOne: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fLineOne, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TTradeAddressCT.GetLineTwo: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fLineTwo, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TTradeAddressCT.GetLineThree: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fLineThree, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TTradeAddressCT.GetLineFour: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fLineFour, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TTradeAddressCT.GetLineFive: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fLineFive, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TTradeAddressCT.GetStreetName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fStreetName, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TTradeAddressCT.GetCityName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fCityName, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TTradeAddressCT.GetCitySubDivisionName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fCitySubDivisionName,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TTradeAddressCT.GetCountryID: ProRock.Xmlite.Schema.QualifiedDataType100.TCountryIDCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TCountryIDCT(Lazy(fCountryID,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TCountryIDCT));
+end;
+
+function TTradeAddressCT.GetCountrySubDivisionID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fCountrySubDivisionID,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TTradeAddressCT.GetAttentionOf: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fAttentionOf, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TTradeAddressCT.GetCareOf: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fCareOf, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TTradeAddressCT.GetBuildingNumber: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fBuildingNumber,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TTradeAddressCT.GetDepartmentName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fDepartmentName,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TTradeAddressCT.GetAdditionalStreetName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fAdditionalStreetName,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+{ TTradeAllowanceChargeCT }
+
+function TTradeAllowanceChargeCT.GetChargeIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT(Lazy(fChargeIndicator,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT));
+end;
+
+function TTradeAllowanceChargeCT.GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fId, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TTradeAllowanceChargeCT.GetSequenceNumeric: ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT(Lazy(fSequenceNumeric,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT));
+end;
+
+function TTradeAllowanceChargeCT.GetCalculationPercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT(Lazy(fCalculationPercent,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT));
+end;
+
+function TTradeAllowanceChargeCT.GetBasisAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT(Lazy(fBasisAmount,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT));
+end;
+
+function TTradeAllowanceChargeCT.GetBasisQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT(Lazy(fBasisQuantity,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT));
+end;
+
+function TTradeAllowanceChargeCT.GetPrepaidIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT(Lazy(fPrepaidIndicator,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT));
+end;
+
+function TTradeAllowanceChargeCT.GetUnitBasisAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT(Lazy(fUnitBasisAmount,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT));
+end;
+
+function TTradeAllowanceChargeCT.GetReasonCode: ProRock.Xmlite.Schema.QualifiedDataType100.TAllowanceChargeReasonCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TAllowanceChargeReasonCodeCT(Lazy(fReasonCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TAllowanceChargeReasonCodeCT));
+end;
+
+function TTradeAllowanceChargeCT.GetReason: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fReason, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TTradeAllowanceChargeCT.GetTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TAllowanceChargeIdentificationCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TAllowanceChargeIdentificationCodeCT(Lazy(fTypeCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TAllowanceChargeIdentificationCodeCT));
+end;
+
+function TTradeAllowanceChargeCT.GetActualTradeCurrencyExchange: TTradeCurrencyExchangeCT;
+begin
+  Result := TTradeCurrencyExchangeCT(Lazy(fActualTradeCurrencyExchange, TTradeCurrencyExchangeCT));
+end;
+
+{ TTradeContactCT }
+
+function TTradeContactCT.GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fId, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TTradeContactCT.GetPersonName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fPersonName, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TTradeContactCT.GetDepartmentName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fDepartmentName,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TTradeContactCT.GetTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TContactTypeCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TContactTypeCodeCT(Lazy(fTypeCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TContactTypeCodeCT));
+end;
+
+function TTradeContactCT.GetJobTitle: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fJobTitle, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TTradeContactCT.GetResponsibility: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fResponsibility,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TTradeContactCT.GetTelephoneUniversalCommunication: TUniversalCommunicationCT;
+begin
+  Result := TUniversalCommunicationCT(Lazy(fTelephoneUniversalCommunication, TUniversalCommunicationCT));
+end;
+
+function TTradeContactCT.GetDirectTelephoneUniversalCommunication: TUniversalCommunicationCT;
+begin
+  Result := TUniversalCommunicationCT(Lazy(fDirectTelephoneUniversalCommunication, TUniversalCommunicationCT));
+end;
+
+function TTradeContactCT.GetMobileTelephoneUniversalCommunication: TUniversalCommunicationCT;
+begin
+  Result := TUniversalCommunicationCT(Lazy(fMobileTelephoneUniversalCommunication, TUniversalCommunicationCT));
+end;
+
+function TTradeContactCT.GetFaxUniversalCommunication: TUniversalCommunicationCT;
+begin
+  Result := TUniversalCommunicationCT(Lazy(fFaxUniversalCommunication, TUniversalCommunicationCT));
+end;
+
+function TTradeContactCT.GetEmailURIUniversalCommunication: TUniversalCommunicationCT;
+begin
+  Result := TUniversalCommunicationCT(Lazy(fEmailURIUniversalCommunication, TUniversalCommunicationCT));
+end;
+
+function TTradeContactCT.GetTelexUniversalCommunication: TUniversalCommunicationCT;
+begin
+  Result := TUniversalCommunicationCT(Lazy(fTelexUniversalCommunication, TUniversalCommunicationCT));
+end;
+
+function TTradeContactCT.GetVOIPUniversalCommunication: TUniversalCommunicationCT;
+begin
+  Result := TUniversalCommunicationCT(Lazy(fVOIPUniversalCommunication, TUniversalCommunicationCT));
+end;
+
+function TTradeContactCT.GetInstantMessagingUniversalCommunication: TUniversalCommunicationCT;
+begin
+  Result := TUniversalCommunicationCT(Lazy(fInstantMessagingUniversalCommunication, TUniversalCommunicationCT));
+end;
+
+function TTradeContactCT.GetSpecifiedContactPerson: TContactPersonCT;
+begin
+  Result := TContactPersonCT(Lazy(fSpecifiedContactPerson, TContactPersonCT));
+end;
+
+{ TTradeCountrySubDivisionCT }
+
+function TTradeCountrySubDivisionCT.GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fId, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+{ TTradeCountryCT }
+
+function TTradeCountryCT.GetId: ProRock.Xmlite.Schema.QualifiedDataType100.TCountryIDCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TCountryIDCT(Lazy(fId, ProRock.Xmlite.Schema.QualifiedDataType100.TCountryIDCT));
+end;
+
+{ TTradeCurrencyExchangeCT }
+
+function TTradeCurrencyExchangeCT.GetSourceUnitBasisNumeric: ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT(Lazy(fSourceUnitBasisNumeric,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT));
+end;
+
+function TTradeCurrencyExchangeCT.GetTargetUnitBaseNumeric: ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT(Lazy(fTargetUnitBaseNumeric,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT));
+end;
+
+function TTradeCurrencyExchangeCT.GetMarketID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fMarketID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TTradeCurrencyExchangeCT.GetConversionRateDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT(Lazy(fConversionRateDateTime,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT));
+end;
+
+{ TTradeDeliveryTermsCT }
+
+function TTradeDeliveryTermsCT.GetDeliveryTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TDeliveryTermsCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TDeliveryTermsCodeCT(Lazy(fDeliveryTypeCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TDeliveryTermsCodeCT));
+end;
+
+function TTradeDeliveryTermsCT.GetRelevantTradeLocation: TTradeLocationCT;
+begin
+  Result := TTradeLocationCT(Lazy(fRelevantTradeLocation, TTradeLocationCT));
+end;
+
+{ TTradeLocationCT }
+
+function TTradeLocationCT.GetCountryID: ProRock.Xmlite.Schema.QualifiedDataType100.TCountryIDCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TCountryIDCT(Lazy(fCountryID,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TCountryIDCT));
+end;
+
+function TTradeLocationCT.GetCountryName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fCountryName, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TTradeLocationCT.GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fId, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TTradeLocationCT.GetName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fName, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+{ TTradePartyCT }
+
+function TTradePartyCT.GetName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fName, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TTradePartyCT.GetSpecifiedLegalOrganization: TLegalOrganizationCT;
+begin
+  Result := TLegalOrganizationCT(Lazy(fSpecifiedLegalOrganization, TLegalOrganizationCT));
+end;
+
+function TTradePartyCT.GetPostalTradeAddress: TTradeAddressCT;
+begin
+  Result := TTradeAddressCT(Lazy(fPostalTradeAddress, TTradeAddressCT));
+end;
+
+function TTradePartyCT.GetEndPointURIUniversalCommunication: TUniversalCommunicationCT;
+begin
+  Result := TUniversalCommunicationCT(Lazy(fEndPointURIUniversalCommunication, TUniversalCommunicationCT));
+end;
+
+{ TTradePaymentDiscountTermsCT }
+
+function TTradePaymentDiscountTermsCT.GetBasisDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT(Lazy(fBasisDateTime,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT));
+end;
+
+function TTradePaymentDiscountTermsCT.GetBasisPeriodMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT(Lazy(fBasisPeriodMeasure,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT));
+end;
+
+function TTradePaymentDiscountTermsCT.GetBasisAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT(Lazy(fBasisAmount,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT));
+end;
+
+function TTradePaymentDiscountTermsCT.GetCalculationPercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT(Lazy(fCalculationPercent,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT));
+end;
+
+function TTradePaymentDiscountTermsCT.GetActualDiscountAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT(Lazy(fActualDiscountAmount,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT));
+end;
+
+{ TTradePaymentPenaltyTermsCT }
+
+function TTradePaymentPenaltyTermsCT.GetBasisDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT(Lazy(fBasisDateTime,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT));
+end;
+
+function TTradePaymentPenaltyTermsCT.GetBasisPeriodMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT(Lazy(fBasisPeriodMeasure,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT));
+end;
+
+function TTradePaymentPenaltyTermsCT.GetBasisAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT(Lazy(fBasisAmount,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT));
+end;
+
+function TTradePaymentPenaltyTermsCT.GetCalculationPercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT(Lazy(fCalculationPercent,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT));
+end;
+
+function TTradePaymentPenaltyTermsCT.GetActualPenaltyAmount: ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT(Lazy(fActualPenaltyAmount,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TAmountCT));
+end;
+
+{ TTradePaymentTermsCT }
+
+function TTradePaymentTermsCT.GetId: ProRock.Xmlite.Schema.QualifiedDataType100.TPaymentTermsIDCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TPaymentTermsIDCT(Lazy(fId,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TPaymentTermsIDCT));
+end;
+
+function TTradePaymentTermsCT.GetFromEventCode: ProRock.Xmlite.Schema.QualifiedDataType100.TPaymentTermsEventTimeReferenceCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TPaymentTermsEventTimeReferenceCodeCT(Lazy(fFromEventCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TPaymentTermsEventTimeReferenceCodeCT));
+end;
+
+function TTradePaymentTermsCT.GetSettlementPeriodMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT(Lazy(fSettlementPeriodMeasure,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT));
+end;
+
+function TTradePaymentTermsCT.GetDueDateDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT(Lazy(fDueDateDateTime,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT));
+end;
+
+function TTradePaymentTermsCT.GetTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TPaymentTermsTypeCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TPaymentTermsTypeCodeCT(Lazy(fTypeCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TPaymentTermsTypeCodeCT));
+end;
+
+function TTradePaymentTermsCT.GetInstructionTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fInstructionTypeCode,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TTradePaymentTermsCT.GetPartialPaymentPercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT(Lazy(fPartialPaymentPercent,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT));
+end;
+
+function TTradePaymentTermsCT.GetApplicableTradePaymentPenaltyTerms: TTradePaymentPenaltyTermsCT;
+begin
+  Result := TTradePaymentPenaltyTermsCT(Lazy(fApplicableTradePaymentPenaltyTerms, TTradePaymentPenaltyTermsCT));
+end;
+
+function TTradePaymentTermsCT.GetApplicableTradePaymentDiscountTerms: TTradePaymentDiscountTermsCT;
+begin
+  Result := TTradePaymentDiscountTermsCT(Lazy(fApplicableTradePaymentDiscountTerms, TTradePaymentDiscountTermsCT));
+end;
+
+{ TTradePriceCT }
+
+function TTradePriceCT.GetTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TPriceTypeCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TPriceTypeCodeCT(Lazy(fTypeCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TPriceTypeCodeCT));
+end;
+
+function TTradePriceCT.GetBasisQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT(Lazy(fBasisQuantity,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT));
+end;
+
+function TTradePriceCT.GetMinimumQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT(Lazy(fMinimumQuantity,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT));
+end;
+
+function TTradePriceCT.GetMaximumQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT(Lazy(fMaximumQuantity,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT));
+end;
+
+function TTradePriceCT.GetOrderUnitConversionFactorNumeric: ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT(Lazy(fOrderUnitConversionFactorNumeric,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT));
+end;
+
+function TTradePriceCT.GetValiditySpecifiedPeriod: TSpecifiedPeriodCT;
+begin
+  Result := TSpecifiedPeriodCT(Lazy(fValiditySpecifiedPeriod, TSpecifiedPeriodCT));
+end;
+
+{ TTradeProductInstanceCT }
+
+function TTradeProductInstanceCT.GetGlobalSerialID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fGlobalSerialID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TTradeProductInstanceCT.GetBatchID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fBatchID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TTradeProductInstanceCT.GetKanbanID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fKanbanID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TTradeProductInstanceCT.GetSupplierAssignedSerialID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fSupplierAssignedSerialID,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TTradeProductInstanceCT.GetBestBeforeDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT(Lazy(fBestBeforeDateTime,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT));
+end;
+
+function TTradeProductInstanceCT.GetExpiryDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT(Lazy(fExpiryDateTime,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT));
+end;
+
+function TTradeProductInstanceCT.GetSellByDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT(Lazy(fSellByDateTime,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT));
+end;
+
+function TTradeProductInstanceCT.GetProductionSupplyChainEvent: TSupplyChainEventCT;
+begin
+  Result := TSupplyChainEventCT(Lazy(fProductionSupplyChainEvent, TSupplyChainEventCT));
+end;
+
+function TTradeProductInstanceCT.GetPackagingSupplyChainEvent: TSupplyChainEventCT;
+begin
+  Result := TSupplyChainEventCT(Lazy(fPackagingSupplyChainEvent, TSupplyChainEventCT));
+end;
+
+{ TTradeProductCT }
+
+function TTradeProductCT.GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fId, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TTradeProductCT.GetGlobalID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fGlobalID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TTradeProductCT.GetSellerAssignedID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fSellerAssignedID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TTradeProductCT.GetBuyerAssignedID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fBuyerAssignedID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TTradeProductCT.GetManufacturerAssignedID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fManufacturerAssignedID,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TTradeProductCT.GetTradeName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fTradeName, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TTradeProductCT.GetDescription: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fDescription, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TTradeProductCT.GetTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fTypeCode, ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TTradeProductCT.GetNetWeightMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT(Lazy(fNetWeightMeasure,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT));
+end;
+
+function TTradeProductCT.GetGrossWeightMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT(Lazy(fGrossWeightMeasure,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT));
+end;
+
+function TTradeProductCT.GetAreaDensityMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT(Lazy(fAreaDensityMeasure,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT));
+end;
+
+function TTradeProductCT.GetBrandName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fBrandName, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TTradeProductCT.GetSubBrandName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fSubBrandName, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TTradeProductCT.GetDrainedNetWeightMeasure: ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT(Lazy(fDrainedNetWeightMeasure,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TMeasureCT));
+end;
+
+function TTradeProductCT.GetVariableMeasureIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT(Lazy(fVariableMeasureIndicator,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT));
+end;
+
+function TTradeProductCT.GetColourCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fColourCode, ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TTradeProductCT.GetFormattedCancellationAnnouncedLaunchDateTime: ProRock.Xmlite.Schema.QualifiedDataType100.TFormattedDateTimeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TFormattedDateTimeCT(Lazy(fFormattedCancellationAnnouncedLaunchDateTime,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TFormattedDateTimeCT));
+end;
+
+function TTradeProductCT.GetFormattedLatestProductDataChangeDateTime: ProRock.Xmlite.Schema.QualifiedDataType100.TFormattedDateTimeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TFormattedDateTimeCT(Lazy(fFormattedLatestProductDataChangeDateTime,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TFormattedDateTimeCT));
+end;
+
+function TTradeProductCT.GetOriginTradeCountry: TTradeCountryCT;
+begin
+  Result := TTradeCountryCT(Lazy(fOriginTradeCountry, TTradeCountryCT));
+end;
+
+function TTradeProductCT.GetLinearSpatialDimension: TSpatialDimensionCT;
+begin
+  Result := TSpatialDimensionCT(Lazy(fLinearSpatialDimension, TSpatialDimensionCT));
+end;
+
+function TTradeProductCT.GetMinimumLinearSpatialDimension: TSpatialDimensionCT;
+begin
+  Result := TSpatialDimensionCT(Lazy(fMinimumLinearSpatialDimension, TSpatialDimensionCT));
+end;
+
+function TTradeProductCT.GetMaximumLinearSpatialDimension: TSpatialDimensionCT;
+begin
+  Result := TSpatialDimensionCT(Lazy(fMaximumLinearSpatialDimension, TSpatialDimensionCT));
+end;
+
+function TTradeProductCT.GetManufacturerTradeParty: TTradePartyCT;
+begin
+  Result := TTradePartyCT(Lazy(fManufacturerTradeParty, TTradePartyCT));
+end;
+
+function TTradeProductCT.GetMSDSReferenceReferencedDocument: TReferencedDocumentCT;
+begin
+  Result := TReferencedDocumentCT(Lazy(fMSDSReferenceReferencedDocument, TReferencedDocumentCT));
+end;
+
+function TTradeProductCT.GetLegalRightsOwnerTradeParty: TTradePartyCT;
+begin
+  Result := TTradePartyCT(Lazy(fLegalRightsOwnerTradeParty, TTradePartyCT));
+end;
+
+function TTradeProductCT.GetBrandOwnerTradeParty: TTradePartyCT;
+begin
+  Result := TTradePartyCT(Lazy(fBrandOwnerTradeParty, TTradePartyCT));
+end;
+
+{ TTradeSettlementFinancialCardCT }
+
+function TTradeSettlementFinancialCardCT.GetMicrochipIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT(Lazy(fMicrochipIndicator,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT));
+end;
+
+function TTradeSettlementFinancialCardCT.GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fId, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TTradeSettlementFinancialCardCT.GetTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fTypeCode, ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TTradeSettlementFinancialCardCT.GetCardholderName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fCardholderName,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TTradeSettlementFinancialCardCT.GetExpiryDate: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateCT(Lazy(fExpiryDate, ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateCT));
+end;
+
+function TTradeSettlementFinancialCardCT.GetVerificationNumeric: ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT(Lazy(fVerificationNumeric,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT));
+end;
+
+function TTradeSettlementFinancialCardCT.GetValidFromDateTime: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT(Lazy(fValidFromDateTime,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateTimeCT));
+end;
+
+function TTradeSettlementFinancialCardCT.GetInterestRatePercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT(Lazy(fInterestRatePercent,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT));
+end;
+
+function TTradeSettlementFinancialCardCT.GetIssuingCompanyName: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fIssuingCompanyName,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TTradeSettlementFinancialCardCT.GetDescription: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fDescription, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+{ TTradeSettlementPaymentMeansCT }
+
+function TTradeSettlementPaymentMeansCT.GetPaymentChannelCode: ProRock.Xmlite.Schema.QualifiedDataType100.TPaymentMeansChannelCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TPaymentMeansChannelCodeCT(Lazy(fPaymentChannelCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TPaymentMeansChannelCodeCT));
+end;
+
+function TTradeSettlementPaymentMeansCT.GetTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TPaymentMeansCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TPaymentMeansCodeCT(Lazy(fTypeCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TPaymentMeansCodeCT));
+end;
+
+function TTradeSettlementPaymentMeansCT.GetGuaranteeMethodCode: ProRock.Xmlite.Schema.QualifiedDataType100.TPaymentGuaranteeMeansCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TPaymentGuaranteeMeansCodeCT(Lazy(fGuaranteeMethodCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TPaymentGuaranteeMeansCodeCT));
+end;
+
+function TTradeSettlementPaymentMeansCT.GetPaymentMethodCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fPaymentMethodCode,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TTradeSettlementPaymentMeansCT.GetApplicableTradeSettlementFinancialCard: TTradeSettlementFinancialCardCT;
+begin
+  Result := TTradeSettlementFinancialCardCT(Lazy(fApplicableTradeSettlementFinancialCard, TTradeSettlementFinancialCardCT));
+end;
+
+function TTradeSettlementPaymentMeansCT.GetPayerPartyDebtorFinancialAccount: TDebtorFinancialAccountCT;
+begin
+  Result := TDebtorFinancialAccountCT(Lazy(fPayerPartyDebtorFinancialAccount, TDebtorFinancialAccountCT));
+end;
+
+function TTradeSettlementPaymentMeansCT.GetPayeePartyCreditorFinancialAccount: TCreditorFinancialAccountCT;
+begin
+  Result := TCreditorFinancialAccountCT(Lazy(fPayeePartyCreditorFinancialAccount, TCreditorFinancialAccountCT));
+end;
+
+function TTradeSettlementPaymentMeansCT.GetPayerSpecifiedDebtorFinancialInstitution: TDebtorFinancialInstitutionCT;
+begin
+  Result := TDebtorFinancialInstitutionCT(Lazy(fPayerSpecifiedDebtorFinancialInstitution, TDebtorFinancialInstitutionCT));
+end;
+
+function TTradeSettlementPaymentMeansCT.GetPayeeSpecifiedCreditorFinancialInstitution: TCreditorFinancialInstitutionCT;
+begin
+  Result := TCreditorFinancialInstitutionCT(Lazy(fPayeeSpecifiedCreditorFinancialInstitution, TCreditorFinancialInstitutionCT));
+end;
+
+{ TTradeTaxCT }
+
+function TTradeTaxCT.GetTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TTaxTypeCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TTaxTypeCodeCT(Lazy(fTypeCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TTaxTypeCodeCT));
+end;
+
+function TTradeTaxCT.GetExemptionReason: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fExemptionReason,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TTradeTaxCT.GetCalculatedRate: ProRock.Xmlite.Schema.UnqualifiedDataType100.TRateCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TRateCT(Lazy(fCalculatedRate,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TRateCT));
+end;
+
+function TTradeTaxCT.GetCalculationSequenceNumeric: ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT(Lazy(fCalculationSequenceNumeric,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TNumericCT));
+end;
+
+function TTradeTaxCT.GetBasisQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT(Lazy(fBasisQuantity,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT));
+end;
+
+function TTradeTaxCT.GetCategoryCode: ProRock.Xmlite.Schema.QualifiedDataType100.TTaxCategoryCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TTaxCategoryCodeCT(Lazy(fCategoryCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TTaxCategoryCodeCT));
+end;
+
+function TTradeTaxCT.GetCurrencyCode: ProRock.Xmlite.Schema.QualifiedDataType100.TCurrencyCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TCurrencyCodeCT(Lazy(fCurrencyCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TCurrencyCodeCT));
+end;
+
+function TTradeTaxCT.GetCustomsDutyIndicator: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT(Lazy(fCustomsDutyIndicator,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TIndicatorCT));
+end;
+
+function TTradeTaxCT.GetExemptionReasonCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fExemptionReasonCode,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TTradeTaxCT.GetTaxBasisAllowanceRate: ProRock.Xmlite.Schema.UnqualifiedDataType100.TRateCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TRateCT(Lazy(fTaxBasisAllowanceRate,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TRateCT));
+end;
+
+function TTradeTaxCT.GetTaxPointDate: ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateCT(Lazy(fTaxPointDate, ProRock.Xmlite.Schema.UnqualifiedDataType100.TDateCT));
+end;
+
+function TTradeTaxCT.GetType: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fType, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TTradeTaxCT.GetDueDateTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TTimeReferenceCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TTimeReferenceCodeCT(Lazy(fDueDateTypeCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TTimeReferenceCodeCT));
+end;
+
+function TTradeTaxCT.GetRateApplicablePercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT(Lazy(fRateApplicablePercent,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT));
+end;
+
+function TTradeTaxCT.GetServiceSupplyTradeCountry: TTradeCountryCT;
+begin
+  Result := TTradeCountryCT(Lazy(fServiceSupplyTradeCountry, TTradeCountryCT));
+end;
+
+function TTradeTaxCT.GetBuyerRepayableTaxSpecifiedTradeAccountingAccount: TTradeAccountingAccountCT;
+begin
+  Result := TTradeAccountingAccountCT(Lazy(fBuyerRepayableTaxSpecifiedTradeAccountingAccount, TTradeAccountingAccountCT));
+end;
+
+function TTradeTaxCT.GetSellerPayableTaxSpecifiedTradeAccountingAccount: TTradeAccountingAccountCT;
+begin
+  Result := TTradeAccountingAccountCT(Lazy(fSellerPayableTaxSpecifiedTradeAccountingAccount, TTradeAccountingAccountCT));
+end;
+
+function TTradeTaxCT.GetSellerRefundableTaxSpecifiedTradeAccountingAccount: TTradeAccountingAccountCT;
+begin
+  Result := TTradeAccountingAccountCT(Lazy(fSellerRefundableTaxSpecifiedTradeAccountingAccount, TTradeAccountingAccountCT));
+end;
+
+function TTradeTaxCT.GetBuyerDeductibleTaxSpecifiedTradeAccountingAccount: TTradeAccountingAccountCT;
+begin
+  Result := TTradeAccountingAccountCT(Lazy(fBuyerDeductibleTaxSpecifiedTradeAccountingAccount, TTradeAccountingAccountCT));
+end;
+
+function TTradeTaxCT.GetBuyerNonDeductibleTaxSpecifiedTradeAccountingAccount: TTradeAccountingAccountCT;
+begin
+  Result := TTradeAccountingAccountCT(Lazy(fBuyerNonDeductibleTaxSpecifiedTradeAccountingAccount, TTradeAccountingAccountCT));
+end;
+
+{ TTransportCargoCT }
+
+function TTransportCargoCT.GetTypeCode: ProRock.Xmlite.Schema.QualifiedDataType100.TCargoCategoryCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TCargoCategoryCodeCT(Lazy(fTypeCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TCargoCategoryCodeCT));
+end;
+
+function TTransportCargoCT.GetIdentification: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fIdentification,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TTransportCargoCT.GetOperationalCategoryCode: ProRock.Xmlite.Schema.QualifiedDataType100.TCargoOperationalCategoryCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TCargoOperationalCategoryCodeCT(Lazy(fOperationalCategoryCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TCargoOperationalCategoryCodeCT));
+end;
+
+function TTransportCargoCT.GetStatisticalClassificationCode: ProRock.Xmlite.Schema.QualifiedDataType100.TCargoCommodityCategoryCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TCargoCommodityCategoryCodeCT(Lazy(fStatisticalClassificationCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TCargoCommodityCategoryCodeCT));
+end;
+
+{ TUniversalCommunicationCT }
+
+function TUniversalCommunicationCT.GetUriid: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fUriid, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TUniversalCommunicationCT.GetChannelCode: ProRock.Xmlite.Schema.QualifiedDataType100.TCommunicationChannelCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.QualifiedDataType100.TCommunicationChannelCodeCT(Lazy(fChannelCode,
+    ProRock.Xmlite.Schema.QualifiedDataType100.TCommunicationChannelCodeCT));
+end;
+
+function TUniversalCommunicationCT.GetCompleteNumber: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fCompleteNumber,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+{ TValuationBreakdownStatementCT }
+
+function TValuationBreakdownStatementCT.GetPriceListID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fPriceListID, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TValuationBreakdownStatementCT.GetContractualLanguageCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fContractualLanguageCode,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+{ TWorkItemComplexDescriptionCT }
+
+function TWorkItemComplexDescriptionCT.GetContractualLanguageCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fContractualLanguageCode,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TWorkItemComplexDescriptionCT.GetSubsetWorkItemComplexDescription: TWorkItemComplexDescriptionCT;
+begin
+  Result := TWorkItemComplexDescriptionCT(Lazy(fSubsetWorkItemComplexDescription, TWorkItemComplexDescriptionCT));
+end;
+
+{ TWorkItemDimensionCT }
+
+function TWorkItemDimensionCT.GetId: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT(Lazy(fId, ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT));
+end;
+
+function TWorkItemDimensionCT.GetDescription: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fDescription, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TWorkItemDimensionCT.GetContractualLanguageCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fContractualLanguageCode,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+{ TWorkItemQuantityAnalysisCT }
+
+function TWorkItemQuantityAnalysisCT.GetActualQuantity: ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT(Lazy(fActualQuantity,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TQuantityCT));
+end;
+
+function TWorkItemQuantityAnalysisCT.GetDescription: ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT(Lazy(fDescription, ProRock.Xmlite.Schema.UnqualifiedDataType100.TTextCT));
+end;
+
+function TWorkItemQuantityAnalysisCT.GetActualQuantityPercent: ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT(Lazy(fActualQuantityPercent,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TPercentCT));
+end;
+
+function TWorkItemQuantityAnalysisCT.GetStatusCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fStatusCode, ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TWorkItemQuantityAnalysisCT.GetTypeCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fTypeCode, ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
+
+function TWorkItemQuantityAnalysisCT.GetContractualLanguageCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
+begin
+  Result := ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT(Lazy(fContractualLanguageCode,
+    ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT));
+end;
 
 initialization
 

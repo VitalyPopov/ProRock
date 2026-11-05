@@ -50,7 +50,7 @@ if response.Present[@response.TraderNameMatch] then // VIES: in the response, no
   ...
 sheet.Count := 0;               // set in code and equal to the default: not written...
 sheet.SetPresent(@sheet.Count); // ...unless marked present: count="0"
-sheet.Clear(@sheet.Drawing);    // removes a value or an object: back to its default, and absent
+sheet.Clear('Drawing');         // removes a value or an object: back to its default, and absent
 ```
 
 - `Present[@Obj.X]` tells exactly what the writer does: present when read, marked, not the default, or (an object) with any
@@ -58,8 +58,9 @@ sheet.Clear(@sheet.Drawing);    // removes a value or an object: back to its def
 - An assignment in code is not seen (properties write their fields), so a value equal to its default set in code needs
   `SetPresent`. A value that was read stays present when code assigns it the default (`Title.XmlValue := ''` writes an empty
   element); to remove it, use `Clear`.
-- `@Obj.X` works for properties that read a field - every generated one except choice members. For a property with a getter,
-  pass its name: `SetPresent('count')`. A wrong one is skipped, nothing raises: the functions return `False`.
+- `@Obj.X` works for properties that read a field: plain values and required objects. An optional object has a getter
+  ([created on first access](large-documents.md)), so pass its name, the property's or the schema's: `SetPresent('Drawing')`. A wrong
+  one is skipped, nothing raises: the functions return `False`.
 
 ## What the generator makes of a schema
 

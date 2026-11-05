@@ -869,11 +869,14 @@ type
     fFilterColumn: TFilterColumnCTList;
     fSortState: TSortStateCT;
     fExtLst: TExtensionListCT;
+
+    function GetSortState: TSortStateCT;
+    function GetExtLst: TExtensionListCT;
   published
     property Ref: TRefST read fRef write fRef;
     property FilterColumn: TFilterColumnCTList read fFilterColumn;
-    property SortState: TSortStateCT read fSortState;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property SortState: TSortStateCT read GetSortState;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_FilterColumn')]
@@ -1031,6 +1034,8 @@ type
     fRef: TRefST;
     fSortCondition: TSortConditionCTList;
     fExtLst: TExtensionListCT;
+
+    function GetExtLst: TExtensionListCT;
   published
     [TDefault(False)]
     property ColumnSort: ProRock.Xmlite.Schema.Base.TBooleanST read fColumnSort write fColumnSort;
@@ -1041,7 +1046,7 @@ type
     [TRequired]
     property Ref: TRefST read fRef write fRef;
     property SortCondition: TSortConditionCTList read fSortCondition;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_SortCondition')]
@@ -1141,9 +1146,11 @@ type
   private
     fC: TCalcCellCTList;
     fExtLst: TExtensionListCT;
+
+    function GetExtLst: TExtensionListCT;
   published
     property C: TCalcCellCTList read fC;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_CalcCell')]
@@ -1177,12 +1184,14 @@ type
     fAuthors: TAuthorsCT;
     fCommentList: TCommentListCT;
     fExtLst: TExtensionListCT;
+
+    function GetExtLst: TExtensionListCT;
   published
     [TRequired]
     property Authors: TAuthorsCT read fAuthors;
     [TRequired]
     property CommentList: TCommentListCT read fCommentList;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_Authors')]
@@ -1210,6 +1219,8 @@ type
     fShapeId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fText: TRstCT;
     fCommentPr: TCommentPrCT;
+
+    function GetCommentPr: TCommentPrCT;
   published
     [TRequired]
     property Ref: TRefST read fRef write fRef;
@@ -1219,7 +1230,7 @@ type
     property ShapeId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fShapeId write fShapeId;
     [TRequired]
     property Text: TRstCT read fText;
-    property CommentPr: TCommentPrCT read fCommentPr;
+    property CommentPr: TCommentPrCT read GetCommentPr;
   end;
 
   [TName('CT_CommentPr')]
@@ -1315,6 +1326,8 @@ type
     fPreserveSortAFLayout: ProRock.Xmlite.Schema.Base.TBooleanST;
     fPreserveFormat: ProRock.Xmlite.Schema.Base.TBooleanST;
     fDataBinding: TDataBindingCT;
+
+    function GetDataBinding: TDataBindingCT;
   published
     [TRequired]
     [TNaming(TNaming.nUpperCase)]
@@ -1344,7 +1357,7 @@ type
     [TNaming(TNaming.nPascalCase)]
     property PreserveFormat: ProRock.Xmlite.Schema.Base.TBooleanST read fPreserveFormat write fPreserveFormat;
     [TNaming(TNaming.nPascalCase)]
-    property DataBinding: TDataBindingCT read fDataBinding;
+    property DataBinding: TDataBindingCT read GetDataBinding;
   end;
 
   [TName('CT_DataBinding')]
@@ -1406,6 +1419,13 @@ type
     fTextPr: TTextPrCT;
     fParameters: TParametersCT;
     fExtLst: TExtensionListCT;
+
+    function GetDbPr: TDbPrCT;
+    function GetOlapPr: TOlapPrCT;
+    function GetWebPr: TWebPrCT;
+    function GetTextPr: TTextPrCT;
+    function GetParameters: TParametersCT;
+    function GetExtLst: TExtensionListCT;
   published
     [TRequired]
     property Id: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fId write fId;
@@ -1441,12 +1461,12 @@ type
     [TDefault(Ord(stcmIntegrated))]
     property Credentials: TCredMethodST read fCredentials write fCredentials;
     property SingleSignOnId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fSingleSignOnId write fSingleSignOnId;
-    property DbPr: TDbPrCT read fDbPr;
-    property OlapPr: TOlapPrCT read fOlapPr;
-    property WebPr: TWebPrCT read fWebPr;
-    property TextPr: TTextPrCT read fTextPr;
-    property Parameters: TParametersCT read fParameters;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property DbPr: TDbPrCT read GetDbPr;
+    property OlapPr: TOlapPrCT read GetOlapPr;
+    property WebPr: TWebPrCT read GetWebPr;
+    property TextPr: TTextPrCT read GetTextPr;
+    property Parameters: TParametersCT read GetParameters;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_DbPr')]
@@ -1513,6 +1533,8 @@ type
     fHtmlFormat: THtmlFmtST;
     fEditPage: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fTables: TTablesCT;
+
+    function GetTables: TTablesCT;
   published
     [TDefault(False)]
     property Xml: ProRock.Xmlite.Schema.Base.TBooleanST read fXml write fXml;
@@ -1537,7 +1559,7 @@ type
     [TDefault(Ord(sthfNone))]
     property HtmlFormat: THtmlFmtST read fHtmlFormat write fHtmlFormat;
     property EditPage: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fEditPage write fEditPage;
-    property Tables: TTablesCT read fTables;
+    property Tables: TTablesCT read GetTables;
   end;
 
   [TName('CT_Parameters')]
@@ -1617,6 +1639,8 @@ type
     fQualifier: TQualifierST;
     fDelimiter: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fTextFields: TTextFieldsCT;
+
+    function GetTextFields: TTextFieldsCT;
   published
     [TDefault(True)]
     property Prompt: ProRock.Xmlite.Schema.Base.TBooleanST read fPrompt write fPrompt;
@@ -1647,7 +1671,7 @@ type
     [TDefault(Ord(stqDoubleQuote))]
     property Qualifier: TQualifierST read fQualifier write fQualifier;
     property Delimiter: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fDelimiter write fDelimiter;
-    property TextFields: TTextFieldsCT read fTextFields;
+    property TextFields: TTextFieldsCT read GetTextFields;
   end;
 
   [TName('CT_TextFields')]
@@ -1705,6 +1729,15 @@ type
     fMeasureGroups: TMeasureGroupsCT;
     fMaps: TMeasureDimensionMapsCT;
     fExtLst: TExtensionListCT;
+
+    function GetCacheHierarchies: TCacheHierarchiesCT;
+    function GetKpis: TPCDKPIsCT;
+    function GetCalculatedItems: TCalculatedItemsCT;
+    function GetCalculatedMembers: TCalculatedMembersCT;
+    function GetDimensions: TDimensionsCT;
+    function GetMeasureGroups: TMeasureGroupsCT;
+    function GetMaps: TMeasureDimensionMapsCT;
+    function GetExtLst: TExtensionListCT;
   published
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
@@ -1743,14 +1776,14 @@ type
     property CacheSource: TCacheSourceCT read fCacheSource;
     [TRequired]
     property CacheFields: TCacheFieldsCT read fCacheFields;
-    property CacheHierarchies: TCacheHierarchiesCT read fCacheHierarchies;
-    property Kpis: TPCDKPIsCT read fKpis;
-    property CalculatedItems: TCalculatedItemsCT read fCalculatedItems;
-    property CalculatedMembers: TCalculatedMembersCT read fCalculatedMembers;
-    property Dimensions: TDimensionsCT read fDimensions;
-    property MeasureGroups: TMeasureGroupsCT read fMeasureGroups;
-    property Maps: TMeasureDimensionMapsCT read fMaps;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property CacheHierarchies: TCacheHierarchiesCT read GetCacheHierarchies;
+    property Kpis: TPCDKPIsCT read GetKpis;
+    property CalculatedItems: TCalculatedItemsCT read GetCalculatedItems;
+    property CalculatedMembers: TCalculatedMembersCT read GetCalculatedMembers;
+    property Dimensions: TDimensionsCT read GetDimensions;
+    property MeasureGroups: TMeasureGroupsCT read GetMeasureGroups;
+    property Maps: TMeasureDimensionMapsCT read GetMaps;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_CacheFields')]
@@ -1783,6 +1816,10 @@ type
     fFieldGroup: TFieldGroupCT;
     fMpMap: TXCTList;
     fExtLst: TExtensionListCT;
+
+    function GetSharedItems: TSharedItemsCT;
+    function GetFieldGroup: TFieldGroupCT;
+    function GetExtLst: TExtensionListCT;
   published
     [TRequired]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
@@ -1805,10 +1842,10 @@ type
     property MappingCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fMappingCount write fMappingCount;
     [TDefault(False)]
     property MemberPropertyField: ProRock.Xmlite.Schema.Base.TBooleanST read fMemberPropertyField write fMemberPropertyField;
-    property SharedItems: TSharedItemsCT read fSharedItems;
-    property FieldGroup: TFieldGroupCT read fFieldGroup;
+    property SharedItems: TSharedItemsCT read GetSharedItems;
+    property FieldGroup: TFieldGroupCT read GetFieldGroup;
     property MpMap: TXCTList read fMpMap;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_CacheSource')]
@@ -1857,10 +1894,12 @@ type
     fAutoPage: ProRock.Xmlite.Schema.Base.TBooleanST;
     fPages: TPagesCT;
     fRangeSets: TRangeSetsCT;
+
+    function GetPages: TPagesCT;
   published
     [TDefault(True)]
     property AutoPage: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoPage write fAutoPage;
-    property Pages: TPagesCT read fPages;
+    property Pages: TPagesCT read GetPages;
     [TRequired]
     property RangeSets: TRangeSetsCT read fRangeSets;
   end;
@@ -2094,6 +2133,8 @@ type
     fB: ProRock.Xmlite.Schema.Base.TBooleanST;
     fTpls: TTuplesCT;
     fX: TXCTList;
+
+    function GetTpls: TTuplesCT;
   published
     [TRequired]
     property V: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fV write fV;
@@ -2112,7 +2153,7 @@ type
     property St: ProRock.Xmlite.Schema.Base.TBooleanST read fSt write fSt;
     [TDefault(False)]
     property B: ProRock.Xmlite.Schema.Base.TBooleanST read fB write fB;
-    property Tpls: TTuplesCT read fTpls;
+    property Tpls: TTuplesCT read GetTpls;
     property X: TXCTList read fX;
   end;
 
@@ -2182,12 +2223,16 @@ type
     fRangePr: TRangePrCT;
     fDiscretePr: TDiscretePrCT;
     fGroupItems: TGroupItemsCT;
+
+    function GetRangePr: TRangePrCT;
+    function GetDiscretePr: TDiscretePrCT;
+    function GetGroupItems: TGroupItemsCT;
   published
     property Par: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fPar write fPar;
     property Base: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fBase write fBase;
-    property RangePr: TRangePrCT read fRangePr;
-    property DiscretePr: TDiscretePrCT read fDiscretePr;
-    property GroupItems: TGroupItemsCT read fGroupItems;
+    property RangePr: TRangePrCT read GetRangePr;
+    property DiscretePr: TDiscretePrCT read GetDiscretePr;
+    property GroupItems: TGroupItemsCT read GetGroupItems;
   end;
 
   [TName('CT_RangePr')]
@@ -2253,10 +2298,12 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fR: TRecordCTList;
     fExtLst: TExtensionListCT;
+
+    function GetExtLst: TExtensionListCT;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
     property R: TRecordCTList read fR;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TOrdered]
@@ -2358,6 +2405,10 @@ type
     fFieldsUsage: TFieldsUsageCT;
     fGroupLevels: TGroupLevelsCT;
     fExtLst: TExtensionListCT;
+
+    function GetFieldsUsage: TFieldsUsageCT;
+    function GetGroupLevels: TGroupLevelsCT;
+    function GetExtLst: TExtensionListCT;
   published
     [TRequired]
     property UniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fUniqueName write fUniqueName;
@@ -2392,9 +2443,9 @@ type
     property UnbalancedGroup: ProRock.Xmlite.Schema.Base.TBooleanST read fUnbalancedGroup write fUnbalancedGroup;
     [TDefault(False)]
     property Hidden: ProRock.Xmlite.Schema.Base.TBooleanST read fHidden write fHidden;
-    property FieldsUsage: TFieldsUsageCT read fFieldsUsage;
-    property GroupLevels: TGroupLevelsCT read fGroupLevels;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property FieldsUsage: TFieldsUsageCT read GetFieldsUsage;
+    property GroupLevels: TGroupLevelsCT read GetGroupLevels;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_FieldsUsage')]
@@ -2435,6 +2486,9 @@ type
     fCustomRollUp: ProRock.Xmlite.Schema.Base.TBooleanST;
     fGroups: TGroupsCT;
     fExtLst: TExtensionListCT;
+
+    function GetGroups: TGroupsCT;
+    function GetExtLst: TExtensionListCT;
   published
     [TRequired]
     property UniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fUniqueName write fUniqueName;
@@ -2444,8 +2498,8 @@ type
     property User: ProRock.Xmlite.Schema.Base.TBooleanST read fUser write fUser;
     [TDefault(False)]
     property CustomRollUp: ProRock.Xmlite.Schema.Base.TBooleanST read fCustomRollUp write fCustomRollUp;
-    property Groups: TGroupsCT read fGroups;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property Groups: TGroupsCT read GetGroups;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_Groups')]
@@ -2510,12 +2564,18 @@ type
     fQueryCache: TQueryCacheCT;
     fServerFormats: TServerFormatsCT;
     fExtLst: TExtensionListCT;
+
+    function GetEntries: TPCDSDTCEntriesCT;
+    function GetSets: TSetsCT;
+    function GetQueryCache: TQueryCacheCT;
+    function GetServerFormats: TServerFormatsCT;
+    function GetExtLst: TExtensionListCT;
   published
-    property Entries: TPCDSDTCEntriesCT read fEntries;
-    property Sets: TSetsCT read fSets;
-    property QueryCache: TQueryCacheCT read fQueryCache;
-    property ServerFormats: TServerFormatsCT read fServerFormats;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property Entries: TPCDSDTCEntriesCT read GetEntries;
+    property Sets: TSetsCT read GetSets;
+    property QueryCache: TQueryCacheCT read GetQueryCache;
+    property ServerFormats: TServerFormatsCT read GetServerFormats;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_ServerFormat')]
@@ -2598,6 +2658,8 @@ type
     fQueryFailed: ProRock.Xmlite.Schema.Base.TBooleanST;
     fTpls: TTuplesCTList;
     fSortByTuple: TTuplesCT;
+
+    function GetSortByTuple: TTuplesCT;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
     [TRequired]
@@ -2609,7 +2671,7 @@ type
     [TDefault(False)]
     property QueryFailed: ProRock.Xmlite.Schema.Base.TBooleanST read fQueryFailed write fQueryFailed;
     property Tpls: TTuplesCTList read fTpls;
-    property SortByTuple: TTuplesCT read fSortByTuple;
+    property SortByTuple: TTuplesCT read GetSortByTuple;
   end;
 
   [TName('CT_QueryCache')]
@@ -2627,10 +2689,12 @@ type
   private
     fMdx: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fTpls: TTuplesCT;
+
+    function GetTpls: TTuplesCT;
   published
     [TRequired]
     property Mdx: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fMdx write fMdx;
-    property Tpls: TTuplesCT read fTpls;
+    property Tpls: TTuplesCT read GetTpls;
   end;
 
   [TName('CT_CalculatedItems')]
@@ -2650,12 +2714,14 @@ type
     fFormula: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fPivotArea: TPivotAreaCT;
     fExtLst: TExtensionListCT;
+
+    function GetExtLst: TExtensionListCT;
   published
     property Field: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fField write fField;
     property Formula: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fFormula write fFormula;
     [TRequired]
     property PivotArea: TPivotAreaCT read fPivotArea;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_CalculatedMembers')]
@@ -2679,6 +2745,8 @@ type
     fSolveOrder: ProRock.Xmlite.Schema.Base.TIntST;
     fSet: ProRock.Xmlite.Schema.Base.TBooleanST;
     fExtLst: TExtensionListCT;
+
+    function GetExtLst: TExtensionListCT;
   published
     [TRequired]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
@@ -2691,7 +2759,7 @@ type
     property SolveOrder: ProRock.Xmlite.Schema.Base.TIntST read fSolveOrder write fSolveOrder;
     [TDefault(False)]
     property &Set: ProRock.Xmlite.Schema.Base.TBooleanST read fSet write fSet;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_pivotTableDefinition')]
@@ -2782,6 +2850,23 @@ type
     fRowHierarchiesUsage: TRowHierarchiesUsageCT;
     fColHierarchiesUsage: TColHierarchiesUsageCT;
     fExtLst: TExtensionListCT;
+
+    function GetPivotFields: TPivotFieldsCT;
+    function GetRowFields: TRowFieldsCT;
+    function GetRowItems: TRowItemsCT;
+    function GetColFields: TColFieldsCT;
+    function GetColItems: TColItemsCT;
+    function GetPageFields: TPageFieldsCT;
+    function GetDataFields: TDataFieldsCT;
+    function GetFormats: TFormatsCT;
+    function GetConditionalFormats: TConditionalFormatsCT;
+    function GetChartFormats: TChartFormatsCT;
+    function GetPivotHierarchies: TPivotHierarchiesCT;
+    function GetPivotTableStyleInfo: TPivotTableStyleCT;
+    function GetFilters: TPivotFiltersCT;
+    function GetRowHierarchiesUsage: TRowHierarchiesUsageCT;
+    function GetColHierarchiesUsage: TColHierarchiesUsageCT;
+    function GetExtLst: TExtensionListCT;
   published
     [TRequired]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
@@ -2904,22 +2989,22 @@ type
     property ApplyWidthHeightFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyWidthHeightFormats write fApplyWidthHeightFormats;
     [TRequired]
     property Location: TLocationCT read fLocation;
-    property PivotFields: TPivotFieldsCT read fPivotFields;
-    property RowFields: TRowFieldsCT read fRowFields;
-    property RowItems: TRowItemsCT read fRowItems;
-    property ColFields: TColFieldsCT read fColFields;
-    property ColItems: TColItemsCT read fColItems;
-    property PageFields: TPageFieldsCT read fPageFields;
-    property DataFields: TDataFieldsCT read fDataFields;
-    property Formats: TFormatsCT read fFormats;
-    property ConditionalFormats: TConditionalFormatsCT read fConditionalFormats;
-    property ChartFormats: TChartFormatsCT read fChartFormats;
-    property PivotHierarchies: TPivotHierarchiesCT read fPivotHierarchies;
-    property PivotTableStyleInfo: TPivotTableStyleCT read fPivotTableStyleInfo;
-    property Filters: TPivotFiltersCT read fFilters;
-    property RowHierarchiesUsage: TRowHierarchiesUsageCT read fRowHierarchiesUsage;
-    property ColHierarchiesUsage: TColHierarchiesUsageCT read fColHierarchiesUsage;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property PivotFields: TPivotFieldsCT read GetPivotFields;
+    property RowFields: TRowFieldsCT read GetRowFields;
+    property RowItems: TRowItemsCT read GetRowItems;
+    property ColFields: TColFieldsCT read GetColFields;
+    property ColItems: TColItemsCT read GetColItems;
+    property PageFields: TPageFieldsCT read GetPageFields;
+    property DataFields: TDataFieldsCT read GetDataFields;
+    property Formats: TFormatsCT read GetFormats;
+    property ConditionalFormats: TConditionalFormatsCT read GetConditionalFormats;
+    property ChartFormats: TChartFormatsCT read GetChartFormats;
+    property PivotHierarchies: TPivotHierarchiesCT read GetPivotHierarchies;
+    property PivotTableStyleInfo: TPivotTableStyleCT read GetPivotTableStyleInfo;
+    property Filters: TPivotFiltersCT read GetFilters;
+    property RowHierarchiesUsage: TRowHierarchiesUsageCT read GetRowHierarchiesUsage;
+    property ColHierarchiesUsage: TColHierarchiesUsageCT read GetColHierarchiesUsage;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_Location')]
@@ -3010,6 +3095,10 @@ type
     fItems: TItemsCT;
     fAutoSortScope: TAutoSortScopeCT;
     fExtLst: TExtensionListCT;
+
+    function GetItems: TItemsCT;
+    function GetAutoSortScope: TAutoSortScopeCT;
+    function GetExtLst: TExtensionListCT;
   published
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
     property Axis: TAxisST read fAxis write fAxis;
@@ -3100,9 +3189,9 @@ type
     property ShowPropAsCaption: ProRock.Xmlite.Schema.Base.TBooleanST read fShowPropAsCaption write fShowPropAsCaption;
     [TDefault(False)]
     property DefaultAttributeDrillState: ProRock.Xmlite.Schema.Base.TBooleanST read fDefaultAttributeDrillState write fDefaultAttributeDrillState;
-    property Items: TItemsCT read fItems;
-    property AutoSortScope: TAutoSortScopeCT read fAutoSortScope;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property Items: TItemsCT read GetItems;
+    property AutoSortScope: TAutoSortScopeCT read GetAutoSortScope;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_AutoSortScope')]
@@ -3180,6 +3269,8 @@ type
     fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fCap: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fExtLst: TExtensionListCT;
+
+    function GetExtLst: TExtensionListCT;
   published
     [TRequired]
     property Fld: ProRock.Xmlite.Schema.Base.TIntST read fFld write fFld;
@@ -3187,7 +3278,7 @@ type
     property Hier: ProRock.Xmlite.Schema.Base.TIntST read fHier write fHier;
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
     property Cap: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fCap write fCap;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_DataFields')]
@@ -3211,6 +3302,8 @@ type
     fBaseItem: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fNumFmtId: TNumFmtIdST;
     fExtLst: TExtensionListCT;
+
+    function GetExtLst: TExtensionListCT;
   published
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
     [TRequired]
@@ -3224,7 +3317,7 @@ type
     [TDefault(1048832)]
     property BaseItem: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fBaseItem write fBaseItem;
     property NumFmtId: TNumFmtIdST read fNumFmtId write fNumFmtId;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_rowItems')]
@@ -3322,13 +3415,15 @@ type
     fDxfId: TDxfIdST;
     fPivotArea: TPivotAreaCT;
     fExtLst: TExtensionListCT;
+
+    function GetExtLst: TExtensionListCT;
   published
     [TDefault(Ord(stfaFormatting))]
     property Action: TFormatActionST read fAction write fAction;
     property DxfId: TDxfIdST read fDxfId write fDxfId;
     [TRequired]
     property PivotArea: TPivotAreaCT read fPivotArea;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_ConditionalFormats')]
@@ -3350,6 +3445,8 @@ type
     fPriority: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fPivotAreas: TPivotAreasCT;
     fExtLst: TExtensionListCT;
+
+    function GetExtLst: TExtensionListCT;
   published
     [TDefault(Ord(stsSelection))]
     property Scope: TScopeST read fScope write fScope;
@@ -3359,7 +3456,7 @@ type
     property Priority: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fPriority write fPriority;
     [TRequired]
     property PivotAreas: TPivotAreasCT read fPivotAreas;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_PivotAreas')]
@@ -3428,6 +3525,9 @@ type
     fMps: TMemberPropertiesCT;
     fMembers: TMembersCTList;
     fExtLst: TExtensionListCT;
+
+    function GetMps: TMemberPropertiesCT;
+    function GetExtLst: TExtensionListCT;
   published
     [TDefault(False)]
     property Outline: ProRock.Xmlite.Schema.Base.TBooleanST read fOutline write fOutline;
@@ -3450,9 +3550,9 @@ type
     [TDefault(False)]
     property IncludeNewItemsInFilter: ProRock.Xmlite.Schema.Base.TBooleanST read fIncludeNewItemsInFilter write fIncludeNewItemsInFilter;
     property Caption: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fCaption write fCaption;
-    property Mps: TMemberPropertiesCT read fMps;
+    property Mps: TMemberPropertiesCT read GetMps;
     property Members: TMembersCTList read fMembers;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_RowHierarchiesUsage')]
@@ -3658,6 +3758,8 @@ type
     fStringValue2: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fAutoFilter: TAutoFilterCT;
     fExtLst: TExtensionListCT;
+
+    function GetExtLst: TExtensionListCT;
   published
     [TRequired]
     property Fld: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fFld write fFld;
@@ -3676,7 +3778,7 @@ type
     property StringValue2: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fStringValue2 write fStringValue2;
     [TRequired]
     property AutoFilter: TAutoFilterCT read fAutoFilter;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_PivotArea')]
@@ -3696,6 +3798,9 @@ type
     fFieldPosition: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fReferences: TPivotAreaReferencesCT;
     fExtLst: TExtensionListCT;
+
+    function GetReferences: TPivotAreaReferencesCT;
+    function GetExtLst: TExtensionListCT;
   published
     property Field: ProRock.Xmlite.Schema.Base.TIntST read fField write fField;
     [TDefault(Ord(stpatNormal))]
@@ -3717,8 +3822,8 @@ type
     property CollapsedLevelsAreSubtotals: ProRock.Xmlite.Schema.Base.TBooleanST read fCollapsedLevelsAreSubtotals write fCollapsedLevelsAreSubtotals;
     property Axis: TAxisST read fAxis write fAxis;
     property FieldPosition: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fFieldPosition write fFieldPosition;
-    property References: TPivotAreaReferencesCT read fReferences;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property References: TPivotAreaReferencesCT read GetReferences;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_PivotAreaReferences')]
@@ -3753,6 +3858,8 @@ type
     fVarPSubtotal: ProRock.Xmlite.Schema.Base.TBooleanST;
     fX: TIndexCTList;
     fExtLst: TExtensionListCT;
+
+    function GetExtLst: TExtensionListCT;
   published
     property Field: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fField write fField;
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
@@ -3787,7 +3894,7 @@ type
     [TDefault(False)]
     property VarPSubtotal: ProRock.Xmlite.Schema.Base.TBooleanST read fVarPSubtotal write fVarPSubtotal;
     property X: TIndexCTList read fX;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_Index')]
@@ -3826,6 +3933,9 @@ type
     fApplyWidthHeightFormats: ProRock.Xmlite.Schema.Base.TBooleanST;
     fQueryTableRefresh: TQueryTableRefreshCT;
     fExtLst: TExtensionListCT;
+
+    function GetQueryTableRefresh: TQueryTableRefreshCT;
+    function GetExtLst: TExtensionListCT;
   published
     [TRequired]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
@@ -3864,8 +3974,8 @@ type
     property ApplyPatternFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyPatternFormats write fApplyPatternFormats;
     property ApplyAlignmentFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyAlignmentFormats write fApplyAlignmentFormats;
     property ApplyWidthHeightFormats: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyWidthHeightFormats write fApplyWidthHeightFormats;
-    property QueryTableRefresh: TQueryTableRefreshCT read fQueryTableRefresh;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property QueryTableRefresh: TQueryTableRefreshCT read GetQueryTableRefresh;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_QueryTableRefresh')]
@@ -3882,6 +3992,10 @@ type
     fQueryTableDeletedFields: TQueryTableDeletedFieldsCT;
     fSortState: TSortStateCT;
     fExtLst: TExtensionListCT;
+
+    function GetQueryTableDeletedFields: TQueryTableDeletedFieldsCT;
+    function GetSortState: TSortStateCT;
+    function GetExtLst: TExtensionListCT;
   published
     [TDefault(True)]
     property PreserveSortFilterLayout: ProRock.Xmlite.Schema.Base.TBooleanST read fPreserveSortFilterLayout write fPreserveSortFilterLayout;
@@ -3899,9 +4013,9 @@ type
     property UnboundColumnsRight: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fUnboundColumnsRight write fUnboundColumnsRight;
     [TRequired]
     property QueryTableFields: TQueryTableFieldsCT read fQueryTableFields;
-    property QueryTableDeletedFields: TQueryTableDeletedFieldsCT read fQueryTableDeletedFields;
-    property SortState: TSortStateCT read fSortState;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property QueryTableDeletedFields: TQueryTableDeletedFieldsCT read GetQueryTableDeletedFields;
+    property SortState: TSortStateCT read GetSortState;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_QueryTableDeletedFields')]
@@ -3945,6 +4059,8 @@ type
     fClipped: ProRock.Xmlite.Schema.Base.TBooleanST;
     fTableColumnId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fExtLst: TExtensionListCT;
+
+    function GetExtLst: TExtensionListCT;
   published
     [TRequired]
     property Id: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fId write fId;
@@ -3959,7 +4075,7 @@ type
     property Clipped: ProRock.Xmlite.Schema.Base.TBooleanST read fClipped write fClipped;
     [TDefault(0)]
     property TableColumnId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fTableColumnId write fTableColumnId;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_Sst')]
@@ -3969,11 +4085,13 @@ type
     fUniqueCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fSi: TRstCTList;
     fExtLst: TExtensionListCT;
+
+    function GetExtLst: TExtensionListCT;
   published
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
     property UniqueCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fUniqueCount write fUniqueCount;
     property Si: TRstCTList read fSi;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_PhoneticRun')]
@@ -3997,8 +4115,10 @@ type
   private
     fRPr: TRPrEltCT;
     fT: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
+
+    function GetRPr: TRPrEltCT;
   published
-    property RPr: TRPrEltCT read fRPr;
+    property RPr: TRPrEltCT read GetRPr;
     [TXmliteElement]
     [TRequired]
     property T: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fT write fT;
@@ -4048,12 +4168,14 @@ type
     fR: TREltCTList;
     fRPh: TPhoneticRunCTList;
     fPhoneticPr: TPhoneticPrCT;
+
+    function GetPhoneticPr: TPhoneticPrCT;
   published
     [TXmliteElement]
     property T: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fT write fT;
     property R: TREltCTList read fR;
     property RPh: TPhoneticRunCTList read fRPh;
-    property PhoneticPr: TPhoneticPrCT read fPhoneticPr;
+    property PhoneticPr: TPhoneticPrCT read GetPhoneticPr;
   end;
 
   [TName('CT_PhoneticPr')]
@@ -4158,6 +4280,9 @@ type
     fSheetIdMap: TSheetIdMapCT;
     fReviewedList: TReviewedRevisionsCT;
     fExtLst: TExtensionListCT;
+
+    function GetReviewedList: TReviewedRevisionsCT;
+    function GetExtLst: TExtensionListCT;
   published
     [TRequired]
     property Guid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST read fGuid write fGuid;
@@ -4174,8 +4299,8 @@ type
     property MaxRId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fMaxRId write fMaxRId;
     [TRequired]
     property SheetIdMap: TSheetIdMapCT read fSheetIdMap;
-    property ReviewedList: TReviewedRevisionsCT read fReviewedList;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ReviewedList: TReviewedRevisionsCT read GetReviewedList;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_SheetIdMap')]
@@ -4345,6 +4470,8 @@ type
     fUa: ProRock.Xmlite.Schema.Base.TBooleanST;
     fRa: ProRock.Xmlite.Schema.Base.TBooleanST;
     fExtLst: TExtensionListCT;
+
+    function GetExtLst: TExtensionListCT;
   published
     [TRequired]
     property SheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSheetId write fSheetId;
@@ -4358,7 +4485,7 @@ type
     property Ua: ProRock.Xmlite.Schema.Base.TBooleanST read fUa write fUa;
     [TDefault(False)]
     property Ra: ProRock.Xmlite.Schema.Base.TBooleanST read fRa write fRa;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_RevisionInsertSheet')]
@@ -4406,6 +4533,10 @@ type
     fNc: TCellCT;
     fNdxf: TDxfCT;
     fExtLst: TExtensionListCT;
+
+    function GetOc: TCellCT;
+    function GetNdxf: TDxfCT;
+    function GetExtLst: TExtensionListCT;
   published
     [TRequired]
     property SId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSId write fSId;
@@ -4434,11 +4565,11 @@ type
     property Ua: ProRock.Xmlite.Schema.Base.TBooleanST read fUa write fUa;
     [TDefault(False)]
     property Ra: ProRock.Xmlite.Schema.Base.TBooleanST read fRa write fRa;
-    property Oc: TCellCT read fOc;
+    property Oc: TCellCT read GetOc;
     [TRequired]
     property Nc: TCellCT read fNc;
-    property Ndxf: TDxfCT read fNdxf;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property Ndxf: TDxfCT read GetNdxf;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_RevisionFormatting')]
@@ -4452,6 +4583,9 @@ type
     fLength: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fDxf: TDxfCT;
     fExtLst: TExtensionListCT;
+
+    function GetDxf: TDxfCT;
+    function GetExtLst: TExtensionListCT;
   published
     [TRequired]
     property SheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSheetId write fSheetId;
@@ -4463,8 +4597,8 @@ type
     property Sqref: TSqrefST read fSqref write fSqref;
     property Start: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fStart write fStart;
     property Length: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fLength write fLength;
-    property Dxf: TDxfCT read fDxf;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property Dxf: TDxfCT read GetDxf;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_RevisionAutoFormatting')]
@@ -4562,6 +4696,8 @@ type
     fFormula: TFormulaST;
     fOldFormula: TFormulaST;
     fExtLst: TExtensionListCT;
+
+    function GetExtLst: TExtensionListCT;
   published
     property LocalSheetId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fLocalSheetId write fLocalSheetId;
     [TDefault(False)]
@@ -4600,7 +4736,7 @@ type
     property Formula: TFormulaST read fFormula write fFormula;
     [TXmliteElement]
     property OldFormula: TFormulaST read fOldFormula write fOldFormula;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_RevisionConflict')]
@@ -4653,6 +4789,8 @@ type
     fId: ProRock.Xmlite.Schema.Base.TIntST;
     fDateTime: ProRock.Xmlite.Schema.Base.TDateTimeST;
     fExtLst: TExtensionListCT;
+
+    function GetExtLst: TExtensionListCT;
   published
     [TRequired]
     property Guid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST read fGuid write fGuid;
@@ -4662,7 +4800,7 @@ type
     property Id: ProRock.Xmlite.Schema.Base.TIntST read fId write fId;
     [TRequired]
     property DateTime: ProRock.Xmlite.Schema.Base.TDateTimeST read fDateTime write fDateTime;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_Macrosheet')]
@@ -4695,35 +4833,60 @@ type
     fPicture: TSheetBackgroundPictureCT;
     fOleObjects: TOleObjectsCT;
     fExtLst: TExtensionListCT;
+
+    function GetSheetPr: TSheetPrCT;
+    function GetDimension: TSheetDimensionCT;
+    function GetSheetViews: TSheetViewsCT;
+    function GetSheetFormatPr: TSheetFormatPrCT;
+    function GetSheetProtection: TSheetProtectionCT;
+    function GetAutoFilter: TAutoFilterCT;
+    function GetSortState: TSortStateCT;
+    function GetDataConsolidate: TDataConsolidateCT;
+    function GetCustomSheetViews: TCustomSheetViewsCT;
+    function GetPhoneticPr: TPhoneticPrCT;
+    function GetPrintOptions: TPrintOptionsCT;
+    function GetPageMargins: TPageMarginsCT;
+    function GetPageSetup: TPageSetupCT;
+    function GetHeaderFooter: THeaderFooterCT;
+    function GetRowBreaks: TPageBreakCT;
+    function GetColBreaks: TPageBreakCT;
+    function GetCustomProperties: TCustomPropertiesCT;
+    function GetDrawing: TDrawingCT;
+    function GetLegacyDrawing: TLegacyDrawingCT;
+    function GetLegacyDrawingHF: TLegacyDrawingCT;
+    function GetDrawingHF: TDrawingHFCT;
+    function GetPicture: TSheetBackgroundPictureCT;
+    function GetOleObjects: TOleObjectsCT;
+    function GetExtLst: TExtensionListCT;
   published
-    property SheetPr: TSheetPrCT read fSheetPr;
-    property Dimension: TSheetDimensionCT read fDimension;
-    property SheetViews: TSheetViewsCT read fSheetViews;
-    property SheetFormatPr: TSheetFormatPrCT read fSheetFormatPr;
+    property SheetPr: TSheetPrCT read GetSheetPr;
+    property Dimension: TSheetDimensionCT read GetDimension;
+    property SheetViews: TSheetViewsCT read GetSheetViews;
+    property SheetFormatPr: TSheetFormatPrCT read GetSheetFormatPr;
     property Cols: TColsCTList read fCols;
     [TRequired]
     property SheetData: TSheetDataCT read fSheetData;
-    property SheetProtection: TSheetProtectionCT read fSheetProtection;
-    property AutoFilter: TAutoFilterCT read fAutoFilter;
-    property SortState: TSortStateCT read fSortState;
-    property DataConsolidate: TDataConsolidateCT read fDataConsolidate;
-    property CustomSheetViews: TCustomSheetViewsCT read fCustomSheetViews;
-    property PhoneticPr: TPhoneticPrCT read fPhoneticPr;
+    property SheetProtection: TSheetProtectionCT read GetSheetProtection;
+    property AutoFilter: TAutoFilterCT read GetAutoFilter;
+    property SortState: TSortStateCT read GetSortState;
+    property DataConsolidate: TDataConsolidateCT read GetDataConsolidate;
+    property CustomSheetViews: TCustomSheetViewsCT read GetCustomSheetViews;
+    property PhoneticPr: TPhoneticPrCT read GetPhoneticPr;
     property ConditionalFormatting: TConditionalFormattingCTList read fConditionalFormatting;
-    property PrintOptions: TPrintOptionsCT read fPrintOptions;
-    property PageMargins: TPageMarginsCT read fPageMargins;
-    property PageSetup: TPageSetupCT read fPageSetup;
-    property HeaderFooter: THeaderFooterCT read fHeaderFooter;
-    property RowBreaks: TPageBreakCT read fRowBreaks;
-    property ColBreaks: TPageBreakCT read fColBreaks;
-    property CustomProperties: TCustomPropertiesCT read fCustomProperties;
-    property Drawing: TDrawingCT read fDrawing;
-    property LegacyDrawing: TLegacyDrawingCT read fLegacyDrawing;
-    property LegacyDrawingHF: TLegacyDrawingCT read fLegacyDrawingHF;
-    property DrawingHF: TDrawingHFCT read fDrawingHF;
-    property Picture: TSheetBackgroundPictureCT read fPicture;
-    property OleObjects: TOleObjectsCT read fOleObjects;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property PrintOptions: TPrintOptionsCT read GetPrintOptions;
+    property PageMargins: TPageMarginsCT read GetPageMargins;
+    property PageSetup: TPageSetupCT read GetPageSetup;
+    property HeaderFooter: THeaderFooterCT read GetHeaderFooter;
+    property RowBreaks: TPageBreakCT read GetRowBreaks;
+    property ColBreaks: TPageBreakCT read GetColBreaks;
+    property CustomProperties: TCustomPropertiesCT read GetCustomProperties;
+    property Drawing: TDrawingCT read GetDrawing;
+    property LegacyDrawing: TLegacyDrawingCT read GetLegacyDrawing;
+    property LegacyDrawingHF: TLegacyDrawingCT read GetLegacyDrawingHF;
+    property DrawingHF: TDrawingHFCT read GetDrawingHF;
+    property Picture: TSheetBackgroundPictureCT read GetPicture;
+    property OleObjects: TOleObjectsCT read GetOleObjects;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_Dialogsheet')]
@@ -4745,23 +4908,40 @@ type
     fOleObjects: TOleObjectsCT;
     fControls: TControlsCT;
     fExtLst: TExtensionListCT;
+
+    function GetSheetPr: TSheetPrCT;
+    function GetSheetViews: TSheetViewsCT;
+    function GetSheetFormatPr: TSheetFormatPrCT;
+    function GetSheetProtection: TSheetProtectionCT;
+    function GetCustomSheetViews: TCustomSheetViewsCT;
+    function GetPrintOptions: TPrintOptionsCT;
+    function GetPageMargins: TPageMarginsCT;
+    function GetPageSetup: TPageSetupCT;
+    function GetHeaderFooter: THeaderFooterCT;
+    function GetDrawing: TDrawingCT;
+    function GetLegacyDrawing: TLegacyDrawingCT;
+    function GetLegacyDrawingHF: TLegacyDrawingCT;
+    function GetDrawingHF: TDrawingHFCT;
+    function GetOleObjects: TOleObjectsCT;
+    function GetControls: TControlsCT;
+    function GetExtLst: TExtensionListCT;
   published
-    property SheetPr: TSheetPrCT read fSheetPr;
-    property SheetViews: TSheetViewsCT read fSheetViews;
-    property SheetFormatPr: TSheetFormatPrCT read fSheetFormatPr;
-    property SheetProtection: TSheetProtectionCT read fSheetProtection;
-    property CustomSheetViews: TCustomSheetViewsCT read fCustomSheetViews;
-    property PrintOptions: TPrintOptionsCT read fPrintOptions;
-    property PageMargins: TPageMarginsCT read fPageMargins;
-    property PageSetup: TPageSetupCT read fPageSetup;
-    property HeaderFooter: THeaderFooterCT read fHeaderFooter;
-    property Drawing: TDrawingCT read fDrawing;
-    property LegacyDrawing: TLegacyDrawingCT read fLegacyDrawing;
-    property LegacyDrawingHF: TLegacyDrawingCT read fLegacyDrawingHF;
-    property DrawingHF: TDrawingHFCT read fDrawingHF;
-    property OleObjects: TOleObjectsCT read fOleObjects;
-    property Controls: TControlsCT read fControls;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property SheetPr: TSheetPrCT read GetSheetPr;
+    property SheetViews: TSheetViewsCT read GetSheetViews;
+    property SheetFormatPr: TSheetFormatPrCT read GetSheetFormatPr;
+    property SheetProtection: TSheetProtectionCT read GetSheetProtection;
+    property CustomSheetViews: TCustomSheetViewsCT read GetCustomSheetViews;
+    property PrintOptions: TPrintOptionsCT read GetPrintOptions;
+    property PageMargins: TPageMarginsCT read GetPageMargins;
+    property PageSetup: TPageSetupCT read GetPageSetup;
+    property HeaderFooter: THeaderFooterCT read GetHeaderFooter;
+    property Drawing: TDrawingCT read GetDrawing;
+    property LegacyDrawing: TLegacyDrawingCT read GetLegacyDrawing;
+    property LegacyDrawingHF: TLegacyDrawingCT read GetLegacyDrawingHF;
+    property DrawingHF: TDrawingHFCT read GetDrawingHF;
+    property OleObjects: TOleObjectsCT read GetOleObjects;
+    property Controls: TControlsCT read GetControls;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_Worksheet')]
@@ -4806,47 +4986,84 @@ type
     fWebPublishItems: TWebPublishItemsCT;
     fTableParts: TTablePartsCT;
     fExtLst: TExtensionListCT;
+
+    function GetSheetPr: TSheetPrCT;
+    function GetDimension: TSheetDimensionCT;
+    function GetSheetViews: TSheetViewsCT;
+    function GetSheetFormatPr: TSheetFormatPrCT;
+    function GetSheetCalcPr: TSheetCalcPrCT;
+    function GetSheetProtection: TSheetProtectionCT;
+    function GetProtectedRanges: TProtectedRangesCT;
+    function GetScenarios: TScenariosCT;
+    function GetAutoFilter: TAutoFilterCT;
+    function GetSortState: TSortStateCT;
+    function GetDataConsolidate: TDataConsolidateCT;
+    function GetCustomSheetViews: TCustomSheetViewsCT;
+    function GetMergeCells: TMergeCellsCT;
+    function GetPhoneticPr: TPhoneticPrCT;
+    function GetDataValidations: TDataValidationsCT;
+    function GetHyperlinks: THyperlinksCT;
+    function GetPrintOptions: TPrintOptionsCT;
+    function GetPageMargins: TPageMarginsCT;
+    function GetPageSetup: TPageSetupCT;
+    function GetHeaderFooter: THeaderFooterCT;
+    function GetRowBreaks: TPageBreakCT;
+    function GetColBreaks: TPageBreakCT;
+    function GetCustomProperties: TCustomPropertiesCT;
+    function GetCellWatches: TCellWatchesCT;
+    function GetIgnoredErrors: TIgnoredErrorsCT;
+    function GetSmartTags: TSmartTagsCT;
+    function GetDrawing: TDrawingCT;
+    function GetLegacyDrawing: TLegacyDrawingCT;
+    function GetLegacyDrawingHF: TLegacyDrawingCT;
+    function GetDrawingHF: TDrawingHFCT;
+    function GetPicture: TSheetBackgroundPictureCT;
+    function GetOleObjects: TOleObjectsCT;
+    function GetControls: TControlsCT;
+    function GetWebPublishItems: TWebPublishItemsCT;
+    function GetTableParts: TTablePartsCT;
+    function GetExtLst: TExtensionListCT;
   published
-    property SheetPr: TSheetPrCT read fSheetPr;
-    property Dimension: TSheetDimensionCT read fDimension;
-    property SheetViews: TSheetViewsCT read fSheetViews;
-    property SheetFormatPr: TSheetFormatPrCT read fSheetFormatPr;
+    property SheetPr: TSheetPrCT read GetSheetPr;
+    property Dimension: TSheetDimensionCT read GetDimension;
+    property SheetViews: TSheetViewsCT read GetSheetViews;
+    property SheetFormatPr: TSheetFormatPrCT read GetSheetFormatPr;
     property Cols: TColsCTList read fCols;
     [TRequired]
     property SheetData: TSheetDataCT read fSheetData;
-    property SheetCalcPr: TSheetCalcPrCT read fSheetCalcPr;
-    property SheetProtection: TSheetProtectionCT read fSheetProtection;
-    property ProtectedRanges: TProtectedRangesCT read fProtectedRanges;
-    property Scenarios: TScenariosCT read fScenarios;
-    property AutoFilter: TAutoFilterCT read fAutoFilter;
-    property SortState: TSortStateCT read fSortState;
-    property DataConsolidate: TDataConsolidateCT read fDataConsolidate;
-    property CustomSheetViews: TCustomSheetViewsCT read fCustomSheetViews;
-    property MergeCells: TMergeCellsCT read fMergeCells;
-    property PhoneticPr: TPhoneticPrCT read fPhoneticPr;
+    property SheetCalcPr: TSheetCalcPrCT read GetSheetCalcPr;
+    property SheetProtection: TSheetProtectionCT read GetSheetProtection;
+    property ProtectedRanges: TProtectedRangesCT read GetProtectedRanges;
+    property Scenarios: TScenariosCT read GetScenarios;
+    property AutoFilter: TAutoFilterCT read GetAutoFilter;
+    property SortState: TSortStateCT read GetSortState;
+    property DataConsolidate: TDataConsolidateCT read GetDataConsolidate;
+    property CustomSheetViews: TCustomSheetViewsCT read GetCustomSheetViews;
+    property MergeCells: TMergeCellsCT read GetMergeCells;
+    property PhoneticPr: TPhoneticPrCT read GetPhoneticPr;
     property ConditionalFormatting: TConditionalFormattingCTList read fConditionalFormatting;
-    property DataValidations: TDataValidationsCT read fDataValidations;
-    property Hyperlinks: THyperlinksCT read fHyperlinks;
-    property PrintOptions: TPrintOptionsCT read fPrintOptions;
-    property PageMargins: TPageMarginsCT read fPageMargins;
-    property PageSetup: TPageSetupCT read fPageSetup;
-    property HeaderFooter: THeaderFooterCT read fHeaderFooter;
-    property RowBreaks: TPageBreakCT read fRowBreaks;
-    property ColBreaks: TPageBreakCT read fColBreaks;
-    property CustomProperties: TCustomPropertiesCT read fCustomProperties;
-    property CellWatches: TCellWatchesCT read fCellWatches;
-    property IgnoredErrors: TIgnoredErrorsCT read fIgnoredErrors;
-    property SmartTags: TSmartTagsCT read fSmartTags;
-    property Drawing: TDrawingCT read fDrawing;
-    property LegacyDrawing: TLegacyDrawingCT read fLegacyDrawing;
-    property LegacyDrawingHF: TLegacyDrawingCT read fLegacyDrawingHF;
-    property DrawingHF: TDrawingHFCT read fDrawingHF;
-    property Picture: TSheetBackgroundPictureCT read fPicture;
-    property OleObjects: TOleObjectsCT read fOleObjects;
-    property Controls: TControlsCT read fControls;
-    property WebPublishItems: TWebPublishItemsCT read fWebPublishItems;
-    property TableParts: TTablePartsCT read fTableParts;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property DataValidations: TDataValidationsCT read GetDataValidations;
+    property Hyperlinks: THyperlinksCT read GetHyperlinks;
+    property PrintOptions: TPrintOptionsCT read GetPrintOptions;
+    property PageMargins: TPageMarginsCT read GetPageMargins;
+    property PageSetup: TPageSetupCT read GetPageSetup;
+    property HeaderFooter: THeaderFooterCT read GetHeaderFooter;
+    property RowBreaks: TPageBreakCT read GetRowBreaks;
+    property ColBreaks: TPageBreakCT read GetColBreaks;
+    property CustomProperties: TCustomPropertiesCT read GetCustomProperties;
+    property CellWatches: TCellWatchesCT read GetCellWatches;
+    property IgnoredErrors: TIgnoredErrorsCT read GetIgnoredErrors;
+    property SmartTags: TSmartTagsCT read GetSmartTags;
+    property Drawing: TDrawingCT read GetDrawing;
+    property LegacyDrawing: TLegacyDrawingCT read GetLegacyDrawing;
+    property LegacyDrawingHF: TLegacyDrawingCT read GetLegacyDrawingHF;
+    property DrawingHF: TDrawingHFCT read GetDrawingHF;
+    property Picture: TSheetBackgroundPictureCT read GetPicture;
+    property OleObjects: TOleObjectsCT read GetOleObjects;
+    property Controls: TControlsCT read GetControls;
+    property WebPublishItems: TWebPublishItemsCT read GetWebPublishItems;
+    property TableParts: TTablePartsCT read GetTableParts;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_SheetData')]
@@ -4958,6 +5175,8 @@ type
     fPh: ProRock.Xmlite.Schema.Base.TBooleanST;
     fC: TCellCTList;
     fExtLst: TExtensionListCT;
+
+    function GetExtLst: TExtensionListCT;
   published
     property R: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fR write fR;
     property Spans: TCellSpansST read fSpans write fSpans;
@@ -4981,7 +5200,7 @@ type
     [TDefault(False)]
     property Ph: ProRock.Xmlite.Schema.Base.TBooleanST read fPh write fPh;
     property C: TCellCTList read fC;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_Cell')]
@@ -4997,6 +5216,10 @@ type
     fV: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fIs: TRstCT;
     fExtLst: TExtensionListCT;
+
+    function GetF: TCellFormulaCT;
+    function GetIs: TRstCT;
+    function GetExtLst: TExtensionListCT;
   published
     property R: TCellRefST read fR write fR;
     [TDefault(0)]
@@ -5009,11 +5232,11 @@ type
     property Vm: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fVm write fVm;
     [TDefault(False)]
     property Ph: ProRock.Xmlite.Schema.Base.TBooleanST read fPh write fPh;
-    property F: TCellFormulaCT read fF;
+    property F: TCellFormulaCT read GetF;
     [TXmliteElement]
     property V: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fV write fV;
-    property &Is: TRstCT read fIs;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property &Is: TRstCT read GetIs;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_SheetPr')]
@@ -5031,6 +5254,10 @@ type
     fTabColor: TColorCT;
     fOutlinePr: TOutlinePrCT;
     fPageSetUpPr: TPageSetUpPrCT;
+
+    function GetTabColor: TColorCT;
+    function GetOutlinePr: TOutlinePrCT;
+    function GetPageSetUpPr: TPageSetUpPrCT;
   published
     [TDefault(False)]
     property SyncHorizontal: ProRock.Xmlite.Schema.Base.TBooleanST read fSyncHorizontal write fSyncHorizontal;
@@ -5048,9 +5275,9 @@ type
     property FilterMode: ProRock.Xmlite.Schema.Base.TBooleanST read fFilterMode write fFilterMode;
     [TDefault(True)]
     property EnableFormatConditionsCalculation: ProRock.Xmlite.Schema.Base.TBooleanST read fEnableFormatConditionsCalculation write fEnableFormatConditionsCalculation;
-    property TabColor: TColorCT read fTabColor;
-    property OutlinePr: TOutlinePrCT read fOutlinePr;
-    property PageSetUpPr: TPageSetUpPrCT read fPageSetUpPr;
+    property TabColor: TColorCT read GetTabColor;
+    property OutlinePr: TOutlinePrCT read GetOutlinePr;
+    property PageSetUpPr: TPageSetUpPrCT read GetPageSetUpPr;
   end;
 
   [TName('CT_SheetDimension')]
@@ -5067,9 +5294,11 @@ type
   private
     fSheetView: TSheetViewCTList;
     fExtLst: TExtensionListCT;
+
+    function GetExtLst: TExtensionListCT;
   published
     property SheetView: TSheetViewCTList read fSheetView;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_SheetView')]
@@ -5098,6 +5327,9 @@ type
     fSelection: TSelectionCTList;
     fPivotSelection: TPivotSelectionCTList;
     fExtLst: TExtensionListCT;
+
+    function GetPane: TPaneCT;
+    function GetExtLst: TExtensionListCT;
   published
     [TDefault(False)]
     property WindowProtection: ProRock.Xmlite.Schema.Base.TBooleanST read fWindowProtection write fWindowProtection;
@@ -5136,10 +5368,10 @@ type
     property ZoomScalePageLayoutView: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fZoomScalePageLayoutView write fZoomScalePageLayoutView;
     [TRequired]
     property WorkbookViewId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fWorkbookViewId write fWorkbookViewId;
-    property Pane: TPaneCT read fPane;
+    property Pane: TPaneCT read GetPane;
     property Selection: TSelectionCTList read fSelection;
     property PivotSelection: TPivotSelectionCTList read fPivotSelection;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_Pane')]
@@ -5312,6 +5544,8 @@ type
     fTopLabels: ProRock.Xmlite.Schema.Base.TBooleanST;
     fLink: ProRock.Xmlite.Schema.Base.TBooleanST;
     fDataRefs: TDataRefsCT;
+
+    function GetDataRefs: TDataRefsCT;
   published
     [TDefault(Ord(stdcfSum))]
     property &Function: TDataConsolidateFunctionST read fFunction write fFunction;
@@ -5323,7 +5557,7 @@ type
     property TopLabels: ProRock.Xmlite.Schema.Base.TBooleanST read fTopLabels write fTopLabels;
     [TDefault(False)]
     property Link: ProRock.Xmlite.Schema.Base.TBooleanST read fLink write fLink;
-    property DataRefs: TDataRefsCT read fDataRefs;
+    property DataRefs: TDataRefsCT read GetDataRefs;
   end;
 
   [TName('CT_DataRefs')]
@@ -5525,6 +5759,17 @@ type
     fHeaderFooter: THeaderFooterCT;
     fAutoFilter: TAutoFilterCT;
     fExtLst: TExtensionListCT;
+
+    function GetPane: TPaneCT;
+    function GetSelection: TSelectionCT;
+    function GetRowBreaks: TPageBreakCT;
+    function GetColBreaks: TPageBreakCT;
+    function GetPageMargins: TPageMarginsCT;
+    function GetPrintOptions: TPrintOptionsCT;
+    function GetPageSetup: TPageSetupCT;
+    function GetHeaderFooter: THeaderFooterCT;
+    function GetAutoFilter: TAutoFilterCT;
+    function GetExtLst: TExtensionListCT;
   published
     [TRequired]
     property Guid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST read fGuid write fGuid;
@@ -5565,16 +5810,16 @@ type
     [TDefault(True)]
     property ShowRuler: ProRock.Xmlite.Schema.Base.TBooleanST read fShowRuler write fShowRuler;
     property TopLeftCell: TCellRefST read fTopLeftCell write fTopLeftCell;
-    property Pane: TPaneCT read fPane;
-    property Selection: TSelectionCT read fSelection;
-    property RowBreaks: TPageBreakCT read fRowBreaks;
-    property ColBreaks: TPageBreakCT read fColBreaks;
-    property PageMargins: TPageMarginsCT read fPageMargins;
-    property PrintOptions: TPrintOptionsCT read fPrintOptions;
-    property PageSetup: TPageSetupCT read fPageSetup;
-    property HeaderFooter: THeaderFooterCT read fHeaderFooter;
-    property AutoFilter: TAutoFilterCT read fAutoFilter;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property Pane: TPaneCT read GetPane;
+    property Selection: TSelectionCT read GetSelection;
+    property RowBreaks: TPageBreakCT read GetRowBreaks;
+    property ColBreaks: TPageBreakCT read GetColBreaks;
+    property PageMargins: TPageMarginsCT read GetPageMargins;
+    property PrintOptions: TPrintOptionsCT read GetPrintOptions;
+    property PageSetup: TPageSetupCT read GetPageSetup;
+    property HeaderFooter: THeaderFooterCT read GetHeaderFooter;
+    property AutoFilter: TAutoFilterCT read GetAutoFilter;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_DataValidations')]
@@ -5648,12 +5893,14 @@ type
     fSqref: TSqrefST;
     fCfRule: TCfRuleCTList;
     fExtLst: TExtensionListCT;
+
+    function GetExtLst: TExtensionListCT;
   published
     [TDefault(False)]
     property Pivot: ProRock.Xmlite.Schema.Base.TBooleanST read fPivot write fPivot;
     property Sqref: TSqrefST read fSqref write fSqref;
     property CfRule: TCfRuleCTList read fCfRule;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_CfRule')]
@@ -5677,6 +5924,11 @@ type
     fDataBar: TDataBarCT;
     fIconSet: TIconSetCT;
     fExtLst: TExtensionListCT;
+
+    function GetColorScale: TColorScaleCT;
+    function GetDataBar: TDataBarCT;
+    function GetIconSet: TIconSetCT;
+    function GetExtLst: TExtensionListCT;
   published
     property &Type: TCfTypeST read fType write fType;
     property DxfId: TDxfIdST read fDxfId write fDxfId;
@@ -5698,10 +5950,10 @@ type
     [TDefault(False)]
     property EqualAverage: ProRock.Xmlite.Schema.Base.TBooleanST read fEqualAverage write fEqualAverage;
     property Formula: TFormulaSTList read fFormula;
-    property ColorScale: TColorScaleCT read fColorScale;
-    property DataBar: TDataBarCT read fDataBar;
-    property IconSet: TIconSetCT read fIconSet;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ColorScale: TColorScaleCT read GetColorScale;
+    property DataBar: TDataBarCT read GetDataBar;
+    property IconSet: TIconSetCT read GetIconSet;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_Hyperlinks')]
@@ -5828,13 +6080,15 @@ type
     fVal: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fGte: ProRock.Xmlite.Schema.Base.TBooleanST;
     fExtLst: TExtensionListCT;
+
+    function GetExtLst: TExtensionListCT;
   published
     [TRequired]
     property &Type: TCfvoTypeST read fType write fType;
     property Val: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fVal write fVal;
     [TDefault(True)]
     property Gte: ProRock.Xmlite.Schema.Base.TBooleanST read fGte write fGte;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_PageMargins')]
@@ -6166,23 +6420,36 @@ type
     fPicture: TSheetBackgroundPictureCT;
     fWebPublishItems: TWebPublishItemsCT;
     fExtLst: TExtensionListCT;
+
+    function GetSheetPr: TChartsheetPrCT;
+    function GetSheetProtection: TChartsheetProtectionCT;
+    function GetCustomSheetViews: TCustomChartsheetViewsCT;
+    function GetPageMargins: TPageMarginsCT;
+    function GetPageSetup: TCsPageSetupCT;
+    function GetHeaderFooter: THeaderFooterCT;
+    function GetLegacyDrawing: TLegacyDrawingCT;
+    function GetLegacyDrawingHF: TLegacyDrawingCT;
+    function GetDrawingHF: TDrawingHFCT;
+    function GetPicture: TSheetBackgroundPictureCT;
+    function GetWebPublishItems: TWebPublishItemsCT;
+    function GetExtLst: TExtensionListCT;
   published
-    property SheetPr: TChartsheetPrCT read fSheetPr;
+    property SheetPr: TChartsheetPrCT read GetSheetPr;
     [TRequired]
     property SheetViews: TChartsheetViewsCT read fSheetViews;
-    property SheetProtection: TChartsheetProtectionCT read fSheetProtection;
-    property CustomSheetViews: TCustomChartsheetViewsCT read fCustomSheetViews;
-    property PageMargins: TPageMarginsCT read fPageMargins;
-    property PageSetup: TCsPageSetupCT read fPageSetup;
-    property HeaderFooter: THeaderFooterCT read fHeaderFooter;
+    property SheetProtection: TChartsheetProtectionCT read GetSheetProtection;
+    property CustomSheetViews: TCustomChartsheetViewsCT read GetCustomSheetViews;
+    property PageMargins: TPageMarginsCT read GetPageMargins;
+    property PageSetup: TCsPageSetupCT read GetPageSetup;
+    property HeaderFooter: THeaderFooterCT read GetHeaderFooter;
     [TRequired]
     property Drawing: TDrawingCT read fDrawing;
-    property LegacyDrawing: TLegacyDrawingCT read fLegacyDrawing;
-    property LegacyDrawingHF: TLegacyDrawingCT read fLegacyDrawingHF;
-    property DrawingHF: TDrawingHFCT read fDrawingHF;
-    property Picture: TSheetBackgroundPictureCT read fPicture;
-    property WebPublishItems: TWebPublishItemsCT read fWebPublishItems;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property LegacyDrawing: TLegacyDrawingCT read GetLegacyDrawing;
+    property LegacyDrawingHF: TLegacyDrawingCT read GetLegacyDrawingHF;
+    property DrawingHF: TDrawingHFCT read GetDrawingHF;
+    property Picture: TSheetBackgroundPictureCT read GetPicture;
+    property WebPublishItems: TWebPublishItemsCT read GetWebPublishItems;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_ChartsheetPr')]
@@ -6191,11 +6458,13 @@ type
     fPublished: ProRock.Xmlite.Schema.Base.TBooleanST;
     fCodeName: ProRock.Xmlite.Schema.Base.TStringST;
     fTabColor: TColorCT;
+
+    function GetTabColor: TColorCT;
   published
     [TDefault(True)]
     property Published: ProRock.Xmlite.Schema.Base.TBooleanST read fPublished write fPublished;
     property CodeName: ProRock.Xmlite.Schema.Base.TStringST read fCodeName write fCodeName;
-    property TabColor: TColorCT read fTabColor;
+    property TabColor: TColorCT read GetTabColor;
   end;
 
   [TName('CT_ChartsheetViews')]
@@ -6203,9 +6472,11 @@ type
   private
     fSheetView: TChartsheetViewCTList;
     fExtLst: TExtensionListCT;
+
+    function GetExtLst: TExtensionListCT;
   published
     property SheetView: TChartsheetViewCTList read fSheetView;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_ChartsheetView')]
@@ -6216,6 +6487,8 @@ type
     fWorkbookViewId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fZoomToFit: ProRock.Xmlite.Schema.Base.TBooleanST;
     fExtLst: TExtensionListCT;
+
+    function GetExtLst: TExtensionListCT;
   published
     [TDefault(False)]
     property TabSelected: ProRock.Xmlite.Schema.Base.TBooleanST read fTabSelected write fTabSelected;
@@ -6225,7 +6498,7 @@ type
     property WorkbookViewId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fWorkbookViewId write fWorkbookViewId;
     [TDefault(False)]
     property ZoomToFit: ProRock.Xmlite.Schema.Base.TBooleanST read fZoomToFit write fZoomToFit;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_ChartsheetProtection')]
@@ -6311,6 +6584,10 @@ type
     fPageMargins: TPageMarginsCT;
     fPageSetup: TCsPageSetupCT;
     fHeaderFooter: THeaderFooterCT;
+
+    function GetPageMargins: TPageMarginsCT;
+    function GetPageSetup: TCsPageSetupCT;
+    function GetHeaderFooter: THeaderFooterCT;
   published
     [TRequired]
     property Guid: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TGuidST read fGuid write fGuid;
@@ -6320,9 +6597,9 @@ type
     property State: TSheetStateST read fState write fState;
     [TDefault(False)]
     property ZoomToFit: ProRock.Xmlite.Schema.Base.TBooleanST read fZoomToFit write fZoomToFit;
-    property PageMargins: TPageMarginsCT read fPageMargins;
-    property PageSetup: TCsPageSetupCT read fPageSetup;
-    property HeaderFooter: THeaderFooterCT read fHeaderFooter;
+    property PageMargins: TPageMarginsCT read GetPageMargins;
+    property PageSetup: TCsPageSetupCT read GetPageSetup;
+    property HeaderFooter: THeaderFooterCT read GetHeaderFooter;
   end;
 
   [TName('CT_CustomProperties')]
@@ -6365,6 +6642,8 @@ type
     fShapeId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fId: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA;
     fObjectPr: TObjectPrCT;
+
+    function GetObjectPr: TObjectPrCT;
   published
     property ProgId: ProRock.Xmlite.Schema.Base.TStringST read fProgId write fProgId;
     [TDefault(Ord(stdaDvaspectContent))]
@@ -6377,7 +6656,7 @@ type
     property ShapeId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fShapeId write fShapeId;
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
-    property ObjectPr: TObjectPrCT read fObjectPr;
+    property ObjectPr: TObjectPrCT read GetObjectPr;
   end;
 
   [TName('CT_ObjectPr')]
@@ -6475,6 +6754,8 @@ type
     fId: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA;
     fName: ProRock.Xmlite.Schema.Base.TStringST;
     fControlPr: TControlPrCT;
+
+    function GetControlPr: TControlPrCT;
   published
     [TRequired]
     property ShapeId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fShapeId write fShapeId;
@@ -6482,7 +6763,7 @@ type
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
     property Name: ProRock.Xmlite.Schema.Base.TStringST read fName write fName;
-    property ControlPr: TControlPrCT read fControlPr;
+    property ControlPr: TControlPrCT read GetControlPr;
   end;
 
   [TName('CT_ControlPr')]
@@ -6540,9 +6821,11 @@ type
   private
     fIgnoredError: TIgnoredErrorCTList;
     fExtLst: TExtensionListCT;
+
+    function GetExtLst: TExtensionListCT;
   published
     property IgnoredError: TIgnoredErrorCTList read fIgnoredError;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_IgnoredError')]
@@ -6611,14 +6894,21 @@ type
     fCellMetadata: TMetadataBlocksCT;
     fValueMetadata: TMetadataBlocksCT;
     fExtLst: TExtensionListCT;
+
+    function GetMetadataTypes: TMetadataTypesCT;
+    function GetMetadataStrings: TMetadataStringsCT;
+    function GetMdxMetadata: TMdxMetadataCT;
+    function GetCellMetadata: TMetadataBlocksCT;
+    function GetValueMetadata: TMetadataBlocksCT;
+    function GetExtLst: TExtensionListCT;
   published
-    property MetadataTypes: TMetadataTypesCT read fMetadataTypes;
-    property MetadataStrings: TMetadataStringsCT read fMetadataStrings;
-    property MdxMetadata: TMdxMetadataCT read fMdxMetadata;
+    property MetadataTypes: TMetadataTypesCT read GetMetadataTypes;
+    property MetadataStrings: TMetadataStringsCT read GetMetadataStrings;
+    property MdxMetadata: TMdxMetadataCT read GetMdxMetadata;
     property FutureMetadata: TFutureMetadataCTList read fFutureMetadata;
-    property CellMetadata: TMetadataBlocksCT read fCellMetadata;
-    property ValueMetadata: TMetadataBlocksCT read fValueMetadata;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property CellMetadata: TMetadataBlocksCT read GetCellMetadata;
+    property ValueMetadata: TMetadataBlocksCT read GetValueMetadata;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_MetadataTypes')]
@@ -6761,21 +7051,25 @@ type
     fCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fBk: TFutureMetadataBlockCTList;
     fExtLst: TExtensionListCT;
+
+    function GetExtLst: TExtensionListCT;
   published
     [TRequired]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
     [TDefault(0)]
     property Count: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fCount write fCount;
     property Bk: TFutureMetadataBlockCTList read fBk;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_FutureMetadataBlock')]
   TFutureMetadataBlockCT = class(TXmliteComplexType)
   private
     fExtLst: TExtensionListCT;
+
+    function GetExtLst: TExtensionListCT;
   published
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_MdxMetadata')]
@@ -6934,6 +7228,8 @@ type
     fConnectionId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fXmlCellPr: TXmlCellPrCT;
     fExtLst: TExtensionListCT;
+
+    function GetExtLst: TExtensionListCT;
   published
     [TRequired]
     property Id: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fId write fId;
@@ -6943,7 +7239,7 @@ type
     property ConnectionId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fConnectionId write fConnectionId;
     [TRequired]
     property XmlCellPr: TXmlCellPrCT read fXmlCellPr;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_XmlCellPr')]
@@ -6953,13 +7249,15 @@ type
     fUniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fXmlPr: TXmlPrCT;
     fExtLst: TExtensionListCT;
+
+    function GetExtLst: TExtensionListCT;
   published
     [TRequired]
     property Id: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fId write fId;
     property UniqueName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fUniqueName write fUniqueName;
     [TRequired]
     property XmlPr: TXmlPrCT read fXmlPr;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_XmlPr')]
@@ -6969,6 +7267,8 @@ type
     fXpath: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fXmlDataType: TXmlDataTypeST;
     fExtLst: TExtensionListCT;
+
+    function GetExtLst: TExtensionListCT;
   published
     [TRequired]
     property MapId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fMapId write fMapId;
@@ -6976,7 +7276,7 @@ type
     property Xpath: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fXpath write fXpath;
     [TRequired]
     property XmlDataType: TXmlDataTypeST read fXmlDataType write fXmlDataType;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_Stylesheet')]
@@ -6993,18 +7293,30 @@ type
     fTableStyles: TTableStylesCT;
     fColors: TColorsCT;
     fExtLst: TExtensionListCT;
+
+    function GetNumFmts: TNumFmtsCT;
+    function GetFonts: TFontsCT;
+    function GetFills: TFillsCT;
+    function GetBorders: TBordersCT;
+    function GetCellStyleXfs: TCellStyleXfsCT;
+    function GetCellXfs: TCellXfsCT;
+    function GetCellStyles: TCellStylesCT;
+    function GetDxfs: TDxfsCT;
+    function GetTableStyles: TTableStylesCT;
+    function GetColors: TColorsCT;
+    function GetExtLst: TExtensionListCT;
   published
-    property NumFmts: TNumFmtsCT read fNumFmts;
-    property Fonts: TFontsCT read fFonts;
-    property Fills: TFillsCT read fFills;
-    property Borders: TBordersCT read fBorders;
-    property CellStyleXfs: TCellStyleXfsCT read fCellStyleXfs;
-    property CellXfs: TCellXfsCT read fCellXfs;
-    property CellStyles: TCellStylesCT read fCellStyles;
-    property Dxfs: TDxfsCT read fDxfs;
-    property TableStyles: TTableStylesCT read fTableStyles;
-    property Colors: TColorsCT read fColors;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property NumFmts: TNumFmtsCT read GetNumFmts;
+    property Fonts: TFontsCT read GetFonts;
+    property Fills: TFillsCT read GetFills;
+    property Borders: TBordersCT read GetBorders;
+    property CellStyleXfs: TCellStyleXfsCT read GetCellStyleXfs;
+    property CellXfs: TCellXfsCT read GetCellXfs;
+    property CellStyles: TCellStylesCT read GetCellStyles;
+    property Dxfs: TDxfsCT read GetDxfs;
+    property TableStyles: TTableStylesCT read GetTableStyles;
+    property Colors: TColorsCT read GetColors;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_CellAlignment')]
@@ -7057,20 +7369,30 @@ type
     fDiagonal: TBorderPrCT;
     fVertical: TBorderPrCT;
     fHorizontal: TBorderPrCT;
+
+    function GetStart: TBorderPrCT;
+    function GetEnd: TBorderPrCT;
+    function GetLeft: TBorderPrCT;
+    function GetRight: TBorderPrCT;
+    function GetTop: TBorderPrCT;
+    function GetBottom: TBorderPrCT;
+    function GetDiagonal: TBorderPrCT;
+    function GetVertical: TBorderPrCT;
+    function GetHorizontal: TBorderPrCT;
   published
     property DiagonalUp: ProRock.Xmlite.Schema.Base.TBooleanST read fDiagonalUp write fDiagonalUp;
     property DiagonalDown: ProRock.Xmlite.Schema.Base.TBooleanST read fDiagonalDown write fDiagonalDown;
     [TDefault(True)]
     property Outline: ProRock.Xmlite.Schema.Base.TBooleanST read fOutline write fOutline;
-    property Start: TBorderPrCT read fStart;
-    property &End: TBorderPrCT read fEnd;
-    property Left: TBorderPrCT read fLeft;
-    property Right: TBorderPrCT read fRight;
-    property Top: TBorderPrCT read fTop;
-    property Bottom: TBorderPrCT read fBottom;
-    property Diagonal: TBorderPrCT read fDiagonal;
-    property Vertical: TBorderPrCT read fVertical;
-    property Horizontal: TBorderPrCT read fHorizontal;
+    property Start: TBorderPrCT read GetStart;
+    property &End: TBorderPrCT read GetEnd;
+    property Left: TBorderPrCT read GetLeft;
+    property Right: TBorderPrCT read GetRight;
+    property Top: TBorderPrCT read GetTop;
+    property Bottom: TBorderPrCT read GetBottom;
+    property Diagonal: TBorderPrCT read GetDiagonal;
+    property Vertical: TBorderPrCT read GetVertical;
+    property Horizontal: TBorderPrCT read GetHorizontal;
   end;
 
   [TName('CT_BorderPr')]
@@ -7078,10 +7400,12 @@ type
   private
     fStyle: TBorderStyleST;
     fColor: TColorCT;
+
+    function GetColor: TColorCT;
   published
     [TDefault(Ord(stbsNone))]
     property Style: TBorderStyleST read fStyle write fStyle;
-    property Color: TColorCT read fColor;
+    property Color: TColorCT read GetColor;
   end;
 
   [TName('CT_CellProtection')]
@@ -7135,10 +7459,13 @@ type
     fPatternType: TPatternTypeST;
     fFgColor: TColorCT;
     fBgColor: TColorCT;
+
+    function GetFgColor: TColorCT;
+    function GetBgColor: TColorCT;
   published
     property PatternType: TPatternTypeST read fPatternType write fPatternType;
-    property FgColor: TColorCT read fFgColor;
-    property BgColor: TColorCT read fBgColor;
+    property FgColor: TColorCT read GetFgColor;
+    property BgColor: TColorCT read GetBgColor;
   end;
 
   [TName('CT_Color')]
@@ -7257,6 +7584,10 @@ type
     fAlignment: TCellAlignmentCT;
     fProtection: TCellProtectionCT;
     fExtLst: TExtensionListCT;
+
+    function GetAlignment: TCellAlignmentCT;
+    function GetProtection: TCellProtectionCT;
+    function GetExtLst: TExtensionListCT;
   published
     property NumFmtId: TNumFmtIdST read fNumFmtId write fNumFmtId;
     property FontId: TFontIdST read fFontId write fFontId;
@@ -7273,9 +7604,9 @@ type
     property ApplyBorder: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyBorder write fApplyBorder;
     property ApplyAlignment: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyAlignment write fApplyAlignment;
     property ApplyProtection: ProRock.Xmlite.Schema.Base.TBooleanST read fApplyProtection write fApplyProtection;
-    property Alignment: TCellAlignmentCT read fAlignment;
-    property Protection: TCellProtectionCT read fProtection;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property Alignment: TCellAlignmentCT read GetAlignment;
+    property Protection: TCellProtectionCT read GetProtection;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_CellStyles')]
@@ -7298,6 +7629,8 @@ type
     fHidden: ProRock.Xmlite.Schema.Base.TBooleanST;
     fCustomBuiltin: ProRock.Xmlite.Schema.Base.TBooleanST;
     fExtLst: TExtensionListCT;
+
+    function GetExtLst: TExtensionListCT;
   published
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
     [TRequired]
@@ -7306,7 +7639,7 @@ type
     property ILevel: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fILevel write fILevel;
     property Hidden: ProRock.Xmlite.Schema.Base.TBooleanST read fHidden write fHidden;
     property CustomBuiltin: ProRock.Xmlite.Schema.Base.TBooleanST read fCustomBuiltin write fCustomBuiltin;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_Dxfs')]
@@ -7329,14 +7662,22 @@ type
     fBorder: TBorderCT;
     fProtection: TCellProtectionCT;
     fExtLst: TExtensionListCT;
+
+    function GetFont: TFontCT;
+    function GetNumFmt: TNumFmtCT;
+    function GetFill: TFillCT;
+    function GetAlignment: TCellAlignmentCT;
+    function GetBorder: TBorderCT;
+    function GetProtection: TCellProtectionCT;
+    function GetExtLst: TExtensionListCT;
   published
-    property Font: TFontCT read fFont;
-    property NumFmt: TNumFmtCT read fNumFmt;
-    property Fill: TFillCT read fFill;
-    property Alignment: TCellAlignmentCT read fAlignment;
-    property Border: TBorderCT read fBorder;
-    property Protection: TCellProtectionCT read fProtection;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property Font: TFontCT read GetFont;
+    property NumFmt: TNumFmtCT read GetNumFmt;
+    property Fill: TFillCT read GetFill;
+    property Alignment: TCellAlignmentCT read GetAlignment;
+    property Border: TBorderCT read GetBorder;
+    property Protection: TCellProtectionCT read GetProtection;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_Colors')]
@@ -7344,9 +7685,12 @@ type
   private
     fIndexedColors: TIndexedColorsCT;
     fMruColors: TMRUColorsCT;
+
+    function GetIndexedColors: TIndexedColorsCT;
+    function GetMruColors: TMRUColorsCT;
   published
-    property IndexedColors: TIndexedColorsCT read fIndexedColors;
-    property MruColors: TMRUColorsCT read fMruColors;
+    property IndexedColors: TIndexedColorsCT read GetIndexedColors;
+    property MruColors: TMRUColorsCT read GetMruColors;
   end;
 
   [TName('CT_IndexedColors')]
@@ -7540,6 +7884,7 @@ type
     function GetExternalBook: TExternalBookCT;
     function GetDdeLink: TDdeLinkCT;
     function GetOleLink: TOleLinkCT;
+    function GetExtLst: TExtensionListCT;
   published
     [TChoice('ExternalBook')]
     property ExternalBook: TExternalBookCT read GetExternalBook;
@@ -7547,7 +7892,7 @@ type
     property DdeLink: TDdeLinkCT read GetDdeLink;
     [TChoice('ExternalBook')]
     property OleLink: TOleLinkCT read GetOleLink;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_ExternalBook')]
@@ -7557,13 +7902,17 @@ type
     fSheetNames: TExternalSheetNamesCT;
     fDefinedNames: TExternalDefinedNamesCT;
     fSheetDataSet: TExternalSheetDataSetCT;
+
+    function GetSheetNames: TExternalSheetNamesCT;
+    function GetDefinedNames: TExternalDefinedNamesCT;
+    function GetSheetDataSet: TExternalSheetDataSetCT;
   published
     [TRequired]
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
-    property SheetNames: TExternalSheetNamesCT read fSheetNames;
-    property DefinedNames: TExternalDefinedNamesCT read fDefinedNames;
-    property SheetDataSet: TExternalSheetDataSetCT read fSheetDataSet;
+    property SheetNames: TExternalSheetNamesCT read GetSheetNames;
+    property DefinedNames: TExternalDefinedNamesCT read GetDefinedNames;
+    property SheetDataSet: TExternalSheetDataSetCT read GetSheetDataSet;
   end;
 
   [TName('CT_ExternalSheetNames')]
@@ -7659,12 +8008,14 @@ type
     fDdeService: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fDdeTopic: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fDdeItems: TDdeItemsCT;
+
+    function GetDdeItems: TDdeItemsCT;
   published
     [TRequired]
     property DdeService: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fDdeService write fDdeService;
     [TRequired]
     property DdeTopic: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fDdeTopic write fDdeTopic;
-    property DdeItems: TDdeItemsCT read fDdeItems;
+    property DdeItems: TDdeItemsCT read GetDdeItems;
   end;
 
   [TName('CT_DdeItems')]
@@ -7683,6 +8034,8 @@ type
     fAdvise: ProRock.Xmlite.Schema.Base.TBooleanST;
     fPreferPic: ProRock.Xmlite.Schema.Base.TBooleanST;
     fValues: TDdeValuesCT;
+
+    function GetValues: TDdeValuesCT;
   published
     [TDefault('0')]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
@@ -7692,7 +8045,7 @@ type
     property Advise: ProRock.Xmlite.Schema.Base.TBooleanST read fAdvise write fAdvise;
     [TDefault(False)]
     property PreferPic: ProRock.Xmlite.Schema.Base.TBooleanST read fPreferPic write fPreferPic;
-    property Values: TDdeValuesCT read fValues;
+    property Values: TDdeValuesCT read GetValues;
   end;
 
   [TName('CT_DdeValues')]
@@ -7728,13 +8081,15 @@ type
     fId: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA;
     fProgId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fOleItems: TOleItemsCT;
+
+    function GetOleItems: TOleItemsCT;
   published
     [TRequired]
     [TNaming(TNaming.nFlatCase)]
     property Id: ProRock.Xmlite.Schema.Ooxml.Rel.TIdA read fId write fId;
     [TRequired]
     property ProgId: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fProgId write fProgId;
-    property OleItems: TOleItemsCT read fOleItems;
+    property OleItems: TOleItemsCT read GetOleItems;
   end;
 
   [TName('CT_OleItems')]
@@ -7793,6 +8148,11 @@ type
     fTableColumns: TTableColumnsCT;
     fTableStyleInfo: TTableStyleInfoCT;
     fExtLst: TExtensionListCT;
+
+    function GetAutoFilter: TAutoFilterCT;
+    function GetSortState: TSortStateCT;
+    function GetTableStyleInfo: TTableStyleInfoCT;
+    function GetExtLst: TExtensionListCT;
   published
     [TRequired]
     property Id: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fId write fId;
@@ -7826,12 +8186,12 @@ type
     property DataCellStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fDataCellStyle write fDataCellStyle;
     property TotalsRowCellStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fTotalsRowCellStyle write fTotalsRowCellStyle;
     property ConnectionId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fConnectionId write fConnectionId;
-    property AutoFilter: TAutoFilterCT read fAutoFilter;
-    property SortState: TSortStateCT read fSortState;
+    property AutoFilter: TAutoFilterCT read GetAutoFilter;
+    property SortState: TSortStateCT read GetSortState;
     [TRequired]
     property TableColumns: TTableColumnsCT read fTableColumns;
-    property TableStyleInfo: TTableStyleInfoCT read fTableStyleInfo;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property TableStyleInfo: TTableStyleInfoCT read GetTableStyleInfo;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_TableStyleInfo')]
@@ -7879,6 +8239,11 @@ type
     fTotalsRowFormula: TTableFormulaCT;
     fXmlColumnPr: TXmlColumnPrCT;
     fExtLst: TExtensionListCT;
+
+    function GetCalculatedColumnFormula: TTableFormulaCT;
+    function GetTotalsRowFormula: TTableFormulaCT;
+    function GetXmlColumnPr: TXmlColumnPrCT;
+    function GetExtLst: TExtensionListCT;
   published
     [TRequired]
     property Id: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fId write fId;
@@ -7895,10 +8260,10 @@ type
     property HeaderRowCellStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fHeaderRowCellStyle write fHeaderRowCellStyle;
     property DataCellStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fDataCellStyle write fDataCellStyle;
     property TotalsRowCellStyle: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fTotalsRowCellStyle write fTotalsRowCellStyle;
-    property CalculatedColumnFormula: TTableFormulaCT read fCalculatedColumnFormula;
-    property TotalsRowFormula: TTableFormulaCT read fTotalsRowFormula;
-    property XmlColumnPr: TXmlColumnPrCT read fXmlColumnPr;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property CalculatedColumnFormula: TTableFormulaCT read GetCalculatedColumnFormula;
+    property TotalsRowFormula: TTableFormulaCT read GetTotalsRowFormula;
+    property XmlColumnPr: TXmlColumnPrCT read GetXmlColumnPr;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_TableFormula')]
@@ -7921,6 +8286,8 @@ type
     fDenormalized: ProRock.Xmlite.Schema.Base.TBooleanST;
     fXmlDataType: TXmlDataTypeST;
     fExtLst: TExtensionListCT;
+
+    function GetExtLst: TExtensionListCT;
   published
     [TRequired]
     property MapId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fMapId write fMapId;
@@ -7930,7 +8297,7 @@ type
     property Denormalized: ProRock.Xmlite.Schema.Base.TBooleanST read fDenormalized write fDenormalized;
     [TRequired]
     property XmlDataType: TXmlDataTypeST read fXmlDataType write fXmlDataType;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_VolTypes')]
@@ -7938,9 +8305,11 @@ type
   private
     fVolType: TVolTypeCTList;
     fExtLst: TExtensionListCT;
+
+    function GetExtLst: TExtensionListCT;
   published
     property VolType: TVolTypeCTList read fVolType;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_VolType')]
@@ -8017,28 +8386,46 @@ type
     fFileRecoveryPr: TFileRecoveryPrCTList;
     fWebPublishObjects: TWebPublishObjectsCT;
     fExtLst: TExtensionListCT;
+
+    function GetFileVersion: TFileVersionCT;
+    function GetFileSharing: TFileSharingCT;
+    function GetWorkbookPr: TWorkbookPrCT;
+    function GetWorkbookProtection: TWorkbookProtectionCT;
+    function GetBookViews: TBookViewsCT;
+    function GetFunctionGroups: TFunctionGroupsCT;
+    function GetExternalReferences: TExternalReferencesCT;
+    function GetDefinedNames: TDefinedNamesCT;
+    function GetCalcPr: TCalcPrCT;
+    function GetOleSize: TOleSizeCT;
+    function GetCustomWorkbookViews: TCustomWorkbookViewsCT;
+    function GetPivotCaches: TPivotCachesCT;
+    function GetSmartTagPr: TSmartTagPrCT;
+    function GetSmartTagTypes: TSmartTagTypesCT;
+    function GetWebPublishing: TWebPublishingCT;
+    function GetWebPublishObjects: TWebPublishObjectsCT;
+    function GetExtLst: TExtensionListCT;
   published
     property Conformance: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TConformanceClassST read fConformance write fConformance;
-    property FileVersion: TFileVersionCT read fFileVersion;
-    property FileSharing: TFileSharingCT read fFileSharing;
-    property WorkbookPr: TWorkbookPrCT read fWorkbookPr;
-    property WorkbookProtection: TWorkbookProtectionCT read fWorkbookProtection;
-    property BookViews: TBookViewsCT read fBookViews;
+    property FileVersion: TFileVersionCT read GetFileVersion;
+    property FileSharing: TFileSharingCT read GetFileSharing;
+    property WorkbookPr: TWorkbookPrCT read GetWorkbookPr;
+    property WorkbookProtection: TWorkbookProtectionCT read GetWorkbookProtection;
+    property BookViews: TBookViewsCT read GetBookViews;
     [TRequired]
     property Sheets: TSheetsCT read fSheets;
-    property FunctionGroups: TFunctionGroupsCT read fFunctionGroups;
-    property ExternalReferences: TExternalReferencesCT read fExternalReferences;
-    property DefinedNames: TDefinedNamesCT read fDefinedNames;
-    property CalcPr: TCalcPrCT read fCalcPr;
-    property OleSize: TOleSizeCT read fOleSize;
-    property CustomWorkbookViews: TCustomWorkbookViewsCT read fCustomWorkbookViews;
-    property PivotCaches: TPivotCachesCT read fPivotCaches;
-    property SmartTagPr: TSmartTagPrCT read fSmartTagPr;
-    property SmartTagTypes: TSmartTagTypesCT read fSmartTagTypes;
-    property WebPublishing: TWebPublishingCT read fWebPublishing;
+    property FunctionGroups: TFunctionGroupsCT read GetFunctionGroups;
+    property ExternalReferences: TExternalReferencesCT read GetExternalReferences;
+    property DefinedNames: TDefinedNamesCT read GetDefinedNames;
+    property CalcPr: TCalcPrCT read GetCalcPr;
+    property OleSize: TOleSizeCT read GetOleSize;
+    property CustomWorkbookViews: TCustomWorkbookViewsCT read GetCustomWorkbookViews;
+    property PivotCaches: TPivotCachesCT read GetPivotCaches;
+    property SmartTagPr: TSmartTagPrCT read GetSmartTagPr;
+    property SmartTagTypes: TSmartTagTypesCT read GetSmartTagTypes;
+    property WebPublishing: TWebPublishingCT read GetWebPublishing;
     property FileRecoveryPr: TFileRecoveryPrCTList read fFileRecoveryPr;
-    property WebPublishObjects: TWebPublishObjectsCT read fWebPublishObjects;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property WebPublishObjects: TWebPublishObjectsCT read GetWebPublishObjects;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_FileVersion')]
@@ -8082,6 +8469,8 @@ type
     fActiveTab: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fAutoFilterDateGrouping: ProRock.Xmlite.Schema.Base.TBooleanST;
     fExtLst: TExtensionListCT;
+
+    function GetExtLst: TExtensionListCT;
   published
     [TDefault(Ord(stvVisible))]
     property Visibility: TVisibilityST read fVisibility write fVisibility;
@@ -8105,7 +8494,7 @@ type
     property ActiveTab: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fActiveTab write fActiveTab;
     [TDefault(True)]
     property AutoFilterDateGrouping: ProRock.Xmlite.Schema.Base.TBooleanST read fAutoFilterDateGrouping write fAutoFilterDateGrouping;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_CustomWorkbookViews')]
@@ -8144,6 +8533,8 @@ type
     fShowComments: TCommentsST;
     fShowObjects: TObjectsST;
     fExtLst: TExtensionListCT;
+
+    function GetExtLst: TExtensionListCT;
   published
     [TRequired]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
@@ -8192,7 +8583,7 @@ type
     property ShowComments: TCommentsST read fShowComments write fShowComments;
     [TDefault(Ord(stoaAll))]
     property ShowObjects: TObjectsST read fShowObjects write fShowObjects;
-    property ExtLst: TExtensionListCT read fExtLst;
+    property ExtLst: TExtensionListCT read GetExtLst;
   end;
 
   [TName('CT_Sheets')]
@@ -9518,6 +9909,18 @@ type
 
 implementation
 
+{ TAutoFilterCT }
+
+function TAutoFilterCT.GetSortState: TSortStateCT;
+begin
+  Result := TSortStateCT(Lazy(fSortState, TSortStateCT));
+end;
+
+function TAutoFilterCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
 { TFilterColumnCT }
 
 function TFilterColumnCT.GetFilters: TFiltersCT;
@@ -9555,6 +9958,146 @@ begin
   Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
 end;
 
+{ TSortStateCT }
+
+function TSortStateCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TCalcChainCT }
+
+function TCalcChainCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TCommentsCT }
+
+function TCommentsCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TCommentCT }
+
+function TCommentCT.GetCommentPr: TCommentPrCT;
+begin
+  Result := TCommentPrCT(Lazy(fCommentPr, TCommentPrCT));
+end;
+
+{ TMapCT }
+
+function TMapCT.GetDataBinding: TDataBindingCT;
+begin
+  Result := TDataBindingCT(Lazy(fDataBinding, TDataBindingCT));
+end;
+
+{ TConnectionCT }
+
+function TConnectionCT.GetDbPr: TDbPrCT;
+begin
+  Result := TDbPrCT(Lazy(fDbPr, TDbPrCT));
+end;
+
+function TConnectionCT.GetOlapPr: TOlapPrCT;
+begin
+  Result := TOlapPrCT(Lazy(fOlapPr, TOlapPrCT));
+end;
+
+function TConnectionCT.GetWebPr: TWebPrCT;
+begin
+  Result := TWebPrCT(Lazy(fWebPr, TWebPrCT));
+end;
+
+function TConnectionCT.GetTextPr: TTextPrCT;
+begin
+  Result := TTextPrCT(Lazy(fTextPr, TTextPrCT));
+end;
+
+function TConnectionCT.GetParameters: TParametersCT;
+begin
+  Result := TParametersCT(Lazy(fParameters, TParametersCT));
+end;
+
+function TConnectionCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TWebPrCT }
+
+function TWebPrCT.GetTables: TTablesCT;
+begin
+  Result := TTablesCT(Lazy(fTables, TTablesCT));
+end;
+
+{ TTextPrCT }
+
+function TTextPrCT.GetTextFields: TTextFieldsCT;
+begin
+  Result := TTextFieldsCT(Lazy(fTextFields, TTextFieldsCT));
+end;
+
+{ TPivotCacheDefinitionCT }
+
+function TPivotCacheDefinitionCT.GetCacheHierarchies: TCacheHierarchiesCT;
+begin
+  Result := TCacheHierarchiesCT(Lazy(fCacheHierarchies, TCacheHierarchiesCT));
+end;
+
+function TPivotCacheDefinitionCT.GetKpis: TPCDKPIsCT;
+begin
+  Result := TPCDKPIsCT(Lazy(fKpis, TPCDKPIsCT));
+end;
+
+function TPivotCacheDefinitionCT.GetCalculatedItems: TCalculatedItemsCT;
+begin
+  Result := TCalculatedItemsCT(Lazy(fCalculatedItems, TCalculatedItemsCT));
+end;
+
+function TPivotCacheDefinitionCT.GetCalculatedMembers: TCalculatedMembersCT;
+begin
+  Result := TCalculatedMembersCT(Lazy(fCalculatedMembers, TCalculatedMembersCT));
+end;
+
+function TPivotCacheDefinitionCT.GetDimensions: TDimensionsCT;
+begin
+  Result := TDimensionsCT(Lazy(fDimensions, TDimensionsCT));
+end;
+
+function TPivotCacheDefinitionCT.GetMeasureGroups: TMeasureGroupsCT;
+begin
+  Result := TMeasureGroupsCT(Lazy(fMeasureGroups, TMeasureGroupsCT));
+end;
+
+function TPivotCacheDefinitionCT.GetMaps: TMeasureDimensionMapsCT;
+begin
+  Result := TMeasureDimensionMapsCT(Lazy(fMaps, TMeasureDimensionMapsCT));
+end;
+
+function TPivotCacheDefinitionCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TCacheFieldCT }
+
+function TCacheFieldCT.GetSharedItems: TSharedItemsCT;
+begin
+  Result := TSharedItemsCT(Lazy(fSharedItems, TSharedItemsCT));
+end;
+
+function TCacheFieldCT.GetFieldGroup: TFieldGroupCT;
+begin
+  Result := TFieldGroupCT(Lazy(fFieldGroup, TFieldGroupCT));
+end;
+
+function TCacheFieldCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
 { TCacheSourceCT }
 
 function TCacheSourceCT.GetWorksheetSource: TWorksheetSourceCT;
@@ -9568,6 +10111,1120 @@ begin
 end;
 
 function TCacheSourceCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TConsolidationCT }
+
+function TConsolidationCT.GetPages: TPagesCT;
+begin
+  Result := TPagesCT(Lazy(fPages, TPagesCT));
+end;
+
+{ TErrorCT }
+
+function TErrorCT.GetTpls: TTuplesCT;
+begin
+  Result := TTuplesCT(Lazy(fTpls, TTuplesCT));
+end;
+
+{ TFieldGroupCT }
+
+function TFieldGroupCT.GetRangePr: TRangePrCT;
+begin
+  Result := TRangePrCT(Lazy(fRangePr, TRangePrCT));
+end;
+
+function TFieldGroupCT.GetDiscretePr: TDiscretePrCT;
+begin
+  Result := TDiscretePrCT(Lazy(fDiscretePr, TDiscretePrCT));
+end;
+
+function TFieldGroupCT.GetGroupItems: TGroupItemsCT;
+begin
+  Result := TGroupItemsCT(Lazy(fGroupItems, TGroupItemsCT));
+end;
+
+{ TPivotCacheRecordsCT }
+
+function TPivotCacheRecordsCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TCacheHierarchyCT }
+
+function TCacheHierarchyCT.GetFieldsUsage: TFieldsUsageCT;
+begin
+  Result := TFieldsUsageCT(Lazy(fFieldsUsage, TFieldsUsageCT));
+end;
+
+function TCacheHierarchyCT.GetGroupLevels: TGroupLevelsCT;
+begin
+  Result := TGroupLevelsCT(Lazy(fGroupLevels, TGroupLevelsCT));
+end;
+
+function TCacheHierarchyCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TGroupLevelCT }
+
+function TGroupLevelCT.GetGroups: TGroupsCT;
+begin
+  Result := TGroupsCT(Lazy(fGroups, TGroupsCT));
+end;
+
+function TGroupLevelCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TTupleCacheCT }
+
+function TTupleCacheCT.GetEntries: TPCDSDTCEntriesCT;
+begin
+  Result := TPCDSDTCEntriesCT(Lazy(fEntries, TPCDSDTCEntriesCT));
+end;
+
+function TTupleCacheCT.GetSets: TSetsCT;
+begin
+  Result := TSetsCT(Lazy(fSets, TSetsCT));
+end;
+
+function TTupleCacheCT.GetQueryCache: TQueryCacheCT;
+begin
+  Result := TQueryCacheCT(Lazy(fQueryCache, TQueryCacheCT));
+end;
+
+function TTupleCacheCT.GetServerFormats: TServerFormatsCT;
+begin
+  Result := TServerFormatsCT(Lazy(fServerFormats, TServerFormatsCT));
+end;
+
+function TTupleCacheCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TSetCT }
+
+function TSetCT.GetSortByTuple: TTuplesCT;
+begin
+  Result := TTuplesCT(Lazy(fSortByTuple, TTuplesCT));
+end;
+
+{ TQueryCT }
+
+function TQueryCT.GetTpls: TTuplesCT;
+begin
+  Result := TTuplesCT(Lazy(fTpls, TTuplesCT));
+end;
+
+{ TCalculatedItemCT }
+
+function TCalculatedItemCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TCalculatedMemberCT }
+
+function TCalculatedMemberCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TPivotTableDefinitionCT }
+
+function TPivotTableDefinitionCT.GetPivotFields: TPivotFieldsCT;
+begin
+  Result := TPivotFieldsCT(Lazy(fPivotFields, TPivotFieldsCT));
+end;
+
+function TPivotTableDefinitionCT.GetRowFields: TRowFieldsCT;
+begin
+  Result := TRowFieldsCT(Lazy(fRowFields, TRowFieldsCT));
+end;
+
+function TPivotTableDefinitionCT.GetRowItems: TRowItemsCT;
+begin
+  Result := TRowItemsCT(Lazy(fRowItems, TRowItemsCT));
+end;
+
+function TPivotTableDefinitionCT.GetColFields: TColFieldsCT;
+begin
+  Result := TColFieldsCT(Lazy(fColFields, TColFieldsCT));
+end;
+
+function TPivotTableDefinitionCT.GetColItems: TColItemsCT;
+begin
+  Result := TColItemsCT(Lazy(fColItems, TColItemsCT));
+end;
+
+function TPivotTableDefinitionCT.GetPageFields: TPageFieldsCT;
+begin
+  Result := TPageFieldsCT(Lazy(fPageFields, TPageFieldsCT));
+end;
+
+function TPivotTableDefinitionCT.GetDataFields: TDataFieldsCT;
+begin
+  Result := TDataFieldsCT(Lazy(fDataFields, TDataFieldsCT));
+end;
+
+function TPivotTableDefinitionCT.GetFormats: TFormatsCT;
+begin
+  Result := TFormatsCT(Lazy(fFormats, TFormatsCT));
+end;
+
+function TPivotTableDefinitionCT.GetConditionalFormats: TConditionalFormatsCT;
+begin
+  Result := TConditionalFormatsCT(Lazy(fConditionalFormats, TConditionalFormatsCT));
+end;
+
+function TPivotTableDefinitionCT.GetChartFormats: TChartFormatsCT;
+begin
+  Result := TChartFormatsCT(Lazy(fChartFormats, TChartFormatsCT));
+end;
+
+function TPivotTableDefinitionCT.GetPivotHierarchies: TPivotHierarchiesCT;
+begin
+  Result := TPivotHierarchiesCT(Lazy(fPivotHierarchies, TPivotHierarchiesCT));
+end;
+
+function TPivotTableDefinitionCT.GetPivotTableStyleInfo: TPivotTableStyleCT;
+begin
+  Result := TPivotTableStyleCT(Lazy(fPivotTableStyleInfo, TPivotTableStyleCT));
+end;
+
+function TPivotTableDefinitionCT.GetFilters: TPivotFiltersCT;
+begin
+  Result := TPivotFiltersCT(Lazy(fFilters, TPivotFiltersCT));
+end;
+
+function TPivotTableDefinitionCT.GetRowHierarchiesUsage: TRowHierarchiesUsageCT;
+begin
+  Result := TRowHierarchiesUsageCT(Lazy(fRowHierarchiesUsage, TRowHierarchiesUsageCT));
+end;
+
+function TPivotTableDefinitionCT.GetColHierarchiesUsage: TColHierarchiesUsageCT;
+begin
+  Result := TColHierarchiesUsageCT(Lazy(fColHierarchiesUsage, TColHierarchiesUsageCT));
+end;
+
+function TPivotTableDefinitionCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TPivotFieldCT }
+
+function TPivotFieldCT.GetItems: TItemsCT;
+begin
+  Result := TItemsCT(Lazy(fItems, TItemsCT));
+end;
+
+function TPivotFieldCT.GetAutoSortScope: TAutoSortScopeCT;
+begin
+  Result := TAutoSortScopeCT(Lazy(fAutoSortScope, TAutoSortScopeCT));
+end;
+
+function TPivotFieldCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TPageFieldCT }
+
+function TPageFieldCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TDataFieldCT }
+
+function TDataFieldCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TFormatCT }
+
+function TFormatCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TConditionalFormatCT }
+
+function TConditionalFormatCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TPivotHierarchyCT }
+
+function TPivotHierarchyCT.GetMps: TMemberPropertiesCT;
+begin
+  Result := TMemberPropertiesCT(Lazy(fMps, TMemberPropertiesCT));
+end;
+
+function TPivotHierarchyCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TPivotFilterCT }
+
+function TPivotFilterCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TPivotAreaCT }
+
+function TPivotAreaCT.GetReferences: TPivotAreaReferencesCT;
+begin
+  Result := TPivotAreaReferencesCT(Lazy(fReferences, TPivotAreaReferencesCT));
+end;
+
+function TPivotAreaCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TPivotAreaReferenceCT }
+
+function TPivotAreaReferenceCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TQueryTableCT }
+
+function TQueryTableCT.GetQueryTableRefresh: TQueryTableRefreshCT;
+begin
+  Result := TQueryTableRefreshCT(Lazy(fQueryTableRefresh, TQueryTableRefreshCT));
+end;
+
+function TQueryTableCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TQueryTableRefreshCT }
+
+function TQueryTableRefreshCT.GetQueryTableDeletedFields: TQueryTableDeletedFieldsCT;
+begin
+  Result := TQueryTableDeletedFieldsCT(Lazy(fQueryTableDeletedFields, TQueryTableDeletedFieldsCT));
+end;
+
+function TQueryTableRefreshCT.GetSortState: TSortStateCT;
+begin
+  Result := TSortStateCT(Lazy(fSortState, TSortStateCT));
+end;
+
+function TQueryTableRefreshCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TQueryTableFieldCT }
+
+function TQueryTableFieldCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TSstCT }
+
+function TSstCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TREltCT }
+
+function TREltCT.GetRPr: TRPrEltCT;
+begin
+  Result := TRPrEltCT(Lazy(fRPr, TRPrEltCT));
+end;
+
+{ TRstCT }
+
+function TRstCT.GetPhoneticPr: TPhoneticPrCT;
+begin
+  Result := TPhoneticPrCT(Lazy(fPhoneticPr, TPhoneticPrCT));
+end;
+
+{ TRevisionHeaderCT }
+
+function TRevisionHeaderCT.GetReviewedList: TReviewedRevisionsCT;
+begin
+  Result := TReviewedRevisionsCT(Lazy(fReviewedList, TReviewedRevisionsCT));
+end;
+
+function TRevisionHeaderCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TRevisionSheetRenameCT }
+
+function TRevisionSheetRenameCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TRevisionCellChangeCT }
+
+function TRevisionCellChangeCT.GetOc: TCellCT;
+begin
+  Result := TCellCT(Lazy(fOc, TCellCT));
+end;
+
+function TRevisionCellChangeCT.GetNdxf: TDxfCT;
+begin
+  Result := TDxfCT(Lazy(fNdxf, TDxfCT));
+end;
+
+function TRevisionCellChangeCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TRevisionFormattingCT }
+
+function TRevisionFormattingCT.GetDxf: TDxfCT;
+begin
+  Result := TDxfCT(Lazy(fDxf, TDxfCT));
+end;
+
+function TRevisionFormattingCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TRevisionDefinedNameCT }
+
+function TRevisionDefinedNameCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TSharedUserCT }
+
+function TSharedUserCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TMacrosheetCT }
+
+function TMacrosheetCT.GetSheetPr: TSheetPrCT;
+begin
+  Result := TSheetPrCT(Lazy(fSheetPr, TSheetPrCT));
+end;
+
+function TMacrosheetCT.GetDimension: TSheetDimensionCT;
+begin
+  Result := TSheetDimensionCT(Lazy(fDimension, TSheetDimensionCT));
+end;
+
+function TMacrosheetCT.GetSheetViews: TSheetViewsCT;
+begin
+  Result := TSheetViewsCT(Lazy(fSheetViews, TSheetViewsCT));
+end;
+
+function TMacrosheetCT.GetSheetFormatPr: TSheetFormatPrCT;
+begin
+  Result := TSheetFormatPrCT(Lazy(fSheetFormatPr, TSheetFormatPrCT));
+end;
+
+function TMacrosheetCT.GetSheetProtection: TSheetProtectionCT;
+begin
+  Result := TSheetProtectionCT(Lazy(fSheetProtection, TSheetProtectionCT));
+end;
+
+function TMacrosheetCT.GetAutoFilter: TAutoFilterCT;
+begin
+  Result := TAutoFilterCT(Lazy(fAutoFilter, TAutoFilterCT));
+end;
+
+function TMacrosheetCT.GetSortState: TSortStateCT;
+begin
+  Result := TSortStateCT(Lazy(fSortState, TSortStateCT));
+end;
+
+function TMacrosheetCT.GetDataConsolidate: TDataConsolidateCT;
+begin
+  Result := TDataConsolidateCT(Lazy(fDataConsolidate, TDataConsolidateCT));
+end;
+
+function TMacrosheetCT.GetCustomSheetViews: TCustomSheetViewsCT;
+begin
+  Result := TCustomSheetViewsCT(Lazy(fCustomSheetViews, TCustomSheetViewsCT));
+end;
+
+function TMacrosheetCT.GetPhoneticPr: TPhoneticPrCT;
+begin
+  Result := TPhoneticPrCT(Lazy(fPhoneticPr, TPhoneticPrCT));
+end;
+
+function TMacrosheetCT.GetPrintOptions: TPrintOptionsCT;
+begin
+  Result := TPrintOptionsCT(Lazy(fPrintOptions, TPrintOptionsCT));
+end;
+
+function TMacrosheetCT.GetPageMargins: TPageMarginsCT;
+begin
+  Result := TPageMarginsCT(Lazy(fPageMargins, TPageMarginsCT));
+end;
+
+function TMacrosheetCT.GetPageSetup: TPageSetupCT;
+begin
+  Result := TPageSetupCT(Lazy(fPageSetup, TPageSetupCT));
+end;
+
+function TMacrosheetCT.GetHeaderFooter: THeaderFooterCT;
+begin
+  Result := THeaderFooterCT(Lazy(fHeaderFooter, THeaderFooterCT));
+end;
+
+function TMacrosheetCT.GetRowBreaks: TPageBreakCT;
+begin
+  Result := TPageBreakCT(Lazy(fRowBreaks, TPageBreakCT));
+end;
+
+function TMacrosheetCT.GetColBreaks: TPageBreakCT;
+begin
+  Result := TPageBreakCT(Lazy(fColBreaks, TPageBreakCT));
+end;
+
+function TMacrosheetCT.GetCustomProperties: TCustomPropertiesCT;
+begin
+  Result := TCustomPropertiesCT(Lazy(fCustomProperties, TCustomPropertiesCT));
+end;
+
+function TMacrosheetCT.GetDrawing: TDrawingCT;
+begin
+  Result := TDrawingCT(Lazy(fDrawing, TDrawingCT));
+end;
+
+function TMacrosheetCT.GetLegacyDrawing: TLegacyDrawingCT;
+begin
+  Result := TLegacyDrawingCT(Lazy(fLegacyDrawing, TLegacyDrawingCT));
+end;
+
+function TMacrosheetCT.GetLegacyDrawingHF: TLegacyDrawingCT;
+begin
+  Result := TLegacyDrawingCT(Lazy(fLegacyDrawingHF, TLegacyDrawingCT));
+end;
+
+function TMacrosheetCT.GetDrawingHF: TDrawingHFCT;
+begin
+  Result := TDrawingHFCT(Lazy(fDrawingHF, TDrawingHFCT));
+end;
+
+function TMacrosheetCT.GetPicture: TSheetBackgroundPictureCT;
+begin
+  Result := TSheetBackgroundPictureCT(Lazy(fPicture, TSheetBackgroundPictureCT));
+end;
+
+function TMacrosheetCT.GetOleObjects: TOleObjectsCT;
+begin
+  Result := TOleObjectsCT(Lazy(fOleObjects, TOleObjectsCT));
+end;
+
+function TMacrosheetCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TDialogsheetCT }
+
+function TDialogsheetCT.GetSheetPr: TSheetPrCT;
+begin
+  Result := TSheetPrCT(Lazy(fSheetPr, TSheetPrCT));
+end;
+
+function TDialogsheetCT.GetSheetViews: TSheetViewsCT;
+begin
+  Result := TSheetViewsCT(Lazy(fSheetViews, TSheetViewsCT));
+end;
+
+function TDialogsheetCT.GetSheetFormatPr: TSheetFormatPrCT;
+begin
+  Result := TSheetFormatPrCT(Lazy(fSheetFormatPr, TSheetFormatPrCT));
+end;
+
+function TDialogsheetCT.GetSheetProtection: TSheetProtectionCT;
+begin
+  Result := TSheetProtectionCT(Lazy(fSheetProtection, TSheetProtectionCT));
+end;
+
+function TDialogsheetCT.GetCustomSheetViews: TCustomSheetViewsCT;
+begin
+  Result := TCustomSheetViewsCT(Lazy(fCustomSheetViews, TCustomSheetViewsCT));
+end;
+
+function TDialogsheetCT.GetPrintOptions: TPrintOptionsCT;
+begin
+  Result := TPrintOptionsCT(Lazy(fPrintOptions, TPrintOptionsCT));
+end;
+
+function TDialogsheetCT.GetPageMargins: TPageMarginsCT;
+begin
+  Result := TPageMarginsCT(Lazy(fPageMargins, TPageMarginsCT));
+end;
+
+function TDialogsheetCT.GetPageSetup: TPageSetupCT;
+begin
+  Result := TPageSetupCT(Lazy(fPageSetup, TPageSetupCT));
+end;
+
+function TDialogsheetCT.GetHeaderFooter: THeaderFooterCT;
+begin
+  Result := THeaderFooterCT(Lazy(fHeaderFooter, THeaderFooterCT));
+end;
+
+function TDialogsheetCT.GetDrawing: TDrawingCT;
+begin
+  Result := TDrawingCT(Lazy(fDrawing, TDrawingCT));
+end;
+
+function TDialogsheetCT.GetLegacyDrawing: TLegacyDrawingCT;
+begin
+  Result := TLegacyDrawingCT(Lazy(fLegacyDrawing, TLegacyDrawingCT));
+end;
+
+function TDialogsheetCT.GetLegacyDrawingHF: TLegacyDrawingCT;
+begin
+  Result := TLegacyDrawingCT(Lazy(fLegacyDrawingHF, TLegacyDrawingCT));
+end;
+
+function TDialogsheetCT.GetDrawingHF: TDrawingHFCT;
+begin
+  Result := TDrawingHFCT(Lazy(fDrawingHF, TDrawingHFCT));
+end;
+
+function TDialogsheetCT.GetOleObjects: TOleObjectsCT;
+begin
+  Result := TOleObjectsCT(Lazy(fOleObjects, TOleObjectsCT));
+end;
+
+function TDialogsheetCT.GetControls: TControlsCT;
+begin
+  Result := TControlsCT(Lazy(fControls, TControlsCT));
+end;
+
+function TDialogsheetCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TWorksheetCT }
+
+function TWorksheetCT.GetSheetPr: TSheetPrCT;
+begin
+  Result := TSheetPrCT(Lazy(fSheetPr, TSheetPrCT));
+end;
+
+function TWorksheetCT.GetDimension: TSheetDimensionCT;
+begin
+  Result := TSheetDimensionCT(Lazy(fDimension, TSheetDimensionCT));
+end;
+
+function TWorksheetCT.GetSheetViews: TSheetViewsCT;
+begin
+  Result := TSheetViewsCT(Lazy(fSheetViews, TSheetViewsCT));
+end;
+
+function TWorksheetCT.GetSheetFormatPr: TSheetFormatPrCT;
+begin
+  Result := TSheetFormatPrCT(Lazy(fSheetFormatPr, TSheetFormatPrCT));
+end;
+
+function TWorksheetCT.GetSheetCalcPr: TSheetCalcPrCT;
+begin
+  Result := TSheetCalcPrCT(Lazy(fSheetCalcPr, TSheetCalcPrCT));
+end;
+
+function TWorksheetCT.GetSheetProtection: TSheetProtectionCT;
+begin
+  Result := TSheetProtectionCT(Lazy(fSheetProtection, TSheetProtectionCT));
+end;
+
+function TWorksheetCT.GetProtectedRanges: TProtectedRangesCT;
+begin
+  Result := TProtectedRangesCT(Lazy(fProtectedRanges, TProtectedRangesCT));
+end;
+
+function TWorksheetCT.GetScenarios: TScenariosCT;
+begin
+  Result := TScenariosCT(Lazy(fScenarios, TScenariosCT));
+end;
+
+function TWorksheetCT.GetAutoFilter: TAutoFilterCT;
+begin
+  Result := TAutoFilterCT(Lazy(fAutoFilter, TAutoFilterCT));
+end;
+
+function TWorksheetCT.GetSortState: TSortStateCT;
+begin
+  Result := TSortStateCT(Lazy(fSortState, TSortStateCT));
+end;
+
+function TWorksheetCT.GetDataConsolidate: TDataConsolidateCT;
+begin
+  Result := TDataConsolidateCT(Lazy(fDataConsolidate, TDataConsolidateCT));
+end;
+
+function TWorksheetCT.GetCustomSheetViews: TCustomSheetViewsCT;
+begin
+  Result := TCustomSheetViewsCT(Lazy(fCustomSheetViews, TCustomSheetViewsCT));
+end;
+
+function TWorksheetCT.GetMergeCells: TMergeCellsCT;
+begin
+  Result := TMergeCellsCT(Lazy(fMergeCells, TMergeCellsCT));
+end;
+
+function TWorksheetCT.GetPhoneticPr: TPhoneticPrCT;
+begin
+  Result := TPhoneticPrCT(Lazy(fPhoneticPr, TPhoneticPrCT));
+end;
+
+function TWorksheetCT.GetDataValidations: TDataValidationsCT;
+begin
+  Result := TDataValidationsCT(Lazy(fDataValidations, TDataValidationsCT));
+end;
+
+function TWorksheetCT.GetHyperlinks: THyperlinksCT;
+begin
+  Result := THyperlinksCT(Lazy(fHyperlinks, THyperlinksCT));
+end;
+
+function TWorksheetCT.GetPrintOptions: TPrintOptionsCT;
+begin
+  Result := TPrintOptionsCT(Lazy(fPrintOptions, TPrintOptionsCT));
+end;
+
+function TWorksheetCT.GetPageMargins: TPageMarginsCT;
+begin
+  Result := TPageMarginsCT(Lazy(fPageMargins, TPageMarginsCT));
+end;
+
+function TWorksheetCT.GetPageSetup: TPageSetupCT;
+begin
+  Result := TPageSetupCT(Lazy(fPageSetup, TPageSetupCT));
+end;
+
+function TWorksheetCT.GetHeaderFooter: THeaderFooterCT;
+begin
+  Result := THeaderFooterCT(Lazy(fHeaderFooter, THeaderFooterCT));
+end;
+
+function TWorksheetCT.GetRowBreaks: TPageBreakCT;
+begin
+  Result := TPageBreakCT(Lazy(fRowBreaks, TPageBreakCT));
+end;
+
+function TWorksheetCT.GetColBreaks: TPageBreakCT;
+begin
+  Result := TPageBreakCT(Lazy(fColBreaks, TPageBreakCT));
+end;
+
+function TWorksheetCT.GetCustomProperties: TCustomPropertiesCT;
+begin
+  Result := TCustomPropertiesCT(Lazy(fCustomProperties, TCustomPropertiesCT));
+end;
+
+function TWorksheetCT.GetCellWatches: TCellWatchesCT;
+begin
+  Result := TCellWatchesCT(Lazy(fCellWatches, TCellWatchesCT));
+end;
+
+function TWorksheetCT.GetIgnoredErrors: TIgnoredErrorsCT;
+begin
+  Result := TIgnoredErrorsCT(Lazy(fIgnoredErrors, TIgnoredErrorsCT));
+end;
+
+function TWorksheetCT.GetSmartTags: TSmartTagsCT;
+begin
+  Result := TSmartTagsCT(Lazy(fSmartTags, TSmartTagsCT));
+end;
+
+function TWorksheetCT.GetDrawing: TDrawingCT;
+begin
+  Result := TDrawingCT(Lazy(fDrawing, TDrawingCT));
+end;
+
+function TWorksheetCT.GetLegacyDrawing: TLegacyDrawingCT;
+begin
+  Result := TLegacyDrawingCT(Lazy(fLegacyDrawing, TLegacyDrawingCT));
+end;
+
+function TWorksheetCT.GetLegacyDrawingHF: TLegacyDrawingCT;
+begin
+  Result := TLegacyDrawingCT(Lazy(fLegacyDrawingHF, TLegacyDrawingCT));
+end;
+
+function TWorksheetCT.GetDrawingHF: TDrawingHFCT;
+begin
+  Result := TDrawingHFCT(Lazy(fDrawingHF, TDrawingHFCT));
+end;
+
+function TWorksheetCT.GetPicture: TSheetBackgroundPictureCT;
+begin
+  Result := TSheetBackgroundPictureCT(Lazy(fPicture, TSheetBackgroundPictureCT));
+end;
+
+function TWorksheetCT.GetOleObjects: TOleObjectsCT;
+begin
+  Result := TOleObjectsCT(Lazy(fOleObjects, TOleObjectsCT));
+end;
+
+function TWorksheetCT.GetControls: TControlsCT;
+begin
+  Result := TControlsCT(Lazy(fControls, TControlsCT));
+end;
+
+function TWorksheetCT.GetWebPublishItems: TWebPublishItemsCT;
+begin
+  Result := TWebPublishItemsCT(Lazy(fWebPublishItems, TWebPublishItemsCT));
+end;
+
+function TWorksheetCT.GetTableParts: TTablePartsCT;
+begin
+  Result := TTablePartsCT(Lazy(fTableParts, TTablePartsCT));
+end;
+
+function TWorksheetCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TRowCT }
+
+function TRowCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TCellCT }
+
+function TCellCT.GetF: TCellFormulaCT;
+begin
+  Result := TCellFormulaCT(Lazy(fF, TCellFormulaCT));
+end;
+
+function TCellCT.GetIs: TRstCT;
+begin
+  Result := TRstCT(Lazy(fIs, TRstCT));
+end;
+
+function TCellCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TSheetPrCT }
+
+function TSheetPrCT.GetTabColor: TColorCT;
+begin
+  Result := TColorCT(Lazy(fTabColor, TColorCT));
+end;
+
+function TSheetPrCT.GetOutlinePr: TOutlinePrCT;
+begin
+  Result := TOutlinePrCT(Lazy(fOutlinePr, TOutlinePrCT));
+end;
+
+function TSheetPrCT.GetPageSetUpPr: TPageSetUpPrCT;
+begin
+  Result := TPageSetUpPrCT(Lazy(fPageSetUpPr, TPageSetUpPrCT));
+end;
+
+{ TSheetViewsCT }
+
+function TSheetViewsCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TSheetViewCT }
+
+function TSheetViewCT.GetPane: TPaneCT;
+begin
+  Result := TPaneCT(Lazy(fPane, TPaneCT));
+end;
+
+function TSheetViewCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TDataConsolidateCT }
+
+function TDataConsolidateCT.GetDataRefs: TDataRefsCT;
+begin
+  Result := TDataRefsCT(Lazy(fDataRefs, TDataRefsCT));
+end;
+
+{ TCustomSheetViewCT }
+
+function TCustomSheetViewCT.GetPane: TPaneCT;
+begin
+  Result := TPaneCT(Lazy(fPane, TPaneCT));
+end;
+
+function TCustomSheetViewCT.GetSelection: TSelectionCT;
+begin
+  Result := TSelectionCT(Lazy(fSelection, TSelectionCT));
+end;
+
+function TCustomSheetViewCT.GetRowBreaks: TPageBreakCT;
+begin
+  Result := TPageBreakCT(Lazy(fRowBreaks, TPageBreakCT));
+end;
+
+function TCustomSheetViewCT.GetColBreaks: TPageBreakCT;
+begin
+  Result := TPageBreakCT(Lazy(fColBreaks, TPageBreakCT));
+end;
+
+function TCustomSheetViewCT.GetPageMargins: TPageMarginsCT;
+begin
+  Result := TPageMarginsCT(Lazy(fPageMargins, TPageMarginsCT));
+end;
+
+function TCustomSheetViewCT.GetPrintOptions: TPrintOptionsCT;
+begin
+  Result := TPrintOptionsCT(Lazy(fPrintOptions, TPrintOptionsCT));
+end;
+
+function TCustomSheetViewCT.GetPageSetup: TPageSetupCT;
+begin
+  Result := TPageSetupCT(Lazy(fPageSetup, TPageSetupCT));
+end;
+
+function TCustomSheetViewCT.GetHeaderFooter: THeaderFooterCT;
+begin
+  Result := THeaderFooterCT(Lazy(fHeaderFooter, THeaderFooterCT));
+end;
+
+function TCustomSheetViewCT.GetAutoFilter: TAutoFilterCT;
+begin
+  Result := TAutoFilterCT(Lazy(fAutoFilter, TAutoFilterCT));
+end;
+
+function TCustomSheetViewCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TConditionalFormattingCT }
+
+function TConditionalFormattingCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TCfRuleCT }
+
+function TCfRuleCT.GetColorScale: TColorScaleCT;
+begin
+  Result := TColorScaleCT(Lazy(fColorScale, TColorScaleCT));
+end;
+
+function TCfRuleCT.GetDataBar: TDataBarCT;
+begin
+  Result := TDataBarCT(Lazy(fDataBar, TDataBarCT));
+end;
+
+function TCfRuleCT.GetIconSet: TIconSetCT;
+begin
+  Result := TIconSetCT(Lazy(fIconSet, TIconSetCT));
+end;
+
+function TCfRuleCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TCfvoCT }
+
+function TCfvoCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TChartsheetCT }
+
+function TChartsheetCT.GetSheetPr: TChartsheetPrCT;
+begin
+  Result := TChartsheetPrCT(Lazy(fSheetPr, TChartsheetPrCT));
+end;
+
+function TChartsheetCT.GetSheetProtection: TChartsheetProtectionCT;
+begin
+  Result := TChartsheetProtectionCT(Lazy(fSheetProtection, TChartsheetProtectionCT));
+end;
+
+function TChartsheetCT.GetCustomSheetViews: TCustomChartsheetViewsCT;
+begin
+  Result := TCustomChartsheetViewsCT(Lazy(fCustomSheetViews, TCustomChartsheetViewsCT));
+end;
+
+function TChartsheetCT.GetPageMargins: TPageMarginsCT;
+begin
+  Result := TPageMarginsCT(Lazy(fPageMargins, TPageMarginsCT));
+end;
+
+function TChartsheetCT.GetPageSetup: TCsPageSetupCT;
+begin
+  Result := TCsPageSetupCT(Lazy(fPageSetup, TCsPageSetupCT));
+end;
+
+function TChartsheetCT.GetHeaderFooter: THeaderFooterCT;
+begin
+  Result := THeaderFooterCT(Lazy(fHeaderFooter, THeaderFooterCT));
+end;
+
+function TChartsheetCT.GetLegacyDrawing: TLegacyDrawingCT;
+begin
+  Result := TLegacyDrawingCT(Lazy(fLegacyDrawing, TLegacyDrawingCT));
+end;
+
+function TChartsheetCT.GetLegacyDrawingHF: TLegacyDrawingCT;
+begin
+  Result := TLegacyDrawingCT(Lazy(fLegacyDrawingHF, TLegacyDrawingCT));
+end;
+
+function TChartsheetCT.GetDrawingHF: TDrawingHFCT;
+begin
+  Result := TDrawingHFCT(Lazy(fDrawingHF, TDrawingHFCT));
+end;
+
+function TChartsheetCT.GetPicture: TSheetBackgroundPictureCT;
+begin
+  Result := TSheetBackgroundPictureCT(Lazy(fPicture, TSheetBackgroundPictureCT));
+end;
+
+function TChartsheetCT.GetWebPublishItems: TWebPublishItemsCT;
+begin
+  Result := TWebPublishItemsCT(Lazy(fWebPublishItems, TWebPublishItemsCT));
+end;
+
+function TChartsheetCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TChartsheetPrCT }
+
+function TChartsheetPrCT.GetTabColor: TColorCT;
+begin
+  Result := TColorCT(Lazy(fTabColor, TColorCT));
+end;
+
+{ TChartsheetViewsCT }
+
+function TChartsheetViewsCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TChartsheetViewCT }
+
+function TChartsheetViewCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TCustomChartsheetViewCT }
+
+function TCustomChartsheetViewCT.GetPageMargins: TPageMarginsCT;
+begin
+  Result := TPageMarginsCT(Lazy(fPageMargins, TPageMarginsCT));
+end;
+
+function TCustomChartsheetViewCT.GetPageSetup: TCsPageSetupCT;
+begin
+  Result := TCsPageSetupCT(Lazy(fPageSetup, TCsPageSetupCT));
+end;
+
+function TCustomChartsheetViewCT.GetHeaderFooter: THeaderFooterCT;
+begin
+  Result := THeaderFooterCT(Lazy(fHeaderFooter, THeaderFooterCT));
+end;
+
+{ TOleObjectCT }
+
+function TOleObjectCT.GetObjectPr: TObjectPrCT;
+begin
+  Result := TObjectPrCT(Lazy(fObjectPr, TObjectPrCT));
+end;
+
+{ TControlCT }
+
+function TControlCT.GetControlPr: TControlPrCT;
+begin
+  Result := TControlPrCT(Lazy(fControlPr, TControlPrCT));
+end;
+
+{ TIgnoredErrorsCT }
+
+function TIgnoredErrorsCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TMetadataCT }
+
+function TMetadataCT.GetMetadataTypes: TMetadataTypesCT;
+begin
+  Result := TMetadataTypesCT(Lazy(fMetadataTypes, TMetadataTypesCT));
+end;
+
+function TMetadataCT.GetMetadataStrings: TMetadataStringsCT;
+begin
+  Result := TMetadataStringsCT(Lazy(fMetadataStrings, TMetadataStringsCT));
+end;
+
+function TMetadataCT.GetMdxMetadata: TMdxMetadataCT;
+begin
+  Result := TMdxMetadataCT(Lazy(fMdxMetadata, TMdxMetadataCT));
+end;
+
+function TMetadataCT.GetCellMetadata: TMetadataBlocksCT;
+begin
+  Result := TMetadataBlocksCT(Lazy(fCellMetadata, TMetadataBlocksCT));
+end;
+
+function TMetadataCT.GetValueMetadata: TMetadataBlocksCT;
+begin
+  Result := TMetadataBlocksCT(Lazy(fValueMetadata, TMetadataBlocksCT));
+end;
+
+function TMetadataCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TFutureMetadataCT }
+
+function TFutureMetadataCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TFutureMetadataBlockCT }
+
+function TFutureMetadataBlockCT.GetExtLst: TExtensionListCT;
 begin
   Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
 end;
@@ -9594,6 +11251,138 @@ begin
   Result := TMdxKPICT(Lazy(fK, TMdxKPICT));
 end;
 
+{ TSingleXmlCellCT }
+
+function TSingleXmlCellCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TXmlCellPrCT }
+
+function TXmlCellPrCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TXmlPrCT }
+
+function TXmlPrCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TStylesheetCT }
+
+function TStylesheetCT.GetNumFmts: TNumFmtsCT;
+begin
+  Result := TNumFmtsCT(Lazy(fNumFmts, TNumFmtsCT));
+end;
+
+function TStylesheetCT.GetFonts: TFontsCT;
+begin
+  Result := TFontsCT(Lazy(fFonts, TFontsCT));
+end;
+
+function TStylesheetCT.GetFills: TFillsCT;
+begin
+  Result := TFillsCT(Lazy(fFills, TFillsCT));
+end;
+
+function TStylesheetCT.GetBorders: TBordersCT;
+begin
+  Result := TBordersCT(Lazy(fBorders, TBordersCT));
+end;
+
+function TStylesheetCT.GetCellStyleXfs: TCellStyleXfsCT;
+begin
+  Result := TCellStyleXfsCT(Lazy(fCellStyleXfs, TCellStyleXfsCT));
+end;
+
+function TStylesheetCT.GetCellXfs: TCellXfsCT;
+begin
+  Result := TCellXfsCT(Lazy(fCellXfs, TCellXfsCT));
+end;
+
+function TStylesheetCT.GetCellStyles: TCellStylesCT;
+begin
+  Result := TCellStylesCT(Lazy(fCellStyles, TCellStylesCT));
+end;
+
+function TStylesheetCT.GetDxfs: TDxfsCT;
+begin
+  Result := TDxfsCT(Lazy(fDxfs, TDxfsCT));
+end;
+
+function TStylesheetCT.GetTableStyles: TTableStylesCT;
+begin
+  Result := TTableStylesCT(Lazy(fTableStyles, TTableStylesCT));
+end;
+
+function TStylesheetCT.GetColors: TColorsCT;
+begin
+  Result := TColorsCT(Lazy(fColors, TColorsCT));
+end;
+
+function TStylesheetCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TBorderCT }
+
+function TBorderCT.GetStart: TBorderPrCT;
+begin
+  Result := TBorderPrCT(Lazy(fStart, TBorderPrCT));
+end;
+
+function TBorderCT.GetEnd: TBorderPrCT;
+begin
+  Result := TBorderPrCT(Lazy(fEnd, TBorderPrCT));
+end;
+
+function TBorderCT.GetLeft: TBorderPrCT;
+begin
+  Result := TBorderPrCT(Lazy(fLeft, TBorderPrCT));
+end;
+
+function TBorderCT.GetRight: TBorderPrCT;
+begin
+  Result := TBorderPrCT(Lazy(fRight, TBorderPrCT));
+end;
+
+function TBorderCT.GetTop: TBorderPrCT;
+begin
+  Result := TBorderPrCT(Lazy(fTop, TBorderPrCT));
+end;
+
+function TBorderCT.GetBottom: TBorderPrCT;
+begin
+  Result := TBorderPrCT(Lazy(fBottom, TBorderPrCT));
+end;
+
+function TBorderCT.GetDiagonal: TBorderPrCT;
+begin
+  Result := TBorderPrCT(Lazy(fDiagonal, TBorderPrCT));
+end;
+
+function TBorderCT.GetVertical: TBorderPrCT;
+begin
+  Result := TBorderPrCT(Lazy(fVertical, TBorderPrCT));
+end;
+
+function TBorderCT.GetHorizontal: TBorderPrCT;
+begin
+  Result := TBorderPrCT(Lazy(fHorizontal, TBorderPrCT));
+end;
+
+{ TBorderPrCT }
+
+function TBorderPrCT.GetColor: TColorCT;
+begin
+  Result := TColorCT(Lazy(fColor, TColorCT));
+end;
+
 { TFillCT }
 
 function TFillCT.GetPatternFill: TPatternFillCT;
@@ -9604,6 +11393,91 @@ end;
 function TFillCT.GetGradientFill: TGradientFillCT;
 begin
   Result := TGradientFillCT(Lazy(fGradientFill, TGradientFillCT));
+end;
+
+{ TPatternFillCT }
+
+function TPatternFillCT.GetFgColor: TColorCT;
+begin
+  Result := TColorCT(Lazy(fFgColor, TColorCT));
+end;
+
+function TPatternFillCT.GetBgColor: TColorCT;
+begin
+  Result := TColorCT(Lazy(fBgColor, TColorCT));
+end;
+
+{ TXfCT }
+
+function TXfCT.GetAlignment: TCellAlignmentCT;
+begin
+  Result := TCellAlignmentCT(Lazy(fAlignment, TCellAlignmentCT));
+end;
+
+function TXfCT.GetProtection: TCellProtectionCT;
+begin
+  Result := TCellProtectionCT(Lazy(fProtection, TCellProtectionCT));
+end;
+
+function TXfCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TCellStyleCT }
+
+function TCellStyleCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TDxfCT }
+
+function TDxfCT.GetFont: TFontCT;
+begin
+  Result := TFontCT(Lazy(fFont, TFontCT));
+end;
+
+function TDxfCT.GetNumFmt: TNumFmtCT;
+begin
+  Result := TNumFmtCT(Lazy(fNumFmt, TNumFmtCT));
+end;
+
+function TDxfCT.GetFill: TFillCT;
+begin
+  Result := TFillCT(Lazy(fFill, TFillCT));
+end;
+
+function TDxfCT.GetAlignment: TCellAlignmentCT;
+begin
+  Result := TCellAlignmentCT(Lazy(fAlignment, TCellAlignmentCT));
+end;
+
+function TDxfCT.GetBorder: TBorderCT;
+begin
+  Result := TBorderCT(Lazy(fBorder, TBorderCT));
+end;
+
+function TDxfCT.GetProtection: TCellProtectionCT;
+begin
+  Result := TCellProtectionCT(Lazy(fProtection, TCellProtectionCT));
+end;
+
+function TDxfCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TColorsCT }
+
+function TColorsCT.GetIndexedColors: TIndexedColorsCT;
+begin
+  Result := TIndexedColorsCT(Lazy(fIndexedColors, TIndexedColorsCT));
+end;
+
+function TColorsCT.GetMruColors: TMRUColorsCT;
+begin
+  Result := TMRUColorsCT(Lazy(fMruColors, TMRUColorsCT));
 end;
 
 { TExternalLinkCT }
@@ -9621,6 +11495,208 @@ end;
 function TExternalLinkCT.GetOleLink: TOleLinkCT;
 begin
   Result := TOleLinkCT(Lazy(fOleLink, TOleLinkCT));
+end;
+
+function TExternalLinkCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TExternalBookCT }
+
+function TExternalBookCT.GetSheetNames: TExternalSheetNamesCT;
+begin
+  Result := TExternalSheetNamesCT(Lazy(fSheetNames, TExternalSheetNamesCT));
+end;
+
+function TExternalBookCT.GetDefinedNames: TExternalDefinedNamesCT;
+begin
+  Result := TExternalDefinedNamesCT(Lazy(fDefinedNames, TExternalDefinedNamesCT));
+end;
+
+function TExternalBookCT.GetSheetDataSet: TExternalSheetDataSetCT;
+begin
+  Result := TExternalSheetDataSetCT(Lazy(fSheetDataSet, TExternalSheetDataSetCT));
+end;
+
+{ TDdeLinkCT }
+
+function TDdeLinkCT.GetDdeItems: TDdeItemsCT;
+begin
+  Result := TDdeItemsCT(Lazy(fDdeItems, TDdeItemsCT));
+end;
+
+{ TDdeItemCT }
+
+function TDdeItemCT.GetValues: TDdeValuesCT;
+begin
+  Result := TDdeValuesCT(Lazy(fValues, TDdeValuesCT));
+end;
+
+{ TOleLinkCT }
+
+function TOleLinkCT.GetOleItems: TOleItemsCT;
+begin
+  Result := TOleItemsCT(Lazy(fOleItems, TOleItemsCT));
+end;
+
+{ TTableCT }
+
+function TTableCT.GetAutoFilter: TAutoFilterCT;
+begin
+  Result := TAutoFilterCT(Lazy(fAutoFilter, TAutoFilterCT));
+end;
+
+function TTableCT.GetSortState: TSortStateCT;
+begin
+  Result := TSortStateCT(Lazy(fSortState, TSortStateCT));
+end;
+
+function TTableCT.GetTableStyleInfo: TTableStyleInfoCT;
+begin
+  Result := TTableStyleInfoCT(Lazy(fTableStyleInfo, TTableStyleInfoCT));
+end;
+
+function TTableCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TTableColumnCT }
+
+function TTableColumnCT.GetCalculatedColumnFormula: TTableFormulaCT;
+begin
+  Result := TTableFormulaCT(Lazy(fCalculatedColumnFormula, TTableFormulaCT));
+end;
+
+function TTableColumnCT.GetTotalsRowFormula: TTableFormulaCT;
+begin
+  Result := TTableFormulaCT(Lazy(fTotalsRowFormula, TTableFormulaCT));
+end;
+
+function TTableColumnCT.GetXmlColumnPr: TXmlColumnPrCT;
+begin
+  Result := TXmlColumnPrCT(Lazy(fXmlColumnPr, TXmlColumnPrCT));
+end;
+
+function TTableColumnCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TXmlColumnPrCT }
+
+function TXmlColumnPrCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TVolTypesCT }
+
+function TVolTypesCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TWorkbookCT }
+
+function TWorkbookCT.GetFileVersion: TFileVersionCT;
+begin
+  Result := TFileVersionCT(Lazy(fFileVersion, TFileVersionCT));
+end;
+
+function TWorkbookCT.GetFileSharing: TFileSharingCT;
+begin
+  Result := TFileSharingCT(Lazy(fFileSharing, TFileSharingCT));
+end;
+
+function TWorkbookCT.GetWorkbookPr: TWorkbookPrCT;
+begin
+  Result := TWorkbookPrCT(Lazy(fWorkbookPr, TWorkbookPrCT));
+end;
+
+function TWorkbookCT.GetWorkbookProtection: TWorkbookProtectionCT;
+begin
+  Result := TWorkbookProtectionCT(Lazy(fWorkbookProtection, TWorkbookProtectionCT));
+end;
+
+function TWorkbookCT.GetBookViews: TBookViewsCT;
+begin
+  Result := TBookViewsCT(Lazy(fBookViews, TBookViewsCT));
+end;
+
+function TWorkbookCT.GetFunctionGroups: TFunctionGroupsCT;
+begin
+  Result := TFunctionGroupsCT(Lazy(fFunctionGroups, TFunctionGroupsCT));
+end;
+
+function TWorkbookCT.GetExternalReferences: TExternalReferencesCT;
+begin
+  Result := TExternalReferencesCT(Lazy(fExternalReferences, TExternalReferencesCT));
+end;
+
+function TWorkbookCT.GetDefinedNames: TDefinedNamesCT;
+begin
+  Result := TDefinedNamesCT(Lazy(fDefinedNames, TDefinedNamesCT));
+end;
+
+function TWorkbookCT.GetCalcPr: TCalcPrCT;
+begin
+  Result := TCalcPrCT(Lazy(fCalcPr, TCalcPrCT));
+end;
+
+function TWorkbookCT.GetOleSize: TOleSizeCT;
+begin
+  Result := TOleSizeCT(Lazy(fOleSize, TOleSizeCT));
+end;
+
+function TWorkbookCT.GetCustomWorkbookViews: TCustomWorkbookViewsCT;
+begin
+  Result := TCustomWorkbookViewsCT(Lazy(fCustomWorkbookViews, TCustomWorkbookViewsCT));
+end;
+
+function TWorkbookCT.GetPivotCaches: TPivotCachesCT;
+begin
+  Result := TPivotCachesCT(Lazy(fPivotCaches, TPivotCachesCT));
+end;
+
+function TWorkbookCT.GetSmartTagPr: TSmartTagPrCT;
+begin
+  Result := TSmartTagPrCT(Lazy(fSmartTagPr, TSmartTagPrCT));
+end;
+
+function TWorkbookCT.GetSmartTagTypes: TSmartTagTypesCT;
+begin
+  Result := TSmartTagTypesCT(Lazy(fSmartTagTypes, TSmartTagTypesCT));
+end;
+
+function TWorkbookCT.GetWebPublishing: TWebPublishingCT;
+begin
+  Result := TWebPublishingCT(Lazy(fWebPublishing, TWebPublishingCT));
+end;
+
+function TWorkbookCT.GetWebPublishObjects: TWebPublishObjectsCT;
+begin
+  Result := TWebPublishObjectsCT(Lazy(fWebPublishObjects, TWebPublishObjectsCT));
+end;
+
+function TWorkbookCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TBookViewCT }
+
+function TBookViewCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
+end;
+
+{ TCustomWorkbookViewCT }
+
+function TCustomWorkbookViewCT.GetExtLst: TExtensionListCT;
+begin
+  Result := TExtensionListCT(Lazy(fExtLst, TExtensionListCT));
 end;
 
 initialization

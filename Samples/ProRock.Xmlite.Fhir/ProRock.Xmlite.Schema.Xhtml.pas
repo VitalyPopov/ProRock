@@ -923,6 +923,10 @@ type
     fTfoot: TTfootE;
     fTbody: TTbodyEList;
     fTr: TTrEList;
+
+    function GetCaption: TCaptionE;
+    function GetThead: TTheadE;
+    function GetTfoot: TTfootE;
   published
     property Summary: TTextST read fSummary write fSummary;
     property Width: TLengthST read fWidth write fWidth;
@@ -931,13 +935,13 @@ type
     property Rules: TTRulesST read fRules write fRules;
     property Cellspacing: TLengthST read fCellspacing write fCellspacing;
     property Cellpadding: TLengthST read fCellpadding write fCellpadding;
-    property Caption: TCaptionE read fCaption;
+    property Caption: TCaptionE read GetCaption;
     [TChoice('Col')]
     property Col: TColEList read fCol;
     [TChoice('Col')]
     property Colgroup: TColgroupEList read fColgroup;
-    property Thead: TTheadE read fThead;
-    property Tfoot: TTfootE read fTfoot;
+    property Thead: TTheadE read GetThead;
+    property Tfoot: TTfootE read GetTfoot;
     [TChoice('Tbody')]
     property Tbody: TTbodyEList read fTbody;
     [TChoice('Tbody')]
@@ -1154,8 +1158,10 @@ type
   TSpecialEG = class(TXmliteElementGroup)
   private
     fImg: TImgE;
+
+    function GetImg: TImgE;
   published
-    property Img: TImgE read fImg;
+    property Img: TImgE read GetImg;
   end;
 
   TFontstyleEG = class(TXmliteElementGroup)
@@ -1245,8 +1251,10 @@ type
   TInlineEG = class(TXmliteElementGroup)
   private
     fA: TAE;
+
+    function GetA: TAE;
   published
-    property A: TAE read fA;
+    property A: TAE read GetA;
   end;
 
   THeadingEG = class(TXmliteElementGroup)
@@ -1390,6 +1398,23 @@ type
 
 implementation
 
+{ TTableE }
+
+function TTableE.GetCaption: TCaptionE;
+begin
+  Result := TCaptionE(Lazy(fCaption, TCaptionE));
+end;
+
+function TTableE.GetThead: TTheadE;
+begin
+  Result := TTheadE(Lazy(fThead, TTheadE));
+end;
+
+function TTableE.GetTfoot: TTfootE;
+begin
+  Result := TTfootE(Lazy(fTfoot, TTfootE));
+end;
+
 { TSpecialPreEG }
 
 function TSpecialPreEG.GetBr: TBrE;
@@ -1410,6 +1435,13 @@ end;
 function TSpecialPreEG.GetMap: TMapE;
 begin
   Result := TMapE(Lazy(fMap, TMapE));
+end;
+
+{ TSpecialEG }
+
+function TSpecialEG.GetImg: TImgE;
+begin
+  Result := TImgE(Lazy(fImg, TImgE));
 end;
 
 { TFontstyleEG }
@@ -1504,6 +1536,13 @@ end;
 function TPhraseEG.GetSup: TSupE;
 begin
   Result := TSupE(Lazy(fSup, TSupE));
+end;
+
+{ TInlineEG }
+
+function TInlineEG.GetA: TAE;
+begin
+  Result := TAE(Lazy(fA, TAE));
 end;
 
 { THeadingEG }

@@ -25,18 +25,40 @@ type
     fId: ProRock.Xmlite.Schema.CommonBasicComponents2.TIdE;
     fReferencedSignatureID: ProRock.Xmlite.Schema.SignatureBasicComponents2.TReferencedSignatureIDE;
     fSignature: ProRock.Xmlite.Schema.Xmldsig.TSignatureE;
+
+    function GetId: ProRock.Xmlite.Schema.CommonBasicComponents2.TIdE;
+    function GetReferencedSignatureID: ProRock.Xmlite.Schema.SignatureBasicComponents2.TReferencedSignatureIDE;
+    function GetSignature: ProRock.Xmlite.Schema.Xmldsig.TSignatureE;
   published
     [TNaming(TNaming.nUpperCase)]
-    property Id: ProRock.Xmlite.Schema.CommonBasicComponents2.TIdE read fId;
+    property Id: ProRock.Xmlite.Schema.CommonBasicComponents2.TIdE read GetId;
     [TNaming(TNaming.nPascalCase)]
-    property ReferencedSignatureID: ProRock.Xmlite.Schema.SignatureBasicComponents2.TReferencedSignatureIDE read fReferencedSignatureID;
+    property ReferencedSignatureID: ProRock.Xmlite.Schema.SignatureBasicComponents2.TReferencedSignatureIDE read GetReferencedSignatureID;
     [TNaming(TNaming.nPascalCase)]
-    property Signature: ProRock.Xmlite.Schema.Xmldsig.TSignatureE read fSignature;
+    property Signature: ProRock.Xmlite.Schema.Xmldsig.TSignatureE read GetSignature;
   end;
 
   TSignatureInformationE = class(TSignatureInformationTypeCT);
 
 implementation
+
+{ TSignatureInformationTypeCT }
+
+function TSignatureInformationTypeCT.GetId: ProRock.Xmlite.Schema.CommonBasicComponents2.TIdE;
+begin
+  Result := ProRock.Xmlite.Schema.CommonBasicComponents2.TIdE(Lazy(fId, ProRock.Xmlite.Schema.CommonBasicComponents2.TIdE));
+end;
+
+function TSignatureInformationTypeCT.GetReferencedSignatureID: ProRock.Xmlite.Schema.SignatureBasicComponents2.TReferencedSignatureIDE;
+begin
+  Result := ProRock.Xmlite.Schema.SignatureBasicComponents2.TReferencedSignatureIDE(Lazy(fReferencedSignatureID,
+    ProRock.Xmlite.Schema.SignatureBasicComponents2.TReferencedSignatureIDE));
+end;
+
+function TSignatureInformationTypeCT.GetSignature: ProRock.Xmlite.Schema.Xmldsig.TSignatureE;
+begin
+  Result := ProRock.Xmlite.Schema.Xmldsig.TSignatureE(Lazy(fSignature, ProRock.Xmlite.Schema.Xmldsig.TSignatureE));
+end;
 
 initialization
 

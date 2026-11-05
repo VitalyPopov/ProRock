@@ -55,8 +55,10 @@ type
   private
     fHeader: THeaderE;
     fBody: TBodyE;
+
+    function GetHeader: THeaderE;
   published
-    property Header: THeaderE read fHeader;
+    property Header: THeaderE read GetHeader;
     [TRequired]
     property Body: TBodyE read fBody;
   end;
@@ -74,6 +76,8 @@ type
     fNode: ProRock.Xmlite.Schema.Base.TAnyURIST;
     fRole: ProRock.Xmlite.Schema.Base.TAnyURIST;
     fDetail: TDetailCT;
+
+    function GetDetail: TDetailCT;
   published
     [TRequired]
     property Code: TFaultcodeCT read fCode;
@@ -83,7 +87,7 @@ type
     property Node: ProRock.Xmlite.Schema.Base.TAnyURIST read fNode write fNode;
     [TXmliteElement]
     property Role: ProRock.Xmlite.Schema.Base.TAnyURIST read fRole write fRole;
-    property Detail: TDetailCT read fDetail;
+    property Detail: TDetailCT read GetDetail;
   end;
 
   [TNaming(TNaming.nFlatCase)]
@@ -112,11 +116,13 @@ type
   private
     fValue: TFaultcodeEnumST;
     fSubcode: TSubcodeCT;
+
+    function GetSubcode: TSubcodeCT;
   published
     [TXmliteElement]
     [TRequired]
     property Value: TFaultcodeEnumST read fValue write fValue;
-    property Subcode: TSubcodeCT read fSubcode;
+    property Subcode: TSubcodeCT read GetSubcode;
   end;
 
   [TNaming(TNaming.nFlatCase)]
@@ -124,11 +130,13 @@ type
   private
     fValue: ProRock.Xmlite.Schema.Base.TQNameST;
     fSubcode: TSubcodeCT;
+
+    function GetSubcode: TSubcodeCT;
   published
     [TXmliteElement]
     [TRequired]
     property Value: ProRock.Xmlite.Schema.Base.TQNameST read fValue write fValue;
-    property Subcode: TSubcodeCT read fSubcode;
+    property Subcode: TSubcodeCT read GetSubcode;
   end;
 
   [TXmliteAnyElement]
@@ -176,6 +184,34 @@ type
   TSupportedEnvTypeCTList = class(TXmliteList<TSupportedEnvTypeCT>);
 
 implementation
+
+{ TEnvelopeCT }
+
+function TEnvelopeCT.GetHeader: THeaderE;
+begin
+  Result := THeaderE(Lazy(fHeader, THeaderE));
+end;
+
+{ TFaultCT }
+
+function TFaultCT.GetDetail: TDetailCT;
+begin
+  Result := TDetailCT(Lazy(fDetail, TDetailCT));
+end;
+
+{ TFaultcodeCT }
+
+function TFaultcodeCT.GetSubcode: TSubcodeCT;
+begin
+  Result := TSubcodeCT(Lazy(fSubcode, TSubcodeCT));
+end;
+
+{ TSubcodeCT }
+
+function TSubcodeCT.GetSubcode: TSubcodeCT;
+begin
+  Result := TSubcodeCT(Lazy(fSubcode, TSubcodeCT));
+end;
 
 initialization
 

@@ -67,8 +67,10 @@ type
   TDocumentedCT = class(TXmliteComplexType)
   private
     fDocumentation: TDocumentationCT;
+
+    function GetDocumentation: TDocumentationCT;
   published
-    property Documentation: TDocumentationCT read fDocumentation;
+    property Documentation: TDocumentationCT read GetDocumentation;
   end;
 
   [TName('tExtensibleAttributesDocumented')]
@@ -235,11 +237,14 @@ type
     fInput: TBindingOperationMessageCT;
     fOutput: TBindingOperationMessageCT;
     fFault: TBindingOperationFaultCTList;
+
+    function GetInput: TBindingOperationMessageCT;
+    function GetOutput: TBindingOperationMessageCT;
   published
     [TRequired]
     property Name: ProRock.Xmlite.Schema.Base.TNCNameST read fName write fName;
-    property Input: TBindingOperationMessageCT read fInput;
-    property Output: TBindingOperationMessageCT read fOutput;
+    property Input: TBindingOperationMessageCT read GetInput;
+    property Output: TBindingOperationMessageCT read GetOutput;
     property Fault: TBindingOperationFaultCTList read fFault;
   end;
 
@@ -372,6 +377,13 @@ type
 
 implementation
 
+{ TDocumentedCT }
+
+function TDocumentedCT.GetDocumentation: TDocumentationCT;
+begin
+  Result := TDocumentationCT(Lazy(fDocumentation, TDocumentationCT));
+end;
+
 { TOperationCT }
 
 function TOperationCT.GetInput: TParamCT;
@@ -382,6 +394,18 @@ end;
 function TOperationCT.GetOutput: TParamCT;
 begin
   Result := TParamCT(Lazy(fOutput, TParamCT));
+end;
+
+{ TBindingOperationCT }
+
+function TBindingOperationCT.GetInput: TBindingOperationMessageCT;
+begin
+  Result := TBindingOperationMessageCT(Lazy(fInput, TBindingOperationMessageCT));
+end;
+
+function TBindingOperationCT.GetOutput: TBindingOperationMessageCT;
+begin
+  Result := TBindingOperationMessageCT(Lazy(fOutput, TBindingOperationMessageCT));
 end;
 
 { TAnyTopLevelOptionalElementEG }

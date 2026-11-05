@@ -268,9 +268,11 @@ type
   private
     fId: TIdST;
     fAnnotation: TAnnotationE;
+
+    function GetAnnotation: TAnnotationE;
   published
     property Id: TIdST read fId write fId;
-    property Annotation: TAnnotationE read fAnnotation;
+    property Annotation: TAnnotationE read GetAnnotation;
   end;
 
   TAttributeCT = class(TAnnotatedCT)
@@ -285,6 +287,8 @@ type
     fName: TNCNameST;
     fRef: TQNameST;
     fSimpleType: TLocalSimpleTypeCT;
+
+    function GetSimpleType: TLocalSimpleTypeCT;
   published
     property &Type: TQNameST read fType write fType;
     [TDefault(Ord(uOptional))]
@@ -294,7 +298,7 @@ type
     property Form: TFormChoiceST read fForm write fForm;
     property Name: TNCNameST read fName write fName;
     property Ref: TQNameST read fRef write fRef;
-    property SimpleType: TLocalSimpleTypeCT read fSimpleType;
+    property SimpleType: TLocalSimpleTypeCT read GetSimpleType;
   end;
 
   TTopLevelAttributeCT = class(TXmliteComplexTypeRestricted)
@@ -306,6 +310,9 @@ type
     fName: TNCNameST;
     fAnnotation: TAnnotationE;
     fSimpleType: TLocalSimpleTypeCT;
+
+    function GetAnnotation: TAnnotationE;
+    function GetSimpleType: TLocalSimpleTypeCT;
   published
     property Id: TIdST read fId write fId;
     property &Type: TQNameST read fType write fType;
@@ -313,8 +320,8 @@ type
     property Fixed: TStringST read fFixed write fFixed;
     [TRequired]
     property Name: TNCNameST read fName write fName;
-    property Annotation: TAnnotationE read fAnnotation;
-    property SimpleType: TLocalSimpleTypeCT read fSimpleType;
+    property Annotation: TAnnotationE read GetAnnotation;
+    property SimpleType: TLocalSimpleTypeCT read GetSimpleType;
   end;
 
   TComplexTypeCT = class(TAnnotatedCT)
@@ -388,6 +395,7 @@ type
     fAttributeGroup: TAttributeGroupRefCTList;
     fAnyAttribute: TAnyAttributeE;
 
+    function GetAnnotation: TAnnotationE;
     function GetSimpleContent: TSimpleContentE;
     function GetComplexContent: TComplexContentE;
     function GetGroup: TGroupRefCT;
@@ -405,7 +413,7 @@ type
     property Block: TDerivationSetST read fBlock write fBlock;
     [TRequired]
     property Name: TNCNameST read fName write fName;
-    property Annotation: TAnnotationE read fAnnotation;
+    property Annotation: TAnnotationE read GetAnnotation;
     [TChoice('SimpleContent')]
     property SimpleContent: TSimpleContentE read GetSimpleContent;
     [TChoice('SimpleContent')]
@@ -441,6 +449,7 @@ type
     fAttributeGroup: TAttributeGroupRefCTList;
     fAnyAttribute: TAnyAttributeE;
 
+    function GetAnnotation: TAnnotationE;
     function GetSimpleContent: TSimpleContentE;
     function GetComplexContent: TComplexContentE;
     function GetGroup: TGroupRefCT;
@@ -452,7 +461,7 @@ type
     property Id: TIdST read fId write fId;
     [TDefault(False)]
     property Mixed: TBooleanST read fMixed write fMixed;
-    property Annotation: TAnnotationE read fAnnotation;
+    property Annotation: TAnnotationE read GetAnnotation;
     [TChoice('SimpleContent')]
     property SimpleContent: TSimpleContentE read GetSimpleContent;
     [TChoice('SimpleContent')]
@@ -503,6 +512,7 @@ type
     function GetChoice: TChoiceE;
     function GetSequence: TSequenceE;
     function GetSimpleType: TLocalSimpleTypeCT;
+    function GetAnyAttribute: TAnyAttributeE;
   published
     [TRequired]
     property Base: TQNameST read fBase write fBase;
@@ -542,7 +552,7 @@ type
     property Pattern: TPatternEList read fPattern;
     property Attribute: TAttributeCTList read fAttribute;
     property AttributeGroup: TAttributeGroupRefCTList read fAttributeGroup;
-    property AnyAttribute: TAnyAttributeE read fAnyAttribute;
+    property AnyAttribute: TAnyAttributeE read GetAnyAttribute;
   end;
 
   [TOrdered]
@@ -559,15 +569,17 @@ type
     fAttributeGroup: TAttributeGroupRefCTList;
     fAnyAttribute: TAnyAttributeE;
 
+    function GetAnnotation: TAnnotationE;
     function GetGroup: TGroupRefCT;
     function GetAll: TAllE;
     function GetChoice: TChoiceE;
     function GetSequence: TSequenceE;
+    function GetAnyAttribute: TAnyAttributeE;
   published
     property Id: TIdST read fId write fId;
     [TRequired]
     property Base: TQNameST read fBase write fBase;
-    property Annotation: TAnnotationE read fAnnotation;
+    property Annotation: TAnnotationE read GetAnnotation;
     [TChoice('Group')]
     property Group: TGroupRefCT read GetGroup;
     [TChoice('Group')]
@@ -578,7 +590,7 @@ type
     property Sequence: TSequenceE read GetSequence;
     property Attribute: TAttributeCTList read fAttribute;
     property AttributeGroup: TAttributeGroupRefCTList read fAttributeGroup;
-    property AnyAttribute: TAnyAttributeE read fAnyAttribute;
+    property AnyAttribute: TAnyAttributeE read GetAnyAttribute;
   end;
 
   [TOrdered]
@@ -597,6 +609,7 @@ type
     function GetAll: TAllE;
     function GetChoice: TChoiceE;
     function GetSequence: TSequenceE;
+    function GetAnyAttribute: TAnyAttributeE;
   published
     [TRequired]
     property Base: TQNameST read fBase write fBase;
@@ -610,7 +623,7 @@ type
     property Sequence: TSequenceE read GetSequence;
     property Attribute: TAttributeCTList read fAttribute;
     property AttributeGroup: TAttributeGroupRefCTList read fAttributeGroup;
-    property AnyAttribute: TAnyAttributeE read fAnyAttribute;
+    property AnyAttribute: TAnyAttributeE read GetAnyAttribute;
   end;
 
   [TOrdered]
@@ -636,12 +649,14 @@ type
     fAttributeGroup: TAttributeGroupRefCTList;
     fAnyAttribute: TAnyAttributeE;
 
+    function GetAnnotation: TAnnotationE;
     function GetSimpleType: TLocalSimpleTypeCT;
+    function GetAnyAttribute: TAnyAttributeE;
   published
     property Id: TIdST read fId write fId;
     [TRequired]
     property Base: TQNameST read fBase write fBase;
-    property Annotation: TAnnotationE read fAnnotation;
+    property Annotation: TAnnotationE read GetAnnotation;
     [TChoice('SimpleType')]
     property SimpleType: TLocalSimpleTypeCT read GetSimpleType;
     [TChoice('SimpleType')]
@@ -670,7 +685,7 @@ type
     property Pattern: TPatternEList read fPattern;
     property Attribute: TAttributeCTList read fAttribute;
     property AttributeGroup: TAttributeGroupRefCTList read fAttributeGroup;
-    property AnyAttribute: TAnyAttributeE read fAnyAttribute;
+    property AnyAttribute: TAnyAttributeE read GetAnyAttribute;
   end;
 
   [TOrdered]
@@ -682,14 +697,17 @@ type
     fAttribute: TAttributeCTList;
     fAttributeGroup: TAttributeGroupRefCTList;
     fAnyAttribute: TAnyAttributeE;
+
+    function GetAnnotation: TAnnotationE;
+    function GetAnyAttribute: TAnyAttributeE;
   published
     property Id: TIdST read fId write fId;
     [TRequired]
     property Base: TQNameST read fBase write fBase;
-    property Annotation: TAnnotationE read fAnnotation;
+    property Annotation: TAnnotationE read GetAnnotation;
     property Attribute: TAttributeCTList read fAttribute;
     property AttributeGroup: TAttributeGroupRefCTList read fAttributeGroup;
-    property AnyAttribute: TAnyAttributeE read fAnyAttribute;
+    property AnyAttribute: TAnyAttributeE read GetAnyAttribute;
   end;
 
   [TOrdered]
@@ -763,6 +781,7 @@ type
     fKey: TKeyEList;
     fKeyref: TKeyrefEList;
 
+    function GetAnnotation: TAnnotationE;
     function GetSimpleType: TLocalSimpleTypeCT;
     function GetComplexType: TLocalComplexTypeCT;
   published
@@ -779,7 +798,7 @@ type
     property Block: TBlockSetST read fBlock write fBlock;
     [TRequired]
     property Name: TNCNameST read fName write fName;
-    property Annotation: TAnnotationE read fAnnotation;
+    property Annotation: TAnnotationE read GetAnnotation;
     [TChoice('SimpleType')]
     property SimpleType: TLocalSimpleTypeCT read GetSimpleType;
     [TChoice('SimpleType')]
@@ -810,6 +829,7 @@ type
     fKey: TKeyEList;
     fKeyref: TKeyrefEList;
 
+    function GetAnnotation: TAnnotationE;
     function GetSimpleType: TLocalSimpleTypeCT;
     function GetComplexType: TLocalComplexTypeCT;
   published
@@ -827,7 +847,7 @@ type
     property Nillable: TBooleanST read fNillable write fNillable;
     property Block: TBlockSetST read fBlock write fBlock;
     property Form: TFormChoiceST read fForm write fForm;
-    property Annotation: TAnnotationE read fAnnotation;
+    property Annotation: TAnnotationE read GetAnnotation;
     [TChoice('SimpleType')]
     property SimpleType: TLocalSimpleTypeCT read GetSimpleType;
     [TChoice('SimpleType')]
@@ -877,6 +897,7 @@ type
     fChoice: TChoiceE;
     fSequence: TSequenceE;
 
+    function GetAnnotation: TAnnotationE;
     function GetAll: TAllE;
     function GetChoice: TChoiceE;
     function GetSequence: TSequenceE;
@@ -888,7 +909,7 @@ type
     property MinOccurs: TNonNegativeIntegerST read fMinOccurs write fMinOccurs;
     [TDefault(1)]
     property MaxOccurs: TAllNNIST read fMaxOccurs write fMaxOccurs;
-    property Annotation: TAnnotationE read fAnnotation;
+    property Annotation: TAnnotationE read GetAnnotation;
     [TChoice('All')]
     property All: TAllE read GetAll;
     [TChoice('All')]
@@ -902,9 +923,11 @@ type
     fId: TIdST;
     fAnnotation: TAnnotationE;
     fElement: TNarrowMaxMinCTList;
+
+    function GetAnnotation: TAnnotationE;
   published
     property Id: TIdST read fId write fId;
-    property Annotation: TAnnotationE read fAnnotation;
+    property Annotation: TAnnotationE read GetAnnotation;
     property Element: TNarrowMaxMinCTList read fElement;
   end;
 
@@ -917,6 +940,7 @@ type
     fChoice: TSimpleExplicitGroupCT;
     fSequence: TSimpleExplicitGroupCT;
 
+    function GetAnnotation: TAnnotationE;
     function GetAll: TNamedGroupCTAll;
     function GetChoice: TSimpleExplicitGroupCT;
     function GetSequence: TSimpleExplicitGroupCT;
@@ -924,7 +948,7 @@ type
     property Id: TIdST read fId write fId;
     [TRequired]
     property Name: TNCNameST read fName write fName;
-    property Annotation: TAnnotationE read fAnnotation;
+    property Annotation: TAnnotationE read GetAnnotation;
     [TChoice('All')]
     property All: TNamedGroupCTAll read GetAll;
     [TChoice('All')]
@@ -940,6 +964,8 @@ type
     fMaxOccurs: TAllNNIST;
     fRef: TQNameST;
     fAnnotation: TAnnotationE;
+
+    function GetAnnotation: TAnnotationE;
   published
     property Id: TIdST read fId write fId;
     [TDefault(1)]
@@ -948,7 +974,7 @@ type
     property MaxOccurs: TAllNNIST read fMaxOccurs write fMaxOccurs;
     [TRequired]
     property Ref: TQNameST read fRef write fRef;
-    property Annotation: TAnnotationE read fAnnotation;
+    property Annotation: TAnnotationE read GetAnnotation;
   end;
 
   [TOrdered]
@@ -963,13 +989,15 @@ type
     fChoice: TChoiceEList;
     fSequence: TSequenceEList;
     fAny: TAnyEList;
+
+    function GetAnnotation: TAnnotationE;
   published
     property Id: TIdST read fId write fId;
     [TDefault(1)]
     property MinOccurs: TNonNegativeIntegerST read fMinOccurs write fMinOccurs;
     [TDefault(1)]
     property MaxOccurs: TAllNNIST read fMaxOccurs write fMaxOccurs;
-    property Annotation: TAnnotationE read fAnnotation;
+    property Annotation: TAnnotationE read GetAnnotation;
     property Element: TLocalElementCTList read fElement;
     property Group: TGroupRefCTList read fGroup;
     property Choice: TChoiceEList read fChoice;
@@ -987,9 +1015,11 @@ type
     fChoice: TChoiceEList;
     fSequence: TSequenceEList;
     fAny: TAnyEList;
+
+    function GetAnnotation: TAnnotationE;
   published
     property Id: TIdST read fId write fId;
-    property Annotation: TAnnotationE read fAnnotation;
+    property Annotation: TAnnotationE read GetAnnotation;
     property Element: TLocalElementCTList read fElement;
     property Group: TGroupRefCTList read fGroup;
     property Choice: TChoiceEList read fChoice;
@@ -1021,6 +1051,7 @@ type
     fKey: TKeyEList;
     fKeyref: TKeyrefEList;
 
+    function GetAnnotation: TAnnotationE;
     function GetSimpleType: TLocalSimpleTypeCT;
     function GetComplexType: TLocalComplexTypeCT;
   published
@@ -1038,7 +1069,7 @@ type
     property MinOccurs: TMinOccurs read fMinOccurs write fMinOccurs;
     [TDefault(Ord(moc1))]
     property MaxOccurs: TMaxOccurs read fMaxOccurs write fMaxOccurs;
-    property Annotation: TAnnotationE read fAnnotation;
+    property Annotation: TAnnotationE read GetAnnotation;
     [TChoice('SimpleType')]
     property SimpleType: TLocalSimpleTypeCT read GetSimpleType;
     [TChoice('SimpleType')]
@@ -1058,13 +1089,15 @@ type
     fMaxOccurs: TMaxOccurs;
     fAnnotation: TAnnotationE;
     fElement: TNarrowMaxMinCTList;
+
+    function GetAnnotation: TAnnotationE;
   published
     property Id: TIdST read fId write fId;
     [TDefault(Ord(mod1))]
     property MinOccurs: TMinOccurs read fMinOccurs write fMinOccurs;
     [TDefault(Ord(moe1))]
     property MaxOccurs: TMaxOccurs read fMaxOccurs write fMaxOccurs;
-    property Annotation: TAnnotationE read fAnnotation;
+    property Annotation: TAnnotationE read GetAnnotation;
     property Element: TNarrowMaxMinCTList read fElement;
   end;
 
@@ -1089,12 +1122,14 @@ type
     fAttribute: TAttributeCTList;
     fAttributeGroup: TAttributeGroupRefCTList;
     fAnyAttribute: TAnyAttributeE;
+
+    function GetAnyAttribute: TAnyAttributeE;
   published
     property Name: TNCNameST read fName write fName;
     property Ref: TQNameST read fRef write fRef;
     property Attribute: TAttributeCTList read fAttribute;
     property AttributeGroup: TAttributeGroupRefCTList read fAttributeGroup;
-    property AnyAttribute: TAnyAttributeE read fAnyAttribute;
+    property AnyAttribute: TAnyAttributeE read GetAnyAttribute;
   end;
 
   [TOrdered]
@@ -1106,14 +1141,17 @@ type
     fAttribute: TAttributeCTList;
     fAttributeGroup: TAttributeGroupRefCTList;
     fAnyAttribute: TAnyAttributeE;
+
+    function GetAnnotation: TAnnotationE;
+    function GetAnyAttribute: TAnyAttributeE;
   published
     property Id: TIdST read fId write fId;
     [TRequired]
     property Name: TNCNameST read fName write fName;
-    property Annotation: TAnnotationE read fAnnotation;
+    property Annotation: TAnnotationE read GetAnnotation;
     property Attribute: TAttributeCTList read fAttribute;
     property AttributeGroup: TAttributeGroupRefCTList read fAttributeGroup;
-    property AnyAttribute: TAnyAttributeE read fAnyAttribute;
+    property AnyAttribute: TAnyAttributeE read GetAnyAttribute;
   end;
 
   TAttributeGroupRefCT = class(TXmliteComplexTypeRestricted)
@@ -1121,11 +1159,13 @@ type
     fId: TIdST;
     fRef: TQNameST;
     fAnnotation: TAnnotationE;
+
+    function GetAnnotation: TAnnotationE;
   published
     property Id: TIdST read fId write fId;
     [TRequired]
     property Ref: TQNameST read fRef write fRef;
-    property Annotation: TAnnotationE read fAnnotation;
+    property Annotation: TAnnotationE read GetAnnotation;
   end;
 
   TKeybaseCT = class(TAnnotatedCT)
@@ -1177,6 +1217,7 @@ type
     fList: TListE;
     fUnion: TUnionE;
 
+    function GetAnnotation: TAnnotationE;
     function GetRestriction: TRestrictionE;
     function GetList: TListE;
     function GetUnion: TUnionE;
@@ -1185,7 +1226,7 @@ type
     property Final: TSimpleDerivationSetST read fFinal write fFinal;
     [TRequired]
     property Name: TNCNameST read fName write fName;
-    property Annotation: TAnnotationE read fAnnotation;
+    property Annotation: TAnnotationE read GetAnnotation;
     [TChoice('Restriction')]
     property Restriction: TRestrictionE read GetRestriction;
     [TChoice('Restriction')]
@@ -1202,12 +1243,13 @@ type
     fList: TListE;
     fUnion: TUnionE;
 
+    function GetAnnotation: TAnnotationE;
     function GetRestriction: TRestrictionE;
     function GetList: TListE;
     function GetUnion: TUnionE;
   published
     property Id: TIdST read fId write fId;
-    property Annotation: TAnnotationE read fAnnotation;
+    property Annotation: TAnnotationE read GetAnnotation;
     [TChoice('Restriction')]
     property Restriction: TRestrictionE read GetRestriction;
     [TChoice('Restriction')]
@@ -1232,11 +1274,13 @@ type
     fId: TIdST;
     fValue: TAnySimpleTypeST;
     fAnnotation: TAnnotationE;
+
+    function GetAnnotation: TAnnotationE;
   published
     property Id: TIdST read fId write fId;
     [TRequired]
     property Value: TAnySimpleTypeST read fValue write fValue;
-    property Annotation: TAnnotationE read fAnnotation;
+    property Annotation: TAnnotationE read GetAnnotation;
   end;
 
   TNumFacetCT = class(TXmliteComplexTypeRestricted)
@@ -1245,13 +1289,15 @@ type
     fFixed: TBooleanST;
     fValue: TNonNegativeIntegerST;
     fAnnotation: TAnnotationE;
+
+    function GetAnnotation: TAnnotationE;
   published
     property Id: TIdST read fId write fId;
     [TDefault(False)]
     property Fixed: TBooleanST read fFixed write fFixed;
     [TRequired]
     property Value: TNonNegativeIntegerST read fValue write fValue;
-    property Annotation: TAnnotationE read fAnnotation;
+    property Annotation: TAnnotationE read GetAnnotation;
   end;
 
   TOccursAG = class(TXmliteAttributeGroup)
@@ -1516,9 +1562,11 @@ type
     fEnumeration: TEnumerationEList;
     fWhiteSpace: TWhiteSpaceEList;
     fPattern: TPatternEList;
+
+    function GetSimpleType: TLocalSimpleTypeCT;
   published
     property Base: TQNameST read fBase write fBase;
-    property SimpleType: TLocalSimpleTypeCT read fSimpleType;
+    property SimpleType: TLocalSimpleTypeCT read GetSimpleType;
     property MinExclusive: TMinExclusiveEList read fMinExclusive;
     property MinInclusive: TMinInclusiveEList read fMinInclusive;
     property MaxExclusive: TMaxExclusiveEList read fMaxExclusive;
@@ -1537,9 +1585,11 @@ type
   private
     fItemType: TQNameST;
     fSimpleType: TLocalSimpleTypeCT;
+
+    function GetSimpleType: TLocalSimpleTypeCT;
   published
     property ItemType: TQNameST read fItemType write fItemType;
-    property SimpleType: TLocalSimpleTypeCT read fSimpleType;
+    property SimpleType: TLocalSimpleTypeCT read GetSimpleType;
   end;
 
   TUnionE = class(TAnnotatedCT)
@@ -1568,13 +1618,15 @@ type
     fFixed: TBooleanST;
     fValue: TPositiveIntegerST;
     fAnnotation: TAnnotationE;
+
+    function GetAnnotation: TAnnotationE;
   published
     property Id: TIdST read fId write fId;
     [TDefault(False)]
     property Fixed: TBooleanST read fFixed write fFixed;
     [TRequired]
     property Value: TPositiveIntegerST read fValue write fValue;
-    property Annotation: TAnnotationE read fAnnotation;
+    property Annotation: TAnnotationE read GetAnnotation;
   end;
 
   TFractionDigitsE = class(TNumFacetCT);
@@ -1595,13 +1647,15 @@ type
     fFixed: TBooleanST;
     fValue: TValue;
     fAnnotation: TAnnotationE;
+
+    function GetAnnotation: TAnnotationE;
   published
     property Id: TIdST read fId write fId;
     [TDefault(False)]
     property Fixed: TBooleanST read fFixed write fFixed;
     [TRequired]
     property Value: TValue read fValue write fValue;
-    property Annotation: TAnnotationE read fAnnotation;
+    property Annotation: TAnnotationE read GetAnnotation;
   end;
 
   TPatternE = class(TXmliteComplexTypeRestricted)
@@ -1609,11 +1663,13 @@ type
     fId: TIdST;
     fValue: TStringST;
     fAnnotation: TAnnotationE;
+
+    function GetAnnotation: TAnnotationE;
   published
     property Id: TIdST read fId write fId;
     [TRequired]
     property Value: TStringST read fValue write fValue;
-    property Annotation: TAnnotationE read fAnnotation;
+    property Annotation: TAnnotationE read GetAnnotation;
   end;
 
   TSchemaTopEG = class(TXmliteElementGroup)
@@ -1737,8 +1793,10 @@ type
   TAttrDeclsEG = class(TXmliteElementGroup)
   private
     fAnyAttribute: TAnyAttributeE;
+
+    function GetAnyAttribute: TAnyAttributeE;
   published
-    property AnyAttribute: TAnyAttributeE read fAnyAttribute;
+    property AnyAttribute: TAnyAttributeE read GetAnyAttribute;
   end;
 
   TComplexTypeModelEG = class(TXmliteElementGroup)
@@ -1758,8 +1816,10 @@ type
   TAllModelEG = class(TXmliteElementGroup)
   private
     fAnnotation: TAnnotationE;
+
+    function GetAnnotation: TAnnotationE;
   published
-    property Annotation: TAnnotationE read fAnnotation;
+    property Annotation: TAnnotationE read GetAnnotation;
   end;
 
   TIdentityConstraintEG = class(TXmliteElementGroup)
@@ -1855,8 +1915,10 @@ type
   TSimpleRestrictionModelEG = class(TXmliteElementGroup)
   private
     fSimpleType: TLocalSimpleTypeCT;
+
+    function GetSimpleType: TLocalSimpleTypeCT;
   published
-    property SimpleType: TLocalSimpleTypeCT read fSimpleType;
+    property SimpleType: TLocalSimpleTypeCT read GetSimpleType;
   end;
 
   TAttributeCTList = class(TXmliteList<TAttributeCT>);
@@ -1901,6 +1963,32 @@ type
 
 implementation
 
+{ TAnnotatedCT }
+
+function TAnnotatedCT.GetAnnotation: TAnnotationE;
+begin
+  Result := TAnnotationE(Lazy(fAnnotation, TAnnotationE));
+end;
+
+{ TAttributeCT }
+
+function TAttributeCT.GetSimpleType: TLocalSimpleTypeCT;
+begin
+  Result := TLocalSimpleTypeCT(Lazy(fSimpleType, TLocalSimpleTypeCT));
+end;
+
+{ TTopLevelAttributeCT }
+
+function TTopLevelAttributeCT.GetAnnotation: TAnnotationE;
+begin
+  Result := TAnnotationE(Lazy(fAnnotation, TAnnotationE));
+end;
+
+function TTopLevelAttributeCT.GetSimpleType: TLocalSimpleTypeCT;
+begin
+  Result := TLocalSimpleTypeCT(Lazy(fSimpleType, TLocalSimpleTypeCT));
+end;
+
 { TComplexTypeCT }
 
 function TComplexTypeCT.GetSimpleContent: TSimpleContentE;
@@ -1940,6 +2028,11 @@ end;
 
 { TTopLevelComplexTypeCT }
 
+function TTopLevelComplexTypeCT.GetAnnotation: TAnnotationE;
+begin
+  Result := TAnnotationE(Lazy(fAnnotation, TAnnotationE));
+end;
+
 function TTopLevelComplexTypeCT.GetSimpleContent: TSimpleContentE;
 begin
   Result := TSimpleContentE(Lazy(fSimpleContent, TSimpleContentE));
@@ -1976,6 +2069,11 @@ begin
 end;
 
 { TLocalComplexTypeCT }
+
+function TLocalComplexTypeCT.GetAnnotation: TAnnotationE;
+begin
+  Result := TAnnotationE(Lazy(fAnnotation, TAnnotationE));
+end;
 
 function TLocalComplexTypeCT.GetSimpleContent: TSimpleContentE;
 begin
@@ -2039,7 +2137,17 @@ begin
   Result := TLocalSimpleTypeCT(Lazy(fSimpleType, TLocalSimpleTypeCT));
 end;
 
+function TRestrictionTypeCT.GetAnyAttribute: TAnyAttributeE;
+begin
+  Result := TAnyAttributeE(Lazy(fAnyAttribute, TAnyAttributeE));
+end;
+
 { TComplexRestrictionTypeCT }
+
+function TComplexRestrictionTypeCT.GetAnnotation: TAnnotationE;
+begin
+  Result := TAnnotationE(Lazy(fAnnotation, TAnnotationE));
+end;
 
 function TComplexRestrictionTypeCT.GetGroup: TGroupRefCT;
 begin
@@ -2059,6 +2167,11 @@ end;
 function TComplexRestrictionTypeCT.GetSequence: TSequenceE;
 begin
   Result := TSequenceE(Lazy(fSequence, TSequenceE));
+end;
+
+function TComplexRestrictionTypeCT.GetAnyAttribute: TAnyAttributeE;
+begin
+  Result := TAnyAttributeE(Lazy(fAnyAttribute, TAnyAttributeE));
 end;
 
 { TExtensionTypeCT }
@@ -2083,11 +2196,38 @@ begin
   Result := TSequenceE(Lazy(fSequence, TSequenceE));
 end;
 
+function TExtensionTypeCT.GetAnyAttribute: TAnyAttributeE;
+begin
+  Result := TAnyAttributeE(Lazy(fAnyAttribute, TAnyAttributeE));
+end;
+
 { TSimpleRestrictionTypeCT }
+
+function TSimpleRestrictionTypeCT.GetAnnotation: TAnnotationE;
+begin
+  Result := TAnnotationE(Lazy(fAnnotation, TAnnotationE));
+end;
 
 function TSimpleRestrictionTypeCT.GetSimpleType: TLocalSimpleTypeCT;
 begin
   Result := TLocalSimpleTypeCT(Lazy(fSimpleType, TLocalSimpleTypeCT));
+end;
+
+function TSimpleRestrictionTypeCT.GetAnyAttribute: TAnyAttributeE;
+begin
+  Result := TAnyAttributeE(Lazy(fAnyAttribute, TAnyAttributeE));
+end;
+
+{ TSimpleExtensionTypeCT }
+
+function TSimpleExtensionTypeCT.GetAnnotation: TAnnotationE;
+begin
+  Result := TAnnotationE(Lazy(fAnnotation, TAnnotationE));
+end;
+
+function TSimpleExtensionTypeCT.GetAnyAttribute: TAnyAttributeE;
+begin
+  Result := TAnyAttributeE(Lazy(fAnyAttribute, TAnyAttributeE));
 end;
 
 { TElementCT }
@@ -2104,6 +2244,11 @@ end;
 
 { TTopLevelElementCT }
 
+function TTopLevelElementCT.GetAnnotation: TAnnotationE;
+begin
+  Result := TAnnotationE(Lazy(fAnnotation, TAnnotationE));
+end;
+
 function TTopLevelElementCT.GetSimpleType: TLocalSimpleTypeCT;
 begin
   Result := TLocalSimpleTypeCT(Lazy(fSimpleType, TLocalSimpleTypeCT));
@@ -2116,6 +2261,11 @@ end;
 
 { TLocalElementCT }
 
+function TLocalElementCT.GetAnnotation: TAnnotationE;
+begin
+  Result := TAnnotationE(Lazy(fAnnotation, TAnnotationE));
+end;
+
 function TLocalElementCT.GetSimpleType: TLocalSimpleTypeCT;
 begin
   Result := TLocalSimpleTypeCT(Lazy(fSimpleType, TLocalSimpleTypeCT));
@@ -2127,6 +2277,11 @@ begin
 end;
 
 { TRealGroupCT }
+
+function TRealGroupCT.GetAnnotation: TAnnotationE;
+begin
+  Result := TAnnotationE(Lazy(fAnnotation, TAnnotationE));
+end;
 
 function TRealGroupCT.GetAll: TAllE;
 begin
@@ -2143,7 +2298,19 @@ begin
   Result := TSequenceE(Lazy(fSequence, TSequenceE));
 end;
 
+{ TNamedGroupCTAll }
+
+function TNamedGroupCTAll.GetAnnotation: TAnnotationE;
+begin
+  Result := TAnnotationE(Lazy(fAnnotation, TAnnotationE));
+end;
+
 { TNamedGroupCT }
+
+function TNamedGroupCT.GetAnnotation: TAnnotationE;
+begin
+  Result := TAnnotationE(Lazy(fAnnotation, TAnnotationE));
+end;
 
 function TNamedGroupCT.GetAll: TNamedGroupCTAll;
 begin
@@ -2160,7 +2327,33 @@ begin
   Result := TSimpleExplicitGroupCT(Lazy(fSequence, TSimpleExplicitGroupCT));
 end;
 
+{ TGroupRefCT }
+
+function TGroupRefCT.GetAnnotation: TAnnotationE;
+begin
+  Result := TAnnotationE(Lazy(fAnnotation, TAnnotationE));
+end;
+
+{ TExplicitGroupCT }
+
+function TExplicitGroupCT.GetAnnotation: TAnnotationE;
+begin
+  Result := TAnnotationE(Lazy(fAnnotation, TAnnotationE));
+end;
+
+{ TSimpleExplicitGroupCT }
+
+function TSimpleExplicitGroupCT.GetAnnotation: TAnnotationE;
+begin
+  Result := TAnnotationE(Lazy(fAnnotation, TAnnotationE));
+end;
+
 { TNarrowMaxMinCT }
+
+function TNarrowMaxMinCT.GetAnnotation: TAnnotationE;
+begin
+  Result := TAnnotationE(Lazy(fAnnotation, TAnnotationE));
+end;
 
 function TNarrowMaxMinCT.GetSimpleType: TLocalSimpleTypeCT;
 begin
@@ -2170,6 +2363,39 @@ end;
 function TNarrowMaxMinCT.GetComplexType: TLocalComplexTypeCT;
 begin
   Result := TLocalComplexTypeCT(Lazy(fComplexType, TLocalComplexTypeCT));
+end;
+
+{ TAllCT }
+
+function TAllCT.GetAnnotation: TAnnotationE;
+begin
+  Result := TAnnotationE(Lazy(fAnnotation, TAnnotationE));
+end;
+
+{ TAttributeGroupCT }
+
+function TAttributeGroupCT.GetAnyAttribute: TAnyAttributeE;
+begin
+  Result := TAnyAttributeE(Lazy(fAnyAttribute, TAnyAttributeE));
+end;
+
+{ TNamedAttributeGroupCT }
+
+function TNamedAttributeGroupCT.GetAnnotation: TAnnotationE;
+begin
+  Result := TAnnotationE(Lazy(fAnnotation, TAnnotationE));
+end;
+
+function TNamedAttributeGroupCT.GetAnyAttribute: TAnyAttributeE;
+begin
+  Result := TAnyAttributeE(Lazy(fAnyAttribute, TAnyAttributeE));
+end;
+
+{ TAttributeGroupRefCT }
+
+function TAttributeGroupRefCT.GetAnnotation: TAnnotationE;
+begin
+  Result := TAnnotationE(Lazy(fAnnotation, TAnnotationE));
 end;
 
 { TSimpleTypeCT }
@@ -2191,6 +2417,11 @@ end;
 
 { TTopLevelSimpleTypeCT }
 
+function TTopLevelSimpleTypeCT.GetAnnotation: TAnnotationE;
+begin
+  Result := TAnnotationE(Lazy(fAnnotation, TAnnotationE));
+end;
+
 function TTopLevelSimpleTypeCT.GetRestriction: TRestrictionE;
 begin
   Result := TRestrictionE(Lazy(fRestriction, TRestrictionE));
@@ -2208,6 +2439,11 @@ end;
 
 { TLocalSimpleTypeCT }
 
+function TLocalSimpleTypeCT.GetAnnotation: TAnnotationE;
+begin
+  Result := TAnnotationE(Lazy(fAnnotation, TAnnotationE));
+end;
+
 function TLocalSimpleTypeCT.GetRestriction: TRestrictionE;
 begin
   Result := TRestrictionE(Lazy(fRestriction, TRestrictionE));
@@ -2221,6 +2457,20 @@ end;
 function TLocalSimpleTypeCT.GetUnion: TUnionE;
 begin
   Result := TUnionE(Lazy(fUnion, TUnionE));
+end;
+
+{ TNoFixedFacetCT }
+
+function TNoFixedFacetCT.GetAnnotation: TAnnotationE;
+begin
+  Result := TAnnotationE(Lazy(fAnnotation, TAnnotationE));
+end;
+
+{ TNumFacetCT }
+
+function TNumFacetCT.GetAnnotation: TAnnotationE;
+begin
+  Result := TAnnotationE(Lazy(fAnnotation, TAnnotationE));
 end;
 
 { TComplexContentE }
@@ -2245,6 +2495,41 @@ end;
 function TSimpleContentE.GetExtension: TSimpleExtensionTypeCT;
 begin
   Result := TSimpleExtensionTypeCT(Lazy(fExtension, TSimpleExtensionTypeCT));
+end;
+
+{ TRestrictionE }
+
+function TRestrictionE.GetSimpleType: TLocalSimpleTypeCT;
+begin
+  Result := TLocalSimpleTypeCT(Lazy(fSimpleType, TLocalSimpleTypeCT));
+end;
+
+{ TListE }
+
+function TListE.GetSimpleType: TLocalSimpleTypeCT;
+begin
+  Result := TLocalSimpleTypeCT(Lazy(fSimpleType, TLocalSimpleTypeCT));
+end;
+
+{ TTotalDigitsE }
+
+function TTotalDigitsE.GetAnnotation: TAnnotationE;
+begin
+  Result := TAnnotationE(Lazy(fAnnotation, TAnnotationE));
+end;
+
+{ TWhiteSpaceE }
+
+function TWhiteSpaceE.GetAnnotation: TAnnotationE;
+begin
+  Result := TAnnotationE(Lazy(fAnnotation, TAnnotationE));
+end;
+
+{ TPatternE }
+
+function TPatternE.GetAnnotation: TAnnotationE;
+begin
+  Result := TAnnotationE(Lazy(fAnnotation, TAnnotationE));
 end;
 
 { TSchemaTopEG }
@@ -2367,6 +2652,13 @@ begin
   Result := TAnyE(Lazy(fAny, TAnyE));
 end;
 
+{ TAttrDeclsEG }
+
+function TAttrDeclsEG.GetAnyAttribute: TAnyAttributeE;
+begin
+  Result := TAnyAttributeE(Lazy(fAnyAttribute, TAnyAttributeE));
+end;
+
 { TComplexTypeModelEG }
 
 function TComplexTypeModelEG.GetSimpleContent: TSimpleContentE;
@@ -2377,6 +2669,13 @@ end;
 function TComplexTypeModelEG.GetComplexContent: TComplexContentE;
 begin
   Result := TComplexContentE(Lazy(fComplexContent, TComplexContentE));
+end;
+
+{ TAllModelEG }
+
+function TAllModelEG.GetAnnotation: TAnnotationE;
+begin
+  Result := TAnnotationE(Lazy(fAnnotation, TAnnotationE));
 end;
 
 { TIdentityConstraintEG }
@@ -2473,6 +2772,13 @@ end;
 function TFacetsEG.GetPattern: TPatternE;
 begin
   Result := TPatternE(Lazy(fPattern, TPatternE));
+end;
+
+{ TSimpleRestrictionModelEG }
+
+function TSimpleRestrictionModelEG.GetSimpleType: TLocalSimpleTypeCT;
+begin
+  Result := TLocalSimpleTypeCT(Lazy(fSimpleType, TLocalSimpleTypeCT));
 end;
 
 initialization

@@ -42,34 +42,44 @@ type
     fSubject: ProRock.Xmlite.Schema.Dc.Elements.TSubjectE;
     fTitle: ProRock.Xmlite.Schema.Dc.Elements.TTitleE;
     fVersion: ProRock.Xmlite.Schema.Base.TStringST;
+
+    function GetCreated: ProRock.Xmlite.Schema.Dc.Terms.TCreatedE;
+    function GetCreator: ProRock.Xmlite.Schema.Dc.Elements.TCreatorE;
+    function GetDescription: ProRock.Xmlite.Schema.Dc.Elements.TDescriptionE;
+    function GetIdentifier: ProRock.Xmlite.Schema.Dc.Elements.TIdentifierE;
+    function GetKeywords: TKeywordsCT;
+    function GetLanguage: ProRock.Xmlite.Schema.Dc.Elements.TLanguageE;
+    function GetModified: ProRock.Xmlite.Schema.Dc.Terms.TModifiedE;
+    function GetSubject: ProRock.Xmlite.Schema.Dc.Elements.TSubjectE;
+    function GetTitle: ProRock.Xmlite.Schema.Dc.Elements.TTitleE;
   published
     [TXmliteElement]
     property Category: ProRock.Xmlite.Schema.Base.TStringST read fCategory write fCategory;
     [TXmliteElement]
     property ContentStatus: ProRock.Xmlite.Schema.Base.TStringST read fContentStatus write fContentStatus;
     [TNaming(TNaming.nFlatCase)]
-    property Created: ProRock.Xmlite.Schema.Dc.Terms.TCreatedE read fCreated;
+    property Created: ProRock.Xmlite.Schema.Dc.Terms.TCreatedE read GetCreated;
     [TNaming(TNaming.nFlatCase)]
-    property Creator: ProRock.Xmlite.Schema.Dc.Elements.TCreatorE read fCreator;
+    property Creator: ProRock.Xmlite.Schema.Dc.Elements.TCreatorE read GetCreator;
     [TNaming(TNaming.nFlatCase)]
-    property Description: ProRock.Xmlite.Schema.Dc.Elements.TDescriptionE read fDescription;
+    property Description: ProRock.Xmlite.Schema.Dc.Elements.TDescriptionE read GetDescription;
     [TNaming(TNaming.nFlatCase)]
-    property Identifier: ProRock.Xmlite.Schema.Dc.Elements.TIdentifierE read fIdentifier;
-    property Keywords: TKeywordsCT read fKeywords;
+    property Identifier: ProRock.Xmlite.Schema.Dc.Elements.TIdentifierE read GetIdentifier;
+    property Keywords: TKeywordsCT read GetKeywords;
     [TNaming(TNaming.nFlatCase)]
-    property Language: ProRock.Xmlite.Schema.Dc.Elements.TLanguageE read fLanguage;
+    property Language: ProRock.Xmlite.Schema.Dc.Elements.TLanguageE read GetLanguage;
     [TXmliteElement]
     property LastModifiedBy: ProRock.Xmlite.Schema.Base.TStringST read fLastModifiedBy write fLastModifiedBy;
     [TXmliteElement]
     property LastPrinted: ProRock.Xmlite.Schema.Base.TDateTimeST read fLastPrinted write fLastPrinted;
     [TNaming(TNaming.nFlatCase)]
-    property Modified: ProRock.Xmlite.Schema.Dc.Terms.TModifiedE read fModified;
+    property Modified: ProRock.Xmlite.Schema.Dc.Terms.TModifiedE read GetModified;
     [TXmliteElement]
     property Revision: ProRock.Xmlite.Schema.Base.TStringST read fRevision write fRevision;
     [TNaming(TNaming.nFlatCase)]
-    property Subject: ProRock.Xmlite.Schema.Dc.Elements.TSubjectE read fSubject;
+    property Subject: ProRock.Xmlite.Schema.Dc.Elements.TSubjectE read GetSubject;
     [TNaming(TNaming.nFlatCase)]
-    property Title: ProRock.Xmlite.Schema.Dc.Elements.TTitleE read fTitle;
+    property Title: ProRock.Xmlite.Schema.Dc.Elements.TTitleE read GetTitle;
     [TXmliteElement]
     property Version: ProRock.Xmlite.Schema.Base.TStringST read fVersion write fVersion;
   end;
@@ -108,6 +118,53 @@ type
   TCTKeywordsCT = TKeywordsCT deprecated 'use TKeywordsCT';
 
 implementation
+
+{ TCorePropertiesCT }
+
+function TCorePropertiesCT.GetCreated: ProRock.Xmlite.Schema.Dc.Terms.TCreatedE;
+begin
+  Result := ProRock.Xmlite.Schema.Dc.Terms.TCreatedE(Lazy(fCreated, ProRock.Xmlite.Schema.Dc.Terms.TCreatedE));
+end;
+
+function TCorePropertiesCT.GetCreator: ProRock.Xmlite.Schema.Dc.Elements.TCreatorE;
+begin
+  Result := ProRock.Xmlite.Schema.Dc.Elements.TCreatorE(Lazy(fCreator, ProRock.Xmlite.Schema.Dc.Elements.TCreatorE));
+end;
+
+function TCorePropertiesCT.GetDescription: ProRock.Xmlite.Schema.Dc.Elements.TDescriptionE;
+begin
+  Result := ProRock.Xmlite.Schema.Dc.Elements.TDescriptionE(Lazy(fDescription, ProRock.Xmlite.Schema.Dc.Elements.TDescriptionE));
+end;
+
+function TCorePropertiesCT.GetIdentifier: ProRock.Xmlite.Schema.Dc.Elements.TIdentifierE;
+begin
+  Result := ProRock.Xmlite.Schema.Dc.Elements.TIdentifierE(Lazy(fIdentifier, ProRock.Xmlite.Schema.Dc.Elements.TIdentifierE));
+end;
+
+function TCorePropertiesCT.GetKeywords: TKeywordsCT;
+begin
+  Result := TKeywordsCT(Lazy(fKeywords, TKeywordsCT));
+end;
+
+function TCorePropertiesCT.GetLanguage: ProRock.Xmlite.Schema.Dc.Elements.TLanguageE;
+begin
+  Result := ProRock.Xmlite.Schema.Dc.Elements.TLanguageE(Lazy(fLanguage, ProRock.Xmlite.Schema.Dc.Elements.TLanguageE));
+end;
+
+function TCorePropertiesCT.GetModified: ProRock.Xmlite.Schema.Dc.Terms.TModifiedE;
+begin
+  Result := ProRock.Xmlite.Schema.Dc.Terms.TModifiedE(Lazy(fModified, ProRock.Xmlite.Schema.Dc.Terms.TModifiedE));
+end;
+
+function TCorePropertiesCT.GetSubject: ProRock.Xmlite.Schema.Dc.Elements.TSubjectE;
+begin
+  Result := ProRock.Xmlite.Schema.Dc.Elements.TSubjectE(Lazy(fSubject, ProRock.Xmlite.Schema.Dc.Elements.TSubjectE));
+end;
+
+function TCorePropertiesCT.GetTitle: ProRock.Xmlite.Schema.Dc.Elements.TTitleE;
+begin
+  Result := ProRock.Xmlite.Schema.Dc.Elements.TTitleE(Lazy(fTitle, ProRock.Xmlite.Schema.Dc.Elements.TTitleE));
+end;
 
 initialization
 

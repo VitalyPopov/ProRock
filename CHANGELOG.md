@@ -12,6 +12,20 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   units generated from the official schemas and shown in one window; the same invoice in both syntaxes is included
 
 ### Changed
+- **Regenerated units: every optional object is created on first access, a required one with its parent.** The sample's UBL invoice:
+  read 73 -> 0.44 ms, write 45 -> 0.36 ms, free 69 -> 0.10 ms, 161,839 -> 148 objects; a FHIR Bundle of 1,000 Patients 94,000 -> 32,000
+  objects. Documents are written byte for byte as before. Units get longer (FHIR 30,832 -> 46,364 lines), compile times stay.
+  Units generated earlier keep working as before. What to change after regenerating:
+  - `Present[@Obj.X]`, `SetPresent(@Obj.X)`, `Clear(@Obj.X)` no longer compile for an optional object (E2036): use the name,
+    `Obj.Clear('X')`. Plain values and required objects keep the `@` form
+  - a getter never returns nil: code that tests `Obj.X = nil`, or walks a recursive type until nil, must test `HasContent`
+  - `TBasite.AutoInitMaxDepth` matters for hand-written classes, whose objects read from a field are still created with their parent
+
+  The Large documents page has the details
+- `[TRequired]` on a hand-written object with a getter: created with its parent, so it is written as required says. It stayed nil and
+  was not written
+- The name in `IsPresent`, `SetPresent` and `Clear` can be the property's too: `Clear('PriceList')`, where the schema's key is `priceList`
+- Several threads reading one object get the same object at the first access to a member
 - Generated units compile about 4 times faster or more: a list class is declared only where it is needed, each one was a generic
   instantiation for the compiler. The FHIR sample's units, Win64, Delphi 13: about 53 s -> 11-15 s (10.3: about 35 s),
   .dcu 157 -> 75 MB; Win32: 23 s -> 5 s. UBL 2.4 Invoice + CreditNote, Win64: about 7 minutes -> 13 s. A unit keeps the lists it uses itself; a list only other units use is an
@@ -39,6 +53,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   exact name alone
 
 ### Fixed
+- `SetPresent` on a choice member not touched yet returned `True` and `IsPresent` said so, but nothing was written: the object was
+  missing. It is created now
+- ProRocket Lite: a choice member whose field takes a trailing `_` (`fScore_`, next to a property `FScore`) stopped the program at
+  start-up; a member named `GetStatus` next to `Status` gave a unit that did not compile
 - ProRocket Lite: a schema with XML Schema or an imported namespace as its default namespace (`<schema xmlns="http://www.w3.org/2001/XMLSchema">`,
   as the W3C XML Signature schemas do) gave a unit that did not compile: the unit of the unprefixed types was missing from `uses`
 - An inherited member follows the naming of the namespace that declares it, not of the class that inherits it, where the two differ

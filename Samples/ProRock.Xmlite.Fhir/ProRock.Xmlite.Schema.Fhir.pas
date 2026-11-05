@@ -3576,10 +3576,14 @@ type
     fProfile: TCanonicalCTList;
     fSecurity: TCodingCTList;
     fTag: TCodingCTList;
+
+    function GetVersionId: TIdCT;
+    function GetLastUpdated: TInstantCT;
+    function GetSource: TUriCT;
   published
-    property VersionId: TIdCT read fVersionId;
-    property LastUpdated: TInstantCT read fLastUpdated;
-    property Source: TUriCT read fSource;
+    property VersionId: TIdCT read GetVersionId;
+    property LastUpdated: TInstantCT read GetLastUpdated;
+    property Source: TUriCT read GetSource;
     property Profile: TCanonicalCTList read fProfile;
     property Security: TCodingCTList read fSecurity;
     property Tag: TCodingCTList read fTag;
@@ -3597,17 +3601,27 @@ type
     fPostalCode: TStringCT;
     fCountry: TStringCT;
     fPeriod: TPeriodCT;
+
+    function GetUse: TAddressUseCT;
+    function GetType: TAddressTypeCT;
+    function GetText: TStringCT;
+    function GetCity: TStringCT;
+    function GetDistrict: TStringCT;
+    function GetState: TStringCT;
+    function GetPostalCode: TStringCT;
+    function GetCountry: TStringCT;
+    function GetPeriod: TPeriodCT;
   published
-    property Use: TAddressUseCT read fUse;
-    property &Type: TAddressTypeCT read fType;
-    property Text: TStringCT read fText;
+    property Use: TAddressUseCT read GetUse;
+    property &Type: TAddressTypeCT read GetType;
+    property Text: TStringCT read GetText;
     property Line: TStringCTList read fLine;
-    property City: TStringCT read fCity;
-    property District: TStringCT read fDistrict;
-    property State: TStringCT read fState;
-    property PostalCode: TStringCT read fPostalCode;
-    property Country: TStringCT read fCountry;
-    property Period: TPeriodCT read fPeriod;
+    property City: TStringCT read GetCity;
+    property District: TStringCT read GetDistrict;
+    property State: TStringCT read GetState;
+    property PostalCode: TStringCT read GetPostalCode;
+    property Country: TStringCT read GetCountry;
+    property Period: TPeriodCT read GetPeriod;
   end;
 
   TAddressUseCT = class(TElementCT)
@@ -3654,15 +3668,24 @@ type
     fHash: TBase64BinaryCT;
     fTitle: TStringCT;
     fCreation: TDateTimeCT;
+
+    function GetContentType: TCodeCT;
+    function GetLanguage: TCodeCT;
+    function GetData: TBase64BinaryCT;
+    function GetUrl: TUrlCT;
+    function GetSize: TUnsignedIntCT;
+    function GetHash: TBase64BinaryCT;
+    function GetTitle: TStringCT;
+    function GetCreation: TDateTimeCT;
   published
-    property ContentType: TCodeCT read fContentType;
-    property Language: TCodeCT read fLanguage;
-    property Data: TBase64BinaryCT read fData;
-    property Url: TUrlCT read fUrl;
-    property Size: TUnsignedIntCT read fSize;
-    property Hash: TBase64BinaryCT read fHash;
-    property Title: TStringCT read fTitle;
-    property Creation: TDateTimeCT read fCreation;
+    property ContentType: TCodeCT read GetContentType;
+    property Language: TCodeCT read GetLanguage;
+    property Data: TBase64BinaryCT read GetData;
+    property Url: TUrlCT read GetUrl;
+    property Size: TUnsignedIntCT read GetSize;
+    property Hash: TBase64BinaryCT read GetHash;
+    property Title: TStringCT read GetTitle;
+    property Creation: TDateTimeCT read GetCreation;
   end;
 
   TQuantityCT = class(TElementCT)
@@ -3672,12 +3695,18 @@ type
     fUnit: TStringCT;
     fSystem: TUriCT;
     fCode: TCodeCT;
+
+    function GetValue: TDecimalCT;
+    function GetComparator: TQuantityComparatorCT;
+    function GetUnit: TStringCT;
+    function GetSystem: TUriCT;
+    function GetCode: TCodeCT;
   published
-    property Value: TDecimalCT read fValue;
-    property Comparator: TQuantityComparatorCT read fComparator;
-    property &Unit: TStringCT read fUnit;
-    property System: TUriCT read fSystem;
-    property Code: TCodeCT read fCode;
+    property Value: TDecimalCT read GetValue;
+    property Comparator: TQuantityComparatorCT read GetComparator;
+    property &Unit: TStringCT read GetUnit;
+    property System: TUriCT read GetSystem;
+    property Code: TCodeCT read GetCode;
   end;
 
   TCountCT = class(TQuantityCT);
@@ -3697,6 +3726,7 @@ type
     function GetSubjectCodeableConcept: TCodeableConceptCT;
     function GetSubjectReference: TReferenceCT;
     function GetSubjectChosen: TBasite;
+    function GetLimit: TPositiveIntCT;
   public
     property SubjectChosen: TBasite read GetSubjectChosen;
   published
@@ -3710,7 +3740,7 @@ type
     property MustSupport: TStringCTList read fMustSupport;
     property CodeFilter: TDataRequirementCodeFilterCTList read fCodeFilter;
     property DateFilter: TDataRequirementDateFilterCTList read fDateFilter;
-    property Limit: TPositiveIntCT read fLimit;
+    property Limit: TPositiveIntCT read GetLimit;
     property Sort: TDataRequirementSortCTList read fSort;
   end;
 
@@ -3721,10 +3751,14 @@ type
     fSearchParam: TStringCT;
     fValueSet: TCanonicalCT;
     fCode: TCodingCTList;
+
+    function GetPath: TStringCT;
+    function GetSearchParam: TStringCT;
+    function GetValueSet: TCanonicalCT;
   published
-    property Path: TStringCT read fPath;
-    property SearchParam: TStringCT read fSearchParam;
-    property ValueSet: TCanonicalCT read fValueSet;
+    property Path: TStringCT read GetPath;
+    property SearchParam: TStringCT read GetSearchParam;
+    property ValueSet: TCanonicalCT read GetValueSet;
     property Code: TCodingCTList read fCode;
   end;
 
@@ -3737,6 +3771,8 @@ type
     fValuePeriod: TPeriodCT;
     fValueDuration: TDurationCT;
 
+    function GetPath: TStringCT;
+    function GetSearchParam: TStringCT;
     function GetValueDateTime: TDateTimeCT;
     function GetValuePeriod: TPeriodCT;
     function GetValueDuration: TDurationCT;
@@ -3744,8 +3780,8 @@ type
   public
     property ValueChosen: TBasite read GetValueChosen;
   published
-    property Path: TStringCT read fPath;
-    property SearchParam: TStringCT read fSearchParam;
+    property Path: TStringCT read GetPath;
+    property SearchParam: TStringCT read GetSearchParam;
     [TChoice('Value')]
     property ValueDateTime: TDateTimeCT read GetValueDateTime;
     [TChoice('Value')]
@@ -3790,28 +3826,38 @@ type
     fMaxDosePerAdministration: TQuantityCT;
     fMaxDosePerLifetime: TQuantityCT;
 
+    function GetSequence: TIntegerCT;
+    function GetText: TStringCT;
+    function GetPatientInstruction: TStringCT;
+    function GetTiming: TTimingCT;
     function GetAsNeededBoolean: TBooleanCT;
     function GetAsNeededCodeableConcept: TCodeableConceptCT;
     function GetAsNeededChosen: TBasite;
+    function GetSite: TCodeableConceptCT;
+    function GetRoute: TCodeableConceptCT;
+    function GetMethod: TCodeableConceptCT;
+    function GetMaxDosePerPeriod: TRatioCT;
+    function GetMaxDosePerAdministration: TQuantityCT;
+    function GetMaxDosePerLifetime: TQuantityCT;
   public
     property AsNeededChosen: TBasite read GetAsNeededChosen;
   published
-    property Sequence: TIntegerCT read fSequence;
-    property Text: TStringCT read fText;
+    property Sequence: TIntegerCT read GetSequence;
+    property Text: TStringCT read GetText;
     property AdditionalInstruction: TCodeableConceptCTList read fAdditionalInstruction;
-    property PatientInstruction: TStringCT read fPatientInstruction;
-    property Timing: TTimingCT read fTiming;
+    property PatientInstruction: TStringCT read GetPatientInstruction;
+    property Timing: TTimingCT read GetTiming;
     [TChoice('AsNeeded')]
     property AsNeededBoolean: TBooleanCT read GetAsNeededBoolean;
     [TChoice('AsNeeded')]
     property AsNeededCodeableConcept: TCodeableConceptCT read GetAsNeededCodeableConcept;
-    property Site: TCodeableConceptCT read fSite;
-    property Route: TCodeableConceptCT read fRoute;
-    property Method: TCodeableConceptCT read fMethod;
+    property Site: TCodeableConceptCT read GetSite;
+    property Route: TCodeableConceptCT read GetRoute;
+    property Method: TCodeableConceptCT read GetMethod;
     property DoseAndRate: TDosageDoseAndRateCTList read fDoseAndRate;
-    property MaxDosePerPeriod: TRatioCT read fMaxDosePerPeriod;
-    property MaxDosePerAdministration: TQuantityCT read fMaxDosePerAdministration;
-    property MaxDosePerLifetime: TQuantityCT read fMaxDosePerLifetime;
+    property MaxDosePerPeriod: TRatioCT read GetMaxDosePerPeriod;
+    property MaxDosePerAdministration: TQuantityCT read GetMaxDosePerAdministration;
+    property MaxDosePerLifetime: TQuantityCT read GetMaxDosePerLifetime;
   end;
 
   [TName('Dosage.DoseAndRate')]
@@ -3824,6 +3870,7 @@ type
     fRateRange: TRangeCT;
     fRateQuantity: TQuantityCT;
 
+    function GetType: TCodeableConceptCT;
     function GetDoseRange: TRangeCT;
     function GetDoseQuantity: TQuantityCT;
     function GetDoseChosen: TBasite;
@@ -3835,7 +3882,7 @@ type
     property DoseChosen: TBasite read GetDoseChosen;
     property RateChosen: TBasite read GetRateChosen;
   published
-    property &Type: TCodeableConceptCT read fType;
+    property &Type: TCodeableConceptCT read GetType;
     [TChoice('Dose')]
     property DoseRange: TRangeCT read GetDoseRange;
     [TChoice('Dose')]
@@ -3852,9 +3899,12 @@ type
   private
     fValue: TDecimalCT;
     fCurrency: TCodeCT;
+
+    function GetValue: TDecimalCT;
+    function GetCurrency: TCodeCT;
   published
-    property Value: TDecimalCT read fValue;
-    property Currency: TCodeCT read fCurrency;
+    property Value: TDecimalCT read GetValue;
+    property Currency: TCodeCT read GetCurrency;
   end;
 
   THumanNameCT = class(TElementCT)
@@ -3866,14 +3916,19 @@ type
     fPrefix: TStringCTList;
     fSuffix: TStringCTList;
     fPeriod: TPeriodCT;
+
+    function GetUse: TNameUseCT;
+    function GetText: TStringCT;
+    function GetFamily: TStringCT;
+    function GetPeriod: TPeriodCT;
   published
-    property Use: TNameUseCT read fUse;
-    property Text: TStringCT read fText;
-    property Family: TStringCT read fFamily;
+    property Use: TNameUseCT read GetUse;
+    property Text: TStringCT read GetText;
+    property Family: TStringCT read GetFamily;
     property Given: TStringCTList read fGiven;
     property Prefix: TStringCTList read fPrefix;
     property Suffix: TStringCTList read fSuffix;
-    property Period: TPeriodCT read fPeriod;
+    property Period: TPeriodCT read GetPeriod;
   end;
 
   TNameUseCT = class(TElementCT)
@@ -3890,12 +3945,18 @@ type
     fUse: TContactPointUseCT;
     fRank: TPositiveIntCT;
     fPeriod: TPeriodCT;
+
+    function GetSystem: TContactPointSystemCT;
+    function GetValue: TStringCT;
+    function GetUse: TContactPointUseCT;
+    function GetRank: TPositiveIntCT;
+    function GetPeriod: TPeriodCT;
   published
-    property System: TContactPointSystemCT read fSystem;
-    property Value: TStringCT read fValue;
-    property Use: TContactPointUseCT read fUse;
-    property Rank: TPositiveIntCT read fRank;
-    property Period: TPeriodCT read fPeriod;
+    property System: TContactPointSystemCT read GetSystem;
+    property Value: TStringCT read GetValue;
+    property Use: TContactPointUseCT read GetUse;
+    property Rank: TPositiveIntCT read GetRank;
+    property Period: TPeriodCT read GetPeriod;
   end;
 
   TContactPointSystemCT = class(TElementCT)
@@ -3919,15 +3980,18 @@ type
     fStatus: TCodeableConceptCT;
     fDateRange: TPeriodCT;
     fRestoreDate: TDateTimeCT;
+
+    function GetJurisdiction: TCodeableConceptCT;
+    function GetRestoreDate: TDateTimeCT;
   published
     [TRequired]
     property Country: TCodeableConceptCT read fCountry;
-    property Jurisdiction: TCodeableConceptCT read fJurisdiction;
+    property Jurisdiction: TCodeableConceptCT read GetJurisdiction;
     [TRequired]
     property Status: TCodeableConceptCT read fStatus;
     [TRequired]
     property DateRange: TPeriodCT read fDateRange;
-    property RestoreDate: TDateTimeCT read fRestoreDate;
+    property RestoreDate: TDateTimeCT read GetRestoreDate;
   end;
 
   TIdentifierCT = class(TElementCT)
@@ -3938,13 +4002,20 @@ type
     fValue: TStringCT;
     fPeriod: TPeriodCT;
     fAssigner: TReferenceCT;
+
+    function GetUse: TIdentifierUseCT;
+    function GetType: TCodeableConceptCT;
+    function GetSystem: TUriCT;
+    function GetValue: TStringCT;
+    function GetPeriod: TPeriodCT;
+    function GetAssigner: TReferenceCT;
   published
-    property Use: TIdentifierUseCT read fUse;
-    property &Type: TCodeableConceptCT read fType;
-    property System: TUriCT read fSystem;
-    property Value: TStringCT read fValue;
-    property Period: TPeriodCT read fPeriod;
-    property Assigner: TReferenceCT read fAssigner;
+    property Use: TIdentifierUseCT read GetUse;
+    property &Type: TCodeableConceptCT read GetType;
+    property System: TUriCT read GetSystem;
+    property Value: TStringCT read GetValue;
+    property Period: TPeriodCT read GetPeriod;
+    property Assigner: TReferenceCT read GetAssigner;
   end;
 
   TIdentifierUseCT = class(TElementCT)
@@ -3967,6 +4038,9 @@ type
     function GetAmountRange: TRangeCT;
     function GetAmountString: TStringCT;
     function GetAmountChosen: TBasite;
+    function GetAmountType: TCodeableConceptCT;
+    function GetAmountText: TStringCT;
+    function GetReferenceRange: TSubstanceAmountReferenceRangeCT;
   public
     property AmountChosen: TBasite read GetAmountChosen;
   published
@@ -3976,9 +4050,9 @@ type
     property AmountRange: TRangeCT read GetAmountRange;
     [TChoice('Amount')]
     property AmountString: TStringCT read GetAmountString;
-    property AmountType: TCodeableConceptCT read fAmountType;
-    property AmountText: TStringCT read fAmountText;
-    property ReferenceRange: TSubstanceAmountReferenceRangeCT read fReferenceRange;
+    property AmountType: TCodeableConceptCT read GetAmountType;
+    property AmountText: TStringCT read GetAmountText;
+    property ReferenceRange: TSubstanceAmountReferenceRangeCT read GetReferenceRange;
   end;
 
   [TName('SubstanceAmount.ReferenceRange')]
@@ -3986,9 +4060,12 @@ type
   private
     fLowLimit: TQuantityCT;
     fHighLimit: TQuantityCT;
+
+    function GetLowLimit: TQuantityCT;
+    function GetHighLimit: TQuantityCT;
   published
-    property LowLimit: TQuantityCT read fLowLimit;
-    property HighLimit: TQuantityCT read fHighLimit;
+    property LowLimit: TQuantityCT read GetLowLimit;
+    property HighLimit: TQuantityCT read GetHighLimit;
   end;
 
   TCodingCT = class(TElementCT)
@@ -3998,12 +4075,18 @@ type
     fCode: TCodeCT;
     fDisplay: TStringCT;
     fUserSelected: TBooleanCT;
+
+    function GetSystem: TUriCT;
+    function GetVersion: TStringCT;
+    function GetCode: TCodeCT;
+    function GetDisplay: TStringCT;
+    function GetUserSelected: TBooleanCT;
   published
-    property System: TUriCT read fSystem;
-    property Version: TStringCT read fVersion;
-    property Code: TCodeCT read fCode;
-    property Display: TStringCT read fDisplay;
-    property UserSelected: TBooleanCT read fUserSelected;
+    property System: TUriCT read GetSystem;
+    property Version: TStringCT read GetVersion;
+    property Code: TCodeCT read GetCode;
+    property Display: TStringCT read GetDisplay;
+    property UserSelected: TBooleanCT read GetUserSelected;
   end;
 
   TSampledDataCT = class(TElementCT)
@@ -4015,17 +4098,22 @@ type
     fUpperLimit: TDecimalCT;
     fDimensions: TPositiveIntCT;
     fData: TSampledDataDataTypeCT;
+
+    function GetFactor: TDecimalCT;
+    function GetLowerLimit: TDecimalCT;
+    function GetUpperLimit: TDecimalCT;
+    function GetData: TSampledDataDataTypeCT;
   published
     [TRequired]
     property Origin: TQuantityCT read fOrigin;
     [TRequired]
     property Period: TDecimalCT read fPeriod;
-    property Factor: TDecimalCT read fFactor;
-    property LowerLimit: TDecimalCT read fLowerLimit;
-    property UpperLimit: TDecimalCT read fUpperLimit;
+    property Factor: TDecimalCT read GetFactor;
+    property LowerLimit: TDecimalCT read GetLowerLimit;
+    property UpperLimit: TDecimalCT read GetUpperLimit;
     [TRequired]
     property Dimensions: TPositiveIntCT read fDimensions;
-    property Data: TSampledDataDataTypeCT read fData;
+    property Data: TSampledDataDataTypeCT read GetData;
   end;
 
   TSampledDataDataTypeCT = class(TElementCT)
@@ -4046,6 +4134,9 @@ type
     function GetAgeRange: TRangeCT;
     function GetAgeCodeableConcept: TCodeableConceptCT;
     function GetAgeChosen: TBasite;
+    function GetGender: TCodeableConceptCT;
+    function GetRace: TCodeableConceptCT;
+    function GetPhysiologicalCondition: TCodeableConceptCT;
   public
     property AgeChosen: TBasite read GetAgeChosen;
   published
@@ -4053,18 +4144,21 @@ type
     property AgeRange: TRangeCT read GetAgeRange;
     [TChoice('Age')]
     property AgeCodeableConcept: TCodeableConceptCT read GetAgeCodeableConcept;
-    property Gender: TCodeableConceptCT read fGender;
-    property Race: TCodeableConceptCT read fRace;
-    property PhysiologicalCondition: TCodeableConceptCT read fPhysiologicalCondition;
+    property Gender: TCodeableConceptCT read GetGender;
+    property Race: TCodeableConceptCT read GetRace;
+    property PhysiologicalCondition: TCodeableConceptCT read GetPhysiologicalCondition;
   end;
 
   TRatioCT = class(TElementCT)
   private
     fNumerator: TQuantityCT;
     fDenominator: TQuantityCT;
+
+    function GetNumerator: TQuantityCT;
+    function GetDenominator: TQuantityCT;
   published
-    property Numerator: TQuantityCT read fNumerator;
-    property Denominator: TQuantityCT read fDenominator;
+    property Numerator: TQuantityCT read GetNumerator;
+    property Denominator: TQuantityCT read GetDenominator;
   end;
 
   TDistanceCT = class(TQuantityCT);
@@ -4077,11 +4171,16 @@ type
     fType: TUriCT;
     fIdentifier: TIdentifierCT;
     fDisplay: TStringCT;
+
+    function GetReference: TStringCT;
+    function GetType: TUriCT;
+    function GetIdentifier: TIdentifierCT;
+    function GetDisplay: TStringCT;
   published
-    property Reference: TStringCT read fReference;
-    property &Type: TUriCT read fType;
-    property Identifier: TIdentifierCT read fIdentifier;
-    property Display: TStringCT read fDisplay;
+    property Reference: TStringCT read GetReference;
+    property &Type: TUriCT read GetType;
+    property Identifier: TIdentifierCT read GetIdentifier;
+    property Display: TStringCT read GetDisplay;
   end;
 
   TTriggerDefinitionCT = class(TElementCT)
@@ -4095,17 +4194,19 @@ type
     fData: TDataRequirementCTList;
     fCondition: TExpressionCT;
 
+    function GetName: TStringCT;
     function GetTimingTiming: TTimingCT;
     function GetTimingReference: TReferenceCT;
     function GetTimingDate: TDateCT;
     function GetTimingDateTime: TDateTimeCT;
     function GetTimingChosen: TBasite;
+    function GetCondition: TExpressionCT;
   public
     property TimingChosen: TBasite read GetTimingChosen;
   published
     [TRequired]
     property &Type: TTriggerTypeCT read fType;
-    property Name: TStringCT read fName;
+    property Name: TStringCT read GetName;
     [TChoice('Timing')]
     property TimingTiming: TTimingCT read GetTimingTiming;
     [TChoice('Timing')]
@@ -4115,7 +4216,7 @@ type
     [TChoice('Timing')]
     property TimingDateTime: TDateTimeCT read GetTimingDateTime;
     property Data: TDataRequirementCTList read fData;
-    property Condition: TExpressionCT read fCondition;
+    property Condition: TExpressionCT read GetCondition;
   end;
 
   TTriggerTypeCT = class(TElementCT)
@@ -4136,9 +4237,12 @@ type
   private
     fStart: TDateTimeCT;
     fEnd: TDateTimeCT;
+
+    function GetStart: TDateTimeCT;
+    function GetEnd: TDateTimeCT;
   published
-    property Start: TDateTimeCT read fStart;
-    property &End: TDateTimeCT read fEnd;
+    property Start: TDateTimeCT read GetStart;
+    property &End: TDateTimeCT read GetEnd;
   end;
 
   TDurationCT = class(TQuantityCT);
@@ -4147,9 +4251,12 @@ type
   private
     fLow: TQuantityCT;
     fHigh: TQuantityCT;
+
+    function GetLow: TQuantityCT;
+    function GetHigh: TQuantityCT;
   published
-    property Low: TQuantityCT read fLow;
-    property High: TQuantityCT read fHigh;
+    property Low: TQuantityCT read GetLow;
+    property High: TQuantityCT read GetHigh;
   end;
 
   TRelatedArtifactCT = class(TElementCT)
@@ -4161,15 +4268,22 @@ type
     fUrl: TUrlCT;
     fDocument: TAttachmentCT;
     fResource: TCanonicalCT;
+
+    function GetLabel: TStringCT;
+    function GetDisplay: TStringCT;
+    function GetCitation: TMarkdownCT;
+    function GetUrl: TUrlCT;
+    function GetDocument: TAttachmentCT;
+    function GetResource: TCanonicalCT;
   published
     [TRequired]
     property &Type: TRelatedArtifactTypeCT read fType;
-    property &Label: TStringCT read fLabel;
-    property Display: TStringCT read fDisplay;
-    property Citation: TMarkdownCT read fCitation;
-    property Url: TUrlCT read fUrl;
-    property Document: TAttachmentCT read fDocument;
-    property Resource: TCanonicalCT read fResource;
+    property &Label: TStringCT read GetLabel;
+    property Display: TStringCT read GetDisplay;
+    property Citation: TMarkdownCT read GetCitation;
+    property Url: TUrlCT read GetUrl;
+    property Document: TAttachmentCT read GetDocument;
+    property Resource: TCanonicalCT read GetResource;
   end;
 
   TRelatedArtifactTypeCT = class(TElementCT)
@@ -4189,6 +4303,7 @@ type
     function GetAuthorReference: TReferenceCT;
     function GetAuthorString: TStringCT;
     function GetAuthorChosen: TBasite;
+    function GetTime: TDateTimeCT;
   public
     property AuthorChosen: TBasite read GetAuthorChosen;
   published
@@ -4196,7 +4311,7 @@ type
     property AuthorReference: TReferenceCT read GetAuthorReference;
     [TChoice('Author')]
     property AuthorString: TStringCT read GetAuthorString;
-    property Time: TDateTimeCT read fTime;
+    property Time: TDateTimeCT read GetTime;
     [TRequired]
     property Text: TMarkdownCT read fText;
   end;
@@ -4207,8 +4322,10 @@ type
     fType: TCodeableConceptCT;
     fPeriod: TQuantityCT;
     fSpecialPrecautionsForStorage: TCodeableConceptCTList;
+
+    function GetIdentifier: TIdentifierCT;
   published
-    property Identifier: TIdentifierCT read fIdentifier;
+    property Identifier: TIdentifierCT read GetIdentifier;
     [TRequired]
     property &Type: TCodeableConceptCT read fType;
     [TRequired]
@@ -4220,8 +4337,10 @@ type
   private
     fName: TStringCT;
     fTelecom: TContactPointCTList;
+
+    function GetName: TStringCT;
   published
-    property Name: TStringCT read fName;
+    property Name: TStringCT read GetName;
     property Telecom: TContactPointCTList read fTelecom;
   end;
 
@@ -4260,13 +4379,18 @@ type
     fLanguage: TExpressionLanguageCT;
     fExpression: TStringCT;
     fReference: TUriCT;
+
+    function GetDescription: TStringCT;
+    function GetName: TIdCT;
+    function GetExpression: TStringCT;
+    function GetReference: TUriCT;
   published
-    property Description: TStringCT read fDescription;
-    property Name: TIdCT read fName;
+    property Description: TStringCT read GetDescription;
+    property Name: TIdCT read GetName;
     [TRequired]
     property Language: TExpressionLanguageCT read fLanguage;
-    property Expression: TStringCT read fExpression;
-    property Reference: TUriCT read fReference;
+    property Expression: TStringCT read GetExpression;
+    property Reference: TUriCT read GetReference;
   end;
 
   TExpressionLanguageCT = class(TElementCT)
@@ -4285,16 +4409,21 @@ type
     fTargetFormat: TCodeCT;
     fSigFormat: TCodeCT;
     fData: TBase64BinaryCT;
+
+    function GetOnBehalfOf: TReferenceCT;
+    function GetTargetFormat: TCodeCT;
+    function GetSigFormat: TCodeCT;
+    function GetData: TBase64BinaryCT;
   published
     property &Type: TCodingCTList read fType;
     [TRequired]
     property When: TInstantCT read fWhen;
     [TRequired]
     property Who: TReferenceCT read fWho;
-    property OnBehalfOf: TReferenceCT read fOnBehalfOf;
-    property TargetFormat: TCodeCT read fTargetFormat;
-    property SigFormat: TCodeCT read fSigFormat;
-    property Data: TBase64BinaryCT read fData;
+    property OnBehalfOf: TReferenceCT read GetOnBehalfOf;
+    property TargetFormat: TCodeCT read GetTargetFormat;
+    property SigFormat: TCodeCT read GetSigFormat;
+    property Data: TBase64BinaryCT read GetData;
   end;
 
   TTimingCT = class(TBackboneElementCT)
@@ -4302,10 +4431,13 @@ type
     fEvent: TDateTimeCTList;
     fRepeat: TTimingRepeatCT;
     fCode: TCodeableConceptCT;
+
+    function GetRepeat: TTimingRepeatCT;
+    function GetCode: TCodeableConceptCT;
   published
     property Event: TDateTimeCTList read fEvent;
-    property &Repeat: TTimingRepeatCT read fRepeat;
-    property Code: TCodeableConceptCT read fCode;
+    property &Repeat: TTimingRepeatCT read GetRepeat;
+    property Code: TCodeableConceptCT read GetCode;
   end;
 
   [TName('Timing.Repeat')]
@@ -4333,6 +4465,17 @@ type
     function GetBoundsRange: TRangeCT;
     function GetBoundsPeriod: TPeriodCT;
     function GetBoundsChosen: TBasite;
+    function GetCount: TPositiveIntCT;
+    function GetCountMax: TPositiveIntCT;
+    function GetDuration: TDecimalCT;
+    function GetDurationMax: TDecimalCT;
+    function GetDurationUnit: TUnitsOfTimeCT;
+    function GetFrequency: TPositiveIntCT;
+    function GetFrequencyMax: TPositiveIntCT;
+    function GetPeriod: TDecimalCT;
+    function GetPeriodMax: TDecimalCT;
+    function GetPeriodUnit: TUnitsOfTimeCT;
+    function GetOffset: TUnsignedIntCT;
   public
     property BoundsChosen: TBasite read GetBoundsChosen;
   published
@@ -4342,20 +4485,20 @@ type
     property BoundsRange: TRangeCT read GetBoundsRange;
     [TChoice('Bounds')]
     property BoundsPeriod: TPeriodCT read GetBoundsPeriod;
-    property Count: TPositiveIntCT read fCount;
-    property CountMax: TPositiveIntCT read fCountMax;
-    property Duration: TDecimalCT read fDuration;
-    property DurationMax: TDecimalCT read fDurationMax;
-    property DurationUnit: TUnitsOfTimeCT read fDurationUnit;
-    property Frequency: TPositiveIntCT read fFrequency;
-    property FrequencyMax: TPositiveIntCT read fFrequencyMax;
-    property Period: TDecimalCT read fPeriod;
-    property PeriodMax: TDecimalCT read fPeriodMax;
-    property PeriodUnit: TUnitsOfTimeCT read fPeriodUnit;
+    property Count: TPositiveIntCT read GetCount;
+    property CountMax: TPositiveIntCT read GetCountMax;
+    property Duration: TDecimalCT read GetDuration;
+    property DurationMax: TDecimalCT read GetDurationMax;
+    property DurationUnit: TUnitsOfTimeCT read GetDurationUnit;
+    property Frequency: TPositiveIntCT read GetFrequency;
+    property FrequencyMax: TPositiveIntCT read GetFrequencyMax;
+    property Period: TDecimalCT read GetPeriod;
+    property PeriodMax: TDecimalCT read GetPeriodMax;
+    property PeriodUnit: TUnitsOfTimeCT read GetPeriodUnit;
     property DayOfWeek: TCodeCTList read fDayOfWeek;
     property TimeOfDay: TTimeCTList read fTimeOfDay;
     property When: TEventTimingCTList read fWhen;
-    property Offset: TUnsignedIntCT read fOffset;
+    property Offset: TUnsignedIntCT read GetOffset;
   end;
 
   TUnitsOfTimeCT = class(TElementCT)
@@ -4385,27 +4528,38 @@ type
     fImprint: TStringCTList;
     fImage: TAttachmentCTList;
     fScoring: TCodeableConceptCT;
+
+    function GetHeight: TQuantityCT;
+    function GetWidth: TQuantityCT;
+    function GetDepth: TQuantityCT;
+    function GetWeight: TQuantityCT;
+    function GetNominalVolume: TQuantityCT;
+    function GetExternalDiameter: TQuantityCT;
+    function GetShape: TStringCT;
+    function GetScoring: TCodeableConceptCT;
   published
-    property Height: TQuantityCT read fHeight;
-    property Width: TQuantityCT read fWidth;
-    property Depth: TQuantityCT read fDepth;
-    property Weight: TQuantityCT read fWeight;
-    property NominalVolume: TQuantityCT read fNominalVolume;
-    property ExternalDiameter: TQuantityCT read fExternalDiameter;
-    property Shape: TStringCT read fShape;
+    property Height: TQuantityCT read GetHeight;
+    property Width: TQuantityCT read GetWidth;
+    property Depth: TQuantityCT read GetDepth;
+    property Weight: TQuantityCT read GetWeight;
+    property NominalVolume: TQuantityCT read GetNominalVolume;
+    property ExternalDiameter: TQuantityCT read GetExternalDiameter;
+    property Shape: TStringCT read GetShape;
     property Color: TStringCTList read fColor;
     property Imprint: TStringCTList read fImprint;
     property Image: TAttachmentCTList read fImage;
-    property Scoring: TCodeableConceptCT read fScoring;
+    property Scoring: TCodeableConceptCT read GetScoring;
   end;
 
   TCodeableConceptCT = class(TElementCT)
   private
     fCoding: TCodingCTList;
     fText: TStringCT;
+
+    function GetText: TStringCT;
   published
     property Coding: TCodingCTList read fCoding;
-    property Text: TStringCT read fText;
+    property Text: TStringCT read GetText;
   end;
 
   TParameterDefinitionCT = class(TElementCT)
@@ -4417,16 +4571,22 @@ type
     fDocumentation: TStringCT;
     fType: TCodeCT;
     fProfile: TCanonicalCT;
+
+    function GetName: TCodeCT;
+    function GetMin: TIntegerCT;
+    function GetMax: TStringCT;
+    function GetDocumentation: TStringCT;
+    function GetProfile: TCanonicalCT;
   published
-    property Name: TCodeCT read fName;
+    property Name: TCodeCT read GetName;
     [TRequired]
     property Use: TCodeCT read fUse;
-    property Min: TIntegerCT read fMin;
-    property Max: TStringCT read fMax;
-    property Documentation: TStringCT read fDocumentation;
+    property Min: TIntegerCT read GetMin;
+    property Max: TStringCT read GetMax;
+    property Documentation: TStringCT read GetDocumentation;
     [TRequired]
     property &Type: TCodeCT read fType;
-    property Profile: TCanonicalCT read fProfile;
+    property Profile: TCanonicalCT read GetProfile;
   end;
 
   TElementDefinitionCT = class(TBackboneElementCT)
@@ -4629,6 +4789,18 @@ type
     fBinding: TElementDefinitionBindingCT;
     fMapping: TElementDefinitionMappingCTList;
 
+    function GetSliceName: TStringCT;
+    function GetSliceIsConstraining: TBooleanCT;
+    function GetLabel: TStringCT;
+    function GetSlicing: TElementDefinitionSlicingCT;
+    function GetShort: TStringCT;
+    function GetDefinition: TMarkdownCT;
+    function GetComment: TMarkdownCT;
+    function GetRequirements: TMarkdownCT;
+    function GetMin: TUnsignedIntCT;
+    function GetMax: TStringCT;
+    function GetBase: TElementDefinitionBaseCT;
+    function GetContentReference: TUriCT;
     function GetDefaultValueBase64Binary: TBase64BinaryCT;
     function GetDefaultValueBoolean: TBooleanCT;
     function GetDefaultValueCanonical: TCanonicalCT;
@@ -4680,6 +4852,8 @@ type
     function GetDefaultValueDosage: TDosageCT;
     function GetDefaultValueMeta: TMetaCT;
     function GetDefaultValueChosen: TBasite;
+    function GetMeaningWhenMissing: TMarkdownCT;
+    function GetOrderMeaning: TStringCT;
     function GetFixedBase64Binary: TBase64BinaryCT;
     function GetFixedBoolean: TBooleanCT;
     function GetFixedCanonical: TCanonicalCT;
@@ -4802,6 +4976,12 @@ type
     function GetMaxValueUnsignedInt: TUnsignedIntCT;
     function GetMaxValueQuantity: TQuantityCT;
     function GetMaxValueChosen: TBasite;
+    function GetMaxLength: TIntegerCT;
+    function GetMustSupport: TBooleanCT;
+    function GetIsModifier: TBooleanCT;
+    function GetIsModifierReason: TStringCT;
+    function GetIsSummary: TBooleanCT;
+    function GetBinding: TElementDefinitionBindingCT;
   public
     property DefaultValueChosen: TBasite read GetDefaultValueChosen;
     property FixedChosen: TBasite read GetFixedChosen;
@@ -4812,20 +4992,20 @@ type
     [TRequired]
     property Path: TStringCT read fPath;
     property Representation: TPropertyRepresentationCTList read fRepresentation;
-    property SliceName: TStringCT read fSliceName;
-    property SliceIsConstraining: TBooleanCT read fSliceIsConstraining;
-    property &Label: TStringCT read fLabel;
+    property SliceName: TStringCT read GetSliceName;
+    property SliceIsConstraining: TBooleanCT read GetSliceIsConstraining;
+    property &Label: TStringCT read GetLabel;
     property Code: TCodingCTList read fCode;
-    property Slicing: TElementDefinitionSlicingCT read fSlicing;
-    property Short: TStringCT read fShort;
-    property Definition: TMarkdownCT read fDefinition;
-    property Comment: TMarkdownCT read fComment;
-    property Requirements: TMarkdownCT read fRequirements;
+    property Slicing: TElementDefinitionSlicingCT read GetSlicing;
+    property Short: TStringCT read GetShort;
+    property Definition: TMarkdownCT read GetDefinition;
+    property Comment: TMarkdownCT read GetComment;
+    property Requirements: TMarkdownCT read GetRequirements;
     property Alias: TStringCTList read fAlias;
-    property Min: TUnsignedIntCT read fMin;
-    property Max: TStringCT read fMax;
-    property Base: TElementDefinitionBaseCT read fBase;
-    property ContentReference: TUriCT read fContentReference;
+    property Min: TUnsignedIntCT read GetMin;
+    property Max: TStringCT read GetMax;
+    property Base: TElementDefinitionBaseCT read GetBase;
+    property ContentReference: TUriCT read GetContentReference;
     property &Type: TElementDefinitionTypeCTList read fType;
     [TChoice('DefaultValue')]
     property DefaultValueBase64Binary: TBase64BinaryCT read GetDefaultValueBase64Binary;
@@ -4927,8 +5107,8 @@ type
     property DefaultValueDosage: TDosageCT read GetDefaultValueDosage;
     [TChoice('DefaultValue')]
     property DefaultValueMeta: TMetaCT read GetDefaultValueMeta;
-    property MeaningWhenMissing: TMarkdownCT read fMeaningWhenMissing;
-    property OrderMeaning: TStringCT read fOrderMeaning;
+    property MeaningWhenMissing: TMarkdownCT read GetMeaningWhenMissing;
+    property OrderMeaning: TStringCT read GetOrderMeaning;
     [TChoice('Fixed')]
     property FixedBase64Binary: TBase64BinaryCT read GetFixedBase64Binary;
     [TChoice('Fixed')]
@@ -5166,14 +5346,14 @@ type
     property MaxValueUnsignedInt: TUnsignedIntCT read GetMaxValueUnsignedInt;
     [TChoice('MaxValue')]
     property MaxValueQuantity: TQuantityCT read GetMaxValueQuantity;
-    property MaxLength: TIntegerCT read fMaxLength;
+    property MaxLength: TIntegerCT read GetMaxLength;
     property Condition: TIdCTList read fCondition;
     property Constraint: TElementDefinitionConstraintCTList read fConstraint;
-    property MustSupport: TBooleanCT read fMustSupport;
-    property IsModifier: TBooleanCT read fIsModifier;
-    property IsModifierReason: TStringCT read fIsModifierReason;
-    property IsSummary: TBooleanCT read fIsSummary;
-    property Binding: TElementDefinitionBindingCT read fBinding;
+    property MustSupport: TBooleanCT read GetMustSupport;
+    property IsModifier: TBooleanCT read GetIsModifier;
+    property IsModifierReason: TStringCT read GetIsModifierReason;
+    property IsSummary: TBooleanCT read GetIsSummary;
+    property Binding: TElementDefinitionBindingCT read GetBinding;
     property Mapping: TElementDefinitionMappingCTList read fMapping;
   end;
 
@@ -5187,17 +5367,22 @@ type
     fExpression: TStringCT;
     fXpath: TStringCT;
     fSource: TCanonicalCT;
+
+    function GetRequirements: TStringCT;
+    function GetExpression: TStringCT;
+    function GetXpath: TStringCT;
+    function GetSource: TCanonicalCT;
   published
     [TRequired]
     property Key: TIdCT read fKey;
-    property Requirements: TStringCT read fRequirements;
+    property Requirements: TStringCT read GetRequirements;
     [TRequired]
     property Severity: TConstraintSeverityCT read fSeverity;
     [TRequired]
     property Human: TStringCT read fHuman;
-    property Expression: TStringCT read fExpression;
-    property Xpath: TStringCT read fXpath;
-    property Source: TCanonicalCT read fSource;
+    property Expression: TStringCT read GetExpression;
+    property Xpath: TStringCT read GetXpath;
+    property Source: TCanonicalCT read GetSource;
   end;
 
   [TName('ElementDefinition.Mapping')]
@@ -5207,13 +5392,16 @@ type
     fLanguage: TCodeCT;
     fMap: TStringCT;
     fComment: TStringCT;
+
+    function GetLanguage: TCodeCT;
+    function GetComment: TStringCT;
   published
     [TRequired]
     property Identity: TIdCT read fIdentity;
-    property Language: TCodeCT read fLanguage;
+    property Language: TCodeCT read GetLanguage;
     [TRequired]
     property Map: TStringCT read fMap;
-    property Comment: TStringCT read fComment;
+    property Comment: TStringCT read GetComment;
   end;
 
   [TName('ElementDefinition.Base')]
@@ -5239,13 +5427,15 @@ type
     fTargetProfile: TCanonicalCTList;
     fAggregation: TAggregationModeCTList;
     fVersioning: TReferenceVersionRulesCT;
+
+    function GetVersioning: TReferenceVersionRulesCT;
   published
     [TRequired]
     property Code: TUriCT read fCode;
     property Profile: TCanonicalCTList read fProfile;
     property TargetProfile: TCanonicalCTList read fTargetProfile;
     property Aggregation: TAggregationModeCTList read fAggregation;
-    property Versioning: TReferenceVersionRulesCT read fVersioning;
+    property Versioning: TReferenceVersionRulesCT read GetVersioning;
   end;
 
   [TName('ElementDefinition.Example')]
@@ -5468,10 +5658,13 @@ type
     fDescription: TStringCT;
     fOrdered: TBooleanCT;
     fRules: TSlicingRulesCT;
+
+    function GetDescription: TStringCT;
+    function GetOrdered: TBooleanCT;
   published
     property Discriminator: TElementDefinitionDiscriminatorCTList read fDiscriminator;
-    property Description: TStringCT read fDescription;
-    property Ordered: TBooleanCT read fOrdered;
+    property Description: TStringCT read GetDescription;
+    property Ordered: TBooleanCT read GetOrdered;
     [TRequired]
     property Rules: TSlicingRulesCT read fRules;
   end;
@@ -5482,11 +5675,14 @@ type
     fStrength: TBindingStrengthCT;
     fDescription: TStringCT;
     fValueSet: TCanonicalCT;
+
+    function GetDescription: TStringCT;
+    function GetValueSet: TCanonicalCT;
   published
     [TRequired]
     property Strength: TBindingStrengthCT read fStrength;
-    property Description: TStringCT read fDescription;
-    property ValueSet: TCanonicalCT read fValueSet;
+    property Description: TStringCT read GetDescription;
+    property ValueSet: TCanonicalCT read GetValueSet;
   end;
 
   [TName('ElementDefinition.Discriminator')]
@@ -5556,11 +5752,16 @@ type
     fMeta: TMetaCT;
     fImplicitRules: TUriCT;
     fLanguage: TCodeCT;
+
+    function GetId: TIdCT;
+    function GetMeta: TMetaCT;
+    function GetImplicitRules: TUriCT;
+    function GetLanguage: TCodeCT;
   published
-    property Id: TIdCT read fId;
-    property Meta: TMetaCT read fMeta;
-    property ImplicitRules: TUriCT read fImplicitRules;
-    property Language: TCodeCT read fLanguage;
+    property Id: TIdCT read GetId;
+    property Meta: TMetaCT read GetMeta;
+    property ImplicitRules: TUriCT read GetImplicitRules;
+    property Language: TCodeCT read GetLanguage;
   end;
 
   TDomainResourceCT = class(TResourceCT)
@@ -5569,8 +5770,10 @@ type
     fContained: TResourceContainerCTList;
     fExtension: TExtensionCTList;
     fModifierExtension: TExtensionCTList;
+
+    function GetText: TNarrativeCT;
   published
-    property Text: TNarrativeCT read fText;
+    property Text: TNarrativeCT read GetText;
     property Contained: TResourceContainerCTList read fContained;
     property Extension: TExtensionCTList read fExtension;
     property ModifierExtension: TExtensionCTList read fModifierExtension;
@@ -5645,19 +5848,26 @@ type
     fDescription: TStringCT;
     fGuarantor: TAccountGuarantorCTList;
     fPartOf: TReferenceCT;
+
+    function GetType: TCodeableConceptCT;
+    function GetName: TStringCT;
+    function GetServicePeriod: TPeriodCT;
+    function GetOwner: TReferenceCT;
+    function GetDescription: TStringCT;
+    function GetPartOf: TReferenceCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
     property Status: TAccountStatusCT read fStatus;
-    property &Type: TCodeableConceptCT read fType;
-    property Name: TStringCT read fName;
+    property &Type: TCodeableConceptCT read GetType;
+    property Name: TStringCT read GetName;
     property Subject: TReferenceCTList read fSubject;
-    property ServicePeriod: TPeriodCT read fServicePeriod;
+    property ServicePeriod: TPeriodCT read GetServicePeriod;
     property Coverage: TAccountCoverageCTList read fCoverage;
-    property Owner: TReferenceCT read fOwner;
-    property Description: TStringCT read fDescription;
+    property Owner: TReferenceCT read GetOwner;
+    property Description: TStringCT read GetDescription;
     property Guarantor: TAccountGuarantorCTList read fGuarantor;
-    property PartOf: TReferenceCT read fPartOf;
+    property PartOf: TReferenceCT read GetPartOf;
   end;
 
   [TName('Account.Coverage')]
@@ -5665,10 +5875,12 @@ type
   private
     fCoverage: TReferenceCT;
     fPriority: TPositiveIntCT;
+
+    function GetPriority: TPositiveIntCT;
   published
     [TRequired]
     property Coverage: TReferenceCT read fCoverage;
-    property Priority: TPositiveIntCT read fPriority;
+    property Priority: TPositiveIntCT read GetPriority;
   end;
 
   [TName('Account.Guarantor')]
@@ -5677,11 +5889,14 @@ type
     fParty: TReferenceCT;
     fOnHold: TBooleanCT;
     fPeriod: TPeriodCT;
+
+    function GetOnHold: TBooleanCT;
+    function GetPeriod: TPeriodCT;
   published
     [TRequired]
     property Party: TReferenceCT read fParty;
-    property OnHold: TBooleanCT read fOnHold;
-    property Period: TPeriodCT read fPeriod;
+    property OnHold: TBooleanCT read GetOnHold;
+    property Period: TPeriodCT read GetPeriod;
   end;
 
   TAccountStatusCT = class(TElementCT)
@@ -5747,9 +5962,30 @@ type
     fTransform: TCanonicalCT;
     fDynamicValue: TActivityDefinitionDynamicValueCTList;
 
+    function GetUrl: TUriCT;
+    function GetVersion: TStringCT;
+    function GetName: TStringCT;
+    function GetTitle: TStringCT;
+    function GetSubtitle: TStringCT;
+    function GetExperimental: TBooleanCT;
     function GetSubjectCodeableConcept: TCodeableConceptCT;
     function GetSubjectReference: TReferenceCT;
     function GetSubjectChosen: TBasite;
+    function GetDate: TDateTimeCT;
+    function GetPublisher: TStringCT;
+    function GetDescription: TMarkdownCT;
+    function GetPurpose: TMarkdownCT;
+    function GetUsage: TStringCT;
+    function GetCopyright: TMarkdownCT;
+    function GetApprovalDate: TDateCT;
+    function GetLastReviewDate: TDateCT;
+    function GetEffectivePeriod: TPeriodCT;
+    function GetKind: TRequestResourceTypeCT;
+    function GetProfile: TCanonicalCT;
+    function GetCode: TCodeableConceptCT;
+    function GetIntent: TRequestIntentCT;
+    function GetPriority: TRequestPriorityCT;
+    function GetDoNotPerform: TBooleanCT;
     function GetTimingTiming: TTimingCT;
     function GetTimingDateTime: TDateTimeCT;
     function GetTimingAge: TAgeCT;
@@ -5757,39 +5993,42 @@ type
     function GetTimingRange: TRangeCT;
     function GetTimingDuration: TDurationCT;
     function GetTimingChosen: TBasite;
+    function GetLocation: TReferenceCT;
     function GetProductReference: TReferenceCT;
     function GetProductCodeableConcept: TCodeableConceptCT;
     function GetProductChosen: TBasite;
+    function GetQuantity: TQuantityCT;
+    function GetTransform: TCanonicalCT;
   public
     property SubjectChosen: TBasite read GetSubjectChosen;
     property TimingChosen: TBasite read GetTimingChosen;
     property ProductChosen: TBasite read GetProductChosen;
   published
-    property Url: TUriCT read fUrl;
+    property Url: TUriCT read GetUrl;
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Version: TStringCT read fVersion;
-    property Name: TStringCT read fName;
-    property Title: TStringCT read fTitle;
-    property Subtitle: TStringCT read fSubtitle;
+    property Version: TStringCT read GetVersion;
+    property Name: TStringCT read GetName;
+    property Title: TStringCT read GetTitle;
+    property Subtitle: TStringCT read GetSubtitle;
     [TRequired]
     property Status: TPublicationStatusCT read fStatus;
-    property Experimental: TBooleanCT read fExperimental;
+    property Experimental: TBooleanCT read GetExperimental;
     [TChoice('Subject')]
     property SubjectCodeableConcept: TCodeableConceptCT read GetSubjectCodeableConcept;
     [TChoice('Subject')]
     property SubjectReference: TReferenceCT read GetSubjectReference;
-    property Date: TDateTimeCT read fDate;
-    property Publisher: TStringCT read fPublisher;
+    property Date: TDateTimeCT read GetDate;
+    property Publisher: TStringCT read GetPublisher;
     property Contact: TContactDetailCTList read fContact;
-    property Description: TMarkdownCT read fDescription;
+    property Description: TMarkdownCT read GetDescription;
     property UseContext: TUsageContextCTList read fUseContext;
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    property Purpose: TMarkdownCT read fPurpose;
-    property Usage: TStringCT read fUsage;
-    property Copyright: TMarkdownCT read fCopyright;
-    property ApprovalDate: TDateCT read fApprovalDate;
-    property LastReviewDate: TDateCT read fLastReviewDate;
-    property EffectivePeriod: TPeriodCT read fEffectivePeriod;
+    property Purpose: TMarkdownCT read GetPurpose;
+    property Usage: TStringCT read GetUsage;
+    property Copyright: TMarkdownCT read GetCopyright;
+    property ApprovalDate: TDateCT read GetApprovalDate;
+    property LastReviewDate: TDateCT read GetLastReviewDate;
+    property EffectivePeriod: TPeriodCT read GetEffectivePeriod;
     property Topic: TCodeableConceptCTList read fTopic;
     property Author: TContactDetailCTList read fAuthor;
     property Editor: TContactDetailCTList read fEditor;
@@ -5797,12 +6036,12 @@ type
     property Endorser: TContactDetailCTList read fEndorser;
     property RelatedArtifact: TRelatedArtifactCTList read fRelatedArtifact;
     property &Library: TCanonicalCTList read fLibrary;
-    property Kind: TRequestResourceTypeCT read fKind;
-    property Profile: TCanonicalCT read fProfile;
-    property Code: TCodeableConceptCT read fCode;
-    property Intent: TRequestIntentCT read fIntent;
-    property Priority: TRequestPriorityCT read fPriority;
-    property DoNotPerform: TBooleanCT read fDoNotPerform;
+    property Kind: TRequestResourceTypeCT read GetKind;
+    property Profile: TCanonicalCT read GetProfile;
+    property Code: TCodeableConceptCT read GetCode;
+    property Intent: TRequestIntentCT read GetIntent;
+    property Priority: TRequestPriorityCT read GetPriority;
+    property DoNotPerform: TBooleanCT read GetDoNotPerform;
     [TChoice('Timing')]
     property TimingTiming: TTimingCT read GetTimingTiming;
     [TChoice('Timing')]
@@ -5815,19 +6054,19 @@ type
     property TimingRange: TRangeCT read GetTimingRange;
     [TChoice('Timing')]
     property TimingDuration: TDurationCT read GetTimingDuration;
-    property Location: TReferenceCT read fLocation;
+    property Location: TReferenceCT read GetLocation;
     property Participant: TActivityDefinitionParticipantCTList read fParticipant;
     [TChoice('Product')]
     property ProductReference: TReferenceCT read GetProductReference;
     [TChoice('Product')]
     property ProductCodeableConcept: TCodeableConceptCT read GetProductCodeableConcept;
-    property Quantity: TQuantityCT read fQuantity;
+    property Quantity: TQuantityCT read GetQuantity;
     property Dosage: TDosageCTList read fDosage;
     property BodySite: TCodeableConceptCTList read fBodySite;
     property SpecimenRequirement: TReferenceCTList read fSpecimenRequirement;
     property ObservationRequirement: TReferenceCTList read fObservationRequirement;
     property ObservationResultRequirement: TReferenceCTList read fObservationResultRequirement;
-    property Transform: TCanonicalCT read fTransform;
+    property Transform: TCanonicalCT read GetTransform;
     property DynamicValue: TActivityDefinitionDynamicValueCTList read fDynamicValue;
   end;
 
@@ -5836,10 +6075,12 @@ type
   private
     fType: TActionParticipantTypeCT;
     fRole: TCodeableConceptCT;
+
+    function GetRole: TCodeableConceptCT;
   published
     [TRequired]
     property &Type: TActionParticipantTypeCT read fType;
-    property Role: TCodeableConceptCT read fRole;
+    property Role: TCodeableConceptCT read GetRole;
   end;
 
   [TName('ActivityDefinition.DynamicValue')]
@@ -5904,24 +6145,36 @@ type
     fSubjectMedicalHistory: TReferenceCTList;
     fReferenceDocument: TReferenceCTList;
     fStudy: TReferenceCTList;
+
+    function GetIdentifier: TIdentifierCT;
+    function GetEvent: TCodeableConceptCT;
+    function GetEncounter: TReferenceCT;
+    function GetDate: TDateTimeCT;
+    function GetDetected: TDateTimeCT;
+    function GetRecordedDate: TDateTimeCT;
+    function GetLocation: TReferenceCT;
+    function GetSeriousness: TCodeableConceptCT;
+    function GetSeverity: TCodeableConceptCT;
+    function GetOutcome: TCodeableConceptCT;
+    function GetRecorder: TReferenceCT;
   published
-    property Identifier: TIdentifierCT read fIdentifier;
+    property Identifier: TIdentifierCT read GetIdentifier;
     [TRequired]
     property Actuality: TAdverseEventActualityCT read fActuality;
     property Category: TCodeableConceptCTList read fCategory;
-    property Event: TCodeableConceptCT read fEvent;
+    property Event: TCodeableConceptCT read GetEvent;
     [TRequired]
     property Subject: TReferenceCT read fSubject;
-    property Encounter: TReferenceCT read fEncounter;
-    property Date: TDateTimeCT read fDate;
-    property Detected: TDateTimeCT read fDetected;
-    property RecordedDate: TDateTimeCT read fRecordedDate;
+    property Encounter: TReferenceCT read GetEncounter;
+    property Date: TDateTimeCT read GetDate;
+    property Detected: TDateTimeCT read GetDetected;
+    property RecordedDate: TDateTimeCT read GetRecordedDate;
     property ResultingCondition: TReferenceCTList read fResultingCondition;
-    property Location: TReferenceCT read fLocation;
-    property Seriousness: TCodeableConceptCT read fSeriousness;
-    property Severity: TCodeableConceptCT read fSeverity;
-    property Outcome: TCodeableConceptCT read fOutcome;
-    property Recorder: TReferenceCT read fRecorder;
+    property Location: TReferenceCT read GetLocation;
+    property Seriousness: TCodeableConceptCT read GetSeriousness;
+    property Severity: TCodeableConceptCT read GetSeverity;
+    property Outcome: TCodeableConceptCT read GetOutcome;
+    property Recorder: TReferenceCT read GetRecorder;
     property Contributor: TReferenceCTList read fContributor;
     property SuspectEntity: TAdverseEventSuspectEntityCTList read fSuspectEntity;
     property SubjectMedicalHistory: TReferenceCTList read fSubjectMedicalHistory;
@@ -5947,11 +6200,16 @@ type
     fProductRelatedness: TStringCT;
     fAuthor: TReferenceCT;
     fMethod: TCodeableConceptCT;
+
+    function GetAssessment: TCodeableConceptCT;
+    function GetProductRelatedness: TStringCT;
+    function GetAuthor: TReferenceCT;
+    function GetMethod: TCodeableConceptCT;
   published
-    property Assessment: TCodeableConceptCT read fAssessment;
-    property ProductRelatedness: TStringCT read fProductRelatedness;
-    property Author: TReferenceCT read fAuthor;
-    property Method: TCodeableConceptCT read fMethod;
+    property Assessment: TCodeableConceptCT read GetAssessment;
+    property ProductRelatedness: TStringCT read GetProductRelatedness;
+    property Author: TReferenceCT read GetAuthor;
+    property Method: TCodeableConceptCT read GetMethod;
   end;
 
   TAdverseEventActualityCT = class(TElementCT)
@@ -5984,25 +6242,35 @@ type
     fNote: TAnnotationCTList;
     fReaction: TAllergyIntoleranceReactionCTList;
 
+    function GetClinicalStatus: TCodeableConceptCT;
+    function GetVerificationStatus: TCodeableConceptCT;
+    function GetType: TAllergyIntoleranceTypeCT;
+    function GetCriticality: TAllergyIntoleranceCriticalityCT;
+    function GetCode: TCodeableConceptCT;
+    function GetEncounter: TReferenceCT;
     function GetOnsetDateTime: TDateTimeCT;
     function GetOnsetAge: TAgeCT;
     function GetOnsetPeriod: TPeriodCT;
     function GetOnsetRange: TRangeCT;
     function GetOnsetString: TStringCT;
     function GetOnsetChosen: TBasite;
+    function GetRecordedDate: TDateTimeCT;
+    function GetRecorder: TReferenceCT;
+    function GetAsserter: TReferenceCT;
+    function GetLastOccurrence: TDateTimeCT;
   public
     property OnsetChosen: TBasite read GetOnsetChosen;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
-    property ClinicalStatus: TCodeableConceptCT read fClinicalStatus;
-    property VerificationStatus: TCodeableConceptCT read fVerificationStatus;
-    property &Type: TAllergyIntoleranceTypeCT read fType;
+    property ClinicalStatus: TCodeableConceptCT read GetClinicalStatus;
+    property VerificationStatus: TCodeableConceptCT read GetVerificationStatus;
+    property &Type: TAllergyIntoleranceTypeCT read GetType;
     property Category: TAllergyIntoleranceCategoryCTList read fCategory;
-    property Criticality: TAllergyIntoleranceCriticalityCT read fCriticality;
-    property Code: TCodeableConceptCT read fCode;
+    property Criticality: TAllergyIntoleranceCriticalityCT read GetCriticality;
+    property Code: TCodeableConceptCT read GetCode;
     [TRequired]
     property Patient: TReferenceCT read fPatient;
-    property Encounter: TReferenceCT read fEncounter;
+    property Encounter: TReferenceCT read GetEncounter;
     [TChoice('Onset')]
     property OnsetDateTime: TDateTimeCT read GetOnsetDateTime;
     [TChoice('Onset')]
@@ -6013,10 +6281,10 @@ type
     property OnsetRange: TRangeCT read GetOnsetRange;
     [TChoice('Onset')]
     property OnsetString: TStringCT read GetOnsetString;
-    property RecordedDate: TDateTimeCT read fRecordedDate;
-    property Recorder: TReferenceCT read fRecorder;
-    property Asserter: TReferenceCT read fAsserter;
-    property LastOccurrence: TDateTimeCT read fLastOccurrence;
+    property RecordedDate: TDateTimeCT read GetRecordedDate;
+    property Recorder: TReferenceCT read GetRecorder;
+    property Asserter: TReferenceCT read GetAsserter;
+    property LastOccurrence: TDateTimeCT read GetLastOccurrence;
     property Note: TAnnotationCTList read fNote;
     property Reaction: TAllergyIntoleranceReactionCTList read fReaction;
   end;
@@ -6031,13 +6299,19 @@ type
     fSeverity: TAllergyIntoleranceSeverityCT;
     fExposureRoute: TCodeableConceptCT;
     fNote: TAnnotationCTList;
+
+    function GetSubstance: TCodeableConceptCT;
+    function GetDescription: TStringCT;
+    function GetOnset: TDateTimeCT;
+    function GetSeverity: TAllergyIntoleranceSeverityCT;
+    function GetExposureRoute: TCodeableConceptCT;
   published
-    property Substance: TCodeableConceptCT read fSubstance;
+    property Substance: TCodeableConceptCT read GetSubstance;
     property Manifestation: TCodeableConceptCTList read fManifestation;
-    property Description: TStringCT read fDescription;
-    property Onset: TDateTimeCT read fOnset;
-    property Severity: TAllergyIntoleranceSeverityCT read fSeverity;
-    property ExposureRoute: TCodeableConceptCT read fExposureRoute;
+    property Description: TStringCT read GetDescription;
+    property Onset: TDateTimeCT read GetOnset;
+    property Severity: TAllergyIntoleranceSeverityCT read GetSeverity;
+    property ExposureRoute: TCodeableConceptCT read GetExposureRoute;
     property Note: TAnnotationCTList read fNote;
   end;
 
@@ -6093,27 +6367,38 @@ type
     fBasedOn: TReferenceCTList;
     fParticipant: TAppointmentParticipantCTList;
     fRequestedPeriod: TPeriodCTList;
+
+    function GetCancelationReason: TCodeableConceptCT;
+    function GetAppointmentType: TCodeableConceptCT;
+    function GetPriority: TUnsignedIntCT;
+    function GetDescription: TStringCT;
+    function GetStart: TInstantCT;
+    function GetEnd: TInstantCT;
+    function GetMinutesDuration: TPositiveIntCT;
+    function GetCreated: TDateTimeCT;
+    function GetComment: TStringCT;
+    function GetPatientInstruction: TStringCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
     property Status: TAppointmentStatusCT read fStatus;
-    property CancelationReason: TCodeableConceptCT read fCancelationReason;
+    property CancelationReason: TCodeableConceptCT read GetCancelationReason;
     property ServiceCategory: TCodeableConceptCTList read fServiceCategory;
     property ServiceType: TCodeableConceptCTList read fServiceType;
     property Specialty: TCodeableConceptCTList read fSpecialty;
-    property AppointmentType: TCodeableConceptCT read fAppointmentType;
+    property AppointmentType: TCodeableConceptCT read GetAppointmentType;
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
     property ReasonReference: TReferenceCTList read fReasonReference;
-    property Priority: TUnsignedIntCT read fPriority;
-    property Description: TStringCT read fDescription;
+    property Priority: TUnsignedIntCT read GetPriority;
+    property Description: TStringCT read GetDescription;
     property SupportingInformation: TReferenceCTList read fSupportingInformation;
-    property Start: TInstantCT read fStart;
-    property &End: TInstantCT read fEnd;
-    property MinutesDuration: TPositiveIntCT read fMinutesDuration;
+    property Start: TInstantCT read GetStart;
+    property &End: TInstantCT read GetEnd;
+    property MinutesDuration: TPositiveIntCT read GetMinutesDuration;
     property Slot: TReferenceCTList read fSlot;
-    property Created: TDateTimeCT read fCreated;
-    property Comment: TStringCT read fComment;
-    property PatientInstruction: TStringCT read fPatientInstruction;
+    property Created: TDateTimeCT read GetCreated;
+    property Comment: TStringCT read GetComment;
+    property PatientInstruction: TStringCT read GetPatientInstruction;
     property BasedOn: TReferenceCTList read fBasedOn;
     property Participant: TAppointmentParticipantCTList read fParticipant;
     property RequestedPeriod: TPeriodCTList read fRequestedPeriod;
@@ -6127,13 +6412,17 @@ type
     fRequired: TParticipantRequiredCT;
     fStatus: TParticipationStatusCT;
     fPeriod: TPeriodCT;
+
+    function GetActor: TReferenceCT;
+    function GetRequired: TParticipantRequiredCT;
+    function GetPeriod: TPeriodCT;
   published
     property &Type: TCodeableConceptCTList read fType;
-    property Actor: TReferenceCT read fActor;
-    property Required: TParticipantRequiredCT read fRequired;
+    property Actor: TReferenceCT read GetActor;
+    property Required: TParticipantRequiredCT read GetRequired;
     [TRequired]
     property Status: TParticipationStatusCT read fStatus;
-    property Period: TPeriodCT read fPeriod;
+    property Period: TPeriodCT read GetPeriod;
   end;
 
   TParticipantRequiredCT = class(TElementCT)
@@ -6167,17 +6456,22 @@ type
     fActor: TReferenceCT;
     fParticipantStatus: TParticipationStatusCT;
     fComment: TStringCT;
+
+    function GetStart: TInstantCT;
+    function GetEnd: TInstantCT;
+    function GetActor: TReferenceCT;
+    function GetComment: TStringCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
     property Appointment: TReferenceCT read fAppointment;
-    property Start: TInstantCT read fStart;
-    property &End: TInstantCT read fEnd;
+    property Start: TInstantCT read GetStart;
+    property &End: TInstantCT read GetEnd;
     property ParticipantType: TCodeableConceptCTList read fParticipantType;
-    property Actor: TReferenceCT read fActor;
+    property Actor: TReferenceCT read GetActor;
     [TRequired]
     property ParticipantStatus: TParticipationStatusCT read fParticipantStatus;
-    property Comment: TStringCT read fComment;
+    property Comment: TStringCT read GetComment;
   end;
 
   TAuditEventCT = class(TDomainResourceCT)
@@ -6193,16 +6487,21 @@ type
     fAgent: TAuditEventAgentCTList;
     fSource: TAuditEventSourceCT;
     fEntity: TAuditEventEntityCTList;
+
+    function GetAction: TAuditEventActionCT;
+    function GetPeriod: TPeriodCT;
+    function GetOutcome: TAuditEventOutcomeCT;
+    function GetOutcomeDesc: TStringCT;
   published
     [TRequired]
     property &Type: TCodingCT read fType;
     property Subtype: TCodingCTList read fSubtype;
-    property Action: TAuditEventActionCT read fAction;
-    property Period: TPeriodCT read fPeriod;
+    property Action: TAuditEventActionCT read GetAction;
+    property Period: TPeriodCT read GetPeriod;
     [TRequired]
     property Recorded: TInstantCT read fRecorded;
-    property Outcome: TAuditEventOutcomeCT read fOutcome;
-    property OutcomeDesc: TStringCT read fOutcomeDesc;
+    property Outcome: TAuditEventOutcomeCT read GetOutcome;
+    property OutcomeDesc: TStringCT read GetOutcomeDesc;
     property PurposeOfEvent: TCodeableConceptCTList read fPurposeOfEvent;
     property Agent: TAuditEventAgentCTList read fAgent;
     [TRequired]
@@ -6224,18 +6523,26 @@ type
     fMedia: TCodingCT;
     fNetwork: TAuditEventNetworkCT;
     fPurposeOfUse: TCodeableConceptCTList;
+
+    function GetType: TCodeableConceptCT;
+    function GetWho: TReferenceCT;
+    function GetAltId: TStringCT;
+    function GetName: TStringCT;
+    function GetLocation: TReferenceCT;
+    function GetMedia: TCodingCT;
+    function GetNetwork: TAuditEventNetworkCT;
   published
-    property &Type: TCodeableConceptCT read fType;
+    property &Type: TCodeableConceptCT read GetType;
     property Role: TCodeableConceptCTList read fRole;
-    property Who: TReferenceCT read fWho;
-    property AltId: TStringCT read fAltId;
-    property Name: TStringCT read fName;
+    property Who: TReferenceCT read GetWho;
+    property AltId: TStringCT read GetAltId;
+    property Name: TStringCT read GetName;
     [TRequired]
     property Requestor: TBooleanCT read fRequestor;
-    property Location: TReferenceCT read fLocation;
+    property Location: TReferenceCT read GetLocation;
     property Policy: TUriCTList read fPolicy;
-    property Media: TCodingCT read fMedia;
-    property Network: TAuditEventNetworkCT read fNetwork;
+    property Media: TCodingCT read GetMedia;
+    property Network: TAuditEventNetworkCT read GetNetwork;
     property PurposeOfUse: TCodeableConceptCTList read fPurposeOfUse;
   end;
 
@@ -6244,9 +6551,12 @@ type
   private
     fAddress: TStringCT;
     fType: TAuditEventAgentNetworkTypeCT;
+
+    function GetAddress: TStringCT;
+    function GetType: TAuditEventAgentNetworkTypeCT;
   published
-    property Address: TStringCT read fAddress;
-    property &Type: TAuditEventAgentNetworkTypeCT read fType;
+    property Address: TStringCT read GetAddress;
+    property &Type: TAuditEventAgentNetworkTypeCT read GetType;
   end;
 
   [TName('AuditEvent.Source')]
@@ -6255,8 +6565,10 @@ type
     fSite: TStringCT;
     fObserver: TReferenceCT;
     fType: TCodingCTList;
+
+    function GetSite: TStringCT;
   published
-    property Site: TStringCT read fSite;
+    property Site: TStringCT read GetSite;
     [TRequired]
     property Observer: TReferenceCT read fObserver;
     property &Type: TCodingCTList read fType;
@@ -6274,15 +6586,23 @@ type
     fDescription: TStringCT;
     fQuery: TBase64BinaryCT;
     fDetail: TAuditEventDetailCTList;
+
+    function GetWhat: TReferenceCT;
+    function GetType: TCodingCT;
+    function GetRole: TCodingCT;
+    function GetLifecycle: TCodingCT;
+    function GetName: TStringCT;
+    function GetDescription: TStringCT;
+    function GetQuery: TBase64BinaryCT;
   published
-    property What: TReferenceCT read fWhat;
-    property &Type: TCodingCT read fType;
-    property Role: TCodingCT read fRole;
-    property Lifecycle: TCodingCT read fLifecycle;
+    property What: TReferenceCT read GetWhat;
+    property &Type: TCodingCT read GetType;
+    property Role: TCodingCT read GetRole;
+    property Lifecycle: TCodingCT read GetLifecycle;
     property SecurityLabel: TCodingCTList read fSecurityLabel;
-    property Name: TStringCT read fName;
-    property Description: TStringCT read fDescription;
-    property Query: TBase64BinaryCT read fQuery;
+    property Name: TStringCT read GetName;
+    property Description: TStringCT read GetDescription;
+    property Query: TBase64BinaryCT read GetQuery;
     property Detail: TAuditEventDetailCTList read fDetail;
   end;
 
@@ -6335,13 +6655,17 @@ type
     fSubject: TReferenceCT;
     fCreated: TDateCT;
     fAuthor: TReferenceCT;
+
+    function GetSubject: TReferenceCT;
+    function GetCreated: TDateCT;
+    function GetAuthor: TReferenceCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
     property Code: TCodeableConceptCT read fCode;
-    property Subject: TReferenceCT read fSubject;
-    property Created: TDateCT read fCreated;
-    property Author: TReferenceCT read fAuthor;
+    property Subject: TReferenceCT read GetSubject;
+    property Created: TDateCT read GetCreated;
+    property Author: TReferenceCT read GetAuthor;
   end;
 
   TBinaryCT = class(TResourceCT)
@@ -6349,11 +6673,14 @@ type
     fContentType: TCodeCT;
     fSecurityContext: TReferenceCT;
     fData: TBase64BinaryCT;
+
+    function GetSecurityContext: TReferenceCT;
+    function GetData: TBase64BinaryCT;
   published
     [TRequired]
     property ContentType: TCodeCT read fContentType;
-    property SecurityContext: TReferenceCT read fSecurityContext;
-    property Data: TBase64BinaryCT read fData;
+    property SecurityContext: TReferenceCT read GetSecurityContext;
+    property Data: TBase64BinaryCT read GetData;
   end;
 
   TBiologicallyDerivedProductCT = class(TDomainResourceCT)
@@ -6369,17 +6696,24 @@ type
     fProcessing: TBiologicallyDerivedProductProcessingCTList;
     fManipulation: TBiologicallyDerivedProductManipulationCT;
     fStorage: TBiologicallyDerivedProductStorageCTList;
+
+    function GetProductCategory: TBiologicallyDerivedProductCategoryCT;
+    function GetProductCode: TCodeableConceptCT;
+    function GetStatus: TBiologicallyDerivedProductStatusCT;
+    function GetQuantity: TIntegerCT;
+    function GetCollection: TBiologicallyDerivedProductCollectionCT;
+    function GetManipulation: TBiologicallyDerivedProductManipulationCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
-    property ProductCategory: TBiologicallyDerivedProductCategoryCT read fProductCategory;
-    property ProductCode: TCodeableConceptCT read fProductCode;
-    property Status: TBiologicallyDerivedProductStatusCT read fStatus;
+    property ProductCategory: TBiologicallyDerivedProductCategoryCT read GetProductCategory;
+    property ProductCode: TCodeableConceptCT read GetProductCode;
+    property Status: TBiologicallyDerivedProductStatusCT read GetStatus;
     property Request: TReferenceCTList read fRequest;
-    property Quantity: TIntegerCT read fQuantity;
+    property Quantity: TIntegerCT read GetQuantity;
     property Parent: TReferenceCTList read fParent;
-    property Collection: TBiologicallyDerivedProductCollectionCT read fCollection;
+    property Collection: TBiologicallyDerivedProductCollectionCT read GetCollection;
     property Processing: TBiologicallyDerivedProductProcessingCTList read fProcessing;
-    property Manipulation: TBiologicallyDerivedProductManipulationCT read fManipulation;
+    property Manipulation: TBiologicallyDerivedProductManipulationCT read GetManipulation;
     property Storage: TBiologicallyDerivedProductStorageCTList read fStorage;
   end;
 
@@ -6391,14 +6725,16 @@ type
     fCollectedDateTime: TDateTimeCT;
     fCollectedPeriod: TPeriodCT;
 
+    function GetCollector: TReferenceCT;
+    function GetSource: TReferenceCT;
     function GetCollectedDateTime: TDateTimeCT;
     function GetCollectedPeriod: TPeriodCT;
     function GetCollectedChosen: TBasite;
   public
     property CollectedChosen: TBasite read GetCollectedChosen;
   published
-    property Collector: TReferenceCT read fCollector;
-    property Source: TReferenceCT read fSource;
+    property Collector: TReferenceCT read GetCollector;
+    property Source: TReferenceCT read GetSource;
     [TChoice('Collected')]
     property CollectedDateTime: TDateTimeCT read GetCollectedDateTime;
     [TChoice('Collected')]
@@ -6414,15 +6750,18 @@ type
     fTimeDateTime: TDateTimeCT;
     fTimePeriod: TPeriodCT;
 
+    function GetDescription: TStringCT;
+    function GetProcedure: TCodeableConceptCT;
+    function GetAdditive: TReferenceCT;
     function GetTimeDateTime: TDateTimeCT;
     function GetTimePeriod: TPeriodCT;
     function GetTimeChosen: TBasite;
   public
     property TimeChosen: TBasite read GetTimeChosen;
   published
-    property Description: TStringCT read fDescription;
-    property &Procedure: TCodeableConceptCT read fProcedure;
-    property Additive: TReferenceCT read fAdditive;
+    property Description: TStringCT read GetDescription;
+    property &Procedure: TCodeableConceptCT read GetProcedure;
+    property Additive: TReferenceCT read GetAdditive;
     [TChoice('Time')]
     property TimeDateTime: TDateTimeCT read GetTimeDateTime;
     [TChoice('Time')]
@@ -6436,13 +6775,14 @@ type
     fTimeDateTime: TDateTimeCT;
     fTimePeriod: TPeriodCT;
 
+    function GetDescription: TStringCT;
     function GetTimeDateTime: TDateTimeCT;
     function GetTimePeriod: TPeriodCT;
     function GetTimeChosen: TBasite;
   public
     property TimeChosen: TBasite read GetTimeChosen;
   published
-    property Description: TStringCT read fDescription;
+    property Description: TStringCT read GetDescription;
     [TChoice('Time')]
     property TimeDateTime: TDateTimeCT read GetTimeDateTime;
     [TChoice('Time')]
@@ -6456,11 +6796,16 @@ type
     fTemperature: TDecimalCT;
     fScale: TBiologicallyDerivedProductStorageScaleCT;
     fDuration: TPeriodCT;
+
+    function GetDescription: TStringCT;
+    function GetTemperature: TDecimalCT;
+    function GetScale: TBiologicallyDerivedProductStorageScaleCT;
+    function GetDuration: TPeriodCT;
   published
-    property Description: TStringCT read fDescription;
-    property Temperature: TDecimalCT read fTemperature;
-    property Scale: TBiologicallyDerivedProductStorageScaleCT read fScale;
-    property Duration: TPeriodCT read fDuration;
+    property Description: TStringCT read GetDescription;
+    property Temperature: TDecimalCT read GetTemperature;
+    property Scale: TBiologicallyDerivedProductStorageScaleCT read GetScale;
+    property Duration: TPeriodCT read GetDuration;
   end;
 
   TBiologicallyDerivedProductCategoryCT = class(TElementCT)
@@ -6494,13 +6839,18 @@ type
     fDescription: TStringCT;
     fImage: TAttachmentCTList;
     fPatient: TReferenceCT;
+
+    function GetActive: TBooleanCT;
+    function GetMorphology: TCodeableConceptCT;
+    function GetLocation: TCodeableConceptCT;
+    function GetDescription: TStringCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Active: TBooleanCT read fActive;
-    property Morphology: TCodeableConceptCT read fMorphology;
-    property Location: TCodeableConceptCT read fLocation;
+    property Active: TBooleanCT read GetActive;
+    property Morphology: TCodeableConceptCT read GetMorphology;
+    property Location: TCodeableConceptCT read GetLocation;
     property LocationQualifier: TCodeableConceptCTList read fLocationQualifier;
-    property Description: TStringCT read fDescription;
+    property Description: TStringCT read GetDescription;
     property Image: TAttachmentCTList read fImage;
     [TRequired]
     property Patient: TReferenceCT read fPatient;
@@ -6515,15 +6865,20 @@ type
     fLink: TBundleLinkCTList;
     fEntry: TBundleEntryCTList;
     fSignature: TSignatureCT;
+
+    function GetIdentifier: TIdentifierCT;
+    function GetTimestamp: TInstantCT;
+    function GetTotal: TUnsignedIntCT;
+    function GetSignature: TSignatureCT;
   published
-    property Identifier: TIdentifierCT read fIdentifier;
+    property Identifier: TIdentifierCT read GetIdentifier;
     [TRequired]
     property &Type: TBundleTypeCT read fType;
-    property Timestamp: TInstantCT read fTimestamp;
-    property Total: TUnsignedIntCT read fTotal;
+    property Timestamp: TInstantCT read GetTimestamp;
+    property Total: TUnsignedIntCT read GetTotal;
     property Link: TBundleLinkCTList read fLink;
     property Entry: TBundleEntryCTList read fEntry;
-    property Signature: TSignatureCT read fSignature;
+    property Signature: TSignatureCT read GetSignature;
   end;
 
   [TName('Bundle.Link')]
@@ -6547,13 +6902,19 @@ type
     fSearch: TBundleSearchCT;
     fRequest: TBundleRequestCT;
     fResponse: TBundleResponseCT;
+
+    function GetFullUrl: TUriCT;
+    function GetResource: TResourceContainerCT;
+    function GetSearch: TBundleSearchCT;
+    function GetRequest: TBundleRequestCT;
+    function GetResponse: TBundleResponseCT;
   published
     property Link: TBundleLinkCTList read fLink;
-    property FullUrl: TUriCT read fFullUrl;
-    property Resource: TResourceContainerCT read fResource;
-    property Search: TBundleSearchCT read fSearch;
-    property Request: TBundleRequestCT read fRequest;
-    property Response: TBundleResponseCT read fResponse;
+    property FullUrl: TUriCT read GetFullUrl;
+    property Resource: TResourceContainerCT read GetResource;
+    property Search: TBundleSearchCT read GetSearch;
+    property Request: TBundleRequestCT read GetRequest;
+    property Response: TBundleResponseCT read GetResponse;
   end;
 
   [TName('Bundle.Search')]
@@ -6561,9 +6922,12 @@ type
   private
     fMode: TSearchEntryModeCT;
     fScore: TDecimalCT;
+
+    function GetMode: TSearchEntryModeCT;
+    function GetScore: TDecimalCT;
   published
-    property Mode: TSearchEntryModeCT read fMode;
-    property Score: TDecimalCT read fScore;
+    property Mode: TSearchEntryModeCT read GetMode;
+    property Score: TDecimalCT read GetScore;
   end;
 
   [TName('Bundle.Request')]
@@ -6575,15 +6939,20 @@ type
     fIfModifiedSince: TInstantCT;
     fIfMatch: TStringCT;
     fIfNoneExist: TStringCT;
+
+    function GetIfNoneMatch: TStringCT;
+    function GetIfModifiedSince: TInstantCT;
+    function GetIfMatch: TStringCT;
+    function GetIfNoneExist: TStringCT;
   published
     [TRequired]
     property Method: THTTPVerbCT read fMethod;
     [TRequired]
     property Url: TUriCT read fUrl;
-    property IfNoneMatch: TStringCT read fIfNoneMatch;
-    property IfModifiedSince: TInstantCT read fIfModifiedSince;
-    property IfMatch: TStringCT read fIfMatch;
-    property IfNoneExist: TStringCT read fIfNoneExist;
+    property IfNoneMatch: TStringCT read GetIfNoneMatch;
+    property IfModifiedSince: TInstantCT read GetIfModifiedSince;
+    property IfMatch: TStringCT read GetIfMatch;
+    property IfNoneExist: TStringCT read GetIfNoneExist;
   end;
 
   [TName('Bundle.Response')]
@@ -6594,13 +6963,18 @@ type
     fEtag: TStringCT;
     fLastModified: TInstantCT;
     fOutcome: TResourceContainerCT;
+
+    function GetLocation: TUriCT;
+    function GetEtag: TStringCT;
+    function GetLastModified: TInstantCT;
+    function GetOutcome: TResourceContainerCT;
   published
     [TRequired]
     property Status: TStringCT read fStatus;
-    property Location: TUriCT read fLocation;
-    property Etag: TStringCT read fEtag;
-    property LastModified: TInstantCT read fLastModified;
-    property Outcome: TResourceContainerCT read fOutcome;
+    property Location: TUriCT read GetLocation;
+    property Etag: TStringCT read GetEtag;
+    property LastModified: TInstantCT read GetLastModified;
+    property Outcome: TResourceContainerCT read GetOutcome;
   end;
 
   THTTPVerbCT = class(TElementCT)
@@ -6652,29 +7026,41 @@ type
     fRest: TCapabilityStatementRestCTList;
     fMessaging: TCapabilityStatementMessagingCTList;
     fDocument: TCapabilityStatementDocumentCTList;
+
+    function GetUrl: TUriCT;
+    function GetVersion: TStringCT;
+    function GetName: TStringCT;
+    function GetTitle: TStringCT;
+    function GetExperimental: TBooleanCT;
+    function GetPublisher: TStringCT;
+    function GetDescription: TMarkdownCT;
+    function GetPurpose: TMarkdownCT;
+    function GetCopyright: TMarkdownCT;
+    function GetSoftware: TCapabilityStatementSoftwareCT;
+    function GetImplementation: TCapabilityStatementImplementationCT;
   published
-    property Url: TUriCT read fUrl;
-    property Version: TStringCT read fVersion;
-    property Name: TStringCT read fName;
-    property Title: TStringCT read fTitle;
+    property Url: TUriCT read GetUrl;
+    property Version: TStringCT read GetVersion;
+    property Name: TStringCT read GetName;
+    property Title: TStringCT read GetTitle;
     [TRequired]
     property Status: TPublicationStatusCT read fStatus;
-    property Experimental: TBooleanCT read fExperimental;
+    property Experimental: TBooleanCT read GetExperimental;
     [TRequired]
     property Date: TDateTimeCT read fDate;
-    property Publisher: TStringCT read fPublisher;
+    property Publisher: TStringCT read GetPublisher;
     property Contact: TContactDetailCTList read fContact;
-    property Description: TMarkdownCT read fDescription;
+    property Description: TMarkdownCT read GetDescription;
     property UseContext: TUsageContextCTList read fUseContext;
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    property Purpose: TMarkdownCT read fPurpose;
-    property Copyright: TMarkdownCT read fCopyright;
+    property Purpose: TMarkdownCT read GetPurpose;
+    property Copyright: TMarkdownCT read GetCopyright;
     [TRequired]
     property Kind: TCapabilityStatementKindCT read fKind;
     property Instantiates: TCanonicalCTList read fInstantiates;
     property Imports: TCanonicalCTList read fImports;
-    property Software: TCapabilityStatementSoftwareCT read fSoftware;
-    property &Implementation: TCapabilityStatementImplementationCT read fImplementation;
+    property Software: TCapabilityStatementSoftwareCT read GetSoftware;
+    property &Implementation: TCapabilityStatementImplementationCT read GetImplementation;
     [TRequired]
     property FhirVersion: TFHIRVersionCT read fFhirVersion;
     property Format: TCodeCTList read fFormat;
@@ -6691,11 +7077,14 @@ type
     fName: TStringCT;
     fVersion: TStringCT;
     fReleaseDate: TDateTimeCT;
+
+    function GetVersion: TStringCT;
+    function GetReleaseDate: TDateTimeCT;
   published
     [TRequired]
     property Name: TStringCT read fName;
-    property Version: TStringCT read fVersion;
-    property ReleaseDate: TDateTimeCT read fReleaseDate;
+    property Version: TStringCT read GetVersion;
+    property ReleaseDate: TDateTimeCT read GetReleaseDate;
   end;
 
   [TName('CapabilityStatement.Implementation')]
@@ -6704,11 +7093,14 @@ type
     fDescription: TStringCT;
     fUrl: TUrlCT;
     fCustodian: TReferenceCT;
+
+    function GetUrl: TUrlCT;
+    function GetCustodian: TReferenceCT;
   published
     [TRequired]
     property Description: TStringCT read fDescription;
-    property Url: TUrlCT read fUrl;
-    property Custodian: TReferenceCT read fCustodian;
+    property Url: TUrlCT read GetUrl;
+    property Custodian: TReferenceCT read GetCustodian;
   end;
 
   [TName('CapabilityStatement.Rest')]
@@ -6722,11 +7114,14 @@ type
     fSearchParam: TCapabilityStatementSearchParamCTList;
     fOperation: TCapabilityStatementOperationCTList;
     fCompartment: TCanonicalCTList;
+
+    function GetDocumentation: TMarkdownCT;
+    function GetSecurity: TCapabilityStatementSecurityCT;
   published
     [TRequired]
     property Mode: TRestfulCapabilityModeCT read fMode;
-    property Documentation: TMarkdownCT read fDocumentation;
-    property Security: TCapabilityStatementSecurityCT read fSecurity;
+    property Documentation: TMarkdownCT read GetDocumentation;
+    property Security: TCapabilityStatementSecurityCT read GetSecurity;
     property Resource: TCapabilityStatementResourceCTList read fResource;
     property Interaction: TCapabilityStatementInteraction1CTList read fInteraction;
     property SearchParam: TCapabilityStatementSearchParamCTList read fSearchParam;
@@ -6740,10 +7135,13 @@ type
     fCors: TBooleanCT;
     fService: TCodeableConceptCTList;
     fDescription: TMarkdownCT;
+
+    function GetCors: TBooleanCT;
+    function GetDescription: TMarkdownCT;
   published
-    property Cors: TBooleanCT read fCors;
+    property Cors: TBooleanCT read GetCors;
     property Service: TCodeableConceptCTList read fService;
-    property Description: TMarkdownCT read fDescription;
+    property Description: TMarkdownCT read GetDescription;
   end;
 
   [TName('CapabilityStatement.Resource')]
@@ -6766,20 +7164,30 @@ type
     fSearchRevInclude: TStringCTList;
     fSearchParam: TCapabilityStatementSearchParamCTList;
     fOperation: TCapabilityStatementOperationCTList;
+
+    function GetProfile: TCanonicalCT;
+    function GetDocumentation: TMarkdownCT;
+    function GetVersioning: TResourceVersionPolicyCT;
+    function GetReadHistory: TBooleanCT;
+    function GetUpdateCreate: TBooleanCT;
+    function GetConditionalCreate: TBooleanCT;
+    function GetConditionalRead: TConditionalReadStatusCT;
+    function GetConditionalUpdate: TBooleanCT;
+    function GetConditionalDelete: TConditionalDeleteStatusCT;
   published
     [TRequired]
     property &Type: TCodeCT read fType;
-    property Profile: TCanonicalCT read fProfile;
+    property Profile: TCanonicalCT read GetProfile;
     property SupportedProfile: TCanonicalCTList read fSupportedProfile;
-    property Documentation: TMarkdownCT read fDocumentation;
+    property Documentation: TMarkdownCT read GetDocumentation;
     property Interaction: TCapabilityStatementInteractionCTList read fInteraction;
-    property Versioning: TResourceVersionPolicyCT read fVersioning;
-    property ReadHistory: TBooleanCT read fReadHistory;
-    property UpdateCreate: TBooleanCT read fUpdateCreate;
-    property ConditionalCreate: TBooleanCT read fConditionalCreate;
-    property ConditionalRead: TConditionalReadStatusCT read fConditionalRead;
-    property ConditionalUpdate: TBooleanCT read fConditionalUpdate;
-    property ConditionalDelete: TConditionalDeleteStatusCT read fConditionalDelete;
+    property Versioning: TResourceVersionPolicyCT read GetVersioning;
+    property ReadHistory: TBooleanCT read GetReadHistory;
+    property UpdateCreate: TBooleanCT read GetUpdateCreate;
+    property ConditionalCreate: TBooleanCT read GetConditionalCreate;
+    property ConditionalRead: TConditionalReadStatusCT read GetConditionalRead;
+    property ConditionalUpdate: TBooleanCT read GetConditionalUpdate;
+    property ConditionalDelete: TConditionalDeleteStatusCT read GetConditionalDelete;
     property ReferencePolicy: TReferenceHandlingPolicyCTList read fReferencePolicy;
     property SearchInclude: TStringCTList read fSearchInclude;
     property SearchRevInclude: TStringCTList read fSearchRevInclude;
@@ -6792,10 +7200,12 @@ type
   private
     fCode: TTypeRestfulInteractionCT;
     fDocumentation: TMarkdownCT;
+
+    function GetDocumentation: TMarkdownCT;
   published
     [TRequired]
     property Code: TTypeRestfulInteractionCT read fCode;
-    property Documentation: TMarkdownCT read fDocumentation;
+    property Documentation: TMarkdownCT read GetDocumentation;
   end;
 
   [TName('CapabilityStatement.SearchParam')]
@@ -6805,13 +7215,16 @@ type
     fDefinition: TCanonicalCT;
     fType: TSearchParamTypeCT;
     fDocumentation: TMarkdownCT;
+
+    function GetDefinition: TCanonicalCT;
+    function GetDocumentation: TMarkdownCT;
   published
     [TRequired]
     property Name: TStringCT read fName;
-    property Definition: TCanonicalCT read fDefinition;
+    property Definition: TCanonicalCT read GetDefinition;
     [TRequired]
     property &Type: TSearchParamTypeCT read fType;
-    property Documentation: TMarkdownCT read fDocumentation;
+    property Documentation: TMarkdownCT read GetDocumentation;
   end;
 
   [TName('CapabilityStatement.Operation')]
@@ -6820,12 +7233,14 @@ type
     fName: TStringCT;
     fDefinition: TCanonicalCT;
     fDocumentation: TMarkdownCT;
+
+    function GetDocumentation: TMarkdownCT;
   published
     [TRequired]
     property Name: TStringCT read fName;
     [TRequired]
     property Definition: TCanonicalCT read fDefinition;
-    property Documentation: TMarkdownCT read fDocumentation;
+    property Documentation: TMarkdownCT read GetDocumentation;
   end;
 
   [TName('CapabilityStatement.Interaction1')]
@@ -6833,10 +7248,12 @@ type
   private
     fCode: TSystemRestfulInteractionCT;
     fDocumentation: TMarkdownCT;
+
+    function GetDocumentation: TMarkdownCT;
   published
     [TRequired]
     property Code: TSystemRestfulInteractionCT read fCode;
-    property Documentation: TMarkdownCT read fDocumentation;
+    property Documentation: TMarkdownCT read GetDocumentation;
   end;
 
   [TName('CapabilityStatement.Messaging')]
@@ -6846,10 +7263,13 @@ type
     fReliableCache: TUnsignedIntCT;
     fDocumentation: TMarkdownCT;
     fSupportedMessage: TCapabilityStatementSupportedMessageCTList;
+
+    function GetReliableCache: TUnsignedIntCT;
+    function GetDocumentation: TMarkdownCT;
   published
     property Endpoint: TCapabilityStatementEndpointCTList read fEndpoint;
-    property ReliableCache: TUnsignedIntCT read fReliableCache;
-    property Documentation: TMarkdownCT read fDocumentation;
+    property ReliableCache: TUnsignedIntCT read GetReliableCache;
+    property Documentation: TMarkdownCT read GetDocumentation;
     property SupportedMessage: TCapabilityStatementSupportedMessageCTList read fSupportedMessage;
   end;
 
@@ -6883,10 +7303,12 @@ type
     fMode: TDocumentModeCT;
     fDocumentation: TMarkdownCT;
     fProfile: TCanonicalCT;
+
+    function GetDocumentation: TMarkdownCT;
   published
     [TRequired]
     property Mode: TDocumentModeCT read fMode;
-    property Documentation: TMarkdownCT read fDocumentation;
+    property Documentation: TMarkdownCT read GetDocumentation;
     [TRequired]
     property Profile: TCanonicalCT read fProfile;
   end;
@@ -6986,6 +7408,13 @@ type
     fGoal: TReferenceCTList;
     fActivity: TCarePlanActivityCTList;
     fNote: TAnnotationCTList;
+
+    function GetTitle: TStringCT;
+    function GetDescription: TStringCT;
+    function GetEncounter: TReferenceCT;
+    function GetPeriod: TPeriodCT;
+    function GetCreated: TDateTimeCT;
+    function GetAuthor: TReferenceCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     property InstantiatesCanonical: TCanonicalCTList read fInstantiatesCanonical;
@@ -6998,14 +7427,14 @@ type
     [TRequired]
     property Intent: TCarePlanIntentCT read fIntent;
     property Category: TCodeableConceptCTList read fCategory;
-    property Title: TStringCT read fTitle;
-    property Description: TStringCT read fDescription;
+    property Title: TStringCT read GetTitle;
+    property Description: TStringCT read GetDescription;
     [TRequired]
     property Subject: TReferenceCT read fSubject;
-    property Encounter: TReferenceCT read fEncounter;
-    property Period: TPeriodCT read fPeriod;
-    property Created: TDateTimeCT read fCreated;
-    property Author: TReferenceCT read fAuthor;
+    property Encounter: TReferenceCT read GetEncounter;
+    property Period: TPeriodCT read GetPeriod;
+    property Created: TDateTimeCT read GetCreated;
+    property Author: TReferenceCT read GetAuthor;
     property Contributor: TReferenceCTList read fContributor;
     property CareTeam: TReferenceCTList read fCareTeam;
     property Addresses: TReferenceCTList read fAddresses;
@@ -7023,12 +7452,15 @@ type
     fProgress: TAnnotationCTList;
     fReference: TReferenceCT;
     fDetail: TCarePlanDetailCT;
+
+    function GetReference: TReferenceCT;
+    function GetDetail: TCarePlanDetailCT;
   published
     property OutcomeCodeableConcept: TCodeableConceptCTList read fOutcomeCodeableConcept;
     property OutcomeReference: TReferenceCTList read fOutcomeReference;
     property Progress: TAnnotationCTList read fProgress;
-    property Reference: TReferenceCT read fReference;
-    property Detail: TCarePlanDetailCT read fDetail;
+    property Reference: TReferenceCT read GetReference;
+    property Detail: TCarePlanDetailCT read GetDetail;
   end;
 
   [TName('CarePlan.Detail')]
@@ -7055,43 +7487,51 @@ type
     fQuantity: TQuantityCT;
     fDescription: TStringCT;
 
+    function GetKind: TCarePlanActivityKindCT;
+    function GetCode: TCodeableConceptCT;
+    function GetStatusReason: TCodeableConceptCT;
+    function GetDoNotPerform: TBooleanCT;
     function GetScheduledTiming: TTimingCT;
     function GetScheduledPeriod: TPeriodCT;
     function GetScheduledString: TStringCT;
     function GetScheduledChosen: TBasite;
+    function GetLocation: TReferenceCT;
     function GetProductCodeableConcept: TCodeableConceptCT;
     function GetProductReference: TReferenceCT;
     function GetProductChosen: TBasite;
+    function GetDailyAmount: TQuantityCT;
+    function GetQuantity: TQuantityCT;
+    function GetDescription: TStringCT;
   public
     property ScheduledChosen: TBasite read GetScheduledChosen;
     property ProductChosen: TBasite read GetProductChosen;
   published
-    property Kind: TCarePlanActivityKindCT read fKind;
+    property Kind: TCarePlanActivityKindCT read GetKind;
     property InstantiatesCanonical: TCanonicalCTList read fInstantiatesCanonical;
     property InstantiatesUri: TUriCTList read fInstantiatesUri;
-    property Code: TCodeableConceptCT read fCode;
+    property Code: TCodeableConceptCT read GetCode;
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
     property ReasonReference: TReferenceCTList read fReasonReference;
     property Goal: TReferenceCTList read fGoal;
     [TRequired]
     property Status: TCarePlanActivityStatusCT read fStatus;
-    property StatusReason: TCodeableConceptCT read fStatusReason;
-    property DoNotPerform: TBooleanCT read fDoNotPerform;
+    property StatusReason: TCodeableConceptCT read GetStatusReason;
+    property DoNotPerform: TBooleanCT read GetDoNotPerform;
     [TChoice('Scheduled')]
     property ScheduledTiming: TTimingCT read GetScheduledTiming;
     [TChoice('Scheduled')]
     property ScheduledPeriod: TPeriodCT read GetScheduledPeriod;
     [TChoice('Scheduled')]
     property ScheduledString: TStringCT read GetScheduledString;
-    property Location: TReferenceCT read fLocation;
+    property Location: TReferenceCT read GetLocation;
     property Performer: TReferenceCTList read fPerformer;
     [TChoice('Product')]
     property ProductCodeableConcept: TCodeableConceptCT read GetProductCodeableConcept;
     [TChoice('Product')]
     property ProductReference: TReferenceCT read GetProductReference;
-    property DailyAmount: TQuantityCT read fDailyAmount;
-    property Quantity: TQuantityCT read fQuantity;
-    property Description: TStringCT read fDescription;
+    property DailyAmount: TQuantityCT read GetDailyAmount;
+    property Quantity: TQuantityCT read GetQuantity;
+    property Description: TStringCT read GetDescription;
   end;
 
   TCarePlanActivityKindCT = class(TElementCT)
@@ -7137,14 +7577,20 @@ type
     fManagingOrganization: TReferenceCTList;
     fTelecom: TContactPointCTList;
     fNote: TAnnotationCTList;
+
+    function GetStatus: TCareTeamStatusCT;
+    function GetName: TStringCT;
+    function GetSubject: TReferenceCT;
+    function GetEncounter: TReferenceCT;
+    function GetPeriod: TPeriodCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Status: TCareTeamStatusCT read fStatus;
+    property Status: TCareTeamStatusCT read GetStatus;
     property Category: TCodeableConceptCTList read fCategory;
-    property Name: TStringCT read fName;
-    property Subject: TReferenceCT read fSubject;
-    property Encounter: TReferenceCT read fEncounter;
-    property Period: TPeriodCT read fPeriod;
+    property Name: TStringCT read GetName;
+    property Subject: TReferenceCT read GetSubject;
+    property Encounter: TReferenceCT read GetEncounter;
+    property Period: TPeriodCT read GetPeriod;
     property Participant: TCareTeamParticipantCTList read fParticipant;
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
     property ReasonReference: TReferenceCTList read fReasonReference;
@@ -7160,11 +7606,15 @@ type
     fMember: TReferenceCT;
     fOnBehalfOf: TReferenceCT;
     fPeriod: TPeriodCT;
+
+    function GetMember: TReferenceCT;
+    function GetOnBehalfOf: TReferenceCT;
+    function GetPeriod: TPeriodCT;
   published
     property Role: TCodeableConceptCTList read fRole;
-    property Member: TReferenceCT read fMember;
-    property OnBehalfOf: TReferenceCT read fOnBehalfOf;
-    property Period: TPeriodCT read fPeriod;
+    property Member: TReferenceCT read GetMember;
+    property OnBehalfOf: TReferenceCT read GetOnBehalfOf;
+    property Period: TPeriodCT read GetPeriod;
   end;
 
   TCareTeamStatusCT = class(TElementCT)
@@ -7189,19 +7639,25 @@ type
     fAdditionalCharacteristic: TCodeableConceptCTList;
     fAdditionalClassification: TCodeableConceptCTList;
     fRelatedEntry: TCatalogEntryRelatedEntryCTList;
+
+    function GetType: TCodeableConceptCT;
+    function GetStatus: TPublicationStatusCT;
+    function GetValidityPeriod: TPeriodCT;
+    function GetValidTo: TDateTimeCT;
+    function GetLastUpdated: TDateTimeCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
-    property &Type: TCodeableConceptCT read fType;
+    property &Type: TCodeableConceptCT read GetType;
     [TRequired]
     property Orderable: TBooleanCT read fOrderable;
     [TRequired]
     property ReferencedItem: TReferenceCT read fReferencedItem;
     property AdditionalIdentifier: TIdentifierCTList read fAdditionalIdentifier;
     property Classification: TCodeableConceptCTList read fClassification;
-    property Status: TPublicationStatusCT read fStatus;
-    property ValidityPeriod: TPeriodCT read fValidityPeriod;
-    property ValidTo: TDateTimeCT read fValidTo;
-    property LastUpdated: TDateTimeCT read fLastUpdated;
+    property Status: TPublicationStatusCT read GetStatus;
+    property ValidityPeriod: TPeriodCT read GetValidityPeriod;
+    property ValidTo: TDateTimeCT read GetValidTo;
+    property LastUpdated: TDateTimeCT read GetLastUpdated;
     property AdditionalCharacteristic: TCodeableConceptCTList read fAdditionalCharacteristic;
     property AdditionalClassification: TCodeableConceptCTList read fAdditionalClassification;
     property RelatedEntry: TCatalogEntryRelatedEntryCTList read fRelatedEntry;
@@ -7258,10 +7714,20 @@ type
     fNote: TAnnotationCTList;
     fSupportingInformation: TReferenceCTList;
 
+    function GetContext: TReferenceCT;
     function GetOccurrenceDateTime: TDateTimeCT;
     function GetOccurrencePeriod: TPeriodCT;
     function GetOccurrenceTiming: TTimingCT;
     function GetOccurrenceChosen: TBasite;
+    function GetPerformingOrganization: TReferenceCT;
+    function GetRequestingOrganization: TReferenceCT;
+    function GetCostCenter: TReferenceCT;
+    function GetQuantity: TQuantityCT;
+    function GetFactorOverride: TDecimalCT;
+    function GetPriceOverride: TMoneyCT;
+    function GetOverrideReason: TStringCT;
+    function GetEnterer: TReferenceCT;
+    function GetEnteredDate: TDateTimeCT;
     function GetProductReference: TReferenceCT;
     function GetProductCodeableConcept: TCodeableConceptCT;
     function GetProductChosen: TBasite;
@@ -7279,7 +7745,7 @@ type
     property Code: TCodeableConceptCT read fCode;
     [TRequired]
     property Subject: TReferenceCT read fSubject;
-    property Context: TReferenceCT read fContext;
+    property Context: TReferenceCT read GetContext;
     [TChoice('Occurrence')]
     property OccurrenceDateTime: TDateTimeCT read GetOccurrenceDateTime;
     [TChoice('Occurrence')]
@@ -7287,16 +7753,16 @@ type
     [TChoice('Occurrence')]
     property OccurrenceTiming: TTimingCT read GetOccurrenceTiming;
     property Performer: TChargeItemPerformerCTList read fPerformer;
-    property PerformingOrganization: TReferenceCT read fPerformingOrganization;
-    property RequestingOrganization: TReferenceCT read fRequestingOrganization;
-    property CostCenter: TReferenceCT read fCostCenter;
-    property Quantity: TQuantityCT read fQuantity;
+    property PerformingOrganization: TReferenceCT read GetPerformingOrganization;
+    property RequestingOrganization: TReferenceCT read GetRequestingOrganization;
+    property CostCenter: TReferenceCT read GetCostCenter;
+    property Quantity: TQuantityCT read GetQuantity;
     property Bodysite: TCodeableConceptCTList read fBodysite;
-    property FactorOverride: TDecimalCT read fFactorOverride;
-    property PriceOverride: TMoneyCT read fPriceOverride;
-    property OverrideReason: TStringCT read fOverrideReason;
-    property Enterer: TReferenceCT read fEnterer;
-    property EnteredDate: TDateTimeCT read fEnteredDate;
+    property FactorOverride: TDecimalCT read GetFactorOverride;
+    property PriceOverride: TMoneyCT read GetPriceOverride;
+    property OverrideReason: TStringCT read GetOverrideReason;
+    property Enterer: TReferenceCT read GetEnterer;
+    property EnteredDate: TDateTimeCT read GetEnteredDate;
     property Reason: TCodeableConceptCTList read fReason;
     property Service: TReferenceCTList read fService;
     [TChoice('Product')]
@@ -7313,8 +7779,10 @@ type
   private
     fFunction: TCodeableConceptCT;
     fActor: TReferenceCT;
+
+    function GetFunction: TCodeableConceptCT;
   published
-    property &Function: TCodeableConceptCT read fFunction;
+    property &Function: TCodeableConceptCT read GetFunction;
     [TRequired]
     property Actor: TReferenceCT read fActor;
   end;
@@ -7351,29 +7819,41 @@ type
     fInstance: TReferenceCTList;
     fApplicability: TChargeItemDefinitionApplicabilityCTList;
     fPropertyGroup: TChargeItemDefinitionPropertyGroupCTList;
+
+    function GetVersion: TStringCT;
+    function GetTitle: TStringCT;
+    function GetExperimental: TBooleanCT;
+    function GetDate: TDateTimeCT;
+    function GetPublisher: TStringCT;
+    function GetDescription: TMarkdownCT;
+    function GetCopyright: TMarkdownCT;
+    function GetApprovalDate: TDateCT;
+    function GetLastReviewDate: TDateCT;
+    function GetEffectivePeriod: TPeriodCT;
+    function GetCode: TCodeableConceptCT;
   published
     [TRequired]
     property Url: TUriCT read fUrl;
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Version: TStringCT read fVersion;
-    property Title: TStringCT read fTitle;
+    property Version: TStringCT read GetVersion;
+    property Title: TStringCT read GetTitle;
     property DerivedFromUri: TUriCTList read fDerivedFromUri;
     property PartOf: TCanonicalCTList read fPartOf;
     property Replaces: TCanonicalCTList read fReplaces;
     [TRequired]
     property Status: TPublicationStatusCT read fStatus;
-    property Experimental: TBooleanCT read fExperimental;
-    property Date: TDateTimeCT read fDate;
-    property Publisher: TStringCT read fPublisher;
+    property Experimental: TBooleanCT read GetExperimental;
+    property Date: TDateTimeCT read GetDate;
+    property Publisher: TStringCT read GetPublisher;
     property Contact: TContactDetailCTList read fContact;
-    property Description: TMarkdownCT read fDescription;
+    property Description: TMarkdownCT read GetDescription;
     property UseContext: TUsageContextCTList read fUseContext;
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    property Copyright: TMarkdownCT read fCopyright;
-    property ApprovalDate: TDateCT read fApprovalDate;
-    property LastReviewDate: TDateCT read fLastReviewDate;
-    property EffectivePeriod: TPeriodCT read fEffectivePeriod;
-    property Code: TCodeableConceptCT read fCode;
+    property Copyright: TMarkdownCT read GetCopyright;
+    property ApprovalDate: TDateCT read GetApprovalDate;
+    property LastReviewDate: TDateCT read GetLastReviewDate;
+    property EffectivePeriod: TPeriodCT read GetEffectivePeriod;
+    property Code: TCodeableConceptCT read GetCode;
     property Instance: TReferenceCTList read fInstance;
     property Applicability: TChargeItemDefinitionApplicabilityCTList read fApplicability;
     property PropertyGroup: TChargeItemDefinitionPropertyGroupCTList read fPropertyGroup;
@@ -7385,10 +7865,14 @@ type
     fDescription: TStringCT;
     fLanguage: TStringCT;
     fExpression: TStringCT;
+
+    function GetDescription: TStringCT;
+    function GetLanguage: TStringCT;
+    function GetExpression: TStringCT;
   published
-    property Description: TStringCT read fDescription;
-    property Language: TStringCT read fLanguage;
-    property Expression: TStringCT read fExpression;
+    property Description: TStringCT read GetDescription;
+    property Language: TStringCT read GetLanguage;
+    property Expression: TStringCT read GetExpression;
   end;
 
   [TName('ChargeItemDefinition.PropertyGroup')]
@@ -7408,12 +7892,16 @@ type
     fCode: TCodeableConceptCT;
     fFactor: TDecimalCT;
     fAmount: TMoneyCT;
+
+    function GetCode: TCodeableConceptCT;
+    function GetFactor: TDecimalCT;
+    function GetAmount: TMoneyCT;
   published
     [TRequired]
     property &Type: TInvoicePriceComponentTypeCT read fType;
-    property Code: TCodeableConceptCT read fCode;
-    property Factor: TDecimalCT read fFactor;
-    property Amount: TMoneyCT read fAmount;
+    property Code: TCodeableConceptCT read GetCode;
+    property Factor: TDecimalCT read GetFactor;
+    property Amount: TMoneyCT read GetAmount;
   end;
 
   TInvoicePriceComponentTypeCT = class(TElementCT)
@@ -7452,41 +7940,54 @@ type
     fAccident: TClaimAccidentCT;
     fItem: TClaimItemCTList;
     fTotal: TMoneyCT;
+
+    function GetSubType: TCodeableConceptCT;
+    function GetBillablePeriod: TPeriodCT;
+    function GetEnterer: TReferenceCT;
+    function GetInsurer: TReferenceCT;
+    function GetFundsReserve: TCodeableConceptCT;
+    function GetPrescription: TReferenceCT;
+    function GetOriginalPrescription: TReferenceCT;
+    function GetPayee: TClaimPayeeCT;
+    function GetReferral: TReferenceCT;
+    function GetFacility: TReferenceCT;
+    function GetAccident: TClaimAccidentCT;
+    function GetTotal: TMoneyCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
     property Status: TFinancialResourceStatusCodesCT read fStatus;
     [TRequired]
     property &Type: TCodeableConceptCT read fType;
-    property SubType: TCodeableConceptCT read fSubType;
+    property SubType: TCodeableConceptCT read GetSubType;
     [TRequired]
     property Use: TUseCT read fUse;
     [TRequired]
     property Patient: TReferenceCT read fPatient;
-    property BillablePeriod: TPeriodCT read fBillablePeriod;
+    property BillablePeriod: TPeriodCT read GetBillablePeriod;
     [TRequired]
     property Created: TDateTimeCT read fCreated;
-    property Enterer: TReferenceCT read fEnterer;
-    property Insurer: TReferenceCT read fInsurer;
+    property Enterer: TReferenceCT read GetEnterer;
+    property Insurer: TReferenceCT read GetInsurer;
     [TRequired]
     property Provider: TReferenceCT read fProvider;
     [TRequired]
     property Priority: TCodeableConceptCT read fPriority;
-    property FundsReserve: TCodeableConceptCT read fFundsReserve;
+    property FundsReserve: TCodeableConceptCT read GetFundsReserve;
     property Related: TClaimRelatedCTList read fRelated;
-    property Prescription: TReferenceCT read fPrescription;
-    property OriginalPrescription: TReferenceCT read fOriginalPrescription;
-    property Payee: TClaimPayeeCT read fPayee;
-    property Referral: TReferenceCT read fReferral;
-    property Facility: TReferenceCT read fFacility;
+    property Prescription: TReferenceCT read GetPrescription;
+    property OriginalPrescription: TReferenceCT read GetOriginalPrescription;
+    property Payee: TClaimPayeeCT read GetPayee;
+    property Referral: TReferenceCT read GetReferral;
+    property Facility: TReferenceCT read GetFacility;
     property CareTeam: TClaimCareTeamCTList read fCareTeam;
     property SupportingInfo: TClaimSupportingInfoCTList read fSupportingInfo;
     property Diagnosis: TClaimDiagnosisCTList read fDiagnosis;
     property &Procedure: TClaimProcedureCTList read fProcedure;
     property Insurance: TClaimInsuranceCTList read fInsurance;
-    property Accident: TClaimAccidentCT read fAccident;
+    property Accident: TClaimAccidentCT read GetAccident;
     property Item: TClaimItemCTList read fItem;
-    property Total: TMoneyCT read fTotal;
+    property Total: TMoneyCT read GetTotal;
   end;
 
   [TName('Claim.Related')]
@@ -7495,10 +7996,14 @@ type
     fClaim: TReferenceCT;
     fRelationship: TCodeableConceptCT;
     fReference: TIdentifierCT;
+
+    function GetClaim: TReferenceCT;
+    function GetRelationship: TCodeableConceptCT;
+    function GetReference: TIdentifierCT;
   published
-    property Claim: TReferenceCT read fClaim;
-    property Relationship: TCodeableConceptCT read fRelationship;
-    property Reference: TIdentifierCT read fReference;
+    property Claim: TReferenceCT read GetClaim;
+    property Relationship: TCodeableConceptCT read GetRelationship;
+    property Reference: TIdentifierCT read GetReference;
   end;
 
   [TName('Claim.Payee')]
@@ -7506,10 +8011,12 @@ type
   private
     fType: TCodeableConceptCT;
     fParty: TReferenceCT;
+
+    function GetParty: TReferenceCT;
   published
     [TRequired]
     property &Type: TCodeableConceptCT read fType;
-    property Party: TReferenceCT read fParty;
+    property Party: TReferenceCT read GetParty;
   end;
 
   [TName('Claim.CareTeam')]
@@ -7520,14 +8027,18 @@ type
     fResponsible: TBooleanCT;
     fRole: TCodeableConceptCT;
     fQualification: TCodeableConceptCT;
+
+    function GetResponsible: TBooleanCT;
+    function GetRole: TCodeableConceptCT;
+    function GetQualification: TCodeableConceptCT;
   published
     [TRequired]
     property Sequence: TPositiveIntCT read fSequence;
     [TRequired]
     property Provider: TReferenceCT read fProvider;
-    property Responsible: TBooleanCT read fResponsible;
-    property Role: TCodeableConceptCT read fRole;
-    property Qualification: TCodeableConceptCT read fQualification;
+    property Responsible: TBooleanCT read GetResponsible;
+    property Role: TCodeableConceptCT read GetRole;
+    property Qualification: TCodeableConceptCT read GetQualification;
   end;
 
   [TName('Claim.SupportingInfo')]
@@ -7545,6 +8056,7 @@ type
     fValueReference: TReferenceCT;
     fReason: TCodeableConceptCT;
 
+    function GetCode: TCodeableConceptCT;
     function GetTimingDate: TDateCT;
     function GetTimingPeriod: TPeriodCT;
     function GetTimingChosen: TBasite;
@@ -7554,6 +8066,7 @@ type
     function GetValueAttachment: TAttachmentCT;
     function GetValueReference: TReferenceCT;
     function GetValueChosen: TBasite;
+    function GetReason: TCodeableConceptCT;
   public
     property TimingChosen: TBasite read GetTimingChosen;
     property ValueChosen: TBasite read GetValueChosen;
@@ -7562,7 +8075,7 @@ type
     property Sequence: TPositiveIntCT read fSequence;
     [TRequired]
     property Category: TCodeableConceptCT read fCategory;
-    property Code: TCodeableConceptCT read fCode;
+    property Code: TCodeableConceptCT read GetCode;
     [TChoice('Timing')]
     property TimingDate: TDateCT read GetTimingDate;
     [TChoice('Timing')]
@@ -7577,7 +8090,7 @@ type
     property ValueAttachment: TAttachmentCT read GetValueAttachment;
     [TChoice('Value')]
     property ValueReference: TReferenceCT read GetValueReference;
-    property Reason: TCodeableConceptCT read fReason;
+    property Reason: TCodeableConceptCT read GetReason;
   end;
 
   [TName('Claim.Diagnosis')]
@@ -7593,6 +8106,8 @@ type
     function GetDiagnosisCodeableConcept: TCodeableConceptCT;
     function GetDiagnosisReference: TReferenceCT;
     function GetDiagnosisChosen: TBasite;
+    function GetOnAdmission: TCodeableConceptCT;
+    function GetPackageCode: TCodeableConceptCT;
   public
     property DiagnosisChosen: TBasite read GetDiagnosisChosen;
   published
@@ -7603,8 +8118,8 @@ type
     [TChoice('Diagnosis')]
     property DiagnosisReference: TReferenceCT read GetDiagnosisReference;
     property &Type: TCodeableConceptCTList read fType;
-    property OnAdmission: TCodeableConceptCT read fOnAdmission;
-    property PackageCode: TCodeableConceptCT read fPackageCode;
+    property OnAdmission: TCodeableConceptCT read GetOnAdmission;
+    property PackageCode: TCodeableConceptCT read GetPackageCode;
   end;
 
   [TName('Claim.Procedure')]
@@ -7617,6 +8132,7 @@ type
     fProcedureReference: TReferenceCT;
     fUdi: TReferenceCTList;
 
+    function GetDate: TDateTimeCT;
     function GetProcedureCodeableConcept: TCodeableConceptCT;
     function GetProcedureReference: TReferenceCT;
     function GetProcedureChosen: TBasite;
@@ -7626,7 +8142,7 @@ type
     [TRequired]
     property Sequence: TPositiveIntCT read fSequence;
     property &Type: TCodeableConceptCTList read fType;
-    property Date: TDateTimeCT read fDate;
+    property Date: TDateTimeCT read GetDate;
     [TChoice('Procedure')]
     property ProcedureCodeableConcept: TCodeableConceptCT read GetProcedureCodeableConcept;
     [TChoice('Procedure')]
@@ -7644,17 +8160,21 @@ type
     fBusinessArrangement: TStringCT;
     fPreAuthRef: TStringCTList;
     fClaimResponse: TReferenceCT;
+
+    function GetIdentifier: TIdentifierCT;
+    function GetBusinessArrangement: TStringCT;
+    function GetClaimResponse: TReferenceCT;
   published
     [TRequired]
     property Sequence: TPositiveIntCT read fSequence;
     [TRequired]
     property Focal: TBooleanCT read fFocal;
-    property Identifier: TIdentifierCT read fIdentifier;
+    property Identifier: TIdentifierCT read GetIdentifier;
     [TRequired]
     property Coverage: TReferenceCT read fCoverage;
-    property BusinessArrangement: TStringCT read fBusinessArrangement;
+    property BusinessArrangement: TStringCT read GetBusinessArrangement;
     property PreAuthRef: TStringCTList read fPreAuthRef;
-    property ClaimResponse: TReferenceCT read fClaimResponse;
+    property ClaimResponse: TReferenceCT read GetClaimResponse;
   end;
 
   [TName('Claim.Accident')]
@@ -7665,6 +8185,7 @@ type
     fLocationAddress: TAddressCT;
     fLocationReference: TReferenceCT;
 
+    function GetType: TCodeableConceptCT;
     function GetLocationAddress: TAddressCT;
     function GetLocationReference: TReferenceCT;
     function GetLocationChosen: TBasite;
@@ -7673,7 +8194,7 @@ type
   published
     [TRequired]
     property Date: TDateCT read fDate;
-    property &Type: TCodeableConceptCT read fType;
+    property &Type: TCodeableConceptCT read GetType;
     [TChoice('Location')]
     property LocationAddress: TAddressCT read GetLocationAddress;
     [TChoice('Location')]
@@ -7708,6 +8229,8 @@ type
     fEncounter: TReferenceCTList;
     fDetail: TClaimDetailCTList;
 
+    function GetRevenue: TCodeableConceptCT;
+    function GetCategory: TCodeableConceptCT;
     function GetServicedDate: TDateCT;
     function GetServicedPeriod: TPeriodCT;
     function GetServicedChosen: TBasite;
@@ -7715,6 +8238,11 @@ type
     function GetLocationAddress: TAddressCT;
     function GetLocationReference: TReferenceCT;
     function GetLocationChosen: TBasite;
+    function GetQuantity: TQuantityCT;
+    function GetUnitPrice: TMoneyCT;
+    function GetFactor: TDecimalCT;
+    function GetNet: TMoneyCT;
+    function GetBodySite: TCodeableConceptCT;
   public
     property ServicedChosen: TBasite read GetServicedChosen;
     property LocationChosen: TBasite read GetLocationChosen;
@@ -7725,8 +8253,8 @@ type
     property DiagnosisSequence: TPositiveIntCTList read fDiagnosisSequence;
     property ProcedureSequence: TPositiveIntCTList read fProcedureSequence;
     property InformationSequence: TPositiveIntCTList read fInformationSequence;
-    property Revenue: TCodeableConceptCT read fRevenue;
-    property Category: TCodeableConceptCT read fCategory;
+    property Revenue: TCodeableConceptCT read GetRevenue;
+    property Category: TCodeableConceptCT read GetCategory;
     [TRequired]
     property ProductOrService: TCodeableConceptCT read fProductOrService;
     property Modifier: TCodeableConceptCTList read fModifier;
@@ -7741,12 +8269,12 @@ type
     property LocationAddress: TAddressCT read GetLocationAddress;
     [TChoice('Location')]
     property LocationReference: TReferenceCT read GetLocationReference;
-    property Quantity: TQuantityCT read fQuantity;
-    property UnitPrice: TMoneyCT read fUnitPrice;
-    property Factor: TDecimalCT read fFactor;
-    property Net: TMoneyCT read fNet;
+    property Quantity: TQuantityCT read GetQuantity;
+    property UnitPrice: TMoneyCT read GetUnitPrice;
+    property Factor: TDecimalCT read GetFactor;
+    property Net: TMoneyCT read GetNet;
     property Udi: TReferenceCTList read fUdi;
-    property BodySite: TCodeableConceptCT read fBodySite;
+    property BodySite: TCodeableConceptCT read GetBodySite;
     property SubSite: TCodeableConceptCTList read fSubSite;
     property Encounter: TReferenceCTList read fEncounter;
     property Detail: TClaimDetailCTList read fDetail;
@@ -7767,19 +8295,26 @@ type
     fNet: TMoneyCT;
     fUdi: TReferenceCTList;
     fSubDetail: TClaimSubDetailCTList;
+
+    function GetRevenue: TCodeableConceptCT;
+    function GetCategory: TCodeableConceptCT;
+    function GetQuantity: TQuantityCT;
+    function GetUnitPrice: TMoneyCT;
+    function GetFactor: TDecimalCT;
+    function GetNet: TMoneyCT;
   published
     [TRequired]
     property Sequence: TPositiveIntCT read fSequence;
-    property Revenue: TCodeableConceptCT read fRevenue;
-    property Category: TCodeableConceptCT read fCategory;
+    property Revenue: TCodeableConceptCT read GetRevenue;
+    property Category: TCodeableConceptCT read GetCategory;
     [TRequired]
     property ProductOrService: TCodeableConceptCT read fProductOrService;
     property Modifier: TCodeableConceptCTList read fModifier;
     property ProgramCode: TCodeableConceptCTList read fProgramCode;
-    property Quantity: TQuantityCT read fQuantity;
-    property UnitPrice: TMoneyCT read fUnitPrice;
-    property Factor: TDecimalCT read fFactor;
-    property Net: TMoneyCT read fNet;
+    property Quantity: TQuantityCT read GetQuantity;
+    property UnitPrice: TMoneyCT read GetUnitPrice;
+    property Factor: TDecimalCT read GetFactor;
+    property Net: TMoneyCT read GetNet;
     property Udi: TReferenceCTList read fUdi;
     property SubDetail: TClaimSubDetailCTList read fSubDetail;
   end;
@@ -7798,19 +8333,26 @@ type
     fFactor: TDecimalCT;
     fNet: TMoneyCT;
     fUdi: TReferenceCTList;
+
+    function GetRevenue: TCodeableConceptCT;
+    function GetCategory: TCodeableConceptCT;
+    function GetQuantity: TQuantityCT;
+    function GetUnitPrice: TMoneyCT;
+    function GetFactor: TDecimalCT;
+    function GetNet: TMoneyCT;
   published
     [TRequired]
     property Sequence: TPositiveIntCT read fSequence;
-    property Revenue: TCodeableConceptCT read fRevenue;
-    property Category: TCodeableConceptCT read fCategory;
+    property Revenue: TCodeableConceptCT read GetRevenue;
+    property Category: TCodeableConceptCT read GetCategory;
     [TRequired]
     property ProductOrService: TCodeableConceptCT read fProductOrService;
     property Modifier: TCodeableConceptCTList read fModifier;
     property ProgramCode: TCodeableConceptCTList read fProgramCode;
-    property Quantity: TQuantityCT read fQuantity;
-    property UnitPrice: TMoneyCT read fUnitPrice;
-    property Factor: TDecimalCT read fFactor;
-    property Net: TMoneyCT read fNet;
+    property Quantity: TQuantityCT read GetQuantity;
+    property UnitPrice: TMoneyCT read GetUnitPrice;
+    property Factor: TDecimalCT read GetFactor;
+    property Net: TMoneyCT read GetNet;
     property Udi: TReferenceCTList read fUdi;
   end;
 
@@ -7857,13 +8399,25 @@ type
     fCommunicationRequest: TReferenceCTList;
     fInsurance: TClaimResponseInsuranceCTList;
     fError: TClaimResponseErrorCTList;
+
+    function GetSubType: TCodeableConceptCT;
+    function GetRequestor: TReferenceCT;
+    function GetRequest: TReferenceCT;
+    function GetDisposition: TStringCT;
+    function GetPreAuthRef: TStringCT;
+    function GetPreAuthPeriod: TPeriodCT;
+    function GetPayeeType: TCodeableConceptCT;
+    function GetPayment: TClaimResponsePaymentCT;
+    function GetFundsReserve: TCodeableConceptCT;
+    function GetFormCode: TCodeableConceptCT;
+    function GetForm: TAttachmentCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
     property Status: TFinancialResourceStatusCodesCT read fStatus;
     [TRequired]
     property &Type: TCodeableConceptCT read fType;
-    property SubType: TCodeableConceptCT read fSubType;
+    property SubType: TCodeableConceptCT read GetSubType;
     [TRequired]
     property Use: TUseCT read fUse;
     [TRequired]
@@ -7872,22 +8426,22 @@ type
     property Created: TDateTimeCT read fCreated;
     [TRequired]
     property Insurer: TReferenceCT read fInsurer;
-    property Requestor: TReferenceCT read fRequestor;
-    property Request: TReferenceCT read fRequest;
+    property Requestor: TReferenceCT read GetRequestor;
+    property Request: TReferenceCT read GetRequest;
     [TRequired]
     property Outcome: TClaimProcessingCodesCT read fOutcome;
-    property Disposition: TStringCT read fDisposition;
-    property PreAuthRef: TStringCT read fPreAuthRef;
-    property PreAuthPeriod: TPeriodCT read fPreAuthPeriod;
-    property PayeeType: TCodeableConceptCT read fPayeeType;
+    property Disposition: TStringCT read GetDisposition;
+    property PreAuthRef: TStringCT read GetPreAuthRef;
+    property PreAuthPeriod: TPeriodCT read GetPreAuthPeriod;
+    property PayeeType: TCodeableConceptCT read GetPayeeType;
     property Item: TClaimResponseItemCTList read fItem;
     property AddItem: TClaimResponseAddItemCTList read fAddItem;
     property Adjudication: TClaimResponseAdjudicationCTList read fAdjudication;
     property Total: TClaimResponseTotalCTList read fTotal;
-    property Payment: TClaimResponsePaymentCT read fPayment;
-    property FundsReserve: TCodeableConceptCT read fFundsReserve;
-    property FormCode: TCodeableConceptCT read fFormCode;
-    property Form: TAttachmentCT read fForm;
+    property Payment: TClaimResponsePaymentCT read GetPayment;
+    property FundsReserve: TCodeableConceptCT read GetFundsReserve;
+    property FormCode: TCodeableConceptCT read GetFormCode;
+    property Form: TAttachmentCT read GetForm;
     property ProcessNote: TClaimResponseProcessNoteCTList read fProcessNote;
     property CommunicationRequest: TReferenceCTList read fCommunicationRequest;
     property Insurance: TClaimResponseInsuranceCTList read fInsurance;
@@ -7916,12 +8470,16 @@ type
     fReason: TCodeableConceptCT;
     fAmount: TMoneyCT;
     fValue: TDecimalCT;
+
+    function GetReason: TCodeableConceptCT;
+    function GetAmount: TMoneyCT;
+    function GetValue: TDecimalCT;
   published
     [TRequired]
     property Category: TCodeableConceptCT read fCategory;
-    property Reason: TCodeableConceptCT read fReason;
-    property Amount: TMoneyCT read fAmount;
-    property Value: TDecimalCT read fValue;
+    property Reason: TCodeableConceptCT read GetReason;
+    property Amount: TMoneyCT read GetAmount;
+    property Value: TDecimalCT read GetValue;
   end;
 
   [TName('ClaimResponse.Detail')]
@@ -7984,6 +8542,11 @@ type
     function GetLocationAddress: TAddressCT;
     function GetLocationReference: TReferenceCT;
     function GetLocationChosen: TBasite;
+    function GetQuantity: TQuantityCT;
+    function GetUnitPrice: TMoneyCT;
+    function GetFactor: TDecimalCT;
+    function GetNet: TMoneyCT;
+    function GetBodySite: TCodeableConceptCT;
   public
     property ServicedChosen: TBasite read GetServicedChosen;
     property LocationChosen: TBasite read GetLocationChosen;
@@ -8006,11 +8569,11 @@ type
     property LocationAddress: TAddressCT read GetLocationAddress;
     [TChoice('Location')]
     property LocationReference: TReferenceCT read GetLocationReference;
-    property Quantity: TQuantityCT read fQuantity;
-    property UnitPrice: TMoneyCT read fUnitPrice;
-    property Factor: TDecimalCT read fFactor;
-    property Net: TMoneyCT read fNet;
-    property BodySite: TCodeableConceptCT read fBodySite;
+    property Quantity: TQuantityCT read GetQuantity;
+    property UnitPrice: TMoneyCT read GetUnitPrice;
+    property Factor: TDecimalCT read GetFactor;
+    property Net: TMoneyCT read GetNet;
+    property BodySite: TCodeableConceptCT read GetBodySite;
     property SubSite: TCodeableConceptCTList read fSubSite;
     property NoteNumber: TPositiveIntCTList read fNoteNumber;
     property Adjudication: TClaimResponseAdjudicationCTList read fAdjudication;
@@ -8029,14 +8592,19 @@ type
     fNoteNumber: TPositiveIntCTList;
     fAdjudication: TClaimResponseAdjudicationCTList;
     fSubDetail: TClaimResponseSubDetail1CTList;
+
+    function GetQuantity: TQuantityCT;
+    function GetUnitPrice: TMoneyCT;
+    function GetFactor: TDecimalCT;
+    function GetNet: TMoneyCT;
   published
     [TRequired]
     property ProductOrService: TCodeableConceptCT read fProductOrService;
     property Modifier: TCodeableConceptCTList read fModifier;
-    property Quantity: TQuantityCT read fQuantity;
-    property UnitPrice: TMoneyCT read fUnitPrice;
-    property Factor: TDecimalCT read fFactor;
-    property Net: TMoneyCT read fNet;
+    property Quantity: TQuantityCT read GetQuantity;
+    property UnitPrice: TMoneyCT read GetUnitPrice;
+    property Factor: TDecimalCT read GetFactor;
+    property Net: TMoneyCT read GetNet;
     property NoteNumber: TPositiveIntCTList read fNoteNumber;
     property Adjudication: TClaimResponseAdjudicationCTList read fAdjudication;
     property SubDetail: TClaimResponseSubDetail1CTList read fSubDetail;
@@ -8053,14 +8621,19 @@ type
     fNet: TMoneyCT;
     fNoteNumber: TPositiveIntCTList;
     fAdjudication: TClaimResponseAdjudicationCTList;
+
+    function GetQuantity: TQuantityCT;
+    function GetUnitPrice: TMoneyCT;
+    function GetFactor: TDecimalCT;
+    function GetNet: TMoneyCT;
   published
     [TRequired]
     property ProductOrService: TCodeableConceptCT read fProductOrService;
     property Modifier: TCodeableConceptCTList read fModifier;
-    property Quantity: TQuantityCT read fQuantity;
-    property UnitPrice: TMoneyCT read fUnitPrice;
-    property Factor: TDecimalCT read fFactor;
-    property Net: TMoneyCT read fNet;
+    property Quantity: TQuantityCT read GetQuantity;
+    property UnitPrice: TMoneyCT read GetUnitPrice;
+    property Factor: TDecimalCT read GetFactor;
+    property Net: TMoneyCT read GetNet;
     property NoteNumber: TPositiveIntCTList read fNoteNumber;
     property Adjudication: TClaimResponseAdjudicationCTList read fAdjudication;
   end;
@@ -8086,15 +8659,20 @@ type
     fDate: TDateCT;
     fAmount: TMoneyCT;
     fIdentifier: TIdentifierCT;
+
+    function GetAdjustment: TMoneyCT;
+    function GetAdjustmentReason: TCodeableConceptCT;
+    function GetDate: TDateCT;
+    function GetIdentifier: TIdentifierCT;
   published
     [TRequired]
     property &Type: TCodeableConceptCT read fType;
-    property Adjustment: TMoneyCT read fAdjustment;
-    property AdjustmentReason: TCodeableConceptCT read fAdjustmentReason;
-    property Date: TDateCT read fDate;
+    property Adjustment: TMoneyCT read GetAdjustment;
+    property AdjustmentReason: TCodeableConceptCT read GetAdjustmentReason;
+    property Date: TDateCT read GetDate;
     [TRequired]
     property Amount: TMoneyCT read fAmount;
-    property Identifier: TIdentifierCT read fIdentifier;
+    property Identifier: TIdentifierCT read GetIdentifier;
   end;
 
   [TName('ClaimResponse.ProcessNote')]
@@ -8104,12 +8682,16 @@ type
     fType: TNoteTypeCT;
     fText: TStringCT;
     fLanguage: TCodeableConceptCT;
+
+    function GetNumber: TPositiveIntCT;
+    function GetType: TNoteTypeCT;
+    function GetLanguage: TCodeableConceptCT;
   published
-    property Number: TPositiveIntCT read fNumber;
-    property &Type: TNoteTypeCT read fType;
+    property Number: TPositiveIntCT read GetNumber;
+    property &Type: TNoteTypeCT read GetType;
     [TRequired]
     property Text: TStringCT read fText;
-    property Language: TCodeableConceptCT read fLanguage;
+    property Language: TCodeableConceptCT read GetLanguage;
   end;
 
   [TName('ClaimResponse.Insurance')]
@@ -8120,6 +8702,9 @@ type
     fCoverage: TReferenceCT;
     fBusinessArrangement: TStringCT;
     fClaimResponse: TReferenceCT;
+
+    function GetBusinessArrangement: TStringCT;
+    function GetClaimResponse: TReferenceCT;
   published
     [TRequired]
     property Sequence: TPositiveIntCT read fSequence;
@@ -8127,8 +8712,8 @@ type
     property Focal: TBooleanCT read fFocal;
     [TRequired]
     property Coverage: TReferenceCT read fCoverage;
-    property BusinessArrangement: TStringCT read fBusinessArrangement;
-    property ClaimResponse: TReferenceCT read fClaimResponse;
+    property BusinessArrangement: TStringCT read GetBusinessArrangement;
+    property ClaimResponse: TReferenceCT read GetClaimResponse;
   end;
 
   [TName('ClaimResponse.Error')]
@@ -8138,10 +8723,14 @@ type
     fDetailSequence: TPositiveIntCT;
     fSubDetailSequence: TPositiveIntCT;
     fCode: TCodeableConceptCT;
+
+    function GetItemSequence: TPositiveIntCT;
+    function GetDetailSequence: TPositiveIntCT;
+    function GetSubDetailSequence: TPositiveIntCT;
   published
-    property ItemSequence: TPositiveIntCT read fItemSequence;
-    property DetailSequence: TPositiveIntCT read fDetailSequence;
-    property SubDetailSequence: TPositiveIntCT read fSubDetailSequence;
+    property ItemSequence: TPositiveIntCT read GetItemSequence;
+    property DetailSequence: TPositiveIntCT read GetDetailSequence;
+    property SubDetailSequence: TPositiveIntCT read GetSubDetailSequence;
     [TRequired]
     property Code: TCodeableConceptCT read fCode;
   end;
@@ -8177,32 +8766,40 @@ type
     fSupportingInfo: TReferenceCTList;
     fNote: TAnnotationCTList;
 
+    function GetStatusReason: TCodeableConceptCT;
+    function GetCode: TCodeableConceptCT;
+    function GetDescription: TStringCT;
+    function GetEncounter: TReferenceCT;
     function GetEffectiveDateTime: TDateTimeCT;
     function GetEffectivePeriod: TPeriodCT;
     function GetEffectiveChosen: TBasite;
+    function GetDate: TDateTimeCT;
+    function GetAssessor: TReferenceCT;
+    function GetPrevious: TReferenceCT;
+    function GetSummary: TStringCT;
   public
     property EffectiveChosen: TBasite read GetEffectiveChosen;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
     property Status: TClinicalImpressionStatusCT read fStatus;
-    property StatusReason: TCodeableConceptCT read fStatusReason;
-    property Code: TCodeableConceptCT read fCode;
-    property Description: TStringCT read fDescription;
+    property StatusReason: TCodeableConceptCT read GetStatusReason;
+    property Code: TCodeableConceptCT read GetCode;
+    property Description: TStringCT read GetDescription;
     [TRequired]
     property Subject: TReferenceCT read fSubject;
-    property Encounter: TReferenceCT read fEncounter;
+    property Encounter: TReferenceCT read GetEncounter;
     [TChoice('Effective')]
     property EffectiveDateTime: TDateTimeCT read GetEffectiveDateTime;
     [TChoice('Effective')]
     property EffectivePeriod: TPeriodCT read GetEffectivePeriod;
-    property Date: TDateTimeCT read fDate;
-    property Assessor: TReferenceCT read fAssessor;
-    property Previous: TReferenceCT read fPrevious;
+    property Date: TDateTimeCT read GetDate;
+    property Assessor: TReferenceCT read GetAssessor;
+    property Previous: TReferenceCT read GetPrevious;
     property Problem: TReferenceCTList read fProblem;
     property Investigation: TClinicalImpressionInvestigationCTList read fInvestigation;
     property Protocol: TUriCTList read fProtocol;
-    property Summary: TStringCT read fSummary;
+    property Summary: TStringCT read GetSummary;
     property Finding: TClinicalImpressionFindingCTList read fFinding;
     property PrognosisCodeableConcept: TCodeableConceptCTList read fPrognosisCodeableConcept;
     property PrognosisReference: TReferenceCTList read fPrognosisReference;
@@ -8227,10 +8824,14 @@ type
     fItemCodeableConcept: TCodeableConceptCT;
     fItemReference: TReferenceCT;
     fBasis: TStringCT;
+
+    function GetItemCodeableConcept: TCodeableConceptCT;
+    function GetItemReference: TReferenceCT;
+    function GetBasis: TStringCT;
   published
-    property ItemCodeableConcept: TCodeableConceptCT read fItemCodeableConcept;
-    property ItemReference: TReferenceCT read fItemReference;
-    property Basis: TStringCT read fBasis;
+    property ItemCodeableConcept: TCodeableConceptCT read GetItemCodeableConcept;
+    property ItemReference: TReferenceCT read GetItemReference;
+    property Basis: TStringCT read GetBasis;
   end;
 
   TClinicalImpressionStatusCT = class(TElementCT)
@@ -8268,32 +8869,50 @@ type
     fFilter: TCodeSystemFilterCTList;
     fProperty: TCodeSystemPropertyCTList;
     fConcept: TCodeSystemConceptCTList;
+
+    function GetUrl: TUriCT;
+    function GetVersion: TStringCT;
+    function GetName: TStringCT;
+    function GetTitle: TStringCT;
+    function GetExperimental: TBooleanCT;
+    function GetDate: TDateTimeCT;
+    function GetPublisher: TStringCT;
+    function GetDescription: TMarkdownCT;
+    function GetPurpose: TMarkdownCT;
+    function GetCopyright: TMarkdownCT;
+    function GetCaseSensitive: TBooleanCT;
+    function GetValueSet: TCanonicalCT;
+    function GetHierarchyMeaning: TCodeSystemHierarchyMeaningCT;
+    function GetCompositional: TBooleanCT;
+    function GetVersionNeeded: TBooleanCT;
+    function GetSupplements: TCanonicalCT;
+    function GetCount: TUnsignedIntCT;
   published
-    property Url: TUriCT read fUrl;
+    property Url: TUriCT read GetUrl;
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Version: TStringCT read fVersion;
-    property Name: TStringCT read fName;
-    property Title: TStringCT read fTitle;
+    property Version: TStringCT read GetVersion;
+    property Name: TStringCT read GetName;
+    property Title: TStringCT read GetTitle;
     [TRequired]
     property Status: TPublicationStatusCT read fStatus;
-    property Experimental: TBooleanCT read fExperimental;
-    property Date: TDateTimeCT read fDate;
-    property Publisher: TStringCT read fPublisher;
+    property Experimental: TBooleanCT read GetExperimental;
+    property Date: TDateTimeCT read GetDate;
+    property Publisher: TStringCT read GetPublisher;
     property Contact: TContactDetailCTList read fContact;
-    property Description: TMarkdownCT read fDescription;
+    property Description: TMarkdownCT read GetDescription;
     property UseContext: TUsageContextCTList read fUseContext;
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    property Purpose: TMarkdownCT read fPurpose;
-    property Copyright: TMarkdownCT read fCopyright;
-    property CaseSensitive: TBooleanCT read fCaseSensitive;
-    property ValueSet: TCanonicalCT read fValueSet;
-    property HierarchyMeaning: TCodeSystemHierarchyMeaningCT read fHierarchyMeaning;
-    property Compositional: TBooleanCT read fCompositional;
-    property VersionNeeded: TBooleanCT read fVersionNeeded;
+    property Purpose: TMarkdownCT read GetPurpose;
+    property Copyright: TMarkdownCT read GetCopyright;
+    property CaseSensitive: TBooleanCT read GetCaseSensitive;
+    property ValueSet: TCanonicalCT read GetValueSet;
+    property HierarchyMeaning: TCodeSystemHierarchyMeaningCT read GetHierarchyMeaning;
+    property Compositional: TBooleanCT read GetCompositional;
+    property VersionNeeded: TBooleanCT read GetVersionNeeded;
     [TRequired]
     property Content: TCodeSystemContentModeCT read fContent;
-    property Supplements: TCanonicalCT read fSupplements;
-    property Count: TUnsignedIntCT read fCount;
+    property Supplements: TCanonicalCT read GetSupplements;
+    property Count: TUnsignedIntCT read GetCount;
     property Filter: TCodeSystemFilterCTList read fFilter;
     property &Property: TCodeSystemPropertyCTList read fProperty;
     property Concept: TCodeSystemConceptCTList read fConcept;
@@ -8306,10 +8925,12 @@ type
     fDescription: TStringCT;
     fOperator: TFilterOperatorCTList;
     fValue: TStringCT;
+
+    function GetDescription: TStringCT;
   published
     [TRequired]
     property Code: TCodeCT read fCode;
-    property Description: TStringCT read fDescription;
+    property Description: TStringCT read GetDescription;
     property Operator: TFilterOperatorCTList read fOperator;
     [TRequired]
     property Value: TStringCT read fValue;
@@ -8322,11 +8943,14 @@ type
     fUri: TUriCT;
     fDescription: TStringCT;
     fType: TPropertyTypeCT;
+
+    function GetUri: TUriCT;
+    function GetDescription: TStringCT;
   published
     [TRequired]
     property Code: TCodeCT read fCode;
-    property Uri: TUriCT read fUri;
-    property Description: TStringCT read fDescription;
+    property Uri: TUriCT read GetUri;
+    property Description: TStringCT read GetDescription;
     [TRequired]
     property &Type: TPropertyTypeCT read fType;
   end;
@@ -8340,11 +8964,14 @@ type
     fDesignation: TCodeSystemDesignationCTList;
     fProperty: TCodeSystemProperty1CTList;
     fConcept: TCodeSystemConceptCTList;
+
+    function GetDisplay: TStringCT;
+    function GetDefinition: TStringCT;
   published
     [TRequired]
     property Code: TCodeCT read fCode;
-    property Display: TStringCT read fDisplay;
-    property Definition: TStringCT read fDefinition;
+    property Display: TStringCT read GetDisplay;
+    property Definition: TStringCT read GetDefinition;
     property Designation: TCodeSystemDesignationCTList read fDesignation;
     property &Property: TCodeSystemProperty1CTList read fProperty;
     property Concept: TCodeSystemConceptCTList read fConcept;
@@ -8356,9 +8983,12 @@ type
     fLanguage: TCodeCT;
     fUse: TCodingCT;
     fValue: TStringCT;
+
+    function GetLanguage: TCodeCT;
+    function GetUse: TCodingCT;
   published
-    property Language: TCodeCT read fLanguage;
-    property Use: TCodingCT read fUse;
+    property Language: TCodeCT read GetLanguage;
+    property Use: TCodingCT read GetUse;
     [TRequired]
     property Value: TStringCT read fValue;
   end;
@@ -8457,6 +9087,15 @@ type
     fReasonReference: TReferenceCTList;
     fPayload: TCommunicationPayloadCTList;
     fNote: TAnnotationCTList;
+
+    function GetStatusReason: TCodeableConceptCT;
+    function GetPriority: TRequestPriorityCT;
+    function GetSubject: TReferenceCT;
+    function GetTopic: TCodeableConceptCT;
+    function GetEncounter: TReferenceCT;
+    function GetSent: TDateTimeCT;
+    function GetReceived: TDateTimeCT;
+    function GetSender: TReferenceCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     property InstantiatesCanonical: TCanonicalCTList read fInstantiatesCanonical;
@@ -8466,18 +9105,18 @@ type
     property InResponseTo: TReferenceCTList read fInResponseTo;
     [TRequired]
     property Status: TEventStatusCT read fStatus;
-    property StatusReason: TCodeableConceptCT read fStatusReason;
+    property StatusReason: TCodeableConceptCT read GetStatusReason;
     property Category: TCodeableConceptCTList read fCategory;
-    property Priority: TRequestPriorityCT read fPriority;
+    property Priority: TRequestPriorityCT read GetPriority;
     property Medium: TCodeableConceptCTList read fMedium;
-    property Subject: TReferenceCT read fSubject;
-    property Topic: TCodeableConceptCT read fTopic;
+    property Subject: TReferenceCT read GetSubject;
+    property Topic: TCodeableConceptCT read GetTopic;
     property About: TReferenceCTList read fAbout;
-    property Encounter: TReferenceCT read fEncounter;
-    property Sent: TDateTimeCT read fSent;
-    property Received: TDateTimeCT read fReceived;
+    property Encounter: TReferenceCT read GetEncounter;
+    property Sent: TDateTimeCT read GetSent;
+    property Received: TDateTimeCT read GetReceived;
     property Recipient: TReferenceCTList read fRecipient;
-    property Sender: TReferenceCT read fSender;
+    property Sender: TReferenceCT read GetSender;
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
     property ReasonReference: TReferenceCTList read fReasonReference;
     property Payload: TCommunicationPayloadCTList read fPayload;
@@ -8539,35 +9178,44 @@ type
     fReasonReference: TReferenceCTList;
     fNote: TAnnotationCTList;
 
+    function GetGroupIdentifier: TIdentifierCT;
+    function GetStatusReason: TCodeableConceptCT;
+    function GetPriority: TRequestPriorityCT;
+    function GetDoNotPerform: TBooleanCT;
+    function GetSubject: TReferenceCT;
+    function GetEncounter: TReferenceCT;
     function GetOccurrenceDateTime: TDateTimeCT;
     function GetOccurrencePeriod: TPeriodCT;
     function GetOccurrenceChosen: TBasite;
+    function GetAuthoredOn: TDateTimeCT;
+    function GetRequester: TReferenceCT;
+    function GetSender: TReferenceCT;
   public
     property OccurrenceChosen: TBasite read GetOccurrenceChosen;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     property BasedOn: TReferenceCTList read fBasedOn;
     property Replaces: TReferenceCTList read fReplaces;
-    property GroupIdentifier: TIdentifierCT read fGroupIdentifier;
+    property GroupIdentifier: TIdentifierCT read GetGroupIdentifier;
     [TRequired]
     property Status: TRequestStatusCT read fStatus;
-    property StatusReason: TCodeableConceptCT read fStatusReason;
+    property StatusReason: TCodeableConceptCT read GetStatusReason;
     property Category: TCodeableConceptCTList read fCategory;
-    property Priority: TRequestPriorityCT read fPriority;
-    property DoNotPerform: TBooleanCT read fDoNotPerform;
+    property Priority: TRequestPriorityCT read GetPriority;
+    property DoNotPerform: TBooleanCT read GetDoNotPerform;
     property Medium: TCodeableConceptCTList read fMedium;
-    property Subject: TReferenceCT read fSubject;
+    property Subject: TReferenceCT read GetSubject;
     property About: TReferenceCTList read fAbout;
-    property Encounter: TReferenceCT read fEncounter;
+    property Encounter: TReferenceCT read GetEncounter;
     property Payload: TCommunicationRequestPayloadCTList read fPayload;
     [TChoice('Occurrence')]
     property OccurrenceDateTime: TDateTimeCT read GetOccurrenceDateTime;
     [TChoice('Occurrence')]
     property OccurrencePeriod: TPeriodCT read GetOccurrencePeriod;
-    property AuthoredOn: TDateTimeCT read fAuthoredOn;
-    property Requester: TReferenceCT read fRequester;
+    property AuthoredOn: TDateTimeCT read GetAuthoredOn;
+    property Requester: TReferenceCT read GetRequester;
     property Recipient: TReferenceCTList read fRecipient;
-    property Sender: TReferenceCT read fSender;
+    property Sender: TReferenceCT read GetSender;
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
     property ReasonReference: TReferenceCTList read fReasonReference;
     property Note: TAnnotationCTList read fNote;
@@ -8611,21 +9259,28 @@ type
     fCode: TCompartmentTypeCT;
     fSearch: TBooleanCT;
     fResource: TCompartmentDefinitionResourceCTList;
+
+    function GetVersion: TStringCT;
+    function GetExperimental: TBooleanCT;
+    function GetDate: TDateTimeCT;
+    function GetPublisher: TStringCT;
+    function GetDescription: TMarkdownCT;
+    function GetPurpose: TMarkdownCT;
   published
     [TRequired]
     property Url: TUriCT read fUrl;
-    property Version: TStringCT read fVersion;
+    property Version: TStringCT read GetVersion;
     [TRequired]
     property Name: TStringCT read fName;
     [TRequired]
     property Status: TPublicationStatusCT read fStatus;
-    property Experimental: TBooleanCT read fExperimental;
-    property Date: TDateTimeCT read fDate;
-    property Publisher: TStringCT read fPublisher;
+    property Experimental: TBooleanCT read GetExperimental;
+    property Date: TDateTimeCT read GetDate;
+    property Publisher: TStringCT read GetPublisher;
     property Contact: TContactDetailCTList read fContact;
-    property Description: TMarkdownCT read fDescription;
+    property Description: TMarkdownCT read GetDescription;
     property UseContext: TUsageContextCTList read fUseContext;
-    property Purpose: TMarkdownCT read fPurpose;
+    property Purpose: TMarkdownCT read GetPurpose;
     [TRequired]
     property Code: TCompartmentTypeCT read fCode;
     [TRequired]
@@ -8639,11 +9294,13 @@ type
     fCode: TCodeCT;
     fParam: TStringCTList;
     fDocumentation: TStringCT;
+
+    function GetDocumentation: TStringCT;
   published
     [TRequired]
     property Code: TCodeCT read fCode;
     property Param: TStringCTList read fParam;
-    property Documentation: TStringCT read fDocumentation;
+    property Documentation: TStringCT read GetDocumentation;
   end;
 
   TCompartmentTypeCT = class(TElementCT)
@@ -8670,23 +9327,29 @@ type
     fRelatesTo: TCompositionRelatesToCTList;
     fEvent: TCompositionEventCTList;
     fSection: TCompositionSectionCTList;
+
+    function GetIdentifier: TIdentifierCT;
+    function GetSubject: TReferenceCT;
+    function GetEncounter: TReferenceCT;
+    function GetConfidentiality: TVConfidentialityClassificationCT;
+    function GetCustodian: TReferenceCT;
   published
-    property Identifier: TIdentifierCT read fIdentifier;
+    property Identifier: TIdentifierCT read GetIdentifier;
     [TRequired]
     property Status: TCompositionStatusCT read fStatus;
     [TRequired]
     property &Type: TCodeableConceptCT read fType;
     property Category: TCodeableConceptCTList read fCategory;
-    property Subject: TReferenceCT read fSubject;
-    property Encounter: TReferenceCT read fEncounter;
+    property Subject: TReferenceCT read GetSubject;
+    property Encounter: TReferenceCT read GetEncounter;
     [TRequired]
     property Date: TDateTimeCT read fDate;
     property Author: TReferenceCTList read fAuthor;
     [TRequired]
     property Title: TStringCT read fTitle;
-    property Confidentiality: TVConfidentialityClassificationCT read fConfidentiality;
+    property Confidentiality: TVConfidentialityClassificationCT read GetConfidentiality;
     property Attester: TCompositionAttesterCTList read fAttester;
-    property Custodian: TReferenceCT read fCustodian;
+    property Custodian: TReferenceCT read GetCustodian;
     property RelatesTo: TCompositionRelatesToCTList read fRelatesTo;
     property Event: TCompositionEventCTList read fEvent;
     property Section: TCompositionSectionCTList read fSection;
@@ -8698,11 +9361,14 @@ type
     fMode: TCompositionAttestationModeCT;
     fTime: TDateTimeCT;
     fParty: TReferenceCT;
+
+    function GetTime: TDateTimeCT;
+    function GetParty: TReferenceCT;
   published
     [TRequired]
     property Mode: TCompositionAttestationModeCT read fMode;
-    property Time: TDateTimeCT read fTime;
-    property Party: TReferenceCT read fParty;
+    property Time: TDateTimeCT read GetTime;
+    property Party: TReferenceCT read GetParty;
   end;
 
   [TName('Composition.RelatesTo')]
@@ -8732,9 +9398,11 @@ type
     fCode: TCodeableConceptCTList;
     fPeriod: TPeriodCT;
     fDetail: TReferenceCTList;
+
+    function GetPeriod: TPeriodCT;
   published
     property Code: TCodeableConceptCTList read fCode;
-    property Period: TPeriodCT read fPeriod;
+    property Period: TPeriodCT read GetPeriod;
     property Detail: TReferenceCTList read fDetail;
   end;
 
@@ -8751,16 +9419,24 @@ type
     fEntry: TReferenceCTList;
     fEmptyReason: TCodeableConceptCT;
     fSection: TCompositionSectionCTList;
+
+    function GetTitle: TStringCT;
+    function GetCode: TCodeableConceptCT;
+    function GetFocus: TReferenceCT;
+    function GetText: TNarrativeCT;
+    function GetMode: TListModeCT;
+    function GetOrderedBy: TCodeableConceptCT;
+    function GetEmptyReason: TCodeableConceptCT;
   published
-    property Title: TStringCT read fTitle;
-    property Code: TCodeableConceptCT read fCode;
+    property Title: TStringCT read GetTitle;
+    property Code: TCodeableConceptCT read GetCode;
     property Author: TReferenceCTList read fAuthor;
-    property Focus: TReferenceCT read fFocus;
-    property Text: TNarrativeCT read fText;
-    property Mode: TListModeCT read fMode;
-    property OrderedBy: TCodeableConceptCT read fOrderedBy;
+    property Focus: TReferenceCT read GetFocus;
+    property Text: TNarrativeCT read GetText;
+    property Mode: TListModeCT read GetMode;
+    property OrderedBy: TCodeableConceptCT read GetOrderedBy;
     property Entry: TReferenceCTList read fEntry;
-    property EmptyReason: TCodeableConceptCT read fEmptyReason;
+    property EmptyReason: TCodeableConceptCT read GetEmptyReason;
     property Section: TCompositionSectionCTList read fSection;
   end;
 
@@ -8823,6 +9499,17 @@ type
     fTargetCanonical: TCanonicalCT;
     fGroup: TConceptMapGroupCTList;
 
+    function GetUrl: TUriCT;
+    function GetIdentifier: TIdentifierCT;
+    function GetVersion: TStringCT;
+    function GetName: TStringCT;
+    function GetTitle: TStringCT;
+    function GetExperimental: TBooleanCT;
+    function GetDate: TDateTimeCT;
+    function GetPublisher: TStringCT;
+    function GetDescription: TMarkdownCT;
+    function GetPurpose: TMarkdownCT;
+    function GetCopyright: TMarkdownCT;
     function GetSourceUri: TUriCT;
     function GetSourceCanonical: TCanonicalCT;
     function GetSourceChosen: TBasite;
@@ -8833,22 +9520,22 @@ type
     property SourceChosen: TBasite read GetSourceChosen;
     property TargetChosen: TBasite read GetTargetChosen;
   published
-    property Url: TUriCT read fUrl;
-    property Identifier: TIdentifierCT read fIdentifier;
-    property Version: TStringCT read fVersion;
-    property Name: TStringCT read fName;
-    property Title: TStringCT read fTitle;
+    property Url: TUriCT read GetUrl;
+    property Identifier: TIdentifierCT read GetIdentifier;
+    property Version: TStringCT read GetVersion;
+    property Name: TStringCT read GetName;
+    property Title: TStringCT read GetTitle;
     [TRequired]
     property Status: TPublicationStatusCT read fStatus;
-    property Experimental: TBooleanCT read fExperimental;
-    property Date: TDateTimeCT read fDate;
-    property Publisher: TStringCT read fPublisher;
+    property Experimental: TBooleanCT read GetExperimental;
+    property Date: TDateTimeCT read GetDate;
+    property Publisher: TStringCT read GetPublisher;
     property Contact: TContactDetailCTList read fContact;
-    property Description: TMarkdownCT read fDescription;
+    property Description: TMarkdownCT read GetDescription;
     property UseContext: TUsageContextCTList read fUseContext;
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    property Purpose: TMarkdownCT read fPurpose;
-    property Copyright: TMarkdownCT read fCopyright;
+    property Purpose: TMarkdownCT read GetPurpose;
+    property Copyright: TMarkdownCT read GetCopyright;
     [TChoice('Source')]
     property SourceUri: TUriCT read GetSourceUri;
     [TChoice('Source')]
@@ -8869,13 +9556,19 @@ type
     fTargetVersion: TStringCT;
     fElement: TConceptMapElementCTList;
     fUnmapped: TConceptMapUnmappedCT;
+
+    function GetSource: TUriCT;
+    function GetSourceVersion: TStringCT;
+    function GetTarget: TUriCT;
+    function GetTargetVersion: TStringCT;
+    function GetUnmapped: TConceptMapUnmappedCT;
   published
-    property Source: TUriCT read fSource;
-    property SourceVersion: TStringCT read fSourceVersion;
-    property Target: TUriCT read fTarget;
-    property TargetVersion: TStringCT read fTargetVersion;
+    property Source: TUriCT read GetSource;
+    property SourceVersion: TStringCT read GetSourceVersion;
+    property Target: TUriCT read GetTarget;
+    property TargetVersion: TStringCT read GetTargetVersion;
     property Element: TConceptMapElementCTList read fElement;
-    property Unmapped: TConceptMapUnmappedCT read fUnmapped;
+    property Unmapped: TConceptMapUnmappedCT read GetUnmapped;
   end;
 
   [TName('ConceptMap.Element')]
@@ -8884,9 +9577,12 @@ type
     fCode: TCodeCT;
     fDisplay: TStringCT;
     fTarget: TConceptMapTargetCTList;
+
+    function GetCode: TCodeCT;
+    function GetDisplay: TStringCT;
   published
-    property Code: TCodeCT read fCode;
-    property Display: TStringCT read fDisplay;
+    property Code: TCodeCT read GetCode;
+    property Display: TStringCT read GetDisplay;
     property Target: TConceptMapTargetCTList read fTarget;
   end;
 
@@ -8899,12 +9595,16 @@ type
     fComment: TStringCT;
     fDependsOn: TConceptMapDependsOnCTList;
     fProduct: TConceptMapDependsOnCTList;
+
+    function GetCode: TCodeCT;
+    function GetDisplay: TStringCT;
+    function GetComment: TStringCT;
   published
-    property Code: TCodeCT read fCode;
-    property Display: TStringCT read fDisplay;
+    property Code: TCodeCT read GetCode;
+    property Display: TStringCT read GetDisplay;
     [TRequired]
     property Equivalence: TConceptMapEquivalenceCT read fEquivalence;
-    property Comment: TStringCT read fComment;
+    property Comment: TStringCT read GetComment;
     property DependsOn: TConceptMapDependsOnCTList read fDependsOn;
     property Product: TConceptMapDependsOnCTList read fProduct;
   end;
@@ -8916,13 +9616,16 @@ type
     fSystem: TCanonicalCT;
     fValue: TStringCT;
     fDisplay: TStringCT;
+
+    function GetSystem: TCanonicalCT;
+    function GetDisplay: TStringCT;
   published
     [TRequired]
     property &Property: TUriCT read fProperty;
-    property System: TCanonicalCT read fSystem;
+    property System: TCanonicalCT read GetSystem;
     [TRequired]
     property Value: TStringCT read fValue;
-    property Display: TStringCT read fDisplay;
+    property Display: TStringCT read GetDisplay;
   end;
 
   [TName('ConceptMap.Unmapped')]
@@ -8932,12 +9635,16 @@ type
     fCode: TCodeCT;
     fDisplay: TStringCT;
     fUrl: TCanonicalCT;
+
+    function GetCode: TCodeCT;
+    function GetDisplay: TStringCT;
+    function GetUrl: TCanonicalCT;
   published
     [TRequired]
     property Mode: TConceptMapGroupUnmappedModeCT read fMode;
-    property Code: TCodeCT read fCode;
-    property Display: TStringCT read fDisplay;
-    property Url: TCanonicalCT read fUrl;
+    property Code: TCodeCT read GetCode;
+    property Display: TStringCT read GetDisplay;
+    property Url: TCanonicalCT read GetUrl;
   end;
 
   TConceptMapGroupUnmappedModeCT = class(TElementCT)
@@ -8975,6 +9682,11 @@ type
     fEvidence: TConditionEvidenceCTList;
     fNote: TAnnotationCTList;
 
+    function GetClinicalStatus: TCodeableConceptCT;
+    function GetVerificationStatus: TCodeableConceptCT;
+    function GetSeverity: TCodeableConceptCT;
+    function GetCode: TCodeableConceptCT;
+    function GetEncounter: TReferenceCT;
     function GetOnsetDateTime: TDateTimeCT;
     function GetOnsetAge: TAgeCT;
     function GetOnsetPeriod: TPeriodCT;
@@ -8987,20 +9699,23 @@ type
     function GetAbatementRange: TRangeCT;
     function GetAbatementString: TStringCT;
     function GetAbatementChosen: TBasite;
+    function GetRecordedDate: TDateTimeCT;
+    function GetRecorder: TReferenceCT;
+    function GetAsserter: TReferenceCT;
   public
     property OnsetChosen: TBasite read GetOnsetChosen;
     property AbatementChosen: TBasite read GetAbatementChosen;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
-    property ClinicalStatus: TCodeableConceptCT read fClinicalStatus;
-    property VerificationStatus: TCodeableConceptCT read fVerificationStatus;
+    property ClinicalStatus: TCodeableConceptCT read GetClinicalStatus;
+    property VerificationStatus: TCodeableConceptCT read GetVerificationStatus;
     property Category: TCodeableConceptCTList read fCategory;
-    property Severity: TCodeableConceptCT read fSeverity;
-    property Code: TCodeableConceptCT read fCode;
+    property Severity: TCodeableConceptCT read GetSeverity;
+    property Code: TCodeableConceptCT read GetCode;
     property BodySite: TCodeableConceptCTList read fBodySite;
     [TRequired]
     property Subject: TReferenceCT read fSubject;
-    property Encounter: TReferenceCT read fEncounter;
+    property Encounter: TReferenceCT read GetEncounter;
     [TChoice('Onset')]
     property OnsetDateTime: TDateTimeCT read GetOnsetDateTime;
     [TChoice('Onset')]
@@ -9021,9 +9736,9 @@ type
     property AbatementRange: TRangeCT read GetAbatementRange;
     [TChoice('Abatement')]
     property AbatementString: TStringCT read GetAbatementString;
-    property RecordedDate: TDateTimeCT read fRecordedDate;
-    property Recorder: TReferenceCT read fRecorder;
-    property Asserter: TReferenceCT read fAsserter;
+    property RecordedDate: TDateTimeCT read GetRecordedDate;
+    property Recorder: TReferenceCT read GetRecorder;
+    property Asserter: TReferenceCT read GetAsserter;
     property Stage: TConditionStageCTList read fStage;
     property Evidence: TConditionEvidenceCTList read fEvidence;
     property Note: TAnnotationCTList read fNote;
@@ -9035,10 +9750,13 @@ type
     fSummary: TCodeableConceptCT;
     fAssessment: TReferenceCTList;
     fType: TCodeableConceptCT;
+
+    function GetSummary: TCodeableConceptCT;
+    function GetType: TCodeableConceptCT;
   published
-    property Summary: TCodeableConceptCT read fSummary;
+    property Summary: TCodeableConceptCT read GetSummary;
     property Assessment: TReferenceCTList read fAssessment;
-    property &Type: TCodeableConceptCT read fType;
+    property &Type: TCodeableConceptCT read GetType;
   end;
 
   [TName('Condition.Evidence')]
@@ -9068,9 +9786,13 @@ type
     fVerification: TConsentVerificationCTList;
     fProvision: TConsentProvisionCT;
 
+    function GetPatient: TReferenceCT;
+    function GetDateTime: TDateTimeCT;
     function GetSourceAttachment: TAttachmentCT;
     function GetSourceReference: TReferenceCT;
     function GetSourceChosen: TBasite;
+    function GetPolicyRule: TCodeableConceptCT;
+    function GetProvision: TConsentProvisionCT;
   public
     property SourceChosen: TBasite read GetSourceChosen;
   published
@@ -9080,8 +9802,8 @@ type
     [TRequired]
     property Scope: TCodeableConceptCT read fScope;
     property Category: TCodeableConceptCTList read fCategory;
-    property Patient: TReferenceCT read fPatient;
-    property DateTime: TDateTimeCT read fDateTime;
+    property Patient: TReferenceCT read GetPatient;
+    property DateTime: TDateTimeCT read GetDateTime;
     property Performer: TReferenceCTList read fPerformer;
     property Organization: TReferenceCTList read fOrganization;
     [TChoice('Source')]
@@ -9089,9 +9811,9 @@ type
     [TChoice('Source')]
     property SourceReference: TReferenceCT read GetSourceReference;
     property Policy: TConsentPolicyCTList read fPolicy;
-    property PolicyRule: TCodeableConceptCT read fPolicyRule;
+    property PolicyRule: TCodeableConceptCT read GetPolicyRule;
     property Verification: TConsentVerificationCTList read fVerification;
-    property Provision: TConsentProvisionCT read fProvision;
+    property Provision: TConsentProvisionCT read GetProvision;
   end;
 
   [TName('Consent.Policy')]
@@ -9099,9 +9821,12 @@ type
   private
     fAuthority: TUriCT;
     fUri: TUriCT;
+
+    function GetAuthority: TUriCT;
+    function GetUri: TUriCT;
   published
-    property Authority: TUriCT read fAuthority;
-    property Uri: TUriCT read fUri;
+    property Authority: TUriCT read GetAuthority;
+    property Uri: TUriCT read GetUri;
   end;
 
   [TName('Consent.Verification')]
@@ -9110,11 +9835,14 @@ type
     fVerified: TBooleanCT;
     fVerifiedWith: TReferenceCT;
     fVerificationDate: TDateTimeCT;
+
+    function GetVerifiedWith: TReferenceCT;
+    function GetVerificationDate: TDateTimeCT;
   published
     [TRequired]
     property Verified: TBooleanCT read fVerified;
-    property VerifiedWith: TReferenceCT read fVerifiedWith;
-    property VerificationDate: TDateTimeCT read fVerificationDate;
+    property VerifiedWith: TReferenceCT read GetVerifiedWith;
+    property VerificationDate: TDateTimeCT read GetVerificationDate;
   end;
 
   [TName('Consent.Provision')]
@@ -9131,16 +9859,20 @@ type
     fDataPeriod: TPeriodCT;
     fData: TConsentDataCTList;
     fProvision: TConsentProvisionCTList;
+
+    function GetType: TConsentProvisionTypeCT;
+    function GetPeriod: TPeriodCT;
+    function GetDataPeriod: TPeriodCT;
   published
-    property &Type: TConsentProvisionTypeCT read fType;
-    property Period: TPeriodCT read fPeriod;
+    property &Type: TConsentProvisionTypeCT read GetType;
+    property Period: TPeriodCT read GetPeriod;
     property Actor: TConsentActorCTList read fActor;
     property Action: TCodeableConceptCTList read fAction;
     property SecurityLabel: TCodingCTList read fSecurityLabel;
     property Purpose: TCodingCTList read fPurpose;
     property &Class: TCodingCTList read fClass;
     property Code: TCodeableConceptCTList read fCode;
-    property DataPeriod: TPeriodCT read fDataPeriod;
+    property DataPeriod: TPeriodCT read GetDataPeriod;
     property Data: TConsentDataCTList read fData;
     property Provision: TConsentProvisionCTList read fProvision;
   end;
@@ -9228,9 +9960,26 @@ type
     fLegallyBindingAttachment: TAttachmentCT;
     fLegallyBindingReference: TReferenceCT;
 
+    function GetUrl: TUriCT;
+    function GetVersion: TStringCT;
+    function GetStatus: TContractResourceStatusCodesCT;
+    function GetLegalState: TCodeableConceptCT;
+    function GetInstantiatesCanonical: TReferenceCT;
+    function GetInstantiatesUri: TUriCT;
+    function GetContentDerivative: TCodeableConceptCT;
+    function GetIssued: TDateTimeCT;
+    function GetApplies: TPeriodCT;
+    function GetExpirationType: TCodeableConceptCT;
+    function GetName: TStringCT;
+    function GetTitle: TStringCT;
+    function GetSubtitle: TStringCT;
+    function GetAuthor: TReferenceCT;
+    function GetScope: TCodeableConceptCT;
     function GetTopicCodeableConcept: TCodeableConceptCT;
     function GetTopicReference: TReferenceCT;
     function GetTopicChosen: TBasite;
+    function GetType: TCodeableConceptCT;
+    function GetContentDefinition: TContractContentDefinitionCT;
     function GetLegallyBindingAttachment: TAttachmentCT;
     function GetLegallyBindingReference: TReferenceCT;
     function GetLegallyBindingChosen: TBasite;
@@ -9239,33 +9988,33 @@ type
     property LegallyBindingChosen: TBasite read GetLegallyBindingChosen;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Url: TUriCT read fUrl;
-    property Version: TStringCT read fVersion;
-    property Status: TContractResourceStatusCodesCT read fStatus;
-    property LegalState: TCodeableConceptCT read fLegalState;
-    property InstantiatesCanonical: TReferenceCT read fInstantiatesCanonical;
-    property InstantiatesUri: TUriCT read fInstantiatesUri;
-    property ContentDerivative: TCodeableConceptCT read fContentDerivative;
-    property Issued: TDateTimeCT read fIssued;
-    property Applies: TPeriodCT read fApplies;
-    property ExpirationType: TCodeableConceptCT read fExpirationType;
+    property Url: TUriCT read GetUrl;
+    property Version: TStringCT read GetVersion;
+    property Status: TContractResourceStatusCodesCT read GetStatus;
+    property LegalState: TCodeableConceptCT read GetLegalState;
+    property InstantiatesCanonical: TReferenceCT read GetInstantiatesCanonical;
+    property InstantiatesUri: TUriCT read GetInstantiatesUri;
+    property ContentDerivative: TCodeableConceptCT read GetContentDerivative;
+    property Issued: TDateTimeCT read GetIssued;
+    property Applies: TPeriodCT read GetApplies;
+    property ExpirationType: TCodeableConceptCT read GetExpirationType;
     property Subject: TReferenceCTList read fSubject;
     property Authority: TReferenceCTList read fAuthority;
     property Domain: TReferenceCTList read fDomain;
     property Site: TReferenceCTList read fSite;
-    property Name: TStringCT read fName;
-    property Title: TStringCT read fTitle;
-    property Subtitle: TStringCT read fSubtitle;
+    property Name: TStringCT read GetName;
+    property Title: TStringCT read GetTitle;
+    property Subtitle: TStringCT read GetSubtitle;
     property Alias: TStringCTList read fAlias;
-    property Author: TReferenceCT read fAuthor;
-    property Scope: TCodeableConceptCT read fScope;
+    property Author: TReferenceCT read GetAuthor;
+    property Scope: TCodeableConceptCT read GetScope;
     [TChoice('Topic')]
     property TopicCodeableConcept: TCodeableConceptCT read GetTopicCodeableConcept;
     [TChoice('Topic')]
     property TopicReference: TReferenceCT read GetTopicReference;
-    property &Type: TCodeableConceptCT read fType;
+    property &Type: TCodeableConceptCT read GetType;
     property SubType: TCodeableConceptCTList read fSubType;
-    property ContentDefinition: TContractContentDefinitionCT read fContentDefinition;
+    property ContentDefinition: TContractContentDefinitionCT read GetContentDefinition;
     property Term: TContractTermCTList read fTerm;
     property SupportingInfo: TReferenceCTList read fSupportingInfo;
     property RelevantHistory: TReferenceCTList read fRelevantHistory;
@@ -9288,15 +10037,20 @@ type
     fPublicationDate: TDateTimeCT;
     fPublicationStatus: TContractResourcePublicationStatusCodesCT;
     fCopyright: TMarkdownCT;
+
+    function GetSubType: TCodeableConceptCT;
+    function GetPublisher: TReferenceCT;
+    function GetPublicationDate: TDateTimeCT;
+    function GetCopyright: TMarkdownCT;
   published
     [TRequired]
     property &Type: TCodeableConceptCT read fType;
-    property SubType: TCodeableConceptCT read fSubType;
-    property Publisher: TReferenceCT read fPublisher;
-    property PublicationDate: TDateTimeCT read fPublicationDate;
+    property SubType: TCodeableConceptCT read GetSubType;
+    property Publisher: TReferenceCT read GetPublisher;
+    property PublicationDate: TDateTimeCT read GetPublicationDate;
     [TRequired]
     property PublicationStatus: TContractResourcePublicationStatusCodesCT read fPublicationStatus;
-    property Copyright: TMarkdownCT read fCopyright;
+    property Copyright: TMarkdownCT read GetCopyright;
   end;
 
   [TName('Contract.Term')]
@@ -9316,22 +10070,28 @@ type
     fAction: TContractActionCTList;
     fGroup: TContractTermCTList;
 
+    function GetIdentifier: TIdentifierCT;
+    function GetIssued: TDateTimeCT;
+    function GetApplies: TPeriodCT;
     function GetTopicCodeableConcept: TCodeableConceptCT;
     function GetTopicReference: TReferenceCT;
     function GetTopicChosen: TBasite;
+    function GetType: TCodeableConceptCT;
+    function GetSubType: TCodeableConceptCT;
+    function GetText: TStringCT;
   public
     property TopicChosen: TBasite read GetTopicChosen;
   published
-    property Identifier: TIdentifierCT read fIdentifier;
-    property Issued: TDateTimeCT read fIssued;
-    property Applies: TPeriodCT read fApplies;
+    property Identifier: TIdentifierCT read GetIdentifier;
+    property Issued: TDateTimeCT read GetIssued;
+    property Applies: TPeriodCT read GetApplies;
     [TChoice('Topic')]
     property TopicCodeableConcept: TCodeableConceptCT read GetTopicCodeableConcept;
     [TChoice('Topic')]
     property TopicReference: TReferenceCT read GetTopicReference;
-    property &Type: TCodeableConceptCT read fType;
-    property SubType: TCodeableConceptCT read fSubType;
-    property Text: TStringCT read fText;
+    property &Type: TCodeableConceptCT read GetType;
+    property SubType: TCodeableConceptCT read GetSubType;
+    property Text: TStringCT read GetText;
     property SecurityLabel: TContractSecurityLabelCTList read fSecurityLabel;
     [TRequired]
     property Offer: TContractOfferCT read fOffer;
@@ -9368,15 +10128,20 @@ type
     fText: TStringCT;
     fLinkId: TStringCTList;
     fSecurityLabelNumber: TUnsignedIntCTList;
+
+    function GetTopic: TReferenceCT;
+    function GetType: TCodeableConceptCT;
+    function GetDecision: TCodeableConceptCT;
+    function GetText: TStringCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     property Party: TContractPartyCTList read fParty;
-    property Topic: TReferenceCT read fTopic;
-    property &Type: TCodeableConceptCT read fType;
-    property Decision: TCodeableConceptCT read fDecision;
+    property Topic: TReferenceCT read GetTopic;
+    property &Type: TCodeableConceptCT read GetType;
+    property Decision: TCodeableConceptCT read GetDecision;
     property DecisionMode: TCodeableConceptCTList read fDecisionMode;
     property Answer: TContractAnswerCTList read fAnswer;
-    property Text: TStringCT read fText;
+    property Text: TStringCT read GetText;
     property LinkId: TStringCTList read fLinkId;
     property SecurityLabelNumber: TUnsignedIntCTList read fSecurityLabelNumber;
   end;
@@ -9468,18 +10233,23 @@ type
     fAnswer: TContractAnswerCTList;
     fSecurityLabelNumber: TUnsignedIntCTList;
     fValuedItem: TContractValuedItemCTList;
+
+    function GetScope: TCodeableConceptCT;
+    function GetRelationship: TCodingCT;
+    function GetCondition: TStringCT;
+    function GetText: TStringCT;
   published
-    property Scope: TCodeableConceptCT read fScope;
+    property Scope: TCodeableConceptCT read GetScope;
     property &Type: TCodeableConceptCTList read fType;
     property TypeReference: TReferenceCTList read fTypeReference;
     property Subtype: TCodeableConceptCTList read fSubtype;
-    property Relationship: TCodingCT read fRelationship;
+    property Relationship: TCodingCT read GetRelationship;
     property Context: TContractContextCTList read fContext;
-    property Condition: TStringCT read fCondition;
+    property Condition: TStringCT read GetCondition;
     property PeriodType: TCodeableConceptCTList read fPeriodType;
     property Period: TPeriodCTList read fPeriod;
     property UsePeriod: TPeriodCTList read fUsePeriod;
-    property Text: TStringCT read fText;
+    property Text: TStringCT read GetText;
     property LinkId: TStringCTList read fLinkId;
     property Answer: TContractAnswerCTList read fAnswer;
     property SecurityLabelNumber: TUnsignedIntCTList read fSecurityLabelNumber;
@@ -9492,10 +10262,13 @@ type
     fReference: TReferenceCT;
     fCode: TCodeableConceptCTList;
     fText: TStringCT;
+
+    function GetReference: TReferenceCT;
+    function GetText: TStringCT;
   published
-    property Reference: TReferenceCT read fReference;
+    property Reference: TReferenceCT read GetReference;
     property Code: TCodeableConceptCTList read fCode;
-    property Text: TStringCT read fText;
+    property Text: TStringCT read GetText;
   end;
 
   [TName('Contract.ValuedItem')]
@@ -9520,6 +10293,17 @@ type
     function GetEntityCodeableConcept: TCodeableConceptCT;
     function GetEntityReference: TReferenceCT;
     function GetEntityChosen: TBasite;
+    function GetIdentifier: TIdentifierCT;
+    function GetEffectiveTime: TDateTimeCT;
+    function GetQuantity: TQuantityCT;
+    function GetUnitPrice: TMoneyCT;
+    function GetFactor: TDecimalCT;
+    function GetPoints: TDecimalCT;
+    function GetNet: TMoneyCT;
+    function GetPayment: TStringCT;
+    function GetPaymentDate: TDateTimeCT;
+    function GetResponsible: TReferenceCT;
+    function GetRecipient: TReferenceCT;
   public
     property EntityChosen: TBasite read GetEntityChosen;
   published
@@ -9527,17 +10311,17 @@ type
     property EntityCodeableConcept: TCodeableConceptCT read GetEntityCodeableConcept;
     [TChoice('Entity')]
     property EntityReference: TReferenceCT read GetEntityReference;
-    property Identifier: TIdentifierCT read fIdentifier;
-    property EffectiveTime: TDateTimeCT read fEffectiveTime;
-    property Quantity: TQuantityCT read fQuantity;
-    property UnitPrice: TMoneyCT read fUnitPrice;
-    property Factor: TDecimalCT read fFactor;
-    property Points: TDecimalCT read fPoints;
-    property Net: TMoneyCT read fNet;
-    property Payment: TStringCT read fPayment;
-    property PaymentDate: TDateTimeCT read fPaymentDate;
-    property Responsible: TReferenceCT read fResponsible;
-    property Recipient: TReferenceCT read fRecipient;
+    property Identifier: TIdentifierCT read GetIdentifier;
+    property EffectiveTime: TDateTimeCT read GetEffectiveTime;
+    property Quantity: TQuantityCT read GetQuantity;
+    property UnitPrice: TMoneyCT read GetUnitPrice;
+    property Factor: TDecimalCT read GetFactor;
+    property Points: TDecimalCT read GetPoints;
+    property Net: TMoneyCT read GetNet;
+    property Payment: TStringCT read GetPayment;
+    property PaymentDate: TDateTimeCT read GetPaymentDate;
+    property Responsible: TReferenceCT read GetResponsible;
+    property Recipient: TReferenceCT read GetRecipient;
     property LinkId: TStringCTList read fLinkId;
     property SecurityLabelNumber: TUnsignedIntCTList read fSecurityLabelNumber;
   end;
@@ -9569,14 +10353,18 @@ type
     fNote: TAnnotationCTList;
     fSecurityLabelNumber: TUnsignedIntCTList;
 
+    function GetDoNotPerform: TBooleanCT;
+    function GetContext: TReferenceCT;
     function GetOccurrenceDateTime: TDateTimeCT;
     function GetOccurrencePeriod: TPeriodCT;
     function GetOccurrenceTiming: TTimingCT;
     function GetOccurrenceChosen: TBasite;
+    function GetPerformerRole: TCodeableConceptCT;
+    function GetPerformer: TReferenceCT;
   public
     property OccurrenceChosen: TBasite read GetOccurrenceChosen;
   published
-    property DoNotPerform: TBooleanCT read fDoNotPerform;
+    property DoNotPerform: TBooleanCT read GetDoNotPerform;
     [TRequired]
     property &Type: TCodeableConceptCT read fType;
     property Subject: TContractSubjectCTList read fSubject;
@@ -9585,7 +10373,7 @@ type
     property LinkId: TStringCTList read fLinkId;
     [TRequired]
     property Status: TCodeableConceptCT read fStatus;
-    property Context: TReferenceCT read fContext;
+    property Context: TReferenceCT read GetContext;
     property ContextLinkId: TStringCTList read fContextLinkId;
     [TChoice('Occurrence')]
     property OccurrenceDateTime: TDateTimeCT read GetOccurrenceDateTime;
@@ -9596,8 +10384,8 @@ type
     property Requester: TReferenceCTList read fRequester;
     property RequesterLinkId: TStringCTList read fRequesterLinkId;
     property PerformerType: TCodeableConceptCTList read fPerformerType;
-    property PerformerRole: TCodeableConceptCT read fPerformerRole;
-    property Performer: TReferenceCT read fPerformer;
+    property PerformerRole: TCodeableConceptCT read GetPerformerRole;
+    property Performer: TReferenceCT read GetPerformer;
     property PerformerLinkId: TStringCTList read fPerformerLinkId;
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
     property ReasonReference: TReferenceCTList read fReasonReference;
@@ -9612,9 +10400,11 @@ type
   private
     fReference: TReferenceCTList;
     fRole: TCodeableConceptCT;
+
+    function GetRole: TCodeableConceptCT;
   published
     property Reference: TReferenceCTList read fReference;
-    property Role: TCodeableConceptCT read fRole;
+    property Role: TCodeableConceptCT read GetRole;
   end;
 
   [TName('Contract.Signer')]
@@ -9718,25 +10508,36 @@ type
     fCostToBeneficiary: TCoverageCostToBeneficiaryCTList;
     fSubrogation: TBooleanCT;
     fContract: TReferenceCTList;
+
+    function GetType: TCodeableConceptCT;
+    function GetPolicyHolder: TReferenceCT;
+    function GetSubscriber: TReferenceCT;
+    function GetSubscriberId: TStringCT;
+    function GetDependent: TStringCT;
+    function GetRelationship: TCodeableConceptCT;
+    function GetPeriod: TPeriodCT;
+    function GetOrder: TPositiveIntCT;
+    function GetNetwork: TStringCT;
+    function GetSubrogation: TBooleanCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
     property Status: TFinancialResourceStatusCodesCT read fStatus;
-    property &Type: TCodeableConceptCT read fType;
-    property PolicyHolder: TReferenceCT read fPolicyHolder;
-    property Subscriber: TReferenceCT read fSubscriber;
-    property SubscriberId: TStringCT read fSubscriberId;
+    property &Type: TCodeableConceptCT read GetType;
+    property PolicyHolder: TReferenceCT read GetPolicyHolder;
+    property Subscriber: TReferenceCT read GetSubscriber;
+    property SubscriberId: TStringCT read GetSubscriberId;
     [TRequired]
     property Beneficiary: TReferenceCT read fBeneficiary;
-    property Dependent: TStringCT read fDependent;
-    property Relationship: TCodeableConceptCT read fRelationship;
-    property Period: TPeriodCT read fPeriod;
+    property Dependent: TStringCT read GetDependent;
+    property Relationship: TCodeableConceptCT read GetRelationship;
+    property Period: TPeriodCT read GetPeriod;
     property Payor: TReferenceCTList read fPayor;
     property &Class: TCoverageClassCTList read fClass;
-    property Order: TPositiveIntCT read fOrder;
-    property Network: TStringCT read fNetwork;
+    property Order: TPositiveIntCT read GetOrder;
+    property Network: TStringCT read GetNetwork;
     property CostToBeneficiary: TCoverageCostToBeneficiaryCTList read fCostToBeneficiary;
-    property Subrogation: TBooleanCT read fSubrogation;
+    property Subrogation: TBooleanCT read GetSubrogation;
     property Contract: TReferenceCTList read fContract;
   end;
 
@@ -9746,12 +10547,14 @@ type
     fType: TCodeableConceptCT;
     fValue: TStringCT;
     fName: TStringCT;
+
+    function GetName: TStringCT;
   published
     [TRequired]
     property &Type: TCodeableConceptCT read fType;
     [TRequired]
     property Value: TStringCT read fValue;
-    property Name: TStringCT read fName;
+    property Name: TStringCT read GetName;
   end;
 
   [TName('Coverage.CostToBeneficiary')]
@@ -9762,13 +10565,14 @@ type
     fValueMoney: TMoneyCT;
     fException: TCoverageExceptionCTList;
 
+    function GetType: TCodeableConceptCT;
     function GetValueQuantity: TQuantityCT;
     function GetValueMoney: TMoneyCT;
     function GetValueChosen: TBasite;
   public
     property ValueChosen: TBasite read GetValueChosen;
   published
-    property &Type: TCodeableConceptCT read fType;
+    property &Type: TCodeableConceptCT read GetType;
     [TChoice('Value')]
     property ValueQuantity: TQuantityCT read GetValueQuantity;
     [TChoice('Value')]
@@ -9781,10 +10585,12 @@ type
   private
     fType: TCodeableConceptCT;
     fPeriod: TPeriodCT;
+
+    function GetPeriod: TPeriodCT;
   published
     [TRequired]
     property &Type: TCodeableConceptCT read fType;
-    property Period: TPeriodCT read fPeriod;
+    property Period: TPeriodCT read GetPeriod;
   end;
 
   TCoverageEligibilityRequestCT = class(TDomainResourceCT)
@@ -9805,16 +10611,20 @@ type
     fInsurance: TCoverageEligibilityRequestInsuranceCTList;
     fItem: TCoverageEligibilityRequestItemCTList;
 
+    function GetPriority: TCodeableConceptCT;
     function GetServicedDate: TDateCT;
     function GetServicedPeriod: TPeriodCT;
     function GetServicedChosen: TBasite;
+    function GetEnterer: TReferenceCT;
+    function GetProvider: TReferenceCT;
+    function GetFacility: TReferenceCT;
   public
     property ServicedChosen: TBasite read GetServicedChosen;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
     property Status: TFinancialResourceStatusCodesCT read fStatus;
-    property Priority: TCodeableConceptCT read fPriority;
+    property Priority: TCodeableConceptCT read GetPriority;
     property Purpose: TEligibilityRequestPurposeCTList read fPurpose;
     [TRequired]
     property Patient: TReferenceCT read fPatient;
@@ -9824,11 +10634,11 @@ type
     property ServicedPeriod: TPeriodCT read GetServicedPeriod;
     [TRequired]
     property Created: TDateTimeCT read fCreated;
-    property Enterer: TReferenceCT read fEnterer;
-    property Provider: TReferenceCT read fProvider;
+    property Enterer: TReferenceCT read GetEnterer;
+    property Provider: TReferenceCT read GetProvider;
     [TRequired]
     property Insurer: TReferenceCT read fInsurer;
-    property Facility: TReferenceCT read fFacility;
+    property Facility: TReferenceCT read GetFacility;
     property SupportingInfo: TCoverageEligibilityRequestSupportingInfoCTList read fSupportingInfo;
     property Insurance: TCoverageEligibilityRequestInsuranceCTList read fInsurance;
     property Item: TCoverageEligibilityRequestItemCTList read fItem;
@@ -9840,12 +10650,14 @@ type
     fSequence: TPositiveIntCT;
     fInformation: TReferenceCT;
     fAppliesToAll: TBooleanCT;
+
+    function GetAppliesToAll: TBooleanCT;
   published
     [TRequired]
     property Sequence: TPositiveIntCT read fSequence;
     [TRequired]
     property Information: TReferenceCT read fInformation;
-    property AppliesToAll: TBooleanCT read fAppliesToAll;
+    property AppliesToAll: TBooleanCT read GetAppliesToAll;
   end;
 
   [TName('CoverageEligibilityRequest.Insurance')]
@@ -9854,11 +10666,14 @@ type
     fFocal: TBooleanCT;
     fCoverage: TReferenceCT;
     fBusinessArrangement: TStringCT;
+
+    function GetFocal: TBooleanCT;
+    function GetBusinessArrangement: TStringCT;
   published
-    property Focal: TBooleanCT read fFocal;
+    property Focal: TBooleanCT read GetFocal;
     [TRequired]
     property Coverage: TReferenceCT read fCoverage;
-    property BusinessArrangement: TStringCT read fBusinessArrangement;
+    property BusinessArrangement: TStringCT read GetBusinessArrangement;
   end;
 
   [TName('CoverageEligibilityRequest.Item')]
@@ -9874,15 +10689,22 @@ type
     fFacility: TReferenceCT;
     fDiagnosis: TCoverageEligibilityRequestDiagnosisCTList;
     fDetail: TReferenceCTList;
+
+    function GetCategory: TCodeableConceptCT;
+    function GetProductOrService: TCodeableConceptCT;
+    function GetProvider: TReferenceCT;
+    function GetQuantity: TQuantityCT;
+    function GetUnitPrice: TMoneyCT;
+    function GetFacility: TReferenceCT;
   published
     property SupportingInfoSequence: TPositiveIntCTList read fSupportingInfoSequence;
-    property Category: TCodeableConceptCT read fCategory;
-    property ProductOrService: TCodeableConceptCT read fProductOrService;
+    property Category: TCodeableConceptCT read GetCategory;
+    property ProductOrService: TCodeableConceptCT read GetProductOrService;
     property Modifier: TCodeableConceptCTList read fModifier;
-    property Provider: TReferenceCT read fProvider;
-    property Quantity: TQuantityCT read fQuantity;
-    property UnitPrice: TMoneyCT read fUnitPrice;
-    property Facility: TReferenceCT read fFacility;
+    property Provider: TReferenceCT read GetProvider;
+    property Quantity: TQuantityCT read GetQuantity;
+    property UnitPrice: TMoneyCT read GetUnitPrice;
+    property Facility: TReferenceCT read GetFacility;
     property Diagnosis: TCoverageEligibilityRequestDiagnosisCTList read fDiagnosis;
     property Detail: TReferenceCTList read fDetail;
   end;
@@ -9934,6 +10756,10 @@ type
     function GetServicedDate: TDateCT;
     function GetServicedPeriod: TPeriodCT;
     function GetServicedChosen: TBasite;
+    function GetRequestor: TReferenceCT;
+    function GetDisposition: TStringCT;
+    function GetPreAuthRef: TStringCT;
+    function GetForm: TCodeableConceptCT;
   public
     property ServicedChosen: TBasite read GetServicedChosen;
   published
@@ -9949,17 +10775,17 @@ type
     property ServicedPeriod: TPeriodCT read GetServicedPeriod;
     [TRequired]
     property Created: TDateTimeCT read fCreated;
-    property Requestor: TReferenceCT read fRequestor;
+    property Requestor: TReferenceCT read GetRequestor;
     [TRequired]
     property Request: TReferenceCT read fRequest;
     [TRequired]
     property Outcome: TRemittanceOutcomeCT read fOutcome;
-    property Disposition: TStringCT read fDisposition;
+    property Disposition: TStringCT read GetDisposition;
     [TRequired]
     property Insurer: TReferenceCT read fInsurer;
     property Insurance: TCoverageEligibilityResponseInsuranceCTList read fInsurance;
-    property PreAuthRef: TStringCT read fPreAuthRef;
-    property Form: TCodeableConceptCT read fForm;
+    property PreAuthRef: TStringCT read GetPreAuthRef;
+    property Form: TCodeableConceptCT read GetForm;
     property Error: TCoverageEligibilityResponseErrorCTList read fError;
   end;
 
@@ -9970,11 +10796,14 @@ type
     fInforce: TBooleanCT;
     fBenefitPeriod: TPeriodCT;
     fItem: TCoverageEligibilityResponseItemCTList;
+
+    function GetInforce: TBooleanCT;
+    function GetBenefitPeriod: TPeriodCT;
   published
     [TRequired]
     property Coverage: TReferenceCT read fCoverage;
-    property Inforce: TBooleanCT read fInforce;
-    property BenefitPeriod: TPeriodCT read fBenefitPeriod;
+    property Inforce: TBooleanCT read GetInforce;
+    property BenefitPeriod: TPeriodCT read GetBenefitPeriod;
     property Item: TCoverageEligibilityResponseItemCTList read fItem;
   end;
 
@@ -9995,21 +10824,33 @@ type
     fAuthorizationRequired: TBooleanCT;
     fAuthorizationSupporting: TCodeableConceptCTList;
     fAuthorizationUrl: TUriCT;
+
+    function GetCategory: TCodeableConceptCT;
+    function GetProductOrService: TCodeableConceptCT;
+    function GetProvider: TReferenceCT;
+    function GetExcluded: TBooleanCT;
+    function GetName: TStringCT;
+    function GetDescription: TStringCT;
+    function GetNetwork: TCodeableConceptCT;
+    function GetUnit: TCodeableConceptCT;
+    function GetTerm: TCodeableConceptCT;
+    function GetAuthorizationRequired: TBooleanCT;
+    function GetAuthorizationUrl: TUriCT;
   published
-    property Category: TCodeableConceptCT read fCategory;
-    property ProductOrService: TCodeableConceptCT read fProductOrService;
+    property Category: TCodeableConceptCT read GetCategory;
+    property ProductOrService: TCodeableConceptCT read GetProductOrService;
     property Modifier: TCodeableConceptCTList read fModifier;
-    property Provider: TReferenceCT read fProvider;
-    property Excluded: TBooleanCT read fExcluded;
-    property Name: TStringCT read fName;
-    property Description: TStringCT read fDescription;
-    property Network: TCodeableConceptCT read fNetwork;
-    property &Unit: TCodeableConceptCT read fUnit;
-    property Term: TCodeableConceptCT read fTerm;
+    property Provider: TReferenceCT read GetProvider;
+    property Excluded: TBooleanCT read GetExcluded;
+    property Name: TStringCT read GetName;
+    property Description: TStringCT read GetDescription;
+    property Network: TCodeableConceptCT read GetNetwork;
+    property &Unit: TCodeableConceptCT read GetUnit;
+    property Term: TCodeableConceptCT read GetTerm;
     property Benefit: TCoverageEligibilityResponseBenefitCTList read fBenefit;
-    property AuthorizationRequired: TBooleanCT read fAuthorizationRequired;
+    property AuthorizationRequired: TBooleanCT read GetAuthorizationRequired;
     property AuthorizationSupporting: TCodeableConceptCTList read fAuthorizationSupporting;
-    property AuthorizationUrl: TUriCT read fAuthorizationUrl;
+    property AuthorizationUrl: TUriCT read GetAuthorizationUrl;
   end;
 
   [TName('CoverageEligibilityResponse.Benefit')]
@@ -10083,27 +10924,33 @@ type
     fReference: TUriCT;
     fMitigation: TDetectedIssueMitigationCTList;
 
+    function GetCode: TCodeableConceptCT;
+    function GetSeverity: TDetectedIssueSeverityCT;
+    function GetPatient: TReferenceCT;
     function GetIdentifiedDateTime: TDateTimeCT;
     function GetIdentifiedPeriod: TPeriodCT;
     function GetIdentifiedChosen: TBasite;
+    function GetAuthor: TReferenceCT;
+    function GetDetail: TStringCT;
+    function GetReference: TUriCT;
   public
     property IdentifiedChosen: TBasite read GetIdentifiedChosen;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
     property Status: TObservationStatusCT read fStatus;
-    property Code: TCodeableConceptCT read fCode;
-    property Severity: TDetectedIssueSeverityCT read fSeverity;
-    property Patient: TReferenceCT read fPatient;
+    property Code: TCodeableConceptCT read GetCode;
+    property Severity: TDetectedIssueSeverityCT read GetSeverity;
+    property Patient: TReferenceCT read GetPatient;
     [TChoice('Identified')]
     property IdentifiedDateTime: TDateTimeCT read GetIdentifiedDateTime;
     [TChoice('Identified')]
     property IdentifiedPeriod: TPeriodCT read GetIdentifiedPeriod;
-    property Author: TReferenceCT read fAuthor;
+    property Author: TReferenceCT read GetAuthor;
     property Implicated: TReferenceCTList read fImplicated;
     property Evidence: TDetectedIssueEvidenceCTList read fEvidence;
-    property Detail: TStringCT read fDetail;
-    property Reference: TUriCT read fReference;
+    property Detail: TStringCT read GetDetail;
+    property Reference: TUriCT read GetReference;
     property Mitigation: TDetectedIssueMitigationCTList read fMitigation;
   end;
 
@@ -10123,11 +10970,14 @@ type
     fAction: TCodeableConceptCT;
     fDate: TDateTimeCT;
     fAuthor: TReferenceCT;
+
+    function GetDate: TDateTimeCT;
+    function GetAuthor: TReferenceCT;
   published
     [TRequired]
     property Action: TCodeableConceptCT read fAction;
-    property Date: TDateTimeCT read fDate;
-    property Author: TReferenceCT read fAuthor;
+    property Date: TDateTimeCT read GetDate;
+    property Author: TReferenceCT read GetAuthor;
   end;
 
   TObservationStatusCT = class(TElementCT)
@@ -10172,33 +11022,50 @@ type
     fNote: TAnnotationCTList;
     fSafety: TCodeableConceptCTList;
     fParent: TReferenceCT;
+
+    function GetDefinition: TReferenceCT;
+    function GetStatus: TFHIRDeviceStatusCT;
+    function GetDistinctIdentifier: TStringCT;
+    function GetManufacturer: TStringCT;
+    function GetManufactureDate: TDateTimeCT;
+    function GetExpirationDate: TDateTimeCT;
+    function GetLotNumber: TStringCT;
+    function GetSerialNumber: TStringCT;
+    function GetModelNumber: TStringCT;
+    function GetPartNumber: TStringCT;
+    function GetType: TCodeableConceptCT;
+    function GetPatient: TReferenceCT;
+    function GetOwner: TReferenceCT;
+    function GetLocation: TReferenceCT;
+    function GetUrl: TUriCT;
+    function GetParent: TReferenceCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Definition: TReferenceCT read fDefinition;
+    property Definition: TReferenceCT read GetDefinition;
     property UdiCarrier: TDeviceUdiCarrierCTList read fUdiCarrier;
-    property Status: TFHIRDeviceStatusCT read fStatus;
+    property Status: TFHIRDeviceStatusCT read GetStatus;
     property StatusReason: TCodeableConceptCTList read fStatusReason;
-    property DistinctIdentifier: TStringCT read fDistinctIdentifier;
-    property Manufacturer: TStringCT read fManufacturer;
-    property ManufactureDate: TDateTimeCT read fManufactureDate;
-    property ExpirationDate: TDateTimeCT read fExpirationDate;
-    property LotNumber: TStringCT read fLotNumber;
-    property SerialNumber: TStringCT read fSerialNumber;
+    property DistinctIdentifier: TStringCT read GetDistinctIdentifier;
+    property Manufacturer: TStringCT read GetManufacturer;
+    property ManufactureDate: TDateTimeCT read GetManufactureDate;
+    property ExpirationDate: TDateTimeCT read GetExpirationDate;
+    property LotNumber: TStringCT read GetLotNumber;
+    property SerialNumber: TStringCT read GetSerialNumber;
     property DeviceName: TDeviceDeviceNameCTList read fDeviceName;
-    property ModelNumber: TStringCT read fModelNumber;
-    property PartNumber: TStringCT read fPartNumber;
-    property &Type: TCodeableConceptCT read fType;
+    property ModelNumber: TStringCT read GetModelNumber;
+    property PartNumber: TStringCT read GetPartNumber;
+    property &Type: TCodeableConceptCT read GetType;
     property Specialization: TDeviceSpecializationCTList read fSpecialization;
     property Version: TDeviceVersionCTList read fVersion;
     property &Property: TDevicePropertyCTList read fProperty;
-    property Patient: TReferenceCT read fPatient;
-    property Owner: TReferenceCT read fOwner;
+    property Patient: TReferenceCT read GetPatient;
+    property Owner: TReferenceCT read GetOwner;
     property Contact: TContactPointCTList read fContact;
-    property Location: TReferenceCT read fLocation;
-    property Url: TUriCT read fUrl;
+    property Location: TReferenceCT read GetLocation;
+    property Url: TUriCT read GetUrl;
     property Note: TAnnotationCTList read fNote;
     property Safety: TCodeableConceptCTList read fSafety;
-    property Parent: TReferenceCT read fParent;
+    property Parent: TReferenceCT read GetParent;
   end;
 
   [TName('Device.UdiCarrier')]
@@ -10210,13 +11077,20 @@ type
     fCarrierAIDC: TBase64BinaryCT;
     fCarrierHRF: TStringCT;
     fEntryType: TUDIEntryTypeCT;
+
+    function GetDeviceIdentifier: TStringCT;
+    function GetIssuer: TUriCT;
+    function GetJurisdiction: TUriCT;
+    function GetCarrierAIDC: TBase64BinaryCT;
+    function GetCarrierHRF: TStringCT;
+    function GetEntryType: TUDIEntryTypeCT;
   published
-    property DeviceIdentifier: TStringCT read fDeviceIdentifier;
-    property Issuer: TUriCT read fIssuer;
-    property Jurisdiction: TUriCT read fJurisdiction;
-    property CarrierAIDC: TBase64BinaryCT read fCarrierAIDC;
-    property CarrierHRF: TStringCT read fCarrierHRF;
-    property EntryType: TUDIEntryTypeCT read fEntryType;
+    property DeviceIdentifier: TStringCT read GetDeviceIdentifier;
+    property Issuer: TUriCT read GetIssuer;
+    property Jurisdiction: TUriCT read GetJurisdiction;
+    property CarrierAIDC: TBase64BinaryCT read GetCarrierAIDC;
+    property CarrierHRF: TStringCT read GetCarrierHRF;
+    property EntryType: TUDIEntryTypeCT read GetEntryType;
   end;
 
   [TName('Device.DeviceName')]
@@ -10236,10 +11110,12 @@ type
   private
     fSystemType: TCodeableConceptCT;
     fVersion: TStringCT;
+
+    function GetVersion: TStringCT;
   published
     [TRequired]
     property SystemType: TCodeableConceptCT read fSystemType;
-    property Version: TStringCT read fVersion;
+    property Version: TStringCT read GetVersion;
   end;
 
   [TName('Device.Version')]
@@ -10248,9 +11124,12 @@ type
     fType: TCodeableConceptCT;
     fComponent: TIdentifierCT;
     fValue: TStringCT;
+
+    function GetType: TCodeableConceptCT;
+    function GetComponent: TIdentifierCT;
   published
-    property &Type: TCodeableConceptCT read fType;
-    property Component: TIdentifierCT read fComponent;
+    property &Type: TCodeableConceptCT read GetType;
+    property Component: TIdentifierCT read GetComponent;
     [TRequired]
     property Value: TStringCT read fValue;
   end;
@@ -10318,6 +11197,14 @@ type
     function GetManufacturerString: TStringCT;
     function GetManufacturerReference: TReferenceCT;
     function GetManufacturerChosen: TBasite;
+    function GetModelNumber: TStringCT;
+    function GetType: TCodeableConceptCT;
+    function GetPhysicalCharacteristics: TProdCharacteristicCT;
+    function GetOwner: TReferenceCT;
+    function GetUrl: TUriCT;
+    function GetOnlineInformation: TUriCT;
+    function GetQuantity: TQuantityCT;
+    function GetParentDevice: TReferenceCT;
   public
     property ManufacturerChosen: TBasite read GetManufacturerChosen;
   published
@@ -10328,23 +11215,23 @@ type
     [TChoice('Manufacturer')]
     property ManufacturerReference: TReferenceCT read GetManufacturerReference;
     property DeviceName: TDeviceDefinitionDeviceNameCTList read fDeviceName;
-    property ModelNumber: TStringCT read fModelNumber;
-    property &Type: TCodeableConceptCT read fType;
+    property ModelNumber: TStringCT read GetModelNumber;
+    property &Type: TCodeableConceptCT read GetType;
     property Specialization: TDeviceDefinitionSpecializationCTList read fSpecialization;
     property Version: TStringCTList read fVersion;
     property Safety: TCodeableConceptCTList read fSafety;
     property ShelfLifeStorage: TProductShelfLifeCTList read fShelfLifeStorage;
-    property PhysicalCharacteristics: TProdCharacteristicCT read fPhysicalCharacteristics;
+    property PhysicalCharacteristics: TProdCharacteristicCT read GetPhysicalCharacteristics;
     property LanguageCode: TCodeableConceptCTList read fLanguageCode;
     property Capability: TDeviceDefinitionCapabilityCTList read fCapability;
     property &Property: TDeviceDefinitionPropertyCTList read fProperty;
-    property Owner: TReferenceCT read fOwner;
+    property Owner: TReferenceCT read GetOwner;
     property Contact: TContactPointCTList read fContact;
-    property Url: TUriCT read fUrl;
-    property OnlineInformation: TUriCT read fOnlineInformation;
+    property Url: TUriCT read GetUrl;
+    property OnlineInformation: TUriCT read GetOnlineInformation;
     property Note: TAnnotationCTList read fNote;
-    property Quantity: TQuantityCT read fQuantity;
-    property ParentDevice: TReferenceCT read fParentDevice;
+    property Quantity: TQuantityCT read GetQuantity;
+    property ParentDevice: TReferenceCT read GetParentDevice;
     property Material: TDeviceDefinitionMaterialCTList read fMaterial;
   end;
 
@@ -10380,10 +11267,12 @@ type
   private
     fSystemType: TStringCT;
     fVersion: TStringCT;
+
+    function GetVersion: TStringCT;
   published
     [TRequired]
     property SystemType: TStringCT read fSystemType;
-    property Version: TStringCT read fVersion;
+    property Version: TStringCT read GetVersion;
   end;
 
   [TName('DeviceDefinition.Capability')]
@@ -10416,11 +11305,14 @@ type
     fSubstance: TCodeableConceptCT;
     fAlternate: TBooleanCT;
     fAllergenicIndicator: TBooleanCT;
+
+    function GetAlternate: TBooleanCT;
+    function GetAllergenicIndicator: TBooleanCT;
   published
     [TRequired]
     property Substance: TCodeableConceptCT read fSubstance;
-    property Alternate: TBooleanCT read fAlternate;
-    property AllergenicIndicator: TBooleanCT read fAllergenicIndicator;
+    property Alternate: TBooleanCT read GetAlternate;
+    property AllergenicIndicator: TBooleanCT read GetAllergenicIndicator;
   end;
 
   TDeviceMetricCT = class(TDomainResourceCT)
@@ -10435,18 +11327,25 @@ type
     fCategory: TDeviceMetricCategoryCT;
     fMeasurementPeriod: TTimingCT;
     fCalibration: TDeviceMetricCalibrationCTList;
+
+    function GetUnit: TCodeableConceptCT;
+    function GetSource: TReferenceCT;
+    function GetParent: TReferenceCT;
+    function GetOperationalStatus: TDeviceMetricOperationalStatusCT;
+    function GetColor: TDeviceMetricColorCT;
+    function GetMeasurementPeriod: TTimingCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
     property &Type: TCodeableConceptCT read fType;
-    property &Unit: TCodeableConceptCT read fUnit;
-    property Source: TReferenceCT read fSource;
-    property Parent: TReferenceCT read fParent;
-    property OperationalStatus: TDeviceMetricOperationalStatusCT read fOperationalStatus;
-    property Color: TDeviceMetricColorCT read fColor;
+    property &Unit: TCodeableConceptCT read GetUnit;
+    property Source: TReferenceCT read GetSource;
+    property Parent: TReferenceCT read GetParent;
+    property OperationalStatus: TDeviceMetricOperationalStatusCT read GetOperationalStatus;
+    property Color: TDeviceMetricColorCT read GetColor;
     [TRequired]
     property Category: TDeviceMetricCategoryCT read fCategory;
-    property MeasurementPeriod: TTimingCT read fMeasurementPeriod;
+    property MeasurementPeriod: TTimingCT read GetMeasurementPeriod;
     property Calibration: TDeviceMetricCalibrationCTList read fCalibration;
   end;
 
@@ -10456,10 +11355,14 @@ type
     fType: TDeviceMetricCalibrationTypeCT;
     fState: TDeviceMetricCalibrationStateCT;
     fTime: TInstantCT;
+
+    function GetType: TDeviceMetricCalibrationTypeCT;
+    function GetState: TDeviceMetricCalibrationStateCT;
+    function GetTime: TInstantCT;
   published
-    property &Type: TDeviceMetricCalibrationTypeCT read fType;
-    property State: TDeviceMetricCalibrationStateCT read fState;
-    property Time: TInstantCT read fTime;
+    property &Type: TDeviceMetricCalibrationTypeCT read GetType;
+    property State: TDeviceMetricCalibrationStateCT read GetState;
+    property Time: TInstantCT read GetTime;
   end;
 
   TDeviceMetricCalibrationTypeCT = class(TElementCT)
@@ -10527,13 +11430,21 @@ type
     fNote: TAnnotationCTList;
     fRelevantHistory: TReferenceCTList;
 
+    function GetGroupIdentifier: TIdentifierCT;
+    function GetStatus: TRequestStatusCT;
+    function GetPriority: TRequestPriorityCT;
     function GetCodeReference: TReferenceCT;
     function GetCodeCodeableConcept: TCodeableConceptCT;
     function GetCodeChosen: TBasite;
+    function GetEncounter: TReferenceCT;
     function GetOccurrenceDateTime: TDateTimeCT;
     function GetOccurrencePeriod: TPeriodCT;
     function GetOccurrenceTiming: TTimingCT;
     function GetOccurrenceChosen: TBasite;
+    function GetAuthoredOn: TDateTimeCT;
+    function GetRequester: TReferenceCT;
+    function GetPerformerType: TCodeableConceptCT;
+    function GetPerformer: TReferenceCT;
   public
     property CodeChosen: TBasite read GetCodeChosen;
     property OccurrenceChosen: TBasite read GetOccurrenceChosen;
@@ -10543,11 +11454,11 @@ type
     property InstantiatesUri: TUriCTList read fInstantiatesUri;
     property BasedOn: TReferenceCTList read fBasedOn;
     property PriorRequest: TReferenceCTList read fPriorRequest;
-    property GroupIdentifier: TIdentifierCT read fGroupIdentifier;
-    property Status: TRequestStatusCT read fStatus;
+    property GroupIdentifier: TIdentifierCT read GetGroupIdentifier;
+    property Status: TRequestStatusCT read GetStatus;
     [TRequired]
     property Intent: TRequestIntentCT read fIntent;
-    property Priority: TRequestPriorityCT read fPriority;
+    property Priority: TRequestPriorityCT read GetPriority;
     [TChoice('Code')]
     property CodeReference: TReferenceCT read GetCodeReference;
     [TChoice('Code')]
@@ -10555,17 +11466,17 @@ type
     property Parameter: TDeviceRequestParameterCTList read fParameter;
     [TRequired]
     property Subject: TReferenceCT read fSubject;
-    property Encounter: TReferenceCT read fEncounter;
+    property Encounter: TReferenceCT read GetEncounter;
     [TChoice('Occurrence')]
     property OccurrenceDateTime: TDateTimeCT read GetOccurrenceDateTime;
     [TChoice('Occurrence')]
     property OccurrencePeriod: TPeriodCT read GetOccurrencePeriod;
     [TChoice('Occurrence')]
     property OccurrenceTiming: TTimingCT read GetOccurrenceTiming;
-    property AuthoredOn: TDateTimeCT read fAuthoredOn;
-    property Requester: TReferenceCT read fRequester;
-    property PerformerType: TCodeableConceptCT read fPerformerType;
-    property Performer: TReferenceCT read fPerformer;
+    property AuthoredOn: TDateTimeCT read GetAuthoredOn;
+    property Requester: TReferenceCT read GetRequester;
+    property PerformerType: TCodeableConceptCT read GetPerformerType;
+    property Performer: TReferenceCT read GetPerformer;
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
     property ReasonReference: TReferenceCTList read fReasonReference;
     property Insurance: TReferenceCTList read fInsurance;
@@ -10583,6 +11494,7 @@ type
     fValueRange: TRangeCT;
     fValueBoolean: TBooleanCT;
 
+    function GetCode: TCodeableConceptCT;
     function GetValueCodeableConcept: TCodeableConceptCT;
     function GetValueQuantity: TQuantityCT;
     function GetValueRange: TRangeCT;
@@ -10591,7 +11503,7 @@ type
   public
     property ValueChosen: TBasite read GetValueChosen;
   published
-    property Code: TCodeableConceptCT read fCode;
+    property Code: TCodeableConceptCT read GetCode;
     [TChoice('Value')]
     property ValueCodeableConcept: TCodeableConceptCT read GetValueCodeableConcept;
     [TChoice('Value')]
@@ -10624,6 +11536,9 @@ type
     function GetTimingPeriod: TPeriodCT;
     function GetTimingDateTime: TDateTimeCT;
     function GetTimingChosen: TBasite;
+    function GetRecordedOn: TDateTimeCT;
+    function GetSource: TReferenceCT;
+    function GetBodySite: TCodeableConceptCT;
   public
     property TimingChosen: TBasite read GetTimingChosen;
   published
@@ -10640,13 +11555,13 @@ type
     property TimingPeriod: TPeriodCT read GetTimingPeriod;
     [TChoice('Timing')]
     property TimingDateTime: TDateTimeCT read GetTimingDateTime;
-    property RecordedOn: TDateTimeCT read fRecordedOn;
-    property Source: TReferenceCT read fSource;
+    property RecordedOn: TDateTimeCT read GetRecordedOn;
+    property Source: TReferenceCT read GetSource;
     [TRequired]
     property Device: TReferenceCT read fDevice;
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
     property ReasonReference: TReferenceCTList read fReasonReference;
-    property BodySite: TCodeableConceptCT read fBodySite;
+    property BodySite: TCodeableConceptCT read GetBodySite;
     property Note: TAnnotationCTList read fNote;
   end;
 
@@ -10679,9 +11594,13 @@ type
     fConclusionCode: TCodeableConceptCTList;
     fPresentedForm: TAttachmentCTList;
 
+    function GetSubject: TReferenceCT;
+    function GetEncounter: TReferenceCT;
     function GetEffectiveDateTime: TDateTimeCT;
     function GetEffectivePeriod: TPeriodCT;
     function GetEffectiveChosen: TBasite;
+    function GetIssued: TInstantCT;
+    function GetConclusion: TStringCT;
   public
     property EffectiveChosen: TBasite read GetEffectiveChosen;
   published
@@ -10692,20 +11611,20 @@ type
     property Category: TCodeableConceptCTList read fCategory;
     [TRequired]
     property Code: TCodeableConceptCT read fCode;
-    property Subject: TReferenceCT read fSubject;
-    property Encounter: TReferenceCT read fEncounter;
+    property Subject: TReferenceCT read GetSubject;
+    property Encounter: TReferenceCT read GetEncounter;
     [TChoice('Effective')]
     property EffectiveDateTime: TDateTimeCT read GetEffectiveDateTime;
     [TChoice('Effective')]
     property EffectivePeriod: TPeriodCT read GetEffectivePeriod;
-    property Issued: TInstantCT read fIssued;
+    property Issued: TInstantCT read GetIssued;
     property Performer: TReferenceCTList read fPerformer;
     property ResultsInterpreter: TReferenceCTList read fResultsInterpreter;
     property Specimen: TReferenceCTList read fSpecimen;
     property Result: TReferenceCTList read fResult;
     property ImagingStudy: TReferenceCTList read fImagingStudy;
     property Media: TDiagnosticReportMediaCTList read fMedia;
-    property Conclusion: TStringCT read fConclusion;
+    property Conclusion: TStringCT read GetConclusion;
     property ConclusionCode: TCodeableConceptCTList read fConclusionCode;
     property PresentedForm: TAttachmentCTList read fPresentedForm;
   end;
@@ -10715,8 +11634,10 @@ type
   private
     fComment: TStringCT;
     fLink: TReferenceCT;
+
+    function GetComment: TStringCT;
   published
-    property Comment: TStringCT read fComment;
+    property Comment: TStringCT read GetComment;
     [TRequired]
     property Link: TReferenceCT read fLink;
   end;
@@ -10742,18 +11663,25 @@ type
     fDescription: TStringCT;
     fContent: TReferenceCTList;
     fRelated: TDocumentManifestRelatedCTList;
+
+    function GetMasterIdentifier: TIdentifierCT;
+    function GetType: TCodeableConceptCT;
+    function GetSubject: TReferenceCT;
+    function GetCreated: TDateTimeCT;
+    function GetSource: TUriCT;
+    function GetDescription: TStringCT;
   published
-    property MasterIdentifier: TIdentifierCT read fMasterIdentifier;
+    property MasterIdentifier: TIdentifierCT read GetMasterIdentifier;
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
     property Status: TDocumentReferenceStatusCT read fStatus;
-    property &Type: TCodeableConceptCT read fType;
-    property Subject: TReferenceCT read fSubject;
-    property Created: TDateTimeCT read fCreated;
+    property &Type: TCodeableConceptCT read GetType;
+    property Subject: TReferenceCT read GetSubject;
+    property Created: TDateTimeCT read GetCreated;
     property Author: TReferenceCTList read fAuthor;
     property Recipient: TReferenceCTList read fRecipient;
-    property Source: TUriCT read fSource;
-    property Description: TStringCT read fDescription;
+    property Source: TUriCT read GetSource;
+    property Description: TStringCT read GetDescription;
     property Content: TReferenceCTList read fContent;
     property Related: TDocumentManifestRelatedCTList read fRelated;
   end;
@@ -10763,9 +11691,12 @@ type
   private
     fIdentifier: TIdentifierCT;
     fRef: TReferenceCT;
+
+    function GetIdentifier: TIdentifierCT;
+    function GetRef: TReferenceCT;
   published
-    property Identifier: TIdentifierCT read fIdentifier;
-    property Ref: TReferenceCT read fRef;
+    property Identifier: TIdentifierCT read GetIdentifier;
+    property Ref: TReferenceCT read GetRef;
   end;
 
   TDocumentReferenceCT = class(TDomainResourceCT)
@@ -10786,24 +11717,34 @@ type
     fSecurityLabel: TCodeableConceptCTList;
     fContent: TDocumentReferenceContentCTList;
     fContext: TDocumentReferenceContextCT;
+
+    function GetMasterIdentifier: TIdentifierCT;
+    function GetDocStatus: TCompositionStatusCT;
+    function GetType: TCodeableConceptCT;
+    function GetSubject: TReferenceCT;
+    function GetDate: TInstantCT;
+    function GetAuthenticator: TReferenceCT;
+    function GetCustodian: TReferenceCT;
+    function GetDescription: TStringCT;
+    function GetContext: TDocumentReferenceContextCT;
   published
-    property MasterIdentifier: TIdentifierCT read fMasterIdentifier;
+    property MasterIdentifier: TIdentifierCT read GetMasterIdentifier;
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
     property Status: TDocumentReferenceStatusCT read fStatus;
-    property DocStatus: TCompositionStatusCT read fDocStatus;
-    property &Type: TCodeableConceptCT read fType;
+    property DocStatus: TCompositionStatusCT read GetDocStatus;
+    property &Type: TCodeableConceptCT read GetType;
     property Category: TCodeableConceptCTList read fCategory;
-    property Subject: TReferenceCT read fSubject;
-    property Date: TInstantCT read fDate;
+    property Subject: TReferenceCT read GetSubject;
+    property Date: TInstantCT read GetDate;
     property Author: TReferenceCTList read fAuthor;
-    property Authenticator: TReferenceCT read fAuthenticator;
-    property Custodian: TReferenceCT read fCustodian;
+    property Authenticator: TReferenceCT read GetAuthenticator;
+    property Custodian: TReferenceCT read GetCustodian;
     property RelatesTo: TDocumentReferenceRelatesToCTList read fRelatesTo;
-    property Description: TStringCT read fDescription;
+    property Description: TStringCT read GetDescription;
     property SecurityLabel: TCodeableConceptCTList read fSecurityLabel;
     property Content: TDocumentReferenceContentCTList read fContent;
-    property Context: TDocumentReferenceContextCT read fContext;
+    property Context: TDocumentReferenceContextCT read GetContext;
   end;
 
   [TName('DocumentReference.RelatesTo')]
@@ -10823,10 +11764,12 @@ type
   private
     fAttachment: TAttachmentCT;
     fFormat: TCodingCT;
+
+    function GetFormat: TCodingCT;
   published
     [TRequired]
     property Attachment: TAttachmentCT read fAttachment;
-    property Format: TCodingCT read fFormat;
+    property Format: TCodingCT read GetFormat;
   end;
 
   [TName('DocumentReference.Context')]
@@ -10839,13 +11782,18 @@ type
     fPracticeSetting: TCodeableConceptCT;
     fSourcePatientInfo: TReferenceCT;
     fRelated: TReferenceCTList;
+
+    function GetPeriod: TPeriodCT;
+    function GetFacilityType: TCodeableConceptCT;
+    function GetPracticeSetting: TCodeableConceptCT;
+    function GetSourcePatientInfo: TReferenceCT;
   published
     property Encounter: TReferenceCTList read fEncounter;
     property Event: TCodeableConceptCTList read fEvent;
-    property Period: TPeriodCT read fPeriod;
-    property FacilityType: TCodeableConceptCT read fFacilityType;
-    property PracticeSetting: TCodeableConceptCT read fPracticeSetting;
-    property SourcePatientInfo: TReferenceCT read fSourcePatientInfo;
+    property Period: TPeriodCT read GetPeriod;
+    property FacilityType: TCodeableConceptCT read GetFacilityType;
+    property PracticeSetting: TCodeableConceptCT read GetPracticeSetting;
+    property SourcePatientInfo: TReferenceCT read GetSourcePatientInfo;
     property Related: TReferenceCTList read fRelated;
   end;
 
@@ -10884,33 +11832,48 @@ type
     fResultsByExposure: TEffectEvidenceSynthesisResultsByExposureCTList;
     fEffectEstimate: TEffectEvidenceSynthesisEffectEstimateCTList;
     fCertainty: TEffectEvidenceSynthesisCertaintyCTList;
+
+    function GetUrl: TUriCT;
+    function GetVersion: TStringCT;
+    function GetName: TStringCT;
+    function GetTitle: TStringCT;
+    function GetDate: TDateTimeCT;
+    function GetPublisher: TStringCT;
+    function GetDescription: TMarkdownCT;
+    function GetCopyright: TMarkdownCT;
+    function GetApprovalDate: TDateCT;
+    function GetLastReviewDate: TDateCT;
+    function GetEffectivePeriod: TPeriodCT;
+    function GetSynthesisType: TCodeableConceptCT;
+    function GetStudyType: TCodeableConceptCT;
+    function GetSampleSize: TEffectEvidenceSynthesisSampleSizeCT;
   published
-    property Url: TUriCT read fUrl;
+    property Url: TUriCT read GetUrl;
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Version: TStringCT read fVersion;
-    property Name: TStringCT read fName;
-    property Title: TStringCT read fTitle;
+    property Version: TStringCT read GetVersion;
+    property Name: TStringCT read GetName;
+    property Title: TStringCT read GetTitle;
     [TRequired]
     property Status: TPublicationStatusCT read fStatus;
-    property Date: TDateTimeCT read fDate;
-    property Publisher: TStringCT read fPublisher;
+    property Date: TDateTimeCT read GetDate;
+    property Publisher: TStringCT read GetPublisher;
     property Contact: TContactDetailCTList read fContact;
-    property Description: TMarkdownCT read fDescription;
+    property Description: TMarkdownCT read GetDescription;
     property Note: TAnnotationCTList read fNote;
     property UseContext: TUsageContextCTList read fUseContext;
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    property Copyright: TMarkdownCT read fCopyright;
-    property ApprovalDate: TDateCT read fApprovalDate;
-    property LastReviewDate: TDateCT read fLastReviewDate;
-    property EffectivePeriod: TPeriodCT read fEffectivePeriod;
+    property Copyright: TMarkdownCT read GetCopyright;
+    property ApprovalDate: TDateCT read GetApprovalDate;
+    property LastReviewDate: TDateCT read GetLastReviewDate;
+    property EffectivePeriod: TPeriodCT read GetEffectivePeriod;
     property Topic: TCodeableConceptCTList read fTopic;
     property Author: TContactDetailCTList read fAuthor;
     property Editor: TContactDetailCTList read fEditor;
     property Reviewer: TContactDetailCTList read fReviewer;
     property Endorser: TContactDetailCTList read fEndorser;
     property RelatedArtifact: TRelatedArtifactCTList read fRelatedArtifact;
-    property SynthesisType: TCodeableConceptCT read fSynthesisType;
-    property StudyType: TCodeableConceptCT read fStudyType;
+    property SynthesisType: TCodeableConceptCT read GetSynthesisType;
+    property StudyType: TCodeableConceptCT read GetStudyType;
     [TRequired]
     property Population: TReferenceCT read fPopulation;
     [TRequired]
@@ -10919,7 +11882,7 @@ type
     property ExposureAlternative: TReferenceCT read fExposureAlternative;
     [TRequired]
     property Outcome: TReferenceCT read fOutcome;
-    property SampleSize: TEffectEvidenceSynthesisSampleSizeCT read fSampleSize;
+    property SampleSize: TEffectEvidenceSynthesisSampleSizeCT read GetSampleSize;
     property ResultsByExposure: TEffectEvidenceSynthesisResultsByExposureCTList read fResultsByExposure;
     property EffectEstimate: TEffectEvidenceSynthesisEffectEstimateCTList read fEffectEstimate;
     property Certainty: TEffectEvidenceSynthesisCertaintyCTList read fCertainty;
@@ -10931,10 +11894,14 @@ type
     fDescription: TStringCT;
     fNumberOfStudies: TIntegerCT;
     fNumberOfParticipants: TIntegerCT;
+
+    function GetDescription: TStringCT;
+    function GetNumberOfStudies: TIntegerCT;
+    function GetNumberOfParticipants: TIntegerCT;
   published
-    property Description: TStringCT read fDescription;
-    property NumberOfStudies: TIntegerCT read fNumberOfStudies;
-    property NumberOfParticipants: TIntegerCT read fNumberOfParticipants;
+    property Description: TStringCT read GetDescription;
+    property NumberOfStudies: TIntegerCT read GetNumberOfStudies;
+    property NumberOfParticipants: TIntegerCT read GetNumberOfParticipants;
   end;
 
   [TName('EffectEvidenceSynthesis.ResultsByExposure')]
@@ -10944,10 +11911,14 @@ type
     fExposureState: TExposureStateCT;
     fVariantState: TCodeableConceptCT;
     fRiskEvidenceSynthesis: TReferenceCT;
+
+    function GetDescription: TStringCT;
+    function GetExposureState: TExposureStateCT;
+    function GetVariantState: TCodeableConceptCT;
   published
-    property Description: TStringCT read fDescription;
-    property ExposureState: TExposureStateCT read fExposureState;
-    property VariantState: TCodeableConceptCT read fVariantState;
+    property Description: TStringCT read GetDescription;
+    property ExposureState: TExposureStateCT read GetExposureState;
+    property VariantState: TCodeableConceptCT read GetVariantState;
     [TRequired]
     property RiskEvidenceSynthesis: TReferenceCT read fRiskEvidenceSynthesis;
   end;
@@ -10961,12 +11932,18 @@ type
     fValue: TDecimalCT;
     fUnitOfMeasure: TCodeableConceptCT;
     fPrecisionEstimate: TEffectEvidenceSynthesisPrecisionEstimateCTList;
+
+    function GetDescription: TStringCT;
+    function GetType: TCodeableConceptCT;
+    function GetVariantState: TCodeableConceptCT;
+    function GetValue: TDecimalCT;
+    function GetUnitOfMeasure: TCodeableConceptCT;
   published
-    property Description: TStringCT read fDescription;
-    property &Type: TCodeableConceptCT read fType;
-    property VariantState: TCodeableConceptCT read fVariantState;
-    property Value: TDecimalCT read fValue;
-    property UnitOfMeasure: TCodeableConceptCT read fUnitOfMeasure;
+    property Description: TStringCT read GetDescription;
+    property &Type: TCodeableConceptCT read GetType;
+    property VariantState: TCodeableConceptCT read GetVariantState;
+    property Value: TDecimalCT read GetValue;
+    property UnitOfMeasure: TCodeableConceptCT read GetUnitOfMeasure;
     property PrecisionEstimate: TEffectEvidenceSynthesisPrecisionEstimateCTList read fPrecisionEstimate;
   end;
 
@@ -10977,11 +11954,16 @@ type
     fLevel: TDecimalCT;
     fFrom: TDecimalCT;
     fTo: TDecimalCT;
+
+    function GetType: TCodeableConceptCT;
+    function GetLevel: TDecimalCT;
+    function GetFrom: TDecimalCT;
+    function GetTo: TDecimalCT;
   published
-    property &Type: TCodeableConceptCT read fType;
-    property Level: TDecimalCT read fLevel;
-    property From: TDecimalCT read fFrom;
-    property &To: TDecimalCT read fTo;
+    property &Type: TCodeableConceptCT read GetType;
+    property Level: TDecimalCT read GetLevel;
+    property From: TDecimalCT read GetFrom;
+    property &To: TDecimalCT read GetTo;
   end;
 
   [TName('EffectEvidenceSynthesis.Certainty')]
@@ -11002,8 +11984,10 @@ type
     fType: TCodeableConceptCT;
     fRating: TCodeableConceptCTList;
     fNote: TAnnotationCTList;
+
+    function GetType: TCodeableConceptCT;
   published
-    property &Type: TCodeableConceptCT read fType;
+    property &Type: TCodeableConceptCT read GetType;
     property Rating: TCodeableConceptCTList read fRating;
     property Note: TAnnotationCTList read fNote;
   end;
@@ -11040,6 +12024,15 @@ type
     fLocation: TEncounterLocationCTList;
     fServiceProvider: TReferenceCT;
     fPartOf: TReferenceCT;
+
+    function GetServiceType: TCodeableConceptCT;
+    function GetPriority: TCodeableConceptCT;
+    function GetSubject: TReferenceCT;
+    function GetPeriod: TPeriodCT;
+    function GetLength: TDurationCT;
+    function GetHospitalization: TEncounterHospitalizationCT;
+    function GetServiceProvider: TReferenceCT;
+    function GetPartOf: TReferenceCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
@@ -11049,23 +12042,23 @@ type
     property &Class: TCodingCT read fClass;
     property ClassHistory: TEncounterClassHistoryCTList read fClassHistory;
     property &Type: TCodeableConceptCTList read fType;
-    property ServiceType: TCodeableConceptCT read fServiceType;
-    property Priority: TCodeableConceptCT read fPriority;
-    property Subject: TReferenceCT read fSubject;
+    property ServiceType: TCodeableConceptCT read GetServiceType;
+    property Priority: TCodeableConceptCT read GetPriority;
+    property Subject: TReferenceCT read GetSubject;
     property EpisodeOfCare: TReferenceCTList read fEpisodeOfCare;
     property BasedOn: TReferenceCTList read fBasedOn;
     property Participant: TEncounterParticipantCTList read fParticipant;
     property Appointment: TReferenceCTList read fAppointment;
-    property Period: TPeriodCT read fPeriod;
-    property Length: TDurationCT read fLength;
+    property Period: TPeriodCT read GetPeriod;
+    property Length: TDurationCT read GetLength;
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
     property ReasonReference: TReferenceCTList read fReasonReference;
     property Diagnosis: TEncounterDiagnosisCTList read fDiagnosis;
     property Account: TReferenceCTList read fAccount;
-    property Hospitalization: TEncounterHospitalizationCT read fHospitalization;
+    property Hospitalization: TEncounterHospitalizationCT read GetHospitalization;
     property Location: TEncounterLocationCTList read fLocation;
-    property ServiceProvider: TReferenceCT read fServiceProvider;
-    property PartOf: TReferenceCT read fPartOf;
+    property ServiceProvider: TReferenceCT read GetServiceProvider;
+    property PartOf: TReferenceCT read GetPartOf;
   end;
 
   [TName('Encounter.StatusHistory')]
@@ -11098,10 +12091,13 @@ type
     fType: TCodeableConceptCTList;
     fPeriod: TPeriodCT;
     fIndividual: TReferenceCT;
+
+    function GetPeriod: TPeriodCT;
+    function GetIndividual: TReferenceCT;
   published
     property &Type: TCodeableConceptCTList read fType;
-    property Period: TPeriodCT read fPeriod;
-    property Individual: TReferenceCT read fIndividual;
+    property Period: TPeriodCT read GetPeriod;
+    property Individual: TReferenceCT read GetIndividual;
   end;
 
   [TName('Encounter.Diagnosis')]
@@ -11110,11 +12106,14 @@ type
     fCondition: TReferenceCT;
     fUse: TCodeableConceptCT;
     fRank: TPositiveIntCT;
+
+    function GetUse: TCodeableConceptCT;
+    function GetRank: TPositiveIntCT;
   published
     [TRequired]
     property Condition: TReferenceCT read fCondition;
-    property Use: TCodeableConceptCT read fUse;
-    property Rank: TPositiveIntCT read fRank;
+    property Use: TCodeableConceptCT read GetUse;
+    property Rank: TPositiveIntCT read GetRank;
   end;
 
   [TName('Encounter.Hospitalization')]
@@ -11129,16 +12128,23 @@ type
     fSpecialArrangement: TCodeableConceptCTList;
     fDestination: TReferenceCT;
     fDischargeDisposition: TCodeableConceptCT;
+
+    function GetPreAdmissionIdentifier: TIdentifierCT;
+    function GetOrigin: TReferenceCT;
+    function GetAdmitSource: TCodeableConceptCT;
+    function GetReAdmission: TCodeableConceptCT;
+    function GetDestination: TReferenceCT;
+    function GetDischargeDisposition: TCodeableConceptCT;
   published
-    property PreAdmissionIdentifier: TIdentifierCT read fPreAdmissionIdentifier;
-    property Origin: TReferenceCT read fOrigin;
-    property AdmitSource: TCodeableConceptCT read fAdmitSource;
-    property ReAdmission: TCodeableConceptCT read fReAdmission;
+    property PreAdmissionIdentifier: TIdentifierCT read GetPreAdmissionIdentifier;
+    property Origin: TReferenceCT read GetOrigin;
+    property AdmitSource: TCodeableConceptCT read GetAdmitSource;
+    property ReAdmission: TCodeableConceptCT read GetReAdmission;
     property DietPreference: TCodeableConceptCTList read fDietPreference;
     property SpecialCourtesy: TCodeableConceptCTList read fSpecialCourtesy;
     property SpecialArrangement: TCodeableConceptCTList read fSpecialArrangement;
-    property Destination: TReferenceCT read fDestination;
-    property DischargeDisposition: TCodeableConceptCT read fDischargeDisposition;
+    property Destination: TReferenceCT read GetDestination;
+    property DischargeDisposition: TCodeableConceptCT read GetDischargeDisposition;
   end;
 
   [TName('Encounter.Location')]
@@ -11148,12 +12154,16 @@ type
     fStatus: TEncounterLocationStatusCT;
     fPhysicalType: TCodeableConceptCT;
     fPeriod: TPeriodCT;
+
+    function GetStatus: TEncounterLocationStatusCT;
+    function GetPhysicalType: TCodeableConceptCT;
+    function GetPeriod: TPeriodCT;
   published
     [TRequired]
     property Location: TReferenceCT read fLocation;
-    property Status: TEncounterLocationStatusCT read fStatus;
-    property PhysicalType: TCodeableConceptCT read fPhysicalType;
-    property Period: TPeriodCT read fPeriod;
+    property Status: TEncounterLocationStatusCT read GetStatus;
+    property PhysicalType: TCodeableConceptCT read GetPhysicalType;
+    property Period: TPeriodCT read GetPeriod;
   end;
 
   TEncounterLocationStatusCT = class(TElementCT)
@@ -11183,16 +12193,20 @@ type
     fPayloadMimeType: TCodeCTList;
     fAddress: TUrlCT;
     fHeader: TStringCTList;
+
+    function GetName: TStringCT;
+    function GetManagingOrganization: TReferenceCT;
+    function GetPeriod: TPeriodCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
     property Status: TEndpointStatusCT read fStatus;
     [TRequired]
     property ConnectionType: TCodingCT read fConnectionType;
-    property Name: TStringCT read fName;
-    property ManagingOrganization: TReferenceCT read fManagingOrganization;
+    property Name: TStringCT read GetName;
+    property ManagingOrganization: TReferenceCT read GetManagingOrganization;
     property Contact: TContactPointCTList read fContact;
-    property Period: TPeriodCT read fPeriod;
+    property Period: TPeriodCT read GetPeriod;
     property PayloadType: TCodeableConceptCTList read fPayloadType;
     property PayloadMimeType: TCodeCTList read fPayloadMimeType;
     [TRequired]
@@ -11216,14 +12230,21 @@ type
     fProvider: TReferenceCT;
     fCandidate: TReferenceCT;
     fCoverage: TReferenceCT;
+
+    function GetStatus: TFinancialResourceStatusCodesCT;
+    function GetCreated: TDateTimeCT;
+    function GetInsurer: TReferenceCT;
+    function GetProvider: TReferenceCT;
+    function GetCandidate: TReferenceCT;
+    function GetCoverage: TReferenceCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Status: TFinancialResourceStatusCodesCT read fStatus;
-    property Created: TDateTimeCT read fCreated;
-    property Insurer: TReferenceCT read fInsurer;
-    property Provider: TReferenceCT read fProvider;
-    property Candidate: TReferenceCT read fCandidate;
-    property Coverage: TReferenceCT read fCoverage;
+    property Status: TFinancialResourceStatusCodesCT read GetStatus;
+    property Created: TDateTimeCT read GetCreated;
+    property Insurer: TReferenceCT read GetInsurer;
+    property Provider: TReferenceCT read GetProvider;
+    property Candidate: TReferenceCT read GetCandidate;
+    property Coverage: TReferenceCT read GetCoverage;
   end;
 
   TEnrollmentResponseCT = class(TDomainResourceCT)
@@ -11236,15 +12257,23 @@ type
     fCreated: TDateTimeCT;
     fOrganization: TReferenceCT;
     fRequestProvider: TReferenceCT;
+
+    function GetStatus: TFinancialResourceStatusCodesCT;
+    function GetRequest: TReferenceCT;
+    function GetOutcome: TRemittanceOutcomeCT;
+    function GetDisposition: TStringCT;
+    function GetCreated: TDateTimeCT;
+    function GetOrganization: TReferenceCT;
+    function GetRequestProvider: TReferenceCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Status: TFinancialResourceStatusCodesCT read fStatus;
-    property Request: TReferenceCT read fRequest;
-    property Outcome: TRemittanceOutcomeCT read fOutcome;
-    property Disposition: TStringCT read fDisposition;
-    property Created: TDateTimeCT read fCreated;
-    property Organization: TReferenceCT read fOrganization;
-    property RequestProvider: TReferenceCT read fRequestProvider;
+    property Status: TFinancialResourceStatusCodesCT read GetStatus;
+    property Request: TReferenceCT read GetRequest;
+    property Outcome: TRemittanceOutcomeCT read GetOutcome;
+    property Disposition: TStringCT read GetDisposition;
+    property Created: TDateTimeCT read GetCreated;
+    property Organization: TReferenceCT read GetOrganization;
+    property RequestProvider: TReferenceCT read GetRequestProvider;
   end;
 
   TEpisodeOfCareCT = class(TDomainResourceCT)
@@ -11261,6 +12290,10 @@ type
     fCareManager: TReferenceCT;
     fTeam: TReferenceCTList;
     fAccount: TReferenceCTList;
+
+    function GetManagingOrganization: TReferenceCT;
+    function GetPeriod: TPeriodCT;
+    function GetCareManager: TReferenceCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
@@ -11270,10 +12303,10 @@ type
     property Diagnosis: TEpisodeOfCareDiagnosisCTList read fDiagnosis;
     [TRequired]
     property Patient: TReferenceCT read fPatient;
-    property ManagingOrganization: TReferenceCT read fManagingOrganization;
-    property Period: TPeriodCT read fPeriod;
+    property ManagingOrganization: TReferenceCT read GetManagingOrganization;
+    property Period: TPeriodCT read GetPeriod;
     property ReferralRequest: TReferenceCTList read fReferralRequest;
-    property CareManager: TReferenceCT read fCareManager;
+    property CareManager: TReferenceCT read GetCareManager;
     property Team: TReferenceCTList read fTeam;
     property Account: TReferenceCTList read fAccount;
   end;
@@ -11296,11 +12329,14 @@ type
     fCondition: TReferenceCT;
     fRole: TCodeableConceptCT;
     fRank: TPositiveIntCT;
+
+    function GetRole: TCodeableConceptCT;
+    function GetRank: TPositiveIntCT;
   published
     [TRequired]
     property Condition: TReferenceCT read fCondition;
-    property Role: TCodeableConceptCT read fRole;
-    property Rank: TPositiveIntCT read fRank;
+    property Role: TCodeableConceptCT read GetRole;
+    property Rank: TPositiveIntCT read GetRank;
   end;
 
   TEpisodeOfCareStatusCT = class(TElementCT)
@@ -11342,37 +12378,52 @@ type
     fRelatedArtifact: TRelatedArtifactCTList;
     fTrigger: TTriggerDefinitionCTList;
 
+    function GetUrl: TUriCT;
+    function GetVersion: TStringCT;
+    function GetName: TStringCT;
+    function GetTitle: TStringCT;
+    function GetSubtitle: TStringCT;
+    function GetExperimental: TBooleanCT;
     function GetSubjectCodeableConcept: TCodeableConceptCT;
     function GetSubjectReference: TReferenceCT;
     function GetSubjectChosen: TBasite;
+    function GetDate: TDateTimeCT;
+    function GetPublisher: TStringCT;
+    function GetDescription: TMarkdownCT;
+    function GetPurpose: TMarkdownCT;
+    function GetUsage: TStringCT;
+    function GetCopyright: TMarkdownCT;
+    function GetApprovalDate: TDateCT;
+    function GetLastReviewDate: TDateCT;
+    function GetEffectivePeriod: TPeriodCT;
   public
     property SubjectChosen: TBasite read GetSubjectChosen;
   published
-    property Url: TUriCT read fUrl;
+    property Url: TUriCT read GetUrl;
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Version: TStringCT read fVersion;
-    property Name: TStringCT read fName;
-    property Title: TStringCT read fTitle;
-    property Subtitle: TStringCT read fSubtitle;
+    property Version: TStringCT read GetVersion;
+    property Name: TStringCT read GetName;
+    property Title: TStringCT read GetTitle;
+    property Subtitle: TStringCT read GetSubtitle;
     [TRequired]
     property Status: TPublicationStatusCT read fStatus;
-    property Experimental: TBooleanCT read fExperimental;
+    property Experimental: TBooleanCT read GetExperimental;
     [TChoice('Subject')]
     property SubjectCodeableConcept: TCodeableConceptCT read GetSubjectCodeableConcept;
     [TChoice('Subject')]
     property SubjectReference: TReferenceCT read GetSubjectReference;
-    property Date: TDateTimeCT read fDate;
-    property Publisher: TStringCT read fPublisher;
+    property Date: TDateTimeCT read GetDate;
+    property Publisher: TStringCT read GetPublisher;
     property Contact: TContactDetailCTList read fContact;
-    property Description: TMarkdownCT read fDescription;
+    property Description: TMarkdownCT read GetDescription;
     property UseContext: TUsageContextCTList read fUseContext;
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    property Purpose: TMarkdownCT read fPurpose;
-    property Usage: TStringCT read fUsage;
-    property Copyright: TMarkdownCT read fCopyright;
-    property ApprovalDate: TDateCT read fApprovalDate;
-    property LastReviewDate: TDateCT read fLastReviewDate;
-    property EffectivePeriod: TPeriodCT read fEffectivePeriod;
+    property Purpose: TMarkdownCT read GetPurpose;
+    property Usage: TStringCT read GetUsage;
+    property Copyright: TMarkdownCT read GetCopyright;
+    property ApprovalDate: TDateCT read GetApprovalDate;
+    property LastReviewDate: TDateCT read GetLastReviewDate;
+    property EffectivePeriod: TPeriodCT read GetEffectivePeriod;
     property Topic: TCodeableConceptCTList read fTopic;
     property Author: TContactDetailCTList read fAuthor;
     property Editor: TContactDetailCTList read fEditor;
@@ -11412,27 +12463,41 @@ type
     fExposureBackground: TReferenceCT;
     fExposureVariant: TReferenceCTList;
     fOutcome: TReferenceCTList;
+
+    function GetUrl: TUriCT;
+    function GetVersion: TStringCT;
+    function GetName: TStringCT;
+    function GetTitle: TStringCT;
+    function GetShortTitle: TStringCT;
+    function GetSubtitle: TStringCT;
+    function GetDate: TDateTimeCT;
+    function GetPublisher: TStringCT;
+    function GetDescription: TMarkdownCT;
+    function GetCopyright: TMarkdownCT;
+    function GetApprovalDate: TDateCT;
+    function GetLastReviewDate: TDateCT;
+    function GetEffectivePeriod: TPeriodCT;
   published
-    property Url: TUriCT read fUrl;
+    property Url: TUriCT read GetUrl;
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Version: TStringCT read fVersion;
-    property Name: TStringCT read fName;
-    property Title: TStringCT read fTitle;
-    property ShortTitle: TStringCT read fShortTitle;
-    property Subtitle: TStringCT read fSubtitle;
+    property Version: TStringCT read GetVersion;
+    property Name: TStringCT read GetName;
+    property Title: TStringCT read GetTitle;
+    property ShortTitle: TStringCT read GetShortTitle;
+    property Subtitle: TStringCT read GetSubtitle;
     [TRequired]
     property Status: TPublicationStatusCT read fStatus;
-    property Date: TDateTimeCT read fDate;
-    property Publisher: TStringCT read fPublisher;
+    property Date: TDateTimeCT read GetDate;
+    property Publisher: TStringCT read GetPublisher;
     property Contact: TContactDetailCTList read fContact;
-    property Description: TMarkdownCT read fDescription;
+    property Description: TMarkdownCT read GetDescription;
     property Note: TAnnotationCTList read fNote;
     property UseContext: TUsageContextCTList read fUseContext;
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    property Copyright: TMarkdownCT read fCopyright;
-    property ApprovalDate: TDateCT read fApprovalDate;
-    property LastReviewDate: TDateCT read fLastReviewDate;
-    property EffectivePeriod: TPeriodCT read fEffectivePeriod;
+    property Copyright: TMarkdownCT read GetCopyright;
+    property ApprovalDate: TDateCT read GetApprovalDate;
+    property LastReviewDate: TDateCT read GetLastReviewDate;
+    property EffectivePeriod: TPeriodCT read GetEffectivePeriod;
     property Topic: TCodeableConceptCTList read fTopic;
     property Author: TContactDetailCTList read fAuthor;
     property Editor: TContactDetailCTList read fEditor;
@@ -11474,34 +12539,49 @@ type
     fRelatedArtifact: TRelatedArtifactCTList;
     fType: TEvidenceVariableTypeCT;
     fCharacteristic: TEvidenceVariableCharacteristicCTList;
+
+    function GetUrl: TUriCT;
+    function GetVersion: TStringCT;
+    function GetName: TStringCT;
+    function GetTitle: TStringCT;
+    function GetShortTitle: TStringCT;
+    function GetSubtitle: TStringCT;
+    function GetDate: TDateTimeCT;
+    function GetPublisher: TStringCT;
+    function GetDescription: TMarkdownCT;
+    function GetCopyright: TMarkdownCT;
+    function GetApprovalDate: TDateCT;
+    function GetLastReviewDate: TDateCT;
+    function GetEffectivePeriod: TPeriodCT;
+    function GetType: TEvidenceVariableTypeCT;
   published
-    property Url: TUriCT read fUrl;
+    property Url: TUriCT read GetUrl;
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Version: TStringCT read fVersion;
-    property Name: TStringCT read fName;
-    property Title: TStringCT read fTitle;
-    property ShortTitle: TStringCT read fShortTitle;
-    property Subtitle: TStringCT read fSubtitle;
+    property Version: TStringCT read GetVersion;
+    property Name: TStringCT read GetName;
+    property Title: TStringCT read GetTitle;
+    property ShortTitle: TStringCT read GetShortTitle;
+    property Subtitle: TStringCT read GetSubtitle;
     [TRequired]
     property Status: TPublicationStatusCT read fStatus;
-    property Date: TDateTimeCT read fDate;
-    property Publisher: TStringCT read fPublisher;
+    property Date: TDateTimeCT read GetDate;
+    property Publisher: TStringCT read GetPublisher;
     property Contact: TContactDetailCTList read fContact;
-    property Description: TMarkdownCT read fDescription;
+    property Description: TMarkdownCT read GetDescription;
     property Note: TAnnotationCTList read fNote;
     property UseContext: TUsageContextCTList read fUseContext;
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    property Copyright: TMarkdownCT read fCopyright;
-    property ApprovalDate: TDateCT read fApprovalDate;
-    property LastReviewDate: TDateCT read fLastReviewDate;
-    property EffectivePeriod: TPeriodCT read fEffectivePeriod;
+    property Copyright: TMarkdownCT read GetCopyright;
+    property ApprovalDate: TDateCT read GetApprovalDate;
+    property LastReviewDate: TDateCT read GetLastReviewDate;
+    property EffectivePeriod: TPeriodCT read GetEffectivePeriod;
     property Topic: TCodeableConceptCTList read fTopic;
     property Author: TContactDetailCTList read fAuthor;
     property Editor: TContactDetailCTList read fEditor;
     property Reviewer: TContactDetailCTList read fReviewer;
     property Endorser: TContactDetailCTList read fEndorser;
     property RelatedArtifact: TRelatedArtifactCTList read fRelatedArtifact;
-    property &Type: TEvidenceVariableTypeCT read fType;
+    property &Type: TEvidenceVariableTypeCT read GetType;
     property Characteristic: TEvidenceVariableCharacteristicCTList read fCharacteristic;
   end;
 
@@ -11524,6 +12604,7 @@ type
     fTimeFromStart: TDurationCT;
     fGroupMeasure: TGroupMeasureCT;
 
+    function GetDescription: TStringCT;
     function GetDefinitionReference: TReferenceCT;
     function GetDefinitionCanonical: TCanonicalCT;
     function GetDefinitionCodeableConcept: TCodeableConceptCT;
@@ -11531,16 +12612,19 @@ type
     function GetDefinitionDataRequirement: TDataRequirementCT;
     function GetDefinitionTriggerDefinition: TTriggerDefinitionCT;
     function GetDefinitionChosen: TBasite;
+    function GetExclude: TBooleanCT;
     function GetParticipantEffectiveDateTime: TDateTimeCT;
     function GetParticipantEffectivePeriod: TPeriodCT;
     function GetParticipantEffectiveDuration: TDurationCT;
     function GetParticipantEffectiveTiming: TTimingCT;
     function GetParticipantEffectiveChosen: TBasite;
+    function GetTimeFromStart: TDurationCT;
+    function GetGroupMeasure: TGroupMeasureCT;
   public
     property DefinitionChosen: TBasite read GetDefinitionChosen;
     property ParticipantEffectiveChosen: TBasite read GetParticipantEffectiveChosen;
   published
-    property Description: TStringCT read fDescription;
+    property Description: TStringCT read GetDescription;
     [TChoice('Definition')]
     property DefinitionReference: TReferenceCT read GetDefinitionReference;
     [TChoice('Definition')]
@@ -11554,7 +12638,7 @@ type
     [TChoice('Definition')]
     property DefinitionTriggerDefinition: TTriggerDefinitionCT read GetDefinitionTriggerDefinition;
     property UsageContext: TUsageContextCTList read fUsageContext;
-    property Exclude: TBooleanCT read fExclude;
+    property Exclude: TBooleanCT read GetExclude;
     [TChoice('ParticipantEffective')]
     property ParticipantEffectiveDateTime: TDateTimeCT read GetParticipantEffectiveDateTime;
     [TChoice('ParticipantEffective')]
@@ -11563,8 +12647,8 @@ type
     property ParticipantEffectiveDuration: TDurationCT read GetParticipantEffectiveDuration;
     [TChoice('ParticipantEffective')]
     property ParticipantEffectiveTiming: TTimingCT read GetParticipantEffectiveTiming;
-    property TimeFromStart: TDurationCT read fTimeFromStart;
-    property GroupMeasure: TGroupMeasureCT read fGroupMeasure;
+    property TimeFromStart: TDurationCT read GetTimeFromStart;
+    property GroupMeasure: TGroupMeasureCT read GetGroupMeasure;
   end;
 
   TEvidenceVariableTypeCT = class(TElementCT)
@@ -11600,21 +12684,30 @@ type
     fInstance: TExampleScenarioInstanceCTList;
     fProcess: TExampleScenarioProcessCTList;
     fWorkflow: TCanonicalCTList;
+
+    function GetUrl: TUriCT;
+    function GetVersion: TStringCT;
+    function GetName: TStringCT;
+    function GetExperimental: TBooleanCT;
+    function GetDate: TDateTimeCT;
+    function GetPublisher: TStringCT;
+    function GetCopyright: TMarkdownCT;
+    function GetPurpose: TMarkdownCT;
   published
-    property Url: TUriCT read fUrl;
+    property Url: TUriCT read GetUrl;
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Version: TStringCT read fVersion;
-    property Name: TStringCT read fName;
+    property Version: TStringCT read GetVersion;
+    property Name: TStringCT read GetName;
     [TRequired]
     property Status: TPublicationStatusCT read fStatus;
-    property Experimental: TBooleanCT read fExperimental;
-    property Date: TDateTimeCT read fDate;
-    property Publisher: TStringCT read fPublisher;
+    property Experimental: TBooleanCT read GetExperimental;
+    property Date: TDateTimeCT read GetDate;
+    property Publisher: TStringCT read GetPublisher;
     property Contact: TContactDetailCTList read fContact;
     property UseContext: TUsageContextCTList read fUseContext;
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    property Copyright: TMarkdownCT read fCopyright;
-    property Purpose: TMarkdownCT read fPurpose;
+    property Copyright: TMarkdownCT read GetCopyright;
+    property Purpose: TMarkdownCT read GetPurpose;
     property Actor: TExampleScenarioActorCTList read fActor;
     property Instance: TExampleScenarioInstanceCTList read fInstance;
     property Process: TExampleScenarioProcessCTList read fProcess;
@@ -11628,13 +12721,16 @@ type
     fType: TExampleScenarioActorTypeCT;
     fName: TStringCT;
     fDescription: TMarkdownCT;
+
+    function GetName: TStringCT;
+    function GetDescription: TMarkdownCT;
   published
     [TRequired]
     property ActorId: TStringCT read fActorId;
     [TRequired]
     property &Type: TExampleScenarioActorTypeCT read fType;
-    property Name: TStringCT read fName;
-    property Description: TMarkdownCT read fDescription;
+    property Name: TStringCT read GetName;
+    property Description: TMarkdownCT read GetDescription;
   end;
 
   [TName('ExampleScenario.Instance')]
@@ -11646,13 +12742,16 @@ type
     fDescription: TMarkdownCT;
     fVersion: TExampleScenarioVersionCTList;
     fContainedInstance: TExampleScenarioContainedInstanceCTList;
+
+    function GetName: TStringCT;
+    function GetDescription: TMarkdownCT;
   published
     [TRequired]
     property ResourceId: TStringCT read fResourceId;
     [TRequired]
     property ResourceType: TResourceTypeCT read fResourceType;
-    property Name: TStringCT read fName;
-    property Description: TMarkdownCT read fDescription;
+    property Name: TStringCT read GetName;
+    property Description: TMarkdownCT read GetDescription;
     property Version: TExampleScenarioVersionCTList read fVersion;
     property ContainedInstance: TExampleScenarioContainedInstanceCTList read fContainedInstance;
   end;
@@ -11674,10 +12773,12 @@ type
   private
     fResourceId: TStringCT;
     fVersionId: TStringCT;
+
+    function GetVersionId: TStringCT;
   published
     [TRequired]
     property ResourceId: TStringCT read fResourceId;
-    property VersionId: TStringCT read fVersionId;
+    property VersionId: TStringCT read GetVersionId;
   end;
 
   [TName('ExampleScenario.Process')]
@@ -11688,12 +12789,16 @@ type
     fPreConditions: TMarkdownCT;
     fPostConditions: TMarkdownCT;
     fStep: TExampleScenarioStepCTList;
+
+    function GetDescription: TMarkdownCT;
+    function GetPreConditions: TMarkdownCT;
+    function GetPostConditions: TMarkdownCT;
   published
     [TRequired]
     property Title: TStringCT read fTitle;
-    property Description: TMarkdownCT read fDescription;
-    property PreConditions: TMarkdownCT read fPreConditions;
-    property PostConditions: TMarkdownCT read fPostConditions;
+    property Description: TMarkdownCT read GetDescription;
+    property PreConditions: TMarkdownCT read GetPreConditions;
+    property PostConditions: TMarkdownCT read GetPostConditions;
     property Step: TExampleScenarioStepCTList read fStep;
   end;
 
@@ -11704,10 +12809,13 @@ type
     fPause: TBooleanCT;
     fOperation: TExampleScenarioOperationCT;
     fAlternative: TExampleScenarioAlternativeCTList;
+
+    function GetPause: TBooleanCT;
+    function GetOperation: TExampleScenarioOperationCT;
   published
     property Process: TExampleScenarioProcessCTList read fProcess;
-    property Pause: TBooleanCT read fPause;
-    property Operation: TExampleScenarioOperationCT read fOperation;
+    property Pause: TBooleanCT read GetPause;
+    property Operation: TExampleScenarioOperationCT read GetOperation;
     property Alternative: TExampleScenarioAlternativeCTList read fAlternative;
   end;
 
@@ -11724,18 +12832,28 @@ type
     fReceiverActive: TBooleanCT;
     fRequest: TExampleScenarioContainedInstanceCT;
     fResponse: TExampleScenarioContainedInstanceCT;
+
+    function GetType: TStringCT;
+    function GetName: TStringCT;
+    function GetInitiator: TStringCT;
+    function GetReceiver: TStringCT;
+    function GetDescription: TMarkdownCT;
+    function GetInitiatorActive: TBooleanCT;
+    function GetReceiverActive: TBooleanCT;
+    function GetRequest: TExampleScenarioContainedInstanceCT;
+    function GetResponse: TExampleScenarioContainedInstanceCT;
   published
     [TRequired]
     property Number: TStringCT read fNumber;
-    property &Type: TStringCT read fType;
-    property Name: TStringCT read fName;
-    property Initiator: TStringCT read fInitiator;
-    property Receiver: TStringCT read fReceiver;
-    property Description: TMarkdownCT read fDescription;
-    property InitiatorActive: TBooleanCT read fInitiatorActive;
-    property ReceiverActive: TBooleanCT read fReceiverActive;
-    property Request: TExampleScenarioContainedInstanceCT read fRequest;
-    property Response: TExampleScenarioContainedInstanceCT read fResponse;
+    property &Type: TStringCT read GetType;
+    property Name: TStringCT read GetName;
+    property Initiator: TStringCT read GetInitiator;
+    property Receiver: TStringCT read GetReceiver;
+    property Description: TMarkdownCT read GetDescription;
+    property InitiatorActive: TBooleanCT read GetInitiatorActive;
+    property ReceiverActive: TBooleanCT read GetReceiverActive;
+    property Request: TExampleScenarioContainedInstanceCT read GetRequest;
+    property Response: TExampleScenarioContainedInstanceCT read GetResponse;
   end;
 
   [TName('ExampleScenario.Alternative')]
@@ -11744,10 +12862,12 @@ type
     fTitle: TStringCT;
     fDescription: TMarkdownCT;
     fStep: TExampleScenarioStepCTList;
+
+    function GetDescription: TMarkdownCT;
   published
     [TRequired]
     property Title: TStringCT read fTitle;
-    property Description: TMarkdownCT read fDescription;
+    property Description: TMarkdownCT read GetDescription;
     property Step: TExampleScenarioStepCTList read fStep;
   end;
 
@@ -11810,57 +12930,78 @@ type
     fProcessNote: TExplanationOfBenefitProcessNoteCTList;
     fBenefitPeriod: TPeriodCT;
     fBenefitBalance: TExplanationOfBenefitBenefitBalanceCTList;
+
+    function GetSubType: TCodeableConceptCT;
+    function GetBillablePeriod: TPeriodCT;
+    function GetEnterer: TReferenceCT;
+    function GetPriority: TCodeableConceptCT;
+    function GetFundsReserveRequested: TCodeableConceptCT;
+    function GetFundsReserve: TCodeableConceptCT;
+    function GetPrescription: TReferenceCT;
+    function GetOriginalPrescription: TReferenceCT;
+    function GetPayee: TExplanationOfBenefitPayeeCT;
+    function GetReferral: TReferenceCT;
+    function GetFacility: TReferenceCT;
+    function GetClaim: TReferenceCT;
+    function GetClaimResponse: TReferenceCT;
+    function GetDisposition: TStringCT;
+    function GetPrecedence: TPositiveIntCT;
+    function GetAccident: TExplanationOfBenefitAccidentCT;
+    function GetPayment: TExplanationOfBenefitPaymentCT;
+    function GetFormCode: TCodeableConceptCT;
+    function GetForm: TAttachmentCT;
+    function GetBenefitPeriod: TPeriodCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
     property Status: TExplanationOfBenefitStatusCT read fStatus;
     [TRequired]
     property &Type: TCodeableConceptCT read fType;
-    property SubType: TCodeableConceptCT read fSubType;
+    property SubType: TCodeableConceptCT read GetSubType;
     [TRequired]
     property Use: TUseCT read fUse;
     [TRequired]
     property Patient: TReferenceCT read fPatient;
-    property BillablePeriod: TPeriodCT read fBillablePeriod;
+    property BillablePeriod: TPeriodCT read GetBillablePeriod;
     [TRequired]
     property Created: TDateTimeCT read fCreated;
-    property Enterer: TReferenceCT read fEnterer;
+    property Enterer: TReferenceCT read GetEnterer;
     [TRequired]
     property Insurer: TReferenceCT read fInsurer;
     [TRequired]
     property Provider: TReferenceCT read fProvider;
-    property Priority: TCodeableConceptCT read fPriority;
-    property FundsReserveRequested: TCodeableConceptCT read fFundsReserveRequested;
-    property FundsReserve: TCodeableConceptCT read fFundsReserve;
+    property Priority: TCodeableConceptCT read GetPriority;
+    property FundsReserveRequested: TCodeableConceptCT read GetFundsReserveRequested;
+    property FundsReserve: TCodeableConceptCT read GetFundsReserve;
     property Related: TExplanationOfBenefitRelatedCTList read fRelated;
-    property Prescription: TReferenceCT read fPrescription;
-    property OriginalPrescription: TReferenceCT read fOriginalPrescription;
-    property Payee: TExplanationOfBenefitPayeeCT read fPayee;
-    property Referral: TReferenceCT read fReferral;
-    property Facility: TReferenceCT read fFacility;
-    property Claim: TReferenceCT read fClaim;
-    property ClaimResponse: TReferenceCT read fClaimResponse;
+    property Prescription: TReferenceCT read GetPrescription;
+    property OriginalPrescription: TReferenceCT read GetOriginalPrescription;
+    property Payee: TExplanationOfBenefitPayeeCT read GetPayee;
+    property Referral: TReferenceCT read GetReferral;
+    property Facility: TReferenceCT read GetFacility;
+    property Claim: TReferenceCT read GetClaim;
+    property ClaimResponse: TReferenceCT read GetClaimResponse;
     [TRequired]
     property Outcome: TClaimProcessingCodesCT read fOutcome;
-    property Disposition: TStringCT read fDisposition;
+    property Disposition: TStringCT read GetDisposition;
     property PreAuthRef: TStringCTList read fPreAuthRef;
     property PreAuthRefPeriod: TPeriodCTList read fPreAuthRefPeriod;
     property CareTeam: TExplanationOfBenefitCareTeamCTList read fCareTeam;
     property SupportingInfo: TExplanationOfBenefitSupportingInfoCTList read fSupportingInfo;
     property Diagnosis: TExplanationOfBenefitDiagnosisCTList read fDiagnosis;
     property &Procedure: TExplanationOfBenefitProcedureCTList read fProcedure;
-    property Precedence: TPositiveIntCT read fPrecedence;
+    property Precedence: TPositiveIntCT read GetPrecedence;
     property Insurance: TExplanationOfBenefitInsuranceCTList read fInsurance;
-    property Accident: TExplanationOfBenefitAccidentCT read fAccident;
+    property Accident: TExplanationOfBenefitAccidentCT read GetAccident;
     property Item: TExplanationOfBenefitItemCTList read fItem;
     property AddItem: TExplanationOfBenefitAddItemCTList read fAddItem;
     property Adjudication: TExplanationOfBenefitAdjudicationCTList read fAdjudication;
     property Total: TExplanationOfBenefitTotalCTList read fTotal;
-    property Payment: TExplanationOfBenefitPaymentCT read fPayment;
-    property FormCode: TCodeableConceptCT read fFormCode;
-    property Form: TAttachmentCT read fForm;
+    property Payment: TExplanationOfBenefitPaymentCT read GetPayment;
+    property FormCode: TCodeableConceptCT read GetFormCode;
+    property Form: TAttachmentCT read GetForm;
     property ProcessNote: TExplanationOfBenefitProcessNoteCTList read fProcessNote;
-    property BenefitPeriod: TPeriodCT read fBenefitPeriod;
+    property BenefitPeriod: TPeriodCT read GetBenefitPeriod;
     property BenefitBalance: TExplanationOfBenefitBenefitBalanceCTList read fBenefitBalance;
   end;
 
@@ -11870,10 +13011,14 @@ type
     fClaim: TReferenceCT;
     fRelationship: TCodeableConceptCT;
     fReference: TIdentifierCT;
+
+    function GetClaim: TReferenceCT;
+    function GetRelationship: TCodeableConceptCT;
+    function GetReference: TIdentifierCT;
   published
-    property Claim: TReferenceCT read fClaim;
-    property Relationship: TCodeableConceptCT read fRelationship;
-    property Reference: TIdentifierCT read fReference;
+    property Claim: TReferenceCT read GetClaim;
+    property Relationship: TCodeableConceptCT read GetRelationship;
+    property Reference: TIdentifierCT read GetReference;
   end;
 
   [TName('ExplanationOfBenefit.Payee')]
@@ -11881,9 +13026,12 @@ type
   private
     fType: TCodeableConceptCT;
     fParty: TReferenceCT;
+
+    function GetType: TCodeableConceptCT;
+    function GetParty: TReferenceCT;
   published
-    property &Type: TCodeableConceptCT read fType;
-    property Party: TReferenceCT read fParty;
+    property &Type: TCodeableConceptCT read GetType;
+    property Party: TReferenceCT read GetParty;
   end;
 
   [TName('ExplanationOfBenefit.CareTeam')]
@@ -11894,14 +13042,18 @@ type
     fResponsible: TBooleanCT;
     fRole: TCodeableConceptCT;
     fQualification: TCodeableConceptCT;
+
+    function GetResponsible: TBooleanCT;
+    function GetRole: TCodeableConceptCT;
+    function GetQualification: TCodeableConceptCT;
   published
     [TRequired]
     property Sequence: TPositiveIntCT read fSequence;
     [TRequired]
     property Provider: TReferenceCT read fProvider;
-    property Responsible: TBooleanCT read fResponsible;
-    property Role: TCodeableConceptCT read fRole;
-    property Qualification: TCodeableConceptCT read fQualification;
+    property Responsible: TBooleanCT read GetResponsible;
+    property Role: TCodeableConceptCT read GetRole;
+    property Qualification: TCodeableConceptCT read GetQualification;
   end;
 
   [TName('ExplanationOfBenefit.SupportingInfo')]
@@ -11919,6 +13071,7 @@ type
     fValueReference: TReferenceCT;
     fReason: TCodingCT;
 
+    function GetCode: TCodeableConceptCT;
     function GetTimingDate: TDateCT;
     function GetTimingPeriod: TPeriodCT;
     function GetTimingChosen: TBasite;
@@ -11928,6 +13081,7 @@ type
     function GetValueAttachment: TAttachmentCT;
     function GetValueReference: TReferenceCT;
     function GetValueChosen: TBasite;
+    function GetReason: TCodingCT;
   public
     property TimingChosen: TBasite read GetTimingChosen;
     property ValueChosen: TBasite read GetValueChosen;
@@ -11936,7 +13090,7 @@ type
     property Sequence: TPositiveIntCT read fSequence;
     [TRequired]
     property Category: TCodeableConceptCT read fCategory;
-    property Code: TCodeableConceptCT read fCode;
+    property Code: TCodeableConceptCT read GetCode;
     [TChoice('Timing')]
     property TimingDate: TDateCT read GetTimingDate;
     [TChoice('Timing')]
@@ -11951,7 +13105,7 @@ type
     property ValueAttachment: TAttachmentCT read GetValueAttachment;
     [TChoice('Value')]
     property ValueReference: TReferenceCT read GetValueReference;
-    property Reason: TCodingCT read fReason;
+    property Reason: TCodingCT read GetReason;
   end;
 
   [TName('ExplanationOfBenefit.Diagnosis')]
@@ -11967,6 +13121,8 @@ type
     function GetDiagnosisCodeableConcept: TCodeableConceptCT;
     function GetDiagnosisReference: TReferenceCT;
     function GetDiagnosisChosen: TBasite;
+    function GetOnAdmission: TCodeableConceptCT;
+    function GetPackageCode: TCodeableConceptCT;
   public
     property DiagnosisChosen: TBasite read GetDiagnosisChosen;
   published
@@ -11977,8 +13133,8 @@ type
     [TChoice('Diagnosis')]
     property DiagnosisReference: TReferenceCT read GetDiagnosisReference;
     property &Type: TCodeableConceptCTList read fType;
-    property OnAdmission: TCodeableConceptCT read fOnAdmission;
-    property PackageCode: TCodeableConceptCT read fPackageCode;
+    property OnAdmission: TCodeableConceptCT read GetOnAdmission;
+    property PackageCode: TCodeableConceptCT read GetPackageCode;
   end;
 
   [TName('ExplanationOfBenefit.Procedure')]
@@ -11991,6 +13147,7 @@ type
     fProcedureReference: TReferenceCT;
     fUdi: TReferenceCTList;
 
+    function GetDate: TDateTimeCT;
     function GetProcedureCodeableConcept: TCodeableConceptCT;
     function GetProcedureReference: TReferenceCT;
     function GetProcedureChosen: TBasite;
@@ -12000,7 +13157,7 @@ type
     [TRequired]
     property Sequence: TPositiveIntCT read fSequence;
     property &Type: TCodeableConceptCTList read fType;
-    property Date: TDateTimeCT read fDate;
+    property Date: TDateTimeCT read GetDate;
     [TChoice('Procedure')]
     property ProcedureCodeableConcept: TCodeableConceptCT read GetProcedureCodeableConcept;
     [TChoice('Procedure')]
@@ -12030,14 +13187,16 @@ type
     fLocationAddress: TAddressCT;
     fLocationReference: TReferenceCT;
 
+    function GetDate: TDateCT;
+    function GetType: TCodeableConceptCT;
     function GetLocationAddress: TAddressCT;
     function GetLocationReference: TReferenceCT;
     function GetLocationChosen: TBasite;
   public
     property LocationChosen: TBasite read GetLocationChosen;
   published
-    property Date: TDateCT read fDate;
-    property &Type: TCodeableConceptCT read fType;
+    property Date: TDateCT read GetDate;
+    property &Type: TCodeableConceptCT read GetType;
     [TChoice('Location')]
     property LocationAddress: TAddressCT read GetLocationAddress;
     [TChoice('Location')]
@@ -12074,6 +13233,8 @@ type
     fAdjudication: TExplanationOfBenefitAdjudicationCTList;
     fDetail: TExplanationOfBenefitDetailCTList;
 
+    function GetRevenue: TCodeableConceptCT;
+    function GetCategory: TCodeableConceptCT;
     function GetServicedDate: TDateCT;
     function GetServicedPeriod: TPeriodCT;
     function GetServicedChosen: TBasite;
@@ -12081,6 +13242,11 @@ type
     function GetLocationAddress: TAddressCT;
     function GetLocationReference: TReferenceCT;
     function GetLocationChosen: TBasite;
+    function GetQuantity: TQuantityCT;
+    function GetUnitPrice: TMoneyCT;
+    function GetFactor: TDecimalCT;
+    function GetNet: TMoneyCT;
+    function GetBodySite: TCodeableConceptCT;
   public
     property ServicedChosen: TBasite read GetServicedChosen;
     property LocationChosen: TBasite read GetLocationChosen;
@@ -12091,8 +13257,8 @@ type
     property DiagnosisSequence: TPositiveIntCTList read fDiagnosisSequence;
     property ProcedureSequence: TPositiveIntCTList read fProcedureSequence;
     property InformationSequence: TPositiveIntCTList read fInformationSequence;
-    property Revenue: TCodeableConceptCT read fRevenue;
-    property Category: TCodeableConceptCT read fCategory;
+    property Revenue: TCodeableConceptCT read GetRevenue;
+    property Category: TCodeableConceptCT read GetCategory;
     [TRequired]
     property ProductOrService: TCodeableConceptCT read fProductOrService;
     property Modifier: TCodeableConceptCTList read fModifier;
@@ -12107,12 +13273,12 @@ type
     property LocationAddress: TAddressCT read GetLocationAddress;
     [TChoice('Location')]
     property LocationReference: TReferenceCT read GetLocationReference;
-    property Quantity: TQuantityCT read fQuantity;
-    property UnitPrice: TMoneyCT read fUnitPrice;
-    property Factor: TDecimalCT read fFactor;
-    property Net: TMoneyCT read fNet;
+    property Quantity: TQuantityCT read GetQuantity;
+    property UnitPrice: TMoneyCT read GetUnitPrice;
+    property Factor: TDecimalCT read GetFactor;
+    property Net: TMoneyCT read GetNet;
     property Udi: TReferenceCTList read fUdi;
-    property BodySite: TCodeableConceptCT read fBodySite;
+    property BodySite: TCodeableConceptCT read GetBodySite;
     property SubSite: TCodeableConceptCTList read fSubSite;
     property Encounter: TReferenceCTList read fEncounter;
     property NoteNumber: TPositiveIntCTList read fNoteNumber;
@@ -12127,12 +13293,16 @@ type
     fReason: TCodeableConceptCT;
     fAmount: TMoneyCT;
     fValue: TDecimalCT;
+
+    function GetReason: TCodeableConceptCT;
+    function GetAmount: TMoneyCT;
+    function GetValue: TDecimalCT;
   published
     [TRequired]
     property Category: TCodeableConceptCT read fCategory;
-    property Reason: TCodeableConceptCT read fReason;
-    property Amount: TMoneyCT read fAmount;
-    property Value: TDecimalCT read fValue;
+    property Reason: TCodeableConceptCT read GetReason;
+    property Amount: TMoneyCT read GetAmount;
+    property Value: TDecimalCT read GetValue;
   end;
 
   [TName('ExplanationOfBenefit.Detail')]
@@ -12152,19 +13322,26 @@ type
     fNoteNumber: TPositiveIntCTList;
     fAdjudication: TExplanationOfBenefitAdjudicationCTList;
     fSubDetail: TExplanationOfBenefitSubDetailCTList;
+
+    function GetRevenue: TCodeableConceptCT;
+    function GetCategory: TCodeableConceptCT;
+    function GetQuantity: TQuantityCT;
+    function GetUnitPrice: TMoneyCT;
+    function GetFactor: TDecimalCT;
+    function GetNet: TMoneyCT;
   published
     [TRequired]
     property Sequence: TPositiveIntCT read fSequence;
-    property Revenue: TCodeableConceptCT read fRevenue;
-    property Category: TCodeableConceptCT read fCategory;
+    property Revenue: TCodeableConceptCT read GetRevenue;
+    property Category: TCodeableConceptCT read GetCategory;
     [TRequired]
     property ProductOrService: TCodeableConceptCT read fProductOrService;
     property Modifier: TCodeableConceptCTList read fModifier;
     property ProgramCode: TCodeableConceptCTList read fProgramCode;
-    property Quantity: TQuantityCT read fQuantity;
-    property UnitPrice: TMoneyCT read fUnitPrice;
-    property Factor: TDecimalCT read fFactor;
-    property Net: TMoneyCT read fNet;
+    property Quantity: TQuantityCT read GetQuantity;
+    property UnitPrice: TMoneyCT read GetUnitPrice;
+    property Factor: TDecimalCT read GetFactor;
+    property Net: TMoneyCT read GetNet;
     property Udi: TReferenceCTList read fUdi;
     property NoteNumber: TPositiveIntCTList read fNoteNumber;
     property Adjudication: TExplanationOfBenefitAdjudicationCTList read fAdjudication;
@@ -12187,19 +13364,26 @@ type
     fUdi: TReferenceCTList;
     fNoteNumber: TPositiveIntCTList;
     fAdjudication: TExplanationOfBenefitAdjudicationCTList;
+
+    function GetRevenue: TCodeableConceptCT;
+    function GetCategory: TCodeableConceptCT;
+    function GetQuantity: TQuantityCT;
+    function GetUnitPrice: TMoneyCT;
+    function GetFactor: TDecimalCT;
+    function GetNet: TMoneyCT;
   published
     [TRequired]
     property Sequence: TPositiveIntCT read fSequence;
-    property Revenue: TCodeableConceptCT read fRevenue;
-    property Category: TCodeableConceptCT read fCategory;
+    property Revenue: TCodeableConceptCT read GetRevenue;
+    property Category: TCodeableConceptCT read GetCategory;
     [TRequired]
     property ProductOrService: TCodeableConceptCT read fProductOrService;
     property Modifier: TCodeableConceptCTList read fModifier;
     property ProgramCode: TCodeableConceptCTList read fProgramCode;
-    property Quantity: TQuantityCT read fQuantity;
-    property UnitPrice: TMoneyCT read fUnitPrice;
-    property Factor: TDecimalCT read fFactor;
-    property Net: TMoneyCT read fNet;
+    property Quantity: TQuantityCT read GetQuantity;
+    property UnitPrice: TMoneyCT read GetUnitPrice;
+    property Factor: TDecimalCT read GetFactor;
+    property Net: TMoneyCT read GetNet;
     property Udi: TReferenceCTList read fUdi;
     property NoteNumber: TPositiveIntCTList read fNoteNumber;
     property Adjudication: TExplanationOfBenefitAdjudicationCTList read fAdjudication;
@@ -12237,6 +13421,11 @@ type
     function GetLocationAddress: TAddressCT;
     function GetLocationReference: TReferenceCT;
     function GetLocationChosen: TBasite;
+    function GetQuantity: TQuantityCT;
+    function GetUnitPrice: TMoneyCT;
+    function GetFactor: TDecimalCT;
+    function GetNet: TMoneyCT;
+    function GetBodySite: TCodeableConceptCT;
   public
     property ServicedChosen: TBasite read GetServicedChosen;
     property LocationChosen: TBasite read GetLocationChosen;
@@ -12259,11 +13448,11 @@ type
     property LocationAddress: TAddressCT read GetLocationAddress;
     [TChoice('Location')]
     property LocationReference: TReferenceCT read GetLocationReference;
-    property Quantity: TQuantityCT read fQuantity;
-    property UnitPrice: TMoneyCT read fUnitPrice;
-    property Factor: TDecimalCT read fFactor;
-    property Net: TMoneyCT read fNet;
-    property BodySite: TCodeableConceptCT read fBodySite;
+    property Quantity: TQuantityCT read GetQuantity;
+    property UnitPrice: TMoneyCT read GetUnitPrice;
+    property Factor: TDecimalCT read GetFactor;
+    property Net: TMoneyCT read GetNet;
+    property BodySite: TCodeableConceptCT read GetBodySite;
     property SubSite: TCodeableConceptCTList read fSubSite;
     property NoteNumber: TPositiveIntCTList read fNoteNumber;
     property Adjudication: TExplanationOfBenefitAdjudicationCTList read fAdjudication;
@@ -12282,14 +13471,19 @@ type
     fNoteNumber: TPositiveIntCTList;
     fAdjudication: TExplanationOfBenefitAdjudicationCTList;
     fSubDetail: TExplanationOfBenefitSubDetail1CTList;
+
+    function GetQuantity: TQuantityCT;
+    function GetUnitPrice: TMoneyCT;
+    function GetFactor: TDecimalCT;
+    function GetNet: TMoneyCT;
   published
     [TRequired]
     property ProductOrService: TCodeableConceptCT read fProductOrService;
     property Modifier: TCodeableConceptCTList read fModifier;
-    property Quantity: TQuantityCT read fQuantity;
-    property UnitPrice: TMoneyCT read fUnitPrice;
-    property Factor: TDecimalCT read fFactor;
-    property Net: TMoneyCT read fNet;
+    property Quantity: TQuantityCT read GetQuantity;
+    property UnitPrice: TMoneyCT read GetUnitPrice;
+    property Factor: TDecimalCT read GetFactor;
+    property Net: TMoneyCT read GetNet;
     property NoteNumber: TPositiveIntCTList read fNoteNumber;
     property Adjudication: TExplanationOfBenefitAdjudicationCTList read fAdjudication;
     property SubDetail: TExplanationOfBenefitSubDetail1CTList read fSubDetail;
@@ -12306,14 +13500,19 @@ type
     fNet: TMoneyCT;
     fNoteNumber: TPositiveIntCTList;
     fAdjudication: TExplanationOfBenefitAdjudicationCTList;
+
+    function GetQuantity: TQuantityCT;
+    function GetUnitPrice: TMoneyCT;
+    function GetFactor: TDecimalCT;
+    function GetNet: TMoneyCT;
   published
     [TRequired]
     property ProductOrService: TCodeableConceptCT read fProductOrService;
     property Modifier: TCodeableConceptCTList read fModifier;
-    property Quantity: TQuantityCT read fQuantity;
-    property UnitPrice: TMoneyCT read fUnitPrice;
-    property Factor: TDecimalCT read fFactor;
-    property Net: TMoneyCT read fNet;
+    property Quantity: TQuantityCT read GetQuantity;
+    property UnitPrice: TMoneyCT read GetUnitPrice;
+    property Factor: TDecimalCT read GetFactor;
+    property Net: TMoneyCT read GetNet;
     property NoteNumber: TPositiveIntCTList read fNoteNumber;
     property Adjudication: TExplanationOfBenefitAdjudicationCTList read fAdjudication;
   end;
@@ -12339,13 +13538,20 @@ type
     fDate: TDateCT;
     fAmount: TMoneyCT;
     fIdentifier: TIdentifierCT;
+
+    function GetType: TCodeableConceptCT;
+    function GetAdjustment: TMoneyCT;
+    function GetAdjustmentReason: TCodeableConceptCT;
+    function GetDate: TDateCT;
+    function GetAmount: TMoneyCT;
+    function GetIdentifier: TIdentifierCT;
   published
-    property &Type: TCodeableConceptCT read fType;
-    property Adjustment: TMoneyCT read fAdjustment;
-    property AdjustmentReason: TCodeableConceptCT read fAdjustmentReason;
-    property Date: TDateCT read fDate;
-    property Amount: TMoneyCT read fAmount;
-    property Identifier: TIdentifierCT read fIdentifier;
+    property &Type: TCodeableConceptCT read GetType;
+    property Adjustment: TMoneyCT read GetAdjustment;
+    property AdjustmentReason: TCodeableConceptCT read GetAdjustmentReason;
+    property Date: TDateCT read GetDate;
+    property Amount: TMoneyCT read GetAmount;
+    property Identifier: TIdentifierCT read GetIdentifier;
   end;
 
   [TName('ExplanationOfBenefit.ProcessNote')]
@@ -12355,11 +13561,16 @@ type
     fType: TNoteTypeCT;
     fText: TStringCT;
     fLanguage: TCodeableConceptCT;
+
+    function GetNumber: TPositiveIntCT;
+    function GetType: TNoteTypeCT;
+    function GetText: TStringCT;
+    function GetLanguage: TCodeableConceptCT;
   published
-    property Number: TPositiveIntCT read fNumber;
-    property &Type: TNoteTypeCT read fType;
-    property Text: TStringCT read fText;
-    property Language: TCodeableConceptCT read fLanguage;
+    property Number: TPositiveIntCT read GetNumber;
+    property &Type: TNoteTypeCT read GetType;
+    property Text: TStringCT read GetText;
+    property Language: TCodeableConceptCT read GetLanguage;
   end;
 
   [TName('ExplanationOfBenefit.BenefitBalance')]
@@ -12373,15 +13584,22 @@ type
     fUnit: TCodeableConceptCT;
     fTerm: TCodeableConceptCT;
     fFinancial: TExplanationOfBenefitFinancialCTList;
+
+    function GetExcluded: TBooleanCT;
+    function GetName: TStringCT;
+    function GetDescription: TStringCT;
+    function GetNetwork: TCodeableConceptCT;
+    function GetUnit: TCodeableConceptCT;
+    function GetTerm: TCodeableConceptCT;
   published
     [TRequired]
     property Category: TCodeableConceptCT read fCategory;
-    property Excluded: TBooleanCT read fExcluded;
-    property Name: TStringCT read fName;
-    property Description: TStringCT read fDescription;
-    property Network: TCodeableConceptCT read fNetwork;
-    property &Unit: TCodeableConceptCT read fUnit;
-    property Term: TCodeableConceptCT read fTerm;
+    property Excluded: TBooleanCT read GetExcluded;
+    property Name: TStringCT read GetName;
+    property Description: TStringCT read GetDescription;
+    property Network: TCodeableConceptCT read GetNetwork;
+    property &Unit: TCodeableConceptCT read GetUnit;
+    property Term: TCodeableConceptCT read GetTerm;
     property Financial: TExplanationOfBenefitFinancialCTList read fFinancial;
   end;
 
@@ -12456,6 +13674,10 @@ type
     fNote: TAnnotationCTList;
     fCondition: TFamilyMemberHistoryConditionCTList;
 
+    function GetDataAbsentReason: TCodeableConceptCT;
+    function GetDate: TDateTimeCT;
+    function GetName: TStringCT;
+    function GetSex: TCodeableConceptCT;
     function GetBornPeriod: TPeriodCT;
     function GetBornDate: TDateCT;
     function GetBornString: TStringCT;
@@ -12464,6 +13686,7 @@ type
     function GetAgeRange: TRangeCT;
     function GetAgeString: TStringCT;
     function GetAgeChosen: TBasite;
+    function GetEstimatedAge: TBooleanCT;
     function GetDeceasedBoolean: TBooleanCT;
     function GetDeceasedAge: TAgeCT;
     function GetDeceasedRange: TRangeCT;
@@ -12480,14 +13703,14 @@ type
     property InstantiatesUri: TUriCTList read fInstantiatesUri;
     [TRequired]
     property Status: TFamilyHistoryStatusCT read fStatus;
-    property DataAbsentReason: TCodeableConceptCT read fDataAbsentReason;
+    property DataAbsentReason: TCodeableConceptCT read GetDataAbsentReason;
     [TRequired]
     property Patient: TReferenceCT read fPatient;
-    property Date: TDateTimeCT read fDate;
-    property Name: TStringCT read fName;
+    property Date: TDateTimeCT read GetDate;
+    property Name: TStringCT read GetName;
     [TRequired]
     property Relationship: TCodeableConceptCT read fRelationship;
-    property Sex: TCodeableConceptCT read fSex;
+    property Sex: TCodeableConceptCT read GetSex;
     [TChoice('Born')]
     property BornPeriod: TPeriodCT read GetBornPeriod;
     [TChoice('Born')]
@@ -12500,7 +13723,7 @@ type
     property AgeRange: TRangeCT read GetAgeRange;
     [TChoice('Age')]
     property AgeString: TStringCT read GetAgeString;
-    property EstimatedAge: TBooleanCT read fEstimatedAge;
+    property EstimatedAge: TBooleanCT read GetEstimatedAge;
     [TChoice('Deceased')]
     property DeceasedBoolean: TBooleanCT read GetDeceasedBoolean;
     [TChoice('Deceased')]
@@ -12529,6 +13752,8 @@ type
     fOnsetString: TStringCT;
     fNote: TAnnotationCTList;
 
+    function GetOutcome: TCodeableConceptCT;
+    function GetContributedToDeath: TBooleanCT;
     function GetOnsetAge: TAgeCT;
     function GetOnsetRange: TRangeCT;
     function GetOnsetPeriod: TPeriodCT;
@@ -12539,8 +13764,8 @@ type
   published
     [TRequired]
     property Code: TCodeableConceptCT read fCode;
-    property Outcome: TCodeableConceptCT read fOutcome;
-    property ContributedToDeath: TBooleanCT read fContributedToDeath;
+    property Outcome: TCodeableConceptCT read GetOutcome;
+    property ContributedToDeath: TBooleanCT read GetContributedToDeath;
     [TChoice('Onset')]
     property OnsetAge: TAgeCT read GetOnsetAge;
     [TChoice('Onset')]
@@ -12569,6 +13794,10 @@ type
     fPeriod: TPeriodCT;
     fEncounter: TReferenceCT;
     fAuthor: TReferenceCT;
+
+    function GetPeriod: TPeriodCT;
+    function GetEncounter: TReferenceCT;
+    function GetAuthor: TReferenceCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
@@ -12578,9 +13807,9 @@ type
     property Code: TCodeableConceptCT read fCode;
     [TRequired]
     property Subject: TReferenceCT read fSubject;
-    property Period: TPeriodCT read fPeriod;
-    property Encounter: TReferenceCT read fEncounter;
-    property Author: TReferenceCT read fAuthor;
+    property Period: TPeriodCT read GetPeriod;
+    property Encounter: TReferenceCT read GetEncounter;
+    property Author: TReferenceCT read GetAuthor;
   end;
 
   TFlagStatusCT = class(TElementCT)
@@ -12610,18 +13839,23 @@ type
     fOutcomeCode: TCodeableConceptCTList;
     fOutcomeReference: TReferenceCTList;
 
+    function GetAchievementStatus: TCodeableConceptCT;
+    function GetPriority: TCodeableConceptCT;
     function GetStartDate: TDateCT;
     function GetStartCodeableConcept: TCodeableConceptCT;
     function GetStartChosen: TBasite;
+    function GetStatusDate: TDateCT;
+    function GetStatusReason: TStringCT;
+    function GetExpressedBy: TReferenceCT;
   public
     property StartChosen: TBasite read GetStartChosen;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
     property LifecycleStatus: TGoalLifecycleStatusCT read fLifecycleStatus;
-    property AchievementStatus: TCodeableConceptCT read fAchievementStatus;
+    property AchievementStatus: TCodeableConceptCT read GetAchievementStatus;
     property Category: TCodeableConceptCTList read fCategory;
-    property Priority: TCodeableConceptCT read fPriority;
+    property Priority: TCodeableConceptCT read GetPriority;
     [TRequired]
     property Description: TCodeableConceptCT read fDescription;
     [TRequired]
@@ -12631,9 +13865,9 @@ type
     [TChoice('Start')]
     property StartCodeableConcept: TCodeableConceptCT read GetStartCodeableConcept;
     property Target: TGoalTargetCTList read fTarget;
-    property StatusDate: TDateCT read fStatusDate;
-    property StatusReason: TStringCT read fStatusReason;
-    property ExpressedBy: TReferenceCT read fExpressedBy;
+    property StatusDate: TDateCT read GetStatusDate;
+    property StatusReason: TStringCT read GetStatusReason;
+    property ExpressedBy: TReferenceCT read GetExpressedBy;
     property Addresses: TReferenceCTList read fAddresses;
     property Note: TAnnotationCTList read fNote;
     property OutcomeCode: TCodeableConceptCTList read fOutcomeCode;
@@ -12654,6 +13888,7 @@ type
     fDueDate: TDateCT;
     fDueDuration: TDurationCT;
 
+    function GetMeasure: TCodeableConceptCT;
     function GetDetailQuantity: TQuantityCT;
     function GetDetailRange: TRangeCT;
     function GetDetailCodeableConcept: TCodeableConceptCT;
@@ -12669,7 +13904,7 @@ type
     property DetailChosen: TBasite read GetDetailChosen;
     property DueChosen: TBasite read GetDueChosen;
   published
-    property Measure: TCodeableConceptCT read fMeasure;
+    property Measure: TCodeableConceptCT read GetMeasure;
     [TChoice('Detail')]
     property DetailQuantity: TQuantityCT read GetDetailQuantity;
     [TChoice('Detail')]
@@ -12714,24 +13949,33 @@ type
     fStart: TCodeCT;
     fProfile: TCanonicalCT;
     fLink: TGraphDefinitionLinkCTList;
+
+    function GetUrl: TUriCT;
+    function GetVersion: TStringCT;
+    function GetExperimental: TBooleanCT;
+    function GetDate: TDateTimeCT;
+    function GetPublisher: TStringCT;
+    function GetDescription: TMarkdownCT;
+    function GetPurpose: TMarkdownCT;
+    function GetProfile: TCanonicalCT;
   published
-    property Url: TUriCT read fUrl;
-    property Version: TStringCT read fVersion;
+    property Url: TUriCT read GetUrl;
+    property Version: TStringCT read GetVersion;
     [TRequired]
     property Name: TStringCT read fName;
     [TRequired]
     property Status: TPublicationStatusCT read fStatus;
-    property Experimental: TBooleanCT read fExperimental;
-    property Date: TDateTimeCT read fDate;
-    property Publisher: TStringCT read fPublisher;
+    property Experimental: TBooleanCT read GetExperimental;
+    property Date: TDateTimeCT read GetDate;
+    property Publisher: TStringCT read GetPublisher;
     property Contact: TContactDetailCTList read fContact;
-    property Description: TMarkdownCT read fDescription;
+    property Description: TMarkdownCT read GetDescription;
     property UseContext: TUsageContextCTList read fUseContext;
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    property Purpose: TMarkdownCT read fPurpose;
+    property Purpose: TMarkdownCT read GetPurpose;
     [TRequired]
     property Start: TCodeCT read fStart;
-    property Profile: TCanonicalCT read fProfile;
+    property Profile: TCanonicalCT read GetProfile;
     property Link: TGraphDefinitionLinkCTList read fLink;
   end;
 
@@ -12744,12 +13988,18 @@ type
     fMax: TStringCT;
     fDescription: TStringCT;
     fTarget: TGraphDefinitionTargetCTList;
+
+    function GetPath: TStringCT;
+    function GetSliceName: TStringCT;
+    function GetMin: TIntegerCT;
+    function GetMax: TStringCT;
+    function GetDescription: TStringCT;
   published
-    property Path: TStringCT read fPath;
-    property SliceName: TStringCT read fSliceName;
-    property Min: TIntegerCT read fMin;
-    property Max: TStringCT read fMax;
-    property Description: TStringCT read fDescription;
+    property Path: TStringCT read GetPath;
+    property SliceName: TStringCT read GetSliceName;
+    property Min: TIntegerCT read GetMin;
+    property Max: TStringCT read GetMax;
+    property Description: TStringCT read GetDescription;
     property Target: TGraphDefinitionTargetCTList read fTarget;
   end;
 
@@ -12761,11 +14011,14 @@ type
     fProfile: TCanonicalCT;
     fCompartment: TGraphDefinitionCompartmentCTList;
     fLink: TGraphDefinitionLinkCTList;
+
+    function GetParams: TStringCT;
+    function GetProfile: TCanonicalCT;
   published
     [TRequired]
     property &Type: TCodeCT read fType;
-    property Params: TStringCT read fParams;
-    property Profile: TCanonicalCT read fProfile;
+    property Params: TStringCT read GetParams;
+    property Profile: TCanonicalCT read GetProfile;
     property Compartment: TGraphDefinitionCompartmentCTList read fCompartment;
     property Link: TGraphDefinitionLinkCTList read fLink;
   end;
@@ -12778,6 +14031,9 @@ type
     fRule: TGraphCompartmentRuleCT;
     fExpression: TStringCT;
     fDescription: TStringCT;
+
+    function GetExpression: TStringCT;
+    function GetDescription: TStringCT;
   published
     [TRequired]
     property Use: TGraphCompartmentUseCT read fUse;
@@ -12785,8 +14041,8 @@ type
     property Code: TCompartmentTypeCT read fCode;
     [TRequired]
     property Rule: TGraphCompartmentRuleCT read fRule;
-    property Expression: TStringCT read fExpression;
-    property Description: TStringCT read fDescription;
+    property Expression: TStringCT read GetExpression;
+    property Description: TStringCT read GetDescription;
   end;
 
   TGraphCompartmentUseCT = class(TElementCT)
@@ -12815,17 +14071,23 @@ type
     fManagingEntity: TReferenceCT;
     fCharacteristic: TGroupCharacteristicCTList;
     fMember: TGroupMemberCTList;
+
+    function GetActive: TBooleanCT;
+    function GetCode: TCodeableConceptCT;
+    function GetName: TStringCT;
+    function GetQuantity: TUnsignedIntCT;
+    function GetManagingEntity: TReferenceCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Active: TBooleanCT read fActive;
+    property Active: TBooleanCT read GetActive;
     [TRequired]
     property &Type: TGroupTypeCT read fType;
     [TRequired]
     property Actual: TBooleanCT read fActual;
-    property Code: TCodeableConceptCT read fCode;
-    property Name: TStringCT read fName;
-    property Quantity: TUnsignedIntCT read fQuantity;
-    property ManagingEntity: TReferenceCT read fManagingEntity;
+    property Code: TCodeableConceptCT read GetCode;
+    property Name: TStringCT read GetName;
+    property Quantity: TUnsignedIntCT read GetQuantity;
+    property ManagingEntity: TReferenceCT read GetManagingEntity;
     property Characteristic: TGroupCharacteristicCTList read fCharacteristic;
     property Member: TGroupMemberCTList read fMember;
   end;
@@ -12848,6 +14110,7 @@ type
     function GetValueRange: TRangeCT;
     function GetValueReference: TReferenceCT;
     function GetValueChosen: TBasite;
+    function GetPeriod: TPeriodCT;
   public
     property ValueChosen: TBasite read GetValueChosen;
   published
@@ -12865,7 +14128,7 @@ type
     property ValueReference: TReferenceCT read GetValueReference;
     [TRequired]
     property Exclude: TBooleanCT read fExclude;
-    property Period: TPeriodCT read fPeriod;
+    property Period: TPeriodCT read GetPeriod;
   end;
 
   [TName('Group.Member')]
@@ -12874,11 +14137,14 @@ type
     fEntity: TReferenceCT;
     fPeriod: TPeriodCT;
     fInactive: TBooleanCT;
+
+    function GetPeriod: TPeriodCT;
+    function GetInactive: TBooleanCT;
   published
     [TRequired]
     property Entity: TReferenceCT read fEntity;
-    property Period: TPeriodCT read fPeriod;
-    property Inactive: TBooleanCT read fInactive;
+    property Period: TPeriodCT read GetPeriod;
+    property Inactive: TBooleanCT read GetInactive;
   end;
 
   TGroupTypeCT = class(TElementCT)
@@ -12908,14 +14174,21 @@ type
     fResult: TReferenceCT;
     fDataRequirement: TDataRequirementCTList;
 
+    function GetRequestIdentifier: TIdentifierCT;
     function GetModuleUri: TUriCT;
     function GetModuleCanonical: TCanonicalCT;
     function GetModuleCodeableConcept: TCodeableConceptCT;
     function GetModuleChosen: TBasite;
+    function GetSubject: TReferenceCT;
+    function GetEncounter: TReferenceCT;
+    function GetOccurrenceDateTime: TDateTimeCT;
+    function GetPerformer: TReferenceCT;
+    function GetOutputParameters: TReferenceCT;
+    function GetResult: TReferenceCT;
   public
     property ModuleChosen: TBasite read GetModuleChosen;
   published
-    property RequestIdentifier: TIdentifierCT read fRequestIdentifier;
+    property RequestIdentifier: TIdentifierCT read GetRequestIdentifier;
     property Identifier: TIdentifierCTList read fIdentifier;
     [TChoice('Module')]
     property ModuleUri: TUriCT read GetModuleUri;
@@ -12925,16 +14198,16 @@ type
     property ModuleCodeableConcept: TCodeableConceptCT read GetModuleCodeableConcept;
     [TRequired]
     property Status: TGuidanceResponseStatusCT read fStatus;
-    property Subject: TReferenceCT read fSubject;
-    property Encounter: TReferenceCT read fEncounter;
-    property OccurrenceDateTime: TDateTimeCT read fOccurrenceDateTime;
-    property Performer: TReferenceCT read fPerformer;
+    property Subject: TReferenceCT read GetSubject;
+    property Encounter: TReferenceCT read GetEncounter;
+    property OccurrenceDateTime: TDateTimeCT read GetOccurrenceDateTime;
+    property Performer: TReferenceCT read GetPerformer;
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
     property ReasonReference: TReferenceCTList read fReasonReference;
     property Note: TAnnotationCTList read fNote;
     property EvaluationMessage: TReferenceCTList read fEvaluationMessage;
-    property OutputParameters: TReferenceCT read fOutputParameters;
-    property Result: TReferenceCT read fResult;
+    property OutputParameters: TReferenceCT read GetOutputParameters;
+    property Result: TReferenceCT read GetResult;
     property DataRequirement: TDataRequirementCTList read fDataRequirement;
   end;
 
@@ -12971,18 +14244,27 @@ type
     fNotAvailable: THealthcareServiceNotAvailableCTList;
     fAvailabilityExceptions: TStringCT;
     fEndpoint: TReferenceCTList;
+
+    function GetActive: TBooleanCT;
+    function GetProvidedBy: TReferenceCT;
+    function GetName: TStringCT;
+    function GetComment: TStringCT;
+    function GetExtraDetails: TMarkdownCT;
+    function GetPhoto: TAttachmentCT;
+    function GetAppointmentRequired: TBooleanCT;
+    function GetAvailabilityExceptions: TStringCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Active: TBooleanCT read fActive;
-    property ProvidedBy: TReferenceCT read fProvidedBy;
+    property Active: TBooleanCT read GetActive;
+    property ProvidedBy: TReferenceCT read GetProvidedBy;
     property Category: TCodeableConceptCTList read fCategory;
     property &Type: TCodeableConceptCTList read fType;
     property Specialty: TCodeableConceptCTList read fSpecialty;
     property Location: TReferenceCTList read fLocation;
-    property Name: TStringCT read fName;
-    property Comment: TStringCT read fComment;
-    property ExtraDetails: TMarkdownCT read fExtraDetails;
-    property Photo: TAttachmentCT read fPhoto;
+    property Name: TStringCT read GetName;
+    property Comment: TStringCT read GetComment;
+    property ExtraDetails: TMarkdownCT read GetExtraDetails;
+    property Photo: TAttachmentCT read GetPhoto;
     property Telecom: TContactPointCTList read fTelecom;
     property CoverageArea: TReferenceCTList read fCoverageArea;
     property ServiceProvisionCode: TCodeableConceptCTList read fServiceProvisionCode;
@@ -12991,10 +14273,10 @@ type
     property Characteristic: TCodeableConceptCTList read fCharacteristic;
     property Communication: TCodeableConceptCTList read fCommunication;
     property ReferralMethod: TCodeableConceptCTList read fReferralMethod;
-    property AppointmentRequired: TBooleanCT read fAppointmentRequired;
+    property AppointmentRequired: TBooleanCT read GetAppointmentRequired;
     property AvailableTime: THealthcareServiceAvailableTimeCTList read fAvailableTime;
     property NotAvailable: THealthcareServiceNotAvailableCTList read fNotAvailable;
-    property AvailabilityExceptions: TStringCT read fAvailabilityExceptions;
+    property AvailabilityExceptions: TStringCT read GetAvailabilityExceptions;
     property Endpoint: TReferenceCTList read fEndpoint;
   end;
 
@@ -13003,9 +14285,12 @@ type
   private
     fCode: TCodeableConceptCT;
     fComment: TMarkdownCT;
+
+    function GetCode: TCodeableConceptCT;
+    function GetComment: TMarkdownCT;
   published
-    property Code: TCodeableConceptCT read fCode;
-    property Comment: TMarkdownCT read fComment;
+    property Code: TCodeableConceptCT read GetCode;
+    property Comment: TMarkdownCT read GetComment;
   end;
 
   [TName('HealthcareService.AvailableTime')]
@@ -13015,11 +14300,15 @@ type
     fAllDay: TBooleanCT;
     fAvailableStartTime: TTimeCT;
     fAvailableEndTime: TTimeCT;
+
+    function GetAllDay: TBooleanCT;
+    function GetAvailableStartTime: TTimeCT;
+    function GetAvailableEndTime: TTimeCT;
   published
     property DaysOfWeek: TDaysOfWeekCTList read fDaysOfWeek;
-    property AllDay: TBooleanCT read fAllDay;
-    property AvailableStartTime: TTimeCT read fAvailableStartTime;
-    property AvailableEndTime: TTimeCT read fAvailableEndTime;
+    property AllDay: TBooleanCT read GetAllDay;
+    property AvailableStartTime: TTimeCT read GetAvailableStartTime;
+    property AvailableEndTime: TTimeCT read GetAvailableEndTime;
   end;
 
   [TName('HealthcareService.NotAvailable')]
@@ -13027,10 +14316,12 @@ type
   private
     fDescription: TStringCT;
     fDuring: TPeriodCT;
+
+    function GetDuring: TPeriodCT;
   published
     [TRequired]
     property Description: TStringCT read fDescription;
-    property During: TPeriodCT read fDuring;
+    property During: TPeriodCT read GetDuring;
   end;
 
   TDaysOfWeekCT = class(TElementCT)
@@ -13062,6 +14353,15 @@ type
     fNote: TAnnotationCTList;
     fDescription: TStringCT;
     fSeries: TImagingStudySeriesCTList;
+
+    function GetEncounter: TReferenceCT;
+    function GetStarted: TDateTimeCT;
+    function GetReferrer: TReferenceCT;
+    function GetNumberOfSeries: TUnsignedIntCT;
+    function GetNumberOfInstances: TUnsignedIntCT;
+    function GetProcedureReference: TReferenceCT;
+    function GetLocation: TReferenceCT;
+    function GetDescription: TStringCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
@@ -13069,21 +14369,21 @@ type
     property Modality: TCodingCTList read fModality;
     [TRequired]
     property Subject: TReferenceCT read fSubject;
-    property Encounter: TReferenceCT read fEncounter;
-    property Started: TDateTimeCT read fStarted;
+    property Encounter: TReferenceCT read GetEncounter;
+    property Started: TDateTimeCT read GetStarted;
     property BasedOn: TReferenceCTList read fBasedOn;
-    property Referrer: TReferenceCT read fReferrer;
+    property Referrer: TReferenceCT read GetReferrer;
     property Interpreter: TReferenceCTList read fInterpreter;
     property Endpoint: TReferenceCTList read fEndpoint;
-    property NumberOfSeries: TUnsignedIntCT read fNumberOfSeries;
-    property NumberOfInstances: TUnsignedIntCT read fNumberOfInstances;
-    property ProcedureReference: TReferenceCT read fProcedureReference;
+    property NumberOfSeries: TUnsignedIntCT read GetNumberOfSeries;
+    property NumberOfInstances: TUnsignedIntCT read GetNumberOfInstances;
+    property ProcedureReference: TReferenceCT read GetProcedureReference;
     property ProcedureCode: TCodeableConceptCTList read fProcedureCode;
-    property Location: TReferenceCT read fLocation;
+    property Location: TReferenceCT read GetLocation;
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
     property ReasonReference: TReferenceCTList read fReasonReference;
     property Note: TAnnotationCTList read fNote;
-    property Description: TStringCT read fDescription;
+    property Description: TStringCT read GetDescription;
     property Series: TImagingStudySeriesCTList read fSeries;
   end;
 
@@ -13102,19 +14402,26 @@ type
     fStarted: TDateTimeCT;
     fPerformer: TImagingStudyPerformerCTList;
     fInstance: TImagingStudyInstanceCTList;
+
+    function GetNumber: TUnsignedIntCT;
+    function GetDescription: TStringCT;
+    function GetNumberOfInstances: TUnsignedIntCT;
+    function GetBodySite: TCodingCT;
+    function GetLaterality: TCodingCT;
+    function GetStarted: TDateTimeCT;
   published
     [TRequired]
     property Uid: TIdCT read fUid;
-    property Number: TUnsignedIntCT read fNumber;
+    property Number: TUnsignedIntCT read GetNumber;
     [TRequired]
     property Modality: TCodingCT read fModality;
-    property Description: TStringCT read fDescription;
-    property NumberOfInstances: TUnsignedIntCT read fNumberOfInstances;
+    property Description: TStringCT read GetDescription;
+    property NumberOfInstances: TUnsignedIntCT read GetNumberOfInstances;
     property Endpoint: TReferenceCTList read fEndpoint;
-    property BodySite: TCodingCT read fBodySite;
-    property Laterality: TCodingCT read fLaterality;
+    property BodySite: TCodingCT read GetBodySite;
+    property Laterality: TCodingCT read GetLaterality;
     property Specimen: TReferenceCTList read fSpecimen;
-    property Started: TDateTimeCT read fStarted;
+    property Started: TDateTimeCT read GetStarted;
     property Performer: TImagingStudyPerformerCTList read fPerformer;
     property Instance: TImagingStudyInstanceCTList read fInstance;
   end;
@@ -13124,8 +14431,10 @@ type
   private
     fFunction: TCodeableConceptCT;
     fActor: TReferenceCT;
+
+    function GetFunction: TCodeableConceptCT;
   published
-    property &Function: TCodeableConceptCT read fFunction;
+    property &Function: TCodeableConceptCT read GetFunction;
     [TRequired]
     property Actor: TReferenceCT read fActor;
   end;
@@ -13137,13 +14446,16 @@ type
     fSopClass: TCodingCT;
     fNumber: TUnsignedIntCT;
     fTitle: TStringCT;
+
+    function GetNumber: TUnsignedIntCT;
+    function GetTitle: TStringCT;
   published
     [TRequired]
     property Uid: TIdCT read fUid;
     [TRequired]
     property SopClass: TCodingCT read fSopClass;
-    property Number: TUnsignedIntCT read fNumber;
-    property Title: TStringCT read fTitle;
+    property Number: TUnsignedIntCT read GetNumber;
+    property Title: TStringCT read GetTitle;
   end;
 
   TImagingStudyStatusCT = class(TElementCT)
@@ -13185,44 +14497,58 @@ type
     fReaction: TImmunizationReactionCTList;
     fProtocolApplied: TImmunizationProtocolAppliedCTList;
 
+    function GetStatusReason: TCodeableConceptCT;
+    function GetEncounter: TReferenceCT;
     function GetOccurrenceDateTime: TDateTimeCT;
     function GetOccurrenceString: TStringCT;
     function GetOccurrenceChosen: TBasite;
+    function GetRecorded: TDateTimeCT;
+    function GetPrimarySource: TBooleanCT;
+    function GetReportOrigin: TCodeableConceptCT;
+    function GetLocation: TReferenceCT;
+    function GetManufacturer: TReferenceCT;
+    function GetLotNumber: TStringCT;
+    function GetExpirationDate: TDateCT;
+    function GetSite: TCodeableConceptCT;
+    function GetRoute: TCodeableConceptCT;
+    function GetDoseQuantity: TQuantityCT;
+    function GetIsSubpotent: TBooleanCT;
+    function GetFundingSource: TCodeableConceptCT;
   public
     property OccurrenceChosen: TBasite read GetOccurrenceChosen;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
     property Status: TImmunizationStatusCodesCT read fStatus;
-    property StatusReason: TCodeableConceptCT read fStatusReason;
+    property StatusReason: TCodeableConceptCT read GetStatusReason;
     [TRequired]
     property VaccineCode: TCodeableConceptCT read fVaccineCode;
     [TRequired]
     property Patient: TReferenceCT read fPatient;
-    property Encounter: TReferenceCT read fEncounter;
+    property Encounter: TReferenceCT read GetEncounter;
     [TChoice('Occurrence')]
     property OccurrenceDateTime: TDateTimeCT read GetOccurrenceDateTime;
     [TChoice('Occurrence')]
     property OccurrenceString: TStringCT read GetOccurrenceString;
-    property Recorded: TDateTimeCT read fRecorded;
-    property PrimarySource: TBooleanCT read fPrimarySource;
-    property ReportOrigin: TCodeableConceptCT read fReportOrigin;
-    property Location: TReferenceCT read fLocation;
-    property Manufacturer: TReferenceCT read fManufacturer;
-    property LotNumber: TStringCT read fLotNumber;
-    property ExpirationDate: TDateCT read fExpirationDate;
-    property Site: TCodeableConceptCT read fSite;
-    property Route: TCodeableConceptCT read fRoute;
-    property DoseQuantity: TQuantityCT read fDoseQuantity;
+    property Recorded: TDateTimeCT read GetRecorded;
+    property PrimarySource: TBooleanCT read GetPrimarySource;
+    property ReportOrigin: TCodeableConceptCT read GetReportOrigin;
+    property Location: TReferenceCT read GetLocation;
+    property Manufacturer: TReferenceCT read GetManufacturer;
+    property LotNumber: TStringCT read GetLotNumber;
+    property ExpirationDate: TDateCT read GetExpirationDate;
+    property Site: TCodeableConceptCT read GetSite;
+    property Route: TCodeableConceptCT read GetRoute;
+    property DoseQuantity: TQuantityCT read GetDoseQuantity;
     property Performer: TImmunizationPerformerCTList read fPerformer;
     property Note: TAnnotationCTList read fNote;
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
     property ReasonReference: TReferenceCTList read fReasonReference;
-    property IsSubpotent: TBooleanCT read fIsSubpotent;
+    property IsSubpotent: TBooleanCT read GetIsSubpotent;
     property SubpotentReason: TCodeableConceptCTList read fSubpotentReason;
     property Education: TImmunizationEducationCTList read fEducation;
     property ProgramEligibility: TCodeableConceptCTList read fProgramEligibility;
-    property FundingSource: TCodeableConceptCT read fFundingSource;
+    property FundingSource: TCodeableConceptCT read GetFundingSource;
     property Reaction: TImmunizationReactionCTList read fReaction;
     property ProtocolApplied: TImmunizationProtocolAppliedCTList read fProtocolApplied;
   end;
@@ -13232,8 +14558,10 @@ type
   private
     fFunction: TCodeableConceptCT;
     fActor: TReferenceCT;
+
+    function GetFunction: TCodeableConceptCT;
   published
-    property &Function: TCodeableConceptCT read fFunction;
+    property &Function: TCodeableConceptCT read GetFunction;
     [TRequired]
     property Actor: TReferenceCT read fActor;
   end;
@@ -13245,11 +14573,16 @@ type
     fReference: TUriCT;
     fPublicationDate: TDateTimeCT;
     fPresentationDate: TDateTimeCT;
+
+    function GetDocumentType: TStringCT;
+    function GetReference: TUriCT;
+    function GetPublicationDate: TDateTimeCT;
+    function GetPresentationDate: TDateTimeCT;
   published
-    property DocumentType: TStringCT read fDocumentType;
-    property Reference: TUriCT read fReference;
-    property PublicationDate: TDateTimeCT read fPublicationDate;
-    property PresentationDate: TDateTimeCT read fPresentationDate;
+    property DocumentType: TStringCT read GetDocumentType;
+    property Reference: TUriCT read GetReference;
+    property PublicationDate: TDateTimeCT read GetPublicationDate;
+    property PresentationDate: TDateTimeCT read GetPresentationDate;
   end;
 
   [TName('Immunization.Reaction')]
@@ -13258,10 +14591,14 @@ type
     fDate: TDateTimeCT;
     fDetail: TReferenceCT;
     fReported: TBooleanCT;
+
+    function GetDate: TDateTimeCT;
+    function GetDetail: TReferenceCT;
+    function GetReported: TBooleanCT;
   published
-    property Date: TDateTimeCT read fDate;
-    property Detail: TReferenceCT read fDetail;
-    property Reported: TBooleanCT read fReported;
+    property Date: TDateTimeCT read GetDate;
+    property Detail: TReferenceCT read GetDetail;
+    property Reported: TBooleanCT read GetReported;
   end;
 
   [TName('Immunization.ProtocolApplied')]
@@ -13275,6 +14612,8 @@ type
     fSeriesDosesPositiveInt: TPositiveIntCT;
     fSeriesDosesString: TStringCT;
 
+    function GetSeries: TStringCT;
+    function GetAuthority: TReferenceCT;
     function GetDoseNumberPositiveInt: TPositiveIntCT;
     function GetDoseNumberString: TStringCT;
     function GetDoseNumberChosen: TBasite;
@@ -13285,8 +14624,8 @@ type
     property DoseNumberChosen: TBasite read GetDoseNumberChosen;
     property SeriesDosesChosen: TBasite read GetSeriesDosesChosen;
   published
-    property Series: TStringCT read fSeries;
-    property Authority: TReferenceCT read fAuthority;
+    property Series: TStringCT read GetSeries;
+    property Authority: TReferenceCT read GetAuthority;
     property TargetDisease: TCodeableConceptCTList read fTargetDisease;
     [TChoice('DoseNumber')]
     property DoseNumberPositiveInt: TPositiveIntCT read GetDoseNumberPositiveInt;
@@ -13323,6 +14662,10 @@ type
     fSeriesDosesPositiveInt: TPositiveIntCT;
     fSeriesDosesString: TStringCT;
 
+    function GetDate: TDateTimeCT;
+    function GetAuthority: TReferenceCT;
+    function GetDescription: TStringCT;
+    function GetSeries: TStringCT;
     function GetDoseNumberPositiveInt: TPositiveIntCT;
     function GetDoseNumberString: TStringCT;
     function GetDoseNumberChosen: TBasite;
@@ -13338,8 +14681,8 @@ type
     property Status: TImmunizationEvaluationStatusCodesCT read fStatus;
     [TRequired]
     property Patient: TReferenceCT read fPatient;
-    property Date: TDateTimeCT read fDate;
-    property Authority: TReferenceCT read fAuthority;
+    property Date: TDateTimeCT read GetDate;
+    property Authority: TReferenceCT read GetAuthority;
     [TRequired]
     property TargetDisease: TCodeableConceptCT read fTargetDisease;
     [TRequired]
@@ -13347,8 +14690,8 @@ type
     [TRequired]
     property DoseStatus: TCodeableConceptCT read fDoseStatus;
     property DoseStatusReason: TCodeableConceptCTList read fDoseStatusReason;
-    property Description: TStringCT read fDescription;
-    property Series: TStringCT read fSeries;
+    property Description: TStringCT read GetDescription;
+    property Series: TStringCT read GetSeries;
     [TChoice('DoseNumber')]
     property DoseNumberPositiveInt: TPositiveIntCT read GetDoseNumberPositiveInt;
     [TChoice('DoseNumber')]
@@ -13373,13 +14716,15 @@ type
     fDate: TDateTimeCT;
     fAuthority: TReferenceCT;
     fRecommendation: TImmunizationRecommendationRecommendationCTList;
+
+    function GetAuthority: TReferenceCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
     property Patient: TReferenceCT read fPatient;
     [TRequired]
     property Date: TDateTimeCT read fDate;
-    property Authority: TReferenceCT read fAuthority;
+    property Authority: TReferenceCT read GetAuthority;
     property Recommendation: TImmunizationRecommendationRecommendationCTList read fRecommendation;
   end;
 
@@ -13401,6 +14746,9 @@ type
     fSupportingImmunization: TReferenceCTList;
     fSupportingPatientInformation: TReferenceCTList;
 
+    function GetTargetDisease: TCodeableConceptCT;
+    function GetDescription: TStringCT;
+    function GetSeries: TStringCT;
     function GetDoseNumberPositiveInt: TPositiveIntCT;
     function GetDoseNumberString: TStringCT;
     function GetDoseNumberChosen: TBasite;
@@ -13412,14 +14760,14 @@ type
     property SeriesDosesChosen: TBasite read GetSeriesDosesChosen;
   published
     property VaccineCode: TCodeableConceptCTList read fVaccineCode;
-    property TargetDisease: TCodeableConceptCT read fTargetDisease;
+    property TargetDisease: TCodeableConceptCT read GetTargetDisease;
     property ContraindicatedVaccineCode: TCodeableConceptCTList read fContraindicatedVaccineCode;
     [TRequired]
     property ForecastStatus: TCodeableConceptCT read fForecastStatus;
     property ForecastReason: TCodeableConceptCTList read fForecastReason;
     property DateCriterion: TImmunizationRecommendationDateCriterionCTList read fDateCriterion;
-    property Description: TStringCT read fDescription;
-    property Series: TStringCT read fSeries;
+    property Description: TStringCT read GetDescription;
+    property Series: TStringCT read GetSeries;
     [TChoice('DoseNumber')]
     property DoseNumberPositiveInt: TPositiveIntCT read GetDoseNumberPositiveInt;
     [TChoice('DoseNumber')]
@@ -13466,31 +14814,42 @@ type
     fGlobal: TImplementationGuideGlobalCTList;
     fDefinition: TImplementationGuideDefinitionCT;
     fManifest: TImplementationGuideManifestCT;
+
+    function GetVersion: TStringCT;
+    function GetTitle: TStringCT;
+    function GetExperimental: TBooleanCT;
+    function GetDate: TDateTimeCT;
+    function GetPublisher: TStringCT;
+    function GetDescription: TMarkdownCT;
+    function GetCopyright: TMarkdownCT;
+    function GetLicense: TSPDXLicenseCT;
+    function GetDefinition: TImplementationGuideDefinitionCT;
+    function GetManifest: TImplementationGuideManifestCT;
   published
     [TRequired]
     property Url: TUriCT read fUrl;
-    property Version: TStringCT read fVersion;
+    property Version: TStringCT read GetVersion;
     [TRequired]
     property Name: TStringCT read fName;
-    property Title: TStringCT read fTitle;
+    property Title: TStringCT read GetTitle;
     [TRequired]
     property Status: TPublicationStatusCT read fStatus;
-    property Experimental: TBooleanCT read fExperimental;
-    property Date: TDateTimeCT read fDate;
-    property Publisher: TStringCT read fPublisher;
+    property Experimental: TBooleanCT read GetExperimental;
+    property Date: TDateTimeCT read GetDate;
+    property Publisher: TStringCT read GetPublisher;
     property Contact: TContactDetailCTList read fContact;
-    property Description: TMarkdownCT read fDescription;
+    property Description: TMarkdownCT read GetDescription;
     property UseContext: TUsageContextCTList read fUseContext;
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    property Copyright: TMarkdownCT read fCopyright;
+    property Copyright: TMarkdownCT read GetCopyright;
     [TRequired]
     property PackageId: TIdCT read fPackageId;
-    property License: TSPDXLicenseCT read fLicense;
+    property License: TSPDXLicenseCT read GetLicense;
     property FhirVersion: TFHIRVersionCTList read fFhirVersion;
     property DependsOn: TImplementationGuideDependsOnCTList read fDependsOn;
     property Global: TImplementationGuideGlobalCTList read fGlobal;
-    property Definition: TImplementationGuideDefinitionCT read fDefinition;
-    property Manifest: TImplementationGuideManifestCT read fManifest;
+    property Definition: TImplementationGuideDefinitionCT read GetDefinition;
+    property Manifest: TImplementationGuideManifestCT read GetManifest;
   end;
 
   [TName('ImplementationGuide.DependsOn')]
@@ -13499,11 +14858,14 @@ type
     fUri: TCanonicalCT;
     fPackageId: TIdCT;
     fVersion: TStringCT;
+
+    function GetPackageId: TIdCT;
+    function GetVersion: TStringCT;
   published
     [TRequired]
     property Uri: TCanonicalCT read fUri;
-    property PackageId: TIdCT read fPackageId;
-    property Version: TStringCT read fVersion;
+    property PackageId: TIdCT read GetPackageId;
+    property Version: TStringCT read GetVersion;
   end;
 
   [TName('ImplementationGuide.Global')]
@@ -13526,10 +14888,12 @@ type
     fPage: TImplementationGuidePageCT;
     fParameter: TImplementationGuideParameterCTList;
     fTemplate: TImplementationGuideTemplateCTList;
+
+    function GetPage: TImplementationGuidePageCT;
   published
     property Grouping: TImplementationGuideGroupingCTList read fGrouping;
     property Resource: TImplementationGuideResourceCTList read fResource;
-    property Page: TImplementationGuidePageCT read fPage;
+    property Page: TImplementationGuidePageCT read GetPage;
     property Parameter: TImplementationGuideParameterCTList read fParameter;
     property Template: TImplementationGuideTemplateCTList read fTemplate;
   end;
@@ -13539,10 +14903,12 @@ type
   private
     fName: TStringCT;
     fDescription: TStringCT;
+
+    function GetDescription: TStringCT;
   published
     [TRequired]
     property Name: TStringCT read fName;
-    property Description: TStringCT read fDescription;
+    property Description: TStringCT read GetDescription;
   end;
 
   [TName('ImplementationGuide.Resource')]
@@ -13556,22 +14922,25 @@ type
     fExampleCanonical: TCanonicalCT;
     fGroupingId: TIdCT;
 
+    function GetName: TStringCT;
+    function GetDescription: TStringCT;
     function GetExampleBoolean: TBooleanCT;
     function GetExampleCanonical: TCanonicalCT;
     function GetExampleChosen: TBasite;
+    function GetGroupingId: TIdCT;
   public
     property ExampleChosen: TBasite read GetExampleChosen;
   published
     [TRequired]
     property Reference: TReferenceCT read fReference;
     property FhirVersion: TFHIRVersionCTList read fFhirVersion;
-    property Name: TStringCT read fName;
-    property Description: TStringCT read fDescription;
+    property Name: TStringCT read GetName;
+    property Description: TStringCT read GetDescription;
     [TChoice('Example')]
     property ExampleBoolean: TBooleanCT read GetExampleBoolean;
     [TChoice('Example')]
     property ExampleCanonical: TCanonicalCT read GetExampleCanonical;
-    property GroupingId: TIdCT read fGroupingId;
+    property GroupingId: TIdCT read GetGroupingId;
   end;
 
   [TName('ImplementationGuide.Page')]
@@ -13618,12 +14987,14 @@ type
     fCode: TCodeCT;
     fSource: TStringCT;
     fScope: TStringCT;
+
+    function GetScope: TStringCT;
   published
     [TRequired]
     property Code: TCodeCT read fCode;
     [TRequired]
     property Source: TStringCT read fSource;
-    property Scope: TStringCT read fScope;
+    property Scope: TStringCT read GetScope;
   end;
 
   [TName('ImplementationGuide.Manifest')]
@@ -13634,8 +15005,10 @@ type
     fPage: TImplementationGuidePage1CTList;
     fImage: TStringCTList;
     fOther: TStringCTList;
+
+    function GetRendering: TUrlCT;
   published
-    property Rendering: TUrlCT read fRendering;
+    property Rendering: TUrlCT read GetRendering;
     property Resource: TImplementationGuideResource1CTList read fResource;
     property Page: TImplementationGuidePage1CTList read fPage;
     property Image: TStringCTList read fImage;
@@ -13653,6 +15026,7 @@ type
     function GetExampleBoolean: TBooleanCT;
     function GetExampleCanonical: TCanonicalCT;
     function GetExampleChosen: TBasite;
+    function GetRelativePath: TUrlCT;
   public
     property ExampleChosen: TBasite read GetExampleChosen;
   published
@@ -13662,7 +15036,7 @@ type
     property ExampleBoolean: TBooleanCT read GetExampleBoolean;
     [TChoice('Example')]
     property ExampleCanonical: TCanonicalCT read GetExampleCanonical;
-    property RelativePath: TUrlCT read fRelativePath;
+    property RelativePath: TUrlCT read GetRelativePath;
   end;
 
   [TName('ImplementationGuide.Page1')]
@@ -13671,10 +15045,12 @@ type
     fName: TStringCT;
     fTitle: TStringCT;
     fAnchor: TStringCTList;
+
+    function GetTitle: TStringCT;
   published
     [TRequired]
     property Name: TStringCT read fName;
-    property Title: TStringCT read fTitle;
+    property Title: TStringCT read GetTitle;
     property Anchor: TStringCTList read fAnchor;
   end;
 
@@ -13715,15 +15091,21 @@ type
     fNetwork: TReferenceCTList;
     fCoverage: TInsurancePlanCoverageCTList;
     fPlan: TInsurancePlanPlanCTList;
+
+    function GetStatus: TPublicationStatusCT;
+    function GetName: TStringCT;
+    function GetPeriod: TPeriodCT;
+    function GetOwnedBy: TReferenceCT;
+    function GetAdministeredBy: TReferenceCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Status: TPublicationStatusCT read fStatus;
+    property Status: TPublicationStatusCT read GetStatus;
     property &Type: TCodeableConceptCTList read fType;
-    property Name: TStringCT read fName;
+    property Name: TStringCT read GetName;
     property Alias: TStringCTList read fAlias;
-    property Period: TPeriodCT read fPeriod;
-    property OwnedBy: TReferenceCT read fOwnedBy;
-    property AdministeredBy: TReferenceCT read fAdministeredBy;
+    property Period: TPeriodCT read GetPeriod;
+    property OwnedBy: TReferenceCT read GetOwnedBy;
+    property AdministeredBy: TReferenceCT read GetAdministeredBy;
     property CoverageArea: TReferenceCTList read fCoverageArea;
     property Contact: TInsurancePlanContactCTList read fContact;
     property Endpoint: TReferenceCTList read fEndpoint;
@@ -13739,11 +15121,15 @@ type
     fName: THumanNameCT;
     fTelecom: TContactPointCTList;
     fAddress: TAddressCT;
+
+    function GetPurpose: TCodeableConceptCT;
+    function GetName: THumanNameCT;
+    function GetAddress: TAddressCT;
   published
-    property Purpose: TCodeableConceptCT read fPurpose;
-    property Name: THumanNameCT read fName;
+    property Purpose: TCodeableConceptCT read GetPurpose;
+    property Name: THumanNameCT read GetName;
     property Telecom: TContactPointCTList read fTelecom;
-    property Address: TAddressCT read fAddress;
+    property Address: TAddressCT read GetAddress;
   end;
 
   [TName('InsurancePlan.Coverage')]
@@ -13765,10 +15151,12 @@ type
     fType: TCodeableConceptCT;
     fRequirement: TStringCT;
     fLimit: TInsurancePlanLimitCTList;
+
+    function GetRequirement: TStringCT;
   published
     [TRequired]
     property &Type: TCodeableConceptCT read fType;
-    property Requirement: TStringCT read fRequirement;
+    property Requirement: TStringCT read GetRequirement;
     property Limit: TInsurancePlanLimitCTList read fLimit;
   end;
 
@@ -13777,9 +15165,12 @@ type
   private
     fValue: TQuantityCT;
     fCode: TCodeableConceptCT;
+
+    function GetValue: TQuantityCT;
+    function GetCode: TCodeableConceptCT;
   published
-    property Value: TQuantityCT read fValue;
-    property Code: TCodeableConceptCT read fCode;
+    property Value: TQuantityCT read GetValue;
+    property Code: TCodeableConceptCT read GetCode;
   end;
 
   [TName('InsurancePlan.Plan')]
@@ -13791,9 +15182,11 @@ type
     fNetwork: TReferenceCTList;
     fGeneralCost: TInsurancePlanGeneralCostCTList;
     fSpecificCost: TInsurancePlanSpecificCostCTList;
+
+    function GetType: TCodeableConceptCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
-    property &Type: TCodeableConceptCT read fType;
+    property &Type: TCodeableConceptCT read GetType;
     property CoverageArea: TReferenceCTList read fCoverageArea;
     property Network: TReferenceCTList read fNetwork;
     property GeneralCost: TInsurancePlanGeneralCostCTList read fGeneralCost;
@@ -13807,11 +15200,16 @@ type
     fGroupSize: TPositiveIntCT;
     fCost: TMoneyCT;
     fComment: TStringCT;
+
+    function GetType: TCodeableConceptCT;
+    function GetGroupSize: TPositiveIntCT;
+    function GetCost: TMoneyCT;
+    function GetComment: TStringCT;
   published
-    property &Type: TCodeableConceptCT read fType;
-    property GroupSize: TPositiveIntCT read fGroupSize;
-    property Cost: TMoneyCT read fCost;
-    property Comment: TStringCT read fComment;
+    property &Type: TCodeableConceptCT read GetType;
+    property GroupSize: TPositiveIntCT read GetGroupSize;
+    property Cost: TMoneyCT read GetCost;
+    property Comment: TStringCT read GetComment;
   end;
 
   [TName('InsurancePlan.SpecificCost')]
@@ -13843,12 +15241,15 @@ type
     fApplicability: TCodeableConceptCT;
     fQualifiers: TCodeableConceptCTList;
     fValue: TQuantityCT;
+
+    function GetApplicability: TCodeableConceptCT;
+    function GetValue: TQuantityCT;
   published
     [TRequired]
     property &Type: TCodeableConceptCT read fType;
-    property Applicability: TCodeableConceptCT read fApplicability;
+    property Applicability: TCodeableConceptCT read GetApplicability;
     property Qualifiers: TCodeableConceptCTList read fQualifiers;
-    property Value: TQuantityCT read fValue;
+    property Value: TQuantityCT read GetValue;
   end;
 
   TInvoiceCT = class(TDomainResourceCT)
@@ -13869,23 +15270,34 @@ type
     fTotalGross: TMoneyCT;
     fPaymentTerms: TMarkdownCT;
     fNote: TAnnotationCTList;
+
+    function GetCancelledReason: TStringCT;
+    function GetType: TCodeableConceptCT;
+    function GetSubject: TReferenceCT;
+    function GetRecipient: TReferenceCT;
+    function GetDate: TDateTimeCT;
+    function GetIssuer: TReferenceCT;
+    function GetAccount: TReferenceCT;
+    function GetTotalNet: TMoneyCT;
+    function GetTotalGross: TMoneyCT;
+    function GetPaymentTerms: TMarkdownCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
     property Status: TInvoiceStatusCT read fStatus;
-    property CancelledReason: TStringCT read fCancelledReason;
-    property &Type: TCodeableConceptCT read fType;
-    property Subject: TReferenceCT read fSubject;
-    property Recipient: TReferenceCT read fRecipient;
-    property Date: TDateTimeCT read fDate;
+    property CancelledReason: TStringCT read GetCancelledReason;
+    property &Type: TCodeableConceptCT read GetType;
+    property Subject: TReferenceCT read GetSubject;
+    property Recipient: TReferenceCT read GetRecipient;
+    property Date: TDateTimeCT read GetDate;
     property Participant: TInvoiceParticipantCTList read fParticipant;
-    property Issuer: TReferenceCT read fIssuer;
-    property Account: TReferenceCT read fAccount;
+    property Issuer: TReferenceCT read GetIssuer;
+    property Account: TReferenceCT read GetAccount;
     property LineItem: TInvoiceLineItemCTList read fLineItem;
     property TotalPriceComponent: TInvoicePriceComponentCTList read fTotalPriceComponent;
-    property TotalNet: TMoneyCT read fTotalNet;
-    property TotalGross: TMoneyCT read fTotalGross;
-    property PaymentTerms: TMarkdownCT read fPaymentTerms;
+    property TotalNet: TMoneyCT read GetTotalNet;
+    property TotalGross: TMoneyCT read GetTotalGross;
+    property PaymentTerms: TMarkdownCT read GetPaymentTerms;
     property Note: TAnnotationCTList read fNote;
   end;
 
@@ -13894,8 +15306,10 @@ type
   private
     fRole: TCodeableConceptCT;
     fActor: TReferenceCT;
+
+    function GetRole: TCodeableConceptCT;
   published
-    property Role: TCodeableConceptCT read fRole;
+    property Role: TCodeableConceptCT read GetRole;
     [TRequired]
     property Actor: TReferenceCT read fActor;
   end;
@@ -13908,13 +15322,14 @@ type
     fChargeItemCodeableConcept: TCodeableConceptCT;
     fPriceComponent: TInvoicePriceComponentCTList;
 
+    function GetSequence: TPositiveIntCT;
     function GetChargeItemReference: TReferenceCT;
     function GetChargeItemCodeableConcept: TCodeableConceptCT;
     function GetChargeItemChosen: TBasite;
   public
     property ChargeItemChosen: TBasite read GetChargeItemChosen;
   published
-    property Sequence: TPositiveIntCT read fSequence;
+    property Sequence: TPositiveIntCT read GetSequence;
     [TChoice('ChargeItem')]
     property ChargeItemReference: TReferenceCT read GetChargeItemReference;
     [TChoice('ChargeItem')]
@@ -13929,12 +15344,16 @@ type
     fCode: TCodeableConceptCT;
     fFactor: TDecimalCT;
     fAmount: TMoneyCT;
+
+    function GetCode: TCodeableConceptCT;
+    function GetFactor: TDecimalCT;
+    function GetAmount: TMoneyCT;
   published
     [TRequired]
     property &Type: TInvoicePriceComponentTypeCT read fType;
-    property Code: TCodeableConceptCT read fCode;
-    property Factor: TDecimalCT read fFactor;
-    property Amount: TMoneyCT read fAmount;
+    property Code: TCodeableConceptCT read GetCode;
+    property Factor: TDecimalCT read GetFactor;
+    property Amount: TMoneyCT read GetAmount;
   end;
 
   TInvoiceStatusCT = class(TElementCT)
@@ -13979,39 +15398,54 @@ type
     fDataRequirement: TDataRequirementCTList;
     fContent: TAttachmentCTList;
 
+    function GetUrl: TUriCT;
+    function GetVersion: TStringCT;
+    function GetName: TStringCT;
+    function GetTitle: TStringCT;
+    function GetSubtitle: TStringCT;
+    function GetExperimental: TBooleanCT;
     function GetSubjectCodeableConcept: TCodeableConceptCT;
     function GetSubjectReference: TReferenceCT;
     function GetSubjectChosen: TBasite;
+    function GetDate: TDateTimeCT;
+    function GetPublisher: TStringCT;
+    function GetDescription: TMarkdownCT;
+    function GetPurpose: TMarkdownCT;
+    function GetUsage: TStringCT;
+    function GetCopyright: TMarkdownCT;
+    function GetApprovalDate: TDateCT;
+    function GetLastReviewDate: TDateCT;
+    function GetEffectivePeriod: TPeriodCT;
   public
     property SubjectChosen: TBasite read GetSubjectChosen;
   published
-    property Url: TUriCT read fUrl;
+    property Url: TUriCT read GetUrl;
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Version: TStringCT read fVersion;
-    property Name: TStringCT read fName;
-    property Title: TStringCT read fTitle;
-    property Subtitle: TStringCT read fSubtitle;
+    property Version: TStringCT read GetVersion;
+    property Name: TStringCT read GetName;
+    property Title: TStringCT read GetTitle;
+    property Subtitle: TStringCT read GetSubtitle;
     [TRequired]
     property Status: TPublicationStatusCT read fStatus;
-    property Experimental: TBooleanCT read fExperimental;
+    property Experimental: TBooleanCT read GetExperimental;
     [TRequired]
     property &Type: TCodeableConceptCT read fType;
     [TChoice('Subject')]
     property SubjectCodeableConcept: TCodeableConceptCT read GetSubjectCodeableConcept;
     [TChoice('Subject')]
     property SubjectReference: TReferenceCT read GetSubjectReference;
-    property Date: TDateTimeCT read fDate;
-    property Publisher: TStringCT read fPublisher;
+    property Date: TDateTimeCT read GetDate;
+    property Publisher: TStringCT read GetPublisher;
     property Contact: TContactDetailCTList read fContact;
-    property Description: TMarkdownCT read fDescription;
+    property Description: TMarkdownCT read GetDescription;
     property UseContext: TUsageContextCTList read fUseContext;
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    property Purpose: TMarkdownCT read fPurpose;
-    property Usage: TStringCT read fUsage;
-    property Copyright: TMarkdownCT read fCopyright;
-    property ApprovalDate: TDateCT read fApprovalDate;
-    property LastReviewDate: TDateCT read fLastReviewDate;
-    property EffectivePeriod: TPeriodCT read fEffectivePeriod;
+    property Purpose: TMarkdownCT read GetPurpose;
+    property Usage: TStringCT read GetUsage;
+    property Copyright: TMarkdownCT read GetCopyright;
+    property ApprovalDate: TDateCT read GetApprovalDate;
+    property LastReviewDate: TDateCT read GetLastReviewDate;
+    property EffectivePeriod: TPeriodCT read GetEffectivePeriod;
     property Topic: TCodeableConceptCTList read fTopic;
     property Author: TContactDetailCTList read fAuthor;
     property Editor: TContactDetailCTList read fEditor;
@@ -14028,9 +15462,12 @@ type
     fActive: TBooleanCT;
     fAuthor: TReferenceCT;
     fItem: TLinkageItemCTList;
+
+    function GetActive: TBooleanCT;
+    function GetAuthor: TReferenceCT;
   published
-    property Active: TBooleanCT read fActive;
-    property Author: TReferenceCT read fAuthor;
+    property Active: TBooleanCT read GetActive;
+    property Author: TReferenceCT read GetAuthor;
     property Item: TLinkageItemCTList read fItem;
   end;
 
@@ -14068,22 +15505,31 @@ type
     fNote: TAnnotationCTList;
     fEntry: TListEntryCTList;
     fEmptyReason: TCodeableConceptCT;
+
+    function GetTitle: TStringCT;
+    function GetCode: TCodeableConceptCT;
+    function GetSubject: TReferenceCT;
+    function GetEncounter: TReferenceCT;
+    function GetDate: TDateTimeCT;
+    function GetSource: TReferenceCT;
+    function GetOrderedBy: TCodeableConceptCT;
+    function GetEmptyReason: TCodeableConceptCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
     property Status: TListStatusCT read fStatus;
     [TRequired]
     property Mode: TListModeCT read fMode;
-    property Title: TStringCT read fTitle;
-    property Code: TCodeableConceptCT read fCode;
-    property Subject: TReferenceCT read fSubject;
-    property Encounter: TReferenceCT read fEncounter;
-    property Date: TDateTimeCT read fDate;
-    property Source: TReferenceCT read fSource;
-    property OrderedBy: TCodeableConceptCT read fOrderedBy;
+    property Title: TStringCT read GetTitle;
+    property Code: TCodeableConceptCT read GetCode;
+    property Subject: TReferenceCT read GetSubject;
+    property Encounter: TReferenceCT read GetEncounter;
+    property Date: TDateTimeCT read GetDate;
+    property Source: TReferenceCT read GetSource;
+    property OrderedBy: TCodeableConceptCT read GetOrderedBy;
     property Note: TAnnotationCTList read fNote;
     property Entry: TListEntryCTList read fEntry;
-    property EmptyReason: TCodeableConceptCT read fEmptyReason;
+    property EmptyReason: TCodeableConceptCT read GetEmptyReason;
   end;
 
   [TName('List.Entry')]
@@ -14093,10 +15539,14 @@ type
     fDeleted: TBooleanCT;
     fDate: TDateTimeCT;
     fItem: TReferenceCT;
+
+    function GetFlag: TCodeableConceptCT;
+    function GetDeleted: TBooleanCT;
+    function GetDate: TDateTimeCT;
   published
-    property Flag: TCodeableConceptCT read fFlag;
-    property Deleted: TBooleanCT read fDeleted;
-    property Date: TDateTimeCT read fDate;
+    property Flag: TCodeableConceptCT read GetFlag;
+    property Deleted: TBooleanCT read GetDeleted;
+    property Date: TDateTimeCT read GetDate;
     [TRequired]
     property Item: TReferenceCT read fItem;
   end;
@@ -14127,23 +15577,35 @@ type
     fHoursOfOperation: TLocationHoursOfOperationCTList;
     fAvailabilityExceptions: TStringCT;
     fEndpoint: TReferenceCTList;
+
+    function GetStatus: TLocationStatusCT;
+    function GetOperationalStatus: TCodingCT;
+    function GetName: TStringCT;
+    function GetDescription: TStringCT;
+    function GetMode: TLocationModeCT;
+    function GetAddress: TAddressCT;
+    function GetPhysicalType: TCodeableConceptCT;
+    function GetPosition: TLocationPositionCT;
+    function GetManagingOrganization: TReferenceCT;
+    function GetPartOf: TReferenceCT;
+    function GetAvailabilityExceptions: TStringCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Status: TLocationStatusCT read fStatus;
-    property OperationalStatus: TCodingCT read fOperationalStatus;
-    property Name: TStringCT read fName;
+    property Status: TLocationStatusCT read GetStatus;
+    property OperationalStatus: TCodingCT read GetOperationalStatus;
+    property Name: TStringCT read GetName;
     property Alias: TStringCTList read fAlias;
-    property Description: TStringCT read fDescription;
-    property Mode: TLocationModeCT read fMode;
+    property Description: TStringCT read GetDescription;
+    property Mode: TLocationModeCT read GetMode;
     property &Type: TCodeableConceptCTList read fType;
     property Telecom: TContactPointCTList read fTelecom;
-    property Address: TAddressCT read fAddress;
-    property PhysicalType: TCodeableConceptCT read fPhysicalType;
-    property Position: TLocationPositionCT read fPosition;
-    property ManagingOrganization: TReferenceCT read fManagingOrganization;
-    property PartOf: TReferenceCT read fPartOf;
+    property Address: TAddressCT read GetAddress;
+    property PhysicalType: TCodeableConceptCT read GetPhysicalType;
+    property Position: TLocationPositionCT read GetPosition;
+    property ManagingOrganization: TReferenceCT read GetManagingOrganization;
+    property PartOf: TReferenceCT read GetPartOf;
     property HoursOfOperation: TLocationHoursOfOperationCTList read fHoursOfOperation;
-    property AvailabilityExceptions: TStringCT read fAvailabilityExceptions;
+    property AvailabilityExceptions: TStringCT read GetAvailabilityExceptions;
     property Endpoint: TReferenceCTList read fEndpoint;
   end;
 
@@ -14153,12 +15615,14 @@ type
     fLongitude: TDecimalCT;
     fLatitude: TDecimalCT;
     fAltitude: TDecimalCT;
+
+    function GetAltitude: TDecimalCT;
   published
     [TRequired]
     property Longitude: TDecimalCT read fLongitude;
     [TRequired]
     property Latitude: TDecimalCT read fLatitude;
-    property Altitude: TDecimalCT read fAltitude;
+    property Altitude: TDecimalCT read GetAltitude;
   end;
 
   [TName('Location.HoursOfOperation')]
@@ -14168,11 +15632,15 @@ type
     fAllDay: TBooleanCT;
     fOpeningTime: TTimeCT;
     fClosingTime: TTimeCT;
+
+    function GetAllDay: TBooleanCT;
+    function GetOpeningTime: TTimeCT;
+    function GetClosingTime: TTimeCT;
   published
     property DaysOfWeek: TDaysOfWeekCTList read fDaysOfWeek;
-    property AllDay: TBooleanCT read fAllDay;
-    property OpeningTime: TTimeCT read fOpeningTime;
-    property ClosingTime: TTimeCT read fClosingTime;
+    property AllDay: TBooleanCT read GetAllDay;
+    property OpeningTime: TTimeCT read GetOpeningTime;
+    property ClosingTime: TTimeCT read GetClosingTime;
   end;
 
   TLocationModeCT = class(TElementCT)
@@ -14234,37 +15702,61 @@ type
     fGroup: TMeasureGroupCTList;
     fSupplementalData: TMeasureSupplementalDataCTList;
 
+    function GetUrl: TUriCT;
+    function GetVersion: TStringCT;
+    function GetName: TStringCT;
+    function GetTitle: TStringCT;
+    function GetSubtitle: TStringCT;
+    function GetExperimental: TBooleanCT;
     function GetSubjectCodeableConcept: TCodeableConceptCT;
     function GetSubjectReference: TReferenceCT;
     function GetSubjectChosen: TBasite;
+    function GetDate: TDateTimeCT;
+    function GetPublisher: TStringCT;
+    function GetDescription: TMarkdownCT;
+    function GetPurpose: TMarkdownCT;
+    function GetUsage: TStringCT;
+    function GetCopyright: TMarkdownCT;
+    function GetApprovalDate: TDateCT;
+    function GetLastReviewDate: TDateCT;
+    function GetEffectivePeriod: TPeriodCT;
+    function GetDisclaimer: TMarkdownCT;
+    function GetScoring: TCodeableConceptCT;
+    function GetCompositeScoring: TCodeableConceptCT;
+    function GetRiskAdjustment: TStringCT;
+    function GetRateAggregation: TStringCT;
+    function GetRationale: TMarkdownCT;
+    function GetClinicalRecommendationStatement: TMarkdownCT;
+    function GetImprovementNotation: TCodeableConceptCT;
+    function GetGuidance: TMarkdownCT;
   public
     property SubjectChosen: TBasite read GetSubjectChosen;
   published
-    property Url: TUriCT read fUrl;
+    property Url: TUriCT read GetUrl;
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Version: TStringCT read fVersion;
-    property Name: TStringCT read fName;
-    property Title: TStringCT read fTitle;
-    property Subtitle: TStringCT read fSubtitle;
+    property Version: TStringCT read GetVersion;
+    property Name: TStringCT read GetName;
+    property Title: TStringCT read GetTitle;
+    property Subtitle: TStringCT read GetSubtitle;
     [TRequired]
     property Status: TPublicationStatusCT read fStatus;
-    property Experimental: TBooleanCT read fExperimental;
+    property Experimental: TBooleanCT read GetExperimental;
     [TChoice('Subject')]
     property SubjectCodeableConcept: TCodeableConceptCT read GetSubjectCodeableConcept;
     [TChoice('Subject')]
     property SubjectReference: TReferenceCT read GetSubjectReference;
-    property Date: TDateTimeCT read fDate;
-    property Publisher: TStringCT read fPublisher;
+    property Date: TDateTimeCT read GetDate;
+    property Publisher: TStringCT read GetPublisher;
     property Contact: TContactDetailCTList read fContact;
-    property Description: TMarkdownCT read fDescription;
+    property Description: TMarkdownCT read GetDescription;
     property UseContext: TUsageContextCTList read fUseContext;
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    property Purpose: TMarkdownCT read fPurpose;
-    property Usage: TStringCT read fUsage;
-    property Copyright: TMarkdownCT read fCopyright;
-    property ApprovalDate: TDateCT read fApprovalDate;
-    property LastReviewDate: TDateCT read fLastReviewDate;
-    property EffectivePeriod: TPeriodCT read fEffectivePeriod;
+    property Purpose: TMarkdownCT read GetPurpose;
+    property Usage: TStringCT read GetUsage;
+    property Copyright: TMarkdownCT read GetCopyright;
+    property ApprovalDate: TDateCT read GetApprovalDate;
+    property LastReviewDate: TDateCT read GetLastReviewDate;
+    property EffectivePeriod: TPeriodCT read GetEffectivePeriod;
     property Topic: TCodeableConceptCTList read fTopic;
     property Author: TContactDetailCTList read fAuthor;
     property Editor: TContactDetailCTList read fEditor;
@@ -14272,17 +15764,17 @@ type
     property Endorser: TContactDetailCTList read fEndorser;
     property RelatedArtifact: TRelatedArtifactCTList read fRelatedArtifact;
     property &Library: TCanonicalCTList read fLibrary;
-    property Disclaimer: TMarkdownCT read fDisclaimer;
-    property Scoring: TCodeableConceptCT read fScoring;
-    property CompositeScoring: TCodeableConceptCT read fCompositeScoring;
+    property Disclaimer: TMarkdownCT read GetDisclaimer;
+    property Scoring: TCodeableConceptCT read GetScoring;
+    property CompositeScoring: TCodeableConceptCT read GetCompositeScoring;
     property &Type: TCodeableConceptCTList read fType;
-    property RiskAdjustment: TStringCT read fRiskAdjustment;
-    property RateAggregation: TStringCT read fRateAggregation;
-    property Rationale: TMarkdownCT read fRationale;
-    property ClinicalRecommendationStatement: TMarkdownCT read fClinicalRecommendationStatement;
-    property ImprovementNotation: TCodeableConceptCT read fImprovementNotation;
+    property RiskAdjustment: TStringCT read GetRiskAdjustment;
+    property RateAggregation: TStringCT read GetRateAggregation;
+    property Rationale: TMarkdownCT read GetRationale;
+    property ClinicalRecommendationStatement: TMarkdownCT read GetClinicalRecommendationStatement;
+    property ImprovementNotation: TCodeableConceptCT read GetImprovementNotation;
     property Definition: TMarkdownCTList read fDefinition;
-    property Guidance: TMarkdownCT read fGuidance;
+    property Guidance: TMarkdownCT read GetGuidance;
     property Group: TMeasureGroupCTList read fGroup;
     property SupplementalData: TMeasureSupplementalDataCTList read fSupplementalData;
   end;
@@ -14294,9 +15786,12 @@ type
     fDescription: TStringCT;
     fPopulation: TMeasurePopulationCTList;
     fStratifier: TMeasureStratifierCTList;
+
+    function GetCode: TCodeableConceptCT;
+    function GetDescription: TStringCT;
   published
-    property Code: TCodeableConceptCT read fCode;
-    property Description: TStringCT read fDescription;
+    property Code: TCodeableConceptCT read GetCode;
+    property Description: TStringCT read GetDescription;
     property Population: TMeasurePopulationCTList read fPopulation;
     property Stratifier: TMeasureStratifierCTList read fStratifier;
   end;
@@ -14307,9 +15802,12 @@ type
     fCode: TCodeableConceptCT;
     fDescription: TStringCT;
     fCriteria: TExpressionCT;
+
+    function GetCode: TCodeableConceptCT;
+    function GetDescription: TStringCT;
   published
-    property Code: TCodeableConceptCT read fCode;
-    property Description: TStringCT read fDescription;
+    property Code: TCodeableConceptCT read GetCode;
+    property Description: TStringCT read GetDescription;
     [TRequired]
     property Criteria: TExpressionCT read fCriteria;
   end;
@@ -14321,10 +15819,14 @@ type
     fDescription: TStringCT;
     fCriteria: TExpressionCT;
     fComponent: TMeasureComponentCTList;
+
+    function GetCode: TCodeableConceptCT;
+    function GetDescription: TStringCT;
+    function GetCriteria: TExpressionCT;
   published
-    property Code: TCodeableConceptCT read fCode;
-    property Description: TStringCT read fDescription;
-    property Criteria: TExpressionCT read fCriteria;
+    property Code: TCodeableConceptCT read GetCode;
+    property Description: TStringCT read GetDescription;
+    property Criteria: TExpressionCT read GetCriteria;
     property Component: TMeasureComponentCTList read fComponent;
   end;
 
@@ -14334,9 +15836,12 @@ type
     fCode: TCodeableConceptCT;
     fDescription: TStringCT;
     fCriteria: TExpressionCT;
+
+    function GetCode: TCodeableConceptCT;
+    function GetDescription: TStringCT;
   published
-    property Code: TCodeableConceptCT read fCode;
-    property Description: TStringCT read fDescription;
+    property Code: TCodeableConceptCT read GetCode;
+    property Description: TStringCT read GetDescription;
     [TRequired]
     property Criteria: TExpressionCT read fCriteria;
   end;
@@ -14348,10 +15853,13 @@ type
     fUsage: TCodeableConceptCTList;
     fDescription: TStringCT;
     fCriteria: TExpressionCT;
+
+    function GetCode: TCodeableConceptCT;
+    function GetDescription: TStringCT;
   published
-    property Code: TCodeableConceptCT read fCode;
+    property Code: TCodeableConceptCT read GetCode;
     property Usage: TCodeableConceptCTList read fUsage;
-    property Description: TStringCT read fDescription;
+    property Description: TStringCT read GetDescription;
     [TRequired]
     property Criteria: TExpressionCT read fCriteria;
   end;
@@ -14369,6 +15877,11 @@ type
     fImprovementNotation: TCodeableConceptCT;
     fGroup: TMeasureReportGroupCTList;
     fEvaluatedResource: TReferenceCTList;
+
+    function GetSubject: TReferenceCT;
+    function GetDate: TDateTimeCT;
+    function GetReporter: TReferenceCT;
+    function GetImprovementNotation: TCodeableConceptCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
@@ -14377,12 +15890,12 @@ type
     property &Type: TMeasureReportTypeCT read fType;
     [TRequired]
     property Measure: TCanonicalCT read fMeasure;
-    property Subject: TReferenceCT read fSubject;
-    property Date: TDateTimeCT read fDate;
-    property Reporter: TReferenceCT read fReporter;
+    property Subject: TReferenceCT read GetSubject;
+    property Date: TDateTimeCT read GetDate;
+    property Reporter: TReferenceCT read GetReporter;
     [TRequired]
     property Period: TPeriodCT read fPeriod;
-    property ImprovementNotation: TCodeableConceptCT read fImprovementNotation;
+    property ImprovementNotation: TCodeableConceptCT read GetImprovementNotation;
     property Group: TMeasureReportGroupCTList read fGroup;
     property EvaluatedResource: TReferenceCTList read fEvaluatedResource;
   end;
@@ -14394,10 +15907,13 @@ type
     fPopulation: TMeasureReportPopulationCTList;
     fMeasureScore: TQuantityCT;
     fStratifier: TMeasureReportStratifierCTList;
+
+    function GetCode: TCodeableConceptCT;
+    function GetMeasureScore: TQuantityCT;
   published
-    property Code: TCodeableConceptCT read fCode;
+    property Code: TCodeableConceptCT read GetCode;
     property Population: TMeasureReportPopulationCTList read fPopulation;
-    property MeasureScore: TQuantityCT read fMeasureScore;
+    property MeasureScore: TQuantityCT read GetMeasureScore;
     property Stratifier: TMeasureReportStratifierCTList read fStratifier;
   end;
 
@@ -14407,10 +15923,14 @@ type
     fCode: TCodeableConceptCT;
     fCount: TIntegerCT;
     fSubjectResults: TReferenceCT;
+
+    function GetCode: TCodeableConceptCT;
+    function GetCount: TIntegerCT;
+    function GetSubjectResults: TReferenceCT;
   published
-    property Code: TCodeableConceptCT read fCode;
-    property Count: TIntegerCT read fCount;
-    property SubjectResults: TReferenceCT read fSubjectResults;
+    property Code: TCodeableConceptCT read GetCode;
+    property Count: TIntegerCT read GetCount;
+    property SubjectResults: TReferenceCT read GetSubjectResults;
   end;
 
   [TName('MeasureReport.Stratifier')]
@@ -14430,11 +15950,14 @@ type
     fComponent: TMeasureReportComponentCTList;
     fPopulation: TMeasureReportPopulation1CTList;
     fMeasureScore: TQuantityCT;
+
+    function GetValue: TCodeableConceptCT;
+    function GetMeasureScore: TQuantityCT;
   published
-    property Value: TCodeableConceptCT read fValue;
+    property Value: TCodeableConceptCT read GetValue;
     property Component: TMeasureReportComponentCTList read fComponent;
     property Population: TMeasureReportPopulation1CTList read fPopulation;
-    property MeasureScore: TQuantityCT read fMeasureScore;
+    property MeasureScore: TQuantityCT read GetMeasureScore;
   end;
 
   [TName('MeasureReport.Component')]
@@ -14455,10 +15978,14 @@ type
     fCode: TCodeableConceptCT;
     fCount: TIntegerCT;
     fSubjectResults: TReferenceCT;
+
+    function GetCode: TCodeableConceptCT;
+    function GetCount: TIntegerCT;
+    function GetSubjectResults: TReferenceCT;
   published
-    property Code: TCodeableConceptCT read fCode;
-    property Count: TIntegerCT read fCount;
-    property SubjectResults: TReferenceCT read fSubjectResults;
+    property Code: TCodeableConceptCT read GetCode;
+    property Count: TIntegerCT read GetCount;
+    property SubjectResults: TReferenceCT read GetSubjectResults;
   end;
 
   TMeasureReportStatusCT = class(TElementCT)
@@ -14501,9 +16028,23 @@ type
     fContent: TAttachmentCT;
     fNote: TAnnotationCTList;
 
+    function GetType: TCodeableConceptCT;
+    function GetModality: TCodeableConceptCT;
+    function GetView: TCodeableConceptCT;
+    function GetSubject: TReferenceCT;
+    function GetEncounter: TReferenceCT;
     function GetCreatedDateTime: TDateTimeCT;
     function GetCreatedPeriod: TPeriodCT;
     function GetCreatedChosen: TBasite;
+    function GetIssued: TInstantCT;
+    function GetOperator: TReferenceCT;
+    function GetBodySite: TCodeableConceptCT;
+    function GetDeviceName: TStringCT;
+    function GetDevice: TReferenceCT;
+    function GetHeight: TPositiveIntCT;
+    function GetWidth: TPositiveIntCT;
+    function GetFrames: TPositiveIntCT;
+    function GetDuration: TDecimalCT;
   public
     property CreatedChosen: TBasite read GetCreatedChosen;
   published
@@ -14512,25 +16053,25 @@ type
     property PartOf: TReferenceCTList read fPartOf;
     [TRequired]
     property Status: TEventStatusCT read fStatus;
-    property &Type: TCodeableConceptCT read fType;
-    property Modality: TCodeableConceptCT read fModality;
-    property View: TCodeableConceptCT read fView;
-    property Subject: TReferenceCT read fSubject;
-    property Encounter: TReferenceCT read fEncounter;
+    property &Type: TCodeableConceptCT read GetType;
+    property Modality: TCodeableConceptCT read GetModality;
+    property View: TCodeableConceptCT read GetView;
+    property Subject: TReferenceCT read GetSubject;
+    property Encounter: TReferenceCT read GetEncounter;
     [TChoice('Created')]
     property CreatedDateTime: TDateTimeCT read GetCreatedDateTime;
     [TChoice('Created')]
     property CreatedPeriod: TPeriodCT read GetCreatedPeriod;
-    property Issued: TInstantCT read fIssued;
-    property Operator: TReferenceCT read fOperator;
+    property Issued: TInstantCT read GetIssued;
+    property Operator: TReferenceCT read GetOperator;
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
-    property BodySite: TCodeableConceptCT read fBodySite;
-    property DeviceName: TStringCT read fDeviceName;
-    property Device: TReferenceCT read fDevice;
-    property Height: TPositiveIntCT read fHeight;
-    property Width: TPositiveIntCT read fWidth;
-    property Frames: TPositiveIntCT read fFrames;
-    property Duration: TDecimalCT read fDuration;
+    property BodySite: TCodeableConceptCT read GetBodySite;
+    property DeviceName: TStringCT read GetDeviceName;
+    property Device: TReferenceCT read GetDevice;
+    property Height: TPositiveIntCT read GetHeight;
+    property Width: TPositiveIntCT read GetWidth;
+    property Frames: TPositiveIntCT read GetFrames;
+    property Duration: TDecimalCT read GetDuration;
     [TRequired]
     property Content: TAttachmentCT read fContent;
     property Note: TAnnotationCTList read fNote;
@@ -14546,15 +16087,22 @@ type
     fAmount: TRatioCT;
     fIngredient: TMedicationIngredientCTList;
     fBatch: TMedicationBatchCT;
+
+    function GetCode: TCodeableConceptCT;
+    function GetStatus: TMedicationStatusCodesCT;
+    function GetManufacturer: TReferenceCT;
+    function GetForm: TCodeableConceptCT;
+    function GetAmount: TRatioCT;
+    function GetBatch: TMedicationBatchCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Code: TCodeableConceptCT read fCode;
-    property Status: TMedicationStatusCodesCT read fStatus;
-    property Manufacturer: TReferenceCT read fManufacturer;
-    property Form: TCodeableConceptCT read fForm;
-    property Amount: TRatioCT read fAmount;
+    property Code: TCodeableConceptCT read GetCode;
+    property Status: TMedicationStatusCodesCT read GetStatus;
+    property Manufacturer: TReferenceCT read GetManufacturer;
+    property Form: TCodeableConceptCT read GetForm;
+    property Amount: TRatioCT read GetAmount;
     property Ingredient: TMedicationIngredientCTList read fIngredient;
-    property Batch: TMedicationBatchCT read fBatch;
+    property Batch: TMedicationBatchCT read GetBatch;
   end;
 
   [TName('Medication.Ingredient')]
@@ -14568,6 +16116,8 @@ type
     function GetItemCodeableConcept: TCodeableConceptCT;
     function GetItemReference: TReferenceCT;
     function GetItemChosen: TBasite;
+    function GetIsActive: TBooleanCT;
+    function GetStrength: TRatioCT;
   public
     property ItemChosen: TBasite read GetItemChosen;
   published
@@ -14575,8 +16125,8 @@ type
     property ItemCodeableConcept: TCodeableConceptCT read GetItemCodeableConcept;
     [TChoice('Item')]
     property ItemReference: TReferenceCT read GetItemReference;
-    property IsActive: TBooleanCT read fIsActive;
-    property Strength: TRatioCT read fStrength;
+    property IsActive: TBooleanCT read GetIsActive;
+    property Strength: TRatioCT read GetStrength;
   end;
 
   [TName('Medication.Batch')]
@@ -14584,9 +16134,12 @@ type
   private
     fLotNumber: TStringCT;
     fExpirationDate: TDateTimeCT;
+
+    function GetLotNumber: TStringCT;
+    function GetExpirationDate: TDateTimeCT;
   published
-    property LotNumber: TStringCT read fLotNumber;
-    property ExpirationDate: TDateTimeCT read fExpirationDate;
+    property LotNumber: TStringCT read GetLotNumber;
+    property ExpirationDate: TDateTimeCT read GetExpirationDate;
   end;
 
   TMedicationStatusCodesCT = class(TElementCT)
@@ -14620,12 +16173,16 @@ type
     fDosage: TMedicationAdministrationDosageCT;
     fEventHistory: TReferenceCTList;
 
+    function GetCategory: TCodeableConceptCT;
     function GetMedicationCodeableConcept: TCodeableConceptCT;
     function GetMedicationReference: TReferenceCT;
     function GetMedicationChosen: TBasite;
+    function GetContext: TReferenceCT;
     function GetEffectiveDateTime: TDateTimeCT;
     function GetEffectivePeriod: TPeriodCT;
     function GetEffectiveChosen: TBasite;
+    function GetRequest: TReferenceCT;
+    function GetDosage: TMedicationAdministrationDosageCT;
   public
     property MedicationChosen: TBasite read GetMedicationChosen;
     property EffectiveChosen: TBasite read GetEffectiveChosen;
@@ -14636,14 +16193,14 @@ type
     [TRequired]
     property Status: TCodeCT read fStatus;
     property StatusReason: TCodeableConceptCTList read fStatusReason;
-    property Category: TCodeableConceptCT read fCategory;
+    property Category: TCodeableConceptCT read GetCategory;
     [TChoice('Medication')]
     property MedicationCodeableConcept: TCodeableConceptCT read GetMedicationCodeableConcept;
     [TChoice('Medication')]
     property MedicationReference: TReferenceCT read GetMedicationReference;
     [TRequired]
     property Subject: TReferenceCT read fSubject;
-    property Context: TReferenceCT read fContext;
+    property Context: TReferenceCT read GetContext;
     property SupportingInformation: TReferenceCTList read fSupportingInformation;
     [TChoice('Effective')]
     property EffectiveDateTime: TDateTimeCT read GetEffectiveDateTime;
@@ -14652,10 +16209,10 @@ type
     property Performer: TMedicationAdministrationPerformerCTList read fPerformer;
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
     property ReasonReference: TReferenceCTList read fReasonReference;
-    property Request: TReferenceCT read fRequest;
+    property Request: TReferenceCT read GetRequest;
     property Device: TReferenceCTList read fDevice;
     property Note: TAnnotationCTList read fNote;
-    property Dosage: TMedicationAdministrationDosageCT read fDosage;
+    property Dosage: TMedicationAdministrationDosageCT read GetDosage;
     property EventHistory: TReferenceCTList read fEventHistory;
   end;
 
@@ -14664,8 +16221,10 @@ type
   private
     fFunction: TCodeableConceptCT;
     fActor: TReferenceCT;
+
+    function GetFunction: TCodeableConceptCT;
   published
-    property &Function: TCodeableConceptCT read fFunction;
+    property &Function: TCodeableConceptCT read GetFunction;
     [TRequired]
     property Actor: TReferenceCT read fActor;
   end;
@@ -14681,17 +16240,22 @@ type
     fRateRatio: TRatioCT;
     fRateQuantity: TQuantityCT;
 
+    function GetText: TStringCT;
+    function GetSite: TCodeableConceptCT;
+    function GetRoute: TCodeableConceptCT;
+    function GetMethod: TCodeableConceptCT;
+    function GetDose: TQuantityCT;
     function GetRateRatio: TRatioCT;
     function GetRateQuantity: TQuantityCT;
     function GetRateChosen: TBasite;
   public
     property RateChosen: TBasite read GetRateChosen;
   published
-    property Text: TStringCT read fText;
-    property Site: TCodeableConceptCT read fSite;
-    property Route: TCodeableConceptCT read fRoute;
-    property Method: TCodeableConceptCT read fMethod;
-    property Dose: TQuantityCT read fDose;
+    property Text: TStringCT read GetText;
+    property Site: TCodeableConceptCT read GetSite;
+    property Route: TCodeableConceptCT read GetRoute;
+    property Method: TCodeableConceptCT read GetMethod;
+    property Dose: TQuantityCT read GetDose;
     [TChoice('Rate')]
     property RateRatio: TRatioCT read GetRateRatio;
     [TChoice('Rate')]
@@ -14730,9 +16294,20 @@ type
     function GetStatusReasonCodeableConcept: TCodeableConceptCT;
     function GetStatusReasonReference: TReferenceCT;
     function GetStatusReasonChosen: TBasite;
+    function GetCategory: TCodeableConceptCT;
     function GetMedicationCodeableConcept: TCodeableConceptCT;
     function GetMedicationReference: TReferenceCT;
     function GetMedicationChosen: TBasite;
+    function GetSubject: TReferenceCT;
+    function GetContext: TReferenceCT;
+    function GetLocation: TReferenceCT;
+    function GetType: TCodeableConceptCT;
+    function GetQuantity: TQuantityCT;
+    function GetDaysSupply: TQuantityCT;
+    function GetWhenPrepared: TDateTimeCT;
+    function GetWhenHandedOver: TDateTimeCT;
+    function GetDestination: TReferenceCT;
+    function GetSubstitution: TMedicationDispenseSubstitutionCT;
   public
     property StatusReasonChosen: TBasite read GetStatusReasonChosen;
     property MedicationChosen: TBasite read GetMedicationChosen;
@@ -14745,27 +16320,27 @@ type
     property StatusReasonCodeableConcept: TCodeableConceptCT read GetStatusReasonCodeableConcept;
     [TChoice('StatusReason')]
     property StatusReasonReference: TReferenceCT read GetStatusReasonReference;
-    property Category: TCodeableConceptCT read fCategory;
+    property Category: TCodeableConceptCT read GetCategory;
     [TChoice('Medication')]
     property MedicationCodeableConcept: TCodeableConceptCT read GetMedicationCodeableConcept;
     [TChoice('Medication')]
     property MedicationReference: TReferenceCT read GetMedicationReference;
-    property Subject: TReferenceCT read fSubject;
-    property Context: TReferenceCT read fContext;
+    property Subject: TReferenceCT read GetSubject;
+    property Context: TReferenceCT read GetContext;
     property SupportingInformation: TReferenceCTList read fSupportingInformation;
     property Performer: TMedicationDispensePerformerCTList read fPerformer;
-    property Location: TReferenceCT read fLocation;
+    property Location: TReferenceCT read GetLocation;
     property AuthorizingPrescription: TReferenceCTList read fAuthorizingPrescription;
-    property &Type: TCodeableConceptCT read fType;
-    property Quantity: TQuantityCT read fQuantity;
-    property DaysSupply: TQuantityCT read fDaysSupply;
-    property WhenPrepared: TDateTimeCT read fWhenPrepared;
-    property WhenHandedOver: TDateTimeCT read fWhenHandedOver;
-    property Destination: TReferenceCT read fDestination;
+    property &Type: TCodeableConceptCT read GetType;
+    property Quantity: TQuantityCT read GetQuantity;
+    property DaysSupply: TQuantityCT read GetDaysSupply;
+    property WhenPrepared: TDateTimeCT read GetWhenPrepared;
+    property WhenHandedOver: TDateTimeCT read GetWhenHandedOver;
+    property Destination: TReferenceCT read GetDestination;
     property Receiver: TReferenceCTList read fReceiver;
     property Note: TAnnotationCTList read fNote;
     property DosageInstruction: TDosageCTList read fDosageInstruction;
-    property Substitution: TMedicationDispenseSubstitutionCT read fSubstitution;
+    property Substitution: TMedicationDispenseSubstitutionCT read GetSubstitution;
     property DetectedIssue: TReferenceCTList read fDetectedIssue;
     property EventHistory: TReferenceCTList read fEventHistory;
   end;
@@ -14775,8 +16350,10 @@ type
   private
     fFunction: TCodeableConceptCT;
     fActor: TReferenceCT;
+
+    function GetFunction: TCodeableConceptCT;
   published
-    property &Function: TCodeableConceptCT read fFunction;
+    property &Function: TCodeableConceptCT read GetFunction;
     [TRequired]
     property Actor: TReferenceCT read fActor;
   end;
@@ -14788,10 +16365,12 @@ type
     fType: TCodeableConceptCT;
     fReason: TCodeableConceptCTList;
     fResponsibleParty: TReferenceCTList;
+
+    function GetType: TCodeableConceptCT;
   published
     [TRequired]
     property WasSubstituted: TBooleanCT read fWasSubstituted;
-    property &Type: TCodeableConceptCT read fType;
+    property &Type: TCodeableConceptCT read GetType;
     property Reason: TCodeableConceptCTList read fReason;
     property ResponsibleParty: TReferenceCTList read fResponsibleParty;
   end;
@@ -14820,25 +16399,33 @@ type
     fContraindication: TReferenceCTList;
     fRegulatory: TMedicationKnowledgeRegulatoryCTList;
     fKinetics: TMedicationKnowledgeKineticsCTList;
+
+    function GetCode: TCodeableConceptCT;
+    function GetStatus: TCodeCT;
+    function GetManufacturer: TReferenceCT;
+    function GetDoseForm: TCodeableConceptCT;
+    function GetAmount: TQuantityCT;
+    function GetPreparationInstruction: TMarkdownCT;
+    function GetPackaging: TMedicationKnowledgePackagingCT;
   published
-    property Code: TCodeableConceptCT read fCode;
-    property Status: TCodeCT read fStatus;
-    property Manufacturer: TReferenceCT read fManufacturer;
-    property DoseForm: TCodeableConceptCT read fDoseForm;
-    property Amount: TQuantityCT read fAmount;
+    property Code: TCodeableConceptCT read GetCode;
+    property Status: TCodeCT read GetStatus;
+    property Manufacturer: TReferenceCT read GetManufacturer;
+    property DoseForm: TCodeableConceptCT read GetDoseForm;
+    property Amount: TQuantityCT read GetAmount;
     property Synonym: TStringCTList read fSynonym;
     property RelatedMedicationKnowledge: TMedicationKnowledgeRelatedMedicationKnowledgeCTList read fRelatedMedicationKnowledge;
     property AssociatedMedication: TReferenceCTList read fAssociatedMedication;
     property ProductType: TCodeableConceptCTList read fProductType;
     property Monograph: TMedicationKnowledgeMonographCTList read fMonograph;
     property Ingredient: TMedicationKnowledgeIngredientCTList read fIngredient;
-    property PreparationInstruction: TMarkdownCT read fPreparationInstruction;
+    property PreparationInstruction: TMarkdownCT read GetPreparationInstruction;
     property IntendedRoute: TCodeableConceptCTList read fIntendedRoute;
     property Cost: TMedicationKnowledgeCostCTList read fCost;
     property MonitoringProgram: TMedicationKnowledgeMonitoringProgramCTList read fMonitoringProgram;
     property AdministrationGuidelines: TMedicationKnowledgeAdministrationGuidelinesCTList read fAdministrationGuidelines;
     property MedicineClassification: TMedicationKnowledgeMedicineClassificationCTList read fMedicineClassification;
-    property Packaging: TMedicationKnowledgePackagingCT read fPackaging;
+    property Packaging: TMedicationKnowledgePackagingCT read GetPackaging;
     property DrugCharacteristic: TMedicationKnowledgeDrugCharacteristicCTList read fDrugCharacteristic;
     property Contraindication: TReferenceCTList read fContraindication;
     property Regulatory: TMedicationKnowledgeRegulatoryCTList read fRegulatory;
@@ -14861,9 +16448,12 @@ type
   private
     fType: TCodeableConceptCT;
     fSource: TReferenceCT;
+
+    function GetType: TCodeableConceptCT;
+    function GetSource: TReferenceCT;
   published
-    property &Type: TCodeableConceptCT read fType;
-    property Source: TReferenceCT read fSource;
+    property &Type: TCodeableConceptCT read GetType;
+    property Source: TReferenceCT read GetSource;
   end;
 
   [TName('MedicationKnowledge.Ingredient')]
@@ -14877,6 +16467,8 @@ type
     function GetItemCodeableConcept: TCodeableConceptCT;
     function GetItemReference: TReferenceCT;
     function GetItemChosen: TBasite;
+    function GetIsActive: TBooleanCT;
+    function GetStrength: TRatioCT;
   public
     property ItemChosen: TBasite read GetItemChosen;
   published
@@ -14884,8 +16476,8 @@ type
     property ItemCodeableConcept: TCodeableConceptCT read GetItemCodeableConcept;
     [TChoice('Item')]
     property ItemReference: TReferenceCT read GetItemReference;
-    property IsActive: TBooleanCT read fIsActive;
-    property Strength: TRatioCT read fStrength;
+    property IsActive: TBooleanCT read GetIsActive;
+    property Strength: TRatioCT read GetStrength;
   end;
 
   [TName('MedicationKnowledge.Cost')]
@@ -14894,10 +16486,12 @@ type
     fType: TCodeableConceptCT;
     fSource: TStringCT;
     fCost: TMoneyCT;
+
+    function GetSource: TStringCT;
   published
     [TRequired]
     property &Type: TCodeableConceptCT read fType;
-    property Source: TStringCT read fSource;
+    property Source: TStringCT read GetSource;
     [TRequired]
     property Cost: TMoneyCT read fCost;
   end;
@@ -14907,9 +16501,12 @@ type
   private
     fType: TCodeableConceptCT;
     fName: TStringCT;
+
+    function GetType: TCodeableConceptCT;
+    function GetName: TStringCT;
   published
-    property &Type: TCodeableConceptCT read fType;
-    property Name: TStringCT read fName;
+    property &Type: TCodeableConceptCT read GetType;
+    property Name: TStringCT read GetName;
   end;
 
   [TName('MedicationKnowledge.AdministrationGuidelines')]
@@ -14981,9 +16578,12 @@ type
   private
     fType: TCodeableConceptCT;
     fQuantity: TQuantityCT;
+
+    function GetType: TCodeableConceptCT;
+    function GetQuantity: TQuantityCT;
   published
-    property &Type: TCodeableConceptCT read fType;
-    property Quantity: TQuantityCT read fQuantity;
+    property &Type: TCodeableConceptCT read GetType;
+    property Quantity: TQuantityCT read GetQuantity;
   end;
 
   [TName('MedicationKnowledge.DrugCharacteristic')]
@@ -14995,6 +16595,7 @@ type
     fValueQuantity: TQuantityCT;
     fValueBase64Binary: TBase64BinaryCT;
 
+    function GetType: TCodeableConceptCT;
     function GetValueCodeableConcept: TCodeableConceptCT;
     function GetValueString: TStringCT;
     function GetValueQuantity: TQuantityCT;
@@ -15003,7 +16604,7 @@ type
   public
     property ValueChosen: TBasite read GetValueChosen;
   published
-    property &Type: TCodeableConceptCT read fType;
+    property &Type: TCodeableConceptCT read GetType;
     [TChoice('Value')]
     property ValueCodeableConcept: TCodeableConceptCT read GetValueCodeableConcept;
     [TChoice('Value')]
@@ -15021,12 +16622,14 @@ type
     fSubstitution: TMedicationKnowledgeSubstitutionCTList;
     fSchedule: TMedicationKnowledgeScheduleCTList;
     fMaxDispense: TMedicationKnowledgeMaxDispenseCT;
+
+    function GetMaxDispense: TMedicationKnowledgeMaxDispenseCT;
   published
     [TRequired]
     property RegulatoryAuthority: TReferenceCT read fRegulatoryAuthority;
     property Substitution: TMedicationKnowledgeSubstitutionCTList read fSubstitution;
     property Schedule: TMedicationKnowledgeScheduleCTList read fSchedule;
-    property MaxDispense: TMedicationKnowledgeMaxDispenseCT read fMaxDispense;
+    property MaxDispense: TMedicationKnowledgeMaxDispenseCT read GetMaxDispense;
   end;
 
   [TName('MedicationKnowledge.Substitution')]
@@ -15055,10 +16658,12 @@ type
   private
     fQuantity: TQuantityCT;
     fPeriod: TDurationCT;
+
+    function GetPeriod: TDurationCT;
   published
     [TRequired]
     property Quantity: TQuantityCT read fQuantity;
-    property Period: TDurationCT read fPeriod;
+    property Period: TDurationCT read GetPeriod;
   end;
 
   [TName('MedicationKnowledge.Kinetics')]
@@ -15067,10 +16672,12 @@ type
     fAreaUnderCurve: TQuantityCTList;
     fLethalDose50: TQuantityCTList;
     fHalfLifePeriod: TDurationCT;
+
+    function GetHalfLifePeriod: TDurationCT;
   published
     property AreaUnderCurve: TQuantityCTList read fAreaUnderCurve;
     property LethalDose50: TQuantityCTList read fLethalDose50;
-    property HalfLifePeriod: TDurationCT read fHalfLifePeriod;
+    property HalfLifePeriod: TDurationCT read GetHalfLifePeriod;
   end;
 
   TMedicationRequestCT = class(TDomainResourceCT)
@@ -15110,12 +16717,26 @@ type
     fDetectedIssue: TReferenceCTList;
     fEventHistory: TReferenceCTList;
 
+    function GetStatusReason: TCodeableConceptCT;
+    function GetPriority: TRequestPriorityCT;
+    function GetDoNotPerform: TBooleanCT;
     function GetReportedBoolean: TBooleanCT;
     function GetReportedReference: TReferenceCT;
     function GetReportedChosen: TBasite;
     function GetMedicationCodeableConcept: TCodeableConceptCT;
     function GetMedicationReference: TReferenceCT;
     function GetMedicationChosen: TBasite;
+    function GetEncounter: TReferenceCT;
+    function GetAuthoredOn: TDateTimeCT;
+    function GetRequester: TReferenceCT;
+    function GetPerformer: TReferenceCT;
+    function GetPerformerType: TCodeableConceptCT;
+    function GetRecorder: TReferenceCT;
+    function GetGroupIdentifier: TIdentifierCT;
+    function GetCourseOfTherapyType: TCodeableConceptCT;
+    function GetDispenseRequest: TMedicationRequestDispenseRequestCT;
+    function GetSubstitution: TMedicationRequestSubstitutionCT;
+    function GetPriorPrescription: TReferenceCT;
   public
     property ReportedChosen: TBasite read GetReportedChosen;
     property MedicationChosen: TBasite read GetMedicationChosen;
@@ -15123,12 +16744,12 @@ type
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
     property Status: TMedicationrequestStatusCT read fStatus;
-    property StatusReason: TCodeableConceptCT read fStatusReason;
+    property StatusReason: TCodeableConceptCT read GetStatusReason;
     [TRequired]
     property Intent: TMedicationRequestIntentCT read fIntent;
     property Category: TCodeableConceptCTList read fCategory;
-    property Priority: TRequestPriorityCT read fPriority;
-    property DoNotPerform: TBooleanCT read fDoNotPerform;
+    property Priority: TRequestPriorityCT read GetPriority;
+    property DoNotPerform: TBooleanCT read GetDoNotPerform;
     [TChoice('Reported')]
     property ReportedBoolean: TBooleanCT read GetReportedBoolean;
     [TChoice('Reported')]
@@ -15139,26 +16760,26 @@ type
     property MedicationReference: TReferenceCT read GetMedicationReference;
     [TRequired]
     property Subject: TReferenceCT read fSubject;
-    property Encounter: TReferenceCT read fEncounter;
+    property Encounter: TReferenceCT read GetEncounter;
     property SupportingInformation: TReferenceCTList read fSupportingInformation;
-    property AuthoredOn: TDateTimeCT read fAuthoredOn;
-    property Requester: TReferenceCT read fRequester;
-    property Performer: TReferenceCT read fPerformer;
-    property PerformerType: TCodeableConceptCT read fPerformerType;
-    property Recorder: TReferenceCT read fRecorder;
+    property AuthoredOn: TDateTimeCT read GetAuthoredOn;
+    property Requester: TReferenceCT read GetRequester;
+    property Performer: TReferenceCT read GetPerformer;
+    property PerformerType: TCodeableConceptCT read GetPerformerType;
+    property Recorder: TReferenceCT read GetRecorder;
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
     property ReasonReference: TReferenceCTList read fReasonReference;
     property InstantiatesCanonical: TCanonicalCTList read fInstantiatesCanonical;
     property InstantiatesUri: TUriCTList read fInstantiatesUri;
     property BasedOn: TReferenceCTList read fBasedOn;
-    property GroupIdentifier: TIdentifierCT read fGroupIdentifier;
-    property CourseOfTherapyType: TCodeableConceptCT read fCourseOfTherapyType;
+    property GroupIdentifier: TIdentifierCT read GetGroupIdentifier;
+    property CourseOfTherapyType: TCodeableConceptCT read GetCourseOfTherapyType;
     property Insurance: TReferenceCTList read fInsurance;
     property Note: TAnnotationCTList read fNote;
     property DosageInstruction: TDosageCTList read fDosageInstruction;
-    property DispenseRequest: TMedicationRequestDispenseRequestCT read fDispenseRequest;
-    property Substitution: TMedicationRequestSubstitutionCT read fSubstitution;
-    property PriorPrescription: TReferenceCT read fPriorPrescription;
+    property DispenseRequest: TMedicationRequestDispenseRequestCT read GetDispenseRequest;
+    property Substitution: TMedicationRequestSubstitutionCT read GetSubstitution;
+    property PriorPrescription: TReferenceCT read GetPriorPrescription;
     property DetectedIssue: TReferenceCTList read fDetectedIssue;
     property EventHistory: TReferenceCTList read fEventHistory;
   end;
@@ -15173,14 +16794,22 @@ type
     fQuantity: TQuantityCT;
     fExpectedSupplyDuration: TDurationCT;
     fPerformer: TReferenceCT;
+
+    function GetInitialFill: TMedicationRequestInitialFillCT;
+    function GetDispenseInterval: TDurationCT;
+    function GetValidityPeriod: TPeriodCT;
+    function GetNumberOfRepeatsAllowed: TUnsignedIntCT;
+    function GetQuantity: TQuantityCT;
+    function GetExpectedSupplyDuration: TDurationCT;
+    function GetPerformer: TReferenceCT;
   published
-    property InitialFill: TMedicationRequestInitialFillCT read fInitialFill;
-    property DispenseInterval: TDurationCT read fDispenseInterval;
-    property ValidityPeriod: TPeriodCT read fValidityPeriod;
-    property NumberOfRepeatsAllowed: TUnsignedIntCT read fNumberOfRepeatsAllowed;
-    property Quantity: TQuantityCT read fQuantity;
-    property ExpectedSupplyDuration: TDurationCT read fExpectedSupplyDuration;
-    property Performer: TReferenceCT read fPerformer;
+    property InitialFill: TMedicationRequestInitialFillCT read GetInitialFill;
+    property DispenseInterval: TDurationCT read GetDispenseInterval;
+    property ValidityPeriod: TPeriodCT read GetValidityPeriod;
+    property NumberOfRepeatsAllowed: TUnsignedIntCT read GetNumberOfRepeatsAllowed;
+    property Quantity: TQuantityCT read GetQuantity;
+    property ExpectedSupplyDuration: TDurationCT read GetExpectedSupplyDuration;
+    property Performer: TReferenceCT read GetPerformer;
   end;
 
   [TName('MedicationRequest.InitialFill')]
@@ -15188,9 +16817,12 @@ type
   private
     fQuantity: TQuantityCT;
     fDuration: TDurationCT;
+
+    function GetQuantity: TQuantityCT;
+    function GetDuration: TDurationCT;
   published
-    property Quantity: TQuantityCT read fQuantity;
-    property Duration: TDurationCT read fDuration;
+    property Quantity: TQuantityCT read GetQuantity;
+    property Duration: TDurationCT read GetDuration;
   end;
 
   [TName('MedicationRequest.Substitution')]
@@ -15203,6 +16835,7 @@ type
     function GetAllowedBoolean: TBooleanCT;
     function GetAllowedCodeableConcept: TCodeableConceptCT;
     function GetAllowedChosen: TBasite;
+    function GetReason: TCodeableConceptCT;
   public
     property AllowedChosen: TBasite read GetAllowedChosen;
   published
@@ -15210,7 +16843,7 @@ type
     property AllowedBoolean: TBooleanCT read GetAllowedBoolean;
     [TChoice('Allowed')]
     property AllowedCodeableConcept: TCodeableConceptCT read GetAllowedCodeableConcept;
-    property Reason: TCodeableConceptCT read fReason;
+    property Reason: TCodeableConceptCT read GetReason;
   end;
 
   [TNaming(TNaming.nCamelCase)]
@@ -15251,12 +16884,16 @@ type
     fNote: TAnnotationCTList;
     fDosage: TDosageCTList;
 
+    function GetCategory: TCodeableConceptCT;
     function GetMedicationCodeableConcept: TCodeableConceptCT;
     function GetMedicationReference: TReferenceCT;
     function GetMedicationChosen: TBasite;
+    function GetContext: TReferenceCT;
     function GetEffectiveDateTime: TDateTimeCT;
     function GetEffectivePeriod: TPeriodCT;
     function GetEffectiveChosen: TBasite;
+    function GetDateAsserted: TDateTimeCT;
+    function GetInformationSource: TReferenceCT;
   public
     property MedicationChosen: TBasite read GetMedicationChosen;
     property EffectiveChosen: TBasite read GetEffectiveChosen;
@@ -15267,20 +16904,20 @@ type
     [TRequired]
     property Status: TMedicationStatusCodesCT read fStatus;
     property StatusReason: TCodeableConceptCTList read fStatusReason;
-    property Category: TCodeableConceptCT read fCategory;
+    property Category: TCodeableConceptCT read GetCategory;
     [TChoice('Medication')]
     property MedicationCodeableConcept: TCodeableConceptCT read GetMedicationCodeableConcept;
     [TChoice('Medication')]
     property MedicationReference: TReferenceCT read GetMedicationReference;
     [TRequired]
     property Subject: TReferenceCT read fSubject;
-    property Context: TReferenceCT read fContext;
+    property Context: TReferenceCT read GetContext;
     [TChoice('Effective')]
     property EffectiveDateTime: TDateTimeCT read GetEffectiveDateTime;
     [TChoice('Effective')]
     property EffectivePeriod: TPeriodCT read GetEffectivePeriod;
-    property DateAsserted: TDateTimeCT read fDateAsserted;
-    property InformationSource: TReferenceCT read fInformationSource;
+    property DateAsserted: TDateTimeCT read GetDateAsserted;
+    property InformationSource: TReferenceCT read GetInformationSource;
     property DerivedFrom: TReferenceCTList read fDerivedFrom;
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
     property ReasonReference: TReferenceCTList read fReasonReference;
@@ -15310,15 +16947,22 @@ type
     fCrossReference: TIdentifierCTList;
     fManufacturingBusinessOperation: TMedicinalProductManufacturingBusinessOperationCTList;
     fSpecialDesignation: TMedicinalProductSpecialDesignationCTList;
+
+    function GetType: TCodeableConceptCT;
+    function GetDomain: TCodingCT;
+    function GetCombinedPharmaceuticalDoseForm: TCodeableConceptCT;
+    function GetLegalStatusOfSupply: TCodeableConceptCT;
+    function GetAdditionalMonitoringIndicator: TCodeableConceptCT;
+    function GetPaediatricUseIndicator: TCodeableConceptCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
-    property &Type: TCodeableConceptCT read fType;
-    property Domain: TCodingCT read fDomain;
-    property CombinedPharmaceuticalDoseForm: TCodeableConceptCT read fCombinedPharmaceuticalDoseForm;
-    property LegalStatusOfSupply: TCodeableConceptCT read fLegalStatusOfSupply;
-    property AdditionalMonitoringIndicator: TCodeableConceptCT read fAdditionalMonitoringIndicator;
+    property &Type: TCodeableConceptCT read GetType;
+    property Domain: TCodingCT read GetDomain;
+    property CombinedPharmaceuticalDoseForm: TCodeableConceptCT read GetCombinedPharmaceuticalDoseForm;
+    property LegalStatusOfSupply: TCodeableConceptCT read GetLegalStatusOfSupply;
+    property AdditionalMonitoringIndicator: TCodeableConceptCT read GetAdditionalMonitoringIndicator;
     property SpecialMeasures: TStringCTList read fSpecialMeasures;
-    property PaediatricUseIndicator: TCodeableConceptCT read fPaediatricUseIndicator;
+    property PaediatricUseIndicator: TCodeableConceptCT read GetPaediatricUseIndicator;
     property ProductClassification: TCodeableConceptCTList read fProductClassification;
     property MarketingStatus: TMarketingStatusCTList read fMarketingStatus;
     property PharmaceuticalProduct: TReferenceCTList read fPharmaceuticalProduct;
@@ -15364,10 +17008,12 @@ type
     fCountry: TCodeableConceptCT;
     fJurisdiction: TCodeableConceptCT;
     fLanguage: TCodeableConceptCT;
+
+    function GetJurisdiction: TCodeableConceptCT;
   published
     [TRequired]
     property Country: TCodeableConceptCT read fCountry;
-    property Jurisdiction: TCodeableConceptCT read fJurisdiction;
+    property Jurisdiction: TCodeableConceptCT read GetJurisdiction;
     [TRequired]
     property Language: TCodeableConceptCT read fLanguage;
   end;
@@ -15381,13 +17027,19 @@ type
     fConfidentialityIndicator: TCodeableConceptCT;
     fManufacturer: TReferenceCTList;
     fRegulator: TReferenceCT;
+
+    function GetOperationType: TCodeableConceptCT;
+    function GetAuthorisationReferenceNumber: TIdentifierCT;
+    function GetEffectiveDate: TDateTimeCT;
+    function GetConfidentialityIndicator: TCodeableConceptCT;
+    function GetRegulator: TReferenceCT;
   published
-    property OperationType: TCodeableConceptCT read fOperationType;
-    property AuthorisationReferenceNumber: TIdentifierCT read fAuthorisationReferenceNumber;
-    property EffectiveDate: TDateTimeCT read fEffectiveDate;
-    property ConfidentialityIndicator: TCodeableConceptCT read fConfidentialityIndicator;
+    property OperationType: TCodeableConceptCT read GetOperationType;
+    property AuthorisationReferenceNumber: TIdentifierCT read GetAuthorisationReferenceNumber;
+    property EffectiveDate: TDateTimeCT read GetEffectiveDate;
+    property ConfidentialityIndicator: TCodeableConceptCT read GetConfidentialityIndicator;
     property Manufacturer: TReferenceCTList read fManufacturer;
-    property Regulator: TReferenceCT read fRegulator;
+    property Regulator: TReferenceCT read GetRegulator;
   end;
 
   [TName('MedicinalProduct.SpecialDesignation')]
@@ -15402,22 +17054,27 @@ type
     fDate: TDateTimeCT;
     fSpecies: TCodeableConceptCT;
 
+    function GetType: TCodeableConceptCT;
+    function GetIntendedUse: TCodeableConceptCT;
     function GetIndicationCodeableConcept: TCodeableConceptCT;
     function GetIndicationReference: TReferenceCT;
     function GetIndicationChosen: TBasite;
+    function GetStatus: TCodeableConceptCT;
+    function GetDate: TDateTimeCT;
+    function GetSpecies: TCodeableConceptCT;
   public
     property IndicationChosen: TBasite read GetIndicationChosen;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
-    property &Type: TCodeableConceptCT read fType;
-    property IntendedUse: TCodeableConceptCT read fIntendedUse;
+    property &Type: TCodeableConceptCT read GetType;
+    property IntendedUse: TCodeableConceptCT read GetIntendedUse;
     [TChoice('Indication')]
     property IndicationCodeableConcept: TCodeableConceptCT read GetIndicationCodeableConcept;
     [TChoice('Indication')]
     property IndicationReference: TReferenceCT read GetIndicationReference;
-    property Status: TCodeableConceptCT read fStatus;
-    property Date: TDateTimeCT read fDate;
-    property Species: TCodeableConceptCT read fSpecies;
+    property Status: TCodeableConceptCT read GetStatus;
+    property Date: TDateTimeCT read GetDate;
+    property Species: TCodeableConceptCT read GetSpecies;
   end;
 
   TMedicinalProductAuthorizationCT = class(TDomainResourceCT)
@@ -15438,23 +17095,36 @@ type
     fHolder: TReferenceCT;
     fRegulator: TReferenceCT;
     fProcedure: TMedicinalProductAuthorizationProcedureCT;
+
+    function GetSubject: TReferenceCT;
+    function GetStatus: TCodeableConceptCT;
+    function GetStatusDate: TDateTimeCT;
+    function GetRestoreDate: TDateTimeCT;
+    function GetValidityPeriod: TPeriodCT;
+    function GetDataExclusivityPeriod: TPeriodCT;
+    function GetDateOfFirstAuthorization: TDateTimeCT;
+    function GetInternationalBirthDate: TDateTimeCT;
+    function GetLegalBasis: TCodeableConceptCT;
+    function GetHolder: TReferenceCT;
+    function GetRegulator: TReferenceCT;
+    function GetProcedure: TMedicinalProductAuthorizationProcedureCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Subject: TReferenceCT read fSubject;
+    property Subject: TReferenceCT read GetSubject;
     property Country: TCodeableConceptCTList read fCountry;
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    property Status: TCodeableConceptCT read fStatus;
-    property StatusDate: TDateTimeCT read fStatusDate;
-    property RestoreDate: TDateTimeCT read fRestoreDate;
-    property ValidityPeriod: TPeriodCT read fValidityPeriod;
-    property DataExclusivityPeriod: TPeriodCT read fDataExclusivityPeriod;
-    property DateOfFirstAuthorization: TDateTimeCT read fDateOfFirstAuthorization;
-    property InternationalBirthDate: TDateTimeCT read fInternationalBirthDate;
-    property LegalBasis: TCodeableConceptCT read fLegalBasis;
+    property Status: TCodeableConceptCT read GetStatus;
+    property StatusDate: TDateTimeCT read GetStatusDate;
+    property RestoreDate: TDateTimeCT read GetRestoreDate;
+    property ValidityPeriod: TPeriodCT read GetValidityPeriod;
+    property DataExclusivityPeriod: TPeriodCT read GetDataExclusivityPeriod;
+    property DateOfFirstAuthorization: TDateTimeCT read GetDateOfFirstAuthorization;
+    property InternationalBirthDate: TDateTimeCT read GetInternationalBirthDate;
+    property LegalBasis: TCodeableConceptCT read GetLegalBasis;
     property JurisdictionalAuthorization: TMedicinalProductAuthorizationJurisdictionalAuthorizationCTList read fJurisdictionalAuthorization;
-    property Holder: TReferenceCT read fHolder;
-    property Regulator: TReferenceCT read fRegulator;
-    property &Procedure: TMedicinalProductAuthorizationProcedureCT read fProcedure;
+    property Holder: TReferenceCT read GetHolder;
+    property Regulator: TReferenceCT read GetRegulator;
+    property &Procedure: TMedicinalProductAuthorizationProcedureCT read GetProcedure;
   end;
 
   [TName('MedicinalProductAuthorization.JurisdictionalAuthorization')]
@@ -15465,12 +17135,16 @@ type
     fJurisdiction: TCodeableConceptCTList;
     fLegalStatusOfSupply: TCodeableConceptCT;
     fValidityPeriod: TPeriodCT;
+
+    function GetCountry: TCodeableConceptCT;
+    function GetLegalStatusOfSupply: TCodeableConceptCT;
+    function GetValidityPeriod: TPeriodCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Country: TCodeableConceptCT read fCountry;
+    property Country: TCodeableConceptCT read GetCountry;
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    property LegalStatusOfSupply: TCodeableConceptCT read fLegalStatusOfSupply;
-    property ValidityPeriod: TPeriodCT read fValidityPeriod;
+    property LegalStatusOfSupply: TCodeableConceptCT read GetLegalStatusOfSupply;
+    property ValidityPeriod: TPeriodCT read GetValidityPeriod;
   end;
 
   [TName('MedicinalProductAuthorization.Procedure')]
@@ -15482,13 +17156,14 @@ type
     fDateDateTime: TDateTimeCT;
     fApplication: TMedicinalProductAuthorizationProcedureCTList;
 
+    function GetIdentifier: TIdentifierCT;
     function GetDatePeriod: TPeriodCT;
     function GetDateDateTime: TDateTimeCT;
     function GetDateChosen: TBasite;
   public
     property DateChosen: TBasite read GetDateChosen;
   published
-    property Identifier: TIdentifierCT read fIdentifier;
+    property Identifier: TIdentifierCT read GetIdentifier;
     [TRequired]
     property &Type: TCodeableConceptCT read fType;
     [TChoice('Date')]
@@ -15507,10 +17182,13 @@ type
     fTherapeuticIndication: TReferenceCTList;
     fOtherTherapy: TMedicinalProductContraindicationOtherTherapyCTList;
     fPopulation: TPopulationCTList;
+
+    function GetDisease: TCodeableConceptCT;
+    function GetDiseaseStatus: TCodeableConceptCT;
   published
     property Subject: TReferenceCTList read fSubject;
-    property Disease: TCodeableConceptCT read fDisease;
-    property DiseaseStatus: TCodeableConceptCT read fDiseaseStatus;
+    property Disease: TCodeableConceptCT read GetDisease;
+    property DiseaseStatus: TCodeableConceptCT read GetDiseaseStatus;
     property Comorbidity: TCodeableConceptCTList read fComorbidity;
     property TherapeuticIndication: TReferenceCTList read fTherapeuticIndication;
     property OtherTherapy: TMedicinalProductContraindicationOtherTherapyCTList read fOtherTherapy;
@@ -15549,13 +17227,18 @@ type
     fOtherTherapy: TMedicinalProductIndicationOtherTherapyCTList;
     fUndesirableEffect: TReferenceCTList;
     fPopulation: TPopulationCTList;
+
+    function GetDiseaseSymptomProcedure: TCodeableConceptCT;
+    function GetDiseaseStatus: TCodeableConceptCT;
+    function GetIntendedEffect: TCodeableConceptCT;
+    function GetDuration: TQuantityCT;
   published
     property Subject: TReferenceCTList read fSubject;
-    property DiseaseSymptomProcedure: TCodeableConceptCT read fDiseaseSymptomProcedure;
-    property DiseaseStatus: TCodeableConceptCT read fDiseaseStatus;
+    property DiseaseSymptomProcedure: TCodeableConceptCT read GetDiseaseSymptomProcedure;
+    property DiseaseStatus: TCodeableConceptCT read GetDiseaseStatus;
     property Comorbidity: TCodeableConceptCTList read fComorbidity;
-    property IntendedEffect: TCodeableConceptCT read fIntendedEffect;
-    property Duration: TQuantityCT read fDuration;
+    property IntendedEffect: TCodeableConceptCT read GetIntendedEffect;
+    property Duration: TQuantityCT read GetDuration;
     property OtherTherapy: TMedicinalProductIndicationOtherTherapyCTList read fOtherTherapy;
     property UndesirableEffect: TReferenceCTList read fUndesirableEffect;
     property Population: TPopulationCTList read fPopulation;
@@ -15590,14 +17273,18 @@ type
     fManufacturer: TReferenceCTList;
     fSpecifiedSubstance: TMedicinalProductIngredientSpecifiedSubstanceCTList;
     fSubstance: TMedicinalProductIngredientSubstanceCT;
+
+    function GetIdentifier: TIdentifierCT;
+    function GetAllergenicIndicator: TBooleanCT;
+    function GetSubstance: TMedicinalProductIngredientSubstanceCT;
   published
-    property Identifier: TIdentifierCT read fIdentifier;
+    property Identifier: TIdentifierCT read GetIdentifier;
     [TRequired]
     property Role: TCodeableConceptCT read fRole;
-    property AllergenicIndicator: TBooleanCT read fAllergenicIndicator;
+    property AllergenicIndicator: TBooleanCT read GetAllergenicIndicator;
     property Manufacturer: TReferenceCTList read fManufacturer;
     property SpecifiedSubstance: TMedicinalProductIngredientSpecifiedSubstanceCTList read fSpecifiedSubstance;
-    property Substance: TMedicinalProductIngredientSubstanceCT read fSubstance;
+    property Substance: TMedicinalProductIngredientSubstanceCT read GetSubstance;
   end;
 
   [TName('MedicinalProductIngredient.SpecifiedSubstance')]
@@ -15607,12 +17294,14 @@ type
     fGroup: TCodeableConceptCT;
     fConfidentiality: TCodeableConceptCT;
     fStrength: TMedicinalProductIngredientStrengthCTList;
+
+    function GetConfidentiality: TCodeableConceptCT;
   published
     [TRequired]
     property Code: TCodeableConceptCT read fCode;
     [TRequired]
     property Group: TCodeableConceptCT read fGroup;
-    property Confidentiality: TCodeableConceptCT read fConfidentiality;
+    property Confidentiality: TCodeableConceptCT read GetConfidentiality;
     property Strength: TMedicinalProductIngredientStrengthCTList read fStrength;
   end;
 
@@ -15626,13 +17315,18 @@ type
     fMeasurementPoint: TStringCT;
     fCountry: TCodeableConceptCTList;
     fReferenceStrength: TMedicinalProductIngredientReferenceStrengthCTList;
+
+    function GetPresentationLowLimit: TRatioCT;
+    function GetConcentration: TRatioCT;
+    function GetConcentrationLowLimit: TRatioCT;
+    function GetMeasurementPoint: TStringCT;
   published
     [TRequired]
     property Presentation: TRatioCT read fPresentation;
-    property PresentationLowLimit: TRatioCT read fPresentationLowLimit;
-    property Concentration: TRatioCT read fConcentration;
-    property ConcentrationLowLimit: TRatioCT read fConcentrationLowLimit;
-    property MeasurementPoint: TStringCT read fMeasurementPoint;
+    property PresentationLowLimit: TRatioCT read GetPresentationLowLimit;
+    property Concentration: TRatioCT read GetConcentration;
+    property ConcentrationLowLimit: TRatioCT read GetConcentrationLowLimit;
+    property MeasurementPoint: TStringCT read GetMeasurementPoint;
     property Country: TCodeableConceptCTList read fCountry;
     property ReferenceStrength: TMedicinalProductIngredientReferenceStrengthCTList read fReferenceStrength;
   end;
@@ -15645,12 +17339,16 @@ type
     fStrengthLowLimit: TRatioCT;
     fMeasurementPoint: TStringCT;
     fCountry: TCodeableConceptCTList;
+
+    function GetSubstance: TCodeableConceptCT;
+    function GetStrengthLowLimit: TRatioCT;
+    function GetMeasurementPoint: TStringCT;
   published
-    property Substance: TCodeableConceptCT read fSubstance;
+    property Substance: TCodeableConceptCT read GetSubstance;
     [TRequired]
     property Strength: TRatioCT read fStrength;
-    property StrengthLowLimit: TRatioCT read fStrengthLowLimit;
-    property MeasurementPoint: TStringCT read fMeasurementPoint;
+    property StrengthLowLimit: TRatioCT read GetStrengthLowLimit;
+    property MeasurementPoint: TStringCT read GetMeasurementPoint;
     property Country: TCodeableConceptCTList read fCountry;
   end;
 
@@ -15674,14 +17372,20 @@ type
     fEffect: TCodeableConceptCT;
     fIncidence: TCodeableConceptCT;
     fManagement: TCodeableConceptCT;
+
+    function GetDescription: TStringCT;
+    function GetType: TCodeableConceptCT;
+    function GetEffect: TCodeableConceptCT;
+    function GetIncidence: TCodeableConceptCT;
+    function GetManagement: TCodeableConceptCT;
   published
     property Subject: TReferenceCTList read fSubject;
-    property Description: TStringCT read fDescription;
+    property Description: TStringCT read GetDescription;
     property Interactant: TMedicinalProductInteractionInteractantCTList read fInteractant;
-    property &Type: TCodeableConceptCT read fType;
-    property Effect: TCodeableConceptCT read fEffect;
-    property Incidence: TCodeableConceptCT read fIncidence;
-    property Management: TCodeableConceptCT read fManagement;
+    property &Type: TCodeableConceptCT read GetType;
+    property Effect: TCodeableConceptCT read GetEffect;
+    property Incidence: TCodeableConceptCT read GetIncidence;
+    property Management: TCodeableConceptCT read GetManagement;
   end;
 
   [TName('MedicinalProductInteraction.Interactant')]
@@ -15711,15 +17415,18 @@ type
     fIngredient: TReferenceCTList;
     fPhysicalCharacteristics: TProdCharacteristicCT;
     fOtherCharacteristics: TCodeableConceptCTList;
+
+    function GetUnitOfPresentation: TCodeableConceptCT;
+    function GetPhysicalCharacteristics: TProdCharacteristicCT;
   published
     [TRequired]
     property ManufacturedDoseForm: TCodeableConceptCT read fManufacturedDoseForm;
-    property UnitOfPresentation: TCodeableConceptCT read fUnitOfPresentation;
+    property UnitOfPresentation: TCodeableConceptCT read GetUnitOfPresentation;
     [TRequired]
     property Quantity: TQuantityCT read fQuantity;
     property Manufacturer: TReferenceCTList read fManufacturer;
     property Ingredient: TReferenceCTList read fIngredient;
-    property PhysicalCharacteristics: TProdCharacteristicCT read fPhysicalCharacteristics;
+    property PhysicalCharacteristics: TProdCharacteristicCT read GetPhysicalCharacteristics;
     property OtherCharacteristics: TCodeableConceptCTList read fOtherCharacteristics;
   end;
 
@@ -15734,13 +17441,17 @@ type
     fManufacturer: TReferenceCTList;
     fBatchIdentifier: TMedicinalProductPackagedBatchIdentifierCTList;
     fPackageItem: TMedicinalProductPackagedPackageItemCTList;
+
+    function GetDescription: TStringCT;
+    function GetLegalStatusOfSupply: TCodeableConceptCT;
+    function GetMarketingAuthorization: TReferenceCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     property Subject: TReferenceCTList read fSubject;
-    property Description: TStringCT read fDescription;
-    property LegalStatusOfSupply: TCodeableConceptCT read fLegalStatusOfSupply;
+    property Description: TStringCT read GetDescription;
+    property LegalStatusOfSupply: TCodeableConceptCT read GetLegalStatusOfSupply;
     property MarketingStatus: TMarketingStatusCTList read fMarketingStatus;
-    property MarketingAuthorization: TReferenceCT read fMarketingAuthorization;
+    property MarketingAuthorization: TReferenceCT read GetMarketingAuthorization;
     property Manufacturer: TReferenceCTList read fManufacturer;
     property BatchIdentifier: TMedicinalProductPackagedBatchIdentifierCTList read fBatchIdentifier;
     property PackageItem: TMedicinalProductPackagedPackageItemCTList read fPackageItem;
@@ -15751,10 +17462,12 @@ type
   private
     fOuterPackaging: TIdentifierCT;
     fImmediatePackaging: TIdentifierCT;
+
+    function GetImmediatePackaging: TIdentifierCT;
   published
     [TRequired]
     property OuterPackaging: TIdentifierCT read fOuterPackaging;
-    property ImmediatePackaging: TIdentifierCT read fImmediatePackaging;
+    property ImmediatePackaging: TIdentifierCT read GetImmediatePackaging;
   end;
 
   [TName('MedicinalProductPackaged.PackageItem')]
@@ -15772,6 +17485,8 @@ type
     fOtherCharacteristics: TCodeableConceptCTList;
     fShelfLifeStorage: TProductShelfLifeCTList;
     fManufacturer: TReferenceCTList;
+
+    function GetPhysicalCharacteristics: TProdCharacteristicCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
@@ -15783,7 +17498,7 @@ type
     property Device: TReferenceCTList read fDevice;
     property ManufacturedItem: TReferenceCTList read fManufacturedItem;
     property PackageItem: TMedicinalProductPackagedPackageItemCTList read fPackageItem;
-    property PhysicalCharacteristics: TProdCharacteristicCT read fPhysicalCharacteristics;
+    property PhysicalCharacteristics: TProdCharacteristicCT read GetPhysicalCharacteristics;
     property OtherCharacteristics: TCodeableConceptCTList read fOtherCharacteristics;
     property ShelfLifeStorage: TProductShelfLifeCTList read fShelfLifeStorage;
     property Manufacturer: TReferenceCTList read fManufacturer;
@@ -15798,11 +17513,13 @@ type
     fDevice: TReferenceCTList;
     fCharacteristics: TMedicinalProductPharmaceuticalCharacteristicsCTList;
     fRouteOfAdministration: TMedicinalProductPharmaceuticalRouteOfAdministrationCTList;
+
+    function GetUnitOfPresentation: TCodeableConceptCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
     property AdministrableDoseForm: TCodeableConceptCT read fAdministrableDoseForm;
-    property UnitOfPresentation: TCodeableConceptCT read fUnitOfPresentation;
+    property UnitOfPresentation: TCodeableConceptCT read GetUnitOfPresentation;
     property Ingredient: TReferenceCTList read fIngredient;
     property Device: TReferenceCTList read fDevice;
     property Characteristics: TMedicinalProductPharmaceuticalCharacteristicsCTList read fCharacteristics;
@@ -15814,10 +17531,12 @@ type
   private
     fCode: TCodeableConceptCT;
     fStatus: TCodeableConceptCT;
+
+    function GetStatus: TCodeableConceptCT;
   published
     [TRequired]
     property Code: TCodeableConceptCT read fCode;
-    property Status: TCodeableConceptCT read fStatus;
+    property Status: TCodeableConceptCT read GetStatus;
   end;
 
   [TName('MedicinalProductPharmaceutical.RouteOfAdministration')]
@@ -15830,14 +17549,20 @@ type
     fMaxDosePerTreatmentPeriod: TRatioCT;
     fMaxTreatmentPeriod: TDurationCT;
     fTargetSpecies: TMedicinalProductPharmaceuticalTargetSpeciesCTList;
+
+    function GetFirstDose: TQuantityCT;
+    function GetMaxSingleDose: TQuantityCT;
+    function GetMaxDosePerDay: TQuantityCT;
+    function GetMaxDosePerTreatmentPeriod: TRatioCT;
+    function GetMaxTreatmentPeriod: TDurationCT;
   published
     [TRequired]
     property Code: TCodeableConceptCT read fCode;
-    property FirstDose: TQuantityCT read fFirstDose;
-    property MaxSingleDose: TQuantityCT read fMaxSingleDose;
-    property MaxDosePerDay: TQuantityCT read fMaxDosePerDay;
-    property MaxDosePerTreatmentPeriod: TRatioCT read fMaxDosePerTreatmentPeriod;
-    property MaxTreatmentPeriod: TDurationCT read fMaxTreatmentPeriod;
+    property FirstDose: TQuantityCT read GetFirstDose;
+    property MaxSingleDose: TQuantityCT read GetMaxSingleDose;
+    property MaxDosePerDay: TQuantityCT read GetMaxDosePerDay;
+    property MaxDosePerTreatmentPeriod: TRatioCT read GetMaxDosePerTreatmentPeriod;
+    property MaxTreatmentPeriod: TDurationCT read GetMaxTreatmentPeriod;
     property TargetSpecies: TMedicinalProductPharmaceuticalTargetSpeciesCTList read fTargetSpecies;
   end;
 
@@ -15858,12 +17583,14 @@ type
     fTissue: TCodeableConceptCT;
     fValue: TQuantityCT;
     fSupportingInformation: TStringCT;
+
+    function GetSupportingInformation: TStringCT;
   published
     [TRequired]
     property Tissue: TCodeableConceptCT read fTissue;
     [TRequired]
     property Value: TQuantityCT read fValue;
-    property SupportingInformation: TStringCT read fSupportingInformation;
+    property SupportingInformation: TStringCT read GetSupportingInformation;
   end;
 
   TMedicinalProductUndesirableEffectCT = class(TDomainResourceCT)
@@ -15873,11 +17600,15 @@ type
     fClassification: TCodeableConceptCT;
     fFrequencyOfOccurrence: TCodeableConceptCT;
     fPopulation: TPopulationCTList;
+
+    function GetSymptomConditionEffect: TCodeableConceptCT;
+    function GetClassification: TCodeableConceptCT;
+    function GetFrequencyOfOccurrence: TCodeableConceptCT;
   published
     property Subject: TReferenceCTList read fSubject;
-    property SymptomConditionEffect: TCodeableConceptCT read fSymptomConditionEffect;
-    property Classification: TCodeableConceptCT read fClassification;
-    property FrequencyOfOccurrence: TCodeableConceptCT read fFrequencyOfOccurrence;
+    property SymptomConditionEffect: TCodeableConceptCT read GetSymptomConditionEffect;
+    property Classification: TCodeableConceptCT read GetClassification;
+    property FrequencyOfOccurrence: TCodeableConceptCT read GetFrequencyOfOccurrence;
     property Population: TPopulationCTList read fPopulation;
   end;
 
@@ -15909,39 +17640,51 @@ type
     fAllowedResponse: TMessageDefinitionAllowedResponseCTList;
     fGraph: TCanonicalCTList;
 
+    function GetUrl: TUriCT;
+    function GetVersion: TStringCT;
+    function GetName: TStringCT;
+    function GetTitle: TStringCT;
+    function GetExperimental: TBooleanCT;
+    function GetPublisher: TStringCT;
+    function GetDescription: TMarkdownCT;
+    function GetPurpose: TMarkdownCT;
+    function GetCopyright: TMarkdownCT;
+    function GetBase: TCanonicalCT;
     function GetEventCoding: TCodingCT;
     function GetEventUri: TUriCT;
     function GetEventChosen: TBasite;
+    function GetCategory: TMessageSignificanceCategoryCT;
+    function GetResponseRequired: TMessageheaderResponseRequestCT;
   public
     property EventChosen: TBasite read GetEventChosen;
   published
-    property Url: TUriCT read fUrl;
+    property Url: TUriCT read GetUrl;
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Version: TStringCT read fVersion;
-    property Name: TStringCT read fName;
-    property Title: TStringCT read fTitle;
+    property Version: TStringCT read GetVersion;
+    property Name: TStringCT read GetName;
+    property Title: TStringCT read GetTitle;
     property Replaces: TCanonicalCTList read fReplaces;
     [TRequired]
     property Status: TPublicationStatusCT read fStatus;
-    property Experimental: TBooleanCT read fExperimental;
+    property Experimental: TBooleanCT read GetExperimental;
     [TRequired]
     property Date: TDateTimeCT read fDate;
-    property Publisher: TStringCT read fPublisher;
+    property Publisher: TStringCT read GetPublisher;
     property Contact: TContactDetailCTList read fContact;
-    property Description: TMarkdownCT read fDescription;
+    property Description: TMarkdownCT read GetDescription;
     property UseContext: TUsageContextCTList read fUseContext;
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    property Purpose: TMarkdownCT read fPurpose;
-    property Copyright: TMarkdownCT read fCopyright;
-    property Base: TCanonicalCT read fBase;
+    property Purpose: TMarkdownCT read GetPurpose;
+    property Copyright: TMarkdownCT read GetCopyright;
+    property Base: TCanonicalCT read GetBase;
     property Parent: TCanonicalCTList read fParent;
     [TChoice('Event')]
     property EventCoding: TCodingCT read GetEventCoding;
     [TChoice('Event')]
     property EventUri: TUriCT read GetEventUri;
-    property Category: TMessageSignificanceCategoryCT read fCategory;
+    property Category: TMessageSignificanceCategoryCT read GetCategory;
     property Focus: TMessageDefinitionFocusCTList read fFocus;
-    property ResponseRequired: TMessageheaderResponseRequestCT read fResponseRequired;
+    property ResponseRequired: TMessageheaderResponseRequestCT read GetResponseRequired;
     property AllowedResponse: TMessageDefinitionAllowedResponseCTList read fAllowedResponse;
     property Graph: TCanonicalCTList read fGraph;
   end;
@@ -15953,13 +17696,16 @@ type
     fProfile: TCanonicalCT;
     fMin: TUnsignedIntCT;
     fMax: TStringCT;
+
+    function GetProfile: TCanonicalCT;
+    function GetMax: TStringCT;
   published
     [TRequired]
     property Code: TCodeCT read fCode;
-    property Profile: TCanonicalCT read fProfile;
+    property Profile: TCanonicalCT read GetProfile;
     [TRequired]
     property Min: TUnsignedIntCT read fMin;
-    property Max: TStringCT read fMax;
+    property Max: TStringCT read GetMax;
   end;
 
   [TName('MessageDefinition.AllowedResponse')]
@@ -15967,10 +17713,12 @@ type
   private
     fMessage: TCanonicalCT;
     fSituation: TMarkdownCT;
+
+    function GetSituation: TMarkdownCT;
   published
     [TRequired]
     property Message: TCanonicalCT read fMessage;
-    property Situation: TMarkdownCT read fSituation;
+    property Situation: TMarkdownCT read GetSituation;
   end;
 
   TMessageSignificanceCategoryCT = class(TElementCT)
@@ -16006,6 +17754,13 @@ type
     function GetEventCoding: TCodingCT;
     function GetEventUri: TUriCT;
     function GetEventChosen: TBasite;
+    function GetSender: TReferenceCT;
+    function GetEnterer: TReferenceCT;
+    function GetAuthor: TReferenceCT;
+    function GetResponsible: TReferenceCT;
+    function GetReason: TCodeableConceptCT;
+    function GetResponse: TMessageHeaderResponseCT;
+    function GetDefinition: TCanonicalCT;
   public
     property EventChosen: TBasite read GetEventChosen;
   published
@@ -16014,16 +17769,16 @@ type
     [TChoice('Event')]
     property EventUri: TUriCT read GetEventUri;
     property Destination: TMessageHeaderDestinationCTList read fDestination;
-    property Sender: TReferenceCT read fSender;
-    property Enterer: TReferenceCT read fEnterer;
-    property Author: TReferenceCT read fAuthor;
+    property Sender: TReferenceCT read GetSender;
+    property Enterer: TReferenceCT read GetEnterer;
+    property Author: TReferenceCT read GetAuthor;
     [TRequired]
     property Source: TMessageHeaderSourceCT read fSource;
-    property Responsible: TReferenceCT read fResponsible;
-    property Reason: TCodeableConceptCT read fReason;
-    property Response: TMessageHeaderResponseCT read fResponse;
+    property Responsible: TReferenceCT read GetResponsible;
+    property Reason: TCodeableConceptCT read GetReason;
+    property Response: TMessageHeaderResponseCT read GetResponse;
     property Focus: TReferenceCTList read fFocus;
-    property Definition: TCanonicalCT read fDefinition;
+    property Definition: TCanonicalCT read GetDefinition;
   end;
 
   [TName('MessageHeader.Destination')]
@@ -16033,12 +17788,16 @@ type
     fTarget: TReferenceCT;
     fEndpoint: TUrlCT;
     fReceiver: TReferenceCT;
+
+    function GetName: TStringCT;
+    function GetTarget: TReferenceCT;
+    function GetReceiver: TReferenceCT;
   published
-    property Name: TStringCT read fName;
-    property Target: TReferenceCT read fTarget;
+    property Name: TStringCT read GetName;
+    property Target: TReferenceCT read GetTarget;
     [TRequired]
     property Endpoint: TUrlCT read fEndpoint;
-    property Receiver: TReferenceCT read fReceiver;
+    property Receiver: TReferenceCT read GetReceiver;
   end;
 
   [TName('MessageHeader.Source')]
@@ -16049,11 +17808,16 @@ type
     fVersion: TStringCT;
     fContact: TContactPointCT;
     fEndpoint: TUrlCT;
+
+    function GetName: TStringCT;
+    function GetSoftware: TStringCT;
+    function GetVersion: TStringCT;
+    function GetContact: TContactPointCT;
   published
-    property Name: TStringCT read fName;
-    property Software: TStringCT read fSoftware;
-    property Version: TStringCT read fVersion;
-    property Contact: TContactPointCT read fContact;
+    property Name: TStringCT read GetName;
+    property Software: TStringCT read GetSoftware;
+    property Version: TStringCT read GetVersion;
+    property Contact: TContactPointCT read GetContact;
     [TRequired]
     property Endpoint: TUrlCT read fEndpoint;
   end;
@@ -16064,12 +17828,14 @@ type
     fIdentifier: TIdCT;
     fCode: TResponseTypeCT;
     fDetails: TReferenceCT;
+
+    function GetDetails: TReferenceCT;
   published
     [TRequired]
     property Identifier: TIdCT read fIdentifier;
     [TRequired]
     property Code: TResponseTypeCT read fCode;
-    property Details: TReferenceCT read fDetails;
+    property Details: TReferenceCT read GetDetails;
   end;
 
   TResponseTypeCT = class(TElementCT)
@@ -16097,21 +17863,31 @@ type
     fRepository: TMolecularSequenceRepositoryCTList;
     fPointer: TReferenceCTList;
     fStructureVariant: TMolecularSequenceStructureVariantCTList;
+
+    function GetType: TSequenceTypeCT;
+    function GetPatient: TReferenceCT;
+    function GetSpecimen: TReferenceCT;
+    function GetDevice: TReferenceCT;
+    function GetPerformer: TReferenceCT;
+    function GetQuantity: TQuantityCT;
+    function GetReferenceSeq: TMolecularSequenceReferenceSeqCT;
+    function GetObservedSeq: TStringCT;
+    function GetReadCoverage: TIntegerCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
-    property &Type: TSequenceTypeCT read fType;
+    property &Type: TSequenceTypeCT read GetType;
     [TRequired]
     property CoordinateSystem: TIntegerCT read fCoordinateSystem;
-    property Patient: TReferenceCT read fPatient;
-    property Specimen: TReferenceCT read fSpecimen;
-    property Device: TReferenceCT read fDevice;
-    property Performer: TReferenceCT read fPerformer;
-    property Quantity: TQuantityCT read fQuantity;
-    property ReferenceSeq: TMolecularSequenceReferenceSeqCT read fReferenceSeq;
+    property Patient: TReferenceCT read GetPatient;
+    property Specimen: TReferenceCT read GetSpecimen;
+    property Device: TReferenceCT read GetDevice;
+    property Performer: TReferenceCT read GetPerformer;
+    property Quantity: TQuantityCT read GetQuantity;
+    property ReferenceSeq: TMolecularSequenceReferenceSeqCT read GetReferenceSeq;
     property Variant: TMolecularSequenceVariantCTList read fVariant;
-    property ObservedSeq: TStringCT read fObservedSeq;
+    property ObservedSeq: TStringCT read GetObservedSeq;
     property Quality: TMolecularSequenceQualityCTList read fQuality;
-    property ReadCoverage: TIntegerCT read fReadCoverage;
+    property ReadCoverage: TIntegerCT read GetReadCoverage;
     property Repository: TMolecularSequenceRepositoryCTList read fRepository;
     property Pointer: TReferenceCTList read fPointer;
     property StructureVariant: TMolecularSequenceStructureVariantCTList read fStructureVariant;
@@ -16129,16 +17905,26 @@ type
     fStrand: TStrandTypeCT;
     fWindowStart: TIntegerCT;
     fWindowEnd: TIntegerCT;
+
+    function GetChromosome: TCodeableConceptCT;
+    function GetGenomeBuild: TStringCT;
+    function GetOrientation: TOrientationTypeCT;
+    function GetReferenceSeqId: TCodeableConceptCT;
+    function GetReferenceSeqPointer: TReferenceCT;
+    function GetReferenceSeqString: TStringCT;
+    function GetStrand: TStrandTypeCT;
+    function GetWindowStart: TIntegerCT;
+    function GetWindowEnd: TIntegerCT;
   published
-    property Chromosome: TCodeableConceptCT read fChromosome;
-    property GenomeBuild: TStringCT read fGenomeBuild;
-    property Orientation: TOrientationTypeCT read fOrientation;
-    property ReferenceSeqId: TCodeableConceptCT read fReferenceSeqId;
-    property ReferenceSeqPointer: TReferenceCT read fReferenceSeqPointer;
-    property ReferenceSeqString: TStringCT read fReferenceSeqString;
-    property Strand: TStrandTypeCT read fStrand;
-    property WindowStart: TIntegerCT read fWindowStart;
-    property WindowEnd: TIntegerCT read fWindowEnd;
+    property Chromosome: TCodeableConceptCT read GetChromosome;
+    property GenomeBuild: TStringCT read GetGenomeBuild;
+    property Orientation: TOrientationTypeCT read GetOrientation;
+    property ReferenceSeqId: TCodeableConceptCT read GetReferenceSeqId;
+    property ReferenceSeqPointer: TReferenceCT read GetReferenceSeqPointer;
+    property ReferenceSeqString: TStringCT read GetReferenceSeqString;
+    property Strand: TStrandTypeCT read GetStrand;
+    property WindowStart: TIntegerCT read GetWindowStart;
+    property WindowEnd: TIntegerCT read GetWindowEnd;
   end;
 
   [TName('MolecularSequence.Variant')]
@@ -16150,13 +17936,20 @@ type
     fReferenceAllele: TStringCT;
     fCigar: TStringCT;
     fVariantPointer: TReferenceCT;
+
+    function GetStart: TIntegerCT;
+    function GetEnd: TIntegerCT;
+    function GetObservedAllele: TStringCT;
+    function GetReferenceAllele: TStringCT;
+    function GetCigar: TStringCT;
+    function GetVariantPointer: TReferenceCT;
   published
-    property Start: TIntegerCT read fStart;
-    property &End: TIntegerCT read fEnd;
-    property ObservedAllele: TStringCT read fObservedAllele;
-    property ReferenceAllele: TStringCT read fReferenceAllele;
-    property Cigar: TStringCT read fCigar;
-    property VariantPointer: TReferenceCT read fVariantPointer;
+    property Start: TIntegerCT read GetStart;
+    property &End: TIntegerCT read GetEnd;
+    property ObservedAllele: TStringCT read GetObservedAllele;
+    property ReferenceAllele: TStringCT read GetReferenceAllele;
+    property Cigar: TStringCT read GetCigar;
+    property VariantPointer: TReferenceCT read GetVariantPointer;
   end;
 
   [TName('MolecularSequence.Quality')]
@@ -16177,23 +17970,38 @@ type
     fRecall: TDecimalCT;
     fFScore: TDecimalCT;
     fRoc: TMolecularSequenceRocCT;
+
+    function GetStandardSequence: TCodeableConceptCT;
+    function GetStart: TIntegerCT;
+    function GetEnd: TIntegerCT;
+    function GetScore: TQuantityCT;
+    function GetMethod: TCodeableConceptCT;
+    function GetTruthTP: TDecimalCT;
+    function GetQueryTP: TDecimalCT;
+    function GetTruthFN: TDecimalCT;
+    function GetQueryFP: TDecimalCT;
+    function GetGtFP: TDecimalCT;
+    function GetPrecision: TDecimalCT;
+    function GetRecall: TDecimalCT;
+    function GetFScore: TDecimalCT;
+    function GetRoc: TMolecularSequenceRocCT;
   published
     [TRequired]
     property &Type: TQualityTypeCT read fType;
-    property StandardSequence: TCodeableConceptCT read fStandardSequence;
-    property Start: TIntegerCT read fStart;
-    property &End: TIntegerCT read fEnd;
-    property Score: TQuantityCT read fScore_;
-    property Method: TCodeableConceptCT read fMethod;
-    property TruthTP: TDecimalCT read fTruthTP;
-    property QueryTP: TDecimalCT read fQueryTP;
-    property TruthFN: TDecimalCT read fTruthFN;
-    property QueryFP: TDecimalCT read fQueryFP;
-    property GtFP: TDecimalCT read fGtFP;
-    property Precision: TDecimalCT read fPrecision;
-    property Recall: TDecimalCT read fRecall;
-    property FScore: TDecimalCT read fFScore;
-    property Roc: TMolecularSequenceRocCT read fRoc;
+    property StandardSequence: TCodeableConceptCT read GetStandardSequence;
+    property Start: TIntegerCT read GetStart;
+    property &End: TIntegerCT read GetEnd;
+    property Score: TQuantityCT read GetScore;
+    property Method: TCodeableConceptCT read GetMethod;
+    property TruthTP: TDecimalCT read GetTruthTP;
+    property QueryTP: TDecimalCT read GetQueryTP;
+    property TruthFN: TDecimalCT read GetTruthFN;
+    property QueryFP: TDecimalCT read GetQueryFP;
+    property GtFP: TDecimalCT read GetGtFP;
+    property Precision: TDecimalCT read GetPrecision;
+    property Recall: TDecimalCT read GetRecall;
+    property FScore: TDecimalCT read GetFScore;
+    property Roc: TMolecularSequenceRocCT read GetRoc;
   end;
 
   [TName('MolecularSequence.Roc')]
@@ -16225,14 +18033,20 @@ type
     fDatasetId: TStringCT;
     fVariantsetId: TStringCT;
     fReadsetId: TStringCT;
+
+    function GetUrl: TUriCT;
+    function GetName: TStringCT;
+    function GetDatasetId: TStringCT;
+    function GetVariantsetId: TStringCT;
+    function GetReadsetId: TStringCT;
   published
     [TRequired]
     property &Type: TRepositoryTypeCT read fType;
-    property Url: TUriCT read fUrl;
-    property Name: TStringCT read fName;
-    property DatasetId: TStringCT read fDatasetId;
-    property VariantsetId: TStringCT read fVariantsetId;
-    property ReadsetId: TStringCT read fReadsetId;
+    property Url: TUriCT read GetUrl;
+    property Name: TStringCT read GetName;
+    property DatasetId: TStringCT read GetDatasetId;
+    property VariantsetId: TStringCT read GetVariantsetId;
+    property ReadsetId: TStringCT read GetReadsetId;
   end;
 
   [TName('MolecularSequence.StructureVariant')]
@@ -16243,12 +18057,18 @@ type
     fLength: TIntegerCT;
     fOuter: TMolecularSequenceOuterCT;
     fInner: TMolecularSequenceInnerCT;
+
+    function GetVariantType: TCodeableConceptCT;
+    function GetExact: TBooleanCT;
+    function GetLength: TIntegerCT;
+    function GetOuter: TMolecularSequenceOuterCT;
+    function GetInner: TMolecularSequenceInnerCT;
   published
-    property VariantType: TCodeableConceptCT read fVariantType;
-    property Exact: TBooleanCT read fExact;
-    property Length: TIntegerCT read fLength;
-    property Outer: TMolecularSequenceOuterCT read fOuter;
-    property Inner: TMolecularSequenceInnerCT read fInner;
+    property VariantType: TCodeableConceptCT read GetVariantType;
+    property Exact: TBooleanCT read GetExact;
+    property Length: TIntegerCT read GetLength;
+    property Outer: TMolecularSequenceOuterCT read GetOuter;
+    property Inner: TMolecularSequenceInnerCT read GetInner;
   end;
 
   [TName('MolecularSequence.Outer')]
@@ -16256,9 +18076,12 @@ type
   private
     fStart: TIntegerCT;
     fEnd: TIntegerCT;
+
+    function GetStart: TIntegerCT;
+    function GetEnd: TIntegerCT;
   published
-    property Start: TIntegerCT read fStart;
-    property &End: TIntegerCT read fEnd;
+    property Start: TIntegerCT read GetStart;
+    property &End: TIntegerCT read GetEnd;
   end;
 
   [TName('MolecularSequence.Inner')]
@@ -16266,9 +18089,12 @@ type
   private
     fStart: TIntegerCT;
     fEnd: TIntegerCT;
+
+    function GetStart: TIntegerCT;
+    function GetEnd: TIntegerCT;
   published
-    property Start: TIntegerCT read fStart;
-    property &End: TIntegerCT read fEnd;
+    property Start: TIntegerCT read GetStart;
+    property &End: TIntegerCT read GetEnd;
   end;
 
   [TNaming(TNaming.nCamelCase)]
@@ -16326,6 +18152,12 @@ type
     fJurisdiction: TCodeableConceptCTList;
     fUsage: TStringCT;
     fUniqueId: TNamingSystemUniqueIdCTList;
+
+    function GetPublisher: TStringCT;
+    function GetResponsible: TStringCT;
+    function GetType: TCodeableConceptCT;
+    function GetDescription: TMarkdownCT;
+    function GetUsage: TStringCT;
   published
     [TRequired]
     property Name: TStringCT read fName;
@@ -16335,14 +18167,14 @@ type
     property Kind: TNamingSystemTypeCT read fKind;
     [TRequired]
     property Date: TDateTimeCT read fDate;
-    property Publisher: TStringCT read fPublisher;
+    property Publisher: TStringCT read GetPublisher;
     property Contact: TContactDetailCTList read fContact;
-    property Responsible: TStringCT read fResponsible;
-    property &Type: TCodeableConceptCT read fType;
-    property Description: TMarkdownCT read fDescription;
+    property Responsible: TStringCT read GetResponsible;
+    property &Type: TCodeableConceptCT read GetType;
+    property Description: TMarkdownCT read GetDescription;
     property UseContext: TUsageContextCTList read fUseContext;
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    property Usage: TStringCT read fUsage;
+    property Usage: TStringCT read GetUsage;
     property UniqueId: TNamingSystemUniqueIdCTList read fUniqueId;
   end;
 
@@ -16354,14 +18186,18 @@ type
     fPreferred: TBooleanCT;
     fComment: TStringCT;
     fPeriod: TPeriodCT;
+
+    function GetPreferred: TBooleanCT;
+    function GetComment: TStringCT;
+    function GetPeriod: TPeriodCT;
   published
     [TRequired]
     property &Type: TNamingSystemIdentifierTypeCT read fType;
     [TRequired]
     property Value: TStringCT read fValue;
-    property Preferred: TBooleanCT read fPreferred;
-    property Comment: TStringCT read fComment;
-    property Period: TPeriodCT read fPeriod;
+    property Preferred: TBooleanCT read GetPreferred;
+    property Comment: TStringCT read GetComment;
+    property Period: TPeriodCT read GetPeriod;
   end;
 
   TNamingSystemIdentifierTypeCT = class(TElementCT)
@@ -16397,6 +18233,11 @@ type
     fSupplement: TNutritionOrderSupplementCTList;
     fEnteralFormula: TNutritionOrderEnteralFormulaCT;
     fNote: TAnnotationCTList;
+
+    function GetEncounter: TReferenceCT;
+    function GetOrderer: TReferenceCT;
+    function GetOralDiet: TNutritionOrderOralDietCT;
+    function GetEnteralFormula: TNutritionOrderEnteralFormulaCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     property InstantiatesCanonical: TCanonicalCTList read fInstantiatesCanonical;
@@ -16408,16 +18249,16 @@ type
     property Intent: TRequestIntentCT read fIntent;
     [TRequired]
     property Patient: TReferenceCT read fPatient;
-    property Encounter: TReferenceCT read fEncounter;
+    property Encounter: TReferenceCT read GetEncounter;
     [TRequired]
     property DateTime: TDateTimeCT read fDateTime;
-    property Orderer: TReferenceCT read fOrderer;
+    property Orderer: TReferenceCT read GetOrderer;
     property AllergyIntolerance: TReferenceCTList read fAllergyIntolerance;
     property FoodPreferenceModifier: TCodeableConceptCTList read fFoodPreferenceModifier;
     property ExcludeFoodModifier: TCodeableConceptCTList read fExcludeFoodModifier;
-    property OralDiet: TNutritionOrderOralDietCT read fOralDiet;
+    property OralDiet: TNutritionOrderOralDietCT read GetOralDiet;
     property Supplement: TNutritionOrderSupplementCTList read fSupplement;
-    property EnteralFormula: TNutritionOrderEnteralFormulaCT read fEnteralFormula;
+    property EnteralFormula: TNutritionOrderEnteralFormulaCT read GetEnteralFormula;
     property Note: TAnnotationCTList read fNote;
   end;
 
@@ -16430,13 +18271,15 @@ type
     fTexture: TNutritionOrderTextureCTList;
     fFluidConsistencyType: TCodeableConceptCTList;
     fInstruction: TStringCT;
+
+    function GetInstruction: TStringCT;
   published
     property &Type: TCodeableConceptCTList read fType;
     property Schedule: TTimingCTList read fSchedule;
     property Nutrient: TNutritionOrderNutrientCTList read fNutrient;
     property Texture: TNutritionOrderTextureCTList read fTexture;
     property FluidConsistencyType: TCodeableConceptCTList read fFluidConsistencyType;
-    property Instruction: TStringCT read fInstruction;
+    property Instruction: TStringCT read GetInstruction;
   end;
 
   [TName('NutritionOrder.Nutrient')]
@@ -16444,9 +18287,12 @@ type
   private
     fModifier: TCodeableConceptCT;
     fAmount: TQuantityCT;
+
+    function GetModifier: TCodeableConceptCT;
+    function GetAmount: TQuantityCT;
   published
-    property Modifier: TCodeableConceptCT read fModifier;
-    property Amount: TQuantityCT read fAmount;
+    property Modifier: TCodeableConceptCT read GetModifier;
+    property Amount: TQuantityCT read GetAmount;
   end;
 
   [TName('NutritionOrder.Texture')]
@@ -16454,9 +18300,12 @@ type
   private
     fModifier: TCodeableConceptCT;
     fFoodType: TCodeableConceptCT;
+
+    function GetModifier: TCodeableConceptCT;
+    function GetFoodType: TCodeableConceptCT;
   published
-    property Modifier: TCodeableConceptCT read fModifier;
-    property FoodType: TCodeableConceptCT read fFoodType;
+    property Modifier: TCodeableConceptCT read GetModifier;
+    property FoodType: TCodeableConceptCT read GetFoodType;
   end;
 
   [TName('NutritionOrder.Supplement')]
@@ -16467,12 +18316,17 @@ type
     fSchedule: TTimingCTList;
     fQuantity: TQuantityCT;
     fInstruction: TStringCT;
+
+    function GetType: TCodeableConceptCT;
+    function GetProductName: TStringCT;
+    function GetQuantity: TQuantityCT;
+    function GetInstruction: TStringCT;
   published
-    property &Type: TCodeableConceptCT read fType;
-    property ProductName: TStringCT read fProductName;
+    property &Type: TCodeableConceptCT read GetType;
+    property ProductName: TStringCT read GetProductName;
     property Schedule: TTimingCTList read fSchedule;
-    property Quantity: TQuantityCT read fQuantity;
-    property Instruction: TStringCT read fInstruction;
+    property Quantity: TQuantityCT read GetQuantity;
+    property Instruction: TStringCT read GetInstruction;
   end;
 
   [TName('NutritionOrder.EnteralFormula')]
@@ -16487,16 +18341,25 @@ type
     fAdministration: TNutritionOrderAdministrationCTList;
     fMaxVolumeToDeliver: TQuantityCT;
     fAdministrationInstruction: TStringCT;
+
+    function GetBaseFormulaType: TCodeableConceptCT;
+    function GetBaseFormulaProductName: TStringCT;
+    function GetAdditiveType: TCodeableConceptCT;
+    function GetAdditiveProductName: TStringCT;
+    function GetCaloricDensity: TQuantityCT;
+    function GetRouteofAdministration: TCodeableConceptCT;
+    function GetMaxVolumeToDeliver: TQuantityCT;
+    function GetAdministrationInstruction: TStringCT;
   published
-    property BaseFormulaType: TCodeableConceptCT read fBaseFormulaType;
-    property BaseFormulaProductName: TStringCT read fBaseFormulaProductName;
-    property AdditiveType: TCodeableConceptCT read fAdditiveType;
-    property AdditiveProductName: TStringCT read fAdditiveProductName;
-    property CaloricDensity: TQuantityCT read fCaloricDensity;
-    property RouteofAdministration: TCodeableConceptCT read fRouteofAdministration;
+    property BaseFormulaType: TCodeableConceptCT read GetBaseFormulaType;
+    property BaseFormulaProductName: TStringCT read GetBaseFormulaProductName;
+    property AdditiveType: TCodeableConceptCT read GetAdditiveType;
+    property AdditiveProductName: TStringCT read GetAdditiveProductName;
+    property CaloricDensity: TQuantityCT read GetCaloricDensity;
+    property RouteofAdministration: TCodeableConceptCT read GetRouteofAdministration;
     property Administration: TNutritionOrderAdministrationCTList read fAdministration;
-    property MaxVolumeToDeliver: TQuantityCT read fMaxVolumeToDeliver;
-    property AdministrationInstruction: TStringCT read fAdministrationInstruction;
+    property MaxVolumeToDeliver: TQuantityCT read GetMaxVolumeToDeliver;
+    property AdministrationInstruction: TStringCT read GetAdministrationInstruction;
   end;
 
   [TName('NutritionOrder.Administration')]
@@ -16507,14 +18370,16 @@ type
     fRateQuantity: TQuantityCT;
     fRateRatio: TRatioCT;
 
+    function GetSchedule: TTimingCT;
+    function GetQuantity: TQuantityCT;
     function GetRateQuantity: TQuantityCT;
     function GetRateRatio: TRatioCT;
     function GetRateChosen: TBasite;
   public
     property RateChosen: TBasite read GetRateChosen;
   published
-    property Schedule: TTimingCT read fSchedule;
-    property Quantity: TQuantityCT read fQuantity;
+    property Schedule: TTimingCT read GetSchedule;
+    property Quantity: TQuantityCT read GetQuantity;
     [TChoice('Rate')]
     property RateQuantity: TQuantityCT read GetRateQuantity;
     [TChoice('Rate')]
@@ -16561,11 +18426,14 @@ type
     fDerivedFrom: TReferenceCTList;
     fComponent: TObservationComponentCTList;
 
+    function GetSubject: TReferenceCT;
+    function GetEncounter: TReferenceCT;
     function GetEffectiveDateTime: TDateTimeCT;
     function GetEffectivePeriod: TPeriodCT;
     function GetEffectiveTiming: TTimingCT;
     function GetEffectiveInstant: TInstantCT;
     function GetEffectiveChosen: TBasite;
+    function GetIssued: TInstantCT;
     function GetValueQuantity: TQuantityCT;
     function GetValueCodeableConcept: TCodeableConceptCT;
     function GetValueString: TStringCT;
@@ -16578,6 +18446,11 @@ type
     function GetValueDateTime: TDateTimeCT;
     function GetValuePeriod: TPeriodCT;
     function GetValueChosen: TBasite;
+    function GetDataAbsentReason: TCodeableConceptCT;
+    function GetBodySite: TCodeableConceptCT;
+    function GetMethod: TCodeableConceptCT;
+    function GetSpecimen: TReferenceCT;
+    function GetDevice: TReferenceCT;
   public
     property EffectiveChosen: TBasite read GetEffectiveChosen;
     property ValueChosen: TBasite read GetValueChosen;
@@ -16590,9 +18463,9 @@ type
     property Category: TCodeableConceptCTList read fCategory;
     [TRequired]
     property Code: TCodeableConceptCT read fCode;
-    property Subject: TReferenceCT read fSubject;
+    property Subject: TReferenceCT read GetSubject;
     property Focus: TReferenceCTList read fFocus;
-    property Encounter: TReferenceCT read fEncounter;
+    property Encounter: TReferenceCT read GetEncounter;
     [TChoice('Effective')]
     property EffectiveDateTime: TDateTimeCT read GetEffectiveDateTime;
     [TChoice('Effective')]
@@ -16601,7 +18474,7 @@ type
     property EffectiveTiming: TTimingCT read GetEffectiveTiming;
     [TChoice('Effective')]
     property EffectiveInstant: TInstantCT read GetEffectiveInstant;
-    property Issued: TInstantCT read fIssued;
+    property Issued: TInstantCT read GetIssued;
     property Performer: TReferenceCTList read fPerformer;
     [TChoice('Value')]
     property ValueQuantity: TQuantityCT read GetValueQuantity;
@@ -16625,13 +18498,13 @@ type
     property ValueDateTime: TDateTimeCT read GetValueDateTime;
     [TChoice('Value')]
     property ValuePeriod: TPeriodCT read GetValuePeriod;
-    property DataAbsentReason: TCodeableConceptCT read fDataAbsentReason;
+    property DataAbsentReason: TCodeableConceptCT read GetDataAbsentReason;
     property Interpretation: TCodeableConceptCTList read fInterpretation;
     property Note: TAnnotationCTList read fNote;
-    property BodySite: TCodeableConceptCT read fBodySite;
-    property Method: TCodeableConceptCT read fMethod;
-    property Specimen: TReferenceCT read fSpecimen;
-    property Device: TReferenceCT read fDevice;
+    property BodySite: TCodeableConceptCT read GetBodySite;
+    property Method: TCodeableConceptCT read GetMethod;
+    property Specimen: TReferenceCT read GetSpecimen;
+    property Device: TReferenceCT read GetDevice;
     property ReferenceRange: TObservationReferenceRangeCTList read fReferenceRange;
     property HasMember: TReferenceCTList read fHasMember;
     property DerivedFrom: TReferenceCTList read fDerivedFrom;
@@ -16647,13 +18520,19 @@ type
     fAppliesTo: TCodeableConceptCTList;
     fAge: TRangeCT;
     fText: TStringCT;
+
+    function GetLow: TQuantityCT;
+    function GetHigh: TQuantityCT;
+    function GetType: TCodeableConceptCT;
+    function GetAge: TRangeCT;
+    function GetText: TStringCT;
   published
-    property Low: TQuantityCT read fLow;
-    property High: TQuantityCT read fHigh;
-    property &Type: TCodeableConceptCT read fType;
+    property Low: TQuantityCT read GetLow;
+    property High: TQuantityCT read GetHigh;
+    property &Type: TCodeableConceptCT read GetType;
     property AppliesTo: TCodeableConceptCTList read fAppliesTo;
-    property Age: TRangeCT read fAge;
-    property Text: TStringCT read fText;
+    property Age: TRangeCT read GetAge;
+    property Text: TStringCT read GetText;
   end;
 
   [TName('Observation.Component')]
@@ -16687,6 +18566,7 @@ type
     function GetValueDateTime: TDateTimeCT;
     function GetValuePeriod: TPeriodCT;
     function GetValueChosen: TBasite;
+    function GetDataAbsentReason: TCodeableConceptCT;
   public
     property ValueChosen: TBasite read GetValueChosen;
   published
@@ -16714,7 +18594,7 @@ type
     property ValueDateTime: TDateTimeCT read GetValueDateTime;
     [TChoice('Value')]
     property ValuePeriod: TPeriodCT read GetValuePeriod;
-    property DataAbsentReason: TCodeableConceptCT read fDataAbsentReason;
+    property DataAbsentReason: TCodeableConceptCT read GetDataAbsentReason;
     property Interpretation: TCodeableConceptCTList read fInterpretation;
     property ReferenceRange: TObservationReferenceRangeCTList read fReferenceRange;
   end;
@@ -16734,21 +18614,30 @@ type
     fNormalCodedValueSet: TReferenceCT;
     fAbnormalCodedValueSet: TReferenceCT;
     fCriticalCodedValueSet: TReferenceCT;
+
+    function GetMultipleResultsAllowed: TBooleanCT;
+    function GetMethod: TCodeableConceptCT;
+    function GetPreferredReportName: TStringCT;
+    function GetQuantitativeDetails: TObservationDefinitionQuantitativeDetailsCT;
+    function GetValidCodedValueSet: TReferenceCT;
+    function GetNormalCodedValueSet: TReferenceCT;
+    function GetAbnormalCodedValueSet: TReferenceCT;
+    function GetCriticalCodedValueSet: TReferenceCT;
   published
     property Category: TCodeableConceptCTList read fCategory;
     [TRequired]
     property Code: TCodeableConceptCT read fCode;
     property Identifier: TIdentifierCTList read fIdentifier;
     property PermittedDataType: TObservationDataTypeCTList read fPermittedDataType;
-    property MultipleResultsAllowed: TBooleanCT read fMultipleResultsAllowed;
-    property Method: TCodeableConceptCT read fMethod;
-    property PreferredReportName: TStringCT read fPreferredReportName;
-    property QuantitativeDetails: TObservationDefinitionQuantitativeDetailsCT read fQuantitativeDetails;
+    property MultipleResultsAllowed: TBooleanCT read GetMultipleResultsAllowed;
+    property Method: TCodeableConceptCT read GetMethod;
+    property PreferredReportName: TStringCT read GetPreferredReportName;
+    property QuantitativeDetails: TObservationDefinitionQuantitativeDetailsCT read GetQuantitativeDetails;
     property QualifiedInterval: TObservationDefinitionQualifiedIntervalCTList read fQualifiedInterval;
-    property ValidCodedValueSet: TReferenceCT read fValidCodedValueSet;
-    property NormalCodedValueSet: TReferenceCT read fNormalCodedValueSet;
-    property AbnormalCodedValueSet: TReferenceCT read fAbnormalCodedValueSet;
-    property CriticalCodedValueSet: TReferenceCT read fCriticalCodedValueSet;
+    property ValidCodedValueSet: TReferenceCT read GetValidCodedValueSet;
+    property NormalCodedValueSet: TReferenceCT read GetNormalCodedValueSet;
+    property AbnormalCodedValueSet: TReferenceCT read GetAbnormalCodedValueSet;
+    property CriticalCodedValueSet: TReferenceCT read GetCriticalCodedValueSet;
   end;
 
   [TName('ObservationDefinition.QuantitativeDetails')]
@@ -16758,11 +18647,16 @@ type
     fUnit: TCodeableConceptCT;
     fConversionFactor: TDecimalCT;
     fDecimalPrecision: TIntegerCT;
+
+    function GetCustomaryUnit: TCodeableConceptCT;
+    function GetUnit: TCodeableConceptCT;
+    function GetConversionFactor: TDecimalCT;
+    function GetDecimalPrecision: TIntegerCT;
   published
-    property CustomaryUnit: TCodeableConceptCT read fCustomaryUnit;
-    property &Unit: TCodeableConceptCT read fUnit;
-    property ConversionFactor: TDecimalCT read fConversionFactor;
-    property DecimalPrecision: TIntegerCT read fDecimalPrecision;
+    property CustomaryUnit: TCodeableConceptCT read GetCustomaryUnit;
+    property &Unit: TCodeableConceptCT read GetUnit;
+    property ConversionFactor: TDecimalCT read GetConversionFactor;
+    property DecimalPrecision: TIntegerCT read GetDecimalPrecision;
   end;
 
   [TName('ObservationDefinition.QualifiedInterval')]
@@ -16776,15 +18670,23 @@ type
     fAge: TRangeCT;
     fGestationalAge: TRangeCT;
     fCondition: TStringCT;
+
+    function GetCategory: TObservationRangeCategoryCT;
+    function GetRange: TRangeCT;
+    function GetContext: TCodeableConceptCT;
+    function GetGender: TAdministrativeGenderCT;
+    function GetAge: TRangeCT;
+    function GetGestationalAge: TRangeCT;
+    function GetCondition: TStringCT;
   published
-    property Category: TObservationRangeCategoryCT read fCategory;
-    property Range: TRangeCT read fRange;
-    property Context: TCodeableConceptCT read fContext;
+    property Category: TObservationRangeCategoryCT read GetCategory;
+    property Range: TRangeCT read GetRange;
+    property Context: TCodeableConceptCT read GetContext;
     property AppliesTo: TCodeableConceptCTList read fAppliesTo;
-    property Gender: TAdministrativeGenderCT read fGender;
-    property Age: TRangeCT read fAge;
-    property GestationalAge: TRangeCT read fGestationalAge;
-    property Condition: TStringCT read fCondition;
+    property Gender: TAdministrativeGenderCT read GetGender;
+    property Age: TRangeCT read GetAge;
+    property GestationalAge: TRangeCT read GetGestationalAge;
+    property Condition: TStringCT read GetCondition;
   end;
 
   TObservationDataTypeCT = class(TElementCT)
@@ -16829,29 +18731,43 @@ type
     fOutputProfile: TCanonicalCT;
     fParameter: TOperationDefinitionParameterCTList;
     fOverload: TOperationDefinitionOverloadCTList;
+
+    function GetUrl: TUriCT;
+    function GetVersion: TStringCT;
+    function GetTitle: TStringCT;
+    function GetExperimental: TBooleanCT;
+    function GetDate: TDateTimeCT;
+    function GetPublisher: TStringCT;
+    function GetDescription: TMarkdownCT;
+    function GetPurpose: TMarkdownCT;
+    function GetAffectsState: TBooleanCT;
+    function GetComment: TMarkdownCT;
+    function GetBase: TCanonicalCT;
+    function GetInputProfile: TCanonicalCT;
+    function GetOutputProfile: TCanonicalCT;
   published
-    property Url: TUriCT read fUrl;
-    property Version: TStringCT read fVersion;
+    property Url: TUriCT read GetUrl;
+    property Version: TStringCT read GetVersion;
     [TRequired]
     property Name: TStringCT read fName;
-    property Title: TStringCT read fTitle;
+    property Title: TStringCT read GetTitle;
     [TRequired]
     property Status: TPublicationStatusCT read fStatus;
     [TRequired]
     property Kind: TOperationKindCT read fKind;
-    property Experimental: TBooleanCT read fExperimental;
-    property Date: TDateTimeCT read fDate;
-    property Publisher: TStringCT read fPublisher;
+    property Experimental: TBooleanCT read GetExperimental;
+    property Date: TDateTimeCT read GetDate;
+    property Publisher: TStringCT read GetPublisher;
     property Contact: TContactDetailCTList read fContact;
-    property Description: TMarkdownCT read fDescription;
+    property Description: TMarkdownCT read GetDescription;
     property UseContext: TUsageContextCTList read fUseContext;
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    property Purpose: TMarkdownCT read fPurpose;
-    property AffectsState: TBooleanCT read fAffectsState;
+    property Purpose: TMarkdownCT read GetPurpose;
+    property AffectsState: TBooleanCT read GetAffectsState;
     [TRequired]
     property Code: TCodeCT read fCode;
-    property Comment: TMarkdownCT read fComment;
-    property Base: TCanonicalCT read fBase;
+    property Comment: TMarkdownCT read GetComment;
+    property Base: TCanonicalCT read GetBase;
     property Resource: TCodeCTList read fResource;
     [TRequired]
     property System: TBooleanCT read fSystem;
@@ -16859,8 +18775,8 @@ type
     property &Type: TBooleanCT read fType;
     [TRequired]
     property Instance: TBooleanCT read fInstance;
-    property InputProfile: TCanonicalCT read fInputProfile;
-    property OutputProfile: TCanonicalCT read fOutputProfile;
+    property InputProfile: TCanonicalCT read GetInputProfile;
+    property OutputProfile: TCanonicalCT read GetOutputProfile;
     property Parameter: TOperationDefinitionParameterCTList read fParameter;
     property Overload: TOperationDefinitionOverloadCTList read fOverload;
   end;
@@ -16879,6 +18795,11 @@ type
     fBinding: TOperationDefinitionBindingCT;
     fReferencedFrom: TOperationDefinitionReferencedFromCTList;
     fPart: TOperationDefinitionParameterCTList;
+
+    function GetDocumentation: TStringCT;
+    function GetType: TCodeCT;
+    function GetSearchType: TSearchParamTypeCT;
+    function GetBinding: TOperationDefinitionBindingCT;
   published
     [TRequired]
     property Name: TCodeCT read fName;
@@ -16888,11 +18809,11 @@ type
     property Min: TIntegerCT read fMin;
     [TRequired]
     property Max: TStringCT read fMax;
-    property Documentation: TStringCT read fDocumentation;
-    property &Type: TCodeCT read fType;
+    property Documentation: TStringCT read GetDocumentation;
+    property &Type: TCodeCT read GetType;
     property TargetProfile: TCanonicalCTList read fTargetProfile;
-    property SearchType: TSearchParamTypeCT read fSearchType;
-    property Binding: TOperationDefinitionBindingCT read fBinding;
+    property SearchType: TSearchParamTypeCT read GetSearchType;
+    property Binding: TOperationDefinitionBindingCT read GetBinding;
     property ReferencedFrom: TOperationDefinitionReferencedFromCTList read fReferencedFrom;
     property Part: TOperationDefinitionParameterCTList read fPart;
   end;
@@ -16914,10 +18835,12 @@ type
   private
     fSource: TStringCT;
     fSourceId: TStringCT;
+
+    function GetSourceId: TStringCT;
   published
     [TRequired]
     property Source: TStringCT read fSource;
-    property SourceId: TStringCT read fSourceId;
+    property SourceId: TStringCT read GetSourceId;
   end;
 
   [TName('OperationDefinition.Overload')]
@@ -16925,9 +18848,11 @@ type
   private
     fParameterName: TStringCTList;
     fComment: TStringCT;
+
+    function GetComment: TStringCT;
   published
     property ParameterName: TStringCTList read fParameterName;
-    property Comment: TStringCT read fComment;
+    property Comment: TStringCT read GetComment;
   end;
 
   TOperationParameterUseCT = class(TElementCT)
@@ -16960,13 +18885,16 @@ type
     fDiagnostics: TStringCT;
     fLocation: TStringCTList;
     fExpression: TStringCTList;
+
+    function GetDetails: TCodeableConceptCT;
+    function GetDiagnostics: TStringCT;
   published
     [TRequired]
     property Severity: TIssueSeverityCT read fSeverity;
     [TRequired]
     property Code: TIssueTypeCT read fCode;
-    property Details: TCodeableConceptCT read fDetails;
-    property Diagnostics: TStringCT read fDiagnostics;
+    property Details: TCodeableConceptCT read GetDetails;
+    property Diagnostics: TStringCT read GetDiagnostics;
     property Location: TStringCTList read fLocation;
     property Expression: TStringCTList read fExpression;
   end;
@@ -16997,15 +18925,19 @@ type
     fPartOf: TReferenceCT;
     fContact: TOrganizationContactCTList;
     fEndpoint: TReferenceCTList;
+
+    function GetActive: TBooleanCT;
+    function GetName: TStringCT;
+    function GetPartOf: TReferenceCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Active: TBooleanCT read fActive;
+    property Active: TBooleanCT read GetActive;
     property &Type: TCodeableConceptCTList read fType;
-    property Name: TStringCT read fName;
+    property Name: TStringCT read GetName;
     property Alias: TStringCTList read fAlias;
     property Telecom: TContactPointCTList read fTelecom;
     property Address: TAddressCTList read fAddress;
-    property PartOf: TReferenceCT read fPartOf;
+    property PartOf: TReferenceCT read GetPartOf;
     property Contact: TOrganizationContactCTList read fContact;
     property Endpoint: TReferenceCTList read fEndpoint;
   end;
@@ -17017,11 +18949,15 @@ type
     fName: THumanNameCT;
     fTelecom: TContactPointCTList;
     fAddress: TAddressCT;
+
+    function GetPurpose: TCodeableConceptCT;
+    function GetName: THumanNameCT;
+    function GetAddress: TAddressCT;
   published
-    property Purpose: TCodeableConceptCT read fPurpose;
-    property Name: THumanNameCT read fName;
+    property Purpose: TCodeableConceptCT read GetPurpose;
+    property Name: THumanNameCT read GetName;
     property Telecom: TContactPointCTList read fTelecom;
-    property Address: TAddressCT read fAddress;
+    property Address: TAddressCT read GetAddress;
   end;
 
   TOrganizationAffiliationCT = class(TDomainResourceCT)
@@ -17038,12 +18974,17 @@ type
     fHealthcareService: TReferenceCTList;
     fTelecom: TContactPointCTList;
     fEndpoint: TReferenceCTList;
+
+    function GetActive: TBooleanCT;
+    function GetPeriod: TPeriodCT;
+    function GetOrganization: TReferenceCT;
+    function GetParticipatingOrganization: TReferenceCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Active: TBooleanCT read fActive;
-    property Period: TPeriodCT read fPeriod;
-    property Organization: TReferenceCT read fOrganization;
-    property ParticipatingOrganization: TReferenceCT read fParticipatingOrganization;
+    property Active: TBooleanCT read GetActive;
+    property Period: TPeriodCT read GetPeriod;
+    property Organization: TReferenceCT read GetOrganization;
+    property ParticipatingOrganization: TReferenceCT read GetParticipatingOrganization;
     property Network: TReferenceCTList read fNetwork;
     property Code: TCodeableConceptCTList read fCode;
     property Specialty: TCodeableConceptCTList read fSpecialty;
@@ -17168,6 +19109,7 @@ type
     function GetValueDosage: TDosageCT;
     function GetValueMeta: TMetaCT;
     function GetValueChosen: TBasite;
+    function GetResource: TResourceContainerCT;
   public
     property ValueChosen: TBasite read GetValueChosen;
   published
@@ -17273,7 +19215,7 @@ type
     property ValueDosage: TDosageCT read GetValueDosage;
     [TChoice('Value')]
     property ValueMeta: TMetaCT read GetValueMeta;
-    property Resource: TResourceContainerCT read fResource;
+    property Resource: TResourceContainerCT read GetResource;
     property Part: TParametersParameterCTList read fPart;
   end;
 
@@ -17298,28 +19240,33 @@ type
     fManagingOrganization: TReferenceCT;
     fLink: TPatientLinkCTList;
 
+    function GetActive: TBooleanCT;
+    function GetGender: TAdministrativeGenderCT;
+    function GetBirthDate: TDateCT;
     function GetDeceasedBoolean: TBooleanCT;
     function GetDeceasedDateTime: TDateTimeCT;
     function GetDeceasedChosen: TBasite;
+    function GetMaritalStatus: TCodeableConceptCT;
     function GetMultipleBirthBoolean: TBooleanCT;
     function GetMultipleBirthInteger: TIntegerCT;
     function GetMultipleBirthChosen: TBasite;
+    function GetManagingOrganization: TReferenceCT;
   public
     property DeceasedChosen: TBasite read GetDeceasedChosen;
     property MultipleBirthChosen: TBasite read GetMultipleBirthChosen;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Active: TBooleanCT read fActive;
+    property Active: TBooleanCT read GetActive;
     property Name: THumanNameCTList read fName;
     property Telecom: TContactPointCTList read fTelecom;
-    property Gender: TAdministrativeGenderCT read fGender;
-    property BirthDate: TDateCT read fBirthDate;
+    property Gender: TAdministrativeGenderCT read GetGender;
+    property BirthDate: TDateCT read GetBirthDate;
     [TChoice('Deceased')]
     property DeceasedBoolean: TBooleanCT read GetDeceasedBoolean;
     [TChoice('Deceased')]
     property DeceasedDateTime: TDateTimeCT read GetDeceasedDateTime;
     property Address: TAddressCTList read fAddress;
-    property MaritalStatus: TCodeableConceptCT read fMaritalStatus;
+    property MaritalStatus: TCodeableConceptCT read GetMaritalStatus;
     [TChoice('MultipleBirth')]
     property MultipleBirthBoolean: TBooleanCT read GetMultipleBirthBoolean;
     [TChoice('MultipleBirth')]
@@ -17328,7 +19275,7 @@ type
     property Contact: TPatientContactCTList read fContact;
     property Communication: TPatientCommunicationCTList read fCommunication;
     property GeneralPractitioner: TReferenceCTList read fGeneralPractitioner;
-    property ManagingOrganization: TReferenceCT read fManagingOrganization;
+    property ManagingOrganization: TReferenceCT read GetManagingOrganization;
     property Link: TPatientLinkCTList read fLink;
   end;
 
@@ -17342,14 +19289,20 @@ type
     fGender: TAdministrativeGenderCT;
     fOrganization: TReferenceCT;
     fPeriod: TPeriodCT;
+
+    function GetName: THumanNameCT;
+    function GetAddress: TAddressCT;
+    function GetGender: TAdministrativeGenderCT;
+    function GetOrganization: TReferenceCT;
+    function GetPeriod: TPeriodCT;
   published
     property Relationship: TCodeableConceptCTList read fRelationship;
-    property Name: THumanNameCT read fName;
+    property Name: THumanNameCT read GetName;
     property Telecom: TContactPointCTList read fTelecom;
-    property Address: TAddressCT read fAddress;
-    property Gender: TAdministrativeGenderCT read fGender;
-    property Organization: TReferenceCT read fOrganization;
-    property Period: TPeriodCT read fPeriod;
+    property Address: TAddressCT read GetAddress;
+    property Gender: TAdministrativeGenderCT read GetGender;
+    property Organization: TReferenceCT read GetOrganization;
+    property Period: TPeriodCT read GetPeriod;
   end;
 
   [TName('Patient.Communication')]
@@ -17357,10 +19310,12 @@ type
   private
     fLanguage: TCodeableConceptCT;
     fPreferred: TBooleanCT;
+
+    function GetPreferred: TBooleanCT;
   published
     [TRequired]
     property Language: TCodeableConceptCT read fLanguage;
-    property Preferred: TBooleanCT read fPreferred;
+    property Preferred: TBooleanCT read GetPreferred;
   end;
 
   [TName('Patient.Link')]
@@ -17396,24 +19351,31 @@ type
     fRecipient: TReferenceCT;
     fAmount: TMoneyCT;
     fPaymentStatus: TCodeableConceptCT;
+
+    function GetRequest: TReferenceCT;
+    function GetResponse: TReferenceCT;
+    function GetProvider: TReferenceCT;
+    function GetPaymentDate: TDateCT;
+    function GetPayee: TReferenceCT;
+    function GetPaymentStatus: TCodeableConceptCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
     property Status: TFinancialResourceStatusCodesCT read fStatus;
-    property Request: TReferenceCT read fRequest;
-    property Response: TReferenceCT read fResponse;
+    property Request: TReferenceCT read GetRequest;
+    property Response: TReferenceCT read GetResponse;
     [TRequired]
     property Created: TDateTimeCT read fCreated;
-    property Provider: TReferenceCT read fProvider;
+    property Provider: TReferenceCT read GetProvider;
     [TRequired]
     property Payment: TReferenceCT read fPayment;
-    property PaymentDate: TDateCT read fPaymentDate;
-    property Payee: TReferenceCT read fPayee;
+    property PaymentDate: TDateCT read GetPaymentDate;
+    property Payee: TReferenceCT read GetPayee;
     [TRequired]
     property Recipient: TReferenceCT read fRecipient;
     [TRequired]
     property Amount: TMoneyCT read fAmount;
-    property PaymentStatus: TCodeableConceptCT read fPaymentStatus;
+    property PaymentStatus: TCodeableConceptCT read GetPaymentStatus;
   end;
 
   TPaymentReconciliationCT = class(TDomainResourceCT)
@@ -17433,25 +19395,34 @@ type
     fDetail: TPaymentReconciliationDetailCTList;
     fFormCode: TCodeableConceptCT;
     fProcessNote: TPaymentReconciliationProcessNoteCTList;
+
+    function GetPeriod: TPeriodCT;
+    function GetPaymentIssuer: TReferenceCT;
+    function GetRequest: TReferenceCT;
+    function GetRequestor: TReferenceCT;
+    function GetOutcome: TRemittanceOutcomeCT;
+    function GetDisposition: TStringCT;
+    function GetPaymentIdentifier: TIdentifierCT;
+    function GetFormCode: TCodeableConceptCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
     property Status: TFinancialResourceStatusCodesCT read fStatus;
-    property Period: TPeriodCT read fPeriod;
+    property Period: TPeriodCT read GetPeriod;
     [TRequired]
     property Created: TDateTimeCT read fCreated;
-    property PaymentIssuer: TReferenceCT read fPaymentIssuer;
-    property Request: TReferenceCT read fRequest;
-    property Requestor: TReferenceCT read fRequestor;
-    property Outcome: TRemittanceOutcomeCT read fOutcome;
-    property Disposition: TStringCT read fDisposition;
+    property PaymentIssuer: TReferenceCT read GetPaymentIssuer;
+    property Request: TReferenceCT read GetRequest;
+    property Requestor: TReferenceCT read GetRequestor;
+    property Outcome: TRemittanceOutcomeCT read GetOutcome;
+    property Disposition: TStringCT read GetDisposition;
     [TRequired]
     property PaymentDate: TDateCT read fPaymentDate;
     [TRequired]
     property PaymentAmount: TMoneyCT read fPaymentAmount;
-    property PaymentIdentifier: TIdentifierCT read fPaymentIdentifier;
+    property PaymentIdentifier: TIdentifierCT read GetPaymentIdentifier;
     property Detail: TPaymentReconciliationDetailCTList read fDetail;
-    property FormCode: TCodeableConceptCT read fFormCode;
+    property FormCode: TCodeableConceptCT read GetFormCode;
     property ProcessNote: TPaymentReconciliationProcessNoteCTList read fProcessNote;
   end;
 
@@ -17468,18 +19439,28 @@ type
     fResponsible: TReferenceCT;
     fPayee: TReferenceCT;
     fAmount: TMoneyCT;
+
+    function GetIdentifier: TIdentifierCT;
+    function GetPredecessor: TIdentifierCT;
+    function GetRequest: TReferenceCT;
+    function GetSubmitter: TReferenceCT;
+    function GetResponse: TReferenceCT;
+    function GetDate: TDateCT;
+    function GetResponsible: TReferenceCT;
+    function GetPayee: TReferenceCT;
+    function GetAmount: TMoneyCT;
   published
-    property Identifier: TIdentifierCT read fIdentifier;
-    property Predecessor: TIdentifierCT read fPredecessor;
+    property Identifier: TIdentifierCT read GetIdentifier;
+    property Predecessor: TIdentifierCT read GetPredecessor;
     [TRequired]
     property &Type: TCodeableConceptCT read fType;
-    property Request: TReferenceCT read fRequest;
-    property Submitter: TReferenceCT read fSubmitter;
-    property Response: TReferenceCT read fResponse;
-    property Date: TDateCT read fDate;
-    property Responsible: TReferenceCT read fResponsible;
-    property Payee: TReferenceCT read fPayee;
-    property Amount: TMoneyCT read fAmount;
+    property Request: TReferenceCT read GetRequest;
+    property Submitter: TReferenceCT read GetSubmitter;
+    property Response: TReferenceCT read GetResponse;
+    property Date: TDateCT read GetDate;
+    property Responsible: TReferenceCT read GetResponsible;
+    property Payee: TReferenceCT read GetPayee;
+    property Amount: TMoneyCT read GetAmount;
   end;
 
   [TName('PaymentReconciliation.ProcessNote')]
@@ -17487,9 +19468,12 @@ type
   private
     fType: TNoteTypeCT;
     fText: TStringCT;
+
+    function GetType: TNoteTypeCT;
+    function GetText: TStringCT;
   published
-    property &Type: TNoteTypeCT read fType;
-    property Text: TStringCT read fText;
+    property &Type: TNoteTypeCT read GetType;
+    property Text: TStringCT read GetText;
   end;
 
   TPersonCT = class(TDomainResourceCT)
@@ -17504,16 +19488,22 @@ type
     fManagingOrganization: TReferenceCT;
     fActive: TBooleanCT;
     fLink: TPersonLinkCTList;
+
+    function GetGender: TAdministrativeGenderCT;
+    function GetBirthDate: TDateCT;
+    function GetPhoto: TAttachmentCT;
+    function GetManagingOrganization: TReferenceCT;
+    function GetActive: TBooleanCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     property Name: THumanNameCTList read fName;
     property Telecom: TContactPointCTList read fTelecom;
-    property Gender: TAdministrativeGenderCT read fGender;
-    property BirthDate: TDateCT read fBirthDate;
+    property Gender: TAdministrativeGenderCT read GetGender;
+    property BirthDate: TDateCT read GetBirthDate;
     property Address: TAddressCTList read fAddress;
-    property Photo: TAttachmentCT read fPhoto;
-    property ManagingOrganization: TReferenceCT read fManagingOrganization;
-    property Active: TBooleanCT read fActive;
+    property Photo: TAttachmentCT read GetPhoto;
+    property ManagingOrganization: TReferenceCT read GetManagingOrganization;
+    property Active: TBooleanCT read GetActive;
     property Link: TPersonLinkCTList read fLink;
   end;
 
@@ -17522,10 +19512,12 @@ type
   private
     fTarget: TReferenceCT;
     fAssurance: TIdentityAssuranceLevelCT;
+
+    function GetAssurance: TIdentityAssuranceLevelCT;
   published
     [TRequired]
     property Target: TReferenceCT read fTarget;
-    property Assurance: TIdentityAssuranceLevelCT read fAssurance;
+    property Assurance: TIdentityAssuranceLevelCT read GetAssurance;
   end;
 
   TIdentityAssuranceLevelCT = class(TElementCT)
@@ -17570,38 +19562,54 @@ type
     fGoal: TPlanDefinitionGoalCTList;
     fAction: TPlanDefinitionActionCTList;
 
+    function GetUrl: TUriCT;
+    function GetVersion: TStringCT;
+    function GetName: TStringCT;
+    function GetTitle: TStringCT;
+    function GetSubtitle: TStringCT;
+    function GetType: TCodeableConceptCT;
+    function GetExperimental: TBooleanCT;
     function GetSubjectCodeableConcept: TCodeableConceptCT;
     function GetSubjectReference: TReferenceCT;
     function GetSubjectChosen: TBasite;
+    function GetDate: TDateTimeCT;
+    function GetPublisher: TStringCT;
+    function GetDescription: TMarkdownCT;
+    function GetPurpose: TMarkdownCT;
+    function GetUsage: TStringCT;
+    function GetCopyright: TMarkdownCT;
+    function GetApprovalDate: TDateCT;
+    function GetLastReviewDate: TDateCT;
+    function GetEffectivePeriod: TPeriodCT;
   public
     property SubjectChosen: TBasite read GetSubjectChosen;
   published
-    property Url: TUriCT read fUrl;
+    property Url: TUriCT read GetUrl;
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Version: TStringCT read fVersion;
-    property Name: TStringCT read fName;
-    property Title: TStringCT read fTitle;
-    property Subtitle: TStringCT read fSubtitle;
-    property &Type: TCodeableConceptCT read fType;
+    property Version: TStringCT read GetVersion;
+    property Name: TStringCT read GetName;
+    property Title: TStringCT read GetTitle;
+    property Subtitle: TStringCT read GetSubtitle;
+    property &Type: TCodeableConceptCT read GetType;
     [TRequired]
     property Status: TPublicationStatusCT read fStatus;
-    property Experimental: TBooleanCT read fExperimental;
+    property Experimental: TBooleanCT read GetExperimental;
     [TChoice('Subject')]
     property SubjectCodeableConcept: TCodeableConceptCT read GetSubjectCodeableConcept;
     [TChoice('Subject')]
     property SubjectReference: TReferenceCT read GetSubjectReference;
-    property Date: TDateTimeCT read fDate;
-    property Publisher: TStringCT read fPublisher;
+    property Date: TDateTimeCT read GetDate;
+    property Publisher: TStringCT read GetPublisher;
     property Contact: TContactDetailCTList read fContact;
-    property Description: TMarkdownCT read fDescription;
+    property Description: TMarkdownCT read GetDescription;
     property UseContext: TUsageContextCTList read fUseContext;
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    property Purpose: TMarkdownCT read fPurpose;
-    property Usage: TStringCT read fUsage;
-    property Copyright: TMarkdownCT read fCopyright;
-    property ApprovalDate: TDateCT read fApprovalDate;
-    property LastReviewDate: TDateCT read fLastReviewDate;
-    property EffectivePeriod: TPeriodCT read fEffectivePeriod;
+    property Purpose: TMarkdownCT read GetPurpose;
+    property Usage: TStringCT read GetUsage;
+    property Copyright: TMarkdownCT read GetCopyright;
+    property ApprovalDate: TDateCT read GetApprovalDate;
+    property LastReviewDate: TDateCT read GetLastReviewDate;
+    property EffectivePeriod: TPeriodCT read GetEffectivePeriod;
     property Topic: TCodeableConceptCTList read fTopic;
     property Author: TContactDetailCTList read fAuthor;
     property Editor: TContactDetailCTList read fEditor;
@@ -17623,12 +19631,16 @@ type
     fAddresses: TCodeableConceptCTList;
     fDocumentation: TRelatedArtifactCTList;
     fTarget: TPlanDefinitionTargetCTList;
+
+    function GetCategory: TCodeableConceptCT;
+    function GetPriority: TCodeableConceptCT;
+    function GetStart: TCodeableConceptCT;
   published
-    property Category: TCodeableConceptCT read fCategory;
+    property Category: TCodeableConceptCT read GetCategory;
     [TRequired]
     property Description: TCodeableConceptCT read fDescription;
-    property Priority: TCodeableConceptCT read fPriority;
-    property Start: TCodeableConceptCT read fStart;
+    property Priority: TCodeableConceptCT read GetPriority;
+    property Start: TCodeableConceptCT read GetStart;
     property Addresses: TCodeableConceptCTList read fAddresses;
     property Documentation: TRelatedArtifactCTList read fDocumentation;
     property Target: TPlanDefinitionTargetCTList read fTarget;
@@ -17643,21 +19655,23 @@ type
     fDetailCodeableConcept: TCodeableConceptCT;
     fDue: TDurationCT;
 
+    function GetMeasure: TCodeableConceptCT;
     function GetDetailQuantity: TQuantityCT;
     function GetDetailRange: TRangeCT;
     function GetDetailCodeableConcept: TCodeableConceptCT;
     function GetDetailChosen: TBasite;
+    function GetDue: TDurationCT;
   public
     property DetailChosen: TBasite read GetDetailChosen;
   published
-    property Measure: TCodeableConceptCT read fMeasure;
+    property Measure: TCodeableConceptCT read GetMeasure;
     [TChoice('Detail')]
     property DetailQuantity: TQuantityCT read GetDetailQuantity;
     [TChoice('Detail')]
     property DetailRange: TRangeCT read GetDetailRange;
     [TChoice('Detail')]
     property DetailCodeableConcept: TCodeableConceptCT read GetDetailCodeableConcept;
-    property Due: TDurationCT read fDue;
+    property Due: TDurationCT read GetDue;
   end;
 
   [TName('PlanDefinition.Action')]
@@ -17698,6 +19712,11 @@ type
     fDynamicValue: TPlanDefinitionDynamicValueCTList;
     fAction: TPlanDefinitionActionCTList;
 
+    function GetPrefix: TStringCT;
+    function GetTitle: TStringCT;
+    function GetDescription: TStringCT;
+    function GetTextEquivalent: TStringCT;
+    function GetPriority: TRequestPriorityCT;
     function GetSubjectCodeableConcept: TCodeableConceptCT;
     function GetSubjectReference: TReferenceCT;
     function GetSubjectChosen: TBasite;
@@ -17708,19 +19727,26 @@ type
     function GetTimingRange: TRangeCT;
     function GetTimingTiming: TTimingCT;
     function GetTimingChosen: TBasite;
+    function GetType: TCodeableConceptCT;
+    function GetGroupingBehavior: TActionGroupingBehaviorCT;
+    function GetSelectionBehavior: TActionSelectionBehaviorCT;
+    function GetRequiredBehavior: TActionRequiredBehaviorCT;
+    function GetPrecheckBehavior: TActionPrecheckBehaviorCT;
+    function GetCardinalityBehavior: TActionCardinalityBehaviorCT;
     function GetDefinitionCanonical: TCanonicalCT;
     function GetDefinitionUri: TUriCT;
     function GetDefinitionChosen: TBasite;
+    function GetTransform: TCanonicalCT;
   public
     property SubjectChosen: TBasite read GetSubjectChosen;
     property TimingChosen: TBasite read GetTimingChosen;
     property DefinitionChosen: TBasite read GetDefinitionChosen;
   published
-    property Prefix: TStringCT read fPrefix;
-    property Title: TStringCT read fTitle;
-    property Description: TStringCT read fDescription;
-    property TextEquivalent: TStringCT read fTextEquivalent;
-    property Priority: TRequestPriorityCT read fPriority;
+    property Prefix: TStringCT read GetPrefix;
+    property Title: TStringCT read GetTitle;
+    property Description: TStringCT read GetDescription;
+    property TextEquivalent: TStringCT read GetTextEquivalent;
+    property Priority: TRequestPriorityCT read GetPriority;
     property Code: TCodeableConceptCTList read fCode;
     property Reason: TCodeableConceptCTList read fReason;
     property Documentation: TRelatedArtifactCTList read fDocumentation;
@@ -17747,17 +19773,17 @@ type
     [TChoice('Timing')]
     property TimingTiming: TTimingCT read GetTimingTiming;
     property Participant: TPlanDefinitionParticipantCTList read fParticipant;
-    property &Type: TCodeableConceptCT read fType;
-    property GroupingBehavior: TActionGroupingBehaviorCT read fGroupingBehavior;
-    property SelectionBehavior: TActionSelectionBehaviorCT read fSelectionBehavior;
-    property RequiredBehavior: TActionRequiredBehaviorCT read fRequiredBehavior;
-    property PrecheckBehavior: TActionPrecheckBehaviorCT read fPrecheckBehavior;
-    property CardinalityBehavior: TActionCardinalityBehaviorCT read fCardinalityBehavior;
+    property &Type: TCodeableConceptCT read GetType;
+    property GroupingBehavior: TActionGroupingBehaviorCT read GetGroupingBehavior;
+    property SelectionBehavior: TActionSelectionBehaviorCT read GetSelectionBehavior;
+    property RequiredBehavior: TActionRequiredBehaviorCT read GetRequiredBehavior;
+    property PrecheckBehavior: TActionPrecheckBehaviorCT read GetPrecheckBehavior;
+    property CardinalityBehavior: TActionCardinalityBehaviorCT read GetCardinalityBehavior;
     [TChoice('Definition')]
     property DefinitionCanonical: TCanonicalCT read GetDefinitionCanonical;
     [TChoice('Definition')]
     property DefinitionUri: TUriCT read GetDefinitionUri;
-    property Transform: TCanonicalCT read fTransform;
+    property Transform: TCanonicalCT read GetTransform;
     property DynamicValue: TPlanDefinitionDynamicValueCTList read fDynamicValue;
     property Action: TPlanDefinitionActionCTList read fAction;
   end;
@@ -17767,10 +19793,12 @@ type
   private
     fKind: TActionConditionKindCT;
     fExpression: TExpressionCT;
+
+    function GetExpression: TExpressionCT;
   published
     [TRequired]
     property Kind: TActionConditionKindCT read fKind;
-    property Expression: TExpressionCT read fExpression;
+    property Expression: TExpressionCT read GetExpression;
   end;
 
   [TName('PlanDefinition.RelatedAction')]
@@ -17802,10 +19830,12 @@ type
   private
     fType: TActionParticipantTypeCT;
     fRole: TCodeableConceptCT;
+
+    function GetRole: TCodeableConceptCT;
   published
     [TRequired]
     property &Type: TActionParticipantTypeCT read fType;
-    property Role: TCodeableConceptCT read fRole;
+    property Role: TCodeableConceptCT read GetRole;
   end;
 
   [TName('PlanDefinition.DynamicValue')]
@@ -17813,9 +19843,12 @@ type
   private
     fPath: TStringCT;
     fExpression: TExpressionCT;
+
+    function GetPath: TStringCT;
+    function GetExpression: TExpressionCT;
   published
-    property Path: TStringCT read fPath;
-    property Expression: TExpressionCT read fExpression;
+    property Path: TStringCT read GetPath;
+    property Expression: TExpressionCT read GetExpression;
   end;
 
   TActionRequiredBehaviorCT = class(TElementCT)
@@ -17879,14 +19912,18 @@ type
     fPhoto: TAttachmentCTList;
     fQualification: TPractitionerQualificationCTList;
     fCommunication: TCodeableConceptCTList;
+
+    function GetActive: TBooleanCT;
+    function GetGender: TAdministrativeGenderCT;
+    function GetBirthDate: TDateCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Active: TBooleanCT read fActive;
+    property Active: TBooleanCT read GetActive;
     property Name: THumanNameCTList read fName;
     property Telecom: TContactPointCTList read fTelecom;
     property Address: TAddressCTList read fAddress;
-    property Gender: TAdministrativeGenderCT read fGender;
-    property BirthDate: TDateCT read fBirthDate;
+    property Gender: TAdministrativeGenderCT read GetGender;
+    property BirthDate: TDateCT read GetBirthDate;
     property Photo: TAttachmentCTList read fPhoto;
     property Qualification: TPractitionerQualificationCTList read fQualification;
     property Communication: TCodeableConceptCTList read fCommunication;
@@ -17899,12 +19936,15 @@ type
     fCode: TCodeableConceptCT;
     fPeriod: TPeriodCT;
     fIssuer: TReferenceCT;
+
+    function GetPeriod: TPeriodCT;
+    function GetIssuer: TReferenceCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
     property Code: TCodeableConceptCT read fCode;
-    property Period: TPeriodCT read fPeriod;
-    property Issuer: TReferenceCT read fIssuer;
+    property Period: TPeriodCT read GetPeriod;
+    property Issuer: TReferenceCT read GetIssuer;
   end;
 
   TPractitionerRoleCT = class(TDomainResourceCT)
@@ -17923,12 +19963,18 @@ type
     fNotAvailable: TPractitionerRoleNotAvailableCTList;
     fAvailabilityExceptions: TStringCT;
     fEndpoint: TReferenceCTList;
+
+    function GetActive: TBooleanCT;
+    function GetPeriod: TPeriodCT;
+    function GetPractitioner: TReferenceCT;
+    function GetOrganization: TReferenceCT;
+    function GetAvailabilityExceptions: TStringCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Active: TBooleanCT read fActive;
-    property Period: TPeriodCT read fPeriod;
-    property Practitioner: TReferenceCT read fPractitioner;
-    property Organization: TReferenceCT read fOrganization;
+    property Active: TBooleanCT read GetActive;
+    property Period: TPeriodCT read GetPeriod;
+    property Practitioner: TReferenceCT read GetPractitioner;
+    property Organization: TReferenceCT read GetOrganization;
     property Code: TCodeableConceptCTList read fCode;
     property Specialty: TCodeableConceptCTList read fSpecialty;
     property Location: TReferenceCTList read fLocation;
@@ -17936,7 +19982,7 @@ type
     property Telecom: TContactPointCTList read fTelecom;
     property AvailableTime: TPractitionerRoleAvailableTimeCTList read fAvailableTime;
     property NotAvailable: TPractitionerRoleNotAvailableCTList read fNotAvailable;
-    property AvailabilityExceptions: TStringCT read fAvailabilityExceptions;
+    property AvailabilityExceptions: TStringCT read GetAvailabilityExceptions;
     property Endpoint: TReferenceCTList read fEndpoint;
   end;
 
@@ -17947,11 +19993,15 @@ type
     fAllDay: TBooleanCT;
     fAvailableStartTime: TTimeCT;
     fAvailableEndTime: TTimeCT;
+
+    function GetAllDay: TBooleanCT;
+    function GetAvailableStartTime: TTimeCT;
+    function GetAvailableEndTime: TTimeCT;
   published
     property DaysOfWeek: TDaysOfWeekCTList read fDaysOfWeek;
-    property AllDay: TBooleanCT read fAllDay;
-    property AvailableStartTime: TTimeCT read fAvailableStartTime;
-    property AvailableEndTime: TTimeCT read fAvailableEndTime;
+    property AllDay: TBooleanCT read GetAllDay;
+    property AvailableStartTime: TTimeCT read GetAvailableStartTime;
+    property AvailableEndTime: TTimeCT read GetAvailableEndTime;
   end;
 
   [TName('PractitionerRole.NotAvailable')]
@@ -17959,10 +20009,12 @@ type
   private
     fDescription: TStringCT;
     fDuring: TPeriodCT;
+
+    function GetDuring: TPeriodCT;
   published
     [TRequired]
     property Description: TStringCT read fDescription;
-    property During: TPeriodCT read fDuring;
+    property During: TPeriodCT read GetDuring;
   end;
 
   TProcedureCT = class(TDomainResourceCT)
@@ -18000,12 +20052,20 @@ type
     fUsedReference: TReferenceCTList;
     fUsedCode: TCodeableConceptCTList;
 
+    function GetStatusReason: TCodeableConceptCT;
+    function GetCategory: TCodeableConceptCT;
+    function GetCode: TCodeableConceptCT;
+    function GetEncounter: TReferenceCT;
     function GetPerformedDateTime: TDateTimeCT;
     function GetPerformedPeriod: TPeriodCT;
     function GetPerformedString: TStringCT;
     function GetPerformedAge: TAgeCT;
     function GetPerformedRange: TRangeCT;
     function GetPerformedChosen: TBasite;
+    function GetRecorder: TReferenceCT;
+    function GetAsserter: TReferenceCT;
+    function GetLocation: TReferenceCT;
+    function GetOutcome: TCodeableConceptCT;
   public
     property PerformedChosen: TBasite read GetPerformedChosen;
   published
@@ -18016,12 +20076,12 @@ type
     property PartOf: TReferenceCTList read fPartOf;
     [TRequired]
     property Status: TEventStatusCT read fStatus;
-    property StatusReason: TCodeableConceptCT read fStatusReason;
-    property Category: TCodeableConceptCT read fCategory;
-    property Code: TCodeableConceptCT read fCode;
+    property StatusReason: TCodeableConceptCT read GetStatusReason;
+    property Category: TCodeableConceptCT read GetCategory;
+    property Code: TCodeableConceptCT read GetCode;
     [TRequired]
     property Subject: TReferenceCT read fSubject;
-    property Encounter: TReferenceCT read fEncounter;
+    property Encounter: TReferenceCT read GetEncounter;
     [TChoice('Performed')]
     property PerformedDateTime: TDateTimeCT read GetPerformedDateTime;
     [TChoice('Performed')]
@@ -18032,14 +20092,14 @@ type
     property PerformedAge: TAgeCT read GetPerformedAge;
     [TChoice('Performed')]
     property PerformedRange: TRangeCT read GetPerformedRange;
-    property Recorder: TReferenceCT read fRecorder;
-    property Asserter: TReferenceCT read fAsserter;
+    property Recorder: TReferenceCT read GetRecorder;
+    property Asserter: TReferenceCT read GetAsserter;
     property Performer: TProcedurePerformerCTList read fPerformer;
-    property Location: TReferenceCT read fLocation;
+    property Location: TReferenceCT read GetLocation;
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
     property ReasonReference: TReferenceCTList read fReasonReference;
     property BodySite: TCodeableConceptCTList read fBodySite;
-    property Outcome: TCodeableConceptCT read fOutcome;
+    property Outcome: TCodeableConceptCT read GetOutcome;
     property Report: TReferenceCTList read fReport;
     property Complication: TCodeableConceptCTList read fComplication;
     property ComplicationDetail: TReferenceCTList read fComplicationDetail;
@@ -18056,11 +20116,14 @@ type
     fFunction: TCodeableConceptCT;
     fActor: TReferenceCT;
     fOnBehalfOf: TReferenceCT;
+
+    function GetFunction: TCodeableConceptCT;
+    function GetOnBehalfOf: TReferenceCT;
   published
-    property &Function: TCodeableConceptCT read fFunction;
+    property &Function: TCodeableConceptCT read GetFunction;
     [TRequired]
     property Actor: TReferenceCT read fActor;
-    property OnBehalfOf: TReferenceCT read fOnBehalfOf;
+    property OnBehalfOf: TReferenceCT read GetOnBehalfOf;
   end;
 
   [TName('Procedure.FocalDevice')]
@@ -18068,8 +20131,10 @@ type
   private
     fAction: TCodeableConceptCT;
     fManipulated: TReferenceCT;
+
+    function GetAction: TCodeableConceptCT;
   published
-    property Action: TCodeableConceptCT read fAction;
+    property Action: TCodeableConceptCT read GetAction;
     [TRequired]
     property Manipulated: TReferenceCT read fManipulated;
   end;
@@ -18091,6 +20156,8 @@ type
     function GetOccurredPeriod: TPeriodCT;
     function GetOccurredDateTime: TDateTimeCT;
     function GetOccurredChosen: TBasite;
+    function GetLocation: TReferenceCT;
+    function GetActivity: TCodeableConceptCT;
   public
     property OccurredChosen: TBasite read GetOccurredChosen;
   published
@@ -18102,9 +20169,9 @@ type
     [TRequired]
     property Recorded: TInstantCT read fRecorded;
     property Policy: TUriCTList read fPolicy;
-    property Location: TReferenceCT read fLocation;
+    property Location: TReferenceCT read GetLocation;
     property Reason: TCodeableConceptCTList read fReason;
-    property Activity: TCodeableConceptCT read fActivity;
+    property Activity: TCodeableConceptCT read GetActivity;
     property Agent: TProvenanceAgentCTList read fAgent;
     property Entity: TProvenanceEntityCTList read fEntity;
     property Signature: TSignatureCTList read fSignature;
@@ -18117,12 +20184,15 @@ type
     fRole: TCodeableConceptCTList;
     fWho: TReferenceCT;
     fOnBehalfOf: TReferenceCT;
+
+    function GetType: TCodeableConceptCT;
+    function GetOnBehalfOf: TReferenceCT;
   published
-    property &Type: TCodeableConceptCT read fType;
+    property &Type: TCodeableConceptCT read GetType;
     property Role: TCodeableConceptCTList read fRole;
     [TRequired]
     property Who: TReferenceCT read fWho;
-    property OnBehalfOf: TReferenceCT read fOnBehalfOf;
+    property OnBehalfOf: TReferenceCT read GetOnBehalfOf;
   end;
 
   [TName('Provenance.Entity')]
@@ -18170,28 +20240,42 @@ type
     fEffectivePeriod: TPeriodCT;
     fCode: TCodingCTList;
     fItem: TQuestionnaireItemCTList;
+
+    function GetUrl: TUriCT;
+    function GetVersion: TStringCT;
+    function GetName: TStringCT;
+    function GetTitle: TStringCT;
+    function GetExperimental: TBooleanCT;
+    function GetDate: TDateTimeCT;
+    function GetPublisher: TStringCT;
+    function GetDescription: TMarkdownCT;
+    function GetPurpose: TMarkdownCT;
+    function GetCopyright: TMarkdownCT;
+    function GetApprovalDate: TDateCT;
+    function GetLastReviewDate: TDateCT;
+    function GetEffectivePeriod: TPeriodCT;
   published
-    property Url: TUriCT read fUrl;
+    property Url: TUriCT read GetUrl;
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Version: TStringCT read fVersion;
-    property Name: TStringCT read fName;
-    property Title: TStringCT read fTitle;
+    property Version: TStringCT read GetVersion;
+    property Name: TStringCT read GetName;
+    property Title: TStringCT read GetTitle;
     property DerivedFrom: TCanonicalCTList read fDerivedFrom;
     [TRequired]
     property Status: TPublicationStatusCT read fStatus;
-    property Experimental: TBooleanCT read fExperimental;
+    property Experimental: TBooleanCT read GetExperimental;
     property SubjectType: TCodeCTList read fSubjectType;
-    property Date: TDateTimeCT read fDate;
-    property Publisher: TStringCT read fPublisher;
+    property Date: TDateTimeCT read GetDate;
+    property Publisher: TStringCT read GetPublisher;
     property Contact: TContactDetailCTList read fContact;
-    property Description: TMarkdownCT read fDescription;
+    property Description: TMarkdownCT read GetDescription;
     property UseContext: TUsageContextCTList read fUseContext;
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    property Purpose: TMarkdownCT read fPurpose;
-    property Copyright: TMarkdownCT read fCopyright;
-    property ApprovalDate: TDateCT read fApprovalDate;
-    property LastReviewDate: TDateCT read fLastReviewDate;
-    property EffectivePeriod: TPeriodCT read fEffectivePeriod;
+    property Purpose: TMarkdownCT read GetPurpose;
+    property Copyright: TMarkdownCT read GetCopyright;
+    property ApprovalDate: TDateCT read GetApprovalDate;
+    property LastReviewDate: TDateCT read GetLastReviewDate;
+    property EffectivePeriod: TPeriodCT read GetEffectivePeriod;
     property Code: TCodingCTList read fCode;
     property Item: TQuestionnaireItemCTList read fItem;
   end;
@@ -18215,22 +20299,32 @@ type
     fAnswerOption: TQuestionnaireAnswerOptionCTList;
     fInitial: TQuestionnaireInitialCTList;
     fItem: TQuestionnaireItemCTList;
+
+    function GetDefinition: TUriCT;
+    function GetPrefix: TStringCT;
+    function GetText: TStringCT;
+    function GetEnableBehavior: TEnableWhenBehaviorCT;
+    function GetRequired: TBooleanCT;
+    function GetRepeats: TBooleanCT;
+    function GetReadOnly: TBooleanCT;
+    function GetMaxLength: TIntegerCT;
+    function GetAnswerValueSet: TCanonicalCT;
   published
     [TRequired]
     property LinkId: TStringCT read fLinkId;
-    property Definition: TUriCT read fDefinition;
+    property Definition: TUriCT read GetDefinition;
     property Code: TCodingCTList read fCode;
-    property Prefix: TStringCT read fPrefix;
-    property Text: TStringCT read fText;
+    property Prefix: TStringCT read GetPrefix;
+    property Text: TStringCT read GetText;
     [TRequired]
     property &Type: TQuestionnaireItemTypeCT read fType;
     property EnableWhen: TQuestionnaireEnableWhenCTList read fEnableWhen;
-    property EnableBehavior: TEnableWhenBehaviorCT read fEnableBehavior;
-    property Required: TBooleanCT read fRequired;
-    property Repeats: TBooleanCT read fRepeats;
-    property ReadOnly: TBooleanCT read fReadOnly;
-    property MaxLength: TIntegerCT read fMaxLength;
-    property AnswerValueSet: TCanonicalCT read fAnswerValueSet;
+    property EnableBehavior: TEnableWhenBehaviorCT read GetEnableBehavior;
+    property Required: TBooleanCT read GetRequired;
+    property Repeats: TBooleanCT read GetRepeats;
+    property ReadOnly: TBooleanCT read GetReadOnly;
+    property MaxLength: TIntegerCT read GetMaxLength;
+    property AnswerValueSet: TCanonicalCT read GetAnswerValueSet;
     property AnswerOption: TQuestionnaireAnswerOptionCTList read fAnswerOption;
     property Initial: TQuestionnaireInitialCTList read fInitial;
     property Item: TQuestionnaireItemCTList read fItem;
@@ -18310,6 +20404,7 @@ type
     function GetValueCoding: TCodingCT;
     function GetValueReference: TReferenceCT;
     function GetValueChosen: TBasite;
+    function GetInitialSelected: TBooleanCT;
   public
     property ValueChosen: TBasite read GetValueChosen;
   published
@@ -18325,7 +20420,7 @@ type
     property ValueCoding: TCodingCT read GetValueCoding;
     [TChoice('Value')]
     property ValueReference: TReferenceCT read GetValueReference;
-    property InitialSelected: TBooleanCT read fInitialSelected;
+    property InitialSelected: TBooleanCT read GetInitialSelected;
   end;
 
   [TName('Questionnaire.Initial')]
@@ -18420,18 +20515,26 @@ type
     fAuthor: TReferenceCT;
     fSource: TReferenceCT;
     fItem: TQuestionnaireResponseItemCTList;
+
+    function GetIdentifier: TIdentifierCT;
+    function GetQuestionnaire: TCanonicalCT;
+    function GetSubject: TReferenceCT;
+    function GetEncounter: TReferenceCT;
+    function GetAuthored: TDateTimeCT;
+    function GetAuthor: TReferenceCT;
+    function GetSource: TReferenceCT;
   published
-    property Identifier: TIdentifierCT read fIdentifier;
+    property Identifier: TIdentifierCT read GetIdentifier;
     property BasedOn: TReferenceCTList read fBasedOn;
     property PartOf: TReferenceCTList read fPartOf;
-    property Questionnaire: TCanonicalCT read fQuestionnaire;
+    property Questionnaire: TCanonicalCT read GetQuestionnaire;
     [TRequired]
     property Status: TQuestionnaireResponseStatusCT read fStatus;
-    property Subject: TReferenceCT read fSubject;
-    property Encounter: TReferenceCT read fEncounter;
-    property Authored: TDateTimeCT read fAuthored;
-    property Author: TReferenceCT read fAuthor;
-    property Source: TReferenceCT read fSource;
+    property Subject: TReferenceCT read GetSubject;
+    property Encounter: TReferenceCT read GetEncounter;
+    property Authored: TDateTimeCT read GetAuthored;
+    property Author: TReferenceCT read GetAuthor;
+    property Source: TReferenceCT read GetSource;
     property Item: TQuestionnaireResponseItemCTList read fItem;
   end;
 
@@ -18443,11 +20546,14 @@ type
     fText: TStringCT;
     fAnswer: TQuestionnaireResponseAnswerCTList;
     fItem: TQuestionnaireResponseItemCTList;
+
+    function GetDefinition: TUriCT;
+    function GetText: TStringCT;
   published
     [TRequired]
     property LinkId: TStringCT read fLinkId;
-    property Definition: TUriCT read fDefinition;
-    property Text: TStringCT read fText;
+    property Definition: TUriCT read GetDefinition;
+    property Text: TStringCT read GetText;
     property Answer: TQuestionnaireResponseAnswerCTList read fAnswer;
     property Item: TQuestionnaireResponseItemCTList read fItem;
   end;
@@ -18533,19 +20639,24 @@ type
     fPhoto: TAttachmentCTList;
     fPeriod: TPeriodCT;
     fCommunication: TRelatedPersonCommunicationCTList;
+
+    function GetActive: TBooleanCT;
+    function GetGender: TAdministrativeGenderCT;
+    function GetBirthDate: TDateCT;
+    function GetPeriod: TPeriodCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Active: TBooleanCT read fActive;
+    property Active: TBooleanCT read GetActive;
     [TRequired]
     property Patient: TReferenceCT read fPatient;
     property Relationship: TCodeableConceptCTList read fRelationship;
     property Name: THumanNameCTList read fName;
     property Telecom: TContactPointCTList read fTelecom;
-    property Gender: TAdministrativeGenderCT read fGender;
-    property BirthDate: TDateCT read fBirthDate;
+    property Gender: TAdministrativeGenderCT read GetGender;
+    property BirthDate: TDateCT read GetBirthDate;
     property Address: TAddressCTList read fAddress;
     property Photo: TAttachmentCTList read fPhoto;
-    property Period: TPeriodCT read fPeriod;
+    property Period: TPeriodCT read GetPeriod;
     property Communication: TRelatedPersonCommunicationCTList read fCommunication;
   end;
 
@@ -18554,10 +20665,12 @@ type
   private
     fLanguage: TCodeableConceptCT;
     fPreferred: TBooleanCT;
+
+    function GetPreferred: TBooleanCT;
   published
     [TRequired]
     property Language: TCodeableConceptCT read fLanguage;
-    property Preferred: TBooleanCT read fPreferred;
+    property Preferred: TBooleanCT read GetPreferred;
   end;
 
   TRequestGroupCT = class(TDomainResourceCT)
@@ -18580,23 +20693,31 @@ type
     fReasonReference: TReferenceCTList;
     fNote: TAnnotationCTList;
     fAction: TRequestGroupActionCTList;
+
+    function GetGroupIdentifier: TIdentifierCT;
+    function GetPriority: TRequestPriorityCT;
+    function GetCode: TCodeableConceptCT;
+    function GetSubject: TReferenceCT;
+    function GetEncounter: TReferenceCT;
+    function GetAuthoredOn: TDateTimeCT;
+    function GetAuthor: TReferenceCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     property InstantiatesCanonical: TCanonicalCTList read fInstantiatesCanonical;
     property InstantiatesUri: TUriCTList read fInstantiatesUri;
     property BasedOn: TReferenceCTList read fBasedOn;
     property Replaces: TReferenceCTList read fReplaces;
-    property GroupIdentifier: TIdentifierCT read fGroupIdentifier;
+    property GroupIdentifier: TIdentifierCT read GetGroupIdentifier;
     [TRequired]
     property Status: TRequestStatusCT read fStatus;
     [TRequired]
     property Intent: TRequestIntentCT read fIntent;
-    property Priority: TRequestPriorityCT read fPriority;
-    property Code: TCodeableConceptCT read fCode;
-    property Subject: TReferenceCT read fSubject;
-    property Encounter: TReferenceCT read fEncounter;
-    property AuthoredOn: TDateTimeCT read fAuthoredOn;
-    property Author: TReferenceCT read fAuthor;
+    property Priority: TRequestPriorityCT read GetPriority;
+    property Code: TCodeableConceptCT read GetCode;
+    property Subject: TReferenceCT read GetSubject;
+    property Encounter: TReferenceCT read GetEncounter;
+    property AuthoredOn: TDateTimeCT read GetAuthoredOn;
+    property Author: TReferenceCT read GetAuthor;
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
     property ReasonReference: TReferenceCTList read fReasonReference;
     property Note: TAnnotationCTList read fNote;
@@ -18631,6 +20752,11 @@ type
     fResource: TReferenceCT;
     fAction: TRequestGroupActionCTList;
 
+    function GetPrefix: TStringCT;
+    function GetTitle: TStringCT;
+    function GetDescription: TStringCT;
+    function GetTextEquivalent: TStringCT;
+    function GetPriority: TRequestPriorityCT;
     function GetTimingDateTime: TDateTimeCT;
     function GetTimingAge: TAgeCT;
     function GetTimingPeriod: TPeriodCT;
@@ -18638,14 +20764,21 @@ type
     function GetTimingRange: TRangeCT;
     function GetTimingTiming: TTimingCT;
     function GetTimingChosen: TBasite;
+    function GetType: TCodeableConceptCT;
+    function GetGroupingBehavior: TActionGroupingBehaviorCT;
+    function GetSelectionBehavior: TActionSelectionBehaviorCT;
+    function GetRequiredBehavior: TActionRequiredBehaviorCT;
+    function GetPrecheckBehavior: TActionPrecheckBehaviorCT;
+    function GetCardinalityBehavior: TActionCardinalityBehaviorCT;
+    function GetResource: TReferenceCT;
   public
     property TimingChosen: TBasite read GetTimingChosen;
   published
-    property Prefix: TStringCT read fPrefix;
-    property Title: TStringCT read fTitle;
-    property Description: TStringCT read fDescription;
-    property TextEquivalent: TStringCT read fTextEquivalent;
-    property Priority: TRequestPriorityCT read fPriority;
+    property Prefix: TStringCT read GetPrefix;
+    property Title: TStringCT read GetTitle;
+    property Description: TStringCT read GetDescription;
+    property TextEquivalent: TStringCT read GetTextEquivalent;
+    property Priority: TRequestPriorityCT read GetPriority;
     property Code: TCodeableConceptCTList read fCode;
     property Documentation: TRelatedArtifactCTList read fDocumentation;
     property Condition: TRequestGroupConditionCTList read fCondition;
@@ -18663,13 +20796,13 @@ type
     [TChoice('Timing')]
     property TimingTiming: TTimingCT read GetTimingTiming;
     property Participant: TReferenceCTList read fParticipant;
-    property &Type: TCodeableConceptCT read fType;
-    property GroupingBehavior: TActionGroupingBehaviorCT read fGroupingBehavior;
-    property SelectionBehavior: TActionSelectionBehaviorCT read fSelectionBehavior;
-    property RequiredBehavior: TActionRequiredBehaviorCT read fRequiredBehavior;
-    property PrecheckBehavior: TActionPrecheckBehaviorCT read fPrecheckBehavior;
-    property CardinalityBehavior: TActionCardinalityBehaviorCT read fCardinalityBehavior;
-    property Resource: TReferenceCT read fResource;
+    property &Type: TCodeableConceptCT read GetType;
+    property GroupingBehavior: TActionGroupingBehaviorCT read GetGroupingBehavior;
+    property SelectionBehavior: TActionSelectionBehaviorCT read GetSelectionBehavior;
+    property RequiredBehavior: TActionRequiredBehaviorCT read GetRequiredBehavior;
+    property PrecheckBehavior: TActionPrecheckBehaviorCT read GetPrecheckBehavior;
+    property CardinalityBehavior: TActionCardinalityBehaviorCT read GetCardinalityBehavior;
+    property Resource: TReferenceCT read GetResource;
     property Action: TRequestGroupActionCTList read fAction;
   end;
 
@@ -18678,10 +20811,12 @@ type
   private
     fKind: TActionConditionKindCT;
     fExpression: TExpressionCT;
+
+    function GetExpression: TExpressionCT;
   published
     [TRequired]
     property Kind: TActionConditionKindCT read fKind;
-    property Expression: TExpressionCT read fExpression;
+    property Expression: TExpressionCT read GetExpression;
   end;
 
   [TName('RequestGroup.RelatedAction')]
@@ -18746,39 +20881,58 @@ type
     fExposureAlternative: TReferenceCT;
     fOutcome: TReferenceCT;
 
+    function GetUrl: TUriCT;
+    function GetVersion: TStringCT;
+    function GetName: TStringCT;
+    function GetTitle: TStringCT;
+    function GetShortTitle: TStringCT;
+    function GetSubtitle: TStringCT;
+    function GetExperimental: TBooleanCT;
     function GetSubjectCodeableConcept: TCodeableConceptCT;
     function GetSubjectReference: TReferenceCT;
     function GetSubjectChosen: TBasite;
+    function GetDate: TDateTimeCT;
+    function GetPublisher: TStringCT;
+    function GetDescription: TMarkdownCT;
+    function GetPurpose: TMarkdownCT;
+    function GetUsage: TStringCT;
+    function GetCopyright: TMarkdownCT;
+    function GetApprovalDate: TDateCT;
+    function GetLastReviewDate: TDateCT;
+    function GetEffectivePeriod: TPeriodCT;
+    function GetExposure: TReferenceCT;
+    function GetExposureAlternative: TReferenceCT;
+    function GetOutcome: TReferenceCT;
   public
     property SubjectChosen: TBasite read GetSubjectChosen;
   published
-    property Url: TUriCT read fUrl;
+    property Url: TUriCT read GetUrl;
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Version: TStringCT read fVersion;
-    property Name: TStringCT read fName;
-    property Title: TStringCT read fTitle;
-    property ShortTitle: TStringCT read fShortTitle;
-    property Subtitle: TStringCT read fSubtitle;
+    property Version: TStringCT read GetVersion;
+    property Name: TStringCT read GetName;
+    property Title: TStringCT read GetTitle;
+    property ShortTitle: TStringCT read GetShortTitle;
+    property Subtitle: TStringCT read GetSubtitle;
     [TRequired]
     property Status: TPublicationStatusCT read fStatus;
-    property Experimental: TBooleanCT read fExperimental;
+    property Experimental: TBooleanCT read GetExperimental;
     [TChoice('Subject')]
     property SubjectCodeableConcept: TCodeableConceptCT read GetSubjectCodeableConcept;
     [TChoice('Subject')]
     property SubjectReference: TReferenceCT read GetSubjectReference;
-    property Date: TDateTimeCT read fDate;
-    property Publisher: TStringCT read fPublisher;
+    property Date: TDateTimeCT read GetDate;
+    property Publisher: TStringCT read GetPublisher;
     property Contact: TContactDetailCTList read fContact;
-    property Description: TMarkdownCT read fDescription;
+    property Description: TMarkdownCT read GetDescription;
     property Comment: TStringCTList read fComment;
     property UseContext: TUsageContextCTList read fUseContext;
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    property Purpose: TMarkdownCT read fPurpose;
-    property Usage: TStringCT read fUsage;
-    property Copyright: TMarkdownCT read fCopyright;
-    property ApprovalDate: TDateCT read fApprovalDate;
-    property LastReviewDate: TDateCT read fLastReviewDate;
-    property EffectivePeriod: TPeriodCT read fEffectivePeriod;
+    property Purpose: TMarkdownCT read GetPurpose;
+    property Usage: TStringCT read GetUsage;
+    property Copyright: TMarkdownCT read GetCopyright;
+    property ApprovalDate: TDateCT read GetApprovalDate;
+    property LastReviewDate: TDateCT read GetLastReviewDate;
+    property EffectivePeriod: TPeriodCT read GetEffectivePeriod;
     property Topic: TCodeableConceptCTList read fTopic;
     property Author: TContactDetailCTList read fAuthor;
     property Editor: TContactDetailCTList read fEditor;
@@ -18788,9 +20942,9 @@ type
     property &Library: TCanonicalCTList read fLibrary;
     [TRequired]
     property Population: TReferenceCT read fPopulation;
-    property Exposure: TReferenceCT read fExposure;
-    property ExposureAlternative: TReferenceCT read fExposureAlternative;
-    property Outcome: TReferenceCT read fOutcome;
+    property Exposure: TReferenceCT read GetExposure;
+    property ExposureAlternative: TReferenceCT read GetExposureAlternative;
+    property Outcome: TReferenceCT read GetOutcome;
   end;
 
   TResearchElementDefinitionCT = class(TDomainResourceCT)
@@ -18830,39 +20984,56 @@ type
     fVariableType: TVariableTypeCT;
     fCharacteristic: TResearchElementDefinitionCharacteristicCTList;
 
+    function GetUrl: TUriCT;
+    function GetVersion: TStringCT;
+    function GetName: TStringCT;
+    function GetTitle: TStringCT;
+    function GetShortTitle: TStringCT;
+    function GetSubtitle: TStringCT;
+    function GetExperimental: TBooleanCT;
     function GetSubjectCodeableConcept: TCodeableConceptCT;
     function GetSubjectReference: TReferenceCT;
     function GetSubjectChosen: TBasite;
+    function GetDate: TDateTimeCT;
+    function GetPublisher: TStringCT;
+    function GetDescription: TMarkdownCT;
+    function GetPurpose: TMarkdownCT;
+    function GetUsage: TStringCT;
+    function GetCopyright: TMarkdownCT;
+    function GetApprovalDate: TDateCT;
+    function GetLastReviewDate: TDateCT;
+    function GetEffectivePeriod: TPeriodCT;
+    function GetVariableType: TVariableTypeCT;
   public
     property SubjectChosen: TBasite read GetSubjectChosen;
   published
-    property Url: TUriCT read fUrl;
+    property Url: TUriCT read GetUrl;
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Version: TStringCT read fVersion;
-    property Name: TStringCT read fName;
-    property Title: TStringCT read fTitle;
-    property ShortTitle: TStringCT read fShortTitle;
-    property Subtitle: TStringCT read fSubtitle;
+    property Version: TStringCT read GetVersion;
+    property Name: TStringCT read GetName;
+    property Title: TStringCT read GetTitle;
+    property ShortTitle: TStringCT read GetShortTitle;
+    property Subtitle: TStringCT read GetSubtitle;
     [TRequired]
     property Status: TPublicationStatusCT read fStatus;
-    property Experimental: TBooleanCT read fExperimental;
+    property Experimental: TBooleanCT read GetExperimental;
     [TChoice('Subject')]
     property SubjectCodeableConcept: TCodeableConceptCT read GetSubjectCodeableConcept;
     [TChoice('Subject')]
     property SubjectReference: TReferenceCT read GetSubjectReference;
-    property Date: TDateTimeCT read fDate;
-    property Publisher: TStringCT read fPublisher;
+    property Date: TDateTimeCT read GetDate;
+    property Publisher: TStringCT read GetPublisher;
     property Contact: TContactDetailCTList read fContact;
-    property Description: TMarkdownCT read fDescription;
+    property Description: TMarkdownCT read GetDescription;
     property Comment: TStringCTList read fComment;
     property UseContext: TUsageContextCTList read fUseContext;
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    property Purpose: TMarkdownCT read fPurpose;
-    property Usage: TStringCT read fUsage;
-    property Copyright: TMarkdownCT read fCopyright;
-    property ApprovalDate: TDateCT read fApprovalDate;
-    property LastReviewDate: TDateCT read fLastReviewDate;
-    property EffectivePeriod: TPeriodCT read fEffectivePeriod;
+    property Purpose: TMarkdownCT read GetPurpose;
+    property Usage: TStringCT read GetUsage;
+    property Copyright: TMarkdownCT read GetCopyright;
+    property ApprovalDate: TDateCT read GetApprovalDate;
+    property LastReviewDate: TDateCT read GetLastReviewDate;
+    property EffectivePeriod: TPeriodCT read GetEffectivePeriod;
     property Topic: TCodeableConceptCTList read fTopic;
     property Author: TContactDetailCTList read fAuthor;
     property Editor: TContactDetailCTList read fEditor;
@@ -18872,7 +21043,7 @@ type
     property &Library: TCanonicalCTList read fLibrary;
     [TRequired]
     property &Type: TResearchElementTypeCT read fType;
-    property VariableType: TVariableTypeCT read fVariableType;
+    property VariableType: TVariableTypeCT read GetVariableType;
     property Characteristic: TResearchElementDefinitionCharacteristicCTList read fCharacteristic;
   end;
 
@@ -18906,16 +21077,24 @@ type
     function GetDefinitionExpression: TExpressionCT;
     function GetDefinitionDataRequirement: TDataRequirementCT;
     function GetDefinitionChosen: TBasite;
+    function GetExclude: TBooleanCT;
+    function GetUnitOfMeasure: TCodeableConceptCT;
+    function GetStudyEffectiveDescription: TStringCT;
     function GetStudyEffectiveDateTime: TDateTimeCT;
     function GetStudyEffectivePeriod: TPeriodCT;
     function GetStudyEffectiveDuration: TDurationCT;
     function GetStudyEffectiveTiming: TTimingCT;
     function GetStudyEffectiveChosen: TBasite;
+    function GetStudyEffectiveTimeFromStart: TDurationCT;
+    function GetStudyEffectiveGroupMeasure: TGroupMeasureCT;
+    function GetParticipantEffectiveDescription: TStringCT;
     function GetParticipantEffectiveDateTime: TDateTimeCT;
     function GetParticipantEffectivePeriod: TPeriodCT;
     function GetParticipantEffectiveDuration: TDurationCT;
     function GetParticipantEffectiveTiming: TTimingCT;
     function GetParticipantEffectiveChosen: TBasite;
+    function GetParticipantEffectiveTimeFromStart: TDurationCT;
+    function GetParticipantEffectiveGroupMeasure: TGroupMeasureCT;
   public
     property DefinitionChosen: TBasite read GetDefinitionChosen;
     property StudyEffectiveChosen: TBasite read GetStudyEffectiveChosen;
@@ -18930,9 +21109,9 @@ type
     [TChoice('Definition')]
     property DefinitionDataRequirement: TDataRequirementCT read GetDefinitionDataRequirement;
     property UsageContext: TUsageContextCTList read fUsageContext;
-    property Exclude: TBooleanCT read fExclude;
-    property UnitOfMeasure: TCodeableConceptCT read fUnitOfMeasure;
-    property StudyEffectiveDescription: TStringCT read fStudyEffectiveDescription;
+    property Exclude: TBooleanCT read GetExclude;
+    property UnitOfMeasure: TCodeableConceptCT read GetUnitOfMeasure;
+    property StudyEffectiveDescription: TStringCT read GetStudyEffectiveDescription;
     [TChoice('StudyEffective')]
     property StudyEffectiveDateTime: TDateTimeCT read GetStudyEffectiveDateTime;
     [TChoice('StudyEffective')]
@@ -18941,9 +21120,9 @@ type
     property StudyEffectiveDuration: TDurationCT read GetStudyEffectiveDuration;
     [TChoice('StudyEffective')]
     property StudyEffectiveTiming: TTimingCT read GetStudyEffectiveTiming;
-    property StudyEffectiveTimeFromStart: TDurationCT read fStudyEffectiveTimeFromStart;
-    property StudyEffectiveGroupMeasure: TGroupMeasureCT read fStudyEffectiveGroupMeasure;
-    property ParticipantEffectiveDescription: TStringCT read fParticipantEffectiveDescription;
+    property StudyEffectiveTimeFromStart: TDurationCT read GetStudyEffectiveTimeFromStart;
+    property StudyEffectiveGroupMeasure: TGroupMeasureCT read GetStudyEffectiveGroupMeasure;
+    property ParticipantEffectiveDescription: TStringCT read GetParticipantEffectiveDescription;
     [TChoice('ParticipantEffective')]
     property ParticipantEffectiveDateTime: TDateTimeCT read GetParticipantEffectiveDateTime;
     [TChoice('ParticipantEffective')]
@@ -18952,8 +21131,8 @@ type
     property ParticipantEffectiveDuration: TDurationCT read GetParticipantEffectiveDuration;
     [TChoice('ParticipantEffective')]
     property ParticipantEffectiveTiming: TTimingCT read GetParticipantEffectiveTiming;
-    property ParticipantEffectiveTimeFromStart: TDurationCT read fParticipantEffectiveTimeFromStart;
-    property ParticipantEffectiveGroupMeasure: TGroupMeasureCT read fParticipantEffectiveGroupMeasure;
+    property ParticipantEffectiveTimeFromStart: TDurationCT read GetParticipantEffectiveTimeFromStart;
+    property ParticipantEffectiveGroupMeasure: TGroupMeasureCT read GetParticipantEffectiveGroupMeasure;
   end;
 
   TResearchElementTypeCT = class(TElementCT)
@@ -18996,15 +21175,24 @@ type
     fNote: TAnnotationCTList;
     fArm: TResearchStudyArmCTList;
     fObjective: TResearchStudyObjectiveCTList;
+
+    function GetTitle: TStringCT;
+    function GetPrimaryPurposeType: TCodeableConceptCT;
+    function GetPhase: TCodeableConceptCT;
+    function GetDescription: TMarkdownCT;
+    function GetPeriod: TPeriodCT;
+    function GetSponsor: TReferenceCT;
+    function GetPrincipalInvestigator: TReferenceCT;
+    function GetReasonStopped: TCodeableConceptCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Title: TStringCT read fTitle;
+    property Title: TStringCT read GetTitle;
     property Protocol: TReferenceCTList read fProtocol;
     property PartOf: TReferenceCTList read fPartOf;
     [TRequired]
     property Status: TResearchStudyStatusCT read fStatus;
-    property PrimaryPurposeType: TCodeableConceptCT read fPrimaryPurposeType;
-    property Phase: TCodeableConceptCT read fPhase;
+    property PrimaryPurposeType: TCodeableConceptCT read GetPrimaryPurposeType;
+    property Phase: TCodeableConceptCT read GetPhase;
     property Category: TCodeableConceptCTList read fCategory;
     property Focus: TCodeableConceptCTList read fFocus;
     property Condition: TCodeableConceptCTList read fCondition;
@@ -19012,13 +21200,13 @@ type
     property RelatedArtifact: TRelatedArtifactCTList read fRelatedArtifact;
     property Keyword: TCodeableConceptCTList read fKeyword;
     property Location: TCodeableConceptCTList read fLocation;
-    property Description: TMarkdownCT read fDescription;
+    property Description: TMarkdownCT read GetDescription;
     property Enrollment: TReferenceCTList read fEnrollment;
-    property Period: TPeriodCT read fPeriod;
-    property Sponsor: TReferenceCT read fSponsor;
-    property PrincipalInvestigator: TReferenceCT read fPrincipalInvestigator;
+    property Period: TPeriodCT read GetPeriod;
+    property Sponsor: TReferenceCT read GetSponsor;
+    property PrincipalInvestigator: TReferenceCT read GetPrincipalInvestigator;
     property Site: TReferenceCTList read fSite;
-    property ReasonStopped: TCodeableConceptCT read fReasonStopped;
+    property ReasonStopped: TCodeableConceptCT read GetReasonStopped;
     property Note: TAnnotationCTList read fNote;
     property Arm: TResearchStudyArmCTList read fArm;
     property Objective: TResearchStudyObjectiveCTList read fObjective;
@@ -19030,11 +21218,14 @@ type
     fName: TStringCT;
     fType: TCodeableConceptCT;
     fDescription: TStringCT;
+
+    function GetType: TCodeableConceptCT;
+    function GetDescription: TStringCT;
   published
     [TRequired]
     property Name: TStringCT read fName;
-    property &Type: TCodeableConceptCT read fType;
-    property Description: TStringCT read fDescription;
+    property &Type: TCodeableConceptCT read GetType;
+    property Description: TStringCT read GetDescription;
   end;
 
   [TName('ResearchStudy.Objective')]
@@ -19042,9 +21233,12 @@ type
   private
     fName: TStringCT;
     fType: TCodeableConceptCT;
+
+    function GetName: TStringCT;
+    function GetType: TCodeableConceptCT;
   published
-    property Name: TStringCT read fName;
-    property &Type: TCodeableConceptCT read fType;
+    property Name: TStringCT read GetName;
+    property &Type: TCodeableConceptCT read GetType;
   end;
 
   TResearchStudyStatusCT = class(TElementCT)
@@ -19064,18 +21258,23 @@ type
     fAssignedArm: TStringCT;
     fActualArm: TStringCT;
     fConsent: TReferenceCT;
+
+    function GetPeriod: TPeriodCT;
+    function GetAssignedArm: TStringCT;
+    function GetActualArm: TStringCT;
+    function GetConsent: TReferenceCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
     property Status: TResearchSubjectStatusCT read fStatus;
-    property Period: TPeriodCT read fPeriod;
+    property Period: TPeriodCT read GetPeriod;
     [TRequired]
     property Study: TReferenceCT read fStudy;
     [TRequired]
     property Individual: TReferenceCT read fIndividual;
-    property AssignedArm: TStringCT read fAssignedArm;
-    property ActualArm: TStringCT read fActualArm;
-    property Consent: TReferenceCT read fConsent;
+    property AssignedArm: TStringCT read GetAssignedArm;
+    property ActualArm: TStringCT read GetActualArm;
+    property Consent: TReferenceCT read GetConsent;
   end;
 
   TResearchSubjectStatusCT = class(TElementCT)
@@ -19106,33 +21305,41 @@ type
     fMitigation: TStringCT;
     fNote: TAnnotationCTList;
 
+    function GetBasedOn: TReferenceCT;
+    function GetParent: TReferenceCT;
+    function GetMethod: TCodeableConceptCT;
+    function GetCode: TCodeableConceptCT;
+    function GetEncounter: TReferenceCT;
     function GetOccurrenceDateTime: TDateTimeCT;
     function GetOccurrencePeriod: TPeriodCT;
     function GetOccurrenceChosen: TBasite;
+    function GetCondition: TReferenceCT;
+    function GetPerformer: TReferenceCT;
+    function GetMitigation: TStringCT;
   public
     property OccurrenceChosen: TBasite read GetOccurrenceChosen;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
-    property BasedOn: TReferenceCT read fBasedOn;
-    property Parent: TReferenceCT read fParent;
+    property BasedOn: TReferenceCT read GetBasedOn;
+    property Parent: TReferenceCT read GetParent;
     [TRequired]
     property Status: TObservationStatusCT read fStatus;
-    property Method: TCodeableConceptCT read fMethod;
-    property Code: TCodeableConceptCT read fCode;
+    property Method: TCodeableConceptCT read GetMethod;
+    property Code: TCodeableConceptCT read GetCode;
     [TRequired]
     property Subject: TReferenceCT read fSubject;
-    property Encounter: TReferenceCT read fEncounter;
+    property Encounter: TReferenceCT read GetEncounter;
     [TChoice('Occurrence')]
     property OccurrenceDateTime: TDateTimeCT read GetOccurrenceDateTime;
     [TChoice('Occurrence')]
     property OccurrencePeriod: TPeriodCT read GetOccurrencePeriod;
-    property Condition: TReferenceCT read fCondition;
-    property Performer: TReferenceCT read fPerformer;
+    property Condition: TReferenceCT read GetCondition;
+    property Performer: TReferenceCT read GetPerformer;
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
     property ReasonReference: TReferenceCTList read fReasonReference;
     property Basis: TReferenceCTList read fBasis;
     property Prediction: TRiskAssessmentPredictionCTList read fPrediction;
-    property Mitigation: TStringCT read fMitigation;
+    property Mitigation: TStringCT read GetMitigation;
     property Note: TAnnotationCTList read fNote;
   end;
 
@@ -19148,28 +21355,32 @@ type
     fWhenRange: TRangeCT;
     fRationale: TStringCT;
 
+    function GetOutcome: TCodeableConceptCT;
     function GetProbabilityDecimal: TDecimalCT;
     function GetProbabilityRange: TRangeCT;
     function GetProbabilityChosen: TBasite;
+    function GetQualitativeRisk: TCodeableConceptCT;
+    function GetRelativeRisk: TDecimalCT;
     function GetWhenPeriod: TPeriodCT;
     function GetWhenRange: TRangeCT;
     function GetWhenChosen: TBasite;
+    function GetRationale: TStringCT;
   public
     property ProbabilityChosen: TBasite read GetProbabilityChosen;
     property WhenChosen: TBasite read GetWhenChosen;
   published
-    property Outcome: TCodeableConceptCT read fOutcome;
+    property Outcome: TCodeableConceptCT read GetOutcome;
     [TChoice('Probability')]
     property ProbabilityDecimal: TDecimalCT read GetProbabilityDecimal;
     [TChoice('Probability')]
     property ProbabilityRange: TRangeCT read GetProbabilityRange;
-    property QualitativeRisk: TCodeableConceptCT read fQualitativeRisk;
-    property RelativeRisk: TDecimalCT read fRelativeRisk;
+    property QualitativeRisk: TCodeableConceptCT read GetQualitativeRisk;
+    property RelativeRisk: TDecimalCT read GetRelativeRisk;
     [TChoice('When')]
     property WhenPeriod: TPeriodCT read GetWhenPeriod;
     [TChoice('When')]
     property WhenRange: TRangeCT read GetWhenRange;
-    property Rationale: TStringCT read fRationale;
+    property Rationale: TStringCT read GetRationale;
   end;
 
   TRiskEvidenceSynthesisCT = class(TDomainResourceCT)
@@ -19205,40 +21416,57 @@ type
     fSampleSize: TRiskEvidenceSynthesisSampleSizeCT;
     fRiskEstimate: TRiskEvidenceSynthesisRiskEstimateCT;
     fCertainty: TRiskEvidenceSynthesisCertaintyCTList;
+
+    function GetUrl: TUriCT;
+    function GetVersion: TStringCT;
+    function GetName: TStringCT;
+    function GetTitle: TStringCT;
+    function GetDate: TDateTimeCT;
+    function GetPublisher: TStringCT;
+    function GetDescription: TMarkdownCT;
+    function GetCopyright: TMarkdownCT;
+    function GetApprovalDate: TDateCT;
+    function GetLastReviewDate: TDateCT;
+    function GetEffectivePeriod: TPeriodCT;
+    function GetSynthesisType: TCodeableConceptCT;
+    function GetStudyType: TCodeableConceptCT;
+    function GetExposure: TReferenceCT;
+    function GetSampleSize: TRiskEvidenceSynthesisSampleSizeCT;
+    function GetRiskEstimate: TRiskEvidenceSynthesisRiskEstimateCT;
   published
-    property Url: TUriCT read fUrl;
+    property Url: TUriCT read GetUrl;
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Version: TStringCT read fVersion;
-    property Name: TStringCT read fName;
-    property Title: TStringCT read fTitle;
+    property Version: TStringCT read GetVersion;
+    property Name: TStringCT read GetName;
+    property Title: TStringCT read GetTitle;
     [TRequired]
     property Status: TPublicationStatusCT read fStatus;
-    property Date: TDateTimeCT read fDate;
-    property Publisher: TStringCT read fPublisher;
+    property Date: TDateTimeCT read GetDate;
+    property Publisher: TStringCT read GetPublisher;
     property Contact: TContactDetailCTList read fContact;
-    property Description: TMarkdownCT read fDescription;
+    property Description: TMarkdownCT read GetDescription;
     property Note: TAnnotationCTList read fNote;
     property UseContext: TUsageContextCTList read fUseContext;
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    property Copyright: TMarkdownCT read fCopyright;
-    property ApprovalDate: TDateCT read fApprovalDate;
-    property LastReviewDate: TDateCT read fLastReviewDate;
-    property EffectivePeriod: TPeriodCT read fEffectivePeriod;
+    property Copyright: TMarkdownCT read GetCopyright;
+    property ApprovalDate: TDateCT read GetApprovalDate;
+    property LastReviewDate: TDateCT read GetLastReviewDate;
+    property EffectivePeriod: TPeriodCT read GetEffectivePeriod;
     property Topic: TCodeableConceptCTList read fTopic;
     property Author: TContactDetailCTList read fAuthor;
     property Editor: TContactDetailCTList read fEditor;
     property Reviewer: TContactDetailCTList read fReviewer;
     property Endorser: TContactDetailCTList read fEndorser;
     property RelatedArtifact: TRelatedArtifactCTList read fRelatedArtifact;
-    property SynthesisType: TCodeableConceptCT read fSynthesisType;
-    property StudyType: TCodeableConceptCT read fStudyType;
+    property SynthesisType: TCodeableConceptCT read GetSynthesisType;
+    property StudyType: TCodeableConceptCT read GetStudyType;
     [TRequired]
     property Population: TReferenceCT read fPopulation;
-    property Exposure: TReferenceCT read fExposure;
+    property Exposure: TReferenceCT read GetExposure;
     [TRequired]
     property Outcome: TReferenceCT read fOutcome;
-    property SampleSize: TRiskEvidenceSynthesisSampleSizeCT read fSampleSize;
-    property RiskEstimate: TRiskEvidenceSynthesisRiskEstimateCT read fRiskEstimate;
+    property SampleSize: TRiskEvidenceSynthesisSampleSizeCT read GetSampleSize;
+    property RiskEstimate: TRiskEvidenceSynthesisRiskEstimateCT read GetRiskEstimate;
     property Certainty: TRiskEvidenceSynthesisCertaintyCTList read fCertainty;
   end;
 
@@ -19248,10 +21476,14 @@ type
     fDescription: TStringCT;
     fNumberOfStudies: TIntegerCT;
     fNumberOfParticipants: TIntegerCT;
+
+    function GetDescription: TStringCT;
+    function GetNumberOfStudies: TIntegerCT;
+    function GetNumberOfParticipants: TIntegerCT;
   published
-    property Description: TStringCT read fDescription;
-    property NumberOfStudies: TIntegerCT read fNumberOfStudies;
-    property NumberOfParticipants: TIntegerCT read fNumberOfParticipants;
+    property Description: TStringCT read GetDescription;
+    property NumberOfStudies: TIntegerCT read GetNumberOfStudies;
+    property NumberOfParticipants: TIntegerCT read GetNumberOfParticipants;
   end;
 
   [TName('RiskEvidenceSynthesis.RiskEstimate')]
@@ -19264,13 +21496,20 @@ type
     fDenominatorCount: TIntegerCT;
     fNumeratorCount: TIntegerCT;
     fPrecisionEstimate: TRiskEvidenceSynthesisPrecisionEstimateCTList;
+
+    function GetDescription: TStringCT;
+    function GetType: TCodeableConceptCT;
+    function GetValue: TDecimalCT;
+    function GetUnitOfMeasure: TCodeableConceptCT;
+    function GetDenominatorCount: TIntegerCT;
+    function GetNumeratorCount: TIntegerCT;
   published
-    property Description: TStringCT read fDescription;
-    property &Type: TCodeableConceptCT read fType;
-    property Value: TDecimalCT read fValue;
-    property UnitOfMeasure: TCodeableConceptCT read fUnitOfMeasure;
-    property DenominatorCount: TIntegerCT read fDenominatorCount;
-    property NumeratorCount: TIntegerCT read fNumeratorCount;
+    property Description: TStringCT read GetDescription;
+    property &Type: TCodeableConceptCT read GetType;
+    property Value: TDecimalCT read GetValue;
+    property UnitOfMeasure: TCodeableConceptCT read GetUnitOfMeasure;
+    property DenominatorCount: TIntegerCT read GetDenominatorCount;
+    property NumeratorCount: TIntegerCT read GetNumeratorCount;
     property PrecisionEstimate: TRiskEvidenceSynthesisPrecisionEstimateCTList read fPrecisionEstimate;
   end;
 
@@ -19281,11 +21520,16 @@ type
     fLevel: TDecimalCT;
     fFrom: TDecimalCT;
     fTo: TDecimalCT;
+
+    function GetType: TCodeableConceptCT;
+    function GetLevel: TDecimalCT;
+    function GetFrom: TDecimalCT;
+    function GetTo: TDecimalCT;
   published
-    property &Type: TCodeableConceptCT read fType;
-    property Level: TDecimalCT read fLevel;
-    property From: TDecimalCT read fFrom;
-    property &To: TDecimalCT read fTo;
+    property &Type: TCodeableConceptCT read GetType;
+    property Level: TDecimalCT read GetLevel;
+    property From: TDecimalCT read GetFrom;
+    property &To: TDecimalCT read GetTo;
   end;
 
   [TName('RiskEvidenceSynthesis.Certainty')]
@@ -19306,8 +21550,10 @@ type
     fType: TCodeableConceptCT;
     fRating: TCodeableConceptCTList;
     fNote: TAnnotationCTList;
+
+    function GetType: TCodeableConceptCT;
   published
-    property &Type: TCodeableConceptCT read fType;
+    property &Type: TCodeableConceptCT read GetType;
     property Rating: TCodeableConceptCTList read fRating;
     property Note: TAnnotationCTList read fNote;
   end;
@@ -19322,15 +21568,19 @@ type
     fActor: TReferenceCTList;
     fPlanningHorizon: TPeriodCT;
     fComment: TStringCT;
+
+    function GetActive: TBooleanCT;
+    function GetPlanningHorizon: TPeriodCT;
+    function GetComment: TStringCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Active: TBooleanCT read fActive;
+    property Active: TBooleanCT read GetActive;
     property ServiceCategory: TCodeableConceptCTList read fServiceCategory;
     property ServiceType: TCodeableConceptCTList read fServiceType;
     property Specialty: TCodeableConceptCTList read fSpecialty;
     property Actor: TReferenceCTList read fActor;
-    property PlanningHorizon: TPeriodCT read fPlanningHorizon;
-    property Comment: TStringCT read fComment;
+    property PlanningHorizon: TPeriodCT read GetPlanningHorizon;
+    property Comment: TStringCT read GetComment;
   end;
 
   TSearchParameterCT = class(TDomainResourceCT)
@@ -19361,35 +21611,47 @@ type
     fModifier: TSearchModifierCodeCTList;
     fChain: TStringCTList;
     fComponent: TSearchParameterComponentCTList;
+
+    function GetVersion: TStringCT;
+    function GetDerivedFrom: TCanonicalCT;
+    function GetExperimental: TBooleanCT;
+    function GetDate: TDateTimeCT;
+    function GetPublisher: TStringCT;
+    function GetPurpose: TMarkdownCT;
+    function GetExpression: TStringCT;
+    function GetXpath: TStringCT;
+    function GetXpathUsage: TXPathUsageTypeCT;
+    function GetMultipleOr: TBooleanCT;
+    function GetMultipleAnd: TBooleanCT;
   published
     [TRequired]
     property Url: TUriCT read fUrl;
-    property Version: TStringCT read fVersion;
+    property Version: TStringCT read GetVersion;
     [TRequired]
     property Name: TStringCT read fName;
-    property DerivedFrom: TCanonicalCT read fDerivedFrom;
+    property DerivedFrom: TCanonicalCT read GetDerivedFrom;
     [TRequired]
     property Status: TPublicationStatusCT read fStatus;
-    property Experimental: TBooleanCT read fExperimental;
-    property Date: TDateTimeCT read fDate;
-    property Publisher: TStringCT read fPublisher;
+    property Experimental: TBooleanCT read GetExperimental;
+    property Date: TDateTimeCT read GetDate;
+    property Publisher: TStringCT read GetPublisher;
     property Contact: TContactDetailCTList read fContact;
     [TRequired]
     property Description: TMarkdownCT read fDescription;
     property UseContext: TUsageContextCTList read fUseContext;
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    property Purpose: TMarkdownCT read fPurpose;
+    property Purpose: TMarkdownCT read GetPurpose;
     [TRequired]
     property Code: TCodeCT read fCode;
     property Base: TCodeCTList read fBase;
     [TRequired]
     property &Type: TSearchParamTypeCT read fType;
-    property Expression: TStringCT read fExpression;
-    property Xpath: TStringCT read fXpath;
-    property XpathUsage: TXPathUsageTypeCT read fXpathUsage;
+    property Expression: TStringCT read GetExpression;
+    property Xpath: TStringCT read GetXpath;
+    property XpathUsage: TXPathUsageTypeCT read GetXpathUsage;
     property Target: TCodeCTList read fTarget;
-    property MultipleOr: TBooleanCT read fMultipleOr;
-    property MultipleAnd: TBooleanCT read fMultipleAnd;
+    property MultipleOr: TBooleanCT read GetMultipleOr;
+    property MultipleAnd: TBooleanCT read GetMultipleAnd;
     property Comparator: TSearchComparatorCTList read fComparator;
     property Modifier: TSearchModifierCodeCTList read fModifier;
     property Chain: TStringCTList read fChain;
@@ -19470,10 +21732,15 @@ type
     fPatientInstruction: TStringCT;
     fRelevantHistory: TReferenceCTList;
 
+    function GetRequisition: TIdentifierCT;
+    function GetPriority: TRequestPriorityCT;
+    function GetDoNotPerform: TBooleanCT;
+    function GetCode: TCodeableConceptCT;
     function GetQuantityQuantity: TQuantityCT;
     function GetQuantityRatio: TRatioCT;
     function GetQuantityRange: TRangeCT;
     function GetQuantityChosen: TBasite;
+    function GetEncounter: TReferenceCT;
     function GetOccurrenceDateTime: TDateTimeCT;
     function GetOccurrencePeriod: TPeriodCT;
     function GetOccurrenceTiming: TTimingCT;
@@ -19481,6 +21748,10 @@ type
     function GetAsNeededBoolean: TBooleanCT;
     function GetAsNeededCodeableConcept: TCodeableConceptCT;
     function GetAsNeededChosen: TBasite;
+    function GetAuthoredOn: TDateTimeCT;
+    function GetRequester: TReferenceCT;
+    function GetPerformerType: TCodeableConceptCT;
+    function GetPatientInstruction: TStringCT;
   public
     property QuantityChosen: TBasite read GetQuantityChosen;
     property OccurrenceChosen: TBasite read GetOccurrenceChosen;
@@ -19491,15 +21762,15 @@ type
     property InstantiatesUri: TUriCTList read fInstantiatesUri;
     property BasedOn: TReferenceCTList read fBasedOn;
     property Replaces: TReferenceCTList read fReplaces;
-    property Requisition: TIdentifierCT read fRequisition;
+    property Requisition: TIdentifierCT read GetRequisition;
     [TRequired]
     property Status: TRequestStatusCT read fStatus;
     [TRequired]
     property Intent: TRequestIntentCT read fIntent;
     property Category: TCodeableConceptCTList read fCategory;
-    property Priority: TRequestPriorityCT read fPriority;
-    property DoNotPerform: TBooleanCT read fDoNotPerform;
-    property Code: TCodeableConceptCT read fCode;
+    property Priority: TRequestPriorityCT read GetPriority;
+    property DoNotPerform: TBooleanCT read GetDoNotPerform;
+    property Code: TCodeableConceptCT read GetCode;
     property OrderDetail: TCodeableConceptCTList read fOrderDetail;
     [TChoice('Quantity')]
     property QuantityQuantity: TQuantityCT read GetQuantityQuantity;
@@ -19509,7 +21780,7 @@ type
     property QuantityRange: TRangeCT read GetQuantityRange;
     [TRequired]
     property Subject: TReferenceCT read fSubject;
-    property Encounter: TReferenceCT read fEncounter;
+    property Encounter: TReferenceCT read GetEncounter;
     [TChoice('Occurrence')]
     property OccurrenceDateTime: TDateTimeCT read GetOccurrenceDateTime;
     [TChoice('Occurrence')]
@@ -19520,9 +21791,9 @@ type
     property AsNeededBoolean: TBooleanCT read GetAsNeededBoolean;
     [TChoice('AsNeeded')]
     property AsNeededCodeableConcept: TCodeableConceptCT read GetAsNeededCodeableConcept;
-    property AuthoredOn: TDateTimeCT read fAuthoredOn;
-    property Requester: TReferenceCT read fRequester;
-    property PerformerType: TCodeableConceptCT read fPerformerType;
+    property AuthoredOn: TDateTimeCT read GetAuthoredOn;
+    property Requester: TReferenceCT read GetRequester;
+    property PerformerType: TCodeableConceptCT read GetPerformerType;
     property Performer: TReferenceCTList read fPerformer;
     property LocationCode: TCodeableConceptCTList read fLocationCode;
     property LocationReference: TReferenceCTList read fLocationReference;
@@ -19533,7 +21804,7 @@ type
     property Specimen: TReferenceCTList read fSpecimen;
     property BodySite: TCodeableConceptCTList read fBodySite;
     property Note: TAnnotationCTList read fNote;
-    property PatientInstruction: TStringCT read fPatientInstruction;
+    property PatientInstruction: TStringCT read GetPatientInstruction;
     property RelevantHistory: TReferenceCTList read fRelevantHistory;
   end;
 
@@ -19550,12 +21821,16 @@ type
     fEnd: TInstantCT;
     fOverbooked: TBooleanCT;
     fComment: TStringCT;
+
+    function GetAppointmentType: TCodeableConceptCT;
+    function GetOverbooked: TBooleanCT;
+    function GetComment: TStringCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     property ServiceCategory: TCodeableConceptCTList read fServiceCategory;
     property ServiceType: TCodeableConceptCTList read fServiceType;
     property Specialty: TCodeableConceptCTList read fSpecialty;
-    property AppointmentType: TCodeableConceptCT read fAppointmentType;
+    property AppointmentType: TCodeableConceptCT read GetAppointmentType;
     [TRequired]
     property Schedule: TReferenceCT read fSchedule;
     [TRequired]
@@ -19564,8 +21839,8 @@ type
     property Start: TInstantCT read fStart;
     [TRequired]
     property &End: TInstantCT read fEnd;
-    property Overbooked: TBooleanCT read fOverbooked;
-    property Comment: TStringCT read fComment;
+    property Overbooked: TBooleanCT read GetOverbooked;
+    property Comment: TStringCT read GetComment;
   end;
 
   TSlotStatusCT = class(TElementCT)
@@ -19590,16 +21865,23 @@ type
     fContainer: TSpecimenContainerCTList;
     fCondition: TCodeableConceptCTList;
     fNote: TAnnotationCTList;
+
+    function GetAccessionIdentifier: TIdentifierCT;
+    function GetStatus: TSpecimenStatusCT;
+    function GetType: TCodeableConceptCT;
+    function GetSubject: TReferenceCT;
+    function GetReceivedTime: TDateTimeCT;
+    function GetCollection: TSpecimenCollectionCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
-    property AccessionIdentifier: TIdentifierCT read fAccessionIdentifier;
-    property Status: TSpecimenStatusCT read fStatus;
-    property &Type: TCodeableConceptCT read fType;
-    property Subject: TReferenceCT read fSubject;
-    property ReceivedTime: TDateTimeCT read fReceivedTime;
+    property AccessionIdentifier: TIdentifierCT read GetAccessionIdentifier;
+    property Status: TSpecimenStatusCT read GetStatus;
+    property &Type: TCodeableConceptCT read GetType;
+    property Subject: TReferenceCT read GetSubject;
+    property ReceivedTime: TDateTimeCT read GetReceivedTime;
     property Parent: TReferenceCTList read fParent;
     property Request: TReferenceCTList read fRequest;
-    property Collection: TSpecimenCollectionCT read fCollection;
+    property Collection: TSpecimenCollectionCT read GetCollection;
     property Processing: TSpecimenProcessingCTList read fProcessing;
     property Container: TSpecimenContainerCTList read fContainer;
     property Condition: TCodeableConceptCTList read fCondition;
@@ -19619,9 +21901,14 @@ type
     fFastingStatusCodeableConcept: TCodeableConceptCT;
     fFastingStatusDuration: TDurationCT;
 
+    function GetCollector: TReferenceCT;
     function GetCollectedDateTime: TDateTimeCT;
     function GetCollectedPeriod: TPeriodCT;
     function GetCollectedChosen: TBasite;
+    function GetDuration: TDurationCT;
+    function GetQuantity: TQuantityCT;
+    function GetMethod: TCodeableConceptCT;
+    function GetBodySite: TCodeableConceptCT;
     function GetFastingStatusCodeableConcept: TCodeableConceptCT;
     function GetFastingStatusDuration: TDurationCT;
     function GetFastingStatusChosen: TBasite;
@@ -19629,15 +21916,15 @@ type
     property CollectedChosen: TBasite read GetCollectedChosen;
     property FastingStatusChosen: TBasite read GetFastingStatusChosen;
   published
-    property Collector: TReferenceCT read fCollector;
+    property Collector: TReferenceCT read GetCollector;
     [TChoice('Collected')]
     property CollectedDateTime: TDateTimeCT read GetCollectedDateTime;
     [TChoice('Collected')]
     property CollectedPeriod: TPeriodCT read GetCollectedPeriod;
-    property Duration: TDurationCT read fDuration;
-    property Quantity: TQuantityCT read fQuantity;
-    property Method: TCodeableConceptCT read fMethod;
-    property BodySite: TCodeableConceptCT read fBodySite;
+    property Duration: TDurationCT read GetDuration;
+    property Quantity: TQuantityCT read GetQuantity;
+    property Method: TCodeableConceptCT read GetMethod;
+    property BodySite: TCodeableConceptCT read GetBodySite;
     [TChoice('FastingStatus')]
     property FastingStatusCodeableConcept: TCodeableConceptCT read GetFastingStatusCodeableConcept;
     [TChoice('FastingStatus')]
@@ -19653,14 +21940,16 @@ type
     fTimeDateTime: TDateTimeCT;
     fTimePeriod: TPeriodCT;
 
+    function GetDescription: TStringCT;
+    function GetProcedure: TCodeableConceptCT;
     function GetTimeDateTime: TDateTimeCT;
     function GetTimePeriod: TPeriodCT;
     function GetTimeChosen: TBasite;
   public
     property TimeChosen: TBasite read GetTimeChosen;
   published
-    property Description: TStringCT read fDescription;
-    property &Procedure: TCodeableConceptCT read fProcedure;
+    property Description: TStringCT read GetDescription;
+    property &Procedure: TCodeableConceptCT read GetProcedure;
     property Additive: TReferenceCTList read fAdditive;
     [TChoice('Time')]
     property TimeDateTime: TDateTimeCT read GetTimeDateTime;
@@ -19679,6 +21968,10 @@ type
     fAdditiveCodeableConcept: TCodeableConceptCT;
     fAdditiveReference: TReferenceCT;
 
+    function GetDescription: TStringCT;
+    function GetType: TCodeableConceptCT;
+    function GetCapacity: TQuantityCT;
+    function GetSpecimenQuantity: TQuantityCT;
     function GetAdditiveCodeableConcept: TCodeableConceptCT;
     function GetAdditiveReference: TReferenceCT;
     function GetAdditiveChosen: TBasite;
@@ -19686,10 +21979,10 @@ type
     property AdditiveChosen: TBasite read GetAdditiveChosen;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Description: TStringCT read fDescription;
-    property &Type: TCodeableConceptCT read fType;
-    property Capacity: TQuantityCT read fCapacity;
-    property SpecimenQuantity: TQuantityCT read fSpecimenQuantity;
+    property Description: TStringCT read GetDescription;
+    property &Type: TCodeableConceptCT read GetType;
+    property Capacity: TQuantityCT read GetCapacity;
+    property SpecimenQuantity: TQuantityCT read GetSpecimenQuantity;
     [TChoice('Additive')]
     property AdditiveCodeableConcept: TCodeableConceptCT read GetAdditiveCodeableConcept;
     [TChoice('Additive')]
@@ -19711,11 +22004,15 @@ type
     fTimeAspect: TStringCT;
     fCollection: TCodeableConceptCTList;
     fTypeTested: TSpecimenDefinitionTypeTestedCTList;
+
+    function GetIdentifier: TIdentifierCT;
+    function GetTypeCollected: TCodeableConceptCT;
+    function GetTimeAspect: TStringCT;
   published
-    property Identifier: TIdentifierCT read fIdentifier;
-    property TypeCollected: TCodeableConceptCT read fTypeCollected;
+    property Identifier: TIdentifierCT read GetIdentifier;
+    property TypeCollected: TCodeableConceptCT read GetTypeCollected;
     property PatientPreparation: TCodeableConceptCTList read fPatientPreparation;
-    property TimeAspect: TStringCT read fTimeAspect;
+    property TimeAspect: TStringCT read GetTimeAspect;
     property Collection: TCodeableConceptCTList read fCollection;
     property TypeTested: TSpecimenDefinitionTypeTestedCTList read fTypeTested;
   end;
@@ -19731,14 +22028,20 @@ type
     fRetentionTime: TDurationCT;
     fRejectionCriterion: TCodeableConceptCTList;
     fHandling: TSpecimenDefinitionHandlingCTList;
+
+    function GetIsDerived: TBooleanCT;
+    function GetType: TCodeableConceptCT;
+    function GetContainer: TSpecimenDefinitionContainerCT;
+    function GetRequirement: TStringCT;
+    function GetRetentionTime: TDurationCT;
   published
-    property IsDerived: TBooleanCT read fIsDerived;
-    property &Type: TCodeableConceptCT read fType;
+    property IsDerived: TBooleanCT read GetIsDerived;
+    property &Type: TCodeableConceptCT read GetType;
     [TRequired]
     property Preference: TSpecimenContainedPreferenceCT read fPreference;
-    property Container: TSpecimenDefinitionContainerCT read fContainer;
-    property Requirement: TStringCT read fRequirement;
-    property RetentionTime: TDurationCT read fRetentionTime;
+    property Container: TSpecimenDefinitionContainerCT read GetContainer;
+    property Requirement: TStringCT read GetRequirement;
+    property RetentionTime: TDurationCT read GetRetentionTime;
     property RejectionCriterion: TCodeableConceptCTList read fRejectionCriterion;
     property Handling: TSpecimenDefinitionHandlingCTList read fHandling;
   end;
@@ -19756,23 +22059,29 @@ type
     fAdditive: TSpecimenDefinitionAdditiveCTList;
     fPreparation: TStringCT;
 
+    function GetMaterial: TCodeableConceptCT;
+    function GetType: TCodeableConceptCT;
+    function GetCap: TCodeableConceptCT;
+    function GetDescription: TStringCT;
+    function GetCapacity: TQuantityCT;
     function GetMinimumVolumeQuantity: TQuantityCT;
     function GetMinimumVolumeString: TStringCT;
     function GetMinimumVolumeChosen: TBasite;
+    function GetPreparation: TStringCT;
   public
     property MinimumVolumeChosen: TBasite read GetMinimumVolumeChosen;
   published
-    property Material: TCodeableConceptCT read fMaterial;
-    property &Type: TCodeableConceptCT read fType;
-    property Cap: TCodeableConceptCT read fCap;
-    property Description: TStringCT read fDescription;
-    property Capacity: TQuantityCT read fCapacity;
+    property Material: TCodeableConceptCT read GetMaterial;
+    property &Type: TCodeableConceptCT read GetType;
+    property Cap: TCodeableConceptCT read GetCap;
+    property Description: TStringCT read GetDescription;
+    property Capacity: TQuantityCT read GetCapacity;
     [TChoice('MinimumVolume')]
     property MinimumVolumeQuantity: TQuantityCT read GetMinimumVolumeQuantity;
     [TChoice('MinimumVolume')]
     property MinimumVolumeString: TStringCT read GetMinimumVolumeString;
     property Additive: TSpecimenDefinitionAdditiveCTList read fAdditive;
-    property Preparation: TStringCT read fPreparation;
+    property Preparation: TStringCT read GetPreparation;
   end;
 
   [TName('SpecimenDefinition.Additive')]
@@ -19800,11 +22109,16 @@ type
     fTemperatureRange: TRangeCT;
     fMaxDuration: TDurationCT;
     fInstruction: TStringCT;
+
+    function GetTemperatureQualifier: TCodeableConceptCT;
+    function GetTemperatureRange: TRangeCT;
+    function GetMaxDuration: TDurationCT;
+    function GetInstruction: TStringCT;
   published
-    property TemperatureQualifier: TCodeableConceptCT read fTemperatureQualifier;
-    property TemperatureRange: TRangeCT read fTemperatureRange;
-    property MaxDuration: TDurationCT read fMaxDuration;
-    property Instruction: TStringCT read fInstruction;
+    property TemperatureQualifier: TCodeableConceptCT read GetTemperatureQualifier;
+    property TemperatureRange: TRangeCT read GetTemperatureRange;
+    property MaxDuration: TDurationCT read GetMaxDuration;
+    property Instruction: TStringCT read GetInstruction;
   end;
 
   TSpecimenContainedPreferenceCT = class(TElementCT)
@@ -19843,27 +22157,41 @@ type
     fDerivation: TTypeDerivationRuleCT;
     fSnapshot: TStructureDefinitionSnapshotCT;
     fDifferential: TStructureDefinitionDifferentialCT;
+
+    function GetVersion: TStringCT;
+    function GetTitle: TStringCT;
+    function GetExperimental: TBooleanCT;
+    function GetDate: TDateTimeCT;
+    function GetPublisher: TStringCT;
+    function GetDescription: TMarkdownCT;
+    function GetPurpose: TMarkdownCT;
+    function GetCopyright: TMarkdownCT;
+    function GetFhirVersion: TFHIRVersionCT;
+    function GetBaseDefinition: TCanonicalCT;
+    function GetDerivation: TTypeDerivationRuleCT;
+    function GetSnapshot: TStructureDefinitionSnapshotCT;
+    function GetDifferential: TStructureDefinitionDifferentialCT;
   published
     [TRequired]
     property Url: TUriCT read fUrl;
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Version: TStringCT read fVersion;
+    property Version: TStringCT read GetVersion;
     [TRequired]
     property Name: TStringCT read fName;
-    property Title: TStringCT read fTitle;
+    property Title: TStringCT read GetTitle;
     [TRequired]
     property Status: TPublicationStatusCT read fStatus;
-    property Experimental: TBooleanCT read fExperimental;
-    property Date: TDateTimeCT read fDate;
-    property Publisher: TStringCT read fPublisher;
+    property Experimental: TBooleanCT read GetExperimental;
+    property Date: TDateTimeCT read GetDate;
+    property Publisher: TStringCT read GetPublisher;
     property Contact: TContactDetailCTList read fContact;
-    property Description: TMarkdownCT read fDescription;
+    property Description: TMarkdownCT read GetDescription;
     property UseContext: TUsageContextCTList read fUseContext;
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    property Purpose: TMarkdownCT read fPurpose;
-    property Copyright: TMarkdownCT read fCopyright;
+    property Purpose: TMarkdownCT read GetPurpose;
+    property Copyright: TMarkdownCT read GetCopyright;
     property Keyword: TCodingCTList read fKeyword;
-    property FhirVersion: TFHIRVersionCT read fFhirVersion;
+    property FhirVersion: TFHIRVersionCT read GetFhirVersion;
     property Mapping: TStructureDefinitionMappingCTList read fMapping;
     [TRequired]
     property Kind: TStructureDefinitionKindCT read fKind;
@@ -19873,10 +22201,10 @@ type
     property ContextInvariant: TStringCTList read fContextInvariant;
     [TRequired]
     property &Type: TUriCT read fType;
-    property BaseDefinition: TCanonicalCT read fBaseDefinition;
-    property Derivation: TTypeDerivationRuleCT read fDerivation;
-    property Snapshot: TStructureDefinitionSnapshotCT read fSnapshot;
-    property Differential: TStructureDefinitionDifferentialCT read fDifferential;
+    property BaseDefinition: TCanonicalCT read GetBaseDefinition;
+    property Derivation: TTypeDerivationRuleCT read GetDerivation;
+    property Snapshot: TStructureDefinitionSnapshotCT read GetSnapshot;
+    property Differential: TStructureDefinitionDifferentialCT read GetDifferential;
   end;
 
   [TName('StructureDefinition.Mapping')]
@@ -19886,12 +22214,16 @@ type
     fUri: TUriCT;
     fName: TStringCT;
     fComment: TStringCT;
+
+    function GetUri: TUriCT;
+    function GetName: TStringCT;
+    function GetComment: TStringCT;
   published
     [TRequired]
     property Identity: TIdCT read fIdentity;
-    property Uri: TUriCT read fUri;
-    property Name: TStringCT read fName;
-    property Comment: TStringCT read fComment;
+    property Uri: TUriCT read GetUri;
+    property Name: TStringCT read GetName;
+    property Comment: TStringCT read GetComment;
   end;
 
   [TName('StructureDefinition.Context')]
@@ -19963,25 +22295,34 @@ type
     fStructure: TStructureMapStructureCTList;
     fImport: TCanonicalCTList;
     fGroup: TStructureMapGroupCTList;
+
+    function GetVersion: TStringCT;
+    function GetTitle: TStringCT;
+    function GetExperimental: TBooleanCT;
+    function GetDate: TDateTimeCT;
+    function GetPublisher: TStringCT;
+    function GetDescription: TMarkdownCT;
+    function GetPurpose: TMarkdownCT;
+    function GetCopyright: TMarkdownCT;
   published
     [TRequired]
     property Url: TUriCT read fUrl;
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Version: TStringCT read fVersion;
+    property Version: TStringCT read GetVersion;
     [TRequired]
     property Name: TStringCT read fName;
-    property Title: TStringCT read fTitle;
+    property Title: TStringCT read GetTitle;
     [TRequired]
     property Status: TPublicationStatusCT read fStatus;
-    property Experimental: TBooleanCT read fExperimental;
-    property Date: TDateTimeCT read fDate;
-    property Publisher: TStringCT read fPublisher;
+    property Experimental: TBooleanCT read GetExperimental;
+    property Date: TDateTimeCT read GetDate;
+    property Publisher: TStringCT read GetPublisher;
     property Contact: TContactDetailCTList read fContact;
-    property Description: TMarkdownCT read fDescription;
+    property Description: TMarkdownCT read GetDescription;
     property UseContext: TUsageContextCTList read fUseContext;
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    property Purpose: TMarkdownCT read fPurpose;
-    property Copyright: TMarkdownCT read fCopyright;
+    property Purpose: TMarkdownCT read GetPurpose;
+    property Copyright: TMarkdownCT read GetCopyright;
     property Structure: TStructureMapStructureCTList read fStructure;
     property Import: TCanonicalCTList read fImport;
     property Group: TStructureMapGroupCTList read fGroup;
@@ -19994,13 +22335,16 @@ type
     fMode: TStructureMapModelModeCT;
     fAlias: TStringCT;
     fDocumentation: TStringCT;
+
+    function GetAlias: TStringCT;
+    function GetDocumentation: TStringCT;
   published
     [TRequired]
     property Url: TCanonicalCT read fUrl;
     [TRequired]
     property Mode: TStructureMapModelModeCT read fMode;
-    property Alias: TStringCT read fAlias;
-    property Documentation: TStringCT read fDocumentation;
+    property Alias: TStringCT read GetAlias;
+    property Documentation: TStringCT read GetDocumentation;
   end;
 
   [TName('StructureMap.Group')]
@@ -20012,13 +22356,16 @@ type
     fDocumentation: TStringCT;
     fInput: TStructureMapInputCTList;
     fRule: TStructureMapRuleCTList;
+
+    function GetExtends: TIdCT;
+    function GetDocumentation: TStringCT;
   published
     [TRequired]
     property Name: TIdCT read fName;
-    property Extends: TIdCT read fExtends;
+    property Extends: TIdCT read GetExtends;
     [TRequired]
     property TypeMode: TStructureMapGroupTypeModeCT read fTypeMode;
-    property Documentation: TStringCT read fDocumentation;
+    property Documentation: TStringCT read GetDocumentation;
     property Input: TStructureMapInputCTList read fInput;
     property Rule: TStructureMapRuleCTList read fRule;
   end;
@@ -20030,13 +22377,16 @@ type
     fType: TStringCT;
     fMode: TStructureMapInputModeCT;
     fDocumentation: TStringCT;
+
+    function GetType: TStringCT;
+    function GetDocumentation: TStringCT;
   published
     [TRequired]
     property Name: TIdCT read fName;
-    property &Type: TStringCT read fType;
+    property &Type: TStringCT read GetType;
     [TRequired]
     property Mode: TStructureMapInputModeCT read fMode;
-    property Documentation: TStringCT read fDocumentation;
+    property Documentation: TStringCT read GetDocumentation;
   end;
 
   [TName('StructureMap.Rule')]
@@ -20048,6 +22398,8 @@ type
     fRule: TStructureMapRuleCTList;
     fDependent: TStructureMapDependentCTList;
     fDocumentation: TStringCT;
+
+    function GetDocumentation: TStringCT;
   published
     [TRequired]
     property Name: TIdCT read fName;
@@ -20055,7 +22407,7 @@ type
     property Target: TStructureMapTargetCTList read fTarget;
     property Rule: TStructureMapRuleCTList read fRule;
     property Dependent: TStructureMapDependentCTList read fDependent;
-    property Documentation: TStringCT read fDocumentation;
+    property Documentation: TStringCT read GetDocumentation;
   end;
 
   [TName('StructureMap.Source')]
@@ -20122,6 +22474,9 @@ type
     fCheck: TStringCT;
     fLogMessage: TStringCT;
 
+    function GetMin: TIntegerCT;
+    function GetMax: TStringCT;
+    function GetType: TStringCT;
     function GetDefaultValueBase64Binary: TBase64BinaryCT;
     function GetDefaultValueBoolean: TBooleanCT;
     function GetDefaultValueCanonical: TCanonicalCT;
@@ -20173,14 +22528,20 @@ type
     function GetDefaultValueDosage: TDosageCT;
     function GetDefaultValueMeta: TMetaCT;
     function GetDefaultValueChosen: TBasite;
+    function GetElement: TStringCT;
+    function GetListMode: TStructureMapSourceListModeCT;
+    function GetVariable: TIdCT;
+    function GetCondition: TStringCT;
+    function GetCheck: TStringCT;
+    function GetLogMessage: TStringCT;
   public
     property DefaultValueChosen: TBasite read GetDefaultValueChosen;
   published
     [TRequired]
     property Context: TIdCT read fContext;
-    property Min: TIntegerCT read fMin;
-    property Max: TStringCT read fMax;
-    property &Type: TStringCT read fType;
+    property Min: TIntegerCT read GetMin;
+    property Max: TStringCT read GetMax;
+    property &Type: TStringCT read GetType;
     [TChoice('DefaultValue')]
     property DefaultValueBase64Binary: TBase64BinaryCT read GetDefaultValueBase64Binary;
     [TChoice('DefaultValue')]
@@ -20281,12 +22642,12 @@ type
     property DefaultValueDosage: TDosageCT read GetDefaultValueDosage;
     [TChoice('DefaultValue')]
     property DefaultValueMeta: TMetaCT read GetDefaultValueMeta;
-    property Element: TStringCT read fElement;
-    property ListMode: TStructureMapSourceListModeCT read fListMode;
-    property Variable: TIdCT read fVariable;
-    property Condition: TStringCT read fCondition;
-    property Check: TStringCT read fCheck;
-    property LogMessage: TStringCT read fLogMessage;
+    property Element: TStringCT read GetElement;
+    property ListMode: TStructureMapSourceListModeCT read GetListMode;
+    property Variable: TIdCT read GetVariable;
+    property Condition: TStringCT read GetCondition;
+    property Check: TStringCT read GetCheck;
+    property LogMessage: TStringCT read GetLogMessage;
   end;
 
   [TName('StructureMap.Target')]
@@ -20300,14 +22661,21 @@ type
     fListRuleId: TIdCT;
     fTransform: TStructureMapTransformCT;
     fParameter: TStructureMapParameterCTList;
+
+    function GetContext: TIdCT;
+    function GetContextType: TStructureMapContextTypeCT;
+    function GetElement: TStringCT;
+    function GetVariable: TIdCT;
+    function GetListRuleId: TIdCT;
+    function GetTransform: TStructureMapTransformCT;
   published
-    property Context: TIdCT read fContext;
-    property ContextType: TStructureMapContextTypeCT read fContextType;
-    property Element: TStringCT read fElement;
-    property Variable: TIdCT read fVariable;
+    property Context: TIdCT read GetContext;
+    property ContextType: TStructureMapContextTypeCT read GetContextType;
+    property Element: TStringCT read GetElement;
+    property Variable: TIdCT read GetVariable;
     property ListMode: TStructureMapTargetListModeCTList read fListMode;
-    property ListRuleId: TIdCT read fListRuleId;
-    property Transform: TStructureMapTransformCT read fTransform;
+    property ListRuleId: TIdCT read GetListRuleId;
+    property Transform: TStructureMapTransformCT read GetTransform;
     property Parameter: TStructureMapParameterCTList read fParameter;
   end;
 
@@ -20410,16 +22778,19 @@ type
     fCriteria: TStringCT;
     fError: TStringCT;
     fChannel: TSubscriptionChannelCT;
+
+    function GetEnd: TInstantCT;
+    function GetError: TStringCT;
   published
     [TRequired]
     property Status: TSubscriptionStatusCT read fStatus;
     property Contact: TContactPointCTList read fContact;
-    property &End: TInstantCT read fEnd;
+    property &End: TInstantCT read GetEnd;
     [TRequired]
     property Reason: TStringCT read fReason;
     [TRequired]
     property Criteria: TStringCT read fCriteria;
-    property Error: TStringCT read fError;
+    property Error: TStringCT read GetError;
     [TRequired]
     property Channel: TSubscriptionChannelCT read fChannel;
   end;
@@ -20431,11 +22802,14 @@ type
     fEndpoint: TUrlCT;
     fPayload: TCodeCT;
     fHeader: TStringCTList;
+
+    function GetEndpoint: TUrlCT;
+    function GetPayload: TCodeCT;
   published
     [TRequired]
     property &Type: TSubscriptionChannelTypeCT read fType;
-    property Endpoint: TUrlCT read fEndpoint;
-    property Payload: TCodeCT read fPayload;
+    property Endpoint: TUrlCT read GetEndpoint;
+    property Payload: TCodeCT read GetPayload;
     property Header: TStringCTList read fHeader;
   end;
 
@@ -20462,13 +22836,16 @@ type
     fDescription: TStringCT;
     fInstance: TSubstanceInstanceCTList;
     fIngredient: TSubstanceIngredientCTList;
+
+    function GetStatus: TFHIRSubstanceStatusCT;
+    function GetDescription: TStringCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Status: TFHIRSubstanceStatusCT read fStatus;
+    property Status: TFHIRSubstanceStatusCT read GetStatus;
     property Category: TCodeableConceptCTList read fCategory;
     [TRequired]
     property Code: TCodeableConceptCT read fCode;
-    property Description: TStringCT read fDescription;
+    property Description: TStringCT read GetDescription;
     property Instance: TSubstanceInstanceCTList read fInstance;
     property Ingredient: TSubstanceIngredientCTList read fIngredient;
   end;
@@ -20479,10 +22856,14 @@ type
     fIdentifier: TIdentifierCT;
     fExpiry: TDateTimeCT;
     fQuantity: TQuantityCT;
+
+    function GetIdentifier: TIdentifierCT;
+    function GetExpiry: TDateTimeCT;
+    function GetQuantity: TQuantityCT;
   published
-    property Identifier: TIdentifierCT read fIdentifier;
-    property Expiry: TDateTimeCT read fExpiry;
-    property Quantity: TQuantityCT read fQuantity;
+    property Identifier: TIdentifierCT read GetIdentifier;
+    property Expiry: TDateTimeCT read GetExpiry;
+    property Quantity: TQuantityCT read GetQuantity;
   end;
 
   [TName('Substance.Ingredient')]
@@ -20492,13 +22873,14 @@ type
     fSubstanceCodeableConcept: TCodeableConceptCT;
     fSubstanceReference: TReferenceCT;
 
+    function GetQuantity: TRatioCT;
     function GetSubstanceCodeableConcept: TCodeableConceptCT;
     function GetSubstanceReference: TReferenceCT;
     function GetSubstanceChosen: TBasite;
   public
     property SubstanceChosen: TBasite read GetSubstanceChosen;
   published
-    property Quantity: TRatioCT read fQuantity;
+    property Quantity: TRatioCT read GetQuantity;
     [TChoice('Substance')]
     property SubstanceCodeableConcept: TCodeableConceptCT read GetSubstanceCodeableConcept;
     [TChoice('Substance')]
@@ -20519,11 +22901,16 @@ type
     fAreaOfHybridisation: TStringCT;
     fOligoNucleotideType: TCodeableConceptCT;
     fSubunit: TSubstanceNucleicAcidSubunitCTList;
+
+    function GetSequenceType: TCodeableConceptCT;
+    function GetNumberOfSubunits: TIntegerCT;
+    function GetAreaOfHybridisation: TStringCT;
+    function GetOligoNucleotideType: TCodeableConceptCT;
   published
-    property SequenceType: TCodeableConceptCT read fSequenceType;
-    property NumberOfSubunits: TIntegerCT read fNumberOfSubunits;
-    property AreaOfHybridisation: TStringCT read fAreaOfHybridisation;
-    property OligoNucleotideType: TCodeableConceptCT read fOligoNucleotideType;
+    property SequenceType: TCodeableConceptCT read GetSequenceType;
+    property NumberOfSubunits: TIntegerCT read GetNumberOfSubunits;
+    property AreaOfHybridisation: TStringCT read GetAreaOfHybridisation;
+    property OligoNucleotideType: TCodeableConceptCT read GetOligoNucleotideType;
     property Subunit: TSubstanceNucleicAcidSubunitCTList read fSubunit;
   end;
 
@@ -20538,13 +22925,20 @@ type
     fThreePrime: TCodeableConceptCT;
     fLinkage: TSubstanceNucleicAcidLinkageCTList;
     fSugar: TSubstanceNucleicAcidSugarCTList;
+
+    function GetSubunit: TIntegerCT;
+    function GetSequence: TStringCT;
+    function GetLength: TIntegerCT;
+    function GetSequenceAttachment: TAttachmentCT;
+    function GetFivePrime: TCodeableConceptCT;
+    function GetThreePrime: TCodeableConceptCT;
   published
-    property Subunit: TIntegerCT read fSubunit;
-    property Sequence: TStringCT read fSequence;
-    property Length: TIntegerCT read fLength;
-    property SequenceAttachment: TAttachmentCT read fSequenceAttachment;
-    property FivePrime: TCodeableConceptCT read fFivePrime;
-    property ThreePrime: TCodeableConceptCT read fThreePrime;
+    property Subunit: TIntegerCT read GetSubunit;
+    property Sequence: TStringCT read GetSequence;
+    property Length: TIntegerCT read GetLength;
+    property SequenceAttachment: TAttachmentCT read GetSequenceAttachment;
+    property FivePrime: TCodeableConceptCT read GetFivePrime;
+    property ThreePrime: TCodeableConceptCT read GetThreePrime;
     property Linkage: TSubstanceNucleicAcidLinkageCTList read fLinkage;
     property Sugar: TSubstanceNucleicAcidSugarCTList read fSugar;
   end;
@@ -20556,11 +22950,16 @@ type
     fIdentifier: TIdentifierCT;
     fName: TStringCT;
     fResidueSite: TStringCT;
+
+    function GetConnectivity: TStringCT;
+    function GetIdentifier: TIdentifierCT;
+    function GetName: TStringCT;
+    function GetResidueSite: TStringCT;
   published
-    property Connectivity: TStringCT read fConnectivity;
-    property Identifier: TIdentifierCT read fIdentifier;
-    property Name: TStringCT read fName;
-    property ResidueSite: TStringCT read fResidueSite;
+    property Connectivity: TStringCT read GetConnectivity;
+    property Identifier: TIdentifierCT read GetIdentifier;
+    property Name: TStringCT read GetName;
+    property ResidueSite: TStringCT read GetResidueSite;
   end;
 
   [TName('SubstanceNucleicAcid.Sugar')]
@@ -20569,10 +22968,14 @@ type
     fIdentifier: TIdentifierCT;
     fName: TStringCT;
     fResidueSite: TStringCT;
+
+    function GetIdentifier: TIdentifierCT;
+    function GetName: TStringCT;
+    function GetResidueSite: TStringCT;
   published
-    property Identifier: TIdentifierCT read fIdentifier;
-    property Name: TStringCT read fName;
-    property ResidueSite: TStringCT read fResidueSite;
+    property Identifier: TIdentifierCT read GetIdentifier;
+    property Name: TStringCT read GetName;
+    property ResidueSite: TStringCT read GetResidueSite;
   end;
 
   TSubstancePolymerCT = class(TDomainResourceCT)
@@ -20583,9 +22986,12 @@ type
     fModification: TStringCTList;
     fMonomerSet: TSubstancePolymerMonomerSetCTList;
     fRepeat: TSubstancePolymerRepeatCTList;
+
+    function GetClass: TCodeableConceptCT;
+    function GetGeometry: TCodeableConceptCT;
   published
-    property &Class: TCodeableConceptCT read fClass;
-    property Geometry: TCodeableConceptCT read fGeometry;
+    property &Class: TCodeableConceptCT read GetClass;
+    property Geometry: TCodeableConceptCT read GetGeometry;
     property CopolymerConnectivity: TCodeableConceptCTList read fCopolymerConnectivity;
     property Modification: TStringCTList read fModification;
     property MonomerSet: TSubstancePolymerMonomerSetCTList read fMonomerSet;
@@ -20597,8 +23003,10 @@ type
   private
     fRatioType: TCodeableConceptCT;
     fStartingMaterial: TSubstancePolymerStartingMaterialCTList;
+
+    function GetRatioType: TCodeableConceptCT;
   published
-    property RatioType: TCodeableConceptCT read fRatioType;
+    property RatioType: TCodeableConceptCT read GetRatioType;
     property StartingMaterial: TSubstancePolymerStartingMaterialCTList read fStartingMaterial;
   end;
 
@@ -20609,11 +23017,16 @@ type
     fType: TCodeableConceptCT;
     fIsDefining: TBooleanCT;
     fAmount: TSubstanceAmountCT;
+
+    function GetMaterial: TCodeableConceptCT;
+    function GetType: TCodeableConceptCT;
+    function GetIsDefining: TBooleanCT;
+    function GetAmount: TSubstanceAmountCT;
   published
-    property Material: TCodeableConceptCT read fMaterial;
-    property &Type: TCodeableConceptCT read fType;
-    property IsDefining: TBooleanCT read fIsDefining;
-    property Amount: TSubstanceAmountCT read fAmount;
+    property Material: TCodeableConceptCT read GetMaterial;
+    property &Type: TCodeableConceptCT read GetType;
+    property IsDefining: TBooleanCT read GetIsDefining;
+    property Amount: TSubstanceAmountCT read GetAmount;
   end;
 
   [TName('SubstancePolymer.Repeat')]
@@ -20623,10 +23036,14 @@ type
     fAverageMolecularFormula: TStringCT;
     fRepeatUnitAmountType: TCodeableConceptCT;
     fRepeatUnit: TSubstancePolymerRepeatUnitCTList;
+
+    function GetNumberOfUnits: TIntegerCT;
+    function GetAverageMolecularFormula: TStringCT;
+    function GetRepeatUnitAmountType: TCodeableConceptCT;
   published
-    property NumberOfUnits: TIntegerCT read fNumberOfUnits;
-    property AverageMolecularFormula: TStringCT read fAverageMolecularFormula;
-    property RepeatUnitAmountType: TCodeableConceptCT read fRepeatUnitAmountType;
+    property NumberOfUnits: TIntegerCT read GetNumberOfUnits;
+    property AverageMolecularFormula: TStringCT read GetAverageMolecularFormula;
+    property RepeatUnitAmountType: TCodeableConceptCT read GetRepeatUnitAmountType;
     property RepeatUnit: TSubstancePolymerRepeatUnitCTList read fRepeatUnit;
   end;
 
@@ -20638,10 +23055,14 @@ type
     fAmount: TSubstanceAmountCT;
     fDegreeOfPolymerisation: TSubstancePolymerDegreeOfPolymerisationCTList;
     fStructuralRepresentation: TSubstancePolymerStructuralRepresentationCTList;
+
+    function GetOrientationOfPolymerisation: TCodeableConceptCT;
+    function GetRepeatUnit: TStringCT;
+    function GetAmount: TSubstanceAmountCT;
   published
-    property OrientationOfPolymerisation: TCodeableConceptCT read fOrientationOfPolymerisation;
-    property RepeatUnit: TStringCT read fRepeatUnit;
-    property Amount: TSubstanceAmountCT read fAmount;
+    property OrientationOfPolymerisation: TCodeableConceptCT read GetOrientationOfPolymerisation;
+    property RepeatUnit: TStringCT read GetRepeatUnit;
+    property Amount: TSubstanceAmountCT read GetAmount;
     property DegreeOfPolymerisation: TSubstancePolymerDegreeOfPolymerisationCTList read fDegreeOfPolymerisation;
     property StructuralRepresentation: TSubstancePolymerStructuralRepresentationCTList read fStructuralRepresentation;
   end;
@@ -20651,9 +23072,12 @@ type
   private
     fDegree: TCodeableConceptCT;
     fAmount: TSubstanceAmountCT;
+
+    function GetDegree: TCodeableConceptCT;
+    function GetAmount: TSubstanceAmountCT;
   published
-    property Degree: TCodeableConceptCT read fDegree;
-    property Amount: TSubstanceAmountCT read fAmount;
+    property Degree: TCodeableConceptCT read GetDegree;
+    property Amount: TSubstanceAmountCT read GetAmount;
   end;
 
   [TName('SubstancePolymer.StructuralRepresentation')]
@@ -20662,10 +23086,14 @@ type
     fType: TCodeableConceptCT;
     fRepresentation: TStringCT;
     fAttachment: TAttachmentCT;
+
+    function GetType: TCodeableConceptCT;
+    function GetRepresentation: TStringCT;
+    function GetAttachment: TAttachmentCT;
   published
-    property &Type: TCodeableConceptCT read fType;
-    property Representation: TStringCT read fRepresentation;
-    property Attachment: TAttachmentCT read fAttachment;
+    property &Type: TCodeableConceptCT read GetType;
+    property Representation: TStringCT read GetRepresentation;
+    property Attachment: TAttachmentCT read GetAttachment;
   end;
 
   TSubstanceProteinCT = class(TDomainResourceCT)
@@ -20674,9 +23102,12 @@ type
     fNumberOfSubunits: TIntegerCT;
     fDisulfideLinkage: TStringCTList;
     fSubunit: TSubstanceProteinSubunitCTList;
+
+    function GetSequenceType: TCodeableConceptCT;
+    function GetNumberOfSubunits: TIntegerCT;
   published
-    property SequenceType: TCodeableConceptCT read fSequenceType;
-    property NumberOfSubunits: TIntegerCT read fNumberOfSubunits;
+    property SequenceType: TCodeableConceptCT read GetSequenceType;
+    property NumberOfSubunits: TIntegerCT read GetNumberOfSubunits;
     property DisulfideLinkage: TStringCTList read fDisulfideLinkage;
     property Subunit: TSubstanceProteinSubunitCTList read fSubunit;
   end;
@@ -20692,15 +23123,24 @@ type
     fNTerminalModification: TStringCT;
     fCTerminalModificationId: TIdentifierCT;
     fCTerminalModification: TStringCT;
+
+    function GetSubunit: TIntegerCT;
+    function GetSequence: TStringCT;
+    function GetLength: TIntegerCT;
+    function GetSequenceAttachment: TAttachmentCT;
+    function GetNTerminalModificationId: TIdentifierCT;
+    function GetNTerminalModification: TStringCT;
+    function GetCTerminalModificationId: TIdentifierCT;
+    function GetCTerminalModification: TStringCT;
   published
-    property Subunit: TIntegerCT read fSubunit;
-    property Sequence: TStringCT read fSequence;
-    property Length: TIntegerCT read fLength;
-    property SequenceAttachment: TAttachmentCT read fSequenceAttachment;
-    property NTerminalModificationId: TIdentifierCT read fNTerminalModificationId;
-    property NTerminalModification: TStringCT read fNTerminalModification;
-    property CTerminalModificationId: TIdentifierCT read fCTerminalModificationId;
-    property CTerminalModification: TStringCT read fCTerminalModification;
+    property Subunit: TIntegerCT read GetSubunit;
+    property Sequence: TStringCT read GetSequence;
+    property Length: TIntegerCT read GetLength;
+    property SequenceAttachment: TAttachmentCT read GetSequenceAttachment;
+    property NTerminalModificationId: TIdentifierCT read GetNTerminalModificationId;
+    property NTerminalModification: TStringCT read GetNTerminalModification;
+    property CTerminalModificationId: TIdentifierCT read GetCTerminalModificationId;
+    property CTerminalModification: TStringCT read GetCTerminalModification;
   end;
 
   TSubstanceReferenceInformationCT = class(TDomainResourceCT)
@@ -20710,8 +23150,10 @@ type
     fGeneElement: TSubstanceReferenceInformationGeneElementCTList;
     fClassification: TSubstanceReferenceInformationClassificationCTList;
     fTarget: TSubstanceReferenceInformationTargetCTList;
+
+    function GetComment: TStringCT;
   published
-    property Comment: TStringCT read fComment;
+    property Comment: TStringCT read GetComment;
     property Gene: TSubstanceReferenceInformationGeneCTList read fGene;
     property GeneElement: TSubstanceReferenceInformationGeneElementCTList read fGeneElement;
     property Classification: TSubstanceReferenceInformationClassificationCTList read fClassification;
@@ -20724,9 +23166,12 @@ type
     fGeneSequenceOrigin: TCodeableConceptCT;
     fGene: TCodeableConceptCT;
     fSource: TReferenceCTList;
+
+    function GetGeneSequenceOrigin: TCodeableConceptCT;
+    function GetGene: TCodeableConceptCT;
   published
-    property GeneSequenceOrigin: TCodeableConceptCT read fGeneSequenceOrigin;
-    property Gene: TCodeableConceptCT read fGene;
+    property GeneSequenceOrigin: TCodeableConceptCT read GetGeneSequenceOrigin;
+    property Gene: TCodeableConceptCT read GetGene;
     property Source: TReferenceCTList read fSource;
   end;
 
@@ -20736,9 +23181,12 @@ type
     fType: TCodeableConceptCT;
     fElement: TIdentifierCT;
     fSource: TReferenceCTList;
+
+    function GetType: TCodeableConceptCT;
+    function GetElement: TIdentifierCT;
   published
-    property &Type: TCodeableConceptCT read fType;
-    property Element: TIdentifierCT read fElement;
+    property &Type: TCodeableConceptCT read GetType;
+    property Element: TIdentifierCT read GetElement;
     property Source: TReferenceCTList read fSource;
   end;
 
@@ -20749,9 +23197,12 @@ type
     fClassification: TCodeableConceptCT;
     fSubtype: TCodeableConceptCTList;
     fSource: TReferenceCTList;
+
+    function GetDomain: TCodeableConceptCT;
+    function GetClassification: TCodeableConceptCT;
   published
-    property Domain: TCodeableConceptCT read fDomain;
-    property Classification: TCodeableConceptCT read fClassification;
+    property Domain: TCodeableConceptCT read GetDomain;
+    property Classification: TCodeableConceptCT read GetClassification;
     property Subtype: TCodeableConceptCTList read fSubtype;
     property Source: TReferenceCTList read fSource;
   end;
@@ -20770,25 +23221,31 @@ type
     fAmountType: TCodeableConceptCT;
     fSource: TReferenceCTList;
 
+    function GetTarget: TIdentifierCT;
+    function GetType: TCodeableConceptCT;
+    function GetInteraction: TCodeableConceptCT;
+    function GetOrganism: TCodeableConceptCT;
+    function GetOrganismType: TCodeableConceptCT;
     function GetAmountQuantity: TQuantityCT;
     function GetAmountRange: TRangeCT;
     function GetAmountString: TStringCT;
     function GetAmountChosen: TBasite;
+    function GetAmountType: TCodeableConceptCT;
   public
     property AmountChosen: TBasite read GetAmountChosen;
   published
-    property Target: TIdentifierCT read fTarget;
-    property &Type: TCodeableConceptCT read fType;
-    property Interaction: TCodeableConceptCT read fInteraction;
-    property Organism: TCodeableConceptCT read fOrganism;
-    property OrganismType: TCodeableConceptCT read fOrganismType;
+    property Target: TIdentifierCT read GetTarget;
+    property &Type: TCodeableConceptCT read GetType;
+    property Interaction: TCodeableConceptCT read GetInteraction;
+    property Organism: TCodeableConceptCT read GetOrganism;
+    property OrganismType: TCodeableConceptCT read GetOrganismType;
     [TChoice('Amount')]
     property AmountQuantity: TQuantityCT read GetAmountQuantity;
     [TChoice('Amount')]
     property AmountRange: TRangeCT read GetAmountRange;
     [TChoice('Amount')]
     property AmountString: TStringCT read GetAmountString;
-    property AmountType: TCodeableConceptCT read fAmountType;
+    property AmountType: TCodeableConceptCT read GetAmountType;
     property Source: TReferenceCTList read fSource;
   end;
 
@@ -20807,19 +23264,27 @@ type
     fFractionDescription: TSubstanceSourceMaterialFractionDescriptionCTList;
     fOrganism: TSubstanceSourceMaterialOrganismCT;
     fPartDescription: TSubstanceSourceMaterialPartDescriptionCTList;
+
+    function GetSourceMaterialClass: TCodeableConceptCT;
+    function GetSourceMaterialType: TCodeableConceptCT;
+    function GetSourceMaterialState: TCodeableConceptCT;
+    function GetOrganismId: TIdentifierCT;
+    function GetOrganismName: TStringCT;
+    function GetDevelopmentStage: TCodeableConceptCT;
+    function GetOrganism: TSubstanceSourceMaterialOrganismCT;
   published
-    property SourceMaterialClass: TCodeableConceptCT read fSourceMaterialClass;
-    property SourceMaterialType: TCodeableConceptCT read fSourceMaterialType;
-    property SourceMaterialState: TCodeableConceptCT read fSourceMaterialState;
-    property OrganismId: TIdentifierCT read fOrganismId;
-    property OrganismName: TStringCT read fOrganismName;
+    property SourceMaterialClass: TCodeableConceptCT read GetSourceMaterialClass;
+    property SourceMaterialType: TCodeableConceptCT read GetSourceMaterialType;
+    property SourceMaterialState: TCodeableConceptCT read GetSourceMaterialState;
+    property OrganismId: TIdentifierCT read GetOrganismId;
+    property OrganismName: TStringCT read GetOrganismName;
     property ParentSubstanceId: TIdentifierCTList read fParentSubstanceId;
     property ParentSubstanceName: TStringCTList read fParentSubstanceName;
     property CountryOfOrigin: TCodeableConceptCTList read fCountryOfOrigin;
     property GeographicalLocation: TStringCTList read fGeographicalLocation;
-    property DevelopmentStage: TCodeableConceptCT read fDevelopmentStage;
+    property DevelopmentStage: TCodeableConceptCT read GetDevelopmentStage;
     property FractionDescription: TSubstanceSourceMaterialFractionDescriptionCTList read fFractionDescription;
-    property Organism: TSubstanceSourceMaterialOrganismCT read fOrganism;
+    property Organism: TSubstanceSourceMaterialOrganismCT read GetOrganism;
     property PartDescription: TSubstanceSourceMaterialPartDescriptionCTList read fPartDescription;
   end;
 
@@ -20828,9 +23293,12 @@ type
   private
     fFraction: TStringCT;
     fMaterialType: TCodeableConceptCT;
+
+    function GetFraction: TStringCT;
+    function GetMaterialType: TCodeableConceptCT;
   published
-    property Fraction: TStringCT read fFraction;
-    property MaterialType: TCodeableConceptCT read fMaterialType;
+    property Fraction: TStringCT read GetFraction;
+    property MaterialType: TCodeableConceptCT read GetMaterialType;
   end;
 
   [TName('SubstanceSourceMaterial.Organism')]
@@ -20844,15 +23312,23 @@ type
     fAuthor: TSubstanceSourceMaterialAuthorCTList;
     fHybrid: TSubstanceSourceMaterialHybridCT;
     fOrganismGeneral: TSubstanceSourceMaterialOrganismGeneralCT;
+
+    function GetFamily: TCodeableConceptCT;
+    function GetGenus: TCodeableConceptCT;
+    function GetSpecies: TCodeableConceptCT;
+    function GetIntraspecificType: TCodeableConceptCT;
+    function GetIntraspecificDescription: TStringCT;
+    function GetHybrid: TSubstanceSourceMaterialHybridCT;
+    function GetOrganismGeneral: TSubstanceSourceMaterialOrganismGeneralCT;
   published
-    property Family: TCodeableConceptCT read fFamily;
-    property Genus: TCodeableConceptCT read fGenus;
-    property Species: TCodeableConceptCT read fSpecies;
-    property IntraspecificType: TCodeableConceptCT read fIntraspecificType;
-    property IntraspecificDescription: TStringCT read fIntraspecificDescription;
+    property Family: TCodeableConceptCT read GetFamily;
+    property Genus: TCodeableConceptCT read GetGenus;
+    property Species: TCodeableConceptCT read GetSpecies;
+    property IntraspecificType: TCodeableConceptCT read GetIntraspecificType;
+    property IntraspecificDescription: TStringCT read GetIntraspecificDescription;
     property Author: TSubstanceSourceMaterialAuthorCTList read fAuthor;
-    property Hybrid: TSubstanceSourceMaterialHybridCT read fHybrid;
-    property OrganismGeneral: TSubstanceSourceMaterialOrganismGeneralCT read fOrganismGeneral;
+    property Hybrid: TSubstanceSourceMaterialHybridCT read GetHybrid;
+    property OrganismGeneral: TSubstanceSourceMaterialOrganismGeneralCT read GetOrganismGeneral;
   end;
 
   [TName('SubstanceSourceMaterial.Author')]
@@ -20860,9 +23336,12 @@ type
   private
     fAuthorType: TCodeableConceptCT;
     fAuthorDescription: TStringCT;
+
+    function GetAuthorType: TCodeableConceptCT;
+    function GetAuthorDescription: TStringCT;
   published
-    property AuthorType: TCodeableConceptCT read fAuthorType;
-    property AuthorDescription: TStringCT read fAuthorDescription;
+    property AuthorType: TCodeableConceptCT read GetAuthorType;
+    property AuthorDescription: TStringCT read GetAuthorDescription;
   end;
 
   [TName('SubstanceSourceMaterial.Hybrid')]
@@ -20873,12 +23352,18 @@ type
     fPaternalOrganismId: TStringCT;
     fPaternalOrganismName: TStringCT;
     fHybridType: TCodeableConceptCT;
+
+    function GetMaternalOrganismId: TStringCT;
+    function GetMaternalOrganismName: TStringCT;
+    function GetPaternalOrganismId: TStringCT;
+    function GetPaternalOrganismName: TStringCT;
+    function GetHybridType: TCodeableConceptCT;
   published
-    property MaternalOrganismId: TStringCT read fMaternalOrganismId;
-    property MaternalOrganismName: TStringCT read fMaternalOrganismName;
-    property PaternalOrganismId: TStringCT read fPaternalOrganismId;
-    property PaternalOrganismName: TStringCT read fPaternalOrganismName;
-    property HybridType: TCodeableConceptCT read fHybridType;
+    property MaternalOrganismId: TStringCT read GetMaternalOrganismId;
+    property MaternalOrganismName: TStringCT read GetMaternalOrganismName;
+    property PaternalOrganismId: TStringCT read GetPaternalOrganismId;
+    property PaternalOrganismName: TStringCT read GetPaternalOrganismName;
+    property HybridType: TCodeableConceptCT read GetHybridType;
   end;
 
   [TName('SubstanceSourceMaterial.OrganismGeneral')]
@@ -20888,11 +23373,16 @@ type
     fPhylum: TCodeableConceptCT;
     fClass: TCodeableConceptCT;
     fOrder: TCodeableConceptCT;
+
+    function GetKingdom: TCodeableConceptCT;
+    function GetPhylum: TCodeableConceptCT;
+    function GetClass: TCodeableConceptCT;
+    function GetOrder: TCodeableConceptCT;
   published
-    property Kingdom: TCodeableConceptCT read fKingdom;
-    property Phylum: TCodeableConceptCT read fPhylum;
-    property &Class: TCodeableConceptCT read fClass;
-    property Order: TCodeableConceptCT read fOrder;
+    property Kingdom: TCodeableConceptCT read GetKingdom;
+    property Phylum: TCodeableConceptCT read GetPhylum;
+    property &Class: TCodeableConceptCT read GetClass;
+    property Order: TCodeableConceptCT read GetOrder;
   end;
 
   [TName('SubstanceSourceMaterial.PartDescription')]
@@ -20900,9 +23390,12 @@ type
   private
     fPart: TCodeableConceptCT;
     fPartLocation: TCodeableConceptCT;
+
+    function GetPart: TCodeableConceptCT;
+    function GetPartLocation: TCodeableConceptCT;
   published
-    property Part: TCodeableConceptCT read fPart;
-    property PartLocation: TCodeableConceptCT read fPartLocation;
+    property Part: TCodeableConceptCT read GetPart;
+    property PartLocation: TCodeableConceptCT read GetPartLocation;
   end;
 
   TSubstanceSpecificationCT = class(TDomainResourceCT)
@@ -20926,26 +23419,39 @@ type
     fPolymer: TReferenceCT;
     fProtein: TReferenceCT;
     fSourceMaterial: TReferenceCT;
+
+    function GetIdentifier: TIdentifierCT;
+    function GetType: TCodeableConceptCT;
+    function GetStatus: TCodeableConceptCT;
+    function GetDomain: TCodeableConceptCT;
+    function GetDescription: TStringCT;
+    function GetComment: TStringCT;
+    function GetReferenceInformation: TReferenceCT;
+    function GetStructure: TSubstanceSpecificationStructureCT;
+    function GetNucleicAcid: TReferenceCT;
+    function GetPolymer: TReferenceCT;
+    function GetProtein: TReferenceCT;
+    function GetSourceMaterial: TReferenceCT;
   published
-    property Identifier: TIdentifierCT read fIdentifier;
-    property &Type: TCodeableConceptCT read fType;
-    property Status: TCodeableConceptCT read fStatus;
-    property Domain: TCodeableConceptCT read fDomain;
-    property Description: TStringCT read fDescription;
+    property Identifier: TIdentifierCT read GetIdentifier;
+    property &Type: TCodeableConceptCT read GetType;
+    property Status: TCodeableConceptCT read GetStatus;
+    property Domain: TCodeableConceptCT read GetDomain;
+    property Description: TStringCT read GetDescription;
     property Source: TReferenceCTList read fSource;
-    property Comment: TStringCT read fComment;
+    property Comment: TStringCT read GetComment;
     property Moiety: TSubstanceSpecificationMoietyCTList read fMoiety;
     property &Property: TSubstanceSpecificationPropertyCTList read fProperty;
-    property ReferenceInformation: TReferenceCT read fReferenceInformation;
-    property Structure: TSubstanceSpecificationStructureCT read fStructure;
+    property ReferenceInformation: TReferenceCT read GetReferenceInformation;
+    property Structure: TSubstanceSpecificationStructureCT read GetStructure;
     property Code: TSubstanceSpecificationCodeCTList read fCode;
     property Name: TSubstanceSpecificationNameCTList read fName;
     property MolecularWeight: TSubstanceSpecificationMolecularWeightCTList read fMolecularWeight;
     property Relationship: TSubstanceSpecificationRelationshipCTList read fRelationship;
-    property NucleicAcid: TReferenceCT read fNucleicAcid;
-    property Polymer: TReferenceCT read fPolymer;
-    property Protein: TReferenceCT read fProtein;
-    property SourceMaterial: TReferenceCT read fSourceMaterial;
+    property NucleicAcid: TReferenceCT read GetNucleicAcid;
+    property Polymer: TReferenceCT read GetPolymer;
+    property Protein: TReferenceCT read GetProtein;
+    property SourceMaterial: TReferenceCT read GetSourceMaterial;
   end;
 
   [TName('SubstanceSpecification.Moiety')]
@@ -20960,18 +23466,24 @@ type
     fAmountQuantity: TQuantityCT;
     fAmountString: TStringCT;
 
+    function GetRole: TCodeableConceptCT;
+    function GetIdentifier: TIdentifierCT;
+    function GetName: TStringCT;
+    function GetStereochemistry: TCodeableConceptCT;
+    function GetOpticalActivity: TCodeableConceptCT;
+    function GetMolecularFormula: TStringCT;
     function GetAmountQuantity: TQuantityCT;
     function GetAmountString: TStringCT;
     function GetAmountChosen: TBasite;
   public
     property AmountChosen: TBasite read GetAmountChosen;
   published
-    property Role: TCodeableConceptCT read fRole;
-    property Identifier: TIdentifierCT read fIdentifier;
-    property Name: TStringCT read fName;
-    property Stereochemistry: TCodeableConceptCT read fStereochemistry;
-    property OpticalActivity: TCodeableConceptCT read fOpticalActivity;
-    property MolecularFormula: TStringCT read fMolecularFormula;
+    property Role: TCodeableConceptCT read GetRole;
+    property Identifier: TIdentifierCT read GetIdentifier;
+    property Name: TStringCT read GetName;
+    property Stereochemistry: TCodeableConceptCT read GetStereochemistry;
+    property OpticalActivity: TCodeableConceptCT read GetOpticalActivity;
+    property MolecularFormula: TStringCT read GetMolecularFormula;
     [TChoice('Amount')]
     property AmountQuantity: TQuantityCT read GetAmountQuantity;
     [TChoice('Amount')]
@@ -20989,6 +23501,9 @@ type
     fAmountQuantity: TQuantityCT;
     fAmountString: TStringCT;
 
+    function GetCategory: TCodeableConceptCT;
+    function GetCode: TCodeableConceptCT;
+    function GetParameters: TStringCT;
     function GetDefiningSubstanceReference: TReferenceCT;
     function GetDefiningSubstanceCodeableConcept: TCodeableConceptCT;
     function GetDefiningSubstanceChosen: TBasite;
@@ -20999,9 +23514,9 @@ type
     property DefiningSubstanceChosen: TBasite read GetDefiningSubstanceChosen;
     property AmountChosen: TBasite read GetAmountChosen;
   published
-    property Category: TCodeableConceptCT read fCategory;
-    property Code: TCodeableConceptCT read fCode;
-    property Parameters: TStringCT read fParameters;
+    property Category: TCodeableConceptCT read GetCategory;
+    property Code: TCodeableConceptCT read GetCode;
+    property Parameters: TStringCT read GetParameters;
     [TChoice('DefiningSubstance')]
     property DefiningSubstanceReference: TReferenceCT read GetDefiningSubstanceReference;
     [TChoice('DefiningSubstance')]
@@ -21023,13 +23538,19 @@ type
     fMolecularWeight: TSubstanceSpecificationMolecularWeightCT;
     fSource: TReferenceCTList;
     fRepresentation: TSubstanceSpecificationRepresentationCTList;
+
+    function GetStereochemistry: TCodeableConceptCT;
+    function GetOpticalActivity: TCodeableConceptCT;
+    function GetMolecularFormula: TStringCT;
+    function GetMolecularFormulaByMoiety: TStringCT;
+    function GetMolecularWeight: TSubstanceSpecificationMolecularWeightCT;
   published
-    property Stereochemistry: TCodeableConceptCT read fStereochemistry;
-    property OpticalActivity: TCodeableConceptCT read fOpticalActivity;
-    property MolecularFormula: TStringCT read fMolecularFormula;
-    property MolecularFormulaByMoiety: TStringCT read fMolecularFormulaByMoiety;
+    property Stereochemistry: TCodeableConceptCT read GetStereochemistry;
+    property OpticalActivity: TCodeableConceptCT read GetOpticalActivity;
+    property MolecularFormula: TStringCT read GetMolecularFormula;
+    property MolecularFormulaByMoiety: TStringCT read GetMolecularFormulaByMoiety;
     property Isotope: TSubstanceSpecificationIsotopeCTList read fIsotope;
-    property MolecularWeight: TSubstanceSpecificationMolecularWeightCT read fMolecularWeight;
+    property MolecularWeight: TSubstanceSpecificationMolecularWeightCT read GetMolecularWeight;
     property Source: TReferenceCTList read fSource;
     property Representation: TSubstanceSpecificationRepresentationCTList read fRepresentation;
   end;
@@ -21042,12 +23563,18 @@ type
     fSubstitution: TCodeableConceptCT;
     fHalfLife: TQuantityCT;
     fMolecularWeight: TSubstanceSpecificationMolecularWeightCT;
+
+    function GetIdentifier: TIdentifierCT;
+    function GetName: TCodeableConceptCT;
+    function GetSubstitution: TCodeableConceptCT;
+    function GetHalfLife: TQuantityCT;
+    function GetMolecularWeight: TSubstanceSpecificationMolecularWeightCT;
   published
-    property Identifier: TIdentifierCT read fIdentifier;
-    property Name: TCodeableConceptCT read fName;
-    property Substitution: TCodeableConceptCT read fSubstitution;
-    property HalfLife: TQuantityCT read fHalfLife;
-    property MolecularWeight: TSubstanceSpecificationMolecularWeightCT read fMolecularWeight;
+    property Identifier: TIdentifierCT read GetIdentifier;
+    property Name: TCodeableConceptCT read GetName;
+    property Substitution: TCodeableConceptCT read GetSubstitution;
+    property HalfLife: TQuantityCT read GetHalfLife;
+    property MolecularWeight: TSubstanceSpecificationMolecularWeightCT read GetMolecularWeight;
   end;
 
   [TName('SubstanceSpecification.MolecularWeight')]
@@ -21056,10 +23583,14 @@ type
     fMethod: TCodeableConceptCT;
     fType: TCodeableConceptCT;
     fAmount: TQuantityCT;
+
+    function GetMethod: TCodeableConceptCT;
+    function GetType: TCodeableConceptCT;
+    function GetAmount: TQuantityCT;
   published
-    property Method: TCodeableConceptCT read fMethod;
-    property &Type: TCodeableConceptCT read fType;
-    property Amount: TQuantityCT read fAmount;
+    property Method: TCodeableConceptCT read GetMethod;
+    property &Type: TCodeableConceptCT read GetType;
+    property Amount: TQuantityCT read GetAmount;
   end;
 
   [TName('SubstanceSpecification.Representation')]
@@ -21068,10 +23599,14 @@ type
     fType: TCodeableConceptCT;
     fRepresentation: TStringCT;
     fAttachment: TAttachmentCT;
+
+    function GetType: TCodeableConceptCT;
+    function GetRepresentation: TStringCT;
+    function GetAttachment: TAttachmentCT;
   published
-    property &Type: TCodeableConceptCT read fType;
-    property Representation: TStringCT read fRepresentation;
-    property Attachment: TAttachmentCT read fAttachment;
+    property &Type: TCodeableConceptCT read GetType;
+    property Representation: TStringCT read GetRepresentation;
+    property Attachment: TAttachmentCT read GetAttachment;
   end;
 
   [TName('SubstanceSpecification.Code')]
@@ -21082,11 +23617,16 @@ type
     fStatusDate: TDateTimeCT;
     fComment: TStringCT;
     fSource: TReferenceCTList;
+
+    function GetCode: TCodeableConceptCT;
+    function GetStatus: TCodeableConceptCT;
+    function GetStatusDate: TDateTimeCT;
+    function GetComment: TStringCT;
   published
-    property Code: TCodeableConceptCT read fCode;
-    property Status: TCodeableConceptCT read fStatus;
-    property StatusDate: TDateTimeCT read fStatusDate;
-    property Comment: TStringCT read fComment;
+    property Code: TCodeableConceptCT read GetCode;
+    property Status: TCodeableConceptCT read GetStatus;
+    property StatusDate: TDateTimeCT read GetStatusDate;
+    property Comment: TStringCT read GetComment;
     property Source: TReferenceCTList read fSource;
   end;
 
@@ -21104,12 +23644,16 @@ type
     fTranslation: TSubstanceSpecificationNameCTList;
     fOfficial: TSubstanceSpecificationOfficialCTList;
     fSource: TReferenceCTList;
+
+    function GetType: TCodeableConceptCT;
+    function GetStatus: TCodeableConceptCT;
+    function GetPreferred: TBooleanCT;
   published
     [TRequired]
     property Name: TStringCT read fName;
-    property &Type: TCodeableConceptCT read fType;
-    property Status: TCodeableConceptCT read fStatus;
-    property Preferred: TBooleanCT read fPreferred;
+    property &Type: TCodeableConceptCT read GetType;
+    property Status: TCodeableConceptCT read GetStatus;
+    property Preferred: TBooleanCT read GetPreferred;
     property Language: TCodeableConceptCTList read fLanguage;
     property Domain: TCodeableConceptCTList read fDomain;
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
@@ -21125,10 +23669,14 @@ type
     fAuthority: TCodeableConceptCT;
     fStatus: TCodeableConceptCT;
     fDate: TDateTimeCT;
+
+    function GetAuthority: TCodeableConceptCT;
+    function GetStatus: TCodeableConceptCT;
+    function GetDate: TDateTimeCT;
   published
-    property Authority: TCodeableConceptCT read fAuthority;
-    property Status: TCodeableConceptCT read fStatus;
-    property Date: TDateTimeCT read fDate;
+    property Authority: TCodeableConceptCT read GetAuthority;
+    property Status: TCodeableConceptCT read GetStatus;
+    property Date: TDateTimeCT read GetDate;
   end;
 
   [TName('SubstanceSpecification.Relationship')]
@@ -21149,11 +23697,15 @@ type
     function GetSubstanceReference: TReferenceCT;
     function GetSubstanceCodeableConcept: TCodeableConceptCT;
     function GetSubstanceChosen: TBasite;
+    function GetRelationship: TCodeableConceptCT;
+    function GetIsDefining: TBooleanCT;
     function GetAmountQuantity: TQuantityCT;
     function GetAmountRange: TRangeCT;
     function GetAmountRatio: TRatioCT;
     function GetAmountString: TStringCT;
     function GetAmountChosen: TBasite;
+    function GetAmountRatioLowLimit: TRatioCT;
+    function GetAmountType: TCodeableConceptCT;
   public
     property SubstanceChosen: TBasite read GetSubstanceChosen;
     property AmountChosen: TBasite read GetAmountChosen;
@@ -21162,8 +23714,8 @@ type
     property SubstanceReference: TReferenceCT read GetSubstanceReference;
     [TChoice('Substance')]
     property SubstanceCodeableConcept: TCodeableConceptCT read GetSubstanceCodeableConcept;
-    property Relationship: TCodeableConceptCT read fRelationship;
-    property IsDefining: TBooleanCT read fIsDefining;
+    property Relationship: TCodeableConceptCT read GetRelationship;
+    property IsDefining: TBooleanCT read GetIsDefining;
     [TChoice('Amount')]
     property AmountQuantity: TQuantityCT read GetAmountQuantity;
     [TChoice('Amount')]
@@ -21172,8 +23724,8 @@ type
     property AmountRatio: TRatioCT read GetAmountRatio;
     [TChoice('Amount')]
     property AmountString: TStringCT read GetAmountString;
-    property AmountRatioLowLimit: TRatioCT read fAmountRatioLowLimit;
-    property AmountType: TCodeableConceptCT read fAmountType;
+    property AmountRatioLowLimit: TRatioCT read GetAmountRatioLowLimit;
+    property AmountType: TCodeableConceptCT read GetAmountType;
     property Source: TReferenceCTList read fSource;
   end;
 
@@ -21193,28 +23745,34 @@ type
     fDestination: TReferenceCT;
     fReceiver: TReferenceCTList;
 
+    function GetStatus: TSupplyDeliveryStatusCT;
+    function GetPatient: TReferenceCT;
+    function GetType: TCodeableConceptCT;
+    function GetSuppliedItem: TSupplyDeliverySuppliedItemCT;
     function GetOccurrenceDateTime: TDateTimeCT;
     function GetOccurrencePeriod: TPeriodCT;
     function GetOccurrenceTiming: TTimingCT;
     function GetOccurrenceChosen: TBasite;
+    function GetSupplier: TReferenceCT;
+    function GetDestination: TReferenceCT;
   public
     property OccurrenceChosen: TBasite read GetOccurrenceChosen;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     property BasedOn: TReferenceCTList read fBasedOn;
     property PartOf: TReferenceCTList read fPartOf;
-    property Status: TSupplyDeliveryStatusCT read fStatus;
-    property Patient: TReferenceCT read fPatient;
-    property &Type: TCodeableConceptCT read fType;
-    property SuppliedItem: TSupplyDeliverySuppliedItemCT read fSuppliedItem;
+    property Status: TSupplyDeliveryStatusCT read GetStatus;
+    property Patient: TReferenceCT read GetPatient;
+    property &Type: TCodeableConceptCT read GetType;
+    property SuppliedItem: TSupplyDeliverySuppliedItemCT read GetSuppliedItem;
     [TChoice('Occurrence')]
     property OccurrenceDateTime: TDateTimeCT read GetOccurrenceDateTime;
     [TChoice('Occurrence')]
     property OccurrencePeriod: TPeriodCT read GetOccurrencePeriod;
     [TChoice('Occurrence')]
     property OccurrenceTiming: TTimingCT read GetOccurrenceTiming;
-    property Supplier: TReferenceCT read fSupplier;
-    property Destination: TReferenceCT read fDestination;
+    property Supplier: TReferenceCT read GetSupplier;
+    property Destination: TReferenceCT read GetDestination;
     property Receiver: TReferenceCTList read fReceiver;
   end;
 
@@ -21225,13 +23783,14 @@ type
     fItemCodeableConcept: TCodeableConceptCT;
     fItemReference: TReferenceCT;
 
+    function GetQuantity: TQuantityCT;
     function GetItemCodeableConcept: TCodeableConceptCT;
     function GetItemReference: TReferenceCT;
     function GetItemChosen: TBasite;
   public
     property ItemChosen: TBasite read GetItemChosen;
   published
-    property Quantity: TQuantityCT read fQuantity;
+    property Quantity: TQuantityCT read GetQuantity;
     [TChoice('Item')]
     property ItemCodeableConcept: TCodeableConceptCT read GetItemCodeableConcept;
     [TChoice('Item')]
@@ -21266,6 +23825,9 @@ type
     fDeliverFrom: TReferenceCT;
     fDeliverTo: TReferenceCT;
 
+    function GetStatus: TSupplyRequestStatusCT;
+    function GetCategory: TCodeableConceptCT;
+    function GetPriority: TRequestPriorityCT;
     function GetItemCodeableConcept: TCodeableConceptCT;
     function GetItemReference: TReferenceCT;
     function GetItemChosen: TBasite;
@@ -21273,14 +23835,18 @@ type
     function GetOccurrencePeriod: TPeriodCT;
     function GetOccurrenceTiming: TTimingCT;
     function GetOccurrenceChosen: TBasite;
+    function GetAuthoredOn: TDateTimeCT;
+    function GetRequester: TReferenceCT;
+    function GetDeliverFrom: TReferenceCT;
+    function GetDeliverTo: TReferenceCT;
   public
     property ItemChosen: TBasite read GetItemChosen;
     property OccurrenceChosen: TBasite read GetOccurrenceChosen;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Status: TSupplyRequestStatusCT read fStatus;
-    property Category: TCodeableConceptCT read fCategory;
-    property Priority: TRequestPriorityCT read fPriority;
+    property Status: TSupplyRequestStatusCT read GetStatus;
+    property Category: TCodeableConceptCT read GetCategory;
+    property Priority: TRequestPriorityCT read GetPriority;
     [TChoice('Item')]
     property ItemCodeableConcept: TCodeableConceptCT read GetItemCodeableConcept;
     [TChoice('Item')]
@@ -21294,13 +23860,13 @@ type
     property OccurrencePeriod: TPeriodCT read GetOccurrencePeriod;
     [TChoice('Occurrence')]
     property OccurrenceTiming: TTimingCT read GetOccurrenceTiming;
-    property AuthoredOn: TDateTimeCT read fAuthoredOn;
-    property Requester: TReferenceCT read fRequester;
+    property AuthoredOn: TDateTimeCT read GetAuthoredOn;
+    property Requester: TReferenceCT read GetRequester;
     property Supplier: TReferenceCTList read fSupplier;
     property ReasonCode: TCodeableConceptCTList read fReasonCode;
     property ReasonReference: TReferenceCTList read fReasonReference;
-    property DeliverFrom: TReferenceCT read fDeliverFrom;
-    property DeliverTo: TReferenceCT read fDeliverTo;
+    property DeliverFrom: TReferenceCT read GetDeliverFrom;
+    property DeliverTo: TReferenceCT read GetDeliverTo;
   end;
 
   [TName('SupplyRequest.Parameter')]
@@ -21312,6 +23878,7 @@ type
     fValueRange: TRangeCT;
     fValueBoolean: TBooleanCT;
 
+    function GetCode: TCodeableConceptCT;
     function GetValueCodeableConcept: TCodeableConceptCT;
     function GetValueQuantity: TQuantityCT;
     function GetValueRange: TRangeCT;
@@ -21320,7 +23887,7 @@ type
   public
     property ValueChosen: TBasite read GetValueChosen;
   published
-    property Code: TCodeableConceptCT read fCode;
+    property Code: TCodeableConceptCT read GetCode;
     [TChoice('Value')]
     property ValueCodeableConcept: TCodeableConceptCT read GetValueCodeableConcept;
     [TChoice('Value')]
@@ -21371,38 +23938,59 @@ type
     fRestriction: TTaskRestrictionCT;
     fInput: TTaskInputCTList;
     fOutput: TTaskOutputCTList;
+
+    function GetInstantiatesCanonical: TCanonicalCT;
+    function GetInstantiatesUri: TUriCT;
+    function GetGroupIdentifier: TIdentifierCT;
+    function GetStatusReason: TCodeableConceptCT;
+    function GetBusinessStatus: TCodeableConceptCT;
+    function GetPriority: TRequestPriorityCT;
+    function GetCode: TCodeableConceptCT;
+    function GetDescription: TStringCT;
+    function GetFocus: TReferenceCT;
+    function GetFor: TReferenceCT;
+    function GetEncounter: TReferenceCT;
+    function GetExecutionPeriod: TPeriodCT;
+    function GetAuthoredOn: TDateTimeCT;
+    function GetLastModified: TDateTimeCT;
+    function GetRequester: TReferenceCT;
+    function GetOwner: TReferenceCT;
+    function GetLocation: TReferenceCT;
+    function GetReasonCode: TCodeableConceptCT;
+    function GetReasonReference: TReferenceCT;
+    function GetRestriction: TTaskRestrictionCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
-    property InstantiatesCanonical: TCanonicalCT read fInstantiatesCanonical;
-    property InstantiatesUri: TUriCT read fInstantiatesUri;
+    property InstantiatesCanonical: TCanonicalCT read GetInstantiatesCanonical;
+    property InstantiatesUri: TUriCT read GetInstantiatesUri;
     property BasedOn: TReferenceCTList read fBasedOn;
-    property GroupIdentifier: TIdentifierCT read fGroupIdentifier;
+    property GroupIdentifier: TIdentifierCT read GetGroupIdentifier;
     property PartOf: TReferenceCTList read fPartOf;
     [TRequired]
     property Status: TTaskStatusCT read fStatus;
-    property StatusReason: TCodeableConceptCT read fStatusReason;
-    property BusinessStatus: TCodeableConceptCT read fBusinessStatus;
+    property StatusReason: TCodeableConceptCT read GetStatusReason;
+    property BusinessStatus: TCodeableConceptCT read GetBusinessStatus;
     [TRequired]
     property Intent: TTaskIntentCT read fIntent;
-    property Priority: TRequestPriorityCT read fPriority;
-    property Code: TCodeableConceptCT read fCode;
-    property Description: TStringCT read fDescription;
-    property Focus: TReferenceCT read fFocus;
-    property &For: TReferenceCT read fFor;
-    property Encounter: TReferenceCT read fEncounter;
-    property ExecutionPeriod: TPeriodCT read fExecutionPeriod;
-    property AuthoredOn: TDateTimeCT read fAuthoredOn;
-    property LastModified: TDateTimeCT read fLastModified;
-    property Requester: TReferenceCT read fRequester;
+    property Priority: TRequestPriorityCT read GetPriority;
+    property Code: TCodeableConceptCT read GetCode;
+    property Description: TStringCT read GetDescription;
+    property Focus: TReferenceCT read GetFocus;
+    property &For: TReferenceCT read GetFor;
+    property Encounter: TReferenceCT read GetEncounter;
+    property ExecutionPeriod: TPeriodCT read GetExecutionPeriod;
+    property AuthoredOn: TDateTimeCT read GetAuthoredOn;
+    property LastModified: TDateTimeCT read GetLastModified;
+    property Requester: TReferenceCT read GetRequester;
     property PerformerType: TCodeableConceptCTList read fPerformerType;
-    property Owner: TReferenceCT read fOwner;
-    property Location: TReferenceCT read fLocation;
-    property ReasonCode: TCodeableConceptCT read fReasonCode;
-    property ReasonReference: TReferenceCT read fReasonReference;
+    property Owner: TReferenceCT read GetOwner;
+    property Location: TReferenceCT read GetLocation;
+    property ReasonCode: TCodeableConceptCT read GetReasonCode;
+    property ReasonReference: TReferenceCT read GetReasonReference;
     property Insurance: TReferenceCTList read fInsurance;
     property Note: TAnnotationCTList read fNote;
     property RelevantHistory: TReferenceCTList read fRelevantHistory;
-    property Restriction: TTaskRestrictionCT read fRestriction;
+    property Restriction: TTaskRestrictionCT read GetRestriction;
     property Input: TTaskInputCTList read fInput;
     property Output: TTaskOutputCTList read fOutput;
   end;
@@ -21413,9 +24001,12 @@ type
     fRepetitions: TPositiveIntCT;
     fPeriod: TPeriodCT;
     fRecipient: TReferenceCTList;
+
+    function GetRepetitions: TPositiveIntCT;
+    function GetPeriod: TPeriodCT;
   published
-    property Repetitions: TPositiveIntCT read fRepetitions;
-    property Period: TPeriodCT read fPeriod;
+    property Repetitions: TPositiveIntCT read GetRepetitions;
+    property Period: TPeriodCT read GetPeriod;
     property Recipient: TReferenceCTList read fRecipient;
   end;
 
@@ -21885,34 +24476,52 @@ type
     fValidateCode: TTerminologyCapabilitiesValidateCodeCT;
     fTranslation: TTerminologyCapabilitiesTranslationCT;
     fClosure: TTerminologyCapabilitiesClosureCT;
+
+    function GetUrl: TUriCT;
+    function GetVersion: TStringCT;
+    function GetName: TStringCT;
+    function GetTitle: TStringCT;
+    function GetExperimental: TBooleanCT;
+    function GetPublisher: TStringCT;
+    function GetDescription: TMarkdownCT;
+    function GetPurpose: TMarkdownCT;
+    function GetCopyright: TMarkdownCT;
+    function GetSoftware: TTerminologyCapabilitiesSoftwareCT;
+    function GetImplementation: TTerminologyCapabilitiesImplementationCT;
+    function GetLockedDate: TBooleanCT;
+    function GetExpansion: TTerminologyCapabilitiesExpansionCT;
+    function GetCodeSearch: TCodeSearchSupportCT;
+    function GetValidateCode: TTerminologyCapabilitiesValidateCodeCT;
+    function GetTranslation: TTerminologyCapabilitiesTranslationCT;
+    function GetClosure: TTerminologyCapabilitiesClosureCT;
   published
-    property Url: TUriCT read fUrl;
-    property Version: TStringCT read fVersion;
-    property Name: TStringCT read fName;
-    property Title: TStringCT read fTitle;
+    property Url: TUriCT read GetUrl;
+    property Version: TStringCT read GetVersion;
+    property Name: TStringCT read GetName;
+    property Title: TStringCT read GetTitle;
     [TRequired]
     property Status: TPublicationStatusCT read fStatus;
-    property Experimental: TBooleanCT read fExperimental;
+    property Experimental: TBooleanCT read GetExperimental;
     [TRequired]
     property Date: TDateTimeCT read fDate;
-    property Publisher: TStringCT read fPublisher;
+    property Publisher: TStringCT read GetPublisher;
     property Contact: TContactDetailCTList read fContact;
-    property Description: TMarkdownCT read fDescription;
+    property Description: TMarkdownCT read GetDescription;
     property UseContext: TUsageContextCTList read fUseContext;
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    property Purpose: TMarkdownCT read fPurpose;
-    property Copyright: TMarkdownCT read fCopyright;
+    property Purpose: TMarkdownCT read GetPurpose;
+    property Copyright: TMarkdownCT read GetCopyright;
     [TRequired]
     property Kind: TCapabilityStatementKindCT read fKind;
-    property Software: TTerminologyCapabilitiesSoftwareCT read fSoftware;
-    property &Implementation: TTerminologyCapabilitiesImplementationCT read fImplementation;
-    property LockedDate: TBooleanCT read fLockedDate;
+    property Software: TTerminologyCapabilitiesSoftwareCT read GetSoftware;
+    property &Implementation: TTerminologyCapabilitiesImplementationCT read GetImplementation;
+    property LockedDate: TBooleanCT read GetLockedDate;
     property CodeSystem: TTerminologyCapabilitiesCodeSystemCTList read fCodeSystem;
-    property Expansion: TTerminologyCapabilitiesExpansionCT read fExpansion;
-    property CodeSearch: TCodeSearchSupportCT read fCodeSearch;
-    property ValidateCode: TTerminologyCapabilitiesValidateCodeCT read fValidateCode;
-    property Translation: TTerminologyCapabilitiesTranslationCT read fTranslation;
-    property Closure: TTerminologyCapabilitiesClosureCT read fClosure;
+    property Expansion: TTerminologyCapabilitiesExpansionCT read GetExpansion;
+    property CodeSearch: TCodeSearchSupportCT read GetCodeSearch;
+    property ValidateCode: TTerminologyCapabilitiesValidateCodeCT read GetValidateCode;
+    property Translation: TTerminologyCapabilitiesTranslationCT read GetTranslation;
+    property Closure: TTerminologyCapabilitiesClosureCT read GetClosure;
   end;
 
   [TName('TerminologyCapabilities.Software')]
@@ -21920,10 +24529,12 @@ type
   private
     fName: TStringCT;
     fVersion: TStringCT;
+
+    function GetVersion: TStringCT;
   published
     [TRequired]
     property Name: TStringCT read fName;
-    property Version: TStringCT read fVersion;
+    property Version: TStringCT read GetVersion;
   end;
 
   [TName('TerminologyCapabilities.Implementation')]
@@ -21931,10 +24542,12 @@ type
   private
     fDescription: TStringCT;
     fUrl: TUrlCT;
+
+    function GetUrl: TUrlCT;
   published
     [TRequired]
     property Description: TStringCT read fDescription;
-    property Url: TUrlCT read fUrl;
+    property Url: TUrlCT read GetUrl;
   end;
 
   [TName('TerminologyCapabilities.CodeSystem')]
@@ -21943,10 +24556,13 @@ type
     fUri: TCanonicalCT;
     fVersion: TTerminologyCapabilitiesVersionCTList;
     fSubsumption: TBooleanCT;
+
+    function GetUri: TCanonicalCT;
+    function GetSubsumption: TBooleanCT;
   published
-    property Uri: TCanonicalCT read fUri;
+    property Uri: TCanonicalCT read GetUri;
     property Version: TTerminologyCapabilitiesVersionCTList read fVersion;
-    property Subsumption: TBooleanCT read fSubsumption;
+    property Subsumption: TBooleanCT read GetSubsumption;
   end;
 
   [TName('TerminologyCapabilities.Version')]
@@ -21958,10 +24574,14 @@ type
     fLanguage: TCodeCTList;
     fFilter: TTerminologyCapabilitiesFilterCTList;
     fProperty: TCodeCTList;
+
+    function GetCode: TStringCT;
+    function GetIsDefault: TBooleanCT;
+    function GetCompositional: TBooleanCT;
   published
-    property Code: TStringCT read fCode;
-    property IsDefault: TBooleanCT read fIsDefault;
-    property Compositional: TBooleanCT read fCompositional;
+    property Code: TStringCT read GetCode;
+    property IsDefault: TBooleanCT read GetIsDefault;
+    property Compositional: TBooleanCT read GetCompositional;
     property Language: TCodeCTList read fLanguage;
     property Filter: TTerminologyCapabilitiesFilterCTList read fFilter;
     property &Property: TCodeCTList read fProperty;
@@ -21986,12 +24606,17 @@ type
     fIncomplete: TBooleanCT;
     fParameter: TTerminologyCapabilitiesParameterCTList;
     fTextFilter: TMarkdownCT;
+
+    function GetHierarchical: TBooleanCT;
+    function GetPaging: TBooleanCT;
+    function GetIncomplete: TBooleanCT;
+    function GetTextFilter: TMarkdownCT;
   published
-    property Hierarchical: TBooleanCT read fHierarchical;
-    property Paging: TBooleanCT read fPaging;
-    property Incomplete: TBooleanCT read fIncomplete;
+    property Hierarchical: TBooleanCT read GetHierarchical;
+    property Paging: TBooleanCT read GetPaging;
+    property Incomplete: TBooleanCT read GetIncomplete;
     property Parameter: TTerminologyCapabilitiesParameterCTList read fParameter;
-    property TextFilter: TMarkdownCT read fTextFilter;
+    property TextFilter: TMarkdownCT read GetTextFilter;
   end;
 
   [TName('TerminologyCapabilities.Parameter')]
@@ -21999,10 +24624,12 @@ type
   private
     fName: TCodeCT;
     fDocumentation: TStringCT;
+
+    function GetDocumentation: TStringCT;
   published
     [TRequired]
     property Name: TCodeCT read fName;
-    property Documentation: TStringCT read fDocumentation;
+    property Documentation: TStringCT read GetDocumentation;
   end;
 
   [TName('TerminologyCapabilities.ValidateCode')]
@@ -22027,8 +24654,10 @@ type
   TTerminologyCapabilitiesClosureCT = class(TBackboneElementCT)
   private
     fTranslation: TBooleanCT;
+
+    function GetTranslation: TBooleanCT;
   published
-    property Translation: TBooleanCT read fTranslation;
+    property Translation: TBooleanCT read GetTranslation;
   end;
 
   TCodeSearchSupportCT = class(TElementCT)
@@ -22052,22 +24681,30 @@ type
     fSetup: TTestReportSetupCT;
     fTest: TTestReportTestCTList;
     fTeardown: TTestReportTeardownCT;
+
+    function GetIdentifier: TIdentifierCT;
+    function GetName: TStringCT;
+    function GetScore: TDecimalCT;
+    function GetTester: TStringCT;
+    function GetIssued: TDateTimeCT;
+    function GetSetup: TTestReportSetupCT;
+    function GetTeardown: TTestReportTeardownCT;
   published
-    property Identifier: TIdentifierCT read fIdentifier;
-    property Name: TStringCT read fName;
+    property Identifier: TIdentifierCT read GetIdentifier;
+    property Name: TStringCT read GetName;
     [TRequired]
     property Status: TTestReportStatusCT read fStatus;
     [TRequired]
     property TestScript: TReferenceCT read fTestScript;
     [TRequired]
     property Result: TTestReportResultCT read fResult;
-    property Score: TDecimalCT read fScore;
-    property Tester: TStringCT read fTester;
-    property Issued: TDateTimeCT read fIssued;
+    property Score: TDecimalCT read GetScore;
+    property Tester: TStringCT read GetTester;
+    property Issued: TDateTimeCT read GetIssued;
     property Participant: TTestReportParticipantCTList read fParticipant;
-    property Setup: TTestReportSetupCT read fSetup;
+    property Setup: TTestReportSetupCT read GetSetup;
     property Test: TTestReportTestCTList read fTest;
-    property Teardown: TTestReportTeardownCT read fTeardown;
+    property Teardown: TTestReportTeardownCT read GetTeardown;
   end;
 
   [TName('TestReport.Participant')]
@@ -22076,12 +24713,14 @@ type
     fType: TTestReportParticipantTypeCT;
     fUri: TUriCT;
     fDisplay: TStringCT;
+
+    function GetDisplay: TStringCT;
   published
     [TRequired]
     property &Type: TTestReportParticipantTypeCT read fType;
     [TRequired]
     property Uri: TUriCT read fUri;
-    property Display: TStringCT read fDisplay;
+    property Display: TStringCT read GetDisplay;
   end;
 
   [TName('TestReport.Setup')]
@@ -22097,9 +24736,12 @@ type
   private
     fOperation: TTestReportOperationCT;
     fAssert: TTestReportAssertCT;
+
+    function GetOperation: TTestReportOperationCT;
+    function GetAssert: TTestReportAssertCT;
   published
-    property Operation: TTestReportOperationCT read fOperation;
-    property Assert: TTestReportAssertCT read fAssert;
+    property Operation: TTestReportOperationCT read GetOperation;
+    property Assert: TTestReportAssertCT read GetAssert;
   end;
 
   [TName('TestReport.Operation')]
@@ -22108,11 +24750,14 @@ type
     fResult: TTestReportActionResultCT;
     fMessage: TMarkdownCT;
     fDetail: TUriCT;
+
+    function GetMessage: TMarkdownCT;
+    function GetDetail: TUriCT;
   published
     [TRequired]
     property Result: TTestReportActionResultCT read fResult;
-    property Message: TMarkdownCT read fMessage;
-    property Detail: TUriCT read fDetail;
+    property Message: TMarkdownCT read GetMessage;
+    property Detail: TUriCT read GetDetail;
   end;
 
   [TName('TestReport.Assert')]
@@ -22121,11 +24766,14 @@ type
     fResult: TTestReportActionResultCT;
     fMessage: TMarkdownCT;
     fDetail: TStringCT;
+
+    function GetMessage: TMarkdownCT;
+    function GetDetail: TStringCT;
   published
     [TRequired]
     property Result: TTestReportActionResultCT read fResult;
-    property Message: TMarkdownCT read fMessage;
-    property Detail: TStringCT read fDetail;
+    property Message: TMarkdownCT read GetMessage;
+    property Detail: TStringCT read GetDetail;
   end;
 
   [TName('TestReport.Test')]
@@ -22134,9 +24782,12 @@ type
     fName: TStringCT;
     fDescription: TStringCT;
     fAction: TTestReportAction1CTList;
+
+    function GetName: TStringCT;
+    function GetDescription: TStringCT;
   published
-    property Name: TStringCT read fName;
-    property Description: TStringCT read fDescription;
+    property Name: TStringCT read GetName;
+    property Description: TStringCT read GetDescription;
     property Action: TTestReportAction1CTList read fAction;
   end;
 
@@ -22145,9 +24796,12 @@ type
   private
     fOperation: TTestReportOperationCT;
     fAssert: TTestReportAssertCT;
+
+    function GetOperation: TTestReportOperationCT;
+    function GetAssert: TTestReportAssertCT;
   published
-    property Operation: TTestReportOperationCT read fOperation;
-    property Assert: TTestReportAssertCT read fAssert;
+    property Operation: TTestReportOperationCT read GetOperation;
+    property Assert: TTestReportAssertCT read GetAssert;
   end;
 
   [TName('TestReport.Teardown')]
@@ -22221,34 +24875,47 @@ type
     fSetup: TTestScriptSetupCT;
     fTest: TTestScriptTestCTList;
     fTeardown: TTestScriptTeardownCT;
+
+    function GetIdentifier: TIdentifierCT;
+    function GetVersion: TStringCT;
+    function GetTitle: TStringCT;
+    function GetExperimental: TBooleanCT;
+    function GetDate: TDateTimeCT;
+    function GetPublisher: TStringCT;
+    function GetDescription: TMarkdownCT;
+    function GetPurpose: TMarkdownCT;
+    function GetCopyright: TMarkdownCT;
+    function GetMetadata: TTestScriptMetadataCT;
+    function GetSetup: TTestScriptSetupCT;
+    function GetTeardown: TTestScriptTeardownCT;
   published
     [TRequired]
     property Url: TUriCT read fUrl;
-    property Identifier: TIdentifierCT read fIdentifier;
-    property Version: TStringCT read fVersion;
+    property Identifier: TIdentifierCT read GetIdentifier;
+    property Version: TStringCT read GetVersion;
     [TRequired]
     property Name: TStringCT read fName;
-    property Title: TStringCT read fTitle;
+    property Title: TStringCT read GetTitle;
     [TRequired]
     property Status: TPublicationStatusCT read fStatus;
-    property Experimental: TBooleanCT read fExperimental;
-    property Date: TDateTimeCT read fDate;
-    property Publisher: TStringCT read fPublisher;
+    property Experimental: TBooleanCT read GetExperimental;
+    property Date: TDateTimeCT read GetDate;
+    property Publisher: TStringCT read GetPublisher;
     property Contact: TContactDetailCTList read fContact;
-    property Description: TMarkdownCT read fDescription;
+    property Description: TMarkdownCT read GetDescription;
     property UseContext: TUsageContextCTList read fUseContext;
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    property Purpose: TMarkdownCT read fPurpose;
-    property Copyright: TMarkdownCT read fCopyright;
+    property Purpose: TMarkdownCT read GetPurpose;
+    property Copyright: TMarkdownCT read GetCopyright;
     property Origin: TTestScriptOriginCTList read fOrigin;
     property Destination: TTestScriptDestinationCTList read fDestination;
-    property Metadata: TTestScriptMetadataCT read fMetadata;
+    property Metadata: TTestScriptMetadataCT read GetMetadata;
     property Fixture: TTestScriptFixtureCTList read fFixture;
     property Profile: TReferenceCTList read fProfile;
     property Variable: TTestScriptVariableCTList read fVariable;
-    property Setup: TTestScriptSetupCT read fSetup;
+    property Setup: TTestScriptSetupCT read GetSetup;
     property Test: TTestScriptTestCTList read fTest;
-    property Teardown: TTestScriptTeardownCT read fTeardown;
+    property Teardown: TTestScriptTeardownCT read GetTeardown;
   end;
 
   [TName('TestScript.Origin')]
@@ -22290,10 +24957,12 @@ type
   private
     fUrl: TUriCT;
     fDescription: TStringCT;
+
+    function GetDescription: TStringCT;
   published
     [TRequired]
     property Url: TUriCT read fUrl;
-    property Description: TStringCT read fDescription;
+    property Description: TStringCT read GetDescription;
   end;
 
   [TName('TestScript.Capability')]
@@ -22306,14 +24975,17 @@ type
     fDestination: TIntegerCT;
     fLink: TUriCTList;
     fCapabilities: TCanonicalCT;
+
+    function GetDescription: TStringCT;
+    function GetDestination: TIntegerCT;
   published
     [TRequired]
     property Required: TBooleanCT read fRequired;
     [TRequired]
     property Validated: TBooleanCT read fValidated;
-    property Description: TStringCT read fDescription;
+    property Description: TStringCT read GetDescription;
     property Origin: TIntegerCTList read fOrigin;
-    property Destination: TIntegerCT read fDestination;
+    property Destination: TIntegerCT read GetDestination;
     property Link: TUriCTList read fLink;
     [TRequired]
     property Capabilities: TCanonicalCT read fCapabilities;
@@ -22325,12 +24997,14 @@ type
     fAutocreate: TBooleanCT;
     fAutodelete: TBooleanCT;
     fResource: TReferenceCT;
+
+    function GetResource: TReferenceCT;
   published
     [TRequired]
     property Autocreate: TBooleanCT read fAutocreate;
     [TRequired]
     property Autodelete: TBooleanCT read fAutodelete;
-    property Resource: TReferenceCT read fResource;
+    property Resource: TReferenceCT read GetResource;
   end;
 
   [TName('TestScript.Variable')]
@@ -22344,16 +25018,24 @@ type
     fHint: TStringCT;
     fPath: TStringCT;
     fSourceId: TIdCT;
+
+    function GetDefaultValue: TStringCT;
+    function GetDescription: TStringCT;
+    function GetExpression: TStringCT;
+    function GetHeaderField: TStringCT;
+    function GetHint: TStringCT;
+    function GetPath: TStringCT;
+    function GetSourceId: TIdCT;
   published
     [TRequired]
     property Name: TStringCT read fName;
-    property DefaultValue: TStringCT read fDefaultValue;
-    property Description: TStringCT read fDescription;
-    property Expression: TStringCT read fExpression;
-    property HeaderField: TStringCT read fHeaderField;
-    property Hint: TStringCT read fHint;
-    property Path: TStringCT read fPath;
-    property SourceId: TIdCT read fSourceId;
+    property DefaultValue: TStringCT read GetDefaultValue;
+    property Description: TStringCT read GetDescription;
+    property Expression: TStringCT read GetExpression;
+    property HeaderField: TStringCT read GetHeaderField;
+    property Hint: TStringCT read GetHint;
+    property Path: TStringCT read GetPath;
+    property SourceId: TIdCT read GetSourceId;
   end;
 
   [TName('TestScript.Setup')]
@@ -22369,9 +25051,12 @@ type
   private
     fOperation: TTestScriptOperationCT;
     fAssert: TTestScriptAssertCT;
+
+    function GetOperation: TTestScriptOperationCT;
+    function GetAssert: TTestScriptAssertCT;
   published
-    property Operation: TTestScriptOperationCT read fOperation;
-    property Assert: TTestScriptAssertCT read fAssert;
+    property Operation: TTestScriptOperationCT read GetOperation;
+    property Assert: TTestScriptAssertCT read GetAssert;
   end;
 
   [TName('TestScript.Operation')]
@@ -22394,25 +25079,41 @@ type
     fSourceId: TIdCT;
     fTargetId: TIdCT;
     fUrl: TStringCT;
+
+    function GetType: TCodingCT;
+    function GetResource: TCodeCT;
+    function GetLabel: TStringCT;
+    function GetDescription: TStringCT;
+    function GetAccept: TCodeCT;
+    function GetContentType: TCodeCT;
+    function GetDestination: TIntegerCT;
+    function GetMethod: TTestScriptRequestMethodCodeCT;
+    function GetOrigin: TIntegerCT;
+    function GetParams: TStringCT;
+    function GetRequestId: TIdCT;
+    function GetResponseId: TIdCT;
+    function GetSourceId: TIdCT;
+    function GetTargetId: TIdCT;
+    function GetUrl: TStringCT;
   published
-    property &Type: TCodingCT read fType;
-    property Resource: TCodeCT read fResource;
-    property &Label: TStringCT read fLabel;
-    property Description: TStringCT read fDescription;
-    property Accept: TCodeCT read fAccept;
-    property ContentType: TCodeCT read fContentType;
-    property Destination: TIntegerCT read fDestination;
+    property &Type: TCodingCT read GetType;
+    property Resource: TCodeCT read GetResource;
+    property &Label: TStringCT read GetLabel;
+    property Description: TStringCT read GetDescription;
+    property Accept: TCodeCT read GetAccept;
+    property ContentType: TCodeCT read GetContentType;
+    property Destination: TIntegerCT read GetDestination;
     [TRequired]
     property EncodeRequestUrl: TBooleanCT read fEncodeRequestUrl;
-    property Method: TTestScriptRequestMethodCodeCT read fMethod;
-    property Origin: TIntegerCT read fOrigin;
-    property Params: TStringCT read fParams;
+    property Method: TTestScriptRequestMethodCodeCT read GetMethod;
+    property Origin: TIntegerCT read GetOrigin;
+    property Params: TStringCT read GetParams;
     property RequestHeader: TTestScriptRequestHeaderCTList read fRequestHeader;
-    property RequestId: TIdCT read fRequestId;
-    property ResponseId: TIdCT read fResponseId;
-    property SourceId: TIdCT read fSourceId;
-    property TargetId: TIdCT read fTargetId;
-    property Url: TStringCT read fUrl;
+    property RequestId: TIdCT read GetRequestId;
+    property ResponseId: TIdCT read GetResponseId;
+    property SourceId: TIdCT read GetSourceId;
+    property TargetId: TIdCT read GetTargetId;
+    property Url: TStringCT read GetUrl;
   end;
 
   [TName('TestScript.RequestHeader')]
@@ -22452,28 +25153,50 @@ type
     fValidateProfileId: TIdCT;
     fValue: TStringCT;
     fWarningOnly: TBooleanCT;
+
+    function GetLabel: TStringCT;
+    function GetDescription: TStringCT;
+    function GetDirection: TAssertionDirectionTypeCT;
+    function GetCompareToSourceId: TStringCT;
+    function GetCompareToSourceExpression: TStringCT;
+    function GetCompareToSourcePath: TStringCT;
+    function GetContentType: TCodeCT;
+    function GetExpression: TStringCT;
+    function GetHeaderField: TStringCT;
+    function GetMinimumId: TStringCT;
+    function GetNavigationLinks: TBooleanCT;
+    function GetOperator: TAssertionOperatorTypeCT;
+    function GetPath: TStringCT;
+    function GetRequestMethod: TTestScriptRequestMethodCodeCT;
+    function GetRequestURL: TStringCT;
+    function GetResource: TCodeCT;
+    function GetResponse: TAssertionResponseTypesCT;
+    function GetResponseCode: TStringCT;
+    function GetSourceId: TIdCT;
+    function GetValidateProfileId: TIdCT;
+    function GetValue: TStringCT;
   published
-    property &Label: TStringCT read fLabel;
-    property Description: TStringCT read fDescription;
-    property Direction: TAssertionDirectionTypeCT read fDirection;
-    property CompareToSourceId: TStringCT read fCompareToSourceId;
-    property CompareToSourceExpression: TStringCT read fCompareToSourceExpression;
-    property CompareToSourcePath: TStringCT read fCompareToSourcePath;
-    property ContentType: TCodeCT read fContentType;
-    property Expression: TStringCT read fExpression;
-    property HeaderField: TStringCT read fHeaderField;
-    property MinimumId: TStringCT read fMinimumId;
-    property NavigationLinks: TBooleanCT read fNavigationLinks;
-    property Operator: TAssertionOperatorTypeCT read fOperator;
-    property Path: TStringCT read fPath;
-    property RequestMethod: TTestScriptRequestMethodCodeCT read fRequestMethod;
-    property RequestURL: TStringCT read fRequestURL;
-    property Resource: TCodeCT read fResource;
-    property Response: TAssertionResponseTypesCT read fResponse;
-    property ResponseCode: TStringCT read fResponseCode;
-    property SourceId: TIdCT read fSourceId;
-    property ValidateProfileId: TIdCT read fValidateProfileId;
-    property Value: TStringCT read fValue;
+    property &Label: TStringCT read GetLabel;
+    property Description: TStringCT read GetDescription;
+    property Direction: TAssertionDirectionTypeCT read GetDirection;
+    property CompareToSourceId: TStringCT read GetCompareToSourceId;
+    property CompareToSourceExpression: TStringCT read GetCompareToSourceExpression;
+    property CompareToSourcePath: TStringCT read GetCompareToSourcePath;
+    property ContentType: TCodeCT read GetContentType;
+    property Expression: TStringCT read GetExpression;
+    property HeaderField: TStringCT read GetHeaderField;
+    property MinimumId: TStringCT read GetMinimumId;
+    property NavigationLinks: TBooleanCT read GetNavigationLinks;
+    property Operator: TAssertionOperatorTypeCT read GetOperator;
+    property Path: TStringCT read GetPath;
+    property RequestMethod: TTestScriptRequestMethodCodeCT read GetRequestMethod;
+    property RequestURL: TStringCT read GetRequestURL;
+    property Resource: TCodeCT read GetResource;
+    property Response: TAssertionResponseTypesCT read GetResponse;
+    property ResponseCode: TStringCT read GetResponseCode;
+    property SourceId: TIdCT read GetSourceId;
+    property ValidateProfileId: TIdCT read GetValidateProfileId;
+    property Value: TStringCT read GetValue;
     [TRequired]
     property WarningOnly: TBooleanCT read fWarningOnly;
   end;
@@ -22484,9 +25207,12 @@ type
     fName: TStringCT;
     fDescription: TStringCT;
     fAction: TTestScriptAction1CTList;
+
+    function GetName: TStringCT;
+    function GetDescription: TStringCT;
   published
-    property Name: TStringCT read fName;
-    property Description: TStringCT read fDescription;
+    property Name: TStringCT read GetName;
+    property Description: TStringCT read GetDescription;
     property Action: TTestScriptAction1CTList read fAction;
   end;
 
@@ -22495,9 +25221,12 @@ type
   private
     fOperation: TTestScriptOperationCT;
     fAssert: TTestScriptAssertCT;
+
+    function GetOperation: TTestScriptOperationCT;
+    function GetAssert: TTestScriptAssertCT;
   published
-    property Operation: TTestScriptOperationCT read fOperation;
-    property Assert: TTestScriptAssertCT read fAssert;
+    property Operation: TTestScriptOperationCT read GetOperation;
+    property Assert: TTestScriptAssertCT read GetAssert;
   end;
 
   [TName('TestScript.Teardown')]
@@ -22565,26 +25294,40 @@ type
     fCopyright: TMarkdownCT;
     fCompose: TValueSetComposeCT;
     fExpansion: TValueSetExpansionCT;
+
+    function GetUrl: TUriCT;
+    function GetVersion: TStringCT;
+    function GetName: TStringCT;
+    function GetTitle: TStringCT;
+    function GetExperimental: TBooleanCT;
+    function GetDate: TDateTimeCT;
+    function GetPublisher: TStringCT;
+    function GetDescription: TMarkdownCT;
+    function GetImmutable: TBooleanCT;
+    function GetPurpose: TMarkdownCT;
+    function GetCopyright: TMarkdownCT;
+    function GetCompose: TValueSetComposeCT;
+    function GetExpansion: TValueSetExpansionCT;
   published
-    property Url: TUriCT read fUrl;
+    property Url: TUriCT read GetUrl;
     property Identifier: TIdentifierCTList read fIdentifier;
-    property Version: TStringCT read fVersion;
-    property Name: TStringCT read fName;
-    property Title: TStringCT read fTitle;
+    property Version: TStringCT read GetVersion;
+    property Name: TStringCT read GetName;
+    property Title: TStringCT read GetTitle;
     [TRequired]
     property Status: TPublicationStatusCT read fStatus;
-    property Experimental: TBooleanCT read fExperimental;
-    property Date: TDateTimeCT read fDate;
-    property Publisher: TStringCT read fPublisher;
+    property Experimental: TBooleanCT read GetExperimental;
+    property Date: TDateTimeCT read GetDate;
+    property Publisher: TStringCT read GetPublisher;
     property Contact: TContactDetailCTList read fContact;
-    property Description: TMarkdownCT read fDescription;
+    property Description: TMarkdownCT read GetDescription;
     property UseContext: TUsageContextCTList read fUseContext;
     property Jurisdiction: TCodeableConceptCTList read fJurisdiction;
-    property Immutable: TBooleanCT read fImmutable;
-    property Purpose: TMarkdownCT read fPurpose;
-    property Copyright: TMarkdownCT read fCopyright;
-    property Compose: TValueSetComposeCT read fCompose;
-    property Expansion: TValueSetExpansionCT read fExpansion;
+    property Immutable: TBooleanCT read GetImmutable;
+    property Purpose: TMarkdownCT read GetPurpose;
+    property Copyright: TMarkdownCT read GetCopyright;
+    property Compose: TValueSetComposeCT read GetCompose;
+    property Expansion: TValueSetExpansionCT read GetExpansion;
   end;
 
   [TName('ValueSet.Compose')]
@@ -22594,9 +25337,12 @@ type
     fInactive: TBooleanCT;
     fInclude: TValueSetIncludeCTList;
     fExclude: TValueSetIncludeCTList;
+
+    function GetLockedDate: TDateCT;
+    function GetInactive: TBooleanCT;
   published
-    property LockedDate: TDateCT read fLockedDate;
-    property Inactive: TBooleanCT read fInactive;
+    property LockedDate: TDateCT read GetLockedDate;
+    property Inactive: TBooleanCT read GetInactive;
     property Include: TValueSetIncludeCTList read fInclude;
     property Exclude: TValueSetIncludeCTList read fExclude;
   end;
@@ -22609,9 +25355,12 @@ type
     fConcept: TValueSetConceptCTList;
     fFilter: TValueSetFilterCTList;
     fValueSet: TCanonicalCTList;
+
+    function GetSystem: TUriCT;
+    function GetVersion: TStringCT;
   published
-    property System: TUriCT read fSystem;
-    property Version: TStringCT read fVersion;
+    property System: TUriCT read GetSystem;
+    property Version: TStringCT read GetVersion;
     property Concept: TValueSetConceptCTList read fConcept;
     property Filter: TValueSetFilterCTList read fFilter;
     property ValueSet: TCanonicalCTList read fValueSet;
@@ -22623,10 +25372,12 @@ type
     fCode: TCodeCT;
     fDisplay: TStringCT;
     fDesignation: TValueSetDesignationCTList;
+
+    function GetDisplay: TStringCT;
   published
     [TRequired]
     property Code: TCodeCT read fCode;
-    property Display: TStringCT read fDisplay;
+    property Display: TStringCT read GetDisplay;
     property Designation: TValueSetDesignationCTList read fDesignation;
   end;
 
@@ -22636,9 +25387,12 @@ type
     fLanguage: TCodeCT;
     fUse: TCodingCT;
     fValue: TStringCT;
+
+    function GetLanguage: TCodeCT;
+    function GetUse: TCodingCT;
   published
-    property Language: TCodeCT read fLanguage;
-    property Use: TCodingCT read fUse;
+    property Language: TCodeCT read GetLanguage;
+    property Use: TCodingCT read GetUse;
     [TRequired]
     property Value: TStringCT read fValue;
   end;
@@ -22667,12 +25421,16 @@ type
     fOffset: TIntegerCT;
     fParameter: TValueSetParameterCTList;
     fContains: TValueSetContainsCTList;
+
+    function GetIdentifier: TUriCT;
+    function GetTotal: TIntegerCT;
+    function GetOffset: TIntegerCT;
   published
-    property Identifier: TUriCT read fIdentifier;
+    property Identifier: TUriCT read GetIdentifier;
     [TRequired]
     property Timestamp: TDateTimeCT read fTimestamp;
-    property Total: TIntegerCT read fTotal;
-    property Offset: TIntegerCT read fOffset;
+    property Total: TIntegerCT read GetTotal;
+    property Offset: TIntegerCT read GetOffset;
     property Parameter: TValueSetParameterCTList read fParameter;
     property Contains: TValueSetContainsCTList read fContains;
   end;
@@ -22729,13 +25487,20 @@ type
     fDisplay: TStringCT;
     fDesignation: TValueSetDesignationCTList;
     fContains: TValueSetContainsCTList;
+
+    function GetSystem: TUriCT;
+    function GetAbstract: TBooleanCT;
+    function GetInactive: TBooleanCT;
+    function GetVersion: TStringCT;
+    function GetCode: TCodeCT;
+    function GetDisplay: TStringCT;
   published
-    property System: TUriCT read fSystem;
-    property Abstract: TBooleanCT read fAbstract;
-    property Inactive: TBooleanCT read fInactive;
-    property Version: TStringCT read fVersion;
-    property Code: TCodeCT read fCode;
-    property Display: TStringCT read fDisplay;
+    property System: TUriCT read GetSystem;
+    property Abstract: TBooleanCT read GetAbstract;
+    property Inactive: TBooleanCT read GetInactive;
+    property Version: TStringCT read GetVersion;
+    property Code: TCodeCT read GetCode;
+    property Display: TStringCT read GetDisplay;
     property Designation: TValueSetDesignationCTList read fDesignation;
     property Contains: TValueSetContainsCTList read fContains;
   end;
@@ -22756,21 +25521,30 @@ type
     fPrimarySource: TVerificationResultPrimarySourceCTList;
     fAttestation: TVerificationResultAttestationCT;
     fValidator: TVerificationResultValidatorCTList;
+
+    function GetNeed: TCodeableConceptCT;
+    function GetStatusDate: TDateTimeCT;
+    function GetValidationType: TCodeableConceptCT;
+    function GetFrequency: TTimingCT;
+    function GetLastPerformed: TDateTimeCT;
+    function GetNextScheduled: TDateCT;
+    function GetFailureAction: TCodeableConceptCT;
+    function GetAttestation: TVerificationResultAttestationCT;
   published
     property Target: TReferenceCTList read fTarget;
     property TargetLocation: TStringCTList read fTargetLocation;
-    property Need: TCodeableConceptCT read fNeed;
+    property Need: TCodeableConceptCT read GetNeed;
     [TRequired]
     property Status: TStatusCT read fStatus;
-    property StatusDate: TDateTimeCT read fStatusDate;
-    property ValidationType: TCodeableConceptCT read fValidationType;
+    property StatusDate: TDateTimeCT read GetStatusDate;
+    property ValidationType: TCodeableConceptCT read GetValidationType;
     property ValidationProcess: TCodeableConceptCTList read fValidationProcess;
-    property Frequency: TTimingCT read fFrequency;
-    property LastPerformed: TDateTimeCT read fLastPerformed;
-    property NextScheduled: TDateCT read fNextScheduled;
-    property FailureAction: TCodeableConceptCT read fFailureAction;
+    property Frequency: TTimingCT read GetFrequency;
+    property LastPerformed: TDateTimeCT read GetLastPerformed;
+    property NextScheduled: TDateCT read GetNextScheduled;
+    property FailureAction: TCodeableConceptCT read GetFailureAction;
     property PrimarySource: TVerificationResultPrimarySourceCTList read fPrimarySource;
-    property Attestation: TVerificationResultAttestationCT read fAttestation;
+    property Attestation: TVerificationResultAttestationCT read GetAttestation;
     property Validator: TVerificationResultValidatorCTList read fValidator;
   end;
 
@@ -22784,13 +25558,18 @@ type
     fValidationDate: TDateTimeCT;
     fCanPushUpdates: TCodeableConceptCT;
     fPushTypeAvailable: TCodeableConceptCTList;
+
+    function GetWho: TReferenceCT;
+    function GetValidationStatus: TCodeableConceptCT;
+    function GetValidationDate: TDateTimeCT;
+    function GetCanPushUpdates: TCodeableConceptCT;
   published
-    property Who: TReferenceCT read fWho;
+    property Who: TReferenceCT read GetWho;
     property &Type: TCodeableConceptCTList read fType;
     property CommunicationMethod: TCodeableConceptCTList read fCommunicationMethod;
-    property ValidationStatus: TCodeableConceptCT read fValidationStatus;
-    property ValidationDate: TDateTimeCT read fValidationDate;
-    property CanPushUpdates: TCodeableConceptCT read fCanPushUpdates;
+    property ValidationStatus: TCodeableConceptCT read GetValidationStatus;
+    property ValidationDate: TDateTimeCT read GetValidationDate;
+    property CanPushUpdates: TCodeableConceptCT read GetCanPushUpdates;
     property PushTypeAvailable: TCodeableConceptCTList read fPushTypeAvailable;
   end;
 
@@ -22805,15 +25584,24 @@ type
     fProxyIdentityCertificate: TStringCT;
     fProxySignature: TSignatureCT;
     fSourceSignature: TSignatureCT;
+
+    function GetWho: TReferenceCT;
+    function GetOnBehalfOf: TReferenceCT;
+    function GetCommunicationMethod: TCodeableConceptCT;
+    function GetDate: TDateCT;
+    function GetSourceIdentityCertificate: TStringCT;
+    function GetProxyIdentityCertificate: TStringCT;
+    function GetProxySignature: TSignatureCT;
+    function GetSourceSignature: TSignatureCT;
   published
-    property Who: TReferenceCT read fWho;
-    property OnBehalfOf: TReferenceCT read fOnBehalfOf;
-    property CommunicationMethod: TCodeableConceptCT read fCommunicationMethod;
-    property Date: TDateCT read fDate;
-    property SourceIdentityCertificate: TStringCT read fSourceIdentityCertificate;
-    property ProxyIdentityCertificate: TStringCT read fProxyIdentityCertificate;
-    property ProxySignature: TSignatureCT read fProxySignature;
-    property SourceSignature: TSignatureCT read fSourceSignature;
+    property Who: TReferenceCT read GetWho;
+    property OnBehalfOf: TReferenceCT read GetOnBehalfOf;
+    property CommunicationMethod: TCodeableConceptCT read GetCommunicationMethod;
+    property Date: TDateCT read GetDate;
+    property SourceIdentityCertificate: TStringCT read GetSourceIdentityCertificate;
+    property ProxyIdentityCertificate: TStringCT read GetProxyIdentityCertificate;
+    property ProxySignature: TSignatureCT read GetProxySignature;
+    property SourceSignature: TSignatureCT read GetSourceSignature;
   end;
 
   [TName('VerificationResult.Validator')]
@@ -22822,11 +25610,14 @@ type
     fOrganization: TReferenceCT;
     fIdentityCertificate: TStringCT;
     fAttestationSignature: TSignatureCT;
+
+    function GetIdentityCertificate: TStringCT;
+    function GetAttestationSignature: TSignatureCT;
   published
     [TRequired]
     property Organization: TReferenceCT read fOrganization;
-    property IdentityCertificate: TStringCT read fIdentityCertificate;
-    property AttestationSignature: TSignatureCT read fAttestationSignature;
+    property IdentityCertificate: TStringCT read GetIdentityCertificate;
+    property AttestationSignature: TSignatureCT read GetAttestationSignature;
   end;
 
   [TNaming(TNaming.nFlatCase)]
@@ -22847,6 +25638,8 @@ type
     fDateWritten: TDateTimeCT;
     fPrescriber: TReferenceCT;
     fLensSpecification: TVisionPrescriptionLensSpecificationCTList;
+
+    function GetEncounter: TReferenceCT;
   published
     property Identifier: TIdentifierCTList read fIdentifier;
     [TRequired]
@@ -22855,7 +25648,7 @@ type
     property Created: TDateTimeCT read fCreated;
     [TRequired]
     property Patient: TReferenceCT read fPatient;
-    property Encounter: TReferenceCT read fEncounter;
+    property Encounter: TReferenceCT read GetEncounter;
     [TRequired]
     property DateWritten: TDateTimeCT read fDateWritten;
     [TRequired]
@@ -22880,22 +25673,33 @@ type
     fColor: TStringCT;
     fBrand: TStringCT;
     fNote: TAnnotationCTList;
+
+    function GetSphere: TDecimalCT;
+    function GetCylinder: TDecimalCT;
+    function GetAxis: TIntegerCT;
+    function GetAdd: TDecimalCT;
+    function GetPower: TDecimalCT;
+    function GetBackCurve: TDecimalCT;
+    function GetDiameter: TDecimalCT;
+    function GetDuration: TQuantityCT;
+    function GetColor: TStringCT;
+    function GetBrand: TStringCT;
   published
     [TRequired]
     property Product: TCodeableConceptCT read fProduct;
     [TRequired]
     property Eye: TVisionEyesCT read fEye;
-    property Sphere: TDecimalCT read fSphere;
-    property Cylinder: TDecimalCT read fCylinder;
-    property Axis: TIntegerCT read fAxis;
+    property Sphere: TDecimalCT read GetSphere;
+    property Cylinder: TDecimalCT read GetCylinder;
+    property Axis: TIntegerCT read GetAxis;
     property Prism: TVisionPrescriptionPrismCTList read fPrism;
-    property Add: TDecimalCT read fAdd;
-    property Power: TDecimalCT read fPower;
-    property BackCurve: TDecimalCT read fBackCurve;
-    property Diameter: TDecimalCT read fDiameter;
-    property Duration: TQuantityCT read fDuration;
-    property Color: TStringCT read fColor;
-    property Brand: TStringCT read fBrand;
+    property Add: TDecimalCT read GetAdd;
+    property Power: TDecimalCT read GetPower;
+    property BackCurve: TDecimalCT read GetBackCurve;
+    property Diameter: TDecimalCT read GetDiameter;
+    property Duration: TQuantityCT read GetDuration;
+    property Color: TStringCT read GetColor;
+    property Brand: TStringCT read GetBrand;
     property Note: TAnnotationCTList read fNote;
   end;
 
@@ -24653,6 +27457,139 @@ begin
   Result := Chosen('Value');
 end;
 
+{ TMetaCT }
+
+function TMetaCT.GetVersionId: TIdCT;
+begin
+  Result := TIdCT(Lazy(fVersionId, TIdCT));
+end;
+
+function TMetaCT.GetLastUpdated: TInstantCT;
+begin
+  Result := TInstantCT(Lazy(fLastUpdated, TInstantCT));
+end;
+
+function TMetaCT.GetSource: TUriCT;
+begin
+  Result := TUriCT(Lazy(fSource, TUriCT));
+end;
+
+{ TAddressCT }
+
+function TAddressCT.GetUse: TAddressUseCT;
+begin
+  Result := TAddressUseCT(Lazy(fUse, TAddressUseCT));
+end;
+
+function TAddressCT.GetType: TAddressTypeCT;
+begin
+  Result := TAddressTypeCT(Lazy(fType, TAddressTypeCT));
+end;
+
+function TAddressCT.GetText: TStringCT;
+begin
+  Result := TStringCT(Lazy(fText, TStringCT));
+end;
+
+function TAddressCT.GetCity: TStringCT;
+begin
+  Result := TStringCT(Lazy(fCity, TStringCT));
+end;
+
+function TAddressCT.GetDistrict: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDistrict, TStringCT));
+end;
+
+function TAddressCT.GetState: TStringCT;
+begin
+  Result := TStringCT(Lazy(fState, TStringCT));
+end;
+
+function TAddressCT.GetPostalCode: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPostalCode, TStringCT));
+end;
+
+function TAddressCT.GetCountry: TStringCT;
+begin
+  Result := TStringCT(Lazy(fCountry, TStringCT));
+end;
+
+function TAddressCT.GetPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fPeriod, TPeriodCT));
+end;
+
+{ TAttachmentCT }
+
+function TAttachmentCT.GetContentType: TCodeCT;
+begin
+  Result := TCodeCT(Lazy(fContentType, TCodeCT));
+end;
+
+function TAttachmentCT.GetLanguage: TCodeCT;
+begin
+  Result := TCodeCT(Lazy(fLanguage, TCodeCT));
+end;
+
+function TAttachmentCT.GetData: TBase64BinaryCT;
+begin
+  Result := TBase64BinaryCT(Lazy(fData, TBase64BinaryCT));
+end;
+
+function TAttachmentCT.GetUrl: TUrlCT;
+begin
+  Result := TUrlCT(Lazy(fUrl, TUrlCT));
+end;
+
+function TAttachmentCT.GetSize: TUnsignedIntCT;
+begin
+  Result := TUnsignedIntCT(Lazy(fSize, TUnsignedIntCT));
+end;
+
+function TAttachmentCT.GetHash: TBase64BinaryCT;
+begin
+  Result := TBase64BinaryCT(Lazy(fHash, TBase64BinaryCT));
+end;
+
+function TAttachmentCT.GetTitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTitle, TStringCT));
+end;
+
+function TAttachmentCT.GetCreation: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fCreation, TDateTimeCT));
+end;
+
+{ TQuantityCT }
+
+function TQuantityCT.GetValue: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fValue, TDecimalCT));
+end;
+
+function TQuantityCT.GetComparator: TQuantityComparatorCT;
+begin
+  Result := TQuantityComparatorCT(Lazy(fComparator, TQuantityComparatorCT));
+end;
+
+function TQuantityCT.GetUnit: TStringCT;
+begin
+  Result := TStringCT(Lazy(fUnit, TStringCT));
+end;
+
+function TQuantityCT.GetSystem: TUriCT;
+begin
+  Result := TUriCT(Lazy(fSystem, TUriCT));
+end;
+
+function TQuantityCT.GetCode: TCodeCT;
+begin
+  Result := TCodeCT(Lazy(fCode, TCodeCT));
+end;
+
 { TDataRequirementCT }
 
 function TDataRequirementCT.GetSubjectCodeableConcept: TCodeableConceptCT;
@@ -24670,7 +27607,39 @@ begin
   Result := Chosen('Subject');
 end;
 
+function TDataRequirementCT.GetLimit: TPositiveIntCT;
+begin
+  Result := TPositiveIntCT(Lazy(fLimit, TPositiveIntCT));
+end;
+
+{ TDataRequirementCodeFilterCT }
+
+function TDataRequirementCodeFilterCT.GetPath: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPath, TStringCT));
+end;
+
+function TDataRequirementCodeFilterCT.GetSearchParam: TStringCT;
+begin
+  Result := TStringCT(Lazy(fSearchParam, TStringCT));
+end;
+
+function TDataRequirementCodeFilterCT.GetValueSet: TCanonicalCT;
+begin
+  Result := TCanonicalCT(Lazy(fValueSet, TCanonicalCT));
+end;
+
 { TDataRequirementDateFilterCT }
+
+function TDataRequirementDateFilterCT.GetPath: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPath, TStringCT));
+end;
+
+function TDataRequirementDateFilterCT.GetSearchParam: TStringCT;
+begin
+  Result := TStringCT(Lazy(fSearchParam, TStringCT));
+end;
 
 function TDataRequirementDateFilterCT.GetValueDateTime: TDateTimeCT;
 begin
@@ -24694,6 +27663,26 @@ end;
 
 { TDosageCT }
 
+function TDosageCT.GetSequence: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fSequence, TIntegerCT));
+end;
+
+function TDosageCT.GetText: TStringCT;
+begin
+  Result := TStringCT(Lazy(fText, TStringCT));
+end;
+
+function TDosageCT.GetPatientInstruction: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPatientInstruction, TStringCT));
+end;
+
+function TDosageCT.GetTiming: TTimingCT;
+begin
+  Result := TTimingCT(Lazy(fTiming, TTimingCT));
+end;
+
 function TDosageCT.GetAsNeededBoolean: TBooleanCT;
 begin
   Result := TBooleanCT(Lazy(fAsNeededBoolean, TBooleanCT));
@@ -24709,7 +27698,42 @@ begin
   Result := Chosen('AsNeeded');
 end;
 
+function TDosageCT.GetSite: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fSite, TCodeableConceptCT));
+end;
+
+function TDosageCT.GetRoute: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fRoute, TCodeableConceptCT));
+end;
+
+function TDosageCT.GetMethod: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fMethod, TCodeableConceptCT));
+end;
+
+function TDosageCT.GetMaxDosePerPeriod: TRatioCT;
+begin
+  Result := TRatioCT(Lazy(fMaxDosePerPeriod, TRatioCT));
+end;
+
+function TDosageCT.GetMaxDosePerAdministration: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fMaxDosePerAdministration, TQuantityCT));
+end;
+
+function TDosageCT.GetMaxDosePerLifetime: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fMaxDosePerLifetime, TQuantityCT));
+end;
+
 { TDosageDoseAndRateCT }
+
+function TDosageDoseAndRateCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
 
 function TDosageDoseAndRateCT.GetDoseRange: TRangeCT;
 begin
@@ -24746,6 +27770,111 @@ begin
   Result := Chosen('Rate');
 end;
 
+{ TMoneyCT }
+
+function TMoneyCT.GetValue: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fValue, TDecimalCT));
+end;
+
+function TMoneyCT.GetCurrency: TCodeCT;
+begin
+  Result := TCodeCT(Lazy(fCurrency, TCodeCT));
+end;
+
+{ THumanNameCT }
+
+function THumanNameCT.GetUse: TNameUseCT;
+begin
+  Result := TNameUseCT(Lazy(fUse, TNameUseCT));
+end;
+
+function THumanNameCT.GetText: TStringCT;
+begin
+  Result := TStringCT(Lazy(fText, TStringCT));
+end;
+
+function THumanNameCT.GetFamily: TStringCT;
+begin
+  Result := TStringCT(Lazy(fFamily, TStringCT));
+end;
+
+function THumanNameCT.GetPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fPeriod, TPeriodCT));
+end;
+
+{ TContactPointCT }
+
+function TContactPointCT.GetSystem: TContactPointSystemCT;
+begin
+  Result := TContactPointSystemCT(Lazy(fSystem, TContactPointSystemCT));
+end;
+
+function TContactPointCT.GetValue: TStringCT;
+begin
+  Result := TStringCT(Lazy(fValue, TStringCT));
+end;
+
+function TContactPointCT.GetUse: TContactPointUseCT;
+begin
+  Result := TContactPointUseCT(Lazy(fUse, TContactPointUseCT));
+end;
+
+function TContactPointCT.GetRank: TPositiveIntCT;
+begin
+  Result := TPositiveIntCT(Lazy(fRank, TPositiveIntCT));
+end;
+
+function TContactPointCT.GetPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fPeriod, TPeriodCT));
+end;
+
+{ TMarketingStatusCT }
+
+function TMarketingStatusCT.GetJurisdiction: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fJurisdiction, TCodeableConceptCT));
+end;
+
+function TMarketingStatusCT.GetRestoreDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fRestoreDate, TDateTimeCT));
+end;
+
+{ TIdentifierCT }
+
+function TIdentifierCT.GetUse: TIdentifierUseCT;
+begin
+  Result := TIdentifierUseCT(Lazy(fUse, TIdentifierUseCT));
+end;
+
+function TIdentifierCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TIdentifierCT.GetSystem: TUriCT;
+begin
+  Result := TUriCT(Lazy(fSystem, TUriCT));
+end;
+
+function TIdentifierCT.GetValue: TStringCT;
+begin
+  Result := TStringCT(Lazy(fValue, TStringCT));
+end;
+
+function TIdentifierCT.GetPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fPeriod, TPeriodCT));
+end;
+
+function TIdentifierCT.GetAssigner: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fAssigner, TReferenceCT));
+end;
+
 { TSubstanceAmountCT }
 
 function TSubstanceAmountCT.GetAmountQuantity: TQuantityCT;
@@ -24768,6 +27897,82 @@ begin
   Result := Chosen('Amount');
 end;
 
+function TSubstanceAmountCT.GetAmountType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fAmountType, TCodeableConceptCT));
+end;
+
+function TSubstanceAmountCT.GetAmountText: TStringCT;
+begin
+  Result := TStringCT(Lazy(fAmountText, TStringCT));
+end;
+
+function TSubstanceAmountCT.GetReferenceRange: TSubstanceAmountReferenceRangeCT;
+begin
+  Result := TSubstanceAmountReferenceRangeCT(Lazy(fReferenceRange, TSubstanceAmountReferenceRangeCT));
+end;
+
+{ TSubstanceAmountReferenceRangeCT }
+
+function TSubstanceAmountReferenceRangeCT.GetLowLimit: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fLowLimit, TQuantityCT));
+end;
+
+function TSubstanceAmountReferenceRangeCT.GetHighLimit: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fHighLimit, TQuantityCT));
+end;
+
+{ TCodingCT }
+
+function TCodingCT.GetSystem: TUriCT;
+begin
+  Result := TUriCT(Lazy(fSystem, TUriCT));
+end;
+
+function TCodingCT.GetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersion, TStringCT));
+end;
+
+function TCodingCT.GetCode: TCodeCT;
+begin
+  Result := TCodeCT(Lazy(fCode, TCodeCT));
+end;
+
+function TCodingCT.GetDisplay: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDisplay, TStringCT));
+end;
+
+function TCodingCT.GetUserSelected: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fUserSelected, TBooleanCT));
+end;
+
+{ TSampledDataCT }
+
+function TSampledDataCT.GetFactor: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fFactor, TDecimalCT));
+end;
+
+function TSampledDataCT.GetLowerLimit: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fLowerLimit, TDecimalCT));
+end;
+
+function TSampledDataCT.GetUpperLimit: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fUpperLimit, TDecimalCT));
+end;
+
+function TSampledDataCT.GetData: TSampledDataDataTypeCT;
+begin
+  Result := TSampledDataDataTypeCT(Lazy(fData, TSampledDataDataTypeCT));
+end;
+
 { TPopulationCT }
 
 function TPopulationCT.GetAgeRange: TRangeCT;
@@ -24785,7 +27990,61 @@ begin
   Result := Chosen('Age');
 end;
 
+function TPopulationCT.GetGender: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fGender, TCodeableConceptCT));
+end;
+
+function TPopulationCT.GetRace: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fRace, TCodeableConceptCT));
+end;
+
+function TPopulationCT.GetPhysiologicalCondition: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fPhysiologicalCondition, TCodeableConceptCT));
+end;
+
+{ TRatioCT }
+
+function TRatioCT.GetNumerator: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fNumerator, TQuantityCT));
+end;
+
+function TRatioCT.GetDenominator: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fDenominator, TQuantityCT));
+end;
+
+{ TReferenceCT }
+
+function TReferenceCT.GetReference: TStringCT;
+begin
+  Result := TStringCT(Lazy(fReference, TStringCT));
+end;
+
+function TReferenceCT.GetType: TUriCT;
+begin
+  Result := TUriCT(Lazy(fType, TUriCT));
+end;
+
+function TReferenceCT.GetIdentifier: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fIdentifier, TIdentifierCT));
+end;
+
+function TReferenceCT.GetDisplay: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDisplay, TStringCT));
+end;
+
 { TTriggerDefinitionCT }
+
+function TTriggerDefinitionCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
 
 function TTriggerDefinitionCT.GetTimingTiming: TTimingCT;
 begin
@@ -24812,6 +28071,67 @@ begin
   Result := Chosen('Timing');
 end;
 
+function TTriggerDefinitionCT.GetCondition: TExpressionCT;
+begin
+  Result := TExpressionCT(Lazy(fCondition, TExpressionCT));
+end;
+
+{ TPeriodCT }
+
+function TPeriodCT.GetStart: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fStart, TDateTimeCT));
+end;
+
+function TPeriodCT.GetEnd: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fEnd, TDateTimeCT));
+end;
+
+{ TRangeCT }
+
+function TRangeCT.GetLow: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fLow, TQuantityCT));
+end;
+
+function TRangeCT.GetHigh: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fHigh, TQuantityCT));
+end;
+
+{ TRelatedArtifactCT }
+
+function TRelatedArtifactCT.GetLabel: TStringCT;
+begin
+  Result := TStringCT(Lazy(fLabel, TStringCT));
+end;
+
+function TRelatedArtifactCT.GetDisplay: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDisplay, TStringCT));
+end;
+
+function TRelatedArtifactCT.GetCitation: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fCitation, TMarkdownCT));
+end;
+
+function TRelatedArtifactCT.GetUrl: TUrlCT;
+begin
+  Result := TUrlCT(Lazy(fUrl, TUrlCT));
+end;
+
+function TRelatedArtifactCT.GetDocument: TAttachmentCT;
+begin
+  Result := TAttachmentCT(Lazy(fDocument, TAttachmentCT));
+end;
+
+function TRelatedArtifactCT.GetResource: TCanonicalCT;
+begin
+  Result := TCanonicalCT(Lazy(fResource, TCanonicalCT));
+end;
+
 { TAnnotationCT }
 
 function TAnnotationCT.GetAuthorReference: TReferenceCT;
@@ -24827,6 +28147,25 @@ end;
 function TAnnotationCT.GetAuthorChosen: TBasite;
 begin
   Result := Chosen('Author');
+end;
+
+function TAnnotationCT.GetTime: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fTime, TDateTimeCT));
+end;
+
+{ TProductShelfLifeCT }
+
+function TProductShelfLifeCT.GetIdentifier: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fIdentifier, TIdentifierCT));
+end;
+
+{ TContactDetailCT }
+
+function TContactDetailCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
 end;
 
 { TUsageContextCT }
@@ -24856,6 +28195,62 @@ begin
   Result := Chosen('Value');
 end;
 
+{ TExpressionCT }
+
+function TExpressionCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+function TExpressionCT.GetName: TIdCT;
+begin
+  Result := TIdCT(Lazy(fName, TIdCT));
+end;
+
+function TExpressionCT.GetExpression: TStringCT;
+begin
+  Result := TStringCT(Lazy(fExpression, TStringCT));
+end;
+
+function TExpressionCT.GetReference: TUriCT;
+begin
+  Result := TUriCT(Lazy(fReference, TUriCT));
+end;
+
+{ TSignatureCT }
+
+function TSignatureCT.GetOnBehalfOf: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fOnBehalfOf, TReferenceCT));
+end;
+
+function TSignatureCT.GetTargetFormat: TCodeCT;
+begin
+  Result := TCodeCT(Lazy(fTargetFormat, TCodeCT));
+end;
+
+function TSignatureCT.GetSigFormat: TCodeCT;
+begin
+  Result := TCodeCT(Lazy(fSigFormat, TCodeCT));
+end;
+
+function TSignatureCT.GetData: TBase64BinaryCT;
+begin
+  Result := TBase64BinaryCT(Lazy(fData, TBase64BinaryCT));
+end;
+
+{ TTimingCT }
+
+function TTimingCT.GetRepeat: TTimingRepeatCT;
+begin
+  Result := TTimingRepeatCT(Lazy(fRepeat, TTimingRepeatCT));
+end;
+
+function TTimingCT.GetCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCode, TCodeableConceptCT));
+end;
+
 { TTimingRepeatCT }
 
 function TTimingRepeatCT.GetBoundsDuration: TDurationCT;
@@ -24878,7 +28273,198 @@ begin
   Result := Chosen('Bounds');
 end;
 
+function TTimingRepeatCT.GetCount: TPositiveIntCT;
+begin
+  Result := TPositiveIntCT(Lazy(fCount, TPositiveIntCT));
+end;
+
+function TTimingRepeatCT.GetCountMax: TPositiveIntCT;
+begin
+  Result := TPositiveIntCT(Lazy(fCountMax, TPositiveIntCT));
+end;
+
+function TTimingRepeatCT.GetDuration: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fDuration, TDecimalCT));
+end;
+
+function TTimingRepeatCT.GetDurationMax: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fDurationMax, TDecimalCT));
+end;
+
+function TTimingRepeatCT.GetDurationUnit: TUnitsOfTimeCT;
+begin
+  Result := TUnitsOfTimeCT(Lazy(fDurationUnit, TUnitsOfTimeCT));
+end;
+
+function TTimingRepeatCT.GetFrequency: TPositiveIntCT;
+begin
+  Result := TPositiveIntCT(Lazy(fFrequency, TPositiveIntCT));
+end;
+
+function TTimingRepeatCT.GetFrequencyMax: TPositiveIntCT;
+begin
+  Result := TPositiveIntCT(Lazy(fFrequencyMax, TPositiveIntCT));
+end;
+
+function TTimingRepeatCT.GetPeriod: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fPeriod, TDecimalCT));
+end;
+
+function TTimingRepeatCT.GetPeriodMax: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fPeriodMax, TDecimalCT));
+end;
+
+function TTimingRepeatCT.GetPeriodUnit: TUnitsOfTimeCT;
+begin
+  Result := TUnitsOfTimeCT(Lazy(fPeriodUnit, TUnitsOfTimeCT));
+end;
+
+function TTimingRepeatCT.GetOffset: TUnsignedIntCT;
+begin
+  Result := TUnsignedIntCT(Lazy(fOffset, TUnsignedIntCT));
+end;
+
+{ TProdCharacteristicCT }
+
+function TProdCharacteristicCT.GetHeight: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fHeight, TQuantityCT));
+end;
+
+function TProdCharacteristicCT.GetWidth: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fWidth, TQuantityCT));
+end;
+
+function TProdCharacteristicCT.GetDepth: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fDepth, TQuantityCT));
+end;
+
+function TProdCharacteristicCT.GetWeight: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fWeight, TQuantityCT));
+end;
+
+function TProdCharacteristicCT.GetNominalVolume: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fNominalVolume, TQuantityCT));
+end;
+
+function TProdCharacteristicCT.GetExternalDiameter: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fExternalDiameter, TQuantityCT));
+end;
+
+function TProdCharacteristicCT.GetShape: TStringCT;
+begin
+  Result := TStringCT(Lazy(fShape, TStringCT));
+end;
+
+function TProdCharacteristicCT.GetScoring: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fScoring, TCodeableConceptCT));
+end;
+
+{ TCodeableConceptCT }
+
+function TCodeableConceptCT.GetText: TStringCT;
+begin
+  Result := TStringCT(Lazy(fText, TStringCT));
+end;
+
+{ TParameterDefinitionCT }
+
+function TParameterDefinitionCT.GetName: TCodeCT;
+begin
+  Result := TCodeCT(Lazy(fName, TCodeCT));
+end;
+
+function TParameterDefinitionCT.GetMin: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fMin, TIntegerCT));
+end;
+
+function TParameterDefinitionCT.GetMax: TStringCT;
+begin
+  Result := TStringCT(Lazy(fMax, TStringCT));
+end;
+
+function TParameterDefinitionCT.GetDocumentation: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDocumentation, TStringCT));
+end;
+
+function TParameterDefinitionCT.GetProfile: TCanonicalCT;
+begin
+  Result := TCanonicalCT(Lazy(fProfile, TCanonicalCT));
+end;
+
 { TElementDefinitionCT }
+
+function TElementDefinitionCT.GetSliceName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fSliceName, TStringCT));
+end;
+
+function TElementDefinitionCT.GetSliceIsConstraining: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fSliceIsConstraining, TBooleanCT));
+end;
+
+function TElementDefinitionCT.GetLabel: TStringCT;
+begin
+  Result := TStringCT(Lazy(fLabel, TStringCT));
+end;
+
+function TElementDefinitionCT.GetSlicing: TElementDefinitionSlicingCT;
+begin
+  Result := TElementDefinitionSlicingCT(Lazy(fSlicing, TElementDefinitionSlicingCT));
+end;
+
+function TElementDefinitionCT.GetShort: TStringCT;
+begin
+  Result := TStringCT(Lazy(fShort, TStringCT));
+end;
+
+function TElementDefinitionCT.GetDefinition: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDefinition, TMarkdownCT));
+end;
+
+function TElementDefinitionCT.GetComment: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fComment, TMarkdownCT));
+end;
+
+function TElementDefinitionCT.GetRequirements: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fRequirements, TMarkdownCT));
+end;
+
+function TElementDefinitionCT.GetMin: TUnsignedIntCT;
+begin
+  Result := TUnsignedIntCT(Lazy(fMin, TUnsignedIntCT));
+end;
+
+function TElementDefinitionCT.GetMax: TStringCT;
+begin
+  Result := TStringCT(Lazy(fMax, TStringCT));
+end;
+
+function TElementDefinitionCT.GetBase: TElementDefinitionBaseCT;
+begin
+  Result := TElementDefinitionBaseCT(Lazy(fBase, TElementDefinitionBaseCT));
+end;
+
+function TElementDefinitionCT.GetContentReference: TUriCT;
+begin
+  Result := TUriCT(Lazy(fContentReference, TUriCT));
+end;
 
 function TElementDefinitionCT.GetDefaultValueBase64Binary: TBase64BinaryCT;
 begin
@@ -25133,6 +28719,16 @@ end;
 function TElementDefinitionCT.GetDefaultValueChosen: TBasite;
 begin
   Result := Chosen('DefaultValue');
+end;
+
+function TElementDefinitionCT.GetMeaningWhenMissing: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fMeaningWhenMissing, TMarkdownCT));
+end;
+
+function TElementDefinitionCT.GetOrderMeaning: TStringCT;
+begin
+  Result := TStringCT(Lazy(fOrderMeaning, TStringCT));
 end;
 
 function TElementDefinitionCT.GetFixedBase64Binary: TBase64BinaryCT;
@@ -25745,6 +29341,77 @@ begin
   Result := Chosen('MaxValue');
 end;
 
+function TElementDefinitionCT.GetMaxLength: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fMaxLength, TIntegerCT));
+end;
+
+function TElementDefinitionCT.GetMustSupport: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fMustSupport, TBooleanCT));
+end;
+
+function TElementDefinitionCT.GetIsModifier: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fIsModifier, TBooleanCT));
+end;
+
+function TElementDefinitionCT.GetIsModifierReason: TStringCT;
+begin
+  Result := TStringCT(Lazy(fIsModifierReason, TStringCT));
+end;
+
+function TElementDefinitionCT.GetIsSummary: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fIsSummary, TBooleanCT));
+end;
+
+function TElementDefinitionCT.GetBinding: TElementDefinitionBindingCT;
+begin
+  Result := TElementDefinitionBindingCT(Lazy(fBinding, TElementDefinitionBindingCT));
+end;
+
+{ TElementDefinitionConstraintCT }
+
+function TElementDefinitionConstraintCT.GetRequirements: TStringCT;
+begin
+  Result := TStringCT(Lazy(fRequirements, TStringCT));
+end;
+
+function TElementDefinitionConstraintCT.GetExpression: TStringCT;
+begin
+  Result := TStringCT(Lazy(fExpression, TStringCT));
+end;
+
+function TElementDefinitionConstraintCT.GetXpath: TStringCT;
+begin
+  Result := TStringCT(Lazy(fXpath, TStringCT));
+end;
+
+function TElementDefinitionConstraintCT.GetSource: TCanonicalCT;
+begin
+  Result := TCanonicalCT(Lazy(fSource, TCanonicalCT));
+end;
+
+{ TElementDefinitionMappingCT }
+
+function TElementDefinitionMappingCT.GetLanguage: TCodeCT;
+begin
+  Result := TCodeCT(Lazy(fLanguage, TCodeCT));
+end;
+
+function TElementDefinitionMappingCT.GetComment: TStringCT;
+begin
+  Result := TStringCT(Lazy(fComment, TStringCT));
+end;
+
+{ TElementDefinitionTypeCT }
+
+function TElementDefinitionTypeCT.GetVersioning: TReferenceVersionRulesCT;
+begin
+  Result := TReferenceVersionRulesCT(Lazy(fVersioning, TReferenceVersionRulesCT));
+end;
+
 { TElementDefinitionExampleCT }
 
 function TElementDefinitionExampleCT.GetValueBase64Binary: TBase64BinaryCT;
@@ -26002,7 +29669,141 @@ begin
   Result := Chosen('Value');
 end;
 
+{ TElementDefinitionSlicingCT }
+
+function TElementDefinitionSlicingCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+function TElementDefinitionSlicingCT.GetOrdered: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fOrdered, TBooleanCT));
+end;
+
+{ TElementDefinitionBindingCT }
+
+function TElementDefinitionBindingCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+function TElementDefinitionBindingCT.GetValueSet: TCanonicalCT;
+begin
+  Result := TCanonicalCT(Lazy(fValueSet, TCanonicalCT));
+end;
+
+{ TResourceCT }
+
+function TResourceCT.GetId: TIdCT;
+begin
+  Result := TIdCT(Lazy(fId, TIdCT));
+end;
+
+function TResourceCT.GetMeta: TMetaCT;
+begin
+  Result := TMetaCT(Lazy(fMeta, TMetaCT));
+end;
+
+function TResourceCT.GetImplicitRules: TUriCT;
+begin
+  Result := TUriCT(Lazy(fImplicitRules, TUriCT));
+end;
+
+function TResourceCT.GetLanguage: TCodeCT;
+begin
+  Result := TCodeCT(Lazy(fLanguage, TCodeCT));
+end;
+
+{ TDomainResourceCT }
+
+function TDomainResourceCT.GetText: TNarrativeCT;
+begin
+  Result := TNarrativeCT(Lazy(fText, TNarrativeCT));
+end;
+
+{ TAccountCT }
+
+function TAccountCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TAccountCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TAccountCT.GetServicePeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fServicePeriod, TPeriodCT));
+end;
+
+function TAccountCT.GetOwner: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fOwner, TReferenceCT));
+end;
+
+function TAccountCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+function TAccountCT.GetPartOf: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fPartOf, TReferenceCT));
+end;
+
+{ TAccountCoverageCT }
+
+function TAccountCoverageCT.GetPriority: TPositiveIntCT;
+begin
+  Result := TPositiveIntCT(Lazy(fPriority, TPositiveIntCT));
+end;
+
+{ TAccountGuarantorCT }
+
+function TAccountGuarantorCT.GetOnHold: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fOnHold, TBooleanCT));
+end;
+
+function TAccountGuarantorCT.GetPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fPeriod, TPeriodCT));
+end;
+
 { TActivityDefinitionCT }
+
+function TActivityDefinitionCT.GetUrl: TUriCT;
+begin
+  Result := TUriCT(Lazy(fUrl, TUriCT));
+end;
+
+function TActivityDefinitionCT.GetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersion, TStringCT));
+end;
+
+function TActivityDefinitionCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TActivityDefinitionCT.GetTitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTitle, TStringCT));
+end;
+
+function TActivityDefinitionCT.GetSubtitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fSubtitle, TStringCT));
+end;
+
+function TActivityDefinitionCT.GetExperimental: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fExperimental, TBooleanCT));
+end;
 
 function TActivityDefinitionCT.GetSubjectCodeableConcept: TCodeableConceptCT;
 begin
@@ -26017,6 +29818,81 @@ end;
 function TActivityDefinitionCT.GetSubjectChosen: TBasite;
 begin
   Result := Chosen('Subject');
+end;
+
+function TActivityDefinitionCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
+
+function TActivityDefinitionCT.GetPublisher: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPublisher, TStringCT));
+end;
+
+function TActivityDefinitionCT.GetDescription: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDescription, TMarkdownCT));
+end;
+
+function TActivityDefinitionCT.GetPurpose: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fPurpose, TMarkdownCT));
+end;
+
+function TActivityDefinitionCT.GetUsage: TStringCT;
+begin
+  Result := TStringCT(Lazy(fUsage, TStringCT));
+end;
+
+function TActivityDefinitionCT.GetCopyright: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fCopyright, TMarkdownCT));
+end;
+
+function TActivityDefinitionCT.GetApprovalDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fApprovalDate, TDateCT));
+end;
+
+function TActivityDefinitionCT.GetLastReviewDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fLastReviewDate, TDateCT));
+end;
+
+function TActivityDefinitionCT.GetEffectivePeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fEffectivePeriod, TPeriodCT));
+end;
+
+function TActivityDefinitionCT.GetKind: TRequestResourceTypeCT;
+begin
+  Result := TRequestResourceTypeCT(Lazy(fKind, TRequestResourceTypeCT));
+end;
+
+function TActivityDefinitionCT.GetProfile: TCanonicalCT;
+begin
+  Result := TCanonicalCT(Lazy(fProfile, TCanonicalCT));
+end;
+
+function TActivityDefinitionCT.GetCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCode, TCodeableConceptCT));
+end;
+
+function TActivityDefinitionCT.GetIntent: TRequestIntentCT;
+begin
+  Result := TRequestIntentCT(Lazy(fIntent, TRequestIntentCT));
+end;
+
+function TActivityDefinitionCT.GetPriority: TRequestPriorityCT;
+begin
+  Result := TRequestPriorityCT(Lazy(fPriority, TRequestPriorityCT));
+end;
+
+function TActivityDefinitionCT.GetDoNotPerform: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fDoNotPerform, TBooleanCT));
 end;
 
 function TActivityDefinitionCT.GetTimingTiming: TTimingCT;
@@ -26054,6 +29930,11 @@ begin
   Result := Chosen('Timing');
 end;
 
+function TActivityDefinitionCT.GetLocation: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fLocation, TReferenceCT));
+end;
+
 function TActivityDefinitionCT.GetProductReference: TReferenceCT;
 begin
   Result := TReferenceCT(Lazy(fProductReference, TReferenceCT));
@@ -26069,7 +29950,133 @@ begin
   Result := Chosen('Product');
 end;
 
+function TActivityDefinitionCT.GetQuantity: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fQuantity, TQuantityCT));
+end;
+
+function TActivityDefinitionCT.GetTransform: TCanonicalCT;
+begin
+  Result := TCanonicalCT(Lazy(fTransform, TCanonicalCT));
+end;
+
+{ TActivityDefinitionParticipantCT }
+
+function TActivityDefinitionParticipantCT.GetRole: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fRole, TCodeableConceptCT));
+end;
+
+{ TAdverseEventCT }
+
+function TAdverseEventCT.GetIdentifier: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fIdentifier, TIdentifierCT));
+end;
+
+function TAdverseEventCT.GetEvent: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fEvent, TCodeableConceptCT));
+end;
+
+function TAdverseEventCT.GetEncounter: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fEncounter, TReferenceCT));
+end;
+
+function TAdverseEventCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
+
+function TAdverseEventCT.GetDetected: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDetected, TDateTimeCT));
+end;
+
+function TAdverseEventCT.GetRecordedDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fRecordedDate, TDateTimeCT));
+end;
+
+function TAdverseEventCT.GetLocation: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fLocation, TReferenceCT));
+end;
+
+function TAdverseEventCT.GetSeriousness: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fSeriousness, TCodeableConceptCT));
+end;
+
+function TAdverseEventCT.GetSeverity: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fSeverity, TCodeableConceptCT));
+end;
+
+function TAdverseEventCT.GetOutcome: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fOutcome, TCodeableConceptCT));
+end;
+
+function TAdverseEventCT.GetRecorder: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fRecorder, TReferenceCT));
+end;
+
+{ TAdverseEventCausalityCT }
+
+function TAdverseEventCausalityCT.GetAssessment: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fAssessment, TCodeableConceptCT));
+end;
+
+function TAdverseEventCausalityCT.GetProductRelatedness: TStringCT;
+begin
+  Result := TStringCT(Lazy(fProductRelatedness, TStringCT));
+end;
+
+function TAdverseEventCausalityCT.GetAuthor: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fAuthor, TReferenceCT));
+end;
+
+function TAdverseEventCausalityCT.GetMethod: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fMethod, TCodeableConceptCT));
+end;
+
 { TAllergyIntoleranceCT }
+
+function TAllergyIntoleranceCT.GetClinicalStatus: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fClinicalStatus, TCodeableConceptCT));
+end;
+
+function TAllergyIntoleranceCT.GetVerificationStatus: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fVerificationStatus, TCodeableConceptCT));
+end;
+
+function TAllergyIntoleranceCT.GetType: TAllergyIntoleranceTypeCT;
+begin
+  Result := TAllergyIntoleranceTypeCT(Lazy(fType, TAllergyIntoleranceTypeCT));
+end;
+
+function TAllergyIntoleranceCT.GetCriticality: TAllergyIntoleranceCriticalityCT;
+begin
+  Result := TAllergyIntoleranceCriticalityCT(Lazy(fCriticality, TAllergyIntoleranceCriticalityCT));
+end;
+
+function TAllergyIntoleranceCT.GetCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCode, TCodeableConceptCT));
+end;
+
+function TAllergyIntoleranceCT.GetEncounter: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fEncounter, TReferenceCT));
+end;
 
 function TAllergyIntoleranceCT.GetOnsetDateTime: TDateTimeCT;
 begin
@@ -26101,6 +30108,259 @@ begin
   Result := Chosen('Onset');
 end;
 
+function TAllergyIntoleranceCT.GetRecordedDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fRecordedDate, TDateTimeCT));
+end;
+
+function TAllergyIntoleranceCT.GetRecorder: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fRecorder, TReferenceCT));
+end;
+
+function TAllergyIntoleranceCT.GetAsserter: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fAsserter, TReferenceCT));
+end;
+
+function TAllergyIntoleranceCT.GetLastOccurrence: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fLastOccurrence, TDateTimeCT));
+end;
+
+{ TAllergyIntoleranceReactionCT }
+
+function TAllergyIntoleranceReactionCT.GetSubstance: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fSubstance, TCodeableConceptCT));
+end;
+
+function TAllergyIntoleranceReactionCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+function TAllergyIntoleranceReactionCT.GetOnset: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fOnset, TDateTimeCT));
+end;
+
+function TAllergyIntoleranceReactionCT.GetSeverity: TAllergyIntoleranceSeverityCT;
+begin
+  Result := TAllergyIntoleranceSeverityCT(Lazy(fSeverity, TAllergyIntoleranceSeverityCT));
+end;
+
+function TAllergyIntoleranceReactionCT.GetExposureRoute: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fExposureRoute, TCodeableConceptCT));
+end;
+
+{ TAppointmentCT }
+
+function TAppointmentCT.GetCancelationReason: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCancelationReason, TCodeableConceptCT));
+end;
+
+function TAppointmentCT.GetAppointmentType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fAppointmentType, TCodeableConceptCT));
+end;
+
+function TAppointmentCT.GetPriority: TUnsignedIntCT;
+begin
+  Result := TUnsignedIntCT(Lazy(fPriority, TUnsignedIntCT));
+end;
+
+function TAppointmentCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+function TAppointmentCT.GetStart: TInstantCT;
+begin
+  Result := TInstantCT(Lazy(fStart, TInstantCT));
+end;
+
+function TAppointmentCT.GetEnd: TInstantCT;
+begin
+  Result := TInstantCT(Lazy(fEnd, TInstantCT));
+end;
+
+function TAppointmentCT.GetMinutesDuration: TPositiveIntCT;
+begin
+  Result := TPositiveIntCT(Lazy(fMinutesDuration, TPositiveIntCT));
+end;
+
+function TAppointmentCT.GetCreated: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fCreated, TDateTimeCT));
+end;
+
+function TAppointmentCT.GetComment: TStringCT;
+begin
+  Result := TStringCT(Lazy(fComment, TStringCT));
+end;
+
+function TAppointmentCT.GetPatientInstruction: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPatientInstruction, TStringCT));
+end;
+
+{ TAppointmentParticipantCT }
+
+function TAppointmentParticipantCT.GetActor: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fActor, TReferenceCT));
+end;
+
+function TAppointmentParticipantCT.GetRequired: TParticipantRequiredCT;
+begin
+  Result := TParticipantRequiredCT(Lazy(fRequired, TParticipantRequiredCT));
+end;
+
+function TAppointmentParticipantCT.GetPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fPeriod, TPeriodCT));
+end;
+
+{ TAppointmentResponseCT }
+
+function TAppointmentResponseCT.GetStart: TInstantCT;
+begin
+  Result := TInstantCT(Lazy(fStart, TInstantCT));
+end;
+
+function TAppointmentResponseCT.GetEnd: TInstantCT;
+begin
+  Result := TInstantCT(Lazy(fEnd, TInstantCT));
+end;
+
+function TAppointmentResponseCT.GetActor: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fActor, TReferenceCT));
+end;
+
+function TAppointmentResponseCT.GetComment: TStringCT;
+begin
+  Result := TStringCT(Lazy(fComment, TStringCT));
+end;
+
+{ TAuditEventCT }
+
+function TAuditEventCT.GetAction: TAuditEventActionCT;
+begin
+  Result := TAuditEventActionCT(Lazy(fAction, TAuditEventActionCT));
+end;
+
+function TAuditEventCT.GetPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fPeriod, TPeriodCT));
+end;
+
+function TAuditEventCT.GetOutcome: TAuditEventOutcomeCT;
+begin
+  Result := TAuditEventOutcomeCT(Lazy(fOutcome, TAuditEventOutcomeCT));
+end;
+
+function TAuditEventCT.GetOutcomeDesc: TStringCT;
+begin
+  Result := TStringCT(Lazy(fOutcomeDesc, TStringCT));
+end;
+
+{ TAuditEventAgentCT }
+
+function TAuditEventAgentCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TAuditEventAgentCT.GetWho: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fWho, TReferenceCT));
+end;
+
+function TAuditEventAgentCT.GetAltId: TStringCT;
+begin
+  Result := TStringCT(Lazy(fAltId, TStringCT));
+end;
+
+function TAuditEventAgentCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TAuditEventAgentCT.GetLocation: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fLocation, TReferenceCT));
+end;
+
+function TAuditEventAgentCT.GetMedia: TCodingCT;
+begin
+  Result := TCodingCT(Lazy(fMedia, TCodingCT));
+end;
+
+function TAuditEventAgentCT.GetNetwork: TAuditEventNetworkCT;
+begin
+  Result := TAuditEventNetworkCT(Lazy(fNetwork, TAuditEventNetworkCT));
+end;
+
+{ TAuditEventNetworkCT }
+
+function TAuditEventNetworkCT.GetAddress: TStringCT;
+begin
+  Result := TStringCT(Lazy(fAddress, TStringCT));
+end;
+
+function TAuditEventNetworkCT.GetType: TAuditEventAgentNetworkTypeCT;
+begin
+  Result := TAuditEventAgentNetworkTypeCT(Lazy(fType, TAuditEventAgentNetworkTypeCT));
+end;
+
+{ TAuditEventSourceCT }
+
+function TAuditEventSourceCT.GetSite: TStringCT;
+begin
+  Result := TStringCT(Lazy(fSite, TStringCT));
+end;
+
+{ TAuditEventEntityCT }
+
+function TAuditEventEntityCT.GetWhat: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fWhat, TReferenceCT));
+end;
+
+function TAuditEventEntityCT.GetType: TCodingCT;
+begin
+  Result := TCodingCT(Lazy(fType, TCodingCT));
+end;
+
+function TAuditEventEntityCT.GetRole: TCodingCT;
+begin
+  Result := TCodingCT(Lazy(fRole, TCodingCT));
+end;
+
+function TAuditEventEntityCT.GetLifecycle: TCodingCT;
+begin
+  Result := TCodingCT(Lazy(fLifecycle, TCodingCT));
+end;
+
+function TAuditEventEntityCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TAuditEventEntityCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+function TAuditEventEntityCT.GetQuery: TBase64BinaryCT;
+begin
+  Result := TBase64BinaryCT(Lazy(fQuery, TBase64BinaryCT));
+end;
+
 { TAuditEventDetailCT }
 
 function TAuditEventDetailCT.GetValueString: TStringCT;
@@ -26118,7 +30378,78 @@ begin
   Result := Chosen('Value');
 end;
 
+{ TBasicCT }
+
+function TBasicCT.GetSubject: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSubject, TReferenceCT));
+end;
+
+function TBasicCT.GetCreated: TDateCT;
+begin
+  Result := TDateCT(Lazy(fCreated, TDateCT));
+end;
+
+function TBasicCT.GetAuthor: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fAuthor, TReferenceCT));
+end;
+
+{ TBinaryCT }
+
+function TBinaryCT.GetSecurityContext: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSecurityContext, TReferenceCT));
+end;
+
+function TBinaryCT.GetData: TBase64BinaryCT;
+begin
+  Result := TBase64BinaryCT(Lazy(fData, TBase64BinaryCT));
+end;
+
+{ TBiologicallyDerivedProductCT }
+
+function TBiologicallyDerivedProductCT.GetProductCategory: TBiologicallyDerivedProductCategoryCT;
+begin
+  Result := TBiologicallyDerivedProductCategoryCT(Lazy(fProductCategory, TBiologicallyDerivedProductCategoryCT));
+end;
+
+function TBiologicallyDerivedProductCT.GetProductCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fProductCode, TCodeableConceptCT));
+end;
+
+function TBiologicallyDerivedProductCT.GetStatus: TBiologicallyDerivedProductStatusCT;
+begin
+  Result := TBiologicallyDerivedProductStatusCT(Lazy(fStatus, TBiologicallyDerivedProductStatusCT));
+end;
+
+function TBiologicallyDerivedProductCT.GetQuantity: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fQuantity, TIntegerCT));
+end;
+
+function TBiologicallyDerivedProductCT.GetCollection: TBiologicallyDerivedProductCollectionCT;
+begin
+  Result := TBiologicallyDerivedProductCollectionCT(Lazy(fCollection, TBiologicallyDerivedProductCollectionCT));
+end;
+
+function TBiologicallyDerivedProductCT.GetManipulation: TBiologicallyDerivedProductManipulationCT;
+begin
+  Result := TBiologicallyDerivedProductManipulationCT(Lazy(fManipulation, TBiologicallyDerivedProductManipulationCT));
+end;
+
 { TBiologicallyDerivedProductCollectionCT }
+
+function TBiologicallyDerivedProductCollectionCT.GetCollector: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fCollector, TReferenceCT));
+end;
+
+function TBiologicallyDerivedProductCollectionCT.GetSource: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSource, TReferenceCT));
+end;
 
 function TBiologicallyDerivedProductCollectionCT.GetCollectedDateTime: TDateTimeCT;
 begin
@@ -26137,6 +30468,21 @@ end;
 
 { TBiologicallyDerivedProductProcessingCT }
 
+function TBiologicallyDerivedProductProcessingCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+function TBiologicallyDerivedProductProcessingCT.GetProcedure: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fProcedure, TCodeableConceptCT));
+end;
+
+function TBiologicallyDerivedProductProcessingCT.GetAdditive: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fAdditive, TReferenceCT));
+end;
+
 function TBiologicallyDerivedProductProcessingCT.GetTimeDateTime: TDateTimeCT;
 begin
   Result := TDateTimeCT(Lazy(fTimeDateTime, TDateTimeCT));
@@ -26154,6 +30500,11 @@ end;
 
 { TBiologicallyDerivedProductManipulationCT }
 
+function TBiologicallyDerivedProductManipulationCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
 function TBiologicallyDerivedProductManipulationCT.GetTimeDateTime: TDateTimeCT;
 begin
   Result := TDateTimeCT(Lazy(fTimeDateTime, TDateTimeCT));
@@ -26169,7 +30520,424 @@ begin
   Result := Chosen('Time');
 end;
 
+{ TBiologicallyDerivedProductStorageCT }
+
+function TBiologicallyDerivedProductStorageCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+function TBiologicallyDerivedProductStorageCT.GetTemperature: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fTemperature, TDecimalCT));
+end;
+
+function TBiologicallyDerivedProductStorageCT.GetScale: TBiologicallyDerivedProductStorageScaleCT;
+begin
+  Result := TBiologicallyDerivedProductStorageScaleCT(Lazy(fScale, TBiologicallyDerivedProductStorageScaleCT));
+end;
+
+function TBiologicallyDerivedProductStorageCT.GetDuration: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fDuration, TPeriodCT));
+end;
+
+{ TBodyStructureCT }
+
+function TBodyStructureCT.GetActive: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fActive, TBooleanCT));
+end;
+
+function TBodyStructureCT.GetMorphology: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fMorphology, TCodeableConceptCT));
+end;
+
+function TBodyStructureCT.GetLocation: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fLocation, TCodeableConceptCT));
+end;
+
+function TBodyStructureCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+{ TBundleCT }
+
+function TBundleCT.GetIdentifier: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fIdentifier, TIdentifierCT));
+end;
+
+function TBundleCT.GetTimestamp: TInstantCT;
+begin
+  Result := TInstantCT(Lazy(fTimestamp, TInstantCT));
+end;
+
+function TBundleCT.GetTotal: TUnsignedIntCT;
+begin
+  Result := TUnsignedIntCT(Lazy(fTotal, TUnsignedIntCT));
+end;
+
+function TBundleCT.GetSignature: TSignatureCT;
+begin
+  Result := TSignatureCT(Lazy(fSignature, TSignatureCT));
+end;
+
+{ TBundleEntryCT }
+
+function TBundleEntryCT.GetFullUrl: TUriCT;
+begin
+  Result := TUriCT(Lazy(fFullUrl, TUriCT));
+end;
+
+function TBundleEntryCT.GetResource: TResourceContainerCT;
+begin
+  Result := TResourceContainerCT(Lazy(fResource, TResourceContainerCT));
+end;
+
+function TBundleEntryCT.GetSearch: TBundleSearchCT;
+begin
+  Result := TBundleSearchCT(Lazy(fSearch, TBundleSearchCT));
+end;
+
+function TBundleEntryCT.GetRequest: TBundleRequestCT;
+begin
+  Result := TBundleRequestCT(Lazy(fRequest, TBundleRequestCT));
+end;
+
+function TBundleEntryCT.GetResponse: TBundleResponseCT;
+begin
+  Result := TBundleResponseCT(Lazy(fResponse, TBundleResponseCT));
+end;
+
+{ TBundleSearchCT }
+
+function TBundleSearchCT.GetMode: TSearchEntryModeCT;
+begin
+  Result := TSearchEntryModeCT(Lazy(fMode, TSearchEntryModeCT));
+end;
+
+function TBundleSearchCT.GetScore: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fScore, TDecimalCT));
+end;
+
+{ TBundleRequestCT }
+
+function TBundleRequestCT.GetIfNoneMatch: TStringCT;
+begin
+  Result := TStringCT(Lazy(fIfNoneMatch, TStringCT));
+end;
+
+function TBundleRequestCT.GetIfModifiedSince: TInstantCT;
+begin
+  Result := TInstantCT(Lazy(fIfModifiedSince, TInstantCT));
+end;
+
+function TBundleRequestCT.GetIfMatch: TStringCT;
+begin
+  Result := TStringCT(Lazy(fIfMatch, TStringCT));
+end;
+
+function TBundleRequestCT.GetIfNoneExist: TStringCT;
+begin
+  Result := TStringCT(Lazy(fIfNoneExist, TStringCT));
+end;
+
+{ TBundleResponseCT }
+
+function TBundleResponseCT.GetLocation: TUriCT;
+begin
+  Result := TUriCT(Lazy(fLocation, TUriCT));
+end;
+
+function TBundleResponseCT.GetEtag: TStringCT;
+begin
+  Result := TStringCT(Lazy(fEtag, TStringCT));
+end;
+
+function TBundleResponseCT.GetLastModified: TInstantCT;
+begin
+  Result := TInstantCT(Lazy(fLastModified, TInstantCT));
+end;
+
+function TBundleResponseCT.GetOutcome: TResourceContainerCT;
+begin
+  Result := TResourceContainerCT(Lazy(fOutcome, TResourceContainerCT));
+end;
+
+{ TCapabilityStatementCT }
+
+function TCapabilityStatementCT.GetUrl: TUriCT;
+begin
+  Result := TUriCT(Lazy(fUrl, TUriCT));
+end;
+
+function TCapabilityStatementCT.GetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersion, TStringCT));
+end;
+
+function TCapabilityStatementCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TCapabilityStatementCT.GetTitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTitle, TStringCT));
+end;
+
+function TCapabilityStatementCT.GetExperimental: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fExperimental, TBooleanCT));
+end;
+
+function TCapabilityStatementCT.GetPublisher: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPublisher, TStringCT));
+end;
+
+function TCapabilityStatementCT.GetDescription: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDescription, TMarkdownCT));
+end;
+
+function TCapabilityStatementCT.GetPurpose: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fPurpose, TMarkdownCT));
+end;
+
+function TCapabilityStatementCT.GetCopyright: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fCopyright, TMarkdownCT));
+end;
+
+function TCapabilityStatementCT.GetSoftware: TCapabilityStatementSoftwareCT;
+begin
+  Result := TCapabilityStatementSoftwareCT(Lazy(fSoftware, TCapabilityStatementSoftwareCT));
+end;
+
+function TCapabilityStatementCT.GetImplementation: TCapabilityStatementImplementationCT;
+begin
+  Result := TCapabilityStatementImplementationCT(Lazy(fImplementation, TCapabilityStatementImplementationCT));
+end;
+
+{ TCapabilityStatementSoftwareCT }
+
+function TCapabilityStatementSoftwareCT.GetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersion, TStringCT));
+end;
+
+function TCapabilityStatementSoftwareCT.GetReleaseDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fReleaseDate, TDateTimeCT));
+end;
+
+{ TCapabilityStatementImplementationCT }
+
+function TCapabilityStatementImplementationCT.GetUrl: TUrlCT;
+begin
+  Result := TUrlCT(Lazy(fUrl, TUrlCT));
+end;
+
+function TCapabilityStatementImplementationCT.GetCustodian: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fCustodian, TReferenceCT));
+end;
+
+{ TCapabilityStatementRestCT }
+
+function TCapabilityStatementRestCT.GetDocumentation: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDocumentation, TMarkdownCT));
+end;
+
+function TCapabilityStatementRestCT.GetSecurity: TCapabilityStatementSecurityCT;
+begin
+  Result := TCapabilityStatementSecurityCT(Lazy(fSecurity, TCapabilityStatementSecurityCT));
+end;
+
+{ TCapabilityStatementSecurityCT }
+
+function TCapabilityStatementSecurityCT.GetCors: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fCors, TBooleanCT));
+end;
+
+function TCapabilityStatementSecurityCT.GetDescription: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDescription, TMarkdownCT));
+end;
+
+{ TCapabilityStatementResourceCT }
+
+function TCapabilityStatementResourceCT.GetProfile: TCanonicalCT;
+begin
+  Result := TCanonicalCT(Lazy(fProfile, TCanonicalCT));
+end;
+
+function TCapabilityStatementResourceCT.GetDocumentation: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDocumentation, TMarkdownCT));
+end;
+
+function TCapabilityStatementResourceCT.GetVersioning: TResourceVersionPolicyCT;
+begin
+  Result := TResourceVersionPolicyCT(Lazy(fVersioning, TResourceVersionPolicyCT));
+end;
+
+function TCapabilityStatementResourceCT.GetReadHistory: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fReadHistory, TBooleanCT));
+end;
+
+function TCapabilityStatementResourceCT.GetUpdateCreate: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fUpdateCreate, TBooleanCT));
+end;
+
+function TCapabilityStatementResourceCT.GetConditionalCreate: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fConditionalCreate, TBooleanCT));
+end;
+
+function TCapabilityStatementResourceCT.GetConditionalRead: TConditionalReadStatusCT;
+begin
+  Result := TConditionalReadStatusCT(Lazy(fConditionalRead, TConditionalReadStatusCT));
+end;
+
+function TCapabilityStatementResourceCT.GetConditionalUpdate: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fConditionalUpdate, TBooleanCT));
+end;
+
+function TCapabilityStatementResourceCT.GetConditionalDelete: TConditionalDeleteStatusCT;
+begin
+  Result := TConditionalDeleteStatusCT(Lazy(fConditionalDelete, TConditionalDeleteStatusCT));
+end;
+
+{ TCapabilityStatementInteractionCT }
+
+function TCapabilityStatementInteractionCT.GetDocumentation: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDocumentation, TMarkdownCT));
+end;
+
+{ TCapabilityStatementSearchParamCT }
+
+function TCapabilityStatementSearchParamCT.GetDefinition: TCanonicalCT;
+begin
+  Result := TCanonicalCT(Lazy(fDefinition, TCanonicalCT));
+end;
+
+function TCapabilityStatementSearchParamCT.GetDocumentation: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDocumentation, TMarkdownCT));
+end;
+
+{ TCapabilityStatementOperationCT }
+
+function TCapabilityStatementOperationCT.GetDocumentation: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDocumentation, TMarkdownCT));
+end;
+
+{ TCapabilityStatementInteraction1CT }
+
+function TCapabilityStatementInteraction1CT.GetDocumentation: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDocumentation, TMarkdownCT));
+end;
+
+{ TCapabilityStatementMessagingCT }
+
+function TCapabilityStatementMessagingCT.GetReliableCache: TUnsignedIntCT;
+begin
+  Result := TUnsignedIntCT(Lazy(fReliableCache, TUnsignedIntCT));
+end;
+
+function TCapabilityStatementMessagingCT.GetDocumentation: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDocumentation, TMarkdownCT));
+end;
+
+{ TCapabilityStatementDocumentCT }
+
+function TCapabilityStatementDocumentCT.GetDocumentation: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDocumentation, TMarkdownCT));
+end;
+
+{ TCarePlanCT }
+
+function TCarePlanCT.GetTitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTitle, TStringCT));
+end;
+
+function TCarePlanCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+function TCarePlanCT.GetEncounter: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fEncounter, TReferenceCT));
+end;
+
+function TCarePlanCT.GetPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fPeriod, TPeriodCT));
+end;
+
+function TCarePlanCT.GetCreated: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fCreated, TDateTimeCT));
+end;
+
+function TCarePlanCT.GetAuthor: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fAuthor, TReferenceCT));
+end;
+
+{ TCarePlanActivityCT }
+
+function TCarePlanActivityCT.GetReference: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fReference, TReferenceCT));
+end;
+
+function TCarePlanActivityCT.GetDetail: TCarePlanDetailCT;
+begin
+  Result := TCarePlanDetailCT(Lazy(fDetail, TCarePlanDetailCT));
+end;
+
 { TCarePlanDetailCT }
+
+function TCarePlanDetailCT.GetKind: TCarePlanActivityKindCT;
+begin
+  Result := TCarePlanActivityKindCT(Lazy(fKind, TCarePlanActivityKindCT));
+end;
+
+function TCarePlanDetailCT.GetCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCode, TCodeableConceptCT));
+end;
+
+function TCarePlanDetailCT.GetStatusReason: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fStatusReason, TCodeableConceptCT));
+end;
+
+function TCarePlanDetailCT.GetDoNotPerform: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fDoNotPerform, TBooleanCT));
+end;
 
 function TCarePlanDetailCT.GetScheduledTiming: TTimingCT;
 begin
@@ -26191,6 +30959,11 @@ begin
   Result := Chosen('Scheduled');
 end;
 
+function TCarePlanDetailCT.GetLocation: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fLocation, TReferenceCT));
+end;
+
 function TCarePlanDetailCT.GetProductCodeableConcept: TCodeableConceptCT;
 begin
   Result := TCodeableConceptCT(Lazy(fProductCodeableConcept, TCodeableConceptCT));
@@ -26206,7 +30979,98 @@ begin
   Result := Chosen('Product');
 end;
 
+function TCarePlanDetailCT.GetDailyAmount: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fDailyAmount, TQuantityCT));
+end;
+
+function TCarePlanDetailCT.GetQuantity: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fQuantity, TQuantityCT));
+end;
+
+function TCarePlanDetailCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+{ TCareTeamCT }
+
+function TCareTeamCT.GetStatus: TCareTeamStatusCT;
+begin
+  Result := TCareTeamStatusCT(Lazy(fStatus, TCareTeamStatusCT));
+end;
+
+function TCareTeamCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TCareTeamCT.GetSubject: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSubject, TReferenceCT));
+end;
+
+function TCareTeamCT.GetEncounter: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fEncounter, TReferenceCT));
+end;
+
+function TCareTeamCT.GetPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fPeriod, TPeriodCT));
+end;
+
+{ TCareTeamParticipantCT }
+
+function TCareTeamParticipantCT.GetMember: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fMember, TReferenceCT));
+end;
+
+function TCareTeamParticipantCT.GetOnBehalfOf: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fOnBehalfOf, TReferenceCT));
+end;
+
+function TCareTeamParticipantCT.GetPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fPeriod, TPeriodCT));
+end;
+
+{ TCatalogEntryCT }
+
+function TCatalogEntryCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TCatalogEntryCT.GetStatus: TPublicationStatusCT;
+begin
+  Result := TPublicationStatusCT(Lazy(fStatus, TPublicationStatusCT));
+end;
+
+function TCatalogEntryCT.GetValidityPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fValidityPeriod, TPeriodCT));
+end;
+
+function TCatalogEntryCT.GetValidTo: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fValidTo, TDateTimeCT));
+end;
+
+function TCatalogEntryCT.GetLastUpdated: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fLastUpdated, TDateTimeCT));
+end;
+
 { TChargeItemCT }
+
+function TChargeItemCT.GetContext: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fContext, TReferenceCT));
+end;
 
 function TChargeItemCT.GetOccurrenceDateTime: TDateTimeCT;
 begin
@@ -26228,6 +31092,51 @@ begin
   Result := Chosen('Occurrence');
 end;
 
+function TChargeItemCT.GetPerformingOrganization: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fPerformingOrganization, TReferenceCT));
+end;
+
+function TChargeItemCT.GetRequestingOrganization: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fRequestingOrganization, TReferenceCT));
+end;
+
+function TChargeItemCT.GetCostCenter: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fCostCenter, TReferenceCT));
+end;
+
+function TChargeItemCT.GetQuantity: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fQuantity, TQuantityCT));
+end;
+
+function TChargeItemCT.GetFactorOverride: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fFactorOverride, TDecimalCT));
+end;
+
+function TChargeItemCT.GetPriceOverride: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fPriceOverride, TMoneyCT));
+end;
+
+function TChargeItemCT.GetOverrideReason: TStringCT;
+begin
+  Result := TStringCT(Lazy(fOverrideReason, TStringCT));
+end;
+
+function TChargeItemCT.GetEnterer: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fEnterer, TReferenceCT));
+end;
+
+function TChargeItemCT.GetEnteredDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fEnteredDate, TDateTimeCT));
+end;
+
 function TChargeItemCT.GetProductReference: TReferenceCT;
 begin
   Result := TReferenceCT(Lazy(fProductReference, TReferenceCT));
@@ -26243,7 +31152,213 @@ begin
   Result := Chosen('Product');
 end;
 
+{ TChargeItemPerformerCT }
+
+function TChargeItemPerformerCT.GetFunction: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fFunction, TCodeableConceptCT));
+end;
+
+{ TChargeItemDefinitionCT }
+
+function TChargeItemDefinitionCT.GetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersion, TStringCT));
+end;
+
+function TChargeItemDefinitionCT.GetTitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTitle, TStringCT));
+end;
+
+function TChargeItemDefinitionCT.GetExperimental: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fExperimental, TBooleanCT));
+end;
+
+function TChargeItemDefinitionCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
+
+function TChargeItemDefinitionCT.GetPublisher: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPublisher, TStringCT));
+end;
+
+function TChargeItemDefinitionCT.GetDescription: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDescription, TMarkdownCT));
+end;
+
+function TChargeItemDefinitionCT.GetCopyright: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fCopyright, TMarkdownCT));
+end;
+
+function TChargeItemDefinitionCT.GetApprovalDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fApprovalDate, TDateCT));
+end;
+
+function TChargeItemDefinitionCT.GetLastReviewDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fLastReviewDate, TDateCT));
+end;
+
+function TChargeItemDefinitionCT.GetEffectivePeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fEffectivePeriod, TPeriodCT));
+end;
+
+function TChargeItemDefinitionCT.GetCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCode, TCodeableConceptCT));
+end;
+
+{ TChargeItemDefinitionApplicabilityCT }
+
+function TChargeItemDefinitionApplicabilityCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+function TChargeItemDefinitionApplicabilityCT.GetLanguage: TStringCT;
+begin
+  Result := TStringCT(Lazy(fLanguage, TStringCT));
+end;
+
+function TChargeItemDefinitionApplicabilityCT.GetExpression: TStringCT;
+begin
+  Result := TStringCT(Lazy(fExpression, TStringCT));
+end;
+
+{ TChargeItemDefinitionPriceComponentCT }
+
+function TChargeItemDefinitionPriceComponentCT.GetCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCode, TCodeableConceptCT));
+end;
+
+function TChargeItemDefinitionPriceComponentCT.GetFactor: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fFactor, TDecimalCT));
+end;
+
+function TChargeItemDefinitionPriceComponentCT.GetAmount: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fAmount, TMoneyCT));
+end;
+
+{ TClaimCT }
+
+function TClaimCT.GetSubType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fSubType, TCodeableConceptCT));
+end;
+
+function TClaimCT.GetBillablePeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fBillablePeriod, TPeriodCT));
+end;
+
+function TClaimCT.GetEnterer: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fEnterer, TReferenceCT));
+end;
+
+function TClaimCT.GetInsurer: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fInsurer, TReferenceCT));
+end;
+
+function TClaimCT.GetFundsReserve: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fFundsReserve, TCodeableConceptCT));
+end;
+
+function TClaimCT.GetPrescription: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fPrescription, TReferenceCT));
+end;
+
+function TClaimCT.GetOriginalPrescription: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fOriginalPrescription, TReferenceCT));
+end;
+
+function TClaimCT.GetPayee: TClaimPayeeCT;
+begin
+  Result := TClaimPayeeCT(Lazy(fPayee, TClaimPayeeCT));
+end;
+
+function TClaimCT.GetReferral: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fReferral, TReferenceCT));
+end;
+
+function TClaimCT.GetFacility: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fFacility, TReferenceCT));
+end;
+
+function TClaimCT.GetAccident: TClaimAccidentCT;
+begin
+  Result := TClaimAccidentCT(Lazy(fAccident, TClaimAccidentCT));
+end;
+
+function TClaimCT.GetTotal: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fTotal, TMoneyCT));
+end;
+
+{ TClaimRelatedCT }
+
+function TClaimRelatedCT.GetClaim: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fClaim, TReferenceCT));
+end;
+
+function TClaimRelatedCT.GetRelationship: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fRelationship, TCodeableConceptCT));
+end;
+
+function TClaimRelatedCT.GetReference: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fReference, TIdentifierCT));
+end;
+
+{ TClaimPayeeCT }
+
+function TClaimPayeeCT.GetParty: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fParty, TReferenceCT));
+end;
+
+{ TClaimCareTeamCT }
+
+function TClaimCareTeamCT.GetResponsible: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fResponsible, TBooleanCT));
+end;
+
+function TClaimCareTeamCT.GetRole: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fRole, TCodeableConceptCT));
+end;
+
+function TClaimCareTeamCT.GetQualification: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fQualification, TCodeableConceptCT));
+end;
+
 { TClaimSupportingInfoCT }
+
+function TClaimSupportingInfoCT.GetCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCode, TCodeableConceptCT));
+end;
 
 function TClaimSupportingInfoCT.GetTimingDate: TDateCT;
 begin
@@ -26290,6 +31405,11 @@ begin
   Result := Chosen('Value');
 end;
 
+function TClaimSupportingInfoCT.GetReason: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fReason, TCodeableConceptCT));
+end;
+
 { TClaimDiagnosisCT }
 
 function TClaimDiagnosisCT.GetDiagnosisCodeableConcept: TCodeableConceptCT;
@@ -26307,7 +31427,22 @@ begin
   Result := Chosen('Diagnosis');
 end;
 
+function TClaimDiagnosisCT.GetOnAdmission: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fOnAdmission, TCodeableConceptCT));
+end;
+
+function TClaimDiagnosisCT.GetPackageCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fPackageCode, TCodeableConceptCT));
+end;
+
 { TClaimProcedureCT }
+
+function TClaimProcedureCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
 
 function TClaimProcedureCT.GetProcedureCodeableConcept: TCodeableConceptCT;
 begin
@@ -26324,7 +31459,29 @@ begin
   Result := Chosen('Procedure');
 end;
 
+{ TClaimInsuranceCT }
+
+function TClaimInsuranceCT.GetIdentifier: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fIdentifier, TIdentifierCT));
+end;
+
+function TClaimInsuranceCT.GetBusinessArrangement: TStringCT;
+begin
+  Result := TStringCT(Lazy(fBusinessArrangement, TStringCT));
+end;
+
+function TClaimInsuranceCT.GetClaimResponse: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fClaimResponse, TReferenceCT));
+end;
+
 { TClaimAccidentCT }
+
+function TClaimAccidentCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
 
 function TClaimAccidentCT.GetLocationAddress: TAddressCT;
 begin
@@ -26342,6 +31499,16 @@ begin
 end;
 
 { TClaimItemCT }
+
+function TClaimItemCT.GetRevenue: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fRevenue, TCodeableConceptCT));
+end;
+
+function TClaimItemCT.GetCategory: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCategory, TCodeableConceptCT));
+end;
 
 function TClaimItemCT.GetServicedDate: TDateCT;
 begin
@@ -26376,6 +31543,169 @@ end;
 function TClaimItemCT.GetLocationChosen: TBasite;
 begin
   Result := Chosen('Location');
+end;
+
+function TClaimItemCT.GetQuantity: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fQuantity, TQuantityCT));
+end;
+
+function TClaimItemCT.GetUnitPrice: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fUnitPrice, TMoneyCT));
+end;
+
+function TClaimItemCT.GetFactor: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fFactor, TDecimalCT));
+end;
+
+function TClaimItemCT.GetNet: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fNet, TMoneyCT));
+end;
+
+function TClaimItemCT.GetBodySite: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fBodySite, TCodeableConceptCT));
+end;
+
+{ TClaimDetailCT }
+
+function TClaimDetailCT.GetRevenue: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fRevenue, TCodeableConceptCT));
+end;
+
+function TClaimDetailCT.GetCategory: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCategory, TCodeableConceptCT));
+end;
+
+function TClaimDetailCT.GetQuantity: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fQuantity, TQuantityCT));
+end;
+
+function TClaimDetailCT.GetUnitPrice: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fUnitPrice, TMoneyCT));
+end;
+
+function TClaimDetailCT.GetFactor: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fFactor, TDecimalCT));
+end;
+
+function TClaimDetailCT.GetNet: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fNet, TMoneyCT));
+end;
+
+{ TClaimSubDetailCT }
+
+function TClaimSubDetailCT.GetRevenue: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fRevenue, TCodeableConceptCT));
+end;
+
+function TClaimSubDetailCT.GetCategory: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCategory, TCodeableConceptCT));
+end;
+
+function TClaimSubDetailCT.GetQuantity: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fQuantity, TQuantityCT));
+end;
+
+function TClaimSubDetailCT.GetUnitPrice: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fUnitPrice, TMoneyCT));
+end;
+
+function TClaimSubDetailCT.GetFactor: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fFactor, TDecimalCT));
+end;
+
+function TClaimSubDetailCT.GetNet: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fNet, TMoneyCT));
+end;
+
+{ TClaimResponseCT }
+
+function TClaimResponseCT.GetSubType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fSubType, TCodeableConceptCT));
+end;
+
+function TClaimResponseCT.GetRequestor: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fRequestor, TReferenceCT));
+end;
+
+function TClaimResponseCT.GetRequest: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fRequest, TReferenceCT));
+end;
+
+function TClaimResponseCT.GetDisposition: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDisposition, TStringCT));
+end;
+
+function TClaimResponseCT.GetPreAuthRef: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPreAuthRef, TStringCT));
+end;
+
+function TClaimResponseCT.GetPreAuthPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fPreAuthPeriod, TPeriodCT));
+end;
+
+function TClaimResponseCT.GetPayeeType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fPayeeType, TCodeableConceptCT));
+end;
+
+function TClaimResponseCT.GetPayment: TClaimResponsePaymentCT;
+begin
+  Result := TClaimResponsePaymentCT(Lazy(fPayment, TClaimResponsePaymentCT));
+end;
+
+function TClaimResponseCT.GetFundsReserve: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fFundsReserve, TCodeableConceptCT));
+end;
+
+function TClaimResponseCT.GetFormCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fFormCode, TCodeableConceptCT));
+end;
+
+function TClaimResponseCT.GetForm: TAttachmentCT;
+begin
+  Result := TAttachmentCT(Lazy(fForm, TAttachmentCT));
+end;
+
+{ TClaimResponseAdjudicationCT }
+
+function TClaimResponseAdjudicationCT.GetReason: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fReason, TCodeableConceptCT));
+end;
+
+function TClaimResponseAdjudicationCT.GetAmount: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fAmount, TMoneyCT));
+end;
+
+function TClaimResponseAdjudicationCT.GetValue: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fValue, TDecimalCT));
 end;
 
 { TClaimResponseAddItemCT }
@@ -26415,7 +31745,164 @@ begin
   Result := Chosen('Location');
 end;
 
+function TClaimResponseAddItemCT.GetQuantity: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fQuantity, TQuantityCT));
+end;
+
+function TClaimResponseAddItemCT.GetUnitPrice: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fUnitPrice, TMoneyCT));
+end;
+
+function TClaimResponseAddItemCT.GetFactor: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fFactor, TDecimalCT));
+end;
+
+function TClaimResponseAddItemCT.GetNet: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fNet, TMoneyCT));
+end;
+
+function TClaimResponseAddItemCT.GetBodySite: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fBodySite, TCodeableConceptCT));
+end;
+
+{ TClaimResponseDetail1CT }
+
+function TClaimResponseDetail1CT.GetQuantity: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fQuantity, TQuantityCT));
+end;
+
+function TClaimResponseDetail1CT.GetUnitPrice: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fUnitPrice, TMoneyCT));
+end;
+
+function TClaimResponseDetail1CT.GetFactor: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fFactor, TDecimalCT));
+end;
+
+function TClaimResponseDetail1CT.GetNet: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fNet, TMoneyCT));
+end;
+
+{ TClaimResponseSubDetail1CT }
+
+function TClaimResponseSubDetail1CT.GetQuantity: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fQuantity, TQuantityCT));
+end;
+
+function TClaimResponseSubDetail1CT.GetUnitPrice: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fUnitPrice, TMoneyCT));
+end;
+
+function TClaimResponseSubDetail1CT.GetFactor: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fFactor, TDecimalCT));
+end;
+
+function TClaimResponseSubDetail1CT.GetNet: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fNet, TMoneyCT));
+end;
+
+{ TClaimResponsePaymentCT }
+
+function TClaimResponsePaymentCT.GetAdjustment: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fAdjustment, TMoneyCT));
+end;
+
+function TClaimResponsePaymentCT.GetAdjustmentReason: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fAdjustmentReason, TCodeableConceptCT));
+end;
+
+function TClaimResponsePaymentCT.GetDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fDate, TDateCT));
+end;
+
+function TClaimResponsePaymentCT.GetIdentifier: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fIdentifier, TIdentifierCT));
+end;
+
+{ TClaimResponseProcessNoteCT }
+
+function TClaimResponseProcessNoteCT.GetNumber: TPositiveIntCT;
+begin
+  Result := TPositiveIntCT(Lazy(fNumber, TPositiveIntCT));
+end;
+
+function TClaimResponseProcessNoteCT.GetType: TNoteTypeCT;
+begin
+  Result := TNoteTypeCT(Lazy(fType, TNoteTypeCT));
+end;
+
+function TClaimResponseProcessNoteCT.GetLanguage: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fLanguage, TCodeableConceptCT));
+end;
+
+{ TClaimResponseInsuranceCT }
+
+function TClaimResponseInsuranceCT.GetBusinessArrangement: TStringCT;
+begin
+  Result := TStringCT(Lazy(fBusinessArrangement, TStringCT));
+end;
+
+function TClaimResponseInsuranceCT.GetClaimResponse: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fClaimResponse, TReferenceCT));
+end;
+
+{ TClaimResponseErrorCT }
+
+function TClaimResponseErrorCT.GetItemSequence: TPositiveIntCT;
+begin
+  Result := TPositiveIntCT(Lazy(fItemSequence, TPositiveIntCT));
+end;
+
+function TClaimResponseErrorCT.GetDetailSequence: TPositiveIntCT;
+begin
+  Result := TPositiveIntCT(Lazy(fDetailSequence, TPositiveIntCT));
+end;
+
+function TClaimResponseErrorCT.GetSubDetailSequence: TPositiveIntCT;
+begin
+  Result := TPositiveIntCT(Lazy(fSubDetailSequence, TPositiveIntCT));
+end;
+
 { TClinicalImpressionCT }
+
+function TClinicalImpressionCT.GetStatusReason: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fStatusReason, TCodeableConceptCT));
+end;
+
+function TClinicalImpressionCT.GetCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCode, TCodeableConceptCT));
+end;
+
+function TClinicalImpressionCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+function TClinicalImpressionCT.GetEncounter: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fEncounter, TReferenceCT));
+end;
 
 function TClinicalImpressionCT.GetEffectiveDateTime: TDateTimeCT;
 begin
@@ -26430,6 +31917,173 @@ end;
 function TClinicalImpressionCT.GetEffectiveChosen: TBasite;
 begin
   Result := Chosen('Effective');
+end;
+
+function TClinicalImpressionCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
+
+function TClinicalImpressionCT.GetAssessor: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fAssessor, TReferenceCT));
+end;
+
+function TClinicalImpressionCT.GetPrevious: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fPrevious, TReferenceCT));
+end;
+
+function TClinicalImpressionCT.GetSummary: TStringCT;
+begin
+  Result := TStringCT(Lazy(fSummary, TStringCT));
+end;
+
+{ TClinicalImpressionFindingCT }
+
+function TClinicalImpressionFindingCT.GetItemCodeableConcept: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fItemCodeableConcept, TCodeableConceptCT));
+end;
+
+function TClinicalImpressionFindingCT.GetItemReference: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fItemReference, TReferenceCT));
+end;
+
+function TClinicalImpressionFindingCT.GetBasis: TStringCT;
+begin
+  Result := TStringCT(Lazy(fBasis, TStringCT));
+end;
+
+{ TCodeSystemCT }
+
+function TCodeSystemCT.GetUrl: TUriCT;
+begin
+  Result := TUriCT(Lazy(fUrl, TUriCT));
+end;
+
+function TCodeSystemCT.GetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersion, TStringCT));
+end;
+
+function TCodeSystemCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TCodeSystemCT.GetTitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTitle, TStringCT));
+end;
+
+function TCodeSystemCT.GetExperimental: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fExperimental, TBooleanCT));
+end;
+
+function TCodeSystemCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
+
+function TCodeSystemCT.GetPublisher: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPublisher, TStringCT));
+end;
+
+function TCodeSystemCT.GetDescription: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDescription, TMarkdownCT));
+end;
+
+function TCodeSystemCT.GetPurpose: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fPurpose, TMarkdownCT));
+end;
+
+function TCodeSystemCT.GetCopyright: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fCopyright, TMarkdownCT));
+end;
+
+function TCodeSystemCT.GetCaseSensitive: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fCaseSensitive, TBooleanCT));
+end;
+
+function TCodeSystemCT.GetValueSet: TCanonicalCT;
+begin
+  Result := TCanonicalCT(Lazy(fValueSet, TCanonicalCT));
+end;
+
+function TCodeSystemCT.GetHierarchyMeaning: TCodeSystemHierarchyMeaningCT;
+begin
+  Result := TCodeSystemHierarchyMeaningCT(Lazy(fHierarchyMeaning, TCodeSystemHierarchyMeaningCT));
+end;
+
+function TCodeSystemCT.GetCompositional: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fCompositional, TBooleanCT));
+end;
+
+function TCodeSystemCT.GetVersionNeeded: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fVersionNeeded, TBooleanCT));
+end;
+
+function TCodeSystemCT.GetSupplements: TCanonicalCT;
+begin
+  Result := TCanonicalCT(Lazy(fSupplements, TCanonicalCT));
+end;
+
+function TCodeSystemCT.GetCount: TUnsignedIntCT;
+begin
+  Result := TUnsignedIntCT(Lazy(fCount, TUnsignedIntCT));
+end;
+
+{ TCodeSystemFilterCT }
+
+function TCodeSystemFilterCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+{ TCodeSystemPropertyCT }
+
+function TCodeSystemPropertyCT.GetUri: TUriCT;
+begin
+  Result := TUriCT(Lazy(fUri, TUriCT));
+end;
+
+function TCodeSystemPropertyCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+{ TCodeSystemConceptCT }
+
+function TCodeSystemConceptCT.GetDisplay: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDisplay, TStringCT));
+end;
+
+function TCodeSystemConceptCT.GetDefinition: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDefinition, TStringCT));
+end;
+
+{ TCodeSystemDesignationCT }
+
+function TCodeSystemDesignationCT.GetLanguage: TCodeCT;
+begin
+  Result := TCodeCT(Lazy(fLanguage, TCodeCT));
+end;
+
+function TCodeSystemDesignationCT.GetUse: TCodingCT;
+begin
+  Result := TCodingCT(Lazy(fUse, TCodingCT));
 end;
 
 { TCodeSystemProperty1CT }
@@ -26474,6 +32128,48 @@ begin
   Result := Chosen('Value');
 end;
 
+{ TCommunicationCT }
+
+function TCommunicationCT.GetStatusReason: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fStatusReason, TCodeableConceptCT));
+end;
+
+function TCommunicationCT.GetPriority: TRequestPriorityCT;
+begin
+  Result := TRequestPriorityCT(Lazy(fPriority, TRequestPriorityCT));
+end;
+
+function TCommunicationCT.GetSubject: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSubject, TReferenceCT));
+end;
+
+function TCommunicationCT.GetTopic: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fTopic, TCodeableConceptCT));
+end;
+
+function TCommunicationCT.GetEncounter: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fEncounter, TReferenceCT));
+end;
+
+function TCommunicationCT.GetSent: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fSent, TDateTimeCT));
+end;
+
+function TCommunicationCT.GetReceived: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fReceived, TDateTimeCT));
+end;
+
+function TCommunicationCT.GetSender: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSender, TReferenceCT));
+end;
+
 { TCommunicationPayloadCT }
 
 function TCommunicationPayloadCT.GetContentString: TStringCT;
@@ -26498,6 +32194,36 @@ end;
 
 { TCommunicationRequestCT }
 
+function TCommunicationRequestCT.GetGroupIdentifier: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fGroupIdentifier, TIdentifierCT));
+end;
+
+function TCommunicationRequestCT.GetStatusReason: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fStatusReason, TCodeableConceptCT));
+end;
+
+function TCommunicationRequestCT.GetPriority: TRequestPriorityCT;
+begin
+  Result := TRequestPriorityCT(Lazy(fPriority, TRequestPriorityCT));
+end;
+
+function TCommunicationRequestCT.GetDoNotPerform: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fDoNotPerform, TBooleanCT));
+end;
+
+function TCommunicationRequestCT.GetSubject: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSubject, TReferenceCT));
+end;
+
+function TCommunicationRequestCT.GetEncounter: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fEncounter, TReferenceCT));
+end;
+
 function TCommunicationRequestCT.GetOccurrenceDateTime: TDateTimeCT;
 begin
   Result := TDateTimeCT(Lazy(fOccurrenceDateTime, TDateTimeCT));
@@ -26511,6 +32237,21 @@ end;
 function TCommunicationRequestCT.GetOccurrenceChosen: TBasite;
 begin
   Result := Chosen('Occurrence');
+end;
+
+function TCommunicationRequestCT.GetAuthoredOn: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fAuthoredOn, TDateTimeCT));
+end;
+
+function TCommunicationRequestCT.GetRequester: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fRequester, TReferenceCT));
+end;
+
+function TCommunicationRequestCT.GetSender: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSender, TReferenceCT));
 end;
 
 { TCommunicationRequestPayloadCT }
@@ -26535,6 +32276,84 @@ begin
   Result := Chosen('Content');
 end;
 
+{ TCompartmentDefinitionCT }
+
+function TCompartmentDefinitionCT.GetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersion, TStringCT));
+end;
+
+function TCompartmentDefinitionCT.GetExperimental: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fExperimental, TBooleanCT));
+end;
+
+function TCompartmentDefinitionCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
+
+function TCompartmentDefinitionCT.GetPublisher: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPublisher, TStringCT));
+end;
+
+function TCompartmentDefinitionCT.GetDescription: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDescription, TMarkdownCT));
+end;
+
+function TCompartmentDefinitionCT.GetPurpose: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fPurpose, TMarkdownCT));
+end;
+
+{ TCompartmentDefinitionResourceCT }
+
+function TCompartmentDefinitionResourceCT.GetDocumentation: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDocumentation, TStringCT));
+end;
+
+{ TCompositionCT }
+
+function TCompositionCT.GetIdentifier: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fIdentifier, TIdentifierCT));
+end;
+
+function TCompositionCT.GetSubject: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSubject, TReferenceCT));
+end;
+
+function TCompositionCT.GetEncounter: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fEncounter, TReferenceCT));
+end;
+
+function TCompositionCT.GetConfidentiality: TVConfidentialityClassificationCT;
+begin
+  Result := TVConfidentialityClassificationCT(Lazy(fConfidentiality, TVConfidentialityClassificationCT));
+end;
+
+function TCompositionCT.GetCustodian: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fCustodian, TReferenceCT));
+end;
+
+{ TCompositionAttesterCT }
+
+function TCompositionAttesterCT.GetTime: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fTime, TDateTimeCT));
+end;
+
+function TCompositionAttesterCT.GetParty: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fParty, TReferenceCT));
+end;
+
 { TCompositionRelatesToCT }
 
 function TCompositionRelatesToCT.GetTargetIdentifier: TIdentifierCT;
@@ -26552,7 +32371,106 @@ begin
   Result := Chosen('Target');
 end;
 
+{ TCompositionEventCT }
+
+function TCompositionEventCT.GetPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fPeriod, TPeriodCT));
+end;
+
+{ TCompositionSectionCT }
+
+function TCompositionSectionCT.GetTitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTitle, TStringCT));
+end;
+
+function TCompositionSectionCT.GetCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCode, TCodeableConceptCT));
+end;
+
+function TCompositionSectionCT.GetFocus: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fFocus, TReferenceCT));
+end;
+
+function TCompositionSectionCT.GetText: TNarrativeCT;
+begin
+  Result := TNarrativeCT(Lazy(fText, TNarrativeCT));
+end;
+
+function TCompositionSectionCT.GetMode: TListModeCT;
+begin
+  Result := TListModeCT(Lazy(fMode, TListModeCT));
+end;
+
+function TCompositionSectionCT.GetOrderedBy: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fOrderedBy, TCodeableConceptCT));
+end;
+
+function TCompositionSectionCT.GetEmptyReason: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fEmptyReason, TCodeableConceptCT));
+end;
+
 { TConceptMapCT }
+
+function TConceptMapCT.GetUrl: TUriCT;
+begin
+  Result := TUriCT(Lazy(fUrl, TUriCT));
+end;
+
+function TConceptMapCT.GetIdentifier: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fIdentifier, TIdentifierCT));
+end;
+
+function TConceptMapCT.GetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersion, TStringCT));
+end;
+
+function TConceptMapCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TConceptMapCT.GetTitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTitle, TStringCT));
+end;
+
+function TConceptMapCT.GetExperimental: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fExperimental, TBooleanCT));
+end;
+
+function TConceptMapCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
+
+function TConceptMapCT.GetPublisher: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPublisher, TStringCT));
+end;
+
+function TConceptMapCT.GetDescription: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDescription, TMarkdownCT));
+end;
+
+function TConceptMapCT.GetPurpose: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fPurpose, TMarkdownCT));
+end;
+
+function TConceptMapCT.GetCopyright: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fCopyright, TMarkdownCT));
+end;
 
 function TConceptMapCT.GetSourceUri: TUriCT;
 begin
@@ -26584,7 +32502,117 @@ begin
   Result := Chosen('Target');
 end;
 
+{ TConceptMapGroupCT }
+
+function TConceptMapGroupCT.GetSource: TUriCT;
+begin
+  Result := TUriCT(Lazy(fSource, TUriCT));
+end;
+
+function TConceptMapGroupCT.GetSourceVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fSourceVersion, TStringCT));
+end;
+
+function TConceptMapGroupCT.GetTarget: TUriCT;
+begin
+  Result := TUriCT(Lazy(fTarget, TUriCT));
+end;
+
+function TConceptMapGroupCT.GetTargetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTargetVersion, TStringCT));
+end;
+
+function TConceptMapGroupCT.GetUnmapped: TConceptMapUnmappedCT;
+begin
+  Result := TConceptMapUnmappedCT(Lazy(fUnmapped, TConceptMapUnmappedCT));
+end;
+
+{ TConceptMapElementCT }
+
+function TConceptMapElementCT.GetCode: TCodeCT;
+begin
+  Result := TCodeCT(Lazy(fCode, TCodeCT));
+end;
+
+function TConceptMapElementCT.GetDisplay: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDisplay, TStringCT));
+end;
+
+{ TConceptMapTargetCT }
+
+function TConceptMapTargetCT.GetCode: TCodeCT;
+begin
+  Result := TCodeCT(Lazy(fCode, TCodeCT));
+end;
+
+function TConceptMapTargetCT.GetDisplay: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDisplay, TStringCT));
+end;
+
+function TConceptMapTargetCT.GetComment: TStringCT;
+begin
+  Result := TStringCT(Lazy(fComment, TStringCT));
+end;
+
+{ TConceptMapDependsOnCT }
+
+function TConceptMapDependsOnCT.GetSystem: TCanonicalCT;
+begin
+  Result := TCanonicalCT(Lazy(fSystem, TCanonicalCT));
+end;
+
+function TConceptMapDependsOnCT.GetDisplay: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDisplay, TStringCT));
+end;
+
+{ TConceptMapUnmappedCT }
+
+function TConceptMapUnmappedCT.GetCode: TCodeCT;
+begin
+  Result := TCodeCT(Lazy(fCode, TCodeCT));
+end;
+
+function TConceptMapUnmappedCT.GetDisplay: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDisplay, TStringCT));
+end;
+
+function TConceptMapUnmappedCT.GetUrl: TCanonicalCT;
+begin
+  Result := TCanonicalCT(Lazy(fUrl, TCanonicalCT));
+end;
+
 { TConditionCT }
+
+function TConditionCT.GetClinicalStatus: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fClinicalStatus, TCodeableConceptCT));
+end;
+
+function TConditionCT.GetVerificationStatus: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fVerificationStatus, TCodeableConceptCT));
+end;
+
+function TConditionCT.GetSeverity: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fSeverity, TCodeableConceptCT));
+end;
+
+function TConditionCT.GetCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCode, TCodeableConceptCT));
+end;
+
+function TConditionCT.GetEncounter: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fEncounter, TReferenceCT));
+end;
 
 function TConditionCT.GetOnsetDateTime: TDateTimeCT;
 begin
@@ -26646,7 +32674,44 @@ begin
   Result := Chosen('Abatement');
 end;
 
+function TConditionCT.GetRecordedDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fRecordedDate, TDateTimeCT));
+end;
+
+function TConditionCT.GetRecorder: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fRecorder, TReferenceCT));
+end;
+
+function TConditionCT.GetAsserter: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fAsserter, TReferenceCT));
+end;
+
+{ TConditionStageCT }
+
+function TConditionStageCT.GetSummary: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fSummary, TCodeableConceptCT));
+end;
+
+function TConditionStageCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
 { TConsentCT }
+
+function TConsentCT.GetPatient: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fPatient, TReferenceCT));
+end;
+
+function TConsentCT.GetDateTime: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDateTime, TDateTimeCT));
+end;
 
 function TConsentCT.GetSourceAttachment: TAttachmentCT;
 begin
@@ -26663,7 +32728,133 @@ begin
   Result := Chosen('Source');
 end;
 
+function TConsentCT.GetPolicyRule: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fPolicyRule, TCodeableConceptCT));
+end;
+
+function TConsentCT.GetProvision: TConsentProvisionCT;
+begin
+  Result := TConsentProvisionCT(Lazy(fProvision, TConsentProvisionCT));
+end;
+
+{ TConsentPolicyCT }
+
+function TConsentPolicyCT.GetAuthority: TUriCT;
+begin
+  Result := TUriCT(Lazy(fAuthority, TUriCT));
+end;
+
+function TConsentPolicyCT.GetUri: TUriCT;
+begin
+  Result := TUriCT(Lazy(fUri, TUriCT));
+end;
+
+{ TConsentVerificationCT }
+
+function TConsentVerificationCT.GetVerifiedWith: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fVerifiedWith, TReferenceCT));
+end;
+
+function TConsentVerificationCT.GetVerificationDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fVerificationDate, TDateTimeCT));
+end;
+
+{ TConsentProvisionCT }
+
+function TConsentProvisionCT.GetType: TConsentProvisionTypeCT;
+begin
+  Result := TConsentProvisionTypeCT(Lazy(fType, TConsentProvisionTypeCT));
+end;
+
+function TConsentProvisionCT.GetPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fPeriod, TPeriodCT));
+end;
+
+function TConsentProvisionCT.GetDataPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fDataPeriod, TPeriodCT));
+end;
+
 { TContractCT }
+
+function TContractCT.GetUrl: TUriCT;
+begin
+  Result := TUriCT(Lazy(fUrl, TUriCT));
+end;
+
+function TContractCT.GetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersion, TStringCT));
+end;
+
+function TContractCT.GetStatus: TContractResourceStatusCodesCT;
+begin
+  Result := TContractResourceStatusCodesCT(Lazy(fStatus, TContractResourceStatusCodesCT));
+end;
+
+function TContractCT.GetLegalState: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fLegalState, TCodeableConceptCT));
+end;
+
+function TContractCT.GetInstantiatesCanonical: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fInstantiatesCanonical, TReferenceCT));
+end;
+
+function TContractCT.GetInstantiatesUri: TUriCT;
+begin
+  Result := TUriCT(Lazy(fInstantiatesUri, TUriCT));
+end;
+
+function TContractCT.GetContentDerivative: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fContentDerivative, TCodeableConceptCT));
+end;
+
+function TContractCT.GetIssued: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fIssued, TDateTimeCT));
+end;
+
+function TContractCT.GetApplies: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fApplies, TPeriodCT));
+end;
+
+function TContractCT.GetExpirationType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fExpirationType, TCodeableConceptCT));
+end;
+
+function TContractCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TContractCT.GetTitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTitle, TStringCT));
+end;
+
+function TContractCT.GetSubtitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fSubtitle, TStringCT));
+end;
+
+function TContractCT.GetAuthor: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fAuthor, TReferenceCT));
+end;
+
+function TContractCT.GetScope: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fScope, TCodeableConceptCT));
+end;
 
 function TContractCT.GetTopicCodeableConcept: TCodeableConceptCT;
 begin
@@ -26678,6 +32869,16 @@ end;
 function TContractCT.GetTopicChosen: TBasite;
 begin
   Result := Chosen('Topic');
+end;
+
+function TContractCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TContractCT.GetContentDefinition: TContractContentDefinitionCT;
+begin
+  Result := TContractContentDefinitionCT(Lazy(fContentDefinition, TContractContentDefinitionCT));
 end;
 
 function TContractCT.GetLegallyBindingAttachment: TAttachmentCT;
@@ -26695,7 +32896,44 @@ begin
   Result := Chosen('LegallyBinding');
 end;
 
+{ TContractContentDefinitionCT }
+
+function TContractContentDefinitionCT.GetSubType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fSubType, TCodeableConceptCT));
+end;
+
+function TContractContentDefinitionCT.GetPublisher: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fPublisher, TReferenceCT));
+end;
+
+function TContractContentDefinitionCT.GetPublicationDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fPublicationDate, TDateTimeCT));
+end;
+
+function TContractContentDefinitionCT.GetCopyright: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fCopyright, TMarkdownCT));
+end;
+
 { TContractTermCT }
+
+function TContractTermCT.GetIdentifier: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fIdentifier, TIdentifierCT));
+end;
+
+function TContractTermCT.GetIssued: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fIssued, TDateTimeCT));
+end;
+
+function TContractTermCT.GetApplies: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fApplies, TPeriodCT));
+end;
 
 function TContractTermCT.GetTopicCodeableConcept: TCodeableConceptCT;
 begin
@@ -26710,6 +32948,43 @@ end;
 function TContractTermCT.GetTopicChosen: TBasite;
 begin
   Result := Chosen('Topic');
+end;
+
+function TContractTermCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TContractTermCT.GetSubType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fSubType, TCodeableConceptCT));
+end;
+
+function TContractTermCT.GetText: TStringCT;
+begin
+  Result := TStringCT(Lazy(fText, TStringCT));
+end;
+
+{ TContractOfferCT }
+
+function TContractOfferCT.GetTopic: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fTopic, TReferenceCT));
+end;
+
+function TContractOfferCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TContractOfferCT.GetDecision: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fDecision, TCodeableConceptCT));
+end;
+
+function TContractOfferCT.GetText: TStringCT;
+begin
+  Result := TStringCT(Lazy(fText, TStringCT));
 end;
 
 { TContractAnswerCT }
@@ -26779,6 +33054,40 @@ begin
   Result := Chosen('Value');
 end;
 
+{ TContractAssetCT }
+
+function TContractAssetCT.GetScope: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fScope, TCodeableConceptCT));
+end;
+
+function TContractAssetCT.GetRelationship: TCodingCT;
+begin
+  Result := TCodingCT(Lazy(fRelationship, TCodingCT));
+end;
+
+function TContractAssetCT.GetCondition: TStringCT;
+begin
+  Result := TStringCT(Lazy(fCondition, TStringCT));
+end;
+
+function TContractAssetCT.GetText: TStringCT;
+begin
+  Result := TStringCT(Lazy(fText, TStringCT));
+end;
+
+{ TContractContextCT }
+
+function TContractContextCT.GetReference: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fReference, TReferenceCT));
+end;
+
+function TContractContextCT.GetText: TStringCT;
+begin
+  Result := TStringCT(Lazy(fText, TStringCT));
+end;
+
 { TContractValuedItemCT }
 
 function TContractValuedItemCT.GetEntityCodeableConcept: TCodeableConceptCT;
@@ -26796,7 +33105,72 @@ begin
   Result := Chosen('Entity');
 end;
 
+function TContractValuedItemCT.GetIdentifier: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fIdentifier, TIdentifierCT));
+end;
+
+function TContractValuedItemCT.GetEffectiveTime: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fEffectiveTime, TDateTimeCT));
+end;
+
+function TContractValuedItemCT.GetQuantity: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fQuantity, TQuantityCT));
+end;
+
+function TContractValuedItemCT.GetUnitPrice: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fUnitPrice, TMoneyCT));
+end;
+
+function TContractValuedItemCT.GetFactor: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fFactor, TDecimalCT));
+end;
+
+function TContractValuedItemCT.GetPoints: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fPoints, TDecimalCT));
+end;
+
+function TContractValuedItemCT.GetNet: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fNet, TMoneyCT));
+end;
+
+function TContractValuedItemCT.GetPayment: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPayment, TStringCT));
+end;
+
+function TContractValuedItemCT.GetPaymentDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fPaymentDate, TDateTimeCT));
+end;
+
+function TContractValuedItemCT.GetResponsible: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fResponsible, TReferenceCT));
+end;
+
+function TContractValuedItemCT.GetRecipient: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fRecipient, TReferenceCT));
+end;
+
 { TContractActionCT }
+
+function TContractActionCT.GetDoNotPerform: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fDoNotPerform, TBooleanCT));
+end;
+
+function TContractActionCT.GetContext: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fContext, TReferenceCT));
+end;
 
 function TContractActionCT.GetOccurrenceDateTime: TDateTimeCT;
 begin
@@ -26816,6 +33190,23 @@ end;
 function TContractActionCT.GetOccurrenceChosen: TBasite;
 begin
   Result := Chosen('Occurrence');
+end;
+
+function TContractActionCT.GetPerformerRole: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fPerformerRole, TCodeableConceptCT));
+end;
+
+function TContractActionCT.GetPerformer: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fPerformer, TReferenceCT));
+end;
+
+{ TContractSubjectCT }
+
+function TContractSubjectCT.GetRole: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fRole, TCodeableConceptCT));
 end;
 
 { TContractFriendlyCT }
@@ -26869,7 +33260,71 @@ begin
   Result := Chosen('Content');
 end;
 
+{ TCoverageCT }
+
+function TCoverageCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TCoverageCT.GetPolicyHolder: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fPolicyHolder, TReferenceCT));
+end;
+
+function TCoverageCT.GetSubscriber: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSubscriber, TReferenceCT));
+end;
+
+function TCoverageCT.GetSubscriberId: TStringCT;
+begin
+  Result := TStringCT(Lazy(fSubscriberId, TStringCT));
+end;
+
+function TCoverageCT.GetDependent: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDependent, TStringCT));
+end;
+
+function TCoverageCT.GetRelationship: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fRelationship, TCodeableConceptCT));
+end;
+
+function TCoverageCT.GetPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fPeriod, TPeriodCT));
+end;
+
+function TCoverageCT.GetOrder: TPositiveIntCT;
+begin
+  Result := TPositiveIntCT(Lazy(fOrder, TPositiveIntCT));
+end;
+
+function TCoverageCT.GetNetwork: TStringCT;
+begin
+  Result := TStringCT(Lazy(fNetwork, TStringCT));
+end;
+
+function TCoverageCT.GetSubrogation: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fSubrogation, TBooleanCT));
+end;
+
+{ TCoverageClassCT }
+
+function TCoverageClassCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
 { TCoverageCostToBeneficiaryCT }
+
+function TCoverageCostToBeneficiaryCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
 
 function TCoverageCostToBeneficiaryCT.GetValueQuantity: TQuantityCT;
 begin
@@ -26886,7 +33341,19 @@ begin
   Result := Chosen('Value');
 end;
 
+{ TCoverageExceptionCT }
+
+function TCoverageExceptionCT.GetPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fPeriod, TPeriodCT));
+end;
+
 { TCoverageEligibilityRequestCT }
+
+function TCoverageEligibilityRequestCT.GetPriority: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fPriority, TCodeableConceptCT));
+end;
 
 function TCoverageEligibilityRequestCT.GetServicedDate: TDateCT;
 begin
@@ -26901,6 +33368,72 @@ end;
 function TCoverageEligibilityRequestCT.GetServicedChosen: TBasite;
 begin
   Result := Chosen('Serviced');
+end;
+
+function TCoverageEligibilityRequestCT.GetEnterer: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fEnterer, TReferenceCT));
+end;
+
+function TCoverageEligibilityRequestCT.GetProvider: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fProvider, TReferenceCT));
+end;
+
+function TCoverageEligibilityRequestCT.GetFacility: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fFacility, TReferenceCT));
+end;
+
+{ TCoverageEligibilityRequestSupportingInfoCT }
+
+function TCoverageEligibilityRequestSupportingInfoCT.GetAppliesToAll: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fAppliesToAll, TBooleanCT));
+end;
+
+{ TCoverageEligibilityRequestInsuranceCT }
+
+function TCoverageEligibilityRequestInsuranceCT.GetFocal: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fFocal, TBooleanCT));
+end;
+
+function TCoverageEligibilityRequestInsuranceCT.GetBusinessArrangement: TStringCT;
+begin
+  Result := TStringCT(Lazy(fBusinessArrangement, TStringCT));
+end;
+
+{ TCoverageEligibilityRequestItemCT }
+
+function TCoverageEligibilityRequestItemCT.GetCategory: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCategory, TCodeableConceptCT));
+end;
+
+function TCoverageEligibilityRequestItemCT.GetProductOrService: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fProductOrService, TCodeableConceptCT));
+end;
+
+function TCoverageEligibilityRequestItemCT.GetProvider: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fProvider, TReferenceCT));
+end;
+
+function TCoverageEligibilityRequestItemCT.GetQuantity: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fQuantity, TQuantityCT));
+end;
+
+function TCoverageEligibilityRequestItemCT.GetUnitPrice: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fUnitPrice, TMoneyCT));
+end;
+
+function TCoverageEligibilityRequestItemCT.GetFacility: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fFacility, TReferenceCT));
 end;
 
 { TCoverageEligibilityRequestDiagnosisCT }
@@ -26935,6 +33468,95 @@ end;
 function TCoverageEligibilityResponseCT.GetServicedChosen: TBasite;
 begin
   Result := Chosen('Serviced');
+end;
+
+function TCoverageEligibilityResponseCT.GetRequestor: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fRequestor, TReferenceCT));
+end;
+
+function TCoverageEligibilityResponseCT.GetDisposition: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDisposition, TStringCT));
+end;
+
+function TCoverageEligibilityResponseCT.GetPreAuthRef: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPreAuthRef, TStringCT));
+end;
+
+function TCoverageEligibilityResponseCT.GetForm: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fForm, TCodeableConceptCT));
+end;
+
+{ TCoverageEligibilityResponseInsuranceCT }
+
+function TCoverageEligibilityResponseInsuranceCT.GetInforce: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fInforce, TBooleanCT));
+end;
+
+function TCoverageEligibilityResponseInsuranceCT.GetBenefitPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fBenefitPeriod, TPeriodCT));
+end;
+
+{ TCoverageEligibilityResponseItemCT }
+
+function TCoverageEligibilityResponseItemCT.GetCategory: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCategory, TCodeableConceptCT));
+end;
+
+function TCoverageEligibilityResponseItemCT.GetProductOrService: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fProductOrService, TCodeableConceptCT));
+end;
+
+function TCoverageEligibilityResponseItemCT.GetProvider: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fProvider, TReferenceCT));
+end;
+
+function TCoverageEligibilityResponseItemCT.GetExcluded: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fExcluded, TBooleanCT));
+end;
+
+function TCoverageEligibilityResponseItemCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TCoverageEligibilityResponseItemCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+function TCoverageEligibilityResponseItemCT.GetNetwork: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fNetwork, TCodeableConceptCT));
+end;
+
+function TCoverageEligibilityResponseItemCT.GetUnit: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fUnit, TCodeableConceptCT));
+end;
+
+function TCoverageEligibilityResponseItemCT.GetTerm: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fTerm, TCodeableConceptCT));
+end;
+
+function TCoverageEligibilityResponseItemCT.GetAuthorizationRequired: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fAuthorizationRequired, TBooleanCT));
+end;
+
+function TCoverageEligibilityResponseItemCT.GetAuthorizationUrl: TUriCT;
+begin
+  Result := TUriCT(Lazy(fAuthorizationUrl, TUriCT));
 end;
 
 { TCoverageEligibilityResponseBenefitCT }
@@ -26981,6 +33603,21 @@ end;
 
 { TDetectedIssueCT }
 
+function TDetectedIssueCT.GetCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCode, TCodeableConceptCT));
+end;
+
+function TDetectedIssueCT.GetSeverity: TDetectedIssueSeverityCT;
+begin
+  Result := TDetectedIssueSeverityCT(Lazy(fSeverity, TDetectedIssueSeverityCT));
+end;
+
+function TDetectedIssueCT.GetPatient: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fPatient, TReferenceCT));
+end;
+
 function TDetectedIssueCT.GetIdentifiedDateTime: TDateTimeCT;
 begin
   Result := TDateTimeCT(Lazy(fIdentifiedDateTime, TDateTimeCT));
@@ -26994,6 +33631,166 @@ end;
 function TDetectedIssueCT.GetIdentifiedChosen: TBasite;
 begin
   Result := Chosen('Identified');
+end;
+
+function TDetectedIssueCT.GetAuthor: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fAuthor, TReferenceCT));
+end;
+
+function TDetectedIssueCT.GetDetail: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDetail, TStringCT));
+end;
+
+function TDetectedIssueCT.GetReference: TUriCT;
+begin
+  Result := TUriCT(Lazy(fReference, TUriCT));
+end;
+
+{ TDetectedIssueMitigationCT }
+
+function TDetectedIssueMitigationCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
+
+function TDetectedIssueMitigationCT.GetAuthor: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fAuthor, TReferenceCT));
+end;
+
+{ TDeviceCT }
+
+function TDeviceCT.GetDefinition: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fDefinition, TReferenceCT));
+end;
+
+function TDeviceCT.GetStatus: TFHIRDeviceStatusCT;
+begin
+  Result := TFHIRDeviceStatusCT(Lazy(fStatus, TFHIRDeviceStatusCT));
+end;
+
+function TDeviceCT.GetDistinctIdentifier: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDistinctIdentifier, TStringCT));
+end;
+
+function TDeviceCT.GetManufacturer: TStringCT;
+begin
+  Result := TStringCT(Lazy(fManufacturer, TStringCT));
+end;
+
+function TDeviceCT.GetManufactureDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fManufactureDate, TDateTimeCT));
+end;
+
+function TDeviceCT.GetExpirationDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fExpirationDate, TDateTimeCT));
+end;
+
+function TDeviceCT.GetLotNumber: TStringCT;
+begin
+  Result := TStringCT(Lazy(fLotNumber, TStringCT));
+end;
+
+function TDeviceCT.GetSerialNumber: TStringCT;
+begin
+  Result := TStringCT(Lazy(fSerialNumber, TStringCT));
+end;
+
+function TDeviceCT.GetModelNumber: TStringCT;
+begin
+  Result := TStringCT(Lazy(fModelNumber, TStringCT));
+end;
+
+function TDeviceCT.GetPartNumber: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPartNumber, TStringCT));
+end;
+
+function TDeviceCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TDeviceCT.GetPatient: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fPatient, TReferenceCT));
+end;
+
+function TDeviceCT.GetOwner: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fOwner, TReferenceCT));
+end;
+
+function TDeviceCT.GetLocation: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fLocation, TReferenceCT));
+end;
+
+function TDeviceCT.GetUrl: TUriCT;
+begin
+  Result := TUriCT(Lazy(fUrl, TUriCT));
+end;
+
+function TDeviceCT.GetParent: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fParent, TReferenceCT));
+end;
+
+{ TDeviceUdiCarrierCT }
+
+function TDeviceUdiCarrierCT.GetDeviceIdentifier: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDeviceIdentifier, TStringCT));
+end;
+
+function TDeviceUdiCarrierCT.GetIssuer: TUriCT;
+begin
+  Result := TUriCT(Lazy(fIssuer, TUriCT));
+end;
+
+function TDeviceUdiCarrierCT.GetJurisdiction: TUriCT;
+begin
+  Result := TUriCT(Lazy(fJurisdiction, TUriCT));
+end;
+
+function TDeviceUdiCarrierCT.GetCarrierAIDC: TBase64BinaryCT;
+begin
+  Result := TBase64BinaryCT(Lazy(fCarrierAIDC, TBase64BinaryCT));
+end;
+
+function TDeviceUdiCarrierCT.GetCarrierHRF: TStringCT;
+begin
+  Result := TStringCT(Lazy(fCarrierHRF, TStringCT));
+end;
+
+function TDeviceUdiCarrierCT.GetEntryType: TUDIEntryTypeCT;
+begin
+  Result := TUDIEntryTypeCT(Lazy(fEntryType, TUDIEntryTypeCT));
+end;
+
+{ TDeviceSpecializationCT }
+
+function TDeviceSpecializationCT.GetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersion, TStringCT));
+end;
+
+{ TDeviceVersionCT }
+
+function TDeviceVersionCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TDeviceVersionCT.GetComponent: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fComponent, TIdentifierCT));
 end;
 
 { TDeviceDefinitionCT }
@@ -27013,7 +33810,130 @@ begin
   Result := Chosen('Manufacturer');
 end;
 
+function TDeviceDefinitionCT.GetModelNumber: TStringCT;
+begin
+  Result := TStringCT(Lazy(fModelNumber, TStringCT));
+end;
+
+function TDeviceDefinitionCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TDeviceDefinitionCT.GetPhysicalCharacteristics: TProdCharacteristicCT;
+begin
+  Result := TProdCharacteristicCT(Lazy(fPhysicalCharacteristics, TProdCharacteristicCT));
+end;
+
+function TDeviceDefinitionCT.GetOwner: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fOwner, TReferenceCT));
+end;
+
+function TDeviceDefinitionCT.GetUrl: TUriCT;
+begin
+  Result := TUriCT(Lazy(fUrl, TUriCT));
+end;
+
+function TDeviceDefinitionCT.GetOnlineInformation: TUriCT;
+begin
+  Result := TUriCT(Lazy(fOnlineInformation, TUriCT));
+end;
+
+function TDeviceDefinitionCT.GetQuantity: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fQuantity, TQuantityCT));
+end;
+
+function TDeviceDefinitionCT.GetParentDevice: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fParentDevice, TReferenceCT));
+end;
+
+{ TDeviceDefinitionSpecializationCT }
+
+function TDeviceDefinitionSpecializationCT.GetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersion, TStringCT));
+end;
+
+{ TDeviceDefinitionMaterialCT }
+
+function TDeviceDefinitionMaterialCT.GetAlternate: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fAlternate, TBooleanCT));
+end;
+
+function TDeviceDefinitionMaterialCT.GetAllergenicIndicator: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fAllergenicIndicator, TBooleanCT));
+end;
+
+{ TDeviceMetricCT }
+
+function TDeviceMetricCT.GetUnit: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fUnit, TCodeableConceptCT));
+end;
+
+function TDeviceMetricCT.GetSource: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSource, TReferenceCT));
+end;
+
+function TDeviceMetricCT.GetParent: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fParent, TReferenceCT));
+end;
+
+function TDeviceMetricCT.GetOperationalStatus: TDeviceMetricOperationalStatusCT;
+begin
+  Result := TDeviceMetricOperationalStatusCT(Lazy(fOperationalStatus, TDeviceMetricOperationalStatusCT));
+end;
+
+function TDeviceMetricCT.GetColor: TDeviceMetricColorCT;
+begin
+  Result := TDeviceMetricColorCT(Lazy(fColor, TDeviceMetricColorCT));
+end;
+
+function TDeviceMetricCT.GetMeasurementPeriod: TTimingCT;
+begin
+  Result := TTimingCT(Lazy(fMeasurementPeriod, TTimingCT));
+end;
+
+{ TDeviceMetricCalibrationCT }
+
+function TDeviceMetricCalibrationCT.GetType: TDeviceMetricCalibrationTypeCT;
+begin
+  Result := TDeviceMetricCalibrationTypeCT(Lazy(fType, TDeviceMetricCalibrationTypeCT));
+end;
+
+function TDeviceMetricCalibrationCT.GetState: TDeviceMetricCalibrationStateCT;
+begin
+  Result := TDeviceMetricCalibrationStateCT(Lazy(fState, TDeviceMetricCalibrationStateCT));
+end;
+
+function TDeviceMetricCalibrationCT.GetTime: TInstantCT;
+begin
+  Result := TInstantCT(Lazy(fTime, TInstantCT));
+end;
+
 { TDeviceRequestCT }
+
+function TDeviceRequestCT.GetGroupIdentifier: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fGroupIdentifier, TIdentifierCT));
+end;
+
+function TDeviceRequestCT.GetStatus: TRequestStatusCT;
+begin
+  Result := TRequestStatusCT(Lazy(fStatus, TRequestStatusCT));
+end;
+
+function TDeviceRequestCT.GetPriority: TRequestPriorityCT;
+begin
+  Result := TRequestPriorityCT(Lazy(fPriority, TRequestPriorityCT));
+end;
 
 function TDeviceRequestCT.GetCodeReference: TReferenceCT;
 begin
@@ -27028,6 +33948,11 @@ end;
 function TDeviceRequestCT.GetCodeChosen: TBasite;
 begin
   Result := Chosen('Code');
+end;
+
+function TDeviceRequestCT.GetEncounter: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fEncounter, TReferenceCT));
 end;
 
 function TDeviceRequestCT.GetOccurrenceDateTime: TDateTimeCT;
@@ -27050,7 +33975,32 @@ begin
   Result := Chosen('Occurrence');
 end;
 
+function TDeviceRequestCT.GetAuthoredOn: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fAuthoredOn, TDateTimeCT));
+end;
+
+function TDeviceRequestCT.GetRequester: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fRequester, TReferenceCT));
+end;
+
+function TDeviceRequestCT.GetPerformerType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fPerformerType, TCodeableConceptCT));
+end;
+
+function TDeviceRequestCT.GetPerformer: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fPerformer, TReferenceCT));
+end;
+
 { TDeviceRequestParameterCT }
+
+function TDeviceRequestParameterCT.GetCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCode, TCodeableConceptCT));
+end;
 
 function TDeviceRequestParameterCT.GetValueCodeableConcept: TCodeableConceptCT;
 begin
@@ -27099,7 +34049,32 @@ begin
   Result := Chosen('Timing');
 end;
 
+function TDeviceUseStatementCT.GetRecordedOn: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fRecordedOn, TDateTimeCT));
+end;
+
+function TDeviceUseStatementCT.GetSource: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSource, TReferenceCT));
+end;
+
+function TDeviceUseStatementCT.GetBodySite: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fBodySite, TCodeableConceptCT));
+end;
+
 { TDiagnosticReportCT }
+
+function TDiagnosticReportCT.GetSubject: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSubject, TReferenceCT));
+end;
+
+function TDiagnosticReportCT.GetEncounter: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fEncounter, TReferenceCT));
+end;
 
 function TDiagnosticReportCT.GetEffectiveDateTime: TDateTimeCT;
 begin
@@ -27116,7 +34091,566 @@ begin
   Result := Chosen('Effective');
 end;
 
+function TDiagnosticReportCT.GetIssued: TInstantCT;
+begin
+  Result := TInstantCT(Lazy(fIssued, TInstantCT));
+end;
+
+function TDiagnosticReportCT.GetConclusion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fConclusion, TStringCT));
+end;
+
+{ TDiagnosticReportMediaCT }
+
+function TDiagnosticReportMediaCT.GetComment: TStringCT;
+begin
+  Result := TStringCT(Lazy(fComment, TStringCT));
+end;
+
+{ TDocumentManifestCT }
+
+function TDocumentManifestCT.GetMasterIdentifier: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fMasterIdentifier, TIdentifierCT));
+end;
+
+function TDocumentManifestCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TDocumentManifestCT.GetSubject: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSubject, TReferenceCT));
+end;
+
+function TDocumentManifestCT.GetCreated: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fCreated, TDateTimeCT));
+end;
+
+function TDocumentManifestCT.GetSource: TUriCT;
+begin
+  Result := TUriCT(Lazy(fSource, TUriCT));
+end;
+
+function TDocumentManifestCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+{ TDocumentManifestRelatedCT }
+
+function TDocumentManifestRelatedCT.GetIdentifier: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fIdentifier, TIdentifierCT));
+end;
+
+function TDocumentManifestRelatedCT.GetRef: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fRef, TReferenceCT));
+end;
+
+{ TDocumentReferenceCT }
+
+function TDocumentReferenceCT.GetMasterIdentifier: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fMasterIdentifier, TIdentifierCT));
+end;
+
+function TDocumentReferenceCT.GetDocStatus: TCompositionStatusCT;
+begin
+  Result := TCompositionStatusCT(Lazy(fDocStatus, TCompositionStatusCT));
+end;
+
+function TDocumentReferenceCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TDocumentReferenceCT.GetSubject: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSubject, TReferenceCT));
+end;
+
+function TDocumentReferenceCT.GetDate: TInstantCT;
+begin
+  Result := TInstantCT(Lazy(fDate, TInstantCT));
+end;
+
+function TDocumentReferenceCT.GetAuthenticator: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fAuthenticator, TReferenceCT));
+end;
+
+function TDocumentReferenceCT.GetCustodian: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fCustodian, TReferenceCT));
+end;
+
+function TDocumentReferenceCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+function TDocumentReferenceCT.GetContext: TDocumentReferenceContextCT;
+begin
+  Result := TDocumentReferenceContextCT(Lazy(fContext, TDocumentReferenceContextCT));
+end;
+
+{ TDocumentReferenceContentCT }
+
+function TDocumentReferenceContentCT.GetFormat: TCodingCT;
+begin
+  Result := TCodingCT(Lazy(fFormat, TCodingCT));
+end;
+
+{ TDocumentReferenceContextCT }
+
+function TDocumentReferenceContextCT.GetPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fPeriod, TPeriodCT));
+end;
+
+function TDocumentReferenceContextCT.GetFacilityType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fFacilityType, TCodeableConceptCT));
+end;
+
+function TDocumentReferenceContextCT.GetPracticeSetting: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fPracticeSetting, TCodeableConceptCT));
+end;
+
+function TDocumentReferenceContextCT.GetSourcePatientInfo: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSourcePatientInfo, TReferenceCT));
+end;
+
+{ TEffectEvidenceSynthesisCT }
+
+function TEffectEvidenceSynthesisCT.GetUrl: TUriCT;
+begin
+  Result := TUriCT(Lazy(fUrl, TUriCT));
+end;
+
+function TEffectEvidenceSynthesisCT.GetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersion, TStringCT));
+end;
+
+function TEffectEvidenceSynthesisCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TEffectEvidenceSynthesisCT.GetTitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTitle, TStringCT));
+end;
+
+function TEffectEvidenceSynthesisCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
+
+function TEffectEvidenceSynthesisCT.GetPublisher: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPublisher, TStringCT));
+end;
+
+function TEffectEvidenceSynthesisCT.GetDescription: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDescription, TMarkdownCT));
+end;
+
+function TEffectEvidenceSynthesisCT.GetCopyright: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fCopyright, TMarkdownCT));
+end;
+
+function TEffectEvidenceSynthesisCT.GetApprovalDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fApprovalDate, TDateCT));
+end;
+
+function TEffectEvidenceSynthesisCT.GetLastReviewDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fLastReviewDate, TDateCT));
+end;
+
+function TEffectEvidenceSynthesisCT.GetEffectivePeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fEffectivePeriod, TPeriodCT));
+end;
+
+function TEffectEvidenceSynthesisCT.GetSynthesisType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fSynthesisType, TCodeableConceptCT));
+end;
+
+function TEffectEvidenceSynthesisCT.GetStudyType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fStudyType, TCodeableConceptCT));
+end;
+
+function TEffectEvidenceSynthesisCT.GetSampleSize: TEffectEvidenceSynthesisSampleSizeCT;
+begin
+  Result := TEffectEvidenceSynthesisSampleSizeCT(Lazy(fSampleSize, TEffectEvidenceSynthesisSampleSizeCT));
+end;
+
+{ TEffectEvidenceSynthesisSampleSizeCT }
+
+function TEffectEvidenceSynthesisSampleSizeCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+function TEffectEvidenceSynthesisSampleSizeCT.GetNumberOfStudies: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fNumberOfStudies, TIntegerCT));
+end;
+
+function TEffectEvidenceSynthesisSampleSizeCT.GetNumberOfParticipants: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fNumberOfParticipants, TIntegerCT));
+end;
+
+{ TEffectEvidenceSynthesisResultsByExposureCT }
+
+function TEffectEvidenceSynthesisResultsByExposureCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+function TEffectEvidenceSynthesisResultsByExposureCT.GetExposureState: TExposureStateCT;
+begin
+  Result := TExposureStateCT(Lazy(fExposureState, TExposureStateCT));
+end;
+
+function TEffectEvidenceSynthesisResultsByExposureCT.GetVariantState: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fVariantState, TCodeableConceptCT));
+end;
+
+{ TEffectEvidenceSynthesisEffectEstimateCT }
+
+function TEffectEvidenceSynthesisEffectEstimateCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+function TEffectEvidenceSynthesisEffectEstimateCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TEffectEvidenceSynthesisEffectEstimateCT.GetVariantState: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fVariantState, TCodeableConceptCT));
+end;
+
+function TEffectEvidenceSynthesisEffectEstimateCT.GetValue: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fValue, TDecimalCT));
+end;
+
+function TEffectEvidenceSynthesisEffectEstimateCT.GetUnitOfMeasure: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fUnitOfMeasure, TCodeableConceptCT));
+end;
+
+{ TEffectEvidenceSynthesisPrecisionEstimateCT }
+
+function TEffectEvidenceSynthesisPrecisionEstimateCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TEffectEvidenceSynthesisPrecisionEstimateCT.GetLevel: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fLevel, TDecimalCT));
+end;
+
+function TEffectEvidenceSynthesisPrecisionEstimateCT.GetFrom: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fFrom, TDecimalCT));
+end;
+
+function TEffectEvidenceSynthesisPrecisionEstimateCT.GetTo: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fTo, TDecimalCT));
+end;
+
+{ TEffectEvidenceSynthesisCertaintySubcomponentCT }
+
+function TEffectEvidenceSynthesisCertaintySubcomponentCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+{ TEncounterCT }
+
+function TEncounterCT.GetServiceType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fServiceType, TCodeableConceptCT));
+end;
+
+function TEncounterCT.GetPriority: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fPriority, TCodeableConceptCT));
+end;
+
+function TEncounterCT.GetSubject: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSubject, TReferenceCT));
+end;
+
+function TEncounterCT.GetPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fPeriod, TPeriodCT));
+end;
+
+function TEncounterCT.GetLength: TDurationCT;
+begin
+  Result := TDurationCT(Lazy(fLength, TDurationCT));
+end;
+
+function TEncounterCT.GetHospitalization: TEncounterHospitalizationCT;
+begin
+  Result := TEncounterHospitalizationCT(Lazy(fHospitalization, TEncounterHospitalizationCT));
+end;
+
+function TEncounterCT.GetServiceProvider: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fServiceProvider, TReferenceCT));
+end;
+
+function TEncounterCT.GetPartOf: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fPartOf, TReferenceCT));
+end;
+
+{ TEncounterParticipantCT }
+
+function TEncounterParticipantCT.GetPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fPeriod, TPeriodCT));
+end;
+
+function TEncounterParticipantCT.GetIndividual: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fIndividual, TReferenceCT));
+end;
+
+{ TEncounterDiagnosisCT }
+
+function TEncounterDiagnosisCT.GetUse: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fUse, TCodeableConceptCT));
+end;
+
+function TEncounterDiagnosisCT.GetRank: TPositiveIntCT;
+begin
+  Result := TPositiveIntCT(Lazy(fRank, TPositiveIntCT));
+end;
+
+{ TEncounterHospitalizationCT }
+
+function TEncounterHospitalizationCT.GetPreAdmissionIdentifier: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fPreAdmissionIdentifier, TIdentifierCT));
+end;
+
+function TEncounterHospitalizationCT.GetOrigin: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fOrigin, TReferenceCT));
+end;
+
+function TEncounterHospitalizationCT.GetAdmitSource: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fAdmitSource, TCodeableConceptCT));
+end;
+
+function TEncounterHospitalizationCT.GetReAdmission: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fReAdmission, TCodeableConceptCT));
+end;
+
+function TEncounterHospitalizationCT.GetDestination: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fDestination, TReferenceCT));
+end;
+
+function TEncounterHospitalizationCT.GetDischargeDisposition: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fDischargeDisposition, TCodeableConceptCT));
+end;
+
+{ TEncounterLocationCT }
+
+function TEncounterLocationCT.GetStatus: TEncounterLocationStatusCT;
+begin
+  Result := TEncounterLocationStatusCT(Lazy(fStatus, TEncounterLocationStatusCT));
+end;
+
+function TEncounterLocationCT.GetPhysicalType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fPhysicalType, TCodeableConceptCT));
+end;
+
+function TEncounterLocationCT.GetPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fPeriod, TPeriodCT));
+end;
+
+{ TEndpointCT }
+
+function TEndpointCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TEndpointCT.GetManagingOrganization: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fManagingOrganization, TReferenceCT));
+end;
+
+function TEndpointCT.GetPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fPeriod, TPeriodCT));
+end;
+
+{ TEnrollmentRequestCT }
+
+function TEnrollmentRequestCT.GetStatus: TFinancialResourceStatusCodesCT;
+begin
+  Result := TFinancialResourceStatusCodesCT(Lazy(fStatus, TFinancialResourceStatusCodesCT));
+end;
+
+function TEnrollmentRequestCT.GetCreated: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fCreated, TDateTimeCT));
+end;
+
+function TEnrollmentRequestCT.GetInsurer: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fInsurer, TReferenceCT));
+end;
+
+function TEnrollmentRequestCT.GetProvider: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fProvider, TReferenceCT));
+end;
+
+function TEnrollmentRequestCT.GetCandidate: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fCandidate, TReferenceCT));
+end;
+
+function TEnrollmentRequestCT.GetCoverage: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fCoverage, TReferenceCT));
+end;
+
+{ TEnrollmentResponseCT }
+
+function TEnrollmentResponseCT.GetStatus: TFinancialResourceStatusCodesCT;
+begin
+  Result := TFinancialResourceStatusCodesCT(Lazy(fStatus, TFinancialResourceStatusCodesCT));
+end;
+
+function TEnrollmentResponseCT.GetRequest: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fRequest, TReferenceCT));
+end;
+
+function TEnrollmentResponseCT.GetOutcome: TRemittanceOutcomeCT;
+begin
+  Result := TRemittanceOutcomeCT(Lazy(fOutcome, TRemittanceOutcomeCT));
+end;
+
+function TEnrollmentResponseCT.GetDisposition: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDisposition, TStringCT));
+end;
+
+function TEnrollmentResponseCT.GetCreated: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fCreated, TDateTimeCT));
+end;
+
+function TEnrollmentResponseCT.GetOrganization: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fOrganization, TReferenceCT));
+end;
+
+function TEnrollmentResponseCT.GetRequestProvider: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fRequestProvider, TReferenceCT));
+end;
+
+{ TEpisodeOfCareCT }
+
+function TEpisodeOfCareCT.GetManagingOrganization: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fManagingOrganization, TReferenceCT));
+end;
+
+function TEpisodeOfCareCT.GetPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fPeriod, TPeriodCT));
+end;
+
+function TEpisodeOfCareCT.GetCareManager: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fCareManager, TReferenceCT));
+end;
+
+{ TEpisodeOfCareDiagnosisCT }
+
+function TEpisodeOfCareDiagnosisCT.GetRole: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fRole, TCodeableConceptCT));
+end;
+
+function TEpisodeOfCareDiagnosisCT.GetRank: TPositiveIntCT;
+begin
+  Result := TPositiveIntCT(Lazy(fRank, TPositiveIntCT));
+end;
+
 { TEventDefinitionCT }
+
+function TEventDefinitionCT.GetUrl: TUriCT;
+begin
+  Result := TUriCT(Lazy(fUrl, TUriCT));
+end;
+
+function TEventDefinitionCT.GetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersion, TStringCT));
+end;
+
+function TEventDefinitionCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TEventDefinitionCT.GetTitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTitle, TStringCT));
+end;
+
+function TEventDefinitionCT.GetSubtitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fSubtitle, TStringCT));
+end;
+
+function TEventDefinitionCT.GetExperimental: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fExperimental, TBooleanCT));
+end;
 
 function TEventDefinitionCT.GetSubjectCodeableConcept: TCodeableConceptCT;
 begin
@@ -27133,7 +34667,196 @@ begin
   Result := Chosen('Subject');
 end;
 
+function TEventDefinitionCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
+
+function TEventDefinitionCT.GetPublisher: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPublisher, TStringCT));
+end;
+
+function TEventDefinitionCT.GetDescription: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDescription, TMarkdownCT));
+end;
+
+function TEventDefinitionCT.GetPurpose: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fPurpose, TMarkdownCT));
+end;
+
+function TEventDefinitionCT.GetUsage: TStringCT;
+begin
+  Result := TStringCT(Lazy(fUsage, TStringCT));
+end;
+
+function TEventDefinitionCT.GetCopyright: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fCopyright, TMarkdownCT));
+end;
+
+function TEventDefinitionCT.GetApprovalDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fApprovalDate, TDateCT));
+end;
+
+function TEventDefinitionCT.GetLastReviewDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fLastReviewDate, TDateCT));
+end;
+
+function TEventDefinitionCT.GetEffectivePeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fEffectivePeriod, TPeriodCT));
+end;
+
+{ TEvidenceCT }
+
+function TEvidenceCT.GetUrl: TUriCT;
+begin
+  Result := TUriCT(Lazy(fUrl, TUriCT));
+end;
+
+function TEvidenceCT.GetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersion, TStringCT));
+end;
+
+function TEvidenceCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TEvidenceCT.GetTitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTitle, TStringCT));
+end;
+
+function TEvidenceCT.GetShortTitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fShortTitle, TStringCT));
+end;
+
+function TEvidenceCT.GetSubtitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fSubtitle, TStringCT));
+end;
+
+function TEvidenceCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
+
+function TEvidenceCT.GetPublisher: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPublisher, TStringCT));
+end;
+
+function TEvidenceCT.GetDescription: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDescription, TMarkdownCT));
+end;
+
+function TEvidenceCT.GetCopyright: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fCopyright, TMarkdownCT));
+end;
+
+function TEvidenceCT.GetApprovalDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fApprovalDate, TDateCT));
+end;
+
+function TEvidenceCT.GetLastReviewDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fLastReviewDate, TDateCT));
+end;
+
+function TEvidenceCT.GetEffectivePeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fEffectivePeriod, TPeriodCT));
+end;
+
+{ TEvidenceVariableCT }
+
+function TEvidenceVariableCT.GetUrl: TUriCT;
+begin
+  Result := TUriCT(Lazy(fUrl, TUriCT));
+end;
+
+function TEvidenceVariableCT.GetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersion, TStringCT));
+end;
+
+function TEvidenceVariableCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TEvidenceVariableCT.GetTitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTitle, TStringCT));
+end;
+
+function TEvidenceVariableCT.GetShortTitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fShortTitle, TStringCT));
+end;
+
+function TEvidenceVariableCT.GetSubtitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fSubtitle, TStringCT));
+end;
+
+function TEvidenceVariableCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
+
+function TEvidenceVariableCT.GetPublisher: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPublisher, TStringCT));
+end;
+
+function TEvidenceVariableCT.GetDescription: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDescription, TMarkdownCT));
+end;
+
+function TEvidenceVariableCT.GetCopyright: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fCopyright, TMarkdownCT));
+end;
+
+function TEvidenceVariableCT.GetApprovalDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fApprovalDate, TDateCT));
+end;
+
+function TEvidenceVariableCT.GetLastReviewDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fLastReviewDate, TDateCT));
+end;
+
+function TEvidenceVariableCT.GetEffectivePeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fEffectivePeriod, TPeriodCT));
+end;
+
+function TEvidenceVariableCT.GetType: TEvidenceVariableTypeCT;
+begin
+  Result := TEvidenceVariableTypeCT(Lazy(fType, TEvidenceVariableTypeCT));
+end;
+
 { TEvidenceVariableCharacteristicCT }
+
+function TEvidenceVariableCharacteristicCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
 
 function TEvidenceVariableCharacteristicCT.GetDefinitionReference: TReferenceCT;
 begin
@@ -27170,6 +34893,11 @@ begin
   Result := Chosen('Definition');
 end;
 
+function TEvidenceVariableCharacteristicCT.GetExclude: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fExclude, TBooleanCT));
+end;
+
 function TEvidenceVariableCharacteristicCT.GetParticipantEffectiveDateTime: TDateTimeCT;
 begin
   Result := TDateTimeCT(Lazy(fParticipantEffectiveDateTime, TDateTimeCT));
@@ -27195,7 +34923,326 @@ begin
   Result := Chosen('ParticipantEffective');
 end;
 
+function TEvidenceVariableCharacteristicCT.GetTimeFromStart: TDurationCT;
+begin
+  Result := TDurationCT(Lazy(fTimeFromStart, TDurationCT));
+end;
+
+function TEvidenceVariableCharacteristicCT.GetGroupMeasure: TGroupMeasureCT;
+begin
+  Result := TGroupMeasureCT(Lazy(fGroupMeasure, TGroupMeasureCT));
+end;
+
+{ TExampleScenarioCT }
+
+function TExampleScenarioCT.GetUrl: TUriCT;
+begin
+  Result := TUriCT(Lazy(fUrl, TUriCT));
+end;
+
+function TExampleScenarioCT.GetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersion, TStringCT));
+end;
+
+function TExampleScenarioCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TExampleScenarioCT.GetExperimental: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fExperimental, TBooleanCT));
+end;
+
+function TExampleScenarioCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
+
+function TExampleScenarioCT.GetPublisher: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPublisher, TStringCT));
+end;
+
+function TExampleScenarioCT.GetCopyright: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fCopyright, TMarkdownCT));
+end;
+
+function TExampleScenarioCT.GetPurpose: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fPurpose, TMarkdownCT));
+end;
+
+{ TExampleScenarioActorCT }
+
+function TExampleScenarioActorCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TExampleScenarioActorCT.GetDescription: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDescription, TMarkdownCT));
+end;
+
+{ TExampleScenarioInstanceCT }
+
+function TExampleScenarioInstanceCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TExampleScenarioInstanceCT.GetDescription: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDescription, TMarkdownCT));
+end;
+
+{ TExampleScenarioContainedInstanceCT }
+
+function TExampleScenarioContainedInstanceCT.GetVersionId: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersionId, TStringCT));
+end;
+
+{ TExampleScenarioProcessCT }
+
+function TExampleScenarioProcessCT.GetDescription: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDescription, TMarkdownCT));
+end;
+
+function TExampleScenarioProcessCT.GetPreConditions: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fPreConditions, TMarkdownCT));
+end;
+
+function TExampleScenarioProcessCT.GetPostConditions: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fPostConditions, TMarkdownCT));
+end;
+
+{ TExampleScenarioStepCT }
+
+function TExampleScenarioStepCT.GetPause: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fPause, TBooleanCT));
+end;
+
+function TExampleScenarioStepCT.GetOperation: TExampleScenarioOperationCT;
+begin
+  Result := TExampleScenarioOperationCT(Lazy(fOperation, TExampleScenarioOperationCT));
+end;
+
+{ TExampleScenarioOperationCT }
+
+function TExampleScenarioOperationCT.GetType: TStringCT;
+begin
+  Result := TStringCT(Lazy(fType, TStringCT));
+end;
+
+function TExampleScenarioOperationCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TExampleScenarioOperationCT.GetInitiator: TStringCT;
+begin
+  Result := TStringCT(Lazy(fInitiator, TStringCT));
+end;
+
+function TExampleScenarioOperationCT.GetReceiver: TStringCT;
+begin
+  Result := TStringCT(Lazy(fReceiver, TStringCT));
+end;
+
+function TExampleScenarioOperationCT.GetDescription: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDescription, TMarkdownCT));
+end;
+
+function TExampleScenarioOperationCT.GetInitiatorActive: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fInitiatorActive, TBooleanCT));
+end;
+
+function TExampleScenarioOperationCT.GetReceiverActive: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fReceiverActive, TBooleanCT));
+end;
+
+function TExampleScenarioOperationCT.GetRequest: TExampleScenarioContainedInstanceCT;
+begin
+  Result := TExampleScenarioContainedInstanceCT(Lazy(fRequest, TExampleScenarioContainedInstanceCT));
+end;
+
+function TExampleScenarioOperationCT.GetResponse: TExampleScenarioContainedInstanceCT;
+begin
+  Result := TExampleScenarioContainedInstanceCT(Lazy(fResponse, TExampleScenarioContainedInstanceCT));
+end;
+
+{ TExampleScenarioAlternativeCT }
+
+function TExampleScenarioAlternativeCT.GetDescription: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDescription, TMarkdownCT));
+end;
+
+{ TExplanationOfBenefitCT }
+
+function TExplanationOfBenefitCT.GetSubType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fSubType, TCodeableConceptCT));
+end;
+
+function TExplanationOfBenefitCT.GetBillablePeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fBillablePeriod, TPeriodCT));
+end;
+
+function TExplanationOfBenefitCT.GetEnterer: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fEnterer, TReferenceCT));
+end;
+
+function TExplanationOfBenefitCT.GetPriority: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fPriority, TCodeableConceptCT));
+end;
+
+function TExplanationOfBenefitCT.GetFundsReserveRequested: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fFundsReserveRequested, TCodeableConceptCT));
+end;
+
+function TExplanationOfBenefitCT.GetFundsReserve: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fFundsReserve, TCodeableConceptCT));
+end;
+
+function TExplanationOfBenefitCT.GetPrescription: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fPrescription, TReferenceCT));
+end;
+
+function TExplanationOfBenefitCT.GetOriginalPrescription: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fOriginalPrescription, TReferenceCT));
+end;
+
+function TExplanationOfBenefitCT.GetPayee: TExplanationOfBenefitPayeeCT;
+begin
+  Result := TExplanationOfBenefitPayeeCT(Lazy(fPayee, TExplanationOfBenefitPayeeCT));
+end;
+
+function TExplanationOfBenefitCT.GetReferral: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fReferral, TReferenceCT));
+end;
+
+function TExplanationOfBenefitCT.GetFacility: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fFacility, TReferenceCT));
+end;
+
+function TExplanationOfBenefitCT.GetClaim: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fClaim, TReferenceCT));
+end;
+
+function TExplanationOfBenefitCT.GetClaimResponse: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fClaimResponse, TReferenceCT));
+end;
+
+function TExplanationOfBenefitCT.GetDisposition: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDisposition, TStringCT));
+end;
+
+function TExplanationOfBenefitCT.GetPrecedence: TPositiveIntCT;
+begin
+  Result := TPositiveIntCT(Lazy(fPrecedence, TPositiveIntCT));
+end;
+
+function TExplanationOfBenefitCT.GetAccident: TExplanationOfBenefitAccidentCT;
+begin
+  Result := TExplanationOfBenefitAccidentCT(Lazy(fAccident, TExplanationOfBenefitAccidentCT));
+end;
+
+function TExplanationOfBenefitCT.GetPayment: TExplanationOfBenefitPaymentCT;
+begin
+  Result := TExplanationOfBenefitPaymentCT(Lazy(fPayment, TExplanationOfBenefitPaymentCT));
+end;
+
+function TExplanationOfBenefitCT.GetFormCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fFormCode, TCodeableConceptCT));
+end;
+
+function TExplanationOfBenefitCT.GetForm: TAttachmentCT;
+begin
+  Result := TAttachmentCT(Lazy(fForm, TAttachmentCT));
+end;
+
+function TExplanationOfBenefitCT.GetBenefitPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fBenefitPeriod, TPeriodCT));
+end;
+
+{ TExplanationOfBenefitRelatedCT }
+
+function TExplanationOfBenefitRelatedCT.GetClaim: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fClaim, TReferenceCT));
+end;
+
+function TExplanationOfBenefitRelatedCT.GetRelationship: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fRelationship, TCodeableConceptCT));
+end;
+
+function TExplanationOfBenefitRelatedCT.GetReference: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fReference, TIdentifierCT));
+end;
+
+{ TExplanationOfBenefitPayeeCT }
+
+function TExplanationOfBenefitPayeeCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TExplanationOfBenefitPayeeCT.GetParty: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fParty, TReferenceCT));
+end;
+
+{ TExplanationOfBenefitCareTeamCT }
+
+function TExplanationOfBenefitCareTeamCT.GetResponsible: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fResponsible, TBooleanCT));
+end;
+
+function TExplanationOfBenefitCareTeamCT.GetRole: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fRole, TCodeableConceptCT));
+end;
+
+function TExplanationOfBenefitCareTeamCT.GetQualification: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fQualification, TCodeableConceptCT));
+end;
+
 { TExplanationOfBenefitSupportingInfoCT }
+
+function TExplanationOfBenefitSupportingInfoCT.GetCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCode, TCodeableConceptCT));
+end;
 
 function TExplanationOfBenefitSupportingInfoCT.GetTimingDate: TDateCT;
 begin
@@ -27242,6 +35289,11 @@ begin
   Result := Chosen('Value');
 end;
 
+function TExplanationOfBenefitSupportingInfoCT.GetReason: TCodingCT;
+begin
+  Result := TCodingCT(Lazy(fReason, TCodingCT));
+end;
+
 { TExplanationOfBenefitDiagnosisCT }
 
 function TExplanationOfBenefitDiagnosisCT.GetDiagnosisCodeableConcept: TCodeableConceptCT;
@@ -27259,7 +35311,22 @@ begin
   Result := Chosen('Diagnosis');
 end;
 
+function TExplanationOfBenefitDiagnosisCT.GetOnAdmission: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fOnAdmission, TCodeableConceptCT));
+end;
+
+function TExplanationOfBenefitDiagnosisCT.GetPackageCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fPackageCode, TCodeableConceptCT));
+end;
+
 { TExplanationOfBenefitProcedureCT }
+
+function TExplanationOfBenefitProcedureCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
 
 function TExplanationOfBenefitProcedureCT.GetProcedureCodeableConcept: TCodeableConceptCT;
 begin
@@ -27278,6 +35345,16 @@ end;
 
 { TExplanationOfBenefitAccidentCT }
 
+function TExplanationOfBenefitAccidentCT.GetDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fDate, TDateCT));
+end;
+
+function TExplanationOfBenefitAccidentCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
 function TExplanationOfBenefitAccidentCT.GetLocationAddress: TAddressCT;
 begin
   Result := TAddressCT(Lazy(fLocationAddress, TAddressCT));
@@ -27294,6 +35371,16 @@ begin
 end;
 
 { TExplanationOfBenefitItemCT }
+
+function TExplanationOfBenefitItemCT.GetRevenue: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fRevenue, TCodeableConceptCT));
+end;
+
+function TExplanationOfBenefitItemCT.GetCategory: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCategory, TCodeableConceptCT));
+end;
 
 function TExplanationOfBenefitItemCT.GetServicedDate: TDateCT;
 begin
@@ -27328,6 +35415,112 @@ end;
 function TExplanationOfBenefitItemCT.GetLocationChosen: TBasite;
 begin
   Result := Chosen('Location');
+end;
+
+function TExplanationOfBenefitItemCT.GetQuantity: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fQuantity, TQuantityCT));
+end;
+
+function TExplanationOfBenefitItemCT.GetUnitPrice: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fUnitPrice, TMoneyCT));
+end;
+
+function TExplanationOfBenefitItemCT.GetFactor: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fFactor, TDecimalCT));
+end;
+
+function TExplanationOfBenefitItemCT.GetNet: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fNet, TMoneyCT));
+end;
+
+function TExplanationOfBenefitItemCT.GetBodySite: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fBodySite, TCodeableConceptCT));
+end;
+
+{ TExplanationOfBenefitAdjudicationCT }
+
+function TExplanationOfBenefitAdjudicationCT.GetReason: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fReason, TCodeableConceptCT));
+end;
+
+function TExplanationOfBenefitAdjudicationCT.GetAmount: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fAmount, TMoneyCT));
+end;
+
+function TExplanationOfBenefitAdjudicationCT.GetValue: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fValue, TDecimalCT));
+end;
+
+{ TExplanationOfBenefitDetailCT }
+
+function TExplanationOfBenefitDetailCT.GetRevenue: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fRevenue, TCodeableConceptCT));
+end;
+
+function TExplanationOfBenefitDetailCT.GetCategory: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCategory, TCodeableConceptCT));
+end;
+
+function TExplanationOfBenefitDetailCT.GetQuantity: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fQuantity, TQuantityCT));
+end;
+
+function TExplanationOfBenefitDetailCT.GetUnitPrice: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fUnitPrice, TMoneyCT));
+end;
+
+function TExplanationOfBenefitDetailCT.GetFactor: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fFactor, TDecimalCT));
+end;
+
+function TExplanationOfBenefitDetailCT.GetNet: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fNet, TMoneyCT));
+end;
+
+{ TExplanationOfBenefitSubDetailCT }
+
+function TExplanationOfBenefitSubDetailCT.GetRevenue: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fRevenue, TCodeableConceptCT));
+end;
+
+function TExplanationOfBenefitSubDetailCT.GetCategory: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCategory, TCodeableConceptCT));
+end;
+
+function TExplanationOfBenefitSubDetailCT.GetQuantity: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fQuantity, TQuantityCT));
+end;
+
+function TExplanationOfBenefitSubDetailCT.GetUnitPrice: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fUnitPrice, TMoneyCT));
+end;
+
+function TExplanationOfBenefitSubDetailCT.GetFactor: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fFactor, TDecimalCT));
+end;
+
+function TExplanationOfBenefitSubDetailCT.GetNet: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fNet, TMoneyCT));
 end;
 
 { TExplanationOfBenefitAddItemCT }
@@ -27365,6 +35558,161 @@ end;
 function TExplanationOfBenefitAddItemCT.GetLocationChosen: TBasite;
 begin
   Result := Chosen('Location');
+end;
+
+function TExplanationOfBenefitAddItemCT.GetQuantity: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fQuantity, TQuantityCT));
+end;
+
+function TExplanationOfBenefitAddItemCT.GetUnitPrice: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fUnitPrice, TMoneyCT));
+end;
+
+function TExplanationOfBenefitAddItemCT.GetFactor: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fFactor, TDecimalCT));
+end;
+
+function TExplanationOfBenefitAddItemCT.GetNet: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fNet, TMoneyCT));
+end;
+
+function TExplanationOfBenefitAddItemCT.GetBodySite: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fBodySite, TCodeableConceptCT));
+end;
+
+{ TExplanationOfBenefitDetail1CT }
+
+function TExplanationOfBenefitDetail1CT.GetQuantity: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fQuantity, TQuantityCT));
+end;
+
+function TExplanationOfBenefitDetail1CT.GetUnitPrice: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fUnitPrice, TMoneyCT));
+end;
+
+function TExplanationOfBenefitDetail1CT.GetFactor: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fFactor, TDecimalCT));
+end;
+
+function TExplanationOfBenefitDetail1CT.GetNet: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fNet, TMoneyCT));
+end;
+
+{ TExplanationOfBenefitSubDetail1CT }
+
+function TExplanationOfBenefitSubDetail1CT.GetQuantity: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fQuantity, TQuantityCT));
+end;
+
+function TExplanationOfBenefitSubDetail1CT.GetUnitPrice: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fUnitPrice, TMoneyCT));
+end;
+
+function TExplanationOfBenefitSubDetail1CT.GetFactor: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fFactor, TDecimalCT));
+end;
+
+function TExplanationOfBenefitSubDetail1CT.GetNet: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fNet, TMoneyCT));
+end;
+
+{ TExplanationOfBenefitPaymentCT }
+
+function TExplanationOfBenefitPaymentCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TExplanationOfBenefitPaymentCT.GetAdjustment: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fAdjustment, TMoneyCT));
+end;
+
+function TExplanationOfBenefitPaymentCT.GetAdjustmentReason: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fAdjustmentReason, TCodeableConceptCT));
+end;
+
+function TExplanationOfBenefitPaymentCT.GetDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fDate, TDateCT));
+end;
+
+function TExplanationOfBenefitPaymentCT.GetAmount: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fAmount, TMoneyCT));
+end;
+
+function TExplanationOfBenefitPaymentCT.GetIdentifier: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fIdentifier, TIdentifierCT));
+end;
+
+{ TExplanationOfBenefitProcessNoteCT }
+
+function TExplanationOfBenefitProcessNoteCT.GetNumber: TPositiveIntCT;
+begin
+  Result := TPositiveIntCT(Lazy(fNumber, TPositiveIntCT));
+end;
+
+function TExplanationOfBenefitProcessNoteCT.GetType: TNoteTypeCT;
+begin
+  Result := TNoteTypeCT(Lazy(fType, TNoteTypeCT));
+end;
+
+function TExplanationOfBenefitProcessNoteCT.GetText: TStringCT;
+begin
+  Result := TStringCT(Lazy(fText, TStringCT));
+end;
+
+function TExplanationOfBenefitProcessNoteCT.GetLanguage: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fLanguage, TCodeableConceptCT));
+end;
+
+{ TExplanationOfBenefitBenefitBalanceCT }
+
+function TExplanationOfBenefitBenefitBalanceCT.GetExcluded: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fExcluded, TBooleanCT));
+end;
+
+function TExplanationOfBenefitBenefitBalanceCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TExplanationOfBenefitBenefitBalanceCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+function TExplanationOfBenefitBenefitBalanceCT.GetNetwork: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fNetwork, TCodeableConceptCT));
+end;
+
+function TExplanationOfBenefitBenefitBalanceCT.GetUnit: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fUnit, TCodeableConceptCT));
+end;
+
+function TExplanationOfBenefitBenefitBalanceCT.GetTerm: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fTerm, TCodeableConceptCT));
 end;
 
 { TExplanationOfBenefitFinancialCT }
@@ -27406,6 +35754,26 @@ end;
 
 { TFamilyMemberHistoryCT }
 
+function TFamilyMemberHistoryCT.GetDataAbsentReason: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fDataAbsentReason, TCodeableConceptCT));
+end;
+
+function TFamilyMemberHistoryCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
+
+function TFamilyMemberHistoryCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TFamilyMemberHistoryCT.GetSex: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fSex, TCodeableConceptCT));
+end;
+
 function TFamilyMemberHistoryCT.GetBornPeriod: TPeriodCT;
 begin
   Result := TPeriodCT(Lazy(fBornPeriod, TPeriodCT));
@@ -27446,6 +35814,11 @@ begin
   Result := Chosen('Age');
 end;
 
+function TFamilyMemberHistoryCT.GetEstimatedAge: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fEstimatedAge, TBooleanCT));
+end;
+
 function TFamilyMemberHistoryCT.GetDeceasedBoolean: TBooleanCT;
 begin
   Result := TBooleanCT(Lazy(fDeceasedBoolean, TBooleanCT));
@@ -27478,6 +35851,16 @@ end;
 
 { TFamilyMemberHistoryConditionCT }
 
+function TFamilyMemberHistoryConditionCT.GetOutcome: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fOutcome, TCodeableConceptCT));
+end;
+
+function TFamilyMemberHistoryConditionCT.GetContributedToDeath: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fContributedToDeath, TBooleanCT));
+end;
+
 function TFamilyMemberHistoryConditionCT.GetOnsetAge: TAgeCT;
 begin
   Result := TAgeCT(Lazy(fOnsetAge, TAgeCT));
@@ -27503,7 +35886,34 @@ begin
   Result := Chosen('Onset');
 end;
 
+{ TFlagCT }
+
+function TFlagCT.GetPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fPeriod, TPeriodCT));
+end;
+
+function TFlagCT.GetEncounter: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fEncounter, TReferenceCT));
+end;
+
+function TFlagCT.GetAuthor: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fAuthor, TReferenceCT));
+end;
+
 { TGoalCT }
+
+function TGoalCT.GetAchievementStatus: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fAchievementStatus, TCodeableConceptCT));
+end;
+
+function TGoalCT.GetPriority: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fPriority, TCodeableConceptCT));
+end;
 
 function TGoalCT.GetStartDate: TDateCT;
 begin
@@ -27520,7 +35930,27 @@ begin
   Result := Chosen('Start');
 end;
 
+function TGoalCT.GetStatusDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fStatusDate, TDateCT));
+end;
+
+function TGoalCT.GetStatusReason: TStringCT;
+begin
+  Result := TStringCT(Lazy(fStatusReason, TStringCT));
+end;
+
+function TGoalCT.GetExpressedBy: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fExpressedBy, TReferenceCT));
+end;
+
 { TGoalTargetCT }
+
+function TGoalTargetCT.GetMeasure: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fMeasure, TCodeableConceptCT));
+end;
 
 function TGoalTargetCT.GetDetailQuantity: TQuantityCT;
 begin
@@ -27577,6 +36007,126 @@ begin
   Result := Chosen('Due');
 end;
 
+{ TGraphDefinitionCT }
+
+function TGraphDefinitionCT.GetUrl: TUriCT;
+begin
+  Result := TUriCT(Lazy(fUrl, TUriCT));
+end;
+
+function TGraphDefinitionCT.GetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersion, TStringCT));
+end;
+
+function TGraphDefinitionCT.GetExperimental: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fExperimental, TBooleanCT));
+end;
+
+function TGraphDefinitionCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
+
+function TGraphDefinitionCT.GetPublisher: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPublisher, TStringCT));
+end;
+
+function TGraphDefinitionCT.GetDescription: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDescription, TMarkdownCT));
+end;
+
+function TGraphDefinitionCT.GetPurpose: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fPurpose, TMarkdownCT));
+end;
+
+function TGraphDefinitionCT.GetProfile: TCanonicalCT;
+begin
+  Result := TCanonicalCT(Lazy(fProfile, TCanonicalCT));
+end;
+
+{ TGraphDefinitionLinkCT }
+
+function TGraphDefinitionLinkCT.GetPath: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPath, TStringCT));
+end;
+
+function TGraphDefinitionLinkCT.GetSliceName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fSliceName, TStringCT));
+end;
+
+function TGraphDefinitionLinkCT.GetMin: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fMin, TIntegerCT));
+end;
+
+function TGraphDefinitionLinkCT.GetMax: TStringCT;
+begin
+  Result := TStringCT(Lazy(fMax, TStringCT));
+end;
+
+function TGraphDefinitionLinkCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+{ TGraphDefinitionTargetCT }
+
+function TGraphDefinitionTargetCT.GetParams: TStringCT;
+begin
+  Result := TStringCT(Lazy(fParams, TStringCT));
+end;
+
+function TGraphDefinitionTargetCT.GetProfile: TCanonicalCT;
+begin
+  Result := TCanonicalCT(Lazy(fProfile, TCanonicalCT));
+end;
+
+{ TGraphDefinitionCompartmentCT }
+
+function TGraphDefinitionCompartmentCT.GetExpression: TStringCT;
+begin
+  Result := TStringCT(Lazy(fExpression, TStringCT));
+end;
+
+function TGraphDefinitionCompartmentCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+{ TGroupCT }
+
+function TGroupCT.GetActive: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fActive, TBooleanCT));
+end;
+
+function TGroupCT.GetCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCode, TCodeableConceptCT));
+end;
+
+function TGroupCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TGroupCT.GetQuantity: TUnsignedIntCT;
+begin
+  Result := TUnsignedIntCT(Lazy(fQuantity, TUnsignedIntCT));
+end;
+
+function TGroupCT.GetManagingEntity: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fManagingEntity, TReferenceCT));
+end;
+
 { TGroupCharacteristicCT }
 
 function TGroupCharacteristicCT.GetValueCodeableConcept: TCodeableConceptCT;
@@ -27609,7 +36159,29 @@ begin
   Result := Chosen('Value');
 end;
 
+function TGroupCharacteristicCT.GetPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fPeriod, TPeriodCT));
+end;
+
+{ TGroupMemberCT }
+
+function TGroupMemberCT.GetPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fPeriod, TPeriodCT));
+end;
+
+function TGroupMemberCT.GetInactive: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fInactive, TBooleanCT));
+end;
+
 { TGuidanceResponseCT }
+
+function TGuidanceResponseCT.GetRequestIdentifier: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fRequestIdentifier, TIdentifierCT));
+end;
 
 function TGuidanceResponseCT.GetModuleUri: TUriCT;
 begin
@@ -27631,7 +36203,218 @@ begin
   Result := Chosen('Module');
 end;
 
+function TGuidanceResponseCT.GetSubject: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSubject, TReferenceCT));
+end;
+
+function TGuidanceResponseCT.GetEncounter: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fEncounter, TReferenceCT));
+end;
+
+function TGuidanceResponseCT.GetOccurrenceDateTime: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fOccurrenceDateTime, TDateTimeCT));
+end;
+
+function TGuidanceResponseCT.GetPerformer: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fPerformer, TReferenceCT));
+end;
+
+function TGuidanceResponseCT.GetOutputParameters: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fOutputParameters, TReferenceCT));
+end;
+
+function TGuidanceResponseCT.GetResult: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fResult, TReferenceCT));
+end;
+
+{ THealthcareServiceCT }
+
+function THealthcareServiceCT.GetActive: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fActive, TBooleanCT));
+end;
+
+function THealthcareServiceCT.GetProvidedBy: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fProvidedBy, TReferenceCT));
+end;
+
+function THealthcareServiceCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function THealthcareServiceCT.GetComment: TStringCT;
+begin
+  Result := TStringCT(Lazy(fComment, TStringCT));
+end;
+
+function THealthcareServiceCT.GetExtraDetails: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fExtraDetails, TMarkdownCT));
+end;
+
+function THealthcareServiceCT.GetPhoto: TAttachmentCT;
+begin
+  Result := TAttachmentCT(Lazy(fPhoto, TAttachmentCT));
+end;
+
+function THealthcareServiceCT.GetAppointmentRequired: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fAppointmentRequired, TBooleanCT));
+end;
+
+function THealthcareServiceCT.GetAvailabilityExceptions: TStringCT;
+begin
+  Result := TStringCT(Lazy(fAvailabilityExceptions, TStringCT));
+end;
+
+{ THealthcareServiceEligibilityCT }
+
+function THealthcareServiceEligibilityCT.GetCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCode, TCodeableConceptCT));
+end;
+
+function THealthcareServiceEligibilityCT.GetComment: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fComment, TMarkdownCT));
+end;
+
+{ THealthcareServiceAvailableTimeCT }
+
+function THealthcareServiceAvailableTimeCT.GetAllDay: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fAllDay, TBooleanCT));
+end;
+
+function THealthcareServiceAvailableTimeCT.GetAvailableStartTime: TTimeCT;
+begin
+  Result := TTimeCT(Lazy(fAvailableStartTime, TTimeCT));
+end;
+
+function THealthcareServiceAvailableTimeCT.GetAvailableEndTime: TTimeCT;
+begin
+  Result := TTimeCT(Lazy(fAvailableEndTime, TTimeCT));
+end;
+
+{ THealthcareServiceNotAvailableCT }
+
+function THealthcareServiceNotAvailableCT.GetDuring: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fDuring, TPeriodCT));
+end;
+
+{ TImagingStudyCT }
+
+function TImagingStudyCT.GetEncounter: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fEncounter, TReferenceCT));
+end;
+
+function TImagingStudyCT.GetStarted: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fStarted, TDateTimeCT));
+end;
+
+function TImagingStudyCT.GetReferrer: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fReferrer, TReferenceCT));
+end;
+
+function TImagingStudyCT.GetNumberOfSeries: TUnsignedIntCT;
+begin
+  Result := TUnsignedIntCT(Lazy(fNumberOfSeries, TUnsignedIntCT));
+end;
+
+function TImagingStudyCT.GetNumberOfInstances: TUnsignedIntCT;
+begin
+  Result := TUnsignedIntCT(Lazy(fNumberOfInstances, TUnsignedIntCT));
+end;
+
+function TImagingStudyCT.GetProcedureReference: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fProcedureReference, TReferenceCT));
+end;
+
+function TImagingStudyCT.GetLocation: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fLocation, TReferenceCT));
+end;
+
+function TImagingStudyCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+{ TImagingStudySeriesCT }
+
+function TImagingStudySeriesCT.GetNumber: TUnsignedIntCT;
+begin
+  Result := TUnsignedIntCT(Lazy(fNumber, TUnsignedIntCT));
+end;
+
+function TImagingStudySeriesCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+function TImagingStudySeriesCT.GetNumberOfInstances: TUnsignedIntCT;
+begin
+  Result := TUnsignedIntCT(Lazy(fNumberOfInstances, TUnsignedIntCT));
+end;
+
+function TImagingStudySeriesCT.GetBodySite: TCodingCT;
+begin
+  Result := TCodingCT(Lazy(fBodySite, TCodingCT));
+end;
+
+function TImagingStudySeriesCT.GetLaterality: TCodingCT;
+begin
+  Result := TCodingCT(Lazy(fLaterality, TCodingCT));
+end;
+
+function TImagingStudySeriesCT.GetStarted: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fStarted, TDateTimeCT));
+end;
+
+{ TImagingStudyPerformerCT }
+
+function TImagingStudyPerformerCT.GetFunction: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fFunction, TCodeableConceptCT));
+end;
+
+{ TImagingStudyInstanceCT }
+
+function TImagingStudyInstanceCT.GetNumber: TUnsignedIntCT;
+begin
+  Result := TUnsignedIntCT(Lazy(fNumber, TUnsignedIntCT));
+end;
+
+function TImagingStudyInstanceCT.GetTitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTitle, TStringCT));
+end;
+
 { TImmunizationCT }
+
+function TImmunizationCT.GetStatusReason: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fStatusReason, TCodeableConceptCT));
+end;
+
+function TImmunizationCT.GetEncounter: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fEncounter, TReferenceCT));
+end;
 
 function TImmunizationCT.GetOccurrenceDateTime: TDateTimeCT;
 begin
@@ -27648,7 +36431,123 @@ begin
   Result := Chosen('Occurrence');
 end;
 
+function TImmunizationCT.GetRecorded: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fRecorded, TDateTimeCT));
+end;
+
+function TImmunizationCT.GetPrimarySource: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fPrimarySource, TBooleanCT));
+end;
+
+function TImmunizationCT.GetReportOrigin: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fReportOrigin, TCodeableConceptCT));
+end;
+
+function TImmunizationCT.GetLocation: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fLocation, TReferenceCT));
+end;
+
+function TImmunizationCT.GetManufacturer: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fManufacturer, TReferenceCT));
+end;
+
+function TImmunizationCT.GetLotNumber: TStringCT;
+begin
+  Result := TStringCT(Lazy(fLotNumber, TStringCT));
+end;
+
+function TImmunizationCT.GetExpirationDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fExpirationDate, TDateCT));
+end;
+
+function TImmunizationCT.GetSite: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fSite, TCodeableConceptCT));
+end;
+
+function TImmunizationCT.GetRoute: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fRoute, TCodeableConceptCT));
+end;
+
+function TImmunizationCT.GetDoseQuantity: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fDoseQuantity, TQuantityCT));
+end;
+
+function TImmunizationCT.GetIsSubpotent: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fIsSubpotent, TBooleanCT));
+end;
+
+function TImmunizationCT.GetFundingSource: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fFundingSource, TCodeableConceptCT));
+end;
+
+{ TImmunizationPerformerCT }
+
+function TImmunizationPerformerCT.GetFunction: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fFunction, TCodeableConceptCT));
+end;
+
+{ TImmunizationEducationCT }
+
+function TImmunizationEducationCT.GetDocumentType: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDocumentType, TStringCT));
+end;
+
+function TImmunizationEducationCT.GetReference: TUriCT;
+begin
+  Result := TUriCT(Lazy(fReference, TUriCT));
+end;
+
+function TImmunizationEducationCT.GetPublicationDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fPublicationDate, TDateTimeCT));
+end;
+
+function TImmunizationEducationCT.GetPresentationDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fPresentationDate, TDateTimeCT));
+end;
+
+{ TImmunizationReactionCT }
+
+function TImmunizationReactionCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
+
+function TImmunizationReactionCT.GetDetail: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fDetail, TReferenceCT));
+end;
+
+function TImmunizationReactionCT.GetReported: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fReported, TBooleanCT));
+end;
+
 { TImmunizationProtocolAppliedCT }
+
+function TImmunizationProtocolAppliedCT.GetSeries: TStringCT;
+begin
+  Result := TStringCT(Lazy(fSeries, TStringCT));
+end;
+
+function TImmunizationProtocolAppliedCT.GetAuthority: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fAuthority, TReferenceCT));
+end;
 
 function TImmunizationProtocolAppliedCT.GetDoseNumberPositiveInt: TPositiveIntCT;
 begin
@@ -27682,6 +36581,26 @@ end;
 
 { TImmunizationEvaluationCT }
 
+function TImmunizationEvaluationCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
+
+function TImmunizationEvaluationCT.GetAuthority: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fAuthority, TReferenceCT));
+end;
+
+function TImmunizationEvaluationCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+function TImmunizationEvaluationCT.GetSeries: TStringCT;
+begin
+  Result := TStringCT(Lazy(fSeries, TStringCT));
+end;
+
 function TImmunizationEvaluationCT.GetDoseNumberPositiveInt: TPositiveIntCT;
 begin
   Result := TPositiveIntCT(Lazy(fDoseNumberPositiveInt, TPositiveIntCT));
@@ -27712,7 +36631,29 @@ begin
   Result := Chosen('SeriesDoses');
 end;
 
+{ TImmunizationRecommendationCT }
+
+function TImmunizationRecommendationCT.GetAuthority: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fAuthority, TReferenceCT));
+end;
+
 { TImmunizationRecommendationRecommendationCT }
+
+function TImmunizationRecommendationRecommendationCT.GetTargetDisease: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fTargetDisease, TCodeableConceptCT));
+end;
+
+function TImmunizationRecommendationRecommendationCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+function TImmunizationRecommendationRecommendationCT.GetSeries: TStringCT;
+begin
+  Result := TStringCT(Lazy(fSeries, TStringCT));
+end;
 
 function TImmunizationRecommendationRecommendationCT.GetDoseNumberPositiveInt: TPositiveIntCT;
 begin
@@ -27744,7 +36685,95 @@ begin
   Result := Chosen('SeriesDoses');
 end;
 
+{ TImplementationGuideCT }
+
+function TImplementationGuideCT.GetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersion, TStringCT));
+end;
+
+function TImplementationGuideCT.GetTitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTitle, TStringCT));
+end;
+
+function TImplementationGuideCT.GetExperimental: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fExperimental, TBooleanCT));
+end;
+
+function TImplementationGuideCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
+
+function TImplementationGuideCT.GetPublisher: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPublisher, TStringCT));
+end;
+
+function TImplementationGuideCT.GetDescription: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDescription, TMarkdownCT));
+end;
+
+function TImplementationGuideCT.GetCopyright: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fCopyright, TMarkdownCT));
+end;
+
+function TImplementationGuideCT.GetLicense: TSPDXLicenseCT;
+begin
+  Result := TSPDXLicenseCT(Lazy(fLicense, TSPDXLicenseCT));
+end;
+
+function TImplementationGuideCT.GetDefinition: TImplementationGuideDefinitionCT;
+begin
+  Result := TImplementationGuideDefinitionCT(Lazy(fDefinition, TImplementationGuideDefinitionCT));
+end;
+
+function TImplementationGuideCT.GetManifest: TImplementationGuideManifestCT;
+begin
+  Result := TImplementationGuideManifestCT(Lazy(fManifest, TImplementationGuideManifestCT));
+end;
+
+{ TImplementationGuideDependsOnCT }
+
+function TImplementationGuideDependsOnCT.GetPackageId: TIdCT;
+begin
+  Result := TIdCT(Lazy(fPackageId, TIdCT));
+end;
+
+function TImplementationGuideDependsOnCT.GetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersion, TStringCT));
+end;
+
+{ TImplementationGuideDefinitionCT }
+
+function TImplementationGuideDefinitionCT.GetPage: TImplementationGuidePageCT;
+begin
+  Result := TImplementationGuidePageCT(Lazy(fPage, TImplementationGuidePageCT));
+end;
+
+{ TImplementationGuideGroupingCT }
+
+function TImplementationGuideGroupingCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
 { TImplementationGuideResourceCT }
+
+function TImplementationGuideResourceCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TImplementationGuideResourceCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
 
 function TImplementationGuideResourceCT.GetExampleBoolean: TBooleanCT;
 begin
@@ -27759,6 +36788,11 @@ end;
 function TImplementationGuideResourceCT.GetExampleChosen: TBasite;
 begin
   Result := Chosen('Example');
+end;
+
+function TImplementationGuideResourceCT.GetGroupingId: TIdCT;
+begin
+  Result := TIdCT(Lazy(fGroupingId, TIdCT));
 end;
 
 { TImplementationGuidePageCT }
@@ -27778,6 +36812,20 @@ begin
   Result := Chosen('Name');
 end;
 
+{ TImplementationGuideTemplateCT }
+
+function TImplementationGuideTemplateCT.GetScope: TStringCT;
+begin
+  Result := TStringCT(Lazy(fScope, TStringCT));
+end;
+
+{ TImplementationGuideManifestCT }
+
+function TImplementationGuideManifestCT.GetRendering: TUrlCT;
+begin
+  Result := TUrlCT(Lazy(fRendering, TUrlCT));
+end;
+
 { TImplementationGuideResource1CT }
 
 function TImplementationGuideResource1CT.GetExampleBoolean: TBooleanCT;
@@ -27795,7 +36843,187 @@ begin
   Result := Chosen('Example');
 end;
 
+function TImplementationGuideResource1CT.GetRelativePath: TUrlCT;
+begin
+  Result := TUrlCT(Lazy(fRelativePath, TUrlCT));
+end;
+
+{ TImplementationGuidePage1CT }
+
+function TImplementationGuidePage1CT.GetTitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTitle, TStringCT));
+end;
+
+{ TInsurancePlanCT }
+
+function TInsurancePlanCT.GetStatus: TPublicationStatusCT;
+begin
+  Result := TPublicationStatusCT(Lazy(fStatus, TPublicationStatusCT));
+end;
+
+function TInsurancePlanCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TInsurancePlanCT.GetPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fPeriod, TPeriodCT));
+end;
+
+function TInsurancePlanCT.GetOwnedBy: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fOwnedBy, TReferenceCT));
+end;
+
+function TInsurancePlanCT.GetAdministeredBy: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fAdministeredBy, TReferenceCT));
+end;
+
+{ TInsurancePlanContactCT }
+
+function TInsurancePlanContactCT.GetPurpose: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fPurpose, TCodeableConceptCT));
+end;
+
+function TInsurancePlanContactCT.GetName: THumanNameCT;
+begin
+  Result := THumanNameCT(Lazy(fName, THumanNameCT));
+end;
+
+function TInsurancePlanContactCT.GetAddress: TAddressCT;
+begin
+  Result := TAddressCT(Lazy(fAddress, TAddressCT));
+end;
+
+{ TInsurancePlanBenefitCT }
+
+function TInsurancePlanBenefitCT.GetRequirement: TStringCT;
+begin
+  Result := TStringCT(Lazy(fRequirement, TStringCT));
+end;
+
+{ TInsurancePlanLimitCT }
+
+function TInsurancePlanLimitCT.GetValue: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fValue, TQuantityCT));
+end;
+
+function TInsurancePlanLimitCT.GetCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCode, TCodeableConceptCT));
+end;
+
+{ TInsurancePlanPlanCT }
+
+function TInsurancePlanPlanCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+{ TInsurancePlanGeneralCostCT }
+
+function TInsurancePlanGeneralCostCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TInsurancePlanGeneralCostCT.GetGroupSize: TPositiveIntCT;
+begin
+  Result := TPositiveIntCT(Lazy(fGroupSize, TPositiveIntCT));
+end;
+
+function TInsurancePlanGeneralCostCT.GetCost: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fCost, TMoneyCT));
+end;
+
+function TInsurancePlanGeneralCostCT.GetComment: TStringCT;
+begin
+  Result := TStringCT(Lazy(fComment, TStringCT));
+end;
+
+{ TInsurancePlanCostCT }
+
+function TInsurancePlanCostCT.GetApplicability: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fApplicability, TCodeableConceptCT));
+end;
+
+function TInsurancePlanCostCT.GetValue: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fValue, TQuantityCT));
+end;
+
+{ TInvoiceCT }
+
+function TInvoiceCT.GetCancelledReason: TStringCT;
+begin
+  Result := TStringCT(Lazy(fCancelledReason, TStringCT));
+end;
+
+function TInvoiceCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TInvoiceCT.GetSubject: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSubject, TReferenceCT));
+end;
+
+function TInvoiceCT.GetRecipient: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fRecipient, TReferenceCT));
+end;
+
+function TInvoiceCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
+
+function TInvoiceCT.GetIssuer: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fIssuer, TReferenceCT));
+end;
+
+function TInvoiceCT.GetAccount: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fAccount, TReferenceCT));
+end;
+
+function TInvoiceCT.GetTotalNet: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fTotalNet, TMoneyCT));
+end;
+
+function TInvoiceCT.GetTotalGross: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fTotalGross, TMoneyCT));
+end;
+
+function TInvoiceCT.GetPaymentTerms: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fPaymentTerms, TMarkdownCT));
+end;
+
+{ TInvoiceParticipantCT }
+
+function TInvoiceParticipantCT.GetRole: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fRole, TCodeableConceptCT));
+end;
+
 { TInvoiceLineItemCT }
+
+function TInvoiceLineItemCT.GetSequence: TPositiveIntCT;
+begin
+  Result := TPositiveIntCT(Lazy(fSequence, TPositiveIntCT));
+end;
 
 function TInvoiceLineItemCT.GetChargeItemReference: TReferenceCT;
 begin
@@ -27812,7 +37040,54 @@ begin
   Result := Chosen('ChargeItem');
 end;
 
+{ TInvoicePriceComponentCT }
+
+function TInvoicePriceComponentCT.GetCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCode, TCodeableConceptCT));
+end;
+
+function TInvoicePriceComponentCT.GetFactor: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fFactor, TDecimalCT));
+end;
+
+function TInvoicePriceComponentCT.GetAmount: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fAmount, TMoneyCT));
+end;
+
 { TLibraryCT }
+
+function TLibraryCT.GetUrl: TUriCT;
+begin
+  Result := TUriCT(Lazy(fUrl, TUriCT));
+end;
+
+function TLibraryCT.GetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersion, TStringCT));
+end;
+
+function TLibraryCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TLibraryCT.GetTitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTitle, TStringCT));
+end;
+
+function TLibraryCT.GetSubtitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fSubtitle, TStringCT));
+end;
+
+function TLibraryCT.GetExperimental: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fExperimental, TBooleanCT));
+end;
 
 function TLibraryCT.GetSubjectCodeableConcept: TCodeableConceptCT;
 begin
@@ -27829,7 +37104,234 @@ begin
   Result := Chosen('Subject');
 end;
 
+function TLibraryCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
+
+function TLibraryCT.GetPublisher: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPublisher, TStringCT));
+end;
+
+function TLibraryCT.GetDescription: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDescription, TMarkdownCT));
+end;
+
+function TLibraryCT.GetPurpose: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fPurpose, TMarkdownCT));
+end;
+
+function TLibraryCT.GetUsage: TStringCT;
+begin
+  Result := TStringCT(Lazy(fUsage, TStringCT));
+end;
+
+function TLibraryCT.GetCopyright: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fCopyright, TMarkdownCT));
+end;
+
+function TLibraryCT.GetApprovalDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fApprovalDate, TDateCT));
+end;
+
+function TLibraryCT.GetLastReviewDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fLastReviewDate, TDateCT));
+end;
+
+function TLibraryCT.GetEffectivePeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fEffectivePeriod, TPeriodCT));
+end;
+
+{ TLinkageCT }
+
+function TLinkageCT.GetActive: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fActive, TBooleanCT));
+end;
+
+function TLinkageCT.GetAuthor: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fAuthor, TReferenceCT));
+end;
+
+{ TListCT }
+
+function TListCT.GetTitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTitle, TStringCT));
+end;
+
+function TListCT.GetCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCode, TCodeableConceptCT));
+end;
+
+function TListCT.GetSubject: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSubject, TReferenceCT));
+end;
+
+function TListCT.GetEncounter: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fEncounter, TReferenceCT));
+end;
+
+function TListCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
+
+function TListCT.GetSource: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSource, TReferenceCT));
+end;
+
+function TListCT.GetOrderedBy: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fOrderedBy, TCodeableConceptCT));
+end;
+
+function TListCT.GetEmptyReason: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fEmptyReason, TCodeableConceptCT));
+end;
+
+{ TListEntryCT }
+
+function TListEntryCT.GetFlag: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fFlag, TCodeableConceptCT));
+end;
+
+function TListEntryCT.GetDeleted: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fDeleted, TBooleanCT));
+end;
+
+function TListEntryCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
+
+{ TLocationCT }
+
+function TLocationCT.GetStatus: TLocationStatusCT;
+begin
+  Result := TLocationStatusCT(Lazy(fStatus, TLocationStatusCT));
+end;
+
+function TLocationCT.GetOperationalStatus: TCodingCT;
+begin
+  Result := TCodingCT(Lazy(fOperationalStatus, TCodingCT));
+end;
+
+function TLocationCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TLocationCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+function TLocationCT.GetMode: TLocationModeCT;
+begin
+  Result := TLocationModeCT(Lazy(fMode, TLocationModeCT));
+end;
+
+function TLocationCT.GetAddress: TAddressCT;
+begin
+  Result := TAddressCT(Lazy(fAddress, TAddressCT));
+end;
+
+function TLocationCT.GetPhysicalType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fPhysicalType, TCodeableConceptCT));
+end;
+
+function TLocationCT.GetPosition: TLocationPositionCT;
+begin
+  Result := TLocationPositionCT(Lazy(fPosition, TLocationPositionCT));
+end;
+
+function TLocationCT.GetManagingOrganization: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fManagingOrganization, TReferenceCT));
+end;
+
+function TLocationCT.GetPartOf: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fPartOf, TReferenceCT));
+end;
+
+function TLocationCT.GetAvailabilityExceptions: TStringCT;
+begin
+  Result := TStringCT(Lazy(fAvailabilityExceptions, TStringCT));
+end;
+
+{ TLocationPositionCT }
+
+function TLocationPositionCT.GetAltitude: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fAltitude, TDecimalCT));
+end;
+
+{ TLocationHoursOfOperationCT }
+
+function TLocationHoursOfOperationCT.GetAllDay: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fAllDay, TBooleanCT));
+end;
+
+function TLocationHoursOfOperationCT.GetOpeningTime: TTimeCT;
+begin
+  Result := TTimeCT(Lazy(fOpeningTime, TTimeCT));
+end;
+
+function TLocationHoursOfOperationCT.GetClosingTime: TTimeCT;
+begin
+  Result := TTimeCT(Lazy(fClosingTime, TTimeCT));
+end;
+
 { TMeasureCT }
+
+function TMeasureCT.GetUrl: TUriCT;
+begin
+  Result := TUriCT(Lazy(fUrl, TUriCT));
+end;
+
+function TMeasureCT.GetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersion, TStringCT));
+end;
+
+function TMeasureCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TMeasureCT.GetTitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTitle, TStringCT));
+end;
+
+function TMeasureCT.GetSubtitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fSubtitle, TStringCT));
+end;
+
+function TMeasureCT.GetExperimental: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fExperimental, TBooleanCT));
+end;
 
 function TMeasureCT.GetSubjectCodeableConcept: TCodeableConceptCT;
 begin
@@ -27846,7 +37348,267 @@ begin
   Result := Chosen('Subject');
 end;
 
+function TMeasureCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
+
+function TMeasureCT.GetPublisher: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPublisher, TStringCT));
+end;
+
+function TMeasureCT.GetDescription: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDescription, TMarkdownCT));
+end;
+
+function TMeasureCT.GetPurpose: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fPurpose, TMarkdownCT));
+end;
+
+function TMeasureCT.GetUsage: TStringCT;
+begin
+  Result := TStringCT(Lazy(fUsage, TStringCT));
+end;
+
+function TMeasureCT.GetCopyright: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fCopyright, TMarkdownCT));
+end;
+
+function TMeasureCT.GetApprovalDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fApprovalDate, TDateCT));
+end;
+
+function TMeasureCT.GetLastReviewDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fLastReviewDate, TDateCT));
+end;
+
+function TMeasureCT.GetEffectivePeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fEffectivePeriod, TPeriodCT));
+end;
+
+function TMeasureCT.GetDisclaimer: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDisclaimer, TMarkdownCT));
+end;
+
+function TMeasureCT.GetScoring: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fScoring, TCodeableConceptCT));
+end;
+
+function TMeasureCT.GetCompositeScoring: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCompositeScoring, TCodeableConceptCT));
+end;
+
+function TMeasureCT.GetRiskAdjustment: TStringCT;
+begin
+  Result := TStringCT(Lazy(fRiskAdjustment, TStringCT));
+end;
+
+function TMeasureCT.GetRateAggregation: TStringCT;
+begin
+  Result := TStringCT(Lazy(fRateAggregation, TStringCT));
+end;
+
+function TMeasureCT.GetRationale: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fRationale, TMarkdownCT));
+end;
+
+function TMeasureCT.GetClinicalRecommendationStatement: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fClinicalRecommendationStatement, TMarkdownCT));
+end;
+
+function TMeasureCT.GetImprovementNotation: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fImprovementNotation, TCodeableConceptCT));
+end;
+
+function TMeasureCT.GetGuidance: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fGuidance, TMarkdownCT));
+end;
+
+{ TMeasureGroupCT }
+
+function TMeasureGroupCT.GetCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCode, TCodeableConceptCT));
+end;
+
+function TMeasureGroupCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+{ TMeasurePopulationCT }
+
+function TMeasurePopulationCT.GetCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCode, TCodeableConceptCT));
+end;
+
+function TMeasurePopulationCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+{ TMeasureStratifierCT }
+
+function TMeasureStratifierCT.GetCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCode, TCodeableConceptCT));
+end;
+
+function TMeasureStratifierCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+function TMeasureStratifierCT.GetCriteria: TExpressionCT;
+begin
+  Result := TExpressionCT(Lazy(fCriteria, TExpressionCT));
+end;
+
+{ TMeasureComponentCT }
+
+function TMeasureComponentCT.GetCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCode, TCodeableConceptCT));
+end;
+
+function TMeasureComponentCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+{ TMeasureSupplementalDataCT }
+
+function TMeasureSupplementalDataCT.GetCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCode, TCodeableConceptCT));
+end;
+
+function TMeasureSupplementalDataCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+{ TMeasureReportCT }
+
+function TMeasureReportCT.GetSubject: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSubject, TReferenceCT));
+end;
+
+function TMeasureReportCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
+
+function TMeasureReportCT.GetReporter: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fReporter, TReferenceCT));
+end;
+
+function TMeasureReportCT.GetImprovementNotation: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fImprovementNotation, TCodeableConceptCT));
+end;
+
+{ TMeasureReportGroupCT }
+
+function TMeasureReportGroupCT.GetCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCode, TCodeableConceptCT));
+end;
+
+function TMeasureReportGroupCT.GetMeasureScore: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fMeasureScore, TQuantityCT));
+end;
+
+{ TMeasureReportPopulationCT }
+
+function TMeasureReportPopulationCT.GetCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCode, TCodeableConceptCT));
+end;
+
+function TMeasureReportPopulationCT.GetCount: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fCount, TIntegerCT));
+end;
+
+function TMeasureReportPopulationCT.GetSubjectResults: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSubjectResults, TReferenceCT));
+end;
+
+{ TMeasureReportStratumCT }
+
+function TMeasureReportStratumCT.GetValue: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fValue, TCodeableConceptCT));
+end;
+
+function TMeasureReportStratumCT.GetMeasureScore: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fMeasureScore, TQuantityCT));
+end;
+
+{ TMeasureReportPopulation1CT }
+
+function TMeasureReportPopulation1CT.GetCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCode, TCodeableConceptCT));
+end;
+
+function TMeasureReportPopulation1CT.GetCount: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fCount, TIntegerCT));
+end;
+
+function TMeasureReportPopulation1CT.GetSubjectResults: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSubjectResults, TReferenceCT));
+end;
+
 { TMediaCT }
+
+function TMediaCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TMediaCT.GetModality: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fModality, TCodeableConceptCT));
+end;
+
+function TMediaCT.GetView: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fView, TCodeableConceptCT));
+end;
+
+function TMediaCT.GetSubject: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSubject, TReferenceCT));
+end;
+
+function TMediaCT.GetEncounter: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fEncounter, TReferenceCT));
+end;
 
 function TMediaCT.GetCreatedDateTime: TDateTimeCT;
 begin
@@ -27861,6 +37623,83 @@ end;
 function TMediaCT.GetCreatedChosen: TBasite;
 begin
   Result := Chosen('Created');
+end;
+
+function TMediaCT.GetIssued: TInstantCT;
+begin
+  Result := TInstantCT(Lazy(fIssued, TInstantCT));
+end;
+
+function TMediaCT.GetOperator: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fOperator, TReferenceCT));
+end;
+
+function TMediaCT.GetBodySite: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fBodySite, TCodeableConceptCT));
+end;
+
+function TMediaCT.GetDeviceName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDeviceName, TStringCT));
+end;
+
+function TMediaCT.GetDevice: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fDevice, TReferenceCT));
+end;
+
+function TMediaCT.GetHeight: TPositiveIntCT;
+begin
+  Result := TPositiveIntCT(Lazy(fHeight, TPositiveIntCT));
+end;
+
+function TMediaCT.GetWidth: TPositiveIntCT;
+begin
+  Result := TPositiveIntCT(Lazy(fWidth, TPositiveIntCT));
+end;
+
+function TMediaCT.GetFrames: TPositiveIntCT;
+begin
+  Result := TPositiveIntCT(Lazy(fFrames, TPositiveIntCT));
+end;
+
+function TMediaCT.GetDuration: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fDuration, TDecimalCT));
+end;
+
+{ TMedicationCT }
+
+function TMedicationCT.GetCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCode, TCodeableConceptCT));
+end;
+
+function TMedicationCT.GetStatus: TMedicationStatusCodesCT;
+begin
+  Result := TMedicationStatusCodesCT(Lazy(fStatus, TMedicationStatusCodesCT));
+end;
+
+function TMedicationCT.GetManufacturer: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fManufacturer, TReferenceCT));
+end;
+
+function TMedicationCT.GetForm: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fForm, TCodeableConceptCT));
+end;
+
+function TMedicationCT.GetAmount: TRatioCT;
+begin
+  Result := TRatioCT(Lazy(fAmount, TRatioCT));
+end;
+
+function TMedicationCT.GetBatch: TMedicationBatchCT;
+begin
+  Result := TMedicationBatchCT(Lazy(fBatch, TMedicationBatchCT));
 end;
 
 { TMedicationIngredientCT }
@@ -27880,7 +37719,34 @@ begin
   Result := Chosen('Item');
 end;
 
+function TMedicationIngredientCT.GetIsActive: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fIsActive, TBooleanCT));
+end;
+
+function TMedicationIngredientCT.GetStrength: TRatioCT;
+begin
+  Result := TRatioCT(Lazy(fStrength, TRatioCT));
+end;
+
+{ TMedicationBatchCT }
+
+function TMedicationBatchCT.GetLotNumber: TStringCT;
+begin
+  Result := TStringCT(Lazy(fLotNumber, TStringCT));
+end;
+
+function TMedicationBatchCT.GetExpirationDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fExpirationDate, TDateTimeCT));
+end;
+
 { TMedicationAdministrationCT }
+
+function TMedicationAdministrationCT.GetCategory: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCategory, TCodeableConceptCT));
+end;
 
 function TMedicationAdministrationCT.GetMedicationCodeableConcept: TCodeableConceptCT;
 begin
@@ -27895,6 +37761,11 @@ end;
 function TMedicationAdministrationCT.GetMedicationChosen: TBasite;
 begin
   Result := Chosen('Medication');
+end;
+
+function TMedicationAdministrationCT.GetContext: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fContext, TReferenceCT));
 end;
 
 function TMedicationAdministrationCT.GetEffectiveDateTime: TDateTimeCT;
@@ -27912,7 +37783,49 @@ begin
   Result := Chosen('Effective');
 end;
 
+function TMedicationAdministrationCT.GetRequest: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fRequest, TReferenceCT));
+end;
+
+function TMedicationAdministrationCT.GetDosage: TMedicationAdministrationDosageCT;
+begin
+  Result := TMedicationAdministrationDosageCT(Lazy(fDosage, TMedicationAdministrationDosageCT));
+end;
+
+{ TMedicationAdministrationPerformerCT }
+
+function TMedicationAdministrationPerformerCT.GetFunction: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fFunction, TCodeableConceptCT));
+end;
+
 { TMedicationAdministrationDosageCT }
+
+function TMedicationAdministrationDosageCT.GetText: TStringCT;
+begin
+  Result := TStringCT(Lazy(fText, TStringCT));
+end;
+
+function TMedicationAdministrationDosageCT.GetSite: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fSite, TCodeableConceptCT));
+end;
+
+function TMedicationAdministrationDosageCT.GetRoute: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fRoute, TCodeableConceptCT));
+end;
+
+function TMedicationAdministrationDosageCT.GetMethod: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fMethod, TCodeableConceptCT));
+end;
+
+function TMedicationAdministrationDosageCT.GetDose: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fDose, TQuantityCT));
+end;
 
 function TMedicationAdministrationDosageCT.GetRateRatio: TRatioCT;
 begin
@@ -27946,6 +37859,11 @@ begin
   Result := Chosen('StatusReason');
 end;
 
+function TMedicationDispenseCT.GetCategory: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCategory, TCodeableConceptCT));
+end;
+
 function TMedicationDispenseCT.GetMedicationCodeableConcept: TCodeableConceptCT;
 begin
   Result := TCodeableConceptCT(Lazy(fMedicationCodeableConcept, TCodeableConceptCT));
@@ -27959,6 +37877,119 @@ end;
 function TMedicationDispenseCT.GetMedicationChosen: TBasite;
 begin
   Result := Chosen('Medication');
+end;
+
+function TMedicationDispenseCT.GetSubject: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSubject, TReferenceCT));
+end;
+
+function TMedicationDispenseCT.GetContext: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fContext, TReferenceCT));
+end;
+
+function TMedicationDispenseCT.GetLocation: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fLocation, TReferenceCT));
+end;
+
+function TMedicationDispenseCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TMedicationDispenseCT.GetQuantity: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fQuantity, TQuantityCT));
+end;
+
+function TMedicationDispenseCT.GetDaysSupply: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fDaysSupply, TQuantityCT));
+end;
+
+function TMedicationDispenseCT.GetWhenPrepared: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fWhenPrepared, TDateTimeCT));
+end;
+
+function TMedicationDispenseCT.GetWhenHandedOver: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fWhenHandedOver, TDateTimeCT));
+end;
+
+function TMedicationDispenseCT.GetDestination: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fDestination, TReferenceCT));
+end;
+
+function TMedicationDispenseCT.GetSubstitution: TMedicationDispenseSubstitutionCT;
+begin
+  Result := TMedicationDispenseSubstitutionCT(Lazy(fSubstitution, TMedicationDispenseSubstitutionCT));
+end;
+
+{ TMedicationDispensePerformerCT }
+
+function TMedicationDispensePerformerCT.GetFunction: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fFunction, TCodeableConceptCT));
+end;
+
+{ TMedicationDispenseSubstitutionCT }
+
+function TMedicationDispenseSubstitutionCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+{ TMedicationKnowledgeCT }
+
+function TMedicationKnowledgeCT.GetCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCode, TCodeableConceptCT));
+end;
+
+function TMedicationKnowledgeCT.GetStatus: TCodeCT;
+begin
+  Result := TCodeCT(Lazy(fStatus, TCodeCT));
+end;
+
+function TMedicationKnowledgeCT.GetManufacturer: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fManufacturer, TReferenceCT));
+end;
+
+function TMedicationKnowledgeCT.GetDoseForm: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fDoseForm, TCodeableConceptCT));
+end;
+
+function TMedicationKnowledgeCT.GetAmount: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fAmount, TQuantityCT));
+end;
+
+function TMedicationKnowledgeCT.GetPreparationInstruction: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fPreparationInstruction, TMarkdownCT));
+end;
+
+function TMedicationKnowledgeCT.GetPackaging: TMedicationKnowledgePackagingCT;
+begin
+  Result := TMedicationKnowledgePackagingCT(Lazy(fPackaging, TMedicationKnowledgePackagingCT));
+end;
+
+{ TMedicationKnowledgeMonographCT }
+
+function TMedicationKnowledgeMonographCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TMedicationKnowledgeMonographCT.GetSource: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSource, TReferenceCT));
 end;
 
 { TMedicationKnowledgeIngredientCT }
@@ -27976,6 +38007,35 @@ end;
 function TMedicationKnowledgeIngredientCT.GetItemChosen: TBasite;
 begin
   Result := Chosen('Item');
+end;
+
+function TMedicationKnowledgeIngredientCT.GetIsActive: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fIsActive, TBooleanCT));
+end;
+
+function TMedicationKnowledgeIngredientCT.GetStrength: TRatioCT;
+begin
+  Result := TRatioCT(Lazy(fStrength, TRatioCT));
+end;
+
+{ TMedicationKnowledgeCostCT }
+
+function TMedicationKnowledgeCostCT.GetSource: TStringCT;
+begin
+  Result := TStringCT(Lazy(fSource, TStringCT));
+end;
+
+{ TMedicationKnowledgeMonitoringProgramCT }
+
+function TMedicationKnowledgeMonitoringProgramCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TMedicationKnowledgeMonitoringProgramCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
 end;
 
 { TMedicationKnowledgeAdministrationGuidelinesCT }
@@ -28012,7 +38072,24 @@ begin
   Result := Chosen('Characteristic');
 end;
 
+{ TMedicationKnowledgePackagingCT }
+
+function TMedicationKnowledgePackagingCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TMedicationKnowledgePackagingCT.GetQuantity: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fQuantity, TQuantityCT));
+end;
+
 { TMedicationKnowledgeDrugCharacteristicCT }
+
+function TMedicationKnowledgeDrugCharacteristicCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
 
 function TMedicationKnowledgeDrugCharacteristicCT.GetValueCodeableConcept: TCodeableConceptCT;
 begin
@@ -28039,7 +38116,43 @@ begin
   Result := Chosen('Value');
 end;
 
+{ TMedicationKnowledgeRegulatoryCT }
+
+function TMedicationKnowledgeRegulatoryCT.GetMaxDispense: TMedicationKnowledgeMaxDispenseCT;
+begin
+  Result := TMedicationKnowledgeMaxDispenseCT(Lazy(fMaxDispense, TMedicationKnowledgeMaxDispenseCT));
+end;
+
+{ TMedicationKnowledgeMaxDispenseCT }
+
+function TMedicationKnowledgeMaxDispenseCT.GetPeriod: TDurationCT;
+begin
+  Result := TDurationCT(Lazy(fPeriod, TDurationCT));
+end;
+
+{ TMedicationKnowledgeKineticsCT }
+
+function TMedicationKnowledgeKineticsCT.GetHalfLifePeriod: TDurationCT;
+begin
+  Result := TDurationCT(Lazy(fHalfLifePeriod, TDurationCT));
+end;
+
 { TMedicationRequestCT }
+
+function TMedicationRequestCT.GetStatusReason: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fStatusReason, TCodeableConceptCT));
+end;
+
+function TMedicationRequestCT.GetPriority: TRequestPriorityCT;
+begin
+  Result := TRequestPriorityCT(Lazy(fPriority, TRequestPriorityCT));
+end;
+
+function TMedicationRequestCT.GetDoNotPerform: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fDoNotPerform, TBooleanCT));
+end;
 
 function TMedicationRequestCT.GetReportedBoolean: TBooleanCT;
 begin
@@ -28071,6 +38184,110 @@ begin
   Result := Chosen('Medication');
 end;
 
+function TMedicationRequestCT.GetEncounter: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fEncounter, TReferenceCT));
+end;
+
+function TMedicationRequestCT.GetAuthoredOn: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fAuthoredOn, TDateTimeCT));
+end;
+
+function TMedicationRequestCT.GetRequester: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fRequester, TReferenceCT));
+end;
+
+function TMedicationRequestCT.GetPerformer: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fPerformer, TReferenceCT));
+end;
+
+function TMedicationRequestCT.GetPerformerType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fPerformerType, TCodeableConceptCT));
+end;
+
+function TMedicationRequestCT.GetRecorder: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fRecorder, TReferenceCT));
+end;
+
+function TMedicationRequestCT.GetGroupIdentifier: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fGroupIdentifier, TIdentifierCT));
+end;
+
+function TMedicationRequestCT.GetCourseOfTherapyType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCourseOfTherapyType, TCodeableConceptCT));
+end;
+
+function TMedicationRequestCT.GetDispenseRequest: TMedicationRequestDispenseRequestCT;
+begin
+  Result := TMedicationRequestDispenseRequestCT(Lazy(fDispenseRequest, TMedicationRequestDispenseRequestCT));
+end;
+
+function TMedicationRequestCT.GetSubstitution: TMedicationRequestSubstitutionCT;
+begin
+  Result := TMedicationRequestSubstitutionCT(Lazy(fSubstitution, TMedicationRequestSubstitutionCT));
+end;
+
+function TMedicationRequestCT.GetPriorPrescription: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fPriorPrescription, TReferenceCT));
+end;
+
+{ TMedicationRequestDispenseRequestCT }
+
+function TMedicationRequestDispenseRequestCT.GetInitialFill: TMedicationRequestInitialFillCT;
+begin
+  Result := TMedicationRequestInitialFillCT(Lazy(fInitialFill, TMedicationRequestInitialFillCT));
+end;
+
+function TMedicationRequestDispenseRequestCT.GetDispenseInterval: TDurationCT;
+begin
+  Result := TDurationCT(Lazy(fDispenseInterval, TDurationCT));
+end;
+
+function TMedicationRequestDispenseRequestCT.GetValidityPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fValidityPeriod, TPeriodCT));
+end;
+
+function TMedicationRequestDispenseRequestCT.GetNumberOfRepeatsAllowed: TUnsignedIntCT;
+begin
+  Result := TUnsignedIntCT(Lazy(fNumberOfRepeatsAllowed, TUnsignedIntCT));
+end;
+
+function TMedicationRequestDispenseRequestCT.GetQuantity: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fQuantity, TQuantityCT));
+end;
+
+function TMedicationRequestDispenseRequestCT.GetExpectedSupplyDuration: TDurationCT;
+begin
+  Result := TDurationCT(Lazy(fExpectedSupplyDuration, TDurationCT));
+end;
+
+function TMedicationRequestDispenseRequestCT.GetPerformer: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fPerformer, TReferenceCT));
+end;
+
+{ TMedicationRequestInitialFillCT }
+
+function TMedicationRequestInitialFillCT.GetQuantity: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fQuantity, TQuantityCT));
+end;
+
+function TMedicationRequestInitialFillCT.GetDuration: TDurationCT;
+begin
+  Result := TDurationCT(Lazy(fDuration, TDurationCT));
+end;
+
 { TMedicationRequestSubstitutionCT }
 
 function TMedicationRequestSubstitutionCT.GetAllowedBoolean: TBooleanCT;
@@ -28088,7 +38305,17 @@ begin
   Result := Chosen('Allowed');
 end;
 
+function TMedicationRequestSubstitutionCT.GetReason: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fReason, TCodeableConceptCT));
+end;
+
 { TMedicationStatementCT }
+
+function TMedicationStatementCT.GetCategory: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCategory, TCodeableConceptCT));
+end;
 
 function TMedicationStatementCT.GetMedicationCodeableConcept: TCodeableConceptCT;
 begin
@@ -28103,6 +38330,11 @@ end;
 function TMedicationStatementCT.GetMedicationChosen: TBasite;
 begin
   Result := Chosen('Medication');
+end;
+
+function TMedicationStatementCT.GetContext: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fContext, TReferenceCT));
 end;
 
 function TMedicationStatementCT.GetEffectiveDateTime: TDateTimeCT;
@@ -28120,7 +38352,93 @@ begin
   Result := Chosen('Effective');
 end;
 
+function TMedicationStatementCT.GetDateAsserted: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDateAsserted, TDateTimeCT));
+end;
+
+function TMedicationStatementCT.GetInformationSource: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fInformationSource, TReferenceCT));
+end;
+
+{ TMedicinalProductCT }
+
+function TMedicinalProductCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TMedicinalProductCT.GetDomain: TCodingCT;
+begin
+  Result := TCodingCT(Lazy(fDomain, TCodingCT));
+end;
+
+function TMedicinalProductCT.GetCombinedPharmaceuticalDoseForm: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCombinedPharmaceuticalDoseForm, TCodeableConceptCT));
+end;
+
+function TMedicinalProductCT.GetLegalStatusOfSupply: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fLegalStatusOfSupply, TCodeableConceptCT));
+end;
+
+function TMedicinalProductCT.GetAdditionalMonitoringIndicator: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fAdditionalMonitoringIndicator, TCodeableConceptCT));
+end;
+
+function TMedicinalProductCT.GetPaediatricUseIndicator: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fPaediatricUseIndicator, TCodeableConceptCT));
+end;
+
+{ TMedicinalProductCountryLanguageCT }
+
+function TMedicinalProductCountryLanguageCT.GetJurisdiction: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fJurisdiction, TCodeableConceptCT));
+end;
+
+{ TMedicinalProductManufacturingBusinessOperationCT }
+
+function TMedicinalProductManufacturingBusinessOperationCT.GetOperationType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fOperationType, TCodeableConceptCT));
+end;
+
+function TMedicinalProductManufacturingBusinessOperationCT.GetAuthorisationReferenceNumber: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fAuthorisationReferenceNumber, TIdentifierCT));
+end;
+
+function TMedicinalProductManufacturingBusinessOperationCT.GetEffectiveDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fEffectiveDate, TDateTimeCT));
+end;
+
+function TMedicinalProductManufacturingBusinessOperationCT.GetConfidentialityIndicator: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fConfidentialityIndicator, TCodeableConceptCT));
+end;
+
+function TMedicinalProductManufacturingBusinessOperationCT.GetRegulator: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fRegulator, TReferenceCT));
+end;
+
 { TMedicinalProductSpecialDesignationCT }
+
+function TMedicinalProductSpecialDesignationCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TMedicinalProductSpecialDesignationCT.GetIntendedUse: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fIntendedUse, TCodeableConceptCT));
+end;
 
 function TMedicinalProductSpecialDesignationCT.GetIndicationCodeableConcept: TCodeableConceptCT;
 begin
@@ -28137,7 +38455,106 @@ begin
   Result := Chosen('Indication');
 end;
 
+function TMedicinalProductSpecialDesignationCT.GetStatus: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fStatus, TCodeableConceptCT));
+end;
+
+function TMedicinalProductSpecialDesignationCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
+
+function TMedicinalProductSpecialDesignationCT.GetSpecies: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fSpecies, TCodeableConceptCT));
+end;
+
+{ TMedicinalProductAuthorizationCT }
+
+function TMedicinalProductAuthorizationCT.GetSubject: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSubject, TReferenceCT));
+end;
+
+function TMedicinalProductAuthorizationCT.GetStatus: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fStatus, TCodeableConceptCT));
+end;
+
+function TMedicinalProductAuthorizationCT.GetStatusDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fStatusDate, TDateTimeCT));
+end;
+
+function TMedicinalProductAuthorizationCT.GetRestoreDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fRestoreDate, TDateTimeCT));
+end;
+
+function TMedicinalProductAuthorizationCT.GetValidityPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fValidityPeriod, TPeriodCT));
+end;
+
+function TMedicinalProductAuthorizationCT.GetDataExclusivityPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fDataExclusivityPeriod, TPeriodCT));
+end;
+
+function TMedicinalProductAuthorizationCT.GetDateOfFirstAuthorization: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDateOfFirstAuthorization, TDateTimeCT));
+end;
+
+function TMedicinalProductAuthorizationCT.GetInternationalBirthDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fInternationalBirthDate, TDateTimeCT));
+end;
+
+function TMedicinalProductAuthorizationCT.GetLegalBasis: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fLegalBasis, TCodeableConceptCT));
+end;
+
+function TMedicinalProductAuthorizationCT.GetHolder: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fHolder, TReferenceCT));
+end;
+
+function TMedicinalProductAuthorizationCT.GetRegulator: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fRegulator, TReferenceCT));
+end;
+
+function TMedicinalProductAuthorizationCT.GetProcedure: TMedicinalProductAuthorizationProcedureCT;
+begin
+  Result := TMedicinalProductAuthorizationProcedureCT(Lazy(fProcedure, TMedicinalProductAuthorizationProcedureCT));
+end;
+
+{ TMedicinalProductAuthorizationJurisdictionalAuthorizationCT }
+
+function TMedicinalProductAuthorizationJurisdictionalAuthorizationCT.GetCountry: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCountry, TCodeableConceptCT));
+end;
+
+function TMedicinalProductAuthorizationJurisdictionalAuthorizationCT.GetLegalStatusOfSupply: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fLegalStatusOfSupply, TCodeableConceptCT));
+end;
+
+function TMedicinalProductAuthorizationJurisdictionalAuthorizationCT.GetValidityPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fValidityPeriod, TPeriodCT));
+end;
+
 { TMedicinalProductAuthorizationProcedureCT }
+
+function TMedicinalProductAuthorizationProcedureCT.GetIdentifier: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fIdentifier, TIdentifierCT));
+end;
 
 function TMedicinalProductAuthorizationProcedureCT.GetDatePeriod: TPeriodCT;
 begin
@@ -28152,6 +38569,18 @@ end;
 function TMedicinalProductAuthorizationProcedureCT.GetDateChosen: TBasite;
 begin
   Result := Chosen('Date');
+end;
+
+{ TMedicinalProductContraindicationCT }
+
+function TMedicinalProductContraindicationCT.GetDisease: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fDisease, TCodeableConceptCT));
+end;
+
+function TMedicinalProductContraindicationCT.GetDiseaseStatus: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fDiseaseStatus, TCodeableConceptCT));
 end;
 
 { TMedicinalProductContraindicationOtherTherapyCT }
@@ -28171,6 +38600,28 @@ begin
   Result := Chosen('Medication');
 end;
 
+{ TMedicinalProductIndicationCT }
+
+function TMedicinalProductIndicationCT.GetDiseaseSymptomProcedure: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fDiseaseSymptomProcedure, TCodeableConceptCT));
+end;
+
+function TMedicinalProductIndicationCT.GetDiseaseStatus: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fDiseaseStatus, TCodeableConceptCT));
+end;
+
+function TMedicinalProductIndicationCT.GetIntendedEffect: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fIntendedEffect, TCodeableConceptCT));
+end;
+
+function TMedicinalProductIndicationCT.GetDuration: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fDuration, TQuantityCT));
+end;
+
 { TMedicinalProductIndicationOtherTherapyCT }
 
 function TMedicinalProductIndicationOtherTherapyCT.GetMedicationCodeableConcept: TCodeableConceptCT;
@@ -28186,6 +38637,96 @@ end;
 function TMedicinalProductIndicationOtherTherapyCT.GetMedicationChosen: TBasite;
 begin
   Result := Chosen('Medication');
+end;
+
+{ TMedicinalProductIngredientCT }
+
+function TMedicinalProductIngredientCT.GetIdentifier: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fIdentifier, TIdentifierCT));
+end;
+
+function TMedicinalProductIngredientCT.GetAllergenicIndicator: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fAllergenicIndicator, TBooleanCT));
+end;
+
+function TMedicinalProductIngredientCT.GetSubstance: TMedicinalProductIngredientSubstanceCT;
+begin
+  Result := TMedicinalProductIngredientSubstanceCT(Lazy(fSubstance, TMedicinalProductIngredientSubstanceCT));
+end;
+
+{ TMedicinalProductIngredientSpecifiedSubstanceCT }
+
+function TMedicinalProductIngredientSpecifiedSubstanceCT.GetConfidentiality: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fConfidentiality, TCodeableConceptCT));
+end;
+
+{ TMedicinalProductIngredientStrengthCT }
+
+function TMedicinalProductIngredientStrengthCT.GetPresentationLowLimit: TRatioCT;
+begin
+  Result := TRatioCT(Lazy(fPresentationLowLimit, TRatioCT));
+end;
+
+function TMedicinalProductIngredientStrengthCT.GetConcentration: TRatioCT;
+begin
+  Result := TRatioCT(Lazy(fConcentration, TRatioCT));
+end;
+
+function TMedicinalProductIngredientStrengthCT.GetConcentrationLowLimit: TRatioCT;
+begin
+  Result := TRatioCT(Lazy(fConcentrationLowLimit, TRatioCT));
+end;
+
+function TMedicinalProductIngredientStrengthCT.GetMeasurementPoint: TStringCT;
+begin
+  Result := TStringCT(Lazy(fMeasurementPoint, TStringCT));
+end;
+
+{ TMedicinalProductIngredientReferenceStrengthCT }
+
+function TMedicinalProductIngredientReferenceStrengthCT.GetSubstance: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fSubstance, TCodeableConceptCT));
+end;
+
+function TMedicinalProductIngredientReferenceStrengthCT.GetStrengthLowLimit: TRatioCT;
+begin
+  Result := TRatioCT(Lazy(fStrengthLowLimit, TRatioCT));
+end;
+
+function TMedicinalProductIngredientReferenceStrengthCT.GetMeasurementPoint: TStringCT;
+begin
+  Result := TStringCT(Lazy(fMeasurementPoint, TStringCT));
+end;
+
+{ TMedicinalProductInteractionCT }
+
+function TMedicinalProductInteractionCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+function TMedicinalProductInteractionCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TMedicinalProductInteractionCT.GetEffect: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fEffect, TCodeableConceptCT));
+end;
+
+function TMedicinalProductInteractionCT.GetIncidence: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fIncidence, TCodeableConceptCT));
+end;
+
+function TMedicinalProductInteractionCT.GetManagement: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fManagement, TCodeableConceptCT));
 end;
 
 { TMedicinalProductInteractionInteractantCT }
@@ -28205,7 +38746,165 @@ begin
   Result := Chosen('Item');
 end;
 
+{ TMedicinalProductManufacturedCT }
+
+function TMedicinalProductManufacturedCT.GetUnitOfPresentation: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fUnitOfPresentation, TCodeableConceptCT));
+end;
+
+function TMedicinalProductManufacturedCT.GetPhysicalCharacteristics: TProdCharacteristicCT;
+begin
+  Result := TProdCharacteristicCT(Lazy(fPhysicalCharacteristics, TProdCharacteristicCT));
+end;
+
+{ TMedicinalProductPackagedCT }
+
+function TMedicinalProductPackagedCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+function TMedicinalProductPackagedCT.GetLegalStatusOfSupply: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fLegalStatusOfSupply, TCodeableConceptCT));
+end;
+
+function TMedicinalProductPackagedCT.GetMarketingAuthorization: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fMarketingAuthorization, TReferenceCT));
+end;
+
+{ TMedicinalProductPackagedBatchIdentifierCT }
+
+function TMedicinalProductPackagedBatchIdentifierCT.GetImmediatePackaging: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fImmediatePackaging, TIdentifierCT));
+end;
+
+{ TMedicinalProductPackagedPackageItemCT }
+
+function TMedicinalProductPackagedPackageItemCT.GetPhysicalCharacteristics: TProdCharacteristicCT;
+begin
+  Result := TProdCharacteristicCT(Lazy(fPhysicalCharacteristics, TProdCharacteristicCT));
+end;
+
+{ TMedicinalProductPharmaceuticalCT }
+
+function TMedicinalProductPharmaceuticalCT.GetUnitOfPresentation: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fUnitOfPresentation, TCodeableConceptCT));
+end;
+
+{ TMedicinalProductPharmaceuticalCharacteristicsCT }
+
+function TMedicinalProductPharmaceuticalCharacteristicsCT.GetStatus: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fStatus, TCodeableConceptCT));
+end;
+
+{ TMedicinalProductPharmaceuticalRouteOfAdministrationCT }
+
+function TMedicinalProductPharmaceuticalRouteOfAdministrationCT.GetFirstDose: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fFirstDose, TQuantityCT));
+end;
+
+function TMedicinalProductPharmaceuticalRouteOfAdministrationCT.GetMaxSingleDose: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fMaxSingleDose, TQuantityCT));
+end;
+
+function TMedicinalProductPharmaceuticalRouteOfAdministrationCT.GetMaxDosePerDay: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fMaxDosePerDay, TQuantityCT));
+end;
+
+function TMedicinalProductPharmaceuticalRouteOfAdministrationCT.GetMaxDosePerTreatmentPeriod: TRatioCT;
+begin
+  Result := TRatioCT(Lazy(fMaxDosePerTreatmentPeriod, TRatioCT));
+end;
+
+function TMedicinalProductPharmaceuticalRouteOfAdministrationCT.GetMaxTreatmentPeriod: TDurationCT;
+begin
+  Result := TDurationCT(Lazy(fMaxTreatmentPeriod, TDurationCT));
+end;
+
+{ TMedicinalProductPharmaceuticalWithdrawalPeriodCT }
+
+function TMedicinalProductPharmaceuticalWithdrawalPeriodCT.GetSupportingInformation: TStringCT;
+begin
+  Result := TStringCT(Lazy(fSupportingInformation, TStringCT));
+end;
+
+{ TMedicinalProductUndesirableEffectCT }
+
+function TMedicinalProductUndesirableEffectCT.GetSymptomConditionEffect: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fSymptomConditionEffect, TCodeableConceptCT));
+end;
+
+function TMedicinalProductUndesirableEffectCT.GetClassification: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fClassification, TCodeableConceptCT));
+end;
+
+function TMedicinalProductUndesirableEffectCT.GetFrequencyOfOccurrence: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fFrequencyOfOccurrence, TCodeableConceptCT));
+end;
+
 { TMessageDefinitionCT }
+
+function TMessageDefinitionCT.GetUrl: TUriCT;
+begin
+  Result := TUriCT(Lazy(fUrl, TUriCT));
+end;
+
+function TMessageDefinitionCT.GetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersion, TStringCT));
+end;
+
+function TMessageDefinitionCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TMessageDefinitionCT.GetTitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTitle, TStringCT));
+end;
+
+function TMessageDefinitionCT.GetExperimental: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fExperimental, TBooleanCT));
+end;
+
+function TMessageDefinitionCT.GetPublisher: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPublisher, TStringCT));
+end;
+
+function TMessageDefinitionCT.GetDescription: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDescription, TMarkdownCT));
+end;
+
+function TMessageDefinitionCT.GetPurpose: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fPurpose, TMarkdownCT));
+end;
+
+function TMessageDefinitionCT.GetCopyright: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fCopyright, TMarkdownCT));
+end;
+
+function TMessageDefinitionCT.GetBase: TCanonicalCT;
+begin
+  Result := TCanonicalCT(Lazy(fBase, TCanonicalCT));
+end;
 
 function TMessageDefinitionCT.GetEventCoding: TCodingCT;
 begin
@@ -28220,6 +38919,35 @@ end;
 function TMessageDefinitionCT.GetEventChosen: TBasite;
 begin
   Result := Chosen('Event');
+end;
+
+function TMessageDefinitionCT.GetCategory: TMessageSignificanceCategoryCT;
+begin
+  Result := TMessageSignificanceCategoryCT(Lazy(fCategory, TMessageSignificanceCategoryCT));
+end;
+
+function TMessageDefinitionCT.GetResponseRequired: TMessageheaderResponseRequestCT;
+begin
+  Result := TMessageheaderResponseRequestCT(Lazy(fResponseRequired, TMessageheaderResponseRequestCT));
+end;
+
+{ TMessageDefinitionFocusCT }
+
+function TMessageDefinitionFocusCT.GetProfile: TCanonicalCT;
+begin
+  Result := TCanonicalCT(Lazy(fProfile, TCanonicalCT));
+end;
+
+function TMessageDefinitionFocusCT.GetMax: TStringCT;
+begin
+  Result := TStringCT(Lazy(fMax, TStringCT));
+end;
+
+{ TMessageDefinitionAllowedResponseCT }
+
+function TMessageDefinitionAllowedResponseCT.GetSituation: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fSituation, TMarkdownCT));
 end;
 
 { TMessageHeaderCT }
@@ -28239,7 +38967,535 @@ begin
   Result := Chosen('Event');
 end;
 
+function TMessageHeaderCT.GetSender: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSender, TReferenceCT));
+end;
+
+function TMessageHeaderCT.GetEnterer: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fEnterer, TReferenceCT));
+end;
+
+function TMessageHeaderCT.GetAuthor: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fAuthor, TReferenceCT));
+end;
+
+function TMessageHeaderCT.GetResponsible: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fResponsible, TReferenceCT));
+end;
+
+function TMessageHeaderCT.GetReason: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fReason, TCodeableConceptCT));
+end;
+
+function TMessageHeaderCT.GetResponse: TMessageHeaderResponseCT;
+begin
+  Result := TMessageHeaderResponseCT(Lazy(fResponse, TMessageHeaderResponseCT));
+end;
+
+function TMessageHeaderCT.GetDefinition: TCanonicalCT;
+begin
+  Result := TCanonicalCT(Lazy(fDefinition, TCanonicalCT));
+end;
+
+{ TMessageHeaderDestinationCT }
+
+function TMessageHeaderDestinationCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TMessageHeaderDestinationCT.GetTarget: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fTarget, TReferenceCT));
+end;
+
+function TMessageHeaderDestinationCT.GetReceiver: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fReceiver, TReferenceCT));
+end;
+
+{ TMessageHeaderSourceCT }
+
+function TMessageHeaderSourceCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TMessageHeaderSourceCT.GetSoftware: TStringCT;
+begin
+  Result := TStringCT(Lazy(fSoftware, TStringCT));
+end;
+
+function TMessageHeaderSourceCT.GetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersion, TStringCT));
+end;
+
+function TMessageHeaderSourceCT.GetContact: TContactPointCT;
+begin
+  Result := TContactPointCT(Lazy(fContact, TContactPointCT));
+end;
+
+{ TMessageHeaderResponseCT }
+
+function TMessageHeaderResponseCT.GetDetails: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fDetails, TReferenceCT));
+end;
+
+{ TMolecularSequenceCT }
+
+function TMolecularSequenceCT.GetType: TSequenceTypeCT;
+begin
+  Result := TSequenceTypeCT(Lazy(fType, TSequenceTypeCT));
+end;
+
+function TMolecularSequenceCT.GetPatient: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fPatient, TReferenceCT));
+end;
+
+function TMolecularSequenceCT.GetSpecimen: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSpecimen, TReferenceCT));
+end;
+
+function TMolecularSequenceCT.GetDevice: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fDevice, TReferenceCT));
+end;
+
+function TMolecularSequenceCT.GetPerformer: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fPerformer, TReferenceCT));
+end;
+
+function TMolecularSequenceCT.GetQuantity: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fQuantity, TQuantityCT));
+end;
+
+function TMolecularSequenceCT.GetReferenceSeq: TMolecularSequenceReferenceSeqCT;
+begin
+  Result := TMolecularSequenceReferenceSeqCT(Lazy(fReferenceSeq, TMolecularSequenceReferenceSeqCT));
+end;
+
+function TMolecularSequenceCT.GetObservedSeq: TStringCT;
+begin
+  Result := TStringCT(Lazy(fObservedSeq, TStringCT));
+end;
+
+function TMolecularSequenceCT.GetReadCoverage: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fReadCoverage, TIntegerCT));
+end;
+
+{ TMolecularSequenceReferenceSeqCT }
+
+function TMolecularSequenceReferenceSeqCT.GetChromosome: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fChromosome, TCodeableConceptCT));
+end;
+
+function TMolecularSequenceReferenceSeqCT.GetGenomeBuild: TStringCT;
+begin
+  Result := TStringCT(Lazy(fGenomeBuild, TStringCT));
+end;
+
+function TMolecularSequenceReferenceSeqCT.GetOrientation: TOrientationTypeCT;
+begin
+  Result := TOrientationTypeCT(Lazy(fOrientation, TOrientationTypeCT));
+end;
+
+function TMolecularSequenceReferenceSeqCT.GetReferenceSeqId: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fReferenceSeqId, TCodeableConceptCT));
+end;
+
+function TMolecularSequenceReferenceSeqCT.GetReferenceSeqPointer: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fReferenceSeqPointer, TReferenceCT));
+end;
+
+function TMolecularSequenceReferenceSeqCT.GetReferenceSeqString: TStringCT;
+begin
+  Result := TStringCT(Lazy(fReferenceSeqString, TStringCT));
+end;
+
+function TMolecularSequenceReferenceSeqCT.GetStrand: TStrandTypeCT;
+begin
+  Result := TStrandTypeCT(Lazy(fStrand, TStrandTypeCT));
+end;
+
+function TMolecularSequenceReferenceSeqCT.GetWindowStart: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fWindowStart, TIntegerCT));
+end;
+
+function TMolecularSequenceReferenceSeqCT.GetWindowEnd: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fWindowEnd, TIntegerCT));
+end;
+
+{ TMolecularSequenceVariantCT }
+
+function TMolecularSequenceVariantCT.GetStart: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fStart, TIntegerCT));
+end;
+
+function TMolecularSequenceVariantCT.GetEnd: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fEnd, TIntegerCT));
+end;
+
+function TMolecularSequenceVariantCT.GetObservedAllele: TStringCT;
+begin
+  Result := TStringCT(Lazy(fObservedAllele, TStringCT));
+end;
+
+function TMolecularSequenceVariantCT.GetReferenceAllele: TStringCT;
+begin
+  Result := TStringCT(Lazy(fReferenceAllele, TStringCT));
+end;
+
+function TMolecularSequenceVariantCT.GetCigar: TStringCT;
+begin
+  Result := TStringCT(Lazy(fCigar, TStringCT));
+end;
+
+function TMolecularSequenceVariantCT.GetVariantPointer: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fVariantPointer, TReferenceCT));
+end;
+
+{ TMolecularSequenceQualityCT }
+
+function TMolecularSequenceQualityCT.GetStandardSequence: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fStandardSequence, TCodeableConceptCT));
+end;
+
+function TMolecularSequenceQualityCT.GetStart: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fStart, TIntegerCT));
+end;
+
+function TMolecularSequenceQualityCT.GetEnd: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fEnd, TIntegerCT));
+end;
+
+function TMolecularSequenceQualityCT.GetScore: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fScore_, TQuantityCT));
+end;
+
+function TMolecularSequenceQualityCT.GetMethod: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fMethod, TCodeableConceptCT));
+end;
+
+function TMolecularSequenceQualityCT.GetTruthTP: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fTruthTP, TDecimalCT));
+end;
+
+function TMolecularSequenceQualityCT.GetQueryTP: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fQueryTP, TDecimalCT));
+end;
+
+function TMolecularSequenceQualityCT.GetTruthFN: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fTruthFN, TDecimalCT));
+end;
+
+function TMolecularSequenceQualityCT.GetQueryFP: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fQueryFP, TDecimalCT));
+end;
+
+function TMolecularSequenceQualityCT.GetGtFP: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fGtFP, TDecimalCT));
+end;
+
+function TMolecularSequenceQualityCT.GetPrecision: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fPrecision, TDecimalCT));
+end;
+
+function TMolecularSequenceQualityCT.GetRecall: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fRecall, TDecimalCT));
+end;
+
+function TMolecularSequenceQualityCT.GetFScore: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fFScore, TDecimalCT));
+end;
+
+function TMolecularSequenceQualityCT.GetRoc: TMolecularSequenceRocCT;
+begin
+  Result := TMolecularSequenceRocCT(Lazy(fRoc, TMolecularSequenceRocCT));
+end;
+
+{ TMolecularSequenceRepositoryCT }
+
+function TMolecularSequenceRepositoryCT.GetUrl: TUriCT;
+begin
+  Result := TUriCT(Lazy(fUrl, TUriCT));
+end;
+
+function TMolecularSequenceRepositoryCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TMolecularSequenceRepositoryCT.GetDatasetId: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDatasetId, TStringCT));
+end;
+
+function TMolecularSequenceRepositoryCT.GetVariantsetId: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVariantsetId, TStringCT));
+end;
+
+function TMolecularSequenceRepositoryCT.GetReadsetId: TStringCT;
+begin
+  Result := TStringCT(Lazy(fReadsetId, TStringCT));
+end;
+
+{ TMolecularSequenceStructureVariantCT }
+
+function TMolecularSequenceStructureVariantCT.GetVariantType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fVariantType, TCodeableConceptCT));
+end;
+
+function TMolecularSequenceStructureVariantCT.GetExact: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fExact, TBooleanCT));
+end;
+
+function TMolecularSequenceStructureVariantCT.GetLength: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fLength, TIntegerCT));
+end;
+
+function TMolecularSequenceStructureVariantCT.GetOuter: TMolecularSequenceOuterCT;
+begin
+  Result := TMolecularSequenceOuterCT(Lazy(fOuter, TMolecularSequenceOuterCT));
+end;
+
+function TMolecularSequenceStructureVariantCT.GetInner: TMolecularSequenceInnerCT;
+begin
+  Result := TMolecularSequenceInnerCT(Lazy(fInner, TMolecularSequenceInnerCT));
+end;
+
+{ TMolecularSequenceOuterCT }
+
+function TMolecularSequenceOuterCT.GetStart: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fStart, TIntegerCT));
+end;
+
+function TMolecularSequenceOuterCT.GetEnd: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fEnd, TIntegerCT));
+end;
+
+{ TMolecularSequenceInnerCT }
+
+function TMolecularSequenceInnerCT.GetStart: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fStart, TIntegerCT));
+end;
+
+function TMolecularSequenceInnerCT.GetEnd: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fEnd, TIntegerCT));
+end;
+
+{ TNamingSystemCT }
+
+function TNamingSystemCT.GetPublisher: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPublisher, TStringCT));
+end;
+
+function TNamingSystemCT.GetResponsible: TStringCT;
+begin
+  Result := TStringCT(Lazy(fResponsible, TStringCT));
+end;
+
+function TNamingSystemCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TNamingSystemCT.GetDescription: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDescription, TMarkdownCT));
+end;
+
+function TNamingSystemCT.GetUsage: TStringCT;
+begin
+  Result := TStringCT(Lazy(fUsage, TStringCT));
+end;
+
+{ TNamingSystemUniqueIdCT }
+
+function TNamingSystemUniqueIdCT.GetPreferred: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fPreferred, TBooleanCT));
+end;
+
+function TNamingSystemUniqueIdCT.GetComment: TStringCT;
+begin
+  Result := TStringCT(Lazy(fComment, TStringCT));
+end;
+
+function TNamingSystemUniqueIdCT.GetPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fPeriod, TPeriodCT));
+end;
+
+{ TNutritionOrderCT }
+
+function TNutritionOrderCT.GetEncounter: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fEncounter, TReferenceCT));
+end;
+
+function TNutritionOrderCT.GetOrderer: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fOrderer, TReferenceCT));
+end;
+
+function TNutritionOrderCT.GetOralDiet: TNutritionOrderOralDietCT;
+begin
+  Result := TNutritionOrderOralDietCT(Lazy(fOralDiet, TNutritionOrderOralDietCT));
+end;
+
+function TNutritionOrderCT.GetEnteralFormula: TNutritionOrderEnteralFormulaCT;
+begin
+  Result := TNutritionOrderEnteralFormulaCT(Lazy(fEnteralFormula, TNutritionOrderEnteralFormulaCT));
+end;
+
+{ TNutritionOrderOralDietCT }
+
+function TNutritionOrderOralDietCT.GetInstruction: TStringCT;
+begin
+  Result := TStringCT(Lazy(fInstruction, TStringCT));
+end;
+
+{ TNutritionOrderNutrientCT }
+
+function TNutritionOrderNutrientCT.GetModifier: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fModifier, TCodeableConceptCT));
+end;
+
+function TNutritionOrderNutrientCT.GetAmount: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fAmount, TQuantityCT));
+end;
+
+{ TNutritionOrderTextureCT }
+
+function TNutritionOrderTextureCT.GetModifier: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fModifier, TCodeableConceptCT));
+end;
+
+function TNutritionOrderTextureCT.GetFoodType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fFoodType, TCodeableConceptCT));
+end;
+
+{ TNutritionOrderSupplementCT }
+
+function TNutritionOrderSupplementCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TNutritionOrderSupplementCT.GetProductName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fProductName, TStringCT));
+end;
+
+function TNutritionOrderSupplementCT.GetQuantity: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fQuantity, TQuantityCT));
+end;
+
+function TNutritionOrderSupplementCT.GetInstruction: TStringCT;
+begin
+  Result := TStringCT(Lazy(fInstruction, TStringCT));
+end;
+
+{ TNutritionOrderEnteralFormulaCT }
+
+function TNutritionOrderEnteralFormulaCT.GetBaseFormulaType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fBaseFormulaType, TCodeableConceptCT));
+end;
+
+function TNutritionOrderEnteralFormulaCT.GetBaseFormulaProductName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fBaseFormulaProductName, TStringCT));
+end;
+
+function TNutritionOrderEnteralFormulaCT.GetAdditiveType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fAdditiveType, TCodeableConceptCT));
+end;
+
+function TNutritionOrderEnteralFormulaCT.GetAdditiveProductName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fAdditiveProductName, TStringCT));
+end;
+
+function TNutritionOrderEnteralFormulaCT.GetCaloricDensity: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fCaloricDensity, TQuantityCT));
+end;
+
+function TNutritionOrderEnteralFormulaCT.GetRouteofAdministration: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fRouteofAdministration, TCodeableConceptCT));
+end;
+
+function TNutritionOrderEnteralFormulaCT.GetMaxVolumeToDeliver: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fMaxVolumeToDeliver, TQuantityCT));
+end;
+
+function TNutritionOrderEnteralFormulaCT.GetAdministrationInstruction: TStringCT;
+begin
+  Result := TStringCT(Lazy(fAdministrationInstruction, TStringCT));
+end;
+
 { TNutritionOrderAdministrationCT }
+
+function TNutritionOrderAdministrationCT.GetSchedule: TTimingCT;
+begin
+  Result := TTimingCT(Lazy(fSchedule, TTimingCT));
+end;
+
+function TNutritionOrderAdministrationCT.GetQuantity: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fQuantity, TQuantityCT));
+end;
 
 function TNutritionOrderAdministrationCT.GetRateQuantity: TQuantityCT;
 begin
@@ -28257,6 +39513,16 @@ begin
 end;
 
 { TObservationCT }
+
+function TObservationCT.GetSubject: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSubject, TReferenceCT));
+end;
+
+function TObservationCT.GetEncounter: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fEncounter, TReferenceCT));
+end;
 
 function TObservationCT.GetEffectiveDateTime: TDateTimeCT;
 begin
@@ -28281,6 +39547,11 @@ end;
 function TObservationCT.GetEffectiveChosen: TBasite;
 begin
   Result := Chosen('Effective');
+end;
+
+function TObservationCT.GetIssued: TInstantCT;
+begin
+  Result := TInstantCT(Lazy(fIssued, TInstantCT));
 end;
 
 function TObservationCT.GetValueQuantity: TQuantityCT;
@@ -28343,6 +39614,58 @@ begin
   Result := Chosen('Value');
 end;
 
+function TObservationCT.GetDataAbsentReason: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fDataAbsentReason, TCodeableConceptCT));
+end;
+
+function TObservationCT.GetBodySite: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fBodySite, TCodeableConceptCT));
+end;
+
+function TObservationCT.GetMethod: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fMethod, TCodeableConceptCT));
+end;
+
+function TObservationCT.GetSpecimen: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSpecimen, TReferenceCT));
+end;
+
+function TObservationCT.GetDevice: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fDevice, TReferenceCT));
+end;
+
+{ TObservationReferenceRangeCT }
+
+function TObservationReferenceRangeCT.GetLow: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fLow, TQuantityCT));
+end;
+
+function TObservationReferenceRangeCT.GetHigh: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fHigh, TQuantityCT));
+end;
+
+function TObservationReferenceRangeCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TObservationReferenceRangeCT.GetAge: TRangeCT;
+begin
+  Result := TRangeCT(Lazy(fAge, TRangeCT));
+end;
+
+function TObservationReferenceRangeCT.GetText: TStringCT;
+begin
+  Result := TStringCT(Lazy(fText, TStringCT));
+end;
+
 { TObservationComponentCT }
 
 function TObservationComponentCT.GetValueQuantity: TQuantityCT;
@@ -28403,6 +39726,283 @@ end;
 function TObservationComponentCT.GetValueChosen: TBasite;
 begin
   Result := Chosen('Value');
+end;
+
+function TObservationComponentCT.GetDataAbsentReason: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fDataAbsentReason, TCodeableConceptCT));
+end;
+
+{ TObservationDefinitionCT }
+
+function TObservationDefinitionCT.GetMultipleResultsAllowed: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fMultipleResultsAllowed, TBooleanCT));
+end;
+
+function TObservationDefinitionCT.GetMethod: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fMethod, TCodeableConceptCT));
+end;
+
+function TObservationDefinitionCT.GetPreferredReportName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPreferredReportName, TStringCT));
+end;
+
+function TObservationDefinitionCT.GetQuantitativeDetails: TObservationDefinitionQuantitativeDetailsCT;
+begin
+  Result := TObservationDefinitionQuantitativeDetailsCT(Lazy(fQuantitativeDetails, TObservationDefinitionQuantitativeDetailsCT));
+end;
+
+function TObservationDefinitionCT.GetValidCodedValueSet: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fValidCodedValueSet, TReferenceCT));
+end;
+
+function TObservationDefinitionCT.GetNormalCodedValueSet: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fNormalCodedValueSet, TReferenceCT));
+end;
+
+function TObservationDefinitionCT.GetAbnormalCodedValueSet: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fAbnormalCodedValueSet, TReferenceCT));
+end;
+
+function TObservationDefinitionCT.GetCriticalCodedValueSet: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fCriticalCodedValueSet, TReferenceCT));
+end;
+
+{ TObservationDefinitionQuantitativeDetailsCT }
+
+function TObservationDefinitionQuantitativeDetailsCT.GetCustomaryUnit: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCustomaryUnit, TCodeableConceptCT));
+end;
+
+function TObservationDefinitionQuantitativeDetailsCT.GetUnit: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fUnit, TCodeableConceptCT));
+end;
+
+function TObservationDefinitionQuantitativeDetailsCT.GetConversionFactor: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fConversionFactor, TDecimalCT));
+end;
+
+function TObservationDefinitionQuantitativeDetailsCT.GetDecimalPrecision: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fDecimalPrecision, TIntegerCT));
+end;
+
+{ TObservationDefinitionQualifiedIntervalCT }
+
+function TObservationDefinitionQualifiedIntervalCT.GetCategory: TObservationRangeCategoryCT;
+begin
+  Result := TObservationRangeCategoryCT(Lazy(fCategory, TObservationRangeCategoryCT));
+end;
+
+function TObservationDefinitionQualifiedIntervalCT.GetRange: TRangeCT;
+begin
+  Result := TRangeCT(Lazy(fRange, TRangeCT));
+end;
+
+function TObservationDefinitionQualifiedIntervalCT.GetContext: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fContext, TCodeableConceptCT));
+end;
+
+function TObservationDefinitionQualifiedIntervalCT.GetGender: TAdministrativeGenderCT;
+begin
+  Result := TAdministrativeGenderCT(Lazy(fGender, TAdministrativeGenderCT));
+end;
+
+function TObservationDefinitionQualifiedIntervalCT.GetAge: TRangeCT;
+begin
+  Result := TRangeCT(Lazy(fAge, TRangeCT));
+end;
+
+function TObservationDefinitionQualifiedIntervalCT.GetGestationalAge: TRangeCT;
+begin
+  Result := TRangeCT(Lazy(fGestationalAge, TRangeCT));
+end;
+
+function TObservationDefinitionQualifiedIntervalCT.GetCondition: TStringCT;
+begin
+  Result := TStringCT(Lazy(fCondition, TStringCT));
+end;
+
+{ TOperationDefinitionCT }
+
+function TOperationDefinitionCT.GetUrl: TUriCT;
+begin
+  Result := TUriCT(Lazy(fUrl, TUriCT));
+end;
+
+function TOperationDefinitionCT.GetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersion, TStringCT));
+end;
+
+function TOperationDefinitionCT.GetTitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTitle, TStringCT));
+end;
+
+function TOperationDefinitionCT.GetExperimental: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fExperimental, TBooleanCT));
+end;
+
+function TOperationDefinitionCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
+
+function TOperationDefinitionCT.GetPublisher: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPublisher, TStringCT));
+end;
+
+function TOperationDefinitionCT.GetDescription: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDescription, TMarkdownCT));
+end;
+
+function TOperationDefinitionCT.GetPurpose: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fPurpose, TMarkdownCT));
+end;
+
+function TOperationDefinitionCT.GetAffectsState: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fAffectsState, TBooleanCT));
+end;
+
+function TOperationDefinitionCT.GetComment: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fComment, TMarkdownCT));
+end;
+
+function TOperationDefinitionCT.GetBase: TCanonicalCT;
+begin
+  Result := TCanonicalCT(Lazy(fBase, TCanonicalCT));
+end;
+
+function TOperationDefinitionCT.GetInputProfile: TCanonicalCT;
+begin
+  Result := TCanonicalCT(Lazy(fInputProfile, TCanonicalCT));
+end;
+
+function TOperationDefinitionCT.GetOutputProfile: TCanonicalCT;
+begin
+  Result := TCanonicalCT(Lazy(fOutputProfile, TCanonicalCT));
+end;
+
+{ TOperationDefinitionParameterCT }
+
+function TOperationDefinitionParameterCT.GetDocumentation: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDocumentation, TStringCT));
+end;
+
+function TOperationDefinitionParameterCT.GetType: TCodeCT;
+begin
+  Result := TCodeCT(Lazy(fType, TCodeCT));
+end;
+
+function TOperationDefinitionParameterCT.GetSearchType: TSearchParamTypeCT;
+begin
+  Result := TSearchParamTypeCT(Lazy(fSearchType, TSearchParamTypeCT));
+end;
+
+function TOperationDefinitionParameterCT.GetBinding: TOperationDefinitionBindingCT;
+begin
+  Result := TOperationDefinitionBindingCT(Lazy(fBinding, TOperationDefinitionBindingCT));
+end;
+
+{ TOperationDefinitionReferencedFromCT }
+
+function TOperationDefinitionReferencedFromCT.GetSourceId: TStringCT;
+begin
+  Result := TStringCT(Lazy(fSourceId, TStringCT));
+end;
+
+{ TOperationDefinitionOverloadCT }
+
+function TOperationDefinitionOverloadCT.GetComment: TStringCT;
+begin
+  Result := TStringCT(Lazy(fComment, TStringCT));
+end;
+
+{ TOperationOutcomeIssueCT }
+
+function TOperationOutcomeIssueCT.GetDetails: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fDetails, TCodeableConceptCT));
+end;
+
+function TOperationOutcomeIssueCT.GetDiagnostics: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDiagnostics, TStringCT));
+end;
+
+{ TOrganizationCT }
+
+function TOrganizationCT.GetActive: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fActive, TBooleanCT));
+end;
+
+function TOrganizationCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TOrganizationCT.GetPartOf: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fPartOf, TReferenceCT));
+end;
+
+{ TOrganizationContactCT }
+
+function TOrganizationContactCT.GetPurpose: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fPurpose, TCodeableConceptCT));
+end;
+
+function TOrganizationContactCT.GetName: THumanNameCT;
+begin
+  Result := THumanNameCT(Lazy(fName, THumanNameCT));
+end;
+
+function TOrganizationContactCT.GetAddress: TAddressCT;
+begin
+  Result := TAddressCT(Lazy(fAddress, TAddressCT));
+end;
+
+{ TOrganizationAffiliationCT }
+
+function TOrganizationAffiliationCT.GetActive: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fActive, TBooleanCT));
+end;
+
+function TOrganizationAffiliationCT.GetPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fPeriod, TPeriodCT));
+end;
+
+function TOrganizationAffiliationCT.GetOrganization: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fOrganization, TReferenceCT));
+end;
+
+function TOrganizationAffiliationCT.GetParticipatingOrganization: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fParticipatingOrganization, TReferenceCT));
 end;
 
 { TParametersParameterCT }
@@ -28662,7 +40262,27 @@ begin
   Result := Chosen('Value');
 end;
 
+function TParametersParameterCT.GetResource: TResourceContainerCT;
+begin
+  Result := TResourceContainerCT(Lazy(fResource, TResourceContainerCT));
+end;
+
 { TPatientCT }
+
+function TPatientCT.GetActive: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fActive, TBooleanCT));
+end;
+
+function TPatientCT.GetGender: TAdministrativeGenderCT;
+begin
+  Result := TAdministrativeGenderCT(Lazy(fGender, TAdministrativeGenderCT));
+end;
+
+function TPatientCT.GetBirthDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fBirthDate, TDateCT));
+end;
 
 function TPatientCT.GetDeceasedBoolean: TBooleanCT;
 begin
@@ -28677,6 +40297,11 @@ end;
 function TPatientCT.GetDeceasedChosen: TBasite;
 begin
   Result := Chosen('Deceased');
+end;
+
+function TPatientCT.GetMaritalStatus: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fMaritalStatus, TCodeableConceptCT));
 end;
 
 function TPatientCT.GetMultipleBirthBoolean: TBooleanCT;
@@ -28694,7 +40319,248 @@ begin
   Result := Chosen('MultipleBirth');
 end;
 
+function TPatientCT.GetManagingOrganization: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fManagingOrganization, TReferenceCT));
+end;
+
+{ TPatientContactCT }
+
+function TPatientContactCT.GetName: THumanNameCT;
+begin
+  Result := THumanNameCT(Lazy(fName, THumanNameCT));
+end;
+
+function TPatientContactCT.GetAddress: TAddressCT;
+begin
+  Result := TAddressCT(Lazy(fAddress, TAddressCT));
+end;
+
+function TPatientContactCT.GetGender: TAdministrativeGenderCT;
+begin
+  Result := TAdministrativeGenderCT(Lazy(fGender, TAdministrativeGenderCT));
+end;
+
+function TPatientContactCT.GetOrganization: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fOrganization, TReferenceCT));
+end;
+
+function TPatientContactCT.GetPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fPeriod, TPeriodCT));
+end;
+
+{ TPatientCommunicationCT }
+
+function TPatientCommunicationCT.GetPreferred: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fPreferred, TBooleanCT));
+end;
+
+{ TPaymentNoticeCT }
+
+function TPaymentNoticeCT.GetRequest: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fRequest, TReferenceCT));
+end;
+
+function TPaymentNoticeCT.GetResponse: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fResponse, TReferenceCT));
+end;
+
+function TPaymentNoticeCT.GetProvider: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fProvider, TReferenceCT));
+end;
+
+function TPaymentNoticeCT.GetPaymentDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fPaymentDate, TDateCT));
+end;
+
+function TPaymentNoticeCT.GetPayee: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fPayee, TReferenceCT));
+end;
+
+function TPaymentNoticeCT.GetPaymentStatus: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fPaymentStatus, TCodeableConceptCT));
+end;
+
+{ TPaymentReconciliationCT }
+
+function TPaymentReconciliationCT.GetPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fPeriod, TPeriodCT));
+end;
+
+function TPaymentReconciliationCT.GetPaymentIssuer: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fPaymentIssuer, TReferenceCT));
+end;
+
+function TPaymentReconciliationCT.GetRequest: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fRequest, TReferenceCT));
+end;
+
+function TPaymentReconciliationCT.GetRequestor: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fRequestor, TReferenceCT));
+end;
+
+function TPaymentReconciliationCT.GetOutcome: TRemittanceOutcomeCT;
+begin
+  Result := TRemittanceOutcomeCT(Lazy(fOutcome, TRemittanceOutcomeCT));
+end;
+
+function TPaymentReconciliationCT.GetDisposition: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDisposition, TStringCT));
+end;
+
+function TPaymentReconciliationCT.GetPaymentIdentifier: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fPaymentIdentifier, TIdentifierCT));
+end;
+
+function TPaymentReconciliationCT.GetFormCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fFormCode, TCodeableConceptCT));
+end;
+
+{ TPaymentReconciliationDetailCT }
+
+function TPaymentReconciliationDetailCT.GetIdentifier: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fIdentifier, TIdentifierCT));
+end;
+
+function TPaymentReconciliationDetailCT.GetPredecessor: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fPredecessor, TIdentifierCT));
+end;
+
+function TPaymentReconciliationDetailCT.GetRequest: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fRequest, TReferenceCT));
+end;
+
+function TPaymentReconciliationDetailCT.GetSubmitter: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSubmitter, TReferenceCT));
+end;
+
+function TPaymentReconciliationDetailCT.GetResponse: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fResponse, TReferenceCT));
+end;
+
+function TPaymentReconciliationDetailCT.GetDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fDate, TDateCT));
+end;
+
+function TPaymentReconciliationDetailCT.GetResponsible: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fResponsible, TReferenceCT));
+end;
+
+function TPaymentReconciliationDetailCT.GetPayee: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fPayee, TReferenceCT));
+end;
+
+function TPaymentReconciliationDetailCT.GetAmount: TMoneyCT;
+begin
+  Result := TMoneyCT(Lazy(fAmount, TMoneyCT));
+end;
+
+{ TPaymentReconciliationProcessNoteCT }
+
+function TPaymentReconciliationProcessNoteCT.GetType: TNoteTypeCT;
+begin
+  Result := TNoteTypeCT(Lazy(fType, TNoteTypeCT));
+end;
+
+function TPaymentReconciliationProcessNoteCT.GetText: TStringCT;
+begin
+  Result := TStringCT(Lazy(fText, TStringCT));
+end;
+
+{ TPersonCT }
+
+function TPersonCT.GetGender: TAdministrativeGenderCT;
+begin
+  Result := TAdministrativeGenderCT(Lazy(fGender, TAdministrativeGenderCT));
+end;
+
+function TPersonCT.GetBirthDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fBirthDate, TDateCT));
+end;
+
+function TPersonCT.GetPhoto: TAttachmentCT;
+begin
+  Result := TAttachmentCT(Lazy(fPhoto, TAttachmentCT));
+end;
+
+function TPersonCT.GetManagingOrganization: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fManagingOrganization, TReferenceCT));
+end;
+
+function TPersonCT.GetActive: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fActive, TBooleanCT));
+end;
+
+{ TPersonLinkCT }
+
+function TPersonLinkCT.GetAssurance: TIdentityAssuranceLevelCT;
+begin
+  Result := TIdentityAssuranceLevelCT(Lazy(fAssurance, TIdentityAssuranceLevelCT));
+end;
+
 { TPlanDefinitionCT }
+
+function TPlanDefinitionCT.GetUrl: TUriCT;
+begin
+  Result := TUriCT(Lazy(fUrl, TUriCT));
+end;
+
+function TPlanDefinitionCT.GetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersion, TStringCT));
+end;
+
+function TPlanDefinitionCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TPlanDefinitionCT.GetTitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTitle, TStringCT));
+end;
+
+function TPlanDefinitionCT.GetSubtitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fSubtitle, TStringCT));
+end;
+
+function TPlanDefinitionCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TPlanDefinitionCT.GetExperimental: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fExperimental, TBooleanCT));
+end;
 
 function TPlanDefinitionCT.GetSubjectCodeableConcept: TCodeableConceptCT;
 begin
@@ -28711,7 +40577,74 @@ begin
   Result := Chosen('Subject');
 end;
 
+function TPlanDefinitionCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
+
+function TPlanDefinitionCT.GetPublisher: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPublisher, TStringCT));
+end;
+
+function TPlanDefinitionCT.GetDescription: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDescription, TMarkdownCT));
+end;
+
+function TPlanDefinitionCT.GetPurpose: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fPurpose, TMarkdownCT));
+end;
+
+function TPlanDefinitionCT.GetUsage: TStringCT;
+begin
+  Result := TStringCT(Lazy(fUsage, TStringCT));
+end;
+
+function TPlanDefinitionCT.GetCopyright: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fCopyright, TMarkdownCT));
+end;
+
+function TPlanDefinitionCT.GetApprovalDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fApprovalDate, TDateCT));
+end;
+
+function TPlanDefinitionCT.GetLastReviewDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fLastReviewDate, TDateCT));
+end;
+
+function TPlanDefinitionCT.GetEffectivePeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fEffectivePeriod, TPeriodCT));
+end;
+
+{ TPlanDefinitionGoalCT }
+
+function TPlanDefinitionGoalCT.GetCategory: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCategory, TCodeableConceptCT));
+end;
+
+function TPlanDefinitionGoalCT.GetPriority: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fPriority, TCodeableConceptCT));
+end;
+
+function TPlanDefinitionGoalCT.GetStart: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fStart, TCodeableConceptCT));
+end;
+
 { TPlanDefinitionTargetCT }
+
+function TPlanDefinitionTargetCT.GetMeasure: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fMeasure, TCodeableConceptCT));
+end;
 
 function TPlanDefinitionTargetCT.GetDetailQuantity: TQuantityCT;
 begin
@@ -28733,7 +40666,37 @@ begin
   Result := Chosen('Detail');
 end;
 
+function TPlanDefinitionTargetCT.GetDue: TDurationCT;
+begin
+  Result := TDurationCT(Lazy(fDue, TDurationCT));
+end;
+
 { TPlanDefinitionActionCT }
+
+function TPlanDefinitionActionCT.GetPrefix: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPrefix, TStringCT));
+end;
+
+function TPlanDefinitionActionCT.GetTitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTitle, TStringCT));
+end;
+
+function TPlanDefinitionActionCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+function TPlanDefinitionActionCT.GetTextEquivalent: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTextEquivalent, TStringCT));
+end;
+
+function TPlanDefinitionActionCT.GetPriority: TRequestPriorityCT;
+begin
+  Result := TRequestPriorityCT(Lazy(fPriority, TRequestPriorityCT));
+end;
 
 function TPlanDefinitionActionCT.GetSubjectCodeableConcept: TCodeableConceptCT;
 begin
@@ -28785,6 +40748,36 @@ begin
   Result := Chosen('Timing');
 end;
 
+function TPlanDefinitionActionCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TPlanDefinitionActionCT.GetGroupingBehavior: TActionGroupingBehaviorCT;
+begin
+  Result := TActionGroupingBehaviorCT(Lazy(fGroupingBehavior, TActionGroupingBehaviorCT));
+end;
+
+function TPlanDefinitionActionCT.GetSelectionBehavior: TActionSelectionBehaviorCT;
+begin
+  Result := TActionSelectionBehaviorCT(Lazy(fSelectionBehavior, TActionSelectionBehaviorCT));
+end;
+
+function TPlanDefinitionActionCT.GetRequiredBehavior: TActionRequiredBehaviorCT;
+begin
+  Result := TActionRequiredBehaviorCT(Lazy(fRequiredBehavior, TActionRequiredBehaviorCT));
+end;
+
+function TPlanDefinitionActionCT.GetPrecheckBehavior: TActionPrecheckBehaviorCT;
+begin
+  Result := TActionPrecheckBehaviorCT(Lazy(fPrecheckBehavior, TActionPrecheckBehaviorCT));
+end;
+
+function TPlanDefinitionActionCT.GetCardinalityBehavior: TActionCardinalityBehaviorCT;
+begin
+  Result := TActionCardinalityBehaviorCT(Lazy(fCardinalityBehavior, TActionCardinalityBehaviorCT));
+end;
+
 function TPlanDefinitionActionCT.GetDefinitionCanonical: TCanonicalCT;
 begin
   Result := TCanonicalCT(Lazy(fDefinitionCanonical, TCanonicalCT));
@@ -28798,6 +40791,18 @@ end;
 function TPlanDefinitionActionCT.GetDefinitionChosen: TBasite;
 begin
   Result := Chosen('Definition');
+end;
+
+function TPlanDefinitionActionCT.GetTransform: TCanonicalCT;
+begin
+  Result := TCanonicalCT(Lazy(fTransform, TCanonicalCT));
+end;
+
+{ TPlanDefinitionConditionCT }
+
+function TPlanDefinitionConditionCT.GetExpression: TExpressionCT;
+begin
+  Result := TExpressionCT(Lazy(fExpression, TExpressionCT));
 end;
 
 { TPlanDefinitionRelatedActionCT }
@@ -28817,7 +40822,126 @@ begin
   Result := Chosen('Offset');
 end;
 
+{ TPlanDefinitionParticipantCT }
+
+function TPlanDefinitionParticipantCT.GetRole: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fRole, TCodeableConceptCT));
+end;
+
+{ TPlanDefinitionDynamicValueCT }
+
+function TPlanDefinitionDynamicValueCT.GetPath: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPath, TStringCT));
+end;
+
+function TPlanDefinitionDynamicValueCT.GetExpression: TExpressionCT;
+begin
+  Result := TExpressionCT(Lazy(fExpression, TExpressionCT));
+end;
+
+{ TPractitionerCT }
+
+function TPractitionerCT.GetActive: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fActive, TBooleanCT));
+end;
+
+function TPractitionerCT.GetGender: TAdministrativeGenderCT;
+begin
+  Result := TAdministrativeGenderCT(Lazy(fGender, TAdministrativeGenderCT));
+end;
+
+function TPractitionerCT.GetBirthDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fBirthDate, TDateCT));
+end;
+
+{ TPractitionerQualificationCT }
+
+function TPractitionerQualificationCT.GetPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fPeriod, TPeriodCT));
+end;
+
+function TPractitionerQualificationCT.GetIssuer: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fIssuer, TReferenceCT));
+end;
+
+{ TPractitionerRoleCT }
+
+function TPractitionerRoleCT.GetActive: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fActive, TBooleanCT));
+end;
+
+function TPractitionerRoleCT.GetPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fPeriod, TPeriodCT));
+end;
+
+function TPractitionerRoleCT.GetPractitioner: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fPractitioner, TReferenceCT));
+end;
+
+function TPractitionerRoleCT.GetOrganization: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fOrganization, TReferenceCT));
+end;
+
+function TPractitionerRoleCT.GetAvailabilityExceptions: TStringCT;
+begin
+  Result := TStringCT(Lazy(fAvailabilityExceptions, TStringCT));
+end;
+
+{ TPractitionerRoleAvailableTimeCT }
+
+function TPractitionerRoleAvailableTimeCT.GetAllDay: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fAllDay, TBooleanCT));
+end;
+
+function TPractitionerRoleAvailableTimeCT.GetAvailableStartTime: TTimeCT;
+begin
+  Result := TTimeCT(Lazy(fAvailableStartTime, TTimeCT));
+end;
+
+function TPractitionerRoleAvailableTimeCT.GetAvailableEndTime: TTimeCT;
+begin
+  Result := TTimeCT(Lazy(fAvailableEndTime, TTimeCT));
+end;
+
+{ TPractitionerRoleNotAvailableCT }
+
+function TPractitionerRoleNotAvailableCT.GetDuring: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fDuring, TPeriodCT));
+end;
+
 { TProcedureCT }
+
+function TProcedureCT.GetStatusReason: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fStatusReason, TCodeableConceptCT));
+end;
+
+function TProcedureCT.GetCategory: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCategory, TCodeableConceptCT));
+end;
+
+function TProcedureCT.GetCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCode, TCodeableConceptCT));
+end;
+
+function TProcedureCT.GetEncounter: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fEncounter, TReferenceCT));
+end;
 
 function TProcedureCT.GetPerformedDateTime: TDateTimeCT;
 begin
@@ -28849,6 +40973,45 @@ begin
   Result := Chosen('Performed');
 end;
 
+function TProcedureCT.GetRecorder: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fRecorder, TReferenceCT));
+end;
+
+function TProcedureCT.GetAsserter: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fAsserter, TReferenceCT));
+end;
+
+function TProcedureCT.GetLocation: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fLocation, TReferenceCT));
+end;
+
+function TProcedureCT.GetOutcome: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fOutcome, TCodeableConceptCT));
+end;
+
+{ TProcedurePerformerCT }
+
+function TProcedurePerformerCT.GetFunction: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fFunction, TCodeableConceptCT));
+end;
+
+function TProcedurePerformerCT.GetOnBehalfOf: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fOnBehalfOf, TReferenceCT));
+end;
+
+{ TProcedureFocalDeviceCT }
+
+function TProcedureFocalDeviceCT.GetAction: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fAction, TCodeableConceptCT));
+end;
+
 { TProvenanceCT }
 
 function TProvenanceCT.GetOccurredPeriod: TPeriodCT;
@@ -28864,6 +41027,142 @@ end;
 function TProvenanceCT.GetOccurredChosen: TBasite;
 begin
   Result := Chosen('Occurred');
+end;
+
+function TProvenanceCT.GetLocation: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fLocation, TReferenceCT));
+end;
+
+function TProvenanceCT.GetActivity: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fActivity, TCodeableConceptCT));
+end;
+
+{ TProvenanceAgentCT }
+
+function TProvenanceAgentCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TProvenanceAgentCT.GetOnBehalfOf: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fOnBehalfOf, TReferenceCT));
+end;
+
+{ TQuestionnaireCT }
+
+function TQuestionnaireCT.GetUrl: TUriCT;
+begin
+  Result := TUriCT(Lazy(fUrl, TUriCT));
+end;
+
+function TQuestionnaireCT.GetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersion, TStringCT));
+end;
+
+function TQuestionnaireCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TQuestionnaireCT.GetTitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTitle, TStringCT));
+end;
+
+function TQuestionnaireCT.GetExperimental: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fExperimental, TBooleanCT));
+end;
+
+function TQuestionnaireCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
+
+function TQuestionnaireCT.GetPublisher: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPublisher, TStringCT));
+end;
+
+function TQuestionnaireCT.GetDescription: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDescription, TMarkdownCT));
+end;
+
+function TQuestionnaireCT.GetPurpose: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fPurpose, TMarkdownCT));
+end;
+
+function TQuestionnaireCT.GetCopyright: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fCopyright, TMarkdownCT));
+end;
+
+function TQuestionnaireCT.GetApprovalDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fApprovalDate, TDateCT));
+end;
+
+function TQuestionnaireCT.GetLastReviewDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fLastReviewDate, TDateCT));
+end;
+
+function TQuestionnaireCT.GetEffectivePeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fEffectivePeriod, TPeriodCT));
+end;
+
+{ TQuestionnaireItemCT }
+
+function TQuestionnaireItemCT.GetDefinition: TUriCT;
+begin
+  Result := TUriCT(Lazy(fDefinition, TUriCT));
+end;
+
+function TQuestionnaireItemCT.GetPrefix: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPrefix, TStringCT));
+end;
+
+function TQuestionnaireItemCT.GetText: TStringCT;
+begin
+  Result := TStringCT(Lazy(fText, TStringCT));
+end;
+
+function TQuestionnaireItemCT.GetEnableBehavior: TEnableWhenBehaviorCT;
+begin
+  Result := TEnableWhenBehaviorCT(Lazy(fEnableBehavior, TEnableWhenBehaviorCT));
+end;
+
+function TQuestionnaireItemCT.GetRequired: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fRequired, TBooleanCT));
+end;
+
+function TQuestionnaireItemCT.GetRepeats: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fRepeats, TBooleanCT));
+end;
+
+function TQuestionnaireItemCT.GetReadOnly: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fReadOnly, TBooleanCT));
+end;
+
+function TQuestionnaireItemCT.GetMaxLength: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fMaxLength, TIntegerCT));
+end;
+
+function TQuestionnaireItemCT.GetAnswerValueSet: TCanonicalCT;
+begin
+  Result := TCanonicalCT(Lazy(fAnswerValueSet, TCanonicalCT));
 end;
 
 { TQuestionnaireEnableWhenCT }
@@ -28960,6 +41259,11 @@ begin
   Result := Chosen('Value');
 end;
 
+function TQuestionnaireAnswerOptionCT.GetInitialSelected: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fInitialSelected, TBooleanCT));
+end;
+
 { TQuestionnaireInitialCT }
 
 function TQuestionnaireInitialCT.GetValueBoolean: TBooleanCT;
@@ -29025,6 +41329,55 @@ end;
 function TQuestionnaireInitialCT.GetValueChosen: TBasite;
 begin
   Result := Chosen('Value');
+end;
+
+{ TQuestionnaireResponseCT }
+
+function TQuestionnaireResponseCT.GetIdentifier: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fIdentifier, TIdentifierCT));
+end;
+
+function TQuestionnaireResponseCT.GetQuestionnaire: TCanonicalCT;
+begin
+  Result := TCanonicalCT(Lazy(fQuestionnaire, TCanonicalCT));
+end;
+
+function TQuestionnaireResponseCT.GetSubject: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSubject, TReferenceCT));
+end;
+
+function TQuestionnaireResponseCT.GetEncounter: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fEncounter, TReferenceCT));
+end;
+
+function TQuestionnaireResponseCT.GetAuthored: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fAuthored, TDateTimeCT));
+end;
+
+function TQuestionnaireResponseCT.GetAuthor: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fAuthor, TReferenceCT));
+end;
+
+function TQuestionnaireResponseCT.GetSource: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSource, TReferenceCT));
+end;
+
+{ TQuestionnaireResponseItemCT }
+
+function TQuestionnaireResponseItemCT.GetDefinition: TUriCT;
+begin
+  Result := TUriCT(Lazy(fDefinition, TUriCT));
+end;
+
+function TQuestionnaireResponseItemCT.GetText: TStringCT;
+begin
+  Result := TStringCT(Lazy(fText, TStringCT));
 end;
 
 { TQuestionnaireResponseAnswerCT }
@@ -29094,7 +41447,98 @@ begin
   Result := Chosen('Value');
 end;
 
+{ TRelatedPersonCT }
+
+function TRelatedPersonCT.GetActive: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fActive, TBooleanCT));
+end;
+
+function TRelatedPersonCT.GetGender: TAdministrativeGenderCT;
+begin
+  Result := TAdministrativeGenderCT(Lazy(fGender, TAdministrativeGenderCT));
+end;
+
+function TRelatedPersonCT.GetBirthDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fBirthDate, TDateCT));
+end;
+
+function TRelatedPersonCT.GetPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fPeriod, TPeriodCT));
+end;
+
+{ TRelatedPersonCommunicationCT }
+
+function TRelatedPersonCommunicationCT.GetPreferred: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fPreferred, TBooleanCT));
+end;
+
+{ TRequestGroupCT }
+
+function TRequestGroupCT.GetGroupIdentifier: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fGroupIdentifier, TIdentifierCT));
+end;
+
+function TRequestGroupCT.GetPriority: TRequestPriorityCT;
+begin
+  Result := TRequestPriorityCT(Lazy(fPriority, TRequestPriorityCT));
+end;
+
+function TRequestGroupCT.GetCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCode, TCodeableConceptCT));
+end;
+
+function TRequestGroupCT.GetSubject: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSubject, TReferenceCT));
+end;
+
+function TRequestGroupCT.GetEncounter: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fEncounter, TReferenceCT));
+end;
+
+function TRequestGroupCT.GetAuthoredOn: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fAuthoredOn, TDateTimeCT));
+end;
+
+function TRequestGroupCT.GetAuthor: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fAuthor, TReferenceCT));
+end;
+
 { TRequestGroupActionCT }
+
+function TRequestGroupActionCT.GetPrefix: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPrefix, TStringCT));
+end;
+
+function TRequestGroupActionCT.GetTitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTitle, TStringCT));
+end;
+
+function TRequestGroupActionCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+function TRequestGroupActionCT.GetTextEquivalent: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTextEquivalent, TStringCT));
+end;
+
+function TRequestGroupActionCT.GetPriority: TRequestPriorityCT;
+begin
+  Result := TRequestPriorityCT(Lazy(fPriority, TRequestPriorityCT));
+end;
 
 function TRequestGroupActionCT.GetTimingDateTime: TDateTimeCT;
 begin
@@ -29131,6 +41575,48 @@ begin
   Result := Chosen('Timing');
 end;
 
+function TRequestGroupActionCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TRequestGroupActionCT.GetGroupingBehavior: TActionGroupingBehaviorCT;
+begin
+  Result := TActionGroupingBehaviorCT(Lazy(fGroupingBehavior, TActionGroupingBehaviorCT));
+end;
+
+function TRequestGroupActionCT.GetSelectionBehavior: TActionSelectionBehaviorCT;
+begin
+  Result := TActionSelectionBehaviorCT(Lazy(fSelectionBehavior, TActionSelectionBehaviorCT));
+end;
+
+function TRequestGroupActionCT.GetRequiredBehavior: TActionRequiredBehaviorCT;
+begin
+  Result := TActionRequiredBehaviorCT(Lazy(fRequiredBehavior, TActionRequiredBehaviorCT));
+end;
+
+function TRequestGroupActionCT.GetPrecheckBehavior: TActionPrecheckBehaviorCT;
+begin
+  Result := TActionPrecheckBehaviorCT(Lazy(fPrecheckBehavior, TActionPrecheckBehaviorCT));
+end;
+
+function TRequestGroupActionCT.GetCardinalityBehavior: TActionCardinalityBehaviorCT;
+begin
+  Result := TActionCardinalityBehaviorCT(Lazy(fCardinalityBehavior, TActionCardinalityBehaviorCT));
+end;
+
+function TRequestGroupActionCT.GetResource: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fResource, TReferenceCT));
+end;
+
+{ TRequestGroupConditionCT }
+
+function TRequestGroupConditionCT.GetExpression: TExpressionCT;
+begin
+  Result := TExpressionCT(Lazy(fExpression, TExpressionCT));
+end;
+
 { TRequestGroupRelatedActionCT }
 
 function TRequestGroupRelatedActionCT.GetOffsetDuration: TDurationCT;
@@ -29150,6 +41636,41 @@ end;
 
 { TResearchDefinitionCT }
 
+function TResearchDefinitionCT.GetUrl: TUriCT;
+begin
+  Result := TUriCT(Lazy(fUrl, TUriCT));
+end;
+
+function TResearchDefinitionCT.GetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersion, TStringCT));
+end;
+
+function TResearchDefinitionCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TResearchDefinitionCT.GetTitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTitle, TStringCT));
+end;
+
+function TResearchDefinitionCT.GetShortTitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fShortTitle, TStringCT));
+end;
+
+function TResearchDefinitionCT.GetSubtitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fSubtitle, TStringCT));
+end;
+
+function TResearchDefinitionCT.GetExperimental: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fExperimental, TBooleanCT));
+end;
+
 function TResearchDefinitionCT.GetSubjectCodeableConcept: TCodeableConceptCT;
 begin
   Result := TCodeableConceptCT(Lazy(fSubjectCodeableConcept, TCodeableConceptCT));
@@ -29165,7 +41686,102 @@ begin
   Result := Chosen('Subject');
 end;
 
+function TResearchDefinitionCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
+
+function TResearchDefinitionCT.GetPublisher: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPublisher, TStringCT));
+end;
+
+function TResearchDefinitionCT.GetDescription: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDescription, TMarkdownCT));
+end;
+
+function TResearchDefinitionCT.GetPurpose: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fPurpose, TMarkdownCT));
+end;
+
+function TResearchDefinitionCT.GetUsage: TStringCT;
+begin
+  Result := TStringCT(Lazy(fUsage, TStringCT));
+end;
+
+function TResearchDefinitionCT.GetCopyright: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fCopyright, TMarkdownCT));
+end;
+
+function TResearchDefinitionCT.GetApprovalDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fApprovalDate, TDateCT));
+end;
+
+function TResearchDefinitionCT.GetLastReviewDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fLastReviewDate, TDateCT));
+end;
+
+function TResearchDefinitionCT.GetEffectivePeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fEffectivePeriod, TPeriodCT));
+end;
+
+function TResearchDefinitionCT.GetExposure: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fExposure, TReferenceCT));
+end;
+
+function TResearchDefinitionCT.GetExposureAlternative: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fExposureAlternative, TReferenceCT));
+end;
+
+function TResearchDefinitionCT.GetOutcome: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fOutcome, TReferenceCT));
+end;
+
 { TResearchElementDefinitionCT }
+
+function TResearchElementDefinitionCT.GetUrl: TUriCT;
+begin
+  Result := TUriCT(Lazy(fUrl, TUriCT));
+end;
+
+function TResearchElementDefinitionCT.GetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersion, TStringCT));
+end;
+
+function TResearchElementDefinitionCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TResearchElementDefinitionCT.GetTitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTitle, TStringCT));
+end;
+
+function TResearchElementDefinitionCT.GetShortTitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fShortTitle, TStringCT));
+end;
+
+function TResearchElementDefinitionCT.GetSubtitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fSubtitle, TStringCT));
+end;
+
+function TResearchElementDefinitionCT.GetExperimental: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fExperimental, TBooleanCT));
+end;
 
 function TResearchElementDefinitionCT.GetSubjectCodeableConcept: TCodeableConceptCT;
 begin
@@ -29180,6 +41796,56 @@ end;
 function TResearchElementDefinitionCT.GetSubjectChosen: TBasite;
 begin
   Result := Chosen('Subject');
+end;
+
+function TResearchElementDefinitionCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
+
+function TResearchElementDefinitionCT.GetPublisher: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPublisher, TStringCT));
+end;
+
+function TResearchElementDefinitionCT.GetDescription: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDescription, TMarkdownCT));
+end;
+
+function TResearchElementDefinitionCT.GetPurpose: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fPurpose, TMarkdownCT));
+end;
+
+function TResearchElementDefinitionCT.GetUsage: TStringCT;
+begin
+  Result := TStringCT(Lazy(fUsage, TStringCT));
+end;
+
+function TResearchElementDefinitionCT.GetCopyright: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fCopyright, TMarkdownCT));
+end;
+
+function TResearchElementDefinitionCT.GetApprovalDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fApprovalDate, TDateCT));
+end;
+
+function TResearchElementDefinitionCT.GetLastReviewDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fLastReviewDate, TDateCT));
+end;
+
+function TResearchElementDefinitionCT.GetEffectivePeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fEffectivePeriod, TPeriodCT));
+end;
+
+function TResearchElementDefinitionCT.GetVariableType: TVariableTypeCT;
+begin
+  Result := TVariableTypeCT(Lazy(fVariableType, TVariableTypeCT));
 end;
 
 { TResearchElementDefinitionCharacteristicCT }
@@ -29209,6 +41875,21 @@ begin
   Result := Chosen('Definition');
 end;
 
+function TResearchElementDefinitionCharacteristicCT.GetExclude: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fExclude, TBooleanCT));
+end;
+
+function TResearchElementDefinitionCharacteristicCT.GetUnitOfMeasure: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fUnitOfMeasure, TCodeableConceptCT));
+end;
+
+function TResearchElementDefinitionCharacteristicCT.GetStudyEffectiveDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fStudyEffectiveDescription, TStringCT));
+end;
+
 function TResearchElementDefinitionCharacteristicCT.GetStudyEffectiveDateTime: TDateTimeCT;
 begin
   Result := TDateTimeCT(Lazy(fStudyEffectiveDateTime, TDateTimeCT));
@@ -29232,6 +41913,21 @@ end;
 function TResearchElementDefinitionCharacteristicCT.GetStudyEffectiveChosen: TBasite;
 begin
   Result := Chosen('StudyEffective');
+end;
+
+function TResearchElementDefinitionCharacteristicCT.GetStudyEffectiveTimeFromStart: TDurationCT;
+begin
+  Result := TDurationCT(Lazy(fStudyEffectiveTimeFromStart, TDurationCT));
+end;
+
+function TResearchElementDefinitionCharacteristicCT.GetStudyEffectiveGroupMeasure: TGroupMeasureCT;
+begin
+  Result := TGroupMeasureCT(Lazy(fStudyEffectiveGroupMeasure, TGroupMeasureCT));
+end;
+
+function TResearchElementDefinitionCharacteristicCT.GetParticipantEffectiveDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fParticipantEffectiveDescription, TStringCT));
 end;
 
 function TResearchElementDefinitionCharacteristicCT.GetParticipantEffectiveDateTime: TDateTimeCT;
@@ -29259,7 +41955,130 @@ begin
   Result := Chosen('ParticipantEffective');
 end;
 
+function TResearchElementDefinitionCharacteristicCT.GetParticipantEffectiveTimeFromStart: TDurationCT;
+begin
+  Result := TDurationCT(Lazy(fParticipantEffectiveTimeFromStart, TDurationCT));
+end;
+
+function TResearchElementDefinitionCharacteristicCT.GetParticipantEffectiveGroupMeasure: TGroupMeasureCT;
+begin
+  Result := TGroupMeasureCT(Lazy(fParticipantEffectiveGroupMeasure, TGroupMeasureCT));
+end;
+
+{ TResearchStudyCT }
+
+function TResearchStudyCT.GetTitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTitle, TStringCT));
+end;
+
+function TResearchStudyCT.GetPrimaryPurposeType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fPrimaryPurposeType, TCodeableConceptCT));
+end;
+
+function TResearchStudyCT.GetPhase: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fPhase, TCodeableConceptCT));
+end;
+
+function TResearchStudyCT.GetDescription: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDescription, TMarkdownCT));
+end;
+
+function TResearchStudyCT.GetPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fPeriod, TPeriodCT));
+end;
+
+function TResearchStudyCT.GetSponsor: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSponsor, TReferenceCT));
+end;
+
+function TResearchStudyCT.GetPrincipalInvestigator: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fPrincipalInvestigator, TReferenceCT));
+end;
+
+function TResearchStudyCT.GetReasonStopped: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fReasonStopped, TCodeableConceptCT));
+end;
+
+{ TResearchStudyArmCT }
+
+function TResearchStudyArmCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TResearchStudyArmCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+{ TResearchStudyObjectiveCT }
+
+function TResearchStudyObjectiveCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TResearchStudyObjectiveCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+{ TResearchSubjectCT }
+
+function TResearchSubjectCT.GetPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fPeriod, TPeriodCT));
+end;
+
+function TResearchSubjectCT.GetAssignedArm: TStringCT;
+begin
+  Result := TStringCT(Lazy(fAssignedArm, TStringCT));
+end;
+
+function TResearchSubjectCT.GetActualArm: TStringCT;
+begin
+  Result := TStringCT(Lazy(fActualArm, TStringCT));
+end;
+
+function TResearchSubjectCT.GetConsent: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fConsent, TReferenceCT));
+end;
+
 { TRiskAssessmentCT }
+
+function TRiskAssessmentCT.GetBasedOn: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fBasedOn, TReferenceCT));
+end;
+
+function TRiskAssessmentCT.GetParent: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fParent, TReferenceCT));
+end;
+
+function TRiskAssessmentCT.GetMethod: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fMethod, TCodeableConceptCT));
+end;
+
+function TRiskAssessmentCT.GetCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCode, TCodeableConceptCT));
+end;
+
+function TRiskAssessmentCT.GetEncounter: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fEncounter, TReferenceCT));
+end;
 
 function TRiskAssessmentCT.GetOccurrenceDateTime: TDateTimeCT;
 begin
@@ -29276,7 +42095,27 @@ begin
   Result := Chosen('Occurrence');
 end;
 
+function TRiskAssessmentCT.GetCondition: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fCondition, TReferenceCT));
+end;
+
+function TRiskAssessmentCT.GetPerformer: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fPerformer, TReferenceCT));
+end;
+
+function TRiskAssessmentCT.GetMitigation: TStringCT;
+begin
+  Result := TStringCT(Lazy(fMitigation, TStringCT));
+end;
+
 { TRiskAssessmentPredictionCT }
+
+function TRiskAssessmentPredictionCT.GetOutcome: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fOutcome, TCodeableConceptCT));
+end;
 
 function TRiskAssessmentPredictionCT.GetProbabilityDecimal: TDecimalCT;
 begin
@@ -29291,6 +42130,16 @@ end;
 function TRiskAssessmentPredictionCT.GetProbabilityChosen: TBasite;
 begin
   Result := Chosen('Probability');
+end;
+
+function TRiskAssessmentPredictionCT.GetQualitativeRisk: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fQualitativeRisk, TCodeableConceptCT));
+end;
+
+function TRiskAssessmentPredictionCT.GetRelativeRisk: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fRelativeRisk, TDecimalCT));
 end;
 
 function TRiskAssessmentPredictionCT.GetWhenPeriod: TPeriodCT;
@@ -29308,7 +42157,266 @@ begin
   Result := Chosen('When');
 end;
 
+function TRiskAssessmentPredictionCT.GetRationale: TStringCT;
+begin
+  Result := TStringCT(Lazy(fRationale, TStringCT));
+end;
+
+{ TRiskEvidenceSynthesisCT }
+
+function TRiskEvidenceSynthesisCT.GetUrl: TUriCT;
+begin
+  Result := TUriCT(Lazy(fUrl, TUriCT));
+end;
+
+function TRiskEvidenceSynthesisCT.GetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersion, TStringCT));
+end;
+
+function TRiskEvidenceSynthesisCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TRiskEvidenceSynthesisCT.GetTitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTitle, TStringCT));
+end;
+
+function TRiskEvidenceSynthesisCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
+
+function TRiskEvidenceSynthesisCT.GetPublisher: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPublisher, TStringCT));
+end;
+
+function TRiskEvidenceSynthesisCT.GetDescription: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDescription, TMarkdownCT));
+end;
+
+function TRiskEvidenceSynthesisCT.GetCopyright: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fCopyright, TMarkdownCT));
+end;
+
+function TRiskEvidenceSynthesisCT.GetApprovalDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fApprovalDate, TDateCT));
+end;
+
+function TRiskEvidenceSynthesisCT.GetLastReviewDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fLastReviewDate, TDateCT));
+end;
+
+function TRiskEvidenceSynthesisCT.GetEffectivePeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fEffectivePeriod, TPeriodCT));
+end;
+
+function TRiskEvidenceSynthesisCT.GetSynthesisType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fSynthesisType, TCodeableConceptCT));
+end;
+
+function TRiskEvidenceSynthesisCT.GetStudyType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fStudyType, TCodeableConceptCT));
+end;
+
+function TRiskEvidenceSynthesisCT.GetExposure: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fExposure, TReferenceCT));
+end;
+
+function TRiskEvidenceSynthesisCT.GetSampleSize: TRiskEvidenceSynthesisSampleSizeCT;
+begin
+  Result := TRiskEvidenceSynthesisSampleSizeCT(Lazy(fSampleSize, TRiskEvidenceSynthesisSampleSizeCT));
+end;
+
+function TRiskEvidenceSynthesisCT.GetRiskEstimate: TRiskEvidenceSynthesisRiskEstimateCT;
+begin
+  Result := TRiskEvidenceSynthesisRiskEstimateCT(Lazy(fRiskEstimate, TRiskEvidenceSynthesisRiskEstimateCT));
+end;
+
+{ TRiskEvidenceSynthesisSampleSizeCT }
+
+function TRiskEvidenceSynthesisSampleSizeCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+function TRiskEvidenceSynthesisSampleSizeCT.GetNumberOfStudies: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fNumberOfStudies, TIntegerCT));
+end;
+
+function TRiskEvidenceSynthesisSampleSizeCT.GetNumberOfParticipants: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fNumberOfParticipants, TIntegerCT));
+end;
+
+{ TRiskEvidenceSynthesisRiskEstimateCT }
+
+function TRiskEvidenceSynthesisRiskEstimateCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+function TRiskEvidenceSynthesisRiskEstimateCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TRiskEvidenceSynthesisRiskEstimateCT.GetValue: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fValue, TDecimalCT));
+end;
+
+function TRiskEvidenceSynthesisRiskEstimateCT.GetUnitOfMeasure: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fUnitOfMeasure, TCodeableConceptCT));
+end;
+
+function TRiskEvidenceSynthesisRiskEstimateCT.GetDenominatorCount: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fDenominatorCount, TIntegerCT));
+end;
+
+function TRiskEvidenceSynthesisRiskEstimateCT.GetNumeratorCount: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fNumeratorCount, TIntegerCT));
+end;
+
+{ TRiskEvidenceSynthesisPrecisionEstimateCT }
+
+function TRiskEvidenceSynthesisPrecisionEstimateCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TRiskEvidenceSynthesisPrecisionEstimateCT.GetLevel: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fLevel, TDecimalCT));
+end;
+
+function TRiskEvidenceSynthesisPrecisionEstimateCT.GetFrom: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fFrom, TDecimalCT));
+end;
+
+function TRiskEvidenceSynthesisPrecisionEstimateCT.GetTo: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fTo, TDecimalCT));
+end;
+
+{ TRiskEvidenceSynthesisCertaintySubcomponentCT }
+
+function TRiskEvidenceSynthesisCertaintySubcomponentCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+{ TScheduleCT }
+
+function TScheduleCT.GetActive: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fActive, TBooleanCT));
+end;
+
+function TScheduleCT.GetPlanningHorizon: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fPlanningHorizon, TPeriodCT));
+end;
+
+function TScheduleCT.GetComment: TStringCT;
+begin
+  Result := TStringCT(Lazy(fComment, TStringCT));
+end;
+
+{ TSearchParameterCT }
+
+function TSearchParameterCT.GetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersion, TStringCT));
+end;
+
+function TSearchParameterCT.GetDerivedFrom: TCanonicalCT;
+begin
+  Result := TCanonicalCT(Lazy(fDerivedFrom, TCanonicalCT));
+end;
+
+function TSearchParameterCT.GetExperimental: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fExperimental, TBooleanCT));
+end;
+
+function TSearchParameterCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
+
+function TSearchParameterCT.GetPublisher: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPublisher, TStringCT));
+end;
+
+function TSearchParameterCT.GetPurpose: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fPurpose, TMarkdownCT));
+end;
+
+function TSearchParameterCT.GetExpression: TStringCT;
+begin
+  Result := TStringCT(Lazy(fExpression, TStringCT));
+end;
+
+function TSearchParameterCT.GetXpath: TStringCT;
+begin
+  Result := TStringCT(Lazy(fXpath, TStringCT));
+end;
+
+function TSearchParameterCT.GetXpathUsage: TXPathUsageTypeCT;
+begin
+  Result := TXPathUsageTypeCT(Lazy(fXpathUsage, TXPathUsageTypeCT));
+end;
+
+function TSearchParameterCT.GetMultipleOr: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fMultipleOr, TBooleanCT));
+end;
+
+function TSearchParameterCT.GetMultipleAnd: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fMultipleAnd, TBooleanCT));
+end;
+
 { TServiceRequestCT }
+
+function TServiceRequestCT.GetRequisition: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fRequisition, TIdentifierCT));
+end;
+
+function TServiceRequestCT.GetPriority: TRequestPriorityCT;
+begin
+  Result := TRequestPriorityCT(Lazy(fPriority, TRequestPriorityCT));
+end;
+
+function TServiceRequestCT.GetDoNotPerform: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fDoNotPerform, TBooleanCT));
+end;
+
+function TServiceRequestCT.GetCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCode, TCodeableConceptCT));
+end;
 
 function TServiceRequestCT.GetQuantityQuantity: TQuantityCT;
 begin
@@ -29328,6 +42436,11 @@ end;
 function TServiceRequestCT.GetQuantityChosen: TBasite;
 begin
   Result := Chosen('Quantity');
+end;
+
+function TServiceRequestCT.GetEncounter: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fEncounter, TReferenceCT));
 end;
 
 function TServiceRequestCT.GetOccurrenceDateTime: TDateTimeCT;
@@ -29365,7 +42478,81 @@ begin
   Result := Chosen('AsNeeded');
 end;
 
+function TServiceRequestCT.GetAuthoredOn: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fAuthoredOn, TDateTimeCT));
+end;
+
+function TServiceRequestCT.GetRequester: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fRequester, TReferenceCT));
+end;
+
+function TServiceRequestCT.GetPerformerType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fPerformerType, TCodeableConceptCT));
+end;
+
+function TServiceRequestCT.GetPatientInstruction: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPatientInstruction, TStringCT));
+end;
+
+{ TSlotCT }
+
+function TSlotCT.GetAppointmentType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fAppointmentType, TCodeableConceptCT));
+end;
+
+function TSlotCT.GetOverbooked: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fOverbooked, TBooleanCT));
+end;
+
+function TSlotCT.GetComment: TStringCT;
+begin
+  Result := TStringCT(Lazy(fComment, TStringCT));
+end;
+
+{ TSpecimenCT }
+
+function TSpecimenCT.GetAccessionIdentifier: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fAccessionIdentifier, TIdentifierCT));
+end;
+
+function TSpecimenCT.GetStatus: TSpecimenStatusCT;
+begin
+  Result := TSpecimenStatusCT(Lazy(fStatus, TSpecimenStatusCT));
+end;
+
+function TSpecimenCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TSpecimenCT.GetSubject: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSubject, TReferenceCT));
+end;
+
+function TSpecimenCT.GetReceivedTime: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fReceivedTime, TDateTimeCT));
+end;
+
+function TSpecimenCT.GetCollection: TSpecimenCollectionCT;
+begin
+  Result := TSpecimenCollectionCT(Lazy(fCollection, TSpecimenCollectionCT));
+end;
+
 { TSpecimenCollectionCT }
+
+function TSpecimenCollectionCT.GetCollector: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fCollector, TReferenceCT));
+end;
 
 function TSpecimenCollectionCT.GetCollectedDateTime: TDateTimeCT;
 begin
@@ -29380,6 +42567,26 @@ end;
 function TSpecimenCollectionCT.GetCollectedChosen: TBasite;
 begin
   Result := Chosen('Collected');
+end;
+
+function TSpecimenCollectionCT.GetDuration: TDurationCT;
+begin
+  Result := TDurationCT(Lazy(fDuration, TDurationCT));
+end;
+
+function TSpecimenCollectionCT.GetQuantity: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fQuantity, TQuantityCT));
+end;
+
+function TSpecimenCollectionCT.GetMethod: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fMethod, TCodeableConceptCT));
+end;
+
+function TSpecimenCollectionCT.GetBodySite: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fBodySite, TCodeableConceptCT));
 end;
 
 function TSpecimenCollectionCT.GetFastingStatusCodeableConcept: TCodeableConceptCT;
@@ -29399,6 +42606,16 @@ end;
 
 { TSpecimenProcessingCT }
 
+function TSpecimenProcessingCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+function TSpecimenProcessingCT.GetProcedure: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fProcedure, TCodeableConceptCT));
+end;
+
 function TSpecimenProcessingCT.GetTimeDateTime: TDateTimeCT;
 begin
   Result := TDateTimeCT(Lazy(fTimeDateTime, TDateTimeCT));
@@ -29416,6 +42633,26 @@ end;
 
 { TSpecimenContainerCT }
 
+function TSpecimenContainerCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+function TSpecimenContainerCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TSpecimenContainerCT.GetCapacity: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fCapacity, TQuantityCT));
+end;
+
+function TSpecimenContainerCT.GetSpecimenQuantity: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fSpecimenQuantity, TQuantityCT));
+end;
+
 function TSpecimenContainerCT.GetAdditiveCodeableConcept: TCodeableConceptCT;
 begin
   Result := TCodeableConceptCT(Lazy(fAdditiveCodeableConcept, TCodeableConceptCT));
@@ -29431,7 +42668,76 @@ begin
   Result := Chosen('Additive');
 end;
 
+{ TSpecimenDefinitionCT }
+
+function TSpecimenDefinitionCT.GetIdentifier: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fIdentifier, TIdentifierCT));
+end;
+
+function TSpecimenDefinitionCT.GetTypeCollected: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fTypeCollected, TCodeableConceptCT));
+end;
+
+function TSpecimenDefinitionCT.GetTimeAspect: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTimeAspect, TStringCT));
+end;
+
+{ TSpecimenDefinitionTypeTestedCT }
+
+function TSpecimenDefinitionTypeTestedCT.GetIsDerived: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fIsDerived, TBooleanCT));
+end;
+
+function TSpecimenDefinitionTypeTestedCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TSpecimenDefinitionTypeTestedCT.GetContainer: TSpecimenDefinitionContainerCT;
+begin
+  Result := TSpecimenDefinitionContainerCT(Lazy(fContainer, TSpecimenDefinitionContainerCT));
+end;
+
+function TSpecimenDefinitionTypeTestedCT.GetRequirement: TStringCT;
+begin
+  Result := TStringCT(Lazy(fRequirement, TStringCT));
+end;
+
+function TSpecimenDefinitionTypeTestedCT.GetRetentionTime: TDurationCT;
+begin
+  Result := TDurationCT(Lazy(fRetentionTime, TDurationCT));
+end;
+
 { TSpecimenDefinitionContainerCT }
+
+function TSpecimenDefinitionContainerCT.GetMaterial: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fMaterial, TCodeableConceptCT));
+end;
+
+function TSpecimenDefinitionContainerCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TSpecimenDefinitionContainerCT.GetCap: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCap, TCodeableConceptCT));
+end;
+
+function TSpecimenDefinitionContainerCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+function TSpecimenDefinitionContainerCT.GetCapacity: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fCapacity, TQuantityCT));
+end;
 
 function TSpecimenDefinitionContainerCT.GetMinimumVolumeQuantity: TQuantityCT;
 begin
@@ -29446,6 +42752,11 @@ end;
 function TSpecimenDefinitionContainerCT.GetMinimumVolumeChosen: TBasite;
 begin
   Result := Chosen('MinimumVolume');
+end;
+
+function TSpecimenDefinitionContainerCT.GetPreparation: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPreparation, TStringCT));
 end;
 
 { TSpecimenDefinitionAdditiveCT }
@@ -29465,7 +42776,213 @@ begin
   Result := Chosen('Additive');
 end;
 
+{ TSpecimenDefinitionHandlingCT }
+
+function TSpecimenDefinitionHandlingCT.GetTemperatureQualifier: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fTemperatureQualifier, TCodeableConceptCT));
+end;
+
+function TSpecimenDefinitionHandlingCT.GetTemperatureRange: TRangeCT;
+begin
+  Result := TRangeCT(Lazy(fTemperatureRange, TRangeCT));
+end;
+
+function TSpecimenDefinitionHandlingCT.GetMaxDuration: TDurationCT;
+begin
+  Result := TDurationCT(Lazy(fMaxDuration, TDurationCT));
+end;
+
+function TSpecimenDefinitionHandlingCT.GetInstruction: TStringCT;
+begin
+  Result := TStringCT(Lazy(fInstruction, TStringCT));
+end;
+
+{ TStructureDefinitionCT }
+
+function TStructureDefinitionCT.GetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersion, TStringCT));
+end;
+
+function TStructureDefinitionCT.GetTitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTitle, TStringCT));
+end;
+
+function TStructureDefinitionCT.GetExperimental: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fExperimental, TBooleanCT));
+end;
+
+function TStructureDefinitionCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
+
+function TStructureDefinitionCT.GetPublisher: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPublisher, TStringCT));
+end;
+
+function TStructureDefinitionCT.GetDescription: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDescription, TMarkdownCT));
+end;
+
+function TStructureDefinitionCT.GetPurpose: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fPurpose, TMarkdownCT));
+end;
+
+function TStructureDefinitionCT.GetCopyright: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fCopyright, TMarkdownCT));
+end;
+
+function TStructureDefinitionCT.GetFhirVersion: TFHIRVersionCT;
+begin
+  Result := TFHIRVersionCT(Lazy(fFhirVersion, TFHIRVersionCT));
+end;
+
+function TStructureDefinitionCT.GetBaseDefinition: TCanonicalCT;
+begin
+  Result := TCanonicalCT(Lazy(fBaseDefinition, TCanonicalCT));
+end;
+
+function TStructureDefinitionCT.GetDerivation: TTypeDerivationRuleCT;
+begin
+  Result := TTypeDerivationRuleCT(Lazy(fDerivation, TTypeDerivationRuleCT));
+end;
+
+function TStructureDefinitionCT.GetSnapshot: TStructureDefinitionSnapshotCT;
+begin
+  Result := TStructureDefinitionSnapshotCT(Lazy(fSnapshot, TStructureDefinitionSnapshotCT));
+end;
+
+function TStructureDefinitionCT.GetDifferential: TStructureDefinitionDifferentialCT;
+begin
+  Result := TStructureDefinitionDifferentialCT(Lazy(fDifferential, TStructureDefinitionDifferentialCT));
+end;
+
+{ TStructureDefinitionMappingCT }
+
+function TStructureDefinitionMappingCT.GetUri: TUriCT;
+begin
+  Result := TUriCT(Lazy(fUri, TUriCT));
+end;
+
+function TStructureDefinitionMappingCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TStructureDefinitionMappingCT.GetComment: TStringCT;
+begin
+  Result := TStringCT(Lazy(fComment, TStringCT));
+end;
+
+{ TStructureMapCT }
+
+function TStructureMapCT.GetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersion, TStringCT));
+end;
+
+function TStructureMapCT.GetTitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTitle, TStringCT));
+end;
+
+function TStructureMapCT.GetExperimental: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fExperimental, TBooleanCT));
+end;
+
+function TStructureMapCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
+
+function TStructureMapCT.GetPublisher: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPublisher, TStringCT));
+end;
+
+function TStructureMapCT.GetDescription: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDescription, TMarkdownCT));
+end;
+
+function TStructureMapCT.GetPurpose: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fPurpose, TMarkdownCT));
+end;
+
+function TStructureMapCT.GetCopyright: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fCopyright, TMarkdownCT));
+end;
+
+{ TStructureMapStructureCT }
+
+function TStructureMapStructureCT.GetAlias: TStringCT;
+begin
+  Result := TStringCT(Lazy(fAlias, TStringCT));
+end;
+
+function TStructureMapStructureCT.GetDocumentation: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDocumentation, TStringCT));
+end;
+
+{ TStructureMapGroupCT }
+
+function TStructureMapGroupCT.GetExtends: TIdCT;
+begin
+  Result := TIdCT(Lazy(fExtends, TIdCT));
+end;
+
+function TStructureMapGroupCT.GetDocumentation: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDocumentation, TStringCT));
+end;
+
+{ TStructureMapInputCT }
+
+function TStructureMapInputCT.GetType: TStringCT;
+begin
+  Result := TStringCT(Lazy(fType, TStringCT));
+end;
+
+function TStructureMapInputCT.GetDocumentation: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDocumentation, TStringCT));
+end;
+
+{ TStructureMapRuleCT }
+
+function TStructureMapRuleCT.GetDocumentation: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDocumentation, TStringCT));
+end;
+
 { TStructureMapSourceCT }
+
+function TStructureMapSourceCT.GetMin: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fMin, TIntegerCT));
+end;
+
+function TStructureMapSourceCT.GetMax: TStringCT;
+begin
+  Result := TStringCT(Lazy(fMax, TStringCT));
+end;
+
+function TStructureMapSourceCT.GetType: TStringCT;
+begin
+  Result := TStringCT(Lazy(fType, TStringCT));
+end;
 
 function TStructureMapSourceCT.GetDefaultValueBase64Binary: TBase64BinaryCT;
 begin
@@ -29722,6 +43239,68 @@ begin
   Result := Chosen('DefaultValue');
 end;
 
+function TStructureMapSourceCT.GetElement: TStringCT;
+begin
+  Result := TStringCT(Lazy(fElement, TStringCT));
+end;
+
+function TStructureMapSourceCT.GetListMode: TStructureMapSourceListModeCT;
+begin
+  Result := TStructureMapSourceListModeCT(Lazy(fListMode, TStructureMapSourceListModeCT));
+end;
+
+function TStructureMapSourceCT.GetVariable: TIdCT;
+begin
+  Result := TIdCT(Lazy(fVariable, TIdCT));
+end;
+
+function TStructureMapSourceCT.GetCondition: TStringCT;
+begin
+  Result := TStringCT(Lazy(fCondition, TStringCT));
+end;
+
+function TStructureMapSourceCT.GetCheck: TStringCT;
+begin
+  Result := TStringCT(Lazy(fCheck, TStringCT));
+end;
+
+function TStructureMapSourceCT.GetLogMessage: TStringCT;
+begin
+  Result := TStringCT(Lazy(fLogMessage, TStringCT));
+end;
+
+{ TStructureMapTargetCT }
+
+function TStructureMapTargetCT.GetContext: TIdCT;
+begin
+  Result := TIdCT(Lazy(fContext, TIdCT));
+end;
+
+function TStructureMapTargetCT.GetContextType: TStructureMapContextTypeCT;
+begin
+  Result := TStructureMapContextTypeCT(Lazy(fContextType, TStructureMapContextTypeCT));
+end;
+
+function TStructureMapTargetCT.GetElement: TStringCT;
+begin
+  Result := TStringCT(Lazy(fElement, TStringCT));
+end;
+
+function TStructureMapTargetCT.GetVariable: TIdCT;
+begin
+  Result := TIdCT(Lazy(fVariable, TIdCT));
+end;
+
+function TStructureMapTargetCT.GetListRuleId: TIdCT;
+begin
+  Result := TIdCT(Lazy(fListRuleId, TIdCT));
+end;
+
+function TStructureMapTargetCT.GetTransform: TStructureMapTransformCT;
+begin
+  Result := TStructureMapTransformCT(Lazy(fTransform, TStructureMapTransformCT));
+end;
+
 { TStructureMapParameterCT }
 
 function TStructureMapParameterCT.GetValueId: TIdCT;
@@ -29754,7 +43333,65 @@ begin
   Result := Chosen('Value');
 end;
 
+{ TSubscriptionCT }
+
+function TSubscriptionCT.GetEnd: TInstantCT;
+begin
+  Result := TInstantCT(Lazy(fEnd, TInstantCT));
+end;
+
+function TSubscriptionCT.GetError: TStringCT;
+begin
+  Result := TStringCT(Lazy(fError, TStringCT));
+end;
+
+{ TSubscriptionChannelCT }
+
+function TSubscriptionChannelCT.GetEndpoint: TUrlCT;
+begin
+  Result := TUrlCT(Lazy(fEndpoint, TUrlCT));
+end;
+
+function TSubscriptionChannelCT.GetPayload: TCodeCT;
+begin
+  Result := TCodeCT(Lazy(fPayload, TCodeCT));
+end;
+
+{ TSubstanceCT }
+
+function TSubstanceCT.GetStatus: TFHIRSubstanceStatusCT;
+begin
+  Result := TFHIRSubstanceStatusCT(Lazy(fStatus, TFHIRSubstanceStatusCT));
+end;
+
+function TSubstanceCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+{ TSubstanceInstanceCT }
+
+function TSubstanceInstanceCT.GetIdentifier: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fIdentifier, TIdentifierCT));
+end;
+
+function TSubstanceInstanceCT.GetExpiry: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fExpiry, TDateTimeCT));
+end;
+
+function TSubstanceInstanceCT.GetQuantity: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fQuantity, TQuantityCT));
+end;
+
 { TSubstanceIngredientCT }
+
+function TSubstanceIngredientCT.GetQuantity: TRatioCT;
+begin
+  Result := TRatioCT(Lazy(fQuantity, TRatioCT));
+end;
 
 function TSubstanceIngredientCT.GetSubstanceCodeableConcept: TCodeableConceptCT;
 begin
@@ -29771,7 +43408,326 @@ begin
   Result := Chosen('Substance');
 end;
 
+{ TSubstanceNucleicAcidCT }
+
+function TSubstanceNucleicAcidCT.GetSequenceType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fSequenceType, TCodeableConceptCT));
+end;
+
+function TSubstanceNucleicAcidCT.GetNumberOfSubunits: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fNumberOfSubunits, TIntegerCT));
+end;
+
+function TSubstanceNucleicAcidCT.GetAreaOfHybridisation: TStringCT;
+begin
+  Result := TStringCT(Lazy(fAreaOfHybridisation, TStringCT));
+end;
+
+function TSubstanceNucleicAcidCT.GetOligoNucleotideType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fOligoNucleotideType, TCodeableConceptCT));
+end;
+
+{ TSubstanceNucleicAcidSubunitCT }
+
+function TSubstanceNucleicAcidSubunitCT.GetSubunit: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fSubunit, TIntegerCT));
+end;
+
+function TSubstanceNucleicAcidSubunitCT.GetSequence: TStringCT;
+begin
+  Result := TStringCT(Lazy(fSequence, TStringCT));
+end;
+
+function TSubstanceNucleicAcidSubunitCT.GetLength: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fLength, TIntegerCT));
+end;
+
+function TSubstanceNucleicAcidSubunitCT.GetSequenceAttachment: TAttachmentCT;
+begin
+  Result := TAttachmentCT(Lazy(fSequenceAttachment, TAttachmentCT));
+end;
+
+function TSubstanceNucleicAcidSubunitCT.GetFivePrime: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fFivePrime, TCodeableConceptCT));
+end;
+
+function TSubstanceNucleicAcidSubunitCT.GetThreePrime: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fThreePrime, TCodeableConceptCT));
+end;
+
+{ TSubstanceNucleicAcidLinkageCT }
+
+function TSubstanceNucleicAcidLinkageCT.GetConnectivity: TStringCT;
+begin
+  Result := TStringCT(Lazy(fConnectivity, TStringCT));
+end;
+
+function TSubstanceNucleicAcidLinkageCT.GetIdentifier: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fIdentifier, TIdentifierCT));
+end;
+
+function TSubstanceNucleicAcidLinkageCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TSubstanceNucleicAcidLinkageCT.GetResidueSite: TStringCT;
+begin
+  Result := TStringCT(Lazy(fResidueSite, TStringCT));
+end;
+
+{ TSubstanceNucleicAcidSugarCT }
+
+function TSubstanceNucleicAcidSugarCT.GetIdentifier: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fIdentifier, TIdentifierCT));
+end;
+
+function TSubstanceNucleicAcidSugarCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TSubstanceNucleicAcidSugarCT.GetResidueSite: TStringCT;
+begin
+  Result := TStringCT(Lazy(fResidueSite, TStringCT));
+end;
+
+{ TSubstancePolymerCT }
+
+function TSubstancePolymerCT.GetClass: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fClass, TCodeableConceptCT));
+end;
+
+function TSubstancePolymerCT.GetGeometry: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fGeometry, TCodeableConceptCT));
+end;
+
+{ TSubstancePolymerMonomerSetCT }
+
+function TSubstancePolymerMonomerSetCT.GetRatioType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fRatioType, TCodeableConceptCT));
+end;
+
+{ TSubstancePolymerStartingMaterialCT }
+
+function TSubstancePolymerStartingMaterialCT.GetMaterial: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fMaterial, TCodeableConceptCT));
+end;
+
+function TSubstancePolymerStartingMaterialCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TSubstancePolymerStartingMaterialCT.GetIsDefining: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fIsDefining, TBooleanCT));
+end;
+
+function TSubstancePolymerStartingMaterialCT.GetAmount: TSubstanceAmountCT;
+begin
+  Result := TSubstanceAmountCT(Lazy(fAmount, TSubstanceAmountCT));
+end;
+
+{ TSubstancePolymerRepeatCT }
+
+function TSubstancePolymerRepeatCT.GetNumberOfUnits: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fNumberOfUnits, TIntegerCT));
+end;
+
+function TSubstancePolymerRepeatCT.GetAverageMolecularFormula: TStringCT;
+begin
+  Result := TStringCT(Lazy(fAverageMolecularFormula, TStringCT));
+end;
+
+function TSubstancePolymerRepeatCT.GetRepeatUnitAmountType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fRepeatUnitAmountType, TCodeableConceptCT));
+end;
+
+{ TSubstancePolymerRepeatUnitCT }
+
+function TSubstancePolymerRepeatUnitCT.GetOrientationOfPolymerisation: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fOrientationOfPolymerisation, TCodeableConceptCT));
+end;
+
+function TSubstancePolymerRepeatUnitCT.GetRepeatUnit: TStringCT;
+begin
+  Result := TStringCT(Lazy(fRepeatUnit, TStringCT));
+end;
+
+function TSubstancePolymerRepeatUnitCT.GetAmount: TSubstanceAmountCT;
+begin
+  Result := TSubstanceAmountCT(Lazy(fAmount, TSubstanceAmountCT));
+end;
+
+{ TSubstancePolymerDegreeOfPolymerisationCT }
+
+function TSubstancePolymerDegreeOfPolymerisationCT.GetDegree: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fDegree, TCodeableConceptCT));
+end;
+
+function TSubstancePolymerDegreeOfPolymerisationCT.GetAmount: TSubstanceAmountCT;
+begin
+  Result := TSubstanceAmountCT(Lazy(fAmount, TSubstanceAmountCT));
+end;
+
+{ TSubstancePolymerStructuralRepresentationCT }
+
+function TSubstancePolymerStructuralRepresentationCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TSubstancePolymerStructuralRepresentationCT.GetRepresentation: TStringCT;
+begin
+  Result := TStringCT(Lazy(fRepresentation, TStringCT));
+end;
+
+function TSubstancePolymerStructuralRepresentationCT.GetAttachment: TAttachmentCT;
+begin
+  Result := TAttachmentCT(Lazy(fAttachment, TAttachmentCT));
+end;
+
+{ TSubstanceProteinCT }
+
+function TSubstanceProteinCT.GetSequenceType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fSequenceType, TCodeableConceptCT));
+end;
+
+function TSubstanceProteinCT.GetNumberOfSubunits: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fNumberOfSubunits, TIntegerCT));
+end;
+
+{ TSubstanceProteinSubunitCT }
+
+function TSubstanceProteinSubunitCT.GetSubunit: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fSubunit, TIntegerCT));
+end;
+
+function TSubstanceProteinSubunitCT.GetSequence: TStringCT;
+begin
+  Result := TStringCT(Lazy(fSequence, TStringCT));
+end;
+
+function TSubstanceProteinSubunitCT.GetLength: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fLength, TIntegerCT));
+end;
+
+function TSubstanceProteinSubunitCT.GetSequenceAttachment: TAttachmentCT;
+begin
+  Result := TAttachmentCT(Lazy(fSequenceAttachment, TAttachmentCT));
+end;
+
+function TSubstanceProteinSubunitCT.GetNTerminalModificationId: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fNTerminalModificationId, TIdentifierCT));
+end;
+
+function TSubstanceProteinSubunitCT.GetNTerminalModification: TStringCT;
+begin
+  Result := TStringCT(Lazy(fNTerminalModification, TStringCT));
+end;
+
+function TSubstanceProteinSubunitCT.GetCTerminalModificationId: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fCTerminalModificationId, TIdentifierCT));
+end;
+
+function TSubstanceProteinSubunitCT.GetCTerminalModification: TStringCT;
+begin
+  Result := TStringCT(Lazy(fCTerminalModification, TStringCT));
+end;
+
+{ TSubstanceReferenceInformationCT }
+
+function TSubstanceReferenceInformationCT.GetComment: TStringCT;
+begin
+  Result := TStringCT(Lazy(fComment, TStringCT));
+end;
+
+{ TSubstanceReferenceInformationGeneCT }
+
+function TSubstanceReferenceInformationGeneCT.GetGeneSequenceOrigin: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fGeneSequenceOrigin, TCodeableConceptCT));
+end;
+
+function TSubstanceReferenceInformationGeneCT.GetGene: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fGene, TCodeableConceptCT));
+end;
+
+{ TSubstanceReferenceInformationGeneElementCT }
+
+function TSubstanceReferenceInformationGeneElementCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TSubstanceReferenceInformationGeneElementCT.GetElement: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fElement, TIdentifierCT));
+end;
+
+{ TSubstanceReferenceInformationClassificationCT }
+
+function TSubstanceReferenceInformationClassificationCT.GetDomain: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fDomain, TCodeableConceptCT));
+end;
+
+function TSubstanceReferenceInformationClassificationCT.GetClassification: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fClassification, TCodeableConceptCT));
+end;
+
 { TSubstanceReferenceInformationTargetCT }
+
+function TSubstanceReferenceInformationTargetCT.GetTarget: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fTarget, TIdentifierCT));
+end;
+
+function TSubstanceReferenceInformationTargetCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TSubstanceReferenceInformationTargetCT.GetInteraction: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fInteraction, TCodeableConceptCT));
+end;
+
+function TSubstanceReferenceInformationTargetCT.GetOrganism: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fOrganism, TCodeableConceptCT));
+end;
+
+function TSubstanceReferenceInformationTargetCT.GetOrganismType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fOrganismType, TCodeableConceptCT));
+end;
 
 function TSubstanceReferenceInformationTargetCT.GetAmountQuantity: TQuantityCT;
 begin
@@ -29793,7 +43749,263 @@ begin
   Result := Chosen('Amount');
 end;
 
+function TSubstanceReferenceInformationTargetCT.GetAmountType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fAmountType, TCodeableConceptCT));
+end;
+
+{ TSubstanceSourceMaterialCT }
+
+function TSubstanceSourceMaterialCT.GetSourceMaterialClass: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fSourceMaterialClass, TCodeableConceptCT));
+end;
+
+function TSubstanceSourceMaterialCT.GetSourceMaterialType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fSourceMaterialType, TCodeableConceptCT));
+end;
+
+function TSubstanceSourceMaterialCT.GetSourceMaterialState: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fSourceMaterialState, TCodeableConceptCT));
+end;
+
+function TSubstanceSourceMaterialCT.GetOrganismId: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fOrganismId, TIdentifierCT));
+end;
+
+function TSubstanceSourceMaterialCT.GetOrganismName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fOrganismName, TStringCT));
+end;
+
+function TSubstanceSourceMaterialCT.GetDevelopmentStage: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fDevelopmentStage, TCodeableConceptCT));
+end;
+
+function TSubstanceSourceMaterialCT.GetOrganism: TSubstanceSourceMaterialOrganismCT;
+begin
+  Result := TSubstanceSourceMaterialOrganismCT(Lazy(fOrganism, TSubstanceSourceMaterialOrganismCT));
+end;
+
+{ TSubstanceSourceMaterialFractionDescriptionCT }
+
+function TSubstanceSourceMaterialFractionDescriptionCT.GetFraction: TStringCT;
+begin
+  Result := TStringCT(Lazy(fFraction, TStringCT));
+end;
+
+function TSubstanceSourceMaterialFractionDescriptionCT.GetMaterialType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fMaterialType, TCodeableConceptCT));
+end;
+
+{ TSubstanceSourceMaterialOrganismCT }
+
+function TSubstanceSourceMaterialOrganismCT.GetFamily: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fFamily, TCodeableConceptCT));
+end;
+
+function TSubstanceSourceMaterialOrganismCT.GetGenus: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fGenus, TCodeableConceptCT));
+end;
+
+function TSubstanceSourceMaterialOrganismCT.GetSpecies: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fSpecies, TCodeableConceptCT));
+end;
+
+function TSubstanceSourceMaterialOrganismCT.GetIntraspecificType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fIntraspecificType, TCodeableConceptCT));
+end;
+
+function TSubstanceSourceMaterialOrganismCT.GetIntraspecificDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fIntraspecificDescription, TStringCT));
+end;
+
+function TSubstanceSourceMaterialOrganismCT.GetHybrid: TSubstanceSourceMaterialHybridCT;
+begin
+  Result := TSubstanceSourceMaterialHybridCT(Lazy(fHybrid, TSubstanceSourceMaterialHybridCT));
+end;
+
+function TSubstanceSourceMaterialOrganismCT.GetOrganismGeneral: TSubstanceSourceMaterialOrganismGeneralCT;
+begin
+  Result := TSubstanceSourceMaterialOrganismGeneralCT(Lazy(fOrganismGeneral, TSubstanceSourceMaterialOrganismGeneralCT));
+end;
+
+{ TSubstanceSourceMaterialAuthorCT }
+
+function TSubstanceSourceMaterialAuthorCT.GetAuthorType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fAuthorType, TCodeableConceptCT));
+end;
+
+function TSubstanceSourceMaterialAuthorCT.GetAuthorDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fAuthorDescription, TStringCT));
+end;
+
+{ TSubstanceSourceMaterialHybridCT }
+
+function TSubstanceSourceMaterialHybridCT.GetMaternalOrganismId: TStringCT;
+begin
+  Result := TStringCT(Lazy(fMaternalOrganismId, TStringCT));
+end;
+
+function TSubstanceSourceMaterialHybridCT.GetMaternalOrganismName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fMaternalOrganismName, TStringCT));
+end;
+
+function TSubstanceSourceMaterialHybridCT.GetPaternalOrganismId: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPaternalOrganismId, TStringCT));
+end;
+
+function TSubstanceSourceMaterialHybridCT.GetPaternalOrganismName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPaternalOrganismName, TStringCT));
+end;
+
+function TSubstanceSourceMaterialHybridCT.GetHybridType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fHybridType, TCodeableConceptCT));
+end;
+
+{ TSubstanceSourceMaterialOrganismGeneralCT }
+
+function TSubstanceSourceMaterialOrganismGeneralCT.GetKingdom: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fKingdom, TCodeableConceptCT));
+end;
+
+function TSubstanceSourceMaterialOrganismGeneralCT.GetPhylum: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fPhylum, TCodeableConceptCT));
+end;
+
+function TSubstanceSourceMaterialOrganismGeneralCT.GetClass: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fClass, TCodeableConceptCT));
+end;
+
+function TSubstanceSourceMaterialOrganismGeneralCT.GetOrder: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fOrder, TCodeableConceptCT));
+end;
+
+{ TSubstanceSourceMaterialPartDescriptionCT }
+
+function TSubstanceSourceMaterialPartDescriptionCT.GetPart: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fPart, TCodeableConceptCT));
+end;
+
+function TSubstanceSourceMaterialPartDescriptionCT.GetPartLocation: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fPartLocation, TCodeableConceptCT));
+end;
+
+{ TSubstanceSpecificationCT }
+
+function TSubstanceSpecificationCT.GetIdentifier: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fIdentifier, TIdentifierCT));
+end;
+
+function TSubstanceSpecificationCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TSubstanceSpecificationCT.GetStatus: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fStatus, TCodeableConceptCT));
+end;
+
+function TSubstanceSpecificationCT.GetDomain: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fDomain, TCodeableConceptCT));
+end;
+
+function TSubstanceSpecificationCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+function TSubstanceSpecificationCT.GetComment: TStringCT;
+begin
+  Result := TStringCT(Lazy(fComment, TStringCT));
+end;
+
+function TSubstanceSpecificationCT.GetReferenceInformation: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fReferenceInformation, TReferenceCT));
+end;
+
+function TSubstanceSpecificationCT.GetStructure: TSubstanceSpecificationStructureCT;
+begin
+  Result := TSubstanceSpecificationStructureCT(Lazy(fStructure, TSubstanceSpecificationStructureCT));
+end;
+
+function TSubstanceSpecificationCT.GetNucleicAcid: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fNucleicAcid, TReferenceCT));
+end;
+
+function TSubstanceSpecificationCT.GetPolymer: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fPolymer, TReferenceCT));
+end;
+
+function TSubstanceSpecificationCT.GetProtein: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fProtein, TReferenceCT));
+end;
+
+function TSubstanceSpecificationCT.GetSourceMaterial: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSourceMaterial, TReferenceCT));
+end;
+
 { TSubstanceSpecificationMoietyCT }
+
+function TSubstanceSpecificationMoietyCT.GetRole: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fRole, TCodeableConceptCT));
+end;
+
+function TSubstanceSpecificationMoietyCT.GetIdentifier: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fIdentifier, TIdentifierCT));
+end;
+
+function TSubstanceSpecificationMoietyCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TSubstanceSpecificationMoietyCT.GetStereochemistry: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fStereochemistry, TCodeableConceptCT));
+end;
+
+function TSubstanceSpecificationMoietyCT.GetOpticalActivity: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fOpticalActivity, TCodeableConceptCT));
+end;
+
+function TSubstanceSpecificationMoietyCT.GetMolecularFormula: TStringCT;
+begin
+  Result := TStringCT(Lazy(fMolecularFormula, TStringCT));
+end;
 
 function TSubstanceSpecificationMoietyCT.GetAmountQuantity: TQuantityCT;
 begin
@@ -29811,6 +44023,21 @@ begin
 end;
 
 { TSubstanceSpecificationPropertyCT }
+
+function TSubstanceSpecificationPropertyCT.GetCategory: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCategory, TCodeableConceptCT));
+end;
+
+function TSubstanceSpecificationPropertyCT.GetCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCode, TCodeableConceptCT));
+end;
+
+function TSubstanceSpecificationPropertyCT.GetParameters: TStringCT;
+begin
+  Result := TStringCT(Lazy(fParameters, TStringCT));
+end;
 
 function TSubstanceSpecificationPropertyCT.GetDefiningSubstanceReference: TReferenceCT;
 begin
@@ -29842,6 +44069,150 @@ begin
   Result := Chosen('Amount');
 end;
 
+{ TSubstanceSpecificationStructureCT }
+
+function TSubstanceSpecificationStructureCT.GetStereochemistry: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fStereochemistry, TCodeableConceptCT));
+end;
+
+function TSubstanceSpecificationStructureCT.GetOpticalActivity: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fOpticalActivity, TCodeableConceptCT));
+end;
+
+function TSubstanceSpecificationStructureCT.GetMolecularFormula: TStringCT;
+begin
+  Result := TStringCT(Lazy(fMolecularFormula, TStringCT));
+end;
+
+function TSubstanceSpecificationStructureCT.GetMolecularFormulaByMoiety: TStringCT;
+begin
+  Result := TStringCT(Lazy(fMolecularFormulaByMoiety, TStringCT));
+end;
+
+function TSubstanceSpecificationStructureCT.GetMolecularWeight: TSubstanceSpecificationMolecularWeightCT;
+begin
+  Result := TSubstanceSpecificationMolecularWeightCT(Lazy(fMolecularWeight, TSubstanceSpecificationMolecularWeightCT));
+end;
+
+{ TSubstanceSpecificationIsotopeCT }
+
+function TSubstanceSpecificationIsotopeCT.GetIdentifier: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fIdentifier, TIdentifierCT));
+end;
+
+function TSubstanceSpecificationIsotopeCT.GetName: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fName, TCodeableConceptCT));
+end;
+
+function TSubstanceSpecificationIsotopeCT.GetSubstitution: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fSubstitution, TCodeableConceptCT));
+end;
+
+function TSubstanceSpecificationIsotopeCT.GetHalfLife: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fHalfLife, TQuantityCT));
+end;
+
+function TSubstanceSpecificationIsotopeCT.GetMolecularWeight: TSubstanceSpecificationMolecularWeightCT;
+begin
+  Result := TSubstanceSpecificationMolecularWeightCT(Lazy(fMolecularWeight, TSubstanceSpecificationMolecularWeightCT));
+end;
+
+{ TSubstanceSpecificationMolecularWeightCT }
+
+function TSubstanceSpecificationMolecularWeightCT.GetMethod: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fMethod, TCodeableConceptCT));
+end;
+
+function TSubstanceSpecificationMolecularWeightCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TSubstanceSpecificationMolecularWeightCT.GetAmount: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fAmount, TQuantityCT));
+end;
+
+{ TSubstanceSpecificationRepresentationCT }
+
+function TSubstanceSpecificationRepresentationCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TSubstanceSpecificationRepresentationCT.GetRepresentation: TStringCT;
+begin
+  Result := TStringCT(Lazy(fRepresentation, TStringCT));
+end;
+
+function TSubstanceSpecificationRepresentationCT.GetAttachment: TAttachmentCT;
+begin
+  Result := TAttachmentCT(Lazy(fAttachment, TAttachmentCT));
+end;
+
+{ TSubstanceSpecificationCodeCT }
+
+function TSubstanceSpecificationCodeCT.GetCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCode, TCodeableConceptCT));
+end;
+
+function TSubstanceSpecificationCodeCT.GetStatus: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fStatus, TCodeableConceptCT));
+end;
+
+function TSubstanceSpecificationCodeCT.GetStatusDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fStatusDate, TDateTimeCT));
+end;
+
+function TSubstanceSpecificationCodeCT.GetComment: TStringCT;
+begin
+  Result := TStringCT(Lazy(fComment, TStringCT));
+end;
+
+{ TSubstanceSpecificationNameCT }
+
+function TSubstanceSpecificationNameCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TSubstanceSpecificationNameCT.GetStatus: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fStatus, TCodeableConceptCT));
+end;
+
+function TSubstanceSpecificationNameCT.GetPreferred: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fPreferred, TBooleanCT));
+end;
+
+{ TSubstanceSpecificationOfficialCT }
+
+function TSubstanceSpecificationOfficialCT.GetAuthority: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fAuthority, TCodeableConceptCT));
+end;
+
+function TSubstanceSpecificationOfficialCT.GetStatus: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fStatus, TCodeableConceptCT));
+end;
+
+function TSubstanceSpecificationOfficialCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
+
 { TSubstanceSpecificationRelationshipCT }
 
 function TSubstanceSpecificationRelationshipCT.GetSubstanceReference: TReferenceCT;
@@ -29857,6 +44228,16 @@ end;
 function TSubstanceSpecificationRelationshipCT.GetSubstanceChosen: TBasite;
 begin
   Result := Chosen('Substance');
+end;
+
+function TSubstanceSpecificationRelationshipCT.GetRelationship: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fRelationship, TCodeableConceptCT));
+end;
+
+function TSubstanceSpecificationRelationshipCT.GetIsDefining: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fIsDefining, TBooleanCT));
 end;
 
 function TSubstanceSpecificationRelationshipCT.GetAmountQuantity: TQuantityCT;
@@ -29884,7 +44265,37 @@ begin
   Result := Chosen('Amount');
 end;
 
+function TSubstanceSpecificationRelationshipCT.GetAmountRatioLowLimit: TRatioCT;
+begin
+  Result := TRatioCT(Lazy(fAmountRatioLowLimit, TRatioCT));
+end;
+
+function TSubstanceSpecificationRelationshipCT.GetAmountType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fAmountType, TCodeableConceptCT));
+end;
+
 { TSupplyDeliveryCT }
+
+function TSupplyDeliveryCT.GetStatus: TSupplyDeliveryStatusCT;
+begin
+  Result := TSupplyDeliveryStatusCT(Lazy(fStatus, TSupplyDeliveryStatusCT));
+end;
+
+function TSupplyDeliveryCT.GetPatient: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fPatient, TReferenceCT));
+end;
+
+function TSupplyDeliveryCT.GetType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fType, TCodeableConceptCT));
+end;
+
+function TSupplyDeliveryCT.GetSuppliedItem: TSupplyDeliverySuppliedItemCT;
+begin
+  Result := TSupplyDeliverySuppliedItemCT(Lazy(fSuppliedItem, TSupplyDeliverySuppliedItemCT));
+end;
 
 function TSupplyDeliveryCT.GetOccurrenceDateTime: TDateTimeCT;
 begin
@@ -29906,7 +44317,22 @@ begin
   Result := Chosen('Occurrence');
 end;
 
+function TSupplyDeliveryCT.GetSupplier: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fSupplier, TReferenceCT));
+end;
+
+function TSupplyDeliveryCT.GetDestination: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fDestination, TReferenceCT));
+end;
+
 { TSupplyDeliverySuppliedItemCT }
+
+function TSupplyDeliverySuppliedItemCT.GetQuantity: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fQuantity, TQuantityCT));
+end;
 
 function TSupplyDeliverySuppliedItemCT.GetItemCodeableConcept: TCodeableConceptCT;
 begin
@@ -29924,6 +44350,21 @@ begin
 end;
 
 { TSupplyRequestCT }
+
+function TSupplyRequestCT.GetStatus: TSupplyRequestStatusCT;
+begin
+  Result := TSupplyRequestStatusCT(Lazy(fStatus, TSupplyRequestStatusCT));
+end;
+
+function TSupplyRequestCT.GetCategory: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCategory, TCodeableConceptCT));
+end;
+
+function TSupplyRequestCT.GetPriority: TRequestPriorityCT;
+begin
+  Result := TRequestPriorityCT(Lazy(fPriority, TRequestPriorityCT));
+end;
 
 function TSupplyRequestCT.GetItemCodeableConcept: TCodeableConceptCT;
 begin
@@ -29960,7 +44401,32 @@ begin
   Result := Chosen('Occurrence');
 end;
 
+function TSupplyRequestCT.GetAuthoredOn: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fAuthoredOn, TDateTimeCT));
+end;
+
+function TSupplyRequestCT.GetRequester: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fRequester, TReferenceCT));
+end;
+
+function TSupplyRequestCT.GetDeliverFrom: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fDeliverFrom, TReferenceCT));
+end;
+
+function TSupplyRequestCT.GetDeliverTo: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fDeliverTo, TReferenceCT));
+end;
+
 { TSupplyRequestParameterCT }
+
+function TSupplyRequestParameterCT.GetCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCode, TCodeableConceptCT));
+end;
 
 function TSupplyRequestParameterCT.GetValueCodeableConcept: TCodeableConceptCT;
 begin
@@ -29985,6 +44451,120 @@ end;
 function TSupplyRequestParameterCT.GetValueChosen: TBasite;
 begin
   Result := Chosen('Value');
+end;
+
+{ TTaskCT }
+
+function TTaskCT.GetInstantiatesCanonical: TCanonicalCT;
+begin
+  Result := TCanonicalCT(Lazy(fInstantiatesCanonical, TCanonicalCT));
+end;
+
+function TTaskCT.GetInstantiatesUri: TUriCT;
+begin
+  Result := TUriCT(Lazy(fInstantiatesUri, TUriCT));
+end;
+
+function TTaskCT.GetGroupIdentifier: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fGroupIdentifier, TIdentifierCT));
+end;
+
+function TTaskCT.GetStatusReason: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fStatusReason, TCodeableConceptCT));
+end;
+
+function TTaskCT.GetBusinessStatus: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fBusinessStatus, TCodeableConceptCT));
+end;
+
+function TTaskCT.GetPriority: TRequestPriorityCT;
+begin
+  Result := TRequestPriorityCT(Lazy(fPriority, TRequestPriorityCT));
+end;
+
+function TTaskCT.GetCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCode, TCodeableConceptCT));
+end;
+
+function TTaskCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+function TTaskCT.GetFocus: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fFocus, TReferenceCT));
+end;
+
+function TTaskCT.GetFor: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fFor, TReferenceCT));
+end;
+
+function TTaskCT.GetEncounter: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fEncounter, TReferenceCT));
+end;
+
+function TTaskCT.GetExecutionPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fExecutionPeriod, TPeriodCT));
+end;
+
+function TTaskCT.GetAuthoredOn: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fAuthoredOn, TDateTimeCT));
+end;
+
+function TTaskCT.GetLastModified: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fLastModified, TDateTimeCT));
+end;
+
+function TTaskCT.GetRequester: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fRequester, TReferenceCT));
+end;
+
+function TTaskCT.GetOwner: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fOwner, TReferenceCT));
+end;
+
+function TTaskCT.GetLocation: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fLocation, TReferenceCT));
+end;
+
+function TTaskCT.GetReasonCode: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fReasonCode, TCodeableConceptCT));
+end;
+
+function TTaskCT.GetReasonReference: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fReasonReference, TReferenceCT));
+end;
+
+function TTaskCT.GetRestriction: TTaskRestrictionCT;
+begin
+  Result := TTaskRestrictionCT(Lazy(fRestriction, TTaskRestrictionCT));
+end;
+
+{ TTaskRestrictionCT }
+
+function TTaskRestrictionCT.GetRepetitions: TPositiveIntCT;
+begin
+  Result := TPositiveIntCT(Lazy(fRepetitions, TPositiveIntCT));
+end;
+
+function TTaskRestrictionCT.GetPeriod: TPeriodCT;
+begin
+  Result := TPeriodCT(Lazy(fPeriod, TPeriodCT));
 end;
 
 { TTaskInputCT }
@@ -30501,6 +45081,748 @@ begin
   Result := Chosen('Value');
 end;
 
+{ TTerminologyCapabilitiesCT }
+
+function TTerminologyCapabilitiesCT.GetUrl: TUriCT;
+begin
+  Result := TUriCT(Lazy(fUrl, TUriCT));
+end;
+
+function TTerminologyCapabilitiesCT.GetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersion, TStringCT));
+end;
+
+function TTerminologyCapabilitiesCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TTerminologyCapabilitiesCT.GetTitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTitle, TStringCT));
+end;
+
+function TTerminologyCapabilitiesCT.GetExperimental: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fExperimental, TBooleanCT));
+end;
+
+function TTerminologyCapabilitiesCT.GetPublisher: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPublisher, TStringCT));
+end;
+
+function TTerminologyCapabilitiesCT.GetDescription: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDescription, TMarkdownCT));
+end;
+
+function TTerminologyCapabilitiesCT.GetPurpose: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fPurpose, TMarkdownCT));
+end;
+
+function TTerminologyCapabilitiesCT.GetCopyright: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fCopyright, TMarkdownCT));
+end;
+
+function TTerminologyCapabilitiesCT.GetSoftware: TTerminologyCapabilitiesSoftwareCT;
+begin
+  Result := TTerminologyCapabilitiesSoftwareCT(Lazy(fSoftware, TTerminologyCapabilitiesSoftwareCT));
+end;
+
+function TTerminologyCapabilitiesCT.GetImplementation: TTerminologyCapabilitiesImplementationCT;
+begin
+  Result := TTerminologyCapabilitiesImplementationCT(Lazy(fImplementation, TTerminologyCapabilitiesImplementationCT));
+end;
+
+function TTerminologyCapabilitiesCT.GetLockedDate: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fLockedDate, TBooleanCT));
+end;
+
+function TTerminologyCapabilitiesCT.GetExpansion: TTerminologyCapabilitiesExpansionCT;
+begin
+  Result := TTerminologyCapabilitiesExpansionCT(Lazy(fExpansion, TTerminologyCapabilitiesExpansionCT));
+end;
+
+function TTerminologyCapabilitiesCT.GetCodeSearch: TCodeSearchSupportCT;
+begin
+  Result := TCodeSearchSupportCT(Lazy(fCodeSearch, TCodeSearchSupportCT));
+end;
+
+function TTerminologyCapabilitiesCT.GetValidateCode: TTerminologyCapabilitiesValidateCodeCT;
+begin
+  Result := TTerminologyCapabilitiesValidateCodeCT(Lazy(fValidateCode, TTerminologyCapabilitiesValidateCodeCT));
+end;
+
+function TTerminologyCapabilitiesCT.GetTranslation: TTerminologyCapabilitiesTranslationCT;
+begin
+  Result := TTerminologyCapabilitiesTranslationCT(Lazy(fTranslation, TTerminologyCapabilitiesTranslationCT));
+end;
+
+function TTerminologyCapabilitiesCT.GetClosure: TTerminologyCapabilitiesClosureCT;
+begin
+  Result := TTerminologyCapabilitiesClosureCT(Lazy(fClosure, TTerminologyCapabilitiesClosureCT));
+end;
+
+{ TTerminologyCapabilitiesSoftwareCT }
+
+function TTerminologyCapabilitiesSoftwareCT.GetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersion, TStringCT));
+end;
+
+{ TTerminologyCapabilitiesImplementationCT }
+
+function TTerminologyCapabilitiesImplementationCT.GetUrl: TUrlCT;
+begin
+  Result := TUrlCT(Lazy(fUrl, TUrlCT));
+end;
+
+{ TTerminologyCapabilitiesCodeSystemCT }
+
+function TTerminologyCapabilitiesCodeSystemCT.GetUri: TCanonicalCT;
+begin
+  Result := TCanonicalCT(Lazy(fUri, TCanonicalCT));
+end;
+
+function TTerminologyCapabilitiesCodeSystemCT.GetSubsumption: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fSubsumption, TBooleanCT));
+end;
+
+{ TTerminologyCapabilitiesVersionCT }
+
+function TTerminologyCapabilitiesVersionCT.GetCode: TStringCT;
+begin
+  Result := TStringCT(Lazy(fCode, TStringCT));
+end;
+
+function TTerminologyCapabilitiesVersionCT.GetIsDefault: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fIsDefault, TBooleanCT));
+end;
+
+function TTerminologyCapabilitiesVersionCT.GetCompositional: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fCompositional, TBooleanCT));
+end;
+
+{ TTerminologyCapabilitiesExpansionCT }
+
+function TTerminologyCapabilitiesExpansionCT.GetHierarchical: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fHierarchical, TBooleanCT));
+end;
+
+function TTerminologyCapabilitiesExpansionCT.GetPaging: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fPaging, TBooleanCT));
+end;
+
+function TTerminologyCapabilitiesExpansionCT.GetIncomplete: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fIncomplete, TBooleanCT));
+end;
+
+function TTerminologyCapabilitiesExpansionCT.GetTextFilter: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fTextFilter, TMarkdownCT));
+end;
+
+{ TTerminologyCapabilitiesParameterCT }
+
+function TTerminologyCapabilitiesParameterCT.GetDocumentation: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDocumentation, TStringCT));
+end;
+
+{ TTerminologyCapabilitiesClosureCT }
+
+function TTerminologyCapabilitiesClosureCT.GetTranslation: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fTranslation, TBooleanCT));
+end;
+
+{ TTestReportCT }
+
+function TTestReportCT.GetIdentifier: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fIdentifier, TIdentifierCT));
+end;
+
+function TTestReportCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TTestReportCT.GetScore: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fScore, TDecimalCT));
+end;
+
+function TTestReportCT.GetTester: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTester, TStringCT));
+end;
+
+function TTestReportCT.GetIssued: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fIssued, TDateTimeCT));
+end;
+
+function TTestReportCT.GetSetup: TTestReportSetupCT;
+begin
+  Result := TTestReportSetupCT(Lazy(fSetup, TTestReportSetupCT));
+end;
+
+function TTestReportCT.GetTeardown: TTestReportTeardownCT;
+begin
+  Result := TTestReportTeardownCT(Lazy(fTeardown, TTestReportTeardownCT));
+end;
+
+{ TTestReportParticipantCT }
+
+function TTestReportParticipantCT.GetDisplay: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDisplay, TStringCT));
+end;
+
+{ TTestReportActionCT }
+
+function TTestReportActionCT.GetOperation: TTestReportOperationCT;
+begin
+  Result := TTestReportOperationCT(Lazy(fOperation, TTestReportOperationCT));
+end;
+
+function TTestReportActionCT.GetAssert: TTestReportAssertCT;
+begin
+  Result := TTestReportAssertCT(Lazy(fAssert, TTestReportAssertCT));
+end;
+
+{ TTestReportOperationCT }
+
+function TTestReportOperationCT.GetMessage: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fMessage, TMarkdownCT));
+end;
+
+function TTestReportOperationCT.GetDetail: TUriCT;
+begin
+  Result := TUriCT(Lazy(fDetail, TUriCT));
+end;
+
+{ TTestReportAssertCT }
+
+function TTestReportAssertCT.GetMessage: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fMessage, TMarkdownCT));
+end;
+
+function TTestReportAssertCT.GetDetail: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDetail, TStringCT));
+end;
+
+{ TTestReportTestCT }
+
+function TTestReportTestCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TTestReportTestCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+{ TTestReportAction1CT }
+
+function TTestReportAction1CT.GetOperation: TTestReportOperationCT;
+begin
+  Result := TTestReportOperationCT(Lazy(fOperation, TTestReportOperationCT));
+end;
+
+function TTestReportAction1CT.GetAssert: TTestReportAssertCT;
+begin
+  Result := TTestReportAssertCT(Lazy(fAssert, TTestReportAssertCT));
+end;
+
+{ TTestScriptCT }
+
+function TTestScriptCT.GetIdentifier: TIdentifierCT;
+begin
+  Result := TIdentifierCT(Lazy(fIdentifier, TIdentifierCT));
+end;
+
+function TTestScriptCT.GetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersion, TStringCT));
+end;
+
+function TTestScriptCT.GetTitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTitle, TStringCT));
+end;
+
+function TTestScriptCT.GetExperimental: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fExperimental, TBooleanCT));
+end;
+
+function TTestScriptCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
+
+function TTestScriptCT.GetPublisher: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPublisher, TStringCT));
+end;
+
+function TTestScriptCT.GetDescription: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDescription, TMarkdownCT));
+end;
+
+function TTestScriptCT.GetPurpose: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fPurpose, TMarkdownCT));
+end;
+
+function TTestScriptCT.GetCopyright: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fCopyright, TMarkdownCT));
+end;
+
+function TTestScriptCT.GetMetadata: TTestScriptMetadataCT;
+begin
+  Result := TTestScriptMetadataCT(Lazy(fMetadata, TTestScriptMetadataCT));
+end;
+
+function TTestScriptCT.GetSetup: TTestScriptSetupCT;
+begin
+  Result := TTestScriptSetupCT(Lazy(fSetup, TTestScriptSetupCT));
+end;
+
+function TTestScriptCT.GetTeardown: TTestScriptTeardownCT;
+begin
+  Result := TTestScriptTeardownCT(Lazy(fTeardown, TTestScriptTeardownCT));
+end;
+
+{ TTestScriptLinkCT }
+
+function TTestScriptLinkCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+{ TTestScriptCapabilityCT }
+
+function TTestScriptCapabilityCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+function TTestScriptCapabilityCT.GetDestination: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fDestination, TIntegerCT));
+end;
+
+{ TTestScriptFixtureCT }
+
+function TTestScriptFixtureCT.GetResource: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fResource, TReferenceCT));
+end;
+
+{ TTestScriptVariableCT }
+
+function TTestScriptVariableCT.GetDefaultValue: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDefaultValue, TStringCT));
+end;
+
+function TTestScriptVariableCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+function TTestScriptVariableCT.GetExpression: TStringCT;
+begin
+  Result := TStringCT(Lazy(fExpression, TStringCT));
+end;
+
+function TTestScriptVariableCT.GetHeaderField: TStringCT;
+begin
+  Result := TStringCT(Lazy(fHeaderField, TStringCT));
+end;
+
+function TTestScriptVariableCT.GetHint: TStringCT;
+begin
+  Result := TStringCT(Lazy(fHint, TStringCT));
+end;
+
+function TTestScriptVariableCT.GetPath: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPath, TStringCT));
+end;
+
+function TTestScriptVariableCT.GetSourceId: TIdCT;
+begin
+  Result := TIdCT(Lazy(fSourceId, TIdCT));
+end;
+
+{ TTestScriptActionCT }
+
+function TTestScriptActionCT.GetOperation: TTestScriptOperationCT;
+begin
+  Result := TTestScriptOperationCT(Lazy(fOperation, TTestScriptOperationCT));
+end;
+
+function TTestScriptActionCT.GetAssert: TTestScriptAssertCT;
+begin
+  Result := TTestScriptAssertCT(Lazy(fAssert, TTestScriptAssertCT));
+end;
+
+{ TTestScriptOperationCT }
+
+function TTestScriptOperationCT.GetType: TCodingCT;
+begin
+  Result := TCodingCT(Lazy(fType, TCodingCT));
+end;
+
+function TTestScriptOperationCT.GetResource: TCodeCT;
+begin
+  Result := TCodeCT(Lazy(fResource, TCodeCT));
+end;
+
+function TTestScriptOperationCT.GetLabel: TStringCT;
+begin
+  Result := TStringCT(Lazy(fLabel, TStringCT));
+end;
+
+function TTestScriptOperationCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+function TTestScriptOperationCT.GetAccept: TCodeCT;
+begin
+  Result := TCodeCT(Lazy(fAccept, TCodeCT));
+end;
+
+function TTestScriptOperationCT.GetContentType: TCodeCT;
+begin
+  Result := TCodeCT(Lazy(fContentType, TCodeCT));
+end;
+
+function TTestScriptOperationCT.GetDestination: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fDestination, TIntegerCT));
+end;
+
+function TTestScriptOperationCT.GetMethod: TTestScriptRequestMethodCodeCT;
+begin
+  Result := TTestScriptRequestMethodCodeCT(Lazy(fMethod, TTestScriptRequestMethodCodeCT));
+end;
+
+function TTestScriptOperationCT.GetOrigin: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fOrigin, TIntegerCT));
+end;
+
+function TTestScriptOperationCT.GetParams: TStringCT;
+begin
+  Result := TStringCT(Lazy(fParams, TStringCT));
+end;
+
+function TTestScriptOperationCT.GetRequestId: TIdCT;
+begin
+  Result := TIdCT(Lazy(fRequestId, TIdCT));
+end;
+
+function TTestScriptOperationCT.GetResponseId: TIdCT;
+begin
+  Result := TIdCT(Lazy(fResponseId, TIdCT));
+end;
+
+function TTestScriptOperationCT.GetSourceId: TIdCT;
+begin
+  Result := TIdCT(Lazy(fSourceId, TIdCT));
+end;
+
+function TTestScriptOperationCT.GetTargetId: TIdCT;
+begin
+  Result := TIdCT(Lazy(fTargetId, TIdCT));
+end;
+
+function TTestScriptOperationCT.GetUrl: TStringCT;
+begin
+  Result := TStringCT(Lazy(fUrl, TStringCT));
+end;
+
+{ TTestScriptAssertCT }
+
+function TTestScriptAssertCT.GetLabel: TStringCT;
+begin
+  Result := TStringCT(Lazy(fLabel, TStringCT));
+end;
+
+function TTestScriptAssertCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+function TTestScriptAssertCT.GetDirection: TAssertionDirectionTypeCT;
+begin
+  Result := TAssertionDirectionTypeCT(Lazy(fDirection, TAssertionDirectionTypeCT));
+end;
+
+function TTestScriptAssertCT.GetCompareToSourceId: TStringCT;
+begin
+  Result := TStringCT(Lazy(fCompareToSourceId, TStringCT));
+end;
+
+function TTestScriptAssertCT.GetCompareToSourceExpression: TStringCT;
+begin
+  Result := TStringCT(Lazy(fCompareToSourceExpression, TStringCT));
+end;
+
+function TTestScriptAssertCT.GetCompareToSourcePath: TStringCT;
+begin
+  Result := TStringCT(Lazy(fCompareToSourcePath, TStringCT));
+end;
+
+function TTestScriptAssertCT.GetContentType: TCodeCT;
+begin
+  Result := TCodeCT(Lazy(fContentType, TCodeCT));
+end;
+
+function TTestScriptAssertCT.GetExpression: TStringCT;
+begin
+  Result := TStringCT(Lazy(fExpression, TStringCT));
+end;
+
+function TTestScriptAssertCT.GetHeaderField: TStringCT;
+begin
+  Result := TStringCT(Lazy(fHeaderField, TStringCT));
+end;
+
+function TTestScriptAssertCT.GetMinimumId: TStringCT;
+begin
+  Result := TStringCT(Lazy(fMinimumId, TStringCT));
+end;
+
+function TTestScriptAssertCT.GetNavigationLinks: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fNavigationLinks, TBooleanCT));
+end;
+
+function TTestScriptAssertCT.GetOperator: TAssertionOperatorTypeCT;
+begin
+  Result := TAssertionOperatorTypeCT(Lazy(fOperator, TAssertionOperatorTypeCT));
+end;
+
+function TTestScriptAssertCT.GetPath: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPath, TStringCT));
+end;
+
+function TTestScriptAssertCT.GetRequestMethod: TTestScriptRequestMethodCodeCT;
+begin
+  Result := TTestScriptRequestMethodCodeCT(Lazy(fRequestMethod, TTestScriptRequestMethodCodeCT));
+end;
+
+function TTestScriptAssertCT.GetRequestURL: TStringCT;
+begin
+  Result := TStringCT(Lazy(fRequestURL, TStringCT));
+end;
+
+function TTestScriptAssertCT.GetResource: TCodeCT;
+begin
+  Result := TCodeCT(Lazy(fResource, TCodeCT));
+end;
+
+function TTestScriptAssertCT.GetResponse: TAssertionResponseTypesCT;
+begin
+  Result := TAssertionResponseTypesCT(Lazy(fResponse, TAssertionResponseTypesCT));
+end;
+
+function TTestScriptAssertCT.GetResponseCode: TStringCT;
+begin
+  Result := TStringCT(Lazy(fResponseCode, TStringCT));
+end;
+
+function TTestScriptAssertCT.GetSourceId: TIdCT;
+begin
+  Result := TIdCT(Lazy(fSourceId, TIdCT));
+end;
+
+function TTestScriptAssertCT.GetValidateProfileId: TIdCT;
+begin
+  Result := TIdCT(Lazy(fValidateProfileId, TIdCT));
+end;
+
+function TTestScriptAssertCT.GetValue: TStringCT;
+begin
+  Result := TStringCT(Lazy(fValue, TStringCT));
+end;
+
+{ TTestScriptTestCT }
+
+function TTestScriptTestCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TTestScriptTestCT.GetDescription: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDescription, TStringCT));
+end;
+
+{ TTestScriptAction1CT }
+
+function TTestScriptAction1CT.GetOperation: TTestScriptOperationCT;
+begin
+  Result := TTestScriptOperationCT(Lazy(fOperation, TTestScriptOperationCT));
+end;
+
+function TTestScriptAction1CT.GetAssert: TTestScriptAssertCT;
+begin
+  Result := TTestScriptAssertCT(Lazy(fAssert, TTestScriptAssertCT));
+end;
+
+{ TValueSetCT }
+
+function TValueSetCT.GetUrl: TUriCT;
+begin
+  Result := TUriCT(Lazy(fUrl, TUriCT));
+end;
+
+function TValueSetCT.GetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersion, TStringCT));
+end;
+
+function TValueSetCT.GetName: TStringCT;
+begin
+  Result := TStringCT(Lazy(fName, TStringCT));
+end;
+
+function TValueSetCT.GetTitle: TStringCT;
+begin
+  Result := TStringCT(Lazy(fTitle, TStringCT));
+end;
+
+function TValueSetCT.GetExperimental: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fExperimental, TBooleanCT));
+end;
+
+function TValueSetCT.GetDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fDate, TDateTimeCT));
+end;
+
+function TValueSetCT.GetPublisher: TStringCT;
+begin
+  Result := TStringCT(Lazy(fPublisher, TStringCT));
+end;
+
+function TValueSetCT.GetDescription: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fDescription, TMarkdownCT));
+end;
+
+function TValueSetCT.GetImmutable: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fImmutable, TBooleanCT));
+end;
+
+function TValueSetCT.GetPurpose: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fPurpose, TMarkdownCT));
+end;
+
+function TValueSetCT.GetCopyright: TMarkdownCT;
+begin
+  Result := TMarkdownCT(Lazy(fCopyright, TMarkdownCT));
+end;
+
+function TValueSetCT.GetCompose: TValueSetComposeCT;
+begin
+  Result := TValueSetComposeCT(Lazy(fCompose, TValueSetComposeCT));
+end;
+
+function TValueSetCT.GetExpansion: TValueSetExpansionCT;
+begin
+  Result := TValueSetExpansionCT(Lazy(fExpansion, TValueSetExpansionCT));
+end;
+
+{ TValueSetComposeCT }
+
+function TValueSetComposeCT.GetLockedDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fLockedDate, TDateCT));
+end;
+
+function TValueSetComposeCT.GetInactive: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fInactive, TBooleanCT));
+end;
+
+{ TValueSetIncludeCT }
+
+function TValueSetIncludeCT.GetSystem: TUriCT;
+begin
+  Result := TUriCT(Lazy(fSystem, TUriCT));
+end;
+
+function TValueSetIncludeCT.GetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersion, TStringCT));
+end;
+
+{ TValueSetConceptCT }
+
+function TValueSetConceptCT.GetDisplay: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDisplay, TStringCT));
+end;
+
+{ TValueSetDesignationCT }
+
+function TValueSetDesignationCT.GetLanguage: TCodeCT;
+begin
+  Result := TCodeCT(Lazy(fLanguage, TCodeCT));
+end;
+
+function TValueSetDesignationCT.GetUse: TCodingCT;
+begin
+  Result := TCodingCT(Lazy(fUse, TCodingCT));
+end;
+
+{ TValueSetExpansionCT }
+
+function TValueSetExpansionCT.GetIdentifier: TUriCT;
+begin
+  Result := TUriCT(Lazy(fIdentifier, TUriCT));
+end;
+
+function TValueSetExpansionCT.GetTotal: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fTotal, TIntegerCT));
+end;
+
+function TValueSetExpansionCT.GetOffset: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fOffset, TIntegerCT));
+end;
+
 { TValueSetParameterCT }
 
 function TValueSetParameterCT.GetValueString: TStringCT;
@@ -30541,6 +45863,215 @@ end;
 function TValueSetParameterCT.GetValueChosen: TBasite;
 begin
   Result := Chosen('Value');
+end;
+
+{ TValueSetContainsCT }
+
+function TValueSetContainsCT.GetSystem: TUriCT;
+begin
+  Result := TUriCT(Lazy(fSystem, TUriCT));
+end;
+
+function TValueSetContainsCT.GetAbstract: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fAbstract, TBooleanCT));
+end;
+
+function TValueSetContainsCT.GetInactive: TBooleanCT;
+begin
+  Result := TBooleanCT(Lazy(fInactive, TBooleanCT));
+end;
+
+function TValueSetContainsCT.GetVersion: TStringCT;
+begin
+  Result := TStringCT(Lazy(fVersion, TStringCT));
+end;
+
+function TValueSetContainsCT.GetCode: TCodeCT;
+begin
+  Result := TCodeCT(Lazy(fCode, TCodeCT));
+end;
+
+function TValueSetContainsCT.GetDisplay: TStringCT;
+begin
+  Result := TStringCT(Lazy(fDisplay, TStringCT));
+end;
+
+{ TVerificationResultCT }
+
+function TVerificationResultCT.GetNeed: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fNeed, TCodeableConceptCT));
+end;
+
+function TVerificationResultCT.GetStatusDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fStatusDate, TDateTimeCT));
+end;
+
+function TVerificationResultCT.GetValidationType: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fValidationType, TCodeableConceptCT));
+end;
+
+function TVerificationResultCT.GetFrequency: TTimingCT;
+begin
+  Result := TTimingCT(Lazy(fFrequency, TTimingCT));
+end;
+
+function TVerificationResultCT.GetLastPerformed: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fLastPerformed, TDateTimeCT));
+end;
+
+function TVerificationResultCT.GetNextScheduled: TDateCT;
+begin
+  Result := TDateCT(Lazy(fNextScheduled, TDateCT));
+end;
+
+function TVerificationResultCT.GetFailureAction: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fFailureAction, TCodeableConceptCT));
+end;
+
+function TVerificationResultCT.GetAttestation: TVerificationResultAttestationCT;
+begin
+  Result := TVerificationResultAttestationCT(Lazy(fAttestation, TVerificationResultAttestationCT));
+end;
+
+{ TVerificationResultPrimarySourceCT }
+
+function TVerificationResultPrimarySourceCT.GetWho: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fWho, TReferenceCT));
+end;
+
+function TVerificationResultPrimarySourceCT.GetValidationStatus: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fValidationStatus, TCodeableConceptCT));
+end;
+
+function TVerificationResultPrimarySourceCT.GetValidationDate: TDateTimeCT;
+begin
+  Result := TDateTimeCT(Lazy(fValidationDate, TDateTimeCT));
+end;
+
+function TVerificationResultPrimarySourceCT.GetCanPushUpdates: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCanPushUpdates, TCodeableConceptCT));
+end;
+
+{ TVerificationResultAttestationCT }
+
+function TVerificationResultAttestationCT.GetWho: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fWho, TReferenceCT));
+end;
+
+function TVerificationResultAttestationCT.GetOnBehalfOf: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fOnBehalfOf, TReferenceCT));
+end;
+
+function TVerificationResultAttestationCT.GetCommunicationMethod: TCodeableConceptCT;
+begin
+  Result := TCodeableConceptCT(Lazy(fCommunicationMethod, TCodeableConceptCT));
+end;
+
+function TVerificationResultAttestationCT.GetDate: TDateCT;
+begin
+  Result := TDateCT(Lazy(fDate, TDateCT));
+end;
+
+function TVerificationResultAttestationCT.GetSourceIdentityCertificate: TStringCT;
+begin
+  Result := TStringCT(Lazy(fSourceIdentityCertificate, TStringCT));
+end;
+
+function TVerificationResultAttestationCT.GetProxyIdentityCertificate: TStringCT;
+begin
+  Result := TStringCT(Lazy(fProxyIdentityCertificate, TStringCT));
+end;
+
+function TVerificationResultAttestationCT.GetProxySignature: TSignatureCT;
+begin
+  Result := TSignatureCT(Lazy(fProxySignature, TSignatureCT));
+end;
+
+function TVerificationResultAttestationCT.GetSourceSignature: TSignatureCT;
+begin
+  Result := TSignatureCT(Lazy(fSourceSignature, TSignatureCT));
+end;
+
+{ TVerificationResultValidatorCT }
+
+function TVerificationResultValidatorCT.GetIdentityCertificate: TStringCT;
+begin
+  Result := TStringCT(Lazy(fIdentityCertificate, TStringCT));
+end;
+
+function TVerificationResultValidatorCT.GetAttestationSignature: TSignatureCT;
+begin
+  Result := TSignatureCT(Lazy(fAttestationSignature, TSignatureCT));
+end;
+
+{ TVisionPrescriptionCT }
+
+function TVisionPrescriptionCT.GetEncounter: TReferenceCT;
+begin
+  Result := TReferenceCT(Lazy(fEncounter, TReferenceCT));
+end;
+
+{ TVisionPrescriptionLensSpecificationCT }
+
+function TVisionPrescriptionLensSpecificationCT.GetSphere: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fSphere, TDecimalCT));
+end;
+
+function TVisionPrescriptionLensSpecificationCT.GetCylinder: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fCylinder, TDecimalCT));
+end;
+
+function TVisionPrescriptionLensSpecificationCT.GetAxis: TIntegerCT;
+begin
+  Result := TIntegerCT(Lazy(fAxis, TIntegerCT));
+end;
+
+function TVisionPrescriptionLensSpecificationCT.GetAdd: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fAdd, TDecimalCT));
+end;
+
+function TVisionPrescriptionLensSpecificationCT.GetPower: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fPower, TDecimalCT));
+end;
+
+function TVisionPrescriptionLensSpecificationCT.GetBackCurve: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fBackCurve, TDecimalCT));
+end;
+
+function TVisionPrescriptionLensSpecificationCT.GetDiameter: TDecimalCT;
+begin
+  Result := TDecimalCT(Lazy(fDiameter, TDecimalCT));
+end;
+
+function TVisionPrescriptionLensSpecificationCT.GetDuration: TQuantityCT;
+begin
+  Result := TQuantityCT(Lazy(fDuration, TQuantityCT));
+end;
+
+function TVisionPrescriptionLensSpecificationCT.GetColor: TStringCT;
+begin
+  Result := TStringCT(Lazy(fColor, TStringCT));
+end;
+
+function TVisionPrescriptionLensSpecificationCT.GetBrand: TStringCT;
+begin
+  Result := TStringCT(Lazy(fBrand, TStringCT));
 end;
 
 initialization

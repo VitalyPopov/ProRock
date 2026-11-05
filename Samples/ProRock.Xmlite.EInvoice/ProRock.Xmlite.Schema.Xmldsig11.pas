@@ -82,6 +82,8 @@ type
     fOrder: ProRock.Xmlite.Schema.Xmldsig.TCryptoBinaryST;
     fCoFactor: ProRock.Xmlite.Schema.Base.TIntegerST;
     fValidationData: TECValidationDataCT;
+
+    function GetValidationData: TECValidationDataCT;
   published
     [TRequired]
     property FieldID: TFieldIDCT read fFieldID;
@@ -95,7 +97,7 @@ type
     property Order: ProRock.Xmlite.Schema.Xmldsig.TCryptoBinaryST read fOrder write fOrder;
     [TXmliteElement]
     property CoFactor: ProRock.Xmlite.Schema.Base.TIntegerST read fCoFactor write fCoFactor;
-    property ValidationData: TECValidationDataCT read fValidationData;
+    property ValidationData: TECValidationDataCT read GetValidationData;
   end;
 
   [TXmliteAnyElement]
@@ -276,6 +278,13 @@ end;
 function TECKeyValueCT.GetNamedCurve: TNamedCurveCT;
 begin
   Result := TNamedCurveCT(Lazy(fNamedCurve, TNamedCurveCT));
+end;
+
+{ TECParametersCT }
+
+function TECParametersCT.GetValidationData: TECValidationDataCT;
+begin
+  Result := TECValidationDataCT(Lazy(fValidationData, TECValidationDataCT));
 end;
 
 { TFieldIDCT }

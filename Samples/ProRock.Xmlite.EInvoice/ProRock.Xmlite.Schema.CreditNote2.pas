@@ -84,61 +84,92 @@ type
     fWithholdingTaxTotal: ProRock.Xmlite.Schema.CommonAggregateComponents2.TWithholdingTaxTotalEList;
     fLegalMonetaryTotal: ProRock.Xmlite.Schema.CommonAggregateComponents2.TLegalMonetaryTotalE;
     fCreditNoteLine: TCreditNoteLineEList;
+
+    function GetUBLExtensions: ProRock.Xmlite.Schema.CommonExtensionComponents2.TUBLExtensionsE;
+    function GetUBLVersionID: ProRock.Xmlite.Schema.CommonBasicComponents2.TUBLVersionIDE;
+    function GetCustomizationID: ProRock.Xmlite.Schema.CommonBasicComponents2.TCustomizationIDE;
+    function GetProfileID: ProRock.Xmlite.Schema.CommonBasicComponents2.TProfileIDE;
+    function GetProfileExecutionID: ProRock.Xmlite.Schema.CommonBasicComponents2.TProfileExecutionIDE;
+    function GetCopyIndicator: ProRock.Xmlite.Schema.CommonBasicComponents2.TCopyIndicatorE;
+    function GetUuid: ProRock.Xmlite.Schema.CommonBasicComponents2.TUuidE;
+    function GetIssueTime: ProRock.Xmlite.Schema.CommonBasicComponents2.TIssueTimeE;
+    function GetDueDate: ProRock.Xmlite.Schema.CommonBasicComponents2.TDueDateE;
+    function GetTaxPointDate: ProRock.Xmlite.Schema.CommonBasicComponents2.TTaxPointDateE;
+    function GetCreditNoteTypeCode: ProRock.Xmlite.Schema.CommonBasicComponents2.TCreditNoteTypeCodeE;
+    function GetDocumentCurrencyCode: ProRock.Xmlite.Schema.CommonBasicComponents2.TDocumentCurrencyCodeE;
+    function GetTaxCurrencyCode: ProRock.Xmlite.Schema.CommonBasicComponents2.TTaxCurrencyCodeE;
+    function GetPricingCurrencyCode: ProRock.Xmlite.Schema.CommonBasicComponents2.TPricingCurrencyCodeE;
+    function GetPaymentCurrencyCode: ProRock.Xmlite.Schema.CommonBasicComponents2.TPaymentCurrencyCodeE;
+    function GetPaymentAlternativeCurrencyCode: ProRock.Xmlite.Schema.CommonBasicComponents2.TPaymentAlternativeCurrencyCodeE;
+    function GetAccountingCostCode: ProRock.Xmlite.Schema.CommonBasicComponents2.TAccountingCostCodeE;
+    function GetAccountingCost: ProRock.Xmlite.Schema.CommonBasicComponents2.TAccountingCostE;
+    function GetLineCountNumeric: ProRock.Xmlite.Schema.CommonBasicComponents2.TLineCountNumericE;
+    function GetBuyerReference: ProRock.Xmlite.Schema.CommonBasicComponents2.TBuyerReferenceE;
+    function GetOrderReference: ProRock.Xmlite.Schema.CommonAggregateComponents2.TOrderReferenceE;
+    function GetAccountingCustomerParty: ProRock.Xmlite.Schema.CommonAggregateComponents2.TAccountingCustomerPartyE;
+    function GetPayeeParty: ProRock.Xmlite.Schema.CommonAggregateComponents2.TPayeePartyE;
+    function GetBuyerCustomerParty: ProRock.Xmlite.Schema.CommonAggregateComponents2.TBuyerCustomerPartyE;
+    function GetSellerSupplierParty: ProRock.Xmlite.Schema.CommonAggregateComponents2.TSellerSupplierPartyE;
+    function GetTaxRepresentativeParty: ProRock.Xmlite.Schema.CommonAggregateComponents2.TTaxRepresentativePartyE;
+    function GetTaxExchangeRate: ProRock.Xmlite.Schema.CommonAggregateComponents2.TTaxExchangeRateE;
+    function GetPricingExchangeRate: ProRock.Xmlite.Schema.CommonAggregateComponents2.TPricingExchangeRateE;
+    function GetPaymentExchangeRate: ProRock.Xmlite.Schema.CommonAggregateComponents2.TPaymentExchangeRateE;
+    function GetPaymentAlternativeExchangeRate: ProRock.Xmlite.Schema.CommonAggregateComponents2.TPaymentAlternativeExchangeRateE;
   published
     [TNaming(TNaming.nPascalCase)]
-    property UBLExtensions: ProRock.Xmlite.Schema.CommonExtensionComponents2.TUBLExtensionsE read fUBLExtensions;
+    property UBLExtensions: ProRock.Xmlite.Schema.CommonExtensionComponents2.TUBLExtensionsE read GetUBLExtensions;
     [TNaming(TNaming.nPascalCase)]
-    property UBLVersionID: ProRock.Xmlite.Schema.CommonBasicComponents2.TUBLVersionIDE read fUBLVersionID;
+    property UBLVersionID: ProRock.Xmlite.Schema.CommonBasicComponents2.TUBLVersionIDE read GetUBLVersionID;
     [TNaming(TNaming.nPascalCase)]
-    property CustomizationID: ProRock.Xmlite.Schema.CommonBasicComponents2.TCustomizationIDE read fCustomizationID;
+    property CustomizationID: ProRock.Xmlite.Schema.CommonBasicComponents2.TCustomizationIDE read GetCustomizationID;
     [TNaming(TNaming.nPascalCase)]
-    property ProfileID: ProRock.Xmlite.Schema.CommonBasicComponents2.TProfileIDE read fProfileID;
+    property ProfileID: ProRock.Xmlite.Schema.CommonBasicComponents2.TProfileIDE read GetProfileID;
     [TNaming(TNaming.nPascalCase)]
-    property ProfileExecutionID: ProRock.Xmlite.Schema.CommonBasicComponents2.TProfileExecutionIDE read fProfileExecutionID;
+    property ProfileExecutionID: ProRock.Xmlite.Schema.CommonBasicComponents2.TProfileExecutionIDE read GetProfileExecutionID;
     [TRequired]
     [TNaming(TNaming.nUpperCase)]
     property Id: ProRock.Xmlite.Schema.CommonBasicComponents2.TIdE read fId;
     [TNaming(TNaming.nPascalCase)]
-    property CopyIndicator: ProRock.Xmlite.Schema.CommonBasicComponents2.TCopyIndicatorE read fCopyIndicator;
+    property CopyIndicator: ProRock.Xmlite.Schema.CommonBasicComponents2.TCopyIndicatorE read GetCopyIndicator;
     [TNaming(TNaming.nUpperCase)]
-    property Uuid: ProRock.Xmlite.Schema.CommonBasicComponents2.TUuidE read fUuid;
+    property Uuid: ProRock.Xmlite.Schema.CommonBasicComponents2.TUuidE read GetUuid;
     [TRequired]
     [TNaming(TNaming.nPascalCase)]
     property IssueDate: ProRock.Xmlite.Schema.CommonBasicComponents2.TIssueDateE read fIssueDate;
     [TNaming(TNaming.nPascalCase)]
-    property IssueTime: ProRock.Xmlite.Schema.CommonBasicComponents2.TIssueTimeE read fIssueTime;
+    property IssueTime: ProRock.Xmlite.Schema.CommonBasicComponents2.TIssueTimeE read GetIssueTime;
     [TNaming(TNaming.nPascalCase)]
-    property DueDate: ProRock.Xmlite.Schema.CommonBasicComponents2.TDueDateE read fDueDate;
+    property DueDate: ProRock.Xmlite.Schema.CommonBasicComponents2.TDueDateE read GetDueDate;
     [TNaming(TNaming.nPascalCase)]
-    property TaxPointDate: ProRock.Xmlite.Schema.CommonBasicComponents2.TTaxPointDateE read fTaxPointDate;
+    property TaxPointDate: ProRock.Xmlite.Schema.CommonBasicComponents2.TTaxPointDateE read GetTaxPointDate;
     [TNaming(TNaming.nPascalCase)]
-    property CreditNoteTypeCode: ProRock.Xmlite.Schema.CommonBasicComponents2.TCreditNoteTypeCodeE read fCreditNoteTypeCode;
+    property CreditNoteTypeCode: ProRock.Xmlite.Schema.CommonBasicComponents2.TCreditNoteTypeCodeE read GetCreditNoteTypeCode;
     [TNaming(TNaming.nPascalCase)]
     property Note: TNoteEList read fNote;
     [TNaming(TNaming.nPascalCase)]
-    property DocumentCurrencyCode: ProRock.Xmlite.Schema.CommonBasicComponents2.TDocumentCurrencyCodeE read fDocumentCurrencyCode;
+    property DocumentCurrencyCode: ProRock.Xmlite.Schema.CommonBasicComponents2.TDocumentCurrencyCodeE read GetDocumentCurrencyCode;
     [TNaming(TNaming.nPascalCase)]
-    property TaxCurrencyCode: ProRock.Xmlite.Schema.CommonBasicComponents2.TTaxCurrencyCodeE read fTaxCurrencyCode;
+    property TaxCurrencyCode: ProRock.Xmlite.Schema.CommonBasicComponents2.TTaxCurrencyCodeE read GetTaxCurrencyCode;
     [TNaming(TNaming.nPascalCase)]
-    property PricingCurrencyCode: ProRock.Xmlite.Schema.CommonBasicComponents2.TPricingCurrencyCodeE read fPricingCurrencyCode;
+    property PricingCurrencyCode: ProRock.Xmlite.Schema.CommonBasicComponents2.TPricingCurrencyCodeE read GetPricingCurrencyCode;
     [TNaming(TNaming.nPascalCase)]
-    property PaymentCurrencyCode: ProRock.Xmlite.Schema.CommonBasicComponents2.TPaymentCurrencyCodeE read fPaymentCurrencyCode;
+    property PaymentCurrencyCode: ProRock.Xmlite.Schema.CommonBasicComponents2.TPaymentCurrencyCodeE read GetPaymentCurrencyCode;
     [TNaming(TNaming.nPascalCase)]
-    property PaymentAlternativeCurrencyCode: ProRock.Xmlite.Schema.CommonBasicComponents2.TPaymentAlternativeCurrencyCodeE read fPaymentAlternativeCurrencyCode;
+    property PaymentAlternativeCurrencyCode: ProRock.Xmlite.Schema.CommonBasicComponents2.TPaymentAlternativeCurrencyCodeE read GetPaymentAlternativeCurrencyCode;
     [TNaming(TNaming.nPascalCase)]
-    property AccountingCostCode: ProRock.Xmlite.Schema.CommonBasicComponents2.TAccountingCostCodeE read fAccountingCostCode;
+    property AccountingCostCode: ProRock.Xmlite.Schema.CommonBasicComponents2.TAccountingCostCodeE read GetAccountingCostCode;
     [TNaming(TNaming.nPascalCase)]
-    property AccountingCost: ProRock.Xmlite.Schema.CommonBasicComponents2.TAccountingCostE read fAccountingCost;
+    property AccountingCost: ProRock.Xmlite.Schema.CommonBasicComponents2.TAccountingCostE read GetAccountingCost;
     [TNaming(TNaming.nPascalCase)]
-    property LineCountNumeric: ProRock.Xmlite.Schema.CommonBasicComponents2.TLineCountNumericE read fLineCountNumeric;
+    property LineCountNumeric: ProRock.Xmlite.Schema.CommonBasicComponents2.TLineCountNumericE read GetLineCountNumeric;
     [TNaming(TNaming.nPascalCase)]
-    property BuyerReference: ProRock.Xmlite.Schema.CommonBasicComponents2.TBuyerReferenceE read fBuyerReference;
+    property BuyerReference: ProRock.Xmlite.Schema.CommonBasicComponents2.TBuyerReferenceE read GetBuyerReference;
     [TNaming(TNaming.nPascalCase)]
     property InvoicePeriod: ProRock.Xmlite.Schema.CommonAggregateComponents2.TInvoicePeriodEList read fInvoicePeriod;
     [TNaming(TNaming.nPascalCase)]
     property DiscrepancyResponse: ProRock.Xmlite.Schema.CommonAggregateComponents2.TDiscrepancyResponseEList read fDiscrepancyResponse;
     [TNaming(TNaming.nPascalCase)]
-    property OrderReference: ProRock.Xmlite.Schema.CommonAggregateComponents2.TOrderReferenceE read fOrderReference;
+    property OrderReference: ProRock.Xmlite.Schema.CommonAggregateComponents2.TOrderReferenceE read GetOrderReference;
     [TNaming(TNaming.nPascalCase)]
     property BillingReference: ProRock.Xmlite.Schema.CommonAggregateComponents2.TBillingReferenceEList read fBillingReference;
     [TNaming(TNaming.nPascalCase)]
@@ -161,15 +192,15 @@ type
     [TNaming(TNaming.nPascalCase)]
     property AccountingSupplierParty: ProRock.Xmlite.Schema.CommonAggregateComponents2.TAccountingSupplierPartyE read fAccountingSupplierParty;
     [TNaming(TNaming.nPascalCase)]
-    property AccountingCustomerParty: ProRock.Xmlite.Schema.CommonAggregateComponents2.TAccountingCustomerPartyE read fAccountingCustomerParty;
+    property AccountingCustomerParty: ProRock.Xmlite.Schema.CommonAggregateComponents2.TAccountingCustomerPartyE read GetAccountingCustomerParty;
     [TNaming(TNaming.nPascalCase)]
-    property PayeeParty: ProRock.Xmlite.Schema.CommonAggregateComponents2.TPayeePartyE read fPayeeParty;
+    property PayeeParty: ProRock.Xmlite.Schema.CommonAggregateComponents2.TPayeePartyE read GetPayeeParty;
     [TNaming(TNaming.nPascalCase)]
-    property BuyerCustomerParty: ProRock.Xmlite.Schema.CommonAggregateComponents2.TBuyerCustomerPartyE read fBuyerCustomerParty;
+    property BuyerCustomerParty: ProRock.Xmlite.Schema.CommonAggregateComponents2.TBuyerCustomerPartyE read GetBuyerCustomerParty;
     [TNaming(TNaming.nPascalCase)]
-    property SellerSupplierParty: ProRock.Xmlite.Schema.CommonAggregateComponents2.TSellerSupplierPartyE read fSellerSupplierParty;
+    property SellerSupplierParty: ProRock.Xmlite.Schema.CommonAggregateComponents2.TSellerSupplierPartyE read GetSellerSupplierParty;
     [TNaming(TNaming.nPascalCase)]
-    property TaxRepresentativeParty: ProRock.Xmlite.Schema.CommonAggregateComponents2.TTaxRepresentativePartyE read fTaxRepresentativeParty;
+    property TaxRepresentativeParty: ProRock.Xmlite.Schema.CommonAggregateComponents2.TTaxRepresentativePartyE read GetTaxRepresentativeParty;
     [TNaming(TNaming.nPascalCase)]
     property Delivery: ProRock.Xmlite.Schema.CommonAggregateComponents2.TDeliveryEList read fDelivery;
     [TNaming(TNaming.nPascalCase)]
@@ -179,13 +210,13 @@ type
     [TNaming(TNaming.nPascalCase)]
     property PaymentTerms: ProRock.Xmlite.Schema.CommonAggregateComponents2.TPaymentTermsEList read fPaymentTerms;
     [TNaming(TNaming.nPascalCase)]
-    property TaxExchangeRate: ProRock.Xmlite.Schema.CommonAggregateComponents2.TTaxExchangeRateE read fTaxExchangeRate;
+    property TaxExchangeRate: ProRock.Xmlite.Schema.CommonAggregateComponents2.TTaxExchangeRateE read GetTaxExchangeRate;
     [TNaming(TNaming.nPascalCase)]
-    property PricingExchangeRate: ProRock.Xmlite.Schema.CommonAggregateComponents2.TPricingExchangeRateE read fPricingExchangeRate;
+    property PricingExchangeRate: ProRock.Xmlite.Schema.CommonAggregateComponents2.TPricingExchangeRateE read GetPricingExchangeRate;
     [TNaming(TNaming.nPascalCase)]
-    property PaymentExchangeRate: ProRock.Xmlite.Schema.CommonAggregateComponents2.TPaymentExchangeRateE read fPaymentExchangeRate;
+    property PaymentExchangeRate: ProRock.Xmlite.Schema.CommonAggregateComponents2.TPaymentExchangeRateE read GetPaymentExchangeRate;
     [TNaming(TNaming.nPascalCase)]
-    property PaymentAlternativeExchangeRate: ProRock.Xmlite.Schema.CommonAggregateComponents2.TPaymentAlternativeExchangeRateE read fPaymentAlternativeExchangeRate;
+    property PaymentAlternativeExchangeRate: ProRock.Xmlite.Schema.CommonAggregateComponents2.TPaymentAlternativeExchangeRateE read GetPaymentAlternativeExchangeRate;
     [TNaming(TNaming.nPascalCase)]
     property AllowanceCharge: ProRock.Xmlite.Schema.CommonAggregateComponents2.TAllowanceChargeEList read fAllowanceCharge;
     [TNaming(TNaming.nPascalCase)]
@@ -202,6 +233,188 @@ type
   TCreditNoteE = class(TCreditNoteTypeCT);
 
 implementation
+
+{ TCreditNoteTypeCT }
+
+function TCreditNoteTypeCT.GetUBLExtensions: ProRock.Xmlite.Schema.CommonExtensionComponents2.TUBLExtensionsE;
+begin
+  Result := ProRock.Xmlite.Schema.CommonExtensionComponents2.TUBLExtensionsE(Lazy(fUBLExtensions,
+    ProRock.Xmlite.Schema.CommonExtensionComponents2.TUBLExtensionsE));
+end;
+
+function TCreditNoteTypeCT.GetUBLVersionID: ProRock.Xmlite.Schema.CommonBasicComponents2.TUBLVersionIDE;
+begin
+  Result := ProRock.Xmlite.Schema.CommonBasicComponents2.TUBLVersionIDE(Lazy(fUBLVersionID,
+    ProRock.Xmlite.Schema.CommonBasicComponents2.TUBLVersionIDE));
+end;
+
+function TCreditNoteTypeCT.GetCustomizationID: ProRock.Xmlite.Schema.CommonBasicComponents2.TCustomizationIDE;
+begin
+  Result := ProRock.Xmlite.Schema.CommonBasicComponents2.TCustomizationIDE(Lazy(fCustomizationID,
+    ProRock.Xmlite.Schema.CommonBasicComponents2.TCustomizationIDE));
+end;
+
+function TCreditNoteTypeCT.GetProfileID: ProRock.Xmlite.Schema.CommonBasicComponents2.TProfileIDE;
+begin
+  Result := ProRock.Xmlite.Schema.CommonBasicComponents2.TProfileIDE(Lazy(fProfileID,
+    ProRock.Xmlite.Schema.CommonBasicComponents2.TProfileIDE));
+end;
+
+function TCreditNoteTypeCT.GetProfileExecutionID: ProRock.Xmlite.Schema.CommonBasicComponents2.TProfileExecutionIDE;
+begin
+  Result := ProRock.Xmlite.Schema.CommonBasicComponents2.TProfileExecutionIDE(Lazy(fProfileExecutionID,
+    ProRock.Xmlite.Schema.CommonBasicComponents2.TProfileExecutionIDE));
+end;
+
+function TCreditNoteTypeCT.GetCopyIndicator: ProRock.Xmlite.Schema.CommonBasicComponents2.TCopyIndicatorE;
+begin
+  Result := ProRock.Xmlite.Schema.CommonBasicComponents2.TCopyIndicatorE(Lazy(fCopyIndicator,
+    ProRock.Xmlite.Schema.CommonBasicComponents2.TCopyIndicatorE));
+end;
+
+function TCreditNoteTypeCT.GetUuid: ProRock.Xmlite.Schema.CommonBasicComponents2.TUuidE;
+begin
+  Result := ProRock.Xmlite.Schema.CommonBasicComponents2.TUuidE(Lazy(fUuid, ProRock.Xmlite.Schema.CommonBasicComponents2.TUuidE));
+end;
+
+function TCreditNoteTypeCT.GetIssueTime: ProRock.Xmlite.Schema.CommonBasicComponents2.TIssueTimeE;
+begin
+  Result := ProRock.Xmlite.Schema.CommonBasicComponents2.TIssueTimeE(Lazy(fIssueTime,
+    ProRock.Xmlite.Schema.CommonBasicComponents2.TIssueTimeE));
+end;
+
+function TCreditNoteTypeCT.GetDueDate: ProRock.Xmlite.Schema.CommonBasicComponents2.TDueDateE;
+begin
+  Result := ProRock.Xmlite.Schema.CommonBasicComponents2.TDueDateE(Lazy(fDueDate, ProRock.Xmlite.Schema.CommonBasicComponents2.TDueDateE));
+end;
+
+function TCreditNoteTypeCT.GetTaxPointDate: ProRock.Xmlite.Schema.CommonBasicComponents2.TTaxPointDateE;
+begin
+  Result := ProRock.Xmlite.Schema.CommonBasicComponents2.TTaxPointDateE(Lazy(fTaxPointDate,
+    ProRock.Xmlite.Schema.CommonBasicComponents2.TTaxPointDateE));
+end;
+
+function TCreditNoteTypeCT.GetCreditNoteTypeCode: ProRock.Xmlite.Schema.CommonBasicComponents2.TCreditNoteTypeCodeE;
+begin
+  Result := ProRock.Xmlite.Schema.CommonBasicComponents2.TCreditNoteTypeCodeE(Lazy(fCreditNoteTypeCode,
+    ProRock.Xmlite.Schema.CommonBasicComponents2.TCreditNoteTypeCodeE));
+end;
+
+function TCreditNoteTypeCT.GetDocumentCurrencyCode: ProRock.Xmlite.Schema.CommonBasicComponents2.TDocumentCurrencyCodeE;
+begin
+  Result := ProRock.Xmlite.Schema.CommonBasicComponents2.TDocumentCurrencyCodeE(Lazy(fDocumentCurrencyCode,
+    ProRock.Xmlite.Schema.CommonBasicComponents2.TDocumentCurrencyCodeE));
+end;
+
+function TCreditNoteTypeCT.GetTaxCurrencyCode: ProRock.Xmlite.Schema.CommonBasicComponents2.TTaxCurrencyCodeE;
+begin
+  Result := ProRock.Xmlite.Schema.CommonBasicComponents2.TTaxCurrencyCodeE(Lazy(fTaxCurrencyCode,
+    ProRock.Xmlite.Schema.CommonBasicComponents2.TTaxCurrencyCodeE));
+end;
+
+function TCreditNoteTypeCT.GetPricingCurrencyCode: ProRock.Xmlite.Schema.CommonBasicComponents2.TPricingCurrencyCodeE;
+begin
+  Result := ProRock.Xmlite.Schema.CommonBasicComponents2.TPricingCurrencyCodeE(Lazy(fPricingCurrencyCode,
+    ProRock.Xmlite.Schema.CommonBasicComponents2.TPricingCurrencyCodeE));
+end;
+
+function TCreditNoteTypeCT.GetPaymentCurrencyCode: ProRock.Xmlite.Schema.CommonBasicComponents2.TPaymentCurrencyCodeE;
+begin
+  Result := ProRock.Xmlite.Schema.CommonBasicComponents2.TPaymentCurrencyCodeE(Lazy(fPaymentCurrencyCode,
+    ProRock.Xmlite.Schema.CommonBasicComponents2.TPaymentCurrencyCodeE));
+end;
+
+function TCreditNoteTypeCT.GetPaymentAlternativeCurrencyCode:
+  ProRock.Xmlite.Schema.CommonBasicComponents2.TPaymentAlternativeCurrencyCodeE;
+begin
+  Result := ProRock.Xmlite.Schema.CommonBasicComponents2.TPaymentAlternativeCurrencyCodeE(Lazy(fPaymentAlternativeCurrencyCode,
+    ProRock.Xmlite.Schema.CommonBasicComponents2.TPaymentAlternativeCurrencyCodeE));
+end;
+
+function TCreditNoteTypeCT.GetAccountingCostCode: ProRock.Xmlite.Schema.CommonBasicComponents2.TAccountingCostCodeE;
+begin
+  Result := ProRock.Xmlite.Schema.CommonBasicComponents2.TAccountingCostCodeE(Lazy(fAccountingCostCode,
+    ProRock.Xmlite.Schema.CommonBasicComponents2.TAccountingCostCodeE));
+end;
+
+function TCreditNoteTypeCT.GetAccountingCost: ProRock.Xmlite.Schema.CommonBasicComponents2.TAccountingCostE;
+begin
+  Result := ProRock.Xmlite.Schema.CommonBasicComponents2.TAccountingCostE(Lazy(fAccountingCost,
+    ProRock.Xmlite.Schema.CommonBasicComponents2.TAccountingCostE));
+end;
+
+function TCreditNoteTypeCT.GetLineCountNumeric: ProRock.Xmlite.Schema.CommonBasicComponents2.TLineCountNumericE;
+begin
+  Result := ProRock.Xmlite.Schema.CommonBasicComponents2.TLineCountNumericE(Lazy(fLineCountNumeric,
+    ProRock.Xmlite.Schema.CommonBasicComponents2.TLineCountNumericE));
+end;
+
+function TCreditNoteTypeCT.GetBuyerReference: ProRock.Xmlite.Schema.CommonBasicComponents2.TBuyerReferenceE;
+begin
+  Result := ProRock.Xmlite.Schema.CommonBasicComponents2.TBuyerReferenceE(Lazy(fBuyerReference,
+    ProRock.Xmlite.Schema.CommonBasicComponents2.TBuyerReferenceE));
+end;
+
+function TCreditNoteTypeCT.GetOrderReference: ProRock.Xmlite.Schema.CommonAggregateComponents2.TOrderReferenceE;
+begin
+  Result := ProRock.Xmlite.Schema.CommonAggregateComponents2.TOrderReferenceE(Lazy(fOrderReference,
+    ProRock.Xmlite.Schema.CommonAggregateComponents2.TOrderReferenceE));
+end;
+
+function TCreditNoteTypeCT.GetAccountingCustomerParty: ProRock.Xmlite.Schema.CommonAggregateComponents2.TAccountingCustomerPartyE;
+begin
+  Result := ProRock.Xmlite.Schema.CommonAggregateComponents2.TAccountingCustomerPartyE(Lazy(fAccountingCustomerParty,
+    ProRock.Xmlite.Schema.CommonAggregateComponents2.TAccountingCustomerPartyE));
+end;
+
+function TCreditNoteTypeCT.GetPayeeParty: ProRock.Xmlite.Schema.CommonAggregateComponents2.TPayeePartyE;
+begin
+  Result := ProRock.Xmlite.Schema.CommonAggregateComponents2.TPayeePartyE(Lazy(fPayeeParty,
+    ProRock.Xmlite.Schema.CommonAggregateComponents2.TPayeePartyE));
+end;
+
+function TCreditNoteTypeCT.GetBuyerCustomerParty: ProRock.Xmlite.Schema.CommonAggregateComponents2.TBuyerCustomerPartyE;
+begin
+  Result := ProRock.Xmlite.Schema.CommonAggregateComponents2.TBuyerCustomerPartyE(Lazy(fBuyerCustomerParty,
+    ProRock.Xmlite.Schema.CommonAggregateComponents2.TBuyerCustomerPartyE));
+end;
+
+function TCreditNoteTypeCT.GetSellerSupplierParty: ProRock.Xmlite.Schema.CommonAggregateComponents2.TSellerSupplierPartyE;
+begin
+  Result := ProRock.Xmlite.Schema.CommonAggregateComponents2.TSellerSupplierPartyE(Lazy(fSellerSupplierParty,
+    ProRock.Xmlite.Schema.CommonAggregateComponents2.TSellerSupplierPartyE));
+end;
+
+function TCreditNoteTypeCT.GetTaxRepresentativeParty: ProRock.Xmlite.Schema.CommonAggregateComponents2.TTaxRepresentativePartyE;
+begin
+  Result := ProRock.Xmlite.Schema.CommonAggregateComponents2.TTaxRepresentativePartyE(Lazy(fTaxRepresentativeParty,
+    ProRock.Xmlite.Schema.CommonAggregateComponents2.TTaxRepresentativePartyE));
+end;
+
+function TCreditNoteTypeCT.GetTaxExchangeRate: ProRock.Xmlite.Schema.CommonAggregateComponents2.TTaxExchangeRateE;
+begin
+  Result := ProRock.Xmlite.Schema.CommonAggregateComponents2.TTaxExchangeRateE(Lazy(fTaxExchangeRate,
+    ProRock.Xmlite.Schema.CommonAggregateComponents2.TTaxExchangeRateE));
+end;
+
+function TCreditNoteTypeCT.GetPricingExchangeRate: ProRock.Xmlite.Schema.CommonAggregateComponents2.TPricingExchangeRateE;
+begin
+  Result := ProRock.Xmlite.Schema.CommonAggregateComponents2.TPricingExchangeRateE(Lazy(fPricingExchangeRate,
+    ProRock.Xmlite.Schema.CommonAggregateComponents2.TPricingExchangeRateE));
+end;
+
+function TCreditNoteTypeCT.GetPaymentExchangeRate: ProRock.Xmlite.Schema.CommonAggregateComponents2.TPaymentExchangeRateE;
+begin
+  Result := ProRock.Xmlite.Schema.CommonAggregateComponents2.TPaymentExchangeRateE(Lazy(fPaymentExchangeRate,
+    ProRock.Xmlite.Schema.CommonAggregateComponents2.TPaymentExchangeRateE));
+end;
+
+function TCreditNoteTypeCT.GetPaymentAlternativeExchangeRate:
+  ProRock.Xmlite.Schema.CommonAggregateComponents2.TPaymentAlternativeExchangeRateE;
+begin
+  Result := ProRock.Xmlite.Schema.CommonAggregateComponents2.TPaymentAlternativeExchangeRateE(Lazy(fPaymentAlternativeExchangeRate,
+    ProRock.Xmlite.Schema.CommonAggregateComponents2.TPaymentAlternativeExchangeRateE));
+end;
 
 initialization
 

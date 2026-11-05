@@ -61,18 +61,28 @@ type
     fExtensionReasonCode: TExtensionReasonCodeE;
     fExtensionReason: TExtensionReasonE;
     fExtensionContent: TExtensionContentE;
+
+    function GetId: ProRock.Xmlite.Schema.CommonBasicComponents2.TIdE;
+    function GetName: ProRock.Xmlite.Schema.CommonBasicComponents2.TNameE;
+    function GetExtensionAgencyID: TExtensionAgencyIDE;
+    function GetExtensionAgencyName: TExtensionAgencyNameE;
+    function GetExtensionVersionID: TExtensionVersionIDE;
+    function GetExtensionAgencyURI: TExtensionAgencyURIE;
+    function GetExtensionURI: TExtensionURIE;
+    function GetExtensionReasonCode: TExtensionReasonCodeE;
+    function GetExtensionReason: TExtensionReasonE;
   published
     [TNaming(TNaming.nUpperCase)]
-    property Id: ProRock.Xmlite.Schema.CommonBasicComponents2.TIdE read fId;
+    property Id: ProRock.Xmlite.Schema.CommonBasicComponents2.TIdE read GetId;
     [TNaming(TNaming.nPascalCase)]
-    property Name: ProRock.Xmlite.Schema.CommonBasicComponents2.TNameE read fName;
-    property ExtensionAgencyID: TExtensionAgencyIDE read fExtensionAgencyID;
-    property ExtensionAgencyName: TExtensionAgencyNameE read fExtensionAgencyName;
-    property ExtensionVersionID: TExtensionVersionIDE read fExtensionVersionID;
-    property ExtensionAgencyURI: TExtensionAgencyURIE read fExtensionAgencyURI;
-    property ExtensionURI: TExtensionURIE read fExtensionURI;
-    property ExtensionReasonCode: TExtensionReasonCodeE read fExtensionReasonCode;
-    property ExtensionReason: TExtensionReasonE read fExtensionReason;
+    property Name: ProRock.Xmlite.Schema.CommonBasicComponents2.TNameE read GetName;
+    property ExtensionAgencyID: TExtensionAgencyIDE read GetExtensionAgencyID;
+    property ExtensionAgencyName: TExtensionAgencyNameE read GetExtensionAgencyName;
+    property ExtensionVersionID: TExtensionVersionIDE read GetExtensionVersionID;
+    property ExtensionAgencyURI: TExtensionAgencyURIE read GetExtensionAgencyURI;
+    property ExtensionURI: TExtensionURIE read GetExtensionURI;
+    property ExtensionReasonCode: TExtensionReasonCodeE read GetExtensionReasonCode;
+    property ExtensionReason: TExtensionReasonE read GetExtensionReason;
     [TRequired]
     property ExtensionContent: TExtensionContentE read fExtensionContent;
   end;
@@ -136,6 +146,53 @@ type
   TUBLExtensionsTypeCT = TUBLExtensionsCT deprecated 'use TUBLExtensionsCT';
 
 implementation
+
+{ TUBLExtensionCT }
+
+function TUBLExtensionCT.GetId: ProRock.Xmlite.Schema.CommonBasicComponents2.TIdE;
+begin
+  Result := ProRock.Xmlite.Schema.CommonBasicComponents2.TIdE(Lazy(fId, ProRock.Xmlite.Schema.CommonBasicComponents2.TIdE));
+end;
+
+function TUBLExtensionCT.GetName: ProRock.Xmlite.Schema.CommonBasicComponents2.TNameE;
+begin
+  Result := ProRock.Xmlite.Schema.CommonBasicComponents2.TNameE(Lazy(fName, ProRock.Xmlite.Schema.CommonBasicComponents2.TNameE));
+end;
+
+function TUBLExtensionCT.GetExtensionAgencyID: TExtensionAgencyIDE;
+begin
+  Result := TExtensionAgencyIDE(Lazy(fExtensionAgencyID, TExtensionAgencyIDE));
+end;
+
+function TUBLExtensionCT.GetExtensionAgencyName: TExtensionAgencyNameE;
+begin
+  Result := TExtensionAgencyNameE(Lazy(fExtensionAgencyName, TExtensionAgencyNameE));
+end;
+
+function TUBLExtensionCT.GetExtensionVersionID: TExtensionVersionIDE;
+begin
+  Result := TExtensionVersionIDE(Lazy(fExtensionVersionID, TExtensionVersionIDE));
+end;
+
+function TUBLExtensionCT.GetExtensionAgencyURI: TExtensionAgencyURIE;
+begin
+  Result := TExtensionAgencyURIE(Lazy(fExtensionAgencyURI, TExtensionAgencyURIE));
+end;
+
+function TUBLExtensionCT.GetExtensionURI: TExtensionURIE;
+begin
+  Result := TExtensionURIE(Lazy(fExtensionURI, TExtensionURIE));
+end;
+
+function TUBLExtensionCT.GetExtensionReasonCode: TExtensionReasonCodeE;
+begin
+  Result := TExtensionReasonCodeE(Lazy(fExtensionReasonCode, TExtensionReasonCodeE));
+end;
+
+function TUBLExtensionCT.GetExtensionReason: TExtensionReasonE;
+begin
+  Result := TExtensionReasonE(Lazy(fExtensionReason, TExtensionReasonE));
+end;
 
 initialization
 

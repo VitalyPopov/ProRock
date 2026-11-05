@@ -26,6 +26,9 @@ type
     fExchangedDocument: ProRock.Xmlite.Schema.ReusableAggregateBusinessInformationEntity100.TExchangedDocumentCT;
     fSupplyChainTradeTransaction: ProRock.Xmlite.Schema.ReusableAggregateBusinessInformationEntity100.TSupplyChainTradeTransactionCT;
     fValuationBreakdownStatement: ProRock.Xmlite.Schema.ReusableAggregateBusinessInformationEntity100.TValuationBreakdownStatementCT;
+
+    function GetValuationBreakdownStatement:
+      ProRock.Xmlite.Schema.ReusableAggregateBusinessInformationEntity100.TValuationBreakdownStatementCT;
   published
     [TRequired]
     property ExchangedDocumentContext: ProRock.Xmlite.Schema.ReusableAggregateBusinessInformationEntity100.TExchangedDocumentContextCT read fExchangedDocumentContext;
@@ -33,12 +36,22 @@ type
     property ExchangedDocument: ProRock.Xmlite.Schema.ReusableAggregateBusinessInformationEntity100.TExchangedDocumentCT read fExchangedDocument;
     [TRequired]
     property SupplyChainTradeTransaction: ProRock.Xmlite.Schema.ReusableAggregateBusinessInformationEntity100.TSupplyChainTradeTransactionCT read fSupplyChainTradeTransaction;
-    property ValuationBreakdownStatement: ProRock.Xmlite.Schema.ReusableAggregateBusinessInformationEntity100.TValuationBreakdownStatementCT read fValuationBreakdownStatement;
+    property ValuationBreakdownStatement: ProRock.Xmlite.Schema.ReusableAggregateBusinessInformationEntity100.TValuationBreakdownStatementCT read GetValuationBreakdownStatement;
   end;
 
   TCrossIndustryInvoiceE = class(TCrossIndustryInvoiceTypeCT);
 
 implementation
+
+{ TCrossIndustryInvoiceTypeCT }
+
+function TCrossIndustryInvoiceTypeCT.GetValuationBreakdownStatement:
+  ProRock.Xmlite.Schema.ReusableAggregateBusinessInformationEntity100.TValuationBreakdownStatementCT;
+begin
+  Result :=
+    ProRock.Xmlite.Schema.ReusableAggregateBusinessInformationEntity100.TValuationBreakdownStatementCT(Lazy(fValuationBreakdownStatement,
+    ProRock.Xmlite.Schema.ReusableAggregateBusinessInformationEntity100.TValuationBreakdownStatementCT));
+end;
 
 initialization
 

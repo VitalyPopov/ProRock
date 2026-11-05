@@ -164,32 +164,32 @@ var
 
   // an empty field removes the element from the document, as in Office (Clear); an assigned '' would be a value - an empty
   // element. False: removed, nothing to assign
-  function TakeText(aField: Pointer; const aText: string): boolean;
+  function TakeText(const aProperty, aText: string): boolean;
   begin
     Result := not aText.IsEmpty;
     if not Result then
-      properties.Clear(aField);
+      properties.Clear(aProperty);
   end;
 
 begin
   properties := fDocument.Properties;
-  if TakeText(@properties.Title, TitleEdit.Text) then
+  if TakeText('Title', TitleEdit.Text) then
     properties.Title.XmlValue := TitleEdit.Text;
-  if TakeText(@properties.Subject, SubjectEdit.Text) then
+  if TakeText('Subject', SubjectEdit.Text) then
     properties.Subject.XmlValue := SubjectEdit.Text;
-  if TakeText(@properties.Creator, CreatorEdit.Text) then
+  if TakeText('Creator', CreatorEdit.Text) then
     properties.Creator.XmlValue := CreatorEdit.Text;
-  if TakeText(@properties.Keywords, KeywordsEdit.Text) then
+  if TakeText('Keywords', KeywordsEdit.Text) then
     properties.Keywords.XmlText := KeywordsEdit.Text;
-  if TakeText(@properties.Description, DescriptionMemo.Text) then
+  if TakeText('Description', DescriptionMemo.Text) then
     properties.Description.XmlValue := DescriptionMemo.Text;
-  if TakeText(@properties.Category, CategoryEdit.Text) then
+  if TakeText('Category', CategoryEdit.Text) then
     properties.Category := CategoryEdit.Text;
-  if TakeText(@properties.ContentStatus, ContentStatusEdit.Text) then
+  if TakeText('ContentStatus', ContentStatusEdit.Text) then
     properties.ContentStatus := ContentStatusEdit.Text;
-  if TakeText(@properties.LastModifiedBy, LastModifiedByEdit.Text) then
+  if TakeText('LastModifiedBy', LastModifiedByEdit.Text) then
     properties.LastModifiedBy := LastModifiedByEdit.Text;
-  if TakeText(@properties.Revision, RevisionEdit.Text) then
+  if TakeText('Revision', RevisionEdit.Text) then
     properties.Revision := RevisionEdit.Text;
 end;
 

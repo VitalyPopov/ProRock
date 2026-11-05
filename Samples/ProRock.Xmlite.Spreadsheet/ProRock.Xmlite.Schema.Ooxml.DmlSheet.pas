@@ -94,6 +94,9 @@ type
     fSpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapePropertiesCT;
     fStyle: ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapeStyleCT;
     fTxBody: ProRock.Xmlite.Schema.Ooxml.DmlMain.TTextBodyCT;
+
+    function GetStyle: ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapeStyleCT;
+    function GetTxBody: ProRock.Xmlite.Schema.Ooxml.DmlMain.TTextBodyCT;
   published
     property Macro: ProRock.Xmlite.Schema.Base.TStringST read fMacro write fMacro;
     property Textlink: ProRock.Xmlite.Schema.Base.TStringST read fTextlink write fTextlink;
@@ -105,8 +108,8 @@ type
     property NvSpPr: TShapeNonVisualCT read fNvSpPr;
     [TRequired]
     property SpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapePropertiesCT read fSpPr;
-    property Style: ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapeStyleCT read fStyle;
-    property TxBody: ProRock.Xmlite.Schema.Ooxml.DmlMain.TTextBodyCT read fTxBody;
+    property Style: ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapeStyleCT read GetStyle;
+    property TxBody: ProRock.Xmlite.Schema.Ooxml.DmlMain.TTextBodyCT read GetTxBody;
   end;
 
   [TName('CT_ConnectorNonVisual')]
@@ -129,6 +132,8 @@ type
     fNvCxnSpPr: TConnectorNonVisualCT;
     fSpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapePropertiesCT;
     fStyle: ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapeStyleCT;
+
+    function GetStyle: ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapeStyleCT;
   published
     property Macro: ProRock.Xmlite.Schema.Base.TStringST read fMacro write fMacro;
     [TDefault(False)]
@@ -137,7 +142,7 @@ type
     property NvCxnSpPr: TConnectorNonVisualCT read fNvCxnSpPr;
     [TRequired]
     property SpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapePropertiesCT read fSpPr;
-    property Style: ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapeStyleCT read fStyle;
+    property Style: ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapeStyleCT read GetStyle;
   end;
 
   [TName('CT_PictureNonVisual')]
@@ -161,6 +166,8 @@ type
     fBlipFill: ProRock.Xmlite.Schema.Ooxml.DmlMain.TBlipFillPropertiesCT;
     fSpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapePropertiesCT;
     fStyle: ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapeStyleCT;
+
+    function GetStyle: ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapeStyleCT;
   published
     property Macro: ProRock.Xmlite.Schema.Base.TStringST read fMacro write fMacro;
     [TDefault(False)]
@@ -171,7 +178,7 @@ type
     property BlipFill: ProRock.Xmlite.Schema.Ooxml.DmlMain.TBlipFillPropertiesCT read fBlipFill;
     [TRequired]
     property SpPr: ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapePropertiesCT read fSpPr;
-    property Style: ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapeStyleCT read fStyle;
+    property Style: ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapeStyleCT read GetStyle;
   end;
 
   [TName('CT_GraphicalObjectFrameNonVisual')]
@@ -479,6 +486,32 @@ type
   TCTTwoCellAnchorCTList = TTwoCellAnchorCTList deprecated 'use TTwoCellAnchorCTList';
 
 implementation
+
+{ TShapeCT }
+
+function TShapeCT.GetStyle: ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapeStyleCT;
+begin
+  Result := ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapeStyleCT(Lazy(fStyle, ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapeStyleCT));
+end;
+
+function TShapeCT.GetTxBody: ProRock.Xmlite.Schema.Ooxml.DmlMain.TTextBodyCT;
+begin
+  Result := ProRock.Xmlite.Schema.Ooxml.DmlMain.TTextBodyCT(Lazy(fTxBody, ProRock.Xmlite.Schema.Ooxml.DmlMain.TTextBodyCT));
+end;
+
+{ TConnectorCT }
+
+function TConnectorCT.GetStyle: ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapeStyleCT;
+begin
+  Result := ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapeStyleCT(Lazy(fStyle, ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapeStyleCT));
+end;
+
+{ TPictureCT }
+
+function TPictureCT.GetStyle: ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapeStyleCT;
+begin
+  Result := ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapeStyleCT(Lazy(fStyle, ProRock.Xmlite.Schema.Ooxml.DmlMain.TShapeStyleCT));
+end;
 
 { TTwoCellAnchorCT }
 

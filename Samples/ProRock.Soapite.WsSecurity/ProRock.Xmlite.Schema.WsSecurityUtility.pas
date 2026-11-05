@@ -56,10 +56,13 @@ type
     fId: TIdA;
     fCreated: TCreatedE;
     fExpires: TExpiresE;
+
+    function GetCreated: TCreatedE;
+    function GetExpires: TExpiresE;
   published
     property Id: TIdA read fId write fId;
-    property Created: TCreatedE read fCreated;
-    property Expires: TExpiresE read fExpires;
+    property Created: TCreatedE read GetCreated;
+    property Expires: TExpiresE read GetExpires;
   end;
 
   [TNaming(TNaming.nCamelCase)]
@@ -77,6 +80,18 @@ type
   TCreatedE = class(TAttributedDateTimeCT);
 
 implementation
+
+{ TTimestampTypeCT }
+
+function TTimestampTypeCT.GetCreated: TCreatedE;
+begin
+  Result := TCreatedE(Lazy(fCreated, TCreatedE));
+end;
+
+function TTimestampTypeCT.GetExpires: TExpiresE;
+begin
+  Result := TExpiresE(Lazy(fExpires, TExpiresE));
+end;
 
 initialization
 
