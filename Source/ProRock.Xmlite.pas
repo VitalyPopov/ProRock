@@ -112,8 +112,8 @@ type
 
   TXmlite = class(TBasite)
   public
-    class function XmlToObject(const aXml: string; aObject: TBasite): boolean; inline;
-    class function ObjectToXml(aObject: TBasite): string; inline;
+    class function XmlToObject(const aXml: string; aObject: TBasite): boolean;
+    class function ObjectToXml(aObject: TBasite): string;
 
   private
     fXmlPrefix, fXmlName: string;
