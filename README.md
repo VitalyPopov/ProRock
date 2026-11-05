@@ -38,7 +38,7 @@ The full documentation is at **[prorock.rocks](https://prorock.rocks/)** (search
 | [Getting started](https://prorock.rocks/getting-started/) | from a WSDL to a working SOAP call in 5 minutes |
 | [Xmlite](https://prorock.rocks/xmlite/) · [Soapite](https://prorock.rocks/soapite/) | XML through typed classes · SOAP clients, transport, authentication |
 | [ProRocket Lite](https://prorock.rocks/prorocket-lite/) | the generator: GUI and command line |
-| [Samples](https://prorock.rocks/samples/) | nine samples, from an Excel workbook and FHIR resources to WS-Security |
+| [Samples](https://prorock.rocks/samples/) | ten samples, from an Excel workbook, FHIR resources and e-invoices to WS-Security |
 | [Design principles](https://prorock.rocks/principles/) | a cockpit, not an engine room: what ProRock is built on - and what it is not |
 | [XML concepts](https://prorock.rocks/xml-concepts/) | namespaces, XSD types, substitution groups - explained for Delphi developers |
 
@@ -88,7 +88,7 @@ repository, add its `Source` folder to your project's search path (ProRock 1.4 a
 the units you need.
 
 Delphi 10.3 Rio to 13 Florence, Win64 and Win32; all units compile for Android (Delphi 13), running on a device is not verified
-yet. The [Samples](Samples) folder has one group project with nine samples - an Excel workbook, FHIR resources, Office document
+yet. The [Samples](Samples) folder has one group project with ten samples - an Excel workbook, FHIR resources, e-invoices, Office document
 properties, EU VIES, WS-Security, client certificates and more.
 
 ## Known limitations and notes

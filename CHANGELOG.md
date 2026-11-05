@@ -7,6 +7,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 
 ## [Unreleased]
 
+### Added
+- Sample `ProRock.Xmlite.EInvoice`: an invoice under EN 16931 in CII (ZUGFeRD, Factur-X, XRechnung) or UBL (Peppol, XRechnung), read into
+  units generated from the official schemas and shown in one window; the same invoice in both syntaxes is included
+
 ### Changed
 - Generated units compile about 4 times faster or more: a list class is declared only where it is needed, each one was a generic
   instantiation for the compiler. The FHIR sample's units, Win64, Delphi 13: about 53 s -> 11-15 s (10.3: about 35 s),
@@ -35,6 +39,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   exact name alone
 
 ### Fixed
+- ProRocket Lite: a schema with XML Schema or an imported namespace as its default namespace (`<schema xmlns="http://www.w3.org/2001/XMLSchema">`,
+  as the W3C XML Signature schemas do) gave a unit that did not compile: the unit of the unprefixed types was missing from `uses`
 - An inherited member follows the naming of the namespace that declares it, not of the class that inherits it, where the two differ
 - An empty element of a simple type (`<title/>`) made `FromXml` return `False`, and everything after it was lost
 - `xs:decimal` values are written without an exponent: `1E-5` and `1E15` are not valid decimals, `0.00001` and

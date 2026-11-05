@@ -7,6 +7,7 @@ running the generator.
 | Sample | What it shows |
 |---|---|
 | [`ProRock.Xmlite.Spreadsheet`](#excel-workbook) | an Excel workbook from the official SpreadsheetML schemas (22,000 generated lines): sheets, dates, formulas and tables shown, cells edited, written back with everything Excel put in it |
+| [`ProRock.Xmlite.EInvoice`](#electronic-invoices) | an electronic invoice under EN 16931 from the official schemas (32,000 generated lines): the same window for CII (ZUGFeRD, Factur-X, XRechnung) and UBL (Peppol, XRechnung), written back as it was read |
 | [`ProRock.Xmlite.Fhir`](#fhir-resources) | HL7® FHIR® R4 resources from the official schemas (38,000 generated lines): a Bundle listed with each Observation's value, the narrative as text, written back as it was; a Bundle of 1,000 resources timed |
 | [`ProRock.Xmlite.DocumentProperties`](#office-document-properties) | the properties of any Office document: open, edit, save; the sheet or slide titles |
 | [`ProRock.Soapite.CheckVatService`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Soapite.CheckVatService) | EU VIES VAT number validation through the generated `TCheckVatService`, with live SOAP Fault handling; `-name:` compares the trader's name too (`checkVatApprox`) and tells an absent match code from VALID with `Present` |
@@ -47,6 +48,32 @@ if cell.F.XmlValue <> '' then                                    // <f>C6*D6</f>
 cell.V := '5';
 workbook.CalcPr.FullCalcOnLoad := True;
 ```
+
+## Electronic invoices
+
+[`ProRock.Xmlite.EInvoice`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Xmlite.EInvoice) opens an invoice or credit
+note under the European standard EN 16931, which has two syntaxes: UN/CEFACT CII, the XML of ZUGFeRD, Factur-X and one form of XRechnung, and
+OASIS UBL, the XML of Peppol and the other form of XRechnung. Both go into units ProRocket generates from the official schemas (`Schemas`
+in the sample's folder: CII D16B, 4,800 lines; UBL 2.4, 27,000 lines), and the root element says which. The window shows the seller and the
+buyer, the lines, the VAT and the totals; Save as writes the file back. `invoice-cii.xml` and `invoice-ubl.xml` are one invoice from KoSIT's
+XRechnung test suite, and show the same in both. Its seller and buyer are placeholders of the test suite.
+
+All that differs between the syntaxes is where a field is, so that is all `InvoiceCii.pas` and `InvoiceUbl.pas` hold:
+
+```pascal
+// CII: rsm:CrossIndustryInvoice
+var settlement := aRoot.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement;
+aInvoice.Currency := settlement.InvoiceCurrencyCode.XmlValue;
+aInvoice.GrandTotal := First(settlement.SpecifiedTradeSettlementHeaderMonetarySummation.GrandTotalAmount);
+
+// UBL: Invoice
+aInvoice.Currency := aRoot.DocumentCurrencyCode.XmlValue;
+aInvoice.GrandTotal := aRoot.LegalMonetaryTotal.TaxInclusiveAmount.XmlValue;
+```
+
+The sample reads XML: a ZUGFeRD or Factur-X file holds its XML inside a PDF, and taking it out is not part of the sample. Reading is not checking:
+the rules of EN 16931 and XRechnung (Schematron) are not run, and the totals are not added up. Amounts are `Double`, exact up to 15
+significant digits.
 
 ## FHIR resources
 
