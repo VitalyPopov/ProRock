@@ -347,7 +347,7 @@ type
     property Attributes: TDictObjectList<TUriedName, TPropertyData> read fAttributes;
     // in class order; a name declared twice gives the first
     property Elements: TDictObjectList<TUriedName, TProperty> read fElements;
-    // aFirst or another of its name: the first at or after aLast, the element read before, not read yet (exact by XSD's UPA rule)
+    // aFirst or another of its name: the first at or after aLast, the element read before, not read yet; by position, branches unknown
     function ElementOfName(aFirst, aLast: TProperty; aObject: TBasite): TProperty;
     // the [TXmliteText] property - the element's text content; nil when the element has no simpleContent
     property TextProperty: TPropertyData read fTextProperty;
