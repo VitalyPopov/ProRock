@@ -104,6 +104,10 @@ for the elements and attributes inside them, for enumeration items (FHIR: `TNami
 `[TEnumNaming]` marks a list named differently; `[TNaming]`, `[TName]` and `[TEnumCaption]` appear only where those do not give the
 exact name.
 
+A member named like one its class inherits takes a trailing `_`, its XML name kept: FHIR's `meta` is `Meta_`, because `Meta` is the
+class metadata, `add` is `Add_`. A SOAP operation the same: `Call` gives `Call_` and `TryCall_`. ProRock's own members keep their
+names, and new ones take the `Xml` prefix, so a later version does not rename an element of yours.
+
 | XSD | Delphi |
 |---|---|
 | `xs:string`, `xs:token`, ... | `string` types (`TStringST = type string`) |

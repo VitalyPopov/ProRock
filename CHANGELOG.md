@@ -22,6 +22,11 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   - `TBasite.AutoInitMaxDepth` matters for hand-written classes, whose objects read from a field are still created with their parent
 
   The Large documents page has the details
+- **Regenerated units: a member named like one its class inherits takes a trailing `_`**, its XML name kept: FHIR's `meta` is
+  `Meta_` and `add` is `Add_`; `Meta` is the class metadata again in every resource, `TBasite(resource).Meta` is no longer needed.
+  A SOAP operation the same: `Call` gives `Call_` and `TryCall_` (it called itself and did not compile). Code using the old names
+  does not compile, nothing changes silently. Before, only a few names were renamed (`Assign_`), the others hid the inherited
+  member (warning W1009). ProRock's own new members take the `Xml` prefix, so a later version does not rename an element
 - `[TRequired]` on a hand-written object with a getter: created with its parent, so it is written as required says. It stayed nil and
   was not written
 - The name in `IsPresent`, `SetPresent` and `Clear` can be the property's too: `Clear('PriceList')`, where the schema's key is `priceList`

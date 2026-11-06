@@ -103,8 +103,7 @@ end;
 ```
 
 The narrative is XHTML mixed content: `InnerText` gives its text; the sample walks `XmlContent` to end a line after
-each paragraph. FHIR's own `meta` element hides ProRock's `Meta` in every resource class - `TBasite(resource).Meta` is
-the class metadata.
+each paragraph. FHIR's own `meta` element is `Meta_` in every resource class: `Meta` is the class metadata.
 
 Compiling the FHIR unit takes a minute or more; the program starts in about a third of a second.
 

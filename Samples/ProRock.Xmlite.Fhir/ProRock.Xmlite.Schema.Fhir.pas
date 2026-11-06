@@ -5749,17 +5749,18 @@ type
   TResourceCT = class(TXmliteComplexType)
   private
     fId: TIdCT;
-    fMeta: TMetaCT;
+    fMeta_: TMetaCT;
     fImplicitRules: TUriCT;
     fLanguage: TCodeCT;
 
     function GetId: TIdCT;
-    function GetMeta: TMetaCT;
+    function GetMeta_: TMetaCT;
     function GetImplicitRules: TUriCT;
     function GetLanguage: TCodeCT;
   published
     property Id: TIdCT read GetId;
-    property Meta: TMetaCT read GetMeta;
+    [TName('meta')]
+    property Meta_: TMetaCT read GetMeta_;
     property ImplicitRules: TUriCT read GetImplicitRules;
     property Language: TCodeCT read GetLanguage;
   end;
@@ -5852,7 +5853,7 @@ type
     function GetType: TCodeableConceptCT;
     function GetName: TStringCT;
     function GetServicePeriod: TPeriodCT;
-    function GetOwner: TReferenceCT;
+    function GetOwner_: TReferenceCT;
     function GetDescription: TStringCT;
     function GetPartOf: TReferenceCT;
   published
@@ -5864,7 +5865,7 @@ type
     property Subject: TReferenceCTList read fSubject;
     property ServicePeriod: TPeriodCT read GetServicePeriod;
     property Coverage: TAccountCoverageCTList read fCoverage;
-    property Owner: TReferenceCT read GetOwner;
+    property Owner: TReferenceCT read GetOwner_;
     property Description: TStringCT read GetDescription;
     property Guarantor: TAccountGuarantorCTList read fGuarantor;
     property PartOf: TReferenceCT read GetPartOf;
@@ -11035,7 +11036,7 @@ type
     function GetPartNumber: TStringCT;
     function GetType: TCodeableConceptCT;
     function GetPatient: TReferenceCT;
-    function GetOwner: TReferenceCT;
+    function GetOwner_: TReferenceCT;
     function GetLocation: TReferenceCT;
     function GetUrl: TUriCT;
     function GetParent: TReferenceCT;
@@ -11059,7 +11060,7 @@ type
     property Version: TDeviceVersionCTList read fVersion;
     property &Property: TDevicePropertyCTList read fProperty;
     property Patient: TReferenceCT read GetPatient;
-    property Owner: TReferenceCT read GetOwner;
+    property Owner: TReferenceCT read GetOwner_;
     property Contact: TContactPointCTList read fContact;
     property Location: TReferenceCT read GetLocation;
     property Url: TUriCT read GetUrl;
@@ -11200,7 +11201,7 @@ type
     function GetModelNumber: TStringCT;
     function GetType: TCodeableConceptCT;
     function GetPhysicalCharacteristics: TProdCharacteristicCT;
-    function GetOwner: TReferenceCT;
+    function GetOwner_: TReferenceCT;
     function GetUrl: TUriCT;
     function GetOnlineInformation: TUriCT;
     function GetQuantity: TQuantityCT;
@@ -11225,7 +11226,7 @@ type
     property LanguageCode: TCodeableConceptCTList read fLanguageCode;
     property Capability: TDeviceDefinitionCapabilityCTList read fCapability;
     property &Property: TDeviceDefinitionPropertyCTList read fProperty;
-    property Owner: TReferenceCT read GetOwner;
+    property Owner: TReferenceCT read GetOwner_;
     property Contact: TContactPointCTList read fContact;
     property Url: TUriCT read GetUrl;
     property OnlineInformation: TUriCT read GetOnlineInformation;
@@ -23954,7 +23955,7 @@ type
     function GetAuthoredOn: TDateTimeCT;
     function GetLastModified: TDateTimeCT;
     function GetRequester: TReferenceCT;
-    function GetOwner: TReferenceCT;
+    function GetOwner_: TReferenceCT;
     function GetLocation: TReferenceCT;
     function GetReasonCode: TCodeableConceptCT;
     function GetReasonReference: TReferenceCT;
@@ -23983,7 +23984,7 @@ type
     property LastModified: TDateTimeCT read GetLastModified;
     property Requester: TReferenceCT read GetRequester;
     property PerformerType: TCodeableConceptCTList read fPerformerType;
-    property Owner: TReferenceCT read GetOwner;
+    property Owner: TReferenceCT read GetOwner_;
     property Location: TReferenceCT read GetLocation;
     property ReasonCode: TCodeableConceptCT read GetReasonCode;
     property ReasonReference: TReferenceCT read GetReasonReference;
@@ -25665,7 +25666,7 @@ type
     fCylinder: TDecimalCT;
     fAxis: TIntegerCT;
     fPrism: TVisionPrescriptionPrismCTList;
-    fAdd: TDecimalCT;
+    fAdd_: TDecimalCT;
     fPower: TDecimalCT;
     fBackCurve: TDecimalCT;
     fDiameter: TDecimalCT;
@@ -25677,7 +25678,7 @@ type
     function GetSphere: TDecimalCT;
     function GetCylinder: TDecimalCT;
     function GetAxis: TIntegerCT;
-    function GetAdd: TDecimalCT;
+    function GetAdd_: TDecimalCT;
     function GetPower: TDecimalCT;
     function GetBackCurve: TDecimalCT;
     function GetDiameter: TDecimalCT;
@@ -25693,7 +25694,8 @@ type
     property Cylinder: TDecimalCT read GetCylinder;
     property Axis: TIntegerCT read GetAxis;
     property Prism: TVisionPrescriptionPrismCTList read fPrism;
-    property Add: TDecimalCT read GetAdd;
+    [TName('add')]
+    property Add_: TDecimalCT read GetAdd_;
     property Power: TDecimalCT read GetPower;
     property BackCurve: TDecimalCT read GetBackCurve;
     property Diameter: TDecimalCT read GetDiameter;
@@ -29700,9 +29702,9 @@ begin
   Result := TIdCT(Lazy(fId, TIdCT));
 end;
 
-function TResourceCT.GetMeta: TMetaCT;
+function TResourceCT.GetMeta_: TMetaCT;
 begin
-  Result := TMetaCT(Lazy(fMeta, TMetaCT));
+  Result := TMetaCT(Lazy(fMeta_, TMetaCT));
 end;
 
 function TResourceCT.GetImplicitRules: TUriCT;
@@ -29739,7 +29741,7 @@ begin
   Result := TPeriodCT(Lazy(fServicePeriod, TPeriodCT));
 end;
 
-function TAccountCT.GetOwner: TReferenceCT;
+function TAccountCT.GetOwner_: TReferenceCT;
 begin
   Result := TReferenceCT(Lazy(fOwner, TReferenceCT));
 end;
@@ -33722,7 +33724,7 @@ begin
   Result := TReferenceCT(Lazy(fPatient, TReferenceCT));
 end;
 
-function TDeviceCT.GetOwner: TReferenceCT;
+function TDeviceCT.GetOwner_: TReferenceCT;
 begin
   Result := TReferenceCT(Lazy(fOwner, TReferenceCT));
 end;
@@ -33825,7 +33827,7 @@ begin
   Result := TProdCharacteristicCT(Lazy(fPhysicalCharacteristics, TProdCharacteristicCT));
 end;
 
-function TDeviceDefinitionCT.GetOwner: TReferenceCT;
+function TDeviceDefinitionCT.GetOwner_: TReferenceCT;
 begin
   Result := TReferenceCT(Lazy(fOwner, TReferenceCT));
 end;
@@ -44530,7 +44532,7 @@ begin
   Result := TReferenceCT(Lazy(fRequester, TReferenceCT));
 end;
 
-function TTaskCT.GetOwner: TReferenceCT;
+function TTaskCT.GetOwner_: TReferenceCT;
 begin
   Result := TReferenceCT(Lazy(fOwner, TReferenceCT));
 end;
@@ -46039,9 +46041,9 @@ begin
   Result := TIntegerCT(Lazy(fAxis, TIntegerCT));
 end;
 
-function TVisionPrescriptionLensSpecificationCT.GetAdd: TDecimalCT;
+function TVisionPrescriptionLensSpecificationCT.GetAdd_: TDecimalCT;
 begin
-  Result := TDecimalCT(Lazy(fAdd, TDecimalCT));
+  Result := TDecimalCT(Lazy(fAdd_, TDecimalCT));
 end;
 
 function TVisionPrescriptionLensSpecificationCT.GetPower: TDecimalCT;

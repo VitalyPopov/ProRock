@@ -6949,7 +6949,7 @@ type
     fClearFormats: ProRock.Xmlite.Schema.Base.TBooleanST;
     fClearContents: ProRock.Xmlite.Schema.Base.TBooleanST;
     fClearComments: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fAssign: ProRock.Xmlite.Schema.Base.TBooleanST;
+    fAssign_: ProRock.Xmlite.Schema.Base.TBooleanST;
     fCoerce: ProRock.Xmlite.Schema.Base.TBooleanST;
     fAdjust: ProRock.Xmlite.Schema.Base.TBooleanST;
     fCellMeta: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -7004,7 +7004,7 @@ type
     property ClearComments: ProRock.Xmlite.Schema.Base.TBooleanST read fClearComments write fClearComments;
     [TDefault(False)]
     [TName('assign')]
-    property Assign_: ProRock.Xmlite.Schema.Base.TBooleanST read fAssign write fAssign;
+    property Assign_: ProRock.Xmlite.Schema.Base.TBooleanST read fAssign_ write fAssign_;
     [TDefault(False)]
     property Coerce: ProRock.Xmlite.Schema.Base.TBooleanST read fCoerce write fCoerce;
     [TDefault(False)]

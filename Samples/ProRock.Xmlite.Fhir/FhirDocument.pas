@@ -138,8 +138,7 @@ procedure TFhirDocument.Describe;
   begin
     var entry: TFhirEntry := Default(TFhirEntry);
     entry.Resource := aResource;
-    // FHIR's own element "meta" hides ProRock's Meta in every resource class: TBasite(...).Meta is the class metadata
-    entry.ResourceType := TBasite(aResource).Meta.Xmlite.Name;
+    entry.ResourceType := aResource.Meta.Xmlite.Name;
     entry.Id := aResource.Id.Value;
 
     if aResource.InheritsFrom(TObservationCT) then
@@ -201,7 +200,7 @@ function TFhirDocument.Narrative(aResource: TResourceCT): string;
   begin
     // mixed content (p, td, b...): XmlContent holds its text runs and child elements in document order; whitespace
     // collapses as in HTML
-    if TBasite(aElement).Meta.Xmlite.Ordered then
+    if aElement.Meta.Xmlite.Ordered then
       for var node: TXmliteNode in aElement.XmlContent do
         if node.IsText then
           aText.Append(TRegEx.Replace(node.Text, '\s+', ' '))
@@ -210,7 +209,7 @@ function TFhirDocument.Narrative(aResource: TResourceCT): string;
     else
       // an element that keeps no order (a table, its rows): its children in schema order - a sequence's order - from the
       // class's metadata
-      for var child: TProperty in TBasite(aElement).Meta.Xmlite.Elements.Values do
+      for var child: TProperty in aElement.Meta.Xmlite.Elements.Values do
         case child.PropertyType of
           ptBasite:
             if aElement.IsPresent(child) then

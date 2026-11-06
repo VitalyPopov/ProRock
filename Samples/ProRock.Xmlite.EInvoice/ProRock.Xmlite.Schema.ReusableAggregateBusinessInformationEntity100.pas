@@ -1675,7 +1675,7 @@ type
     fSystemID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT;
     fSystemName: TTextCTList;
     fClassCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
-    fClassName: TTextCTList;
+    fClassName_: TTextCTList;
     fSubClassCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT;
     fClassProductCharacteristic: TProductCharacteristicCTList;
     fApplicableReferencedStandard: TReferencedStandardCT;
@@ -1688,7 +1688,8 @@ type
     property SystemID: ProRock.Xmlite.Schema.UnqualifiedDataType100.TIdCT read GetSystemID;
     property SystemName: TTextCTList read fSystemName;
     property ClassCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetClassCode;
-    property ClassName: TTextCTList read fClassName;
+    [TName('ClassName')]
+    property ClassName_: TTextCTList read fClassName_;
     property SubClassCode: ProRock.Xmlite.Schema.UnqualifiedDataType100.TCodeCT read GetSubClassCode;
     property ClassProductCharacteristic: TProductCharacteristicCTList read fClassProductCharacteristic;
     property ApplicableReferencedStandard: TReferencedStandardCT read GetApplicableReferencedStandard;

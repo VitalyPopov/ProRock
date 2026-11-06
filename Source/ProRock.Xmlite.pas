@@ -110,6 +110,7 @@ type
     procedure AddTextEscape(const aString: string);
   end;
 
+  // a new member takes the Xml prefix: a generated one named like it would get a trailing _ when regenerated
   TXmlite = class(TBasite)
   public
     class function XmlToObject(const aXml: string; aObject: TBasite): boolean;
