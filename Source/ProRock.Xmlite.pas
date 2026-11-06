@@ -326,8 +326,10 @@ type
     fIsTXmlite, fProcessAnyElement, fProcessAnyAttribute, fOrdered, fMixed: boolean;
     fAttributes: TDictObjectList<TUriedName, TPropertyData>;
     fElements: TDictObjectList<TUriedName, TProperty>;
+    fSameName: TDictionary<TProperty, TProperty>; // the next element of the same XML name; nil while no name is declared twice
     fTextProperty: TPropertyData;
 
+    procedure RegisterElement(const aName: TUriedName; aProperty: TProperty);
     function FieldIsElement(aField: TProperty): boolean; inline;
     function FieldIsText(aField: TProperty): boolean; inline;
     function GetMeta: TMetaBasite;
@@ -343,7 +345,10 @@ type
 
     property Meta: TMetaBasite read GetMeta;
     property Attributes: TDictObjectList<TUriedName, TPropertyData> read fAttributes;
+    // in class order; a name declared twice gives the first
     property Elements: TDictObjectList<TUriedName, TProperty> read fElements;
+    // aFirst or another of its name: the first at or after aLast, the element read before, not read yet (exact by XSD's UPA rule)
+    function ElementOfName(aFirst, aLast: TProperty; aObject: TBasite): TProperty;
     // the [TXmliteText] property - the element's text content; nil when the element has no simpleContent
     property TextProperty: TPropertyData read fTextProperty;
     property IsTXmlite: boolean read fIsTXmlite;
@@ -855,6 +860,7 @@ begin
     end
     else
     begin
+      propertyElement := Meta.Xmlite.ElementOfName(propertyElement, lastProperty, Self);
       lastProperty := propertyElement;
       lastCount := 1;
       case propertyElement.PropertyType of
@@ -2376,12 +2382,12 @@ begin
           if FieldIsText(propertyData) then
             fTextProperty := propertyData
           else if FieldIsElement(propertyData) then
-            fElements.Add(uriedName, propertyData)
+            RegisterElement(uriedName, propertyData)
           else
             fAttributes.Add(uriedName, propertyData);
         end;
       ptBasite, ptBasiteList, ptDataList:
-        fElements.Add(uriedName, propertyInfo);
+        RegisterElement(uriedName, propertyInfo);
     end;
   end;
 
@@ -2415,7 +2421,62 @@ destructor TMetaBasiteXmlite.Destroy;
 begin
   fAttributes.Free;
   fElements.Free;
+  fSameName.Free;
   inherited;
+end;
+
+procedure TMetaBasiteXmlite.RegisterElement(const aName: TUriedName; aProperty: TProperty);
+begin
+  // a member of its ancestor's Delphi name hides it (units before 1.7): the descendant's alone, as before
+  var first: TProperty := fElements[aName];
+  if (first <> nil) and SameText(first.RttiProperty.Name, aProperty.RttiProperty.Name) and
+    ((fSameName = nil) or not fSameName.ContainsKey(first)) then
+  begin
+    fElements.Add(aName, aProperty);
+    Exit;
+  end;
+
+  fElements.AddAnother(aName, aProperty);
+  if first = nil then
+    Exit;
+
+  if fSameName = nil then
+    fSameName := TDictionary<TProperty, TProperty>.Create;
+  var last: TProperty := first;
+  var next: TProperty;
+  while fSameName.TryGetValue(last, next) do
+    last := next;
+  fSameName.Add(last, aProperty);
+end;
+
+function TMetaBasiteXmlite.ElementOfName(aFirst, aLast: TProperty; aObject: TBasite): TProperty;
+
+  function IsList(aProperty: TProperty): boolean; inline;
+  begin
+    Result := aProperty.PropertyType in [ptBasiteList, ptDataList];
+  end;
+
+begin
+  Result := aFirst;
+  if (fSameName = nil) or not fSameName.ContainsKey(aFirst) then
+    Exit;
+
+  var lastIndex: integer := -1;
+  if aLast <> nil then
+    lastIndex := fElements.Values.IndexOf(aLast);
+  var candidate: TProperty := aFirst;
+  repeat
+    if (fElements.Values.IndexOf(candidate) >= lastIndex) and ((IsList(candidate) and (candidate = aLast)) or
+      not aObject.IsPresent(candidate)) then
+      Exit(candidate);
+  until not fSameName.TryGetValue(candidate, candidate);
+
+  // a document out of the schema's order
+  candidate := aFirst;
+  repeat
+    if not aObject.IsPresent(candidate) then
+      Exit(candidate);
+  until not fSameName.TryGetValue(candidate, candidate);
 end;
 
 function TMetaBasiteXmlite.FieldIsElement(aField: TProperty): boolean;
@@ -2467,13 +2528,13 @@ begin
           if FieldIsText(propertyData) then
             fTextProperty := propertyData
           else if FieldIsElement(propertyData) then
-            fElements.Add(uriedName, propertyData)
+            RegisterElement(uriedName, propertyData)
           else
             fAttributes.Add(uriedName, propertyData);
         end;
 
       ptBasite, ptBasiteList, ptDataList:
-        fElements.Add(uriedName, propertyInfo);
+        RegisterElement(uriedName, propertyInfo);
     end;
   end;
 end;
@@ -2487,6 +2548,7 @@ begin
     fAttributes.Clear;
   if fElements <> nil then
     fElements.Clear;
+  FreeAndNil(fSameName);
 
   for var propertyInfo: TProperty in Meta.Properties do
     propertyInfo.Xmlite.NamespaceUnregister;

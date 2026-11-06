@@ -6,7 +6,6 @@
     ProRock is a free and open-source Delphi library. Feedback and contributions are welcome.
     https://github.com/VitalyPopov/ProRock
     
-    Generated (UTC): 2026-10-30T18:17:22.000Z
     Namespace: http://schemas.openxmlformats.org/drawingml/2006/main
 *)
 
@@ -1286,9 +1285,9 @@ type
   [TName('CT_HslColor')]
   THslColorCT = class(TXmliteComplexType)
   private
-    fHue: TPositiveFixedAngleST;
-    fSat: TPercentageST;
-    fLum: TPercentageST;
+    fHue2: TPositiveFixedAngleST;
+    fSat2: TPercentageST;
+    fLum2: TPercentageST;
     fTint: TPositiveFixedPercentageCTList;
     fShade: TPositiveFixedPercentageCTList;
     fComp: TComplementTransformCTList;
@@ -1297,10 +1296,13 @@ type
     fAlpha: TPositiveFixedPercentageCTList;
     fAlphaOff: TFixedPercentageCTList;
     fAlphaMod: TPositivePercentageCTList;
+    fHue: TPositiveFixedAngleCTList;
     fHueOff: TAngleCTList;
     fHueMod: TPositivePercentageCTList;
+    fSat: TPercentageCTList;
     fSatOff: TPercentageCTList;
     fSatMod: TPercentageCTList;
+    fLum: TPercentageCTList;
     fLumOff: TPercentageCTList;
     fLumMod: TPercentageCTList;
     fRed: TPercentageCTList;
@@ -1316,11 +1318,14 @@ type
     fInvGamma: TInverseGammaTransformCTList;
   published
     [TRequired]
-    property Hue: TPositiveFixedAngleST read fHue write fHue;
+    [TName('hue')]
+    property Hue2: TPositiveFixedAngleST read fHue2 write fHue2;
     [TRequired]
-    property Sat: TPercentageST read fSat write fSat;
+    [TName('sat')]
+    property Sat2: TPercentageST read fSat2 write fSat2;
     [TRequired]
-    property Lum: TPercentageST read fLum write fLum;
+    [TName('lum')]
+    property Lum2: TPercentageST read fLum2 write fLum2;
     property Tint: TPositiveFixedPercentageCTList read fTint;
     property Shade: TPositiveFixedPercentageCTList read fShade;
     property Comp: TComplementTransformCTList read fComp;
@@ -1329,10 +1334,13 @@ type
     property Alpha: TPositiveFixedPercentageCTList read fAlpha;
     property AlphaOff: TFixedPercentageCTList read fAlphaOff;
     property AlphaMod: TPositivePercentageCTList read fAlphaMod;
+    property Hue: TPositiveFixedAngleCTList read fHue;
     property HueOff: TAngleCTList read fHueOff;
     property HueMod: TPositivePercentageCTList read fHueMod;
+    property Sat: TPercentageCTList read fSat;
     property SatOff: TPercentageCTList read fSatOff;
     property SatMod: TPercentageCTList read fSatMod;
+    property Lum: TPercentageCTList read fLum;
     property LumOff: TPercentageCTList read fLumOff;
     property LumMod: TPercentageCTList read fLumMod;
     property Red: TPercentageCTList read fRed;

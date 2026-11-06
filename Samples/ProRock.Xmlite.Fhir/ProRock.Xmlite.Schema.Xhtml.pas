@@ -6,7 +6,6 @@
     ProRock is a free and open-source Delphi library. Feedback and contributions are welcome.
     https://github.com/VitalyPopov/ProRock
     
-    Generated (UTC): 2026-10-30T18:17:22.000Z
     Namespace: http://www.w3.org/1999/xhtml
 *)
 
@@ -756,9 +755,10 @@ type
   [TName('q')]
   TQE = class(TInlineCT)
   private
-    fCite: TUriST;
+    fCite2: TUriST;
   published
-    property Cite: TUriST read fCite write fCite;
+    [TName('cite')]
+    property Cite2: TUriST read fCite2 write fCite2;
   end;
 
   [TMixed]
@@ -1076,7 +1076,7 @@ type
     TAlign = (agLeft, agCenter, agRight, agJustify, agChar);
     TValign = (vgTop, vgMiddle, vgBottom, vgBaseline);
   private
-    fAbbr: TTextST;
+    fAbbr2: TTextST;
     fAxis: TAnySimpleTypeST;
     fHeaders: ProRock.Xmlite.Schema.Base.TIdrefsST;
     fScope: TScopeST;
@@ -1087,7 +1087,8 @@ type
     fCharoff: TLengthST;
     fValign: TValign;
   published
-    property Abbr: TTextST read fAbbr write fAbbr;
+    [TName('abbr')]
+    property Abbr2: TTextST read fAbbr2 write fAbbr2;
     property Axis: TAnySimpleTypeST read fAxis write fAxis;
     property Headers: ProRock.Xmlite.Schema.Base.TIdrefsST read fHeaders write fHeaders;
     property Scope: TScopeST read fScope write fScope;
@@ -1107,7 +1108,7 @@ type
     TAlign = (ahLeft, ahCenter, ahRight, ahJustify, ahChar);
     TValign = (vhTop, vhMiddle, vhBottom, vhBaseline);
   private
-    fAbbr: TTextST;
+    fAbbr2: TTextST;
     fAxis: TAnySimpleTypeST;
     fHeaders: ProRock.Xmlite.Schema.Base.TIdrefsST;
     fScope: TScopeST;
@@ -1118,7 +1119,8 @@ type
     fCharoff: TLengthST;
     fValign: TValign;
   published
-    property Abbr: TTextST read fAbbr write fAbbr;
+    [TName('abbr')]
+    property Abbr2: TTextST read fAbbr2 write fAbbr2;
     property Axis: TAnySimpleTypeST read fAxis write fAxis;
     property Headers: ProRock.Xmlite.Schema.Base.TIdrefsST read fHeaders write fHeaders;
     property Scope: TScopeST read fScope write fScope;

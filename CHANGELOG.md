@@ -27,6 +27,18 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   A SOAP operation the same: `Call` gives `Call_` and `TryCall_` (it called itself and did not compile). Code using the old names
   does not compile, nothing changes silently. Before, only a few names were renamed (`Assign_`), the others hid the inherited
   member (warning W1009). ProRock's own new members take the `Xml` prefix, so a later version does not rename an element
+- **Regenerated units: two schema names of one Delphi name are two members**, the later one numbered from 2 in schema order, its XML
+  name kept: names differing in case (`item`, `Item`: `Item`, `Item2`) or in style (`item_type`, `itemType`), an element and an
+  attribute (the element keeps the name), an element an extension repeats from its base (`Note`, `Note2`, `Note3` over three levels),
+  one name twice in a sequence (`a, b, a`: `A`, `B`, `A2`). Before, one of them was dropped: it could not be reached from code, and a
+  name declared twice lost data (`<a>1</a><b>2</b><a>3</a>` was written `<a>3</a><b>2</b>`). The numbers come before the `_`: `meta`
+  and `Meta` give `Meta_` and `Meta2`. SOAP operations the same: `Foo` and `foo` give `Foo2` with `TryFoo2`. In the units shipped
+  with ProRock: SpreadsheetML's `TupleCache`, `SecurityDescriptor` and `Odxf` are the elements now, the attributes `TupleCache2`,
+  `SecurityDescriptor2`, `Odxf2`; DrawingML's `THslColorCT` attributes are `Hue2`, `Sat2`, `Lum2` (`Hue` and the others are its
+  color changes); XHTML's `q` attribute `Cite2` and `th`, `td` `Abbr2`, beside the inherited `<cite>` and `<abbr>`; the XSD, WSDL and
+  XML Signature units get `Annotation2`, `Input2`, `Output2`, `Fault2`, `PGPKeyPacket2`, where a type declares an element twice: a
+  document reads into the first as before. Code using an old meaning does not compile, its type changed. Units generated earlier
+  keep working as before
 - `[TRequired]` on a hand-written object with a getter: created with its parent, so it is written as required says. It stayed nil and
   was not written
 - The name in `IsPresent`, `SetPresent` and `Clear` can be the property's too: `Clear('PriceList')`, where the schema's key is `priceList`

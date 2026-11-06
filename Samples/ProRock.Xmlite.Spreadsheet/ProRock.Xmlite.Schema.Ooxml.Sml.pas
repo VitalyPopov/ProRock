@@ -6,7 +6,6 @@
     ProRock is a free and open-source Delphi library. Feedback and contributions are welcome.
     https://github.com/VitalyPopov/ProRock
     
-    Generated (UTC): 2026-10-30T18:17:22.000Z
     Namespace: http://schemas.openxmlformats.org/spreadsheetml/2006/main
 *)
 
@@ -1716,13 +1715,14 @@ type
     fMinRefreshableVersion: ProRock.Xmlite.Schema.Base.TUnsignedByteST;
     fRecordCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
     fUpgradeOnRefresh: ProRock.Xmlite.Schema.Base.TBooleanST;
-    fTupleCache: ProRock.Xmlite.Schema.Base.TBooleanST;
+    fTupleCache2: ProRock.Xmlite.Schema.Base.TBooleanST;
     fSupportSubquery: ProRock.Xmlite.Schema.Base.TBooleanST;
     fSupportAdvancedDrill: ProRock.Xmlite.Schema.Base.TBooleanST;
     fCacheSource: TCacheSourceCT;
     fCacheFields: TCacheFieldsCT;
     fCacheHierarchies: TCacheHierarchiesCT;
     fKpis: TPCDKPIsCT;
+    fTupleCache: TTupleCacheCT;
     fCalculatedItems: TCalculatedItemsCT;
     fCalculatedMembers: TCalculatedMembersCT;
     fDimensions: TDimensionsCT;
@@ -1732,6 +1732,7 @@ type
 
     function GetCacheHierarchies: TCacheHierarchiesCT;
     function GetKpis: TPCDKPIsCT;
+    function GetTupleCache: TTupleCacheCT;
     function GetCalculatedItems: TCalculatedItemsCT;
     function GetCalculatedMembers: TCalculatedMembersCT;
     function GetDimensions: TDimensionsCT;
@@ -1767,7 +1768,8 @@ type
     [TDefault(False)]
     property UpgradeOnRefresh: ProRock.Xmlite.Schema.Base.TBooleanST read fUpgradeOnRefresh write fUpgradeOnRefresh;
     [TDefault(False)]
-    property TupleCache: ProRock.Xmlite.Schema.Base.TBooleanST read fTupleCache write fTupleCache;
+    [TName('tupleCache')]
+    property TupleCache2: ProRock.Xmlite.Schema.Base.TBooleanST read fTupleCache2 write fTupleCache2;
     [TDefault(False)]
     property SupportSubquery: ProRock.Xmlite.Schema.Base.TBooleanST read fSupportSubquery write fSupportSubquery;
     [TDefault(False)]
@@ -1778,6 +1780,7 @@ type
     property CacheFields: TCacheFieldsCT read fCacheFields;
     property CacheHierarchies: TCacheHierarchiesCT read GetCacheHierarchies;
     property Kpis: TPCDKPIsCT read GetKpis;
+    property TupleCache: TTupleCacheCT read GetTupleCache;
     property CalculatedItems: TCalculatedItemsCT read GetCalculatedItems;
     property CalculatedMembers: TCalculatedMembersCT read GetCalculatedMembers;
     property Dimensions: TDimensionsCT read GetDimensions;
@@ -4516,7 +4519,7 @@ type
   TRevisionCellChangeCT = class(TXmliteComplexType)
   private
     fSId: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
-    fOdxf: ProRock.Xmlite.Schema.Base.TBooleanST;
+    fOdxf2: ProRock.Xmlite.Schema.Base.TBooleanST;
     fXfDxf: ProRock.Xmlite.Schema.Base.TBooleanST;
     fS: ProRock.Xmlite.Schema.Base.TBooleanST;
     fDxf: ProRock.Xmlite.Schema.Base.TBooleanST;
@@ -4531,17 +4534,20 @@ type
     fRa: ProRock.Xmlite.Schema.Base.TBooleanST;
     fOc: TCellCT;
     fNc: TCellCT;
+    fOdxf: TDxfCT;
     fNdxf: TDxfCT;
     fExtLst: TExtensionListCT;
 
     function GetOc: TCellCT;
+    function GetOdxf: TDxfCT;
     function GetNdxf: TDxfCT;
     function GetExtLst: TExtensionListCT;
   published
     [TRequired]
     property SId: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSId write fSId;
     [TDefault(False)]
-    property Odxf: ProRock.Xmlite.Schema.Base.TBooleanST read fOdxf write fOdxf;
+    [TName('odxf')]
+    property Odxf2: ProRock.Xmlite.Schema.Base.TBooleanST read fOdxf2 write fOdxf2;
     [TDefault(False)]
     property XfDxf: ProRock.Xmlite.Schema.Base.TBooleanST read fXfDxf write fXfDxf;
     [TDefault(False)]
@@ -4568,6 +4574,7 @@ type
     property Oc: TCellCT read GetOc;
     [TRequired]
     property Nc: TCellCT read fNc;
+    property Odxf: TDxfCT read GetOdxf;
     property Ndxf: TDxfCT read GetNdxf;
     property ExtLst: TExtensionListCT read GetExtLst;
   end;
@@ -6325,22 +6332,25 @@ type
     fPassword: TUnsignedShortHexST;
     fSqref: TSqrefST;
     fName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
-    fSecurityDescriptor: ProRock.Xmlite.Schema.Base.TStringST;
+    fSecurityDescriptor2: ProRock.Xmlite.Schema.Base.TStringST;
     fAlgorithmName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST;
     fHashValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST;
     fSaltValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST;
     fSpinCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST;
+    fSecurityDescriptor: TStringSTList;
   published
     property Password: TUnsignedShortHexST read fPassword write fPassword;
     [TRequired]
     property Sqref: TSqrefST read fSqref write fSqref;
     [TRequired]
     property Name: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fName write fName;
-    property SecurityDescriptor: ProRock.Xmlite.Schema.Base.TStringST read fSecurityDescriptor write fSecurityDescriptor;
+    [TName('securityDescriptor')]
+    property SecurityDescriptor2: ProRock.Xmlite.Schema.Base.TStringST read fSecurityDescriptor2 write fSecurityDescriptor2;
     property AlgorithmName: ProRock.Xmlite.Schema.Ooxml.SimpleTypes.TXstringST read fAlgorithmName write fAlgorithmName;
     property HashValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST read fHashValue write fHashValue;
     property SaltValue: ProRock.Xmlite.Schema.Base.TBase64BinaryST read fSaltValue write fSaltValue;
     property SpinCount: ProRock.Xmlite.Schema.Base.TUnsignedIntST read fSpinCount write fSpinCount;
+    property SecurityDescriptor: TStringSTList read fSecurityDescriptor;
   end;
 
   [TName('CT_Scenario')]
@@ -10051,6 +10061,11 @@ begin
   Result := TPCDKPIsCT(Lazy(fKpis, TPCDKPIsCT));
 end;
 
+function TPivotCacheDefinitionCT.GetTupleCache: TTupleCacheCT;
+begin
+  Result := TTupleCacheCT(Lazy(fTupleCache, TTupleCacheCT));
+end;
+
 function TPivotCacheDefinitionCT.GetCalculatedItems: TCalculatedItemsCT;
 begin
   Result := TCalculatedItemsCT(Lazy(fCalculatedItems, TCalculatedItemsCT));
@@ -10483,6 +10498,11 @@ end;
 function TRevisionCellChangeCT.GetOc: TCellCT;
 begin
   Result := TCellCT(Lazy(fOc, TCellCT));
+end;
+
+function TRevisionCellChangeCT.GetOdxf: TDxfCT;
+begin
+  Result := TDxfCT(Lazy(fOdxf, TDxfCT));
 end;
 
 function TRevisionCellChangeCT.GetNdxf: TDxfCT;

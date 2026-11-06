@@ -6,7 +6,6 @@
     ProRock is a free and open-source Delphi library. Feedback and contributions are welcome.
     https://github.com/VitalyPopov/ProRock
     
-    Generated (UTC): 2026-10-30T18:17:22.000Z
     Namespace: http://www.w3.org/2001/XMLSchema
 *)
 
@@ -1342,6 +1341,7 @@ type
     fElement: TElementEList;
     fAttribute: TAttributeEList;
     fNotation: TNotationEList;
+    fAnnotation2: TAnnotationEList;
   published
     property TargetNamespace: TAnyURIST read fTargetNamespace write fTargetNamespace;
     property Version: TTokenST read fVersion write fVersion;
@@ -1365,6 +1365,8 @@ type
     property Element: TElementEList read fElement;
     property Attribute: TAttributeEList read fAttribute;
     property Notation: TNotationEList read fNotation;
+    [TName('annotation')]
+    property Annotation2: TAnnotationEList read fAnnotation2;
   end;
 
   TAnyAttributeE = class(TWildcardCT);

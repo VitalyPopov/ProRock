@@ -6,7 +6,6 @@
     ProRock is a free and open-source Delphi library. Feedback and contributions are welcome.
     https://github.com/VitalyPopov/ProRock
     
-    Generated (UTC): 2026-11-05T06:31:40.766Z
     Namespace: http://www.w3.org/2000/09/xmldsig#
 *)
 
@@ -308,6 +307,7 @@ type
   private
     fPGPKeyID: ProRock.Xmlite.Schema.Base.TBase64BinaryST;
     fPGPKeyPacket: ProRock.Xmlite.Schema.Base.TBase64BinaryST;
+    fPGPKeyPacket2: ProRock.Xmlite.Schema.Base.TBase64BinaryST;
   published
     [TXmliteElement]
     [TChoice('PGPKey')]
@@ -315,6 +315,10 @@ type
     [TXmliteElement]
     [TChoice('PGPKey')]
     property PGPKeyPacket: ProRock.Xmlite.Schema.Base.TBase64BinaryST read fPGPKeyPacket write fPGPKeyPacket;
+    [TXmliteElement]
+    [TChoice('PGPKey')]
+    [TName('PGPKeyPacket')]
+    property PGPKeyPacket2: ProRock.Xmlite.Schema.Base.TBase64BinaryST read fPGPKeyPacket2 write fPGPKeyPacket2;
   end;
 
   [TXmliteAnyElement]

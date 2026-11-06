@@ -6,7 +6,6 @@
     ProRock is a free and open-source Delphi library. Feedback and contributions are welcome.
     https://github.com/VitalyPopov/ProRock
     
-    Generated (UTC): 2026-10-30T18:17:22.000Z
     Namespace: http://schemas.xmlsoap.org/wsdl/
 *)
 
@@ -161,9 +160,14 @@ type
     fInput: TParamCT;
     fOutput: TParamCT;
     fFault: TFaultCTList;
+    fOutput2: TParamCT;
+    fInput2: TParamCT;
+    fFault2: TFaultCTList;
 
     function GetInput: TParamCT;
     function GetOutput: TParamCT;
+    function GetOutput2: TParamCT;
+    function GetInput2: TParamCT;
   published
     [TRequired]
     property Name: ProRock.Xmlite.Schema.Base.TNCNameST read fName write fName;
@@ -174,6 +178,15 @@ type
     property Output: TParamCT read GetOutput;
     [TChoice('Input')]
     property Fault: TFaultCTList read fFault;
+    [TChoice('Input')]
+    [TName('output')]
+    property Output2: TParamCT read GetOutput2;
+    [TChoice('Input')]
+    [TName('input')]
+    property Input2: TParamCT read GetInput2;
+    [TChoice('Input')]
+    [TName('fault')]
+    property Fault2: TFaultCTList read fFault2;
   end;
 
   [TName('tParam')]
@@ -394,6 +407,16 @@ end;
 function TOperationCT.GetOutput: TParamCT;
 begin
   Result := TParamCT(Lazy(fOutput, TParamCT));
+end;
+
+function TOperationCT.GetOutput2: TParamCT;
+begin
+  Result := TParamCT(Lazy(fOutput2, TParamCT));
+end;
+
+function TOperationCT.GetInput2: TParamCT;
+begin
+  Result := TParamCT(Lazy(fInput2, TParamCT));
 end;
 
 { TBindingOperationCT }

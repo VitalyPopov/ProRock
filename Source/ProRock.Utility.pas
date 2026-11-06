@@ -84,6 +84,8 @@ type
     property Value[const aKey: K]: V read GetValue; default;
 
     procedure Add(const aKey: K; const aValue: V);
+    // a value under a key that may be there: Keys and Values get it after the others, the key keeps giving the first
+    procedure AddAnother(const aKey: K; const aValue: V);
     procedure Remove(const aKey: K); overload;
     procedure Remove(const aIndex: integer); overload;
     procedure Clear;
@@ -450,6 +452,13 @@ begin
   fKeys.Add(aKey);
   fValues.Add(aValue);
   fDictionary.AddOrSetValue(aKey, aValue);
+end;
+
+procedure TDictObjectList<K, V>.AddAnother(const aKey: K; const aValue: V);
+begin
+  fKeys.Add(aKey);
+  fValues.Add(aValue);
+  fDictionary.TryAdd(aKey, aValue);
 end;
 
 procedure TDictObjectList<K, V>.Clear;
