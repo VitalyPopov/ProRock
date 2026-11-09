@@ -1,10 +1,10 @@
-site_name: ProRock 🤟
+site_name: ProRock
 site_description: "Schema-typed XML for Delphi: generate exact classes from XSD and WSDL. When the schema changes, regenerate, don't re-patch."
 site_url: https://prorock.rocks/
 repo_url: https://github.com/VitalyPopov/ProRock
 repo_name: VitalyPopov/ProRock
 edit_uri: edit/main/docs/
-copyright: ProRock is licensed under the Apache License 2.0. ProRocket Lite is a free closed-source tool with its own license.
+copyright: © 2026 Vitaly Popov. ProRock is licensed under the Apache License 2.0. ProRocket Lite is a free closed-source tool with its own license.
 
 theme:
   name: material
@@ -20,6 +20,7 @@ theme:
         name: Dark mode
   features:
     - navigation.sections
+    - navigation.indexes
     - navigation.top
     - content.code.copy
     - search.highlight
@@ -41,19 +42,27 @@ markdown_extensions:
 
 nav:
   - Home: index.md
-  - Design principles: principles.md
-  - Getting started: getting-started.md
-  - Library:
-      - Xmlite (XML): xmlite.md
-      - Soapite (SOAP): soapite.md
-      - XML support: xml-support.md
-      - Large documents: large-documents.md
-      - Limitations and notes: limitations.md
+  - Start:
+      - How it works: how-it-works.md
+      - Getting started: getting-started.md
+      - Samples: samples.md
   - Generator:
-      - ProRocket Lite: prorocket-lite.md
+      - prorocket-lite/index.md
+      - GUI: gui.md
       - Command line: cli.md
-  - Samples: samples.md
-  - XML concepts for Delphi developers: xml-concepts.md
+      - Generated code: generated-code.md
+  - Using the classes:
+      - XML (Xmlite): xmlite.md
+      - SOAP (Soapite): soapite.md
+      - Large documents: large-documents.md
+      - Hand-written classes: hand-written.md
+  - Reference:
+      - Tested schemas: tested-schemas.md
+      - XML support: xml-support.md
+      - Limitations and notes: limitations.md
+  - Background:
+      - Design principles: principles.md
+      - XML for ProRockers: xml-concepts.md
   - Project:
       - Roadmap: roadmap.md
       - Changelog: changelog.md

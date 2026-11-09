@@ -1,54 +1,50 @@
+---
+icon: lucide/triangle-alert
+---
+
 # Limitations and notes
 
-What of XML and XML Schema is supported, in part or not yet: [XML support](xml-support.md). This page has the notes for
-using it; [XML concepts](xml-concepts.md) explains the XML Schema terms with examples. Coverage grows through real-world schemas. If yours doesn't generate or doesn't read right,
-[open an issue](https://github.com/VitalyPopov/ProRock/issues/new/choose) - see also the [roadmap](roadmap.md).
-
-## Writing a document back
-
-A document read and written back keeps what its schema describes: values equal to their default, objects with only
-defaults, absent values stay absent, enumeration texts and element order as in the schema
-([presence](xmlite.md#absent-or-default-presence)), the elements the schema does not describe, and mixed content with its text
-and order ([mixed content](xmlite.md#mixed-content-and-element-order)).
-
-A value set in code that equals its default is written only when marked present (`SetPresent`) - see
-[presence](xmlite.md#absent-or-default-presence).
-
-ProRock reads and writes documents, it does not validate them. A required element you don't set is written all the same, empty, or
-as `0` for a number, so a forgotten amount looks like a real `0`: validate what you send where it matters. In a document that
-has a second element where the schema allows one, the last one is read and the others are lost, and `FromXml` still returns `True`.
-
-## Large schemas
-
-FHIR R4 and the OOXML SpreadsheetML/DrawingML schemas generate units that compile unchanged. Very large units compile slowly:
-all of FHIR R4 is one unit of about 38,000 lines, which Delphi 13 compiles in a minute or more.
-
-## Notes
-
-- `TSoapiteError.Message`, `Detail` and `Response` are text controlled by the server and may contain its internals (stack
-  traces, paths). Log them, and show your own message to end users.
-- Generated string types (`TStringST = type string`) need a cast before string-helper methods:
-  `string(response.Address).Replace(...)`.
-- `xs:decimal`, `xs:float` and `xs:double` are `Double`, written as the shortest text that reads back the same value: a number
-  of up to 15 significant digits comes back as the same number (`0.1` stays `0.1`; `1.50` is written `1.5`), a longer one
-  as the same Double in its shortest text, and digits beyond what a Double holds (about 17) are lost. Arithmetic is binary floating point. For money arithmetic, convert to `Currency` before calculating:
-  `var price: Currency := line.Price; var total := price * line.Quantity;`. `xs:integer` is `Int64`, `xs:unsignedLong` is
-  `UInt64`.
-- A property that fell back to `string` (a schema the generator reported missing) where the XML has child elements: parsing
-  succeeds, the property stays empty and that content is dropped - also when written back. Add the schema and regenerate if
-  that data matters.
+What to know before relying on it. Which XML and XML Schema constructs are covered, one by one: [XML support](xml-support.md); what
+comes next: [Roadmap](roadmap.md). If your schema doesn't generate or doesn't read right, please
+[open an issue](https://github.com/VitalyPopov/ProRock/issues/new/choose): coverage grows through real-world schemas.
 
 ## Platform and compatibility
 
-Developed and tested with **Delphi 13 Florence** (13.1), mainly on **Win64**; **Win32** is supported as well. Every release is
-also verified to compile and work with Delphi 12 Athens, 11 Alexandria, 10.4 Sydney and 10.3 Rio.
+| | |
+|---|---|
+| **Delphi 13 Florence** (13.1) | developed and tested on it, mainly on Win64; Win32 is supported as well |
+| **Delphi 12, 11, 10.4, 10.3** | every release is verified to compile and pass the tests, Win64 and Win32<br>(10.4 Win32: compiled only) |
+| before **10.3** | not supported: the code uses inline variables |
+| **Client certificates** | Delphi 12 or later (System.Net's support for them) |
+| **Android** 32/64-bit | all units compile (Delphi 13), running on a device is not verified yet |
+| **ProRocket Lite**, the generator | runs on Windows 64-bit |
 
-Large generated units compile much slower on Delphi 10.3 than on 10.4 and later.
+!!! note "Delphi 10.3 compiles large generated units much slower"
+    All of FHIR R4 (a unit of about 46,000 lines, 48,000 with the XHTML unit for its narratives) takes about 3 minutes there, against
+    10-20 seconds on Delphi 13. Only 10.3 does this, 10.4 and later do not. Why is not known, and honestly, it is an old Delphi, so
+    there are no plans to investigate. Compile times of the others: [Tested schemas](tested-schemas.md).
 
-The code uses inline variable declarations, so Delphi versions before 10.3 are not supported. Client certificates use
-System.Net's support for them, which works from Delphi 12 on.
+## Writing a document back
 
-ProRock has no Windows-only dependencies: all units compile for **Android** 32/64-bit (Delphi 13). Running on a device is not
-verified yet.
+A document read and written back keeps what its schema describes: values equal to their default, objects with only defaults, absent
+values staying absent, enumeration texts, element order as in the schema ([presence](xmlite.md#absent-or-default-presence)), the
+elements the schema does not describe, and mixed content with its text and order
+([mixed content](xmlite.md#mixed-content-and-element-order)).
 
-ProRocket Lite (the generator) runs on Windows 64-bit.
+A value set in code that equals its default is written only when marked present (`SetPresent`).
+
+!!! warning "ProRock does not validate"
+    - A required element you don't set is written all the same, empty, or as `0` for a number, so a forgotten amount looks like a
+      real `0`. Validate what you send where it matters.
+    - In a document with a second element where the schema allows one, the last one is read, the others are lost, and `FromXml`
+      still returns `True`.
+
+## Numbers
+
+`xs:decimal`, `xs:float` and `xs:double` are `Double`, written as the shortest text that reads back the same value. A number of up to
+15 significant digits comes back as the same number (`0.1` stays `0.1`; `1.50` is written `1.5`), a longer one as the same Double in
+its shortest text, and digits beyond what a Double holds (about 17) are lost. `xs:integer` is `Int64`, `xs:unsignedLong` is `UInt64`.
+
+!!! tip "For money arithmetic, convert to `Currency` before calculating"
+    Arithmetic on a `Double` is binary floating point:
+    `var price: Currency := line.Price; var total := price * line.Quantity;`

@@ -37,3 +37,26 @@ document.addEventListener("click", function (event) {
   document.addEventListener("keydown", onKey);
   document.body.appendChild(overlay);
 });
+
+// the generator's download in the header, on every page: nobody expects a free generator next to a library
+document.addEventListener("DOMContentLoaded", function () {
+  var title = document.querySelector(".md-header__title");
+  var home = document.querySelector(".md-header__button.md-logo");
+  if (!title || !home) return;
+  var link = document.createElement("a");
+  link.className = "prorock-download";
+  link.href = "https://github.com/VitalyPopov/ProRock/releases/latest/download/ProRocket-Lite.zip";
+  link.title = "ProRocket Lite: the free code generator, Windows 64-bit";
+  var icon = document.createElement("img");
+  icon.src = new URL("assets/prorocket.png", home.href).href;
+  icon.alt = "";
+  link.appendChild(icon);
+  link.appendChild(document.createTextNode("Download generator"));
+  title.insertAdjacentElement("afterend", link);
+});
+
+// the name in the header as on Home: Pro + Rock in orange
+document.addEventListener("DOMContentLoaded", function () {
+  var name = document.querySelector(".md-header__title .md-header__topic:first-child .md-ellipsis");
+  if (name) name.innerHTML = name.innerHTML.replace("ProRock", 'Pro<span class="prorock-rock">Rock</span> 🤟');
+});

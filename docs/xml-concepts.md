@@ -1,7 +1,11 @@
+---
+icon: lucide/book-open
+---
+
 # XML concepts for Delphi developers
 
-The XML and XSD terms that come up with ProRock, each with a small example and what it becomes in Delphi. No prior XSD
-knowledge needed.
+You do not need any of this to use ProRock: pick the schema, generate, use the classes. This page is for when a term comes up: the
+XML and XSD words, each with a small example and what it becomes in Delphi.
 
 ## Elements and attributes
 

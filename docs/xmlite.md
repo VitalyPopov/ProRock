@@ -1,18 +1,20 @@
-# Xmlite
+---
+icon: lucide/code-xml
+---
 
-Xmlite reads and writes XML through plain Delphi objects: one class per element or type of the schema, one property per child
-element or attribute. It is namespace- and schema-aware, and parses in place on the text, without building a DOM.
+# XML (Xmlite)
 
-Classes come from two places:
+Reading and writing XML through plain Delphi objects: one class per element or type of the schema, one property per child element
+or attribute. Xmlite is namespace- and schema-aware, and parses in place on the text, without building a DOM.
 
-- **generated** by [ProRocket Lite](prorocket-lite.md) from an XSD or WSDL - exact to the schema, regenerated when it changes
-- **hand-written**, for a small format without a schema or to start simple
+The classes come from the [generator](prorocket-lite/index.md); for a small format without a schema you can
+[write them by hand](hand-written.md).
 
 ## Reading and writing
 
 ```pascal
 uses System.SysUtils, System.IOUtils,
-  ProRock.Xmlite, // FromXml and ToXml (a class helper: visible only where ProRock.Xmlite is in uses)
+  ProRock.Xmlite,
   ProRock.Xmlite.Schema.Order;
 
 var order := TOrderE.Create; // the root element's class: <order> -> TOrderE
@@ -27,10 +29,13 @@ finally
 end;
 ```
 
-- Nested objects and lists are created and freed with their parent (read-only properties); just use them. The members of a
-  choice are created on first access - see [Large documents](large-documents.md).
-- Enumerations are Delphi enums, `maxOccurs > 1` gives a typed list (`...List`): of objects, or of plain values for a repeating
-  element of a simple type (`<author>Ann</author><author>Bob</author>`: `Authors.Author.Add('Ann')`, a `TList<T>` to use).
+!!! warning "`FromXml` and `ToXml` need `ProRock.Xmlite` in `uses`"
+    They come from a class helper, visible only where that unit is listed. Without it: E2003, undeclared identifier.
+
+- Nested objects and lists are created and freed with their parent; just use them. What each schema construct becomes:
+  [Generated code](generated-code.md).
+- A repeating element of a simple type is a list of plain values: `<author>Ann</author><author>Bob</author>` is
+  `Authors.Author.Add('Ann')`, a `TList<T>` to use.
 - `TXmlite.ObjectToXml(obj)` writes any object, also one that is not a root element.
 
 ## Absent or default: presence
@@ -62,68 +67,6 @@ sheet.Clear('Drawing');         // removes a value or an object: back to its def
   ([created on first access](large-documents.md)), so pass its name, the property's or the schema's: `SetPresent('Drawing')`. A wrong
   one is skipped, nothing raises: the functions return `False`.
 
-## What the generator makes of a schema
-
-From this part of an XSD:
-
-```xml
-<xs:simpleType name="OrderStatus">
-  <xs:restriction base="xs:string">
-    <xs:enumeration value="new"/>
-    <xs:enumeration value="shipped"/>
-  </xs:restriction>
-</xs:simpleType>
-
-<xs:complexType name="ItemsType">
-  <xs:sequence>
-    <xs:element name="item" type="ItemType" maxOccurs="unbounded"/>
-  </xs:sequence>
-</xs:complexType>
-```
-
-you get:
-
-```pascal
-TOrderStatusST = (osNew, osShipped);
-
-TItemsTypeCT = class(TXmliteComplexType)
-private
-  fItem: TItemTypeCTList;
-published
-  property Item: TItemTypeCTList read fItem;
-end;
-```
-
-The suffix tells what a name was in the schema: `E` an element, `CT` a complex type, `ST` a simple type. What all the types of
-one kind share stays out of the Delphi name: `CT_Font` -> `TFontCT` in OOXML, `InvoiceType` -> `TInvoiceCT` in UBL (the rule and
-the option to keep whole names: [Command line](cli.md#type-names)). One unit per XML namespace (`ProRock.Xmlite.Schema.<Name>`), so
-the units of a schema set use each other as the schemas import each other.
-
-XML names come back from the Delphi names by the schema's own styles, which `RegisterNamespace` at the end of the unit states: for types,
-for the elements and attributes inside them, for enumeration items (FHIR: `TNaming.nPascalCase, TNaming.nCamelCase, TNaming.nKebabCase`).
-`[TEnumNaming]` marks a list named differently; `[TNaming]`, `[TName]` and `[TEnumCaption]` appear only where those do not give the
-exact name.
-
-A member named like one its class inherits takes a trailing `_`, its XML name kept: FHIR's `meta` is `Meta_`, because `Meta` is the
-class metadata, `add` is `Add_`. A SOAP operation the same: `Call` gives `Call_` and `TryCall_`. ProRock's own members keep their
-names, and new ones take the `Xml` prefix, so a later version does not rename an element of yours.
-
-| XSD | Delphi |
-|---|---|
-| `xs:string`, `xs:token`, ... | `string` types (`TStringST = type string`) |
-| `xs:integer`, `xs:long`, `xs:int`, `xs:short`, ... | `Int64` types |
-| `xs:unsignedLong` and its derived types | `UInt64` types |
-| `xs:decimal`, `xs:float`, `xs:double` | `Double` types |
-| `xs:boolean` | `Boolean` |
-| `xs:date`, `xs:dateTime`, `xs:duration`, ... | `string` types: the text as in the document |
-| enumeration | a Delphi enum |
-| complex type, element | a class |
-| `maxOccurs > 1` | a typed list: of objects, or of values (`TXmliteValueList<T>`) for a simple type |
-| simpleContent (text plus attributes) | the text in `XmlValue`, the attributes as properties |
-
-!!! note "Generated string types"
-    `TStringST` is `type string`, so string-helper methods need a cast: `string(response.Address).Replace(...)`.
-
 ## Content the schema does not describe
 
 Real documents carry more than their schema: Office writes its own extensions into every file, a newer version of a format
@@ -143,8 +86,7 @@ adds elements. Xmlite keeps such content and writes it back:
 - **Values that do not fit their type** (`12,50` in a decimal, `XXX` in an enumeration, `<amount currency="EUR"/>`): the property
   is not present and holds its default, the read goes on, and the value is written back as it came - an element through
   `XmlUnknown`, an attribute through `XmlAttributes`, the text of an element with attributes through `XmlText`. Setting the property
-  replaces it; to set it to its default, `SetPresent` too. ProRock is no validator: the other end will refuse such a value, as it
-  would have refused the document before.
+  replaces it; to set it to its default, `SetPresent` too.
 - **Namespace declarations** of the document are written back too, so prefixes that only appear in values
   (`mc:Ignorable="x14ac"`) stay declared.
 - `Clear` removes the kept content with the rest.
@@ -152,6 +94,10 @@ adds elements. Xmlite keeps such content and writes it back:
 Kept content is never written without being checked: an element whose tags are not closed or crossed, or which uses an
 undeclared prefix, fails the read - as any malformed XML does: `FromXml` returns `False`, and the object holds what was read
 up to there.
+
+!!! tip "ProRock reads on, it does not validate"
+    A value that does not fit is kept and written back, so a document comes through unharmed. The other end will still refuse it,
+    as it would have refused the document before.
 
 ## Mixed content and element order
 
@@ -193,39 +139,6 @@ p.AddText(': final');
 - `Ordered` and `Mixed` are settings of the class's metadata (`TPE.Meta.Xmlite.Mixed`) - changeable at run time, for every
   object of the class. Units generated before 1.6 have no `[TMixed]`: regenerate them.
 
-## Hand-written classes
-
-Without a schema, write the classes yourself. A published property is an attribute by default; `[TXmliteElement]` makes it a
-child element:
-
-```pascal
-uses ProRock.Basite, ProRock.Xmlite;
-
-type
-  TItem = class(TBasite)
-  private
-    fSku: string;
-    fTitle: string;
-    fPrice: Double;
-  published
-    property sku: string read fSku write fSku;         // <item sku="...">
-    [TXmliteElement]
-    property title: string read fTitle write fTitle;   // <title>...</title>
-    [TXmliteElement]
-    property price: Double read fPrice write fPrice;
-  end;
-
-  TItems = class(TBasite)
-  private
-    fItem: TBasiteList<TItem>;
-  published
-    property item: TBasiteList<TItem> read fItem;     // created and freed with TItems
-  end;
-```
-
-You can start with simple models like these and move to generated, namespace-aware classes when a schema arrives. The samples
-[`ProRock.Xmlite.Basic`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Xmlite.Basic) (hand-written) and [`ProRock.Xmlite.Namespaces`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Xmlite.Namespaces) (generated) show both.
-
 ## Derived types: `xsi:type`
 
 When the schema allows a derived type in place of the declared one, the document says so with `xsi:type`. To write it, tell the
@@ -237,20 +150,5 @@ props.Modified.SetXsiType(TW3cdtfCT); // <dcterms:modified xsi:type="dcterms:W3C
 
 `SetXsiType` refuses a class that is not a complex type derived from the element's type. See
 [XML concepts](xml-concepts.md#derived-types-and-xsitype) for what this means.
-
-## Under the hood
-
-`TXmlite` and `TXmliteList` inherit from `TBasite` and `TBasiteList`. Three parts fit together:
-
-- **Basite** defines how objects live: plain Delphi objects (PODOs), nested objects created and freed with their parent,
-  independent of any data format
-- **MetaBank** defines how they are described: the metadata of every registered class and property, built once and reused
-  for every parse and write, so there is no repeated RTTI scanning. The classes of one schema registered there form its
-  **metamodel**
-- **Xmlite** defines how XML maps to them: elements, attributes and namespaces as metadata on top. Soapite builds on Xmlite
-
-The metamodels that ship with ProRock - XML Schema itself, WSDL, the SOAP envelopes and bindings
-(`ProRock.Xmlite.Schema.*`) - are ordinary generated units: ProRocket Lite generates them from their official schemas with
-every release, and reads every XSD and WSDL through them.
 
 What of XML and XML Schema is covered: [XML support](xml-support.md); notes for using it: [Limitations and notes](limitations.md).

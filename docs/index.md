@@ -1,91 +1,16 @@
-# ProRock
+---
+icon: lucide/house
+hide:
+  - toc
+---
 
-**Schema-typed XML for Delphi.** Generate exact Delphi classes from XSD and WSDL, parse and write XML through them, call SOAP
-services with them.
+# ProRock { .hero-hidden }
 
-> **When the schema changes, regenerate, don't re-patch.**
+<div class="hero"><div class="hero-text"><div class="hero-name">Pro<span>Rock</span> 🤟</div><div class="hero-claim">Your schema in.<br>Ready Delphi classes out.</div><p>A free generator for XSD and WSDL, and an open-source library that reads and writes XML and calls SOAP services through the classes it makes.</p></div><div class="hero-side"><div class="hero-minerals"><div><img src="assets/basite.webp" alt=""><span>Basite</span></div><div><img src="assets/xmlite.webp" alt=""><span>Xmlite</span></div><div><img src="assets/soapite.webp" alt=""><span>Soapite</span></div></div><div class="hero-buttons"><a class="md-button md-button--primary" href="getting-started/">Get started in 5 minutes</a><a class="md-button" href="how-it-works/">How it works</a></div></div></div>
 
-A schema changes: a new e-invoicing version, an ISO 20022 release, a service adding fields. Hand-written or hand-patched mappings
-then have to be found and fixed one by one. With ProRock you regenerate the units, and the compiler shows exactly what changed.
+<div class="grid-claims"><a class="claim" href="prorocket-lite/"><svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-rocket" viewBox="0 0 24 24"><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09"/><path d="M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05"/></svg><b>Free generator</b><span>GUI and command line, free for any use, commercial too. The generated code is yours.</span></a><a class="claim" href="tested-schemas/"><svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-badge-check" viewBox="0 0 24 24"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76"/><path d="m16 9-5.5 5.5L8 12"/></svg><b>Proven on real schemas</b><span>HL7 FHIR R4, e-invoices, Excel workbooks, ISO 20022, SOAP services.</span></a><a class="claim" href="samples/#excel-workbook"><svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-repeat" viewBox="0 0 24 24"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14M7 22l-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg><b>Writes back what it read</b><span>Even what the schema does not describe. Excel opens the file and recalculates.</span></a><a class="claim" href="how-it-works/"><svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-braces" viewBox="0 0 24 24"><path d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1"/></svg><b>No DOM, no XPath</b><span>The classes are the schema, and code completion is their documentation.</span></a><a class="claim" href="large-documents/"><svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-zap" viewBox="0 0 24 24"><path d="M15.914 4a1.5 1.5 0 0 0-2.474-1.561l-9 9A1.5 1.5 0 0 0 5.5 14h4.002a.5.5 0 0 1 .471.666L8.086 20a1.5 1.5 0 0 0 2.475 1.56l9-9A1.5 1.5 0 0 0 18.5 10h-3.997a.5.5 0 0 1-.472-.667z"/></svg><b>Fast</b><span>Lazy objects: an e-invoice reads in under a millisecond, 1,000 FHIR patients in 0.1 s.</span></a><a class="claim" href="getting-started/"><svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-package-open" viewBox="0 0 24 24"><path d="M12 22v-9M15.17 2.21a1.67 1.67 0 0 1 1.63 0L21 4.57a1.93 1.93 0 0 1 0 3.36L8.82 14.79a1.66 1.66 0 0 1-1.64 0L3 12.43a1.93 1.93 0 0 1 0-3.36z"/><path d="M20 13v3.87a2.06 2.06 0 0 1-1.11 1.83l-6 3.08a1.93 1.93 0 0 1-1.78 0l-6-3.08A2.06 2.06 0 0 1 4 16.87V13"/><path d="M21 12.43a1.93 1.93 0 0 0 0-3.36L8.83 2.2a1.64 1.64 0 0 0-1.63 0L3 4.57a1.93 1.93 0 0 0 0 3.36l12.18 6.86a1.64 1.64 0 0 0 1.63 0z"/></svg><b>Nothing to install</b><span>Pure Delphi source, Apache 2.0. Delphi 10.3 to 13, Win64 and Win32.</span></a></div>
 
-[Get started in 5 minutes](getting-started.md){ .md-button .md-button--primary }
-[![](assets/prorocket.png){ .button-icon } Download ProRocket Lite](https://github.com/VitalyPopov/ProRock/releases/latest/download/ProRocket-Lite.zip){ .md-button }
+<div class="ask-head"><h2 id="it-is-young">It is young, and it grows with you</h2><div class="ask-buttons"><a class="md-button md-button--primary" href="https://github.com/VitalyPopov/ProRock">⭐ Star on GitHub</a><a class="md-button" href="https://github.com/VitalyPopov/ProRock/issues/new/choose">Open an issue</a><a class="md-button ask-support" href="https://github.com/sponsors/VitalyPopov">Support the project</a></div></div>
 
-## Proven on real schemas
-
-- **HL7® FHIR® R4** - all 146 resource types from the official schemas: a Bundle of 1,000 Patients read in 0.1 s,
-  narratives written back as they were ([sample](samples.md#fhir-resources))
-- **Excel workbooks** - SpreadsheetML from ECMA-376: an invoice read, edited and written back with everything Excel put in
-  it; Excel opens it and recalculates ([sample](samples.md#excel-workbook))
-- **SOAP services** - the EU VIES VAT service, WS-Security, client certificates ([getting started](getting-started.md))
-
-What of XML and XML Schema is covered, in part or not yet: [XML support](xml-support.md).
-
-## What it looks like
-
-A FHIR Bundle: each entry holds one of 146 resource types, an Observation's value one of eleven - the classes say which:
-
-```pascal
-bundle.FromXml(xml);
-for var entry in bundle.Entry do
-begin
-  var resource := entry.Resource.Chosen;               // the one resource in this entry
-  if resource is TObservationCT then
-  begin
-    var value := TObservationCT(resource).ValueChosen; // TQuantityCT, TCodeableConceptCT, TStringCT... or nil
-    if value is TQuantityCT then
-      Writeln(TQuantityCT(value).Value.Value, ' ', TQuantityCT(value).&Unit.Value); // 185 lbs
-  end;
-end;
-```
-
-An Excel cell changed, and the workbook written back with everything else as it was:
-
-```pascal
-cell.V := '5';                           // <c r="C6"><v>5</v></c>
-workbook.CalcPr.FullCalcOnLoad := True;  // Excel recalculates the totals when it opens the file
-```
-
-![Excel with the workbook saved by the sample: the changed quantity, the amount and the total recalculated, the table intact](assets/excel-saved.png)
-
-A SOAP call from a WSDL takes [5 minutes](getting-started.md).
-
-## Two parts
-
-**ProRock** - the runtime library. Open source (Apache 2.0), pure Delphi source, no dependencies beyond the RTL, no packages
-to install.
-
-- [Basite](xmlite.md#under-the-hood): the core - plain Delphi objects described once by their metadata (MetaBank): nested
-  objects created and freed with their parent, presence of every value. Independent of any data format, the base for Xmlite
-  and later Jsonite
-- [Xmlite](xmlite.md): XML parsing and serialization to and from plain Delphi objects, namespace- and schema-aware. Parsing works
-  in place on the text, without building a DOM. What of XML it covers: [XML support](xml-support.md)
-- [Soapite](soapite.md): SOAP 1.1 / 1.2 clients on top of Xmlite, generated from WSDL, with typed requests, responses and faults
-
-**ProRocket Lite** - the code generator: XSD and WSDL in, Delphi units out, in a [GUI](prorocket-lite.md) and from the
-[command line](cli.md) - friendly to scripts and AI coding assistants. Free for any use, including commercial; the generated
-code is yours.
-
-## How it is designed
-
-A cockpit, not an engine room: the complexity stays inside, outside are plain Delphi objects you own. Little to learn,
-nothing to install, as fast as it can be made - and tolerant of real-world data. More in
-[Design principles](principles.md).
-
-## Platforms
-
-Delphi 10.3 Rio to 13 Florence, Win64 and Win32. All units compile for Android 32/64-bit (Delphi 13); running on a device is
-not verified yet. Details: [Limitations and notes](limitations.md#platform-and-compatibility).
-
-## Feedback
-
-Feedback, real-world schemas that do not work yet, and contributions are welcome:
-[open an issue](https://github.com/VitalyPopov/ProRock/issues/new/choose) or see
-[CONTRIBUTING.md](https://github.com/VitalyPopov/ProRock/blob/main/CONTRIBUTING.md).
-
-If ProRock is useful to you, at least smash the ⭐ [Star on GitHub](https://github.com/VitalyPopov/ProRock) - it costs nothing
-and helps other Delphi developers find it. And if you'd like to do more, you can
-[support the project](https://github.com/sponsors/VitalyPopov). Thank you! 🤟
-
-Since October 2026, development is assisted by [Claude Code](https://claude.com/claude-code) (Anthropic): it helps with
-implementation, tests and generator fixes. Design, decisions and verification remain the author's.
+One developer builds it, and real use is what moves it forward. Try it on your schema and tell what breaks: that is the most
+useful thing you can do. And if it helps you, a star costs nothing and helps other Delphi developers find it.

@@ -30,8 +30,8 @@ jobs:
       - run: pip install zensical==0.0.71
       # ROADMAP.md and CHANGELOG.md stay in the repository root; the site gets copies
       - run: |
-          sed 's/(CHANGELOG\.md)/(changelog.md)/g' ROADMAP.md > docs/roadmap.md
-          cp CHANGELOG.md docs/changelog.md
+          { printf -- '---\nicon: lucide/map\n---\n\n'; sed 's/(CHANGELOG\.md)/(changelog.md)/g' ROADMAP.md; } > docs/roadmap.md
+          { printf -- '---\nicon: lucide/history\n---\n\n'; cat CHANGELOG.md; } > docs/changelog.md
       - run: zensical build --clean
       - uses: actions/upload-pages-artifact@v4
         with:

@@ -1,14 +1,21 @@
+---
+icon: lucide/flask-conical
+---
+
 # Samples
 
 In [`Samples`](https://github.com/VitalyPopov/ProRock/tree/main/Samples) of the repository, one group project
 (`ProRock.Samples.groupproj`). The generated units and the source WSDL/XSD files are included, so the samples build without
 running the generator.
 
+!!! tip "Your own schemas need the generator"
+    It is a free download: [ProRocket Lite](prorocket-lite/index.md).
+
 | Sample | What it shows |
 |---|---|
-| [`ProRock.Xmlite.Spreadsheet`](#excel-workbook) | an Excel workbook from the official SpreadsheetML schemas (22,000 generated lines): sheets, dates, formulas and tables shown, cells edited, written back with everything Excel put in it |
-| [`ProRock.Xmlite.EInvoice`](#electronic-invoices) | an electronic invoice under EN 16931 from the official schemas (32,000 generated lines): the same window for CII (ZUGFeRD, Factur-X, XRechnung) and UBL (Peppol, XRechnung), written back as it was read |
-| [`ProRock.Xmlite.Fhir`](#fhir-resources) | HL7® FHIR® R4 resources from the official schemas (38,000 generated lines): a Bundle listed with each Observation's value, the narrative as text, written back as it was; a Bundle of 1,000 resources timed |
+| [`ProRock.Xmlite.Spreadsheet`](#excel-workbook) | an Excel workbook from the official SpreadsheetML schemas (about 23,000 generated lines): sheets, dates, formulas and tables shown, cells edited, written back with everything Excel put in it |
+| [`ProRock.Xmlite.EInvoice`](#electronic-invoices) | an electronic invoice under EN 16931 from the official schemas (about 51,000 generated lines): the same window for CII (ZUGFeRD, Factur-X, XRechnung) and UBL (Peppol, XRechnung), written back as it was read |
+| [`ProRock.Xmlite.Fhir`](#fhir-resources) | HL7® FHIR® R4 resources from the official schemas (about 48,000 generated lines): a Bundle listed with each Observation's value, the narrative as text, written back as it was; a Bundle of 1,000 resources timed |
 | [`ProRock.Xmlite.DocumentProperties`](#office-document-properties) | the properties of any Office document: open, edit, save; the sheet or slide titles |
 | [`ProRock.Soapite.CheckVatService`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Soapite.CheckVatService) | EU VIES VAT number validation through the generated `TCheckVatService`, with live SOAP Fault handling; `-name:` compares the trader's name too (`checkVatApprox`) and tells an absent match code from VALID with `Present` |
 | [`ProRock.Soapite.WsSecurity`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Soapite.WsSecurity) | a WS-Security UsernameToken (PasswordDigest, Nonce, Timestamp) in the SOAP header, from units generated from the OASIS schemas; offline, or `-live`. Other header blocks work the same way, e.g. the ebMS 3.0 `eb:Messaging` of AS4 |
@@ -54,7 +61,7 @@ workbook.CalcPr.FullCalcOnLoad := True;
 [`ProRock.Xmlite.EInvoice`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Xmlite.EInvoice) opens an invoice or credit
 note under the European standard EN 16931, which has two syntaxes: UN/CEFACT CII, the XML of ZUGFeRD, Factur-X and one form of XRechnung, and
 OASIS UBL, the XML of Peppol and the other form of XRechnung. Both go into units ProRocket generates from the official schemas (`Schemas`
-in the sample's folder: CII D16B, 4,800 lines; UBL 2.4, 27,000 lines), and the root element says which. The window shows the seller and the
+in the sample's folder: CII D16B, about 9,000 lines; UBL 2.4, about 42,000 lines), and the root element says which. The window shows the seller and the
 buyer, the lines, the VAT and the totals; Save as writes the file back. `invoice-cii.xml` and `invoice-ubl.xml` are one invoice from KoSIT's
 XRechnung test suite, and show the same in both. Its seller and buyer are placeholders of the test suite.
 
@@ -79,7 +86,7 @@ significant digits.
 
 [`ProRock.Xmlite.Fhir`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Xmlite.Fhir) reads HL7® FHIR® R4
 XML - a Bundle or a single resource - into the units ProRocket generates from the standard's schemas (`fhir-single.xsd`,
-`fhir-xhtml.xsd`): 146 resource types, their data types and the narrative's XHTML, 38,000 lines. It lists each resource
+`fhir-xhtml.xsd`): 146 resource types, their data types and the narrative's XHTML, about 48,000 lines. It lists each resource
 with what it is, its value and when; the selected one's narrative is shown as text. Save as writes the file back as it
 was read, and Speed test reads and writes a Bundle of 1,000 resources made of the same entries. `bundle.xml` holds the
 Patient and Observation examples of the specification.
@@ -105,7 +112,7 @@ end;
 The narrative is XHTML mixed content: `InnerText` gives its text; the sample walks `XmlContent` to end a line after
 each paragraph. FHIR's own `meta` element is `Meta_` in every resource class: `Meta` is the class metadata.
 
-Compiling the FHIR unit takes a minute or more; the program starts in about a third of a second.
+Compiling the FHIR unit takes 10-20 seconds on Delphi 13; the program starts in about a third of a second.
 
 ## Office document properties
 

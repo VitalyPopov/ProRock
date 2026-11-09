@@ -1,28 +1,25 @@
+---
+icon: lucide/layers
+---
+
 # Large documents
 
-Since 1.7, in generated classes an object is created when your code first touches it, not together with its parent. A schema can
-offer hundreds of members and a document uses a few, so the rest no longer cost anything. Nothing changes in how you use the
-classes: create, read, work, write, free. In your own classes you choose: see [Hand-written classes](#hand-written-classes).
+A schema can offer hundreds of members, and a document uses a few. In generated classes objects are created lazily, when your code first
+touches them, not together with their parent, so the members a document does not use cost nothing. How you use the classes is the same:
+create, read, work, write, free. In your own classes you choose: see
+[Hand-written classes](hand-written.md#lazy-creation).
 
-| The e-invoice sample's UBL invoice (5 lines) | 1.6 | 1.7 |
-|---|---|---|
-| read | 73 ms | 0.44 ms |
-| write | 45 ms | 0.36 ms |
-| free | 69 ms | 0.10 ms |
-| objects in memory | 161,839 | 148 |
+| Document | Read | Write | Free | Objects in memory |
+|---|---|---|---|---|
+| a UBL e-invoice of 5 lines (the [sample](samples.md#electronic-invoices)) | 0.44 ms | 0.36 ms | 0.10 ms | 148 |
+| a FHIR R4 Bundle of 1,000 Patients, 1.8 MB | 0.08 s | 0.07 s | 0.03 s | 32,000 |
 
-| A FHIR R4 Bundle of 1,000 Patients (1.8 MB) | 1.5 | 1.6 (choices) | 1.7 |
-|---|---|---|---|
-| read | 11.9 s | 0.11 s | 0.08 s |
-| write | 6.7 s | 0.09 s | 0.07 s |
-| free | 10.0 s | 0.06 s | 0.03 s |
-| objects in memory | 52.6 million | 94,000 | 32,000 |
+Measured with Delphi 13, Win64.
 
-Measured with Delphi 13, Win64. Documents are written byte for byte as before.
+## Lazy creation: why it is fast
 
-## The rule
-
-In a generated class an object is created on first access. A required one comes with its parent, because it is always written:
+In a generated class an object is created lazily, on first access, so a large schema costs only what a document really uses. A
+required object comes with its parent, because it is always written:
 
 ```pascal
 TOrderE = class(TXmliteElement)
@@ -106,11 +103,9 @@ silently.
 
 ## Things to keep in mind
 
-- **Looking creates.** `if order.Seller.City.XmlValue <> ''` creates an empty seller and city. They are not written, and it is no
-  more than was always there before 1.7. To test whether an element is there without creating it, use the name:
-  `order.IsPresent('Seller')`; for a choice, `Chosen`.
-- **A getter never returns nil.** `if order.Seller = nil` is never true, and code that descends through the properties of a
-  recursive type (a node with a node below) must stop where there is no content:
+!!! warning "A getter never returns nil"
+    `if order.Seller = nil` is never true, and code that descends through the properties of a recursive type (a node with a node
+    below) must stop where there is no content:
 
     ```pascal
     procedure Walk(aNode: TNodeCT);
@@ -122,38 +117,15 @@ silently.
     end;
     ```
 
+!!! tip "Reading without a copy"
+    `FromXml` reads a copy of the text, so your string stays as it was. For a large text you read once, `FromXmlInPlace(xml)` saves
+    that copy. The read writes into `xml`, so it no longer holds the document afterwards.
+
+- **Looking creates.** `if order.Seller.City.XmlValue <> ''` creates an empty seller and city. They are not written, and it is no
+  more than was always there before 1.7. To test whether an element is there without creating it, use the name:
+  `order.IsPresent('Seller')`; for a choice, `Chosen`.
 - **No address for an object created on first access.** `Present[@Obj.Seller]`, `SetPresent(@...)` and `Clear(@...)` do not compile
   for a property with a getter (E2036); use the name: `order.IsPresent('Seller')`, `order.Clear('Seller')`. Plain values and required
   objects keep the `@` form. A name that does not exist returns `False`, so check the result where it matters.
 - **Threads.** Several threads may read one object at once: the first access to an untouched member gives all of them the same
   object. Writing to it while others read still needs your own lock.
-- **Reading without a copy.** `FromXml` reads a copy of the text, so your string stays as it was. For a large text
-  you read once, `FromXmlInPlace(xml)` saves that copy - the read writes into `xml`, so it no longer holds the document
-  afterwards: `var xml := TFile.ReadAllText(...); bundle.FromXmlInPlace(xml);`
-
-## Hand-written classes
-
-In your own classes the property says it: an object read from a field is created with its parent, down to
-`TBasite.AutoInitMaxDepth` levels of a type nested in itself; one with a getter is created on first access. Keep a field named `f` +
-the property name - the reader and writer use the field directly - and create the object in the getter with `Lazy`:
-
-```pascal
-TShipment = class(TXmliteComplexType)
-private
-  fCourier: TCourier;
-  function GetCourier: TCourier;
-published
-  [TXmliteElement, TChoice('Delivery')]
-  property Courier: TCourier read GetCourier;
-end;
-
-function TShipment.GetCourier: TCourier;
-begin
-  Result := TCourier(Lazy(fCourier, TCourier));
-end;
-```
-
-Without the field the class reports it on first use. `[TChoice]` is optional: it only adds the property to a group for
-`Chosen`. `[TRequired]` is independent of both forms: a required object is written always, so it is created with its parent,
-with a getter too. Created with its parent does not mean required: an object from a field without `[TRequired]` is written only when
-it has content.

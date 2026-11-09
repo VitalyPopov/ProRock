@@ -1,20 +1,26 @@
-# Soapite
+---
+icon: lucide/send
+---
 
-Soapite is the SOAP client: typed requests, typed responses and typed faults, through a client class generated from the WSDL.
-SOAP 1.1 and 1.2 are both supported.
+# SOAP (Soapite)
+
+A SOAP service as a Delphi class: give the generator the WSDL, and every operation is a method with typed requests, responses and
+faults. SOAP 1.1 and 1.2 are both supported. From a WSDL to a first call: [Getting started](getting-started.md).
 
 ## The generated client
 
-[ProRocket Lite](prorocket-lite.md) makes one client unit per `wsdl:service` (`ProRock.Soapite.<Service>`), next to the units
+[ProRocket Lite](prorocket-lite/index.md) makes one client unit per `wsdl:service` (`ProRock.Soapite.<Service>`), next to the units
 of its types. The client unit re-exports the request and response types, `TSoapiteError` and the exceptions, so for plain calls
 it is the only unit to use.
 
 ```pascal
 uses ProRock.Soapite.CheckVatService;
 
-// pass the real endpoint: the default is the WSDL's soap:address, which may be outdated (VIES still declares http://)
 var service := TCheckVatService.Create('https://ec.europa.eu/taxation_customs/vies/services/checkVatService');
 ```
+
+!!! tip "Pass the real endpoint"
+    The default is the WSDL's `soap:address`, which may be outdated: VIES still declares `http://` there.
 
 ## Two forms of every operation
 
@@ -78,7 +84,17 @@ transport.ClientCertificatePassword := 'pfx password';
 
 One of the two, not both. The sample [`ProRock.Http.ClientCertificate`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Http.ClientCertificate) makes the call both ways.
 
-### A custom transport
+## SOAP headers
+
+Header blocks (WS-Addressing, WS-Security tokens, a service's own headers) are added in `OnRequestHeader` and read in
+`OnResponseHeader`. Header blocks are Xmlite objects, so generate them from their schema like any other type. The sample
+[`ProRock.Soapite.WsSecurity`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Soapite.WsSecurity) adds a WS-Security UsernameToken this way, from units generated from the OASIS schemas.
+
+## Logging
+
+`OnRequest` and `OnResponse` give the raw XML of every call - the envelope only, without the transport's credentials.
+
+## A custom transport
 
 A different HTTP library, request signing, a fake for tests: a custom transport is a `THttpTransport` descendant that
 implements `Send`. The default headers (`SetHeader`, `SetBasicAuth`, ...) are already in the request when `Send` gets it.
@@ -121,13 +137,3 @@ begin
   Result := inherited Send(request);
 end;
 ```
-
-## SOAP headers
-
-Header blocks (WS-Addressing, WS-Security tokens, a service's own headers) are added in `OnRequestHeader` and read in
-`OnResponseHeader`. Header blocks are Xmlite objects, so generate them from their schema like any other type. The sample
-[`ProRock.Soapite.WsSecurity`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Soapite.WsSecurity) adds a WS-Security UsernameToken this way, from units generated from the OASIS schemas.
-
-## Logging
-
-`OnRequest` and `OnResponse` give the raw XML of every call - the envelope only, without the transport's credentials.

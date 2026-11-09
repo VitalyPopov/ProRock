@@ -1,128 +1,69 @@
+<img align="right" src="docs/assets/minerals-row.webp" alt="Basite, Xmlite and Soapite">
+
 # ProRock 🤟
 
-**Schema-typed XML for Delphi.** Generate exact Delphi classes from XSD and WSDL, parse and write XML through them, call SOAP
-services with them.
+**Your schema in. Ready Delphi classes out.** A free generator for XSD and WSDL, with a GUI and a command line, and an open-source
+library that reads and writes XML and calls SOAP services through the classes it makes.
 
 > **When the schema changes, regenerate, don't re-patch.**
 
-A schema changes: a new e-invoicing version, an ISO 20022 release, a service adding fields. Hand-written or hand-patched mappings
-then have to be found and fixed one by one. With ProRock you regenerate the units, and the compiler shows exactly what changed.
+## What you get
 
-**Proven on real schemas:**
-- **HL7® FHIR® R4** - all 146 resource types from the official schemas: a Bundle of 1,000 Patients read in 0.1 s,
-  narratives written back as they were ([sample](https://prorock.rocks/samples/#fhir-resources))
-- **Excel workbooks** - SpreadsheetML from ECMA-376: an invoice read, edited and written back with everything Excel put in
-  it; Excel opens it and recalculates ([sample](https://prorock.rocks/samples/#excel-workbook))
-- **SOAP services** - the EU VIES VAT service, WS-Security, client certificates (quick start below)
+- **Plain Delphi objects** you own: no DOM, no XPath, no interfaces. The classes are the schema, and code completion is their documentation
+- **Proven on real schemas**: HL7® FHIR® R4, e-invoices (ZUGFeRD, Factur-X, XRechnung, Peppol), Excel workbooks, ISO 20022, SOAP services
+- **Writes back what it read**, even what the schema does not describe: Excel opens the file and recalculates
+- **Fast**: lazy objects, an e-invoice reads in under a millisecond
+- **A clean diff** when the schema changes, and the compiler shows the rest
 
-<p align="center"><img src="docs/assets/readme-screens.png" alt="ProRocket Lite with the FHIR R4 schemas generated, the FHIR sample reading a Bundle, and an invoice edited by the Excel sample, opened in Excel with its total recalculated"></p>
+## See everything at [prorock.rocks](https://prorock.rocks/)
 
-**Two parts:**
-- **ProRock** - the runtime library: open source (Apache 2.0), pure Delphi source, no dependencies beyond the RTL
-  - **Basite** - the core: plain Delphi objects described once by their metadata (MetaBank) - nested objects created and
-    freed with their parent, presence of every value; independent of any data format, the base for Xmlite and later Jsonite
-  - **Xmlite** - XML parsing and serialization to and from plain Delphi objects, namespace- and schema-aware, without a DOM
-  - **Soapite** - SOAP 1.1 / 1.2 clients on top of Xmlite, generated from WSDL
-- **ProRocket Lite** - the code generator: XSD/WSDL in, Delphi units out, in a GUI and from the command line - friendly to
-  scripts and AI coding assistants. Free for any use, including commercial
+**[How it works](https://prorock.rocks/how-it-works/)** · **[Getting started in 5 minutes](https://prorock.rocks/getting-started/)** ·
+[Samples](https://prorock.rocks/samples/) · [Tested schemas](https://prorock.rocks/tested-schemas/) ·
+[Limitations](https://prorock.rocks/limitations/) · [Roadmap](ROADMAP.md) · [Changelog](CHANGELOG.md)
 
-**[Download ProRocket-Lite.zip](https://github.com/VitalyPopov/ProRock/releases/latest/download/ProRocket-Lite.zip)**
-(Windows 64-bit, always the newest release; SHA-256 in the [release notes](https://github.com/VitalyPopov/ProRock/releases))
+<p align="center"><img src="docs/assets/prorocket-lite.png" alt="ProRocket Lite, the code generator, with the FHIR R4 schemas generated"></p>
 
-## Documentation
+## Get it
 
-The full documentation is at **[prorock.rocks](https://prorock.rocks/)** (searchable):
+- **ProRocket Lite**, the generator: **[download the zip](https://github.com/VitalyPopov/ProRock/releases/latest/download/ProRocket-Lite.zip)**.
+  Windows 64-bit, free for any use, including commercial; SHA-256 in the [release notes](https://github.com/VitalyPopov/ProRock/releases)
+- **ProRock**, the library: clone this repository and add its `Source` folder to your search path. Pure Delphi source
+  (Apache 2.0), nothing to install. Delphi 10.3 to 13, Win64 and Win32
 
-|   |   |
-|---|---|
-| [Getting started](https://prorock.rocks/getting-started/) | from a WSDL to a working SOAP call in 5 minutes |
-| [Xmlite](https://prorock.rocks/xmlite/) · [Soapite](https://prorock.rocks/soapite/) | XML through typed classes · SOAP clients, transport, authentication |
-| [ProRocket Lite](https://prorock.rocks/prorocket-lite/) | the generator: GUI and command line |
-| [Samples](https://prorock.rocks/samples/) | ten samples, from an Excel workbook, FHIR resources and e-invoices to WS-Security |
-| [Design principles](https://prorock.rocks/principles/) | a cockpit, not an engine room: what ProRock is built on - and what it is not |
-| [XML concepts](https://prorock.rocks/xml-concepts/) | namespaces, XSD types, substitution groups - explained for Delphi developers |
+## From a WSDL to a SOAP call
 
-## Quick start: a SOAP client from a WSDL
-
-1. Open ProRocket Lite, add the WSDL (here `checkVatService.wsdl`, the EU VIES VAT number service), click **Generate** -
-   or from the command line: `ProRocketCli.exe checkVatService.wsdl`.
-2. You get two units: the types (`ProRock.Xmlite.Schema.CheckVatService`) and the client (`ProRock.Soapite.CheckVatService`).
-3. Call the service. Pass the endpoint: the default is the WSDL's `soap:address`, and VIES still declares `http://` there.
+```
+ProRocketCli.exe checkVatService.wsdl
+```
 
 ```pascal
 uses ProRock.Soapite.CheckVatService;
 
 var service := TCheckVatService.Create('https://ec.europa.eu/taxation_customs/vies/services/checkVatService');
+var request := TCheckVatE.Create;
 try
-  var request := TCheckVatE.Create;
+  request.CountryCode := 'IE';
+  request.VatNumber := '6388047V';
+  var response := service.CheckVat(request);
   try
-    request.CountryCode := 'IE';
-    request.VatNumber := '6388047V';
-
-    var response: TCheckVatResponseE;
-    var error: TSoapiteError;
-    if service.TryCheckVat(request, response, error) then // never raises for service or network failures
-      try
-        Writeln(response.Name, ' - valid: ', response.Valid);
-      finally
-        response.Free;
-      end
-    else
-      Writeln('failed [', error.Code, ']: ', error.Message);
+    Writeln(response.Name, ' - valid: ', response.Valid);
   finally
-    request.Free;
+    response.Free;
   end;
 finally
+  request.Free;
   service.Free;
 end;
 ```
 
-The same from an XSD, the project setup, timeouts, authentication and faults:
-[getting started](https://prorock.rocks/getting-started/) and
-[Soapite](https://prorock.rocks/soapite/).
+## It is young, and it grows with you
 
-## Installation
+Try it on your schema and tell what breaks: please [open an issue](https://github.com/VitalyPopov/ProRock/issues/new/choose). If
+ProRock is useful to you, smash the ⭐ Star, and you can [support the project](https://github.com/sponsors/VitalyPopov). Thank you! 🤟
 
-ProRock is a pure source library: no installation, no design-time packages, no component registration. Clone or download the
-repository, add its `Source` folder to your project's search path (ProRock 1.4 and earlier: the repository folder itself), use
-the units you need.
+Contributing: [CONTRIBUTING.md](CONTRIBUTING.md). Security issues: [SECURITY.md](SECURITY.md).
 
-Delphi 10.3 Rio to 13 Florence, Win64 and Win32; all units compile for Android (Delphi 13), running on a device is not verified
-yet. The [Samples](Samples) folder has one group project with ten samples - an Excel workbook, FHIR resources, e-invoices, Office document
-properties, EU VIES, WS-Security, client certificates and more.
-
-## Known limitations and notes
-
-Coverage grows through real-world schemas. Reading and writing back are exact for what a schema describes, also for large
-schemas: FHIR R4 and the OOXML SpreadsheetML/DrawingML schemas generate units that compile and round-trip - Office's own
-extensions and FHIR's XHTML narratives included.
-
-Not covered yet:
-- elements standing in for their substitution group head
-- `xsi:nil`
-- schemas without a target namespace
-- facets (patterns, lengths, ranges) are not validated
-
-What comes next: [ROADMAP](ROADMAP.md). The full list, with notes on decimals, string types and server error texts:
-[Limitations and notes](https://prorock.rocks/limitations/).
-
-## Development
-
-Changes are listed in the [CHANGELOG](CHANGELOG.md), plans in the [ROADMAP](ROADMAP.md). Security issues: see
-[SECURITY.md](SECURITY.md).
-
-Since October 2026, development is assisted by [Claude Code](https://claude.com/claude-code) (Anthropic): it helps with
-implementation, tests and generator fixes. Design, decisions and verification remain the author's.
-
-Feedback, real-world schemas that do not work yet, and contributions are welcome - see [CONTRIBUTING.md](CONTRIBUTING.md).
-
-If ProRock is useful to you, at least smash the ⭐ Star - it costs nothing and helps other Delphi developers find it. And if
-you'd like to do more, you can [support the project](https://github.com/sponsors/VitalyPopov). Thank you! 🤟
-
-## License
-
-ProRock is licensed under the [Apache License 2.0](LICENSE). ProRocket Lite is a free closed-source tool with its own license.
-The generated metamodels are derived from W3C, IBM and Microsoft schemas; their notices are in
+[Apache License 2.0](LICENSE); ProRocket Lite is a free closed-source tool with its own license. Third-party notices:
 [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
 
 Have fun, and let's ProRock! 🤟

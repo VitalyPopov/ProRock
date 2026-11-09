@@ -1,3 +1,7 @@
+---
+icon: lucide/compass
+---
+
 # Design principles
 
 What is kept in mind while building ProRock - and what it is not. Not rules it follows to the letter: an orientation, there
@@ -6,7 +10,7 @@ when each new problem is met.
 ## A cockpit, not an engine room
 
 The hard parts stay inside: schemas, namespaces, prefixes, object lifetimes, laziness, metadata. Outside are a few clear
-controls - properties, enums, lists and a handful of verbs. The FHIR unit is 38,000 generated lines, and a Bundle entry is
+controls - properties, enums, lists and a handful of verbs. The FHIR unit is 46,000 generated lines, and a Bundle entry is
 a choice of 146 resource types; using it is this:
 
 ```pascal
@@ -55,15 +59,15 @@ well-formed XML fails the read instead of being written back broken.
 
 ## As fast as it can be made
 
-Wherever something can be faster, it is made faster. You do not pay for what you do not touch: the members of a choice
-are created on first access, and a FHIR Bundle of 1,000 Patients reads in 0.10 s ([Large documents](large-documents.md)).
+Wherever something can be faster, it is made faster. You do not pay for what you do not touch: objects are created
+lazily, on first access, and a FHIR Bundle of 1,000 Patients reads in 0.08 s ([Large documents](large-documents.md)).
 Parsing works on the text without building a DOM; class metadata is built once, not scanned again for every document.
 Measured on real documents, with the numbers published.
 
 ## Reality decides
 
-Real schemas, real files and real requests set the priorities: FHIR R4, Office's own files, the EU VIES service, and what
-its users ask for. A feature counts as supported when it is verified on such data, and the
+Real schemas, real files and real requests set the priorities: FHIR R4, Office's own files, e-invoices, the EU VIES service
+([Tested schemas](tested-schemas.md)), and what its users ask for. A feature counts as supported when it is verified on such data, and the
 [XML support](xml-support.md) page says as plainly what is partial or missing.
 
 ## Progressive, in layers
@@ -82,7 +86,7 @@ And forward, not backward: modern Delphi, 10.3 and later, where inline variables
 
 - **Not a validator - today.** Documents are read and written, not checked against their schema; facets are not enforced.
 - **Not a DOM.** XML is read into classes - generated from its schema, or written by hand when there is none
-  ([Xmlite](xmlite.md#hand-written-classes)) - not into a tree of nodes.
+  ([Hand-written classes](hand-written.md)) - not into a tree of nodes.
 - **Not a company product.** One developer builds it, free to use; [support](https://github.com/sponsors/VitalyPopov) is
   what keeps it going, and it is highly appreciated.
 - **Not a competitor.** There is no one to beat: other libraries do their work, and collaboration moves Delphi forward.

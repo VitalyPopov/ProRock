@@ -1,14 +1,15 @@
+---
+icon: lucide/play
+---
+
 # Getting started in 5 minutes
 
 From a WSDL to a working SOAP call: get the library and the generator, generate the units, call the service. The example is the
 EU VIES VAT number service, which is public and needs no account.
 
 !!! tip "Working with an AI coding assistant?"
-    The steps below can be done by the assistant as well. The ProRocket Lite zip contains `CLI.md`, written for people and for AI
-    assistants alike: how to verify the download, run `ProRocketCli.exe`, read its problem lines, add missing schemas, and lay
-    out the project. Point your assistant to it (or to the [Command line](cli.md) page, the same text). In a blind test an AI
-    agent built a working VIES client app from the zip and the documentation alone, asking the developer before downloading
-    and running the generator.
+    It can do these steps too: point it to `CLI.md` in the zip, or to [the same text](cli-full.md) here. In a blind test an AI agent
+    built a working VIES client app from the zip and the documentation alone, asking the developer before running the generator.
 
 ## 1. Get ProRock
 
@@ -16,18 +17,20 @@ ProRock is a pure source library: no installation, no design-time packages, no c
 tag (tags have no `v`) next to your project:
 
 ```
-git clone --branch 1.6.0 https://github.com/VitalyPopov/ProRock ThirdParty\ProRock
+git clone --branch 1.7.0 https://github.com/VitalyPopov/ProRock ThirdParty\ProRock
 ```
 
 or download the source zip of the [latest release](https://github.com/VitalyPopov/ProRock/releases/latest).
 
 ## 2. Get ProRocket Lite
 
-[Download ProRocket-Lite.zip](https://github.com/VitalyPopov/ProRock/releases/latest/download/ProRocket-Lite.zip) (Windows
-64-bit) and unzip it into a folder of its own. The SHA-256 checksum is in the
+<a class="md-button md-button--primary prorock-get" href="https://github.com/VitalyPopov/ProRock/releases/latest/download/ProRocket-Lite.zip"><img src="../assets/prorocket.png" alt=""><span>Download ProRocket-Lite.zip<small>free generator, GUI and CLI</small></span></a>
+
+Windows 64-bit. Unzip it into a folder of its own. The SHA-256 checksum is in the
 [release notes](https://github.com/VitalyPopov/ProRock/releases).
 
-The executables are not code-signed yet, so Windows SmartScreen may warn on the first start: **More info → Run anyway**.
+!!! warning "Windows SmartScreen may warn on the first start"
+    The executables are not code-signed yet. Click **More info → Run anyway**.
 
 ## 3. Generate the units
 
@@ -45,15 +48,8 @@ You get two units:
 
 ## 4. Set up the project
 
-```
-MyApp  MyApp.dproj
-  Generated\          the generated units - regenerate them, never edit by hand
-  ThirdParty\ProRock\ the ProRock release named in the unit header (its units in Source\)
-```
-
-Add `ThirdParty\ProRock\Source;Generated` to the project's search path in the **Base** configuration
-(**Project Options > Delphi Compiler > Search path**). Relative paths keep the project portable. ProRock 1.4 and earlier
-have their units in the repository folder itself: `ThirdParty\ProRock;Generated`.
+Add `ThirdParty\ProRock\Source;Generated` to the project's search path, in the **Base** configuration
+(**Project Options > Delphi Compiler > Search path**). Nothing else to set up.
 
 ## 5. Call the service
 
@@ -88,7 +84,7 @@ finally
 end;
 ```
 
-That's it. Next: [Soapite](soapite.md) for timeouts, authentication and faults.
+That's it. Next: [SOAP](soapite.md) for timeouts, authentication and faults.
 
 ## The same from an XSD
 
@@ -113,7 +109,7 @@ finally
 end;
 ```
 
-Next: [Xmlite](xmlite.md).
+Next: [XML](xmlite.md), and [how it works](how-it-works.md) if you skipped it.
 
 ## When the schema changes
 
