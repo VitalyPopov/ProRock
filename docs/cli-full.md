@@ -114,12 +114,13 @@ On stderr, sorted, one per problem:
 problem: <kind> key="value" key="value" ...
 ```
 
-Values are always in double quotes. Errors (exit code 1) are `error: <message>` lines.
+Values are always in double quotes. Errors (exit code 1) are `error: <message>` lines; a file that cannot be loaded says why
+(`error: cannot load a.xsd: its root element is <xs:element>, not <schema>`).
 
 | Kind | Example | What to do |
 |---|---|---|
-| `missing-schema` | `namespace="urn:b" location="b.xsd" from="a.xsd"` | `a.xsd` imports namespace `urn:b`; add that schema (`location` is where `a.xsd` says it is, relative to `a.xsd` or a URL). Its types fall back to `string` and its elements are left out until then |
-| `missing-include` | `namespace="urn:a" location="a-part.xsd" from="a.xsd"` | add the included file; it counts as found when a file with the same name is given |
+| `missing-schema` | `namespace="urn:b" location="b.xsd" from="a.xsd"` | `a.xsd` imports and uses namespace `urn:b`, and no file of it is given or found at `location` (a relative path is followed, a URL never); add that schema. Its types fall back to `string` and its elements are left out until then |
+| `missing-include` | `namespace="urn:a" location="a-part.xsd" from="a.xsd"` | the included file is not at `location` (relative to `a.xsd`) and not given; add it - a given file with the same name counts |
 | `unresolved-ref` | `kind="type" name="NoSuchType" namespace="urn:a" from="a.xsd"` | a name that exists in no given file of that namespace: a typo in the schema, or a definition in a file still missing (an include). Types fall back to `string`, element references are left out |
 | `unsupported` | `feature="redefine" location="base.xsd" from="a.xsd"` | `xs:redefine` is not supported: the redefined components come out in their original form |
 | `duplicate-unit` | `unit="ProRock.Xmlite.Schema.Order"` | two namespaces get the same unit name (e.g. the same path under two hosts); nothing is written (exit code 1). Generate them in separate runs into separate folders, and tell the developer |
@@ -146,7 +147,10 @@ MyApp  MyApp.dproj
   (Project Manager) is optional. ProRock 1.4 and earlier have their units in the repository folder itself:
   `ThirdParty\ProRock;Generated`.
 
-The CLI never downloads anything and never follows `schemaLocation`: it works only with the files it is given.
+The CLI never downloads anything. It follows a local relative `schemaLocation` of `xs:include`, `xs:redefine` and
+`xs:import` (`../common/types.xsd`; never a URL or an absolute path), an import only when the schema uses that namespace.
+So the main schema alone is often enough when its files lie as they were published. A file you give wins over the one
+found that way: an include by its file name, an import by its namespace.
 
 ## Using the units
 
@@ -203,6 +207,7 @@ Quick starts for both: https://prorock.rocks/getting-started/
 ## Limits
 
 - ProRocketCli runs on Windows 64-bit; the generated units need Delphi 10.3 or later.
-- Schemas without `targetNamespace` (including "chameleon" includes) cannot be loaded yet: exit code 1, "cannot load".
+- Namespaces that import each other come out in one unit, named after the one you gave: Delphi allows no circular `uses`
+  (HL7 CDA's `urn:hl7-org:v3` and its SDTC extensions).
 - WSDL problems (skipped operations, `wsdl:import`) are not problem lines yet; they are written in the unit header.
 - Known limitations of ProRock: https://prorock.rocks/limitations/

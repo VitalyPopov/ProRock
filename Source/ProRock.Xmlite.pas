@@ -90,6 +90,8 @@ type
 
     procedure WriteAttribute(const aName, aValue: string; const aPrefix: string = ''); inline;
     procedure WriteAttributes(aObject: TBasite; aNamespaces: boolean = False); inline;
+    // the default namespace declared around the current element ('' when none)
+    function DefaultInScope: string;
   public
     destructor Destroy; override;
 
@@ -1027,10 +1029,17 @@ var
   // the namespace in scope is the default one: no prefix; any other namespace: prefixed (declared by GetXmlns)
   function elementName(aProperty: TProperty; aScope: TNamespace): string;
   begin
-    if (aProperty.Xmlite.Namespace = nil) or (aProperty.Xmlite.Namespace = aScope) then
+    if (aProperty.Xmlite.Namespace = nil) or (aProperty.Xmlite.Namespace = aScope) or aProperty.Xmlite.Namespace.Uri.IsEmpty then
       Result := aProperty.Xmlite.Name
     else
       Result := aProperty.Xmlite.NamePrefixed;
+  end;
+
+  // an element of no namespace under a default one has no prefix to take: it declares itself (xmlns="", WriteAttributes)
+  function declares(aProperty: TProperty; aScope: TNamespace): boolean;
+  begin
+    Result := (aProperty.Xmlite.Namespace <> nil) and aProperty.Xmlite.Namespace.Uri.IsEmpty and (aScope <> nil) and
+      not aScope.Uri.IsEmpty;
   end;
 
   // a kept element, once; a value that did not fit its type not when the property was set since
@@ -1069,7 +1078,7 @@ var
         Exit;
       children.Remove(aChild);
       if childProperty <> nil then
-        aChild.ToXml(aWriter, elementName(childProperty, aScope), aScope, False)
+        aChild.ToXml(aWriter, elementName(childProperty, aScope), aScope, declares(childProperty, aScope))
       else if aChild.Meta.Xmlite.Namespace = aScope then // as XmlAny below
         aChild.ToXml(aWriter, aChild.Meta.Xmlite.Name, aScope, False)
       else
@@ -1249,7 +1258,7 @@ begin
                   var propertyBasite: TPropertyBasite := TPropertyBasite(propertyElement);
                   var fieldObject: TBasite := propertyBasite.ObjectPointer(Self)^;
                   if (fieldObject <> nil) and (WritesRequired(propertyBasite) or IsPresent(propertyBasite)) then
-                    fieldObject.ToXml(aWriter, elementName(propertyElement, scope), scope, False);
+                    fieldObject.ToXml(aWriter, elementName(propertyElement, scope), scope, declares(propertyElement, scope));
                 end;
               ptBasiteList:
                 begin
@@ -1259,7 +1268,7 @@ begin
                   if list <> nil then
                     for var i := 0 to list.Count - 1 do
                     begin
-                      list[i].ToXml(aWriter, elementName(propertyElement, scope), scope, False);
+                      list[i].ToXml(aWriter, elementName(propertyElement, scope), scope, declares(propertyElement, scope));
                       WriteUnknown(propertyElement, i + 1);
                     end;
                 end;
@@ -1411,7 +1420,8 @@ begin
       if (namespace <> nil) and (namespace.Uri <> cXmlPrefixUri) then // the xml prefix is bound by definition, never declared
         if namespace = Meta.Xmlite.Namespace then
         begin
-          Result := Result + Format(' xmlns="%s"', [namespace.Uri]);
+          if not namespace.Uri.IsEmpty then // no namespace: nothing to declare at a root (WriteAttributes undeclares one in scope)
+            Result := Result + Format(' xmlns="%s"', [namespace.Uri]);
           declared.AddOrSetValue('', namespace.Uri);
           if prefixed.Contains(namespace) and not namespace.Prefix.IsEmpty then // a default namespace is not for attributes
           begin
@@ -1419,7 +1429,7 @@ begin
             declared.AddOrSetValue(namespace.Prefix, namespace.Uri);
           end;
         end
-        else
+        else if not namespace.Uri.IsEmpty then // no namespace has no prefix: such an element declares itself
         begin
           Result := Result + Format(' xmlns:%s="%s"', [namespace.Prefix, namespace.Uri]);
           declared.AddOrSetValue(namespace.Prefix, namespace.Uri);
@@ -1550,6 +1560,8 @@ begin
   AddIndent;
   Write('<');
   Write(aName);
+  if (aFieldInfo.Xmlite.Namespace <> nil) and aFieldInfo.Xmlite.Namespace.Uri.IsEmpty and not DefaultInScope.IsEmpty then
+    Write(' xmlns=""');
   if aObject <> nil then
     WriteAttributes(aObject);
   var typeKind: TTypeKind := aFieldInfo.RttiProperty.PropertyType.TypeKind;
@@ -1661,6 +1673,15 @@ begin
   Write('"');
 end;
 
+function TWriterXmlite.DefaultInScope: string;
+begin
+  Result := '';
+  if fDeclared <> nil then
+    for var i := fDeclared.Count - 1 downto 0 do
+      if fDeclared[i].TryGetValue('', Result) then
+        Exit;
+end;
+
 procedure TWriterXmlite.WriteAttributes(aObject: TBasite; aNamespaces: boolean);
 begin
   if aNamespaces then
@@ -1668,8 +1689,12 @@ begin
     if fDeclared = nil then
       fDeclared := TObjectList<TDictionary<string, string>>.Create;
     var declared: TDictionary<string, string> := TDictionary<string, string>.Create;
+    var xmlns: string := aObject.GetXmlns(declared);
+    var uri: string;
+    if declared.TryGetValue('', uri) and uri.IsEmpty and not DefaultInScope.IsEmpty then // no namespace under a default one
+      xmlns := ' xmlns=""' + xmlns;
     fDeclared.Add(declared);
-    Write(aObject.GetXmlns(declared));
+    Write(xmlns);
   end;
 
   for var attribute: TPropertyData in aObject.Meta.Xmlite.Attributes.Values do

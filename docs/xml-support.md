@@ -71,7 +71,10 @@ What of XML and XML Schema works, what works in part, and what is not covered ye
 |---|---|---|
 | Imports (other namespaces) | ✅ | one unit per namespace, units use each other |
 | Includes (the same namespace) | ✅ | several files, one unit |
-| Schemas without `targetNamespace` | ⏳ | including "chameleon" includes |
+| Schemas without `targetNamespace` | ✅ | a unit named after the file, elements in no namespace (no `xmlns`, `xmlns=""` under a default one) |
+| "Chameleon" includes | ✅ | a file without `targetNamespace` joins each namespace that includes it |
+| `schemaLocation` | ✅ | a local relative path is followed (include, import, redefine); never a URL, nothing is downloaded |
+| Namespaces that import each other | ✅ | one unit for both (Delphi allows no circular `uses`) |
 | `xs:redefine` | ❌ | reported by the generator |
 | WSDL 1.1, SOAP document/literal | ✅ | rpc/encoded operations are skipped (listed in the generated unit's header) |
 

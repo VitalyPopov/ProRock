@@ -40,6 +40,14 @@ A value set in code that equals its default is written only when marked present 
     - An attribute on an element of a plain value (`<v extra="1">12</v>`, where the schema allows none) is not kept.
       `xml:space` is written again where the text needs it.
 
+## Schema sets
+
+- Namespaces that import each other share one unit, named after the one you gave: Delphi allows no circular `uses` between units.
+  HL7 CDA's `urn:hl7-org:v3` and its SDTC extensions come out as one. If both refer to the other's global elements or attributes,
+  the members of one of them are written in the wrong namespace: please
+  [open an issue](https://github.com/VitalyPopov/ProRock/issues/new/choose) if you meet such a pair.
+- `xs:redefine` is not supported yet: the generator reports it, and the components come out as the original file has them.
+
 ## Numbers
 
 `xs:decimal`, `xs:float` and `xs:double` are `Double`, written as the shortest text that reads back the same value. A number of up to

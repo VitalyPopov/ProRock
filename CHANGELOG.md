@@ -17,8 +17,17 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   (ISO-8859-1, windows-1252...), else UTF-8; `False` when the encoding is unknown or the bytes do not fit it. `ToXmlFile` writes
   UTF-8 without a BOM. The docs read and write files with them: `TFile.ReadAllText(f, TEncoding.UTF8)`, shown before, raised an
   exception on a UTF-16 or ISO-8859-1 file
+- Schemas without `targetNamespace`: the unit is named after the file, its elements are in no namespace - written without
+  `xmlns`, with `xmlns=""` under a default namespace. A "chameleon" include (a file without `targetNamespace` included by one
+  that has it) joins each namespace that includes it
+- The generator follows a local relative `schemaLocation` of `xs:include`, `xs:redefine` and `xs:import` (an import only when
+  the schema uses that namespace); never a URL, nothing is downloaded, and a file you give wins. HL7 CDA generates from
+  `CDA_SDTC.xsd` alone, an MSBuild project's schema from `Microsoft.Build.xsd` alone
+- Namespaces that import each other come out in one unit (Delphi allows no circular `uses`): HL7 CDA and its SDTC extensions
 
 ### Changed
+- "cannot load" says why: `error: cannot load a.xsd: its root element is <xs:element>, not <schema>` (also an empty file, no XML,
+  XML that does not read); ProRocket Lite shows the same. A file whose root is not `xs:schema` no longer loads as an empty schema
 - **A required element a document lacked is no longer written back.** An object read with `FromXml` writes what the document had
   and what code sets; before, a missing required value was made up on save - empty, or `0` for an amount, which a validator takes
   for a real `0`. Objects built in code still write every required element, so a forgotten one shows (`Clear` makes a read

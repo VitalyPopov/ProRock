@@ -769,6 +769,8 @@ class function TUtility.Acronym(const aName: string; aAcronyms: THashSet<string>
 const cAlphabet = 'abcdefghijklmnopqrstuvwxyz';
 begin
   Result := ToPascalCase(aName);
+  if Result.IsEmpty then // PChar('') is a constant: the #0 below would be written into it
+    Exit;
   var cursor: PChar := PChar(Result);
   var acronymCursor: PChar := cursor;
   while cursor^ <> #0 do

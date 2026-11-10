@@ -37,8 +37,9 @@ ProRocketCli.exe [-o <output folder>] [--strict] [--no-timestamp] [--full-type-n
 | `-h`, `--help` | usage |
 
 **Generate all the schemas of a project in one run, every time.** Units generated separately, or by different versions, may not
-fit together, and regenerating everything costs nothing. The CLI works only with the files it is given: it never downloads
-anything and never follows `schemaLocation`. It does not expand wildcards either; list the files, or let the shell do it.
+fit together, and regenerating everything costs nothing. The CLI never downloads anything: it follows a local relative
+`schemaLocation` (`../common/types.xsd`, never a URL), and a file you give wins over the one found there. It does not expand
+wildcards either; list the files, or let the shell do it.
 
 The standard schemas are part of ProRock, so you do not give them: XML Schema, `xml:` and `xsi:` attributes, the SOAP envelopes,
 WSDL and its SOAP bindings.
@@ -69,8 +70,8 @@ Values are always in double quotes. Errors (exit code 1) are `error: <message>` 
 
 | Kind | Example | What to do |
 |---|---|---|
-| `missing-schema` | `namespace="urn:b" location="b.xsd" from="a.xsd"` | `a.xsd` imports namespace `urn:b`; add that schema (`location` is where `a.xsd` says it is, relative to `a.xsd` or a URL). Its types fall back to `string` and its elements are left out until then |
-| `missing-include` | `namespace="urn:a" location="a-part.xsd" from="a.xsd"` | add the included file; it counts as found when a file with the same name is given |
+| `missing-schema` | `namespace="urn:b" location="b.xsd" from="a.xsd"` | `a.xsd` imports and uses namespace `urn:b`, and no file of it is given or found at `location` (a relative path is followed, a URL never); add that schema. Its types fall back to `string` and its elements are left out until then |
+| `missing-include` | `namespace="urn:a" location="a-part.xsd" from="a.xsd"` | the included file is not at `location` (relative to `a.xsd`) and not given; add it - a given file with the same name counts |
 | `unresolved-ref` | `kind="type" name="NoSuchType" namespace="urn:a" from="a.xsd"` | a name that exists in no given file of that namespace: a typo in the schema, or a definition in a file still missing (an include). Types fall back to `string`, element references are left out |
 | `unsupported` | `feature="redefine" location="base.xsd" from="a.xsd"` | `xs:redefine` is not supported: the redefined components come out in their original form |
 | `duplicate-unit` | `unit="ProRock.Xmlite.Schema.Order"` | two namespaces get the same unit name (e.g. the same path under two hosts); nothing is written (exit code 1). Generate them in separate runs into separate folders, and tell the developer |
@@ -80,7 +81,7 @@ Values are always in double quotes. Errors (exit code 1) are `error: <message>` 
 
 !!! warning "Limits"
     - runs on Windows 64-bit; the generated units need Delphi 10.3 or later
-    - schemas without a `targetNamespace` cannot be loaded yet: exit code 1
+    - namespaces that import each other come out in one unit (Delphi allows no circular `uses`)
     - WSDL problems (skipped operations, `wsdl:import`) are written in the unit header, not as problem lines
 
     All of them: [Limitations and notes](limitations.md).
