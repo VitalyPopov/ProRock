@@ -24,6 +24,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   the schema uses that namespace); never a URL, nothing is downloaded, and a file you give wins. HL7 CDA generates from
   `CDA_SDTC.xsd` alone, an MSBuild project's schema from `Microsoft.Build.xsd` alone
 - Namespaces that import each other come out in one unit (Delphi allows no circular `uses`): HL7 CDA and its SDTC extensions
+- `xs:redefine`: a redefinition replaces the original in the whole namespace, the redefined file's own references included. A
+  restriction of itself takes the new content, an extension of itself the old plus the new (one class), a simple type keeps its
+  narrowed enumeration; groups and attribute groups referring to themselves add to the original. Every GAEB DA XML 3.3 schema
+  (the German construction standard) generates from its file alone
 
 ### Changed
 - "cannot load" says why: `error: cannot load a.xsd: its root element is <xs:element>, not <schema>` (also an empty file, no XML,
@@ -125,6 +129,11 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   have it) hid the element's namespace declarations: its children were not read, and the read could fail
 - The text of an element whose class has no text property (`XmlText`) read as empty when it started with CDATA, a comment or a
   processing instruction
+- ProRocket Lite: an attribute group referring to another one left the other one's attributes out. Regenerated units have them:
+  FHIR's XHTML `div`, `p` and the other elements get `id`, `class`, `style`, `title`, `lang` and `dir`; VML's shapes their core and
+  shape attributes
+- ProRocket Lite: more than 27 enumerations of one name in a unit (XHTML's `dir` in each element) gave the 28th the item prefix of
+  the 27th, and the unit did not compile
 - ProRocket Lite: a namespace ending in two version segments (`http://www.topografix.com/GPX/1/1`) gave the unit `Schema_11`; it
   is `Gpx11` now
 - ProRocket Lite: a reference to a global element of an inline simple type (BMEcat's `<GENERATOR_INFO>`, a restriction of a string)

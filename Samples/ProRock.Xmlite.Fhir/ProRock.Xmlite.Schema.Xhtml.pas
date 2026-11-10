@@ -7,6 +7,7 @@
     Docs and download: https://prorock.rocks/
     Source and feedback: https://github.com/VitalyPopov/ProRock
     
+    Generated (UTC): 2026-11-10T11:02:14.431Z
     Namespace: http://www.w3.org/1999/xhtml
 *)
 
@@ -550,7 +551,28 @@ type
     property Tabindex: TTabindexNumberST read fTabindex write fTabindex;
   end;
 
-  TAttrsAG = class(TXmliteAttributeGroup);
+  TAttrsAG = class(TXmliteAttributeGroup)
+  type
+    TDir = (daLtr, daRtl);
+  private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
+  published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
+  end;
 
   TCellhalignAG = class(TXmliteAttributeGroup)
   type
@@ -575,93 +597,458 @@ type
   end;
 
   [TMixed]
-  TDivE = class(TFlowCT);
+  TDivE = class(TFlowCT)
+  type
+    TDir = (dbLtr, dbRtl);
+  private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
+  published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
+  end;
 
   [TMixed]
   [TName('p')]
-  TPE = class(TInlineCT);
+  TPE = class(TInlineCT)
+  type
+    TDir = (dcLtr, dcRtl);
+  private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
+  published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
+  end;
 
   [TMixed]
   [TName('h1')]
-  TH1E = class(TInlineCT);
+  TH1E = class(TInlineCT)
+  type
+    TDir = (ddLtr, ddRtl);
+  private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
+  published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
+  end;
 
   [TMixed]
   [TName('h2')]
-  TH2E = class(TInlineCT);
+  TH2E = class(TInlineCT)
+  type
+    TDir = (deLtr, deRtl);
+  private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
+  published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
+  end;
 
   [TMixed]
   [TName('h3')]
-  TH3E = class(TInlineCT);
+  TH3E = class(TInlineCT)
+  type
+    TDir = (dfLtr, dfRtl);
+  private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
+  published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
+  end;
 
   [TMixed]
   [TName('h4')]
-  TH4E = class(TInlineCT);
+  TH4E = class(TInlineCT)
+  type
+    TDir = (dgLtr, dgRtl);
+  private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
+  published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
+  end;
 
   [TMixed]
   [TName('h5')]
-  TH5E = class(TInlineCT);
+  TH5E = class(TInlineCT)
+  type
+    TDir = (dhLtr, dhRtl);
+  private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
+  published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
+  end;
 
   [TMixed]
   [TName('h6')]
-  TH6E = class(TInlineCT);
+  TH6E = class(TInlineCT)
+  type
+    TDir = (diLtr, diRtl);
+  private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
+  published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
+  end;
 
   TUlE = class(TXmliteElement)
+  type
+    TDir = (djLtr, djRtl);
   private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
     fLi: TLiEList;
   published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
     property Li: TLiEList read fLi;
   end;
 
   TOlE = class(TXmliteElement)
+  type
+    TDir = (dkLtr, dkRtl);
   private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
     fLi: TLiEList;
   published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
     property Li: TLiEList read fLi;
   end;
 
   [TMixed]
-  TLiE = class(TFlowCT);
+  TLiE = class(TFlowCT)
+  type
+    TDir = (dlLtr, dlRtl);
+  private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
+  published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
+  end;
 
   [TOrdered]
   TDlE = class(TXmliteElement)
+  type
+    TDir = (dmLtr, dmRtl);
   private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
     fDt: TDtEList;
     fDd: TDdEList;
   published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
     property Dt: TDtEList read fDt;
     property Dd: TDdEList read fDd;
   end;
 
   [TMixed]
-  TDtE = class(TInlineCT);
+  TDtE = class(TInlineCT)
+  type
+    TDir = (dnLtr, dnRtl);
+  private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
+  published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
+  end;
 
   [TMixed]
-  TDdE = class(TFlowCT);
+  TDdE = class(TFlowCT)
+  type
+    TDir = (doLtr, doRtl);
+  private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
+  published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
+  end;
 
   [TMixed]
-  TAddressE = class(TInlineCT);
+  TAddressE = class(TInlineCT)
+  type
+    TDir = (dpLtr, dpRtl);
+  private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
+  published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
+  end;
 
-  THrE = class(TXmliteElement);
+  THrE = class(TXmliteElement)
+  type
+    TDir = (dqLtr, dqRtl);
+  private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
+  published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
+  end;
 
   [TMixed]
   TPreE = class(TPreContentCT)
+  type
+    TDir = (drLtr, drRtl);
   private
     fSpace: ProRock.Xmlite.Schema.Xml.TSpaceA;
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
   published
     [TNaming(TNaming.nFlatCase)]
     property Space: ProRock.Xmlite.Schema.Xml.TSpaceA read fSpace write fSpace;
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
   end;
 
   TBlockquoteE = class(TBlockCT)
+  type
+    TDir = (dsLtr, dsRtl);
   private
     fCite: TUriST;
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
   published
     property Cite: TUriST read fCite write fCite;
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
   end;
 
   [TMixed]
   [TName('a')]
   TAE = class(TAContentCT)
+  type
+    TDir = (dtLtr, dtRtl);
   private
     fCharset: TCharsetST;
     fType: TContentTypeST;
@@ -672,6 +1059,13 @@ type
     fRev: TLinkTypesST;
     fShape: TShapeST;
     fCoords: TCoordsST;
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
     fAccesskey: TCharacterST;
     fTabindex: TTabindexNumberST;
   published
@@ -685,17 +1079,47 @@ type
     [TDefault(Ord(sRect))]
     property Shape: TShapeST read fShape write fShape;
     property Coords: TCoordsST read fCoords write fCoords;
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
     property Accesskey: TCharacterST read fAccesskey write fAccesskey;
     property Tabindex: TTabindexNumberST read fTabindex write fTabindex;
   end;
 
   [TMixed]
-  TSpanE = class(TInlineCT);
+  TSpanE = class(TInlineCT)
+  type
+    TDir = (duLtr, duRtl);
+  private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
+  published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
+  end;
 
   [TMixed]
   TBdoE = class(TInlineCT)
   type
-    TDir = (daLtr, daRtl);
+    TDir = (dvLtr, dvRtl);
   private
     fLangXhtml: TLanguageCodeST;
     fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
@@ -731,71 +1155,447 @@ type
   end;
 
   [TMixed]
-  TEmE = class(TInlineCT);
+  TEmE = class(TInlineCT)
+  type
+    TDir = (dwLtr, dwRtl);
+  private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
+  published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
+  end;
 
   [TMixed]
-  TStrongE = class(TInlineCT);
+  TStrongE = class(TInlineCT)
+  type
+    TDir = (dxLtr, dxRtl);
+  private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
+  published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
+  end;
 
   [TMixed]
-  TDfnE = class(TInlineCT);
+  TDfnE = class(TInlineCT)
+  type
+    TDir = (dyLtr, dyRtl);
+  private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
+  published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
+  end;
 
   [TMixed]
-  TCodeE = class(TInlineCT);
+  TCodeE = class(TInlineCT)
+  type
+    TDir = (dzLtr, dzRtl);
+  private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
+  published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
+  end;
 
   [TMixed]
-  TSampE = class(TInlineCT);
+  TSampE = class(TInlineCT)
+  type
+    TDir = (daaLtr, daaRtl);
+  private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
+  published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
+  end;
 
   [TMixed]
-  TKbdE = class(TInlineCT);
+  TKbdE = class(TInlineCT)
+  type
+    TDir = (dabLtr, dabRtl);
+  private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
+  published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
+  end;
 
   [TMixed]
-  TVarE = class(TInlineCT);
+  TVarE = class(TInlineCT)
+  type
+    TDir = (dacLtr, dacRtl);
+  private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
+  published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
+  end;
 
   [TMixed]
-  TCiteE = class(TInlineCT);
+  TCiteE = class(TInlineCT)
+  type
+    TDir = (dadLtr, dadRtl);
+  private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
+  published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
+  end;
 
   [TMixed]
-  TAbbrE = class(TInlineCT);
+  TAbbrE = class(TInlineCT)
+  type
+    TDir = (daeLtr, daeRtl);
+  private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
+  published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
+  end;
 
   [TMixed]
-  TAcronymE = class(TInlineCT);
+  TAcronymE = class(TInlineCT)
+  type
+    TDir = (dafLtr, dafRtl);
+  private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
+  published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
+  end;
 
   [TMixed]
   [TName('q')]
   TQE = class(TInlineCT)
+  type
+    TDir = (dagLtr, dagRtl);
   private
     fCite2: TUriST;
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
   published
     [TName('cite')]
     property Cite2: TUriST read fCite2 write fCite2;
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
   end;
 
   [TMixed]
-  TSubE = class(TInlineCT);
+  TSubE = class(TInlineCT)
+  type
+    TDir = (dahLtr, dahRtl);
+  private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
+  published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
+  end;
 
   [TMixed]
-  TSupE = class(TInlineCT);
+  TSupE = class(TInlineCT)
+  type
+    TDir = (daiLtr, daiRtl);
+  private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
+  published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
+  end;
 
   [TMixed]
-  TTtE = class(TInlineCT);
+  TTtE = class(TInlineCT)
+  type
+    TDir = (dajLtr, dajRtl);
+  private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
+  published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
+  end;
 
   [TMixed]
   [TName('i')]
-  TIE = class(TInlineCT);
+  TIE = class(TInlineCT)
+  type
+    TDir = (dakLtr, dakRtl);
+  private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
+  published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
+  end;
 
   [TMixed]
   [TName('b')]
-  TBE = class(TInlineCT);
+  TBE = class(TInlineCT)
+  type
+    TDir = (dalLtr, dalRtl);
+  private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
+  published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
+  end;
 
   [TMixed]
-  TBigE = class(TInlineCT);
+  TBigE = class(TInlineCT)
+  type
+    TDir = (damLtr, damRtl);
+  private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
+  published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
+  end;
 
   [TMixed]
-  TSmallE = class(TInlineCT);
+  TSmallE = class(TInlineCT)
+  type
+    TDir = (danLtr, danRtl);
+  private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
+  published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
+  end;
 
   TImgE = class(TXmliteElement)
   type
     TIsmap = (iIsmap);
+    TDir = (daoLtr, daoRtl);
   private
     fSrc: TUriST;
     fAlt: TTextST;
@@ -804,6 +1604,13 @@ type
     fWidth: TLengthST;
     fUsemap: TUriST;
     fIsmap: TIsmap;
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
   published
     [TRequired]
     property Src: TUriST read fSrc write fSrc;
@@ -814,11 +1621,20 @@ type
     property Width: TLengthST read fWidth write fWidth;
     property Usemap: TUriST read fUsemap write fUsemap;
     property Ismap: TIsmap read fIsmap write fIsmap;
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
   end;
 
   TMapE = class(TXmliteElement)
   type
-    TDir = (dbLtr, dbRtl);
+    TDir = (dapLtr, dapRtl);
   private
     fId: ProRock.Xmlite.Schema.Base.TIdST;
     fClass: TAnySimpleTypeST;
@@ -896,12 +1712,20 @@ type
   TAreaE = class(TXmliteElement)
   type
     TNohref = (nNohref);
+    TDir = (daqLtr, daqRtl);
   private
     fShape: TShapeST;
     fCoords: TCoordsST;
     fHref: TUriST;
     fNohref: TNohref;
     fAlt: TTextST;
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
     fAccesskey: TCharacterST;
     fTabindex: TTabindexNumberST;
   published
@@ -912,11 +1736,22 @@ type
     property Nohref: TNohref read fNohref write fNohref;
     [TRequired]
     property Alt: TTextST read fAlt write fAlt;
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
     property Accesskey: TCharacterST read fAccesskey write fAccesskey;
     property Tabindex: TTabindexNumberST read fTabindex write fTabindex;
   end;
 
   TTableE = class(TXmliteElement)
+  type
+    TDir = (darLtr, darRtl);
   private
     fSummary: TTextST;
     fWidth: TLengthST;
@@ -925,6 +1760,13 @@ type
     fRules: TTRulesST;
     fCellspacing: TLengthST;
     fCellpadding: TLengthST;
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
     fCaption: TCaptionE;
     fCol: TColEList;
     fColgroup: TColgroupEList;
@@ -944,6 +1786,15 @@ type
     property Rules: TTRulesST read fRules write fRules;
     property Cellspacing: TLengthST read fCellspacing write fCellspacing;
     property Cellpadding: TLengthST read fCellpadding write fCellpadding;
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
     property Caption: TCaptionE read GetCaption;
     [TChoice('Col')]
     property Col: TColEList read fCol;
@@ -958,19 +1809,57 @@ type
   end;
 
   [TMixed]
-  TCaptionE = class(TInlineCT);
+  TCaptionE = class(TInlineCT)
+  type
+    TDir = (dasLtr, dasRtl);
+  private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
+  published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
+  end;
 
   TTheadE = class(TXmliteElement)
   type
+    TDir = (datLtr, datRtl);
     TAlign = (aaLeft, aaCenter, aaRight, aaJustify, aaChar);
     TValign = (vaTop, vaMiddle, vaBottom, vaBaseline);
   private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
     fAlign: TAlign;
     fChar: TCharacterST;
     fCharoff: TLengthST;
     fValign: TValign;
     fTr: TTrEList;
   published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
     property Align: TAlign read fAlign write fAlign;
     property Char: TCharacterST read fChar write fChar;
     property Charoff: TLengthST read fCharoff write fCharoff;
@@ -980,15 +1869,32 @@ type
 
   TTfootE = class(TXmliteElement)
   type
+    TDir = (dauLtr, dauRtl);
     TAlign = (abLeft, abCenter, abRight, abJustify, abChar);
     TValign = (vbTop, vbMiddle, vbBottom, vbBaseline);
   private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
     fAlign: TAlign;
     fChar: TCharacterST;
     fCharoff: TLengthST;
     fValign: TValign;
     fTr: TTrEList;
   published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
     property Align: TAlign read fAlign write fAlign;
     property Char: TCharacterST read fChar write fChar;
     property Charoff: TLengthST read fCharoff write fCharoff;
@@ -998,15 +1904,32 @@ type
 
   TTbodyE = class(TXmliteElement)
   type
+    TDir = (davLtr, davRtl);
     TAlign = (acLeft, acCenter, acRight, acJustify, acChar);
     TValign = (vcTop, vcMiddle, vcBottom, vcBaseline);
   private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
     fAlign: TAlign;
     fChar: TCharacterST;
     fCharoff: TLengthST;
     fValign: TValign;
     fTr: TTrEList;
   published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
     property Align: TAlign read fAlign write fAlign;
     property Char: TCharacterST read fChar write fChar;
     property Charoff: TLengthST read fCharoff write fCharoff;
@@ -1016,11 +1939,19 @@ type
 
   TColgroupE = class(TXmliteElement)
   type
+    TDir = (dawLtr, dawRtl);
     TAlign = (adLeft, adCenter, adRight, adJustify, adChar);
     TValign = (vdTop, vdMiddle, vdBottom, vdBaseline);
   private
     fSpan: TNumberST;
     fWidth: TMultiLengthST;
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
     fAlign: TAlign;
     fChar: TCharacterST;
     fCharoff: TLengthST;
@@ -1030,6 +1961,15 @@ type
     [TDefault(1)]
     property Span: TNumberST read fSpan write fSpan;
     property Width: TMultiLengthST read fWidth write fWidth;
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
     property Align: TAlign read fAlign write fAlign;
     property Char: TCharacterST read fChar write fChar;
     property Charoff: TLengthST read fCharoff write fCharoff;
@@ -1039,11 +1979,19 @@ type
 
   TColE = class(TXmliteElement)
   type
+    TDir = (daxLtr, daxRtl);
     TAlign = (aeLeft, aeCenter, aeRight, aeJustify, aeChar);
     TValign = (veTop, veMiddle, veBottom, veBaseline);
   private
     fSpan: TNumberST;
     fWidth: TMultiLengthST;
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
     fAlign: TAlign;
     fChar: TCharacterST;
     fCharoff: TLengthST;
@@ -1052,6 +2000,15 @@ type
     [TDefault(1)]
     property Span: TNumberST read fSpan write fSpan;
     property Width: TMultiLengthST read fWidth write fWidth;
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
     property Align: TAlign read fAlign write fAlign;
     property Char: TCharacterST read fChar write fChar;
     property Charoff: TLengthST read fCharoff write fCharoff;
@@ -1061,9 +2018,17 @@ type
   [TOrdered]
   TTrE = class(TXmliteElement)
   type
+    TDir = (dayLtr, dayRtl);
     TAlign = (afLeft, afCenter, afRight, afJustify, afChar);
     TValign = (vfTop, vfMiddle, vfBottom, vfBaseline);
   private
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
     fAlign: TAlign;
     fChar: TCharacterST;
     fCharoff: TLengthST;
@@ -1071,6 +2036,15 @@ type
     fTh: TThEList;
     fTd: TTdEList;
   published
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
     property Align: TAlign read fAlign write fAlign;
     property Char: TCharacterST read fChar write fChar;
     property Charoff: TLengthST read fCharoff write fCharoff;
@@ -1082,6 +2056,7 @@ type
   [TMixed]
   TThE = class(TFlowCT)
   type
+    TDir = (dazLtr, dazRtl);
     TAlign = (agLeft, agCenter, agRight, agJustify, agChar);
     TValign = (vgTop, vgMiddle, vgBottom, vgBaseline);
   private
@@ -1091,6 +2066,13 @@ type
     fScope: TScopeST;
     fRowspan: TNumberST;
     fColspan: TNumberST;
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
     fAlign: TAlign;
     fChar: TCharacterST;
     fCharoff: TLengthST;
@@ -1105,6 +2087,15 @@ type
     property Rowspan: TNumberST read fRowspan write fRowspan;
     [TDefault(1)]
     property Colspan: TNumberST read fColspan write fColspan;
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
     property Align: TAlign read fAlign write fAlign;
     property Char: TCharacterST read fChar write fChar;
     property Charoff: TLengthST read fCharoff write fCharoff;
@@ -1114,6 +2105,7 @@ type
   [TMixed]
   TTdE = class(TFlowCT)
   type
+    TDir = (dbaLtr, dbaRtl);
     TAlign = (ahLeft, ahCenter, ahRight, ahJustify, ahChar);
     TValign = (vhTop, vhMiddle, vhBottom, vhBaseline);
   private
@@ -1123,6 +2115,13 @@ type
     fScope: TScopeST;
     fRowspan: TNumberST;
     fColspan: TNumberST;
+    fId: ProRock.Xmlite.Schema.Base.TIdST;
+    fClass: ProRock.Xmlite.Schema.Base.TNmtokensST;
+    fStyle: TStyleSheetST;
+    fTitle: TTextST;
+    fLangXhtml: TLanguageCodeST;
+    fLangXml: ProRock.Xmlite.Schema.Xml.TLangA;
+    fDir: TDir;
     fAlign: TAlign;
     fChar: TCharacterST;
     fCharoff: TLengthST;
@@ -1137,6 +2136,15 @@ type
     property Rowspan: TNumberST read fRowspan write fRowspan;
     [TDefault(1)]
     property Colspan: TNumberST read fColspan write fColspan;
+    property Id: ProRock.Xmlite.Schema.Base.TIdST read fId write fId;
+    property &Class: ProRock.Xmlite.Schema.Base.TNmtokensST read fClass write fClass;
+    property Style: TStyleSheetST read fStyle write fStyle;
+    property Title: TTextST read fTitle write fTitle;
+    [TName('lang')]
+    property LangXhtml: TLanguageCodeST read fLangXhtml write fLangXhtml;
+    [TName('lang')]
+    property LangXml: ProRock.Xmlite.Schema.Xml.TLangA read fLangXml write fLangXml;
+    property Dir: TDir read fDir write fDir;
     property Align: TAlign read fAlign write fAlign;
     property Char: TCharacterST read fChar write fChar;
     property Charoff: TLengthST read fCharoff write fCharoff;

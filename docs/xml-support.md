@@ -75,7 +75,7 @@ What of XML and XML Schema works, what works in part, and what is not covered ye
 | "Chameleon" includes | ✅ | a file without `targetNamespace` joins each namespace that includes it |
 | `schemaLocation` | ✅ | a local relative path is followed (include, import, redefine); never a URL, nothing is downloaded |
 | Namespaces that import each other | ✅ | one unit for both (Delphi allows no circular `uses`) |
-| `xs:redefine` | ❌ | reported by the generator |
+| `xs:redefine` | ✅ | a redefinition replaces the original in the whole namespace; a restriction of itself takes the new content, an extension of itself the old plus the new; GAEB DA XML |
 | WSDL 1.1, SOAP document/literal | ✅ | rpc/encoded operations are skipped (listed in the generated unit's header) |
 
 What is planned next is on the [roadmap](roadmap.md). A schema that does not generate or read right is worth an

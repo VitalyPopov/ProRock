@@ -46,7 +46,6 @@ A value set in code that equals its default is written only when marked present 
   HL7 CDA's `urn:hl7-org:v3` and its SDTC extensions come out as one. If both refer to the other's global elements or attributes,
   the members of one of them are written in the wrong namespace: please
   [open an issue](https://github.com/VitalyPopov/ProRock/issues/new/choose) if you meet such a pair.
-- `xs:redefine` is not supported yet: the generator reports it, and the components come out as the original file has them.
 
 ## Numbers
 

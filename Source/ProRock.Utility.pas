@@ -784,26 +784,28 @@ begin
     Inc(cursor);
   end;
   acronymCursor^ := #0;
+  Result := PChar(Result);
 
+  // taken: the acronym, then + a..z, + aa..zz and so on (one letter only gave the 27th taker its 26th's name)
   if aAcronyms <> nil then
   begin
-    var alphabetCursor: PChar := PChar(cAlphabet);
-    while aAcronyms.Contains(PChar(Result)) and (alphabetCursor^ <> #0) do
+    var acronym: string := Result;
+    var index: integer := 0;
+    while aAcronyms.Contains(Result) do
     begin
-      if alphabetCursor = PChar(cAlphabet) then
+      Inc(index);
+      var suffix: string := '';
+      var rest: integer := index;
+      while rest > 0 do
       begin
-        if acronymCursor - PChar(Result) = Length(aName) then
-          SetLength(Result, acronymCursor - PChar(Result) + 1)
-        else
-          (acronymCursor + 1)^ := #0;
+        Dec(rest);
+        suffix := cAlphabet[rest mod Length(cAlphabet) + 1] + suffix;
+        rest := rest div Length(cAlphabet);
       end;
-      acronymCursor^ := alphabetCursor^;
-      Inc(alphabetCursor);
+      Result := acronym + suffix;
     end;
-    aAcronyms.Add(PChar(Result));
+    aAcronyms.Add(Result);
   end;
-
-  Result := PChar(Result);
 end;
 
 class function TUtility.ExePath: string;

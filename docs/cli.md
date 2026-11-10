@@ -73,11 +73,10 @@ Values are always in double quotes. Errors (exit code 1) are `error: <message>` 
 | `missing-schema` | `namespace="urn:b" location="b.xsd" from="a.xsd"` | `a.xsd` imports and uses namespace `urn:b`, and no file of it is given or found at `location` (a relative path is followed, a URL never); add that schema. Its types fall back to `string` and its elements are left out until then |
 | `missing-include` | `namespace="urn:a" location="a-part.xsd" from="a.xsd"` | the included file is not at `location` (relative to `a.xsd`) and not given; add it - a given file with the same name counts |
 | `unresolved-ref` | `kind="type" name="NoSuchType" namespace="urn:a" from="a.xsd"` | a name that exists in no given file of that namespace: a typo in the schema, or a definition in a file still missing (an include). Types fall back to `string`, element references are left out |
-| `unsupported` | `feature="redefine" location="base.xsd" from="a.xsd"` | `xs:redefine` is not supported: the redefined components come out in their original form |
 | `duplicate-unit` | `unit="ProRock.Xmlite.Schema.Order"` | two namespaces get the same unit name (e.g. the same path under two hosts); nothing is written (exit code 1). Generate them in separate runs into separate folders, and tell the developer |
 
 `kind` in `unresolved-ref` is one of `type` (complex or simple), `complexType`, `simpleType`, `element`, `attribute`,
-`attributeGroup`, `group`. References into a namespace that is reported as `missing-schema` are not listed one by one.
+`attributeGroup`, `group`, `redefine` (an `xs:redefine` names a component its file does not have). References into a namespace that is reported as `missing-schema` are not listed one by one.
 
 !!! warning "Limits"
     - runs on Windows 64-bit; the generated units need Delphi 10.3 or later
