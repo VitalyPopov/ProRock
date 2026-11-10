@@ -39,7 +39,7 @@ ProRocketCli.exe [-o <output folder>] [--strict] [--no-timestamp] [--full-type-n
 **Generate all the schemas of a project in one run, every time.** Units generated separately, or by different versions, may not
 fit together, and regenerating everything costs nothing. The CLI never downloads anything: it follows a local relative
 `schemaLocation` (`../common/types.xsd`, never a URL), and a file you give wins over the one found there. It does not expand
-wildcards either; list the files, or let the shell do it.
+wildcards either, nor does cmd: list the files, or in PowerShell `ProRocketCli.exe -o Generated (Get-ChildItem *.xsd)`.
 
 The standard schemas are part of ProRock, so you do not give them: XML Schema, `xml:` and `xsi:` attributes, the SOAP envelopes,
 WSDL and its SOAP bindings.

@@ -99,7 +99,7 @@ begin
     for var i := 0 to StringGrid1.RowCount - 1 do
       if not StringGrid1.Cells[0, i].Trim.IsEmpty then
       begin
-        var item := TItemTypeCT.Create;
+        var item := TItemCT.Create;
         item.title := StringGrid1.Cells[0, i];
         item.quantity := StrToIntDef(StringGrid1.Cells[1, i], 0);
         item.price := StrToFloatDef(StringGrid1.Cells[2, i], 0);

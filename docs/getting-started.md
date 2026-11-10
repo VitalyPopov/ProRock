@@ -34,8 +34,9 @@ Windows 64-bit. Unzip it into a folder of its own. The SHA-256 checksum is in th
 
 ## 3. Generate the units
 
-Save the [VIES WSDL](https://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl) as `checkVatService.wsdl`. Then either
-open `ProRocket.Lite.exe`, add the file and click **Generate**, or run the command line:
+Save the [VIES WSDL](https://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl) as `checkVatService.wsdl` in your project
+folder. Then either open `ProRocket.Lite.exe`, add the file and click **Generate**, or run the command line there (with the path
+of the folder you unzipped to):
 
 ```
 ProRocketCli.exe -o Generated checkVatService.wsdl
@@ -99,11 +100,11 @@ uses System.SysUtils,
 
 var order := TOrderE.Create;
 try
-  if order.FromXmlFile('order.xml') then // in its encoding: UTF-8, UTF-16, ISO-8859-1...
+  if order.FromXmlFile('demo.xml') then // in its encoding: UTF-8, UTF-16, ISO-8859-1...
     Writeln(order.Customer.Name, ': ', order.Items.Item.Count, ' items');
 
   order.Status := osShipped;
-  order.ToXmlFile('order.xml'); // UTF-8
+  order.ToXmlFile('shipped.xml'); // UTF-8
 finally
   order.Free;
 end;
