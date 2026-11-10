@@ -469,3 +469,14 @@
 .md-header__title .md-header__topic:first-child .md-ellipsis {
   color: var(--md-default-fg-color);
 }
+
+/* the changelog is long and dense: a smaller text on its page only, relative to the theme's size, which follows the window
+   width (a fixed rem came out larger than the other pages on wide screens) */
+.md-content:has(h1#changelog) .md-typeset > :is(p, ul, ol) {
+  font-size: 0.9em;
+}
+.md-content:has(h1#changelog) .md-typeset h2 {
+  margin-top: 2.4em;
+  padding-top: 1.2em;
+  border-top: 1px solid var(--md-default-fg-color--lighter);
+}

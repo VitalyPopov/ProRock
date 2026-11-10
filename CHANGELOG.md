@@ -1,144 +1,91 @@
 # Changelog
 
-All notable changes to ProRock (runtime library) and ProRocket Lite (code generator) are documented here. Both share one version
-number since 1.1.0.
+All notable changes to ProRock (runtime library) and ProRocket (code generator: Lite and its CLI) are documented here. Both
+share one version number since 1.1.0.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
-### Added
-- Sample `ProRock.Xmlite.EInvoice`: an invoice under EN 16931 in CII (ZUGFeRD, Factur-X, XRechnung) or UBL (Peppol, XRechnung), read into
-  units generated from the official schemas and shown in one window; the same invoice in both syntaxes is included
-- Generated units check the ProRock they compile with: a warning when ProRock's new code level means regenerating brings something
-  (raised only then, this changelog says why), an error when ProRock is older than the unit; `PROROCK_NO_REGENERATE_WARNING` silences
-  the warning. `cProRockCodeLevel` is 1 in 1.7. The Generated code page has the details
-- `FromXmlFile` and `FromXmlBytes` read a document in its encoding: the BOM (UTF-8, UTF-16), else the declaration's `encoding=`
-  (ISO-8859-1, windows-1252...), else UTF-8; `False` when the encoding is unknown or the bytes do not fit it. `ToXmlFile` writes
-  UTF-8 without a BOM. The docs read and write files with them: `TFile.ReadAllText(f, TEncoding.UTF8)`, shown before, raised an
-  exception on a UTF-16 or ISO-8859-1 file
-- Schemas without `targetNamespace`: the unit is named after the file, its elements are in no namespace - written without
-  `xmlns`, with `xmlns=""` under a default namespace. A "chameleon" include (a file without `targetNamespace` included by one
-  that has it) joins each namespace that includes it
-- The generator follows a local relative `schemaLocation` of `xs:include`, `xs:redefine` and `xs:import` (an import only when
-  the schema uses that namespace); never a URL, nothing is downloaded, and a file you give wins. HL7 CDA generates from
-  `CDA_SDTC.xsd` alone, an MSBuild project's schema from `Microsoft.Build.xsd` alone
-- Namespaces that import each other come out in one unit (Delphi allows no circular `uses`): HL7 CDA and its SDTC extensions
-- `xs:redefine`: a redefinition replaces the original in the whole namespace, the redefined file's own references included. A
-  restriction of itself takes the new content, an extension of itself the old plus the new (one class), a simple type keeps its
-  narrowed enumeration; groups and attribute groups referring to themselves add to the original. Every GAEB DA XML 3.3 schema
-  (the German construction standard) generates from its file alone
+### Highlights
 
-### Changed
-- "cannot load" says why: `error: cannot load a.xsd: its root element is <xs:element>, not <schema>` (also an empty file, no XML,
-  XML that does not read); ProRocket Lite shows the same. A file whose root is not `xs:schema` no longer loads as an empty schema
-- **A required element a document lacked is no longer written back.** An object read with `FromXml` writes what the document had
-  and what code sets; before, a missing required value was made up on save - empty, or `0` for an amount, which a validator takes
-  for a real `0`. Objects built in code still write every required element, so a forgotten one shows (`Clear` makes a read
-  object one built in code)
-- **Regenerated units: every optional object is created on first access, a required one with its parent.** The sample's UBL invoice:
-  read 73 -> 0.44 ms, write 45 -> 0.36 ms, free 69 -> 0.10 ms, 161,839 -> 148 objects; a FHIR Bundle of 1,000 Patients 94,000 -> 32,000
-  objects. Documents are written byte for byte as before. Units get longer (FHIR 30,832 -> 46,364 lines), compile times stay.
-  Units generated earlier keep working as before. What to change after regenerating:
-  - `Present[@Obj.X]`, `SetPresent(@Obj.X)`, `Clear(@Obj.X)` no longer compile for an optional object (E2036): use the name,
-    `Obj.Clear('X')`. Plain values and required objects keep the `@` form
-  - a getter never returns nil: code that tests `Obj.X = nil`, or walks a recursive type until nil, must test `HasContent`
-  - `TBasite.AutoInitMaxDepth` matters for hand-written classes, whose objects read from a field are still created with their parent
+- ProRock: a value that does not fit its type is kept and written back, a missing required element is no longer made up on save
+- ProRock: `FromXmlFile` reads a document in its own encoding (UTF-16, ISO-8859-1, windows-1252)
+- ProRock: an e-invoicing sample, an EN 16931 invoice in CII (ZUGFeRD, Factur-X, XRechnung) and UBL (Peppol)
+- Generated units compile about 4 times faster (UBL 2.4: about 7 minutes -> 13 s)
+- Generated units create only the objects a document has: a UBL invoice read 73 -> 0.44 ms, 161,839 -> 148 objects
+- Nicer type names: `TInvoiceLineCT`, not `TInvoiceLineTypeCT`; the old ones stay as `deprecated` aliases until 2.0
+- More schemas generate and compile: no `targetNamespace`, `xs:redefine`, local `schemaLocation` followed (HL7 CDA, MSBuild,
+  GAEB DA XML)
+- Generated units warn when a later ProRock is worth regenerating for
 
-  The Large documents page has the details
-- **Regenerated units: a member named like one its class inherits takes a trailing `_`**, its XML name kept: FHIR's `meta` is
-  `Meta_` and `add` is `Add_`; `Meta` is the class metadata again in every resource, `TBasite(resource).Meta` is no longer needed.
-  A SOAP operation the same: `Call` gives `Call_` and `TryCall_` (it called itself and did not compile). Code using the old names
-  does not compile, nothing changes silently. Before, only a few names were renamed (`Assign_`), the others hid the inherited
-  member (warning W1009). ProRock's own new members take the `Xml` prefix, so a later version does not rename an element
-- **Regenerated units: two schema names of one Delphi name are two members**, the later one numbered from 2 in schema order, its XML
-  name kept: names differing in case (`item`, `Item`: `Item`, `Item2`) or in style (`item_type`, `itemType`), an element and an
-  attribute (the element keeps the name), an element an extension repeats from its base (`Note`, `Note2`, `Note3` over three levels),
-  one name twice in a sequence (`a, b, a`: `A`, `B`, `A2`). Before, one of them was dropped: it could not be reached from code, and a
-  name declared twice lost data (`<a>1</a><b>2</b><a>3</a>` was written `<a>3</a><b>2</b>`). The numbers come before the `_`: `meta`
-  and `Meta` give `Meta_` and `Meta2`. SOAP operations the same: `Foo` and `foo` give `Foo2` with `TryFoo2`. In the units shipped
-  with ProRock: SpreadsheetML's `TupleCache`, `SecurityDescriptor` and `Odxf` are the elements now, the attributes `TupleCache2`,
-  `SecurityDescriptor2`, `Odxf2`; DrawingML's `THslColorCT` attributes are `Hue2`, `Sat2`, `Lum2` (`Hue` and the others are its
-  color changes); XHTML's `q` attribute `Cite2` and `th`, `td` `Abbr2`, beside the inherited `<cite>` and `<abbr>`; the XSD, WSDL and
-  XML Signature units get `Annotation2`, `Input2`, `Output2`, `Fault2`, `PGPKeyPacket2`, where a type declares an element twice: a
-  document reads into the first as before. Code using an old meaning does not compile, its type changed. Units generated earlier
-  keep working as before
-- `[TRequired]` on a hand-written object with a getter: created with its parent, so it is written as required says. It stayed nil and
-  was not written
-- The name in `IsPresent`, `SetPresent` and `Clear` can be the property's too: `Clear('PriceList')`, where the schema's key is `priceList`
-- Several threads reading one object get the same object at the first access to a member
-- Generated units compile about 4 times faster or more: a list class is declared only where it is needed, each one was a generic
-  instantiation for the compiler. The FHIR sample's units, Win64, Delphi 13: about 53 s -> 11-15 s (10.3: about 35 s),
-  .dcu 157 -> 75 MB; Win32: 23 s -> 5 s. UBL 2.4 Invoice + CreditNote, Win64: about 7 minutes -> 13 s. A unit keeps the lists it uses itself; a list only other units use is an
-  alias there, `TNoteEList = TXmliteList<TNoteE>`, one type in every unit. Generating one document with its common schemas and
-  later another one into the same folder writes the same common units
-- A list class nothing refers to is no longer generated, in the units shipped with ProRock too. Regenerate your units; code
-  that names such a list itself can use `TXmliteList<TItem>`
-- A value that does not fit its type (`12,50` in a decimal, `XXX` in an enumeration, an empty number) no longer turns silently
-  into `0` or the enumeration's first item: the property is not present, and the value is kept and written back as it came, for
-  elements, list items, attributes and the text of an element with attributes (`<amount currency="EUR"/>` stays empty). Setting the
-  property replaces it. A list no longer gets a zero item for it
-- A number is its property's default only when exactly equal, in the property's own type. Very small values set from code were taken
-  for 0 and not written (`1.23E-13` on Win64, `1E-20` on Win32 too), and so were values close to any other default
-- `xml:space="preserve"` is written only in Office's namespaces, which trim the text otherwise. Elsewhere a simple type has no such
-  attribute and a validating reader refused the document; the spaces are kept without it
-- Generated simple types carry `[TBaseType]`, so the runtime knows what a type derives from. Regenerate your units for this; units
-  generated earlier keep working as before
-- Generated units are shorter and easier to read: a schema's types, members and enumeration items are often named in different styles
-  but the same across the schema, so `RegisterNamespace` can now state all three, and most `[TNaming]`, `[TName]` and `[TEnumCaption]`
-  lines are gone (SpreadsheetML 11,244 -> 9,083 lines, FHIR 37,566 -> 30,832). No Delphi name changes, so your code is not affected.
-  Units generated earlier keep working as before
-- `[TEnumNaming(TNaming.nKebabCase)]`: the naming of an enumeration's items, where it differs from its namespace's. `[TEnumCaption]`
-  still wins per item
-- A type gets `[TNaming]` only when that style really gives its name back: `FamilyHistoryStatus-list` said Train-Case, it now has its
-  exact name alone
+### ProRock (library)
 
-### Fixed
-- `SetPresent` on a choice member not touched yet returned `True` and `IsPresent` said so, but nothing was written: the object was
-  missing. It is created now
-- ProRocket Lite: a choice member whose field takes a trailing `_` (`fScore_`, next to a property `FScore`) stopped the program at
-  start-up; a member named `GetStatus` next to `Status` gave a unit that did not compile
-- ProRocket Lite: a schema with XML Schema or an imported namespace as its default namespace (`<schema xmlns="http://www.w3.org/2001/XMLSchema">`,
-  as the W3C XML Signature schemas do) gave a unit that did not compile: the unit of the unprefixed types was missing from `uses`
-- An inherited member follows the naming of the namespace that declares it, not of the class that inherits it, where the two differ
-- An empty element of a simple type (`<title/>`) made `FromXml` return `False`, and everything after it was lost
-- `xs:decimal` values are written without an exponent: `1E-5` and `1E15` are not valid decimals, `0.00001` and
-  `1000000000000000` are. `xs:double` keeps its exponent
-- Whitespace around a number or an enumeration value is ignored, as XML Schema says: `<n> 12 </n>` is 12, it used to read as 0
-- A raw line end in a document saved on Windows reads as a line feed, as XML says. It kept its carriage return, in the value and in
-  what was written back (`a&#x0D;&#x0A;b`), which every other reader took for a different text. `&#13;` is still a carriage return
-- Not a number is written `NaN`, as XML Schema spells it, not `NAN`; `NaN`, `INF` and `-INF` are read as numbers on every Delphi,
-  10.3 - 11 did not
-- A number too large for a `Comp` property, or `NaN` or `INF` in one, silently became -9223372036854775808; now it is a value that
-  does not fit its type
-- ProRocket Lite: a namespace ending in a code list's directory version (`...:ActionCode:D16A`) gives a unit of its own
-  (`ActionCodeD16A`); before, the coupled UN/CEFACT CII schemas failed with a duplicate unit name. XAdES units are `Xades` and
-  `Xades141`
-- Three samples did not compile on older Delphi: `ProRock.Soapite.WsSecurity` on 10.3 and 10.4, `ProRock.Xmlite.Basic` and
-  `ProRock.Xmlite.Spreadsheet` on 10.3. The samples behave as before
-- A hand-written class deriving directly from `TBasite`, in a unit that uses `ProRock.Xmlite`, crashed the compiler since 1.6.0
-  (F2084): on every Delphi in a build with debug info, on 10.3 in any build. Generated units were not affected
-- Text with attributes (simpleContent: UBL's and CII's IDs and amounts) read as empty when it started with CDATA, a comment or a
-  processing instruction: `<cbc:ID><![CDATA[INV-1]]></cbc:ID>`, as exports that wrap every value write it
-- An element the schema has once, repeated in a document, was read over: the last one won and the others were lost. The first is
-  read now, the others are kept and written back after it
-- A tab or line end typed in an attribute value reads as a space, as XML says (`&#10;` is still a line end); it was kept as it was
-- An `xsi:type` value with a prefix that is not declared (or no QName at all) made the writer declare that prefix with the default
-  namespace, and the second write was not well-formed
-- A line break or a tab right after an element's name (`<gpx` and its attributes on the next lines, as GPX files and schemas
-  have it) hid the element's namespace declarations: its children were not read, and the read could fail
-- The text of an element whose class has no text property (`XmlText`) read as empty when it started with CDATA, a comment or a
-  processing instruction
-- ProRocket Lite: an attribute group referring to another one left the other one's attributes out. Regenerated units have them:
-  FHIR's XHTML `div`, `p` and the other elements get `id`, `class`, `style`, `title`, `lang` and `dir`; VML's shapes their core and
-  shape attributes
-- ProRocket Lite: more than 27 enumerations of one name in a unit (XHTML's `dir` in each element) gave the 28th the item prefix of
-  the 27th, and the unit did not compile
-- ProRocket Lite: a namespace ending in two version segments (`http://www.topografix.com/GPX/1/1`) gave the unit `Schema_11`; it
-  is `Gpx11` now
-- ProRocket Lite: a reference to a global element of an inline simple type (BMEcat's `<GENERATOR_INFO>`, a restriction of a string)
-  gave an empty class whose value was only in `XmlText`; it is a value of a nested type now, as for a local element (`Info: TInfo`,
-  a value list when it repeats). Code using the class must use the value after regenerating
+#### Added
+- Sample `ProRock.Xmlite.EInvoice`: one EN 16931 invoice in CII and in UBL, read into units generated from the official schemas
+- `FromXmlFile` and `FromXmlBytes` read a document in its own encoding, `ToXmlFile` writes UTF-8
+- `IsPresent`, `SetPresent` and `Clear` take the property's name too: `Clear('PriceList')`
+
+#### Changed
+- A value that does not fit its type, like `12,50` in a decimal, is kept and written back as it came; the property is not
+  present. Before, it became `0` or the enumeration's first item
+- A required element a document lacked is not written back; before, it was made up on save, an amount as `0`. Objects built in
+  code still write every required element
+
+#### Fixed
+- Reading lost data: after an empty element like `<title/>`; in an element repeated where the schema has it once; in text
+  starting with CDATA or a comment, as in `<cbc:ID><![CDATA[INV-1]]></cbc:ID>`; in children of an element whose attributes start
+  on a new line
+- Reading followed XML's rules loosely: spaces around numbers, raw CR LF line ends, tabs and line ends in attribute values;
+  `NaN` and `INF` on 10.3 - 11; a too large `Comp` value
+- Writing gave invalid XML: `xs:decimal` with an exponent, `NAN`, an undeclared `xsi:type` prefix, `xml:space` outside Office
+- Writing left out: very small numbers set from code, like `1E-20`; a choice member after `SetPresent`; a `[TRequired]` hand-written
+  object with a getter
+- A member inherited from a type of another namespace was read and written in the inheriting namespace's naming
+- The compiler crashed on a hand-written class deriving directly from `TBasite` (F2084, since 1.6.0); three samples did not compile
+  on 10.3 and 10.4
+
+### ProRocket (generator)
+
+#### When you regenerate
+Units generated by ProRocket 1.6 and earlier work with ProRock 1.7 as they are. A unit regenerated with 1.7 can need these
+changes in your code:
+
+- Old type names are `deprecated` aliases until 2.0; Delphi warns where your code uses them
+- A member hiding an inherited one takes a trailing `_`, as FHIR's `Meta_`; two schema names of one Delphi name are numbered,
+  `Item` and `Item2`. Code using an old name does not compile
+- An optional object no longer takes `@`: `Obj.Clear('X')`, not `Clear(@Obj.X)`; its getter never returns nil, test `HasContent`
+- A global element of an inline simple type is a value, not a class: BMEcat's `<GENERATOR_INFO>`
+- Some unit names changed: GPX 1.1 `Gpx11`, XAdES `Xades` and `Xades141`
+
+#### Added
+- Schemas without `targetNamespace`, and "chameleon" includes that join the including namespace
+- `xs:redefine`: every GAEB DA XML 3.3 schema generates from its file alone
+- A local relative `schemaLocation` is followed (never a URL): HL7 CDA from `CDA_SDTC.xsd` alone, MSBuild from `Microsoft.Build.xsd`
+- Namespaces that import each other come out in one unit
+- Generated units check ProRock's code level: a warning when regenerating brings something, an error when ProRock is too old
+- `--full-type-names` (CLI) keeps the whole XML name in type names
+
+#### Changed
+- Units compile about 4 times faster (FHIR, Win64: 53 -> 11-15 s)
+- Every optional object is created on first access: a UBL invoice read 73 -> 0.44 ms, 161,839 -> 148 objects
+- A schema's naming styles are recognized: most `[TNaming]`, `[TName]` and `[TEnumCaption]` lines are gone
+- Type names lose what all the types of one kind share: `CT_Font` -> `TFontCT`, `InvoiceLineType` -> `TInvoiceLineCT`
+- Every name collision is resolved by one rule: a schema name meeting an inherited one takes `_`, two schema names a number.
+  Before, one of them was dropped, and a name declared twice lost data. Renamed in the units shipped with ProRock: SpreadsheetML's
+  attributes `TupleCache2`, `SecurityDescriptor2`, `Odxf2`, DrawingML's `Hue2`, `Sat2`, `Lum2`, XHTML's `Cite2`, `Abbr2`
+- "cannot load" says why (the root element is not `xs:schema`, an empty file, not XML)
+
+#### Deprecated
+- Type names of units generated before 1.7: aliases until 2.0
+
+#### Fixed
+- An attribute group referring to another one lost its attributes: FHIR's XHTML elements get `id`, `class`, `style` and more
+- Units that did not compile: XML Schema as a schema's default namespace, a member `GetStatus` next to `Status`, more than 27
+  enumerations of one name
+- A choice member whose field takes `_` stopped the program at start-up
+- The UN/CEFACT code lists of CII failed with a duplicate unit name; they are units of their own now, like `ActionCodeD16A`
+- A global element of an inline simple type gave an empty class
 
 ## [1.6.0] - 2026-11-02
 
@@ -566,6 +513,14 @@ Claude Code (Anthropic).
 
 - First public release: Basite (metadata-driven object model core) and Xmlite (XML parsing and serialization to and from PODOs)
 
+[Unreleased]: https://github.com/VitalyPopov/ProRock/compare/1.6.0...HEAD
+[1.6.0]: https://github.com/VitalyPopov/ProRock/compare/1.5.1...1.6.0
+[1.5.1]: https://github.com/VitalyPopov/ProRock/compare/1.5.0...1.5.1
+[1.5.0]: https://github.com/VitalyPopov/ProRock/compare/1.4.1...1.5.0
+[1.4.1]: https://github.com/VitalyPopov/ProRock/compare/1.4.0...1.4.1
+[1.4.0]: https://github.com/VitalyPopov/ProRock/compare/1.3.0...1.4.0
+[1.3.0]: https://github.com/VitalyPopov/ProRock/compare/1.2.0...1.3.0
+[1.2.0]: https://github.com/VitalyPopov/ProRock/compare/1.1.0...1.2.0
 [1.1.0]: https://github.com/VitalyPopov/ProRock/compare/1.0.3...1.1.0
 [1.0.3]: https://github.com/VitalyPopov/ProRock/compare/1.0.2...1.0.3
 [1.0.2]: https://github.com/VitalyPopov/ProRock/compare/1.0.1...1.0.2
