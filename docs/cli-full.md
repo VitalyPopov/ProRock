@@ -181,6 +181,7 @@ var order := TOrderE.Create;           // the root element's class: <Order> -> T
 try
   if order.FromXml(xmlText) then ...   // True when the text was parsed
   xmlText := order.ToXml;
+  order.FromXmlFile('order.xml');       // a file in its encoding (BOM, encoding="..." or UTF-8); ToXmlFile writes UTF-8
 finally
   order.Free;
 end;

@@ -13,17 +13,17 @@ The classes come from the [generator](prorocket-lite/index.md); for a small form
 ## Reading and writing
 
 ```pascal
-uses System.SysUtils, System.IOUtils,
+uses System.SysUtils,
   ProRock.Xmlite,
   ProRock.Xmlite.Schema.Order;
 
 var order := TOrderE.Create; // the root element's class: <order> -> TOrderE
 try
-  if order.FromXml(TFile.ReadAllText('order.xml', TEncoding.UTF8)) then // True when the text was parsed
+  if order.FromXmlFile('order.xml') then // True when the file was read and parsed
     Writeln(order.Customer.Name, ': ', order.Items.Item.Count, ' items');
 
   order.Status := osShipped;
-  TFile.WriteAllText('order.xml', order.ToXml, TEncoding.UTF8);
+  order.ToXmlFile('order.xml');
 finally
   order.Free;
 end;
@@ -36,6 +36,9 @@ end;
   [Generated code](generated-code.md).
 - A repeating element of a simple type is a list of plain values: `<author>Ann</author><author>Bob</author>` is
   `Authors.Author.Add('Ann')`, a `TList<T>` to use.
+- `FromXmlFile` and `FromXmlBytes` read a document in its encoding: the BOM (UTF-8, UTF-16), else the declaration's
+  `encoding=` (ISO-8859-1, windows-1252...), else UTF-8. `False` also when the encoding is unknown or the bytes do not fit it.
+  `ToXmlFile` writes UTF-8 without a BOM. `FromXml` and `ToXml` take and give a string, for text you have already.
 - `TXmlite.ObjectToXml(obj)` writes any object, also one that is not a root element.
 
 ## Absent or default: presence
@@ -59,7 +62,8 @@ sheet.Clear('Drawing');         // removes a value or an object: back to its def
 ```
 
 - `Present[@Obj.X]` tells exactly what the writer does: present when read, marked, not the default, or (an object) with any
-  content. `[TRequired]` values and objects are written always.
+  content. `[TRequired]` values and objects are written always when built in code; read from a document, only when it had
+  them or code sets them.
 - An assignment in code is not seen (properties write their fields), so a value equal to its default set in code needs
   `SetPresent`. A value that was read stays present when code assigns it the default (`Title.XmlValue := ''` writes an empty
   element); to remove it, use `Clear`.

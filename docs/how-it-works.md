@@ -65,7 +65,7 @@ Using it:
 ```pascal
 var order := TOrderE.Create;
 try
-  order.FromXml(TFile.ReadAllText('order.xml', TEncoding.UTF8));
+  order.FromXmlFile('order.xml');
 
   Writeln(order.Customer, ': ', order.Item[0].Quantity, ' x ', order.Item[0].Title); // Ann: 2 x Rocket
 

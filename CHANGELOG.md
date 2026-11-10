@@ -13,8 +13,16 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 - Generated units check the ProRock they compile with: a warning when ProRock's new code level means regenerating brings something
   (raised only then, this changelog says why), an error when ProRock is older than the unit; `PROROCK_NO_REGENERATE_WARNING` silences
   the warning. `cProRockCodeLevel` is 1 in 1.7. The Generated code page has the details
+- `FromXmlFile` and `FromXmlBytes` read a document in its encoding: the BOM (UTF-8, UTF-16), else the declaration's `encoding=`
+  (ISO-8859-1, windows-1252...), else UTF-8; `False` when the encoding is unknown or the bytes do not fit it. `ToXmlFile` writes
+  UTF-8 without a BOM. The docs read and write files with them: `TFile.ReadAllText(f, TEncoding.UTF8)`, shown before, raised an
+  exception on a UTF-16 or ISO-8859-1 file
 
 ### Changed
+- **A required element a document lacked is no longer written back.** An object read with `FromXml` writes what the document had
+  and what code sets; before, a missing required value was made up on save - empty, or `0` for an amount, which a validator takes
+  for a real `0`. Objects built in code still write every required element, so a forgotten one shows (`Clear` makes a read
+  object one built in code)
 - **Regenerated units: every optional object is created on first access, a required one with its parent.** The sample's UBL invoice:
   read 73 -> 0.44 ms, write 45 -> 0.36 ms, free 69 -> 0.10 ms, 161,839 -> 148 objects; a FHIR Bundle of 1,000 Patients 94,000 -> 32,000
   objects. Documents are written byte for byte as before. Units get longer (FHIR 30,832 -> 46,364 lines), compile times stay.

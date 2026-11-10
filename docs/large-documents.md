@@ -36,7 +36,7 @@ end;
 
 ```pascal
 order.Seller.City.XmlValue := 'Dubai';   // touching creates the way down
-TFile.WriteAllText('order.xml', order.ToXml, TEncoding.UTF8);  // only what has content is written
+order.ToXmlFile('order.xml');  // only what has content is written
 ```
 
 Reading creates what is in the document. Touching an object that stays empty is harmless: it is not written, and whatever it holds

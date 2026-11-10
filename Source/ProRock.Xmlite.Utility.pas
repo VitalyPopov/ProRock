@@ -64,6 +64,8 @@ type
     class procedure DecodeNamedEscapeEntity(var aCursor, aResultCursor: PChar); static; inline;
     class function ReadUnescapeInPlace(var aCursor: PChar; aStringEndsAt: Char = #0): string; static; inline;
     class function ReadQuotedValueInPlace(var aCursor: PChar): string; static; inline;
+    // the text of a document's bytes: the BOM, else UTF-16 by its first characters, else the declaration's encoding, else UTF-8
+    class function DecodeXml(const aBytes: TBytes; out aXml: string): boolean; static;
     class function PassDtd(var aCursor: PChar): boolean; static; inline;
     // a comment, CDATA, a processing instruction or a DOCTYPE, passed to its own end (it may hold < and >)
     class function PassMarkup(var aCursor: PChar): boolean; static;
@@ -89,7 +91,7 @@ type
 
 implementation
 
-uses System.Hash;
+uses System.Hash, System.Math;
 
 { TUriedName }
 
@@ -565,6 +567,89 @@ begin
   aCursor^ := ending;
 
   Result := True;
+end;
+
+class function TReaderXmlite.DecodeXml(const aBytes: TBytes; out aXml: string): boolean;
+
+  // encoding="..." of a declaration in an ASCII-compatible encoding; '' when there is none
+  function DeclaredEncoding: string;
+  begin
+    Result := '';
+    var count: integer := Length(aBytes);
+    if (count < 6) or (aBytes[0] <> Ord('<')) or (aBytes[1] <> Ord('?')) then
+      Exit;
+    var head: string := TEncoding.ASCII.GetString(aBytes, 0, Min(count, 200));
+    var finish: integer := head.IndexOf('?>');
+    if finish < 0 then
+      Exit;
+    head := head.Substring(0, finish);
+    var at: integer := head.IndexOf('encoding');
+    if at < 0 then
+      Exit;
+    at := head.IndexOfAny(['"', ''''], at);
+    if at < 0 then
+      Exit;
+    var close: integer := head.IndexOf(head.Chars[at], at + 1);
+    if close > at then
+      Result := head.Substring(at + 1, close - at - 1).Trim.ToLower;
+  end;
+
+begin
+  aXml := '';
+  Result := False;
+  var count: integer := Length(aBytes);
+  var encoding: TEncoding := nil;
+  var skip: integer := 0;
+  if (count >= 3) and (aBytes[0] = $EF) and (aBytes[1] = $BB) and (aBytes[2] = $BF) then
+  begin
+    encoding := TEncoding.UTF8;
+    skip := 3;
+  end
+  else if (count >= 2) and (aBytes[0] = $FF) and (aBytes[1] = $FE) then
+  begin
+    encoding := TEncoding.Unicode;
+    skip := 2;
+  end
+  else if (count >= 2) and (aBytes[0] = $FE) and (aBytes[1] = $FF) then
+  begin
+    encoding := TEncoding.BigEndianUnicode;
+    skip := 2;
+  end
+  else if (count >= 2) and (aBytes[0] = Ord('<')) and (aBytes[1] = 0) then
+    encoding := TEncoding.Unicode
+  else if (count >= 2) and (aBytes[0] = 0) and (aBytes[1] = Ord('<')) then
+    encoding := TEncoding.BigEndianUnicode;
+
+  var own: boolean := False;
+  if encoding = nil then
+  begin
+    var name: string := DeclaredEncoding;
+    // one byte per ASCII character here: a declared UTF-16 is wrong, the bytes are UTF-8
+    if (name = '') or name.StartsWith('utf-8') or (name = 'utf8') or name.StartsWith('utf-16') or (name = 'us-ascii') or
+      (name = 'ascii') then
+      encoding := TEncoding.UTF8
+    else
+      try
+        encoding := TEncoding.GetEncoding(name);
+        own := not TEncoding.IsStandardEncoding(encoding);
+      except
+        on EEncodingError do
+          Exit; // a name the system does not know
+      end;
+  end;
+
+  try
+    try
+      aXml := encoding.GetString(aBytes, skip, count - skip);
+      Result := True;
+    except
+      on EEncodingError do
+        Exit; // bytes that do not fit the encoding
+    end;
+  finally
+    if own then
+      encoding.Free;
+  end;
 end;
 
 class function TReaderXmlite.ReadQuotedValueInPlace(var aCursor: PChar): string;

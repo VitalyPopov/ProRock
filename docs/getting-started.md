@@ -93,17 +93,17 @@ Generate the units from the XSD the same way, then parse and write documents thr
 has this `order.xsd` and a document for it (`demo.xml`):
 
 ```pascal
-uses System.SysUtils, System.IOUtils,
-  ProRock.Xmlite, // FromXml and ToXml (a class helper: visible only where ProRock.Xmlite is in uses)
+uses System.SysUtils,
+  ProRock.Xmlite, // FromXmlFile and ToXmlFile (a class helper: visible only where ProRock.Xmlite is in uses)
   ProRock.Xmlite.Schema.Order;
 
 var order := TOrderE.Create;
 try
-  if order.FromXml(TFile.ReadAllText('order.xml', TEncoding.UTF8)) then
+  if order.FromXmlFile('order.xml') then // in its encoding: UTF-8, UTF-16, ISO-8859-1...
     Writeln(order.Customer.Name, ': ', order.Items.Item.Count, ' items');
 
   order.Status := osShipped;
-  TFile.WriteAllText('order.xml', order.ToXml, TEncoding.UTF8);
+  order.ToXmlFile('order.xml'); // UTF-8
 finally
   order.Free;
 end;

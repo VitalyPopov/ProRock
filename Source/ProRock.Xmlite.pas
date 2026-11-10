@@ -215,6 +215,8 @@ type
     function TagType: TTagType;
     // written when present, or required - unless a kept value that did not fit its type stands in for it
     function ValueIsWritten(aProperty: TProperty): boolean;
+    // required and written although not present: built in code (a forgotten value shows); a read object writes what it read
+    function WritesRequired(aProperty: TProperty): boolean; inline;
 
     function ReadTagContents(var aCursor: PChar; const aName: string; aXmlns: TXmlns): boolean;
 
@@ -236,6 +238,12 @@ type
     function FromXml(const aXml: string): boolean; overload;
     // reads without a copy - aXml is changed by the read (large documents read once)
     function FromXmlInPlace(var aXml: string): boolean;
+    // a file or bytes in their encoding: the BOM (UTF-8, UTF-16), else the declaration's encoding="", else UTF-8. False also
+    // when the encoding is unknown or the bytes do not fit it
+    function FromXmlFile(const aFileName: string): boolean;
+    function FromXmlBytes(const aXml: TBytes): boolean;
+    // UTF-8 without a BOM, as the declaration says
+    procedure ToXmlFile(const aFileName: string; const aName: string = '');
   end;
 
   TXmliteElementAttribute = class(TCustomAttribute);
@@ -467,7 +475,7 @@ type
 
 implementation
 
-uses System.IniFiles, System.Variants, System.Hash;
+uses System.IniFiles, System.Variants, System.Hash, System.IOUtils;
 
 // the read order of elements (TXmlite.XmlPosition): one counter per thread, so parsing in several threads needs no lock
 threadvar
@@ -479,6 +487,22 @@ constructor TBasiteHelper.CreateFromXml(const aXml: string);
 begin
   inherited Create;
   FromXml(aXml);
+end;
+
+function TBasiteHelper.FromXmlFile(const aFileName: string): boolean;
+begin
+  Result := FromXmlBytes(TFile.ReadAllBytes(aFileName));
+end;
+
+function TBasiteHelper.FromXmlBytes(const aXml: TBytes): boolean;
+begin
+  var xml: string;
+  Result := TReaderXmlite.DecodeXml(aXml, xml) and FromXmlInPlace(xml);
+end;
+
+procedure TBasiteHelper.ToXmlFile(const aFileName: string; const aName: string);
+begin
+  TFile.WriteAllBytes(aFileName, TEncoding.UTF8.GetBytes(ToXml(aName)));
 end;
 
 function TBasiteHelper.FromXml(const aXml: string): boolean;
@@ -948,7 +972,12 @@ end;
 
 function TBasiteHelper.ValueIsWritten(aProperty: TProperty): boolean;
 begin
-  Result := IsPresent(aProperty) or (aProperty.Required and not (Meta.Xmlite.IsTXmlite and TXmlite(Self).HasBadValue(aProperty)));
+  Result := IsPresent(aProperty) or (WritesRequired(aProperty) and not (Meta.Xmlite.IsTXmlite and TXmlite(Self).HasBadValue(aProperty)));
+end;
+
+function TBasiteHelper.WritesRequired(aProperty: TProperty): boolean;
+begin
+  Result := aProperty.Required and not (Meta.Xmlite.IsTXmlite and (TXmlite(Self).fXmlPosition <> 0));
 end;
 
 // the tag of an element that is written (its parent decided it is present): with content, or empty
@@ -960,7 +989,7 @@ begin
   var textProperty: TPropertyData := Meta.Xmlite.TextProperty;
   if Assigned(textProperty) and Meta.Xmlite.IsTXmlite and TXmlite(Self).fXmlTextEmpty and not IsPresent(textProperty) then
     textProperty := nil;
-  if Assigned(textProperty) and (textProperty.Required or IsPresent(textProperty)) then
+  if Assigned(textProperty) and (WritesRequired(textProperty) or IsPresent(textProperty)) then
     Exit(xttOpenClose);
 
   if Meta.Xmlite.ProcessAnyElement and (TXmlite(Self).XmlAny.Count > 0) then
@@ -979,7 +1008,7 @@ begin
   // the same test as ToXml makes for each child element
   for var propertyInfo: TProperty in Meta.Xmlite.Elements.Values do
     if ((propertyInfo.PropertyType <> ptBasite) or (TPropertyBasite(propertyInfo).ObjectPointer(Self)^ <> nil)) and
-      (propertyInfo.Required or IsPresent(propertyInfo)) then
+      (WritesRequired(propertyInfo) or IsPresent(propertyInfo)) then
       Exit(xttOpenClose);
 
   if Assigned(textProperty) then
@@ -1075,7 +1104,7 @@ var
           ptBasite:
             begin
               var fieldObject: TBasite := TPropertyBasite(propertyElement).ObjectPointer(Self)^;
-              if (fieldObject <> nil) and (propertyElement.Required or IsPresent(propertyElement)) then
+              if (fieldObject <> nil) and (WritesRequired(propertyElement) or IsPresent(propertyElement)) then
                 children.AddOrSetValue(fieldObject, propertyElement);
             end;
           ptBasiteList:
@@ -1214,7 +1243,7 @@ begin
                   // written when present or required - its own required values do not make it present (<drawing r:id=""/>)
                   var propertyBasite: TPropertyBasite := TPropertyBasite(propertyElement);
                   var fieldObject: TBasite := propertyBasite.ObjectPointer(Self)^;
-                  if (fieldObject <> nil) and (propertyBasite.Required or IsPresent(propertyBasite)) then
+                  if (fieldObject <> nil) and (WritesRequired(propertyBasite) or IsPresent(propertyBasite)) then
                     fieldObject.ToXml(aWriter, elementName(propertyElement, scope), scope, False);
                 end;
               ptBasiteList:
@@ -1314,7 +1343,7 @@ function TBasiteHelper.GetXmlns(aDeclared: TDictionary<string, string>): string;
 
     procedure AddPropertyDataXmlns(aXmlnsList: THashedObjectList<TNamespace>; aPropertyData: TPropertyData; aObject: TBasite); inline;
     begin
-      if not aPropertyData.Required and not aObject.IsPresent(aPropertyData) then
+      if not aObject.WritesRequired(aPropertyData) and not aObject.IsPresent(aPropertyData) then
         Exit;
 
       // the property's own namespace only: its value type's one (xs of xs:string) names nothing in the document
@@ -1329,7 +1358,7 @@ function TBasiteHelper.GetXmlns(aDeclared: TDictionary<string, string>): string;
     for var attribute: TPropertyData in aObject.Meta.Xmlite.Attributes.Values do
     begin
       AddPropertyDataXmlns(aXmlnsList, attribute, aObject);
-      if attribute.Xmlite.Qualified and (attribute.Required or aObject.IsPresent(attribute)) then
+      if attribute.Xmlite.Qualified and (aObject.WritesRequired(attribute) or aObject.IsPresent(attribute)) then
         aPrefixed.Add(attribute.Xmlite.Namespace);
     end;
 
@@ -1343,7 +1372,7 @@ function TBasiteHelper.GetXmlns(aDeclared: TDictionary<string, string>): string;
         ptBasite:
           begin
             var propertyObject: TBasite := TPropertyBasite(element).ObjectPointer(aObject)^;
-            if (propertyObject <> nil) and (element.Required or aObject.IsPresent(element)) then
+            if (propertyObject <> nil) and (aObject.WritesRequired(element) or aObject.IsPresent(element)) then
               FillXmlnsList(aXmlnsList, aPrefixed, aKept, propertyObject, aScope);
           end;
         ptBasiteList:

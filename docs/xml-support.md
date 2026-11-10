@@ -21,7 +21,7 @@ What of XML and XML Schema works, what works in part, and what is not covered ye
 | Comments, processing instructions, DOCTYPE | ✅ | skipped on read, not written back |
 | Entities declared in a DTD | ❌ | `&name;` stays text - which also rules out entity-expansion attacks |
 | `xml:space="preserve"` | ✅ | written for text with leading or trailing spaces in Office's namespaces, which trim it otherwise; elsewhere the spaces are kept without it, as a schema's simple type has no such attribute |
-| Attributes the schema does not know | ✅ | kept and written back |
+| Attributes the schema does not know | ✅ | kept and written back - not on an element of a plain value, which has no place for them ([Limitations](limitations.md)) |
 | Elements the schema does not know | ✅ | kept as their exact text and written back where they were - Office's own extensions (`extLst`, `mc:AlternateContent`) survive a round trip ([Xmlite](xmlite.md#content-the-schema-does-not-describe)) |
 | Values that do not fit their type | ✅ | `12,50` in a decimal, `XXX` in an enumeration, an empty number: the property is not present, the value is kept and written back as it came, attributes and list items too; setting the property replaces it. CDATA in such a value comes back as escaped text |
 | Malformed XML | ✅ | the read fails: `FromXml` returns `False` - tags not closed or crossed, an undeclared prefix in kept content |

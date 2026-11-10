@@ -34,10 +34,11 @@ elements the schema does not describe, and mixed content with its text and order
 A value set in code that equals its default is written only when marked present (`SetPresent`).
 
 !!! warning "ProRock does not validate"
-    - A required element you don't set is written all the same, empty, or as `0` for a number, so a forgotten amount looks like a
-      real `0`. Validate what you send where it matters.
-    - In a document with a second element where the schema allows one, the last one is read, the others are lost, and `FromXml`
-      still returns `True`.
+    - A required element you don't set in an object built in code is written all the same, empty, or as `0` for a number, so a
+      forgotten amount looks like a real `0`. Validate what you send where it matters. An object read from a document writes a
+      required element only when the document had it or code sets it: nothing is made up.
+    - An attribute on an element of a plain value (`<v extra="1">12</v>`, where the schema allows none) is not kept.
+      `xml:space` is written again where the text needs it.
 
 ## Numbers
 
