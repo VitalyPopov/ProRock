@@ -97,6 +97,13 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   `ProRock.Xmlite.Spreadsheet` on 10.3. The samples behave as before
 - A hand-written class deriving directly from `TBasite`, in a unit that uses `ProRock.Xmlite`, crashed the compiler since 1.6.0
   (F2084): on every Delphi in a build with debug info, on 10.3 in any build. Generated units were not affected
+- Text with attributes (simpleContent: UBL's and CII's IDs and amounts) read as empty when it started with CDATA, a comment or a
+  processing instruction: `<cbc:ID><![CDATA[INV-1]]></cbc:ID>`, as exports that wrap every value write it
+- An element the schema has once, repeated in a document, was read over: the last one won and the others were lost. The first is
+  read now, the others are kept and written back after it
+- A tab or line end typed in an attribute value reads as a space, as XML says (`&#10;` is still a line end); it was kept as it was
+- An `xsi:type` value with a prefix that is not declared (or no QName at all) made the writer declare that prefix with the default
+  namespace, and the second write was not well-formed
 
 ## [1.6.0] - 2026-11-02
 

@@ -619,9 +619,11 @@ begin
               TXmlite(Self).XmlAttributeNamespaces.AddOrSetValue(attributePrefix, uri);
             if (uri = cXsiUri) and (attributeName = 'type') and (attributeValue.IndexOf(':') > 0) then
             begin
+              // declared prefixes only: xmlns[] falls back to the default namespace, for a value that is no QName too
               var valuePrefix: string := attributeValue.Substring(0, attributeValue.IndexOf(':'));
-              if not xmlns[valuePrefix].IsEmpty then
-                TXmlite(Self).XmlAttributeNamespaces.AddOrSetValue(valuePrefix, xmlns[valuePrefix]);
+              var valueUri: string;
+              if xmlns.TryGetValue(valuePrefix, valueUri) and not valueUri.IsEmpty then
+                TXmlite(Self).XmlAttributeNamespaces.AddOrSetValue(valuePrefix, valueUri);
             end;
           end;
       end
@@ -641,10 +643,12 @@ begin
 
       var textProperty: TPropertyData := Meta.Xmlite.TextProperty;
       if Assigned(textProperty) then
-      begin // simpleContent: the text is the value - whitespace included
-        if aXmlCursor^ <> '<' then
+      begin // simpleContent: the text is the value - whitespace included; it may open with CDATA, a comment or a PI
+        var text: string := '';
+        if (aXmlCursor^ <> '<') or (aXmlCursor[1] = '!') or (aXmlCursor[1] = '?') then
+          text := TReaderXmlite.ReadUnescapeInPlace(aXmlCursor, '<');
+        if not text.IsEmpty then
         begin
-          var text: string := TReaderXmlite.ReadUnescapeInPlace(aXmlCursor, '<');
           if not textProperty.TrySetValue(Self, text) and Meta.Xmlite.IsTXmlite then
             TXmlite(Self).fXmlText := text; // does not fit its type: kept as it came, written while the property is not present
         end
@@ -864,6 +868,13 @@ begin
     else
     begin
       propertyElement := Meta.Xmlite.ElementOfName(propertyElement, lastProperty, Self);
+      if (propertyElement.PropertyType in [ptData, ptBasite]) and Meta.Xmlite.IsTXmlite and IsPresent(propertyElement) then
+      begin // a single element that came again (the schema has it once): kept as its text, not read over the first
+        aCursor := cursorStart;
+        if not KeepFragment(aCursor, tagFullName, lastProperty, lastCount, nil) then
+          Exit;
+        Continue;
+      end;
       lastProperty := propertyElement;
       lastCount := 1;
       case propertyElement.PropertyType of

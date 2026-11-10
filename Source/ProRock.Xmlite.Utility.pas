@@ -583,6 +583,14 @@ begin
 
   // decoded from a copy: a start tag is read twice (declarations, then attributes) - in place would corrupt the second read
   SetString(Result, valueStart, aCursor - valueStart);
+  // a tab or line end typed in the value is a space (XML's attribute-value normalization); &#10; stays a line end
+  var spaceCursor: PChar := PChar(Result);
+  while spaceCursor^ <> #0 do
+  begin
+    if CharInSet(spaceCursor^, [#9, #10, #13]) then
+      spaceCursor^ := ' ';
+    Inc(spaceCursor);
+  end;
   if Result.IndexOf('&') >= 0 then
   begin
     var copyCursor: PChar := PChar(Result);
