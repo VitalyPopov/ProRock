@@ -9,14 +9,14 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 
 ### Highlights
 
-- ProRock: a value that does not fit its type is kept and written back, a missing required element is no longer made up on save
-- ProRock: `FromXmlFile` reads a document in its own encoding (UTF-16, ISO-8859-1, windows-1252)
-- ProRock: an e-invoicing sample, an EN 16931 invoice in CII (ZUGFeRD, Factur-X, XRechnung) and UBL (Peppol)
 - Generated units compile about 4 times faster (UBL 2.4: about 7 minutes -> 13 s)
 - Generated units create only the objects a document has: a UBL invoice read 73 -> 0.44 ms, 161,839 -> 148 objects
-- Nicer type names: `TInvoiceLineCT`, not `TInvoiceLineTypeCT`; the old ones stay as `deprecated` aliases until 2.0
+- ProRock: a value that does not fit its type is kept and written back, a missing required element is no longer made up on save
 - More schemas generate and compile: no `targetNamespace`, `xs:redefine`, local `schemaLocation` followed (HL7 CDA, MSBuild,
   GAEB DA XML)
+- Nicer type names: `TInvoiceLineCT`, not `TInvoiceLineTypeCT`; the old ones stay as `deprecated` aliases until 2.0
+- ProRock: an e-invoicing sample, an EN 16931 invoice in CII (ZUGFeRD, Factur-X, XRechnung) and UBL (Peppol)
+- ProRock: `FromXmlFile` reads a document in its own encoding (UTF-16, ISO-8859-1, windows-1252)
 - Generated units warn when a later ProRock is worth regenerating for
 
 ### ProRock (library)
