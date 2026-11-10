@@ -112,6 +112,15 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 - A tab or line end typed in an attribute value reads as a space, as XML says (`&#10;` is still a line end); it was kept as it was
 - An `xsi:type` value with a prefix that is not declared (or no QName at all) made the writer declare that prefix with the default
   namespace, and the second write was not well-formed
+- A line break or a tab right after an element's name (`<gpx` and its attributes on the next lines, as GPX files and schemas
+  have it) hid the element's namespace declarations: its children were not read, and the read could fail
+- The text of an element whose class has no text property (`XmlText`) read as empty when it started with CDATA, a comment or a
+  processing instruction
+- ProRocket Lite: a namespace ending in two version segments (`http://www.topografix.com/GPX/1/1`) gave the unit `Schema_11`; it
+  is `Gpx11` now
+- ProRocket Lite: a reference to a global element of an inline simple type (BMEcat's `<GENERATOR_INFO>`, a restriction of a string)
+  gave an empty class whose value was only in `XmlText`; it is a value of a nested type now, as for a local element (`Info: TInfo`,
+  a value list when it repeats). Code using the class must use the value after regenerating
 
 ## [1.6.0] - 2026-11-02
 

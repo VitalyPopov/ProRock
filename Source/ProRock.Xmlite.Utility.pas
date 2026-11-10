@@ -836,7 +836,8 @@ begin
   if not MoveToVisualChar(aCursor) or not CharInSet(aCursor^, cXmlNameStartChars) then
     Exit; // invalid beginning of a tag name
 
-  if not MoveToChars(aCursor, [#32, '>', '/']) then
+  // the name ends at any whitespace: a line end or a tab before the first attribute is common (GPX's schema)
+  if not MoveToChars(aCursor, [#32, #9, #10, #13, '>', '/']) then
     Exit; // expected to find space (beginning of xmlns/attribute) or at least ending of the tag
 
   while aCursor^ <= #32 do

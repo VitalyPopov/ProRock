@@ -686,8 +686,13 @@ begin
         if not TReaderXmlite.MoveToVisualChar(aXmlCursor) then
           Exit;
 
-        if Meta.Xmlite.IsTXmlite and (aXmlCursor^ <> '<') then
-          TXmlite(Self).fXmlText := TReaderXmlite.ReadUnescapeInPlace(aXmlCursor, '<');
+        // CDATA, a comment or a PI may come first; only whitespace around a comment before the first child is no text
+        if Meta.Xmlite.IsTXmlite and ((aXmlCursor^ <> '<') or (aXmlCursor[1] = '!') or (aXmlCursor[1] = '?')) then
+        begin
+          var text: string := TReaderXmlite.ReadUnescapeInPlace(aXmlCursor, '<');
+          if not text.Trim.IsEmpty then
+            TXmlite(Self).fXmlText := text;
+        end;
       end;
 
       // malformed content fails the read; the object keeps what was read up to there
