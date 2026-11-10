@@ -10,6 +10,9 @@ type
   TSoapVersions = set of TSoapVersion;
 
 const
+  // re-exported: a generated unit's {$IF} sees only the units of its own uses
+  cProRockCodeLevel = ProRock.Basite.cProRockCodeLevel;
+
   cSoapiteContentType11 = 'text/xml; charset=utf-8';
   cSoapiteContentType12 = 'application/soap+xml; charset=utf-8';
 

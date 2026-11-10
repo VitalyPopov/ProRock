@@ -7,6 +7,9 @@ uses System.Classes, System.SysUtils, System.StrUtils, System.Generics.Collectio
   ProRock.Basite, ProRock.Utility, ProRock.Xmlite.Utility;
 
 const
+  // re-exported: a generated unit's {$IF} sees only the units of its own uses
+  cProRockCodeLevel = ProRock.Basite.cProRockCodeLevel;
+
   cXmlDeclaration = '<?xml version="1.0" encoding="UTF-8"?>';
 
   cDefaultSuffixSimpleType = 'ST';

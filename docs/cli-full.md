@@ -88,6 +88,9 @@ The CLI does not expand wildcards; list the files, or let the shell do it. In Po
 - The output is deterministic: an unchanged schema gives an unchanged unit, except the `Generated (UTC)` line in the
   header - with `--no-timestamp` there is no such line, so the files are byte-identical and any diff is a real change.
 - stdout gets one line per written unit: `generated: <full path>`.
+- A unit checks the ProRock it compiles with: warning W1054 "Generated for an older ProRock: regenerate this unit" means a newer
+  ProRock changed what regenerating gives - regenerate; error E1054 "Generated for a newer ProRock" or "Needs ProRock 1.7 or later" -
+  update ProRock to the version in the unit header. `PROROCK_NO_REGENERATE_WARNING` in the defines silences the warning.
 
 ### Type names
 

@@ -9,6 +9,8 @@ uses System.Classes, System.Rtti, Generics.Collections, System.SysUtils, System.
 
 const
   cProRockVersion = '1.6.0';
+  // raised only when regenerating brings something; generated units compare it in {$IF} and warn
+  cProRockCodeLevel = 1;
 
   // TBasite.AutoInitMaxDepth range: 1 - library code needs non-recursive paths (Envelope.Body); above 5 only costs memory
   cAutoInitMaxDepthMin = 1;

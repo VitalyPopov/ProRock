@@ -49,6 +49,19 @@ namespace URI:
 `ProRock.Xmlite.Schema.<Service>.pas`. The client unit re-exports the request and response types, `TSoapiteError` and the
 exceptions, so for plain calls it is the only unit to put in `uses`.
 
+**Each unit checks the ProRock it compiles with.** A release that changes what regenerating gives raises ProRock's code level,
+and the [changelog](changelog.md) says why; a release that does not keeps it, so most updates warn about nothing.
+
+| When | The compiler says |
+|---|---|
+| ProRock has a higher code level than the unit | warning: `Generated for an older ProRock: regenerate this unit` |
+| ProRock has a lower code level than the unit | error: `Generated for a newer ProRock: update ProRock` |
+| ProRock 1.6 or older | error: `Needs ProRock 1.7 or later` |
+
+The unit keeps working as it did; the warning only says that regenerating brings something. `PROROCK_NO_REGENERATE_WARNING` in the
+project's defines silences it. Delphi shows a message when it compiles the unit: after an update the units recompile and warn, a
+later Make reuses them quietly, a Build warns again. Units generated before 1.7 have no check.
+
 ## Type names
 
 `T` + the XML name + a suffix for its kind: `CT` a complex type, `ST` a simple type, `AG` an attribute group, `EG` an element group,

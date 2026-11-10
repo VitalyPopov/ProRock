@@ -17,6 +17,14 @@ interface
 uses
   ProRock.Xmlite, ProRock.Xmlite.Schema.UnqualifiedDataTypes1;
 
+{$IF not Declared(cProRockCodeLevel)}
+  {$MESSAGE ERROR 'Needs ProRock 1.7 or later: update ProRock (https://prorock.rocks/)'}
+{$ELSEIF cProRockCodeLevel < 1}
+  {$MESSAGE ERROR 'Generated for a newer ProRock: update ProRock (https://prorock.rocks/)'}
+{$ELSEIF (cProRockCodeLevel > 1) and not Defined(PROROCK_NO_REGENERATE_WARNING)}
+  {$MESSAGE WARN 'Generated for an older ProRock: regenerate this unit (why: https://prorock.rocks/changelog/)'}
+{$IFEND}
+
 type
   TAllowanceChargeReasonCT = class;
   TChannelCT = class;

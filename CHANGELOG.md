@@ -10,6 +10,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 ### Added
 - Sample `ProRock.Xmlite.EInvoice`: an invoice under EN 16931 in CII (ZUGFeRD, Factur-X, XRechnung) or UBL (Peppol, XRechnung), read into
   units generated from the official schemas and shown in one window; the same invoice in both syntaxes is included
+- Generated units check the ProRock they compile with: a warning when ProRock's new code level means regenerating brings something
+  (raised only then, this changelog says why), an error when ProRock is older than the unit; `PROROCK_NO_REGENERATE_WARNING` silences
+  the warning. `cProRockCodeLevel` is 1 in 1.7. The Generated code page has the details
 
 ### Changed
 - **Regenerated units: every optional object is created on first access, a required one with its parent.** The sample's UBL invoice:

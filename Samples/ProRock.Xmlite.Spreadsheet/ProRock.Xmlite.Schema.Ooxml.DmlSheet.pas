@@ -17,6 +17,14 @@ interface
 uses
   ProRock.Xmlite, ProRock.Xmlite.Schema.Base, ProRock.Xmlite.Schema.Ooxml.DmlMain, ProRock.Xmlite.Schema.Ooxml.Rel;
 
+{$IF not Declared(cProRockCodeLevel)}
+  {$MESSAGE ERROR 'Needs ProRock 1.7 or later: update ProRock (https://prorock.rocks/)'}
+{$ELSEIF cProRockCodeLevel < 1}
+  {$MESSAGE ERROR 'Generated for a newer ProRock: update ProRock (https://prorock.rocks/)'}
+{$ELSEIF (cProRockCodeLevel > 1) and not Defined(PROROCK_NO_REGENERATE_WARNING)}
+  {$MESSAGE WARN 'Generated for an older ProRock: regenerate this unit (why: https://prorock.rocks/changelog/)'}
+{$IFEND}
+
 type
   [TName('ST_EditAs')]
   TEditAsST = (steaTwoCell, steaOneCell, steaAbsolute);
