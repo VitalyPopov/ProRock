@@ -91,7 +91,7 @@ with what it is, its value and when; the selected one's narrative is shown as te
 was read, and Speed test reads and writes a Bundle of 1,000 resources made of the same entries. `bundle.xml` holds the
 Patient and Observation examples of the specification.
 
-![The FHIR sample: a Bundle of the specification's examples, each Observation with its value - 51.2 cm, 107 mmHg / 60 mmHg, blue, 185 lbs - the Body Weight narrative below, and a Bundle of 1,003 resources read in 319 ms and written in 281 ms](assets/fhir-sample.png)
+![The FHIR sample: a Bundle of the specification's examples, the Patient and each Observation with its value - 51.2 cm, 107 mmHg / 60 mmHg, blue, 185 lbs - the Body Weight narrative below, and a Bundle of 1,003 resources read in 266 ms and written in 261 ms](assets/fhir-sample.png)
 
 The resource of a Bundle entry is a choice of all 146 resource types; an Observation's `value[x]` is one of eleven.
 Only the member in the document is created, and the typed shortcut gives it:
