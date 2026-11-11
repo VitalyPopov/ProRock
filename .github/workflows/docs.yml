@@ -27,7 +27,7 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: 3.x
-      - run: pip install zensical==0.0.71
+      - run: pip install zensical==0.1.1
       # ROADMAP.md and CHANGELOG.md stay in the repository root; the site gets copies
       - run: |
           { printf -- '---\nicon: lucide/map\n---\n\n'; sed 's/(CHANGELOG\.md)/(changelog.md)/g' ROADMAP.md; } > docs/roadmap.md
