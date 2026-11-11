@@ -21,6 +21,7 @@ result and compiled with every change, except where the table says otherwise. Th
 | UN/CEFACT CII D16B (ZUGFeRD, Factur-X, XRechnung) | e-invoicing | [sample](samples.md#electronic-invoices) | 9,062 | 2 s | 957 |
 | ISO 20022 pain.001.001.09, camt.053.001.08 | banking | checked for 1.7, not in every run | 7,139 | 2 s | 5 |
 | BMEcat 2005.2 | product catalogs | checked for 1.7, not in every run | 6,704 | 4 s |  |
+| GAEB DA XML 3.3, bill of quantities (X83) | construction | checked for 1.7, not in every run | 4,400 | 2 s |  |
 | GPX 1.1 | GPS tracks | checked for 1.7, not in every run | 506 | 1 s |  |
 | ECMA-376 SpreadsheetML and DrawingML | Office | [sample](samples.md#excel-workbook) | 22,734 | 5 s | 45 parts |
 | OPC core and extended properties, Dublin Core | Office | [sample](samples.md#office-document-properties) | 1,578 | 1 s |  |

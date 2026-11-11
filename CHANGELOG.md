@@ -9,7 +9,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 
 ### Highlights
 
-- Generated units compile about 4 times faster (UBL 2.4: about 7 minutes -> 13 s)
+- Generated units compile much faster: UBL 2.4 about 7 minutes -> 13 s
 - Generated units create only the objects a document has: a UBL invoice read 73 -> 0.44 ms, 161,839 -> 148 objects
 - ProRock: a value that does not fit its type is kept and written back, a missing required element is no longer made up on save
 - More schemas generate and compile: no `targetNamespace`, `xs:redefine`, local `schemaLocation` followed (HL7 CDA, MSBuild,

@@ -65,7 +65,7 @@ Using it:
 ```pascal
 var order := TOrderE.Create;
 try
-  order.FromXmlFile('order.xml');
+  order.FromXmlFile('order.xml'); // with ProRock.Xmlite in uses
 
   Writeln(order.Customer, ': ', order.Item[0].Quantity, ' x ', order.Item[0].Title); // Ann: 2 x Rocket
 

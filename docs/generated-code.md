@@ -10,8 +10,8 @@ when you wonder why something looks the way it does.
 !!! tip "Two recommendations"
     - **Regenerate rather than edit.** A run overwrites the units of the same names. If you know what you are doing, change a unit and
       keep it changed, just do not run the generator over it.
-    - **Keep the versions together.** Use the ProRock release named in the unit header. Other pairs mostly work, but there are breaking
-      changes sometimes, and both are improving all the time, so regenerate when you update ProRock.
+    - **Regenerate when the compiler says so.** Each unit checks the ProRock it compiles with and warns when regenerating brings
+      something ([below](#units)); the unit header names the release it was made for.
 
 ## From XSD to Delphi
 
