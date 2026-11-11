@@ -447,6 +447,10 @@
     flex-direction: column;
     align-items: flex-start;
   }
+  .md-typeset .hero-name {
+    font-size: min(3.2rem, 13vw);
+    white-space: nowrap;
+  }
   .md-typeset .hero-side {
     align-self: stretch;
     align-items: center;
