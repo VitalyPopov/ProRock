@@ -72,7 +72,7 @@ Real schemas, real files and real requests set the priorities: FHIR R4, Office's
 
 ## Progressive, in layers
 
-Whatever is built becomes the ground for what comes next. The core, **Basite**, knows nothing about XML: it knows plain
+Whatever is built becomes the ground for what comes next. The core, [**Basite**](basite.md), knows nothing about XML: it knows plain
 Delphi objects and their metadata - who owns what, which values are present. XML is one layer on top of it (**Xmlite**),
 SOAP one on top of XML (**Soapite**). So JSON can come as another layer on the same classes, not as a second library
 ([roadmap](roadmap.md)) - and what one layer gains, the next ones get.

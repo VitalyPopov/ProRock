@@ -57,7 +57,7 @@
 }
 
 /* the enlarged screenshot (extra.js) */
-.md-typeset a:has(> img) {
+.md-typeset a:is([href$=".png"], [href$=".jpg"], [href$=".jpeg"], [href$=".webp"]):has(> img) {
   cursor: zoom-in;
 }
 .prorock-lightbox {
@@ -320,11 +320,19 @@
   display: flex;
   gap: 1rem;
 }
-.md-typeset .hero-minerals div {
+.md-typeset .hero-minerals a {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.2rem;
+  text-decoration: none;
+  transition: transform 0.15s;
+}
+.md-typeset .hero-minerals a:hover {
+  transform: translateY(-3px);
+}
+.md-typeset .hero-minerals a:hover span {
+  color: var(--md-accent-fg-color);
 }
 .md-typeset .hero-minerals img {
   height: 4.6rem;

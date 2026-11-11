@@ -116,7 +116,7 @@ Nothing to hunt for by hand.
 | **Your units** | the generated classes | the code is yours, no strings attached |
 
 Inside the library, three names you will meet: **Xmlite** reads and writes XML through the classes, **Soapite** makes SOAP calls
-on top of it, **Basite** is the object core under both ([Design principles](principles.md#progressive-in-layers)).
+on top of it, **Basite** is the object core under both ([The core (Basite)](basite.md)).
 
 ## Where next
 
