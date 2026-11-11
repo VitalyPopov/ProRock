@@ -12,7 +12,7 @@ icon: lucide/app-window
 The project tree shows each file as ProRock reads it, parsed through ProRock's own XML Schema and WSDL classes. Generate fills the
 code preview with one tab per unit and writes the units into the folder named above it.
 
-[![ProRocket Lite 1.6.0 with the FHIR R4 schemas generated: the Observation element in the project tree, TObservationCT in the code preview with its ValueChosen shortcut and choice members, no problems reported](assets/prorocket-lite.png)](assets/prorocket-lite.png)
+[![ProRocket Lite 1.7.0 with the FHIR R4 schemas generated: the Observation element in the project tree, TObservationCT in the code preview with its ValueChosen shortcut and choice members, no problems reported](assets/prorocket-lite.png)](assets/prorocket-lite.png)
 
 All of FHIR R4 above: 146 resource types in one unit of about 46,000 lines, and no problems reported.
 
