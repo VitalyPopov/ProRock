@@ -400,20 +400,26 @@
   line-height: 1.4;
   color: var(--md-default-fg-color--light);
 }
-.md-typeset .ask-head {
+/* the ask mirrors the hero: words on the left, the buttons on the right as wide as the hero's side */
+.md-typeset .ask {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
-  gap: 0.6rem 1.5rem;
-  margin-top: 1.6rem;
+  gap: 2rem;
+  margin-top: 2.5rem;
 }
-.md-typeset .ask-head h2 {
+.md-typeset .ask-text {
+  flex: 1 1 0;
+}
+.md-typeset .ask-text h2 {
+  margin: 0 0 0.6rem;
+}
+.md-typeset .ask-text p {
   margin: 0;
 }
 .md-typeset .ask-buttons {
-  display: grid;
-  grid-template-columns: repeat(3, 8.6rem);
+  flex: 0 0 15.8rem;
+  display: flex;
+  flex-direction: column;
   gap: 0.5rem;
 }
 .md-typeset .ask-buttons .md-button {
@@ -447,12 +453,15 @@
   .md-typeset .hero-buttons {
     align-self: stretch;
   }
-  .md-typeset .grid-claims,
-  .md-typeset .ask-buttons {
+  .md-typeset .grid-claims {
     grid-template-columns: 1fr;
   }
+  .md-typeset .ask {
+    flex-direction: column;
+    align-items: stretch;
+  }
   .md-typeset .ask-buttons {
-    width: 100%;
+    flex-basis: auto;
   }
 }
 
