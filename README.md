@@ -1,4 +1,4 @@
-# ProRock 🤟 <a href="https://prorock.rocks/"><img src="docs/assets/minerals-row.webp" height="32" alt="Basite, Xmlite and Soapite"></a>
+# ProRock 🤟 <a href="https://prorock.rocks/"><img align="right" src="docs/assets/minerals-row.webp" alt="Basite, Xmlite and Soapite"></a>
 
 **Your schema in. Ready Delphi classes out.** A free XSD and WSDL generator, and an open-source Delphi library for XML and SOAP.
 
@@ -8,7 +8,14 @@
 - **Fast**: an e-invoice reads in under a millisecond
 - **When the schema changes, regenerate**: a clean diff, and the compiler shows the rest
 
-### [Everything at prorock.rocks](https://prorock.rocks/) · [Download the generator](https://github.com/VitalyPopov/ProRock/releases/latest/download/ProRocket-Lite.zip) · [Get started in 5 minutes](https://prorock.rocks/getting-started/)
+## Start here
 
-Young and growing: try it on your schema and [tell us what breaks](https://github.com/VitalyPopov/ProRock/issues/new/choose).
-Useful to you? ⭐ Star it, or [support the project](https://github.com/sponsors/VitalyPopov). 🤟
+- **[prorock.rocks](https://prorock.rocks/)**: how it works, samples, the schemas it is tested on, the documentation
+- **[Getting started](https://prorock.rocks/getting-started/)**: from a WSDL to a working SOAP call in 5 minutes
+- **[ProRocket Lite](https://github.com/VitalyPopov/ProRock/releases/latest/download/ProRocket-Lite.zip)**: the code generator (GUI and command line), Windows 64-bit, free for any use
+
+## It is young, and it grows with you
+
+Try it on your schema and tell what breaks: please [open an issue](https://github.com/VitalyPopov/ProRock/issues/new/choose).
+
+If ProRock is useful to you, smash the ⭐ Star, and you can [support the project](https://github.com/sponsors/VitalyPopov). Thank you! 🤟
