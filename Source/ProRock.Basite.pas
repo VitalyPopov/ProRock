@@ -8,7 +8,7 @@ uses System.Classes, System.Rtti, Generics.Collections, System.SysUtils, System.
   ProRock.Utility;
 
 const
-  cProRockVersion = '1.6.0';
+  cProRockVersion = '1.7.0';
   // raised only when regenerating brings something; generated units compare it in {$IF} and warn
   cProRockCodeLevel = 1;
 

@@ -20,7 +20,7 @@ comes next: [Roadmap](roadmap.md). If your schema doesn't generate or doesn't re
 | **ProRocket Lite**, the generator | runs on Windows 64-bit |
 
 !!! note "Delphi 10.3 compiles large generated units much slower"
-    All of FHIR R4 (a unit of about 46,000 lines, 48,000 with the XHTML unit for its narratives) takes about 3 minutes there, against
+    All of FHIR R4 (a unit of about 46,000 lines, 49,000 with the XHTML unit for its narratives) takes about 3 minutes there, against
     10-20 seconds on Delphi 13. Only 10.3 does this, 10.4 and later do not. Why is not known, and honestly, it is an old Delphi, so
     there are no plans to investigate. Compile times of the others: [Tested schemas](tested-schemas.md).
 

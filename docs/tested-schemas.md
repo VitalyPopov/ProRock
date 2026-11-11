@@ -15,7 +15,7 @@ result and compiled with every change, except where the table says otherwise. Th
 
 | Schema | Field | Where to see it | Generated lines | Compiles in | Real documents read and written back |
 |---|---|---|---:|---:|---:|
-| HL7 FHIR R4, all 146 resource types + XHTML for the narratives | healthcare | [sample](samples.md#fhir-resources) | 48,044 | 13 s | 17 |
+| HL7 FHIR R4, all 146 resource types + XHTML for the narratives | healthcare | [sample](samples.md#fhir-resources) | 49,051 | 13 s | 17 |
 | HL7 CDA R2 with the SDTC extensions, from `CDA_SDTC.xsd` alone | healthcare | tested only | 9,613 | 2 s | 3 |
 | UBL 2.4 (Peppol, XRechnung) | e-invoicing | [sample](samples.md#electronic-invoices) | 42,552 | 16 s | 62 |
 | UN/CEFACT CII D16B (ZUGFeRD, Factur-X, XRechnung) | e-invoicing | [sample](samples.md#electronic-invoices) | 9,062 | 2 s | 957 |
