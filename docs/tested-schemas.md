@@ -1,5 +1,7 @@
 ---
 icon: lucide/badge-check
+hide:
+  - toc
 ---
 
 # Tested schemas
