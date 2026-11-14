@@ -14,15 +14,7 @@
 uses
   Vcl.Forms,
   Form.Main in 'Form.Main.pas' {MainForm},
-  OfficeDocument in 'OfficeDocument.pas',
-  ProRock.Xmlite.Schema.CoreProperties in 'ProRock.Xmlite.Schema.CoreProperties.pas',
-  ProRock.Xmlite.Schema.Relationships in 'ProRock.Xmlite.Schema.Relationships.pas',
-  ProRock.Xmlite.Schema.Dc.Elements in 'ProRock.Xmlite.Schema.Dc.Elements.pas',
-  ProRock.Xmlite.Schema.Dc.Terms in 'ProRock.Xmlite.Schema.Dc.Terms.pas',
-  ProRock.Xmlite.Schema.Dc.Types in 'ProRock.Xmlite.Schema.Dc.Types.pas',
-  ProRock.Xmlite.Schema.Ooxml.PropExt in 'ProRock.Xmlite.Schema.Ooxml.PropExt.pas',
-  ProRock.Xmlite.Schema.Ooxml.PropVar in 'ProRock.Xmlite.Schema.Ooxml.PropVar.pas',
-  ProRock.Xmlite.Schema.Ooxml.SimpleTypes in 'ProRock.Xmlite.Schema.Ooxml.SimpleTypes.pas';
+  OfficeDocument in 'OfficeDocument.pas';
 
 {$R *.res}
 

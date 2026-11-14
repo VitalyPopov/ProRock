@@ -11,13 +11,7 @@ program ProRock.Xmlite.SpreadsheetSample;
 uses
   Vcl.Forms,
   Form.Main in 'Form.Main.pas' {MainForm},
-  SpreadsheetDocument in 'SpreadsheetDocument.pas',
-  ProRock.Xmlite.Schema.Ooxml.Sml in 'ProRock.Xmlite.Schema.Ooxml.Sml.pas',
-  ProRock.Xmlite.Schema.Ooxml.DmlSheet in 'ProRock.Xmlite.Schema.Ooxml.DmlSheet.pas',
-  ProRock.Xmlite.Schema.Ooxml.DmlMain in 'ProRock.Xmlite.Schema.Ooxml.DmlMain.pas',
-  ProRock.Xmlite.Schema.Ooxml.Rel in 'ProRock.Xmlite.Schema.Ooxml.Rel.pas',
-  ProRock.Xmlite.Schema.Ooxml.SimpleTypes in 'ProRock.Xmlite.Schema.Ooxml.SimpleTypes.pas',
-  ProRock.Xmlite.Schema.Relationships in 'ProRock.Xmlite.Schema.Relationships.pas';
+  SpreadsheetDocument in 'SpreadsheetDocument.pas';
 
 {$R *.res}
 

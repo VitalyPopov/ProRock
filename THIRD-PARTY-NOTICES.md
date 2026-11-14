@@ -25,19 +25,14 @@ Samples:
 - `Samples/ProRock.Soapite.WsSecurity/oasis-200401-wss-wssecurity-secext-1.0.xsd` and `...-utility-1.0.xsd` - the OASIS Web
   Services Security 1.0 schemas, https://docs.oasis-open.org/wss/2004/01/, unmodified, with the units ProRocket generates from
   them (`ProRock.Xmlite.Schema.WsSecurity`, `.WsSecurityUtility`) - [OASIS](#oasis)
-- `Samples/ProRock.Xmlite.DocumentProperties` - units ProRocket generates from the OPC schemas of ECMA-376 Part 2, 5th edition
-  (December 2021: `opc-coreProperties.xsd`, `opc-relationships.xsd`; `ProRock.Xmlite.Schema.CoreProperties`,
-  `.Relationships`), and from three schemas of ECMA-376 Part 4, 5th edition (October 2016, Transitional Migration Features:
-  `shared-documentPropertiesExtended.xsd`, `shared-documentPropertiesVariantTypes.xsd`, `shared-commonSimpleTypes.xsd`;
-  `ProRock.Xmlite.Schema.Ooxml.PropExt`, `.PropVar`, `.SimpleTypes`) - [Ecma International](#ecma-international) - and from
-  the Dublin Core schemas of DCMI
-  (http://dublincore.org/schemas/xmls/qdc/2003/04/02/ `dc.xsd`, `dcterms.xsd`, `dcmitype.xsd`;
+- `Source` - units ProRocket generates from schemas of ECMA-376 Part 4, 5th edition (October 2016, Transitional Migration
+  Features: `sml.xsd`, `dml-spreadsheetDrawing.xsd`, `dml-main.xsd`, `shared-relationshipReference.xsd`,
+  `shared-commonSimpleTypes.xsd`, `shared-documentPropertiesExtended.xsd`, `shared-documentPropertiesVariantTypes.xsd`;
+  `ProRock.Xmlite.Schema.Ooxml.Sml`, `.DmlSheet`, `.DmlMain`, `.Rel`, `.SimpleTypes`, `.PropExt`, `.PropVar`) and from the OPC
+  schemas of ECMA-376 Part 2, 5th edition (December 2021: `opc-relationships.xsd`, `opc-coreProperties.xsd`;
+  `ProRock.Xmlite.Schema.Relationships`, `.CoreProperties`) - [Ecma International](#ecma-international) - and from the Dublin
+  Core schemas of DCMI (http://dublincore.org/schemas/xmls/qdc/2003/04/02/ `dc.xsd`, `dcterms.xsd`, `dcmitype.xsd`;
   `ProRock.Xmlite.Schema.Dc.Elements`, `.Terms`, `.Types`) - [DCMI](#dcmi). The schemas themselves are not included
-- `Samples/ProRock.Xmlite.Spreadsheet` - units ProRocket generates from the SpreadsheetML schemas of ECMA-376 Part 4, 5th
-  edition (October 2016, Transitional Migration Features: `sml.xsd`, `dml-spreadsheetDrawing.xsd`, `dml-main.xsd`,
-  `shared-relationshipReference.xsd`, `shared-commonSimpleTypes.xsd`; `ProRock.Xmlite.Schema.Ooxml.Sml`, `.DmlSheet`,
-  `.DmlMain`, `.Rel`, `.SimpleTypes`) and from `opc-relationships.xsd` of ECMA-376 Part 2, 5th edition (December 2021;
-  `ProRock.Xmlite.Schema.Relationships`) - [Ecma International](#ecma-international). The schemas themselves are not included
 - `Samples/ProRock.Xmlite.Fhir/fhir-single.xsd` and `fhir-xhtml.xsd` - the XML schemas of the HL7® FHIR® R4 standard
   (version 4.0.1, http://hl7.org/fhir/R4/fhir-all-xsd.zip), unmodified, with the units ProRocket generates from them
   (`ProRock.Xmlite.Schema.Fhir`, `.Xhtml`) - [HL7](#hl7); `fhir-xhtml.xsd` is HL7's pared-down version of the W3C XHTML

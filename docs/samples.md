@@ -27,8 +27,9 @@ running the generator.
 ## Excel workbook
 
 [`ProRock.Xmlite.Spreadsheet`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Xmlite.Spreadsheet) opens an
-Excel workbook (.xlsx) into the units ProRocket generates from the SpreadsheetML schemas of ECMA-376: the workbook, its
-sheets, shared strings, styles and tables, found as Office finds them - through the package's relationships. Each sheet is
+Excel workbook (.xlsx) into the units ProRocket generates from the SpreadsheetML schemas of ECMA-376 (they ship in `Source`):
+the workbook, its sheets, shared strings, styles and tables, found as Office finds them - through the package's
+relationships. Each sheet is
 shown in a grid: text, numbers, dates (from the cell's style), the formula of the selected cell; the tables with their
 columns. Cells without a formula can be edited. Save writes every part it read back from its objects - with everything
 Excel put in them that the schema does not describe (`extLst`, revision ids, `mc:Ignorable`) - and copies every other part
@@ -123,7 +124,8 @@ and shows every value in File > Info.
 
 ![The DocumentProperties sample with an .xlsx file open: title, subject, author, keywords, comments and the other core properties, the application and the worksheets](assets/document-properties.png)
 
-An Office document is a zip of XML parts (OPC, ECMA-376 Part 2). The sample uses units generated from the official schemas:
+An Office document is a zip of XML parts (OPC, ECMA-376 Part 2). The sample uses units generated from the official schemas
+(they ship in `Source`):
 
 - `opc-relationships.xsd` - to find the core properties part through the package relationships (`_rels/.rels`)
 - `opc-coreProperties.xsd`, built on Dublin Core - the properties themselves (`docProps/core.xml`)

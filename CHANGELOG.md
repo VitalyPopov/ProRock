@@ -5,6 +5,22 @@ share one version number since 1.1.0.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versions follow [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### ProRock (library)
+
+#### Added
+- `ProRock.Calcite`, Excel workbooks (.xlsx), first steps: a workbook opened and saved with nothing lost - a part not changed
+  is saved as the same bytes, a changed one from its generated objects (`Workbook.Xml`, `Sheets[1].Xml`). `Open` and `Save`
+  return False with the reason in `Error` (a file open in Excel, not a workbook), they do not raise. Cells and values next
+- `ToXml` and `ToXmlFile` take write options for that call, whatever `TBasite.Pretty` says: `[]` compact, `[woPretty]`
+  indented, `woBooleanDigits` writes `xs:boolean` as `1` and `0`, as Office does
+- `TXmliteClass = class of TXmlite`: an object of a class known only at run time, without ProRock.Basite
+
+#### Changed
+- The SpreadsheetML, DrawingML, package relationships and document properties (core, app, Dublin Core) units moved from the
+  samples to `Source`: if your project lists the samples' copies, remove them from it
+
 ## [1.7.0] - 2026-11-11
 
 ### Highlights

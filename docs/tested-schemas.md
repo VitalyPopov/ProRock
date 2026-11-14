@@ -25,8 +25,8 @@ result and compiled with every change, except where the table says otherwise. Th
 | BMEcat 2005.2 | product catalogs | checked for 1.7, not in every run | 6,704 | 4 s |  |
 | GAEB DA XML 3.3, bill of quantities (X83) | construction | checked for 1.7, not in every run | 4,400 | 2 s |  |
 | GPX 1.1 | GPS tracks | checked for 1.7, not in every run | 506 | 1 s |  |
-| ECMA-376 SpreadsheetML and DrawingML | Office | [sample](samples.md#excel-workbook) | 22,734 | 5 s | 45 parts |
-| OPC core and extended properties, Dublin Core | Office | [sample](samples.md#office-document-properties) | 1,578 | 1 s |  |
+| ECMA-376 SpreadsheetML and DrawingML | Office | built into ProRock, [sample](samples.md#excel-workbook) | 22,734 | 5 s | 45 parts |
+| OPC core and extended properties, Dublin Core | Office | built into ProRock, [sample](samples.md#office-document-properties) | 1,578 | 1 s |  |
 | EU VIES VAT service (WSDL) | SOAP | [sample](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Soapite.CheckVatService) | 271 | 1 s |  |
 | WS-Security 1.0 | SOAP headers | [sample](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Soapite.WsSecurity) | 304 | 1 s |  |
 | ebMS 3.0 / AS4 headers | SOAP headers | tested only | 461 | 1 s |  |

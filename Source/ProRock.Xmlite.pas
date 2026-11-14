@@ -83,9 +83,14 @@ type
     function Name: string;
   end;
 
+  // how ToXml writes: woPretty indented; woBooleanDigits xs:boolean as 1 and 0, as Office writes it
+  TXmliteWriteOption = (woPretty, woBooleanDigits);
+  TXmliteWriteOptions = set of TXmliteWriteOption;
+
   TWriterXmlite = class(TWriterBase)
   private
     fPretty: boolean;
+    fBooleanDigits: boolean;
     fDeclared: TObjectList<TDictionary<string, string>>; // prefix ('' - default) -> URI declared by the elements open now
 
     procedure WriteAttribute(const aName, aValue: string; const aPrefix: string = ''); inline;
@@ -96,7 +101,10 @@ type
     destructor Destroy; override;
 
     property Pretty: boolean read fPretty write fPretty;
+    property BooleanDigits: boolean read fBooleanDigits write fBooleanDigits;
 
+    // a value's text as written: BooleanDigits applied
+    function ValueText(aProperty: TProperty; const aText: string): string; inline;
     procedure PopDeclared;
     // a kept element, declaring the outside prefixes it uses whose binding here differs
     procedure AddUnknown(const aUnknown: TXmliteUnknown);
@@ -191,6 +199,9 @@ type
     function HasContent: boolean; override;
   end;
 
+  // an object of a class known only at run time: aClass.Create (the constructor is virtual)
+  TXmliteClass = class of TXmlite;
+
   TXmliteList<T: TXmlite, constructor> = class(TBasiteList<T>);
   // a list of plain values: TXstringSTList = class(TXmliteValueList<TXstringST>) - Authors.Author.Add('Ann')
   TXmliteValueList<T> = class(TBasiteValueList<T>);
@@ -234,8 +245,12 @@ type
     function GetXmlns: string; overload;
     function GetXmlns(aDeclared: TDictionary<string, string>): string; overload;
 
+    // indented or compact as Pretty says; the overloads with aOptions decide per call, whatever Pretty says ([] - compact)
     procedure ToXml(aStream: TStream; const aName: string = ''; aXmlHeader: boolean = True); overload;
+    procedure ToXml(aStream: TStream; aOptions: TXmliteWriteOptions; const aName: string = ''; aXmlHeader: boolean = True);
+      overload;
     function ToXml(const aName: string = ''; aXmlHeader: boolean = True): string; overload;
+    function ToXml(aOptions: TXmliteWriteOptions; const aName: string = ''; aXmlHeader: boolean = True): string; overload;
     // reads a copy: aXml stays as it is
     function FromXml(const aXml: string): boolean; overload;
     // reads without a copy - aXml is changed by the read (large documents read once)
@@ -245,7 +260,8 @@ type
     function FromXmlFile(const aFileName: string): boolean;
     function FromXmlBytes(const aXml: TBytes): boolean;
     // UTF-8 without a BOM, as the declaration says
-    procedure ToXmlFile(const aFileName: string; const aName: string = '');
+    procedure ToXmlFile(const aFileName: string; const aName: string = ''); overload;
+    procedure ToXmlFile(const aFileName: string; aOptions: TXmliteWriteOptions; const aName: string = ''); overload;
   end;
 
   TXmliteElementAttribute = class(TCustomAttribute);
@@ -505,6 +521,11 @@ end;
 procedure TBasiteHelper.ToXmlFile(const aFileName: string; const aName: string);
 begin
   TFile.WriteAllBytes(aFileName, TEncoding.UTF8.GetBytes(ToXml(aName)));
+end;
+
+procedure TBasiteHelper.ToXmlFile(const aFileName: string; aOptions: TXmliteWriteOptions; const aName: string);
+begin
+  TFile.WriteAllBytes(aFileName, TEncoding.UTF8.GetBytes(ToXml(aOptions, aName)));
 end;
 
 function TBasiteHelper.FromXml(const aXml: string): boolean;
@@ -1100,9 +1121,11 @@ var
       written[aIndex] := True;
       valuesWritten.AddOrSetValue(aProperty, written);
       if aProperty.PropertyType = ptDataList then
-        aWriter.AddTextNode(elementName(aProperty, aScope), TPropertyDataList(aProperty).ItemText(Self, aIndex), aProperty)
+        aWriter.AddTextNode(elementName(aProperty, aScope), aWriter.ValueText(aProperty,
+          TPropertyDataList(aProperty).ItemText(Self, aIndex)), aProperty)
       else
-        aWriter.AddTextNode(elementName(aProperty, aScope), TPropertyData(aProperty).Value[Self], aProperty);
+        aWriter.AddTextNode(elementName(aProperty, aScope), aWriter.ValueText(aProperty, TPropertyData(aProperty).Value[Self]),
+          aProperty);
     end;
 
   begin
@@ -1208,7 +1231,8 @@ begin
           not IsPresent(Meta.Xmlite.TextProperty) then
           aWriter.AddTagText(objectName, Self, aNamespaces, TXmlite(Self).fXmlText) // did not fit its type, not set since
         else
-          aWriter.AddTagText(objectName, Self, aNamespaces, Meta.Xmlite.TextProperty.Value[Self])
+          aWriter.AddTagText(objectName, Self, aNamespaces, aWriter.ValueText(Meta.Xmlite.TextProperty,
+            Meta.Xmlite.TextProperty.Value[Self]))
       else
       begin
         // mixed content: no indentation inside - it would become a part of the text
@@ -1240,7 +1264,8 @@ begin
                 begin
                   var propertyData: TPropertyData := TPropertyData(propertyElement);
                   if ValueIsWritten(propertyData) then
-                    aWriter.AddTextNode(elementName(propertyElement, scope), propertyData.Value[Self], propertyData);
+                    aWriter.AddTextNode(elementName(propertyElement, scope), aWriter.ValueText(propertyData, propertyData.Value[Self]),
+                      propertyData);
                 end;
               ptDataList:
                 begin
@@ -1248,7 +1273,8 @@ begin
                   WriteUnknown(propertyElement, 0); // a kept item that did not fit its type, before the first good one
                   for var i := 0 to propertyDataList.Count(Self) - 1 do
                   begin
-                    aWriter.AddTextNode(elementName(propertyElement, scope), propertyDataList.ItemText(Self, i), propertyDataList);
+                    aWriter.AddTextNode(elementName(propertyElement, scope), aWriter.ValueText(propertyDataList,
+                      propertyDataList.ItemText(Self, i)), propertyDataList);
                     WriteUnknown(propertyElement, i + 1);
                   end;
                 end;
@@ -1308,11 +1334,25 @@ begin
     TXmlite(Self).DoAfterSerialization;
 end;
 
+// the options the overloads without them write with: indented as Pretty says
+function GlobalWriteOptions: TXmliteWriteOptions;
+begin
+  Result := [];
+  if TBasite.Pretty then
+    Include(Result, woPretty);
+end;
+
 procedure TBasiteHelper.ToXml(aStream: TStream; const aName: string; aXmlHeader: boolean);
+begin
+  ToXml(aStream, GlobalWriteOptions, aName, aXmlHeader);
+end;
+
+procedure TBasiteHelper.ToXml(aStream: TStream; aOptions: TXmliteWriteOptions; const aName: string; aXmlHeader: boolean);
 begin
   var writer: TWriterXmlite := TWriterXmlite.Create(aStream);
   try
-    writer.Pretty := TBasite.Pretty;
+    writer.Pretty := woPretty in aOptions;
+    writer.BooleanDigits := woBooleanDigits in aOptions;
     ToXml(writer, aName, nil, True, aXmlHeader);
   finally
     writer.Free;
@@ -1321,9 +1361,15 @@ end;
 
 function TBasiteHelper.ToXml(const aName: string; aXmlHeader: boolean): string;
 begin
+  Result := ToXml(GlobalWriteOptions, aName, aXmlHeader);
+end;
+
+function TBasiteHelper.ToXml(aOptions: TXmliteWriteOptions; const aName: string; aXmlHeader: boolean): string;
+begin
   var writer: TWriterXmlite := TWriterXmlite.Create;
   try
-    writer.Pretty := TBasite.Pretty;
+    writer.Pretty := woPretty in aOptions;
+    writer.BooleanDigits := woBooleanDigits in aOptions;
     ToXml(writer, aName, nil, True, aXmlHeader);
     Result := writer.Text;
   finally
@@ -1682,6 +1728,26 @@ begin
         Exit;
 end;
 
+function TWriterXmlite.ValueText(aProperty: TProperty; const aText: string): string;
+begin
+  var meta: TMetaType := TMetaType(aProperty.Meta); // data or a list of values: always a TMetaType
+  if not (fBooleanDigits and meta.IsBoolean) then
+    Result := aText
+  else if meta.ValuesAliases.Count = 0 then // only true or false
+  begin
+    if aText.Length = 4 then
+      Result := '1'
+    else
+      Result := '0';
+  end
+  else if aText = 'true' then
+    Result := '1'
+  else if aText = 'false' then
+    Result := '0'
+  else
+    Result := aText; // an alias: as stated
+end;
+
 procedure TWriterXmlite.WriteAttributes(aObject: TBasite; aNamespaces: boolean);
 begin
   if aNamespaces then
@@ -1700,9 +1766,9 @@ begin
   for var attribute: TPropertyData in aObject.Meta.Xmlite.Attributes.Values do
     if aObject.ValueIsWritten(attribute) then
       if (attribute.Xmlite.Namespace = attribute.ParentMeta.Xmlite.Namespace) and not attribute.Xmlite.Qualified then
-        WriteAttribute(attribute.Xmlite.Name, attribute.Value[aObject])
+        WriteAttribute(attribute.Xmlite.Name, ValueText(attribute, attribute.Value[aObject]))
       else
-        WriteAttribute(attribute.Xmlite.NamePrefixed, attribute.Value[aObject]);
+        WriteAttribute(attribute.Xmlite.NamePrefixed, ValueText(attribute, attribute.Value[aObject]));
 
   if aObject.Meta.Xmlite.IsTXmlite then
     for var attribute: TPair<string, string> in TXmlite(aObject).XmlAttributes do

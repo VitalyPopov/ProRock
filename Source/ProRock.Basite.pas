@@ -427,6 +427,7 @@ type
 
     property BaseType: TMetaType read fBaseType;
     property ValuesAliases: TDualDictionary<variant, string> read fValuesAliases;
+    property IsBoolean: boolean read fIsBoolean;
 
     property EnumName[aEnumValue: integer]: string read GetEnumName;
     function EnumValueDef(const aEnumName: string; aDefault: integer = 0): integer;
