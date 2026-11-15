@@ -1284,6 +1284,19 @@ begin
         if TryStrToCurr(aText, currencyValue, FormatSettings.Invariant) then
           Result := currencyValue;
       end
+      else if Meta.fFloatType in [ftSingle, ftDouble] then
+      begin
+        // straight to the field's type: through Extended it is rounded twice
+        var doubleValue: Double;
+        var singleValue: Single;
+        if Meta.fFloatType = ftDouble then
+        begin
+          if TUtility.TryFloatFromText(aText, doubleValue) then
+            Result := doubleValue;
+        end
+        else if TUtility.TryFloatFromText(aText, singleValue) then
+          Result := singleValue;
+      end
       else
       begin
         var floatValue: Extended;

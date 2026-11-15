@@ -21,6 +21,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 - The SpreadsheetML, DrawingML, package relationships and document properties (core, app, Dublin Core) units moved from the
   samples to `Source`: if your project lists the samples' copies, remove them from it
 
+#### Fixed
+- `xs:double` and `xs:float` are read and written exactly on every platform: on Win64 a 17-digit value (Excel writes many) could
+  read as the next Double, and some were written as text that reads back as another; a Single always gets the nearest value
+
 ## [1.7.0] - 2026-11-11
 
 ### Highlights
