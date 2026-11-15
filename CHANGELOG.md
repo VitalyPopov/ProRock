@@ -12,7 +12,11 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 #### Added
 - `ProRock.Calcite`, Excel workbooks (.xlsx), first steps: a workbook opened and saved with nothing lost - a part not changed
   is saved as the same bytes, a changed one from its generated objects (`Workbook.Xml`, `Sheets[1].Xml`). `Open` and `Save`
-  return False with the reason in `Error` (a file open in Excel, not a workbook), they do not raise. Cells and values next
+  return False with the reason in `Error` (a file open in Excel, not a workbook), they do not raise
+- Calcite's cells: `Sheet.Range['B5']`, `Sheet.Cells[5, 'B']` (Excel's order, from 1) read and write `Value` (a Variant) or
+  `AsString`, `AsFloat`, `AsInteger`, `AsDateTime`, `AsBoolean`, as Excel keeps them - text as a shared string found or
+  added, a date as a number in a date format (Excel's short date when the cell had none), Excel recalculating formulas on open;
+  text stays text (`'=A1'`, `'00123'`). `ClearContents` keeps a formatted cell; formulas themselves come later
 - `ToXml` and `ToXmlFile` take write options for that call, whatever `TBasite.Pretty` says: `[]` compact, `[woPretty]`
   indented, `woBooleanDigits` writes `xs:boolean` as `1` and `0`, as Office does
 - `TXmliteClass = class of TXmlite`: an object of a class known only at run time, without ProRock.Basite
