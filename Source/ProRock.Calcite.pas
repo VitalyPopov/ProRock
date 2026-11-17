@@ -46,6 +46,14 @@ type
     procedure SetAsDateTime(aValue: TDateTime);
     function GetAsBoolean: boolean;
     procedure SetAsBoolean(aValue: boolean);
+    procedure CheckShape(const aArray: Variant);
+    function GetFormula: Variant;
+    procedure SetFormula(const aValue: Variant);
+    function GetHasFormula: boolean;
+    function GetHasArray: boolean;
+    function GetCurrentArray: TRange;
+    function GetFormulaArray: string;
+    procedure SetFormulaArray(const aValue: string);
   public
     // the values gone, as Excel's ClearContents: a cell with a format stays
     procedure ClearContents;
@@ -60,7 +68,8 @@ type
 
     // Excel's Value: Empty, a Double, a TDateTime (a number in a date format), a string, a Boolean, an error as its text (#N/A).
     // Several cells: a Variant array [1..RowCount, 1..ColumnCount], and one value is written to each.
-    // Text is stored as text: '=A1' is not a formula, '00123' not a number. Empty or '' clears the cell
+    // Text is stored as text: '=A1' is not a formula (Formula writes one), '00123' not a number. Empty or '' clears the cell.
+    // A formula's value is the one Excel calculated last: none for a formula written here until Excel opens and saves the file
     property Value: Variant read GetValue write SetValue;
 
     // the first cell's
@@ -73,6 +82,21 @@ type
     // a date written into a cell without a date format gets Excel's short date (with the time when there is one)
     property AsDateTime: TDateTime read GetAsDateTime write SetAsDateTime;
     property AsBoolean: boolean read GetAsBoolean write SetAsBoolean;
+
+    // Excel's Formula: '=' and the formula in Excel's own form (=SUM(A1:A3;B1) is the locale's, =SUM(A1:A3,B1) Excel's), '' for
+    // a cell without one; several cells: a Variant array as Value's. Written: the = optional, '' clears; one text written to
+    // several cells moves its relative references to each, as Excel fills (=B1 in A1:A3: =B1, =B2, =B3); an array gives each
+    // cell its own. A formula broken on its face (quotes, brackets) is refused; what Excel cannot calculate shows its error
+    property Formula: Variant read GetFormula write SetFormula;
+    // every cell has a formula (each cell of an array formula's area has)
+    property HasFormula: boolean read GetHasFormula;
+    // the first cell is in an array formula's area
+    property HasArray: boolean read GetHasArray;
+    // that area; EInvalidOpException when there is none
+    property CurrentArray: TRange read GetCurrentArray;
+    // the first cell's array formula ('' when there is none). Written: the range becomes one array formula; an array formula
+    // changes only as a whole, as in Excel. Excel 365's dynamic arrays read as array formulas
+    property FormulaArray: string read GetFormulaArray write SetFormulaArray;
   end;
 
   TWorksheet = class
@@ -81,8 +105,11 @@ type
     fName: string;
     fPartName: string;
     fPrepared: boolean;
-    // found on the first write: the areas of array formulas, tables' header and totals rows, pivot tables
-    fArrays, fTableRows, fPivots: TList<TRange>;
+    // found on the first need: the areas of array formulas and data tables, shared formulas' first cells by si
+    fArrays, fDataTables: TList<TRange>;
+    fShared: TDictionary<cardinal, TCellCT>;
+    // found on the first write: the areas of tables, their header and totals rows, pivot tables
+    fTables, fTableRows, fPivots: TList<TRange>;
     fLockedWritten: boolean; // reported once a sheet
 
     function GetXml: TWorksheetE;
@@ -91,16 +118,25 @@ type
     function FindCell(aRow, aColumn: integer): TCellCT;
     function EffectiveStyle(aRow, aColumn: integer): cardinal;
     function CellValue(aCell: TCellCT; out aValue: Variant): TCellValueType;
-    function CanWrite(aRow, aColumn: integer): boolean;
+    procedure FindFormulas;
+    procedure ForgetFormulas;
+    procedure FindFixedAreas;
+    function FormulaText(aRow, aColumn: integer; out aText: string): boolean;
+    function CheckFormula(aRow, aColumn: integer; const aFormula: Variant; out aText: string): boolean;
+    function Unshare(aIndex: cardinal): boolean;
+    function Blocker(aRow, aColumn: integer; const aTarget: TRange; out aCode, aWhy: string): boolean;
+    function CanWrite(aRow, aColumn: integer; const aTarget: TRange): boolean;
     function CellForWriting(aRow, aColumn: integer): TCellCT;
     procedure RemoveValue(aCell: TCellCT);
     procedure Refuse(aRow, aColumn: integer; const aCode, aWhy: string);
     function IsLocked(aRow, aColumn: integer): boolean;
-    procedure WriteNumber(aRow, aColumn: integer; aValue: Double);
-    procedure WriteDate(aRow, aColumn: integer; aValue: TDateTime);
-    procedure WriteText(aRow, aColumn: integer; const aValue: string);
-    procedure WriteBoolean(aRow, aColumn: integer; aValue: boolean);
-    procedure WriteValue(aRow, aColumn: integer; const aValue: Variant);
+    procedure WriteNumber(aRow, aColumn: integer; aValue: Double; const aTarget: TRange);
+    procedure WriteDate(aRow, aColumn: integer; aValue: TDateTime; const aTarget: TRange);
+    procedure WriteText(aRow, aColumn: integer; const aValue: string; const aTarget: TRange);
+    procedure WriteBoolean(aRow, aColumn: integer; aValue: boolean; const aTarget: TRange);
+    procedure WriteValue(aRow, aColumn: integer; const aValue: Variant; const aTarget: TRange);
+    procedure WriteFormula(aRow, aColumn: integer; const aText: string; const aTarget: TRange);
+    procedure WriteArray(const aRange: TRange; const aFormula: string);
     procedure ClearContents(const aRange: TRange);
     function MakeRange(aTop, aLeft, aBottom, aRight: integer): TRange;
     function GetRange(const aAddress: string): TRange;
@@ -183,7 +219,7 @@ type
     function Write(aStream: TStream): boolean;
     procedure Exchange(aOther: TWorkbook);
     function PartIndex(const aName: string): integer;
-    procedure FixedAreas(const aSheetPart: string; aTableRows, aPivots: TList<TRange>);
+    procedure FixedAreas(const aSheetPart: string; aTables, aTableRows, aPivots: TList<TRange>);
     function AddPart(const aName: string; aClass: TXmliteClass): string;
     function NewPart(const aRelationship, aTarget, aContentType: string; aXml: TXmlite): string;
     // ReadPart leaves the part as its bytes, EditPart saves it from its objects
@@ -192,7 +228,7 @@ type
 
     function IsLockedStyle(aStyle: cardinal): boolean;
     procedure ValueChanged;
-    procedure FormulaRemoved;
+    procedure FormulaChanged;
     function Date1904: boolean;
     function SharedString(aIndex: integer): string;
     function SharedStringIndex(const aText: string): integer;
@@ -233,7 +269,7 @@ type
 
 implementation
 
-uses System.IOUtils, System.Math, System.Variants, System.DateUtils, System.TypInfo,
+uses System.IOUtils, System.Math, System.Variants, System.DateUtils, System.TypInfo, System.Character,
   ProRock.Utility, ProRock.Xmlite.Schema.Relationships, ProRock.Xmlite.Schema.ContentTypes;
 
 const
@@ -251,6 +287,7 @@ const
   cMaxRow = 1048576;
   cMaxColumn = 16384;
   cMaxText = 32767;
+  cMaxFormula = 8192;
 
   // Excel's number formats a date gets: m/d/yyyy, m/d/yyyy h:mm, h:mm:ss (shown in the user's locale)
   cDateFormat = 14;
@@ -399,6 +436,519 @@ begin
   Result := True;
 end;
 
+{ formulas }
+
+type
+  TReferenceKind = (rkNone, rkCell, rkColumn, rkRow);
+
+// A1, $A$1, A, $A, 5, $5 (a column and a row count only as one end of A:C or 5:7)
+function ReadReference(const aWord: string; out aRow, aColumn: integer; out aRowFixed, aColumnFixed: boolean): TReferenceKind;
+begin
+  Result := rkNone;
+  var index: integer := 1;
+  aColumnFixed := (index <= aWord.Length) and (aWord[index] = '$');
+  if aColumnFixed then
+    Inc(index);
+  var start: integer := index;
+  aColumn := ReadColumn(aWord, index);
+  var letters: boolean := index > start;
+  if letters and (aColumn = 0) then
+    Exit;
+  aRowFixed := (index <= aWord.Length) and (aWord[index] = '$');
+  if aRowFixed then
+    Inc(index);
+  start := index;
+  aRow := ReadRow(aWord, index);
+  var digits: boolean := index > start;
+  if (index <= aWord.Length) or (digits and (aRow = 0)) then
+    Exit;
+  if letters and digits then
+    Result := rkCell
+  else if letters and not aRowFixed then
+    Result := rkColumn
+  else if digits and not aColumnFixed then
+    Result := rkRow;
+end;
+
+// a reference's relative parts moved; False off the sheet
+function MoveReference(aKind: TReferenceKind; aRow, aColumn: integer; aRowFixed, aColumnFixed: boolean;
+  aRows, aColumns: integer; out aText: string): boolean;
+begin
+  if not aRowFixed and (aKind in [rkCell, rkRow]) then
+    Inc(aRow, aRows);
+  if not aColumnFixed and (aKind in [rkCell, rkColumn]) then
+    Inc(aColumn, aColumns);
+  Result := ((aKind = rkColumn) or ((aRow >= 1) and (aRow <= cMaxRow))) and
+    ((aKind = rkRow) or ((aColumn >= 1) and (aColumn <= cMaxColumn)));
+  aText := '';
+  if aKind in [rkCell, rkColumn] then
+  begin
+    if aColumnFixed then
+      aText := '$';
+    aText := aText + ColumnName(aColumn);
+  end;
+  if aKind in [rkCell, rkRow] then
+  begin
+    if aRowFixed then
+      aText := aText + '$';
+    aText := aText + IntToStr(aRow);
+  end;
+end;
+
+// Excel's A1 formula text (as stored, without the =): its references moved by aRows and aColumns, as Excel fills - the
+// relative parts only, one off the sheet becomes #REF!. False with aWhy when Excel would not read it: a broken formula makes
+// Excel refuse the whole file, even repaired. The grammar is checked (values and operators in turn, brackets, arguments, array
+// constants), not names: an unknown function or name is Excel's #NAME?. Not checked yet, and refused by Excel too: the number
+// of arguments one of Excel's own functions takes (ROUND(1), SUM())
+function ShiftFormula(const aFormula: string; aRows, aColumns: integer; out aResult, aWhy: string): boolean;
+const
+  cErrors: array [0 .. 9] of string = ('#NULL!', '#DIV/0!', '#VALUE!', '#REF!', '#NAME?', '#NUM!', '#N/A', '#GETTING_DATA',
+    '#SPILL!', '#CALC!');
+  cSpaces = [' ', #9, #10, #13];
+  cOperators = ['+', '-', '*', '/', '^', '&', '=', '<', '>', ':'];
+  cMaxArguments = 255;
+var
+  builder: TStringBuilder;
+  i, last: integer; // last: the formula's length
+  // what comes next: a value (at the start, after an operator, an opening bracket, a comma) or an operator
+  expectValue: boolean;
+  // the value before was a constant (a number, a text, TRUE, an error, an array): no range or intersection with it
+  constant: boolean;
+  spaced: boolean; // spaces after a value: an intersection when another value follows
+  ranged: boolean; // after a : the next value is a reference too
+  arguments: boolean; // just after a function's ( or a comma between its arguments: an argument may be left out
+  prefixed: boolean; // after Sheet1! or [1]: a reference follows
+  continued: boolean; // after a table's name: its [...] is the same value
+  called: boolean; // after a function's name: its ( follows
+  brackets: string; // what is open: f - a function's (, g - a group's (, { - an array constant
+  commas: TArray<integer>; // a function's commas so far, for each bracket open
+
+  function Fail(const aText: string): boolean;
+  begin
+    aWhy := aText;
+    Result := False;
+  end;
+
+  function IsWordStart(aChar: Char): boolean;
+  begin
+    Result := aChar.IsLetterOrDigit or CharInSet(aChar, ['_', '\', '$', '.']);
+  end;
+
+  function ReadWord(aFrom: integer): integer; // the index after it
+  begin
+    Result := aFrom;
+    while (Result <= last) and (aFormula[Result].IsLetterOrDigit or CharInSet(aFormula[Result], ['_', '\', '$', '.', '?'])) do
+      Inc(Result);
+  end;
+
+  function Inside: Char;
+  begin
+    if brackets = '' then
+      Result := #0
+    else
+      Result := brackets[brackets.Length];
+  end;
+
+  // a quoted text or sheet name: the index of its closing quote (a doubled one is inside), 0 when there is none
+  function ClosingQuote(aQuote: Char): integer;
+  begin
+    Result := i + 1;
+    while Result <= last do
+    begin
+      if aFormula[Result] = aQuote then
+      begin
+        if (Result < last) and (aFormula[Result + 1] = aQuote) then
+          Inc(Result)
+        else
+          Exit;
+      end;
+      Inc(Result);
+    end;
+    Result := 0;
+  end;
+
+  // a value where one may stand: next to another only through spaces, both references (an intersection)
+  function Value(aConstant: boolean): boolean;
+  begin
+    Result := False;
+    if not expectValue and not (spaced and not constant and not aConstant and (Inside <> '{')) then
+      Exit(Fail('two values without an operator between them'));
+    if (Inside = '{') and not aConstant then
+      Exit(Fail('an array constant holds constants only'));
+    if (ranged or prefixed) and aConstant then
+      Exit(Fail('a reference missing'));
+    expectValue := False;
+    constant := aConstant;
+    spaced := False;
+    ranged := False;
+    arguments := False;
+    prefixed := False;
+    Result := True;
+  end;
+
+  // anything but a value: not right after Sheet1!, a table's name or a :
+  function NotAValue: boolean;
+  begin
+    Result := not prefixed and not continued and not ranged;
+    if not Result then
+      Fail('a reference missing');
+    spaced := False;
+  end;
+
+  // a word: a reference alone or as one end of a range (moved, or #REF!), a number, TRUE, a name
+  function Word(aEnd: integer): boolean;
+  begin
+    var word: string := Copy(aFormula, i, aEnd - i);
+    var row, column: integer;
+    var rowFixed, columnFixed: boolean;
+    var kind: TReferenceKind := ReadReference(word, row, column, rowFixed, columnFixed);
+    var secondEnd: integer := 0;
+    var row2, column2: integer;
+    var rowFixed2, columnFixed2: boolean;
+    if (kind <> rkNone) and (aEnd < last) and (aFormula[aEnd] = ':') and IsWordStart(aFormula[aEnd + 1]) then
+    begin
+      secondEnd := ReadWord(aEnd + 1);
+      if ReadReference(Copy(aFormula, aEnd + 1, secondEnd - aEnd - 1), row2, column2, rowFixed2, columnFixed2) <> kind then
+        secondEnd := 0;
+    end;
+    if (kind = rkNone) or ((kind <> rkCell) and (secondEnd = 0)) then
+    begin // a number, TRUE, a name
+      var isNumber: boolean := CharInSet(word[1], ['0' .. '9', '.']);
+      if isNumber then
+      begin // the exponent's sign was not part of the word: 1.5E+3
+        if CharInSet(word[word.Length], ['E', 'e']) and (aEnd < last) and CharInSet(aFormula[aEnd], ['+', '-']) and
+          CharInSet(aFormula[aEnd + 1], ['0' .. '9']) then
+        begin
+          aEnd := ReadWord(aEnd + 1);
+          word := Copy(aFormula, i, aEnd - i);
+        end;
+        var number: Double;
+        if not TUtility.TryFloatFromText(word, number) then
+          Exit(Fail('not a number: ' + word));
+      end;
+      if not Value(isNumber or SameText(word, 'TRUE') or SameText(word, 'FALSE')) then
+        Exit(False);
+      builder.Append(word);
+      i := aEnd;
+      Exit(True);
+    end;
+    if not Value(False) then
+      Exit(False);
+    if secondEnd = 0 then
+      secondEnd := aEnd
+    else
+      word := Copy(aFormula, i, secondEnd - i);
+    var moved, moved2: string;
+    if (aRows = 0) and (aColumns = 0) then
+      builder.Append(word)
+    else if not MoveReference(kind, row, column, rowFixed, columnFixed, aRows, aColumns, moved) or
+      ((secondEnd > aEnd) and not MoveReference(kind, row2, column2, rowFixed2, columnFixed2, aRows, aColumns, moved2)) then
+      builder.Append('#REF!')
+    else if secondEnd > aEnd then
+      builder.Append(moved).Append(':').Append(moved2)
+    else
+      builder.Append(moved);
+    i := secondEnd;
+    Result := True;
+  end;
+
+  function Token: boolean;
+  begin
+    Result := False;
+    var letter: Char := aFormula[i];
+    var start: integer := i;
+    if CharInSet(letter, cSpaces) then
+    begin
+      if not expectValue then
+        spaced := True;
+      builder.Append(letter);
+      Inc(i);
+      Exit(True);
+    end;
+    case letter of
+      '"':
+        begin
+          var close: integer := ClosingQuote(letter);
+          if close = 0 then
+            Exit(Fail('a text without its closing quote'));
+          if not Value(True) then
+            Exit;
+          i := close + 1;
+        end;
+      '''':
+        begin // a sheet name, its ! with it
+          var close: integer := ClosingQuote(letter);
+          if close = 0 then
+            Exit(Fail('a sheet name without its closing quote'));
+          if (close = last) or (aFormula[close + 1] <> '!') then
+            Exit(Fail('a quoted sheet name without ! after it'));
+          if not expectValue and not spaced then
+            Exit(Fail('two values without an operator between them'));
+          prefixed := True;
+          i := close + 2;
+        end;
+      '[':
+        begin // a table's columns (Table1[[#This Row],[Sum]], ' escapes) or another workbook ([1]Sheet1!A1)
+          var close: integer := i;
+          var depth: integer := 0;
+          while close <= last do
+          begin
+            case aFormula[close] of
+              '''':
+                Inc(close);
+              '[':
+                Inc(depth);
+              ']':
+                begin
+                  Dec(depth);
+                  if depth = 0 then
+                    Break;
+                end;
+            end;
+            Inc(close);
+          end;
+          if close > last then
+            Exit(Fail('a [ without its ]'));
+          i := close + 1;
+          if continued then
+            continued := False
+          else if (i <= last) and (IsWordStart(aFormula[i]) or (aFormula[i] = '''')) then
+            // a workbook: its sheet's name follows
+          else if (i <= last) and (aFormula[i] = '!') then
+          begin // a workbook's name: [1]!Total
+            prefixed := True;
+            Inc(i);
+          end
+          else if not Value(False) then
+            Exit;
+        end;
+      '#':
+        begin
+          var error: string := '';
+          for var index := Low(cErrors) to High(cErrors) do
+            if SameText(Copy(aFormula, i, cErrors[index].Length), cErrors[index]) then
+              error := cErrors[index];
+          if error.IsEmpty then
+            Exit(Fail('an error value Excel does not have'));
+          if not Value(error <> '#REF!') then // Sheet1!#REF! stands for a reference
+            Exit;
+          builder.Append(error);
+          Inc(i, error.Length);
+          Exit(True);
+        end;
+      '(':
+        begin
+          if not NotAValue then
+            Exit;
+          SetLength(commas, brackets.Length + 1);
+          commas[brackets.Length] := 0;
+          if called then
+          begin
+            brackets := brackets + 'f';
+            called := False;
+            expectValue := True;
+            arguments := True;
+          end
+          else if expectValue and (Inside <> '{') then
+          begin
+            brackets := brackets + 'g';
+            arguments := False;
+          end
+          else
+            Exit(Fail('a ( where an operator should be'));
+          Inc(i);
+        end;
+      ')':
+        begin
+          if not NotAValue then
+            Exit;
+          case Inside of
+            'f':
+              if expectValue and not arguments then
+                Exit(Fail('an operator without the value after it'));
+            'g':
+              if expectValue then
+                Exit(Fail('a ( ) without a value inside'));
+          else
+            Exit(Fail('a ) without its opening one'));
+          end;
+          brackets := Copy(brackets, 1, brackets.Length - 1);
+          expectValue := False;
+          constant := False;
+          arguments := False;
+          Inc(i);
+        end;
+      '{':
+        begin
+          if not NotAValue then
+            Exit;
+          if not expectValue or (Inside = '{') then
+            Exit(Fail('a { where it cannot stand'));
+          brackets := brackets + '{';
+          arguments := False;
+          Inc(i);
+        end;
+      '}':
+        begin
+          if not NotAValue then
+            Exit;
+          if Inside <> '{' then
+            Exit(Fail('a } without its opening one'));
+          if expectValue then
+            Exit(Fail('an array constant with a value missing'));
+          brackets := Copy(brackets, 1, brackets.Length - 1);
+          expectValue := True; // the array is the value
+          if not Value(True) then
+            Exit;
+          Inc(i);
+        end;
+      ',':
+        begin
+          if not NotAValue then
+            Exit;
+          case Inside of
+            'f':
+              begin
+                arguments := True; // an argument may be left out: IF(A1,,2)
+                Inc(commas[brackets.Length - 1]);
+                if commas[brackets.Length - 1] >= cMaxArguments then
+                  Exit(Fail(Format('more than %d arguments to a function', [cMaxArguments])));
+              end;
+            'g', '{':
+              if expectValue then
+                Exit(Fail('a comma without a value before it'));
+          else
+            Exit(Fail('a comma outside a function''s brackets'));
+          end;
+          expectValue := True;
+          Inc(i);
+        end;
+      ';':
+        begin
+          if not NotAValue then
+            Exit;
+          if (Inside <> '{') or expectValue then
+            Exit(Fail('a ; outside an array constant''s rows'));
+          expectValue := True;
+          Inc(i);
+        end;
+      '%':
+        begin
+          if not NotAValue then
+            Exit;
+          if expectValue or (Inside = '{') then
+            Exit(Fail('a % without a value before it'));
+          Inc(i);
+        end;
+    else
+      if IsWordStart(letter) then
+      begin
+        var after: integer := ReadWord(i);
+        var next: Char := #0;
+        if after <= last then
+          next := aFormula[after];
+        // a 3-D reference's sheets: Sheet1:Sheet3!A1
+        var sheetsEnd: integer := 0;
+        if (next = ':') and (after < last) and IsWordStart(aFormula[after + 1]) then
+        begin
+          sheetsEnd := ReadWord(after + 1);
+          if (sheetsEnd > last) or (aFormula[sheetsEnd] <> '!') then
+            sheetsEnd := 0;
+        end;
+        if (sheetsEnd > 0) or (next = '!') then
+        begin // a sheet's name
+          if prefixed or (not expectValue and not spaced) then
+            Exit(Fail('two values without an operator between them'));
+          prefixed := True;
+          if sheetsEnd > 0 then
+            i := sheetsEnd + 1
+          else
+            i := after + 1;
+        end
+        else if next = '(' then
+        begin // a function: its ( opens the arguments
+          if not Value(False) then
+            Exit;
+          called := True;
+          i := after;
+        end
+        else if next = '[' then
+        begin // a table: its [...] follows
+          if not Value(False) then
+            Exit;
+          continued := True;
+          i := after;
+        end
+        else
+          Exit(Word(after));
+      end
+      else if CharInSet(letter, cOperators) then
+      begin
+        if not NotAValue then
+          Exit;
+        if CharInSet(letter, ['+', '-']) and expectValue then
+        begin // a sign
+          arguments := False;
+          Inc(i);
+        end
+        else if expectValue or (Inside = '{') then
+          Exit(Fail('an operator without the value before it'))
+        else
+        begin
+          if (letter = ':') and constant then
+            Exit(Fail('a range of a constant'));
+          ranged := letter = ':';
+          Inc(i);
+          if ((letter = '<') and (i <= last) and CharInSet(aFormula[i], ['>', '='])) or
+            ((letter = '>') and (i <= last) and (aFormula[i] = '=')) then
+            Inc(i);
+          expectValue := True;
+        end;
+      end
+      else
+        Exit(Fail('a character no formula has: ' + letter));
+    end;
+    builder.Append(aFormula, start - 1, i - start);
+    Result := True;
+  end;
+
+begin
+  aResult := '';
+  aWhy := '';
+  last := aFormula.Length;
+  expectValue := True;
+  constant := False;
+  spaced := False;
+  ranged := False;
+  arguments := False;
+  prefixed := False;
+  continued := False;
+  called := False;
+  brackets := '';
+  builder := TStringBuilder.Create(last + 8);
+  try
+    i := 1;
+    while i <= last do
+      if not Token then
+        Exit(False);
+    if Inside = '{' then
+      Exit(Fail('a { without its closing one'));
+    if brackets <> '' then
+      Exit(Fail('a ( without its closing one'));
+    if prefixed or continued or ranged then
+      Exit(Fail('a reference missing'));
+    if expectValue then
+      if aFormula.Trim = '' then
+        Exit(Fail('an empty formula'))
+      else
+        Exit(Fail('an operator without the value after it'));
+    aResult := builder.ToString;
+    Result := True;
+  finally
+    builder.Free;
+  end;
+end;
+
 { values }
 
 // ST_Xstring: a character XML cannot hold is written as _xHHHH_, and so is an underscore that would read as one
@@ -539,6 +1089,54 @@ begin
   Result := (aId <= 58) and (Byte(aId) in [14 .. 22, 27 .. 36, 45 .. 47, 50 .. 58]);
 end;
 
+// the value of a data table's cells, as Excel's Formula shows it: TABLE(row input, column input)
+function TableFormula(aFormula: TCellFormulaCT): string;
+begin
+  if aFormula.Dt2D then
+    Result := Format('TABLE(%s,%s)', [aFormula.R1, aFormula.R2])
+  else if aFormula.Dtr then
+    Result := Format('TABLE(%s,)', [aFormula.R1])
+  else
+    Result := Format('TABLE(,%s)', [aFormula.R1]);
+end;
+
+function Contains(const aOuter, aInner: TRange): boolean;
+begin
+  Result := (aInner.fTop >= aOuter.fTop) and (aInner.fBottom <= aOuter.fBottom) and (aInner.fLeft >= aOuter.fLeft) and
+    (aInner.fRight <= aOuter.fRight);
+end;
+
+function Overlaps(const aLeft, aRight: TRange): boolean;
+begin
+  Result := (aLeft.fTop <= aRight.fBottom) and (aRight.fTop <= aLeft.fBottom) and (aLeft.fLeft <= aRight.fRight) and
+    (aRight.fLeft <= aLeft.fRight);
+end;
+
+function AreaAt(aAreas: TList<TRange>; aRow, aColumn: integer; out aArea: TRange): boolean;
+begin
+  for var area: TRange in aAreas do
+    if (aRow >= area.fTop) and (aRow <= area.fBottom) and (aColumn >= area.fLeft) and (aColumn <= area.fRight) then
+    begin
+      aArea := area;
+      Exit(True);
+    end;
+  Result := False;
+end;
+
+// an item of an array for a range, from 0: two dimensions, or one (a row)
+function ArrayItem(const aArray: Variant; aRow, aColumn: integer): Variant;
+begin
+  if VarArrayDimCount(aArray) = 2 then
+    Result := aArray[VarArrayLowBound(aArray, 1) + aRow, VarArrayLowBound(aArray, 2) + aColumn]
+  else
+    Result := aArray[VarArrayLowBound(aArray, 1) + aColumn];
+end;
+
+function IsNoFormula(const aValue: Variant): boolean;
+begin
+  Result := VarIsEmpty(aValue) or VarIsNull(aValue) or (VarIsStr(aValue) and (string(aValue) = ''));
+end;
+
 { TRange }
 
 function TRange.GetRowCount: integer;
@@ -575,39 +1173,37 @@ begin
     end;
 end;
 
-procedure TRange.SetValue(const aValue: Variant);
+// an array as Excel takes it: its shape the range's (one dimension: a row)
+procedure TRange.CheckShape(const aArray: Variant);
 begin
-  if not VarIsArray(aValue) then
-  begin
-    for var row := fTop to fBottom do
-      for var column := fLeft to fRight do
-        fSheet.WriteValue(row, column, aValue);
-    Exit;
-  end;
-  // an array as Excel takes it: its shape the range's (one dimension: a row)
   var rows, columns: integer;
-  var twoDimensions: boolean := VarArrayDimCount(aValue) = 2;
-  if twoDimensions then
+  if VarArrayDimCount(aArray) = 2 then
   begin
-    rows := VarArrayHighBound(aValue, 1) - VarArrayLowBound(aValue, 1) + 1;
-    columns := VarArrayHighBound(aValue, 2) - VarArrayLowBound(aValue, 2) + 1;
+    rows := VarArrayHighBound(aArray, 1) - VarArrayLowBound(aArray, 1) + 1;
+    columns := VarArrayHighBound(aArray, 2) - VarArrayLowBound(aArray, 2) + 1;
   end
-  else if VarArrayDimCount(aValue) = 1 then
+  else if VarArrayDimCount(aArray) = 1 then
   begin
     rows := 1;
-    columns := VarArrayHighBound(aValue, 1) - VarArrayLowBound(aValue, 1) + 1;
+    columns := VarArrayHighBound(aArray, 1) - VarArrayLowBound(aArray, 1) + 1;
   end
   else
     raise EArgumentException.Create('An array for a range has one or two dimensions');
   if (rows <> RowCount) or (columns <> ColumnCount) then
     raise EArgumentException.CreateFmt('An array of %d x %d for %s (%d x %d)', [rows, columns, Address, RowCount, ColumnCount]);
-  for var row := 0 to rows - 1 do
-    for var column := 0 to columns - 1 do
-      if twoDimensions then
-        fSheet.WriteValue(fTop + row, fLeft + column,
-          aValue[VarArrayLowBound(aValue, 1) + row, VarArrayLowBound(aValue, 2) + column])
+end;
+
+procedure TRange.SetValue(const aValue: Variant);
+begin
+  var isArray: boolean := VarIsArray(aValue);
+  if isArray then
+    CheckShape(aValue);
+  for var row := fTop to fBottom do
+    for var column := fLeft to fRight do
+      if isArray then
+        fSheet.WriteValue(row, column, ArrayItem(aValue, row - fTop, column - fLeft), Self)
       else
-        fSheet.WriteValue(fTop + row, fLeft + column, aValue[VarArrayLowBound(aValue, 1) + column]);
+        fSheet.WriteValue(row, column, aValue, Self);
 end;
 
 function TRange.GetValueType: TCellValueType;
@@ -738,13 +1334,100 @@ begin
   fSheet.ClearContents(Self);
 end;
 
+function TRange.GetFormula: Variant;
+
+  function CellFormula(aRow, aColumn: integer): string;
+  begin
+    if fSheet.FormulaText(aRow, aColumn, Result) then
+      Result := '=' + Result;
+  end;
+
+begin
+  if (fBottom = fTop) and (fRight = fLeft) then
+    Exit(CellFormula(fTop, fLeft));
+  Result := VarArrayCreate([1, RowCount, 1, ColumnCount], varVariant);
+  for var row := fTop to fBottom do
+    for var column := fLeft to fRight do
+      Result[row - fTop + 1, column - fLeft + 1] := CellFormula(row, column);
+end;
+
+procedure TRange.SetFormula(const aValue: Variant);
+begin
+  var text: string;
+  if VarIsArray(aValue) then
+  begin
+    CheckShape(aValue);
+    for var row := fTop to fBottom do
+      for var column := fLeft to fRight do
+      begin
+        var item: Variant := ArrayItem(aValue, row - fTop, column - fLeft);
+        if IsNoFormula(item) then
+          fSheet.ClearContents(fSheet.MakeRange(row, column, row, column))
+        else if fSheet.CheckFormula(row, column, item, text) then
+          fSheet.WriteFormula(row, column, text, Self);
+      end;
+  end
+  else if IsNoFormula(aValue) then
+    ClearContents
+  else if fSheet.CheckFormula(fTop, fLeft, aValue, text) then // checked once, moved to each cell as Excel fills
+    for var row := fTop to fBottom do
+      for var column := fLeft to fRight do
+      begin
+        var moved, why: string;
+        ShiftFormula(text, row - fTop, column - fLeft, moved, why);
+        fSheet.WriteFormula(row, column, moved, Self);
+      end;
+end;
+
+function TRange.GetHasFormula: boolean;
+begin
+  for var row := fTop to fBottom do
+    for var column := fLeft to fRight do
+    begin
+      var text: string;
+      if not fSheet.FormulaText(row, column, text) then
+        Exit(False);
+    end;
+  Result := True;
+end;
+
+function TRange.GetHasArray: boolean;
+begin
+  fSheet.FindFormulas;
+  var area: TRange;
+  Result := AreaAt(fSheet.fArrays, fTop, fLeft, area);
+end;
+
+function TRange.GetCurrentArray: TRange;
+begin
+  fSheet.FindFormulas;
+  if not AreaAt(fSheet.fArrays, fTop, fLeft, Result) then
+    raise EInvalidOpException.CreateFmt('%s!%s is not in an array formula', [fSheet.Name, CellName(fTop, fLeft)]);
+end;
+
+function TRange.GetFormulaArray: string;
+begin
+  Result := '';
+  if HasArray and fSheet.FormulaText(fTop, fLeft, Result) then
+    Result := '=' + Result;
+end;
+
+procedure TRange.SetFormulaArray(const aValue: string);
+begin
+  if aValue = '' then
+    ClearContents
+  else
+    fSheet.WriteArray(Self, aValue);
+end;
+
 { TWorksheet }
 
 destructor TWorksheet.Destroy;
 begin
+  ForgetFormulas;
   fPivots.Free;
   fTableRows.Free;
-  fArrays.Free;
+  fTables.Free;
   inherited;
 end;
 
@@ -930,50 +1613,190 @@ begin
     fWorkbook.IsLockedStyle(EffectiveStyle(aRow, aColumn));
 end;
 
-// False: a shared or an array formula holds the cell (formulas are not written yet), a table's header or totals row (the
-// table's own definition, a header its column's name in formulas), a pivot table (Excel builds it from its cache)
-function TWorksheet.CanWrite(aRow, aColumn: integer): boolean;
+// the areas of array formulas and data tables, shared formulas' first cells: found once, again after one of them changes
+procedure TWorksheet.FindFormulas;
 begin
+  if fArrays <> nil then
+    Exit;
+  fArrays := TList<TRange>.Create;
+  fDataTables := TList<TRange>.Create;
+  fShared := TDictionary<cardinal, TCellCT>.Create;
+  for var row: TRowCT in Objects(False).SheetData.Row do
+    for var cell: TCellCT in row.C do
+      if cell.IsPresent('F') and (cell.F.T <> stcftNormal) then
+        if cell.F.T = stcftShared then
+        begin
+          if cell.F.Ref <> '' then // the first cell: its text, the group's area
+            fShared.AddOrSetValue(cell.F.Si, cell);
+        end
+        else
+        begin
+          var area: TRange := MakeRange(0, 0, 0, 0);
+          if not ParseAddress(cell.F.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
+            ParseAddress(cell.R, area.fTop, area.fLeft, area.fBottom, area.fRight);
+          if cell.F.T = stcftArray then
+            fArrays.Add(area)
+          else
+            fDataTables.Add(area);
+        end;
+end;
+
+procedure TWorksheet.ForgetFormulas;
+begin
+  FreeAndNil(fArrays);
+  FreeAndNil(fDataTables);
+  FreeAndNil(fShared);
+end;
+
+// tables (their header and totals rows apart) and pivot tables, from their own parts: found on the first write
+procedure TWorksheet.FindFixedAreas;
+begin
+  if fTables <> nil then
+    Exit;
+  fTables := TList<TRange>.Create;
+  fTableRows := TList<TRange>.Create;
+  fPivots := TList<TRange>.Create;
+  fWorkbook.FixedAreas(fPartName, fTables, fTableRows, fPivots);
+end;
+
+// the formula without its =: a shared one's cells the first one's text moved to them, an array formula's and a data table's
+// cells their first one's
+function TWorksheet.FormulaText(aRow, aColumn: integer; out aText: string): boolean;
+begin
+  aText := '';
   var cell: TCellCT := FindCell(aRow, aColumn);
-  if (cell <> nil) and cell.IsPresent('F') and (cell.F.T <> stcftNormal) then
+  if (cell <> nil) and cell.IsPresent('F') then
+    case cell.F.T of
+      stcftShared:
+        if cell.F.XmlValue <> '' then
+          aText := DecodeText(cell.F.XmlValue)
+        else
+        begin
+          FindFormulas;
+          var first: TCellCT;
+          var top, left, bottom, right: integer;
+          if fShared.TryGetValue(cell.F.Si, first) and ParseAddress(first.R, top, left, bottom, right) then
+          begin
+            var why: string;
+            ShiftFormula(DecodeText(first.F.XmlValue), aRow - top, aColumn - left, aText, why);
+          end;
+        end;
+      stcftDataTable:
+        aText := TableFormula(cell.F);
+    else
+      aText := DecodeText(cell.F.XmlValue);
+    end;
+  if aText = '' then
   begin
-    Refuse(aRow, aColumn, 'Formula', 'part of a shared or array formula, which Calcite does not change yet');
+    FindFormulas;
+    var area: TRange;
+    if (AreaAt(fArrays, aRow, aColumn, area) or AreaAt(fDataTables, aRow, aColumn, area)) and
+      ((area.fTop <> aRow) or (area.fLeft <> aColumn)) then
+      FormulaText(area.fTop, area.fLeft, aText);
+  end;
+  Result := aText <> '';
+end;
+
+// the text to store - without its =, checked on its face; False: refused at the cell
+function TWorksheet.CheckFormula(aRow, aColumn: integer; const aFormula: Variant; out aText: string): boolean;
+begin
+  Result := False;
+  if not VarIsStr(aFormula) then
+    raise EArgumentException.CreateFmt('A formula is a string, not a Variant of type %d', [VarType(aFormula)]);
+  aText := aFormula;
+  if aText.StartsWith('=') then
+    aText := aText.Substring(1);
+  var checked, why: string;
+  if aText.Length + 1 > cMaxFormula then
+    Refuse(aRow, aColumn, 'Formula', Format('%d characters, Excel''s formulas hold up to %d', [aText.Length + 1, cMaxFormula]))
+  else if not ShiftFormula(aText, 0, 0, checked, why) then
+    Refuse(aRow, aColumn, 'Formula', 'not a formula Excel reads: ' + why)
+  else
+    Result := True;
+end;
+
+// a shared formula's cells as plain ones, each its own text (the values Excel calculated stay); False: its text unreadable
+function TWorksheet.Unshare(aIndex: cardinal): boolean;
+begin
+  FindFormulas;
+  var first: TCellCT;
+  var area: TRange;
+  if not fShared.TryGetValue(aIndex, first) then
+    Exit(True); // no first cell: nothing the others could be read from
+  var text: string := DecodeText(first.F.XmlValue);
+  var checked, why: string;
+  if not ParseAddress(first.F.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) or
+    not ShiftFormula(text, 0, 0, checked, why) then
+    Exit(False);
+  var top, left, bottom, right: integer;
+  ParseAddress(first.R, top, left, bottom, right);
+  var sheet: TWorksheetE := Objects(True);
+  var rowIndex: integer;
+  FindRow(sheet, area.fTop, rowIndex);
+  var rows: TRowCTList := sheet.SheetData.Row;
+  while (rowIndex < rows.Count) and (rows[rowIndex].R <= cardinal(area.fBottom)) do
+  begin
+    var row: TRowCT := rows[rowIndex];
+    for var cell: TCellCT in row.C do
+      if cell.IsPresent('F') and (cell.F.T = stcftShared) and (cell.F.Si = aIndex) then
+      begin
+        var moved: string;
+        ShiftFormula(text, integer(row.R) - top, ColumnOf(cell.R) - left, moved, why);
+        cell.F.Clear('T');
+        cell.F.Clear('Si');
+        cell.F.Clear('Ref');
+        cell.F.XmlValue := EncodeText(moved);
+      end;
+    Inc(rowIndex);
+  end;
+  ForgetFormulas;
+  fWorkbook.FormulaChanged;
+  Result := True;
+end;
+
+// why a cell cannot be written as part of aTarget: an array formula not wholly in it (Excel changes one only as a whole), a
+// data table (Excel's what-if analysis fills it), a table's header or totals row (the table's own definition, a header its
+// column's name in formulas), a pivot table (Excel builds it from its cache)
+function TWorksheet.Blocker(aRow, aColumn: integer; const aTarget: TRange; out aCode, aWhy: string): boolean;
+begin
+  Result := True;
+  FindFormulas;
+  FindFixedAreas;
+  var area: TRange;
+  aCode := 'Formula';
+  if AreaAt(fArrays, aRow, aColumn, area) and not Contains(aTarget, area) then
+    aWhy := 'part of an array formula (' + area.Address + '), which Excel changes only as a whole'
+  else if AreaAt(fDataTables, aRow, aColumn, area) then
+    aWhy := 'part of a data table, which Excel''s what-if analysis fills'
+  else if AreaAt(fTableRows, aRow, aColumn, area) then
+  begin
+    aCode := 'TableRow';
+    aWhy := 'a table''s header or totals row (part of the table''s definition, which Calcite does not change yet)';
+  end
+  else if AreaAt(fPivots, aRow, aColumn, area) then
+  begin
+    aCode := 'PivotTable';
+    aWhy := 'part of a pivot table, which Excel builds again';
+  end
+  else
+    Result := False;
+end;
+
+// False: refused (Blocker), or a shared formula Calcite cannot read holds the cell; True: a shared one is made plain first
+function TWorksheet.CanWrite(aRow, aColumn: integer; const aTarget: TRange): boolean;
+begin
+  var code, why: string;
+  if Blocker(aRow, aColumn, aTarget, code, why) then
+  begin
+    Refuse(aRow, aColumn, code, why);
     Exit(False);
   end;
-  if fArrays = nil then
+  var cell: TCellCT := FindCell(aRow, aColumn);
+  if (cell <> nil) and cell.IsPresent('F') and (cell.F.T = stcftShared) and not Unshare(cell.F.Si) then
   begin
-    fArrays := TList<TRange>.Create;
-    for var row: TRowCT in Objects(False).SheetData.Row do
-      for var rowCell: TCellCT in row.C do
-        if rowCell.IsPresent('F') and (rowCell.F.T in [stcftArray, stcftDataTable]) then
-        begin
-          var area: TRange;
-          if ParseAddress(rowCell.F.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
-            fArrays.Add(area);
-        end;
-    fTableRows := TList<TRange>.Create;
-    fPivots := TList<TRange>.Create;
-    fWorkbook.FixedAreas(fPartName, fTableRows, fPivots);
+    Refuse(aRow, aColumn, 'Formula', 'part of a shared formula whose text Calcite cannot read');
+    Exit(False);
   end;
-  for var area: TRange in fArrays do
-    if (aRow >= area.fTop) and (aRow <= area.fBottom) and (aColumn >= area.fLeft) and (aColumn <= area.fRight) then
-    begin
-      Refuse(aRow, aColumn, 'Formula', 'part of an array formula, which Calcite does not change yet');
-      Exit(False);
-    end;
-  for var area: TRange in fTableRows do
-    if (aRow >= area.fTop) and (aRow <= area.fBottom) and (aColumn >= area.fLeft) and (aColumn <= area.fRight) then
-    begin
-      Refuse(aRow, aColumn, 'TableRow',
-        'a table''s header or totals row (part of the table''s definition, which Calcite does not change yet)');
-      Exit(False);
-    end;
-  for var area: TRange in fPivots do
-    if (aRow >= area.fTop) and (aRow <= area.fBottom) and (aColumn >= area.fLeft) and (aColumn <= area.fRight) then
-    begin
-      Refuse(aRow, aColumn, 'PivotTable', 'part of a pivot table, which Excel builds again');
-      Exit(False);
-    end;
   if not fLockedWritten and IsLocked(aRow, aColumn) then
   begin
     fLockedWritten := True;
@@ -1043,8 +1866,10 @@ begin
     fWorkbook.SharedStringReleased;
   if aCell.IsPresent('F') then
   begin
+    if aCell.F.T <> stcftNormal then
+      ForgetFormulas;
     aCell.Clear('F');
-    fWorkbook.FormulaRemoved;
+    fWorkbook.FormulaChanged;
   end;
   aCell.Clear('Is');
   aCell.Clear(@aCell.V);
@@ -1054,15 +1879,15 @@ begin
   aCell.Clear(@aCell.Vm);
 end;
 
-procedure TWorksheet.WriteNumber(aRow, aColumn: integer; aValue: Double);
+procedure TWorksheet.WriteNumber(aRow, aColumn: integer; aValue: Double; const aTarget: TRange);
 begin
   if IsNan(aValue) or IsInfinite(aValue) then
     Refuse(aRow, aColumn, 'Value', 'Excel holds no NaN or infinity')
-  else if CanWrite(aRow, aColumn) then
+  else if CanWrite(aRow, aColumn, aTarget) then
     CellForWriting(aRow, aColumn).V := FloatText(aValue, ftDouble);
 end;
 
-procedure TWorksheet.WriteDate(aRow, aColumn: integer; aValue: TDateTime);
+procedure TWorksheet.WriteDate(aRow, aColumn: integer; aValue: TDateTime; const aTarget: TRange);
 begin
   var serial: Double;
   if not DateToSerial(aValue, fWorkbook.Date1904, serial) then
@@ -1070,7 +1895,7 @@ begin
     Refuse(aRow, aColumn, 'Value', 'a date before the first one Excel has (' + DateToISO8601(aValue) + ')');
     Exit;
   end;
-  if not CanWrite(aRow, aColumn) then
+  if not CanWrite(aRow, aColumn, aTarget) then
     Exit;
   var style: integer := EffectiveStyle(aRow, aColumn);
   if not fWorkbook.IsDateStyle(style) then
@@ -1092,11 +1917,11 @@ begin
   cell.V := FloatText(serial, ftDouble);
 end;
 
-procedure TWorksheet.WriteText(aRow, aColumn: integer; const aValue: string);
+procedure TWorksheet.WriteText(aRow, aColumn: integer; const aValue: string; const aTarget: TRange);
 begin
   if aValue.Length > cMaxText then
     Refuse(aRow, aColumn, 'Value', Format('%d characters, Excel''s cells hold up to %d', [aValue.Length, cMaxText]))
-  else if CanWrite(aRow, aColumn) then
+  else if CanWrite(aRow, aColumn, aTarget) then
   begin
     var index: integer := fWorkbook.SharedStringIndex(aValue);
     if index < 0 then
@@ -1110,9 +1935,9 @@ begin
   end;
 end;
 
-procedure TWorksheet.WriteBoolean(aRow, aColumn: integer; aValue: boolean);
+procedure TWorksheet.WriteBoolean(aRow, aColumn: integer; aValue: boolean; const aTarget: TRange);
 begin
-  if CanWrite(aRow, aColumn) then
+  if CanWrite(aRow, aColumn, aTarget) then
   begin
     var cell: TCellCT := CellForWriting(aRow, aColumn);
     cell.T := stctB;
@@ -1120,26 +1945,77 @@ begin
   end;
 end;
 
-procedure TWorksheet.WriteValue(aRow, aColumn: integer; const aValue: Variant);
+procedure TWorksheet.WriteValue(aRow, aColumn: integer; const aValue: Variant; const aTarget: TRange);
 begin
   case VarType(aValue) of
     varEmpty, varNull:
       ClearContents(MakeRange(aRow, aColumn, aRow, aColumn));
     varSmallint, varInteger, varShortInt, varByte, varWord, varLongWord, varInt64, varUInt64, varSingle, varDouble, varCurrency:
-      WriteNumber(aRow, aColumn, aValue);
+      WriteNumber(aRow, aColumn, aValue, aTarget);
     varDate:
-      WriteDate(aRow, aColumn, VarToDateTime(aValue));
+      WriteDate(aRow, aColumn, VarToDateTime(aValue), aTarget);
     varBoolean:
-      WriteBoolean(aRow, aColumn, aValue);
+      WriteBoolean(aRow, aColumn, aValue, aTarget);
     varOleStr, varString, varUString:
       if string(aValue) = '' then // as in Excel
         ClearContents(MakeRange(aRow, aColumn, aRow, aColumn))
       else
-        WriteText(aRow, aColumn, aValue);
+        WriteText(aRow, aColumn, aValue, aTarget);
   else
     raise EArgumentException.CreateFmt('A cell takes a number, a date, a string or a Boolean, not a Variant of type %d',
       [VarType(aValue)]);
   end;
+end;
+
+procedure TWorksheet.WriteFormula(aRow, aColumn: integer; const aText: string; const aTarget: TRange);
+begin
+  if CanWrite(aRow, aColumn, aTarget) then
+  begin
+    CellForWriting(aRow, aColumn).F.XmlValue := EncodeText(aText);
+    fWorkbook.FormulaChanged;
+  end;
+end;
+
+// the range as one array formula, written whole or not at all: its first cell holds it, Excel fills the others when it
+// calculates
+procedure TWorksheet.WriteArray(const aRange: TRange; const aFormula: string);
+begin
+  var text: string;
+  if not CheckFormula(aRange.fTop, aRange.fLeft, aFormula, text) then
+    Exit;
+  FindFormulas;
+  FindFixedAreas;
+  var why: string := '';
+  for var area: TRange in fArrays do
+    if Overlaps(area, aRange) and not Contains(aRange, area) then
+      why := 'part of an array formula (' + area.Address + '), which Excel changes only as a whole';
+  for var area: TRange in fDataTables do
+    if Overlaps(area, aRange) then
+      why := 'a data table, which Excel''s what-if analysis fills';
+  for var area: TRange in fTableRows do
+    if Overlaps(area, aRange) then
+      why := 'a table''s header or totals row (part of the table''s definition, which Calcite does not change yet)';
+  if (aRange.RowCount > 1) or (aRange.ColumnCount > 1) then
+    for var area: TRange in fTables do
+      if Overlaps(area, aRange) then
+        why := 'a table, where Excel allows no array formula of several cells';
+  for var area: TRange in fPivots do
+    if Overlaps(area, aRange) then
+      why := 'a pivot table, which Excel builds again';
+  if why <> '' then
+  begin
+    Refuse(aRange.fTop, aRange.fLeft, 'Formula', 'an array formula over ' + why);
+    Exit;
+  end;
+  ClearContents(aRange);
+  if not CanWrite(aRange.fTop, aRange.fLeft, aRange) then
+    Exit;
+  var formula: TCellFormulaCT := CellForWriting(aRange.fTop, aRange.fLeft).F;
+  formula.T := stcftArray;
+  formula.Ref := aRange.Address;
+  formula.XmlValue := EncodeText(text);
+  ForgetFormulas;
+  fWorkbook.FormulaChanged;
 end;
 
 procedure TWorksheet.ClearContents(const aRange: TRange);
@@ -1170,7 +2046,7 @@ begin
       var cell: TCellCT := row.C[cellIndex];
       var column: integer := ColumnOf(cell.R);
       var hasValue: boolean := cell.Present[@cell.V] or cell.IsPresent('F') or cell.IsPresent('Is');
-      if hasValue and not CanWrite(row.R, column) then
+      if hasValue and not CanWrite(row.R, column, aRange) then
       begin
         Inc(cellIndex);
         Continue;
@@ -1497,7 +2373,7 @@ end;
 
 // a sheet's cells that belong to its tables' and pivot tables' definitions: header and totals rows, pivot tables with their
 // page fields above them
-procedure TWorkbook.FixedAreas(const aSheetPart: string; aTableRows, aPivots: TList<TRange>);
+procedure TWorkbook.FixedAreas(const aSheetPart: string; aTables, aTableRows, aPivots: TList<TRange>);
 begin
   var relationships: TRelationshipsE := ReadRelationships(Self, aSheetPart);
   if relationships = nil then
@@ -1519,6 +2395,7 @@ begin
           if ParseAddress(table.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
           begin
             var whole: TRange := area;
+            aTables.Add(whole);
             if table.HeaderRowCount > 0 then
             begin
               area.fBottom := whole.fTop + integer(table.HeaderRowCount) - 1;
@@ -1715,8 +2592,9 @@ begin
   TWorkbookE(EditPart(fWorkbookPart)).CalcPr.FullCalcOnLoad := True;
 end;
 
-// the calculation chain is Excel's cache: a stale entry is its repair prompt, so it goes and Excel builds a new one
-procedure TWorkbook.FormulaRemoved;
+// the calculation chain is Excel's cache: a stale entry is its repair prompt, a missing one is not calculated, so it goes with
+// any change of a formula and Excel builds a new one
+procedure TWorkbook.FormulaChanged;
 begin
   if fCalcChainPart.IsEmpty then
     Exit;

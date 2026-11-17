@@ -16,14 +16,19 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 - Calcite's cells: `Sheet.Range['B5']`, `Sheet.Cells[5, 'B']` (Excel's order, from 1) read and write `Value` (a Variant) or
   `AsString`, `AsFloat`, `AsInteger`, `AsDateTime`, `AsBoolean`, as Excel keeps them - text as a shared string found or
   added, a date as a number in a date format (Excel's short date when the cell had none), Excel recalculating formulas on open;
-  text stays text (`'=A1'`, `'00123'`). `ClearContents` keeps a formatted cell; formulas themselves come later
+  text stays text (`'=A1'`, `'00123'`). `ClearContents` keeps a formatted cell
+- Calcite's formulas, as Excel's own properties: `Formula` reads `=SUM(A1:A3)` (a shared formula's cells too, moved from its
+  first one) and writes one, the `=` optional; one formula written to several cells moves its relative references to each, as
+  Excel fills, a reference off the sheet becoming `#REF!`; `HasFormula`, `HasArray`, `CurrentArray` and `FormulaArray` for array
+  formulas, changed only as a whole as in Excel. A formula broken on its face (a quote or bracket left open) is refused and
+  listed in `Issues`. A formula written has no value until Excel calculates it, which it does when the file opens
 - `ToXml` and `ToXmlFile` take write options for that call, whatever `TBasite.Pretty` says: `[]` compact, `[woPretty]`
   indented, `woBooleanDigits` writes `xs:boolean` as `1` and `0`, as Office does
 - `TXmliteClass = class of TXmlite`: an object of a class known only at run time, without ProRock.Basite
 - The readers tell what went wrong: `FromXml`, `FromXmlInPlace`, `FromXmlFile` and `FromXmlBytes` take a `TIssues` (a record,
   nothing to free) and list why a read returned False with its line and column, values kept that do not fit their type and
   content not in the schema; these overloads answer instead of raising (a missing file is False too), `OnIssue` hears each
-- Calcite's `Issues` and `OnIssue`: a write Excel would refuse (a cell of an array formula, a table's header, NaN) leaves the
+- Calcite's `Issues` and `OnIssue`: a write Excel would refuse (a part of an array formula, a table's header, NaN) leaves the
   cell as it was and is listed, the rest is saved
 
 #### Changed
