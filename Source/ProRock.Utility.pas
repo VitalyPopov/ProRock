@@ -159,6 +159,53 @@ type
     class function ReadInteger(var aCursor: PChar; aHex: boolean = False): integer; static; inline;
   end;
 
+  TIssueSeverity = (isHint, isWarning, isError); // as the compiler's
+
+  // what went wrong, or is worth knowing, in a call or an object; Code is stable (for code), Message for people
+  TIssue = record
+    Severity: TIssueSeverity;
+    Code: string;
+    Where: string; // Sheet1!B5, line 12, column 5; '' when nowhere in particular
+    Message: string;
+    // Error at Sheet1!B5: ...
+    function ToString: string;
+  end;
+
+  TIssueEvent = reference to procedure(const aIssue: TIssue);
+
+  // a record: no Create or Free, a local one starts empty; Add appends, so one list may collect several calls
+  TIssues = record
+  public type
+    TEnumerator = record
+    private
+      fItems: TArray<TIssue>;
+      fIndex: integer;
+      function GetCurrent: TIssue; inline;
+    public
+      function MoveNext: boolean; inline;
+      property Current: TIssue read GetCurrent;
+    end;
+  private
+    fItems: TArray<TIssue>;
+    function GetCount: integer; inline;
+    function GetItem(aIndex: integer): TIssue; inline;
+  public
+    // called with each issue as it is added: a log as it happens, or a raise to stop at the first one
+    OnIssue: TIssueEvent;
+
+    procedure Add(const aIssue: TIssue); overload;
+    procedure Add(aSeverity: TIssueSeverity; const aCode, aWhere, aMessage: string); overload;
+    // OnIssue stays
+    procedure Clear;
+    function HasErrors: boolean;
+    // one issue a line
+    function Text: string;
+    function GetEnumerator: TEnumerator;
+    property Count: integer read GetCount;
+    property Items[aIndex: integer]: TIssue read GetItem; default;
+  end;
+  PIssues = ^TIssues;
+
   TUtility = class abstract
   public const
     cNameStartChars = ['A' .. 'Z', 'a' .. 'z'];
@@ -199,6 +246,95 @@ function FloatText(aValue: Extended; aFloatType: TFloatType; aPlain: boolean = F
 implementation
 
 uses System.RegularExpressions, System.StrUtils;
+
+{ TIssue }
+
+function TIssue.ToString: string;
+const
+  cSeverities: array [TIssueSeverity] of string = ('Hint', 'Warning', 'Error');
+begin
+  if Where.IsEmpty then
+    Result := cSeverities[Severity] + ': ' + Message
+  else
+    Result := cSeverities[Severity] + ' at ' + Where + ': ' + Message;
+end;
+
+{ TIssues.TEnumerator }
+
+function TIssues.TEnumerator.GetCurrent: TIssue;
+begin
+  Result := fItems[fIndex];
+end;
+
+function TIssues.TEnumerator.MoveNext: boolean;
+begin
+  Inc(fIndex);
+  Result := fIndex < Length(fItems);
+end;
+
+{ TIssues }
+
+function TIssues.GetCount: integer;
+begin
+  Result := Length(fItems);
+end;
+
+function TIssues.GetItem(aIndex: integer): TIssue;
+begin
+  Result := fItems[aIndex];
+end;
+
+procedure TIssues.Add(const aIssue: TIssue);
+begin
+  fItems := fItems + [aIssue];
+  if Assigned(OnIssue) then
+    OnIssue(aIssue);
+end;
+
+procedure TIssues.Add(aSeverity: TIssueSeverity; const aCode, aWhere, aMessage: string);
+begin
+  var issue: TIssue;
+  issue.Severity := aSeverity;
+  issue.Code := aCode;
+  issue.Where := aWhere;
+  issue.Message := aMessage;
+  Add(issue);
+end;
+
+procedure TIssues.Clear;
+begin
+  fItems := nil;
+end;
+
+function TIssues.HasErrors: boolean;
+begin
+  for var issue: TIssue in fItems do
+    if issue.Severity = isError then
+      Exit(True);
+  Result := False;
+end;
+
+function TIssues.Text: string;
+begin
+  var lines: TStringBuilder := TStringBuilder.Create;
+  try
+    for var issue: TIssue in fItems do
+    begin
+      if lines.Length > 0 then
+        lines.AppendLine;
+      lines.Append(issue.ToString);
+    end;
+    Result := lines.ToString;
+  finally
+    lines.Free;
+  end;
+end;
+
+function TIssues.GetEnumerator: TEnumerator;
+begin
+  Result.fItems := fItems;
+  Result.fIndex := -1;
+end;
 
 // own text <-> Double/Single, the RTL's are inexact (Win64 most): Eisel-Lemire reads, Schubfach writes (shortest even when tiny)
 

@@ -20,8 +20,15 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 - `ToXml` and `ToXmlFile` take write options for that call, whatever `TBasite.Pretty` says: `[]` compact, `[woPretty]`
   indented, `woBooleanDigits` writes `xs:boolean` as `1` and `0`, as Office does
 - `TXmliteClass = class of TXmlite`: an object of a class known only at run time, without ProRock.Basite
+- The readers tell what went wrong: `FromXml`, `FromXmlInPlace`, `FromXmlFile` and `FromXmlBytes` take a `TIssues` (a record,
+  nothing to free) and list why a read returned False with its line and column, values kept that do not fit their type and
+  content not in the schema; these overloads answer instead of raising (a missing file is False too), `OnIssue` hears each
+- Calcite's `Issues` and `OnIssue`: a write Excel would refuse (a cell of an array formula, a table's header, NaN) leaves the
+  cell as it was and is listed, the rest is saved
 
 #### Changed
+- `RegisterNamespace` raises when a namespace is registered again (two units for one namespace in a program): the second unit's
+  classes were left unknown to the reader without a word
 - The SpreadsheetML, DrawingML, package relationships and document properties (core, app, Dublin Core) units moved from the
   samples to `Source`: if your project lists the samples' copies, remove them from it
 

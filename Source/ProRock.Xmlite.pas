@@ -9,6 +9,9 @@ uses System.Classes, System.SysUtils, System.StrUtils, System.Generics.Collectio
 const
   // re-exported: a generated unit's {$IF} sees only the units of its own uses
   cProRockCodeLevel = ProRock.Basite.cProRockCodeLevel;
+  isHint = ProRock.Utility.isHint;
+  isWarning = ProRock.Utility.isWarning;
+  isError = ProRock.Utility.isError;
 
   cXmlDeclaration = '<?xml version="1.0" encoding="UTF-8"?>';
 
@@ -27,6 +30,10 @@ const
 type
   {$REGION 'ProRock.Basite types aliases'}
   TNaming = ProRock.Utility.TNaming;
+  TIssueSeverity = ProRock.Utility.TIssueSeverity;
+  TIssue = ProRock.Utility.TIssue;
+  TIssueEvent = ProRock.Utility.TIssueEvent;
+  TIssues = ProRock.Utility.TIssues;
   TNamingAttribute = ProRock.Utility.TNamingAttribute;
   TBaseTypeAttribute = ProRock.Basite.TBaseTypeAttribute;
   TPlainNumberAttribute = ProRock.Basite.TPlainNumberAttribute;
@@ -232,6 +239,7 @@ type
     function WritesRequired(aProperty: TProperty): boolean; inline;
 
     function ReadTagContents(var aCursor: PChar; const aName: string; aXmlns: TXmlns): boolean;
+    function ReadInPlace(var aXml: string; aIssues: PIssues; const aSource: string = ''): boolean;
 
     function FromXml(var aXmlCursor: PChar; aXmlns: TXmlns = nil): boolean; overload;
     // aScope: the default namespace in scope; aNamespaces: the element declares its namespaces (a root)
@@ -254,11 +262,17 @@ type
     // reads a copy: aXml stays as it is
     function FromXml(const aXml: string): boolean; overload;
     // reads without a copy - aXml is changed by the read (large documents read once)
-    function FromXmlInPlace(var aXml: string): boolean;
+    function FromXmlInPlace(var aXml: string): boolean; overload;
     // a file or bytes in their encoding: the BOM (UTF-8, UTF-16), else the declaration's encoding="", else UTF-8. False also
     // when the encoding is unknown or the bytes do not fit it
-    function FromXmlFile(const aFileName: string): boolean;
-    function FromXmlBytes(const aXml: TBytes): boolean;
+    function FromXmlFile(const aFileName: string): boolean; overload;
+    function FromXmlBytes(const aXml: TBytes): boolean; overload;
+    // the same, and aIssues gets why a read answered False, values kept that do not fit their type, content not in the
+    // schema (once a name); added to what aIssues holds. These answer instead of raising: a file not read is False too
+    function FromXml(const aXml: string; var aIssues: TIssues): boolean; overload;
+    function FromXmlInPlace(var aXml: string; var aIssues: TIssues): boolean; overload;
+    function FromXmlFile(const aFileName: string; var aIssues: TIssues): boolean; overload;
+    function FromXmlBytes(const aXml: TBytes; var aIssues: TIssues): boolean; overload;
     // UTF-8 without a BOM, as the declaration says
     procedure ToXmlFile(const aFileName: string; const aName: string = ''); overload;
     procedure ToXmlFile(const aFileName: string; aOptions: TXmliteWriteOptions; const aName: string = ''); overload;
@@ -459,6 +473,7 @@ type
     class var Instance: TMetaBankXmlite;
 
     class constructor Create;
+    class procedure RegisteredTwice(aNamespace: TNamespace); static;
     class procedure AddComponents(aNamespace: TNamespace; const aSimpleTypes: TArray<PTypeInfo>; const aComplexTypes: TArray<TBasiteClass>;
       const aAttributes: TArray<PTypeInfo>; const aAttributeGroups, aElements, aGroups: TArray<TBasiteClass>);
   public
@@ -495,9 +510,85 @@ implementation
 
 uses System.IniFiles, System.Variants, System.Hash, System.IOUtils;
 
+type
+  // what the read in progress on this thread reports to, and where its text starts (for a line and column)
+  TReadIssues = record
+    Issues: PIssues;
+    Source: string; // a file name, before the line
+    Start: PChar;
+    Failed: boolean; // the first failure is reported: the innermost, where the read stopped
+    Named: THashSet<string>; // what is reported once a read: code + key
+    // where the lines were counted to: counted on from there, as a read moves forward
+    LineCursor, LineStart: PChar;
+    Line: integer;
+  end;
+  PReadIssues = ^TReadIssues;
+
 // the read order of elements (TXmlite.XmlPosition): one counter per thread, so parsing in several threads needs no lock
 threadvar
   gXmlReadPosition: cardinal;
+  gReadIssues: PReadIssues; // nil: no issues asked for
+
+// line 3, column 20 - in the text as the parser left it: a &#10; unescaped before aCursor moves it by a line
+function ReadPlace(aContext: PReadIssues; aCursor: PChar): string;
+begin
+  if aCursor < aContext.LineCursor then
+  begin
+    aContext.LineCursor := aContext.Start;
+    aContext.LineStart := aContext.Start;
+    aContext.Line := 1;
+  end;
+  while aContext.LineCursor < aCursor do
+  begin
+    if aContext.LineCursor^ = #10 then
+    begin
+      Inc(aContext.Line);
+      aContext.LineStart := aContext.LineCursor + 1;
+    end;
+    Inc(aContext.LineCursor);
+  end;
+  Result := Format('line %d, column %d', [aContext.Line, aCursor - aContext.LineStart + 1]);
+  if not aContext.Source.IsEmpty then
+    Result := aContext.Source + ', ' + Result;
+end;
+
+// False, for Exit(ReadFailed(...))
+function ReadFailed(aCursor: PChar; const aMessage: string): boolean;
+begin
+  Result := False;
+  var context: PReadIssues := gReadIssues;
+  if (context = nil) or context.Failed then
+    Exit;
+  context.Failed := True;
+  context.Issues.Add(isError, 'Malformed', ReadPlace(context, aCursor), aMessage);
+end;
+
+// aKey (an element and a name in it): reported once a read under aCode; '' - every time
+procedure ReadReport(aCursor: PChar; aSeverity: TIssueSeverity; const aCode, aKey, aMessage: string);
+begin
+  var context: PReadIssues := gReadIssues;
+  if context = nil then
+    Exit;
+  if not aKey.IsEmpty then
+  begin
+    if context.Named = nil then
+      context.Named := THashSet<string>.Create;
+    if context.Named.Contains(aCode + ' ' + aKey) then
+      Exit;
+    context.Named.Add(aCode + ' ' + aKey);
+  end;
+  context.Issues.Add(aSeverity, aCode, ReadPlace(context, aCursor), aMessage);
+end;
+
+function Quoted(const aValue: string): string;
+const
+  cLength = 40;
+begin
+  if aValue.Length > cLength then
+    Result := '"' + aValue.Substring(0, cLength) + '..."'
+  else
+    Result := '"' + aValue + '"';
+end;
 
 { TBasiteHelper }
 
@@ -515,7 +606,52 @@ end;
 function TBasiteHelper.FromXmlBytes(const aXml: TBytes): boolean;
 begin
   var xml: string;
-  Result := TReaderXmlite.DecodeXml(aXml, xml) and FromXmlInPlace(xml);
+  Result := TReaderXmlite.DecodeXml(aXml, xml) and ReadInPlace(xml, nil);
+end;
+
+function TBasiteHelper.FromXml(const aXml: string; var aIssues: TIssues): boolean;
+begin
+  var xml: string := aXml;
+  Result := ReadInPlace(xml, @aIssues);
+end;
+
+function TBasiteHelper.FromXmlInPlace(var aXml: string; var aIssues: TIssues): boolean;
+begin
+  Result := ReadInPlace(aXml, @aIssues);
+end;
+
+function DecodeXml(const aBytes: TBytes; out aXml: string; var aIssues: TIssues; const aSource: string): boolean;
+begin
+  Result := TReaderXmlite.DecodeXml(aBytes, aXml);
+  if not Result then
+    aIssues.Add(isError, 'Encoding', aSource, 'the encoding is unknown, or the bytes do not fit it');
+end;
+
+function TBasiteHelper.FromXmlBytes(const aXml: TBytes; var aIssues: TIssues): boolean;
+begin
+  var xml: string;
+  Result := DecodeXml(aXml, xml, aIssues, '') and ReadInPlace(xml, @aIssues);
+end;
+
+function TBasiteHelper.FromXmlFile(const aFileName: string; var aIssues: TIssues): boolean;
+begin
+  var bytes: TBytes;
+  try
+    bytes := TFile.ReadAllBytes(aFileName);
+  except
+    on e: Exception do
+    begin
+      // 10.3 - 10.4: EFileNotFoundException and its kin are no EInOutError yet
+      if not (e.InheritsFrom(EStreamError) or e.InheritsFrom(EInOutError) or e.InheritsFrom(EOSError) or
+        e.InheritsFrom(EFileNotFoundException) or e.InheritsFrom(EDirectoryNotFoundException) or
+        e.InheritsFrom(EPathTooLongException)) then
+        raise;
+      aIssues.Add(isError, 'File', aFileName, e.Message);
+      Exit(False);
+    end;
+  end;
+  var xml: string;
+  Result := DecodeXml(bytes, xml, aIssues, aFileName) and ReadInPlace(xml, @aIssues, aFileName);
 end;
 
 procedure TBasiteHelper.ToXmlFile(const aFileName: string; const aName: string);
@@ -531,7 +667,7 @@ end;
 function TBasiteHelper.FromXml(const aXml: string): boolean;
 begin
   var xml: string := aXml;
-  Result := FromXmlInPlace(xml); // shared now: copied there
+  Result := ReadInPlace(xml, nil);
 end;
 
 // XML 1.0, 2.11: a raw CRLF or CR is a line feed before anything is read; a reference (&#xD;) stays a carriage return
@@ -561,28 +697,59 @@ end;
 
 function TBasiteHelper.FromXmlInPlace(var aXml: string): boolean;
 begin
+  Result := ReadInPlace(aXml, nil);
+end;
+
+function TBasiteHelper.ReadInPlace(var aXml: string; aIssues: PIssues; const aSource: string): boolean;
+begin
   // the parser writes into the text: a shared string gets its own copy first, so only aXml changes
   UniqueString(aXml);
   NormalizeLineEnds(aXml);
   var xmlCursor: PChar := PChar(aXml);
-  if not TReaderXmlite.MoveToChar(xmlCursor, '<') then
-    Exit(False);
 
-  // declaration
-  while (xmlCursor^ = '<') and (xmlCursor[1] = '?') do
+  // a read inside a read (an OnIssue handler's) reports to its own list, or to none
+  var outer: PReadIssues := gReadIssues;
+  var context: TReadIssues;
+  context.Named := nil;
+  if aIssues = nil then
+    gReadIssues := nil
+  else
   begin
-    Inc(xmlCursor, 2);
-    while xmlCursor[1] <> '>' do
-      if not TReaderXmlite.MoveToChar(xmlCursor, '?') then
-        Exit(False);
-
-    if not TReaderXmlite.MoveToChar(xmlCursor, '<') then
-      Exit(False);
+    context.Issues := aIssues;
+    context.Source := aSource;
+    context.Start := xmlCursor;
+    context.Failed := False;
+    context.LineCursor := xmlCursor;
+    context.LineStart := xmlCursor;
+    context.Line := 1;
+    gReadIssues := @context;
   end;
+  try
+    if not TReaderXmlite.MoveToChar(xmlCursor, '<') then
+      Exit(ReadFailed(xmlCursor, 'no element: the text holds no XML'));
 
-  Clear;
+    // declaration
+    while (xmlCursor^ = '<') and (xmlCursor[1] = '?') do
+    begin
+      var declaration: PChar := xmlCursor;
+      Inc(xmlCursor, 2);
+      while xmlCursor[1] <> '>' do
+        if not TReaderXmlite.MoveToChar(xmlCursor, '?') then
+          Exit(ReadFailed(declaration, '<? is not closed by ?>'));
 
-  Result := FromXml(xmlCursor);
+      if not TReaderXmlite.MoveToChar(xmlCursor, '<') then
+        Exit(ReadFailed(xmlCursor, 'no element after the XML declaration'));
+    end;
+
+    Clear;
+
+    Result := FromXml(xmlCursor);
+    if not Result then
+      ReadFailed(xmlCursor, 'not well-formed XML'); // a failure not described where it happened
+  finally
+    gReadIssues := outer;
+    context.Named.Free;
+  end;
 end;
 
 function TBasiteHelper.FromXml(var aXmlCursor: PChar; aXmlns: TXmlns): boolean;
@@ -595,12 +762,15 @@ begin
     TXmlite(Self).DoBeforeParsing;
 
   if not TReaderXmlite.MoveToChar(aXmlCursor, '<') then
-    Exit;
+    Exit(ReadFailed(aXmlCursor, 'an element expected'));
 
   // pass the DOCTYPE, comments, processing instructions
   while (aXmlCursor[1] = '!') or (aXmlCursor[1] = '?') do
+  begin
+    var markup: PChar := aXmlCursor;
     if not TReaderXmlite.PassMarkup(aXmlCursor) or not TReaderXmlite.MoveToChar(aXmlCursor, '<') then
-      Exit;
+      Exit(ReadFailed(markup, 'a DOCTYPE, comment or processing instruction not closed, or no element after it'));
+  end;
 
   var xmlns: TXmlns;
 
@@ -618,21 +788,23 @@ begin
   end;
 
   try
+    var tagStart: PChar := aXmlCursor;
     if not TReaderXmlite.ReadXmlns(aXmlCursor, xmlns) then
-      Exit;
+      Exit(ReadFailed(tagStart, 'the start tag is not well-formed'));
 
     var isEndTag: boolean;
     var objectName, name, prefix: string;
     if not TReaderXmlite.ReadTagName(aXmlCursor, isEndTag, prefix, name, objectName) then
-      Exit;
+      Exit(ReadFailed(tagStart, 'a start tag expected'));
 
     if CharInSet(aXmlCursor^, cWhitespaces) then
       // attributes
       while TReaderXmlite.MoveToVisualChar(aXmlCursor) and not CharInSet(aXmlCursor^, ['/', '>']) do
       begin
+        var attributeStart: PChar := aXmlCursor;
         var attributePrefix, attributeName, attributeFullName, attributeValue: string;
         if not TReaderXmlite.ReadAttributeName(aXmlCursor, attributePrefix, attributeName, attributeFullName) then
-          Exit;
+          Exit(ReadFailed(attributeStart, 'an attribute of <' + objectName + '> is not well-formed'));
 
         attributeValue := TReaderXmlite.ReadQuotedValueInPlace(aXmlCursor);
 
@@ -660,7 +832,12 @@ begin
               if TXmlite(Self).fXmlBadAttributes = nil then
                 TXmlite(Self).fXmlBadAttributes := TDictionary<string, TProperty>.Create;
               TXmlite(Self).fXmlBadAttributes.AddOrSetValue(attributeFullName, propertyData);
-            end;
+              ReadReport(attributeStart, isWarning, 'BadValue', '', Format('%s=%s of <%s> does not fit its type: kept as read',
+                [attributeFullName, Quoted(attributeValue), objectName]));
+            end
+            else if uri <> cXsiUri then
+              ReadReport(attributeStart, isHint, 'UnknownAttribute', objectName + ' ' + attributeFullName,
+                Format('%s of <%s> is not in the schema: kept as read', [attributeFullName, objectName]));
             // its prefix, and for xsi:type the value's (dcterms:W3CDTF) - declared again on write
             if not attributePrefix.IsEmpty and not uri.IsEmpty then
               TXmlite(Self).XmlAttributeNamespaces.AddOrSetValue(attributePrefix, uri);
@@ -675,7 +852,7 @@ begin
           end;
       end
     else if not TReaderXmlite.MoveToVisualChar(aXmlCursor) then
-      Exit;
+      Exit(ReadFailed(tagStart, 'the text ends inside <' + objectName + '>'));
 
     if (aXmlCursor^ = '/') and (aXmlCursor[1] = '>') then
     begin // empty tag
@@ -697,17 +874,21 @@ begin
         if not text.IsEmpty then
         begin
           if not textProperty.TrySetValue(Self, text) and Meta.Xmlite.IsTXmlite then
+          begin
             TXmlite(Self).fXmlText := text; // does not fit its type: kept as it came, written while the property is not present
+            ReadReport(tagStart, isWarning, 'BadValue', '', Format('the text %s of <%s> does not fit its type: kept as read',
+              [Quoted(text), objectName]));
+          end;
         end
         else if Meta.Xmlite.IsTXmlite then
           TXmlite(Self).ReadEmptyText;
         if aXmlCursor^ = #0 then
-          Exit;
+          Exit(ReadFailed(tagStart, 'the text ends before </' + objectName + '>'));
       end
       else if not Meta.Xmlite.Mixed then // mixed content: every text run read in ReadTagContents, whitespace included
       begin
         if not TReaderXmlite.MoveToVisualChar(aXmlCursor) then
-          Exit;
+          Exit(ReadFailed(tagStart, 'the text ends before </' + objectName + '>'));
 
         // CDATA, a comment or a PI may come first; only whitespace around a comment before the first child is no text
         if Meta.Xmlite.IsTXmlite and ((aXmlCursor^ <> '<') or (aXmlCursor[1] = '!') or (aXmlCursor[1] = '?')) then
@@ -720,7 +901,11 @@ begin
 
       // malformed content fails the read; the object keeps what was read up to there
       Result := ReadTagContents(aXmlCursor, objectName, xmlns);
-    end;
+    end
+    else if aXmlCursor^ = #0 then
+      ReadFailed(tagStart, 'the text ends inside <' + objectName + '>')
+    else
+      ReadFailed(aXmlCursor, '> or /> expected in <' + objectName + '>');
 
   finally
     if not Meta.Xmlite.IsTXmlite then
@@ -838,30 +1023,34 @@ begin
     begin // the text up to the next tag, whitespace included - CDATA as text, comments and processing instructions passed
       var text: string := TReaderXmlite.ReadUnescapeInPlace(aCursor, '<');
       if aCursor^ = #0 then
-        Exit;
+        Exit(ReadFailed(aCursor, 'the text ends before </' + aName + '>'));
       if not text.IsEmpty then
         TXmlite(Self).AddNode(xnkText, text, nil, nil, 0);
     end;
 
     if not TReaderXmlite.MoveToChar(aCursor, '<') then
-      Exit;
+      Exit(ReadFailed(aCursor, 'the text ends before </' + aName + '>'));
 
     // pass comments, CDATA and processing instructions between elements (mixed content's text is not kept)
     while (aCursor[1] = '!') or (aCursor[1] = '?') do
+    begin
+      var markup: PChar := aCursor;
       if not TReaderXmlite.PassMarkup(aCursor) or not TReaderXmlite.MoveToChar(aCursor, '<') then
-        Exit;
+        Exit(ReadFailed(markup, 'a comment, CDATA or processing instruction not closed, or the text ends before </' + aName +
+          '>'));
+    end;
 
     var cursorStart: PChar := aCursor;
     var isEndTag: boolean;
     var tagFullName, tagName, tagPrefix: string;
     if not TReaderXmlite.ReadTagName(aCursor, isEndTag, tagPrefix, tagName, tagFullName) then
-      Exit;
+      Exit(ReadFailed(cursorStart, 'a tag expected in <' + aName + '>'));
 
     if isEndTag then
       if tagFullName = aName then
         Exit(True)
-      else // closing tag with wrong name
-        Exit;
+      else
+        Exit(ReadFailed(cursorStart, Format('</%s> expected, </%s> found', [aName, tagFullName])));
 
     // xmlns declared on the tag itself applies to the tag's own name too (e.g. <AddResponse xmlns="http://tempuri.org/">)
     var elementUri: string := TagUri(cursorStart, tagPrefix, aXmlns);
@@ -909,13 +1098,17 @@ begin
     begin // not described: kept as its text, to be written back where it was - a well-formed element only
       aCursor := cursorStart;
       if not KeepFragment(aCursor, tagFullName, lastProperty, lastCount, nil) then
-        Exit;
+        Exit(ReadFailed(cursorStart, '<' + tagFullName + '> is not well-formed'));
+      ReadReport(cursorStart, isHint, 'UnknownElement', aName + ' ' + tagFullName,
+        Format('<%s> in <%s> is not in the schema: kept as read', [tagFullName, aName]));
     end
     else if propertyElement = nil then
     begin // no such name in elements list of the object - skip the whole node till it's end
       Inc(aCursor);
       if not TReaderXmlite.PassNode(aCursor, tagFullName) then
-        Exit;
+        Exit(ReadFailed(cursorStart, '<' + tagFullName + '> is not well-formed'));
+      ReadReport(cursorStart, isWarning, 'Skipped', aName + ' ' + tagFullName,
+        Format('<%s> in <%s> is not in the schema: skipped', [tagFullName, aName]));
     end
     else
     begin
@@ -924,7 +1117,9 @@ begin
       begin // a single element that came again (the schema has it once): kept as its text, not read over the first
         aCursor := cursorStart;
         if not KeepFragment(aCursor, tagFullName, lastProperty, lastCount, nil) then
-          Exit;
+          Exit(ReadFailed(cursorStart, '<' + tagFullName + '> is not well-formed'));
+        ReadReport(cursorStart, isWarning, 'Repeated', '',
+          Format('<%s> came again in <%s>, where the schema has it once: kept as read', [tagFullName, aName]));
         Continue;
       end;
       lastProperty := propertyElement;
@@ -935,11 +1130,13 @@ begin
             var text: string;
             var tagEnd: PChar;
             if not TReaderXmlite.ReadValueNode(aCursor, tagFullName, text, tagEnd) then
-              Exit;
+              Exit(ReadFailed(cursorStart, '<' + tagFullName + '> is not well-formed'));
             if not TPropertyData(propertyElement).TrySetValue(Self, text) then
             begin
               if not KeepBadValue(cursorStart, tagEnd, text, tagFullName, propertyElement, 1) then
-                Exit;
+                Exit(ReadFailed(cursorStart, '<' + tagFullName + '> is not well-formed'));
+              ReadReport(cursorStart, isWarning, 'BadValue', '', Format('<%s>%s does not fit its type: kept as read',
+                [tagFullName, Quoted(text)]));
             end
             else if ordered then
               TXmlite(Self).AddNode(xnkElement, '', nil, propertyElement, 0);
@@ -982,13 +1179,15 @@ begin
             var text: string;
             var tagEnd: PChar;
             if not TReaderXmlite.ReadValueNode(aCursor, tagFullName, text, tagEnd) then
-              Exit;
+              Exit(ReadFailed(cursorStart, '<' + tagFullName + '> is not well-formed'));
             var added: boolean := TPropertyDataList(propertyElement).TryAddText(Self, text);
             lastCount := TPropertyDataList(propertyElement).Count(Self);
             if not added then
             begin
               if not KeepBadValue(cursorStart, tagEnd, text, tagFullName, propertyElement, lastCount) then
-                Exit;
+                Exit(ReadFailed(cursorStart, '<' + tagFullName + '> is not well-formed'));
+              ReadReport(cursorStart, isWarning, 'BadValue', '', Format('<%s>%s does not fit its type: kept as read',
+                [tagFullName, Quoted(text)]));
             end
             else if ordered then
               TXmlite(Self).AddNode(xnkElement, '', nil, propertyElement, lastCount - 1);
@@ -2388,8 +2587,8 @@ class function TMetaBankXmlite.RegisterNamespace(const aUri: string; const aSimp
   const aSuffixSimpleType, aSuffixComplexType, aSuffixAttribute, aSuffixAttributeGroup, aSuffixElement, aSuffixElementGroup: string)
   : TNamespace;
 begin
-  if Instance.TryGetNamespace(aUri, Result) then // already registered
-    Exit;
+  if Instance.TryGetNamespace(aUri, Result) then
+    RegisteredTwice(Result);
 
   Result := TNamespace.Create(aUri, aPrefix, aNaming, aSuffixSimpleType, aSuffixComplexType, aSuffixAttribute, aSuffixAttributeGroup,
     aSuffixElement, aSuffixElementGroup);
@@ -2401,8 +2600,8 @@ class function TMetaBankXmlite.RegisterNamespace(const aUri: string; const aSimp
   const aAttributeGroups, aElements, aGroups: TArray<TBasiteClass>; const aPrefix: string; aNaming, aMemberNaming, aItemNaming: TNaming)
   : TNamespace;
 begin
-  if Instance.TryGetNamespace(aUri, Result) then // already registered
-    Exit;
+  if Instance.TryGetNamespace(aUri, Result) then
+    RegisteredTwice(Result);
 
   Result := TNamespace.Create(aUri, aPrefix, aNaming, cDefaultSuffixSimpleType, cDefaultSuffixComplexType, cDefaultSuffixAttribute,
     cDefaultSuffixAttributeGroup, cDefaultSuffixElement, cDefaultSuffixElementGroup);
@@ -2410,6 +2609,13 @@ begin
   Result.fItemNaming := aItemNaming;
   Result.fExactNames := True;
   AddComponents(Result, aSimpleTypes, aComplexTypes, aAttributes, aAttributeGroups, aElements, aGroups);
+end;
+
+// a second unit's classes would stay unknown to the reader: a setup error, raised at the program's start
+class procedure TMetaBankXmlite.RegisteredTwice(aNamespace: TNamespace);
+begin
+  raise EArgumentException.CreateFmt('RegisterNamespace: %s is registered already, by %s - a program uses one unit for a namespace',
+    [aNamespace.Uri, aNamespace.UnitQualifiedName]);
 end;
 
 class procedure TMetaBankXmlite.AddComponents(aNamespace: TNamespace; const aSimpleTypes: TArray<PTypeInfo>;

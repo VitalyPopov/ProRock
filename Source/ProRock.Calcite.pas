@@ -1,4 +1,4 @@
-unit ProRock.Calcite;
+﻿unit ProRock.Calcite;
 
 // Excel workbooks (.xlsx): open, change and save with nothing lost
 
@@ -7,7 +7,17 @@ interface
 uses System.SysUtils, System.Classes, System.Generics.Collections, System.Zip,
   ProRock.Xmlite, ProRock.Xmlite.Schema.Ooxml.Sml;
 
+const
+  isHint = ProRock.Xmlite.isHint;
+  isWarning = ProRock.Xmlite.isWarning;
+  isError = ProRock.Xmlite.isError;
+
 type
+  TIssueSeverity = ProRock.Xmlite.TIssueSeverity;
+  TIssue = ProRock.Xmlite.TIssue;
+  TIssueEvent = ProRock.Xmlite.TIssueEvent;
+  TIssues = ProRock.Xmlite.TIssues;
+
   TWorkbook = class;
   TWorksheet = class;
 
@@ -73,6 +83,7 @@ type
     fPrepared: boolean;
     // found on the first write: the areas of array formulas, tables' header and totals rows, pivot tables
     fArrays, fTableRows, fPivots: TList<TRange>;
+    fLockedWritten: boolean; // reported once a sheet
 
     function GetXml: TWorksheetE;
     function Objects(aEdit: boolean): TWorksheetE;
@@ -83,7 +94,8 @@ type
     function CanWrite(aRow, aColumn: integer): boolean;
     function CellForWriting(aRow, aColumn: integer): TCellCT;
     procedure RemoveValue(aCell: TCellCT);
-    procedure Refuse(aRow, aColumn: integer; const aWhy: string);
+    procedure Refuse(aRow, aColumn: integer; const aCode, aWhy: string);
+    function IsLocked(aRow, aColumn: integer): boolean;
     procedure WriteNumber(aRow, aColumn: integer; aValue: Double);
     procedure WriteDate(aRow, aColumn: integer; aValue: TDateTime);
     procedure WriteText(aRow, aColumn: integer; const aValue: string);
@@ -160,12 +172,13 @@ type
     fStyleKeys: TDictionary<string, integer>; // cellXfs by content, built on the first need
     fDateStyles: TDictionary<cardinal, boolean>;
     fValuesChanged: boolean;
-    fRefusal: string; // why Save refuses: a value that could not be written
+    fIssues: TIssues;
 
     class procedure Swap<T>(var aLeft, aRight: T); static; inline;
     procedure Close;
     function Load: boolean;
-    function Fail(const aError: string): boolean;
+    function Fail(const aCode, aError: string): boolean;
+    function ReadXml(aXml: TXmlite; const aPart: string; const aBytes: TBytes): boolean;
     function CanWrite: boolean;
     function Write(aStream: TStream): boolean;
     procedure Exchange(aOther: TWorkbook);
@@ -177,7 +190,7 @@ type
     function ReadPart(const aName: string): TXmlite;
     function EditPart(const aName: string): TXmlite;
 
-    procedure Refuse(const aWhy: string);
+    function IsLockedStyle(aStyle: cardinal): boolean;
     procedure ValueChanged;
     procedure FormulaRemoved;
     function Date1904: boolean;
@@ -202,7 +215,7 @@ type
     // False: Error says why, and the workbook open before stays open
     function Open(const aFileName: string): boolean; overload;
     function Open(aStream: TStream): boolean; overload;
-    // Save: to the file opened. False: Error says why (a value that could not be written too), and the file stays as it was
+    // Save: to the file opened. False: Error says why, and the file stays as it was
     function Save: boolean;
     function SaveAs(const aFileName: string): boolean; overload;
     function SaveAs(aStream: TStream): boolean; overload;
@@ -210,6 +223,11 @@ type
     property FileName: string read fFileName;
     // why the last Open or Save returned False
     property Error: string read fError;
+    // since the last Open: writes refused (the cell keeps its value), what Open and Save could not do, values and parts read
+    // not quite right. Save refuses only to keep the file valid with nothing lost: Issues.HasErrors tells the rest
+    property Issues: TIssues read fIssues;
+    // each issue as it comes
+    property OnIssue: TIssueEvent read fIssues.OnIssue write fIssues.OnIssue;
     property Sheets: TWorksheets read fSheets;
   end;
 
@@ -898,9 +916,18 @@ begin
   end;
 end;
 
-procedure TWorksheet.Refuse(aRow, aColumn: integer; const aWhy: string);
+// Excel's refusal: the cell keeps its value, the rest is done
+procedure TWorksheet.Refuse(aRow, aColumn: integer; const aCode, aWhy: string);
 begin
-  fWorkbook.Refuse(Format('%s!%s: %s', [fName, CellName(aRow, aColumn), aWhy]));
+  fWorkbook.fIssues.Add(isError, aCode, fName + '!' + CellName(aRow, aColumn), aWhy + ' - not written');
+end;
+
+// on a protected sheet, a cell its style does not unlock
+function TWorksheet.IsLocked(aRow, aColumn: integer): boolean;
+begin
+  var sheet: TWorksheetE := Objects(False);
+  Result := sheet.IsPresent('SheetProtection') and sheet.SheetProtection.Sheet and
+    fWorkbook.IsLockedStyle(EffectiveStyle(aRow, aColumn));
 end;
 
 // False: a shared or an array formula holds the cell (formulas are not written yet), a table's header or totals row (the
@@ -910,7 +937,7 @@ begin
   var cell: TCellCT := FindCell(aRow, aColumn);
   if (cell <> nil) and cell.IsPresent('F') and (cell.F.T <> stcftNormal) then
   begin
-    Refuse(aRow, aColumn, 'part of a shared or array formula, which Calcite does not change yet');
+    Refuse(aRow, aColumn, 'Formula', 'part of a shared or array formula, which Calcite does not change yet');
     Exit(False);
   end;
   if fArrays = nil then
@@ -931,21 +958,28 @@ begin
   for var area: TRange in fArrays do
     if (aRow >= area.fTop) and (aRow <= area.fBottom) and (aColumn >= area.fLeft) and (aColumn <= area.fRight) then
     begin
-      Refuse(aRow, aColumn, 'part of an array formula, which Calcite does not change yet');
+      Refuse(aRow, aColumn, 'Formula', 'part of an array formula, which Calcite does not change yet');
       Exit(False);
     end;
   for var area: TRange in fTableRows do
     if (aRow >= area.fTop) and (aRow <= area.fBottom) and (aColumn >= area.fLeft) and (aColumn <= area.fRight) then
     begin
-      Refuse(aRow, aColumn, 'a table''s header or totals row (part of the table''s definition, which Calcite does not change yet)');
+      Refuse(aRow, aColumn, 'TableRow',
+        'a table''s header or totals row (part of the table''s definition, which Calcite does not change yet)');
       Exit(False);
     end;
   for var area: TRange in fPivots do
     if (aRow >= area.fTop) and (aRow <= area.fBottom) and (aColumn >= area.fLeft) and (aColumn <= area.fRight) then
     begin
-      Refuse(aRow, aColumn, 'part of a pivot table, which Excel builds again');
+      Refuse(aRow, aColumn, 'PivotTable', 'part of a pivot table, which Excel builds again');
       Exit(False);
     end;
+  if not fLockedWritten and IsLocked(aRow, aColumn) then
+  begin
+    fLockedWritten := True;
+    fWorkbook.fIssues.Add(isWarning, 'Locked', fName + '!' + CellName(aRow, aColumn),
+      'a locked cell of a protected sheet, written: Excel lets its users change it only unprotected (reported once a sheet)');
+  end;
   Result := True;
 end;
 
@@ -1023,7 +1057,7 @@ end;
 procedure TWorksheet.WriteNumber(aRow, aColumn: integer; aValue: Double);
 begin
   if IsNan(aValue) or IsInfinite(aValue) then
-    Refuse(aRow, aColumn, 'Excel holds no NaN or infinity')
+    Refuse(aRow, aColumn, 'Value', 'Excel holds no NaN or infinity')
   else if CanWrite(aRow, aColumn) then
     CellForWriting(aRow, aColumn).V := FloatText(aValue, ftDouble);
 end;
@@ -1033,7 +1067,7 @@ begin
   var serial: Double;
   if not DateToSerial(aValue, fWorkbook.Date1904, serial) then
   begin
-    Refuse(aRow, aColumn, 'a date before the first one Excel has (' + DateToISO8601(aValue) + ')');
+    Refuse(aRow, aColumn, 'Value', 'a date before the first one Excel has (' + DateToISO8601(aValue) + ')');
     Exit;
   end;
   if not CanWrite(aRow, aColumn) then
@@ -1049,7 +1083,7 @@ begin
     style := fWorkbook.DateStyle(style, numberFormat);
     if style < 0 then
     begin
-      Refuse(aRow, aColumn, 'a date needs a date format, and the workbook has no styles to add one to');
+      Refuse(aRow, aColumn, 'NoStyles', 'a date needs a date format, and the workbook has no styles to add one to');
       Exit;
     end;
   end;
@@ -1061,12 +1095,12 @@ end;
 procedure TWorksheet.WriteText(aRow, aColumn: integer; const aValue: string);
 begin
   if aValue.Length > cMaxText then
-    Refuse(aRow, aColumn, Format('%d characters, Excel''s cells hold up to %d', [aValue.Length, cMaxText]))
+    Refuse(aRow, aColumn, 'Value', Format('%d characters, Excel''s cells hold up to %d', [aValue.Length, cMaxText]))
   else if CanWrite(aRow, aColumn) then
   begin
     var index: integer := fWorkbook.SharedStringIndex(aValue);
     if index < 0 then
-      Refuse(aRow, aColumn, 'the workbook has no shared strings and no content types to add them to')
+      Refuse(aRow, aColumn, 'NoSharedStrings', 'the workbook has no shared strings and no content types to add them to')
     else
     begin
       var cell: TCellCT := CellForWriting(aRow, aColumn);
@@ -1320,20 +1354,39 @@ begin
   fStylesPart := '';
   fCalcChainPart := '';
   fValuesChanged := False;
-  fRefusal := '';
 end;
 
 // an answer for the caller (False and Error); everything else still raises: a bug
 function IsFileError(aError: Exception): boolean;
 begin
+  // 10.3 - 10.4: EFileNotFoundException and its kin are no EInOutError yet
   Result := aError.InheritsFrom(EStreamError) or aError.InheritsFrom(EInOutError) or aError.InheritsFrom(EZipException) or
-    aError.InheritsFrom(EEncodingError) or aError.InheritsFrom(EOSError);
+    aError.InheritsFrom(EEncodingError) or aError.InheritsFrom(EOSError) or aError.InheritsFrom(EFileNotFoundException) or
+    aError.InheritsFrom(EDirectoryNotFoundException) or aError.InheritsFrom(EPathTooLongException);
 end;
 
-function TWorkbook.Fail(const aError: string): boolean;
+function TWorkbook.Fail(const aCode, aError: string): boolean;
 begin
   fError := aError;
+  fIssues.Add(isError, aCode, '', aError);
   Result := False;
+end;
+
+// what the read reports, the part named; content not in the schema is kept anyway (left out)
+function TWorkbook.ReadXml(aXml: TXmlite; const aPart: string; const aBytes: TBytes): boolean;
+begin
+  var read: TIssues;
+  Result := aXml.FromXmlBytes(aBytes, read);
+  for var issue: TIssue in read do
+    if issue.Severity <> isHint then
+    begin
+      var named: TIssue := issue;
+      if named.Where.IsEmpty then
+        named.Where := aPart
+      else
+        named.Where := aPart + ', ' + named.Where;
+      fIssues.Add(named);
+    end;
 end;
 
 function TWorkbook.Open(const aFileName: string): boolean;
@@ -1347,7 +1400,8 @@ begin
     begin
       if not IsFileError(e) then
         raise;
-      Exit(Fail(e.Message));
+      fIssues.Clear;
+      Exit(Fail('File', e.Message));
     end;
   end;
   try
@@ -1361,9 +1415,11 @@ end;
 
 function TWorkbook.Open(aStream: TStream): boolean;
 begin
-  // into a workbook of its own first: a failed Open leaves this one as it was
+  // into a workbook of its own first: a failed Open leaves this one as it was, with this Open's issues
+  fIssues.Clear;
   var opened: TWorkbook := TWorkbook.Create;
   try
+    opened.fIssues.OnIssue := fIssues.OnIssue;
     try
       // a copy in memory: the parts are read from it on first use, and the file itself may be saved over
       opened.fSource := TBytesStream.Create;
@@ -1374,16 +1430,21 @@ begin
         opened.fZip.Open(opened.fSource, zmRead);
       except
         on EZipException do
-          Exit(Fail('Not an .xlsx file (not a zip package)'));
+          Exit(Fail('NotXlsx', 'Not an .xlsx file (not a zip package)'));
       end;
       if not opened.Load then
-        Exit(Fail(opened.fError));
+      begin
+        fIssues := opened.fIssues; // Load's failure among them
+        fError := opened.fError;
+        Exit(False);
+      end;
     except
       on e: Exception do
       begin
         if not IsFileError(e) then
           raise;
-        Exit(Fail(e.Message));
+        fIssues := opened.fIssues;
+        Exit(Fail('File', e.Message));
       end;
     end;
     Exchange(opened);
@@ -1414,7 +1475,7 @@ begin
   Swap<TDictionary<string, integer>>(fStyleKeys, aOther.fStyleKeys);
   Swap<TDictionary<cardinal, boolean>>(fDateStyles, aOther.fDateStyles);
   Swap<boolean>(fValuesChanged, aOther.fValuesChanged);
-  Swap<string>(fRefusal, aOther.fRefusal);
+  Swap<TIssues>(fIssues, aOther.fIssues);
   for var sheet: TWorksheet in fSheets do
     sheet.fWorkbook := Self;
   for var sheet: TWorksheet in aOther.fSheets do
@@ -1431,7 +1492,7 @@ begin
   var bytes: TBytes;
   aBook.fZip.Read(index, bytes);
   Result := TRelationshipsE.Create;
-  Result.FromXmlBytes(bytes);
+  aBook.ReadXml(Result, RelationshipsPart(aPart), bytes);
 end;
 
 // a sheet's cells that belong to its tables' and pivot tables' definitions: header and totals rows, pivot tables with their
@@ -1454,7 +1515,7 @@ begin
         fZip.Read(index, bytes);
         var table: TTableE := TTableE.Create;
         try
-          table.FromXmlBytes(bytes);
+          ReadXml(table, ResolveTarget(aSheetPart, relationship.Target), bytes);
           if ParseAddress(table.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
           begin
             var whole: TRange := area;
@@ -1479,7 +1540,7 @@ begin
         fZip.Read(index, bytes);
         var pivot: TPivotTableDefinitionE := TPivotTableDefinitionE.Create;
         try
-          pivot.FromXmlBytes(bytes);
+          ReadXml(pivot, ResolveTarget(aSheetPart, relationship.Target), bytes);
           if ParseAddress(pivot.Location.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
           begin
             if pivot.Location.RowPageCount > 0 then // the page fields and a blank row
@@ -1512,13 +1573,13 @@ begin
       packageRelationships.Free;
     end;
   if fWorkbookPart.IsEmpty then
-    Exit(Fail('Not an Office document: the package names no main part'));
+    Exit(Fail('NotWorkbook', 'Not an Office document: the package names no main part'));
   var workbook: TWorkbookE := TWorkbookE(ReadPart(fWorkbookPart));
   fContentTypesPart := AddPart(cContentTypes, TTypesE);
 
   var workbookRelationships: TRelationshipsE := ReadRelationships(Self, fWorkbookPart);
   if workbookRelationships = nil then
-    Exit(Fail(Format('%s is not a workbook: it has no relationships', [fWorkbookPart])));
+    Exit(Fail('NotWorkbook', Format('%s is not a workbook: it has no relationships', [fWorkbookPart])));
   fWorkbookRelationshipsPart := AddPart(RelationshipsPart(fWorkbookPart), TRelationshipsE);
   try
     for var relationship: TRelationshipE in workbookRelationships.Relationship do
@@ -1539,7 +1600,7 @@ begin
         begin
           var partName: string := AddPart(ResolveTarget(fWorkbookPart, relationship.Target), TWorksheetE);
           if partName.IsEmpty then
-            Exit(Fail(Format('The sheet "%s" has no part (%s)', [sheetEntry.Name, relationship.Target])));
+            Exit(Fail('NoSheetPart', Format('The sheet "%s" has no part (%s)', [sheetEntry.Name, relationship.Target])));
           var sheet: TWorksheet := TWorksheet.Create;
           fSheets.fList.Add(sheet);
           sheet.fWorkbook := Self;
@@ -1618,7 +1679,7 @@ begin
     fZip.Read(PartIndex(aName), bytes);
     part.fXml := part.fClass.Create;
     // False: read as far as it goes, but it would not be written back as it was
-    part.fExact := part.fXml.FromXmlBytes(bytes);
+    part.fExact := ReadXml(part.fXml, aName, bytes);
   end;
   Result := part.fXml;
 end;
@@ -1630,10 +1691,19 @@ begin
   fParts[aName].fChanged := True;
 end;
 
-procedure TWorkbook.Refuse(const aWhy: string);
+// Excel's default: a cell is locked unless its style unlocks it
+function TWorkbook.IsLockedStyle(aStyle: cardinal): boolean;
 begin
-  if fRefusal.IsEmpty then // the first one: what went wrong first
-    fRefusal := aWhy + ' - not written, the workbook cannot be saved';
+  Result := True;
+  if fStylesPart.IsEmpty then
+    Exit;
+  var styles: TStyleSheetE := TStyleSheetE(ReadPart(fStylesPart));
+  if styles.IsPresent('CellXfs') and (aStyle < cardinal(styles.CellXfs.Xf.Count)) then
+  begin
+    var style: TXfCT := styles.CellXfs.Xf[aStyle];
+    if style.IsPresent('Protection') then
+      Result := style.Protection.Locked;
+  end;
 end;
 
 // formulas' cached results are stale: Excel recalculates when it opens the file
@@ -1813,9 +1883,9 @@ end;
 function TWorkbook.Save: boolean;
 begin
   if fZip = nil then
-    Exit(Fail('No workbook is open'));
+    Exit(Fail('NotOpen', 'No workbook is open'));
   if fFileName.IsEmpty then
-    Exit(Fail('The workbook has no file to save to (it was opened from a stream): use SaveAs'));
+    Exit(Fail('NoFileName', 'The workbook has no file to save to (it was opened from a stream): use SaveAs'));
   Result := SaveAs(fFileName);
 end;
 
@@ -1844,7 +1914,7 @@ begin
       begin
         if not IsFileError(e) then
           raise;
-        Result := Fail(e.Message);
+        Result := Fail('File', e.Message);
       end;
     end;
   finally
@@ -1867,7 +1937,7 @@ begin
     begin
       if not IsFileError(e) then
         raise;
-      Result := Fail(e.Message);
+      Result := Fail('File', e.Message);
     end;
   end;
   if Result then
@@ -1877,13 +1947,11 @@ end;
 function TWorkbook.CanWrite: boolean;
 begin
   if fZip = nil then
-    Exit(Fail('No workbook is open'));
-  if not fRefusal.IsEmpty then
-    Exit(Fail(fRefusal));
+    Exit(Fail('NotOpen', 'No workbook is open'));
   // refused rather than written broken
   for var pair: TPair<string, TPart> in fParts do
     if pair.Value.fChanged and not pair.Value.fExact then
-      Exit(Fail(Format('%s cannot be saved changed: it did not read back exactly, writing it could lose something',
+      Exit(Fail('NotExact', Format('%s cannot be saved changed: it did not read back exactly, writing it could lose something',
         [pair.Key])));
   Result := True;
 end;
