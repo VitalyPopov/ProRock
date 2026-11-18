@@ -25,6 +25,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   function Excel does not have (`SUMME`: names are English) is written with a warning. Excel's prefixes (`_xlfn.XLOOKUP`, a
   `LET`'s `_xlpm.x`) are added on write and dropped on read, as Excel's `Formula` shows it. A formula written has no value
   until Excel calculates it, which it does when the file opens
+- Calcite's new workbooks: `TWorkbook.Create` gives one as Excel's own new workbook - `Sheet1`, ready to write and `SaveAs`
+  (`Open` replaces it; a failed `Open` leaves it). `Sheets.Add` adds a sheet at the end, named or Excel's next `SheetN`; a
+  name Excel would not open (more than 31 characters, `[ ] : * ? / \`, `'` at either end, taken in any case) is listed in
+  `Issues` and the sheet gets the next `SheetN`. A sheet made this way can be renamed until formulas are written
 - `ToXml` and `ToXmlFile` take write options for that call, whatever `TBasite.Pretty` says: `[]` compact, `[woPretty]`
   indented, `woBooleanDigits` writes `xs:boolean` as `1` and `0`, as Office does
 - `TXmliteClass = class of TXmlite`: an object of a class known only at run time, without ProRock.Basite

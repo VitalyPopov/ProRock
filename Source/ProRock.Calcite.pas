@@ -113,6 +113,7 @@ type
     // found on the first write: the areas of tables, their header and totals rows, pivot tables
     fTables, fTableRows, fPivots: TList<TRange>;
     fLockedWritten: boolean; // reported once a sheet
+    fFresh: boolean; // made here, a new workbook's or added: nothing outside Calcite can name it yet
 
     function GetXml: TWorksheetE;
     function Objects(aEdit: boolean): TWorksheetE;
@@ -145,6 +146,7 @@ type
     function GetCells(aRow, aColumn: integer): TRange;
     function GetCellsByLetters(aRow: integer; const aColumn: string): TRange;
     function GetUsedRange: TRange;
+    procedure SetName(const aValue: string);
   public
     destructor Destroy; override;
 
@@ -152,7 +154,8 @@ type
     property Xml: TWorksheetE read GetXml;
 
     property Workbook: TWorkbook read fWorkbook;
-    property Name: string read fName;
+    // renamed only while nothing can name it: a sheet made here (a new workbook's or added), before formulas are written
+    property Name: string read fName write SetName;
     // 'B5', 'A1:C10', '5:5', 'B:D' ($ allowed); EArgumentException for anything else
     property Range[const aAddress: string]: TRange read GetRange;
     // Excel's order, from 1: Cells[5, 2] or Cells[5, 'B'] is B5; Sheet[5, 'B'] too
@@ -165,6 +168,7 @@ type
   // in the workbook's order, numbered from 1 as in Excel; chart sheets are not listed
   TWorksheets = class
   private
+    fWorkbook: TWorkbook;
     fList: TObjectList<TWorksheet>;
 
     function GetCount: integer;
@@ -177,6 +181,9 @@ type
     function GetEnumerator: TList<TWorksheet>.TEnumerator;
     // nil when there is none; case is ignored, as in Excel
     function Find(const aName: string): TWorksheet;
+    // at the end; no name: Excel's next SheetN. A name Excel would refuse (more than 31 characters, [ ] : * ? / \, ' at
+    // either end, taken) is an issue, and the sheet gets the next SheetN
+    function Add(const aName: string = ''): TWorksheet;
 
     property Count: integer read GetCount;
     // raise when there is none (Find does not)
@@ -210,9 +217,13 @@ type
     fStyleKeys: TDictionary<string, integer>; // cellXfs by content, built on the first need
     fDateStyles: TDictionary<cardinal, boolean>;
     fValuesChanged: boolean;
+    fFormulasWritten: boolean;
     fIssues: TIssues;
 
+    // nothing open: Open's own workbook
+    constructor CreateClosed;
     class procedure Swap<T>(var aLeft, aRight: T); static; inline;
+    procedure NewPackage;
     procedure Close;
     function Load: boolean;
     function Fail(const aCode, aError: string): boolean;
@@ -223,7 +234,9 @@ type
     function PartIndex(const aName: string): integer;
     procedure FixedAreas(const aSheetPart: string; aTables, aTableRows, aPivots: TList<TRange>);
     function AddPart(const aName: string; aClass: TXmliteClass): string;
-    function NewPart(const aRelationship, aTarget, aContentType: string; aXml: TXmlite): string;
+    function NewPart(const aRelationship, aTarget, aContentType: string; aXml: TXmlite; out aId: string): string;
+    function SheetNameError(const aName: string; aExcept: TWorksheet): string;
+    function AddSheet(const aName: string): TWorksheet;
     // ReadPart leaves the part as its bytes, EditPart saves it from its objects
     function ReadPart(const aName: string): TXmlite;
     function EditPart(const aName: string): TXmlite;
@@ -242,6 +255,7 @@ type
     function GetXmlSharedStrings: TSstE;
     function GetXmlStyles: TStyleSheetE;
   public
+    // a new workbook, as Excel's: Sheet1 and nothing in it; Open replaces it
     constructor Create;
     destructor Destroy; override;
 
@@ -253,7 +267,7 @@ type
     // False: Error says why, and the workbook open before stays open
     function Open(const aFileName: string): boolean; overload;
     function Open(aStream: TStream): boolean; overload;
-    // Save: to the file opened. False: Error says why, and the file stays as it was
+    // Save: to the file opened (a new workbook has none: SaveAs). False: Error says why, and the file stays as it was
     function Save: boolean;
     function SaveAs(const aFileName: string): boolean; overload;
     function SaveAs(aStream: TStream): boolean; overload;
@@ -285,6 +299,8 @@ const
   cPivotTable = '/pivotTable';
   cContentTypes = '[Content_Types].xml';
   cSharedStringsType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml';
+  cWorksheetType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml';
+  cMaxSheetName = 31; // UTF-16 units, as Excel counts
 
   cMaxRow = 1048576;
   cMaxColumn = 16384;
@@ -2909,6 +2925,28 @@ begin
     Result := MakeRange(top, left, bottom, right);
 end;
 
+procedure TWorksheet.SetName(const aValue: string);
+begin
+  if aValue = fName then
+    Exit;
+  var why: string;
+  if not fFresh then
+    why := 'only a sheet made here is renamed: in a workbook opened, formulas and other parts may name it'
+  else if fWorkbook.fFormulasWritten then
+    why := 'sheets are renamed before formulas are written: a formula may name the sheet'
+  else
+    why := fWorkbook.SheetNameError(aValue, Self);
+  if not why.IsEmpty then
+  begin
+    fWorkbook.fIssues.Add(isError, 'Rename', fName, why + ' - not renamed');
+    Exit;
+  end;
+  for var entry: TSheetCT in TWorkbookE(fWorkbook.EditPart(fWorkbook.fWorkbookPart)).Sheets.Sheet do
+    if entry.Name = fName then
+      entry.Name := aValue;
+  fName := aValue;
+end;
+
 { TWorksheets }
 
 constructor TWorksheets.Create;
@@ -2934,6 +2972,11 @@ begin
     if AnsiSameText(sheet.Name, aName) then
       Exit(sheet);
   Result := nil;
+end;
+
+function TWorksheets.Add(const aName: string): TWorksheet;
+begin
+  Result := fWorkbook.AddSheet(aName);
 end;
 
 function TWorksheets.GetCount: integer;
@@ -2965,12 +3008,19 @@ end;
 
 { TWorkbook }
 
-constructor TWorkbook.Create;
+constructor TWorkbook.CreateClosed;
 begin
-  inherited;
+  inherited Create;
   fParts := TObjectDictionary<string, TPart>.Create([doOwnsValues]);
   fSheets := TWorksheets.Create;
+  fSheets.fWorkbook := Self;
   fDropped := TList<string>.Create;
+end;
+
+constructor TWorkbook.Create;
+begin
+  CreateClosed;
+  NewPackage;
 end;
 
 destructor TWorkbook.Destroy;
@@ -2987,6 +3037,68 @@ begin
   var value: T := aLeft;
   aLeft := aRight;
   aRight := value;
+end;
+
+// Excel's new workbook, read as a file would be: Transitional, no theme; styles with fonts, fills and borders (without them
+// Excel refuses the file)
+procedure TWorkbook.NewPackage;
+const
+  cDeclaration = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'#13#10;
+  cPackage = 'http://schemas.openxmlformats.org/package/2006/';
+  cOffice = 'http://schemas.openxmlformats.org/officeDocument/2006/';
+  cMain = 'http://schemas.openxmlformats.org/spreadsheetml/2006/main';
+  cTypes = 'application/vnd.openxmlformats-';
+begin
+  var created: string := FormatDateTime('yyyy"-"mm"-"dd"T"hh":"nn":"ss"Z"', TTimeZone.Local.ToUniversalTime(Now));
+  var parts: TArray<string> := [
+    cContentTypes, '<Types xmlns="' + cPackage + 'content-types">' +
+      '<Default Extension="rels" ContentType="' + cTypes + 'package.relationships+xml"/>' +
+      '<Default Extension="xml" ContentType="application/xml"/>' +
+      '<Override PartName="/xl/workbook.xml" ContentType="' + cTypes + 'officedocument.spreadsheetml.sheet.main+xml"/>' +
+      '<Override PartName="/xl/worksheets/sheet1.xml" ContentType="' + cWorksheetType + '"/>' +
+      '<Override PartName="/xl/styles.xml" ContentType="' + cTypes + 'officedocument.spreadsheetml.styles+xml"/>' +
+      '<Override PartName="/docProps/core.xml" ContentType="' + cTypes + 'package.core-properties+xml"/>' +
+      '<Override PartName="/docProps/app.xml" ContentType="' + cTypes + 'officedocument.extended-properties+xml"/></Types>',
+    '_rels/.rels', '<Relationships xmlns="' + cPackage + 'relationships">' +
+      '<Relationship Id="rId1" Type="' + cOffice + 'relationships/officeDocument" Target="xl/workbook.xml"/>' +
+      '<Relationship Id="rId2" Type="' + cPackage + 'relationships/metadata/core-properties" Target="docProps/core.xml"/>' +
+      '<Relationship Id="rId3" Type="' + cOffice + 'relationships/extended-properties" Target="docProps/app.xml"/>' +
+      '</Relationships>',
+    'docProps/app.xml', '<Properties xmlns="' + cOffice + 'extended-properties"><Application>ProRock Calcite</Application>' +
+      '</Properties>',
+    'docProps/core.xml', '<cp:coreProperties xmlns:cp="' + cPackage + 'metadata/core-properties" ' +
+      'xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" ' +
+      'xmlns:dcmitype="http://purl.org/dc/dcmitype/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">' +
+      '<dcterms:created xsi:type="dcterms:W3CDTF">' + created + '</dcterms:created>' +
+      '<dcterms:modified xsi:type="dcterms:W3CDTF">' + created + '</dcterms:modified></cp:coreProperties>',
+    'xl/workbook.xml', '<workbook xmlns="' + cMain + '" xmlns:r="' + cOffice + 'relationships">' +
+      '<sheets><sheet name="Sheet1" sheetId="1" r:id="rId1"/></sheets></workbook>',
+    'xl/_rels/workbook.xml.rels', '<Relationships xmlns="' + cPackage + 'relationships">' +
+      '<Relationship Id="rId1" Type="' + cOffice + 'relationships/worksheet" Target="worksheets/sheet1.xml"/>' +
+      '<Relationship Id="rId2" Type="' + cOffice + 'relationships/styles" Target="styles.xml"/></Relationships>',
+    'xl/styles.xml', '<styleSheet xmlns="' + cMain + '">' +
+      '<fonts count="1"><font><sz val="11"/><name val="Calibri"/><family val="2"/></font></fonts>' +
+      '<fills count="2"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill></fills>' +
+      '<borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders>' +
+      '<cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>' +
+      '<cellXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/></cellXfs>' +
+      '<cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>',
+    'xl/worksheets/sheet1.xml', '<worksheet xmlns="' + cMain + '"><sheetData/></worksheet>'];
+  fSource := TBytesStream.Create;
+  var zip: TZipFile := TZipFile.Create;
+  try
+    zip.Open(fSource, zmWrite);
+    for var i := 0 to High(parts) div 2 do
+      zip.Add(TEncoding.UTF8.GetBytes(cDeclaration + parts[2 * i + 1]), parts[2 * i]);
+    zip.Close;
+  finally
+    zip.Free;
+  end;
+  fSource.Position := 0;
+  fZip := TZipFile.Create;
+  fZip.Open(fSource, zmRead);
+  Load;
+  fSheets.fList[0].fFresh := True;
 end;
 
 procedure TWorkbook.Close;
@@ -3008,6 +3120,7 @@ begin
   fStylesPart := '';
   fCalcChainPart := '';
   fValuesChanged := False;
+  fFormulasWritten := False;
 end;
 
 // an answer for the caller (False and Error); everything else still raises: a bug
@@ -3071,7 +3184,7 @@ function TWorkbook.Open(aStream: TStream): boolean;
 begin
   // into a workbook of its own first: a failed Open leaves this one as it was, with this Open's issues
   fIssues.Clear;
-  var opened: TWorkbook := TWorkbook.Create;
+  var opened: TWorkbook := TWorkbook.CreateClosed;
   try
     opened.fIssues.OnIssue := fIssues.OnIssue;
     try
@@ -3129,7 +3242,10 @@ begin
   Swap<TDictionary<string, integer>>(fStyleKeys, aOther.fStyleKeys);
   Swap<TDictionary<cardinal, boolean>>(fDateStyles, aOther.fDateStyles);
   Swap<boolean>(fValuesChanged, aOther.fValuesChanged);
+  Swap<boolean>(fFormulasWritten, aOther.fFormulasWritten);
   Swap<TIssues>(fIssues, aOther.fIssues);
+  fSheets.fWorkbook := Self;
+  aOther.fSheets.fWorkbook := aOther;
   for var sheet: TWorksheet in fSheets do
     sheet.fWorkbook := Self;
   for var sheet: TWorksheet in aOther.fSheets do
@@ -3293,9 +3409,10 @@ begin
   end;
 end;
 
-// a part of the workbook's, with its relationship and content type; '' (aXml freed) when the package has no content types
-function TWorkbook.NewPart(const aRelationship, aTarget, aContentType: string; aXml: TXmlite): string;
+// a part of the workbook's, with its relationship (aId) and content type; '' (aXml freed) when the package has no content types
+function TWorkbook.NewPart(const aRelationship, aTarget, aContentType: string; aXml: TXmlite; out aId: string): string;
 begin
+  aId := '';
   if fContentTypesPart.IsEmpty then
   begin
     aXml.Free;
@@ -3319,10 +3436,83 @@ begin
   relationship.Id := 'rId' + IntToStr(number);
   relationship.&Type := fRelationshipTypes + aRelationship;
   relationship.Target := aTarget;
+  aId := relationship.Id;
 
   var contentType: TOverrideE := TTypesE(EditPart(fContentTypesPart)).Add<TOverrideE>;
   contentType.PartName := '/' + Result;
   contentType.ContentType := aContentType;
+end;
+
+// Excel's rules as it opens a file: a sheet named against them makes it refuse the whole file, even repaired. '' - a good name
+function TWorkbook.SheetNameError(const aName: string; aExcept: TWorksheet): string;
+begin
+  if aName.IsEmpty then
+    Exit('a sheet''s name cannot be empty');
+  if Length(aName) > cMaxSheetName then
+    Exit(Format('a sheet''s name has at most %d characters', [cMaxSheetName]));
+  for var c: char in aName do
+    if CharInSet(c, ['[', ']', ':', '*', '?', '/', '\']) or (c < ' ') then
+      Exit('a sheet''s name cannot have [ ] : * ? / \ or control characters');
+  if aName.StartsWith('''') or aName.EndsWith('''') then
+    Exit('a sheet''s name cannot start or end with ''');
+  if AnsiSameText(aName, 'History') then
+    Exit('History is reserved by Excel');
+  // chart sheets too
+  for var entry: TSheetCT in TWorkbookE(ReadPart(fWorkbookPart)).Sheets.Sheet do
+    if AnsiSameText(entry.Name, aName) and ((aExcept = nil) or (entry.Name <> aExcept.fName)) then
+      Exit(Format('the workbook has a sheet "%s" already', [string(entry.Name)]));
+  Result := '';
+end;
+
+function TWorkbook.AddSheet(const aName: string): TWorksheet;
+begin
+  var name: string := aName;
+  var why: string := '';
+  if not name.IsEmpty then
+    why := SheetNameError(name, nil);
+  var workbook: TWorkbookE := TWorkbookE(ReadPart(fWorkbookPart));
+  if name.IsEmpty or not why.IsEmpty then
+  begin
+    var number: integer := workbook.Sheets.Sheet.Count;
+    repeat
+      Inc(number);
+      name := 'Sheet' + IntToStr(number);
+    until SheetNameError(name, nil).IsEmpty;
+  end;
+  if not why.IsEmpty then
+    fIssues.Add(isError, 'SheetName', aName, why + ' - the sheet is added as ' + name);
+
+  var number: integer := 0;
+  var target, partName: string;
+  repeat
+    Inc(number);
+    target := 'worksheets/sheet' + IntToStr(number) + '.xml';
+    partName := ResolveTarget(fWorkbookPart, target);
+  until (PartIndex(partName) < 0) and not fParts.ContainsKey(partName);
+  var id: string;
+  partName := NewPart(cWorksheet, target, cWorksheetType, TWorksheetE.Create, id);
+  if partName.IsEmpty then
+  begin
+    fIssues.Add(isError, 'NoContentTypes', '', 'The package has no content types: a sheet cannot be added');
+    Exit(nil);
+  end;
+
+  workbook := TWorkbookE(EditPart(fWorkbookPart));
+  var sheetId: cardinal := 0;
+  for var entry: TSheetCT in workbook.Sheets.Sheet do
+    if entry.SheetId > sheetId then
+      sheetId := entry.SheetId;
+  var added: TSheetCT := workbook.Sheets.Add<TSheetCT>;
+  added.Name := name;
+  added.SheetId := sheetId + 1;
+  added.Id := id;
+
+  Result := TWorksheet.Create;
+  fSheets.fList.Add(Result);
+  Result.fWorkbook := Self;
+  Result.fName := name;
+  Result.fPartName := partName;
+  Result.fFresh := True;
 end;
 
 function TWorkbook.ReadPart(const aName: string): TXmlite;
@@ -3374,6 +3564,7 @@ end;
 // any change of a formula and Excel builds a new one
 procedure TWorkbook.FormulaChanged;
 begin
+  fFormulasWritten := True;
   if fCalcChainPart.IsEmpty then
     Exit;
   var relationships: TRelationshipsE := TRelationshipsE(EditPart(fWorkbookRelationshipsPart));
@@ -3413,7 +3604,8 @@ begin
   if fSharedStringsPart.IsEmpty then
   begin
     var added: TSstE := TSstE.Create;
-    fSharedStringsPart := NewPart(cSharedStrings, 'sharedStrings.xml', cSharedStringsType, added);
+    var id: string;
+    fSharedStringsPart := NewPart(cSharedStrings, 'sharedStrings.xml', cSharedStringsType, added, id);
     if fSharedStringsPart.IsEmpty then
       Exit(-1);
     added.Count := 0;
@@ -3541,7 +3733,7 @@ begin
   if fZip = nil then
     Exit(Fail('NotOpen', 'No workbook is open'));
   if fFileName.IsEmpty then
-    Exit(Fail('NoFileName', 'The workbook has no file to save to (it was opened from a stream): use SaveAs'));
+    Exit(Fail('NoFileName', 'The workbook has no file to save to (a new one, or opened from a stream): use SaveAs'));
   Result := SaveAs(fFileName);
 end;
 
