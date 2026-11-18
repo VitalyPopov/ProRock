@@ -21,10 +21,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   first one) and writes one, the `=` optional; one formula written to several cells moves its relative references to each, as
   Excel fills, a reference off the sheet becoming `#REF!`; `HasFormula`, `HasArray`, `CurrentArray` and `FormulaArray` for array
   formulas, changed only as a whole as in Excel. A formula Excel would not open (a bracket left open, `ROUND(1)`: Excel's own
-  functions take their numbers of arguments) is refused and listed in `Issues`; a function Excel does not have (`SUMME`: names
-  are English) is written with a warning. Excel's prefixes (`_xlfn.XLOOKUP`, a `LET`'s `_xlpm.x`) are added on write and
-  dropped on read, as Excel's `Formula` shows it. A formula written has no value until Excel calculates it, which it does when
-  the file opens
+  functions take their numbers of arguments, `ROW(1)`: some take only references) is refused and listed in `Issues`; a
+  function Excel does not have (`SUMME`: names are English) is written with a warning. Excel's prefixes (`_xlfn.XLOOKUP`, a
+  `LET`'s `_xlpm.x`) are added on write and dropped on read, as Excel's `Formula` shows it. A formula written has no value
+  until Excel calculates it, which it does when the file opens
 - `ToXml` and `ToXmlFile` take write options for that call, whatever `TBasite.Pretty` says: `[]` compact, `[woPretty]`
   indented, `woBooleanDigits` writes `xs:boolean` as `1` and `0`, as Office does
 - `TXmliteClass = class of TXmlite`: an object of a class known only at run time, without ProRock.Basite
