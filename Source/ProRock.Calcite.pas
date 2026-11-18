@@ -86,7 +86,8 @@ type
     // Excel's Formula: '=' and the formula in Excel's own form (=SUM(A1:A3;B1) is the locale's, =SUM(A1:A3,B1) Excel's), '' for
     // a cell without one; several cells: a Variant array as Value's. Written: the = optional, '' clears; one text written to
     // several cells moves its relative references to each, as Excel fills (=B1 in A1:A3: =B1, =B2, =B3); an array gives each
-    // cell its own. A formula broken on its face (quotes, brackets) is refused; what Excel cannot calculate shows its error
+    // cell its own. Function names in English only (SUM, not SUMME), Excel's prefixes (_xlfn.) not needed. A formula Excel
+    // would refuse (brackets, ROUND(1)) is refused, an unknown function warned of; what Excel cannot calculate shows its error
     property Formula: Variant read GetFormula write SetFormula;
     // every cell has a formula (each cell of an array formula's area has)
     property HasFormula: boolean read GetHasFormula;
@@ -495,18 +496,323 @@ begin
   end;
 end;
 
-// Excel's A1 formula text (as stored, without the =): its references moved by aRows and aColumns, as Excel fills - the
-// relative parts only, one off the sheet becomes #REF!. False with aWhy when Excel would not read it: a broken formula makes
-// Excel refuse the whole file, even repaired. The grammar is checked (values and operators in turn, brackets, arguments, array
-// constants), not names: an unknown function or name is Excel's #NAME?. Not checked yet, and refused by Excel too: the number
-// of arguments one of Excel's own functions takes (ROUND(1), SUM())
-function ShiftFormula(const aFormula: string; aRows, aColumns: integer; out aResult, aWhy: string): boolean;
+type
+  // one of Excel's functions: the argument counts it takes (those over Paired come in pairs: SUMIFS 3, 5, 7...; none when
+  // Min is over Max: CALL) and the prefix a file stores it with (cFunctionPrefixes)
+  TExcelFunction = record
+    Name: string;
+    Min, Max, Paired, Prefix: byte;
+  end;
+
+const
+  cFunctionPrefixes: array [0 .. 2] of string = ('', '_xlfn.', '_xlfn._xlws.');
+  // Excel's functions, made from Excel itself (each count tried, a saved file read): not edited by hand
+  cFunctionCount = 518;
+  cLetFunction = 277;
+  cLambdaFunction = 270;
+  cFunctions: array [0 .. cFunctionCount - 1] of TExcelFunction = (
+  (Name: 'ABS'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'ACCRINT'; Min: 6; Max: 8; Paired: 8; Prefix: 0),
+  (Name: 'ACCRINTM'; Min: 4; Max: 5; Paired: 5; Prefix: 0), (Name: 'ACOS'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'ACOSH'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'ACOT'; Min: 1; Max: 1; Paired: 1; Prefix: 1),
+  (Name: 'ACOTH'; Min: 1; Max: 1; Paired: 1; Prefix: 1), (Name: 'ADDRESS'; Min: 2; Max: 5; Paired: 5; Prefix: 0),
+  (Name: 'AGGREGATE'; Min: 3; Max: 254; Paired: 254; Prefix: 1), (Name: 'AMORDEGRC'; Min: 6; Max: 7; Paired: 7; Prefix: 0),
+  (Name: 'AMORLINC'; Min: 6; Max: 7; Paired: 7; Prefix: 0), (Name: 'AND'; Min: 1; Max: 255; Paired: 255; Prefix: 0),
+  (Name: 'ARABIC'; Min: 1; Max: 1; Paired: 1; Prefix: 1), (Name: 'AREAS'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'ARRAYTOTEXT'; Min: 1; Max: 2; Paired: 2; Prefix: 1), (Name: 'ASC'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'ASIN'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'ASINH'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'ATAN'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'ATAN2'; Min: 2; Max: 2; Paired: 2; Prefix: 0),
+  (Name: 'ATANH'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'AVEDEV'; Min: 1; Max: 255; Paired: 255; Prefix: 0),
+  (Name: 'AVERAGE'; Min: 1; Max: 255; Paired: 255; Prefix: 0), (Name: 'AVERAGEA'; Min: 1; Max: 255; Paired: 255; Prefix: 0),
+  (Name: 'AVERAGEIF'; Min: 2; Max: 3; Paired: 3; Prefix: 0), (Name: 'AVERAGEIFS'; Min: 3; Max: 255; Paired: 3; Prefix: 0),
+  (Name: 'BAHTTEXT'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'BASE'; Min: 2; Max: 3; Paired: 3; Prefix: 1),
+  (Name: 'BESSELI'; Min: 2; Max: 2; Paired: 2; Prefix: 0), (Name: 'BESSELJ'; Min: 2; Max: 2; Paired: 2; Prefix: 0),
+  (Name: 'BESSELK'; Min: 2; Max: 2; Paired: 2; Prefix: 0), (Name: 'BESSELY'; Min: 2; Max: 2; Paired: 2; Prefix: 0),
+  (Name: 'BETA.DIST'; Min: 4; Max: 6; Paired: 6; Prefix: 1), (Name: 'BETADIST'; Min: 3; Max: 5; Paired: 5; Prefix: 0),
+  (Name: 'BETAINV'; Min: 3; Max: 5; Paired: 5; Prefix: 0), (Name: 'BIN2DEC'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'BIN2HEX'; Min: 1; Max: 2; Paired: 2; Prefix: 0), (Name: 'BIN2OCT'; Min: 1; Max: 2; Paired: 2; Prefix: 0),
+  (Name: 'BINOM.DIST'; Min: 4; Max: 4; Paired: 4; Prefix: 1), (Name: 'BINOM.DIST.RANGE'; Min: 3; Max: 4; Paired: 4; Prefix: 1),
+  (Name: 'BINOM.INV'; Min: 3; Max: 3; Paired: 3; Prefix: 1), (Name: 'BINOMDIST'; Min: 4; Max: 4; Paired: 4; Prefix: 0),
+  (Name: 'BITAND'; Min: 2; Max: 2; Paired: 2; Prefix: 1), (Name: 'BITLSHIFT'; Min: 2; Max: 2; Paired: 2; Prefix: 1),
+  (Name: 'BITOR'; Min: 2; Max: 2; Paired: 2; Prefix: 1), (Name: 'BITRSHIFT'; Min: 2; Max: 2; Paired: 2; Prefix: 1),
+  (Name: 'BITXOR'; Min: 2; Max: 2; Paired: 2; Prefix: 1), (Name: 'BYCOL'; Min: 1; Max: 2; Paired: 2; Prefix: 1),
+  (Name: 'BYROW'; Min: 1; Max: 2; Paired: 2; Prefix: 1), (Name: 'CALL'; Min: 1; Max: 0; Paired: 0; Prefix: 0),
+  (Name: 'CEILING'; Min: 2; Max: 2; Paired: 2; Prefix: 0), (Name: 'CEILING.MATH'; Min: 1; Max: 3; Paired: 3; Prefix: 1),
+  (Name: 'CEILING.PRECISE'; Min: 1; Max: 2; Paired: 2; Prefix: 1), (Name: 'CELL'; Min: 1; Max: 2; Paired: 2; Prefix: 0),
+  (Name: 'CHAR'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'CHIDIST'; Min: 2; Max: 2; Paired: 2; Prefix: 0),
+  (Name: 'CHIINV'; Min: 2; Max: 2; Paired: 2; Prefix: 0), (Name: 'CHISQ.DIST'; Min: 3; Max: 3; Paired: 3; Prefix: 1),
+  (Name: 'CHISQ.DIST.RT'; Min: 2; Max: 2; Paired: 2; Prefix: 1), (Name: 'CHISQ.INV'; Min: 2; Max: 2; Paired: 2; Prefix: 1),
+  (Name: 'CHISQ.INV.RT'; Min: 2; Max: 2; Paired: 2; Prefix: 1), (Name: 'CHISQ.TEST'; Min: 2; Max: 2; Paired: 2; Prefix: 1),
+  (Name: 'CHITEST'; Min: 2; Max: 2; Paired: 2; Prefix: 0), (Name: 'CHOOSE'; Min: 2; Max: 255; Paired: 255; Prefix: 0),
+  (Name: 'CHOOSECOLS'; Min: 2; Max: 254; Paired: 254; Prefix: 1), (Name: 'CHOOSEROWS'; Min: 2; Max: 254; Paired: 254; Prefix: 1),
+  (Name: 'CLEAN'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'CODE'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'COLUMN'; Min: 0; Max: 1; Paired: 1; Prefix: 0), (Name: 'COLUMNS'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'COMBIN'; Min: 2; Max: 2; Paired: 2; Prefix: 0), (Name: 'COMBINA'; Min: 2; Max: 2; Paired: 2; Prefix: 1),
+  (Name: 'COMPLEX'; Min: 2; Max: 3; Paired: 3; Prefix: 0), (Name: 'CONCAT'; Min: 1; Max: 254; Paired: 254; Prefix: 1),
+  (Name: 'CONCATENATE'; Min: 1; Max: 255; Paired: 255; Prefix: 0), (Name: 'CONFIDENCE'; Min: 3; Max: 3; Paired: 3; Prefix: 0),
+  (Name: 'CONFIDENCE.NORM'; Min: 3; Max: 3; Paired: 3; Prefix: 1), (Name: 'CONFIDENCE.T'; Min: 3; Max: 3; Paired: 3; Prefix: 1),
+  (Name: 'CONVERT'; Min: 3; Max: 3; Paired: 3; Prefix: 0), (Name: 'CORREL'; Min: 2; Max: 2; Paired: 2; Prefix: 0),
+  (Name: 'COS'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'COSH'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'COT'; Min: 1; Max: 1; Paired: 1; Prefix: 1), (Name: 'COTH'; Min: 1; Max: 1; Paired: 1; Prefix: 1),
+  (Name: 'COUNT'; Min: 1; Max: 255; Paired: 255; Prefix: 0), (Name: 'COUNTA'; Min: 1; Max: 255; Paired: 255; Prefix: 0),
+  (Name: 'COUNTBLANK'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'COUNTIF'; Min: 2; Max: 2; Paired: 2; Prefix: 0),
+  (Name: 'COUNTIFS'; Min: 2; Max: 254; Paired: 2; Prefix: 0), (Name: 'COUPDAYBS'; Min: 3; Max: 4; Paired: 4; Prefix: 0),
+  (Name: 'COUPDAYS'; Min: 3; Max: 4; Paired: 4; Prefix: 0), (Name: 'COUPDAYSNC'; Min: 3; Max: 4; Paired: 4; Prefix: 0),
+  (Name: 'COUPNCD'; Min: 3; Max: 4; Paired: 4; Prefix: 0), (Name: 'COUPNUM'; Min: 3; Max: 4; Paired: 4; Prefix: 0),
+  (Name: 'COUPPCD'; Min: 3; Max: 4; Paired: 4; Prefix: 0), (Name: 'COVAR'; Min: 2; Max: 2; Paired: 2; Prefix: 0),
+  (Name: 'COVARIANCE.P'; Min: 2; Max: 2; Paired: 2; Prefix: 1), (Name: 'COVARIANCE.S'; Min: 2; Max: 2; Paired: 2; Prefix: 1),
+  (Name: 'CRITBINOM'; Min: 3; Max: 3; Paired: 3; Prefix: 0), (Name: 'CSC'; Min: 1; Max: 1; Paired: 1; Prefix: 1),
+  (Name: 'CSCH'; Min: 1; Max: 1; Paired: 1; Prefix: 1), (Name: 'CUBEKPIMEMBER'; Min: 3; Max: 4; Paired: 4; Prefix: 0),
+  (Name: 'CUBEMEMBER'; Min: 2; Max: 3; Paired: 3; Prefix: 0), (Name: 'CUBEMEMBERPROPERTY'; Min: 3; Max: 3; Paired: 3; Prefix: 0),
+  (Name: 'CUBERANKEDMEMBER'; Min: 3; Max: 4; Paired: 4; Prefix: 0), (Name: 'CUBESET'; Min: 2; Max: 5; Paired: 5; Prefix: 0),
+  (Name: 'CUBESETCOUNT'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'CUBEVALUE'; Min: 1; Max: 255; Paired: 255; Prefix: 0),
+  (Name: 'CUMIPMT'; Min: 6; Max: 6; Paired: 6; Prefix: 0), (Name: 'CUMPRINC'; Min: 6; Max: 6; Paired: 6; Prefix: 0),
+  (Name: 'DATE'; Min: 3; Max: 3; Paired: 3; Prefix: 0), (Name: 'DATEDIF'; Min: 3; Max: 3; Paired: 3; Prefix: 0),
+  (Name: 'DATEVALUE'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'DAVERAGE'; Min: 3; Max: 3; Paired: 3; Prefix: 0),
+  (Name: 'DAY'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'DAYS'; Min: 2; Max: 2; Paired: 2; Prefix: 1),
+  (Name: 'DAYS360'; Min: 2; Max: 3; Paired: 3; Prefix: 0), (Name: 'DB'; Min: 4; Max: 5; Paired: 5; Prefix: 0),
+  (Name: 'DBCS'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'DCOUNT'; Min: 3; Max: 3; Paired: 3; Prefix: 0),
+  (Name: 'DCOUNTA'; Min: 3; Max: 3; Paired: 3; Prefix: 0), (Name: 'DDB'; Min: 4; Max: 5; Paired: 5; Prefix: 0),
+  (Name: 'DEC2BIN'; Min: 1; Max: 2; Paired: 2; Prefix: 0), (Name: 'DEC2HEX'; Min: 1; Max: 2; Paired: 2; Prefix: 0),
+  (Name: 'DEC2OCT'; Min: 1; Max: 2; Paired: 2; Prefix: 0), (Name: 'DECIMAL'; Min: 2; Max: 2; Paired: 2; Prefix: 1),
+  (Name: 'DEGREES'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'DELTA'; Min: 1; Max: 2; Paired: 2; Prefix: 0),
+  (Name: 'DETECTLANGUAGE'; Min: 1; Max: 1; Paired: 1; Prefix: 1), (Name: 'DEVSQ'; Min: 1; Max: 255; Paired: 255; Prefix: 0),
+  (Name: 'DGET'; Min: 3; Max: 3; Paired: 3; Prefix: 0), (Name: 'DISC'; Min: 4; Max: 5; Paired: 5; Prefix: 0),
+  (Name: 'DMAX'; Min: 3; Max: 3; Paired: 3; Prefix: 0), (Name: 'DMIN'; Min: 3; Max: 3; Paired: 3; Prefix: 0),
+  (Name: 'DOLLAR'; Min: 1; Max: 2; Paired: 2; Prefix: 0), (Name: 'DOLLARDE'; Min: 2; Max: 2; Paired: 2; Prefix: 0),
+  (Name: 'DOLLARFR'; Min: 2; Max: 2; Paired: 2; Prefix: 0), (Name: 'DPRODUCT'; Min: 3; Max: 3; Paired: 3; Prefix: 0),
+  (Name: 'DROP'; Min: 2; Max: 3; Paired: 3; Prefix: 1), (Name: 'DSTDEV'; Min: 3; Max: 3; Paired: 3; Prefix: 0),
+  (Name: 'DSTDEVP'; Min: 3; Max: 3; Paired: 3; Prefix: 0), (Name: 'DSUM'; Min: 3; Max: 3; Paired: 3; Prefix: 0),
+  (Name: 'DURATION'; Min: 5; Max: 6; Paired: 6; Prefix: 0), (Name: 'DVAR'; Min: 3; Max: 3; Paired: 3; Prefix: 0),
+  (Name: 'DVARP'; Min: 3; Max: 3; Paired: 3; Prefix: 0), (Name: 'EDATE'; Min: 2; Max: 2; Paired: 2; Prefix: 0),
+  (Name: 'EFFECT'; Min: 2; Max: 2; Paired: 2; Prefix: 0), (Name: 'ENCODEURL'; Min: 1; Max: 1; Paired: 1; Prefix: 1),
+  (Name: 'EOMONTH'; Min: 2; Max: 2; Paired: 2; Prefix: 0), (Name: 'ERF'; Min: 1; Max: 2; Paired: 2; Prefix: 0),
+  (Name: 'ERF.PRECISE'; Min: 1; Max: 1; Paired: 1; Prefix: 1), (Name: 'ERFC'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'ERFC.PRECISE'; Min: 1; Max: 1; Paired: 1; Prefix: 1), (Name: 'ERROR.TYPE'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'EUROCONVERT'; Min: 0; Max: 254; Paired: 254; Prefix: 0), (Name: 'EVEN'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'EXACT'; Min: 2; Max: 2; Paired: 2; Prefix: 0), (Name: 'EXP'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'EXPAND'; Min: 2; Max: 4; Paired: 4; Prefix: 1), (Name: 'EXPON.DIST'; Min: 3; Max: 3; Paired: 3; Prefix: 1),
+  (Name: 'EXPONDIST'; Min: 3; Max: 3; Paired: 3; Prefix: 0), (Name: 'F.DIST'; Min: 4; Max: 4; Paired: 4; Prefix: 1),
+  (Name: 'F.DIST.RT'; Min: 3; Max: 3; Paired: 3; Prefix: 1), (Name: 'F.INV'; Min: 3; Max: 3; Paired: 3; Prefix: 1),
+  (Name: 'F.INV.RT'; Min: 3; Max: 3; Paired: 3; Prefix: 1), (Name: 'F.TEST'; Min: 2; Max: 2; Paired: 2; Prefix: 1),
+  (Name: 'FACT'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'FACTDOUBLE'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'FALSE'; Min: 0; Max: 0; Paired: 0; Prefix: 0), (Name: 'FDIST'; Min: 3; Max: 3; Paired: 3; Prefix: 0),
+  (Name: 'FILTER'; Min: 2; Max: 3; Paired: 3; Prefix: 2), (Name: 'FILTERXML'; Min: 2; Max: 2; Paired: 2; Prefix: 1),
+  (Name: 'FINV'; Min: 3; Max: 3; Paired: 3; Prefix: 0), (Name: 'FISHER'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'FISHERINV'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'FIXED'; Min: 1; Max: 3; Paired: 3; Prefix: 0),
+  (Name: 'FLOOR'; Min: 2; Max: 2; Paired: 2; Prefix: 0), (Name: 'FLOOR.MATH'; Min: 1; Max: 3; Paired: 3; Prefix: 1),
+  (Name: 'FLOOR.PRECISE'; Min: 1; Max: 2; Paired: 2; Prefix: 1), (Name: 'FORECAST'; Min: 3; Max: 3; Paired: 3; Prefix: 0),
+  (Name: 'FORECAST.ETS'; Min: 3; Max: 6; Paired: 6; Prefix: 1), (Name: 'FORECAST.ETS.CONFINT'; Min: 3; Max: 7; Paired: 7; Prefix: 1),
+  (Name: 'FORECAST.ETS.SEASONALITY'; Min: 2; Max: 4; Paired: 4; Prefix: 1),
+  (Name: 'FORECAST.ETS.STAT'; Min: 3; Max: 6; Paired: 6; Prefix: 1), (Name: 'FORECAST.LINEAR'; Min: 3; Max: 3; Paired: 3; Prefix: 1),
+  (Name: 'FORMULATEXT'; Min: 1; Max: 1; Paired: 1; Prefix: 1), (Name: 'FREQUENCY'; Min: 2; Max: 2; Paired: 2; Prefix: 0),
+  (Name: 'FTEST'; Min: 2; Max: 2; Paired: 2; Prefix: 0), (Name: 'FV'; Min: 3; Max: 5; Paired: 5; Prefix: 0),
+  (Name: 'FVSCHEDULE'; Min: 2; Max: 2; Paired: 2; Prefix: 0), (Name: 'GAMMA'; Min: 1; Max: 1; Paired: 1; Prefix: 1),
+  (Name: 'GAMMA.DIST'; Min: 4; Max: 4; Paired: 4; Prefix: 1), (Name: 'GAMMA.INV'; Min: 3; Max: 3; Paired: 3; Prefix: 1),
+  (Name: 'GAMMADIST'; Min: 4; Max: 4; Paired: 4; Prefix: 0), (Name: 'GAMMAINV'; Min: 3; Max: 3; Paired: 3; Prefix: 0),
+  (Name: 'GAMMALN'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'GAMMALN.PRECISE'; Min: 1; Max: 1; Paired: 1; Prefix: 1),
+  (Name: 'GAUSS'; Min: 1; Max: 1; Paired: 1; Prefix: 1), (Name: 'GCD'; Min: 1; Max: 255; Paired: 255; Prefix: 0),
+  (Name: 'GEOMEAN'; Min: 1; Max: 255; Paired: 255; Prefix: 0), (Name: 'GESTEP'; Min: 1; Max: 2; Paired: 2; Prefix: 0),
+  (Name: 'GETPIVOTDATA'; Min: 2; Max: 254; Paired: 4; Prefix: 0), (Name: 'GROUPBY'; Min: 3; Max: 8; Paired: 8; Prefix: 1),
+  (Name: 'GROWTH'; Min: 1; Max: 4; Paired: 4; Prefix: 0), (Name: 'HARMEAN'; Min: 1; Max: 255; Paired: 255; Prefix: 0),
+  (Name: 'HEX2BIN'; Min: 1; Max: 2; Paired: 2; Prefix: 0), (Name: 'HEX2DEC'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'HEX2OCT'; Min: 1; Max: 2; Paired: 2; Prefix: 0), (Name: 'HLOOKUP'; Min: 3; Max: 4; Paired: 4; Prefix: 0),
+  (Name: 'HOUR'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'HSTACK'; Min: 1; Max: 254; Paired: 254; Prefix: 1),
+  (Name: 'HYPERLINK'; Min: 1; Max: 2; Paired: 2; Prefix: 0), (Name: 'HYPGEOM.DIST'; Min: 5; Max: 5; Paired: 5; Prefix: 1),
+  (Name: 'HYPGEOMDIST'; Min: 4; Max: 4; Paired: 4; Prefix: 0), (Name: 'IF'; Min: 2; Max: 3; Paired: 3; Prefix: 0),
+  (Name: 'IFERROR'; Min: 2; Max: 2; Paired: 2; Prefix: 0), (Name: 'IFNA'; Min: 2; Max: 2; Paired: 2; Prefix: 1),
+  (Name: 'IFS'; Min: 2; Max: 254; Paired: 2; Prefix: 1), (Name: 'IMABS'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'IMAGE'; Min: 1; Max: 5; Paired: 5; Prefix: 1), (Name: 'IMAGINARY'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'IMARGUMENT'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'IMCONJUGATE'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'IMCOS'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'IMCOSH'; Min: 1; Max: 1; Paired: 1; Prefix: 1),
+  (Name: 'IMCOT'; Min: 1; Max: 1; Paired: 1; Prefix: 1), (Name: 'IMCSC'; Min: 1; Max: 1; Paired: 1; Prefix: 1),
+  (Name: 'IMCSCH'; Min: 1; Max: 1; Paired: 1; Prefix: 1), (Name: 'IMDIV'; Min: 2; Max: 2; Paired: 2; Prefix: 0),
+  (Name: 'IMEXP'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'IMLN'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'IMLOG10'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'IMLOG2'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'IMPOWER'; Min: 2; Max: 2; Paired: 2; Prefix: 0), (Name: 'IMPRODUCT'; Min: 1; Max: 255; Paired: 255; Prefix: 0),
+  (Name: 'IMREAL'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'IMSEC'; Min: 1; Max: 1; Paired: 1; Prefix: 1),
+  (Name: 'IMSECH'; Min: 1; Max: 1; Paired: 1; Prefix: 1), (Name: 'IMSIN'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'IMSINH'; Min: 1; Max: 1; Paired: 1; Prefix: 1), (Name: 'IMSQRT'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'IMSUB'; Min: 2; Max: 2; Paired: 2; Prefix: 0), (Name: 'IMSUM'; Min: 1; Max: 255; Paired: 255; Prefix: 0),
+  (Name: 'IMTAN'; Min: 1; Max: 1; Paired: 1; Prefix: 1), (Name: 'INDEX'; Min: 2; Max: 4; Paired: 4; Prefix: 0),
+  (Name: 'INDIRECT'; Min: 1; Max: 2; Paired: 2; Prefix: 0), (Name: 'INFO'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'INT'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'INTERCEPT'; Min: 2; Max: 2; Paired: 2; Prefix: 0),
+  (Name: 'INTRATE'; Min: 4; Max: 5; Paired: 5; Prefix: 0), (Name: 'IPMT'; Min: 4; Max: 6; Paired: 6; Prefix: 0),
+  (Name: 'IRR'; Min: 1; Max: 2; Paired: 2; Prefix: 0), (Name: 'ISBLANK'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'ISERR'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'ISERROR'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'ISEVEN'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'ISFORMULA'; Min: 1; Max: 1; Paired: 1; Prefix: 1),
+  (Name: 'ISLOGICAL'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'ISNA'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'ISNONTEXT'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'ISNUMBER'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'ISO.CEILING'; Min: 1; Max: 2; Paired: 2; Prefix: 0), (Name: 'ISODD'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'ISOMITTED'; Min: 1; Max: 1; Paired: 1; Prefix: 1), (Name: 'ISOWEEKNUM'; Min: 1; Max: 1; Paired: 1; Prefix: 1),
+  (Name: 'ISPMT'; Min: 4; Max: 4; Paired: 4; Prefix: 0), (Name: 'ISREF'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'ISTEXT'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'JIS'; Min: 0; Max: 254; Paired: 254; Prefix: 0),
+  (Name: 'KURT'; Min: 1; Max: 255; Paired: 255; Prefix: 0), (Name: 'LAMBDA'; Min: 1; Max: 254; Paired: 254; Prefix: 1),
+  (Name: 'LARGE'; Min: 2; Max: 2; Paired: 2; Prefix: 0), (Name: 'LCM'; Min: 1; Max: 255; Paired: 255; Prefix: 0),
+  (Name: 'LEFT'; Min: 1; Max: 2; Paired: 2; Prefix: 0), (Name: 'LEFTB'; Min: 1; Max: 2; Paired: 2; Prefix: 0),
+  (Name: 'LEN'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'LENB'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'LET'; Min: 3; Max: 253; Paired: 3; Prefix: 1), (Name: 'LINEST'; Min: 1; Max: 4; Paired: 4; Prefix: 0),
+  (Name: 'LN'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'LOG'; Min: 1; Max: 2; Paired: 2; Prefix: 0),
+  (Name: 'LOG10'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'LOGEST'; Min: 1; Max: 4; Paired: 4; Prefix: 0),
+  (Name: 'LOGINV'; Min: 3; Max: 3; Paired: 3; Prefix: 0), (Name: 'LOGNORM.DIST'; Min: 4; Max: 4; Paired: 4; Prefix: 1),
+  (Name: 'LOGNORM.INV'; Min: 3; Max: 3; Paired: 3; Prefix: 1), (Name: 'LOGNORMDIST'; Min: 3; Max: 3; Paired: 3; Prefix: 0),
+  (Name: 'LOOKUP'; Min: 2; Max: 3; Paired: 3; Prefix: 0), (Name: 'LOWER'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'MAKEARRAY'; Min: 3; Max: 3; Paired: 3; Prefix: 1), (Name: 'MAP'; Min: 2; Max: 254; Paired: 254; Prefix: 1),
+  (Name: 'MATCH'; Min: 2; Max: 3; Paired: 3; Prefix: 0), (Name: 'MAX'; Min: 1; Max: 255; Paired: 255; Prefix: 0),
+  (Name: 'MAXA'; Min: 1; Max: 255; Paired: 255; Prefix: 0), (Name: 'MAXIFS'; Min: 3; Max: 253; Paired: 3; Prefix: 1),
+  (Name: 'MDETERM'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'MDURATION'; Min: 5; Max: 6; Paired: 6; Prefix: 0),
+  (Name: 'MEDIAN'; Min: 1; Max: 255; Paired: 255; Prefix: 0), (Name: 'MID'; Min: 3; Max: 3; Paired: 3; Prefix: 0),
+  (Name: 'MIDB'; Min: 3; Max: 3; Paired: 3; Prefix: 0), (Name: 'MIN'; Min: 1; Max: 255; Paired: 255; Prefix: 0),
+  (Name: 'MINA'; Min: 1; Max: 255; Paired: 255; Prefix: 0), (Name: 'MINIFS'; Min: 3; Max: 253; Paired: 3; Prefix: 1),
+  (Name: 'MINUTE'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'MINVERSE'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'MIRR'; Min: 3; Max: 3; Paired: 3; Prefix: 0), (Name: 'MMULT'; Min: 2; Max: 2; Paired: 2; Prefix: 0),
+  (Name: 'MOD'; Min: 2; Max: 2; Paired: 2; Prefix: 0), (Name: 'MODE'; Min: 1; Max: 255; Paired: 255; Prefix: 0),
+  (Name: 'MODE.MULT'; Min: 1; Max: 254; Paired: 254; Prefix: 1), (Name: 'MODE.SNGL'; Min: 1; Max: 254; Paired: 254; Prefix: 1),
+  (Name: 'MONTH'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'MROUND'; Min: 2; Max: 2; Paired: 2; Prefix: 0),
+  (Name: 'MULTINOMIAL'; Min: 1; Max: 255; Paired: 255; Prefix: 0), (Name: 'MUNIT'; Min: 1; Max: 1; Paired: 1; Prefix: 1),
+  (Name: 'N'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'NA'; Min: 0; Max: 0; Paired: 0; Prefix: 0),
+  (Name: 'NEGBINOM.DIST'; Min: 4; Max: 4; Paired: 4; Prefix: 1), (Name: 'NEGBINOMDIST'; Min: 3; Max: 3; Paired: 3; Prefix: 0),
+  (Name: 'NETWORKDAYS'; Min: 2; Max: 3; Paired: 3; Prefix: 0), (Name: 'NETWORKDAYS.INTL'; Min: 2; Max: 4; Paired: 4; Prefix: 0),
+  (Name: 'NOMINAL'; Min: 2; Max: 2; Paired: 2; Prefix: 0), (Name: 'NORM.DIST'; Min: 4; Max: 4; Paired: 4; Prefix: 1),
+  (Name: 'NORM.INV'; Min: 3; Max: 3; Paired: 3; Prefix: 1), (Name: 'NORM.S.DIST'; Min: 2; Max: 2; Paired: 2; Prefix: 1),
+  (Name: 'NORM.S.INV'; Min: 1; Max: 1; Paired: 1; Prefix: 1), (Name: 'NORMDIST'; Min: 4; Max: 4; Paired: 4; Prefix: 0),
+  (Name: 'NORMINV'; Min: 3; Max: 3; Paired: 3; Prefix: 0), (Name: 'NORMSDIST'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'NORMSINV'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'NOT'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'NOW'; Min: 0; Max: 0; Paired: 0; Prefix: 0), (Name: 'NPER'; Min: 3; Max: 5; Paired: 5; Prefix: 0),
+  (Name: 'NPV'; Min: 2; Max: 255; Paired: 255; Prefix: 0), (Name: 'NUMBERVALUE'; Min: 1; Max: 3; Paired: 3; Prefix: 1),
+  (Name: 'OCT2BIN'; Min: 1; Max: 2; Paired: 2; Prefix: 0), (Name: 'OCT2DEC'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'OCT2HEX'; Min: 1; Max: 2; Paired: 2; Prefix: 0), (Name: 'ODD'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'ODDFPRICE'; Min: 8; Max: 9; Paired: 9; Prefix: 0), (Name: 'ODDFYIELD'; Min: 8; Max: 9; Paired: 9; Prefix: 0),
+  (Name: 'ODDLPRICE'; Min: 7; Max: 8; Paired: 8; Prefix: 0), (Name: 'ODDLYIELD'; Min: 7; Max: 8; Paired: 8; Prefix: 0),
+  (Name: 'OFFSET'; Min: 3; Max: 5; Paired: 5; Prefix: 0), (Name: 'OR'; Min: 1; Max: 255; Paired: 255; Prefix: 0),
+  (Name: 'PDURATION'; Min: 3; Max: 3; Paired: 3; Prefix: 1), (Name: 'PEARSON'; Min: 2; Max: 2; Paired: 2; Prefix: 0),
+  (Name: 'PERCENTILE'; Min: 2; Max: 2; Paired: 2; Prefix: 0), (Name: 'PERCENTILE.EXC'; Min: 2; Max: 2; Paired: 2; Prefix: 1),
+  (Name: 'PERCENTILE.INC'; Min: 2; Max: 2; Paired: 2; Prefix: 1), (Name: 'PERCENTOF'; Min: 2; Max: 2; Paired: 2; Prefix: 1),
+  (Name: 'PERCENTRANK'; Min: 2; Max: 3; Paired: 3; Prefix: 0), (Name: 'PERCENTRANK.EXC'; Min: 2; Max: 3; Paired: 3; Prefix: 1),
+  (Name: 'PERCENTRANK.INC'; Min: 2; Max: 3; Paired: 3; Prefix: 1), (Name: 'PERMUT'; Min: 2; Max: 2; Paired: 2; Prefix: 0),
+  (Name: 'PERMUTATIONA'; Min: 2; Max: 2; Paired: 2; Prefix: 1), (Name: 'PHI'; Min: 1; Max: 1; Paired: 1; Prefix: 1),
+  (Name: 'PHONETIC'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'PI'; Min: 0; Max: 0; Paired: 0; Prefix: 0),
+  (Name: 'PIVOTBY'; Min: 4; Max: 11; Paired: 11; Prefix: 1), (Name: 'PMT'; Min: 3; Max: 5; Paired: 5; Prefix: 0),
+  (Name: 'POISSON'; Min: 3; Max: 3; Paired: 3; Prefix: 0), (Name: 'POISSON.DIST'; Min: 3; Max: 3; Paired: 3; Prefix: 1),
+  (Name: 'POWER'; Min: 2; Max: 2; Paired: 2; Prefix: 0), (Name: 'PPMT'; Min: 4; Max: 6; Paired: 6; Prefix: 0),
+  (Name: 'PRICE'; Min: 6; Max: 7; Paired: 7; Prefix: 0), (Name: 'PRICEDISC'; Min: 4; Max: 5; Paired: 5; Prefix: 0),
+  (Name: 'PRICEMAT'; Min: 5; Max: 6; Paired: 6; Prefix: 0), (Name: 'PROB'; Min: 3; Max: 4; Paired: 4; Prefix: 0),
+  (Name: 'PRODUCT'; Min: 1; Max: 255; Paired: 255; Prefix: 0), (Name: 'PROPER'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'PV'; Min: 3; Max: 5; Paired: 5; Prefix: 0), (Name: 'QUARTILE'; Min: 2; Max: 2; Paired: 2; Prefix: 0),
+  (Name: 'QUARTILE.EXC'; Min: 2; Max: 2; Paired: 2; Prefix: 1), (Name: 'QUARTILE.INC'; Min: 2; Max: 2; Paired: 2; Prefix: 1),
+  (Name: 'QUOTIENT'; Min: 2; Max: 2; Paired: 2; Prefix: 0), (Name: 'RADIANS'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'RAND'; Min: 0; Max: 0; Paired: 0; Prefix: 0), (Name: 'RANDARRAY'; Min: 0; Max: 5; Paired: 5; Prefix: 1),
+  (Name: 'RANDBETWEEN'; Min: 2; Max: 2; Paired: 2; Prefix: 0), (Name: 'RANK'; Min: 2; Max: 3; Paired: 3; Prefix: 0),
+  (Name: 'RANK.AVG'; Min: 2; Max: 3; Paired: 3; Prefix: 1), (Name: 'RANK.EQ'; Min: 2; Max: 3; Paired: 3; Prefix: 1),
+  (Name: 'RATE'; Min: 3; Max: 6; Paired: 6; Prefix: 0), (Name: 'RECEIVED'; Min: 4; Max: 5; Paired: 5; Prefix: 0),
+  (Name: 'REDUCE'; Min: 3; Max: 3; Paired: 3; Prefix: 1), (Name: 'REGEXEXTRACT'; Min: 2; Max: 4; Paired: 4; Prefix: 1),
+  (Name: 'REGEXREPLACE'; Min: 3; Max: 5; Paired: 5; Prefix: 1), (Name: 'REGEXTEST'; Min: 2; Max: 3; Paired: 3; Prefix: 1),
+  (Name: 'REGISTER.ID'; Min: 1; Max: 0; Paired: 0; Prefix: 0), (Name: 'REPLACE'; Min: 4; Max: 4; Paired: 4; Prefix: 0),
+  (Name: 'REPLACEB'; Min: 4; Max: 4; Paired: 4; Prefix: 0), (Name: 'REPT'; Min: 2; Max: 2; Paired: 2; Prefix: 0),
+  (Name: 'RIGHT'; Min: 1; Max: 2; Paired: 2; Prefix: 0), (Name: 'RIGHTB'; Min: 1; Max: 2; Paired: 2; Prefix: 0),
+  (Name: 'ROMAN'; Min: 1; Max: 2; Paired: 2; Prefix: 0), (Name: 'ROUND'; Min: 2; Max: 2; Paired: 2; Prefix: 0),
+  (Name: 'ROUNDDOWN'; Min: 2; Max: 2; Paired: 2; Prefix: 0), (Name: 'ROUNDUP'; Min: 2; Max: 2; Paired: 2; Prefix: 0),
+  (Name: 'ROW'; Min: 0; Max: 1; Paired: 1; Prefix: 0), (Name: 'ROWS'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'RRI'; Min: 3; Max: 3; Paired: 3; Prefix: 1), (Name: 'RSQ'; Min: 2; Max: 2; Paired: 2; Prefix: 0),
+  (Name: 'RTD'; Min: 3; Max: 255; Paired: 255; Prefix: 0), (Name: 'SCAN'; Min: 3; Max: 3; Paired: 3; Prefix: 1),
+  (Name: 'SEARCH'; Min: 2; Max: 3; Paired: 3; Prefix: 0), (Name: 'SEARCHB'; Min: 2; Max: 3; Paired: 3; Prefix: 0),
+  (Name: 'SEC'; Min: 1; Max: 1; Paired: 1; Prefix: 1), (Name: 'SECH'; Min: 1; Max: 1; Paired: 1; Prefix: 1),
+  (Name: 'SECOND'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'SEQUENCE'; Min: 1; Max: 4; Paired: 4; Prefix: 1),
+  (Name: 'SERIESSUM'; Min: 4; Max: 4; Paired: 4; Prefix: 0), (Name: 'SHEET'; Min: 0; Max: 1; Paired: 1; Prefix: 1),
+  (Name: 'SHEETS'; Min: 0; Max: 1; Paired: 1; Prefix: 1), (Name: 'SIGN'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'SIN'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'SINH'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'SKEW'; Min: 1; Max: 255; Paired: 255; Prefix: 0), (Name: 'SKEW.P'; Min: 1; Max: 254; Paired: 254; Prefix: 1),
+  (Name: 'SLN'; Min: 3; Max: 3; Paired: 3; Prefix: 0), (Name: 'SLOPE'; Min: 2; Max: 2; Paired: 2; Prefix: 0),
+  (Name: 'SMALL'; Min: 2; Max: 2; Paired: 2; Prefix: 0), (Name: 'SORT'; Min: 1; Max: 4; Paired: 4; Prefix: 2),
+  (Name: 'SORTBY'; Min: 2; Max: 253; Paired: 3; Prefix: 1), (Name: 'SQRT'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'SQRTPI'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'STANDARDIZE'; Min: 3; Max: 3; Paired: 3; Prefix: 0),
+  (Name: 'STDEV'; Min: 1; Max: 255; Paired: 255; Prefix: 0), (Name: 'STDEV.P'; Min: 1; Max: 254; Paired: 254; Prefix: 1),
+  (Name: 'STDEV.S'; Min: 1; Max: 254; Paired: 254; Prefix: 1), (Name: 'STDEVA'; Min: 1; Max: 255; Paired: 255; Prefix: 0),
+  (Name: 'STDEVP'; Min: 1; Max: 255; Paired: 255; Prefix: 0), (Name: 'STDEVPA'; Min: 1; Max: 255; Paired: 255; Prefix: 0),
+  (Name: 'STEYX'; Min: 2; Max: 2; Paired: 2; Prefix: 0), (Name: 'STOCKHISTORY'; Min: 2; Max: 254; Paired: 254; Prefix: 1),
+  (Name: 'SUBSTITUTE'; Min: 3; Max: 4; Paired: 4; Prefix: 0), (Name: 'SUBTOTAL'; Min: 2; Max: 255; Paired: 255; Prefix: 0),
+  (Name: 'SUM'; Min: 1; Max: 255; Paired: 255; Prefix: 0), (Name: 'SUMIF'; Min: 2; Max: 3; Paired: 3; Prefix: 0),
+  (Name: 'SUMIFS'; Min: 3; Max: 255; Paired: 3; Prefix: 0), (Name: 'SUMPRODUCT'; Min: 1; Max: 255; Paired: 255; Prefix: 0),
+  (Name: 'SUMSQ'; Min: 1; Max: 255; Paired: 255; Prefix: 0), (Name: 'SUMX2MY2'; Min: 2; Max: 2; Paired: 2; Prefix: 0),
+  (Name: 'SUMX2PY2'; Min: 2; Max: 2; Paired: 2; Prefix: 0), (Name: 'SUMXMY2'; Min: 2; Max: 2; Paired: 2; Prefix: 0),
+  (Name: 'SWITCH'; Min: 3; Max: 254; Paired: 254; Prefix: 1), (Name: 'SYD'; Min: 4; Max: 4; Paired: 4; Prefix: 0),
+  (Name: 'T'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'T.DIST'; Min: 3; Max: 3; Paired: 3; Prefix: 1),
+  (Name: 'T.DIST.2T'; Min: 2; Max: 2; Paired: 2; Prefix: 1), (Name: 'T.DIST.RT'; Min: 2; Max: 2; Paired: 2; Prefix: 1),
+  (Name: 'T.INV'; Min: 2; Max: 2; Paired: 2; Prefix: 1), (Name: 'T.INV.2T'; Min: 2; Max: 2; Paired: 2; Prefix: 1),
+  (Name: 'T.TEST'; Min: 4; Max: 4; Paired: 4; Prefix: 1), (Name: 'TAKE'; Min: 2; Max: 3; Paired: 3; Prefix: 1),
+  (Name: 'TAN'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'TANH'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'TBILLEQ'; Min: 3; Max: 3; Paired: 3; Prefix: 0), (Name: 'TBILLPRICE'; Min: 3; Max: 3; Paired: 3; Prefix: 0),
+  (Name: 'TBILLYIELD'; Min: 3; Max: 3; Paired: 3; Prefix: 0), (Name: 'TDIST'; Min: 3; Max: 3; Paired: 3; Prefix: 0),
+  (Name: 'TEXT'; Min: 2; Max: 2; Paired: 2; Prefix: 0), (Name: 'TEXTAFTER'; Min: 2; Max: 6; Paired: 6; Prefix: 1),
+  (Name: 'TEXTBEFORE'; Min: 2; Max: 6; Paired: 6; Prefix: 1), (Name: 'TEXTJOIN'; Min: 3; Max: 254; Paired: 254; Prefix: 1),
+  (Name: 'TEXTSPLIT'; Min: 2; Max: 6; Paired: 6; Prefix: 1), (Name: 'TIME'; Min: 3; Max: 3; Paired: 3; Prefix: 0),
+  (Name: 'TIMEVALUE'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'TINV'; Min: 2; Max: 2; Paired: 2; Prefix: 0),
+  (Name: 'TOCOL'; Min: 1; Max: 3; Paired: 3; Prefix: 1), (Name: 'TODAY'; Min: 0; Max: 0; Paired: 0; Prefix: 0),
+  (Name: 'TOROW'; Min: 1; Max: 3; Paired: 3; Prefix: 1), (Name: 'TRANSLATE'; Min: 1; Max: 3; Paired: 3; Prefix: 1),
+  (Name: 'TRANSPOSE'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'TREND'; Min: 1; Max: 4; Paired: 4; Prefix: 0),
+  (Name: 'TRIM'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'TRIMMEAN'; Min: 2; Max: 2; Paired: 2; Prefix: 0),
+  (Name: 'TRIMRANGE'; Min: 1; Max: 3; Paired: 3; Prefix: 1), (Name: 'TRUE'; Min: 0; Max: 0; Paired: 0; Prefix: 0),
+  (Name: 'TRUNC'; Min: 1; Max: 2; Paired: 2; Prefix: 0), (Name: 'TTEST'; Min: 4; Max: 4; Paired: 4; Prefix: 0),
+  (Name: 'TYPE'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'UNICHAR'; Min: 1; Max: 1; Paired: 1; Prefix: 1),
+  (Name: 'UNICODE'; Min: 1; Max: 1; Paired: 1; Prefix: 1), (Name: 'UNIQUE'; Min: 1; Max: 3; Paired: 3; Prefix: 1),
+  (Name: 'UPPER'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'VALUE'; Min: 1; Max: 1; Paired: 1; Prefix: 0),
+  (Name: 'VALUETOTEXT'; Min: 1; Max: 2; Paired: 2; Prefix: 1), (Name: 'VAR'; Min: 1; Max: 255; Paired: 255; Prefix: 0),
+  (Name: 'VAR.P'; Min: 1; Max: 254; Paired: 254; Prefix: 1), (Name: 'VAR.S'; Min: 1; Max: 254; Paired: 254; Prefix: 1),
+  (Name: 'VARA'; Min: 1; Max: 255; Paired: 255; Prefix: 0), (Name: 'VARP'; Min: 1; Max: 255; Paired: 255; Prefix: 0),
+  (Name: 'VARPA'; Min: 1; Max: 255; Paired: 255; Prefix: 0), (Name: 'VDB'; Min: 5; Max: 7; Paired: 7; Prefix: 0),
+  (Name: 'VLOOKUP'; Min: 3; Max: 4; Paired: 4; Prefix: 0), (Name: 'VSTACK'; Min: 1; Max: 254; Paired: 254; Prefix: 1),
+  (Name: 'WEBSERVICE'; Min: 1; Max: 1; Paired: 1; Prefix: 1), (Name: 'WEEKDAY'; Min: 1; Max: 2; Paired: 2; Prefix: 0),
+  (Name: 'WEEKNUM'; Min: 1; Max: 2; Paired: 2; Prefix: 0), (Name: 'WEIBULL'; Min: 4; Max: 4; Paired: 4; Prefix: 0),
+  (Name: 'WEIBULL.DIST'; Min: 4; Max: 4; Paired: 4; Prefix: 1), (Name: 'WORKDAY'; Min: 2; Max: 3; Paired: 3; Prefix: 0),
+  (Name: 'WORKDAY.INTL'; Min: 2; Max: 4; Paired: 4; Prefix: 0), (Name: 'WRAPCOLS'; Min: 2; Max: 3; Paired: 3; Prefix: 1),
+  (Name: 'WRAPROWS'; Min: 2; Max: 3; Paired: 3; Prefix: 1), (Name: 'XIRR'; Min: 2; Max: 3; Paired: 3; Prefix: 0),
+  (Name: 'XLOOKUP'; Min: 3; Max: 6; Paired: 6; Prefix: 1), (Name: 'XMATCH'; Min: 2; Max: 4; Paired: 4; Prefix: 1),
+  (Name: 'XNPV'; Min: 3; Max: 3; Paired: 3; Prefix: 0), (Name: 'XOR'; Min: 1; Max: 254; Paired: 254; Prefix: 1),
+  (Name: 'YEAR'; Min: 1; Max: 1; Paired: 1; Prefix: 0), (Name: 'YEARFRAC'; Min: 2; Max: 3; Paired: 3; Prefix: 0),
+  (Name: 'YIELD'; Min: 6; Max: 7; Paired: 7; Prefix: 0), (Name: 'YIELDDISC'; Min: 4; Max: 5; Paired: 5; Prefix: 0),
+  (Name: 'YIELDMAT'; Min: 5; Max: 6; Paired: 6; Prefix: 0), (Name: 'Z.TEST'; Min: 2; Max: 3; Paired: 3; Prefix: 1),
+  (Name: 'ZTEST'; Min: 2; Max: 3; Paired: 3; Prefix: 0)
+  );
+
+// Excel's function by its name without a prefix, in any case; -1 when it is none of them
+function FindFunction(const aName: string): integer;
+begin
+  var low: integer := 0;
+  var high: integer := cFunctionCount - 1;
+  while low <= high do
+  begin
+    Result := (low + high) div 2;
+    var order: integer := CompareText(cFunctions[Result].Name, aName); // ASCII only: no SUMME, no СУММ
+    if order = 0 then
+      Exit
+    else if order < 0 then
+      low := Result + 1
+    else
+      high := Result - 1;
+  end;
+  Result := -1;
+end;
+
+type
+  // a formula's text as a file stores it (_xlfn.XLOOKUP, LET's _xlpm.x) or as Excel's Formula shows it (XLOOKUP, x)
+  TFormulaForm = (ffStored, ffShown);
+
+// Excel's A1 formula text (without the =) in aForm: its references moved by aRows and aColumns, as Excel fills - the relative
+// parts only, one off the sheet becomes #REF!. False with aWhy when Excel would not read it: a broken formula makes Excel
+// refuse the whole file, even repaired. Checked: the grammar (values and operators in turn, brackets, arguments, array
+// constants) and the number of arguments Excel's own functions take (ROUND(1), SUM()); an unknown function or name is Excel's
+// #NAME?, the first unknown function aUnknown (a VBA or add-in one is unknown too). Without its prefix a file Excel refuses
+// (FILTER) or shows #NAME? (XLOOKUP, LET's x): the stored form adds the prefixes, the shown form drops them
+function ShiftFormula(const aFormula: string; aRows, aColumns: integer; aForm: TFormulaForm; out aResult, aWhy,
+  aUnknown: string): boolean;
 const
   cErrors: array [0 .. 9] of string = ('#NULL!', '#DIV/0!', '#VALUE!', '#REF!', '#NAME?', '#NUM!', '#N/A', '#GETTING_DATA',
     '#SPILL!', '#CALC!');
   cSpaces = [' ', #9, #10, #13];
   cOperators = ['+', '-', '*', '/', '^', '&', '=', '<', '>', ':'];
   cMaxArguments = 255;
+  cUnknown = -1;
+  cResult = -2;
+  cParameterPrefix = '_xlpm.';
 var
   builder: TStringBuilder;
   i, last: integer; // last: the formula's length
@@ -520,8 +826,13 @@ var
   prefixed: boolean; // after Sheet1! or [1]: a reference follows
   continued: boolean; // after a table's name: its [...] is the same value
   called: boolean; // after a function's name: its ( follows
+  calledFunction: integer; // that function: cFunctions' index, cUnknown, cResult (a LAMBDA's result or parameter called)
+  callable: boolean; // just after a LAMBDA's ) or a call's: a ( calls its result, LAMBDA(x,x+1)(5)
   brackets: string; // what is open: f - a function's (, g - a group's (, { - an array constant
   commas: TArray<integer>; // a function's commas so far, for each bracket open
+  functions: TArray<integer>; // a function's calledFunction, for each bracket open
+  parameters: TList<string>; // LET's and LAMBDA's parameters in scope (Excel stores them _xlpm.x)
+  scopes: TArray<integer>; // parameters' count at a function's (, for each bracket open: those after it end at its )
 
   function Fail(const aText: string): boolean;
   begin
@@ -547,6 +858,72 @@ var
       Result := #0
     else
       Result := brackets[brackets.Length];
+  end;
+
+  // the first character after aFrom's spaces, #0 at the end
+  function NextChar(aFrom: integer): Char;
+  begin
+    while (aFrom <= last) and CharInSet(aFormula[aFrom], cSpaces) do
+      Inc(aFrom);
+    if aFrom > last then
+      Result := #0
+    else
+      Result := aFormula[aFrom];
+  end;
+
+  // a word ending before aEnd declares a parameter: LET's name (each other argument, not its last), LAMBDA's (all but its last)
+  function Declares(aEnd: integer): boolean;
+  begin
+    Result := (Inside = 'f') and arguments and (NextChar(aEnd) = ',') and
+      ((functions[brackets.Length - 1] = cLambdaFunction) or
+      ((functions[brackets.Length - 1] = cLetFunction) and not Odd(commas[brackets.Length - 1])));
+  end;
+
+  // a parameter in scope as declared (Excel shows LAMBDA(Total,TOTAL*2) as LAMBDA(Total,Total*2)), '' when there is none
+  function Declared(const aName: string): string;
+  begin
+    for var index := parameters.Count - 1 downto 0 do
+      if SameText(parameters[index], aName) then
+        Exit(parameters[index]);
+    Result := '';
+  end;
+
+  procedure OpenFunction(aFunction: integer);
+  begin
+    brackets := brackets + 'f';
+    functions[brackets.Length - 1] := aFunction;
+    scopes[brackets.Length - 1] := parameters.Count;
+    called := False;
+    expectValue := True;
+    arguments := True;
+  end;
+
+  // a function's ): Excel refuses a file where its own one has another number of arguments
+  function CloseFunction: boolean;
+  begin
+    var top: integer := brackets.Length - 1;
+    var count: integer := commas[top] + 1;
+    if (commas[top] = 0) and expectValue then
+      count := 0;
+    parameters.DeleteRange(scopes[top], parameters.Count - scopes[top]);
+    callable := (functions[top] = cLambdaFunction) or (functions[top] = cResult);
+    if functions[top] < 0 then
+      Exit(True);
+    var known: TExcelFunction := cFunctions[functions[top]];
+    if known.Min > known.Max then
+      Exit(Fail(Format('Excel takes %s in no cell''s formula', [known.Name])));
+    if (count >= known.Min) and (count <= known.Max) and ((count <= known.Paired) or not Odd(count - known.Paired)) then
+      Exit(True);
+    var counts: string := IntToStr(known.Min);
+    if known.Max > known.Min then
+      counts := counts + ' to ' + IntToStr(known.Max);
+    if (known.Min = 1) and (known.Max = 1) then
+      counts := counts + ' argument'
+    else
+      counts := counts + ' arguments';
+    if known.Paired < known.Max then
+      counts := Format('%s, those after %d in pairs', [counts, known.Paired]);
+    Result := Fail(Format('%s takes %s, not %d', [known.Name, counts, count]));
   end;
 
   // a quoted text or sheet name: the index of its closing quote (a doubled one is inside), 0 when there is none
@@ -652,11 +1029,76 @@ var
     Result := True;
   end;
 
+  function HasPrefix(const aWord, aPrefix: string): boolean;
+  begin
+    Result := SameText(Copy(aWord, 1, aPrefix.Length), aPrefix);
+  end;
+
+  function Unprefixed(const aWord: string): string;
+  begin
+    Result := aWord;
+    if HasPrefix(Result, cParameterPrefix) then
+      Result := Result.Substring(cParameterPrefix.Length);
+  end;
+
+  // LET's or LAMBDA's parameter ending before aEnd, declared or used; called when a ( follows (LET(f,LAMBDA(x,x+1),f(5)))
+  function Parameter(aEnd: integer): boolean;
+  begin
+    var name: string := Unprefixed(Copy(aFormula, i, aEnd - i));
+    var declaring: boolean := Declares(aEnd);
+    if not Value(False) then
+      Exit(False);
+    if declaring then
+      parameters.Add(name)
+    else
+      name := Declared(name);
+    if aForm = ffStored then
+      builder.Append(cParameterPrefix);
+    builder.Append(name);
+    i := aEnd;
+    if (i <= last) and (aFormula[i] = '(') then
+    begin
+      called := True;
+      calledFunction := cResult;
+    end;
+    Result := True;
+  end;
+
+  // a function's name ending before aEnd, its ( next: one of Excel's in aForm, upper case; another as it is
+  function FunctionName(aEnd: integer): boolean;
+  begin
+    if not Value(False) then
+      Exit(False);
+    var word: string := Copy(aFormula, i, aEnd - i);
+    var name: string := word;
+    while HasPrefix(name, '_xlfn.') or HasPrefix(name, '_xlws.') do
+      name := name.Substring(6);
+    calledFunction := FindFunction(name);
+    if calledFunction >= 0 then
+    begin
+      if aForm = ffStored then
+        builder.Append(cFunctionPrefixes[cFunctions[calledFunction].Prefix]);
+      builder.Append(cFunctions[calledFunction].Name);
+    end
+    else
+    begin
+      calledFunction := cUnknown;
+      if (aUnknown = '') and not HasPrefix(word, '_xl') then // _xludf.: a user's function the file names so
+        aUnknown := word;
+      builder.Append(word);
+    end;
+    called := True;
+    i := aEnd;
+    Result := True;
+  end;
+
   function Token: boolean;
   begin
     Result := False;
     var letter: Char := aFormula[i];
     var start: integer := i;
+    var wasCallable: boolean := callable;
+    callable := False;
     if CharInSet(letter, cSpaces) then
     begin
       if not expectValue then
@@ -741,14 +1183,13 @@ var
           if not NotAValue then
             Exit;
           SetLength(commas, brackets.Length + 1);
+          SetLength(functions, brackets.Length + 1);
+          SetLength(scopes, brackets.Length + 1);
           commas[brackets.Length] := 0;
           if called then
-          begin
-            brackets := brackets + 'f';
-            called := False;
-            expectValue := True;
-            arguments := True;
-          end
+            OpenFunction(calledFunction)
+          else if wasCallable and not expectValue then
+            OpenFunction(cResult)
           else if expectValue and (Inside <> '{') then
           begin
             brackets := brackets + 'g';
@@ -765,7 +1206,9 @@ var
           case Inside of
             'f':
               if expectValue and not arguments then
-                Exit(Fail('an operator without the value after it'));
+                Exit(Fail('an operator without the value after it'))
+              else if not CloseFunction then
+                Exit;
             'g':
               if expectValue then
                 Exit(Fail('a ( ) without a value inside'));
@@ -865,13 +1308,10 @@ var
           else
             i := after + 1;
         end
+        else if Declares(after) or (Declared(Unprefixed(Copy(aFormula, i, after - i))) <> '') then
+          Exit(Parameter(after))
         else if next = '(' then
-        begin // a function: its ( opens the arguments
-          if not Value(False) then
-            Exit;
-          called := True;
-          i := after;
-        end
+          Exit(FunctionName(after))
         else if next = '[' then
         begin // a table: its [...] follows
           if not Value(False) then
@@ -915,6 +1355,7 @@ var
 begin
   aResult := '';
   aWhy := '';
+  aUnknown := '';
   last := aFormula.Length;
   expectValue := True;
   constant := False;
@@ -924,9 +1365,13 @@ begin
   prefixed := False;
   continued := False;
   called := False;
+  calledFunction := cUnknown;
+  callable := False;
   brackets := '';
-  builder := TStringBuilder.Create(last + 8);
+  parameters := nil;
+  builder := TStringBuilder.Create(last + 16);
   try
+    parameters := TList<string>.Create;
     i := 1;
     while i <= last do
       if not Token then
@@ -945,8 +1390,17 @@ begin
     aResult := builder.ToString;
     Result := True;
   finally
+    parameters.Free;
     builder.Free;
   end;
+end;
+
+// a stored formula as Excel's Formula shows it (prefixes dropped); as it is when it does not read
+function ShownFormula(const aStored: string): string;
+begin
+  var why, unknown: string;
+  if not ShiftFormula(aStored, 0, 0, ffShown, Result, why, unknown) then
+    Result := aStored;
 end;
 
 { values }
@@ -1339,7 +1793,7 @@ function TRange.GetFormula: Variant;
   function CellFormula(aRow, aColumn: integer): string;
   begin
     if fSheet.FormulaText(aRow, aColumn, Result) then
-      Result := '=' + Result;
+      Result := '=' + ShownFormula(Result);
   end;
 
 begin
@@ -1373,8 +1827,8 @@ begin
     for var row := fTop to fBottom do
       for var column := fLeft to fRight do
       begin
-        var moved, why: string;
-        ShiftFormula(text, row - fTop, column - fLeft, moved, why);
+        var moved, why, unknown: string;
+        ShiftFormula(text, row - fTop, column - fLeft, ffStored, moved, why, unknown);
         fSheet.WriteFormula(row, column, moved, Self);
       end;
 end;
@@ -1409,7 +1863,7 @@ function TRange.GetFormulaArray: string;
 begin
   Result := '';
   if HasArray and fSheet.FormulaText(fTop, fLeft, Result) then
-    Result := '=' + Result;
+    Result := '=' + ShownFormula(Result);
 end;
 
 procedure TRange.SetFormulaArray(const aValue: string);
@@ -1677,8 +2131,8 @@ begin
           var top, left, bottom, right: integer;
           if fShared.TryGetValue(cell.F.Si, first) and ParseAddress(first.R, top, left, bottom, right) then
           begin
-            var why: string;
-            ShiftFormula(DecodeText(first.F.XmlValue), aRow - top, aColumn - left, aText, why);
+            var why, unknown: string;
+            ShiftFormula(DecodeText(first.F.XmlValue), aRow - top, aColumn - left, ffStored, aText, why, unknown);
           end;
         end;
       stcftDataTable:
@@ -1697,22 +2151,28 @@ begin
   Result := aText <> '';
 end;
 
-// the text to store - without its =, checked on its face; False: refused at the cell
+// the text to store - without its =, checked, Excel's prefixes added; False: refused at the cell. A function Excel does not
+// have is written with a warning: a local name (SUMME) is one, a VBA or add-in function too
 function TWorksheet.CheckFormula(aRow, aColumn: integer; const aFormula: Variant; out aText: string): boolean;
 begin
   Result := False;
   if not VarIsStr(aFormula) then
     raise EArgumentException.CreateFmt('A formula is a string, not a Variant of type %d', [VarType(aFormula)]);
-  aText := aFormula;
-  if aText.StartsWith('=') then
-    aText := aText.Substring(1);
-  var checked, why: string;
-  if aText.Length + 1 > cMaxFormula then
-    Refuse(aRow, aColumn, 'Formula', Format('%d characters, Excel''s formulas hold up to %d', [aText.Length + 1, cMaxFormula]))
-  else if not ShiftFormula(aText, 0, 0, checked, why) then
+  var text: string := aFormula;
+  if text.StartsWith('=') then
+    text := text.Substring(1);
+  var why, unknown: string;
+  if text.Length + 1 > cMaxFormula then
+    Refuse(aRow, aColumn, 'Formula', Format('%d characters, Excel''s formulas hold up to %d', [text.Length + 1, cMaxFormula]))
+  else if not ShiftFormula(text, 0, 0, ffStored, aText, why, unknown) then
     Refuse(aRow, aColumn, 'Formula', 'not a formula Excel reads: ' + why)
   else
+  begin
+    if unknown <> '' then
+      fWorkbook.fIssues.Add(isWarning, 'Function', fName + '!' + CellName(aRow, aColumn),
+        unknown + ' is not one of Excel''s functions (English)');
     Result := True;
+  end;
 end;
 
 // a shared formula's cells as plain ones, each its own text (the values Excel calculated stay); False: its text unreadable
@@ -1724,9 +2184,9 @@ begin
   if not fShared.TryGetValue(aIndex, first) then
     Exit(True); // no first cell: nothing the others could be read from
   var text: string := DecodeText(first.F.XmlValue);
-  var checked, why: string;
+  var checked, why, unknown: string;
   if not ParseAddress(first.F.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) or
-    not ShiftFormula(text, 0, 0, checked, why) then
+    not ShiftFormula(text, 0, 0, ffStored, checked, why, unknown) then
     Exit(False);
   var top, left, bottom, right: integer;
   ParseAddress(first.R, top, left, bottom, right);
@@ -1741,7 +2201,7 @@ begin
       if cell.IsPresent('F') and (cell.F.T = stcftShared) and (cell.F.Si = aIndex) then
       begin
         var moved: string;
-        ShiftFormula(text, integer(row.R) - top, ColumnOf(cell.R) - left, moved, why);
+        ShiftFormula(text, integer(row.R) - top, ColumnOf(cell.R) - left, ffStored, moved, why, unknown);
         cell.F.Clear('T');
         cell.F.Clear('Si');
         cell.F.Clear('Ref');
