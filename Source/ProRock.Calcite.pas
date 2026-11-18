@@ -24,6 +24,30 @@ type
   // a date is a number in a date format, as in Excel
   TCellValueType = (cvEmpty, cvNumber, cvDate, cvText, cvBoolean, cvError);
 
+  // Excel's Range.Font: read from the first cell, written to every cell
+  TRangeFont = record
+  private
+    fSheet: TWorksheet;
+    fTop, fLeft, fBottom, fRight: integer;
+
+    function GetBold: boolean;
+    procedure SetBold(aValue: boolean);
+  public
+    property Bold: boolean read GetBold write SetBold;
+  end;
+
+  // Excel's Range.Columns: the range's columns
+  TRangeColumns = record
+  private
+    fSheet: TWorksheet;
+    fTop, fLeft, fBottom, fRight: integer;
+  public
+    // Excel's AutoFit, estimated: each column as wide as its longest shown value in the range's rows. Calcite measures no
+    // fonts - the width comes from the characters (digits exact, letters close; wide letters, other fonts and sizes less so).
+    // A column with nothing in those rows keeps its width
+    procedure AutoFit;
+  end;
+
   // An address on a sheet, not the cells themselves: no Free. Reading creates nothing, writing creates the cells it needs
   TRange = record
   private
@@ -54,6 +78,12 @@ type
     function GetCurrentArray: TRange;
     function GetFormulaArray: string;
     procedure SetFormulaArray(const aValue: string);
+    function GetNumberFormat: string;
+    procedure SetNumberFormat(const aValue: string);
+    function GetFont: TRangeFont;
+    function GetColumns: TRangeColumns;
+    function GetColumnWidth: Double;
+    procedure SetColumnWidth(aValue: Double);
   public
     // the values gone, as Excel's ClearContents: a cell with a format stays
     procedure ClearContents;
@@ -99,6 +129,17 @@ type
     // the first cell's array formula ('' when there is none). Written: the range becomes one array formula; an array formula
     // changes only as a whole, as in Excel. Excel 365's dynamic arrays read as array formulas
     property FormulaArray: string read GetFormulaArray write SetFormulaArray;
+
+    // Excel's NumberFormat, the first cell's: 'General', '0.00', '#,##0.00', 'dd.mm.yyyy', '@' (text). Written to every cell,
+    // a whole column or row as Excel does; '' is General. m/d/yyyy and m/d/yyyy h:mm are Excel's built-in dates, shown in each
+    // reader's own order (Excel names them by the regional settings); dd.mm.yyyy is shown as written everywhere. A format
+    // Excel would not open ([Foo]0, an open quote, digits and dates in one section) is refused
+    property NumberFormat: string read GetNumberFormat write SetNumberFormat;
+    property Font: TRangeFont read GetFont;
+    property Columns: TRangeColumns read GetColumns;
+    // Excel's ColumnWidth in characters of the default font's digits (8.43 by default), the first column's; written to every
+    // column of the range, 0 hides them; EArgumentOutOfRangeException beyond 0..255
+    property ColumnWidth: Double read GetColumnWidth write SetColumnWidth;
   end;
 
   TWorksheet = class
@@ -147,6 +188,14 @@ type
     function GetCellsByLetters(aRow: integer; const aColumn: string): TRange;
     function GetUsedRange: TRange;
     procedure SetName(const aValue: string);
+    function CellForStyle(aRow, aColumn: integer): TCellCT;
+    procedure Restyle(const aRange: TRange; const aChange: TProc<TXfCT>);
+    function DefaultWidth: Double;
+    function ColumnEntries(aLeft, aRight: integer): TArray<TColCT>;
+    function ColumnEntry(aColumn: integer): TColCT;
+    procedure AutoFit(const aRange: TRange);
+    function GetFreezePanes: string;
+    procedure SetFreezePanes(const aValue: string);
   public
     destructor Destroy; override;
 
@@ -163,6 +212,9 @@ type
     property Cells[aRow: integer; const aColumn: string]: TRange read GetCellsByLetters; default;
     // from the first cell to the last one the sheet has (a formatted one too, as in Excel); A1 when there are none
     property UsedRange: TRange read GetUsedRange;
+    // Excel's Freeze Panes at a cell: the rows above it and the columns left of it stay put ('A2' - the first row, 'B1' - the
+    // first column); '' or 'A1' unfreezes. A sheet with several views, or an opened sheet's panes, is not changed (an issue)
+    property FreezePanes: string read GetFreezePanes write SetFreezePanes;
   end;
 
   // in the workbook's order, numbered from 1 as in Excel; chart sheets are not listed
@@ -215,6 +267,8 @@ type
     fSheets: TWorksheets;
     fStrings: TDictionary<string, integer>; // shared strings by text, built on the first write
     fStyleKeys: TDictionary<string, integer>; // cellXfs by content, built on the first need
+    fFontKeys: TDictionary<string, integer>; // fonts by content, the same
+    fDateStyleIds: TDictionary<UInt64, integer>; // DateStyle's answers: a style and a format, the style with it
     fDateStyles: TDictionary<cardinal, boolean>;
     fValuesChanged: boolean;
     fFormulasWritten: boolean;
@@ -249,7 +303,12 @@ type
     function SharedStringIndex(const aText: string): integer;
     procedure SharedStringReleased;
     function IsDateStyle(aStyle: cardinal): boolean;
+    function ChangedStyle(aStyle: cardinal; const aChange: TProc<TXfCT>): integer;
     function DateStyle(aStyle: cardinal; aFormat: integer): integer;
+    function FormatCode(aStyle: cardinal): string;
+    function FormatId(const aCode: string): integer;
+    function FontWith(aFont: cardinal; aBold: boolean): integer;
+    function StyleFont(aStyle: cardinal): TFontCT;
 
     function GetXml: TWorkbookE;
     function GetXmlSharedStrings: TSstE;
@@ -285,7 +344,7 @@ type
 
 implementation
 
-uses System.IOUtils, System.Math, System.Variants, System.DateUtils, System.TypInfo, System.Character,
+uses System.IOUtils, System.Math, System.Variants, System.DateUtils, System.TypInfo, System.Character, System.Generics.Defaults,
   ProRock.Utility, ProRock.Xmlite.Schema.Relationships, ProRock.Xmlite.Schema.ContentTypes;
 
 const
@@ -1877,6 +1936,503 @@ begin
   Result := (aId <= 58) and (Byte(aId) in [14 .. 22, 27 .. 36, 45 .. 47, 50 .. 58]);
 end;
 
+const
+  // Excel's built-in number formats as its NumberFormat names them in English; 14-17 and 22 follow the regional settings
+  // in Excel (these are en-US's), 5-8 the currency's; '' - none
+  cBuiltInFormats: array[0 .. 49] of string = ('General', '0', '0.00', '#,##0', '#,##0.00', '$#,##0_);($#,##0)',
+    '$#,##0_);[Red]($#,##0)', '$#,##0.00_);($#,##0.00)', '$#,##0.00_);[Red]($#,##0.00)', '0%', '0.00%', '0.00E+00', '# ?/?',
+    '# ??/??', 'm/d/yyyy', 'd-mmm-yy', 'd-mmm', 'mmm-yy', 'h:mm AM/PM', 'h:mm:ss AM/PM', 'h:mm', 'h:mm:ss', 'm/d/yyyy h:mm',
+    '', '', '', '', '', '', '', '', '', '', '', '', '', '', '#,##0_);(#,##0)', '#,##0_);[Red](#,##0)',
+    '#,##0.00_);(#,##0.00)', '#,##0.00_);[Red](#,##0.00)', '_(* #,##0_);_(* (#,##0);_(* "-"_);_(@_)',
+    '_($* #,##0_);_($* (#,##0);_($* "-"_);_(@_)', '_(* #,##0.00_);_(* (#,##0.00);_(* "-"??_);_(@_)',
+    '_($* #,##0.00_);_($* (#,##0.00);_($* "-"??_);_(@_)', 'mm:ss', '[h]:mm:ss', 'mm:ss.0', '##0.0E+0', '@');
+
+function BuiltInFormat(aId: cardinal): string;
+begin
+  if (aId <= High(cBuiltInFormats)) and (cBuiltInFormats[aId] <> '') then
+    Result := cBuiltInFormats[aId]
+  else if (aId <= 58) and (Byte(aId) in [32 .. 35]) then // the East Asian times and dates: the locale's
+    Result := 'h:mm:ss'
+  else if (aId <= 58) and (Byte(aId) in [27 .. 31, 36, 50 .. 58]) then
+    Result := 'm/d/yyyy'
+  else
+    Result := 'General';
+end;
+
+// a code written: the built-in id it names, -1 for none (5-8 are the locale's currency, never chosen)
+function BuiltInFormatId(const aShown: string): integer;
+begin
+  if (aShown = '') or SameText(aShown, 'General') then
+    Exit(0);
+  for var id := 1 to High(cBuiltInFormats) do
+    if not (id in [5 .. 8]) and (cBuiltInFormats[id] = aShown) then
+      Exit(id);
+  Result := -1;
+end;
+
+// a number format's sections, split at ; outside quotes, brackets and escapes; why Excel would not open it, '' - it would
+function FormatSections(const aCode: string; out aSections: TArray<string>): string;
+begin
+  aSections := [];
+  var start: integer := 1;
+  var i: integer := 1;
+  while i <= aCode.Length do
+  begin
+    case aCode[i] of
+      '"':
+        begin
+          i := Pos('"', aCode, i + 1);
+          if i = 0 then
+            Exit('a quote not closed');
+        end;
+      '[':
+        begin
+          i := Pos(']', aCode, i + 1);
+          if i = 0 then
+            Exit('a [ not closed');
+        end;
+      '\', '_', '*':
+        begin
+          if i = aCode.Length then
+            Exit(aCode[i] + ' at the end, with nothing after it');
+          Inc(i);
+        end;
+      ';':
+        begin
+          aSections := aSections + [Copy(aCode, start, i - start)];
+          start := i + 1;
+        end;
+    end;
+    Inc(i);
+  end;
+  aSections := aSections + [Copy(aCode, start, MaxInt)];
+  Result := '';
+end;
+
+type
+  // what a section of a number format has, outside quotes and escapes
+  TFormatSection = record
+    Digits, Dates, Text, General: boolean;
+    Error: string;
+  end;
+
+// a section of a number format that FormatSections took: digit placeholders, date and time codes, @, General
+function ScanSection(const aSection: string): TFormatSection;
+const
+  cColors: array[0 .. 7] of string = ('black', 'blue', 'cyan', 'green', 'magenta', 'red', 'white', 'yellow');
+begin
+  Result := Default(TFormatSection);
+  var colors: integer := 0;
+  var conditions: integer := 0;
+  var seconds: boolean := False; // the last date code: decimals of seconds may follow
+  var n: integer := aSection.Length;
+  var i: integer := 1;
+  while i <= n do
+  begin
+    var c: char := aSection[i];
+    case c of
+      '"':
+        i := Pos('"', aSection, i + 1);
+      '\', '_', '*':
+        Inc(i);
+      '[':
+        begin
+          var close: integer := Pos(']', aSection, i + 1);
+          var inside: string := LowerCase(Copy(aSection, i + 1, close - i - 1));
+          var number: Double;
+          var color: integer;
+          var named: boolean := False;
+          for var name: string in cColors do
+            named := named or (inside = name);
+          if named or (inside.StartsWith('color') and TryStrToInt(inside.Substring(5), color) and (color >= 1) and
+            (color <= 56)) then
+          begin
+            Inc(colors);
+            if colors > 1 then
+              Result.Error := 'two colors in one section';
+          end
+          else if (inside <> '') and CharInSet(inside[1], ['<', '>', '=']) then
+          begin
+            var operatorLength: integer := 1;
+            if (inside.Length > 1) and CharInSet(inside[2], ['>', '=']) and (inside[1] <> '=') then
+              operatorLength := 2;
+            Inc(conditions);
+            if not TryStrToFloat(inside.Substring(operatorLength).Trim, number, TFormatSettings.Invariant) then
+              Result.Error := 'a condition without a number: [' + inside + ']'
+            else if conditions > 1 then
+              Result.Error := 'two conditions in one section';
+          end
+          else if inside.StartsWith('$') then
+            // a currency or a locale
+          else if (inside <> '') and CharInSet(inside[1], ['h', 'm', 's']) and (inside.Trim([inside[1]]) = '') then
+          begin // elapsed time
+            Result.Dates := True;
+            seconds := inside[1] = 's';
+          end
+          else if inside.StartsWith('dbnum') and TryStrToInt(inside.Substring(5), color) then
+            // East Asian numerals
+          else
+            Result.Error := 'Excel has no [' + inside + ']';
+          i := close;
+        end;
+      '0', '#', '?':
+        begin
+          Result.Digits := True;
+          seconds := False;
+        end;
+      '.':
+        if seconds then
+        begin
+          var zeros: integer := 0;
+          while (i < n) and (aSection[i + 1] = '0') do
+          begin
+            Inc(zeros);
+            Inc(i);
+          end;
+          if zeros > 3 then
+            Result.Error := 'more than three decimals of seconds';
+        end;
+      'E':
+        begin
+          if (i = n) or not CharInSet(aSection[i + 1], ['+', '-']) then
+            Result.Error := 'E without + or - after it'
+          else if (i + 1 = n) or not CharInSet(aSection[i + 2], ['0', '#', '?']) then
+            Result.Error := 'E+ without a digit placeholder after it';
+          Result.Digits := True;
+          Inc(i);
+        end;
+      '@':
+        Result.Text := True;
+      'G', 'g':
+        if SameText(Copy(aSection, i, 7), 'General') then
+        begin
+          Result.General := True;
+          Inc(i, 6);
+        end
+        else
+          Result.Dates := True; // an era
+      'A', 'a':
+        if SameText(Copy(aSection, i, 5), 'AM/PM') then
+        begin
+          Result.Dates := True;
+          Inc(i, 4);
+        end
+        else if SameText(Copy(aSection, i, 3), 'A/P') then
+        begin
+          Result.Dates := True;
+          Inc(i, 2);
+        end;
+      'B':
+        if (i < n) and CharInSet(aSection[i + 1], ['1', '2']) then
+          Inc(i) // a calendar
+        else
+          Result.Error := 'B without 1 or 2 after it';
+      'n', 'N':
+        Result.Error := 'n (minutes are m)';
+      'b', 'd', 'D', 'e', 'h', 'H', 'm', 'M', 'y', 'Y':
+        begin
+          Result.Dates := True;
+          seconds := False;
+        end;
+      's', 'S':
+        begin
+          Result.Dates := True;
+          seconds := True;
+        end;
+    end;
+    if Result.Error <> '' then
+      Exit;
+    Inc(i);
+  end;
+end;
+
+// why Excel would not open a file with this number format, '' - it would (each rule found by opening files in Excel)
+function NumberFormatError(const aCode: string): string;
+begin
+  var sections: TArray<string>;
+  Result := FormatSections(aCode, sections);
+  if Result <> '' then
+    Exit;
+  if Length(sections) > 4 then
+    Exit('more than four sections');
+  for var i := 0 to High(sections) do
+  begin
+    var section: TFormatSection := ScanSection(sections[i]);
+    if section.Error <> '' then
+      Exit(section.Error);
+    if section.General and section.Digits then
+      Exit('General and digit placeholders in one section');
+    if section.Text and (section.Digits or section.Dates) then
+      Exit('@ and digits or dates in one section');
+    if section.Digits and section.Dates then
+      Exit('digits and dates in one section');
+    if (i = 3) and (section.Digits or section.Dates) then
+      Exit('digits or dates in the fourth section, which is for text');
+    if section.Text and (i < High(sections)) then
+      Exit('@ in a section before the last one');
+  end;
+end;
+
+// a code as Excel's NumberFormat shows it: no \ before what is shown as itself anyway ($ - + / ( ) : ! ^ & ' ~ { } < > = and
+// a space, a . in a date's section) - Excel writes dd\.mm\.yyyy for dd.mm.yyyy
+function ShownFormat(const aCode: string): string;
+begin
+  var sections: TArray<string>;
+  if FormatSections(aCode, sections) <> '' then
+    Exit(aCode);
+  var builder: TStringBuilder := TStringBuilder.Create;
+  try
+    for var index := 0 to High(sections) do
+    begin
+      if index > 0 then
+        builder.Append(';');
+      var section: string := sections[index];
+      var dates: boolean := ScanSection(section).Dates;
+      var i: integer := 1;
+      while i <= section.Length do
+      begin
+        var c: char := section[i];
+        if c = '"' then
+        begin
+          var close: integer := Pos('"', section, i + 1);
+          builder.Append(Copy(section, i, close - i + 1));
+          i := close;
+        end
+        else if c = '[' then
+        begin
+          var close: integer := Pos(']', section, i + 1);
+          builder.Append(Copy(section, i, close - i + 1));
+          i := close;
+        end
+        else if CharInSet(c, ['\', '_', '*']) and (i < section.Length) then
+        begin
+          Inc(i);
+          if (c <> '\') or not (CharInSet(section[i], ['$', '-', '+', '/', '(', ')', ':', '!', '^', '&', '''', '~', '{', '}',
+            '<', '>', '=', ' ']) or (dates and (section[i] = '.'))) then
+            builder.Append(c);
+          builder.Append(section[i]);
+        end
+        else
+          builder.Append(c);
+        Inc(i);
+      end;
+    end;
+    Result := builder.ToString;
+  finally
+    builder.Free;
+  end;
+end;
+
+const
+  // the default font's digit (Calibri or Aptos Narrow 11) in pixels: the unit of Excel's column widths
+  cDigitPixels = 7;
+  cMaxColumnWidth = 255;
+
+// Excel's ColumnWidth (characters) as a file stores it, and back: whole pixels, 5 of them padding
+function WidthToFile(aCharacters: Double): Double;
+begin
+  if aCharacters <= 0 then
+    Exit(0);
+  Result := Trunc((Trunc(aCharacters * cDigitPixels + 0.5) + 5) / cDigitPixels * 256) / 256;
+end;
+
+function FileToWidth(aWidth: Double): Double;
+begin
+  var pixels: integer := Trunc(aWidth * cDigitPixels + 0.5) - 5;
+  if pixels <= 0 then
+    Exit(0);
+  Result := Trunc(pixels / cDigitPixels * 100 + 0.5) / 100;
+end;
+
+// a text's width in the default font's pixels, estimated by kinds of characters (Excel's AutoFit of Aptos Narrow 11
+// measured); the widest line
+function TextPixels(const aText: string; aBold: boolean): Double;
+begin
+  Result := 0;
+  var line: Double := 0;
+  for var i := 1 to aText.Length do
+  begin
+    var c: char := aText[i];
+    var width: Double;
+    case c of
+      #10:
+        begin
+          Result := Max(Result, line);
+          line := 0;
+          Continue;
+        end;
+      '0' .. '9':
+        width := 7;
+      '.', ',', ':', ';', '''', '!', '|':
+        width := 2.5;
+      'f', 'i', 'j', 'l', 'r', 't', 'I', ' ':
+        width := 4;
+      '-', '/', '\', '(', ')', '[', ']', '"', '*':
+        width := 4.5;
+      'm', 'w', '@', '%':
+        width := 11;
+      'M', 'W':
+        width := 12;
+      'A' .. 'H', 'J' .. 'L', 'N' .. 'V', 'X' .. 'Z':
+        width := 8;
+      #$DC00 .. #$DFFF:
+        Continue; // the second half of a pair: counted with the first
+      #$1100 .. #$115F, #$2E80 .. #$A4CF, #$AC00 .. #$D7A3, #$D800 .. #$DBFF, #$F900 .. #$FAFF, #$FE30 .. #$FE4F,
+      #$FF00 .. #$FF60, #$FFE0 .. #$FFE6:
+        width := 16; // East Asian wide, and the pairs (emoji)
+    else
+      width := 7.5;
+    end;
+    if aBold and not CharInSet(c, ['0' .. '9']) then
+      width := width * 1.04;
+    line := line + width;
+  end;
+  Result := Max(Result, line);
+end;
+
+// a number as Excel's General shows it in a cell: up to 11 characters
+function GeneralText(aNumber: Double): string;
+begin
+  Result := FloatText(aNumber, ftDouble);
+  if Result.Length <= 11 then
+    Exit;
+  var size: Double := Abs(aNumber);
+  if (size >= 1E11) or (size < 1E-4) then
+    Exit(FormatFloat('0.#####E+00', aNumber, TFormatSettings.Invariant));
+  var decimals: integer := 11 - Length(IntToStr(Trunc(size))) - 1 - Ord(aNumber < 0);
+  Result := FormatFloat('0.' + StringOfChar('#', Max(decimals, 0)), aNumber, TFormatSettings.Invariant);
+end;
+
+// a number as a number format would show it, close enough for its width: Delphi's FormatFloat and FormatDateTime take
+// most of Excel's codes
+function ShownNumber(aNumber: Double; const aCode: string): string;
+begin
+  var sections: TArray<string>;
+  if FormatSections(aCode, sections) <> '' then
+    Exit(GeneralText(aNumber));
+  var section: string := sections[0];
+  if (aNumber < 0) and (Length(sections) >= 2) then
+  begin
+    section := sections[1];
+    aNumber := -aNumber;
+  end
+  else if (aNumber = 0) and (Length(sections) >= 3) then
+    section := sections[2];
+  var info: TFormatSection := ScanSection(section);
+  if info.Text then
+    Exit(GeneralText(aNumber));
+  // Excel's code -> Delphi's: literals quoted, padding and fills as a space or nothing, brackets as what they show
+  var code: string := '';
+  var scale: Double := 1;
+  var i: integer := 1;
+  while i <= section.Length do
+  begin
+    var c: char := section[i];
+    case c of
+      '"':
+        begin
+          var close: integer := Pos('"', section, i + 1);
+          code := code + Copy(section, i, close - i + 1);
+          i := close;
+        end;
+      '\':
+        begin
+          Inc(i);
+          code := code + '"' + section[i] + '"';
+        end;
+      '_':
+        begin
+          Inc(i);
+          code := code + ' ';
+        end;
+      '*':
+        Inc(i);
+      '[':
+        begin
+          var close: integer := Pos(']', section, i + 1);
+          var inside: string := Copy(section, i + 1, close - i - 1);
+          var unitPerDay: Double := 0;
+          case LowerCase(inside + ' ')[1] of
+            '$':
+              code := code + '"' + Copy(inside, 2, Pos('-', inside + '-') - 2) + '"';
+            'h':
+              unitPerDay := 24;
+            'm':
+              unitPerDay := 1440;
+            's':
+              unitPerDay := 86400;
+          end;
+          if unitPerDay > 0 then
+            code := code + '"' + IntToStr(Trunc(aNumber * unitPerDay)) + '"';
+          i := close;
+        end;
+      '%':
+        begin
+          scale := scale * 100;
+          code := code + '"%"';
+        end;
+      '?':
+        code := code + '0';
+      'G', 'g':
+        if SameText(Copy(section, i, 7), 'General') then
+        begin
+          code := code + '"' + GeneralText(aNumber) + '"';
+          Inc(i, 6);
+        end
+        else
+          code := code + c;
+      'e', 'b', 'B':
+        if info.Dates then
+          code := code + 'yyyy'
+        else
+          code := code + c;
+      's', 'S':
+        begin
+          code := code + c;
+          if (i < section.Length) and (section[i + 1] = '.') then
+          begin // decimals of seconds: Delphi's z
+            code := code + '.';
+            Inc(i);
+            while (i < section.Length) and (section[i + 1] = '0') do
+            begin
+              code := code + 'z';
+              Inc(i);
+            end;
+          end;
+        end;
+      'm', 'M':
+        begin // minutes before seconds (Delphi's n); after hours Delphi takes m as minutes itself
+          var j: integer := i;
+          while (j < section.Length) and CharInSet(section[j + 1], ['m', 'M']) do
+            Inc(j);
+          var k: integer := j + 1;
+          while (k <= section.Length) and not CharInSet(section[k], ['a' .. 'z', 'A' .. 'Z', '0']) do
+            Inc(k);
+          var letter: char := 'm';
+          if (k <= section.Length) and CharInSet(section[k], ['s', 'S']) then
+            letter := 'n';
+          code := code + StringOfChar(letter, j - i + 1);
+          i := j;
+        end;
+    else
+      code := code + c;
+    end;
+    Inc(i);
+  end;
+  try
+    if info.Dates then
+      Result := FormatDateTime(code, SerialToDate(aNumber, False), TFormatSettings.Invariant)
+    else if info.Digits then
+      Result := FormatFloat(code, aNumber * scale, TFormatSettings.Invariant)
+    else if code = '' then
+      Result := GeneralText(aNumber)
+    else
+      Result := StringReplace(code, '"', '', [rfReplaceAll]);
+  except
+    Result := GeneralText(aNumber);
+  end;
+end;
+
 // the value of a data table's cells, as Excel's Formula shows it: TABLE(row input, column input)
 function TableFormula(aFormula: TCellFormulaCT): string;
 begin
@@ -2206,6 +2762,113 @@ begin
     ClearContents
   else
     fSheet.WriteArray(Self, aValue);
+end;
+
+function TRange.GetNumberFormat: string;
+begin
+  Result := fSheet.fWorkbook.FormatCode(fSheet.EffectiveStyle(fTop, fLeft));
+end;
+
+procedure TRange.SetNumberFormat(const aValue: string);
+begin
+  var why: string := NumberFormatError(aValue);
+  var id: integer := -1;
+  if why <> '' then
+    why := 'a number format Excel would not open (' + why + ')'
+  else
+  begin
+    id := fSheet.fWorkbook.FormatId(aValue);
+    if id < 0 then
+      why := 'the workbook has no styles to add a number format to';
+  end;
+  if why <> '' then
+  begin
+    fSheet.fWorkbook.fIssues.Add(isError, 'NumberFormat', fSheet.fName + '!' + Address, why + ' - not written');
+    Exit;
+  end;
+  fSheet.Restyle(Self,
+    procedure(aXf: TXfCT)
+    begin
+      aXf.NumFmtId := id;
+      aXf.ApplyNumberFormat := True;
+    end);
+end;
+
+function TRange.GetFont: TRangeFont;
+begin
+  Result.fSheet := fSheet;
+  Result.fTop := fTop;
+  Result.fLeft := fLeft;
+  Result.fBottom := fBottom;
+  Result.fRight := fRight;
+end;
+
+function TRange.GetColumns: TRangeColumns;
+begin
+  Result.fSheet := fSheet;
+  Result.fTop := fTop;
+  Result.fLeft := fLeft;
+  Result.fBottom := fBottom;
+  Result.fRight := fRight;
+end;
+
+function TRange.GetColumnWidth: Double;
+begin
+  var column: TColCT := fSheet.ColumnEntry(fLeft);
+  if column = nil then
+    Result := fSheet.DefaultWidth
+  else if column.Hidden then
+    Result := 0
+  else // no width: Excel's 0
+    Result := FileToWidth(column.Width);
+end;
+
+procedure TRange.SetColumnWidth(aValue: Double);
+begin
+  if IsNan(aValue) or (aValue < 0) or (aValue > cMaxColumnWidth) then
+    raise EArgumentOutOfRangeException.CreateFmt('A column width of %s: Excel''s are 0 to %d characters',
+      [FloatText(aValue, ftDouble), cMaxColumnWidth]);
+  for var column: TColCT in fSheet.ColumnEntries(fLeft, fRight) do
+  begin
+    column.Width := WidthToFile(aValue);
+    column.SetPresent(@column.Width);
+    column.CustomWidth := True;
+    column.Clear(@column.BestFit);
+    if aValue = 0 then
+      column.Hidden := True
+    else
+      column.Clear(@column.Hidden);
+  end;
+end;
+
+{ TRangeFont }
+
+function TRangeFont.GetBold: boolean;
+begin
+  var font: TFontCT := fSheet.fWorkbook.StyleFont(fSheet.EffectiveStyle(fTop, fLeft));
+  Result := (font <> nil) and (font.B.Count > 0) and font.B[0].Val;
+end;
+
+procedure TRangeFont.SetBold(aValue: boolean);
+begin
+  var workbook: TWorkbook := fSheet.fWorkbook;
+  fSheet.Restyle(fSheet.MakeRange(fTop, fLeft, fBottom, fRight),
+    procedure(aXf: TXfCT)
+    begin
+      var font: integer := workbook.FontWith(aXf.FontId, aValue);
+      if font >= 0 then
+      begin
+        aXf.FontId := font;
+        aXf.ApplyFont := True;
+      end;
+    end);
+end;
+
+{ TRangeColumns }
+
+procedure TRangeColumns.AutoFit;
+begin
+  fSheet.AutoFit(fSheet.MakeRange(fTop, fLeft, fBottom, fRight));
 end;
 
 { TWorksheet }
@@ -2600,8 +3263,16 @@ begin
   Result := True;
 end;
 
-// the cell, created where Excel expects it (rows in order, cells by column), with its value removed
+// the cell, created where Excel expects it, with its value removed
 function TWorksheet.CellForWriting(aRow, aColumn: integer): TCellCT;
+begin
+  Result := CellForStyle(aRow, aColumn);
+  RemoveValue(Result);
+  fWorkbook.ValueChanged;
+end;
+
+// the cell as it is, created where Excel expects it (rows in order, cells by column) with the style it shows
+function TWorksheet.CellForStyle(aRow, aColumn: integer): TCellCT;
 begin
   var style: cardinal := EffectiveStyle(aRow, aColumn);
   var sheet: TWorksheetE := Objects(True);
@@ -2616,10 +3287,7 @@ begin
   var row: TRowCT := rows[rowIndex];
   var cellIndex: integer;
   if FindInRow(row, aColumn, cellIndex) then
-  begin
-    Result := row.C[cellIndex];
-    RemoveValue(Result);
-  end
+    Result := row.C[cellIndex]
   else
   begin
     Result := TCellCT.Create;
@@ -2651,7 +3319,350 @@ begin
         sheet.Dimension.Ref := MakeRange(Min(top, aRow), Min(left, aColumn), Max(bottom, aRow), Max(right, aColumn)).Address;
     end;
   end;
-  fWorkbook.ValueChanged;
+end;
+
+// each cell of the range given its style changed (one new style for each old one); a whole column's or row's own style
+// too, as Excel formats them: the cells it will have take it
+procedure TWorksheet.Restyle(const aRange: TRange; const aChange: TProc<TXfCT>);
+begin
+  var changed: TDictionary<cardinal, integer> := TDictionary<cardinal, integer>.Create;
+  try
+    var failed: boolean := False;
+    var newStyle: TFunc<cardinal, cardinal> :=
+      function(aStyle: cardinal): cardinal
+      var
+        style: integer;
+      begin
+        if not changed.TryGetValue(aStyle, style) then
+        begin
+          style := fWorkbook.ChangedStyle(aStyle, aChange);
+          changed.Add(aStyle, style);
+        end;
+        failed := failed or (style < 0);
+        if style < 0 then
+          Result := aStyle
+        else
+          Result := style;
+      end;
+    var sheet: TWorksheetE := Objects(True);
+    var wholeColumns: boolean := (aRange.fTop = 1) and (aRange.fBottom = cMaxRow);
+    var wholeRows: boolean := (aRange.fLeft = 1) and (aRange.fRight = cMaxColumn);
+    if wholeColumns or wholeRows then
+    begin
+      if wholeColumns then
+        for var column: TColCT in ColumnEntries(aRange.fLeft, aRange.fRight) do
+        begin
+          column.Style := newStyle(column.Style);
+          column.SetPresent(@column.Style);
+        end
+      else
+        for var number := aRange.fTop to aRange.fBottom do
+        begin
+          var rowIndex: integer;
+          if not FindRow(sheet, number, rowIndex) then
+          begin
+            var added: TRowCT := TRowCT.Create;
+            added.R := number;
+            sheet.SheetData.Row.Insert(rowIndex, added);
+          end;
+          var row: TRowCT := sheet.SheetData.Row[rowIndex];
+          if row.CustomFormat then
+            row.S := newStyle(row.S)
+          else
+            row.S := newStyle(0);
+          row.CustomFormat := True;
+        end;
+      // the cells there already
+      var rowIndex: integer;
+      FindRow(sheet, aRange.fTop, rowIndex);
+      var rows: TRowCTList := sheet.SheetData.Row;
+      while (rowIndex < rows.Count) and (rows[rowIndex].R <= cardinal(aRange.fBottom)) do
+      begin
+        var row: TRowCT := rows[rowIndex];
+        if wholeColumns and wholeRows and row.CustomFormat then
+          row.S := newStyle(row.S); // the whole sheet: a formatted row's empty cells too
+        var cellIndex: integer;
+        FindInRow(row, aRange.fLeft, cellIndex);
+        while (cellIndex < row.C.Count) and (ColumnOf(row.C[cellIndex].R) <= aRange.fRight) do
+        begin
+          row.C[cellIndex].S := newStyle(row.C[cellIndex].S);
+          Inc(cellIndex);
+        end;
+        Inc(rowIndex);
+      end;
+    end
+    else
+      for var row := aRange.fTop to aRange.fBottom do
+        for var column := aRange.fLeft to aRange.fRight do
+        begin
+          var cell: TCellCT := CellForStyle(row, column);
+          cell.S := newStyle(cell.S);
+        end;
+    if failed then
+      fWorkbook.fIssues.Add(isError, 'NoStyles', fName + '!' + aRange.Address,
+        'the workbook has no styles to change - not written');
+  finally
+    changed.Free;
+  end;
+end;
+
+// the width of a column without its own, in characters: Excel's 8.43 unless the sheet says
+function TWorksheet.DefaultWidth: Double;
+begin
+  var sheet: TWorksheetE := Objects(False);
+  var base: cardinal := 8;
+  if sheet.IsPresent('SheetFormatPr') then
+  begin
+    if sheet.SheetFormatPr.Present[@sheet.SheetFormatPr.DefaultColWidth] then
+      Exit(FileToWidth(sheet.SheetFormatPr.DefaultColWidth));
+    if sheet.SheetFormatPr.Present[@sheet.SheetFormatPr.BaseColWidth] then
+      base := sheet.SheetFormatPr.BaseColWidth;
+  end;
+  // base characters and the padding, in whole multiples of 8 pixels
+  var pixels: integer := (integer(base) * cDigitPixels + 5 + 7) div 8 * 8;
+  Result := Trunc((pixels - 5) / cDigitPixels * 100 + 0.5) / 100;
+end;
+
+// the column's <col>, nil when it has none
+function TWorksheet.ColumnEntry(aColumn: integer): TColCT;
+begin
+  for var columns: TColsCT in Objects(False).Cols do
+    for var column: TColCT in columns.Col do
+      if (cardinal(aColumn) >= column.Min) and (cardinal(aColumn) <= column.Max) then
+        Exit(column);
+  Result := nil;
+end;
+
+// the <col> entries covering aLeft..aRight exactly, in order: those there split at the ends, the gaps filled with the
+// default width (a <col> without one is hidden)
+function TWorksheet.ColumnEntries(aLeft, aRight: integer): TArray<TColCT>;
+
+  // the entry across aAt split there: ...aAt-1 and aAt...
+  procedure Split(aColumns: TColCTList; aAt: cardinal);
+  begin
+    for var i := 0 to aColumns.Count - 1 do
+      if (aColumns[i].Min < aAt) and (aColumns[i].Max >= aAt) then
+      begin
+        var copy: TColCT := TColCT.Create;
+        TXmlite.XmlToObject(TXmlite.ObjectToXml(aColumns[i]), copy);
+        copy.Min := aAt;
+        aColumns[i].Max := aAt - 1;
+        aColumns.Insert(i + 1, copy);
+        Exit;
+      end;
+  end;
+
+begin
+  var sheet: TWorksheetE := Objects(True);
+  if sheet.Cols.Count = 0 then
+    sheet.Cols.Add(TColsCT.Create);
+  var columns: TColCTList := sheet.Cols[0].Col;
+  while sheet.Cols.Count > 1 do // one <cols>, as Excel writes
+  begin
+    var other: TColCTList := sheet.Cols[1].Col;
+    while other.Count > 0 do
+      columns.Add(other.Extract(other[0]));
+    sheet.Cols.Delete(1);
+  end;
+  columns.Sort(TComparer<TColCT>.Construct(
+    function(const aLeftColumn, aRightColumn: TColCT): integer
+    begin
+      Result := CompareValue(int64(aLeftColumn.Min), int64(aRightColumn.Min));
+    end));
+  Split(columns, aLeft);
+  if aRight < cMaxColumn then
+    Split(columns, aRight + 1);
+  Result := [];
+  var i: integer := 0;
+  while (i < columns.Count) and (columns[i].Max < cardinal(aLeft)) do
+    Inc(i);
+  var next: integer := aLeft;
+  while next <= aRight do
+    if (i < columns.Count) and (columns[i].Min = cardinal(next)) then
+    begin
+      Result := Result + [columns[i]];
+      next := columns[i].Max + 1;
+      Inc(i);
+    end
+    else
+    begin
+      var last: integer := aRight;
+      if (i < columns.Count) and (columns[i].Min <= cardinal(aRight)) then
+        last := columns[i].Min - 1;
+      var added: TColCT := TColCT.Create;
+      added.Min := next;
+      added.Max := last;
+      added.Width := WidthToFile(DefaultWidth);
+      columns.Insert(i, added);
+      Inc(i);
+      Result := Result + [added];
+      next := last + 1;
+    end;
+end;
+
+// Excel's AutoFit estimated: the widest shown value of each column in the range's rows, with Excel's 2 pixels of margin
+procedure TWorksheet.AutoFit(const aRange: TRange);
+begin
+  var sheet: TWorksheetE := Objects(False);
+  var widths: TArray<Double>;
+  SetLength(widths, aRange.fRight - aRange.fLeft + 1);
+  var fonts: TDictionary<cardinal, Double> := TDictionary<cardinal, Double>.Create; // each style's scale: size, bold
+  try
+    var rows: TRowCTList := sheet.SheetData.Row;
+    var rowIndex: integer;
+    FindRow(sheet, aRange.fTop, rowIndex);
+    while (rowIndex < rows.Count) and (rows[rowIndex].R <= cardinal(aRange.fBottom)) do
+    begin
+      var row: TRowCT := rows[rowIndex];
+      var cellIndex: integer;
+      FindInRow(row, aRange.fLeft, cellIndex);
+      while (cellIndex < row.C.Count) and (ColumnOf(row.C[cellIndex].R) <= aRange.fRight) do
+      begin
+        var cell: TCellCT := row.C[cellIndex];
+        var value: Variant;
+        var text: string := '';
+        case CellValue(cell, value) of
+          cvText, cvError:
+            text := value;
+          cvBoolean:
+            if value then
+              text := 'TRUE'
+            else
+              text := 'FALSE';
+          cvNumber, cvDate:
+            begin
+              var number: Double;
+              if TUtility.TryFloatFromText(string(cell.V).Trim, number) then
+                text := ShownNumber(number, fWorkbook.FormatCode(cell.S));
+            end;
+        end;
+        if text <> '' then
+        begin
+          var scale: Double;
+          if not fonts.TryGetValue(cell.S, scale) then
+          begin
+            scale := 1;
+            var font: TFontCT := fWorkbook.StyleFont(cell.S);
+            if (font <> nil) and (font.Sz.Count > 0) and (font.Sz[0].Val > 0) then
+              scale := font.Sz[0].Val / 11;
+            if (font <> nil) and (font.B.Count > 0) and font.B[0].Val then
+              scale := -scale; // bold
+            fonts.Add(cell.S, scale);
+          end;
+          var index: integer := ColumnOf(cell.R) - aRange.fLeft;
+          widths[index] := Max(widths[index], TextPixels(text, scale < 0) * Abs(scale));
+        end;
+        Inc(cellIndex);
+      end;
+      Inc(rowIndex);
+    end;
+  finally
+    fonts.Free;
+  end;
+  for var i := 0 to High(widths) do
+    if widths[i] > 0 then
+    begin
+      var pixels: integer := Trunc(widths[i] + 0.5) + 2 + 5;
+      var width: Double := Min(Trunc(pixels / cDigitPixels * 256) / 256, WidthToFile(cMaxColumnWidth));
+      var column: TColCT := ColumnEntries(aRange.fLeft + i, aRange.fLeft + i)[0];
+      column.Width := width;
+      column.BestFit := True;
+      column.CustomWidth := True;
+      column.Clear(@column.Hidden);
+    end;
+end;
+
+// the cell below and right of a frozen pane, '' when there is none
+function TWorksheet.GetFreezePanes: string;
+begin
+  Result := '';
+  var sheet: TWorksheetE := Objects(False);
+  if not sheet.IsPresent('SheetViews') or (sheet.SheetViews.SheetView.Count = 0) or
+    not sheet.SheetViews.SheetView[0].IsPresent('Pane') then
+    Exit;
+  var pane: TPaneCT := sheet.SheetViews.SheetView[0].Pane;
+  if not (pane.State in [stpsFrozen, stpsFrozenSplit]) then
+    Exit;
+  var top, left, bottom, right: integer;
+  if (pane.TopLeftCell <> '') and ParseAddress(pane.TopLeftCell, top, left, bottom, right) and (top = bottom) and
+    (left = right) then
+    Result := CellName(top, left)
+  else
+    Result := CellName(Trunc(pane.YSplit) + 1, Trunc(pane.XSplit) + 1);
+end;
+
+// Excel's frozen pane and its selections, as Excel writes them for one view
+procedure TWorksheet.SetFreezePanes(const aValue: string);
+begin
+  var row: integer := 1;
+  var column: integer := 1;
+  if aValue <> '' then
+  begin
+    var bottom, right: integer;
+    if not ParseAddress(aValue, row, column, bottom, right) or (row <> bottom) or (column <> right) then
+      raise EArgumentException.CreateFmt('FreezePanes takes a cell: "%s"', [aValue]);
+  end;
+  var sheet: TWorksheetE := Objects(False);
+  var why: string := '';
+  if sheet.IsPresent('SheetViews') and (sheet.SheetViews.SheetView.Count > 1) then
+    why := 'the sheet has several views; Calcite freezes panes only with one'
+  else if sheet.IsPresent('SheetViews') and (sheet.SheetViews.SheetView.Count = 1) and
+    sheet.SheetViews.SheetView[0].IsPresent('Pane') and not fFresh then
+    why := 'the sheet has panes of its own, which Calcite does not change yet';
+  if why <> '' then
+  begin
+    fWorkbook.fIssues.Add(isError, 'FreezePanes', fName, why + ' - not changed');
+    Exit;
+  end;
+  if (row = 1) and (column = 1) and not sheet.IsPresent('SheetViews') then
+    Exit;
+  sheet := Objects(True);
+  if sheet.SheetViews.SheetView.Count = 0 then
+  begin
+    var added: TSheetViewCT := TSheetViewCT.Create;
+    added.SetPresent(@added.WorkbookViewId);
+    sheet.SheetViews.SheetView.Add(added);
+  end;
+  var view: TSheetViewCT := sheet.SheetViews.SheetView[0];
+  view.Clear('Pane');
+  view.Selection.Clear;
+  if (row = 1) and (column = 1) then
+    Exit;
+  var pane: TPaneCT := view.Pane;
+  pane.XSplit := column - 1;
+  pane.YSplit := row - 1;
+  pane.TopLeftCell := CellName(row, column);
+  pane.State := stpsFrozen;
+  pane.SetPresent(@pane.State);
+  // a selection in each pane that scrolls, its first cell: Excel's own
+  var panes: TArray<TPaneST>;
+  var cells: TArray<string>;
+  if row = 1 then
+  begin
+    panes := [stpTopRight];
+    cells := [CellName(1, column)];
+  end
+  else if column = 1 then
+  begin
+    panes := [stpBottomLeft];
+    cells := [CellName(row, 1)];
+  end
+  else
+  begin
+    panes := [stpTopRight, stpBottomLeft, stpBottomRight];
+    cells := [CellName(1, column), CellName(row, 1), CellName(row, column)];
+  end;
+  pane.ActivePane := panes[High(panes)];
+  pane.SetPresent(@pane.ActivePane);
+  for var i := 0 to High(panes) do
+  begin
+    var selection: TSelectionCT := TSelectionCT.Create;
+    selection.Pane := panes[i];
+    selection.SetPresent(@selection.Pane);
+    selection.ActiveCell := cells[i];
+    selection.Sqref := cells[i];
+    view.Selection.Add(selection);
+  end;
 end;
 
 procedure TWorksheet.RemoveValue(aCell: TCellCT);
@@ -3110,6 +4121,8 @@ begin
   FreeAndNil(fSource);
   FreeAndNil(fStrings);
   FreeAndNil(fStyleKeys);
+  FreeAndNil(fFontKeys);
+  FreeAndNil(fDateStyleIds);
   FreeAndNil(fDateStyles);
   fFileName := '';
   fRelationshipTypes := '';
@@ -3240,6 +4253,8 @@ begin
   Swap<TWorksheets>(fSheets, aOther.fSheets);
   Swap<TDictionary<string, integer>>(fStrings, aOther.fStrings);
   Swap<TDictionary<string, integer>>(fStyleKeys, aOther.fStyleKeys);
+  Swap<TDictionary<string, integer>>(fFontKeys, aOther.fFontKeys);
+  Swap<TDictionary<UInt64, integer>>(fDateStyleIds, aOther.fDateStyleIds);
   Swap<TDictionary<cardinal, boolean>>(fDateStyles, aOther.fDateStyles);
   Swap<boolean>(fValuesChanged, aOther.fValuesChanged);
   Swap<boolean>(fFormulasWritten, aOther.fFormulasWritten);
@@ -3664,15 +4679,17 @@ begin
   fDateStyles.Add(aStyle, Result);
 end;
 
-// aStyle with the number format aFormat, found in cellXfs by content or added; -1 when there are no styles
-function TWorkbook.DateStyle(aStyle: cardinal; aFormat: integer): integer;
+// aStyle changed by aChange, found in cellXfs by content or added; -1 when there are no styles
+function TWorkbook.ChangedStyle(aStyle: cardinal; const aChange: TProc<TXfCT>): integer;
 begin
   if fStylesPart.IsEmpty then
     Exit(-1);
   var styles: TStyleSheetE := TStyleSheetE(ReadPart(fStylesPart));
-  if not styles.IsPresent('CellXfs') or (aStyle >= cardinal(styles.CellXfs.Xf.Count)) then
+  if not styles.IsPresent('CellXfs') or (styles.CellXfs.Xf.Count = 0) then
     Exit(-1);
   var formats: TXfCTList := styles.CellXfs.Xf;
+  if aStyle >= cardinal(formats.Count) then
+    aStyle := 0; // as Excel shows such a cell
   if fStyleKeys = nil then
   begin
     fStyleKeys := TDictionary<string, integer>.Create;
@@ -3683,8 +4700,7 @@ begin
   var wanted: TXfCT := TXfCT.Create;
   try
     TXmlite.XmlToObject(TXmlite.ObjectToXml(formats[aStyle]), wanted);
-    wanted.NumFmtId := aFormat;
-    wanted.ApplyNumberFormat := True;
+    aChange(wanted);
     var key: string := TXmlite.ObjectToXml(wanted);
     if fStyleKeys.TryGetValue(key, Result) then
       Exit;
@@ -3698,6 +4714,128 @@ begin
   finally
     wanted.Free;
   end;
+end;
+
+// aStyle with the number format aFormat; -1 when there are no styles. Asked for each date written: kept
+function TWorkbook.DateStyle(aStyle: cardinal; aFormat: integer): integer;
+begin
+  var key: UInt64 := UInt64(aStyle) shl 32 or cardinal(aFormat);
+  if fDateStyleIds = nil then
+    fDateStyleIds := TDictionary<UInt64, integer>.Create;
+  if fDateStyleIds.TryGetValue(key, Result) then
+    Exit;
+  Result := ChangedStyle(aStyle,
+    procedure(aXf: TXfCT)
+    begin
+      aXf.NumFmtId := aFormat;
+      aXf.ApplyNumberFormat := True;
+    end);
+  fDateStyleIds.Add(key, Result);
+end;
+
+// the style's number format as Excel's NumberFormat names it
+function TWorkbook.FormatCode(aStyle: cardinal): string;
+begin
+  Result := 'General';
+  if fStylesPart.IsEmpty then
+    Exit;
+  var styles: TStyleSheetE := TStyleSheetE(ReadPart(fStylesPart));
+  if not styles.IsPresent('CellXfs') or (aStyle >= cardinal(styles.CellXfs.Xf.Count)) then
+    Exit;
+  var id: cardinal := styles.CellXfs.Xf[aStyle].NumFmtId;
+  if styles.IsPresent('NumFmts') then
+    for var numberFormat: TNumFmtCT in styles.NumFmts.NumFmt do
+      if numberFormat.NumFmtId = id then
+        Exit(ShownFormat(DecodeText(numberFormat.FormatCode)));
+  Result := BuiltInFormat(id);
+end;
+
+// the id of a number format, built-in or in numFmts, added when there is none; -1 when there are no styles
+function TWorkbook.FormatId(const aCode: string): integer;
+begin
+  if fStylesPart.IsEmpty then
+    Exit(-1);
+  var styles: TStyleSheetE := TStyleSheetE(ReadPart(fStylesPart));
+  var shown: string := ShownFormat(aCode);
+  var builtIn: integer := BuiltInFormatId(shown);
+  var last: integer := 163; // custom formats start at 164
+  if styles.IsPresent('NumFmts') then
+    for var numberFormat: TNumFmtCT in styles.NumFmts.NumFmt do
+    begin
+      if integer(numberFormat.NumFmtId) = builtIn then
+        builtIn := -1; // a built-in id given a code of its own
+      if ShownFormat(DecodeText(numberFormat.FormatCode)) = shown then
+        Exit(numberFormat.NumFmtId);
+      last := Max(last, integer(numberFormat.NumFmtId));
+    end;
+  if builtIn >= 0 then
+    Exit(builtIn);
+  styles := TStyleSheetE(EditPart(fStylesPart));
+  var added: TNumFmtCT := TNumFmtCT.Create;
+  added.NumFmtId := last + 1;
+  added.FormatCode := EncodeText(aCode);
+  styles.NumFmts.NumFmt.Add(added);
+  styles.NumFmts.Count := styles.NumFmts.NumFmt.Count;
+  Result := added.NumFmtId;
+end;
+
+// the font aFont with bold set or not, found in fonts by content or added; -1 when there are no fonts
+function TWorkbook.FontWith(aFont: cardinal; aBold: boolean): integer;
+begin
+  if fStylesPart.IsEmpty then
+    Exit(-1);
+  var styles: TStyleSheetE := TStyleSheetE(ReadPart(fStylesPart));
+  if not styles.IsPresent('Fonts') or (styles.Fonts.Font.Count = 0) then
+    Exit(-1);
+  var fonts: TFontCTList := styles.Fonts.Font;
+  if aFont >= cardinal(fonts.Count) then
+    aFont := 0;
+  if fFontKeys = nil then
+  begin
+    fFontKeys := TDictionary<string, integer>.Create;
+    for var i := 0 to fonts.Count - 1 do
+      fFontKeys.TryAdd(TXmlite.ObjectToXml(fonts[i]), i);
+  end;
+  var wanted: TFontCT := TFontCT.Create;
+  try
+    TXmlite.XmlToObject(TXmlite.ObjectToXml(fonts[aFont]), wanted);
+    wanted.B.Clear;
+    if aBold then
+    begin
+      var bold: TBooleanPropertyCT := TBooleanPropertyCT.Create;
+      bold.Val := True;
+      wanted.B.Add(bold);
+    end;
+    var key: string := TXmlite.ObjectToXml(wanted);
+    if fFontKeys.TryGetValue(key, Result) then
+      Exit;
+    styles := TStyleSheetE(EditPart(fStylesPart));
+    fonts.Add(wanted);
+    Result := fonts.Count - 1;
+    wanted := nil;
+    fFontKeys.Add(key, Result);
+    if styles.Fonts.Present[@styles.Fonts.Count] then
+      styles.Fonts.Count := fonts.Count;
+  finally
+    wanted.Free;
+  end;
+end;
+
+// the font a style shows; nil when there is none
+function TWorkbook.StyleFont(aStyle: cardinal): TFontCT;
+begin
+  Result := nil;
+  if fStylesPart.IsEmpty then
+    Exit;
+  var styles: TStyleSheetE := TStyleSheetE(ReadPart(fStylesPart));
+  if not styles.IsPresent('Fonts') or (styles.Fonts.Font.Count = 0) then
+    Exit;
+  var font: cardinal := 0;
+  if styles.IsPresent('CellXfs') and (aStyle < cardinal(styles.CellXfs.Xf.Count)) then
+    font := styles.CellXfs.Xf[aStyle].FontId;
+  if font >= cardinal(styles.Fonts.Font.Count) then
+    font := 0;
+  Result := styles.Fonts.Font[font];
 end;
 
 function TWorkbook.GetXml: TWorkbookE;
@@ -3724,6 +4862,8 @@ begin
   begin
     Result := TStyleSheetE(EditPart(fStylesPart));
     FreeAndNil(fStyleKeys);
+    FreeAndNil(fFontKeys);
+    FreeAndNil(fDateStyleIds);
     FreeAndNil(fDateStyles);
   end;
 end;
