@@ -14,6 +14,10 @@ const
   isError = ProRock.Xmlite.isError;
   {$ENDREGION}
 
+  // Excel's built-in dates: each reader sees them as their own short date, 31.12.2026 or 12/31/2026
+  nfShortDate = 'm/d/yyyy';
+  nfShortDateTime = 'm/d/yyyy h:mm';
+
 type
   {$REGION 'ProRock.Xmlite types aliases'}
   TIssueSeverity = ProRock.Xmlite.TIssueSeverity;
@@ -308,6 +312,8 @@ type
     fError: string;
     fXlsx: TWorkbookXlsx;
     fProperties: TWorkbookProperties;
+    fDateFormats: array[0 .. 1] of string; // DateFormat, DateTimeFormat
+    fDateFormatIds: array[0 .. 1] of integer; // their numFmtIds in this workbook's styles, -2: not found yet
     fPackage: TPackageOoxml;
     fWorkbookPart, fSharedStringsPart, fStylesPart, fCalcChainPart: string;
     fSheets: TWorksheets;
@@ -353,6 +359,9 @@ type
     function GetXmlStyles: TStyleSheetE;
     function GetFileName: string;
     function ExtensionError(const aFileName: string): string;
+    function GetDateFormat(aIndex: integer): string;
+    procedure SetDateFormat(aIndex: integer; const aValue: string);
+    function DateFormatId(aIndex: integer): integer;
   public
     // a new workbook, as Excel's: Sheet1 and nothing in it; Open replaces it
     constructor Create;
@@ -383,6 +392,10 @@ type
     property Sheets: TWorksheets read fSheets;
     // Excel's File > Info: title, author, dates (Save sets Modified when anything changed); the open file's, after an Open too
     property Properties: TWorkbookProperties read fProperties;
+    // what a date written into an unformatted cell gets (a date with a time: DateTimeFormat); 'dd.mm.yyyy' shows so to
+    // every reader. EArgumentException for a code that is no date or one Excel would not open. Kept over Open
+    property DateFormat: string index 0 read GetDateFormat write SetDateFormat;
+    property DateTimeFormat: string index 1 read GetDateFormat write SetDateFormat;
   end;
 
 implementation
@@ -403,9 +416,7 @@ const
   cSharedStringsType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml';
   cWorksheetType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml';
 
-  // Excel's number formats a date gets: m/d/yyyy, m/d/yyyy h:mm, h:mm:ss (shown in the user's locale)
-  cDateFormat = 14;
-  cDateTimeFormat = 22;
+  // Excel's number format a time of day gets: h:mm:ss
   cTimeFormat = 21;
 
 {$REGION 'Excel language: formulas'}
@@ -3557,12 +3568,13 @@ begin
   var style: integer := EffectiveStyle(aRow, aColumn);
   if not fWorkbook.IsDateStyle(style) then
   begin
-    var numberFormat: integer := cDateTimeFormat;
-    if serial < 1 then
-      numberFormat := cTimeFormat
-    else if Frac(serial) = 0 then
-      numberFormat := cDateFormat;
-    style := fWorkbook.DateStyle(style, numberFormat);
+    var numberFormat: integer := cTimeFormat;
+    if serial >= 1 then
+      numberFormat := fWorkbook.DateFormatId(Ord(Frac(serial) <> 0));
+    if numberFormat >= 0 then
+      style := fWorkbook.DateStyle(style, numberFormat)
+    else
+      style := -1;
     if style < 0 then
     begin
       Refuse(aRow, aColumn, 'NoStyles', 'a date needs a date format, and the workbook has no styles to add one to');
@@ -3948,6 +3960,10 @@ begin
   fXlsx.fWorkbook := Self;
   fProperties := TWorkbookProperties.Create;
   fProperties.fWorkbook := Self;
+  fDateFormats[0] := nfShortDate;
+  fDateFormats[1] := nfShortDateTime;
+  fDateFormatIds[0] := -2;
+  fDateFormatIds[1] := -2;
 end;
 
 constructor TWorkbook.Create;
@@ -4129,6 +4145,11 @@ begin
   Swap<boolean>(fValuesChanged, aOther.fValuesChanged);
   Swap<boolean>(fFormulasWritten, aOther.fFormulasWritten);
   Swap<TIssues>(fIssues, aOther.fIssues);
+  for var i := 0 to 1 do
+  begin
+    fDateFormatIds[i] := -2;
+    aOther.fDateFormatIds[i] := -2;
+  end;
   ForwardIssues;
   aOther.ForwardIssues;
   fSheets.fWorkbook := Self;
@@ -4592,12 +4613,42 @@ begin
     FreeAndNil(fFontKeys);
     FreeAndNil(fDateStyleIds);
     FreeAndNil(fDateStyles);
+    fDateFormatIds[0] := -2;
+    fDateFormatIds[1] := -2;
   end;
 end;
 
 function TWorkbook.GetFileName: string;
 begin
   Result := fPackage.FileName;
+end;
+
+function TWorkbook.GetDateFormat(aIndex: integer): string;
+begin
+  Result := fDateFormats[aIndex];
+end;
+
+procedure TWorkbook.SetDateFormat(aIndex: integer; const aValue: string);
+begin
+  var why: string := NumberFormatError(aValue);
+  var sections: TArray<string>;
+  if (why = '') and ((FormatSections(aValue, sections) <> '') or not ScanSection(sections[0]).Dates) then
+    why := 'no date in it';
+  if why <> '' then
+    raise EArgumentException.CreateFmt('Not a date format Excel would open: "%s" (%s)', [aValue, why]);
+  var local: string := LocalNotation(aValue);
+  if local <> '' then
+    fIssues.Add(isWarning, 'NumberFormat', '', '"' + aValue + '": ' + local + ' - taken as it is');
+  fDateFormats[aIndex] := aValue;
+  fDateFormatIds[aIndex] := -2;
+end;
+
+// the numFmtId of DateFormat (0) or DateTimeFormat (1), added to the styles on the first need; -1: no styles
+function TWorkbook.DateFormatId(aIndex: integer): integer;
+begin
+  if fDateFormatIds[aIndex] = -2 then
+    fDateFormatIds[aIndex] := FormatId(fDateFormats[aIndex]);
+  Result := fDateFormatIds[aIndex];
 end;
 
 // Excel opens a workbook only under the extension of its kind, and other formats' names would mislead

@@ -18,7 +18,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 - Calcite's cells: `Sheet['B5']`, `Sheet['A1:C10']`, `Sheet.Cells[5, 'B']` (Excel's order, from 1; a range's `LastRow` and
   `LastColumn`) read and write `Value` (a Variant) or
   `AsString`, `AsFloat`, `AsInteger`, `AsDateTime`, `AsBoolean`, as Excel keeps them - text as a shared string found or
-  added, a date as a number in a date format (Excel's short date when the cell had none), Excel recalculating formulas on open;
+  added, a date as a number in a date format (when the cell had none: Excel's built-in short date, `nfShortDate`, which each
+  reader sees in their own form, 31.12.2026 or 12/31/2026; `Workbook.DateFormat := 'dd.mm.yyyy'` and `DateTimeFormat` fix
+  one for every reader, `ExportDataSet` takes them too), Excel recalculating formulas on open;
   text stays text (`'=A1'`, `'00123'`). `ClearContents` keeps a formatted cell
 - Calcite's formulas, as Excel's own properties: `Formula` reads `=SUM(A1:A3)` (a shared formula's cells too, moved from its
   first one) and writes one, the `=` optional; one formula written to several cells moves its relative references to each, as

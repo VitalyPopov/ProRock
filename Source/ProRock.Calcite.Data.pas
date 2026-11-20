@@ -140,7 +140,7 @@ begin
 end;
 
 // the number format a field's values get, '' - Calcite's own (General, a date's)
-function FieldFormat(aField: TField): string;
+function FieldFormat(aField: TField; aWorkbook: TWorkbook): string;
 begin
   Result := '';
   if (aField is TNumericField) and (TNumericField(aField).DisplayFormat <> '') then
@@ -149,11 +149,11 @@ begin
     Exit(DateCode(TDateTimeField(aField).DisplayFormat));
   case aField.DataType of
     ftDate:
-      Result := 'm/d/yyyy';
+      Result := aWorkbook.DateFormat;
     ftTime:
       Result := 'h:mm:ss';
     ftDateTime, ftTimeStamp, ftTimeStampOffset:
-      Result := 'm/d/yyyy h:mm';
+      Result := aWorkbook.DateTimeFormat;
     ftCurrency:
       Result := '#,##0.00';
     ftFloat, ftExtended, ftSingle:
@@ -234,7 +234,7 @@ begin
     if row > top then
       for var i := 0 to fields.Count - 1 do
       begin
-        var code: string := FieldFormat(fields[i]);
+        var code: string := FieldFormat(fields[i], aSheet.Workbook);
         if code <> '' then
           aSheet.Range[aSheet.Cells[top + 1, left + i].Address + ':' + aSheet.Cells[row, left + i].Address].NumberFormat := code;
       end;
