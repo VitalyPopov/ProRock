@@ -1842,6 +1842,65 @@ begin
   end;
 end;
 
+// '' or why a code looks typed in another language's Excel (TT.MM.JJJJ, aaaa-mm-dd, #.##0,00): a file keeps English codes,
+// and Excel takes most of these as written - aaaa a weekday, J a letter shown as it is, 0,00 thousands
+function LocalNotation(const aCode: string): string;
+const
+  cPlaces = ['#', '0', '?'];
+  cLetters: array[0 .. 5] of string = ('JJ', 'TT', 'RR', #$0414#$0414, #$041C#$041C, #$0413#$0413); // gg: an era in English
+  cHint = 'it looks like another language''s notation: Excel''s codes are English (yyyy, mm, dd, hh, #,##0.00), each reader '
+    + 'sees them in their own';
+begin
+  Result := '';
+  var sections: TArray<string>;
+  if FormatSections(aCode, sections) <> '' then
+    Exit;
+  for var section: string in sections do
+  begin
+    // the codes alone, without quotes, brackets and escaped characters
+    var codes: string := '';
+    var i: integer := 1;
+    while i <= section.Length do
+    begin
+      case section[i] of
+        '"':
+          i := Pos('"', section, i + 1);
+        '[':
+          i := Pos(']', section, i + 1);
+        '\', '_', '*':
+          Inc(i);
+      else
+        codes := codes + section[i];
+      end;
+      Inc(i);
+    end;
+
+    // German, Dutch, French, Polish and Russian date letters; Spanish or Italian aaaa beside a day and a month, with no y
+    var upper: string := codes.ToUpper;
+    for var letters: string in cLetters do
+      if upper.Contains(letters) then
+        Exit(cHint);
+    if upper.Contains('AA') and not upper.Contains('Y') and upper.Contains('M')
+      and (upper.Contains('D') or upper.Contains('G')) then
+      Exit(cHint);
+
+    // a decimal comma: #.##0,00, or 0,00 with no point
+    var n: integer := codes.Length;
+    for var p := 1 to n do
+      if (codes[p] = '.') and (p + 4 <= n) and CharInSet(codes[p + 1], cPlaces) and CharInSet(codes[p + 2], cPlaces)
+        and CharInSet(codes[p + 3], cPlaces) and (codes[p + 4] = ',') then
+        Exit(cHint)
+      else if (codes[p] = ',') and not codes.Contains('.') and (p > 1) and CharInSet(codes[p - 1], cPlaces) then
+      begin
+        var places: integer := 0;
+        while (p + places + 1 <= n) and CharInSet(codes[p + places + 1], cPlaces) do
+          Inc(places);
+        if (places in [1, 2]) and ((p + places = n) or (codes[p + places + 1] <> ',')) then
+          Exit(cHint);
+      end;
+  end;
+end;
+
 // a code as Excel's NumberFormat shows it: no \ before what is shown as itself anyway ($ - + / ( ) : ! ^ & ' ~ { } < > = and
 // a space, a . in a date's section) - Excel writes dd\.mm\.yyyy for dd.mm.yyyy
 function ShownFormat(const aCode: string): string;
@@ -2529,9 +2588,14 @@ end;
 procedure TRange.SetNumberFormat(const aValue: string);
 begin
   var why: string := NumberFormatError(aValue);
+  var local: string := LocalNotation(aValue);
   var id: integer := -1;
   if why <> '' then
-    why := 'a number format Excel would not open (' + why + ')'
+  begin
+    why := 'a number format Excel would not open (' + why + ')';
+    if local <> '' then
+      why := why + '; ' + local;
+  end
   else
   begin
     id := fSheet.fWorkbook.FormatId(aValue);
@@ -2543,6 +2607,9 @@ begin
     fSheet.fWorkbook.fIssues.Add(isError, 'NumberFormat', fSheet.fName + '!' + Address, why + ' - not written');
     Exit;
   end;
+  if local <> '' then
+    fSheet.fWorkbook.fIssues.Add(isWarning, 'NumberFormat', fSheet.fName + '!' + Address, '"' + aValue + '": ' + local
+      + ' - written as it is');
   fSheet.Restyle(Self,
     procedure(aXf: TXfCT)
     begin

@@ -34,7 +34,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   `Issues` and the sheet gets the next `SheetN`. A sheet made this way can be renamed until formulas are written
 - Calcite's formatting, as Excel's own properties: `NumberFormat` (`'0.00'`, `'#,##0.00'`, `'dd.mm.yyyy'`; Excel's built-in
   ones found by their names, others added once and found again, a whole column or row formatted as Excel does it; a format
-  Excel would not open, like `[Foo]0` or digits and dates in one section, is refused and listed in `Issues`), `Font.Bold`,
+  Excel would not open, like `[Foo]0` or digits and dates in one section, is refused and listed in `Issues`; one typed in
+  another language's notation, `TT.MM.JJJJ`, `aaaa-mm-dd`, `#.##0,00`, gets a warning: the codes are English, as in Delphi's
+  `FormatFloat`, and each reader sees them in their own), `Font.Bold`,
   `ColumnWidth` in Excel's characters, `Columns.AutoFit` (Excel's widths for Latin letters, digits and signs in Calibri and Aptos
   Narrow, other fonts as Calibri, other scripts estimated; numbers and dates a digit wider, never `####`),
   and `Sheet.FreezePanes := 'A2'`, written as Excel writes it
