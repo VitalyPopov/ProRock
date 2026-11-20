@@ -393,7 +393,7 @@ end;
 
 function TPackageOoxml.Open(const aFileName: string): boolean;
 begin
-  var stream: TFileStream := nil;
+  var stream: TFileStream;
   try
     // others may write it meanwhile: a document open in Office can still be read
     stream := TFileStream.Create(aFileName, fmOpenRead or fmShareDenyNone);

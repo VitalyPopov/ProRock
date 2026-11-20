@@ -218,6 +218,8 @@ type
     // Excel's order, from 1: Cells[5, 2] or Cells[5, 'B'] is B5; Sheet[5, 'B'] too
     property Cells[aRow, aColumn: integer]: TRange read GetCells; default;
     property Cells[aRow: integer; const aColumn: string]: TRange read GetCellsByLetters; default;
+    // Sheet['B5'] or Sheet['A1:C10'], as Range
+    property Cells[const aAddress: string]: TRange read GetRange; default;
     // from the first cell to the last one the sheet has (a formatted one too, as in Excel); A1 when there are none
     property UsedRange: TRange read GetUsedRange;
     // Excel's Freeze Panes at a cell: the rows above it and the columns left of it stay put ('A2' - the first row, 'B1' - the
@@ -1114,7 +1116,6 @@ var
   // a value where one may stand: next to another only through spaces, both references (an intersection)
   function Value(aConstant: boolean): boolean;
   begin
-    Result := False;
     if not expectValue and not (spaced and not constant and not aConstant and (Inside <> '{')) then
       Exit(Fail('two values without an operator between them'));
     if (Inside = '{') and not aConstant then
