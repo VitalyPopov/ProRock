@@ -1,14 +1,14 @@
 unit Form.Main;
 
 // The core properties of an Office document - the ones File > Info shows - opened, edited and saved, and what the
-// application says about its contents (the sheets of a workbook), shown. All the document work is in OfficeDocument.pas;
-// this form only shows the values and takes them back
+// application says about its contents (the sheets of a workbook), shown. The document is a TPackageOoxml
+// (ProRock.Office.Ooxml): its Properties are plain values; docProps/app.xml is read into the generated classes
 
 interface
 
 uses Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
   Vcl.ExtCtrls,
-  OfficeDocument;
+  ProRock.Office.Ooxml;
 
 type
   TMainForm = class(TForm)
@@ -65,7 +65,7 @@ type
     procedure SaveButtonClick(Sender: TObject);
     procedure SaveAsButtonClick(Sender: TObject);
   private
-    fDocument: TOfficeDocument;
+    fDocument: TPackageOoxml;
 
     procedure WMDropFiles(var aMessage: TWMDropFiles); message WM_DROPFILES;
 
@@ -83,15 +83,24 @@ var
 
 implementation
 
-uses System.UITypes, System.Math, Winapi.ShellAPI, ProRock.Xmlite.Schema.CoreProperties, ProRock.Xmlite.Schema.Ooxml.PropVar;
+uses System.UITypes, System.Math, System.DateUtils, Winapi.ShellAPI, ProRock.Xmlite.Schema.Ooxml.PropExt,
+  ProRock.Xmlite.Schema.Ooxml.PropVar;
 
 {$R *.dfm}
+
+// the properties keep UTC, File > Info shows local time
+function LocalTime(aValue: TDateTime): string;
+begin
+  Result := '';
+  if aValue <> 0 then
+    Result := DateTimeToStr(TTimeZone.Local.ToLocalTime(aValue));
+end;
 
 { TMainForm }
 
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
-  fDocument := TOfficeDocument.Create;
+  fDocument := TPackageOoxml.Create;
   DragAcceptFiles(Handle, True);
 
   if ParamCount > 0 then
@@ -106,20 +115,18 @@ end;
 
 procedure TMainForm.ShowProperties;
 begin
-  // the generated classes: Dublin Core elements carry their text in XmlValue (dc:title, dcterms:created), the elements of
-  // the core properties namespace are plain strings (cp:category), cp:keywords is mixed content - its text is XmlText
-  var properties := fDocument.Properties;
-  TitleEdit.Text := properties.Title.XmlValue;
-  SubjectEdit.Text := properties.Subject.XmlValue;
-  CreatorEdit.Text := properties.Creator.XmlValue;
-  KeywordsEdit.Text := properties.Keywords.XmlText;
-  DescriptionMemo.Text := properties.Description.XmlValue;
+  var properties: TCoreProperties := fDocument.Properties;
+  TitleEdit.Text := properties.Title;
+  SubjectEdit.Text := properties.Subject;
+  CreatorEdit.Text := properties.Creator;
+  KeywordsEdit.Text := properties.Keywords;
+  DescriptionMemo.Text := AdjustLineBreaks(properties.Description); // XML keeps line breaks as LF
   CategoryEdit.Text := properties.Category;
   ContentStatusEdit.Text := properties.ContentStatus;
   LastModifiedByEdit.Text := properties.LastModifiedBy;
   RevisionEdit.Text := properties.Revision;
-  CreatedEdit.Text := properties.Created.XmlValue;
-  ModifiedEdit.Text := properties.Modified.XmlValue;
+  CreatedEdit.Text := LocalTime(properties.Created);
+  ModifiedEdit.Text := LocalTime(properties.Modified);
   ShowContents;
 
   FileLabel.Caption := fDocument.FileName;
@@ -131,16 +138,23 @@ end;
 
 procedure TMainForm.ShowContents;
 begin
-  // docProps/app.xml: the titles of the parts are a list of plain strings (a vt:vector of vt:lpstr), grouped by the heading
-  // pairs - a name and a count each (vt:variant holding a vt:lpstr, then one holding a vt:i4): "Worksheets: Sales, Costs"
-  var extended := fDocument.ExtendedProperties;
+  ApplicationEdit.Text := '';
+  PartsMemo.Clear;
+  // the application's properties are optional, found through the package's relationships
+  var extended: TPropertiesE := nil;
+  for var relationship: TRelationshipOoxml in fDocument.Relationships('', '/extended-properties') do
+    if not relationship.Part.IsEmpty then
+      extended := fDocument.Part<TPropertiesE>(relationship.Part);
+  if extended = nil then
+    Exit;
   ApplicationEdit.Text := extended.Application;
 
+  // the titles of the parts are a list of plain strings (a vt:vector of vt:lpstr), grouped by the heading pairs - a name
+  // and a count each (vt:variant holding a vt:lpstr, then one holding a vt:i4): "Worksheets: Sales, Costs"
   var titles := extended.TitlesOfParts.Vector.Lpstr;
   var pairs := extended.HeadingPairs.Vector.Variant;
   PartsMemo.Lines.BeginUpdate;
   try
-    PartsMemo.Clear;
     var first: integer := 0;
     for var i := 0 to pairs.Count div 2 - 1 do
     begin
@@ -158,51 +172,37 @@ begin
   end;
 end;
 
+// only what changed: a save with nothing changed leaves the file as it was. An empty field removes the property, as in Office
 procedure TMainForm.TakeProperties;
-var
-  properties: TCorePropertiesE;
-
-  // an empty field removes the element from the document, as in Office (Clear); an assigned '' would be a value - an empty
-  // element. False: removed, nothing to assign
-  function TakeText(const aProperty, aText: string): boolean;
-  begin
-    Result := not aText.IsEmpty;
-    if not Result then
-      properties.Clear(aProperty);
-  end;
-
 begin
-  properties := fDocument.Properties;
-  if TakeText('Title', TitleEdit.Text) then
-    properties.Title.XmlValue := TitleEdit.Text;
-  if TakeText('Subject', SubjectEdit.Text) then
-    properties.Subject.XmlValue := SubjectEdit.Text;
-  if TakeText('Creator', CreatorEdit.Text) then
-    properties.Creator.XmlValue := CreatorEdit.Text;
-  if TakeText('Keywords', KeywordsEdit.Text) then
-    properties.Keywords.XmlText := KeywordsEdit.Text;
-  if TakeText('Description', DescriptionMemo.Text) then
-    properties.Description.XmlValue := DescriptionMemo.Text;
-  if TakeText('Category', CategoryEdit.Text) then
+  var properties: TCoreProperties := fDocument.Properties;
+  if TitleEdit.Text <> properties.Title then
+    properties.Title := TitleEdit.Text;
+  if SubjectEdit.Text <> properties.Subject then
+    properties.Subject := SubjectEdit.Text;
+  if CreatorEdit.Text <> properties.Creator then
+    properties.Creator := CreatorEdit.Text;
+  if KeywordsEdit.Text <> properties.Keywords then
+    properties.Keywords := KeywordsEdit.Text;
+  var description: string := string(DescriptionMemo.Text).Replace(#13#10, #10);
+  if description <> properties.Description then
+    properties.Description := description;
+  if CategoryEdit.Text <> properties.Category then
     properties.Category := CategoryEdit.Text;
-  if TakeText('ContentStatus', ContentStatusEdit.Text) then
+  if ContentStatusEdit.Text <> properties.ContentStatus then
     properties.ContentStatus := ContentStatusEdit.Text;
-  if TakeText('LastModifiedBy', LastModifiedByEdit.Text) then
+  if LastModifiedByEdit.Text <> properties.LastModifiedBy then
     properties.LastModifiedBy := LastModifiedByEdit.Text;
-  if TakeText('Revision', RevisionEdit.Text) then
+  if RevisionEdit.Text <> properties.Revision then
     properties.Revision := RevisionEdit.Text;
 end;
 
 procedure TMainForm.OpenDocument(const aFileName: string);
 begin
-  try
-    fDocument.Load(aFileName);
-  except
-    on e: EOfficeDocument do
-    begin
-      MessageDlg(e.Message, mtWarning, [mbOK], 0);
-      Exit;
-    end;
+  if not fDocument.Open(aFileName) then
+  begin
+    MessageDlg(fDocument.Error, mtWarning, [mbOK], 0);
+    Exit;
   end;
   ShowProperties;
 end;
@@ -214,8 +214,12 @@ begin
     Exit;
 
   TakeProperties;
-  fDocument.Save(aFileName);
-  ShowProperties; // Modified is the time of this save now
+  if not fDocument.SaveAs(aFileName) then
+  begin
+    MessageDlg(fDocument.Error, mtWarning, [mbOK], 0);
+    Exit;
+  end;
+  ShowProperties; // Modified is the time of this save when something changed
 end;
 
 procedure TMainForm.OpenButtonClick(Sender: TObject);

@@ -128,8 +128,9 @@ attribute `xsi:type`:
 ```
 
 `xsi` is the namespace `http://www.w3.org/2001/XMLSchema-instance`, the schema's own vocabulary inside documents. In ProRock,
-`SetXsiType(TW3cdtfCT)` writes it. The Office document format requires it on `created` and `modified`, which is why the
-[DocumentProperties sample](samples.md#office-document-properties) calls it.
+`SetXsiType(TW3cdtfCT)` writes it. The Office document format requires it on `created` and `modified`, which is why
+`ProRock.Office.Ooxml` calls it when it sets them (the [DocumentProperties sample](samples.md#office-document-properties)
+shows them).
 
 ## Substitution groups
 

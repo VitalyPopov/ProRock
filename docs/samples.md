@@ -124,36 +124,36 @@ and shows every value in File > Info.
 
 ![The DocumentProperties sample with an .xlsx file open: title, subject, author, keywords, comments and the other core properties, the application and the worksheets](assets/document-properties.png)
 
-An Office document is a zip of XML parts (OPC, ECMA-376 Part 2). The sample uses units generated from the official schemas
-(they ship in `Source`):
-
-- `opc-relationships.xsd` - to find the core properties part through the package relationships (`_rels/.rels`)
-- `opc-coreProperties.xsd`, built on Dublin Core - the properties themselves (`docProps/core.xml`)
-- `shared-documentPropertiesExtended.xsd` (ECMA-376 Part 4) - what the application says about the document
-  (`docProps/app.xml`): its name, and the titles of its parts - the sheets of a workbook, the slides of a presentation
+An Office document is a zip of XML parts (OPC, ECMA-376 Part 2). The sample opens it with `TPackageOoxml` from
+`ProRock.Office.Ooxml`: a part is read on first use, and a part not changed is saved as the same bytes, in the same order and
+with the same compression. `Properties` are the core properties (`docProps/core.xml`) as plain values - text, and dates in
+UTC; an empty value removes the element, as Office does:
 
 ```pascal
-// the generated classes: Dublin Core elements carry their text in XmlValue (dc:title, dcterms:created), the elements of
-// the core properties namespace are plain strings (cp:category), cp:keywords is mixed content - its text is XmlText
-var properties := fDocument.Properties;
-TitleEdit.Text := properties.Title.XmlValue;
-KeywordsEdit.Text := properties.Keywords.XmlText;
-CategoryEdit.Text := properties.Category;
+var properties: TCoreProperties := fDocument.Properties;
+TitleEdit.Text := properties.Title;
+...
+if TitleEdit.Text <> properties.Title then // only what changed
+  properties.Title := TitleEdit.Text;
 ```
 
-On save, `Modified` is set to now (UTC) with the `xsi:type` OPC requires, and every other part of the file is copied byte for
-byte, in the same order and with the same compression:
+Save sets `Modified` when anything changed, as Office does; a save with nothing changed leaves the file as it was. A
+digitally signed document (`Signed`) gets a warning first: the signature usually covers the core properties, so saving
+breaks it.
+
+What the application says about the document (`docProps/app.xml`) - its name, and the titles of its parts: the sheets of a
+workbook, the slides of a presentation - is read into the classes generated from the official schema
+(`shared-documentPropertiesExtended.xsd`, ECMA-376 Part 4; the unit ships in `Source`). The part is found through the
+package's relationships, and `Part<T>` reads it:
 
 ```pascal
-fProperties.Modified.XmlValue := FormatDateTime('yyyy-mm-dd"T"hh":"nn":"ss"Z"', TTimeZone.Local.ToUniversalTime(Now));
-fProperties.Modified.SetXsiType(TW3cdtfCT); // <dcterms:modified xsi:type="dcterms:W3CDTF">
-var core: TBytes := TEncoding.UTF8.GetBytes(TXmlite.ObjectToXml(fProperties));
+for var relationship: TRelationshipOoxml in fDocument.Relationships('', '/extended-properties') do
+  if not relationship.Part.IsEmpty then
+    extended := fDocument.Part<TPropertiesE>(relationship.Part);
 ```
 
-A digitally signed document gets a warning first: the signature usually covers the core properties, so saving breaks it.
-
-The application's properties are shown, not edited (saved as they were). The titles of the parts are a list of plain
-strings - a `vt:vector` of `vt:lpstr` - grouped by heading pairs, a name and a count each:
+It is shown, not edited (saved as it was). The titles of the parts are a list of plain strings - a `vt:vector` of
+`vt:lpstr` - grouped by heading pairs, a name and a count each:
 
 ```xml
 <HeadingPairs><vt:vector size="2" baseType="variant">

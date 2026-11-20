@@ -45,12 +45,20 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   content not in the schema; these overloads answer instead of raising (a missing file is False too), `OnIssue` hears each
 - Calcite's `Issues` and `OnIssue`: a write Excel would refuse (a part of an array formula, a table's header, NaN) leaves the
   cell as it was and is listed, the rest is saved
+- `ProRock.Office.Ooxml`, Office files (.xlsx, .docx, .pptx - any OPC package): `TPackageOoxml` opens and saves one with
+  nothing lost - a part is read on first use into its generated classes (`Part<T>`, `EditPart<T>`), a part not changed is saved
+  as the same bytes; `Relationships`, `HasPart`, `AddPart`, `RemovePart`, `Signed`. `Properties`: the core properties Office
+  shows in File > Info as plain values (dates in UTC, an empty value removes the element); a save that changes something sets
+  `Modified`, as Office does
+- Calcite's `Workbook.Properties`: the workbook's title, author, dates and the rest of File > Info
 
 #### Changed
 - `RegisterNamespace` raises when a namespace is registered again (two units for one namespace in a program): the second unit's
   classes were left unknown to the reader without a word
 - The SpreadsheetML, DrawingML, package relationships and document properties (core, app, Dublin Core) units moved from the
   samples to `Source`: if your project lists the samples' copies, remove them from it
+- The DocumentProperties sample is built on `ProRock.Office.Ooxml`: its `OfficeDocument.pas` is gone; app.xml is still read
+  into its generated classes
 
 #### Fixed
 - `xs:double` and `xs:float` are read and written exactly on every platform: on Win64 a 17-digit value (Excel writes many) could
