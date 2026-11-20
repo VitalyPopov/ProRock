@@ -193,7 +193,7 @@ type
     // elements without a property, kept for the round trip as their text (Clear removes them)
     property XmlUnknown: TList<TXmliteUnknown> read GetXmlUnknown;
     // [TOrdered]/[TMixed]: the children (and text) in document order, written so; children not in it come after. Remove a
-    // child by Remove - one deleted through its list leaves a dangling node
+    // child by Remove; one deleted through its list leaves its node, skipped by the writer and InnerText
     property XmlContent: TList<TXmliteNode> read GetXmlContent;
     // the text before the first child element; in mixed content the leading text node of XmlContent
     property XmlText: string read GetXmlText write SetXmlText;
@@ -523,6 +523,21 @@ type
 implementation
 
 uses System.IniFiles, System.Variants, System.Hash, System.IOUtils;
+
+// objects by their addresses alone: an XmlContent node may name a child deleted through its list, so the default
+// comparer (the object's own GetHashCode and Equals) would follow a freed pointer
+function AddressComparer: IEqualityComparer<TBasite>;
+begin
+  Result := TEqualityComparer<TBasite>.Construct(
+    function(const aLeft, aRight: TBasite): boolean
+    begin
+      Result := Pointer(aLeft) = Pointer(aRight);
+    end,
+    function(const aValue: TBasite): integer
+    begin
+      Result := THashBobJenkins.GetHashValue(aValue, SizeOf(aValue));
+    end);
+end;
 
 type
   // what the read in progress on this thread reports to, and where its text starts (for a line and column)
@@ -1346,7 +1361,7 @@ var
     if (unknowns <> nil) and (Length(unknownWritten) <> unknowns.Count) then
       SetLength(unknownWritten, unknowns.Count);
 
-    children := TDictionary<TBasite, TProperty>.Create;
+    children := TDictionary<TBasite, TProperty>.Create(AddressComparer);
     valuesWritten := TDictionary<TProperty, TArray<boolean>>.Create;
     try
       for var propertyElement in Meta.Xmlite.Elements.Values do
@@ -2268,23 +2283,51 @@ begin
   if Meta.Xmlite.Ordered and (fXmlContent <> nil) and (fXmlContent.Count > 0) then
   begin
     Result := '';
-    for var node: TXmliteNode in fXmlContent do
-      case node.Kind of
-        xnkText:
-          Result := Result + node.Text;
-        xnkElement:
-          if node.Element <> nil then
-            Result := Result + TextOf(node.Element)
-          else if node.ElementProperty = nil then
-            Continue
-          else if node.ElementProperty.PropertyType = ptDataList then
-          begin
-            if node.Index < TPropertyDataList(node.ElementProperty).Count(Self) then // the list may have changed
-              Result := Result + TPropertyDataList(node.ElementProperty).ItemText(Self, node.Index);
-          end
-          else if node.ElementProperty.PropertyType = ptData then
-            Result := Result + TPropertyData(node.ElementProperty).Value[Self];
-      end;
+    // a node's object only while its property (or XmlAny) holds it, as the writer does
+    var children: TDictionary<TBasite, boolean> := TDictionary<TBasite, boolean>.Create(AddressComparer);
+    try
+      for var propertyElement in Meta.Xmlite.Elements.Values do
+        case propertyElement.PropertyType of
+          ptBasite:
+            begin
+              var fieldObject: TBasite := TPropertyBasite(propertyElement).ObjectPointer(Self)^;
+              if fieldObject <> nil then
+                children.AddOrSetValue(fieldObject, True);
+            end;
+          ptBasiteList:
+            begin
+              var list: TBasiteList := TPropertyBasiteList(propertyElement).ObjectPointer(Self)^;
+              if list <> nil then
+                for var item: TBasite in list do
+                  children.AddOrSetValue(item, True);
+            end;
+        end;
+      if fXmlAny <> nil then
+        for var anyElement: TBasite in fXmlAny do
+          children.AddOrSetValue(anyElement, True);
+      for var node: TXmliteNode in fXmlContent do
+        case node.Kind of
+          xnkText:
+            Result := Result + node.Text;
+          xnkElement:
+            if node.Element <> nil then
+            begin
+              if children.ContainsKey(node.Element) then
+                Result := Result + TextOf(node.Element);
+            end
+            else if node.ElementProperty = nil then
+              Continue
+            else if node.ElementProperty.PropertyType = ptDataList then
+            begin
+              if node.Index < TPropertyDataList(node.ElementProperty).Count(Self) then // the list may have changed
+                Result := Result + TPropertyDataList(node.ElementProperty).ItemText(Self, node.Index);
+            end
+            else if node.ElementProperty.PropertyType = ptData then
+              Result := Result + TPropertyData(node.ElementProperty).Value[Self];
+        end;
+    finally
+      children.Free;
+    end;
     Exit;
   end;
 

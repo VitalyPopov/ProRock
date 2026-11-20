@@ -81,6 +81,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 #### Fixed
 - `xs:double` and `xs:float` are read and written exactly on every platform: on Win64 a 17-digit value (Excel writes many) could
   read as the next Double, and some were written as text that reads back as another; a Single always gets the nearest value
+- An ordered element (`[TOrdered]`, `[TMixed]`) whose child was deleted through its list, not `Remove` (`Font.B.Clear`),
+  could crash on write or in `InnerText`, mostly on Win64: such a child is now skipped, as intended
 
 ## [1.7.0] - 2026-11-11
 
