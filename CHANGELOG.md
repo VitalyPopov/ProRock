@@ -42,6 +42,15 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   `ColumnWidth` in Excel's characters, `Columns.AutoFit` (Excel's widths for Latin letters, digits and signs in Calibri and Aptos
   Narrow, other fonts as Calibri, other scripts estimated; numbers and dates a digit wider, never `####`),
   and `Sheet.FreezePanes := 'A2'`, written as Excel writes it
+- Calcite's cell formatting, as Excel's own properties: `Font` (`Name`, `Size`, `Color`, `Bold`, `Italic`, `Underline` with
+  Excel's five kinds, `Strikethrough`, and `Style` for the four at once with Delphi's `fsBold`...), `Interior.Color` (a solid
+  fill; `clNone` removes it), `Borders[beLeft]` and the other edges, the inside ones too (`LineStyle`, `Weight`, `Color`, paired
+  as Excel pairs them; an edge shared with the neighbouring cell, as Excel keeps it), `Borders` for all of them, `BorderAround`,
+  `HorizontalAlignment`, `VerticalAlignment`, `WrapText`. Colors are `TColor`, Excel's own order; theme colors with their
+  tints and the old palette read as Excel shows them. Each format is found in the workbook's styles or added once
+- Calcite's whole columns and rows, as Excel's: `Sheet.Columns[2]`, `Columns['B:D']`, `Sheet.Rows[200]`, `Rows['5:7']`, a
+  range's own (`Range['C1:E5'].Columns[2]` is D1:D5), `EntireRow`, `EntireColumn` - formatted before they hold anything;
+  their `Address` is Excel's, `B:D` and `5:7`
 - `ProRock.Calcite.Data`: `ExportDataSet(DataSet, Sheet)` writes a TDataSet's visible fields to a sheet - a bold header from
   `DisplayLabel`, each value as its type (null left empty), number formats from the fields (`DisplayFormat`, currency,
   decimals, dates), the columns fitted and the header frozen

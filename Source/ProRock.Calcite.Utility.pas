@@ -1,6 +1,6 @@
 ﻿unit ProRock.Calcite.Utility;
 
-// Excel's language, format-neutral: limits, A1 addresses and references, serial dates, text widths (internal)
+// Excel's language, format-neutral: limits, A1 addresses and references, serial dates, text widths, colors (internal)
 
 interface
 
@@ -40,6 +40,12 @@ function DateToSerial(aDate: TDateTime; a1904: boolean; out aSerial: Double): bo
 // a text's width in pixels at size 11, the widest line: ASCII as Excel's AutoFit measures Aptos Narrow (aFont) or Calibri
 // (any other font), the rest estimated
 function TextPixels(const aText, aFont: string; aBold: boolean): Double;
+
+// colors as Excel's Color (BGR, TColor's order)
+// a tint or shade (-1 darkest, 1 lightest) as Excel applies it: its integer HLS (240 steps), each product truncated
+function TintedColor(aColor: integer; aTint: Double): integer;
+// an indexed color in Excel's default palette: 0-63, 64 the system's text (black), 65 its window (white); others black
+function PaletteColor(aIndex: integer): integer;
 
 // an item of an array for a range, from 0: two dimensions, or one (a row)
 function ArrayItem(const aArray: Variant; aRow, aColumn: integer): Variant;
@@ -291,6 +297,95 @@ begin
     line := line + width;
   end;
   Result := Max(Result, line);
+end;
+
+function TintedColor(aColor: integer; aTint: Double): integer;
+const
+  cMax = 240;
+
+  function HueValue(aLow, aHigh, aHue: integer): integer;
+  begin
+    aHue := (aHue mod cMax + cMax) mod cMax;
+    if aHue < cMax div 6 then
+      Result := aLow + ((aHigh - aLow) * aHue + cMax div 12) div (cMax div 6)
+    else if aHue < cMax div 2 then
+      Result := aHigh
+    else if aHue < cMax * 2 div 3 then
+      Result := aLow + ((aHigh - aLow) * (cMax * 2 div 3 - aHue) + cMax div 12) div (cMax div 6)
+    else
+      Result := aLow;
+  end;
+
+begin
+  if aTint = 0 then
+    Exit(aColor);
+  var r: integer := aColor and $FF;
+  var g: integer := aColor shr 8 and $FF;
+  var b: integer := aColor shr 16 and $FF;
+  var high: integer := Max(r, Max(g, b));
+  var low: integer := Min(r, Min(g, b));
+  var lum: integer := ((high + low) * cMax + 255) div 510;
+  var hue: integer := 0;
+  var sat: integer := 0;
+  if high <> low then
+  begin
+    if lum <= cMax div 2 then
+      sat := ((high - low) * cMax + (high + low) div 2) div (high + low)
+    else
+      sat := ((high - low) * cMax + (510 - high - low) div 2) div (510 - high - low);
+    var rd: integer := ((high - r) * (cMax div 6) + (high - low) div 2) div (high - low);
+    var gd: integer := ((high - g) * (cMax div 6) + (high - low) div 2) div (high - low);
+    var bd: integer := ((high - b) * (cMax div 6) + (high - low) div 2) div (high - low);
+    if r = high then
+      hue := bd - gd
+    else if g = high then
+      hue := cMax div 3 + rd - bd
+    else
+      hue := cMax * 2 div 3 + gd - rd;
+    hue := (hue mod cMax + cMax) mod cMax;
+  end;
+  if aTint < 0 then
+    lum := Trunc(lum * (1 + aTint))
+  else
+    lum := Trunc(lum * (1 - aTint)) + (cMax - Trunc(cMax * (1 - aTint)));
+  lum := EnsureRange(lum, 0, cMax);
+  if sat = 0 then
+  begin
+    r := Floor(lum * 255 / cMax + 0.5);
+    Exit(r or r shl 8 or r shl 16);
+  end;
+  var m2: integer;
+  if lum <= cMax div 2 then
+    m2 := (lum * (cMax + sat) + cMax div 2) div cMax
+  else
+    m2 := lum + sat - (lum * sat + cMax div 2) div cMax;
+  var m1: integer := 2 * lum - m2;
+  r := (HueValue(m1, m2, hue + cMax div 3) * 255 + cMax div 2) div cMax;
+  g := (HueValue(m1, m2, hue) * 255 + cMax div 2) div cMax;
+  b := (HueValue(m1, m2, hue - cMax div 3) * 255 + cMax div 2) div cMax;
+  Result := r or g shl 8 or b shl 16;
+end;
+
+function PaletteColor(aIndex: integer): integer;
+const
+  // Excel's Colors(1..56) = indexes 8-63; 0-7 repeat the first eight
+  cPalette: array[0 .. 55] of integer = (
+    $000000, $FFFFFF, $0000FF, $00FF00, $FF0000, $00FFFF, $FF00FF, $FFFF00, $000080, $008000, $800000, $008080,
+    $800080, $808000, $C0C0C0, $808080, $FF9999, $663399, $CCFFFF, $FFFFCC, $660066, $8080FF, $CC6600, $FFCCCC,
+    $800000, $FF00FF, $00FFFF, $FFFF00, $800080, $000080, $808000, $FF0000, $FFCC00, $FFFFCC, $CCFFCC, $99FFFF,
+    $FFCC99, $CC99FF, $FF99CC, $99CCFF, $FF6633, $CCCC33, $00CC99, $00CCFF, $0099FF, $0066FF, $996666, $969696,
+    $663300, $669933, $003300, $003333, $003399, $663399, $993333, $333333);
+begin
+  case aIndex of
+    0 .. 7:
+      Result := cPalette[aIndex];
+    8 .. 63:
+      Result := cPalette[aIndex - 8];
+    65:
+      Result := $FFFFFF;
+  else
+    Result := 0;
+  end;
 end;
 
 function ArrayItem(const aArray: Variant; aRow, aColumn: integer): Variant;

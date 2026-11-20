@@ -4,7 +4,7 @@
 
 interface
 
-uses System.SysUtils, System.Classes, System.Generics.Collections,
+uses System.SysUtils, System.Classes, System.Generics.Collections, System.UITypes,
   ProRock.Xmlite, ProRock.Office.Ooxml, ProRock.Xmlite.Schema.Ooxml.Sml, ProRock.Xmlite.Schema.CoreProperties;
 
 const
@@ -17,6 +17,15 @@ const
   // Excel's built-in dates: each reader sees them as their own short date, 31.12.2026 or 12/31/2026
   nfShortDate = 'm/d/yyyy';
   nfShortDateTime = 'm/d/yyyy h:mm';
+
+  // the VCL's, for programs without it: Interior.Color := clNone removes a fill, a font or border color clDefault is
+  // Excel's automatic
+  clNone = TColors.SysNone;
+  clDefault = TColors.SysDefault;
+  fsBold = TFontStyle.fsBold;
+  fsItalic = TFontStyle.fsItalic;
+  fsUnderline = TFontStyle.fsUnderline;
+  fsStrikeOut = TFontStyle.fsStrikeOut;
 
 type
   {$REGION 'ProRock.Xmlite types aliases'}
@@ -32,32 +41,149 @@ type
   // a date is a number in a date format, as in Excel
   TCellValueType = (cvEmpty, cvNumber, cvDate, cvText, cvBoolean, cvError);
 
+  // Excel's names: XlUnderlineStyle, XlHAlign, XlVAlign, XlBordersIndex, XlLineStyle, XlBorderWeight
+  TUnderline = (ulNone, ulSingle, ulDouble, ulSingleAccounting, ulDoubleAccounting);
+  THAlign = (haGeneral, haLeft, haCenter, haRight, haFill, haJustify, haCenterAcrossSelection, haDistributed);
+  TVAlign = (vaTop, vaCenter, vaBottom, vaJustify, vaDistributed);
+  TBorderEdge = (beLeft, beTop, beBottom, beRight, beInsideVertical, beInsideHorizontal);
+  TBorderEdges = set of TBorderEdge;
+  TLineStyle = (lsNone, lsContinuous, lsDash, lsDot, lsDashDot, lsDashDotDot, lsDouble, lsSlantDashDot);
+  TBorderWeight = (bwHairline, bwThin, bwMedium, bwThick);
+
   // Excel's Range.Font: read from the first cell, written to every cell
   TRangeFont = record
   private
     fSheet: TWorksheet;
     fTop, fLeft, fBottom, fRight: integer;
 
-    function GetBold: boolean;
-    procedure SetBold(aValue: boolean);
+    procedure Change(const aChange: TProc<TFontCT>);
+    function GetFlag(aIndex: integer): boolean;
+    procedure SetFlag(aIndex: integer; aValue: boolean);
+    function GetName: string;
+    procedure SetName(const aValue: string);
+    function GetSize: Double;
+    procedure SetSize(aValue: Double);
+    function GetColor: TColor;
+    procedure SetColor(aValue: TColor);
+    function GetUnderline: TUnderline;
+    procedure SetUnderline(aValue: TUnderline);
+    function GetStyle: TFontStyles;
+    procedure SetStyle(aValue: TFontStyles);
   public
-    property Bold: boolean read GetBold write SetBold;
+    // a name of the theme's fonts (Aptos Narrow, Calibri) set by name stays that font when the theme changes
+    property Name: string read GetName write SetName;
+    // in points, 1 to 409
+    property Size: Double read GetSize write SetSize;
+    // TColor's BGR, as Excel's Color; theme colors read as Excel shows them; clDefault: automatic (reads 0, black)
+    property Color: TColor read GetColor write SetColor;
+    property Bold: boolean index 0 read GetFlag write SetFlag;
+    property Italic: boolean index 1 read GetFlag write SetFlag;
+    property Strikethrough: boolean index 2 read GetFlag write SetFlag;
+    property Underline: TUnderline read GetUnderline write SetUnderline;
+    // the four at once (System.UITypes' fsBold...): fsUnderline is any underline, and written as a single one
+    property Style: TFontStyles read GetStyle write SetStyle;
   end;
 
-  // Excel's Range.Columns: the range's columns
-  TRangeColumns = record
+  // Excel's Range.Interior: a solid fill, the first cell's read, every cell's written
+  TRangeInterior = record
   private
     fSheet: TWorksheet;
     fTop, fLeft, fBottom, fRight: integer;
+
+    function GetColor: TColor;
+    procedure SetColor(aValue: TColor);
   public
-    // Excel's AutoFit, estimated: each column as wide as its longest shown value in the range's rows, numbers and dates a digit
-    // wider (too narrow, Excel shows ####). Calcite measures no fonts: Latin letters, digits and signs exact in Calibri and
-    // Aptos Narrow, other fonts as Calibri, other scripts close. A column with nothing in those rows keeps its width
-    procedure AutoFit;
+    // clNone: no fill (Excel reads 16777215, white). Patterns read as their background color
+    property Color: TColor read GetColor write SetColor;
+  end;
+
+  // Excel's Border: one edge of a range, or all of them (Range.Borders)
+  TRangeBorder = record
+  private
+    fSheet: TWorksheet;
+    fTop, fLeft, fBottom, fRight: integer;
+    fEdges: TBorderEdges;
+
+    function GetLineStyle: TLineStyle;
+    procedure SetLineStyle(aValue: TLineStyle);
+    function GetWeight: TBorderWeight;
+    procedure SetWeight(aValue: TBorderWeight);
+    function GetColor: TColor;
+    procedure SetColor(aValue: TColor);
+  public
+    // Excel's pairs: lsContinuous any weight; lsDash, lsDashDot, lsDashDotDot thin or medium; lsDot thin; lsDouble thick;
+    // lsSlantDashDot medium. A style takes its own weight where the pair is missing, a weight makes the line continuous.
+    // A cell's edge is shared with its neighbour: setting one clears the neighbour's, reading one sees it
+    property LineStyle: TLineStyle read GetLineStyle write SetLineStyle;
+    property Weight: TBorderWeight read GetWeight write SetWeight;
+    // clDefault: automatic (reads 0, black)
+    property Color: TColor read GetColor write SetColor;
+  end;
+
+  // Excel's Range.Borders: Borders[beLeft] an edge, the inside ones between the range's cells; Borders.LineStyle all six
+  TRangeBorders = record
+  private
+    fSheet: TWorksheet;
+    fTop, fLeft, fBottom, fRight: integer;
+
+    function GetItem(aEdge: TBorderEdge): TRangeBorder;
+    function GetAll: TRangeBorder;
+    function GetLineStyle: TLineStyle;
+    procedure SetLineStyle(aValue: TLineStyle);
+    function GetWeight: TBorderWeight;
+    procedure SetWeight(aValue: TBorderWeight);
+    function GetColor: TColor;
+    procedure SetColor(aValue: TColor);
+  public
+    property Items[aEdge: TBorderEdge]: TRangeBorder read GetItem; default;
+    // read: the left edge's
+    property LineStyle: TLineStyle read GetLineStyle write SetLineStyle;
+    property Weight: TBorderWeight read GetWeight write SetWeight;
+    property Color: TColor read GetColor write SetColor;
   end;
 
   // An address on a sheet, not the cells themselves: no Free. Reading creates nothing, writing creates the cells it needs
   TRange = record
+  public type
+    // Excel's Range.Columns: the range's columns (Sheet.Columns: the sheet's)
+    TColumns = record
+    private
+      fSheet: TWorksheet;
+      fTop, fLeft, fBottom, fRight: integer;
+
+      function GetCount: integer;
+      function GetItem(aIndex: integer): TRange;
+      function GetItemByLetters(const aColumns: string): TRange;
+    public
+      // Excel's AutoFit, estimated: each column as wide as its longest shown value in the range's rows, numbers and dates a
+      // digit wider (too narrow, Excel shows ####). Calcite measures no fonts: Latin letters, digits and signs exact in
+      // Calibri and Aptos Narrow, other fonts as Calibri, other scripts close. A column with nothing in those rows keeps its
+      // width
+      procedure AutoFit;
+
+      property Count: integer read GetCount;
+      // Excel's Columns(2), Columns("B"), Columns("B:D"), counted from the range's first column as in Excel:
+      // Range['C1:E5'].Columns[2] is D1:D5, Sheet.Columns['B'] the whole column B
+      property Items[aIndex: integer]: TRange read GetItem; default;
+      property Items[const aColumns: string]: TRange read GetItemByLetters; default;
+    end;
+
+    // Excel's Range.Rows: the range's rows (Sheet.Rows: the sheet's)
+    TRows = record
+    private
+      fSheet: TWorksheet;
+      fTop, fLeft, fBottom, fRight: integer;
+
+      function GetCount: integer;
+      function GetItem(aIndex: integer): TRange;
+      function GetItemByNumbers(const aRows: string): TRange;
+    public
+      property Count: integer read GetCount;
+      // Excel's Rows(2), Rows("5:7"), counted from the range's first row: Range['C3:E5'].Rows[2] is C4:E4, Sheet.Rows[200]
+      // the whole row 200
+      property Items[aIndex: integer]: TRange read GetItem; default;
+      property Items[const aRows: string]: TRange read GetItemByNumbers; default;
+    end;
   private
     fSheet: TWorksheet;
     fTop, fLeft, fBottom, fRight: integer;
@@ -89,7 +215,18 @@ type
     function GetNumberFormat: string;
     procedure SetNumberFormat(const aValue: string);
     function GetFont: TRangeFont;
-    function GetColumns: TRangeColumns;
+    function GetInterior: TRangeInterior;
+    function GetBorders: TRangeBorders;
+    function GetHorizontalAlignment: THAlign;
+    procedure SetHorizontalAlignment(aValue: THAlign);
+    function GetVerticalAlignment: TVAlign;
+    procedure SetVerticalAlignment(aValue: TVAlign);
+    function GetWrapText: boolean;
+    procedure SetWrapText(aValue: boolean);
+    function GetColumns: TColumns;
+    function GetRows: TRows;
+    function GetEntireRow: TRange;
+    function GetEntireColumn: TRange;
     function GetColumnWidth: Double;
     procedure SetColumnWidth(aValue: Double);
   public
@@ -104,7 +241,7 @@ type
     // the bottom row and the right column: B2:D5 has LastRow 5, LastColumn 4
     property LastRow: integer read fBottom;
     property LastColumn: integer read fRight;
-    // B5, A1:C10
+    // B5, A1:C10; whole columns B:D and rows 5:7, as Excel's
     property Address: string read GetAddress;
 
     // Excel's Value: Empty, a Double, a TDateTime (a number in a date format), a string, a Boolean, an error as its text (#N/A).
@@ -147,11 +284,28 @@ type
     // Excel would not open ([Foo]0, an open quote, digits and dates in one section) is refused
     property NumberFormat: string read GetNumberFormat write SetNumberFormat;
     property Font: TRangeFont read GetFont;
-    property Columns: TRangeColumns read GetColumns;
+    property Interior: TRangeInterior read GetInterior;
+    property Borders: TRangeBorders read GetBorders;
+    // Excel's BorderAround: the outline only, the inside edges kept
+    procedure BorderAround(aLineStyle: TLineStyle = lsContinuous; aWeight: TBorderWeight = bwThin;
+      aColor: TColor = clDefault);
+    // Excel's alignment, the first cell's; written to every cell
+    property HorizontalAlignment: THAlign read GetHorizontalAlignment write SetHorizontalAlignment;
+    property VerticalAlignment: TVAlign read GetVerticalAlignment write SetVerticalAlignment;
+    property WrapText: boolean read GetWrapText write SetWrapText;
+
+    property Columns: TColumns read GetColumns;
+    property Rows: TRows read GetRows;
+    // the whole rows and columns the range is in: Range['C5:D6'].EntireRow is 5:6
+    property EntireRow: TRange read GetEntireRow;
+    property EntireColumn: TRange read GetEntireColumn;
     // Excel's ColumnWidth in characters of the default font's digits (8.43 by default), the first column's; written to every
     // column of the range, 0 hides them; EArgumentOutOfRangeException beyond 0..255
     property ColumnWidth: Double read GetColumnWidth write SetColumnWidth;
   end;
+
+  TRangeColumns = TRange.TColumns;
+  TRangeRows = TRange.TRows;
 
   // the sheet's xlsx objects: Sheet.Xlsx
   TWorksheetXlsx = class
@@ -209,9 +363,14 @@ type
     function GetCells(aRow, aColumn: integer): TRange;
     function GetCellsByLetters(aRow: integer; const aColumn: string): TRange;
     function GetUsedRange: TRange;
+    function GetColumns: TRangeColumns;
+    function GetRows: TRangeRows;
     procedure SetName(const aValue: string);
     function CellForStyle(aRow, aColumn: integer): TCellCT;
-    procedure Restyle(const aRange: TRange; const aChange: TProc<TXfCT>);
+    procedure Restyle(const aRange: TRange; const aChange: TProc<TXfCT>; aExisting: boolean = False);
+    procedure RestyleFont(const aRange: TRange; const aChange: TProc<TFontCT>);
+    procedure RestyleBorders(const aRange: TRange; aEdges: TBorderEdges; const aChange: TProc<TBorderPrCT>);
+    function BorderSide(aRow, aColumn: integer; aEdge: TBorderEdge): TBorderPrCT;
     function DefaultWidth: Double;
     function ColumnEntries(aLeft, aRight: integer): TArray<TColCT>;
     function ColumnEntry(aColumn: integer): TColCT;
@@ -236,6 +395,10 @@ type
     property Cells[const aAddress: string]: TRange read GetRange; default;
     // from the first cell to the last one the sheet has (a formatted one too, as in Excel); A1 when there are none
     property UsedRange: TRange read GetUsedRange;
+    // Excel's Worksheet.Columns and Rows: Sheet.Columns[2], Sheet.Columns['B:D'], Sheet.Rows[200], Sheet.Rows['5:7'] -
+    // whole columns and rows to format before they hold anything
+    property Columns: TRangeColumns read GetColumns;
+    property Rows: TRangeRows read GetRows;
     // Excel's Freeze Panes at a cell: the rows above it and the columns left of it stay put ('A2' - the first row, 'B1' - the
     // first column); '' or 'A1' unfreezes. A sheet with several views, or an opened sheet's panes, is not changed (an issue)
     property FreezePanes: string read GetFreezePanes write SetFreezePanes;
@@ -319,7 +482,9 @@ type
     fSheets: TWorksheets;
     fStrings: TDictionary<string, integer>; // shared strings by text, built on the first write
     fStyleKeys: TDictionary<string, integer>; // cellXfs by content, built on the first need
-    fFontKeys: TDictionary<string, integer>; // fonts by content, the same
+    fFontKeys, fFillKeys, fBorderKeys: TDictionary<string, integer>; // fonts, fills, borders by content, the same
+    fThemePart: string;
+    fThemeColors: TArray<integer>; // the theme's 12 in the order styles number them, read on the first need
     fDateStyleIds: TDictionary<UInt64, integer>; // DateStyle's answers: a style and a format, the style with it
     fDateStyles: TDictionary<cardinal, boolean>;
     fValuesChanged: boolean;
@@ -351,8 +516,18 @@ type
     function DateStyle(aStyle: cardinal; aFormat: integer): integer;
     function FormatCode(aStyle: cardinal): string;
     function FormatId(const aCode: string): integer;
-    function FontWith(aFont: cardinal; aBold: boolean): integer;
+    function ChangedItem<T: TXmlite, constructor>(aItems: TObjectList<T>; var aKeys: TDictionary<string, integer>;
+      aIndex: cardinal; const aChange: TProc<T>): integer;
+    function ChangedFont(aFont: cardinal; const aChange: TProc<TFontCT>): integer;
+    function ChangedFill(aFill: cardinal; const aChange: TProc<TFillCT>): integer;
+    function ChangedBorder(aBorder: cardinal; const aChange: TProc<TBorderCT>): integer;
+    function StyleXf(aStyle: cardinal): TXfCT;
     function StyleFont(aStyle: cardinal): TFontCT;
+    function StyleFill(aStyle: cardinal): TFillCT;
+    function StyleBorder(aStyle: cardinal): TBorderCT;
+    function BorderAt(aBorder: cardinal): TBorderCT;
+    function ThemeColor(aIndex: cardinal): integer;
+    function ColorOf(aColor: TColorCT; aDefault: TColor): TColor;
 
     function GetXml: TWorkbookE;
     function GetXmlSharedStrings: TSstE;
@@ -401,11 +576,19 @@ type
 implementation
 
 uses System.Math, System.Variants, System.DateUtils, System.TypInfo, System.Character, System.Generics.Defaults,
-  System.Zip, ProRock.Utility, ProRock.Calcite.Utility;
+  System.Zip, ProRock.Utility, ProRock.Calcite.Utility, ProRock.Xmlite.Schema.Ooxml.DmlMain;
+
+type
+  {$REGION 'ProRock.Xmlite.Schema.Ooxml.Sml types aliases'}
+  // DrawingML has them too
+  TColorCT = ProRock.Xmlite.Schema.Ooxml.Sml.TColorCT;
+  TFontSchemeCT = ProRock.Xmlite.Schema.Ooxml.Sml.TFontSchemeCT;
+  {$ENDREGION}
 
 const
   // relationship types end in these names - Transitional and Strict differ only before them
   cOfficeDocument = '/officeDocument';
+  cTheme = '/theme';
   cWorksheet = '/worksheet';
   cSharedStrings = '/sharedStrings';
   cStyles = '/styles';
@@ -2308,6 +2491,207 @@ end;
 
 {$ENDREGION}
 
+{$REGION 'xlsx storage: fonts, fills, borders, colors'}
+
+const
+  cAutomaticIndex = 64; // indexed: the system's text color, Excel's automatic
+  cUnderlines: array[TUnderlineValuesST] of TUnderline = (ulSingle, ulDouble, ulSingleAccounting, ulDoubleAccounting, ulNone);
+  cUnderlineValues: array[TUnderline] of TUnderlineValuesST = (stuvNone, stuvSingle, stuvDouble, stuvSingleAccounting,
+    stuvDoubleAccounting);
+  // each style as Excel reads it: LineStyle and Weight
+  cBorderLines: array[TBorderStyleST] of TLineStyle = (lsNone, lsContinuous, lsContinuous, lsDash, lsDot, lsContinuous,
+    lsDouble, lsContinuous, lsDash, lsDashDot, lsDashDot, lsDashDotDot, lsDashDotDot, lsSlantDashDot);
+  cBorderWeights: array[TBorderStyleST] of TBorderWeight = (bwThin, bwThin, bwMedium, bwThin, bwThin, bwThick, bwThick,
+    bwHairline, bwMedium, bwThin, bwMedium, bwThin, bwMedium, bwMedium);
+
+procedure CheckColor(aValue: TColor; aDefault, aNone: boolean);
+begin
+  if (aValue >= 0) and (aValue <= $FFFFFF) or aDefault and (aValue = clDefault) or aNone and (aValue = clNone) then
+    Exit;
+  raise EArgumentException.CreateFmt('Not a color Excel stores: $%.8X (RGB values, $000000 to $FFFFFF)', [aValue]);
+end;
+
+// clDefault: Excel's automatic
+procedure WriteColor(aColor: TColorCT; aValue: TColor);
+begin
+  aColor.Clear;
+  if aValue = clDefault then
+  begin
+    aColor.Indexed := cAutomaticIndex;
+    aColor.SetPresent(@aColor.Indexed);
+  end
+  else
+    aColor.Rgb := Format('FF%.2X%.2X%.2X', [aValue and $FF, aValue shr 8 and $FF, aValue shr 16 and $FF]);
+end;
+
+function IsOn(aList: TBooleanPropertyCTList): boolean;
+begin
+  Result := (aList.Count > 0) and aList[0].Val;
+end;
+
+type
+  // CT_Font is ordered: its children go through Remove, an item deleted through its list leaves a dangling node
+  TFontChildren = record
+    class procedure Clear<T: TXmlite>(aFont: TFontCT; aList: TObjectList<T>); static;
+  end;
+
+class procedure TFontChildren.Clear<T>(aFont: TFontCT; aList: TObjectList<T>);
+begin
+  for var i := aList.Count - 1 downto 0 do
+    aFont.Remove(aList[i]);
+end;
+
+procedure WriteFlag(aFont: TFontCT; aList: TBooleanPropertyCTList; aValue: boolean);
+begin
+  TFontChildren.Clear<TBooleanPropertyCT>(aFont, aList);
+  if aValue then
+  begin
+    var item: TBooleanPropertyCT := TBooleanPropertyCT.Create;
+    item.Val := True;
+    aList.Add(item);
+  end;
+end;
+
+// TRangeFont's flags by index: Bold, Italic, Strikethrough
+function FontFlag(aFont: TFontCT; aIndex: integer): TBooleanPropertyCTList;
+begin
+  case aIndex of
+    0: Result := aFont.B;
+    1: Result := aFont.I;
+  else
+    Result := aFont.Strike;
+  end;
+end;
+
+procedure WriteUnderline(aFont: TFontCT; aValue: TUnderline);
+begin
+  TFontChildren.Clear<TUnderlinePropertyCT>(aFont, aFont.U);
+  if aValue = ulNone then
+    Exit;
+  var item: TUnderlinePropertyCT := TUnderlinePropertyCT.Create;
+  item.Val := cUnderlineValues[aValue]; // single, the default, is written as <u/>
+  aFont.U.Add(item);
+end;
+
+// the stored style for an Excel pair; False when Excel has none
+function PairStyle(aLine: TLineStyle; aWeight: TBorderWeight; out aStyle: TBorderStyleST): boolean;
+begin
+  for var style := Succ(stbsNone) to High(TBorderStyleST) do
+    if (cBorderLines[style] = aLine) and (cBorderWeights[style] = aWeight) then
+    begin
+      aStyle := style;
+      Exit(True);
+    end;
+  Result := False;
+end;
+
+// a line as Excel draws it: a style without the weight takes its own (thin, double thick, slant medium); the color kept,
+// automatic when there is none; lsNone removes the line
+procedure WriteSide(aSide: TBorderPrCT; aLine: TLineStyle; aWeight: TBorderWeight);
+const
+  cOwnWeights: array[TLineStyle] of TBorderWeight = (bwThin, bwThin, bwThin, bwThin, bwThin, bwThin, bwThick, bwMedium);
+begin
+  if aLine = lsNone then
+  begin
+    aSide.Clear;
+    Exit;
+  end;
+  var style: TBorderStyleST;
+  if not PairStyle(aLine, aWeight, style) then
+    PairStyle(aLine, cOwnWeights[aLine], style);
+  aSide.Style := style;
+  if not aSide.IsPresent('Color') then
+    WriteColor(aSide.Color, clDefault);
+end;
+
+function SideName(aEdge: TBorderEdge): string;
+begin
+  case aEdge of
+    beLeft: Result := 'Left';
+    beTop: Result := 'Top';
+    beBottom: Result := 'Bottom';
+  else
+    Result := 'Right';
+  end;
+end;
+
+// a cell border's side (beLeft, beTop, beBottom, beRight), made when it has none
+function SideOf(aBorder: TBorderCT; aEdge: TBorderEdge): TBorderPrCT;
+begin
+  case aEdge of
+    beLeft: Result := aBorder.Left;
+    beTop: Result := aBorder.Top;
+    beBottom: Result := aBorder.Bottom;
+  else
+    Result := aBorder.Right;
+  end;
+end;
+
+// the side with a line; nil when it has none
+function DrawnSide(aBorder: TBorderCT; aEdge: TBorderEdge): TBorderPrCT;
+begin
+  Result := nil;
+  if (aBorder <> nil) and aBorder.IsPresent(SideName(aEdge)) then
+  begin
+    Result := SideOf(aBorder, aEdge);
+    if Result.Style = stbsNone then
+      Result := nil;
+  end;
+end;
+
+// the side Excel reads for a range's edge: the first cell's, the last column's right, the last row's bottom, the inside
+// ones the first cell's right and bottom; nil when there is no line
+function ShownSide(aSheet: TWorksheet; aTop, aLeft, aBottom, aRight: integer; aEdges: TBorderEdges): TBorderPrCT;
+begin
+  var edge: TBorderEdge := beLeft;
+  for var each: TBorderEdge in aEdges do
+  begin
+    edge := each;
+    Break;
+  end;
+  case edge of
+    beBottom: Result := aSheet.BorderSide(aBottom, aLeft, beBottom);
+    beRight: Result := aSheet.BorderSide(aTop, aRight, beRight);
+    beInsideVertical:
+      if aLeft = aRight then
+        Result := nil
+      else
+        Result := aSheet.BorderSide(aTop, aLeft, beRight);
+    beInsideHorizontal:
+      if aTop = aBottom then
+        Result := nil
+      else
+        Result := aSheet.BorderSide(aTop, aLeft, beBottom);
+  else
+    Result := aSheet.BorderSide(aTop, aLeft, edge);
+  end;
+end;
+
+// an alignment left with Excel's defaults is not written, as Excel writes none
+procedure AlignmentChanged(aXf: TXfCT);
+begin
+  if not aXf.Alignment.HasContent then
+    aXf.Clear('Alignment');
+  aXf.ApplyAlignment := True;
+end;
+
+// A1:C10 for any range, whole columns too: what the file's dimension and refs hold
+function CellsAddress(const aRange: TRange): string;
+begin
+  Result := CellName(aRange.fTop, aRange.fLeft);
+  if (aRange.fBottom <> aRange.fTop) or (aRange.fRight <> aRange.fLeft) then
+    Result := Result + ':' + CellName(aRange.fBottom, aRange.fRight);
+end;
+
+// FFRRGGBB (or RRGGBB) as BGR
+function RgbValue(const aHex: string): integer;
+begin
+  var value: integer := StrToIntDef('$' + aHex.Substring(Max(0, aHex.Length - 6)), 0);
+  Result := value shr 16 and $FF or value and $FF00 or (value and $FF) shl 16;
+end;
+
+{$ENDREGION}
+
 { TRange }
 
 function TRange.GetRowCount: integer;
@@ -2322,9 +2706,12 @@ end;
 
 function TRange.GetAddress: string;
 begin
-  Result := CellName(fTop, fLeft);
-  if (fBottom <> fTop) or (fRight <> fLeft) then
-    Result := Result + ':' + CellName(fBottom, fRight);
+  if (fLeft = 1) and (fRight = cMaxColumn) then // whole rows, the whole sheet too
+    Result := IntToStr(fTop) + ':' + IntToStr(fBottom)
+  else if (fTop = 1) and (fBottom = cMaxRow) then
+    Result := ColumnName(fLeft) + ':' + ColumnName(fRight)
+  else
+    Result := CellsAddress(Self);
 end;
 
 function TRange.GetValue: Variant;
@@ -2638,13 +3025,126 @@ begin
   Result.fRight := fRight;
 end;
 
-function TRange.GetColumns: TRangeColumns;
+function TRange.GetInterior: TRangeInterior;
 begin
   Result.fSheet := fSheet;
   Result.fTop := fTop;
   Result.fLeft := fLeft;
   Result.fBottom := fBottom;
   Result.fRight := fRight;
+end;
+
+function TRange.GetBorders: TRangeBorders;
+begin
+  Result.fSheet := fSheet;
+  Result.fTop := fTop;
+  Result.fLeft := fLeft;
+  Result.fBottom := fBottom;
+  Result.fRight := fRight;
+end;
+
+procedure TRange.BorderAround(aLineStyle: TLineStyle; aWeight: TBorderWeight; aColor: TColor);
+begin
+  CheckColor(aColor, True, False);
+  fSheet.RestyleBorders(Self, [beLeft, beTop, beBottom, beRight],
+    procedure(aSide: TBorderPrCT)
+    begin
+      WriteSide(aSide, aLineStyle, aWeight);
+      if aLineStyle <> lsNone then
+        WriteColor(aSide.Color, aColor);
+    end);
+end;
+
+function TRange.GetHorizontalAlignment: THAlign;
+begin
+  var xf: TXfCT := fSheet.fWorkbook.StyleXf(fSheet.EffectiveStyle(fTop, fLeft));
+  if (xf = nil) or not xf.IsPresent('Alignment') then
+    Exit(haGeneral);
+  Result := THAlign(Ord(xf.Alignment.Horizontal));
+end;
+
+procedure TRange.SetHorizontalAlignment(aValue: THAlign);
+begin
+  fSheet.Restyle(Self,
+    procedure(aXf: TXfCT)
+    begin
+      var alignment: TCellAlignmentCT := aXf.Alignment;
+      if aValue = haGeneral then
+        alignment.Clear(@alignment.Horizontal)
+      else
+        alignment.Horizontal := THorizontalAlignmentST(Ord(aValue));
+      AlignmentChanged(aXf);
+    end);
+end;
+
+function TRange.GetVerticalAlignment: TVAlign;
+begin
+  var xf: TXfCT := fSheet.fWorkbook.StyleXf(fSheet.EffectiveStyle(fTop, fLeft));
+  if (xf = nil) or not xf.IsPresent('Alignment') then
+    Exit(vaBottom);
+  Result := TVAlign(Ord(xf.Alignment.Vertical));
+end;
+
+procedure TRange.SetVerticalAlignment(aValue: TVAlign);
+begin
+  fSheet.Restyle(Self,
+    procedure(aXf: TXfCT)
+    begin
+      var alignment: TCellAlignmentCT := aXf.Alignment;
+      if aValue = vaBottom then
+        alignment.Clear(@alignment.Vertical)
+      else
+        alignment.Vertical := TVerticalAlignmentST(Ord(aValue));
+      AlignmentChanged(aXf);
+    end);
+end;
+
+function TRange.GetWrapText: boolean;
+begin
+  var xf: TXfCT := fSheet.fWorkbook.StyleXf(fSheet.EffectiveStyle(fTop, fLeft));
+  Result := (xf <> nil) and xf.IsPresent('Alignment') and xf.Alignment.WrapText;
+end;
+
+procedure TRange.SetWrapText(aValue: boolean);
+begin
+  fSheet.Restyle(Self,
+    procedure(aXf: TXfCT)
+    begin
+      var alignment: TCellAlignmentCT := aXf.Alignment;
+      if aValue then
+        alignment.WrapText := True
+      else
+        alignment.Clear(@alignment.WrapText);
+      AlignmentChanged(aXf);
+    end);
+end;
+
+function TRange.GetColumns: TColumns;
+begin
+  Result.fSheet := fSheet;
+  Result.fTop := fTop;
+  Result.fLeft := fLeft;
+  Result.fBottom := fBottom;
+  Result.fRight := fRight;
+end;
+
+function TRange.GetRows: TRows;
+begin
+  Result.fSheet := fSheet;
+  Result.fTop := fTop;
+  Result.fLeft := fLeft;
+  Result.fBottom := fBottom;
+  Result.fRight := fRight;
+end;
+
+function TRange.GetEntireRow: TRange;
+begin
+  Result := fSheet.MakeRange(fTop, 1, fBottom, cMaxColumn);
+end;
+
+function TRange.GetEntireColumn: TRange;
+begin
+  Result := fSheet.MakeRange(1, fLeft, cMaxRow, fRight);
 end;
 
 function TRange.GetColumnWidth: Double;
@@ -2678,32 +3178,388 @@ end;
 
 { TRangeFont }
 
-function TRangeFont.GetBold: boolean;
+procedure TRangeFont.Change(const aChange: TProc<TFontCT>);
 begin
-  var font: TFontCT := fSheet.fWorkbook.StyleFont(fSheet.EffectiveStyle(fTop, fLeft));
-  Result := (font <> nil) and (font.B.Count > 0) and font.B[0].Val;
+  fSheet.RestyleFont(fSheet.MakeRange(fTop, fLeft, fBottom, fRight), aChange);
 end;
 
-procedure TRangeFont.SetBold(aValue: boolean);
+function TRangeFont.GetFlag(aIndex: integer): boolean;
 begin
-  var workbook: TWorkbook := fSheet.fWorkbook;
-  fSheet.Restyle(fSheet.MakeRange(fTop, fLeft, fBottom, fRight),
-    procedure(aXf: TXfCT)
+  var font: TFontCT := fSheet.fWorkbook.StyleFont(fSheet.EffectiveStyle(fTop, fLeft));
+  Result := (font <> nil) and IsOn(FontFlag(font, aIndex));
+end;
+
+procedure TRangeFont.SetFlag(aIndex: integer; aValue: boolean);
+begin
+  Change(
+    procedure(aFont: TFontCT)
     begin
-      var font: integer := workbook.FontWith(aXf.FontId, aValue);
-      if font >= 0 then
+      WriteFlag(aFont, FontFlag(aFont, aIndex), aValue);
+    end);
+end;
+
+function TRangeFont.GetName: string;
+begin
+  Result := '';
+  var font: TFontCT := fSheet.fWorkbook.StyleFont(fSheet.EffectiveStyle(fTop, fLeft));
+  if (font <> nil) and (font.Name.Count > 0) then
+    Result := font.Name[0].Val;
+end;
+
+procedure TRangeFont.SetName(const aValue: string);
+begin
+  var name: string := aValue.Trim;
+  if name = '' then
+    raise EArgumentException.Create('A font needs a name');
+  Change(
+    procedure(aFont: TFontCT)
+    begin
+      if (aFont.Name.Count > 0) and SameText(aFont.Name[0].Val, name) then
+        Exit;
+      TFontChildren.Clear<TFontNameCT>(aFont, aFont.Name);
+      var item: TFontNameCT := TFontNameCT.Create;
+      item.Val := name;
+      aFont.Name.Add(item);
+      // the old font's: a scheme would show the theme's font instead, as Excel drops it
+      TFontChildren.Clear<TFontSchemeCT>(aFont, aFont.Scheme);
+      TFontChildren.Clear<TIntPropertyCT>(aFont, aFont.Charset);
+      TFontChildren.Clear<TFontFamilyCT>(aFont, aFont.Family);
+    end);
+end;
+
+function TRangeFont.GetSize: Double;
+begin
+  Result := 11;
+  var font: TFontCT := fSheet.fWorkbook.StyleFont(fSheet.EffectiveStyle(fTop, fLeft));
+  if (font <> nil) and (font.Sz.Count > 0) then
+    Result := font.Sz[0].Val;
+end;
+
+procedure TRangeFont.SetSize(aValue: Double);
+begin
+  if IsNan(aValue) or (aValue < 1) or (aValue > 409) then
+    raise EArgumentOutOfRangeException.CreateFmt('A font size of %s: Excel''s are 1 to 409 points',
+      [FloatText(aValue, ftDouble)]);
+  Change(
+    procedure(aFont: TFontCT)
+    begin
+      TFontChildren.Clear<TFontSizeCT>(aFont, aFont.Sz);
+      var item: TFontSizeCT := TFontSizeCT.Create;
+      item.Val := aValue;
+      aFont.Sz.Add(item);
+    end);
+end;
+
+function TRangeFont.GetColor: TColor;
+begin
+  Result := 0;
+  var font: TFontCT := fSheet.fWorkbook.StyleFont(fSheet.EffectiveStyle(fTop, fLeft));
+  if (font <> nil) and (font.Color.Count > 0) then
+    Result := fSheet.fWorkbook.ColorOf(font.Color[0], 0);
+end;
+
+procedure TRangeFont.SetColor(aValue: TColor);
+begin
+  CheckColor(aValue, True, False);
+  Change(
+    procedure(aFont: TFontCT)
+    begin
+      TFontChildren.Clear<TColorCT>(aFont, aFont.Color);
+      if aValue <> clDefault then // automatic: no color, as Excel writes it
       begin
-        aXf.FontId := font;
-        aXf.ApplyFont := True;
+        var item: TColorCT := TColorCT.Create;
+        WriteColor(item, aValue);
+        aFont.Color.Add(item);
       end;
     end);
 end;
 
-{ TRangeColumns }
+function TRangeFont.GetUnderline: TUnderline;
+begin
+  Result := ulNone;
+  var font: TFontCT := fSheet.fWorkbook.StyleFont(fSheet.EffectiveStyle(fTop, fLeft));
+  if (font <> nil) and (font.U.Count > 0) then
+    Result := cUnderlines[font.U[0].Val];
+end;
 
-procedure TRangeColumns.AutoFit;
+procedure TRangeFont.SetUnderline(aValue: TUnderline);
+begin
+  Change(
+    procedure(aFont: TFontCT)
+    begin
+      WriteUnderline(aFont, aValue);
+    end);
+end;
+
+function TRangeFont.GetStyle: TFontStyles;
+begin
+  Result := [];
+  var font: TFontCT := fSheet.fWorkbook.StyleFont(fSheet.EffectiveStyle(fTop, fLeft));
+  if font = nil then
+    Exit;
+  if IsOn(font.B) then
+    Include(Result, fsBold);
+  if IsOn(font.I) then
+    Include(Result, fsItalic);
+  if (font.U.Count > 0) and (cUnderlines[font.U[0].Val] <> ulNone) then
+    Include(Result, fsUnderline);
+  if IsOn(font.Strike) then
+    Include(Result, fsStrikeOut);
+end;
+
+procedure TRangeFont.SetStyle(aValue: TFontStyles);
+begin
+  Change(
+    procedure(aFont: TFontCT)
+    begin
+      WriteFlag(aFont, aFont.B, fsBold in aValue);
+      WriteFlag(aFont, aFont.I, fsItalic in aValue);
+      WriteFlag(aFont, aFont.Strike, fsStrikeOut in aValue);
+      if fsUnderline in aValue then
+        WriteUnderline(aFont, ulSingle)
+      else
+        WriteUnderline(aFont, ulNone);
+    end);
+end;
+
+{ TRangeInterior }
+
+function TRangeInterior.GetColor: TColor;
+begin
+  Result := clNone;
+  var fill: TFillCT := fSheet.fWorkbook.StyleFill(fSheet.EffectiveStyle(fTop, fLeft));
+  if (fill = nil) or not fill.IsPresent('PatternFill') then
+    Exit;
+  var pattern: TPatternFillCT := fill.PatternFill;
+  case pattern.PatternType of
+    stptbNone:
+      ;
+    stptbSolid:
+      if pattern.IsPresent('FgColor') then
+        Result := fSheet.fWorkbook.ColorOf(pattern.FgColor, 0)
+      else
+        Result := 0;
+  else // the pattern's background: Excel's Interior.Color
+    if pattern.IsPresent('BgColor') then
+      Result := fSheet.fWorkbook.ColorOf(pattern.BgColor, $FFFFFF)
+    else
+      Result := $FFFFFF;
+  end;
+end;
+
+procedure TRangeInterior.SetColor(aValue: TColor);
+begin
+  CheckColor(aValue, False, True);
+  var workbook: TWorkbook := fSheet.fWorkbook;
+  fSheet.Restyle(fSheet.MakeRange(fTop, fLeft, fBottom, fRight),
+    procedure(aXf: TXfCT)
+    begin
+      var fill: integer := workbook.ChangedFill(aXf.FillId,
+        procedure(aFill: TFillCT)
+        begin
+          aFill.Clear;
+          var pattern: TPatternFillCT := aFill.PatternFill;
+          if aValue = clNone then
+          begin
+            pattern.PatternType := stptbNone;
+            pattern.SetPresent(@pattern.PatternType);
+          end
+          else
+          begin // as Excel writes a solid fill
+            pattern.PatternType := stptbSolid;
+            WriteColor(pattern.FgColor, aValue);
+            pattern.BgColor.Indexed := cAutomaticIndex;
+            pattern.BgColor.SetPresent(@pattern.BgColor.Indexed);
+          end;
+        end);
+      if fill >= 0 then
+      begin
+        aXf.FillId := fill;
+        aXf.ApplyFill := True;
+      end;
+    end);
+end;
+
+{ TRangeBorder }
+
+function TRangeBorder.GetLineStyle: TLineStyle;
+begin
+  var side: TBorderPrCT := ShownSide(fSheet, fTop, fLeft, fBottom, fRight, fEdges);
+  if side = nil then
+    Exit(lsNone);
+  Result := cBorderLines[side.Style];
+end;
+
+procedure TRangeBorder.SetLineStyle(aValue: TLineStyle);
+begin
+  fSheet.RestyleBorders(fSheet.MakeRange(fTop, fLeft, fBottom, fRight), fEdges,
+    procedure(aSide: TBorderPrCT)
+    begin
+      WriteSide(aSide, aValue, cBorderWeights[aSide.Style]);
+    end);
+end;
+
+function TRangeBorder.GetWeight: TBorderWeight;
+begin
+  var side: TBorderPrCT := ShownSide(fSheet, fTop, fLeft, fBottom, fRight, fEdges);
+  if side = nil then
+    Exit(bwThin);
+  Result := cBorderWeights[side.Style];
+end;
+
+procedure TRangeBorder.SetWeight(aValue: TBorderWeight);
+begin
+  fSheet.RestyleBorders(fSheet.MakeRange(fTop, fLeft, fBottom, fRight), fEdges,
+    procedure(aSide: TBorderPrCT)
+    begin
+      var line: TLineStyle := cBorderLines[aSide.Style];
+      if line = lsNone then
+        line := lsContinuous;
+      var style: TBorderStyleST;
+      if not PairStyle(line, aValue, style) then
+        line := lsContinuous;
+      WriteSide(aSide, line, aValue);
+    end);
+end;
+
+function TRangeBorder.GetColor: TColor;
+begin
+  var side: TBorderPrCT := ShownSide(fSheet, fTop, fLeft, fBottom, fRight, fEdges);
+  if (side = nil) or not side.IsPresent('Color') then
+    Exit(0);
+  Result := fSheet.fWorkbook.ColorOf(side.Color, 0);
+end;
+
+procedure TRangeBorder.SetColor(aValue: TColor);
+begin
+  CheckColor(aValue, True, False);
+  fSheet.RestyleBorders(fSheet.MakeRange(fTop, fLeft, fBottom, fRight), fEdges,
+    procedure(aSide: TBorderPrCT)
+    begin
+      if aSide.Style = stbsNone then
+        WriteSide(aSide, lsContinuous, bwThin);
+      WriteColor(aSide.Color, aValue);
+    end);
+end;
+
+{ TRangeBorders }
+
+function TRangeBorders.GetItem(aEdge: TBorderEdge): TRangeBorder;
+begin
+  Result := GetAll;
+  Result.fEdges := [aEdge];
+end;
+
+function TRangeBorders.GetAll: TRangeBorder;
+begin
+  Result.fSheet := fSheet;
+  Result.fTop := fTop;
+  Result.fLeft := fLeft;
+  Result.fBottom := fBottom;
+  Result.fRight := fRight;
+  Result.fEdges := [Low(TBorderEdge) .. High(TBorderEdge)];
+end;
+
+function TRangeBorders.GetLineStyle: TLineStyle;
+begin
+  Result := GetItem(beLeft).LineStyle;
+end;
+
+procedure TRangeBorders.SetLineStyle(aValue: TLineStyle);
+begin
+  var all: TRangeBorder := GetAll;
+  all.LineStyle := aValue;
+end;
+
+function TRangeBorders.GetWeight: TBorderWeight;
+begin
+  Result := GetItem(beLeft).Weight;
+end;
+
+procedure TRangeBorders.SetWeight(aValue: TBorderWeight);
+begin
+  var all: TRangeBorder := GetAll;
+  all.Weight := aValue;
+end;
+
+function TRangeBorders.GetColor: TColor;
+begin
+  Result := GetItem(beLeft).Color;
+end;
+
+procedure TRangeBorders.SetColor(aValue: TColor);
+begin
+  var all: TRangeBorder := GetAll;
+  all.Color := aValue;
+end;
+
+{ TRange.TColumns }
+
+procedure TRange.TColumns.AutoFit;
 begin
   fSheet.AutoFit(fSheet.MakeRange(fTop, fLeft, fBottom, fRight));
+end;
+
+function TRange.TColumns.GetCount: integer;
+begin
+  Result := fRight - fLeft + 1;
+end;
+
+function TRange.TColumns.GetItem(aIndex: integer): TRange;
+begin
+  var column: integer := fLeft + aIndex - 1;
+  if (column < 1) or (column > cMaxColumn) then
+    raise EArgumentOutOfRangeException.CreateFmt('Column %d from %s is off the sheet', [aIndex, ColumnName(fLeft)]);
+  Result := fSheet.MakeRange(fTop, column, fBottom, column);
+end;
+
+function TRange.TColumns.GetItemByLetters(const aColumns: string): TRange;
+begin
+  var text: string := aColumns.Trim;
+  var index: integer := 1;
+  var first: integer := ReadColumn(text, index);
+  var last: integer := first;
+  if (index <= text.Length) and (text[index] = ':') then
+  begin
+    Inc(index);
+    last := ReadColumn(text, index);
+  end;
+  if (first = 0) or (last = 0) or (index <= text.Length) then
+    raise EArgumentException.CreateFmt('Not columns: "%s" (B or B:D)', [aColumns]);
+  Result := GetItem(Min(first, last));
+  Result.fRight := GetItem(Max(first, last)).fRight;
+end;
+
+{ TRange.TRows }
+
+function TRange.TRows.GetCount: integer;
+begin
+  Result := fBottom - fTop + 1;
+end;
+
+function TRange.TRows.GetItem(aIndex: integer): TRange;
+begin
+  var row: integer := fTop + aIndex - 1;
+  if (row < 1) or (row > cMaxRow) then
+    raise EArgumentOutOfRangeException.CreateFmt('Row %d from %d is off the sheet', [aIndex, fTop]);
+  Result := fSheet.MakeRange(row, fLeft, row, fRight);
+end;
+
+function TRange.TRows.GetItemByNumbers(const aRows: string): TRange;
+begin
+  var text: string := aRows.Trim;
+  var index: integer := 1;
+  var first: integer := ReadRow(text, index);
+  var last: integer := first;
+  if (index <= text.Length) and (text[index] = ':') then
+  begin
+    Inc(index);
+    last := ReadRow(text, index);
+  end;
+  if (first = 0) or (last = 0) or (index <= text.Length) then
+    raise EArgumentException.CreateFmt('Not rows: "%s" (5 or 5:7)', [aRows]);
+  Result := GetItem(Min(first, last));
+  Result.fBottom := GetItem(Max(first, last)).fBottom;
 end;
 
 { TWorksheetXlsx }
@@ -3164,14 +4020,14 @@ begin
       var top, left, bottom, right: integer;
       if ParseAddress(sheet.Dimension.Ref, top, left, bottom, right) and
         ((aRow < top) or (aRow > bottom) or (aColumn < left) or (aColumn > right)) then
-        sheet.Dimension.Ref := MakeRange(Min(top, aRow), Min(left, aColumn), Max(bottom, aRow), Max(right, aColumn)).Address;
+        sheet.Dimension.Ref := CellsAddress(MakeRange(Min(top, aRow), Min(left, aColumn), Max(bottom, aRow), Max(right, aColumn)));
     end;
   end;
 end;
 
 // each cell of the range given its style changed (one new style for each old one); a whole column's or row's own style
-// too, as Excel formats them: the cells it will have take it
-procedure TWorksheet.Restyle(const aRange: TRange; const aChange: TProc<TXfCT>);
+// too, as Excel formats them: the cells it will have take it. aExisting: only the cells there already
+procedure TWorksheet.Restyle(const aRange: TRange; const aChange: TProc<TXfCT>; aExisting: boolean);
 begin
   var changed: TDictionary<cardinal, integer> := TDictionary<cardinal, integer>.Create;
   try
@@ -3195,9 +4051,11 @@ begin
     var sheet: TWorksheetE := Objects(True);
     var wholeColumns: boolean := (aRange.fTop = 1) and (aRange.fBottom = cMaxRow);
     var wholeRows: boolean := (aRange.fLeft = 1) and (aRange.fRight = cMaxColumn);
-    if wholeColumns or wholeRows then
+    if wholeColumns or wholeRows or aExisting then
     begin
-      if wholeColumns then
+      if aExisting then
+        // the cells there already, below
+      else if wholeColumns then
         for var column: TColCT in ColumnEntries(aRange.fLeft, aRange.fRight) do
         begin
           column.Style := newStyle(column.Style);
@@ -3227,7 +4085,7 @@ begin
       while (rowIndex < rows.Count) and (rows[rowIndex].R <= cardinal(aRange.fBottom)) do
       begin
         var row: TRowCT := rows[rowIndex];
-        if wholeColumns and wholeRows and row.CustomFormat then
+        if wholeColumns and wholeRows and row.CustomFormat and not aExisting then
           row.S := newStyle(row.S); // the whole sheet: a formatted row's empty cells too
         var cellIndex: integer;
         FindInRow(row, aRange.fLeft, cellIndex);
@@ -3252,6 +4110,156 @@ begin
   finally
     changed.Free;
   end;
+end;
+
+procedure TWorksheet.RestyleFont(const aRange: TRange; const aChange: TProc<TFontCT>);
+begin
+  var workbook: TWorkbook := fWorkbook;
+  Restyle(aRange,
+    procedure(aXf: TXfCT)
+    begin
+      var font: integer := workbook.ChangedFont(aXf.FontId, aChange);
+      if font >= 0 then
+      begin
+        aXf.FontId := font;
+        aXf.ApplyFont := True;
+      end;
+    end);
+end;
+
+// aChange for each side the edges give each cell (the inside ones both cells' sides, as Excel writes them), in at most
+// nine areas; the neighbours' sides on the outer edges cleared, as Excel keeps an edge on one cell
+procedure TWorksheet.RestyleBorders(const aRange: TRange; aEdges: TBorderEdges; const aChange: TProc<TBorderPrCT>);
+type
+  TBand = record
+    First, Last: integer;
+    Low, High: boolean; // the band's top (or left) side, its bottom (or right) one
+  end;
+
+  // the rows (or columns) in bands with the same sides: the first gets aLow, the last aHigh, between them aInside
+  function Bands(aFirst, aLast: integer; aLow, aHigh, aInside: boolean): TArray<TBand>;
+  begin
+    Result := nil;
+    var starts: TArray<integer> := [aFirst, aFirst + 1, aLast];
+    var ends: TArray<integer> := [aFirst, aLast - 1, aLast];
+    for var i := 0 to 2 do
+      if (ends[i] >= starts[i]) and ((i = 0) or (starts[i] > Result[High(Result)].Last)) then
+      begin
+        var band: TBand;
+        band.First := starts[i];
+        band.Last := ends[i];
+        band.Low := (band.First = aFirst) and aLow or (band.First > aFirst) and aInside;
+        band.High := (band.Last = aLast) and aHigh or (band.Last < aLast) and aInside;
+        if (Length(Result) > 0) and (Result[High(Result)].Low = band.Low) and (Result[High(Result)].High = band.High) then
+          Result[High(Result)].Last := band.Last
+        else
+          Result := Result + [band];
+      end;
+  end;
+
+  function Change(aSides: TBorderEdges; const aSide: TProc<TBorderPrCT>; aDrawnOnly: boolean): TProc<TXfCT>;
+  begin
+    var workbook: TWorkbook := fWorkbook;
+    Result :=
+      procedure(aXf: TXfCT)
+      begin
+        if aDrawnOnly then
+        begin
+          var drawn: boolean := False;
+          for var edge: TBorderEdge in aSides do
+            drawn := drawn or (DrawnSide(workbook.BorderAt(aXf.BorderId), edge) <> nil);
+          if not drawn then
+            Exit;
+        end;
+        var border: integer := workbook.ChangedBorder(aXf.BorderId,
+          procedure(aBorder: TBorderCT)
+          begin
+            for var edge: TBorderEdge in aSides do
+              aSide(SideOf(aBorder, edge));
+          end);
+        if border >= 0 then
+        begin
+          aXf.BorderId := border;
+          aXf.ApplyBorder := True;
+        end;
+      end;
+  end;
+
+begin
+  var rows: TArray<TBand> := Bands(aRange.fTop, aRange.fBottom, beTop in aEdges, beBottom in aEdges,
+    beInsideHorizontal in aEdges);
+  var columns: TArray<TBand> := Bands(aRange.fLeft, aRange.fRight, beLeft in aEdges, beRight in aEdges,
+    beInsideVertical in aEdges);
+  for var rowBand: TBand in rows do
+    for var columnBand: TBand in columns do
+    begin
+      var sides: TBorderEdges := [];
+      if rowBand.Low then
+        Include(sides, beTop);
+      if rowBand.High then
+        Include(sides, beBottom);
+      if columnBand.Low then
+        Include(sides, beLeft);
+      if columnBand.High then
+        Include(sides, beRight);
+      if sides <> [] then
+        Restyle(MakeRange(rowBand.First, columnBand.First, rowBand.Last, columnBand.Last), Change(sides, aChange, False));
+    end;
+  var clear: TProc<TBorderPrCT> :=
+    procedure(aSide: TBorderPrCT)
+    begin
+      aSide.Clear;
+    end;
+  if (beLeft in aEdges) and (aRange.fLeft > 1) then
+    Restyle(MakeRange(aRange.fTop, aRange.fLeft - 1, aRange.fBottom, aRange.fLeft - 1), Change([beRight], clear, True), True);
+  if (beRight in aEdges) and (aRange.fRight < cMaxColumn) then
+    Restyle(MakeRange(aRange.fTop, aRange.fRight + 1, aRange.fBottom, aRange.fRight + 1), Change([beLeft], clear, True),
+      True);
+  if (beTop in aEdges) and (aRange.fTop > 1) then
+    Restyle(MakeRange(aRange.fTop - 1, aRange.fLeft, aRange.fTop - 1, aRange.fRight), Change([beBottom], clear, True), True);
+  if (beBottom in aEdges) and (aRange.fBottom < cMaxRow) then
+    Restyle(MakeRange(aRange.fBottom + 1, aRange.fLeft, aRange.fBottom + 1, aRange.fRight), Change([beTop], clear, True),
+      True);
+end;
+
+// a cell's side with a line, as Excel reads it: its own, else the neighbour's facing one; nil when neither has one
+function TWorksheet.BorderSide(aRow, aColumn: integer; aEdge: TBorderEdge): TBorderPrCT;
+begin
+  Result := DrawnSide(fWorkbook.StyleBorder(EffectiveStyle(aRow, aColumn)), aEdge);
+  if Result <> nil then
+    Exit;
+  case aEdge of
+    beLeft:
+      if aColumn > 1 then
+        Result := DrawnSide(fWorkbook.StyleBorder(EffectiveStyle(aRow, aColumn - 1)), beRight);
+    beRight:
+      if aColumn < cMaxColumn then
+        Result := DrawnSide(fWorkbook.StyleBorder(EffectiveStyle(aRow, aColumn + 1)), beLeft);
+    beTop:
+      if aRow > 1 then
+        Result := DrawnSide(fWorkbook.StyleBorder(EffectiveStyle(aRow - 1, aColumn)), beBottom);
+    beBottom:
+      if aRow < cMaxRow then
+        Result := DrawnSide(fWorkbook.StyleBorder(EffectiveStyle(aRow + 1, aColumn)), beTop);
+  end;
+end;
+
+function TWorksheet.GetColumns: TRangeColumns;
+begin
+  Result.fSheet := Self;
+  Result.fTop := 1;
+  Result.fLeft := 1;
+  Result.fBottom := cMaxRow;
+  Result.fRight := cMaxColumn;
+end;
+
+function TWorksheet.GetRows: TRangeRows;
+begin
+  Result.fSheet := Self;
+  Result.fTop := 1;
+  Result.fLeft := 1;
+  Result.fBottom := cMaxRow;
+  Result.fRight := cMaxColumn;
 end;
 
 // the width of a column without its own, in characters: Excel's 8.43 unless the sheet says
@@ -3681,7 +4689,7 @@ begin
     Exit;
   var formula: TCellFormulaCT := CellForWriting(aRange.fTop, aRange.fLeft).F;
   formula.T := stcftArray;
-  formula.Ref := aRange.Address;
+  formula.Ref := CellsAddress(aRange);
   formula.XmlValue := EncodeText(text);
   ForgetFormulas;
   fWorkbook.FormulaChanged;
@@ -3981,6 +4989,8 @@ begin
   fStrings.Free;
   fStyleKeys.Free;
   fFontKeys.Free;
+  fFillKeys.Free;
+  fBorderKeys.Free;
   fDateStyleIds.Free;
   fDateStyles.Free;
   inherited;
@@ -4140,6 +5150,10 @@ begin
   Swap<TDictionary<string, integer>>(fStrings, aOther.fStrings);
   Swap<TDictionary<string, integer>>(fStyleKeys, aOther.fStyleKeys);
   Swap<TDictionary<string, integer>>(fFontKeys, aOther.fFontKeys);
+  Swap<TDictionary<string, integer>>(fFillKeys, aOther.fFillKeys);
+  Swap<TDictionary<string, integer>>(fBorderKeys, aOther.fBorderKeys);
+  Swap<string>(fThemePart, aOther.fThemePart);
+  Swap<TArray<integer>>(fThemeColors, aOther.fThemeColors);
   Swap<TDictionary<UInt64, integer>>(fDateStyleIds, aOther.fDateStyleIds);
   Swap<TDictionary<cardinal, boolean>>(fDateStyles, aOther.fDateStyles);
   Swap<boolean>(fValuesChanged, aOther.fValuesChanged);
@@ -4217,7 +5231,9 @@ begin
     else if relationship.&Type.EndsWith(cStyles) then
       fStylesPart := relationship.Part
     else if relationship.&Type.EndsWith(cCalcChain) then
-      fCalcChainPart := relationship.Part;
+      fCalcChainPart := relationship.Part
+    else if relationship.&Type.EndsWith(cTheme) then
+      fThemePart := relationship.Part;
 
   for var sheetEntry: TSheetCT in workbook.Sheets.Sheet do
     for var relationship: TRelationshipOoxml in relationships do
@@ -4527,46 +5543,88 @@ begin
   Result := added.NumFmtId;
 end;
 
-// the font aFont with bold set or not, found in fonts by content or added; -1 when there are no fonts
-function TWorkbook.FontWith(aFont: cardinal; aBold: boolean): integer;
+// aItems[aIndex] changed by aChange, found by content or added (the keys built on the first need); the caller checks there
+// are items
+function TWorkbook.ChangedItem<T>(aItems: TObjectList<T>; var aKeys: TDictionary<string, integer>; aIndex: cardinal;
+  const aChange: TProc<T>): integer;
+begin
+  if aIndex >= cardinal(aItems.Count) then
+    aIndex := 0; // as Excel shows such a cell
+  if aKeys = nil then
+  begin
+    aKeys := TDictionary<string, integer>.Create;
+    for var i := 0 to aItems.Count - 1 do
+      aKeys.TryAdd(TXmlite.ObjectToXml(aItems[i]), i);
+  end;
+  // a copy through its XML: everything it has kept
+  var wanted: T := T.Create;
+  try
+    TXmlite.XmlToObject(TXmlite.ObjectToXml(aItems[aIndex]), wanted);
+    aChange(wanted);
+    var key: string := TXmlite.ObjectToXml(wanted);
+    if aKeys.TryGetValue(key, Result) then
+      Exit;
+    fPackage.EditPart<TStyleSheetE>(fStylesPart);
+    aItems.Add(wanted);
+    Result := aItems.Count - 1;
+    wanted := nil;
+    aKeys.Add(key, Result);
+  finally
+    wanted.Free;
+  end;
+end;
+
+// -1 when there are no fonts
+function TWorkbook.ChangedFont(aFont: cardinal; const aChange: TProc<TFontCT>): integer;
 begin
   if fStylesPart.IsEmpty then
     Exit(-1);
   var styles: TStyleSheetE := fPackage.Part<TStyleSheetE>(fStylesPart);
   if not styles.IsPresent('Fonts') or (styles.Fonts.Font.Count = 0) then
     Exit(-1);
-  var fonts: TFontCTList := styles.Fonts.Font;
-  if aFont >= cardinal(fonts.Count) then
-    aFont := 0;
-  if fFontKeys = nil then
-  begin
-    fFontKeys := TDictionary<string, integer>.Create;
-    for var i := 0 to fonts.Count - 1 do
-      fFontKeys.TryAdd(TXmlite.ObjectToXml(fonts[i]), i);
-  end;
-  var wanted: TFontCT := TFontCT.Create;
-  try
-    TXmlite.XmlToObject(TXmlite.ObjectToXml(fonts[aFont]), wanted);
-    wanted.B.Clear;
-    if aBold then
-    begin
-      var bold: TBooleanPropertyCT := TBooleanPropertyCT.Create;
-      bold.Val := True;
-      wanted.B.Add(bold);
-    end;
-    var key: string := TXmlite.ObjectToXml(wanted);
-    if fFontKeys.TryGetValue(key, Result) then
-      Exit;
-    styles := fPackage.EditPart<TStyleSheetE>(fStylesPart);
-    fonts.Add(wanted);
-    Result := fonts.Count - 1;
-    wanted := nil;
-    fFontKeys.Add(key, Result);
-    if styles.Fonts.Present[@styles.Fonts.Count] then
-      styles.Fonts.Count := fonts.Count;
-  finally
-    wanted.Free;
-  end;
+  Result := ChangedItem<TFontCT>(styles.Fonts.Font, fFontKeys, aFont, aChange);
+  if styles.Fonts.Present[@styles.Fonts.Count] and (styles.Fonts.Count <> cardinal(styles.Fonts.Font.Count)) then
+    styles.Fonts.Count := styles.Fonts.Font.Count;
+end;
+
+// -1 when there are no fills
+function TWorkbook.ChangedFill(aFill: cardinal; const aChange: TProc<TFillCT>): integer;
+begin
+  if fStylesPart.IsEmpty then
+    Exit(-1);
+  var styles: TStyleSheetE := fPackage.Part<TStyleSheetE>(fStylesPart);
+  if not styles.IsPresent('Fills') or (styles.Fills.Fill.Count = 0) then
+    Exit(-1);
+  Result := ChangedItem<TFillCT>(styles.Fills.Fill, fFillKeys, aFill, aChange);
+  if styles.Fills.Present[@styles.Fills.Count] and (styles.Fills.Count <> cardinal(styles.Fills.Fill.Count)) then
+    styles.Fills.Count := styles.Fills.Fill.Count;
+end;
+
+// -1 when there are no borders
+function TWorkbook.ChangedBorder(aBorder: cardinal; const aChange: TProc<TBorderCT>): integer;
+begin
+  if fStylesPart.IsEmpty then
+    Exit(-1);
+  var styles: TStyleSheetE := fPackage.Part<TStyleSheetE>(fStylesPart);
+  if not styles.IsPresent('Borders') or (styles.Borders.Border.Count = 0) then
+    Exit(-1);
+  Result := ChangedItem<TBorderCT>(styles.Borders.Border, fBorderKeys, aBorder, aChange);
+  if styles.Borders.Present[@styles.Borders.Count] and (styles.Borders.Count <> cardinal(styles.Borders.Border.Count)) then
+    styles.Borders.Count := styles.Borders.Border.Count;
+end;
+
+// the style's xf (a style beyond cellXfs shows the first, as in Excel); nil when there is none
+function TWorkbook.StyleXf(aStyle: cardinal): TXfCT;
+begin
+  Result := nil;
+  if fStylesPart.IsEmpty then
+    Exit;
+  var styles: TStyleSheetE := fPackage.Part<TStyleSheetE>(fStylesPart);
+  if not styles.IsPresent('CellXfs') or (styles.CellXfs.Xf.Count = 0) then
+    Exit;
+  if aStyle >= cardinal(styles.CellXfs.Xf.Count) then
+    aStyle := 0;
+  Result := styles.CellXfs.Xf[aStyle];
 end;
 
 // the font a style shows; nil when there is none
@@ -4579,11 +5637,100 @@ begin
   if not styles.IsPresent('Fonts') or (styles.Fonts.Font.Count = 0) then
     Exit;
   var font: cardinal := 0;
-  if styles.IsPresent('CellXfs') and (aStyle < cardinal(styles.CellXfs.Xf.Count)) then
-    font := styles.CellXfs.Xf[aStyle].FontId;
+  var xf: TXfCT := StyleXf(aStyle);
+  if xf <> nil then
+    font := xf.FontId;
   if font >= cardinal(styles.Fonts.Font.Count) then
     font := 0;
   Result := styles.Fonts.Font[font];
+end;
+
+// the fill a style shows; nil when there is none
+function TWorkbook.StyleFill(aStyle: cardinal): TFillCT;
+begin
+  Result := nil;
+  var xf: TXfCT := StyleXf(aStyle);
+  if xf = nil then
+    Exit;
+  var styles: TStyleSheetE := fPackage.Part<TStyleSheetE>(fStylesPart);
+  if styles.IsPresent('Fills') and (xf.FillId < cardinal(styles.Fills.Fill.Count)) then
+    Result := styles.Fills.Fill[xf.FillId];
+end;
+
+// the border a style shows; nil when there is none
+function TWorkbook.StyleBorder(aStyle: cardinal): TBorderCT;
+begin
+  Result := nil;
+  var xf: TXfCT := StyleXf(aStyle);
+  if xf <> nil then
+    Result := BorderAt(xf.BorderId);
+end;
+
+function TWorkbook.BorderAt(aBorder: cardinal): TBorderCT;
+begin
+  Result := nil;
+  if fStylesPart.IsEmpty then
+    Exit;
+  var styles: TStyleSheetE := fPackage.Part<TStyleSheetE>(fStylesPart);
+  if styles.IsPresent('Borders') and (aBorder < cardinal(styles.Borders.Border.Count)) then
+    Result := styles.Borders.Border[aBorder];
+end;
+
+// a theme color by its number in styles: 0 lt1 (window), 1 dk1 (text), 2 lt2, 3 dk2, then the accents and the links;
+// without a theme, Excel's current Office one
+function TWorkbook.ThemeColor(aIndex: cardinal): integer;
+const
+  cOffice: array[0 .. 11] of integer = ($FFFFFF, $000000, $E8E8E8, $41280E, $826015, $3271E9, $246B19, $D59E0F, $932BA0,
+    $2EA74E, $867846, $7D6096);
+begin
+  if fThemeColors = nil then
+  begin
+    SetLength(fThemeColors, Length(cOffice));
+    for var i := 0 to High(cOffice) do
+      fThemeColors[i] := cOffice[i];
+    if not fThemePart.IsEmpty then
+    begin
+      var scheme: TColorSchemeCT := fPackage.Part<TThemeE>(fThemePart).ThemeElements.ClrScheme;
+      var colors: TArray<ProRock.Xmlite.Schema.Ooxml.DmlMain.TColorCT> := [scheme.Lt1, scheme.Dk1, scheme.Lt2, scheme.Dk2,
+        scheme.Accent1, scheme.Accent2, scheme.Accent3, scheme.Accent4, scheme.Accent5, scheme.Accent6, scheme.Hlink,
+        scheme.FolHlink];
+      for var i := 0 to High(colors) do
+        if colors[i].IsPresent('SrgbClr') then
+          fThemeColors[i] := RgbValue(colors[i].SrgbClr.Val)
+        else if colors[i].IsPresent('SysClr') then
+          fThemeColors[i] := RgbValue(colors[i].SysClr.LastClr);
+    end;
+  end;
+  if aIndex < cardinal(Length(fThemeColors)) then
+    Result := fThemeColors[aIndex]
+  else
+    Result := 0;
+end;
+
+// a stored color as Excel's Color: rgb, theme or indexed (the file's own palette first), with its tint; aDefault for
+// automatic and none
+function TWorkbook.ColorOf(aColor: TColorCT; aDefault: TColor): TColor;
+begin
+  if (aColor = nil) or aColor.Auto then
+    Exit(aDefault);
+  var value: integer;
+  if aColor.Present[@aColor.Rgb] then
+    value := RgbValue(aColor.Rgb)
+  else if aColor.Present[@aColor.Theme] then
+    value := ThemeColor(aColor.Theme)
+  else if aColor.Present[@aColor.Indexed] then
+  begin
+    value := PaletteColor(aColor.Indexed);
+    var styles: TStyleSheetE := fPackage.Part<TStyleSheetE>(fStylesPart);
+    if (aColor.Indexed < cAutomaticIndex) and styles.IsPresent('Colors') and styles.Colors.IsPresent('IndexedColors') and
+      (aColor.Indexed < cardinal(styles.Colors.IndexedColors.RgbColor.Count)) then
+      value := RgbValue(styles.Colors.IndexedColors.RgbColor[aColor.Indexed].Rgb);
+  end
+  else
+    Exit(aDefault);
+  if aColor.Present[@aColor.Tint] then
+    value := TintedColor(value, aColor.Tint);
+  Result := value;
 end;
 
 function TWorkbook.GetXml: TWorkbookE;
@@ -4611,6 +5758,8 @@ begin
     Result := fPackage.EditPart<TStyleSheetE>(fStylesPart);
     FreeAndNil(fStyleKeys);
     FreeAndNil(fFontKeys);
+    FreeAndNil(fFillKeys);
+    FreeAndNil(fBorderKeys);
     FreeAndNil(fDateStyleIds);
     FreeAndNil(fDateStyles);
     fDateFormatIds[0] := -2;
