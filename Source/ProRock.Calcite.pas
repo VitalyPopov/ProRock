@@ -101,6 +101,9 @@ type
     property Column: integer read fLeft;
     property RowCount: integer read GetRowCount;
     property ColumnCount: integer read GetColumnCount;
+    // the bottom row and the right column: B2:D5 has LastRow 5, LastColumn 4
+    property LastRow: integer read fBottom;
+    property LastColumn: integer read fRight;
     // B5, A1:C10
     property Address: string read GetAddress;
 
