@@ -1,5 +1,7 @@
 ﻿unit ProRock.Basite;
 
+// Objects described by their RTTI metadata: TBasite, TBasiteList, the MetaBank, presence of values
+
 interface
 
 {$DEFINE PROROCK}
@@ -22,6 +24,10 @@ const
   cBasiteValueListPattern = 'TBasiteValueList<[A-Za-z0-9_.]+>';
 
 type
+  {$REGION 'ProRock.Utility types aliases'}
+  TNaming = ProRock.Utility.TNaming;
+  {$ENDREGION}
+
   TBaseTypeAttribute = class(TCustomAttribute)
   private
     fBaseType: string;

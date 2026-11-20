@@ -1,5 +1,7 @@
 ﻿unit ProRock.Xmlite.Utility;
 
+// XML-level functions: reading, escaping, names (internal)
+
 interface
 
 uses System.Classes, System.SysUtils, System.StrUtils, System.Generics.Collections, System.Generics.Defaults,

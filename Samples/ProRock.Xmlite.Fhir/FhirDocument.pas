@@ -44,7 +44,7 @@ type
 
 implementation
 
-uses System.IOUtils, System.StrUtils, System.RegularExpressions, ProRock.Xmlite.Utility;
+uses System.IOUtils, System.StrUtils, System.RegularExpressions;
 
 const
   cFhirUri = 'http://hl7.org/fhir';
@@ -109,7 +109,7 @@ begin
   var root: TMatch := TRegEx.Match(xml, '<([A-Za-z]+)[\s>/]'); // a letter: not <?xml or <!--
   if not root.Success then
     raise EFhirDocument.Create('Not an XML file');
-  var meta: TMetaBasite := TMetaBank.Xmlite.Namespaces.GetMetaBasite(cFhirUri, xctElement, root.Groups[1].Value);
+  var meta: TMetaBasite := TMetaBank.Xmlite.Namespaces.GetMetaBasite(cFhirUri, TXmliteComponentType.xctElement, root.Groups[1].Value);
   if (meta = nil) or not meta.ClassItself.InheritsFrom(TResourceCT) then
     raise EFhirDocument.CreateFmt('<%s> is not a FHIR R4 resource', [root.Groups[1].Value]);
 

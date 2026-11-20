@@ -8,15 +8,19 @@ uses System.SysUtils, System.Classes, System.Generics.Collections, System.Zip,
   ProRock.Xmlite, ProRock.Xmlite.Schema.Ooxml.Sml;
 
 const
+  {$REGION 'ProRock.Xmlite constants aliases'}
   isHint = ProRock.Xmlite.isHint;
   isWarning = ProRock.Xmlite.isWarning;
   isError = ProRock.Xmlite.isError;
+  {$ENDREGION}
 
 type
+  {$REGION 'ProRock.Xmlite types aliases'}
   TIssueSeverity = ProRock.Xmlite.TIssueSeverity;
   TIssue = ProRock.Xmlite.TIssue;
   TIssueEvent = ProRock.Xmlite.TIssueEvent;
   TIssues = ProRock.Xmlite.TIssues;
+  {$ENDREGION}
 
   TWorkbook = class;
   TWorksheet = class;
@@ -589,6 +593,7 @@ const
   cFunctionCount = 518;
   cLetFunction = 277;
   cLambdaFunction = 270;
+  {$REGION 'Excel functions'}
   cFunctions: array [0 .. cFunctionCount - 1] of TExcelFunction = (
   (Name: 'ABS'; Min: 1; Max: 1; Paired: 1; Prefix: 0; References: ''; ReferenceResult: False),
   (Name: 'ACCRINT'; Min: 6; Max: 8; Paired: 8; Prefix: 0; References: ''; ReferenceResult: False),
@@ -1109,6 +1114,7 @@ const
   (Name: 'Z.TEST'; Min: 2; Max: 3; Paired: 3; Prefix: 1; References: ''; ReferenceResult: False),
   (Name: 'ZTEST'; Min: 2; Max: 3; Paired: 3; Prefix: 0; References: ''; ReferenceResult: False)
   );
+  {$ENDREGION}
 
 // Excel's function by its name without a prefix, in any case; -1 when it is none of them
 function FindFunction(const aName: string): integer;

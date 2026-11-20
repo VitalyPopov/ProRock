@@ -1,5 +1,7 @@
 ﻿unit ProRock.Xmlite;
 
+// XML to objects and back through the metadata of generated classes
+
 interface
 
 uses System.Classes, System.SysUtils, System.StrUtils, System.Generics.Collections, System.Generics.Defaults, System.Rtti, System.Math,
@@ -7,11 +9,13 @@ uses System.Classes, System.SysUtils, System.StrUtils, System.Generics.Collectio
   ProRock.Basite, ProRock.Utility, ProRock.Xmlite.Utility;
 
 const
+  {$REGION 'ProRock.Basite and ProRock.Utility constants aliases'}
   // re-exported: a generated unit's {$IF} sees only the units of its own uses
   cProRockCodeLevel = ProRock.Basite.cProRockCodeLevel;
   isHint = ProRock.Utility.isHint;
   isWarning = ProRock.Utility.isWarning;
   isError = ProRock.Utility.isError;
+  {$ENDREGION}
 
   cXmlDeclaration = '<?xml version="1.0" encoding="UTF-8"?>';
 
@@ -28,13 +32,23 @@ const
   cDefaultNaming = TNaming.nCamelCase;
 
 type
-  {$REGION 'ProRock.Basite types aliases'}
+  {$REGION 'ProRock.Utility types aliases'}
   TNaming = ProRock.Utility.TNaming;
   TIssueSeverity = ProRock.Utility.TIssueSeverity;
   TIssue = ProRock.Utility.TIssue;
   TIssueEvent = ProRock.Utility.TIssueEvent;
   TIssues = ProRock.Utility.TIssues;
   TNamingAttribute = ProRock.Utility.TNamingAttribute;
+  TWriterBase = ProRock.Utility.TWriterBase;
+  {$ENDREGION}
+
+  {$REGION 'ProRock.Xmlite.Utility types aliases'}
+  TXmliteComponentType = ProRock.Xmlite.Utility.TXmliteComponentType;
+  TUriedName = ProRock.Xmlite.Utility.TUriedName;
+  TXmlns = ProRock.Xmlite.Utility.TXmlns;
+  {$ENDREGION}
+
+  {$REGION 'ProRock.Basite types aliases'}
   TBaseTypeAttribute = ProRock.Basite.TBaseTypeAttribute;
   TPlainNumberAttribute = ProRock.Basite.TPlainNumberAttribute;
   TNameAttribute = ProRock.Basite.TNameAttribute;

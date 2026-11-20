@@ -1,5 +1,7 @@
 ﻿unit ProRock.Http;
 
+// HTTP transport for SOAP clients
+
 interface
 
 uses System.Classes, System.SysUtils;
