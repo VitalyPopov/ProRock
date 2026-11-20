@@ -214,6 +214,8 @@ type
     cNameChars = cNameStartChars + ['0' .. '9', '-', '_'];
   public
     class function IsDebugging: boolean; static; inline;
+    // a file's or a stream's trouble, an answer for the caller (False and Error); anything else is a bug: raised
+    class function IsFileError(aError: Exception): boolean; static;
     class function ExePath: string; static; inline;
 
     class function GuessNaming(const aName: string): TNaming; static; inline;
@@ -247,7 +249,7 @@ function FloatText(aValue: Extended; aFloatType: TFloatType; aPlain: boolean = F
 
 implementation
 
-uses System.RegularExpressions, System.StrUtils;
+uses System.RegularExpressions, System.StrUtils, System.Zip;
 
 { TIssue }
 
@@ -2193,6 +2195,14 @@ begin
     Result := nUpperCase // UPPERCASE
   else if hasLower and not hasUpper then
     Result := nFlatCase; // flatcase
+end;
+
+class function TUtility.IsFileError(aError: Exception): boolean;
+begin
+  // 10.3 - 10.4: EFileNotFoundException and its kin are no EInOutError yet
+  Result := aError.InheritsFrom(EStreamError) or aError.InheritsFrom(EInOutError) or aError.InheritsFrom(EZipException) or
+    aError.InheritsFrom(EEncodingError) or aError.InheritsFrom(EOSError) or aError.InheritsFrom(EFileNotFoundException) or
+    aError.InheritsFrom(EDirectoryNotFoundException) or aError.InheritsFrom(EPathTooLongException);
 end;
 
 class function TUtility.IsDebugging: boolean;
