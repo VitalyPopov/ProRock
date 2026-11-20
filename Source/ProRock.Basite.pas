@@ -141,6 +141,10 @@ type
   protected
     procedure Initialize; virtual;
     procedure Deinitialize; virtual;
+    // one of its lists lets go of a child (deleted, extracted, replaced) or of all of them (cleared, aList's items still
+    // there): what keeps the children's order hears it
+    procedure ChildRemoved(aChild: TBasite); virtual;
+    procedure ChildrenRemoved(aList: TObject); virtual;
     // a lazy property's getter: creates the object on first access - Result := TPatientE(Lazy(fPatient, TPatientE))
     function Lazy(var aField; aClass: TBasiteClass): TBasite;
   public
@@ -177,13 +181,23 @@ type
   PBasite = ^TBasite;
 
   TBasiteList<T: TBasite, constructor> = class(TObjectList<T>)
+  private
+    fOwner: TBasite;
+    fClearing: boolean;
+  protected
+    procedure Notify(const aItem: T; aAction: TCollectionNotification); override;
   public
     class function Meta: TMetaBasiteList; inline;
   public
     constructor Create; reintroduce; virtual;
+    destructor Destroy; override;
 
     function IsEmpty: boolean; inline;
+    // all items freed; the owner hears it once, not per item
     procedure Clear; reintroduce; virtual;
+
+    // the object whose property the list is, told what leaves it (set by the runtime; nil for a list of its own)
+    property Owner: TBasite read fOwner write fOwner;
   end;
 
   TBasiteList = TBasiteList<TBasite>;
@@ -476,8 +490,8 @@ type
   private
     fItemMeta: TMetaBasite;
   public
-    // a new empty list of this class
-    function CreateList: TBasiteList;
+    // a new empty list of this class, aOwner's property
+    function CreateList(aOwner: TBasite): TBasiteList;
 
     property ItemMeta: TMetaBasite read fItemMeta;
   end;
@@ -782,7 +796,7 @@ begin
         begin
           var propertyBasiteList: TPropertyBasiteList := TPropertyBasiteList(propertyInfo);
           if not propertyBasiteList.fLazy then
-            propertyBasiteList.ObjectPointer(Self)^ := propertyBasiteList.Meta.CreateList;
+            propertyBasiteList.ObjectPointer(Self)^ := propertyBasiteList.Meta.CreateList(Self);
         end;
       ptDataList:
         if not propertyInfo.fLazy then
@@ -807,6 +821,14 @@ begin
 end;
 
 procedure TBasite.Deinitialize;
+begin
+end;
+
+procedure TBasite.ChildRemoved(aChild: TBasite);
+begin
+end;
+
+procedure TBasite.ChildrenRemoved(aList: TObject);
 begin
 end;
 
@@ -1084,6 +1106,26 @@ end;
 
 procedure TBasiteList<T>.Clear;
 begin
+  if (fOwner <> nil) and (Count > 0) then
+    fOwner.ChildrenRemoved(Self);
+  fClearing := True;
+  try
+    inherited;
+  finally
+    fClearing := False;
+  end;
+end;
+
+procedure TBasiteList<T>.Notify(const aItem: T; aAction: TCollectionNotification);
+begin
+  if (fOwner <> nil) and not fClearing and (aAction in [cnRemoved, cnExtracted]) then
+    fOwner.ChildRemoved(aItem);
+  inherited;
+end;
+
+destructor TBasiteList<T>.Destroy;
+begin
+  fOwner := nil; // the owner is going: nothing to tell
   inherited;
 end;
 
@@ -2012,13 +2054,14 @@ end;
 
 { TMetaBasiteList }
 
-function TMetaBasiteList.CreateList: TBasiteList;
+function TMetaBasiteList.CreateList(aOwner: TBasite): TBasiteList;
 begin
   // class of TBasiteList<T> is refused (E2021): the virtual Create runs on a new instance
   Result := TBasiteList(ClassItself.NewInstance);
   try
     Result.Create;
     Result.AfterConstruction;
+    Result.fOwner := aOwner;
   except
     Result.Free;
     raise;

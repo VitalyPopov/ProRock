@@ -580,9 +580,7 @@ uses System.Math, System.Variants, System.DateUtils, System.TypInfo, System.Char
 
 type
   {$REGION 'ProRock.Xmlite.Schema.Ooxml.Sml types aliases'}
-  // DrawingML has them too
-  TColorCT = ProRock.Xmlite.Schema.Ooxml.Sml.TColorCT;
-  TFontSchemeCT = ProRock.Xmlite.Schema.Ooxml.Sml.TFontSchemeCT;
+  TColorCT = ProRock.Xmlite.Schema.Ooxml.Sml.TColorCT; // DrawingML has one too
   {$ENDREGION}
 
 const
@@ -2529,21 +2527,9 @@ begin
   Result := (aList.Count > 0) and aList[0].Val;
 end;
 
-type
-  // CT_Font is ordered: its children go through Remove, an item deleted through its list leaves a dangling node
-  TFontChildren = record
-    class procedure Clear<T: TXmlite>(aFont: TFontCT; aList: TObjectList<T>); static;
-  end;
-
-class procedure TFontChildren.Clear<T>(aFont: TFontCT; aList: TObjectList<T>);
+procedure WriteFlag(aList: TBooleanPropertyCTList; aValue: boolean);
 begin
-  for var i := aList.Count - 1 downto 0 do
-    aFont.Remove(aList[i]);
-end;
-
-procedure WriteFlag(aFont: TFontCT; aList: TBooleanPropertyCTList; aValue: boolean);
-begin
-  TFontChildren.Clear<TBooleanPropertyCT>(aFont, aList);
+  aList.Clear;
   if aValue then
   begin
     var item: TBooleanPropertyCT := TBooleanPropertyCT.Create;
@@ -2565,7 +2551,7 @@ end;
 
 procedure WriteUnderline(aFont: TFontCT; aValue: TUnderline);
 begin
-  TFontChildren.Clear<TUnderlinePropertyCT>(aFont, aFont.U);
+  aFont.U.Clear;
   if aValue = ulNone then
     Exit;
   var item: TUnderlinePropertyCT := TUnderlinePropertyCT.Create;
@@ -3194,7 +3180,7 @@ begin
   Change(
     procedure(aFont: TFontCT)
     begin
-      WriteFlag(aFont, FontFlag(aFont, aIndex), aValue);
+      WriteFlag(FontFlag(aFont, aIndex), aValue);
     end);
 end;
 
@@ -3216,14 +3202,14 @@ begin
     begin
       if (aFont.Name.Count > 0) and SameText(aFont.Name[0].Val, name) then
         Exit;
-      TFontChildren.Clear<TFontNameCT>(aFont, aFont.Name);
+      aFont.Name.Clear;
       var item: TFontNameCT := TFontNameCT.Create;
       item.Val := name;
       aFont.Name.Add(item);
       // the old font's: a scheme would show the theme's font instead, as Excel drops it
-      TFontChildren.Clear<TFontSchemeCT>(aFont, aFont.Scheme);
-      TFontChildren.Clear<TIntPropertyCT>(aFont, aFont.Charset);
-      TFontChildren.Clear<TFontFamilyCT>(aFont, aFont.Family);
+      aFont.Scheme.Clear;
+      aFont.Charset.Clear;
+      aFont.Family.Clear;
     end);
 end;
 
@@ -3243,7 +3229,7 @@ begin
   Change(
     procedure(aFont: TFontCT)
     begin
-      TFontChildren.Clear<TFontSizeCT>(aFont, aFont.Sz);
+      aFont.Sz.Clear;
       var item: TFontSizeCT := TFontSizeCT.Create;
       item.Val := aValue;
       aFont.Sz.Add(item);
@@ -3264,7 +3250,7 @@ begin
   Change(
     procedure(aFont: TFontCT)
     begin
-      TFontChildren.Clear<TColorCT>(aFont, aFont.Color);
+      aFont.Color.Clear;
       if aValue <> clDefault then // automatic: no color, as Excel writes it
       begin
         var item: TColorCT := TColorCT.Create;
@@ -3312,9 +3298,9 @@ begin
   Change(
     procedure(aFont: TFontCT)
     begin
-      WriteFlag(aFont, aFont.B, fsBold in aValue);
-      WriteFlag(aFont, aFont.I, fsItalic in aValue);
-      WriteFlag(aFont, aFont.Strike, fsStrikeOut in aValue);
+      WriteFlag(aFont.B, fsBold in aValue);
+      WriteFlag(aFont.I, fsItalic in aValue);
+      WriteFlag(aFont.Strike, fsStrikeOut in aValue);
       if fsUnderline in aValue then
         WriteUnderline(aFont, ulSingle)
       else

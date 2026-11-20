@@ -176,6 +176,9 @@ type
   protected
     procedure Initialize; override;
     procedure Deinitialize; override;
+    // a child gone from its list leaves XmlContent: no node names a freed object (or a new one at its address)
+    procedure ChildRemoved(aChild: TBasite); override;
+    procedure ChildrenRemoved(aList: TObject); override;
 
     procedure DoBeforeSerialization; virtual;
     procedure DoAfterSerialization; virtual;
@@ -192,8 +195,8 @@ type
     property XmlAttributes: TDictionary<string, string> read fXmlAttributes; // attributes without a property, kept for the round trip
     // elements without a property, kept for the round trip as their text (Clear removes them)
     property XmlUnknown: TList<TXmliteUnknown> read GetXmlUnknown;
-    // [TOrdered]/[TMixed]: the children (and text) in document order, written so; children not in it come after. Remove a
-    // child by Remove; one deleted through its list leaves its node, skipped by the writer and InnerText
+    // [TOrdered]/[TMixed]: the children (and text) in document order, written so; children not in it come after. A child
+    // removed (Remove, or through its list: Delete, Extract, Clear) leaves it too
     property XmlContent: TList<TXmliteNode> read GetXmlContent;
     // the text before the first child element; in mixed content the leading text node of XmlContent
     property XmlText: string read GetXmlText write SetXmlText;
@@ -1191,7 +1194,7 @@ begin
           begin
             var propertyObjectList: TPropertyBasiteList := TPropertyBasiteList(propertyElement);
             if propertyObjectList.ObjectPointer(Self)^ = nil then
-              propertyObjectList.ObjectPointer(Self)^ := propertyObjectList.Meta.CreateList;
+              propertyObjectList.ObjectPointer(Self)^ := propertyObjectList.Meta.CreateList(Self);
             var objectListItem: TBasite := propertyObjectList.Meta.ItemMeta.ClassItself.Create;
             aCursor := cursorStart;
             var read: boolean := objectListItem.FromXml(aCursor, aXmlns);
@@ -2014,13 +2017,44 @@ end;
 procedure TXmlite.Deinitialize;
 begin
   fXmlBadAttributes.Free;
-  fXmlContent.Free;
+  FreeAndNil(fXmlContent);
   fXmlUnknown.Free;
   fXmlAny.Free;
   fXmlns.Free;
   fXmlAttributeNamespaces.Free;
   fXmlAttributes.Free;
   inherited;
+end;
+
+procedure TXmlite.ChildRemoved(aChild: TBasite);
+begin
+  if fXmlContent <> nil then
+    for var i := fXmlContent.Count - 1 downto 0 do
+      if fXmlContent[i].Element = aChild then
+        fXmlContent.Delete(i);
+end;
+
+// one pass for a whole list: clearing a long one stays linear
+procedure TXmlite.ChildrenRemoved(aList: TObject);
+begin
+  if (fXmlContent = nil) or (fXmlContent.Count = 0) then
+    Exit;
+  var leaving: TDictionary<TBasite, boolean> := TDictionary<TBasite, boolean>.Create(AddressComparer);
+  try
+    for var item: TBasite in TBasiteList(aList) do
+      leaving.AddOrSetValue(item, True);
+    var kept: integer := 0;
+    for var i := 0 to fXmlContent.Count - 1 do
+      if (fXmlContent[i].Element = nil) or not leaving.ContainsKey(fXmlContent[i].Element) then
+      begin
+        if kept < i then
+          fXmlContent[kept] := fXmlContent[i];
+        Inc(kept);
+      end;
+    fXmlContent.Count := kept;
+  finally
+    leaving.Free;
+  end;
 end;
 
 procedure TXmlite.DoAfterParsing;
@@ -2046,6 +2080,7 @@ begin
   fXmlAttributeNamespaces := TDictionary<string, string>.Create;
   fXmlns := TXmlns.Create;
   fXmlAny := TBasiteList<TBasite>.Create;
+  fXmlAny.Owner := Self;
 end;
 
 procedure TXmlite.Clear;
@@ -2199,7 +2234,7 @@ begin
   begin
     var propertyList: TPropertyBasiteList := TPropertyBasiteList(propertyElement);
     if propertyList.ObjectPointer(Self)^ = nil then
-      propertyList.ObjectPointer(Self)^ := propertyList.Meta.CreateList;
+      propertyList.ObjectPointer(Self)^ := propertyList.Meta.CreateList(Self);
     Result := TBasiteClass(aClass).Create;
     propertyList.ObjectPointer(Self)^.Add(Result);
     index := propertyList.ObjectPointer(Self)^.Count - 1;
