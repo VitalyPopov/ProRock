@@ -182,15 +182,15 @@ type
     private
       fItems: TArray<TIssue>;
       fIndex: integer;
-      function GetCurrent: TIssue; inline;
+      function GetCurrent: TIssue;
     public
-      function MoveNext: boolean; inline;
+      function MoveNext: boolean;
       property Current: TIssue read GetCurrent;
     end;
   private
     fItems: TArray<TIssue>;
-    function GetCount: integer; inline;
-    function GetItem(aIndex: integer): TIssue; inline;
+    function GetCount: integer;
+    function GetItem(aIndex: integer): TIssue;
   public
     // called with each issue as it is added: a log as it happens, or a raise to stop at the first one
     OnIssue: TIssueEvent;
