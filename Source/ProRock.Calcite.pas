@@ -4,8 +4,8 @@
 
 interface
 
-uses System.SysUtils, System.Classes, System.Generics.Collections, System.Zip,
-  ProRock.Xmlite, ProRock.Xmlite.Schema.Ooxml.Sml;
+uses System.SysUtils, System.Classes, System.Generics.Collections,
+  ProRock.Xmlite, ProRock.Office.Ooxml, ProRock.Xmlite.Schema.Ooxml.Sml;
 
 const
   {$REGION 'ProRock.Xmlite constants aliases'}
@@ -20,6 +20,10 @@ type
   TIssue = ProRock.Xmlite.TIssue;
   TIssueEvent = ProRock.Xmlite.TIssueEvent;
   TIssues = ProRock.Xmlite.TIssues;
+  {$ENDREGION}
+
+  {$REGION 'ProRock.Office.Ooxml types aliases'}
+  TCoreProperties = ProRock.Office.Ooxml.TCoreProperties;
   {$ENDREGION}
 
   TWorkbook = class;
@@ -248,26 +252,10 @@ type
   end;
 
   TWorkbook = class
-  private type
-    TPart = class
-    private
-      fClass: TXmliteClass;
-      fXml: TXmlite; // nil until first used
-      fExact: boolean; // read without a loss: may be written back
-      fChanged: boolean;
-      fNew: boolean; // not in the package yet
-    public
-      destructor Destroy; override;
-    end;
   private
-    fFileName: string;
     fError: string;
-    fSource: TBytesStream;
-    fZip: TZipFile; // over fSource
-    fParts: TObjectDictionary<string, TPart>; // only the parts Calcite has classes for
-    fRelationshipTypes: string; // what the package's relationship types start with: Transitional and Strict differ
-    fWorkbookPart, fWorkbookRelationshipsPart, fContentTypesPart, fSharedStringsPart, fStylesPart, fCalcChainPart: string;
-    fDropped: TList<string>; // parts left out on save
+    fPackage: TPackageOoxml;
+    fWorkbookPart, fSharedStringsPart, fStylesPart, fCalcChainPart: string;
     fSheets: TWorksheets;
     fStrings: TDictionary<string, integer>; // shared strings by text, built on the first write
     fStyleKeys: TDictionary<string, integer>; // cellXfs by content, built on the first need
@@ -282,22 +270,14 @@ type
     constructor CreateClosed;
     class procedure Swap<T>(var aLeft, aRight: T); static; inline;
     procedure NewPackage;
-    procedure Close;
+    procedure ForwardIssues;
+    function Opened(const aFileName: string; aStream: TStream): boolean;
     function Load: boolean;
     function Fail(const aCode, aError: string): boolean;
-    function ReadXml(aXml: TXmlite; const aPart: string; const aBytes: TBytes): boolean;
-    function CanWrite: boolean;
-    function Write(aStream: TStream): boolean;
     procedure Exchange(aOther: TWorkbook);
-    function PartIndex(const aName: string): integer;
     procedure FixedAreas(const aSheetPart: string; aTables, aTableRows, aPivots: TList<TRange>);
-    function AddPart(const aName: string; aClass: TXmliteClass): string;
-    function NewPart(const aRelationship, aTarget, aContentType: string; aXml: TXmlite; out aId: string): string;
     function SheetNameError(const aName: string; aExcept: TWorksheet): string;
     function AddSheet(const aName: string): TWorksheet;
-    // ReadPart leaves the part as its bytes, EditPart saves it from its objects
-    function ReadPart(const aName: string): TXmlite;
-    function EditPart(const aName: string): TXmlite;
 
     function IsLockedStyle(aStyle: cardinal): boolean;
     procedure ValueChanged;
@@ -317,6 +297,8 @@ type
     function GetXml: TWorkbookE;
     function GetXmlSharedStrings: TSstE;
     function GetXmlStyles: TStyleSheetE;
+    function GetFileName: string;
+    function GetProperties: TCoreProperties;
   public
     // a new workbook, as Excel's: Sheet1 and nothing in it; Open replaces it
     constructor Create;
@@ -335,7 +317,7 @@ type
     function SaveAs(const aFileName: string): boolean; overload;
     function SaveAs(aStream: TStream): boolean; overload;
 
-    property FileName: string read fFileName;
+    property FileName: string read GetFileName;
     // why the last Open or Save returned False
     property Error: string read fError;
     // since the last Open: writes refused (the cell keeps its value), what Open and Save could not do, values and parts read
@@ -344,12 +326,14 @@ type
     // each issue as it comes
     property OnIssue: TIssueEvent read fIssues.OnIssue write fIssues.OnIssue;
     property Sheets: TWorksheets read fSheets;
+    // Excel's File > Info: title, author, dates (Save sets Modified when anything changed). Anew after Open, as Sheets
+    property Properties: TCoreProperties read GetProperties;
   end;
 
 implementation
 
-uses System.IOUtils, System.Math, System.Variants, System.DateUtils, System.TypInfo, System.Character, System.Generics.Defaults,
-  ProRock.Utility, ProRock.Calcite.Utility, ProRock.Xmlite.Schema.Relationships, ProRock.Xmlite.Schema.ContentTypes;
+uses System.Math, System.Variants, System.DateUtils, System.TypInfo, System.Character, System.Generics.Defaults,
+  System.Zip, ProRock.Utility, ProRock.Calcite.Utility;
 
 const
   // relationship types end in these names - Transitional and Strict differ only before them
@@ -368,42 +352,6 @@ const
   cDateFormat = 14;
   cDateTimeFormat = 22;
   cTimeFormat = 21;
-
-{$REGION 'xlsx package: part names'}
-
-// relative to the folder of the part that has the relationship, or absolute (/xl/...)
-function ResolveTarget(const aSourcePart, aTarget: string): string;
-begin
-  if aTarget.StartsWith('/') then
-    Exit(aTarget.Substring(1));
-  var path: TStringList := TStringList.Create;
-  try
-    path.Delimiter := '/';
-    path.StrictDelimiter := True;
-    path.DelimitedText := aSourcePart;
-    if path.Count > 0 then
-      path.Delete(path.Count - 1); // the part's own name ('' - the package itself)
-    for var segment: string in aTarget.Split(['/']) do
-      if segment = '..' then
-      begin
-        if path.Count > 0 then
-          path.Delete(path.Count - 1);
-      end
-      else if (segment <> '.') and (segment <> '') then
-        path.Add(segment);
-    Result := path.DelimitedText;
-  finally
-    path.Free;
-  end;
-end;
-
-function RelationshipsPart(const aPart: string): string;
-begin
-  var slash: integer := aPart.LastIndexOf('/');
-  Result := aPart.Substring(0, slash + 1) + '_rels/' + aPart.Substring(slash + 1) + '.rels';
-end;
-
-{$ENDREGION}
 
 {$REGION 'Excel language: formulas'}
 
@@ -2645,9 +2593,9 @@ end;
 function TWorksheet.Objects(aEdit: boolean): TWorksheetE;
 begin
   if aEdit then
-    Result := TWorksheetE(fWorkbook.EditPart(fPartName))
+    Result := fWorkbook.fPackage.EditPart<TWorksheetE>(fPartName)
   else
-    Result := TWorksheetE(fWorkbook.ReadPart(fPartName));
+    Result := fWorkbook.fPackage.Part<TWorksheetE>(fPartName);
   if fPrepared then
     Exit;
   fPrepared := True;
@@ -3707,7 +3655,7 @@ begin
     fWorkbook.fIssues.Add(isError, 'Rename', fName, why + ' - not renamed');
     Exit;
   end;
-  for var entry: TSheetCT in TWorkbookE(fWorkbook.EditPart(fWorkbook.fWorkbookPart)).Sheets.Sheet do
+  for var entry: TSheetCT in fWorkbook.fPackage.EditPart<TWorkbookE>(fWorkbook.fWorkbookPart).Sheets.Sheet do
     if entry.Name = fName then
       entry.Name := aValue;
   fName := aValue;
@@ -3764,23 +3712,15 @@ begin
     raise EArgumentException.CreateFmt('There is no sheet "%s"', [aName]);
 end;
 
-{ TWorkbook.TPart }
-
-destructor TWorkbook.TPart.Destroy;
-begin
-  fXml.Free;
-  inherited;
-end;
-
 { TWorkbook }
 
 constructor TWorkbook.CreateClosed;
 begin
   inherited Create;
-  fParts := TObjectDictionary<string, TPart>.Create([doOwnsValues]);
+  fPackage := TPackageOoxml.Create;
+  ForwardIssues;
   fSheets := TWorksheets.Create;
   fSheets.fWorkbook := Self;
-  fDropped := TList<string>.Create;
 end;
 
 constructor TWorkbook.Create;
@@ -3791,10 +3731,13 @@ end;
 
 destructor TWorkbook.Destroy;
 begin
-  Close;
-  fDropped.Free;
   fSheets.Free;
-  fParts.Free;
+  fPackage.Free;
+  fStrings.Free;
+  fStyleKeys.Free;
+  fFontKeys.Free;
+  fDateStyleIds.Free;
+  fDateStyles.Free;
   inherited;
 end;
 
@@ -3803,6 +3746,16 @@ begin
   var value: T := aLeft;
   aLeft := aRight;
   aRight := value;
+end;
+
+// the closure holds Self: set again when the package moves to another workbook
+procedure TWorkbook.ForwardIssues;
+begin
+  fPackage.OnIssue :=
+    procedure(const aIssue: TIssue)
+    begin
+      fIssues.Add(aIssue);
+    end;
 end;
 
 // Excel's new workbook, read as a file would be: Transitional, no theme; styles with fonts, fills and borders (without them
@@ -3850,54 +3803,24 @@ begin
       '<cellXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/></cellXfs>' +
       '<cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>',
     'xl/worksheets/sheet1.xml', '<worksheet xmlns="' + cMain + '"><sheetData/></worksheet>'];
-  fSource := TBytesStream.Create;
-  var zip: TZipFile := TZipFile.Create;
+  var built: TBytesStream := TBytesStream.Create;
   try
-    zip.Open(fSource, zmWrite);
-    for var i := 0 to High(parts) div 2 do
-      zip.Add(TEncoding.UTF8.GetBytes(cDeclaration + parts[2 * i + 1]), parts[2 * i]);
-    zip.Close;
+    var zip: TZipFile := TZipFile.Create;
+    try
+      zip.Open(built, zmWrite);
+      for var i := 0 to High(parts) div 2 do
+        zip.Add(TEncoding.UTF8.GetBytes(cDeclaration + parts[2 * i + 1]), parts[2 * i]);
+      zip.Close;
+    finally
+      zip.Free;
+    end;
+    built.Position := 0;
+    fPackage.Open(built);
   finally
-    zip.Free;
+    built.Free;
   end;
-  fSource.Position := 0;
-  fZip := TZipFile.Create;
-  fZip.Open(fSource, zmRead);
   Load;
   fSheets.fList[0].fFresh := True;
-end;
-
-procedure TWorkbook.Close;
-begin
-  fSheets.fList.Clear;
-  fParts.Clear;
-  fDropped.Clear;
-  FreeAndNil(fZip);
-  FreeAndNil(fSource);
-  FreeAndNil(fStrings);
-  FreeAndNil(fStyleKeys);
-  FreeAndNil(fFontKeys);
-  FreeAndNil(fDateStyleIds);
-  FreeAndNil(fDateStyles);
-  fFileName := '';
-  fRelationshipTypes := '';
-  fWorkbookPart := '';
-  fWorkbookRelationshipsPart := '';
-  fContentTypesPart := '';
-  fSharedStringsPart := '';
-  fStylesPart := '';
-  fCalcChainPart := '';
-  fValuesChanged := False;
-  fFormulasWritten := False;
-end;
-
-// an answer for the caller (False and Error); everything else still raises: a bug
-function IsFileError(aError: Exception): boolean;
-begin
-  // 10.3 - 10.4: EFileNotFoundException and its kin are no EInOutError yet
-  Result := aError.InheritsFrom(EStreamError) or aError.InheritsFrom(EInOutError) or aError.InheritsFrom(EZipException) or
-    aError.InheritsFrom(EEncodingError) or aError.InheritsFrom(EOSError) or aError.InheritsFrom(EFileNotFoundException) or
-    aError.InheritsFrom(EDirectoryNotFoundException) or aError.InheritsFrom(EPathTooLongException);
 end;
 
 function TWorkbook.Fail(const aCode, aError: string): boolean;
@@ -3907,66 +3830,36 @@ begin
   Result := False;
 end;
 
-// what the read reports, the part named; content not in the schema is kept anyway (left out)
-function TWorkbook.ReadXml(aXml: TXmlite; const aPart: string; const aBytes: TBytes): boolean;
-begin
-  var read: TIssues;
-  Result := aXml.FromXmlBytes(aBytes, read);
-  for var issue: TIssue in read do
-    if issue.Severity <> isHint then
-    begin
-      var named: TIssue := issue;
-      if named.Where.IsEmpty then
-        named.Where := aPart
-      else
-        named.Where := aPart + ', ' + named.Where;
-      fIssues.Add(named);
-    end;
-end;
-
 function TWorkbook.Open(const aFileName: string): boolean;
 begin
-  var stream: TFileStream := nil;
-  try
-    // others may write it meanwhile: a workbook open in Excel can still be read
-    stream := TFileStream.Create(aFileName, fmOpenRead or fmShareDenyNone);
-  except
-    on e: Exception do
-    begin
-      if not IsFileError(e) then
-        raise;
-      fIssues.Clear;
-      Exit(Fail('File', e.Message));
-    end;
-  end;
-  try
-    Result := Open(stream);
-  finally
-    stream.Free;
-  end;
-  if Result then
-    fFileName := aFileName;
+  Result := Opened(aFileName, nil);
 end;
 
 function TWorkbook.Open(aStream: TStream): boolean;
+begin
+  Result := Opened('', aStream);
+end;
+
+// aStream, or the file when it is nil
+function TWorkbook.Opened(const aFileName: string; aStream: TStream): boolean;
 begin
   // into a workbook of its own first: a failed Open leaves this one as it was, with this Open's issues
   fIssues.Clear;
   var opened: TWorkbook := TWorkbook.CreateClosed;
   try
     opened.fIssues.OnIssue := fIssues.OnIssue;
+    var done: boolean;
+    if aStream = nil then
+      done := opened.fPackage.Open(aFileName)
+    else
+      done := opened.fPackage.Open(aStream);
+    if not done then
+    begin
+      fIssues := opened.fIssues; // the package's failure among them
+      fError := opened.fPackage.Error;
+      Exit(False);
+    end;
     try
-      // a copy in memory: the parts are read from it on first use, and the file itself may be saved over
-      opened.fSource := TBytesStream.Create;
-      opened.fSource.CopyFrom(aStream, aStream.Size - aStream.Position);
-      opened.fSource.Position := 0;
-      opened.fZip := TZipFile.Create;
-      try
-        opened.fZip.Open(opened.fSource, zmRead);
-      except
-        on EZipException do
-          Exit(Fail('NotXlsx', 'Not an .xlsx file (not a zip package)'));
-      end;
       if not opened.Load then
       begin
         fIssues := opened.fIssues; // Load's failure among them
@@ -3976,7 +3869,7 @@ begin
     except
       on e: Exception do
       begin
-        if not IsFileError(e) then
+        if not TUtility.IsFileError(e) then
           raise;
         fIssues := opened.fIssues;
         Exit(Fail('File', e.Message));
@@ -3993,18 +3886,11 @@ end;
 // everything but Error: what is open here goes to aOther
 procedure TWorkbook.Exchange(aOther: TWorkbook);
 begin
-  Swap<string>(fFileName, aOther.fFileName);
-  Swap<TBytesStream>(fSource, aOther.fSource);
-  Swap<TZipFile>(fZip, aOther.fZip);
-  Swap<TObjectDictionary<string, TPart>>(fParts, aOther.fParts);
-  Swap<string>(fRelationshipTypes, aOther.fRelationshipTypes);
+  Swap<TPackageOoxml>(fPackage, aOther.fPackage);
   Swap<string>(fWorkbookPart, aOther.fWorkbookPart);
-  Swap<string>(fWorkbookRelationshipsPart, aOther.fWorkbookRelationshipsPart);
-  Swap<string>(fContentTypesPart, aOther.fContentTypesPart);
   Swap<string>(fSharedStringsPart, aOther.fSharedStringsPart);
   Swap<string>(fStylesPart, aOther.fStylesPart);
   Swap<string>(fCalcChainPart, aOther.fCalcChainPart);
-  Swap<TList<string>>(fDropped, aOther.fDropped);
   Swap<TWorksheets>(fSheets, aOther.fSheets);
   Swap<TDictionary<string, integer>>(fStrings, aOther.fStrings);
   Swap<TDictionary<string, integer>>(fStyleKeys, aOther.fStyleKeys);
@@ -4014,6 +3900,8 @@ begin
   Swap<boolean>(fValuesChanged, aOther.fValuesChanged);
   Swap<boolean>(fFormulasWritten, aOther.fFormulasWritten);
   Swap<TIssues>(fIssues, aOther.fIssues);
+  ForwardIssues;
+  aOther.ForwardIssues;
   fSheets.fWorkbook := Self;
   aOther.fSheets.fWorkbook := aOther;
   for var sheet: TWorksheet in fSheets do
@@ -4022,195 +3910,78 @@ begin
     sheet.fWorkbook := aOther;
 end;
 
-// a part's relationships as they are in the package, nil when it has none
-function ReadRelationships(aBook: TWorkbook; const aPart: string): TRelationshipsE;
-begin
-  Result := nil;
-  var index: integer := aBook.PartIndex(RelationshipsPart(aPart));
-  if index < 0 then
-    Exit;
-  var bytes: TBytes;
-  aBook.fZip.Read(index, bytes);
-  Result := TRelationshipsE.Create;
-  aBook.ReadXml(Result, RelationshipsPart(aPart), bytes);
-end;
-
 // a sheet's cells that belong to its tables' and pivot tables' definitions: header and totals rows, pivot tables with their
 // page fields above them
 procedure TWorkbook.FixedAreas(const aSheetPart: string; aTables, aTableRows, aPivots: TList<TRange>);
 begin
-  var relationships: TRelationshipsE := ReadRelationships(Self, aSheetPart);
-  if relationships = nil then
-    Exit;
-  try
-    for var relationship: TRelationshipE in relationships.Relationship do
+  for var relationship: TRelationshipOoxml in fPackage.Relationships(aSheetPart) do
+  begin
+    var area: TRange;
+    if relationship.&Type.EndsWith(cTable) then
     begin
-      var index: integer := PartIndex(ResolveTarget(aSheetPart, relationship.Target));
-      if index < 0 then
-        Continue;
-      var bytes: TBytes;
-      var area: TRange;
-      if string(relationship.&Type).EndsWith(cTable) then
+      var table: TTableE := fPackage.Part<TTableE>(relationship.Part);
+      if (table <> nil) and ParseAddress(table.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
       begin
-        fZip.Read(index, bytes);
-        var table: TTableE := TTableE.Create;
-        try
-          ReadXml(table, ResolveTarget(aSheetPart, relationship.Target), bytes);
-          if ParseAddress(table.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
-          begin
-            var whole: TRange := area;
-            aTables.Add(whole);
-            if table.HeaderRowCount > 0 then
-            begin
-              area.fBottom := whole.fTop + integer(table.HeaderRowCount) - 1;
-              aTableRows.Add(area);
-            end;
-            if table.TotalsRowCount > 0 then
-            begin
-              area.fTop := whole.fBottom - integer(table.TotalsRowCount) + 1;
-              area.fBottom := whole.fBottom;
-              aTableRows.Add(area);
-            end;
-          end;
-        finally
-          table.Free;
+        var whole: TRange := area;
+        aTables.Add(whole);
+        if table.HeaderRowCount > 0 then
+        begin
+          area.fBottom := whole.fTop + integer(table.HeaderRowCount) - 1;
+          aTableRows.Add(area);
         end;
-      end
-      else if string(relationship.&Type).EndsWith(cPivotTable) then
-      begin
-        fZip.Read(index, bytes);
-        var pivot: TPivotTableDefinitionE := TPivotTableDefinitionE.Create;
-        try
-          ReadXml(pivot, ResolveTarget(aSheetPart, relationship.Target), bytes);
-          if ParseAddress(pivot.Location.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
-          begin
-            if pivot.Location.RowPageCount > 0 then // the page fields and a blank row
-              area.fTop := Max(1, area.fTop - integer(pivot.Location.RowPageCount) - 1);
-            aPivots.Add(area);
-          end;
-        finally
-          pivot.Free;
+        if table.TotalsRowCount > 0 then
+        begin
+          area.fTop := whole.fBottom - integer(table.TotalsRowCount) + 1;
+          area.fBottom := whole.fBottom;
+          aTableRows.Add(area);
         end;
       end;
+    end
+    else if relationship.&Type.EndsWith(cPivotTable) then
+    begin
+      var pivot: TPivotTableDefinitionE := fPackage.Part<TPivotTableDefinitionE>(relationship.Part);
+      if (pivot <> nil) and ParseAddress(pivot.Location.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
+      begin
+        if pivot.Location.RowPageCount > 0 then // the page fields and a blank row
+          area.fTop := Max(1, area.fTop - integer(pivot.Location.RowPageCount) - 1);
+        aPivots.Add(area);
+      end;
     end;
-  finally
-    relationships.Free;
   end;
 end;
 
 function TWorkbook.Load: boolean;
 begin
   // the main part is found, not assumed (xl/workbook.xml in Excel's files)
-  var packageRelationships: TRelationshipsE := ReadRelationships(Self, '');
-  if packageRelationships <> nil then
-    try
-      for var relationship: TRelationshipE in packageRelationships.Relationship do
-        if string(relationship.&Type).EndsWith(cOfficeDocument) then
-        begin
-          fWorkbookPart := AddPart(ResolveTarget('', relationship.Target), TWorkbookE);
-          fRelationshipTypes := string(relationship.&Type).Substring(0, Length(relationship.&Type) - Length(cOfficeDocument));
-        end;
-    finally
-      packageRelationships.Free;
-    end;
+  for var relationship: TRelationshipOoxml in fPackage.Relationships('', cOfficeDocument) do
+    fWorkbookPart := relationship.Part;
   if fWorkbookPart.IsEmpty then
     Exit(Fail('NotWorkbook', 'Not an Office document: the package names no main part'));
-  var workbook: TWorkbookE := TWorkbookE(ReadPart(fWorkbookPart));
-  fContentTypesPart := AddPart(cContentTypes, TTypesE);
-
-  var workbookRelationships: TRelationshipsE := ReadRelationships(Self, fWorkbookPart);
-  if workbookRelationships = nil then
+  var workbook: TWorkbookE := fPackage.Part<TWorkbookE>(fWorkbookPart);
+  var relationships: TArray<TRelationshipOoxml> := fPackage.Relationships(fWorkbookPart);
+  if Length(relationships) = 0 then
     Exit(Fail('NotWorkbook', Format('%s is not a workbook: it has no relationships', [fWorkbookPart])));
-  fWorkbookRelationshipsPart := AddPart(RelationshipsPart(fWorkbookPart), TRelationshipsE);
-  try
-    for var relationship: TRelationshipE in workbookRelationships.Relationship do
-      if string(relationship.&Type).EndsWith(cSharedStrings) then
-        fSharedStringsPart := AddPart(ResolveTarget(fWorkbookPart, relationship.Target), TSstE)
-      else if string(relationship.&Type).EndsWith(cStyles) then
-        fStylesPart := AddPart(ResolveTarget(fWorkbookPart, relationship.Target), TStyleSheetE)
-      else if string(relationship.&Type).EndsWith(cCalcChain) then
+  for var relationship: TRelationshipOoxml in relationships do
+    if relationship.&Type.EndsWith(cSharedStrings) then
+      fSharedStringsPart := relationship.Part
+    else if relationship.&Type.EndsWith(cStyles) then
+      fStylesPart := relationship.Part
+    else if relationship.&Type.EndsWith(cCalcChain) then
+      fCalcChainPart := relationship.Part;
+
+  for var sheetEntry: TSheetCT in workbook.Sheets.Sheet do
+    for var relationship: TRelationshipOoxml in relationships do
+      if (relationship.Id = sheetEntry.Id) and relationship.&Type.EndsWith(cWorksheet) then
       begin
-        var index: integer := PartIndex(ResolveTarget(fWorkbookPart, relationship.Target));
-        if index >= 0 then
-          fCalcChainPart := fZip.FileNames[index];
+        if relationship.Part.IsEmpty then
+          Exit(Fail('NoSheetPart', Format('The sheet "%s" has no part (%s)', [sheetEntry.Name, relationship.Target])));
+        var sheet: TWorksheet := TWorksheet.Create;
+        fSheets.fList.Add(sheet);
+        sheet.fWorkbook := Self;
+        sheet.fName := sheetEntry.Name;
+        sheet.fPartName := relationship.Part;
       end;
-
-    for var sheetEntry: TSheetCT in workbook.Sheets.Sheet do
-      for var relationship: TRelationshipE in workbookRelationships.Relationship do
-        if (relationship.Id = sheetEntry.Id) and string(relationship.&Type).EndsWith(cWorksheet) then
-        begin
-          var partName: string := AddPart(ResolveTarget(fWorkbookPart, relationship.Target), TWorksheetE);
-          if partName.IsEmpty then
-            Exit(Fail('NoSheetPart', Format('The sheet "%s" has no part (%s)', [sheetEntry.Name, relationship.Target])));
-          var sheet: TWorksheet := TWorksheet.Create;
-          fSheets.fList.Add(sheet);
-          sheet.fWorkbook := Self;
-          sheet.fName := sheetEntry.Name;
-          sheet.fPartName := partName;
-        end;
-  finally
-    workbookRelationships.Free;
-  end;
   Result := True;
-end;
-
-// part names ignore case (OPC); Excel's own match exactly
-function TWorkbook.PartIndex(const aName: string): integer;
-begin
-  Result := fZip.IndexOf(aName);
-  if Result < 0 then
-    for var i := 0 to fZip.FileCount - 1 do
-      if SameText(fZip.FileNames[i], aName) then
-        Exit(i);
-end;
-
-// the name as in the package ('' when missing)
-function TWorkbook.AddPart(const aName: string; aClass: TXmliteClass): string;
-begin
-  var index: integer := PartIndex(aName);
-  if index < 0 then
-    Exit('');
-  Result := fZip.FileNames[index];
-  if not fParts.ContainsKey(Result) then
-  begin
-    var part: TPart := TPart.Create;
-    part.fClass := aClass;
-    fParts.Add(Result, part);
-  end;
-end;
-
-// a part of the workbook's, with its relationship (aId) and content type; '' (aXml freed) when the package has no content types
-function TWorkbook.NewPart(const aRelationship, aTarget, aContentType: string; aXml: TXmlite; out aId: string): string;
-begin
-  aId := '';
-  if fContentTypesPart.IsEmpty then
-  begin
-    aXml.Free;
-    Exit('');
-  end;
-  Result := ResolveTarget(fWorkbookPart, aTarget);
-  var part: TPart := TPart.Create;
-  part.fClass := TXmliteClass(aXml.ClassType);
-  part.fXml := aXml;
-  part.fExact := True;
-  part.fChanged := True;
-  part.fNew := True;
-  fParts.Add(Result, part);
-
-  var relationships: TRelationshipsE := TRelationshipsE(EditPart(fWorkbookRelationshipsPart));
-  var number: integer := 1;
-  for var existing: TRelationshipE in relationships.Relationship do
-    if string(existing.Id).StartsWith('rId') then
-      number := Max(number, StrToIntDef(string(existing.Id).Substring(3), 0) + 1);
-  var relationship: TRelationshipE := relationships.Add<TRelationshipE>;
-  relationship.Id := 'rId' + IntToStr(number);
-  relationship.&Type := fRelationshipTypes + aRelationship;
-  relationship.Target := aTarget;
-  aId := relationship.Id;
-
-  var contentType: TOverrideE := TTypesE(EditPart(fContentTypesPart)).Add<TOverrideE>;
-  contentType.PartName := '/' + Result;
-  contentType.ContentType := aContentType;
 end;
 
 // Excel's rules as it opens a file: a sheet named against them makes it refuse the whole file, even repaired. '' - a good name
@@ -4228,7 +3999,7 @@ begin
   if AnsiSameText(aName, 'History') then
     Exit('History is reserved by Excel');
   // chart sheets too
-  for var entry: TSheetCT in TWorkbookE(ReadPart(fWorkbookPart)).Sheets.Sheet do
+  for var entry: TSheetCT in fPackage.Part<TWorkbookE>(fWorkbookPart).Sheets.Sheet do
     if AnsiSameText(entry.Name, aName) and ((aExcept = nil) or (entry.Name <> aExcept.fName)) then
       Exit(Format('the workbook has a sheet "%s" already', [string(entry.Name)]));
   Result := '';
@@ -4240,7 +4011,7 @@ begin
   var why: string := '';
   if not name.IsEmpty then
     why := SheetNameError(name, nil);
-  var workbook: TWorkbookE := TWorkbookE(ReadPart(fWorkbookPart));
+  var workbook: TWorkbookE := fPackage.Part<TWorkbookE>(fWorkbookPart);
   if name.IsEmpty or not why.IsEmpty then
   begin
     var number: integer := workbook.Sheets.Sheet.Count;
@@ -4252,22 +4023,24 @@ begin
   if not why.IsEmpty then
     fIssues.Add(isError, 'SheetName', aName, why + ' - the sheet is added as ' + name);
 
-  var number: integer := 0;
-  var target, partName: string;
-  repeat
-    Inc(number);
-    target := 'worksheets/sheet' + IntToStr(number) + '.xml';
-    partName := ResolveTarget(fWorkbookPart, target);
-  until (PartIndex(partName) < 0) and not fParts.ContainsKey(partName);
-  var id: string;
-  partName := NewPart(cWorksheet, target, cWorksheetType, TWorksheetE.Create, id);
-  if partName.IsEmpty then
+  if not fPackage.HasPart(cContentTypes) then
   begin
     fIssues.Add(isError, 'NoContentTypes', '', 'The package has no content types: a sheet cannot be added');
     Exit(nil);
   end;
+  var folder: string := fWorkbookPart.Substring(0, fWorkbookPart.LastIndexOf('/') + 1);
+  var number: integer := 0;
+  var target: string;
+  repeat
+    Inc(number);
+    target := 'worksheets/sheet' + IntToStr(number) + '.xml';
+  until not fPackage.HasPart(folder + target);
+  var id: string;
+  var partName: string := fPackage.AddPart(fWorkbookPart, cWorksheet, target, cWorksheetType, TWorksheetE.Create, id);
+  if partName.IsEmpty then
+    Exit(nil);
 
-  workbook := TWorkbookE(EditPart(fWorkbookPart));
+  workbook := fPackage.EditPart<TWorkbookE>(fWorkbookPart);
   var sheetId: cardinal := 0;
   for var entry: TSheetCT in workbook.Sheets.Sheet do
     if entry.SheetId > sheetId then
@@ -4285,34 +4058,13 @@ begin
   Result.fFresh := True;
 end;
 
-function TWorkbook.ReadPart(const aName: string): TXmlite;
-begin
-  var part: TPart := fParts[aName];
-  if part.fXml = nil then
-  begin
-    var bytes: TBytes;
-    fZip.Read(PartIndex(aName), bytes);
-    part.fXml := part.fClass.Create;
-    // False: read as far as it goes, but it would not be written back as it was
-    part.fExact := ReadXml(part.fXml, aName, bytes);
-  end;
-  Result := part.fXml;
-end;
-
-// a part that did not read back exactly too: Save refuses it
-function TWorkbook.EditPart(const aName: string): TXmlite;
-begin
-  Result := ReadPart(aName);
-  fParts[aName].fChanged := True;
-end;
-
 // Excel's default: a cell is locked unless its style unlocks it
 function TWorkbook.IsLockedStyle(aStyle: cardinal): boolean;
 begin
   Result := True;
   if fStylesPart.IsEmpty then
     Exit;
-  var styles: TStyleSheetE := TStyleSheetE(ReadPart(fStylesPart));
+  var styles: TStyleSheetE := fPackage.Part<TStyleSheetE>(fStylesPart);
   if styles.IsPresent('CellXfs') and (aStyle < cardinal(styles.CellXfs.Xf.Count)) then
   begin
     var style: TXfCT := styles.CellXfs.Xf[aStyle];
@@ -4327,7 +4079,7 @@ begin
   if fValuesChanged then
     Exit;
   fValuesChanged := True;
-  TWorkbookE(EditPart(fWorkbookPart)).CalcPr.FullCalcOnLoad := True;
+  fPackage.EditPart<TWorkbookE>(fWorkbookPart).CalcPr.FullCalcOnLoad := True;
 end;
 
 // the calculation chain is Excel's cache: a stale entry is its repair prompt, a missing one is not calculated, so it goes with
@@ -4337,24 +4089,13 @@ begin
   fFormulasWritten := True;
   if fCalcChainPart.IsEmpty then
     Exit;
-  var relationships: TRelationshipsE := TRelationshipsE(EditPart(fWorkbookRelationshipsPart));
-  for var i := relationships.Relationship.Count - 1 downto 0 do
-    if string(relationships.Relationship[i].&Type).EndsWith(cCalcChain) then
-      relationships.Remove(relationships.Relationship[i]);
-  if not fContentTypesPart.IsEmpty then
-  begin
-    var types: TTypesE := TTypesE(EditPart(fContentTypesPart));
-    for var i := types.Override.Count - 1 downto 0 do
-      if SameText(types.Override[i].PartName, '/' + fCalcChainPart) then
-        types.Remove(types.Override[i]);
-  end;
-  fDropped.Add(fCalcChainPart);
+  fPackage.RemovePart(fWorkbookPart, fCalcChainPart);
   fCalcChainPart := '';
 end;
 
 function TWorkbook.Date1904: boolean;
 begin
-  var workbook: TWorkbookE := TWorkbookE(ReadPart(fWorkbookPart));
+  var workbook: TWorkbookE := fPackage.Part<TWorkbookE>(fWorkbookPart);
   Result := workbook.IsPresent('WorkbookPr') and workbook.WorkbookPr.Date1904;
 end;
 
@@ -4363,7 +4104,7 @@ begin
   Result := '';
   if fSharedStringsPart.IsEmpty then
     Exit;
-  var strings: TSstE := TSstE(ReadPart(fSharedStringsPart));
+  var strings: TSstE := fPackage.Part<TSstE>(fSharedStringsPart);
   if (aIndex >= 0) and (aIndex < strings.Si.Count) then
     Result := RichText(strings.Si[aIndex]);
 end;
@@ -4373,9 +4114,11 @@ function TWorkbook.SharedStringIndex(const aText: string): integer;
 begin
   if fSharedStringsPart.IsEmpty then
   begin
+    if not fPackage.HasPart(cContentTypes) then // the caller says why
+      Exit(-1);
     var added: TSstE := TSstE.Create;
     var id: string;
-    fSharedStringsPart := NewPart(cSharedStrings, 'sharedStrings.xml', cSharedStringsType, added, id);
+    fSharedStringsPart := fPackage.AddPart(fWorkbookPart, cSharedStrings, 'sharedStrings.xml', cSharedStringsType, added, id);
     if fSharedStringsPart.IsEmpty then
       Exit(-1);
     added.Count := 0;
@@ -4383,7 +4126,7 @@ begin
     added.SetPresent(@added.Count);
     added.SetPresent(@added.UniqueCount);
   end;
-  var strings: TSstE := TSstE(EditPart(fSharedStringsPart));
+  var strings: TSstE := fPackage.EditPart<TSstE>(fSharedStringsPart);
   if fStrings = nil then
   begin
     fStrings := TDictionary<string, integer>.Create;
@@ -4412,7 +4155,7 @@ procedure TWorkbook.SharedStringReleased;
 begin
   if fSharedStringsPart.IsEmpty then
     Exit;
-  var strings: TSstE := TSstE(EditPart(fSharedStringsPart));
+  var strings: TSstE := fPackage.EditPart<TSstE>(fSharedStringsPart);
   if strings.Present[@strings.Count] and (strings.Count > 0) then
   begin
     strings.Count := strings.Count - 1;
@@ -4428,7 +4171,7 @@ begin
     fDateStyles := TDictionary<cardinal, boolean>.Create;
   if fDateStyles.TryGetValue(aStyle, Result) then
     Exit;
-  var styles: TStyleSheetE := TStyleSheetE(ReadPart(fStylesPart));
+  var styles: TStyleSheetE := fPackage.Part<TStyleSheetE>(fStylesPart);
   Result := styles.IsPresent('CellXfs') and (aStyle < cardinal(styles.CellXfs.Xf.Count)) and
     IsDateFormat(styles.CellXfs.Xf[aStyle].NumFmtId, styles);
   fDateStyles.Add(aStyle, Result);
@@ -4439,7 +4182,7 @@ function TWorkbook.ChangedStyle(aStyle: cardinal; const aChange: TProc<TXfCT>): 
 begin
   if fStylesPart.IsEmpty then
     Exit(-1);
-  var styles: TStyleSheetE := TStyleSheetE(ReadPart(fStylesPart));
+  var styles: TStyleSheetE := fPackage.Part<TStyleSheetE>(fStylesPart);
   if not styles.IsPresent('CellXfs') or (styles.CellXfs.Xf.Count = 0) then
     Exit(-1);
   var formats: TXfCTList := styles.CellXfs.Xf;
@@ -4459,7 +4202,7 @@ begin
     var key: string := TXmlite.ObjectToXml(wanted);
     if fStyleKeys.TryGetValue(key, Result) then
       Exit;
-    styles := TStyleSheetE(EditPart(fStylesPart));
+    styles := fPackage.EditPart<TStyleSheetE>(fStylesPart);
     formats.Add(wanted);
     Result := formats.Count - 1;
     wanted := nil;
@@ -4494,7 +4237,7 @@ begin
   Result := 'General';
   if fStylesPart.IsEmpty then
     Exit;
-  var styles: TStyleSheetE := TStyleSheetE(ReadPart(fStylesPart));
+  var styles: TStyleSheetE := fPackage.Part<TStyleSheetE>(fStylesPart);
   if not styles.IsPresent('CellXfs') or (aStyle >= cardinal(styles.CellXfs.Xf.Count)) then
     Exit;
   var id: cardinal := styles.CellXfs.Xf[aStyle].NumFmtId;
@@ -4510,7 +4253,7 @@ function TWorkbook.FormatId(const aCode: string): integer;
 begin
   if fStylesPart.IsEmpty then
     Exit(-1);
-  var styles: TStyleSheetE := TStyleSheetE(ReadPart(fStylesPart));
+  var styles: TStyleSheetE := fPackage.Part<TStyleSheetE>(fStylesPart);
   var shown: string := ShownFormat(aCode);
   var builtIn: integer := BuiltInFormatId(shown);
   var last: integer := 163; // custom formats start at 164
@@ -4525,7 +4268,7 @@ begin
     end;
   if builtIn >= 0 then
     Exit(builtIn);
-  styles := TStyleSheetE(EditPart(fStylesPart));
+  styles := fPackage.EditPart<TStyleSheetE>(fStylesPart);
   var added: TNumFmtCT := TNumFmtCT.Create;
   added.NumFmtId := last + 1;
   added.FormatCode := EncodeText(aCode);
@@ -4539,7 +4282,7 @@ function TWorkbook.FontWith(aFont: cardinal; aBold: boolean): integer;
 begin
   if fStylesPart.IsEmpty then
     Exit(-1);
-  var styles: TStyleSheetE := TStyleSheetE(ReadPart(fStylesPart));
+  var styles: TStyleSheetE := fPackage.Part<TStyleSheetE>(fStylesPart);
   if not styles.IsPresent('Fonts') or (styles.Fonts.Font.Count = 0) then
     Exit(-1);
   var fonts: TFontCTList := styles.Fonts.Font;
@@ -4564,7 +4307,7 @@ begin
     var key: string := TXmlite.ObjectToXml(wanted);
     if fFontKeys.TryGetValue(key, Result) then
       Exit;
-    styles := TStyleSheetE(EditPart(fStylesPart));
+    styles := fPackage.EditPart<TStyleSheetE>(fStylesPart);
     fonts.Add(wanted);
     Result := fonts.Count - 1;
     wanted := nil;
@@ -4582,7 +4325,7 @@ begin
   Result := nil;
   if fStylesPart.IsEmpty then
     Exit;
-  var styles: TStyleSheetE := TStyleSheetE(ReadPart(fStylesPart));
+  var styles: TStyleSheetE := fPackage.Part<TStyleSheetE>(fStylesPart);
   if not styles.IsPresent('Fonts') or (styles.Fonts.Font.Count = 0) then
     Exit;
   var font: cardinal := 0;
@@ -4597,7 +4340,7 @@ function TWorkbook.GetXml: TWorkbookE;
 begin
   Result := nil;
   if not fWorkbookPart.IsEmpty then
-    Result := TWorkbookE(EditPart(fWorkbookPart));
+    Result := fPackage.EditPart<TWorkbookE>(fWorkbookPart);
 end;
 
 function TWorkbook.GetXmlSharedStrings: TSstE;
@@ -4605,7 +4348,7 @@ begin
   Result := nil;
   if not fSharedStringsPart.IsEmpty then
   begin
-    Result := TSstE(EditPart(fSharedStringsPart));
+    Result := fPackage.EditPart<TSstE>(fSharedStringsPart);
     FreeAndNil(fStrings); // the user's changes: found again on the next write
   end;
 end;
@@ -4615,7 +4358,7 @@ begin
   Result := nil;
   if not fStylesPart.IsEmpty then
   begin
-    Result := TStyleSheetE(EditPart(fStylesPart));
+    Result := fPackage.EditPart<TStyleSheetE>(fStylesPart);
     FreeAndNil(fStyleKeys);
     FreeAndNil(fFontKeys);
     FreeAndNil(fDateStyleIds);
@@ -4623,128 +4366,32 @@ begin
   end;
 end;
 
+function TWorkbook.GetFileName: string;
+begin
+  Result := fPackage.FileName;
+end;
+
+function TWorkbook.GetProperties: TCoreProperties;
+begin
+  Result := fPackage.Properties;
+end;
+
 function TWorkbook.Save: boolean;
 begin
-  if fZip = nil then
-    Exit(Fail('NotOpen', 'No workbook is open'));
-  if fFileName.IsEmpty then
-    Exit(Fail('NoFileName', 'The workbook has no file to save to (a new one, or opened from a stream): use SaveAs'));
-  Result := SaveAs(fFileName);
+  Result := fPackage.Save;
+  fError := fPackage.Error;
 end;
 
 function TWorkbook.SaveAs(const aFileName: string): boolean;
 begin
-  if not CanWrite then // a refusal touches no file
-    Exit(False);
-  // the old file stays intact until the new one is complete
-  var temporary: string := aFileName + '.saving';
-  try
-    try
-      var stream: TFileStream := TFileStream.Create(temporary, fmCreate);
-      try
-        Result := Write(stream);
-      finally
-        stream.Free;
-      end;
-      if Result then
-      begin
-        if FileExists(aFileName) then
-          TFile.Delete(aFileName);
-        TFile.Move(temporary, aFileName);
-      end;
-    except
-      on e: Exception do
-      begin
-        if not IsFileError(e) then
-          raise;
-        Result := Fail('File', e.Message);
-      end;
-    end;
-  finally
-    if FileExists(temporary) then
-      DeleteFile(temporary);
-  end;
-  if Result then
-  begin
-    fFileName := aFileName;
-    fError := '';
-  end;
+  Result := fPackage.SaveAs(aFileName);
+  fError := fPackage.Error;
 end;
 
 function TWorkbook.SaveAs(aStream: TStream): boolean;
 begin
-  try
-    Result := Write(aStream);
-  except
-    on e: Exception do
-    begin
-      if not IsFileError(e) then
-        raise;
-      Result := Fail('File', e.Message);
-    end;
-  end;
-  if Result then
-    fError := '';
-end;
-
-function TWorkbook.CanWrite: boolean;
-begin
-  if fZip = nil then
-    Exit(Fail('NotOpen', 'No workbook is open'));
-  // refused rather than written broken
-  for var pair: TPair<string, TPart> in fParts do
-    if pair.Value.fChanged and not pair.Value.fExact then
-      Exit(Fail('NotExact', Format('%s cannot be saved changed: it did not read back exactly, writing it could lose something',
-        [pair.Key])));
-  Result := True;
-end;
-
-function TWorkbook.Write(aStream: TStream): boolean;
-
-  procedure AddXml(aTarget: TZipFile; aPart: TPart; const aName: string; aCompression: TZipCompression);
-  begin
-    var xml: TBytesStream := TBytesStream.Create;
-    try
-      // as Excel writes: compact whatever TBasite.Pretty says, booleans as 1 and 0
-      aPart.fXml.ToXml(xml, [woBooleanDigits]);
-      xml.Position := 0;
-      aTarget.Add(xml, aName, aCompression);
-    finally
-      xml.Free;
-    end;
-  end;
-
-begin
-  if not CanWrite then
-    Exit(False);
-  var target: TZipFile := TZipFile.Create;
-  try
-    target.Open(aStream, zmWrite);
-    // the same order and compression as the original
-    for var i := 0 to fZip.FileCount - 1 do
-    begin
-      var name: string := fZip.FileNames[i];
-      if fDropped.Contains(name) then
-        Continue;
-      var compression: TZipCompression := TZipCompression(fZip.FileInfo[i].CompressionMethod);
-      var part: TPart;
-      if fParts.TryGetValue(name, part) and part.fChanged then
-        AddXml(target, part, name, compression)
-      else
-      begin
-        var bytes: TBytes;
-        fZip.Read(i, bytes);
-        target.Add(bytes, name, compression);
-      end;
-    end;
-    for var pair: TPair<string, TPart> in fParts do
-      if pair.Value.fNew then
-        AddXml(target, pair.Value, pair.Key, zcDeflate);
-    target.Close;
-  finally
-    target.Free;
-  end;
-  Result := True;
+  Result := fPackage.SaveAs(aStream);
+  fError := fPackage.Error;
 end;
 
 end.
