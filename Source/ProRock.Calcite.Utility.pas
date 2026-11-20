@@ -37,9 +37,9 @@ function SerialToDate(aSerial: Double; a1904: boolean): TDateTime;
 // False before the system's first day (1900-01-01, 1904-01-01); a TDateTime below 1 is a time of day
 function DateToSerial(aDate: TDateTime; a1904: boolean; out aSerial: Double): boolean;
 
-// a text's width in the default font's pixels, estimated by kinds of characters (Excel's AutoFit of Aptos Narrow 11
-// measured); the widest line
-function TextPixels(const aText: string; aBold: boolean): Double;
+// a text's width in pixels at size 11, the widest line: ASCII as Excel's AutoFit measures Aptos Narrow (aFont) or Calibri
+// (any other font), the rest estimated
+function TextPixels(const aText, aFont: string; aBold: boolean): Double;
 
 // an item of an array for a range, from 0: two dimensions, or one (a row)
 function ArrayItem(const aArray: Variant; aRow, aColumn: integer): Variant;
@@ -244,9 +244,20 @@ begin
     aSerial := aDate;
 end;
 
-function TextPixels(const aText: string; aBold: boolean): Double;
+function TextPixels(const aText, aFont: string; aBold: boolean): Double;
+const
+  // ' ' to '~', a pixel width each in hex (Excel 365 at 96 dpi, size 11); regular, bold
+  cCalibri: array[boolean] of string = (
+    '35677BA3557745467777777777447777D988977994586CAA8A87799D877565774786885784474C888856587B7765757',
+    '35777BB4557745467777777777447777D988977A94586DAA8A877A9E887565775786885784474C888856587B7765757');
+  cAptosNarrow: array[boolean] of string = (
+    '35577B93557745457777777777447777C888977994586BAA8A87798C877454867887874784474C888857486A6664747',
+    '35677B93557745457777777777447777B88AA87AA4587BAA8A98798D887555867787885784474C888857587A7765757');
 begin
   Result := 0;
+  var table: string := cCalibri[aBold];
+  if SameText(aFont, 'Aptos Narrow') then
+    table := cAptosNarrow[aBold];
   var line: Double := 0;
   for var i := 1 to aText.Length do
   begin
@@ -259,20 +270,14 @@ begin
           line := 0;
           Continue;
         end;
-      '0' .. '9':
-        width := 7;
-      '.', ',', ':', ';', '''', '!', '|':
-        width := 2.5;
-      'f', 'i', 'j', 'l', 'r', 't', 'I', ' ':
-        width := 4;
-      '-', '/', '\', '(', ')', '[', ']', '"', '*':
-        width := 4.5;
-      'm', 'w', '@', '%':
-        width := 11;
-      'M', 'W':
-        width := 12;
-      'A' .. 'H', 'J' .. 'L', 'N' .. 'V', 'X' .. 'Z':
-        width := 8;
+      ' ' .. '~':
+        begin
+          var digit: integer := Ord(table[Ord(c) - 31]) - Ord('0');
+          if digit > 9 then
+            Dec(digit, Ord('A') - Ord('9') - 1);
+          line := line + digit;
+          Continue;
+        end;
       #$DC00 .. #$DFFF:
         Continue; // the second half of a pair: counted with the first
       #$1100 .. #$115F, #$2E80 .. #$A4CF, #$AC00 .. #$D7A3, #$D800 .. #$DBFF, #$F900 .. #$FAFF, #$FE30 .. #$FE4F,
@@ -281,7 +286,7 @@ begin
     else
       width := 7.5;
     end;
-    if aBold and not CharInSet(c, ['0' .. '9']) then
+    if aBold then
       width := width * 1.04;
     line := line + width;
   end;

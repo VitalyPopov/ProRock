@@ -50,9 +50,9 @@ type
     fSheet: TWorksheet;
     fTop, fLeft, fBottom, fRight: integer;
   public
-    // Excel's AutoFit, estimated: each column as wide as its longest shown value in the range's rows. Calcite measures no
-    // fonts - the width comes from the characters (digits exact, letters close; wide letters, other fonts and sizes less so).
-    // A column with nothing in those rows keeps its width
+    // Excel's AutoFit, estimated: each column as wide as its longest shown value in the range's rows, numbers and dates a digit
+    // wider (too narrow, Excel shows ####). Calcite measures no fonts: Latin letters, digits and signs exact in Calibri and
+    // Aptos Narrow, other fonts as Calibri, other scripts close. A column with nothing in those rows keeps its width
     procedure AutoFit;
   end;
 
@@ -3204,12 +3204,13 @@ begin
 end;
 
 // Excel's AutoFit estimated: the widest shown value of each column in the range's rows, with Excel's 2 pixels of margin
+// (numbers and dates a digit more)
 procedure TWorksheet.AutoFit(const aRange: TRange);
 begin
   var sheet: TWorksheetE := Objects(False);
   var widths: TArray<Double>;
   SetLength(widths, aRange.fRight - aRange.fLeft + 1);
-  var fonts: TDictionary<cardinal, Double> := TDictionary<cardinal, Double>.Create; // each style's scale: size, bold
+  var fonts: TDictionary<cardinal, TFontCT> := TDictionary<cardinal, TFontCT>.Create; // each style's, nil: none
   try
     var rows: TRowCTList := sheet.SheetData.Row;
     var rowIndex: integer;
@@ -3224,6 +3225,7 @@ begin
         var cell: TCellCT := row.C[cellIndex];
         var value: Variant;
         var text: string := '';
+        var margin: integer := 0;
         case CellValue(cell, value) of
           cvText, cvError:
             text := value;
@@ -3236,24 +3238,37 @@ begin
             begin
               var number: Double;
               if TUtility.TryFloatFromText(string(cell.V).Trim, number) then
-                text := ShownNumber(number, fWorkbook.FormatCode(cell.S));
+              begin
+                var code: string := fWorkbook.FormatCode(cell.S);
+                // the built-in dates show in the reader's own order: measured at their widest, two digits each
+                if (code = 'm/d/yyyy') or (code = 'm/d/yyyy h:mm') then
+                  code := StringReplace(StringReplace(code, 'm/d', 'mm/dd', []), ' h:', ' hh:', []);
+                text := ShownNumber(number, code);
+              end;
+              margin := cDigitPixels; // too narrow, a number shows ####, where text only runs over
             end;
         end;
         if text <> '' then
         begin
-          var scale: Double;
-          if not fonts.TryGetValue(cell.S, scale) then
+          var font: TFontCT;
+          if not fonts.TryGetValue(cell.S, font) then
           begin
-            scale := 1;
-            var font: TFontCT := fWorkbook.StyleFont(cell.S);
-            if (font <> nil) and (font.Sz.Count > 0) and (font.Sz[0].Val > 0) then
+            font := fWorkbook.StyleFont(cell.S);
+            fonts.Add(cell.S, font);
+          end;
+          var scale: Double := 1;
+          var bold: boolean := False;
+          var name: string := '';
+          if font <> nil then
+          begin
+            if (font.Sz.Count > 0) and (font.Sz[0].Val > 0) then
               scale := font.Sz[0].Val / 11;
-            if (font <> nil) and (font.B.Count > 0) and font.B[0].Val then
-              scale := -scale; // bold
-            fonts.Add(cell.S, scale);
+            bold := (font.B.Count > 0) and font.B[0].Val;
+            if font.Name.Count > 0 then
+              name := font.Name[0].Val;
           end;
           var index: integer := ColumnOf(cell.R) - aRange.fLeft;
-          widths[index] := Max(widths[index], TextPixels(text, scale < 0) * Abs(scale));
+          widths[index] := Max(widths[index], TextPixels(text, name, bold) * scale + margin);
         end;
         Inc(cellIndex);
       end;

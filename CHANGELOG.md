@@ -32,7 +32,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 - Calcite's formatting, as Excel's own properties: `NumberFormat` (`'0.00'`, `'#,##0.00'`, `'dd.mm.yyyy'`; Excel's built-in
   ones found by their names, others added once and found again, a whole column or row formatted as Excel does it; a format
   Excel would not open, like `[Foo]0` or digits and dates in one section, is refused and listed in `Issues`), `Font.Bold`,
-  `ColumnWidth` in Excel's characters, `Columns.AutoFit` (an estimate from the characters shown: Calcite measures no fonts),
+  `ColumnWidth` in Excel's characters, `Columns.AutoFit` (Excel's widths for Latin letters, digits and signs in Calibri and Aptos
+  Narrow, other fonts as Calibri, other scripts estimated; numbers and dates a digit wider, never `####`),
   and `Sheet.FreezePanes := 'A2'`, written as Excel writes it
 - `ProRock.Calcite.Data`: `ExportDataSet(DataSet, Sheet)` writes a TDataSet's visible fields to a sheet - a bold header from
   `DisplayLabel`, each value as its type (null left empty), number formats from the fields (`DisplayFormat`, currency,
