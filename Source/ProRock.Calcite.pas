@@ -369,6 +369,8 @@ const
   cDateTimeFormat = 22;
   cTimeFormat = 21;
 
+{$REGION 'xlsx package: part names'}
+
 // relative to the folder of the part that has the relationship, or absolute (/xl/...)
 function ResolveTarget(const aSourcePart, aTarget: string): string;
 begin
@@ -401,8 +403,9 @@ begin
   Result := aPart.Substring(0, slash + 1) + '_rels/' + aPart.Substring(slash + 1) + '.rels';
 end;
 
-{ formulas }
+{$ENDREGION}
 
+{$REGION 'Excel language: formulas'}
 
 type
   // one of Excel's functions: the argument counts it takes (those over Paired come in pairs: SUMIFS 3, 5, 7...; none when
@@ -1630,145 +1633,9 @@ begin
     Result := aStored;
 end;
 
-{ values }
+{$ENDREGION}
 
-// ST_Xstring: a character XML cannot hold is written as _xHHHH_, and so is an underscore that would read as one
-function DecodeText(const aText: string): string;
-begin
-  if Pos('_x', aText) = 0 then
-    Exit(aText);
-  var builder: TStringBuilder := TStringBuilder.Create(aText.Length);
-  try
-    var i: integer := 1;
-    while i <= aText.Length do
-    begin
-      var code: integer;
-      if (aText[i] = '_') and (i + 6 <= aText.Length) and (aText[i + 1] = 'x') and (aText[i + 6] = '_') and
-        TryStrToInt('$' + Copy(aText, i + 2, 4), code) then
-      begin
-        builder.Append(Char(code));
-        Inc(i, 7);
-      end
-      else
-      begin
-        builder.Append(aText[i]);
-        Inc(i);
-      end;
-    end;
-    Result := builder.ToString;
-  finally
-    builder.Free;
-  end;
-end;
-
-function EncodeText(const aText: string): string;
-begin
-  Result := aText;
-  for var i := aText.Length downto 1 do
-  begin
-    var code: integer := Ord(aText[i]);
-    if ((code < 32) and not (code in [9, 10, 13])) or (code = $FFFE) or (code = $FFFF) then
-      Result := Copy(Result, 1, i - 1) + Format('_x%.4X_', [code]) + Copy(Result, i + 1, MaxInt)
-    else if (code = Ord('_')) and (i + 6 <= aText.Length) and (aText[i + 1] = 'x') and (aText[i + 6] = '_') then
-    begin
-      var hex: integer;
-      if TryStrToInt('$' + Copy(aText, i + 2, 4), hex) then
-        Result := Copy(Result, 1, i - 1) + '_x005F_' + Copy(Result, i + 1, MaxInt);
-    end;
-  end;
-end;
-
-// a shared string or an inline one: plain text, or rich text in runs
-function RichText(aItem: TRstCT): string;
-begin
-  Result := aItem.T;
-  for var run: TREltCT in aItem.R do
-    Result := Result + string(run.T);
-  Result := DecodeText(Result);
-end;
-
-// Excel's built-in date and time formats, and a format code with day, month, year, hour or second outside quotes
-function IsDateFormat(aId: cardinal; aStyles: TStyleSheetE): boolean;
-
-  function IsDateCode(const aCode: string): boolean;
-  begin
-    if aCode.StartsWith('General', True) then
-      Exit(False);
-    var i: integer := 1;
-    while i <= aCode.Length do
-    begin
-      case aCode[i] of
-        ';':
-          Exit(False); // the first section decides
-        '"':
-          begin
-            Inc(i);
-            while (i <= aCode.Length) and (aCode[i] <> '"') do
-              Inc(i);
-          end;
-        '\', '_', '*':
-          Inc(i);
-        '[':
-          begin
-            var close: integer := Pos(']', aCode, i);
-            if close = 0 then
-              Exit(False);
-            // elapsed time ([h]:mm) is a time; colors, conditions and locales ([Red], [>0], [$-409]) are not
-            var inside: string := LowerCase(Copy(aCode, i + 1, close - i - 1));
-            if (inside <> '') and ((inside.Trim(['h']) = '') or (inside.Trim(['m']) = '') or (inside.Trim(['s']) = '')) then
-              Exit(True);
-            i := close;
-          end;
-        'y', 'Y', 'm', 'M', 'd', 'D', 'h', 'H', 's', 'S':
-          Exit(True);
-      end;
-      Inc(i);
-    end;
-    Result := False;
-  end;
-
-begin
-  if aStyles.IsPresent('NumFmts') then
-    for var numberFormat: TNumFmtCT in aStyles.NumFmts.NumFmt do
-      if numberFormat.NumFmtId = aId then
-        Exit(IsDateCode(DecodeText(numberFormat.FormatCode)));
-  // 27-36 and 50-58: the East Asian ones
-  Result := (aId <= 58) and (Byte(aId) in [14 .. 22, 27 .. 36, 45 .. 47, 50 .. 58]);
-end;
-
-const
-  // Excel's built-in number formats as its NumberFormat names them in English; 14-17 and 22 follow the regional settings
-  // in Excel (these are en-US's), 5-8 the currency's; '' - none
-  cBuiltInFormats: array[0 .. 49] of string = ('General', '0', '0.00', '#,##0', '#,##0.00', '$#,##0_);($#,##0)',
-    '$#,##0_);[Red]($#,##0)', '$#,##0.00_);($#,##0.00)', '$#,##0.00_);[Red]($#,##0.00)', '0%', '0.00%', '0.00E+00', '# ?/?',
-    '# ??/??', 'm/d/yyyy', 'd-mmm-yy', 'd-mmm', 'mmm-yy', 'h:mm AM/PM', 'h:mm:ss AM/PM', 'h:mm', 'h:mm:ss', 'm/d/yyyy h:mm',
-    '', '', '', '', '', '', '', '', '', '', '', '', '', '', '#,##0_);(#,##0)', '#,##0_);[Red](#,##0)',
-    '#,##0.00_);(#,##0.00)', '#,##0.00_);[Red](#,##0.00)', '_(* #,##0_);_(* (#,##0);_(* "-"_);_(@_)',
-    '_($* #,##0_);_($* (#,##0);_($* "-"_);_(@_)', '_(* #,##0.00_);_(* (#,##0.00);_(* "-"??_);_(@_)',
-    '_($* #,##0.00_);_($* (#,##0.00);_($* "-"??_);_(@_)', 'mm:ss', '[h]:mm:ss', 'mm:ss.0', '##0.0E+0', '@');
-
-function BuiltInFormat(aId: cardinal): string;
-begin
-  if (aId <= High(cBuiltInFormats)) and (cBuiltInFormats[aId] <> '') then
-    Result := cBuiltInFormats[aId]
-  else if (aId <= 58) and (Byte(aId) in [32 .. 35]) then // the East Asian times and dates: the locale's
-    Result := 'h:mm:ss'
-  else if (aId <= 58) and (Byte(aId) in [27 .. 31, 36, 50 .. 58]) then
-    Result := 'm/d/yyyy'
-  else
-    Result := 'General';
-end;
-
-// a code written: the built-in id it names, -1 for none (5-8 are the locale's currency, never chosen)
-function BuiltInFormatId(const aShown: string): integer;
-begin
-  if (aShown = '') or SameText(aShown, 'General') then
-    Exit(0);
-  for var id := 1 to High(cBuiltInFormats) do
-    if not (id in [5 .. 8]) and (cBuiltInFormats[id] = aShown) then
-      Exit(id);
-  Result := -1;
-end;
+{$REGION 'Excel language: number formats'}
 
 // a number format's sections, split at ; outside quotes, brackets and escapes; why Excel would not open it, '' - it would
 function FormatSections(const aCode: string; out aSections: TArray<string>): string;
@@ -2023,27 +1890,6 @@ begin
   end;
 end;
 
-const
-  // the default font's digit (Calibri or Aptos Narrow 11) in pixels: the unit of Excel's column widths
-  cDigitPixels = 7;
-  cMaxColumnWidth = 255;
-
-// Excel's ColumnWidth (characters) as a file stores it, and back: whole pixels, 5 of them padding
-function WidthToFile(aCharacters: Double): Double;
-begin
-  if aCharacters <= 0 then
-    Exit(0);
-  Result := Trunc((Trunc(aCharacters * cDigitPixels + 0.5) + 5) / cDigitPixels * 256) / 256;
-end;
-
-function FileToWidth(aWidth: Double): Double;
-begin
-  var pixels: integer := Trunc(aWidth * cDigitPixels + 0.5) - 5;
-  if pixels <= 0 then
-    Exit(0);
-  Result := Trunc(pixels / cDigitPixels * 100 + 0.5) / 100;
-end;
-
 // a number as Excel's General shows it in a cell: up to 11 characters
 function GeneralText(aNumber: Double): string;
 begin
@@ -2187,6 +2033,169 @@ begin
   end;
 end;
 
+{$ENDREGION}
+
+{$REGION 'xlsx storage: text, built-in formats, date styles, widths, data tables'}
+
+// ST_Xstring: a character XML cannot hold is written as _xHHHH_, and so is an underscore that would read as one
+function DecodeText(const aText: string): string;
+begin
+  if Pos('_x', aText) = 0 then
+    Exit(aText);
+  var builder: TStringBuilder := TStringBuilder.Create(aText.Length);
+  try
+    var i: integer := 1;
+    while i <= aText.Length do
+    begin
+      var code: integer;
+      if (aText[i] = '_') and (i + 6 <= aText.Length) and (aText[i + 1] = 'x') and (aText[i + 6] = '_') and
+        TryStrToInt('$' + Copy(aText, i + 2, 4), code) then
+      begin
+        builder.Append(Char(code));
+        Inc(i, 7);
+      end
+      else
+      begin
+        builder.Append(aText[i]);
+        Inc(i);
+      end;
+    end;
+    Result := builder.ToString;
+  finally
+    builder.Free;
+  end;
+end;
+
+function EncodeText(const aText: string): string;
+begin
+  Result := aText;
+  for var i := aText.Length downto 1 do
+  begin
+    var code: integer := Ord(aText[i]);
+    if ((code < 32) and not (code in [9, 10, 13])) or (code = $FFFE) or (code = $FFFF) then
+      Result := Copy(Result, 1, i - 1) + Format('_x%.4X_', [code]) + Copy(Result, i + 1, MaxInt)
+    else if (code = Ord('_')) and (i + 6 <= aText.Length) and (aText[i + 1] = 'x') and (aText[i + 6] = '_') then
+    begin
+      var hex: integer;
+      if TryStrToInt('$' + Copy(aText, i + 2, 4), hex) then
+        Result := Copy(Result, 1, i - 1) + '_x005F_' + Copy(Result, i + 1, MaxInt);
+    end;
+  end;
+end;
+
+// a shared string or an inline one: plain text, or rich text in runs
+function RichText(aItem: TRstCT): string;
+begin
+  Result := aItem.T;
+  for var run: TREltCT in aItem.R do
+    Result := Result + string(run.T);
+  Result := DecodeText(Result);
+end;
+
+const
+  // Excel's built-in number formats as its NumberFormat names them in English; 14-17 and 22 follow the regional settings
+  // in Excel (these are en-US's), 5-8 the currency's; '' - none
+  cBuiltInFormats: array[0 .. 49] of string = ('General', '0', '0.00', '#,##0', '#,##0.00', '$#,##0_);($#,##0)',
+    '$#,##0_);[Red]($#,##0)', '$#,##0.00_);($#,##0.00)', '$#,##0.00_);[Red]($#,##0.00)', '0%', '0.00%', '0.00E+00', '# ?/?',
+    '# ??/??', 'm/d/yyyy', 'd-mmm-yy', 'd-mmm', 'mmm-yy', 'h:mm AM/PM', 'h:mm:ss AM/PM', 'h:mm', 'h:mm:ss', 'm/d/yyyy h:mm',
+    '', '', '', '', '', '', '', '', '', '', '', '', '', '', '#,##0_);(#,##0)', '#,##0_);[Red](#,##0)',
+    '#,##0.00_);(#,##0.00)', '#,##0.00_);[Red](#,##0.00)', '_(* #,##0_);_(* (#,##0);_(* "-"_);_(@_)',
+    '_($* #,##0_);_($* (#,##0);_($* "-"_);_(@_)', '_(* #,##0.00_);_(* (#,##0.00);_(* "-"??_);_(@_)',
+    '_($* #,##0.00_);_($* (#,##0.00);_($* "-"??_);_(@_)', 'mm:ss', '[h]:mm:ss', 'mm:ss.0', '##0.0E+0', '@');
+
+function BuiltInFormat(aId: cardinal): string;
+begin
+  if (aId <= High(cBuiltInFormats)) and (cBuiltInFormats[aId] <> '') then
+    Result := cBuiltInFormats[aId]
+  else if (aId <= 58) and (Byte(aId) in [32 .. 35]) then // the East Asian times and dates: the locale's
+    Result := 'h:mm:ss'
+  else if (aId <= 58) and (Byte(aId) in [27 .. 31, 36, 50 .. 58]) then
+    Result := 'm/d/yyyy'
+  else
+    Result := 'General';
+end;
+
+// a code written: the built-in id it names, -1 for none (5-8 are the locale's currency, never chosen)
+function BuiltInFormatId(const aShown: string): integer;
+begin
+  if (aShown = '') or SameText(aShown, 'General') then
+    Exit(0);
+  for var id := 1 to High(cBuiltInFormats) do
+    if not (id in [5 .. 8]) and (cBuiltInFormats[id] = aShown) then
+      Exit(id);
+  Result := -1;
+end;
+
+// Excel's built-in date and time formats, and a format code with day, month, year, hour or second outside quotes
+function IsDateFormat(aId: cardinal; aStyles: TStyleSheetE): boolean;
+
+  function IsDateCode(const aCode: string): boolean;
+  begin
+    if aCode.StartsWith('General', True) then
+      Exit(False);
+    var i: integer := 1;
+    while i <= aCode.Length do
+    begin
+      case aCode[i] of
+        ';':
+          Exit(False); // the first section decides
+        '"':
+          begin
+            Inc(i);
+            while (i <= aCode.Length) and (aCode[i] <> '"') do
+              Inc(i);
+          end;
+        '\', '_', '*':
+          Inc(i);
+        '[':
+          begin
+            var close: integer := Pos(']', aCode, i);
+            if close = 0 then
+              Exit(False);
+            // elapsed time ([h]:mm) is a time; colors, conditions and locales ([Red], [>0], [$-409]) are not
+            var inside: string := LowerCase(Copy(aCode, i + 1, close - i - 1));
+            if (inside <> '') and ((inside.Trim(['h']) = '') or (inside.Trim(['m']) = '') or (inside.Trim(['s']) = '')) then
+              Exit(True);
+            i := close;
+          end;
+        'y', 'Y', 'm', 'M', 'd', 'D', 'h', 'H', 's', 'S':
+          Exit(True);
+      end;
+      Inc(i);
+    end;
+    Result := False;
+  end;
+
+begin
+  if aStyles.IsPresent('NumFmts') then
+    for var numberFormat: TNumFmtCT in aStyles.NumFmts.NumFmt do
+      if numberFormat.NumFmtId = aId then
+        Exit(IsDateCode(DecodeText(numberFormat.FormatCode)));
+  // 27-36 and 50-58: the East Asian ones
+  Result := (aId <= 58) and (Byte(aId) in [14 .. 22, 27 .. 36, 45 .. 47, 50 .. 58]);
+end;
+
+const
+  // the default font's digit (Calibri or Aptos Narrow 11) in pixels: the unit of Excel's column widths
+  cDigitPixels = 7;
+  cMaxColumnWidth = 255;
+
+// Excel's ColumnWidth (characters) as a file stores it, and back: whole pixels, 5 of them padding
+function WidthToFile(aCharacters: Double): Double;
+begin
+  if aCharacters <= 0 then
+    Exit(0);
+  Result := Trunc((Trunc(aCharacters * cDigitPixels + 0.5) + 5) / cDigitPixels * 256) / 256;
+end;
+
+function FileToWidth(aWidth: Double): Double;
+begin
+  var pixels: integer := Trunc(aWidth * cDigitPixels + 0.5) - 5;
+  if pixels <= 0 then
+    Exit(0);
+  Result := Trunc(pixels / cDigitPixels * 100 + 0.5) / 100;
+end;
+
 // the value of a data table's cells, as Excel's Formula shows it: TABLE(row input, column input)
 function TableFormula(aFormula: TCellFormulaCT): string;
 begin
@@ -2197,6 +2206,10 @@ begin
   else
     Result := Format('TABLE(,%s)', [aFormula.R1]);
 end;
+
+{$ENDREGION}
+
+{$REGION 'Ranges'}
 
 function Contains(const aOuter, aInner: TRange): boolean;
 begin
@@ -2220,6 +2233,8 @@ begin
     end;
   Result := False;
 end;
+
+{$ENDREGION}
 
 { TRange }
 
