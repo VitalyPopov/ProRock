@@ -113,6 +113,8 @@ type
     // aPart's relationships ('' - the package's); aType - all, or those whose type ends so: /worksheet, /metadata/core-properties
     function Relationships(const aPart: string; const aType: string = ''): TArray<TRelationshipOoxml>;
     function HasPart(const aName: string): boolean;
+    // [Content_Types].xml's for a part: its Override, else the Default of its extension; '' - none
+    function ContentType(const aName: string): string;
     // a new part, related from aFrom ('' - the package) with aType (a full URI, or an ending the main part's prefix goes
     // before) and its content type; its name, aId - the relationship's. '' (aXml freed): no content types, or the name is taken
     function AddPart(const aFrom, aType, aTarget, aContentType: string; aXml: TXmlite; out aId: string): string;
@@ -495,6 +497,22 @@ end;
 function TPackageOoxml.HasPart(const aName: string): boolean;
 begin
   Result := not FindPart(aName).IsEmpty;
+end;
+
+function TPackageOoxml.ContentType(const aName: string): string;
+begin
+  Result := '';
+  var name: string := FindPart(aName);
+  var types: TTypesE := Part<TTypesE>(cContentTypes);
+  if name.IsEmpty or (types = nil) then
+    Exit;
+  for var entry: TOverrideE in types.Override do
+    if SameText(entry.PartName, '/' + name) then
+      Exit(entry.ContentType);
+  var extension: string := ExtractFileExt(name).Substring(1);
+  for var entry: TDefaultE in types.Default do
+    if SameText(entry.Extension, extension) then
+      Exit(entry.ContentType);
 end;
 
 function TPackageOoxml.GetPart(const aName: string; aClass: TXmliteClass; aEdit: boolean): TXmlite;

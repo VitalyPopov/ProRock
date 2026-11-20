@@ -5,7 +5,7 @@
 interface
 
 uses System.SysUtils, System.Classes, System.Generics.Collections,
-  ProRock.Xmlite, ProRock.Office.Ooxml, ProRock.Xmlite.Schema.Ooxml.Sml;
+  ProRock.Xmlite, ProRock.Office.Ooxml, ProRock.Xmlite.Schema.Ooxml.Sml, ProRock.Xmlite.Schema.CoreProperties;
 
 const
   {$REGION 'ProRock.Xmlite constants aliases'}
@@ -20,10 +20,6 @@ type
   TIssue = ProRock.Xmlite.TIssue;
   TIssueEvent = ProRock.Xmlite.TIssueEvent;
   TIssues = ProRock.Xmlite.TIssues;
-  {$ENDREGION}
-
-  {$REGION 'ProRock.Office.Ooxml types aliases'}
-  TCoreProperties = ProRock.Office.Ooxml.TCoreProperties;
   {$ENDREGION}
 
   TWorkbook = class;
@@ -153,9 +149,20 @@ type
     property ColumnWidth: Double read GetColumnWidth write SetColumnWidth;
   end;
 
+  // the sheet's xlsx objects: Sheet.Xlsx
+  TWorksheetXlsx = class
+  private
+    fSheet: TWorksheet;
+    function GetWorksheet: TWorksheetE;
+  public
+    // the generated objects; once taken, the sheet is saved from them
+    property Worksheet: TWorksheetE read GetWorksheet;
+  end;
+
   TWorksheet = class
   private
     fWorkbook: TWorkbook;
+    fXlsx: TWorksheetXlsx;
     fName: string;
     fPartName: string;
     fPrepared: boolean;
@@ -167,7 +174,7 @@ type
     fLockedWritten: boolean; // reported once a sheet
     fFresh: boolean; // made here, a new workbook's or added: nothing outside Calcite can name it yet
 
-    function GetXml: TWorksheetE;
+    function GetXlsx: TWorksheetXlsx;
     function Objects(aEdit: boolean): TWorksheetE;
     function FindRow(aSheet: TWorksheetE; aRow: integer; out aIndex: integer): boolean;
     function FindCell(aRow, aColumn: integer): TCellCT;
@@ -210,8 +217,8 @@ type
   public
     destructor Destroy; override;
 
-    // the generated objects; once taken, the sheet is saved from them
-    property Xml: TWorksheetE read GetXml;
+    // the xlsx file's own objects, for what Calcite does not cover
+    property Xlsx: TWorksheetXlsx read GetXlsx;
 
     property Workbook: TWorkbook read fWorkbook;
     // renamed only while nothing can name it: a sheet made here (a new workbook's or added), before formulas are written
@@ -256,9 +263,51 @@ type
     property Items[const aName: string]: TWorksheet read GetItemByName; default;
   end;
 
+  // the workbook's xlsx objects: Workbook.Xlsx. Each nil when the file has no such part; once taken, the part is saved from
+  // them
+  TWorkbookXlsx = class
+  private
+    fWorkbook: TWorkbook;
+    function GetWorkbook: TWorkbookE;
+    function GetSharedStrings: TSstE;
+    function GetStyles: TStyleSheetE;
+    function GetCoreProperties: TCorePropertiesE;
+  public
+    property Workbook: TWorkbookE read GetWorkbook;
+    property SharedStrings: TSstE read GetSharedStrings;
+    property Styles: TStyleSheetE read GetStyles;
+    // docProps/core.xml's, made when the file has none
+    property CoreProperties: TCorePropertiesE read GetCoreProperties;
+  end;
+
+  // Excel's File > Info as plain values: '' and 0 - none, and setting them so removes the property; dates in UTC
+  TWorkbookProperties = class
+  private
+    fWorkbook: TWorkbook;
+    function GetText(aIndex: integer): string;
+    procedure SetText(aIndex: integer; const aValue: string);
+    function GetDate(aIndex: integer): TDateTime;
+    procedure SetDate(aIndex: integer; aValue: TDateTime);
+  public
+    property Title: string index 0 read GetText write SetText;
+    property Subject: string index 1 read GetText write SetText;
+    property Creator: string index 2 read GetText write SetText;
+    property Keywords: string index 3 read GetText write SetText;
+    property Description: string index 4 read GetText write SetText;
+    property Category: string index 5 read GetText write SetText;
+    property ContentStatus: string index 6 read GetText write SetText;
+    property LastModifiedBy: string index 7 read GetText write SetText;
+    property Revision: string index 8 read GetText write SetText;
+    property Created: TDateTime index 0 read GetDate write SetDate;
+    // Save sets it when anything changed, as Excel does
+    property Modified: TDateTime index 1 read GetDate write SetDate;
+  end;
+
   TWorkbook = class
   private
     fError: string;
+    fXlsx: TWorkbookXlsx;
+    fProperties: TWorkbookProperties;
     fPackage: TPackageOoxml;
     fWorkbookPart, fSharedStringsPart, fStylesPart, fCalcChainPart: string;
     fSheets: TWorksheets;
@@ -303,21 +352,22 @@ type
     function GetXmlSharedStrings: TSstE;
     function GetXmlStyles: TStyleSheetE;
     function GetFileName: string;
-    function GetProperties: TCoreProperties;
+    function ExtensionError(const aFileName: string): string;
   public
     // a new workbook, as Excel's: Sheet1 and nothing in it; Open replaces it
     constructor Create;
     destructor Destroy; override;
 
-    // the generated objects (nil when there are none); once taken, the part is saved from them
-    property Xml: TWorkbookE read GetXml;
-    property XmlSharedStrings: TSstE read GetXmlSharedStrings;
-    property XmlStyles: TStyleSheetE read GetXmlStyles;
+    // the xlsx file's own objects, for what Calcite does not cover
+    property Xlsx: TWorkbookXlsx read fXlsx;
 
-    // False: Error says why, and the workbook open before stays open
+    // the format from the content, not the name's extension. False: Error says why, and the workbook open before stays
+    // open
     function Open(const aFileName: string): boolean; overload;
     function Open(aStream: TStream): boolean; overload;
-    // Save: to the file opened (a new workbook has none: SaveAs). False: Error says why, and the file stays as it was
+    // Save: to the file opened (a new workbook has none: SaveAs). SaveAs: the extension as Excel needs it - .xlsx, .xlsm with
+    // macros, .xltx and .xltm for templates (another name is written as it is). False: Error says why, and the file stays
+    // as it was
     function Save: boolean;
     function SaveAs(const aFileName: string): boolean; overload;
     function SaveAs(aStream: TStream): boolean; overload;
@@ -331,8 +381,8 @@ type
     // each issue as it comes
     property OnIssue: TIssueEvent read fIssues.OnIssue write fIssues.OnIssue;
     property Sheets: TWorksheets read fSheets;
-    // Excel's File > Info: title, author, dates (Save sets Modified when anything changed). Anew after Open, as Sheets
-    property Properties: TCoreProperties read GetProperties;
+    // Excel's File > Info: title, author, dates (Save sets Modified when anything changed); the open file's, after an Open too
+    property Properties: TWorkbookProperties read fProperties;
   end;
 
 implementation
@@ -2578,10 +2628,18 @@ begin
   fSheet.AutoFit(fSheet.MakeRange(fTop, fLeft, fBottom, fRight));
 end;
 
+{ TWorksheetXlsx }
+
+function TWorksheetXlsx.GetWorksheet: TWorksheetE;
+begin
+  Result := fSheet.Objects(True);
+end;
+
 { TWorksheet }
 
 destructor TWorksheet.Destroy;
 begin
+  fXlsx.Free;
   ForgetFormulas;
   fPivots.Free;
   fTableRows.Free;
@@ -2589,9 +2647,14 @@ begin
   inherited;
 end;
 
-function TWorksheet.GetXml: TWorksheetE;
+function TWorksheet.GetXlsx: TWorksheetXlsx;
 begin
-  Result := Objects(True);
+  if fXlsx = nil then
+  begin
+    fXlsx := TWorksheetXlsx.Create;
+    fXlsx.fSheet := Self;
+  end;
+  Result := fXlsx;
 end;
 
 function TWorksheet.Objects(aEdit: boolean): TWorksheetE;
@@ -3731,6 +3794,80 @@ begin
     raise EArgumentException.CreateFmt('There is no sheet "%s"', [aName]);
 end;
 
+{ TWorkbookXlsx }
+
+function TWorkbookXlsx.GetWorkbook: TWorkbookE;
+begin
+  Result := fWorkbook.GetXml;
+end;
+
+function TWorkbookXlsx.GetSharedStrings: TSstE;
+begin
+  Result := fWorkbook.GetXmlSharedStrings;
+end;
+
+function TWorkbookXlsx.GetStyles: TStyleSheetE;
+begin
+  Result := fWorkbook.GetXmlStyles;
+end;
+
+function TWorkbookXlsx.GetCoreProperties: TCorePropertiesE;
+begin
+  Result := fWorkbook.fPackage.Properties.Xml;
+end;
+
+{ TWorkbookProperties }
+
+function TWorkbookProperties.GetText(aIndex: integer): string;
+begin
+  var core: TCoreProperties := fWorkbook.fPackage.Properties;
+  case aIndex of
+    0: Result := core.Title;
+    1: Result := core.Subject;
+    2: Result := core.Creator;
+    3: Result := core.Keywords;
+    4: Result := core.Description;
+    5: Result := core.Category;
+    6: Result := core.ContentStatus;
+    7: Result := core.LastModifiedBy;
+  else
+    Result := core.Revision;
+  end;
+end;
+
+procedure TWorkbookProperties.SetText(aIndex: integer; const aValue: string);
+begin
+  var core: TCoreProperties := fWorkbook.fPackage.Properties;
+  case aIndex of
+    0: core.Title := aValue;
+    1: core.Subject := aValue;
+    2: core.Creator := aValue;
+    3: core.Keywords := aValue;
+    4: core.Description := aValue;
+    5: core.Category := aValue;
+    6: core.ContentStatus := aValue;
+    7: core.LastModifiedBy := aValue;
+  else
+    core.Revision := aValue;
+  end;
+end;
+
+function TWorkbookProperties.GetDate(aIndex: integer): TDateTime;
+begin
+  if aIndex = 0 then
+    Result := fWorkbook.fPackage.Properties.Created
+  else
+    Result := fWorkbook.fPackage.Properties.Modified;
+end;
+
+procedure TWorkbookProperties.SetDate(aIndex: integer; aValue: TDateTime);
+begin
+  if aIndex = 0 then
+    fWorkbook.fPackage.Properties.Created := aValue
+  else
+    fWorkbook.fPackage.Properties.Modified := aValue;
+end;
+
 { TWorkbook }
 
 constructor TWorkbook.CreateClosed;
@@ -3740,6 +3877,10 @@ begin
   ForwardIssues;
   fSheets := TWorksheets.Create;
   fSheets.fWorkbook := Self;
+  fXlsx := TWorkbookXlsx.Create;
+  fXlsx.fWorkbook := Self;
+  fProperties := TWorkbookProperties.Create;
+  fProperties.fWorkbook := Self;
 end;
 
 constructor TWorkbook.Create;
@@ -3750,6 +3891,8 @@ end;
 
 destructor TWorkbook.Destroy;
 begin
+  fProperties.Free;
+  fXlsx.Free;
   fSheets.Free;
   fPackage.Free;
   fStrings.Free;
@@ -4390,9 +4533,30 @@ begin
   Result := fPackage.FileName;
 end;
 
-function TWorkbook.GetProperties: TCoreProperties;
+// Excel opens a workbook only under the extension of its kind, and other formats' names would mislead
+function TWorkbook.ExtensionError(const aFileName: string): string;
+const
+  cTypes = 'application/vnd.openxmlformats-';
 begin
-  Result := fPackage.Properties;
+  Result := '';
+  var extension: string := ExtractFileExt(aFileName).ToLower;
+  var contentType: string := fPackage.ContentType(fWorkbookPart);
+  var kind: string := '';
+  if contentType = cTypes + 'officedocument.spreadsheetml.sheet.main+xml' then
+    kind := '.xlsx'
+  else if contentType = 'application/vnd.ms-excel.sheet.macroEnabled.main+xml' then
+    kind := '.xlsm'
+  else if contentType = cTypes + 'officedocument.spreadsheetml.template.main+xml' then
+    kind := '.xltx'
+  else if contentType = 'application/vnd.ms-excel.template.macroEnabled.main+xml' then
+    kind := '.xltm';
+  if (extension = '.xlsx') or (extension = '.xlsm') or (extension = '.xltx') or (extension = '.xltm') then
+  begin
+    if not kind.IsEmpty and (extension <> kind) then
+      Result := Format('The workbook is %s: Excel refuses it named %s', [kind, extension]);
+  end
+  else if (extension = '.xls') or (extension = '.xlsb') or (extension = '.ods') or (extension = '.csv') then
+    Result := Format('Calcite writes %s, not %s', [kind, extension]);
 end;
 
 function TWorkbook.Save: boolean;
@@ -4403,6 +4567,9 @@ end;
 
 function TWorkbook.SaveAs(const aFileName: string): boolean;
 begin
+  var error: string := ExtensionError(aFileName);
+  if not error.IsEmpty then
+    Exit(Fail('Extension', error));
   Result := fPackage.SaveAs(aFileName);
   fError := fPackage.Error;
 end;

@@ -11,9 +11,12 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 
 #### Added
 - `ProRock.Calcite`, Excel workbooks (.xlsx), first steps: a workbook opened and saved with nothing lost - a part not changed
-  is saved as the same bytes, a changed one from its generated objects (`Workbook.Xml`, `Sheets[1].Xml`). `Open` and `Save`
-  return False with the reason in `Error` (a file open in Excel, not a workbook), they do not raise
-- Calcite's cells: `Sheet.Range['B5']`, `Sheet.Cells[5, 'B']` (Excel's order, from 1) read and write `Value` (a Variant) or
+  is saved as the same bytes, a changed one from its generated objects (`Workbook.Xlsx.Workbook`, `.Styles`,
+  `.SharedStrings`, `Sheets[1].Xlsx.Worksheet`). `Open` and `Save` return False with the reason in `Error` (a file open in
+  Excel, not a workbook), they do not raise. `Open` knows the format by the content, `SaveAs` refuses a name Excel would not
+  open: a workbook with macros as .xlsx, a template as .xlsm, another format's .ods or .csv
+- Calcite's cells: `Sheet['B5']`, `Sheet['A1:C10']`, `Sheet.Cells[5, 'B']` (Excel's order, from 1; a range's `LastRow` and
+  `LastColumn`) read and write `Value` (a Variant) or
   `AsString`, `AsFloat`, `AsInteger`, `AsDateTime`, `AsBoolean`, as Excel keeps them - text as a shared string found or
   added, a date as a number in a date format (Excel's short date when the cell had none), Excel recalculating formulas on open;
   text stays text (`'=A1'`, `'00123'`). `ClearContents` keeps a formatted cell
@@ -48,10 +51,11 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   cell as it was and is listed, the rest is saved
 - `ProRock.Office.Ooxml`, Office files (.xlsx, .docx, .pptx - any OPC package): `TPackageOoxml` opens and saves one with
   nothing lost - a part is read on first use into its generated classes (`Part<T>`, `EditPart<T>`), a part not changed is saved
-  as the same bytes; `Relationships`, `HasPart`, `AddPart`, `RemovePart`, `Signed`. `Properties`: the core properties Office
+  as the same bytes; `Relationships`, `HasPart`, `ContentType`, `AddPart`, `RemovePart`, `Signed`. `Properties`: the core properties Office
   shows in File > Info as plain values (dates in UTC, an empty value removes the element); a save that changes something sets
   `Modified`, as Office does
-- Calcite's `Workbook.Properties`: the workbook's title, author, dates and the rest of File > Info
+- Calcite's `Workbook.Properties`: the workbook's title, author, dates and the rest of File > Info, as plain values
+  (`Workbook.Xlsx.CoreProperties` for the rest of the part)
 
 #### Changed
 - `RegisterNamespace` raises when a namespace is registered again (two units for one namespace in a program): the second unit's
