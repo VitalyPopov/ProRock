@@ -372,6 +372,24 @@ type
       Index: integer;
       Text: string;
     end;
+    // the sheet's rows or columns as drawings place objects on them, in EMUs (12700 a point, 9525 a pixel): where one
+    // starts (from 0, as markers count), which one a distance falls in
+    TAxis = class
+    private
+      fDefault: Int64;
+      fSizes: TList<TPair<integer, Int64>>; // the rows or columns (from 1) of another size, in order
+    public
+      constructor Create(aSheet: TWorksheet; aByRows: boolean);
+      destructor Destroy; override;
+      function Start(aIndex: integer): Int64;
+      procedure Find(aPosition: Int64; out aIndex: integer; out aOffset: Int64);
+    end;
+    // a drawing's object (xdr:twoCellAnchor or xdr:oneCellAnchor) and where it started and ended on the shifted axis
+    TAnchorMove = record
+      Part: string;
+      Anchor: TXmlite;
+      From, &To: Int64;
+    end;
   private
     fWorkbook: TWorkbook;
     fXlsx: TWorksheetXlsx;
@@ -386,6 +404,10 @@ type
     fMerges: TList<TRange>; // the merged areas, found on the first need, again after a change
     fLockedWritten: boolean; // reported once a sheet
     fFresh: boolean; // made here, a new workbook's or added: nothing outside Calcite can name it yet
+    // while rows or columns are inserted or deleted: the tables (Sales) and table columns (Sales[Q1]) going, each table's
+    // area and data rows (pairs)
+    fGone: TArray<string>;
+    fBodies: TArray<TRange>;
 
     function GetXlsx: TWorksheetXlsx;
     function Objects(aEdit: boolean): TWorksheetE;
@@ -449,7 +471,16 @@ type
     function ShiftBlocker(aByRows: boolean; aFirst, aCount: integer): string;
     function PlanFormulas(aSheet: TWorksheet; aByRows: boolean; aFirst, aCount: integer; aMoves: TList<TFormulaMove>;
       aTexts: TList<TTextMove>; aRefs: TDictionary<cardinal, string>; out aWhy: string): boolean;
+    function TablesBlocker(aByRows: boolean; aFirst, aCount: integer): string;
+    function PivotsBlocker(aByRows: boolean; aFirst, aCount: integer): string;
+    procedure KeepTableRows(var aFirst, aCount: integer; aCleared: TList<TRange>);
+    procedure PlanTables(aByRows: boolean; aFirst, aCount: integer);
+    procedure ShiftTables(aByRows: boolean; aFirst, aCount: integer);
+    procedure ShiftPivots(aByRows: boolean; aFirst, aCount: integer);
+    function PlanDrawings(aByRows: boolean; out aWhy: string): TList<TAnchorMove>;
+    procedure ShiftDrawings(aMoves: TList<TAnchorMove>; aByRows: boolean; aFirst, aCount: integer);
     function CopiedRow(aSource: TRowCT; aNumber: integer): TRowCT;
+    procedure ShowRows(aTop, aBottom: integer);
     procedure ShiftColumnEntries(aFirst, aCount: integer);
     procedure ShiftCells(aByRows: boolean; aFirst, aCount: integer);
     procedure ShiftLists(aByRows: boolean; aFirst, aCount: integer);
@@ -667,7 +698,8 @@ type
 implementation
 
 uses System.Math, System.Variants, System.DateUtils, System.TypInfo, System.Character, System.Generics.Defaults,
-  System.Zip, ProRock.Utility, ProRock.Calcite.Utility, ProRock.Xmlite.Schema.Ooxml.DmlMain;
+  System.Zip, ProRock.Utility, ProRock.Calcite.Utility, ProRock.Xmlite.Schema.Ooxml.DmlMain,
+  ProRock.Xmlite.Schema.Ooxml.DmlSheet;
 
 type
   {$REGION 'ProRock.Xmlite.Schema.Ooxml.Sml types aliases'}
@@ -1292,6 +1324,8 @@ var
   prefixStart: integer; // where the prefix being read began: [1]Sheet1! is one; 0 between them
   prefix: string; // the last one before its ! (Sheet1, 'My Sheet', [1]Sheet1, Sheet1:Sheet3), for aMap
   continued: boolean; // after a table's name: its [...] is the same value
+  tableName: string; // that name, '' when another workbook's
+  tableStart: integer; // where the builder has it
   called: boolean; // after a function's name: its ( follows
   calledFunction: integer; // that function: cFunctions' index, cUnknown, cResult (a LAMBDA's result or parameter called)
   callable: boolean; // just after a LAMBDA's ) or a call's: a ( calls its result, LAMBDA(x,x+1)(5)
@@ -1676,7 +1710,15 @@ var
             Exit(Fail('a [ without its ]'));
           i := close + 1;
           if continued then
-            continued := False
+          begin
+            continued := False;
+            if (tableName <> '') and aMap.TableGone(tableName, Copy(aFormula, start, i - start)) then
+            begin
+              builder.Length := tableStart;
+              builder.Append('#REF!');
+              Exit(True);
+            end;
+          end
           else if (i <= last) and (IsWordStart(aFormula[i]) or (aFormula[i] = '''')) then
             prefixStart := start // a workbook: its sheet's name follows
           else if (i <= last) and (aFormula[i] = '!') then
@@ -1854,6 +1896,10 @@ var
           Exit(FunctionName(after))
         else if next = '[' then
         begin // a table: its [...] follows
+          tableName := '';
+          if not prefixed then
+            tableName := Copy(aFormula, i, after - i);
+          tableStart := builder.Length;
           if not Value(False) then
             Exit;
           continued := True;
@@ -1909,6 +1955,8 @@ begin
   prefixStart := 0;
   prefix := '';
   continued := False;
+  tableName := '';
+  tableStart := 0;
   called := False;
   calledFunction := cUnknown;
   callable := False;
@@ -5239,9 +5287,9 @@ const
   cPushedOff = 'Microsoft Excel can''t insert new cells because it would push non-empty cells off the end of the ' +
     'worksheet. These non-empty cells might appear empty but have blank values, some formatting, or a formula. Delete ' +
     'enough rows or columns to make room for what you want to insert and then try again.';
-  cElements: array[0 .. 9] of string = ('Drawing', 'LegacyDrawing', 'OleObjects', 'Controls', 'ExtLst', 'Scenarios',
+  cElements: array[0 .. 8] of string = ('LegacyDrawing', 'OleObjects', 'Controls', 'ExtLst', 'Scenarios',
     'DataConsolidate', 'CustomSheetViews', 'CellWatches', 'SmartTags');
-  cWhat: array[0 .. 9] of string = ('drawings (charts, pictures, shapes)', 'notes', 'embedded objects', 'controls',
+  cWhat: array[0 .. 8] of string = ('notes', 'embedded objects', 'controls',
     'Excel 2010''s extensions (conditional formats, validation, sparklines)', 'scenarios', 'a data consolidation',
     'custom views', 'watched cells', 'smart tags');
 begin
@@ -5265,28 +5313,19 @@ begin
         if HasValue(cell) and (aByRows and (integer(row.R) > limit - aCount) or
           not aByRows and (ColumnOf(cell.R) > limit - aCount)) then
           Exit(cPushedOff);
-  FindFixedAreas;
-  for var area: TRange in fTables do
-    if IfThen(aByRows, area.fBottom, area.fRight) >= aFirst then
-      Exit('a table (' + CellsAddress(area) + ')' + cLater);
-  for var area: TRange in fPivots do
-    if IfThen(aByRows, area.fBottom, area.fRight) >= aFirst then
-      Exit('a pivot table (' + CellsAddress(area) + ')' + cLater);
+  Result := PivotsBlocker(aByRows, aFirst, aCount);
+  if Result = '' then
+    Result := TablesBlocker(aByRows, aFirst, aCount);
+  if Result <> '' then
+    Exit;
   for var i := 0 to High(cElements) do
     if sheet.IsPresent(cElements[i]) then
       Exit(cWhat[i] + cLater);
-  // charts name cells in their series, pivot caches in their source
+  // charts name cells in their series
   var package: TPackageOoxml := fWorkbook.fPackage;
   for var relationship: TRelationshipOoxml in package.Relationships(fWorkbook.fWorkbookPart) do
     if relationship.&Type.EndsWith(cChartsheet) then
-      Exit('charts' + cLater)
-    else if relationship.&Type.EndsWith(cPivotCacheDefinition) then
-    begin
-      var cache: TPivotCacheDefinitionE := package.Part<TPivotCacheDefinitionE>(relationship.Part);
-      if (cache <> nil) and cache.CacheSource.IsPresent('WorksheetSource') and
-        ((cache.CacheSource.WorksheetSource.Name <> '') or AnsiSameText(cache.CacheSource.WorksheetSource.Sheet, fName)) then
-        Exit('the source of a pivot table' + cLater);
-    end;
+      Exit('charts' + cLater);
   for var other: TWorksheet in fWorkbook.fSheets do
     for var drawing: TRelationshipOoxml in package.Relationships(other.fPartName) do
       if drawing.&Type.EndsWith(cDrawing) then
@@ -5294,6 +5333,48 @@ begin
           if chart.&Type.EndsWith(cChart) then
             Exit('charts' + cLater);
   Result := '';
+end;
+
+// how a formula on aFormulaSheet ('' for a defined name's) changes with rows or columns of aSheet inserted (aCount > 0) or
+// deleted from aFirst
+function ShiftMap(const aFormulaSheet, aSheet: string; aByRows: boolean; aFirst, aCount: integer): TReferenceMap;
+begin
+  if aCount < 0 then
+    Result := TReferenceMap.Deleted(aSheet, aByRows, aFirst, -aCount)
+  else
+    Result := TReferenceMap.Inserted(aSheet, aByRows, aFirst, aCount);
+  Result.OnSheet := (aFormulaSheet <> '') and AnsiSameText(aFormulaSheet, aSheet);
+  Result.InName := aFormulaSheet = '';
+end;
+
+// the same with aSheet's tables: those deleted and their columns (structured references to them become #REF!), the ranges
+// growing with them (PlanTables found them)
+function SheetMap(const aFormulaSheet: string; aSheet: TWorksheet; aByRows: boolean; aFirst, aCount: integer): TReferenceMap;
+begin
+  Result := ShiftMap(aFormulaSheet, aSheet.fName, aByRows, aFirst, aCount);
+  Result.GoneTables := aSheet.fGone;
+  SetLength(Result.Bodies, Length(aSheet.fBodies) div 2);
+  for var i := 0 to High(Result.Bodies) do
+  begin
+    Result.Bodies[i].Left := aSheet.fBodies[2 * i].fLeft;
+    Result.Bodies[i].Right := aSheet.fBodies[2 * i].fRight;
+    Result.Bodies[i].Top := aSheet.fBodies[2 * i].fTop;
+    Result.Bodies[i].Bottom := aSheet.fBodies[2 * i].fBottom;
+    Result.Bodies[i].DataTop := aSheet.fBodies[2 * i + 1].fTop;
+    Result.Bodies[i].DataBottom := aSheet.fBodies[2 * i + 1].fBottom;
+  end;
+end;
+
+// a stored formula through aMap, as it was when nothing in it changes; False with aWhy when it does not read
+function MappedFormula(const aFormula: string; const aMap: TReferenceMap; out aResult, aWhy: string): boolean;
+begin
+  var unchanged: TReferenceMap := TReferenceMap.Fill(0, 0);
+  unchanged.InName := aMap.InName;
+  var unknown, same: string;
+  Result := ShiftFormula(aFormula, aMap, ffStored, aResult, aWhy, unknown) and
+    ShiftFormula(aFormula, unchanged, ffStored, same, aWhy, unknown);
+  if not Result or (aResult = same) then // the text as it was: prefixes and spaces too
+    aResult := aFormula;
 end;
 
 // this sheet's formulas through rows or columns of aSheet inserted or deleted (Shift's): each cell's that stays, its place
@@ -5306,7 +5387,7 @@ function TWorksheet.PlanFormulas(aSheet: TWorksheet; aByRows: boolean; aFirst, a
   begin
     Result := True;
     var why: string;
-    if TWorkbook.ChangedFormula(aText, fName, aSheet.fName, aByRows, aFirst, aCount, aResult, why) then
+    if MappedFormula(aText, SheetMap(fName, aSheet, aByRows, aFirst, aCount), aResult, why) then
       Exit;
     aResult := aText;
     if (aSheet = Self) or aText.ToUpper.Contains(aSheet.fName.ToUpper) then
@@ -5377,6 +5458,12 @@ begin
         Exit;
     end;
   Result := True;
+end;
+
+procedure TWorksheet.ShowRows(aTop, aBottom: integer);
+begin
+  for var row: TRowCT in RowEntries(aTop, aBottom) do
+    row.Clear(@row.Hidden);
 end;
 
 // a row inserted as Excel does: the format and height of the row above (not hidden), its cells' styles where they differ
@@ -5558,6 +5645,25 @@ begin
   end;
 end;
 
+// an autofilter's columns through columns inserted or deleted (its first one was aOldLeft, is aLeft): True when the last
+// filter went with them - Excel then shows the rows it hid
+function ShiftFilterColumns(aFilter: TAutoFilterCT; aOldLeft, aLeft, aFirst, aCount: integer): boolean;
+begin
+  var filtered: boolean := aFilter.FilterColumn.Count > 0;
+  for var i := aFilter.FilterColumn.Count - 1 downto 0 do
+  begin
+    var column: integer := ShiftedIndex(aOldLeft + integer(aFilter.FilterColumn[i].ColId), aFirst, aCount, cMaxColumn);
+    if column = 0 then
+      aFilter.FilterColumn.Delete(i)
+    else
+    begin
+      aFilter.FilterColumn[i].ColId := column - aLeft;
+      aFilter.FilterColumn[i].SetPresent(@aFilter.FilterColumn[i].ColId);
+    end;
+  end;
+  Result := filtered and (aFilter.FilterColumn.Count = 0);
+end;
+
 // what the sheet lists by address, as Excel moves it: merged areas (one left with a cell unmerged), conditional formats and
 // validation (grown by a row or column inserted right after them), hyperlinks, the autofilter (gone with its header row)
 // and its sort, ignored errors, protected ranges, page breaks, frozen panes (never fewer than one row or column), the
@@ -5692,18 +5798,8 @@ begin
       else
       begin
         filter.Ref := CellsAddress(area);
-        if not aByRows then
-          for var i := filter.FilterColumn.Count - 1 downto 0 do
-          begin
-            var column: integer := ShiftedIndex(oldLeft + integer(filter.FilterColumn[i].ColId), aFirst, aCount, cMaxColumn);
-            if column = 0 then
-              filter.FilterColumn.Delete(i)
-            else
-            begin
-              filter.FilterColumn[i].ColId := column - area.fLeft;
-              filter.FilterColumn[i].SetPresent(@filter.FilterColumn[i].ColId);
-            end;
-          end;
+        if not aByRows and ShiftFilterColumns(filter, oldLeft, area.fLeft, aFirst, aCount) then
+          ShowRows(area.fTop + 1, area.fBottom);
         if filter.IsPresent('SortState') and not SortKept(filter.SortState) then
           filter.Clear('SortState');
       end;
@@ -5793,6 +5889,667 @@ begin
       if names.Count = 0 then
         workbook.Clear('DefinedNames');
     end;
+  end;
+end;
+
+// a DrawingML coordinate (ST_Coordinate) in EMUs: a number of them, or a measure with its unit (2.5cm, 1in, 12pt)
+function CoordinateEmus(const aText: string; out aEmus: Int64): boolean;
+const
+  cUnits: array[0 .. 5] of string = ('mm', 'cm', 'in', 'pt', 'pc', 'pi');
+  cEmus: array[0 .. 5] of integer = (36000, 360000, 914400, 12700, 152400, 152400);
+begin
+  if TryStrToInt64(aText, aEmus) then
+    Exit(True);
+  for var i := 0 to High(cUnits) do
+    if aText.EndsWith(cUnits[i]) then
+    begin
+      var number: Double;
+      Result := TUtility.TryFloatFromText(aText.Substring(0, aText.Length - 2), number);
+      if Result then
+        aEmus := Round(number * cEmus[i]);
+      Exit;
+    end;
+  Result := False;
+end;
+
+// a marker's row (aByRows) or column, from 0, and its offset in EMUs; False when the offset does not read
+function MarkerPlace(aMarker: TMarkerCT; aByRows: boolean; out aIndex: integer; out aOffset: Int64): boolean;
+begin
+  if aByRows then
+  begin
+    aIndex := aMarker.Row;
+    Result := CoordinateEmus(aMarker.RowOff, aOffset);
+  end
+  else
+  begin
+    aIndex := aMarker.Col;
+    Result := CoordinateEmus(aMarker.ColOff, aOffset);
+  end;
+end;
+
+procedure PlaceMarker(aMarker: TMarkerCT; aByRows: boolean; aIndex: integer; aOffset: Int64);
+begin
+  if aByRows then
+  begin
+    aMarker.Row := aIndex;
+    aMarker.RowOff := IntToStr(aOffset);
+  end
+  else
+  begin
+    aMarker.Col := aIndex;
+    aMarker.ColOff := IntToStr(aOffset);
+  end;
+end;
+
+{ TWorksheet.TAxis }
+
+constructor TWorksheet.TAxis.Create(aSheet: TWorksheet; aByRows: boolean);
+const
+  cPoint = 12700;
+  cPixel = 9525;
+begin
+  fSizes := TList<TPair<integer, Int64>>.Create;
+  var sheet: TWorksheetE := aSheet.Objects(False);
+  var format: TSheetFormatPrCT := nil;
+  if sheet.IsPresent('SheetFormatPr') then
+    format := sheet.SheetFormatPr;
+  if aByRows then
+  begin
+    fDefault := Round(15 * cPoint);
+    if format <> nil then
+      if format.ZeroHeight then
+        fDefault := 0
+      else if format.Present[@format.DefaultRowHeight] then
+        fDefault := Round(format.DefaultRowHeight * cPoint);
+    for var row: TRowCT in sheet.SheetData.Row do
+      if row.Hidden then
+        fSizes.Add(TPair<integer, Int64>.Create(row.R, 0))
+      else if row.Present[@row.Ht] then
+        fSizes.Add(TPair<integer, Int64>.Create(row.R, Round(row.Ht * cPoint)));
+    Exit;
+  end;
+  // pixels as Excel shows the widths in Calibri's or Aptos Narrow's digits (cDigitPixels), as ColumnWidth reads them
+  var base: integer := 8;
+  if (format <> nil) and format.Present[@format.BaseColWidth] then
+    base := format.BaseColWidth;
+  fDefault := (base * cDigitPixels + 5 + 7) div 8 * 8 * cPixel;
+  if (format <> nil) and format.Present[@format.DefaultColWidth] then
+    fDefault := Trunc(format.DefaultColWidth * cDigitPixels + 0.5) * cPixel;
+  for var columns: TColsCT in sheet.Cols do // not SortedColumns: it would add an empty <cols>, which Excel refuses
+    for var column: TColCT in columns.Col do
+      for var index := column.Min to Min(column.Max, cMaxColumn) do
+        if column.Hidden then
+          fSizes.Add(TPair<integer, Int64>.Create(index, 0))
+        else if column.Present[@column.Width] then
+          fSizes.Add(TPair<integer, Int64>.Create(index, Trunc(column.Width * cDigitPixels + 0.5) * cPixel));
+  fSizes.Sort(TComparer<TPair<integer, Int64>>.Construct(
+    function(const aLeft, aRight: TPair<integer, Int64>): integer
+    begin
+      Result := CompareValue(aLeft.Key, aRight.Key);
+    end));
+end;
+
+destructor TWorksheet.TAxis.Destroy;
+begin
+  fSizes.Free;
+  inherited;
+end;
+
+function TWorksheet.TAxis.Start(aIndex: integer): Int64;
+begin
+  Result := fDefault * aIndex;
+  for var size: TPair<integer, Int64> in fSizes do
+    if size.Key <= aIndex then
+      Inc(Result, size.Value - fDefault)
+    else
+      Break;
+end;
+
+procedure TWorksheet.TAxis.Find(aPosition: Int64; out aIndex: integer; out aOffset: Int64);
+begin
+  var start: Int64 := 0;
+  var next: integer := 1; // the first row or column not passed yet, from 1
+  for var size: TPair<integer, Int64> in fSizes do
+  begin
+    var block: Int64 := fDefault * (size.Key - next);
+    if aPosition < start + block then
+      Break;
+    Inc(start, block);
+    if aPosition < start + size.Value then
+    begin
+      aIndex := size.Key - 1;
+      aOffset := aPosition - start;
+      Exit;
+    end;
+    Inc(start, size.Value);
+    next := size.Key + 1;
+  end;
+  if fDefault = 0 then
+  begin
+    aIndex := next - 1;
+    aOffset := 0;
+    Exit;
+  end;
+  aIndex := next - 1 + integer((aPosition - start) div fDefault);
+  aOffset := (aPosition - start) mod fDefault;
+end;
+
+// why Excel or Calcite does not move the sheet's tables (and the sheet's autofilter) so, '' when nothing stands in the way
+function TWorksheet.TablesBlocker(aByRows: boolean; aFirst, aCount: integer): string;
+const
+  cFiltered = 'a filtered %s (%s): Excel inserts and deletes rows through a filter only partly, which Calcite does not ' +
+    'copy - clear the filter first';
+  cFilterDeleted = 'a filtered column of a %s (%s) deleted while other filters stay: Excel shows the rows only that filter ' +
+    'hid, which Calcite does not work out - clear the filter first';
+var
+  last: integer;
+
+  // columns deleted with some of the filtered ones, not all
+  function SomeFilters(aFilter: TAutoFilterCT; aLeft: integer): boolean;
+  begin
+    var deleted: integer := 0;
+    for var column: TFilterColumnCT in aFilter.FilterColumn do
+      if (aLeft + integer(column.ColId) >= aFirst) and (aLeft + integer(column.ColId) <= last) then
+        Inc(deleted);
+    Result := not aByRows and (aCount < 0) and (deleted > 0) and (deleted < aFilter.FilterColumn.Count);
+  end;
+
+  // rows passing through it: an insert below its first row, a delete taking any
+  function Through(const aArea: TRange): boolean;
+  begin
+    Result := aByRows and ((aCount > 0) and (aFirst > aArea.fTop) and (aFirst <= aArea.fBottom) or
+      (aCount < 0) and (aFirst <= aArea.fBottom) and (last >= aArea.fTop));
+  end;
+
+begin
+  last := aFirst - aCount - 1;
+  var package: TPackageOoxml := fWorkbook.fPackage;
+  for var relationship: TRelationshipOoxml in package.Relationships(fPartName) do
+    if relationship.&Type.EndsWith(cTable) then
+    begin
+      var table: TTableE := package.Part<TTableE>(relationship.Part);
+      var area: TRange := Default(TRange);
+      if (table = nil) or not ParseAddress(table.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
+        Exit(Format('a table that does not read (%s)', [relationship.Part]));
+      if IfThen(aByRows, area.fBottom, area.fRight) < aFirst then
+        Continue;
+      if table.TableType <> stttWorksheet then
+        Exit(Format('a table from a query or an XML map (%s, %s), which Calcite does not move yet', [table.Name,
+          CellsAddress(area)]));
+      if aByRows and (aCount < 0) and (table.HeaderRowCount > 0) and (aFirst < area.fTop + integer(table.HeaderRowCount)) and
+        (last >= area.fTop) and ((aFirst > area.fTop) or (last < area.fBottom)) then
+        Exit(Format('the header row of a table (%s, %s): Excel deletes it only with the whole table', [table.Name,
+          CellsAddress(area)]));
+      if table.IsPresent('AutoFilter') and (table.AutoFilter.FilterColumn.Count > 0) and Through(area) then
+        Exit(Format(cFiltered, ['table', table.Name]));
+      if table.IsPresent('AutoFilter') and SomeFilters(table.AutoFilter, area.fLeft) then
+        Exit(Format(cFilterDeleted, ['table', table.Name]));
+    end;
+  var sheet: TWorksheetE := Objects(False);
+  if sheet.IsPresent('AutoFilter') and (sheet.AutoFilter.FilterColumn.Count > 0) then
+  begin
+    var area: TRange := Default(TRange);
+    if ParseAddress(sheet.AutoFilter.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) and Through(area) then
+      Exit(Format(cFiltered, ['list', CellsAddress(area)]));
+    if SomeFilters(sheet.AutoFilter, area.fLeft) then
+      Exit(Format(cFilterDeleted, ['list', CellsAddress(area)]));
+  end;
+  Result := '';
+end;
+
+// Excel's refusal of a pivot table cut (its page fields above it count), '' when none is
+function TWorksheet.PivotsBlocker(aByRows: boolean; aFirst, aCount: integer): string;
+begin
+  var last: integer := aFirst - aCount - 1;
+  FindFixedAreas;
+  for var area: TRange in fPivots do
+  begin
+    var low: integer := IfThen(aByRows, area.fTop, area.fLeft);
+    var high: integer := IfThen(aByRows, area.fBottom, area.fRight);
+    if (aCount > 0) and (aFirst > low) and (aFirst <= high) or
+      (aCount < 0) and (aFirst <= high) and (last >= low) and ((aFirst > low) or (last < high)) then
+      Exit('We can''t make this change for the selected cells because it will affect a PivotTable. Use the field list to ' +
+        'change the report. If you are trying to insert or delete cells, move the PivotTable and try again.');
+  end;
+  // a consolidation names its ranges by sheet
+  var package: TPackageOoxml := fWorkbook.fPackage;
+  for var relationship: TRelationshipOoxml in package.Relationships(fWorkbook.fWorkbookPart) do
+    if relationship.&Type.EndsWith(cPivotCacheDefinition) then
+    begin
+      var cache: TPivotCacheDefinitionE := package.Part<TPivotCacheDefinitionE>(relationship.Part);
+      if cache = nil then
+        Exit(Format('a pivot cache that does not read (%s)', [relationship.Part]));
+      if cache.CacheSource.IsPresent('Consolidation') then
+        Exit('a pivot table consolidating ranges, which Calcite does not move yet');
+    end;
+  Result := '';
+end;
+
+// a delete taking all the data rows of a table whose header stays: Excel keeps the first of them, emptied (aCleared), and
+// deletes the rest
+procedure TWorksheet.KeepTableRows(var aFirst, aCount: integer; aCleared: TList<TRange>);
+begin
+  var last: integer := aFirst - aCount - 1;
+  var package: TPackageOoxml := fWorkbook.fPackage;
+  for var relationship: TRelationshipOoxml in package.Relationships(fPartName) do
+    if relationship.&Type.EndsWith(cTable) then
+    begin
+      var table: TTableE := package.Part<TTableE>(relationship.Part);
+      var area: TRange := Default(TRange);
+      if (table = nil) or not ParseAddress(table.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) or
+        (table.HeaderRowCount = 0) then
+        Continue;
+      var dataTop: integer := area.fTop + integer(table.HeaderRowCount);
+      var dataBottom: integer := area.fBottom - integer(table.TotalsRowCount);
+      if (dataTop <= dataBottom) and (aFirst = dataTop) and (last >= dataBottom) then
+      begin
+        area.fTop := dataTop;
+        area.fBottom := dataTop;
+        aCleared.Add(area);
+      end;
+    end;
+  if aCleared.Count > 0 then
+  begin
+    Inc(aFirst);
+    Inc(aCount);
+  end;
+end;
+
+// the tables and table columns the change deletes (fGone), for the formulas naming them
+procedure TWorksheet.PlanTables(aByRows: boolean; aFirst, aCount: integer);
+begin
+  fGone := nil;
+  fBodies := nil;
+  var last: integer := aFirst - aCount - 1;
+  var package: TPackageOoxml := fWorkbook.fPackage;
+  for var relationship: TRelationshipOoxml in package.Relationships(fPartName) do
+    if relationship.&Type.EndsWith(cTable) then
+    begin
+      var table: TTableE := package.Part<TTableE>(relationship.Part);
+      var area: TRange := Default(TRange);
+      if not ParseAddress(table.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
+        Continue;
+      var data: TRange := area;
+      data.fTop := area.fTop + integer(table.HeaderRowCount);
+      data.fBottom := area.fBottom - integer(table.TotalsRowCount);
+      fBodies := fBodies + [area, data];
+      if aCount > 0 then
+        Continue;
+      if not ShiftedArea(area, aByRows, aFirst, aCount, False) then
+        fGone := fGone + [string(table.Name)]
+      else if not aByRows then
+      begin
+        ParseAddress(table.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight);
+        for var index := 0 to table.TableColumns.TableColumn.Count - 1 do
+          if (area.fLeft + index >= aFirst) and (area.fLeft + index <= last) then
+            fGone := fGone + [table.Name + '[' + table.TableColumns.TableColumn[index].Name + ']'];
+      end;
+    end;
+end;
+
+// the sheet's tables as Excel moves them: grown by rows or columns inserted inside (new columns named Column1...; new rows
+// take the calculated columns' formulas), shrunk, gone with all their rows or columns; the totals row deleted, the table
+// keeps none; the autofilter, its columns and sort follow
+procedure TWorksheet.ShiftTables(aByRows: boolean; aFirst, aCount: integer);
+var
+  sheet: TWorksheetE;
+  last: integer;
+
+  function Changed(const aText: string): string;
+  begin
+    var why: string;
+    if not MappedFormula(aText, SheetMap(fName, Self, aByRows, aFirst, aCount), Result, why) then
+      Result := aText;
+  end;
+
+  procedure ChangeFormula(aFormula: TTableFormulaCT);
+  begin
+    var text: string := DecodeText(aFormula.XmlValue);
+    var changed: string := Changed(text);
+    if changed <> text then
+      aFormula.XmlValue := EncodeText(changed);
+  end;
+
+  procedure WriteName(aRow, aColumn: integer; const aName: string);
+  begin
+    var cell: TCellCT := CellForWriting(aRow, aColumn);
+    var index: integer := fWorkbook.SharedStringIndex(aName);
+    if index >= 0 then
+    begin
+      cell.T := stctS;
+      cell.V := IntToStr(index);
+    end
+    else
+    begin
+      cell.T := stctInlineStr;
+      cell.&Is.T := EncodeText(aName);
+    end;
+  end;
+
+  procedure Remove(const aRelationship: TRelationshipOoxml);
+  begin
+    if sheet.IsPresent('TableParts') then
+    begin
+      var parts: TTablePartCTList := sheet.TableParts.TablePart;
+      for var i := parts.Count - 1 downto 0 do
+        if parts[i].Id = aRelationship.Id then
+          parts.Delete(i);
+      if parts.Count = 0 then
+        sheet.Clear('TableParts')
+      else
+        sheet.TableParts.Count := parts.Count;
+    end;
+    fWorkbook.fPackage.RemovePart(fPartName, aRelationship.Part);
+  end;
+
+begin
+  sheet := Objects(True);
+  last := aFirst - aCount - 1;
+  var package: TPackageOoxml := fWorkbook.fPackage;
+  for var relationship: TRelationshipOoxml in package.Relationships(fPartName) do
+  begin
+    if not relationship.&Type.EndsWith(cTable) then
+      Continue;
+    var table: TTableE := package.EditPart<TTableE>(relationship.Part);
+    var old: TRange := Default(TRange);
+    if not ParseAddress(table.Ref, old.fTop, old.fLeft, old.fBottom, old.fRight) then
+      Continue;
+    var area: TRange := old;
+    if not ShiftedArea(area, aByRows, aFirst, aCount, False) then
+    begin
+      Remove(relationship);
+      Continue;
+    end;
+    var columns: TTableColumnCTList := table.TableColumns.TableColumn;
+    var added: TArray<integer> := nil; // the new columns' numbers on the sheet
+    if not aByRows and (aCount < 0) then
+    begin
+      for var index := columns.Count - 1 downto 0 do
+        if (old.fLeft + index >= aFirst) and (old.fLeft + index <= last) then
+          columns.Delete(index);
+    end
+    else if not aByRows and (aFirst > old.fLeft) and (aFirst <= old.fRight) then
+    begin // Excel's names: the first ColumnN the table does not have
+      var id: cardinal := 0;
+      var names: TStringList := TStringList.Create;
+      try
+        names.CaseSensitive := False;
+        for var column: TTableColumnCT in columns do
+        begin
+          id := Max(id, column.Id);
+          names.Add(column.Name);
+        end;
+        var number: integer := 1;
+        for var index := 0 to aCount - 1 do
+        begin
+          while names.IndexOf('Column' + IntToStr(number)) >= 0 do
+            Inc(number);
+          var column: TTableColumnCT := TTableColumnCT.Create;
+          Inc(id);
+          column.Id := id;
+          column.Name := 'Column' + IntToStr(number);
+          names.Add(column.Name);
+          columns.Insert(aFirst - old.fLeft + index, column);
+          added := added + [aFirst + index];
+        end;
+      finally
+        names.Free;
+      end;
+    end;
+    table.TableColumns.Count := columns.Count;
+    if aByRows and (aCount < 0) and (table.TotalsRowCount > 0) and (old.fBottom >= aFirst) and (old.fBottom <= last) then
+    begin // the table keeps no totals row then
+      table.Clear(@table.TotalsRowCount);
+      table.TotalsRowShown := False;
+      table.SetPresent(@table.TotalsRowShown);
+      for var column: TTableColumnCT in columns do
+      begin
+        column.Clear(@column.TotalsRowFunction);
+        column.Clear(@column.TotalsRowLabel);
+        column.Clear('TotalsRowFormula');
+      end;
+    end;
+    for var column: TTableColumnCT in columns do
+    begin
+      if column.IsPresent('CalculatedColumnFormula') then
+        ChangeFormula(column.CalculatedColumnFormula);
+      if column.IsPresent('TotalsRowFormula') then
+        ChangeFormula(column.TotalsRowFormula);
+    end;
+    table.Ref := CellsAddress(area);
+    var dataTop: integer := area.fTop + integer(table.HeaderRowCount);
+    var dataBottom: integer := area.fBottom - integer(table.TotalsRowCount);
+    if table.HeaderRowCount > 0 then
+      for var column: integer in added do
+        WriteName(area.fTop, column, columns[column - area.fLeft].Name);
+    if aByRows and (aCount > 0) and (aFirst > old.fTop) and (aFirst <= old.fBottom) then
+      for var index := 0 to columns.Count - 1 do
+        if columns[index].IsPresent('CalculatedColumnFormula') and not columns[index].CalculatedColumnFormula.&Array then
+        begin
+          var text: string := DecodeText(columns[index].CalculatedColumnFormula.XmlValue);
+          for var row := Max(aFirst, dataTop) to Min(aFirst + aCount - 1, dataBottom) do
+          begin
+            var filled, why, unknown: string;
+            if ShiftFormula(text, TReferenceMap.Fill(row - dataTop, 0), ffStored, filled, why, unknown) then
+            begin
+              CellForWriting(row, area.fLeft + index).F.XmlValue := EncodeText(filled);
+              fWorkbook.FormulaChanged;
+            end;
+          end;
+        end;
+    if table.IsPresent('AutoFilter') then
+    begin
+      var filter: TAutoFilterCT := table.AutoFilter;
+      var shown: TRange := area;
+      shown.fBottom := dataBottom;
+      filter.Ref := CellsAddress(shown);
+      if not aByRows and ShiftFilterColumns(filter, old.fLeft, area.fLeft, aFirst, aCount) then
+        ShowRows(dataTop, dataBottom);
+    end;
+    if table.IsPresent('SortState') then
+    begin
+      var sort: TSortStateCT := table.SortState;
+      var ref: string := ShiftedSqref(sort.Ref, aByRows, aFirst, aCount, False);
+      if ref <> '' then
+      begin
+        sort.Ref := ref;
+        for var i := sort.SortCondition.Count - 1 downto 0 do
+        begin
+          var condition: string := ShiftedSqref(sort.SortCondition[i].Ref, aByRows, aFirst, aCount, False);
+          if condition = '' then
+            sort.SortCondition.Delete(i)
+          else
+            sort.SortCondition[i].Ref := condition;
+        end;
+      end;
+      if (ref = '') or (sort.SortCondition.Count = 0) then
+        table.Clear('SortState');
+    end;
+  end;
+end;
+
+// pivot tables on the sheet moved (gone when deleted whole) and the caches' sources on it grown or shrunk, as Excel does;
+// a source deleted whole keeps its ref, as in Excel
+procedure TWorksheet.ShiftPivots(aByRows: boolean; aFirst, aCount: integer);
+begin
+  var package: TPackageOoxml := fWorkbook.fPackage;
+  for var relationship: TRelationshipOoxml in package.Relationships(fPartName) do
+    if relationship.&Type.EndsWith(cPivotTable) then
+    begin
+      var pivot: TPivotTableDefinitionE := package.Part<TPivotTableDefinitionE>(relationship.Part);
+      var area: TRange := Default(TRange);
+      if (pivot = nil) or not ParseAddress(pivot.Location.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
+        Continue;
+      var whole: TRange := area;
+      if pivot.Location.RowPageCount > 0 then // the page fields and a blank row
+        whole.fTop := Max(1, area.fTop - integer(pivot.Location.RowPageCount) - 1);
+      if not ShiftedArea(whole, aByRows, aFirst, aCount, False) then
+      begin
+        var folder: integer := relationship.Part.LastIndexOf('/') + 1;
+        package.RemovePart(relationship.Part, relationship.Part.Substring(0, folder) + '_rels/' +
+          relationship.Part.Substring(folder) + '.rels');
+        package.RemovePart(fPartName, relationship.Part);
+      end
+      else if ShiftedArea(area, aByRows, aFirst, aCount, False) then
+        package.EditPart<TPivotTableDefinitionE>(relationship.Part).Location.Ref := CellsAddress(area);
+    end;
+  for var relationship: TRelationshipOoxml in package.Relationships(fWorkbook.fWorkbookPart) do
+    if relationship.&Type.EndsWith(cPivotCacheDefinition) then
+    begin
+      var cache: TPivotCacheDefinitionE := package.Part<TPivotCacheDefinitionE>(relationship.Part);
+      if not cache.CacheSource.IsPresent('WorksheetSource') then
+        Continue;
+      var source: TWorksheetSourceCT := cache.CacheSource.WorksheetSource;
+      if (source.Name <> '') or (source.Ref = '') or not AnsiSameText(source.Sheet, fName) or source.Present[@source.Id] then
+        Continue;
+      var ref: string := ShiftedSqref(source.Ref, aByRows, aFirst, aCount, False);
+      if (ref <> '') and (ref <> source.Ref) then
+        package.EditPart<TPivotCacheDefinitionE>(relationship.Part).CacheSource.WorksheetSource.Ref := ref;
+    end;
+end;
+
+// the drawings' objects and where they start and end along the shifted axis before the change; aWhy for a drawing that
+// does not read
+function TWorksheet.PlanDrawings(aByRows: boolean; out aWhy: string): TList<TAnchorMove>;
+begin
+  Result := TList<TAnchorMove>.Create;
+  aWhy := '';
+  var package: TPackageOoxml := fWorkbook.fPackage;
+  var axis: TAxis := nil;
+  try
+    for var relationship: TRelationshipOoxml in package.Relationships(fPartName) do
+      if relationship.&Type.EndsWith(cDrawing) then
+      begin
+        var drawing: TWsDrE := package.Part<TWsDrE>(relationship.Part);
+        if drawing = nil then
+        begin
+          aWhy := Format('a drawing that does not read (%s)', [relationship.Part]);
+          Exit;
+        end;
+        if axis = nil then
+          axis := TAxis.Create(Self, aByRows);
+        for var anchor: TTwoCellAnchorCT in drawing.TwoCellAnchor do
+        begin
+          var move: TAnchorMove := Default(TAnchorMove);
+          move.Part := relationship.Part;
+          move.Anchor := anchor;
+          var fromIndex, toIndex: integer;
+          var fromOffset, toOffset: Int64;
+          if not MarkerPlace(anchor.From, aByRows, fromIndex, fromOffset) or
+            not MarkerPlace(anchor.&To, aByRows, toIndex, toOffset) then
+          begin
+            aWhy := Format('a drawing''s object whose place does not read (%s)', [relationship.Part]);
+            Exit;
+          end;
+          move.From := axis.Start(fromIndex) + fromOffset;
+          move.&To := axis.Start(toIndex) + toOffset;
+          Result.Add(move);
+        end;
+        for var anchor: TOneCellAnchorCT in drawing.OneCellAnchor do
+        begin
+          var move: TAnchorMove := Default(TAnchorMove);
+          move.Part := relationship.Part;
+          move.Anchor := anchor;
+          var index: integer;
+          var offset: Int64;
+          if not MarkerPlace(anchor.From, aByRows, index, offset) then
+          begin
+            aWhy := Format('a drawing''s object whose place does not read (%s)', [relationship.Part]);
+            Exit;
+          end;
+          Result.Add(move);
+        end;
+      end;
+  finally
+    axis.Free;
+  end;
+end;
+
+// the drawings' objects as Excel moves them: move and size with cells (twoCell) - each end with its cell, gone when its
+// rows or columns are deleted whole; move only (oneCell) - its start with its cell, its size kept; free (absolute) -
+// where it was; xdr:oneCellAnchor's start with its cell
+procedure TWorksheet.ShiftDrawings(aMoves: TList<TAnchorMove>; aByRows: boolean; aFirst, aCount: integer);
+var
+  last, limit: integer;
+  axis: TAxis;
+
+  // a marker with its cell: one deleted goes to the start of what follows (its offset as written otherwise)
+  procedure MoveMarker(aMarker: TMarkerCT);
+  begin
+    var index: integer;
+    var offset: Int64;
+    MarkerPlace(aMarker, aByRows, index, offset);
+    var moved: integer := ShiftedIndex(index + 1, aFirst, aCount, limit);
+    if (moved = 0) and (aCount < 0) then
+      PlaceMarker(aMarker, aByRows, aFirst - 1, 0)
+    else if aByRows then
+      aMarker.Row := IfThen(moved = 0, limit, moved) - 1
+    else
+      aMarker.Col := IfThen(moved = 0, limit, moved) - 1;
+  end;
+
+  // a marker at a distance from the sheet's top or left
+  procedure Place(aMarker: TMarkerCT; aPosition: Int64);
+  begin
+    var index: integer;
+    var offset: Int64;
+    axis.Find(aPosition, index, offset);
+    PlaceMarker(aMarker, aByRows, index, offset);
+  end;
+
+  // the marker's row or column among the deleted ones (an end: at the start of the one after them too)
+  function Deleted(aMarker: TMarkerCT; aEnd: boolean): boolean;
+  begin
+    var index: integer;
+    var offset: Int64;
+    MarkerPlace(aMarker, aByRows, index, offset);
+    Inc(index);
+    Result := (aCount < 0) and ((index >= aFirst) and (index <= last) or aEnd and (index = last + 1) and (offset = 0));
+  end;
+
+begin
+  if aMoves.Count = 0 then
+    Exit;
+  last := aFirst - aCount - 1;
+  limit := IfThen(aByRows, cMaxRow, cMaxColumn);
+  var package: TPackageOoxml := fWorkbook.fPackage;
+  axis := TAxis.Create(Self, aByRows);
+  try
+    for var move: TAnchorMove in aMoves do
+    begin
+      var drawing: TWsDrE := package.EditPart<TWsDrE>(move.Part);
+      if move.Anchor is TOneCellAnchorCT then
+      begin
+        MoveMarker(TOneCellAnchorCT(move.Anchor).From);
+        Continue;
+      end;
+      var anchor: TTwoCellAnchorCT := TTwoCellAnchorCT(move.Anchor);
+      case anchor.EditAs of
+        steaTwoCell:
+          if Deleted(anchor.From, False) and Deleted(anchor.&To, True) then
+            drawing.TwoCellAnchor.Remove(anchor)
+          else
+          begin
+            MoveMarker(anchor.From);
+            MoveMarker(anchor.&To);
+          end;
+        steaOneCell:
+          begin
+            MoveMarker(anchor.From);
+            var index: integer;
+            var offset: Int64;
+            MarkerPlace(anchor.From, aByRows, index, offset);
+            Place(anchor.&To, axis.Start(index) + offset + move.&To - move.From);
+          end;
+        steaAbsolute:
+          begin
+            Place(anchor.From, move.From);
+            Place(anchor.&To, move.&To);
+          end;
+      end;
+    end;
+  finally
+    axis.Free;
   end;
 end;
 
@@ -5887,12 +6644,23 @@ begin
   var what: string := Format('Columns %s:%s', [ColumnName(aFirst), ColumnName(last)]);
   if aByRows then
     what := Format('Rows %d:%d', [aFirst, last]);
-  var why: string := ShiftBlocker(aByRows, aFirst, aCount);
+  var cleared: TList<TRange> := TList<TRange>.Create;
+  var anchors: TList<TAnchorMove> := nil;
   var moves: TObjectList<TList<TFormulaMove>> := TObjectList<TList<TFormulaMove>>.Create;
   var refs: TObjectList<TDictionary<cardinal, string>> := TObjectList<TDictionary<cardinal, string>>.Create;
   var texts: TList<TTextMove> := TList<TTextMove>.Create;
   try
+    if aByRows and (aCount < 0) then
+      KeepTableRows(aFirst, aCount, cleared);
+    var why: string := '';
+    if aCount <> 0 then
+      why := ShiftBlocker(aByRows, aFirst, aCount);
     if why = '' then
+    begin
+      PlanTables(aByRows, aFirst, aCount);
+      anchors := PlanDrawings(aByRows, why);
+    end;
+    if (why = '') and (aCount <> 0) then
       for var sheet: TWorksheet in fWorkbook.fSheets do
       begin
         moves.Add(TList<TFormulaMove>.Create);
@@ -5900,7 +6668,7 @@ begin
         if not sheet.PlanFormulas(Self, aByRows, aFirst, aCount, moves.Last, texts, refs.Last, why) then
           Break;
       end;
-    if why = '' then
+    if (why = '') and (aCount <> 0) then
       fWorkbook.ChangeNames(fName, aByRows, aFirst, aCount, why);
     if why <> '' then
     begin
@@ -5919,16 +6687,34 @@ begin
       else
         move.Validation.Formula2 := EncodeText(move.Text);
     end;
-    ShiftCells(aByRows, aFirst, aCount);
-    ShiftLists(aByRows, aFirst, aCount);
-    for var index := 0 to fWorkbook.fSheets.fList.Count - 1 do
-      fWorkbook.fSheets.fList[index].ApplyFormulas(moves[index], refs[index], fWorkbook.fSheets.fList[index] = Self, aByRows,
-        aFirst, aCount);
+    if aCount <> 0 then
+    begin
+      ShiftCells(aByRows, aFirst, aCount);
+      ShiftLists(aByRows, aFirst, aCount);
+      for var index := 0 to fWorkbook.fSheets.fList.Count - 1 do
+        fWorkbook.fSheets.fList[index].ApplyFormulas(moves[index], refs[index], fWorkbook.fSheets.fList[index] = Self,
+          aByRows, aFirst, aCount);
+      ShiftTables(aByRows, aFirst, aCount);
+      ShiftPivots(aByRows, aFirst, aCount);
+      ShiftDrawings(anchors, aByRows, aFirst, aCount);
+    end;
+    for var area: TRange in cleared do
+      for var row: TRowCT in RowEntries(area.fTop, area.fBottom) do
+        for var cell: TCellCT in row.C do
+          if (ColumnOf(cell.R) >= area.fLeft) and (ColumnOf(cell.R) <= area.fRight) then
+            RemoveValue(cell);
   finally
+    fGone := nil;
+    fBodies := nil;
     texts.Free;
     refs.Free;
     moves.Free;
+    anchors.Free;
+    cleared.Free;
   end;
+  FreeAndNil(fTables);
+  FreeAndNil(fTableRows);
+  FreeAndNil(fPivots);
   ForgetFormulas;
   FreeAndNil(fMerges);
   fWorkbook.ValueChanged;
@@ -7142,25 +7928,16 @@ end;
 class function TWorkbook.ChangedFormula(const aFormula, aFormulaSheet, aSheet: string; aByRows: boolean; aFirst,
   aCount: integer; out aResult, aWhy: string): boolean;
 begin
-  var map: TReferenceMap;
-  if aCount < 0 then
-    map := TReferenceMap.Deleted(aSheet, aByRows, aFirst, -aCount)
-  else
-    map := TReferenceMap.Inserted(aSheet, aByRows, aFirst, aCount);
-  map.OnSheet := (aFormulaSheet <> '') and AnsiSameText(aFormulaSheet, aSheet);
-  map.InName := aFormulaSheet = '';
-  var unchanged: TReferenceMap := TReferenceMap.Fill(0, 0);
-  unchanged.InName := map.InName;
-  var unknown, same: string;
-  Result := ShiftFormula(aFormula, map, ffStored, aResult, aWhy, unknown) and
-    ShiftFormula(aFormula, unchanged, ffStored, same, aWhy, unknown);
-  if not Result or (aResult = same) then // the text as it was: prefixes and spaces too
-    aResult := aFormula;
+  Result := MappedFormula(aFormula, ShiftMap(aFormulaSheet, aSheet, aByRows, aFirst, aCount), aResult, aWhy);
 end;
 
 function TWorkbook.ChangeNames(const aSheet: string; aByRows: boolean; aFirst, aCount: integer; out aWhy: string): boolean;
 begin
   aWhy := '';
+  var map: TReferenceMap := ShiftMap('', aSheet, aByRows, aFirst, aCount);
+  for var sheet: TWorksheet in fSheets do
+    if AnsiSameText(sheet.fName, aSheet) then
+      map := SheetMap('', sheet, aByRows, aFirst, aCount);
   var xml: TWorkbookE := nil;
   if not fWorkbookPart.IsEmpty then
     xml := fPackage.Part<TWorkbookE>(fWorkbookPart);
@@ -7174,7 +7951,7 @@ begin
   begin
     var text: string := DecodeText(names[index].XmlValue);
     var why: string;
-    if not ChangedFormula(text, '', aSheet, aByRows, aFirst, aCount, changed[index], why) then
+    if not MappedFormula(text, map, changed[index], why) then
     begin // one not naming the sheet stays as it is
       if text.ToUpper.Contains(aSheet.ToUpper) then
       begin

@@ -34,6 +34,11 @@ function MoveReference(aKind: TReferenceKind; aRow, aColumn: integer; aRowFixed,
 type
   TReferenceChange = (rcFill, rcInsert, rcDelete);
 
+  // a table's rows (with its header and totals) and columns, its data rows among them
+  TTableBody = record
+    Left, Right, Top, DataTop, DataBottom, Bottom: integer;
+  end;
+
   // how a formula's references change, as Excel changes them. A fill moves the relative parts of every reference. An insert
   // or delete of rows or columns on one sheet moves each reference into it at or past the cut, the absolute parts too (in a
   // defined name the relative parts stay, as Excel keeps them); a range grows or shrinks, one wholly deleted or pushed off
@@ -47,6 +52,11 @@ type
     First, Count: integer; // from row or column First, Count of them
     OnSheet: boolean; // a reference without a sheet's name is on Sheet: the formula is there
     InName: boolean; // the formula is a defined name's
+    // tables deleted with the rows or columns (Sales) and table columns (Sales[Q1]): Excel writes #REF! for what names them
+    GoneTables: TArray<string>;
+    // the sheet's tables: a range in one's columns over all its data rows grows with rows inserted at its first data row or
+    // its totals row, as the table does
+    Bodies: TArray<TTableBody>;
     class function Fill(aRows, aColumns: integer): TReferenceMap; static;
     class function Inserted(const aSheet: string; aByRows: boolean; aFirst, aCount: integer): TReferenceMap; static;
     class function Deleted(const aSheet: string; aByRows: boolean; aFirst, aCount: integer): TReferenceMap; static;
@@ -57,7 +67,13 @@ type
     // when it stays as written
     function Map(aKind: TReferenceKind; aRow, aColumn: integer; aRowFixed, aColumnFixed, aRange: boolean; aRow2, aColumn2: integer;
       aRowFixed2, aColumnFixed2: boolean; out aText: string): boolean;
+    // whether Table[...] (aBrackets with its [ and ]) names a table or column gone: Excel writes #REF! for it
+    function TableGone(const aTable, aBrackets: string): boolean;
   end;
+
+// the columns a structured reference's brackets name ([Sales], [[#This Row],[Sales]], [[Q1]:[Q3]], [@Sales]), their '
+// escapes undone; # specifiers left out
+function TableColumns(const aBrackets: string): TArray<string>;
 
 // Excel's serial numbers: days from 1899-12-30 as TDateTime, but in the 1900 system the serials before 1900-03-01 count a
 // 1900-02-29 that never was (60 reads as 1900-02-28); a serial below 1 is a time of day
@@ -247,6 +263,52 @@ begin
   end;
 end;
 
+function TableColumns(const aBrackets: string): TArray<string>;
+var
+  inner: string;
+  i: integer;
+
+  // one name up to the ] that closes it (or the end), from i on
+  function Name: string;
+  begin
+    Result := '';
+    while (i <= inner.Length) and (inner[i] <> ']') do
+    begin
+      if (inner[i] = '''') and (i < inner.Length) then
+        Inc(i);
+      Result := Result + inner[i];
+      Inc(i);
+    end;
+  end;
+
+  procedure Add(const aName: string);
+  begin
+    if (aName <> '') and (aName[1] <> '#') then
+      Result := Result + [aName.Trim];
+  end;
+
+begin
+  Result := nil;
+  inner := Copy(aBrackets, 2, aBrackets.Length - 2);
+  i := 1;
+  if inner.StartsWith('@') then
+    i := 2;
+  if (i > inner.Length) or (inner[i] <> '[') then
+  begin // [Sales], [@Sales], [#Totals], []
+    Add(Name);
+    Exit;
+  end;
+  while i <= inner.Length do
+    if inner[i] = '[' then
+    begin
+      Inc(i);
+      Add(Name);
+      Inc(i);
+    end
+    else
+      Inc(i); // , : @ and spaces between them
+end;
+
 class function TReferenceMap.Fill(aRows, aColumns: integer): TReferenceMap;
 begin
   Result := Default(TReferenceMap);
@@ -284,6 +346,29 @@ begin
   Result := not name.StartsWith('[') and not name.Contains(':') and AnsiSameText(name, Sheet);
 end;
 
+function TReferenceMap.TableGone(const aTable, aBrackets: string): boolean;
+begin
+  var columns: TArray<string> := nil;
+  for var gone: string in GoneTables do
+  begin
+    var bracket: integer := gone.IndexOf('[');
+    if bracket < 0 then
+    begin
+      if AnsiSameText(gone, aTable) then
+        Exit(True);
+    end
+    else if AnsiSameText(gone.Substring(0, bracket), aTable) then
+    begin
+      if columns = nil then
+        columns := TableColumns(aBrackets);
+      for var column: string in columns do
+        if AnsiSameText(column, gone.Substring(bracket + 1, gone.Length - bracket - 2)) then
+          Exit(True);
+    end;
+  end;
+  Result := False;
+end;
+
 function TReferenceMap.Map(aKind: TReferenceKind; aRow, aColumn: integer; aRowFixed, aColumnFixed, aRange: boolean;
   aRow2, aColumn2: integer; aRowFixed2, aColumnFixed2: boolean; out aText: string): boolean;
 var
@@ -318,6 +403,15 @@ var
     begin
       if (low = 1) and (high = limit) then // every row or column stays so
         Exit(True);
+      if ByRows and (aKind = rkCell) then
+        for var body: TTableBody in Bodies do
+          if (Min(aColumn, aColumn2) >= body.Left) and (Max(aColumn, aColumn2) <= body.Right) and (low >= body.Top) and
+            (low <= body.DataTop) and (high >= body.DataBottom) and (high <= body.Bottom) and
+            ((First = body.DataTop) or (First = body.DataBottom + 1) and (First <= body.Bottom)) then
+          begin
+            high := Min(high + Count, limit);
+            Exit(True);
+          end;
       if low >= First then
         Inc(low, Count);
       if high >= First then
