@@ -585,6 +585,15 @@ type
     function GetDateFormat(aIndex: integer): string;
     procedure SetDateFormat(aIndex: integer; const aValue: string);
     function DateFormatId(aIndex: integer): integer;
+  protected
+    // rows or columns inserted (aCount > 0) or deleted (aCount < 0) from aFirst on sheet aSheet, as Excel changes references:
+    // a stored formula on sheet aFormulaSheet ('' for a defined name's), as it was when nothing in it changes. False with
+    // aWhy when it does not read
+    class function ChangedFormula(const aFormula, aFormulaSheet, aSheet: string; aByRows: boolean; aFirst, aCount: integer;
+      out aResult, aWhy: string): boolean; static;
+    // the same for every defined name, print areas and titles too. False with aWhy and nothing changed when one naming aSheet
+    // does not read
+    function ChangeNames(const aSheet: string; aByRows: boolean; aFirst, aCount: integer; out aWhy: string): boolean;
   public
     // a new workbook, as Excel's: Sheet1 and nothing in it; Open replaces it
     constructor Create;
@@ -1213,14 +1222,14 @@ type
   // a formula's text as a file stores it (_xlfn.XLOOKUP, LET's _xlpm.x) or as Excel's Formula shows it (XLOOKUP, x)
   TFormulaForm = (ffStored, ffShown);
 
-// Excel's A1 formula text (without the =) in aForm: its references moved by aRows and aColumns, as Excel fills - the relative
-// parts only, one off the sheet becomes #REF!. False with aWhy when Excel would not read it: a broken formula makes Excel
-// refuse the whole file, even repaired. Checked: the grammar (values and operators in turn, brackets, arguments, array
-// constants), the number of arguments Excel's own functions take (ROUND(1), SUM()) and a reference where one must stand
-// (ROW(1)); an unknown function or name is Excel's #NAME?, the first unknown function aUnknown (a VBA or add-in one is
-// unknown too). Without its prefix a file Excel refuses (FILTER) or shows #NAME? (XLOOKUP, LET's x): the stored form adds the
-// prefixes, the shown form drops them
-function ShiftFormula(const aFormula: string; aRows, aColumns: integer; aForm: TFormulaForm; out aResult, aWhy,
+// Excel's A1 formula text (without the =) in aForm: its references changed by aMap (moved as Excel fills, or for rows or
+// columns inserted or deleted), one off the sheet or deleted becomes #REF!. False with aWhy when Excel would not read it: a
+// broken formula makes Excel refuse the whole file, even repaired. Checked: the grammar (values and operators in turn,
+// brackets, arguments, array constants), the number of arguments Excel's own functions take (ROUND(1), SUM()) and a reference
+// where one must stand (ROW(1)); an unknown function or name is Excel's #NAME?, the first unknown function aUnknown (a VBA or
+// add-in one is unknown too). Without its prefix a file Excel refuses (FILTER) or shows #NAME? (XLOOKUP, LET's x): the stored
+// form adds the prefixes, the shown form drops them
+function ShiftFormula(const aFormula: string; const aMap: TReferenceMap; aForm: TFormulaForm; out aResult, aWhy,
   aUnknown: string): boolean;
 const
   cErrors: array [0 .. 9] of string = ('#NULL!', '#DIV/0!', '#VALUE!', '#REF!', '#NAME?', '#NUM!', '#N/A', '#GETTING_DATA',
@@ -1242,6 +1251,8 @@ var
   ranged: boolean; // after a : the next value is a reference too
   arguments: boolean; // just after a function's ( or a comma between its arguments: an argument may be left out
   prefixed: boolean; // after Sheet1! or [1]: a reference follows
+  prefixStart: integer; // where the prefix being read began: [1]Sheet1! is one; 0 between them
+  prefix: string; // the last one before its ! (Sheet1, 'My Sheet', [1]Sheet1, Sheet1:Sheet3), for aMap
   continued: boolean; // after a table's name: its [...] is the same value
   called: boolean; // after a function's name: its ( follows
   calledFunction: integer; // that function: cFunctions' index, cUnknown, cResult (a LAMBDA's result or parameter called)
@@ -1438,13 +1449,16 @@ var
   // a word: a reference alone or as one end of a range (moved, or #REF!), a number, TRUE, a name
   function Word(aEnd: integer): boolean;
   begin
+    var wasPrefixed: boolean := prefixed;
     var word: string := Copy(aFormula, i, aEnd - i);
     var row, column: integer;
     var rowFixed, columnFixed: boolean;
     var kind: TReferenceKind := ReadReference(word, row, column, rowFixed, columnFixed);
     var secondEnd: integer := 0;
-    var row2, column2: integer;
-    var rowFixed2, columnFixed2: boolean;
+    var row2: integer := 0;
+    var column2: integer := 0;
+    var rowFixed2: boolean := False;
+    var columnFixed2: boolean := False;
     if (kind <> rkNone) and (aEnd < last) and (aFormula[aEnd] = ':') and IsWordStart(aFormula[aEnd + 1]) then
     begin
       secondEnd := ReadWord(aEnd + 1);
@@ -1478,14 +1492,16 @@ var
       secondEnd := aEnd
     else
       word := Copy(aFormula, i, secondEnd - i);
-    var moved, moved2: string;
-    if (aRows = 0) and (aColumns = 0) then
+    var moved: string;
+    if not wasPrefixed then
+      prefix := '';
+    if not aMap.Changes(prefix) then
       builder.Append(word)
-    else if not MoveReference(kind, row, column, rowFixed, columnFixed, aRows, aColumns, moved) or
-      ((secondEnd > aEnd) and not MoveReference(kind, row2, column2, rowFixed2, columnFixed2, aRows, aColumns, moved2)) then
+    else if not aMap.Map(kind, row, column, rowFixed, columnFixed, secondEnd > aEnd, row2, column2, rowFixed2, columnFixed2,
+      moved) then
       builder.Append('#REF!')
-    else if secondEnd > aEnd then
-      builder.Append(moved).Append(':').Append(moved2)
+    else if moved = '' then
+      builder.Append(word)
     else
       builder.Append(moved);
     i := secondEnd;
@@ -1592,6 +1608,10 @@ var
           if not expectValue and not spaced then
             Exit(Fail('two values without an operator between them'));
           prefixed := True;
+          if prefixStart = 0 then
+            prefixStart := i;
+          prefix := Copy(aFormula, prefixStart, close + 1 - prefixStart);
+          prefixStart := 0;
           i := close + 2;
         end;
       '[':
@@ -1620,10 +1640,11 @@ var
           if continued then
             continued := False
           else if (i <= last) and (IsWordStart(aFormula[i]) or (aFormula[i] = '''')) then
-            // a workbook: its sheet's name follows
+            prefixStart := start // a workbook: its sheet's name follows
           else if (i <= last) and (aFormula[i] = '!') then
           begin // a workbook's name: [1]!Total
             prefixed := True;
+            prefix := Copy(aFormula, start, i - start);
             Inc(i);
           end
           else if not Value(False) then
@@ -1728,8 +1749,11 @@ var
             'g', '{':
               if expectValue then
                 Exit(Fail('a comma without a value before it'));
-          else
-            Exit(Fail('a comma outside a function''s brackets'));
+          else // a defined name's union: Sheet1!$A:$B,Sheet1!$1:$2
+            if not aMap.InName then
+              Exit(Fail('a comma outside a function''s brackets'))
+            else if expectValue then
+              Exit(Fail('a comma without a value before it'));
           end;
           expectValue := True;
           Inc(i);
@@ -1759,9 +1783,13 @@ var
         var next: Char := #0;
         if after <= last then
           next := aFormula[after];
-        // a 3-D reference's sheets: Sheet1:Sheet3!A1
+        // a 3-D reference's sheets: Sheet1:Sheet3!A1; not after a sheet's name (Sheet1!A3:Sheet1!A5) or from a cell
+        // (A3:Sheet1!A5: Excel quotes a sheet named like a cell)
         var sheetsEnd: integer := 0;
-        if (next = ':') and (after < last) and IsWordStart(aFormula[after + 1]) then
+        var row, column: integer;
+        var rowFixed, columnFixed: boolean;
+        if (next = ':') and (after < last) and IsWordStart(aFormula[after + 1]) and not prefixed and
+          (ReadReference(Copy(aFormula, i, after - i), row, column, rowFixed, columnFixed) <> rkCell) then
         begin
           sheetsEnd := ReadWord(after + 1);
           if (sheetsEnd > last) or (aFormula[sheetsEnd] <> '!') then
@@ -1772,10 +1800,15 @@ var
           if prefixed or (not expectValue and not spaced) then
             Exit(Fail('two values without an operator between them'));
           prefixed := True;
+          if prefixStart = 0 then
+            prefixStart := i;
           if sheetsEnd > 0 then
-            i := sheetsEnd + 1
+            i := sheetsEnd
           else
-            i := after + 1;
+            i := after;
+          prefix := Copy(aFormula, prefixStart, i - prefixStart);
+          prefixStart := 0;
+          Inc(i);
         end
         else if Declares(after) or (Declared(Unprefixed(Copy(aFormula, i, after - i))) <> '') then
           Exit(Parameter(after))
@@ -1835,6 +1868,8 @@ begin
   ranged := False;
   arguments := False;
   prefixed := False;
+  prefixStart := 0;
+  prefix := '';
   continued := False;
   called := False;
   calledFunction := cUnknown;
@@ -1871,7 +1906,7 @@ end;
 function ShownFormula(const aStored: string): string;
 begin
   var why, unknown: string;
-  if not ShiftFormula(aStored, 0, 0, ffShown, Result, why, unknown) then
+  if not ShiftFormula(aStored, TReferenceMap.Fill(0, 0), ffShown, Result, why, unknown) then
     Result := aStored;
 end;
 
@@ -2969,7 +3004,7 @@ begin
       for var column := fLeft to fRight do
       begin
         var moved, why, unknown: string;
-        ShiftFormula(text, row - fTop, column - fLeft, ffStored, moved, why, unknown);
+        ShiftFormula(text, TReferenceMap.Fill(row - fTop, column - fLeft), ffStored, moved, why, unknown);
         fSheet.WriteFormula(row, column, moved, Self);
       end;
 end;
@@ -4020,7 +4055,8 @@ begin
           if fShared.TryGetValue(cell.F.Si, first) and ParseAddress(first.R, top, left, bottom, right) then
           begin
             var why, unknown: string;
-            ShiftFormula(DecodeText(first.F.XmlValue), aRow - top, aColumn - left, ffStored, aText, why, unknown);
+            ShiftFormula(DecodeText(first.F.XmlValue), TReferenceMap.Fill(aRow - top, aColumn - left), ffStored, aText, why,
+              unknown);
           end;
         end;
       stcftDataTable:
@@ -4052,7 +4088,7 @@ begin
   var why, unknown: string;
   if text.Length + 1 > cMaxFormula then
     Refuse(aRow, aColumn, 'Formula', Format('%d characters, Excel''s formulas hold up to %d', [text.Length + 1, cMaxFormula]))
-  else if not ShiftFormula(text, 0, 0, ffStored, aText, why, unknown) then
+  else if not ShiftFormula(text, TReferenceMap.Fill(0, 0), ffStored, aText, why, unknown) then
     Refuse(aRow, aColumn, 'Formula', 'not a formula Excel reads: ' + why)
   else
   begin
@@ -4074,7 +4110,7 @@ begin
   var text: string := DecodeText(first.F.XmlValue);
   var checked, why, unknown: string;
   if not ParseAddress(first.F.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) or
-    not ShiftFormula(text, 0, 0, ffStored, checked, why, unknown) then
+    not ShiftFormula(text, TReferenceMap.Fill(0, 0), ffStored, checked, why, unknown) then
     Exit(False);
   var top, left, bottom, right: integer;
   ParseAddress(first.R, top, left, bottom, right);
@@ -4089,7 +4125,8 @@ begin
       if cell.IsPresent('F') and (cell.F.T = stcftShared) and (cell.F.Si = aIndex) then
       begin
         var moved: string;
-        ShiftFormula(text, integer(row.R) - top, ColumnOf(cell.R) - left, ffStored, moved, why, unknown);
+        ShiftFormula(text, TReferenceMap.Fill(integer(row.R) - top, ColumnOf(cell.R) - left), ffStored, moved, why,
+          unknown);
         cell.F.Clear('T');
         cell.F.Clear('Si');
         cell.F.Clear('Ref');
@@ -6235,6 +6272,62 @@ begin
   if aColor.Present[@aColor.Tint] then
     value := TintedColor(value, aColor.Tint);
   Result := value;
+end;
+
+class function TWorkbook.ChangedFormula(const aFormula, aFormulaSheet, aSheet: string; aByRows: boolean; aFirst,
+  aCount: integer; out aResult, aWhy: string): boolean;
+begin
+  var map: TReferenceMap;
+  if aCount < 0 then
+    map := TReferenceMap.Deleted(aSheet, aByRows, aFirst, -aCount)
+  else
+    map := TReferenceMap.Inserted(aSheet, aByRows, aFirst, aCount);
+  map.OnSheet := (aFormulaSheet <> '') and AnsiSameText(aFormulaSheet, aSheet);
+  map.InName := aFormulaSheet = '';
+  var unchanged: TReferenceMap := TReferenceMap.Fill(0, 0);
+  unchanged.InName := map.InName;
+  var unknown, same: string;
+  Result := ShiftFormula(aFormula, map, ffStored, aResult, aWhy, unknown) and
+    ShiftFormula(aFormula, unchanged, ffStored, same, aWhy, unknown);
+  if not Result or (aResult = same) then // the text as it was: prefixes and spaces too
+    aResult := aFormula;
+end;
+
+function TWorkbook.ChangeNames(const aSheet: string; aByRows: boolean; aFirst, aCount: integer; out aWhy: string): boolean;
+begin
+  aWhy := '';
+  var xml: TWorkbookE := nil;
+  if not fWorkbookPart.IsEmpty then
+    xml := fPackage.Part<TWorkbookE>(fWorkbookPart);
+  if (xml = nil) or not xml.IsPresent('DefinedNames') then
+    Exit(True);
+  var names: TDefinedNameCTList := xml.DefinedNames.DefinedName;
+  var changed: TArray<string>;
+  SetLength(changed, names.Count);
+  var any: boolean := False;
+  for var index := 0 to names.Count - 1 do
+  begin
+    var text: string := DecodeText(names[index].XmlValue);
+    var why: string;
+    if not ChangedFormula(text, '', aSheet, aByRows, aFirst, aCount, changed[index], why) then
+    begin // one not naming the sheet stays as it is
+      if text.ToUpper.Contains(aSheet.ToUpper) then
+      begin
+        aWhy := Format('the defined name %s does not read: %s', [names[index].Name, why]);
+        Exit(False);
+      end;
+      changed[index] := text;
+    end;
+    any := any or (changed[index] <> text);
+  end;
+  if any then
+  begin
+    names := fPackage.EditPart<TWorkbookE>(fWorkbookPart).DefinedNames.DefinedName;
+    for var index := 0 to names.Count - 1 do
+      if changed[index] <> DecodeText(names[index].XmlValue) then
+        names[index].XmlValue := EncodeText(changed[index]);
+  end;
+  Result := True;
 end;
 
 function TWorkbook.GetXml: TWorkbookE;

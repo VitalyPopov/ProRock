@@ -31,6 +31,34 @@ function ReadReference(const aWord: string; out aRow, aColumn: integer; out aRow
 function MoveReference(aKind: TReferenceKind; aRow, aColumn: integer; aRowFixed, aColumnFixed: boolean;
   aRows, aColumns: integer; out aText: string): boolean;
 
+type
+  TReferenceChange = (rcFill, rcInsert, rcDelete);
+
+  // how a formula's references change, as Excel changes them. A fill moves the relative parts of every reference. An insert
+  // or delete of rows or columns on one sheet moves each reference into it at or past the cut, the absolute parts too (in a
+  // defined name the relative parts stay, as Excel keeps them); a range grows or shrinks, one wholly deleted or pushed off
+  // the sheet is #REF!, one reaching the last row or column keeps reaching it. 3-D references (Sheet1:Sheet3!A1) and other
+  // workbooks' stay, as in Excel
+  TReferenceMap = record
+    Change: TReferenceChange;
+    Rows, Columns: integer; // a fill's offset
+    Sheet: string; // the sheet with rows or columns inserted or deleted
+    ByRows: boolean;
+    First, Count: integer; // from row or column First, Count of them
+    OnSheet: boolean; // a reference without a sheet's name is on Sheet: the formula is there
+    InName: boolean; // the formula is a defined name's
+    class function Fill(aRows, aColumns: integer): TReferenceMap; static;
+    class function Inserted(const aSheet: string; aByRows: boolean; aFirst, aCount: integer): TReferenceMap; static;
+    class function Deleted(const aSheet: string; aByRows: boolean; aFirst, aCount: integer): TReferenceMap; static;
+    // whether the references after a prefix change: aPrefix as written before its ! (Data, 'My Sheet', [1]Data,
+    // Data:Three), '' for none
+    function Changes(const aPrefix: string): boolean;
+    // a reference read by ReadReference, alone or a range's first end with its second (aRange): False for #REF!, aText ''
+    // when it stays as written
+    function Map(aKind: TReferenceKind; aRow, aColumn: integer; aRowFixed, aColumnFixed, aRange: boolean; aRow2, aColumn2: integer;
+      aRowFixed2, aColumnFixed2: boolean; out aText: string): boolean;
+  end;
+
 // Excel's serial numbers: days from 1899-12-30 as TDateTime, but in the 1900 system the serials before 1900-03-01 count a
 // 1900-02-29 that never was (60 reads as 1900-02-28); a serial below 1 is a time of day
 function SerialToDate(aSerial: Double; a1904: boolean): TDateTime;
@@ -217,6 +245,181 @@ begin
       aText := aText + '$';
     aText := aText + IntToStr(aRow);
   end;
+end;
+
+class function TReferenceMap.Fill(aRows, aColumns: integer): TReferenceMap;
+begin
+  Result := Default(TReferenceMap);
+  Result.Change := rcFill;
+  Result.Rows := aRows;
+  Result.Columns := aColumns;
+end;
+
+class function TReferenceMap.Inserted(const aSheet: string; aByRows: boolean; aFirst, aCount: integer): TReferenceMap;
+begin
+  Result := Default(TReferenceMap);
+  Result.Change := rcInsert;
+  Result.Sheet := aSheet;
+  Result.ByRows := aByRows;
+  Result.First := aFirst;
+  Result.Count := aCount;
+end;
+
+class function TReferenceMap.Deleted(const aSheet: string; aByRows: boolean; aFirst, aCount: integer): TReferenceMap;
+begin
+  Result := Inserted(aSheet, aByRows, aFirst, aCount);
+  Result.Change := rcDelete;
+end;
+
+function TReferenceMap.Changes(const aPrefix: string): boolean;
+begin
+  if Change = rcFill then
+    Exit((Rows <> 0) or (Columns <> 0));
+  if aPrefix = '' then
+    Exit(OnSheet);
+  var name: string := aPrefix;
+  if (name.Length >= 2) and (name[1] = '''') and (name[name.Length] = '''') then
+    name := Copy(name, 2, name.Length - 2).Replace('''''', '''');
+  // another workbook's or 3-D: a sheet's name has neither [ nor :
+  Result := not name.StartsWith('[') and not name.Contains(':') and AnsiSameText(name, Sheet);
+end;
+
+function TReferenceMap.Map(aKind: TReferenceKind; aRow, aColumn: integer; aRowFixed, aColumnFixed, aRange: boolean;
+  aRow2, aColumn2: integer; aRowFixed2, aColumnFixed2: boolean; out aText: string): boolean;
+var
+  low, high, limit: integer;
+  lowFixed, highFixed: boolean;
+
+  // one end alone: False when it is deleted or pushed off the sheet
+  function MapOne(var aValue: integer; aFixed: boolean): boolean;
+  begin
+    Result := True;
+    if InName and not aFixed then
+      Exit;
+    if Change = rcInsert then
+    begin
+      if aValue >= First then
+        Inc(aValue, Count);
+      Result := aValue <= limit;
+    end
+    else if aValue >= First + Count then
+      Dec(aValue, Count)
+    else if aValue >= First then
+      Result := False;
+  end;
+
+  // a range's ends, low <= high
+  function MapRange: boolean;
+  begin
+    if InName and (not lowFixed or not highFixed) then
+      Exit(MapOne(low, lowFixed) and MapOne(high, highFixed));
+    var last: integer := First + Count - 1;
+    if Change = rcInsert then
+    begin
+      if (low = 1) and (high = limit) then // every row or column stays so
+        Exit(True);
+      if low >= First then
+        Inc(low, Count);
+      if high >= First then
+        high := Min(high + Count, limit);
+      Exit(low <= limit);
+    end;
+    if (low >= First) and (high <= last) then
+      Exit(False);
+    if low > last then
+      Dec(low, Count)
+    else if low >= First then
+      low := First;
+    if high = limit then
+      // reaching the last row or column, it keeps reaching it
+    else if high > last then
+      Dec(high, Count)
+    else if high >= First then
+      high := First - 1;
+    Result := True;
+  end;
+
+  function Text(aKind: TReferenceKind; aRow, aColumn: integer; aRowFixed, aColumnFixed: boolean): string;
+  begin
+    MoveReference(aKind, aRow, aColumn, aRowFixed, aColumnFixed, 0, 0, Result);
+  end;
+
+begin
+  aText := '';
+  if Change = rcFill then
+  begin
+    var moved2: string;
+    Result := MoveReference(aKind, aRow, aColumn, aRowFixed, aColumnFixed, Rows, Columns, aText) and
+      (not aRange or MoveReference(aKind, aRow2, aColumn2, aRowFixed2, aColumnFixed2, Rows, Columns, moved2));
+    if aRange then
+      aText := aText + ':' + moved2;
+    Exit;
+  end;
+  Result := True;
+  if (ByRows and (aKind = rkColumn)) or (not ByRows and (aKind = rkRow)) then
+    Exit;
+  if not aRange then
+  begin
+    aRow2 := aRow;
+    aColumn2 := aColumn;
+    aRowFixed2 := aRowFixed;
+    aColumnFixed2 := aColumnFixed;
+  end;
+  // a range written backwards (A5:A1) as low and high
+  var swapped: boolean;
+  if ByRows then
+  begin
+    limit := cMaxRow;
+    swapped := aRow > aRow2;
+    low := Min(aRow, aRow2);
+    high := Max(aRow, aRow2);
+    lowFixed := (aRowFixed and not swapped) or (aRowFixed2 and swapped);
+    highFixed := (aRowFixed2 and not swapped) or (aRowFixed and swapped);
+  end
+  else
+  begin
+    limit := cMaxColumn;
+    swapped := aColumn > aColumn2;
+    low := Min(aColumn, aColumn2);
+    high := Max(aColumn, aColumn2);
+    lowFixed := (aColumnFixed and not swapped) or (aColumnFixed2 and swapped);
+    highFixed := (aColumnFixed2 and not swapped) or (aColumnFixed and swapped);
+  end;
+  var oldLow: integer := low;
+  var oldHigh: integer := high;
+  if aRange then
+    Result := MapRange
+  else
+    Result := MapOne(low, lowFixed);
+  if not Result or ((low = oldLow) and (high = oldHigh)) then
+    Exit;
+  if not aRange then
+    high := low;
+  if swapped then
+  begin
+    var value: integer := low;
+    low := high;
+    high := value;
+  end;
+  if ByRows then
+  begin
+    aRow := low;
+    aRow2 := high;
+  end
+  else
+  begin
+    aColumn := low;
+    aColumn2 := high;
+  end;
+  if not aRange then
+    aText := Text(aKind, aRow, aColumn, aRowFixed, aColumnFixed)
+  else if (aKind = rkCell) and (Min(aColumn, aColumn2) = 1) and (Max(aColumn, aColumn2) = cMaxColumn) then
+    // every column: Excel writes the rows, 5:7
+    aText := Text(rkRow, aRow, 0, aRowFixed, False) + ':' + Text(rkRow, aRow2, 0, aRowFixed2, False)
+  else if (aKind = rkCell) and (Min(aRow, aRow2) = 1) and (Max(aRow, aRow2) = cMaxRow) then
+    aText := Text(rkColumn, 0, aColumn, False, aColumnFixed) + ':' + Text(rkColumn, 0, aColumn2, False, aColumnFixed2)
+  else
+    aText := Text(aKind, aRow, aColumn, aRowFixed, aColumnFixed) + ':' + Text(aKind, aRow2, aColumn2, aRowFixed2, aColumnFixed2);
 end;
 
 function SerialToDate(aSerial: Double; a1904: boolean): TDateTime;
