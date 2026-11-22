@@ -49,6 +49,8 @@ type
   TBorderEdges = set of TBorderEdge;
   TLineStyle = (lsNone, lsContinuous, lsDash, lsDot, lsDashDot, lsDashDotDot, lsDouble, lsSlantDashDot);
   TBorderWeight = (bwHairline, bwThin, bwMedium, bwThick);
+  // Excel's XlSheetVisibility: svVeryHidden is shown again only from code
+  TSheetVisibility = (svVisible, svHidden, svVeryHidden);
 
   // Excel's Range.Font: read from the first cell, written to every cell
   TRangeFont = record
@@ -178,6 +180,10 @@ type
       function GetItem(aIndex: integer): TRange;
       function GetItemByNumbers(const aRows: string): TRange;
     public
+      // Excel's AutoFit: the rows' own heights dropped, Excel fits them to what they show when it opens the file (RowHeight
+      // reads the default until then)
+      procedure AutoFit;
+
       property Count: integer read GetCount;
       // Excel's Rows(2), Rows("5:7"), counted from the range's first row: Range['C3:E5'].Rows[2] is C4:E4, Sheet.Rows[200]
       // the whole row 200
@@ -229,8 +235,15 @@ type
     function GetEntireColumn: TRange;
     function GetColumnWidth: Double;
     procedure SetColumnWidth(aValue: Double);
+    function GetRowHeight: Double;
+    procedure SetRowHeight(aValue: Double);
+    function GetHidden: boolean;
+    procedure SetHidden(aValue: boolean);
+    function GetMergeCells: boolean;
+    procedure SetMergeCells(aValue: boolean);
+    function GetMergeArea: TRange;
   public
-    // the values gone, as Excel's ClearContents: a cell with a format stays
+    // the values gone, as Excel's ClearContents: a cell with a format stays. A merged area touched is cleared whole
     procedure ClearContents;
 
     property Sheet: TWorksheet read fSheet;
@@ -302,6 +315,25 @@ type
     // Excel's ColumnWidth in characters of the default font's digits (8.43 by default), the first column's; written to every
     // column of the range, 0 hides them; EArgumentOutOfRangeException beyond 0..255
     property ColumnWidth: Double read GetColumnWidth write SetColumnWidth;
+    // Excel's RowHeight in points, the first row's as the file stores it (Excel shows it rounded to its screen), 0 when
+    // hidden; written to every row of the range, 0 hides them; EArgumentOutOfRangeException beyond 0..409.5
+    property RowHeight: Double read GetRowHeight write SetRowHeight;
+    // whole rows or columns only, as in Excel (Range['B5'].EntireRow.Hidden; EInvalidOpException otherwise): the first
+    // one's read, every one written; a row's height and a column's width come back when shown again
+    property Hidden: boolean read GetHidden write SetHidden;
+
+    // Excel's Merge: one cell over the range (aAcross: one for each row). It keeps the first value, read row by row, in the
+    // top-left cell and clears the others; every cell takes the top-left cell's format; merged areas it meets become part
+    // of it. Refused (an issue) over an array formula, a data table, a table or a pivot table
+    procedure Merge(aAcross: boolean = False);
+    // every merged area the range touches, whole; the cells keep their formats
+    procedure UnMerge;
+    // every cell is merged; written: Merge or UnMerge
+    property MergeCells: boolean read GetMergeCells write SetMergeCells;
+    // the merged area of the first cell, the cell itself when it is not merged. A value written to a merged area's cell
+    // other than its top-left one is not written (a warning), as Excel shows only that one. Formats go to the cells named,
+    // as in Excel: MergeArea.BorderAround outlines the whole area
+    property MergeArea: TRange read GetMergeArea;
   end;
 
   TRangeColumns = TRange.TColumns;
@@ -329,6 +361,7 @@ type
     fShared: TDictionary<cardinal, TCellCT>;
     // found on the first write: the areas of tables, their header and totals rows, pivot tables
     fTables, fTableRows, fPivots: TList<TRange>;
+    fMerges: TList<TRange>; // the merged areas, found on the first need, again after a change
     fLockedWritten: boolean; // reported once a sheet
     fFresh: boolean; // made here, a new workbook's or added: nothing outside Calcite can name it yet
 
@@ -368,6 +401,18 @@ type
     procedure SetName(const aValue: string);
     function CellForStyle(aRow, aColumn: integer): TCellCT;
     procedure Restyle(const aRange: TRange; const aChange: TProc<TXfCT>; aExisting: boolean = False);
+    procedure SetStyles(const aRange: TRange; const aNewStyle: TFunc<cardinal, cardinal>; aExisting: boolean);
+    function FindMerges: TList<TRange>;
+    function MergedAt(aRow, aColumn: integer; out aArea: TRange): boolean;
+    function IsCovered(aRow, aColumn: integer): boolean;
+    function Uncovered(aRow, aColumn: integer): boolean;
+    function WithMerges(const aRange: TRange): TRange;
+    procedure Merge(const aRange: TRange);
+    procedure UnMerge(const aRange: TRange);
+    function RowEntries(aTop, aBottom: integer): TArray<TRowCT>;
+    function SheetEntry: TSheetCT;
+    function GetVisible: TSheetVisibility;
+    procedure SetVisible(aValue: TSheetVisibility);
     procedure RestyleFont(const aRange: TRange; const aChange: TProc<TFontCT>);
     procedure RestyleBorders(const aRange: TRange; aEdges: TBorderEdges; const aChange: TProc<TBorderPrCT>);
     function BorderSide(aRow, aColumn: integer; aEdge: TBorderEdge): TBorderPrCT;
@@ -402,6 +447,9 @@ type
     // Excel's Freeze Panes at a cell: the rows above it and the columns left of it stay put ('A2' - the first row, 'B1' - the
     // first column); '' or 'A1' unfreezes. A sheet with several views, or an opened sheet's panes, is not changed (an issue)
     property FreezePanes: string read GetFreezePanes write SetFreezePanes;
+    // Excel's Visible: hiding the last visible sheet raises EInvalidOpException, as in Excel; hiding the active one makes
+    // the next visible sheet active
+    property Visible: TSheetVisibility read GetVisible write SetVisible;
   end;
 
   // in the workbook's order, numbered from 1 as in Excel; chart sheets are not listed
@@ -2432,6 +2480,9 @@ const
   // the default font's digit (Calibri or Aptos Narrow 11) in pixels: the unit of Excel's column widths
   cDigitPixels = 7;
   cMaxColumnWidth = 255;
+  // in points: a sheet's rows without a height of their own and no default in the file, Excel's largest
+  cDefaultRowHeight = 15;
+  cMaxRowHeight = 409.5;
 
 // Excel's ColumnWidth (characters) as a file stores it, and back: whole pixels, 5 of them padding
 function WidthToFile(aCharacters: Double): Double;
@@ -2875,7 +2926,7 @@ end;
 
 procedure TRange.ClearContents;
 begin
-  fSheet.ClearContents(Self);
+  fSheet.ClearContents(fSheet.WithMerges(Self));
 end;
 
 function TRange.GetFormula: Variant;
@@ -3160,6 +3211,136 @@ begin
     else
       column.Clear(@column.Hidden);
   end;
+end;
+
+function TRange.GetRowHeight: Double;
+begin
+  var sheet: TWorksheetE := fSheet.Objects(False);
+  var rowIndex: integer;
+  var row: TRowCT := nil;
+  if fSheet.FindRow(sheet, fTop, rowIndex) then
+    row := sheet.SheetData.Row[rowIndex];
+  var format: TSheetFormatPrCT := nil;
+  if sheet.IsPresent('SheetFormatPr') then
+    format := sheet.SheetFormatPr;
+  if row <> nil then
+  begin
+    if row.Hidden then
+      Exit(0);
+    if row.Present[@row.Ht] then
+      Exit(row.Ht);
+  end
+  else if (format <> nil) and format.ZeroHeight then // rows not listed are hidden
+    Exit(0);
+  if (format <> nil) and format.Present[@format.DefaultRowHeight] then
+    Result := format.DefaultRowHeight
+  else
+    Result := cDefaultRowHeight;
+end;
+
+procedure TRange.SetRowHeight(aValue: Double);
+begin
+  if IsNan(aValue) or (aValue < 0) or (aValue > cMaxRowHeight) then
+    raise EArgumentOutOfRangeException.CreateFmt('A row height of %s: Excel''s are 0 to %s points',
+      [FloatText(aValue, ftDouble), FloatText(cMaxRowHeight, ftDouble)]);
+  for var row: TRowCT in fSheet.RowEntries(fTop, fBottom) do
+    if aValue = 0 then
+      row.Hidden := True
+    else
+    begin
+      row.Ht := aValue;
+      row.SetPresent(@row.Ht);
+      row.CustomHeight := True;
+      row.Clear(@row.Hidden);
+    end;
+end;
+
+function TRange.GetHidden: boolean;
+begin
+  if (fLeft = 1) and (fRight = cMaxColumn) then
+    Result := GetRowHeight = 0
+  else if (fTop = 1) and (fBottom = cMaxRow) then
+  begin
+    var column: TColCT := fSheet.ColumnEntry(fLeft);
+    Result := (column <> nil) and column.Hidden;
+  end
+  else
+    raise EInvalidOpException.CreateFmt('Hidden is for whole rows or columns, not %s: Range[''%s''].EntireRow.Hidden',
+      [Address, Address]);
+end;
+
+procedure TRange.SetHidden(aValue: boolean);
+begin
+  if (fLeft = 1) and (fRight = cMaxColumn) then
+  begin
+    for var row: TRowCT in fSheet.RowEntries(fTop, fBottom) do
+      if aValue then
+        row.Hidden := True
+      else
+        row.Clear(@row.Hidden);
+  end
+  else if (fTop = 1) and (fBottom = cMaxRow) then
+  begin
+    for var column: TColCT in fSheet.ColumnEntries(fLeft, fRight) do
+      if aValue then
+        column.Hidden := True
+      else
+      begin
+        column.Clear(@column.Hidden);
+        if column.Width = 0 then // hidden by a width of 0: shown at the default one
+        begin
+          column.Width := WidthToFile(fSheet.DefaultWidth);
+          column.Clear(@column.CustomWidth);
+        end;
+      end;
+  end
+  else
+    raise EInvalidOpException.CreateFmt('Hidden is for whole rows or columns, not %s: Range[''%s''].EntireRow.Hidden',
+      [Address, Address]);
+end;
+
+procedure TRange.Merge(aAcross: boolean);
+begin
+  if aAcross then
+    for var row := fTop to fBottom do
+      fSheet.Merge(fSheet.MakeRange(row, fLeft, row, fRight))
+  else
+    fSheet.Merge(Self);
+end;
+
+procedure TRange.UnMerge;
+begin
+  fSheet.UnMerge(Self);
+end;
+
+function TRange.GetMergeCells: boolean;
+begin
+  var area: TRange;
+  for var row := fTop to fBottom do
+  begin
+    var column: integer := fLeft;
+    while column <= fRight do
+    begin
+      if not fSheet.MergedAt(row, column, area) then
+        Exit(False);
+      column := area.fRight + 1;
+    end;
+  end;
+  Result := True;
+end;
+
+procedure TRange.SetMergeCells(aValue: boolean);
+begin
+  if aValue then
+    Merge
+  else
+    UnMerge;
+end;
+
+function TRange.GetMergeArea: TRange;
+begin
+  if not fSheet.MergedAt(fTop, fLeft, Result) then
+    Result := fSheet.MakeRange(fTop, fLeft, fTop, fLeft);
 end;
 
 { TRangeFont }
@@ -3548,6 +3729,25 @@ begin
   Result.fBottom := GetItem(Max(first, last)).fBottom;
 end;
 
+procedure TRange.TRows.AutoFit;
+begin
+  var sheet: TWorksheetE := fSheet.Objects(False);
+  var rowIndex: integer;
+  fSheet.FindRow(sheet, fTop, rowIndex);
+  var rows: TRowCTList := sheet.SheetData.Row;
+  while (rowIndex < rows.Count) and (rows[rowIndex].R <= cardinal(fBottom)) do
+  begin
+    var row: TRowCT := rows[rowIndex];
+    if row.Present[@row.Ht] or row.CustomHeight then
+    begin
+      fSheet.Objects(True);
+      row.Clear(@row.Ht);
+      row.Clear(@row.CustomHeight);
+    end;
+    Inc(rowIndex);
+  end;
+end;
+
 { TWorksheetXlsx }
 
 function TWorksheetXlsx.GetWorksheet: TWorksheetE;
@@ -3561,6 +3761,7 @@ destructor TWorksheet.Destroy;
 begin
   fXlsx.Free;
   ForgetFormulas;
+  fMerges.Free;
   fPivots.Free;
   fTableRows.Free;
   fTables.Free;
@@ -4034,68 +4235,74 @@ begin
         else
           Result := style;
       end;
-    var sheet: TWorksheetE := Objects(True);
-    var wholeColumns: boolean := (aRange.fTop = 1) and (aRange.fBottom = cMaxRow);
-    var wholeRows: boolean := (aRange.fLeft = 1) and (aRange.fRight = cMaxColumn);
-    if wholeColumns or wholeRows or aExisting then
-    begin
-      if aExisting then
-        // the cells there already, below
-      else if wholeColumns then
-        for var column: TColCT in ColumnEntries(aRange.fLeft, aRange.fRight) do
-        begin
-          column.Style := newStyle(column.Style);
-          column.SetPresent(@column.Style);
-        end
-      else
-        for var number := aRange.fTop to aRange.fBottom do
-        begin
-          var rowIndex: integer;
-          if not FindRow(sheet, number, rowIndex) then
-          begin
-            var added: TRowCT := TRowCT.Create;
-            added.R := number;
-            sheet.SheetData.Row.Insert(rowIndex, added);
-          end;
-          var row: TRowCT := sheet.SheetData.Row[rowIndex];
-          if row.CustomFormat then
-            row.S := newStyle(row.S)
-          else
-            row.S := newStyle(0);
-          row.CustomFormat := True;
-        end;
-      // the cells there already
-      var rowIndex: integer;
-      FindRow(sheet, aRange.fTop, rowIndex);
-      var rows: TRowCTList := sheet.SheetData.Row;
-      while (rowIndex < rows.Count) and (rows[rowIndex].R <= cardinal(aRange.fBottom)) do
-      begin
-        var row: TRowCT := rows[rowIndex];
-        if wholeColumns and wholeRows and row.CustomFormat and not aExisting then
-          row.S := newStyle(row.S); // the whole sheet: a formatted row's empty cells too
-        var cellIndex: integer;
-        FindInRow(row, aRange.fLeft, cellIndex);
-        while (cellIndex < row.C.Count) and (ColumnOf(row.C[cellIndex].R) <= aRange.fRight) do
-        begin
-          row.C[cellIndex].S := newStyle(row.C[cellIndex].S);
-          Inc(cellIndex);
-        end;
-        Inc(rowIndex);
-      end;
-    end
-    else
-      for var row := aRange.fTop to aRange.fBottom do
-        for var column := aRange.fLeft to aRange.fRight do
-        begin
-          var cell: TCellCT := CellForStyle(row, column);
-          cell.S := newStyle(cell.S);
-        end;
+    SetStyles(aRange, newStyle, aExisting);
     if failed then
       fWorkbook.fIssues.Add(isError, 'NoStyles', fName + '!' + aRange.Address,
         'the workbook has no styles to change - not written');
   finally
     changed.Free;
   end;
+end;
+
+// each cell of the range given aNewStyle of its style; whole columns and rows as Restyle says
+procedure TWorksheet.SetStyles(const aRange: TRange; const aNewStyle: TFunc<cardinal, cardinal>; aExisting: boolean);
+begin
+  var sheet: TWorksheetE := Objects(True);
+  var wholeColumns: boolean := (aRange.fTop = 1) and (aRange.fBottom = cMaxRow);
+  var wholeRows: boolean := (aRange.fLeft = 1) and (aRange.fRight = cMaxColumn);
+  if wholeColumns or wholeRows or aExisting then
+  begin
+    if aExisting then
+      // the cells there already, below
+    else if wholeColumns then
+      for var column: TColCT in ColumnEntries(aRange.fLeft, aRange.fRight) do
+      begin
+        column.Style := aNewStyle(column.Style);
+        column.SetPresent(@column.Style);
+      end
+    else
+      for var number := aRange.fTop to aRange.fBottom do
+      begin
+        var rowIndex: integer;
+        if not FindRow(sheet, number, rowIndex) then
+        begin
+          var added: TRowCT := TRowCT.Create;
+          added.R := number;
+          sheet.SheetData.Row.Insert(rowIndex, added);
+        end;
+        var row: TRowCT := sheet.SheetData.Row[rowIndex];
+        if row.CustomFormat then
+          row.S := aNewStyle(row.S)
+        else
+          row.S := aNewStyle(0);
+        row.CustomFormat := True;
+      end;
+    // the cells there already
+    var rowIndex: integer;
+    FindRow(sheet, aRange.fTop, rowIndex);
+    var rows: TRowCTList := sheet.SheetData.Row;
+    while (rowIndex < rows.Count) and (rows[rowIndex].R <= cardinal(aRange.fBottom)) do
+    begin
+      var row: TRowCT := rows[rowIndex];
+      if wholeColumns and wholeRows and row.CustomFormat and not aExisting then
+        row.S := aNewStyle(row.S); // the whole sheet: a formatted row's empty cells too
+      var cellIndex: integer;
+      FindInRow(row, aRange.fLeft, cellIndex);
+      while (cellIndex < row.C.Count) and (ColumnOf(row.C[cellIndex].R) <= aRange.fRight) do
+      begin
+        row.C[cellIndex].S := aNewStyle(row.C[cellIndex].S);
+        Inc(cellIndex);
+      end;
+      Inc(rowIndex);
+    end;
+  end
+  else
+    for var row := aRange.fTop to aRange.fBottom do
+      for var column := aRange.fLeft to aRange.fRight do
+      begin
+        var cell: TCellCT := CellForStyle(row, column);
+        cell.S := aNewStyle(cell.S);
+      end;
 end;
 
 procedure TWorksheet.RestyleFont(const aRange: TRange; const aChange: TProc<TFontCT>);
@@ -4430,6 +4637,310 @@ begin
 end;
 
 // the cell below and right of a frozen pane, '' when there is none
+// the <row> entries of aTop..aBottom, made where missing
+function TWorksheet.RowEntries(aTop, aBottom: integer): TArray<TRowCT>;
+begin
+  var sheet: TWorksheetE := Objects(True);
+  var rows: TRowCTList := sheet.SheetData.Row;
+  SetLength(Result, aBottom - aTop + 1);
+  var rowIndex: integer;
+  FindRow(sheet, aTop, rowIndex);
+  for var number := aTop to aBottom do
+  begin
+    if (rowIndex >= rows.Count) or (rows[rowIndex].R <> cardinal(number)) then
+    begin
+      var added: TRowCT := TRowCT.Create;
+      added.R := number;
+      rows.Insert(rowIndex, added);
+    end;
+    Result[number - aTop] := rows[rowIndex];
+    Inc(rowIndex);
+  end;
+end;
+
+function TWorksheet.FindMerges: TList<TRange>;
+begin
+  if fMerges = nil then
+  begin
+    fMerges := TList<TRange>.Create;
+    var sheet: TWorksheetE := Objects(False);
+    if sheet.IsPresent('MergeCells') then
+      for var merged: TMergeCellCT in sheet.MergeCells.MergeCell do
+      begin
+        var area: TRange := MakeRange(0, 0, 0, 0);
+        if ParseAddress(merged.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
+          fMerges.Add(area);
+      end;
+  end;
+  Result := fMerges;
+end;
+
+function TWorksheet.MergedAt(aRow, aColumn: integer; out aArea: TRange): boolean;
+begin
+  Result := AreaAt(FindMerges, aRow, aColumn, aArea);
+end;
+
+// in a merged area, not its top-left cell: Excel shows nothing of it
+function TWorksheet.IsCovered(aRow, aColumn: integer): boolean;
+begin
+  var area: TRange;
+  Result := MergedAt(aRow, aColumn, area) and ((aRow <> area.fTop) or (aColumn <> area.fLeft));
+end;
+
+// False: covered (IsCovered), a warning added
+function TWorksheet.Uncovered(aRow, aColumn: integer): boolean;
+begin
+  var area: TRange;
+  Result := not IsCovered(aRow, aColumn);
+  if not Result then
+  begin
+    MergedAt(aRow, aColumn, area);
+    fWorkbook.fIssues.Add(isWarning, 'Merged', fName + '!' + CellName(aRow, aColumn),
+      'covered by the merged area ' + area.Address + ', which shows only ' + CellName(area.fTop, area.fLeft) +
+      ' - not written');
+  end;
+end;
+
+// the range grown over the merged areas it touches, as Excel's selection grows
+function TWorksheet.WithMerges(const aRange: TRange): TRange;
+begin
+  Result := aRange;
+  var grown: boolean := True;
+  while grown do
+  begin
+    grown := False;
+    for var area: TRange in FindMerges do
+      if Overlaps(area, Result) and not Contains(Result, area) then
+      begin
+        Result.fTop := Min(Result.fTop, area.fTop);
+        Result.fLeft := Min(Result.fLeft, area.fLeft);
+        Result.fBottom := Max(Result.fBottom, area.fBottom);
+        Result.fRight := Max(Result.fRight, area.fRight);
+        grown := True;
+      end;
+  end;
+end;
+
+procedure TWorksheet.Merge(const aRange: TRange);
+
+  function HasValue(aCell: TCellCT): boolean;
+  begin
+    Result := aCell.Present[@aCell.V] or aCell.IsPresent('F') or aCell.IsPresent('Is');
+  end;
+
+begin
+  if (aRange.fTop = aRange.fBottom) and (aRange.fLeft = aRange.fRight) then
+    Exit;
+  var area: TRange := WithMerges(aRange);
+  FindFormulas;
+  FindFixedAreas;
+  var why: string := '';
+  for var fixed: TRange in fArrays do
+    if Overlaps(fixed, area) then
+      why := 'an array formula (' + fixed.Address + '), which Excel changes only as a whole';
+  for var fixed: TRange in fDataTables do
+    if Overlaps(fixed, area) then
+      why := 'a data table, which Excel''s what-if analysis fills';
+  for var fixed: TRange in fTables do
+    if Overlaps(fixed, area) then
+      why := 'a table, where Excel merges no cells';
+  for var fixed: TRange in fPivots do
+    if Overlaps(fixed, area) then
+      why := 'a pivot table, which Excel builds again';
+  if why <> '' then
+  begin
+    fWorkbook.fIssues.Add(isError, 'Merge', fName + '!' + area.Address, 'over ' + why + ' - not merged');
+    Exit;
+  end;
+  var sheet: TWorksheetE := Objects(True);
+  // the merged areas met become part of this one
+  if sheet.IsPresent('MergeCells') then
+    for var i := sheet.MergeCells.MergeCell.Count - 1 downto 0 do
+    begin
+      var old: TRange := MakeRange(0, 0, 0, 0);
+      if ParseAddress(sheet.MergeCells.MergeCell[i].Ref, old.fTop, old.fLeft, old.fBottom, old.fRight) and
+        Overlaps(old, area) then
+        sheet.MergeCells.MergeCell.Delete(i);
+    end;
+  FreeAndNil(fMerges);
+  // the first value read row by row goes to the top-left cell, as Excel keeps it
+  var first: TCellCT := nil;
+  var rowIndex: integer;
+  FindRow(sheet, area.fTop, rowIndex);
+  var rows: TRowCTList := sheet.SheetData.Row;
+  while (first = nil) and (rowIndex < rows.Count) and (rows[rowIndex].R <= cardinal(area.fBottom)) do
+  begin
+    var cellIndex: integer;
+    FindInRow(rows[rowIndex], area.fLeft, cellIndex);
+    var cells: TCellCTList := rows[rowIndex].C;
+    while (cellIndex < cells.Count) and (ColumnOf(cells[cellIndex].R) <= area.fRight) do
+    begin
+      if HasValue(cells[cellIndex]) then
+      begin
+        first := cells[cellIndex];
+        Break;
+      end;
+      Inc(cellIndex);
+    end;
+    Inc(rowIndex);
+  end;
+  if (first <> nil) and (string(first.R) <> CellName(area.fTop, area.fLeft)) then
+  begin
+    var row, column: integer;
+    ParseAddress(first.R, row, column, row, column);
+    var text: string;
+    var value: Variant;
+    if first.IsPresent('F') then
+    begin
+      if FormulaText(row, column, text) then
+        WriteFormula(area.fTop, area.fLeft, text, area);
+    end
+    else if first.IsPresent('Is') then
+    begin
+      CellValue(first, value);
+      WriteText(area.fTop, area.fLeft, VarToStr(value), area);
+    end
+    else if CanWrite(area.fTop, area.fLeft, area) then
+    begin
+      // moved as it is: a shared string's count stays
+      var target: TCellCT := CellForWriting(area.fTop, area.fLeft);
+      target.T := first.T;
+      target.V := first.V;
+      first.Clear(@first.V);
+      first.Clear(@first.T);
+    end;
+  end;
+  if area.fRight > area.fLeft then
+    ClearContents(MakeRange(area.fTop, area.fLeft + 1, area.fTop, area.fRight));
+  if area.fBottom > area.fTop then
+    ClearContents(MakeRange(area.fTop + 1, area.fLeft, area.fBottom, area.fRight));
+  // every cell takes the top-left cell's format
+  var style: cardinal := EffectiveStyle(area.fTop, area.fLeft);
+  SetStyles(area,
+    function(aStyle: cardinal): cardinal
+    begin
+      Result := style;
+    end, False);
+  var added: TMergeCellCT := TMergeCellCT.Create;
+  added.Ref := CellsAddress(area);
+  sheet.MergeCells.MergeCell.Add(added);
+  sheet.MergeCells.Count := sheet.MergeCells.MergeCell.Count;
+  sheet.MergeCells.SetPresent(@sheet.MergeCells.Count);
+  FreeAndNil(fMerges);
+end;
+
+procedure TWorksheet.UnMerge(const aRange: TRange);
+begin
+  var sheet: TWorksheetE := Objects(False);
+  if not sheet.IsPresent('MergeCells') then
+    Exit;
+  var list: TMergeCellCTList := sheet.MergeCells.MergeCell;
+  for var i := list.Count - 1 downto 0 do
+  begin
+    var area: TRange := MakeRange(0, 0, 0, 0);
+    if ParseAddress(list[i].Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) and Overlaps(area, aRange) then
+    begin
+      Objects(True);
+      list.Delete(i);
+    end;
+  end;
+  if list.Count = 0 then // the schema wants one at least
+    sheet.Clear('MergeCells')
+  else if sheet.MergeCells.Present[@sheet.MergeCells.Count] then
+    sheet.MergeCells.Count := list.Count;
+  FreeAndNil(fMerges);
+end;
+
+// the workbook's <sheet> of this one
+function TWorksheet.SheetEntry: TSheetCT;
+begin
+  for var entry: TSheetCT in fWorkbook.fPackage.Part<TWorkbookE>(fWorkbook.fWorkbookPart).Sheets.Sheet do
+    if entry.Name = fName then
+      Exit(entry);
+  Result := nil;
+end;
+
+function TWorksheet.GetVisible: TSheetVisibility;
+begin
+  var entry: TSheetCT := SheetEntry;
+  if entry = nil then
+    Exit(svVisible);
+  case entry.State of
+    stssHidden: Result := svHidden;
+    stssVeryHidden: Result := svVeryHidden;
+  else
+    Result := svVisible;
+  end;
+end;
+
+procedure TWorksheet.SetVisible(aValue: TSheetVisibility);
+const
+  cStates: array[TSheetVisibility] of TSheetStateST = (stssVisible, stssHidden, stssVeryHidden);
+begin
+  if aValue = GetVisible then
+    Exit;
+  var workbook: TWorkbookE := fWorkbook.fPackage.EditPart<TWorkbookE>(fWorkbook.fWorkbookPart);
+  var entries: TSheetCTList := workbook.Sheets.Sheet;
+  var index: integer := -1;
+  var visible: integer := 0;
+  for var i := 0 to entries.Count - 1 do
+  begin
+    if entries[i].Name = fName then
+      index := i
+    else if entries[i].State = stssVisible then
+      Inc(visible);
+  end;
+  if index < 0 then
+    Exit;
+  if (aValue <> svVisible) and (visible = 0) then
+    raise EInvalidOpException.CreateFmt('%s is the last visible sheet: Excel keeps one at least', [fName]);
+  if aValue = svVisible then
+    entries[index].Clear(@entries[index].State)
+  else
+    entries[index].State := cStates[aValue];
+  if aValue = svVisible then
+    Exit;
+  if not workbook.IsPresent('BookViews') then
+    if index = 0 then // the first sheet is active without a view
+      workbook.BookViews.WorkbookView.Add(TBookViewCT.Create)
+    else
+      Exit;
+  // the active sheet hidden: the next visible one (else the one before) active, as Excel does
+  for var view: TBookViewCT in workbook.BookViews.WorkbookView do
+  begin
+    if integer(view.ActiveTab) <> index then
+      Continue;
+    var active: integer := -1;
+    for var i := index + 1 to entries.Count - 1 do
+      if (active < 0) and (entries[i].State = stssVisible) then
+        active := i;
+    for var i := index - 1 downto 0 do
+      if (active < 0) and (entries[i].State = stssVisible) then
+        active := i;
+    view.ActiveTab := active;
+    view.SetPresent(@view.ActiveTab);
+    if integer(view.FirstSheet) > active then
+      view.FirstSheet := active;
+    // the tabs selected: the new active one only
+    for var sheet: TWorksheet in fWorkbook.fSheets do
+    begin
+      var tab: integer := entries.IndexOf(sheet.SheetEntry);
+      var objects: TWorksheetE := sheet.Objects(False);
+      if (tab = index) or (tab = active) then
+        if objects.IsPresent('SheetViews') then
+          for var sheetView: TSheetViewCT in objects.SheetViews.SheetView do
+            if sheetView.TabSelected <> (tab = active) then
+            begin
+              sheet.Objects(True);
+              if tab = active then
+                sheetView.TabSelected := True
+              else
+                sheetView.Clear(@sheetView.TabSelected);
+            end;
+    end;
+  end;
+end;
+
 function TWorksheet.GetFreezePanes: string;
 begin
   Result := '';
@@ -4545,7 +5056,7 @@ procedure TWorksheet.WriteNumber(aRow, aColumn: integer; aValue: Double; const a
 begin
   if IsNan(aValue) or IsInfinite(aValue) then
     Refuse(aRow, aColumn, 'Value', 'Excel holds no NaN or infinity')
-  else if CanWrite(aRow, aColumn, aTarget) then
+  else if Uncovered(aRow, aColumn) and CanWrite(aRow, aColumn, aTarget) then
     CellForWriting(aRow, aColumn).V := FloatText(aValue, ftDouble);
 end;
 
@@ -4557,7 +5068,7 @@ begin
     Refuse(aRow, aColumn, 'Value', 'a date before the first one Excel has (' + DateToISO8601(aValue) + ')');
     Exit;
   end;
-  if not CanWrite(aRow, aColumn, aTarget) then
+  if not Uncovered(aRow, aColumn) or not CanWrite(aRow, aColumn, aTarget) then
     Exit;
   var style: integer := EffectiveStyle(aRow, aColumn);
   if not fWorkbook.IsDateStyle(style) then
@@ -4584,7 +5095,7 @@ procedure TWorksheet.WriteText(aRow, aColumn: integer; const aValue: string; con
 begin
   if aValue.Length > cMaxText then
     Refuse(aRow, aColumn, 'Value', Format('%d characters, Excel''s cells hold up to %d', [aValue.Length, cMaxText]))
-  else if CanWrite(aRow, aColumn, aTarget) then
+  else if Uncovered(aRow, aColumn) and CanWrite(aRow, aColumn, aTarget) then
   begin
     var index: integer := fWorkbook.SharedStringIndex(aValue);
     if index < 0 then
@@ -4600,7 +5111,7 @@ end;
 
 procedure TWorksheet.WriteBoolean(aRow, aColumn: integer; aValue: boolean; const aTarget: TRange);
 begin
-  if CanWrite(aRow, aColumn, aTarget) then
+  if Uncovered(aRow, aColumn) and CanWrite(aRow, aColumn, aTarget) then
   begin
     var cell: TCellCT := CellForWriting(aRow, aColumn);
     cell.T := stctB;
@@ -4632,7 +5143,7 @@ end;
 
 procedure TWorksheet.WriteFormula(aRow, aColumn: integer; const aText: string; const aTarget: TRange);
 begin
-  if CanWrite(aRow, aColumn, aTarget) then
+  if Uncovered(aRow, aColumn) and CanWrite(aRow, aColumn, aTarget) then
   begin
     CellForWriting(aRow, aColumn).F.XmlValue := EncodeText(aText);
     fWorkbook.FormulaChanged;
@@ -4665,6 +5176,9 @@ begin
   for var area: TRange in fPivots do
     if Overlaps(area, aRange) then
       why := 'a pivot table, which Excel builds again';
+  for var area: TRange in FindMerges do
+    if Overlaps(area, aRange) then
+      why := 'merged cells (' + area.Address + '), where Excel allows no array formula';
   if why <> '' then
   begin
     Refuse(aRange.fTop, aRange.fLeft, 'Formula', 'an array formula over ' + why);
@@ -4709,6 +5223,10 @@ begin
       var cell: TCellCT := row.C[cellIndex];
       var column: integer := ColumnOf(cell.R);
       var hasValue: boolean := cell.Present[@cell.V] or cell.IsPresent('F') or cell.IsPresent('Is');
+      var area: TRange;
+      if hasValue and MergedAt(row.R, column, area) and not Contains(aRange, area) and
+        ((integer(row.R) <> area.fTop) or (column <> area.fLeft)) then
+        hasValue := False; // covered, its area not cleared whole: as a write to it, nothing done
       if hasValue and not CanWrite(row.R, column, aRange) then
       begin
         Inc(cellIndex);

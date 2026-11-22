@@ -51,6 +51,13 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 - Calcite's whole columns and rows, as Excel's: `Sheet.Columns[2]`, `Columns['B:D']`, `Sheet.Rows[200]`, `Rows['5:7']`, a
   range's own (`Range['C1:E5'].Columns[2]` is D1:D5), `EntireRow`, `EntireColumn` - formatted before they hold anything;
   their `Address` is Excel's, `B:D` and `5:7`
+- Calcite's layout, as Excel's own properties: `RowHeight` in points (0 hides), `Rows.AutoFit` (Excel fits the rows when it
+  opens the file), `Hidden` for whole rows and columns (a height or width comes back when shown again), a sheet's `Visible`
+  (`svHidden`, `svVeryHidden`; the last visible sheet stays, hiding the active one makes the next active). Merged cells:
+  `Merge` (across too), `UnMerge`, `MergeCells`, `MergeArea` - the first value kept in the top-left cell, every cell given its
+  format, merged areas met joined into one (Excel opens no file with overlapping ones); a value written to a covered cell is
+  not written (a warning), `ClearContents` clears a merged area it touches whole; merging over an array formula, a table or
+  a pivot table is refused
 - `ProRock.Calcite.Data`: `ExportDataSet(DataSet, Sheet)` writes a TDataSet's visible fields to a sheet - a bold header from
   `DisplayLabel`, each value as its type (null left empty), number formats from the fields (`DisplayFormat`, currency,
   decimals, dates), the columns fitted and the header frozen
