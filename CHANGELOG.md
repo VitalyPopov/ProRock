@@ -58,6 +58,13 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   format, merged areas met joined into one (Excel opens no file with overlapping ones); a value written to a covered cell is
   not written (a warning), `ClearContents` clears a merged area it touches whole; merging over an array formula, a table or
   a pivot table is refused
+- Calcite's `Insert` and `Delete` of whole rows and columns, as Excel's (`Sheet.Rows['5:7'].Insert`,
+  `Range['B5'].EntireColumn.Delete`): cells, heights, widths, merged areas, conditional formats, data validation, hyperlinks,
+  the autofilter and frozen panes move; formulas on every sheet, defined names, print areas and titles change as Excel
+  changes them (a deleted reference becomes `#REF!`); new rows and columns take the format of the row above or the column
+  left. Refused with nothing changed, as Excel refuses: part of an array formula, cells pushed off the sheet; refused for
+  now: a table or a pivot table the change would move, a sheet with drawings or notes, a pivot table's source sheet, any
+  workbook with charts. Cells shifted within rows or columns come later
 - `ProRock.Calcite.Data`: `ExportDataSet(DataSet, Sheet)` writes a TDataSet's visible fields to a sheet - a bold header from
   `DisplayLabel`, each value as its type (null left empty), number formats from the fields (`DisplayFormat`, currency,
   decimals, dates), the columns fitted and the header frozen

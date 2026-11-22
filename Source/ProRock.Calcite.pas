@@ -245,6 +245,13 @@ type
   public
     // the values gone, as Excel's ClearContents: a cell with a format stays. A merged area touched is cleared whole
     procedure ClearContents;
+    // Excel's Insert and Delete of whole rows or columns (Sheet.Rows['5:7'].Insert, Range['B5'].EntireColumn.Delete): cells,
+    // merged areas, conditional formats, validation, hyperlinks, the autofilter and frozen panes move, formulas and names on
+    // every sheet change as in Excel; new rows and columns take the format of the one above or left. EInvalidOpException
+    // with nothing changed where Excel refuses (part of an array formula, cells pushed off the sheet) or for what Calcite
+    // does not move yet (tables, pivot tables, charts, drawings, notes); cells shifted within rows or columns: later
+    procedure Insert;
+    procedure Delete;
 
     property Sheet: TWorksheet read fSheet;
     property Row: integer read fTop;
@@ -350,6 +357,21 @@ type
   end;
 
   TWorksheet = class
+  private type
+    // a formula's cell through rows or columns inserted or deleted: where it is then, its text before and after (stored)
+    TFormulaMove = record
+      Cell: TCellCT;
+      Row, Column: integer;
+      Before, After: string;
+    end;
+    // a conditional format's formula (Rule, its Index) or data validation's (Validation, 1 or 2) changed the same way
+    TTextMove = record
+      Sheet: TWorksheet;
+      Rule: TCfRuleCT;
+      Validation: TDataValidationCT;
+      Index: integer;
+      Text: string;
+    end;
   private
     fWorkbook: TWorkbook;
     fXlsx: TWorksheetXlsx;
@@ -417,11 +439,23 @@ type
     procedure RestyleBorders(const aRange: TRange; aEdges: TBorderEdges; const aChange: TProc<TBorderPrCT>);
     function BorderSide(aRow, aColumn: integer; aEdge: TBorderEdge): TBorderPrCT;
     function DefaultWidth: Double;
+    function SortedColumns: TColCTList;
+    function ColumnStyle(aColumn: integer): cardinal;
     function ColumnEntries(aLeft, aRight: integer): TArray<TColCT>;
     function ColumnEntry(aColumn: integer): TColCT;
     procedure AutoFit(const aRange: TRange);
     function GetFreezePanes: string;
     procedure SetFreezePanes(const aValue: string);
+    function ShiftBlocker(aByRows: boolean; aFirst, aCount: integer): string;
+    function PlanFormulas(aSheet: TWorksheet; aByRows: boolean; aFirst, aCount: integer; aMoves: TList<TFormulaMove>;
+      aTexts: TList<TTextMove>; aRefs: TDictionary<cardinal, string>; out aWhy: string): boolean;
+    function CopiedRow(aSource: TRowCT; aNumber: integer): TRowCT;
+    procedure ShiftColumnEntries(aFirst, aCount: integer);
+    procedure ShiftCells(aByRows: boolean; aFirst, aCount: integer);
+    procedure ShiftLists(aByRows: boolean; aFirst, aCount: integer);
+    procedure ApplyFormulas(aMoves: TList<TFormulaMove>; aRefs: TDictionary<cardinal, string>; aShifted: boolean;
+      aByRows: boolean; aFirst, aCount: integer);
+    procedure Shift(aByRows: boolean; aFirst, aCount: integer);
   public
     destructor Destroy; override;
 
@@ -650,6 +684,10 @@ const
   cCalcChain = '/calcChain';
   cTable = '/table';
   cPivotTable = '/pivotTable';
+  cPivotCacheDefinition = '/pivotCacheDefinition';
+  cDrawing = '/drawing';
+  cChart = '/chart';
+  cChartsheet = '/chartsheet';
   cContentTypes = '[Content_Types].xml';
   cSharedStringsType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml';
   cWorksheetType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml';
@@ -2764,6 +2802,114 @@ end;
 
 {$ENDREGION}
 
+{$REGION 'Ranges: rows and columns inserted and deleted'}
+
+// rows or columns inserted (aCount > 0) at aFirst or deleted (aCount < 0) from it, as Excel moves a span of them: one
+// inserted inside grows (aGrowAfter: right after it too, as a format carries on), a delete shrinks it, the whole sheet's
+// stays and one reaching the last row or column keeps reaching it; False when nothing is left
+function ShiftedSpan(var aLow, aHigh: integer; aFirst, aCount, aLimit: integer; aGrowAfter: boolean): boolean;
+begin
+  if aCount > 0 then
+  begin
+    if (aLow = 1) and (aHigh = aLimit) then
+      Exit(True);
+    if aFirst <= aLow then
+    begin
+      Inc(aLow, aCount);
+      Inc(aHigh, aCount);
+    end
+    else if (aFirst <= aHigh) or aGrowAfter and (aFirst = aHigh + 1) then
+      Inc(aHigh, aCount);
+    aHigh := Min(aHigh, aLimit);
+    Exit(aLow <= aLimit);
+  end;
+  var last: integer := aFirst - aCount - 1;
+  if last < aLow then
+  begin
+    Inc(aLow, aCount);
+    Inc(aHigh, aCount);
+  end
+  else if aFirst <= aHigh then
+  begin
+    var toEnd: boolean := aHigh = aLimit;
+    var left: integer := aHigh - aLow + 1 - (Min(last, aHigh) - Max(aFirst, aLow) + 1);
+    if left = 0 then
+      Exit(False);
+    aLow := Min(aLow, aFirst);
+    aHigh := aLow + left - 1;
+    if toEnd then
+      aHigh := aLimit;
+  end;
+  Result := True;
+end;
+
+// a row or column number the same way: 0 when deleted or pushed off the sheet
+function ShiftedIndex(aIndex, aFirst, aCount, aLimit: integer): integer;
+begin
+  Result := aIndex;
+  if aIndex < aFirst then
+    Exit;
+  if aCount < 0 then
+  begin
+    if aIndex < aFirst - aCount then
+      Exit(0);
+  end
+  else if aIndex + aCount > aLimit then
+    Exit(0);
+  Result := aIndex + aCount;
+end;
+
+function ShiftedArea(var aArea: TRange; aByRows: boolean; aFirst, aCount: integer; aGrowAfter: boolean): boolean;
+begin
+  if aByRows then
+    Result := ShiftedSpan(aArea.fTop, aArea.fBottom, aFirst, aCount, cMaxRow, aGrowAfter)
+  else
+    Result := ShiftedSpan(aArea.fLeft, aArea.fRight, aFirst, aCount, cMaxColumn, aGrowAfter);
+end;
+
+// a list of areas (A1:B5 D7) the same way, those gone dropped: '' when none is left
+function ShiftedSqref(const aSqref: string; aByRows: boolean; aFirst, aCount: integer; aGrowAfter: boolean): string;
+begin
+  Result := '';
+  for var item: string in aSqref.Split([' '], TStringSplitOptions.ExcludeEmpty) do
+  begin
+    var area: TRange := Default(TRange);
+    var text: string := item;
+    if ParseAddress(item, area.fTop, area.fLeft, area.fBottom, area.fRight) then
+      if ShiftedArea(area, aByRows, aFirst, aCount, aGrowAfter) then
+        text := CellsAddress(area)
+      else
+        text := '';
+    if text <> '' then
+      if Result = '' then
+        Result := text
+      else
+        Result := Result + ' ' + text;
+  end;
+end;
+
+function HasValue(aCell: TCellCT): boolean;
+begin
+  Result := aCell.Present[@aCell.V] or aCell.IsPresent('F') or aCell.IsPresent('Is');
+end;
+
+// the <col> entry across aAt split there: ...aAt-1 and aAt...
+procedure SplitColumns(aColumns: TColCTList; aAt: cardinal);
+begin
+  for var i := 0 to aColumns.Count - 1 do
+    if (aColumns[i].Min < aAt) and (aColumns[i].Max >= aAt) then
+    begin
+      var copy: TColCT := TColCT.Create;
+      TXmlite.XmlToObject(TXmlite.ObjectToXml(aColumns[i]), copy);
+      copy.Min := aAt;
+      aColumns[i].Max := aAt - 1;
+      aColumns.Insert(i + 1, copy);
+      Exit;
+    end;
+end;
+
+{$ENDREGION}
+
 { TRange }
 
 function TRange.GetRowCount: integer;
@@ -3376,6 +3522,28 @@ function TRange.GetMergeArea: TRange;
 begin
   if not fSheet.MergedAt(fTop, fLeft, Result) then
     Result := fSheet.MakeRange(fTop, fLeft, fTop, fLeft);
+end;
+
+procedure TRange.Insert;
+begin
+  if (fLeft = 1) and (fRight = cMaxColumn) then
+    fSheet.Shift(True, fTop, RowCount)
+  else if (fTop = 1) and (fBottom = cMaxRow) then
+    fSheet.Shift(False, fLeft, ColumnCount)
+  else
+    raise EInvalidOpException.CreateFmt('Insert takes whole rows or columns, not %s: Range[''%s''].EntireRow.Insert',
+      [Address, Address]);
+end;
+
+procedure TRange.Delete;
+begin
+  if (fLeft = 1) and (fRight = cMaxColumn) then
+    fSheet.Shift(True, fTop, -RowCount)
+  else if (fTop = 1) and (fBottom = cMaxRow) then
+    fSheet.Shift(False, fLeft, -ColumnCount)
+  else
+    raise EInvalidOpException.CreateFmt('Delete takes whole rows or columns, not %s: Range[''%s''].EntireRow.Delete',
+      [Address, Address]);
 end;
 
 { TRangeFont }
@@ -4519,45 +4687,44 @@ begin
   Result := nil;
 end;
 
+function TWorksheet.ColumnStyle(aColumn: integer): cardinal;
+begin
+  var column: TColCT := ColumnEntry(aColumn);
+  if column = nil then
+    Result := 0
+  else
+    Result := column.Style;
+end;
+
 // the <col> entries covering aLeft..aRight exactly, in order: those there split at the ends, the gaps filled with the
 // default width (a <col> without one is hidden)
-function TWorksheet.ColumnEntries(aLeft, aRight: integer): TArray<TColCT>;
-
-  // the entry across aAt split there: ...aAt-1 and aAt...
-  procedure Split(aColumns: TColCTList; aAt: cardinal);
-  begin
-    for var i := 0 to aColumns.Count - 1 do
-      if (aColumns[i].Min < aAt) and (aColumns[i].Max >= aAt) then
-      begin
-        var copy: TColCT := TColCT.Create;
-        TXmlite.XmlToObject(TXmlite.ObjectToXml(aColumns[i]), copy);
-        copy.Min := aAt;
-        aColumns[i].Max := aAt - 1;
-        aColumns.Insert(i + 1, copy);
-        Exit;
-      end;
-  end;
-
+// the <col> entries in one <cols> sorted, as Excel writes them (a <cols> added when there is none)
+function TWorksheet.SortedColumns: TColCTList;
 begin
   var sheet: TWorksheetE := Objects(True);
   if sheet.Cols.Count = 0 then
     sheet.Cols.Add(TColsCT.Create);
-  var columns: TColCTList := sheet.Cols[0].Col;
-  while sheet.Cols.Count > 1 do // one <cols>, as Excel writes
+  Result := sheet.Cols[0].Col;
+  while sheet.Cols.Count > 1 do
   begin
     var other: TColCTList := sheet.Cols[1].Col;
     while other.Count > 0 do
-      columns.Add(other.Extract(other[0]));
+      Result.Add(other.Extract(other[0]));
     sheet.Cols.Delete(1);
   end;
-  columns.Sort(TComparer<TColCT>.Construct(
+  Result.Sort(TComparer<TColCT>.Construct(
     function(const aLeftColumn, aRightColumn: TColCT): integer
     begin
       Result := CompareValue(int64(aLeftColumn.Min), int64(aRightColumn.Min));
     end));
-  Split(columns, aLeft);
+end;
+
+function TWorksheet.ColumnEntries(aLeft, aRight: integer): TArray<TColCT>;
+begin
+  var columns: TColCTList := SortedColumns;
+  SplitColumns(columns, aLeft);
   if aRight < cMaxColumn then
-    Split(columns, aRight + 1);
+    SplitColumns(columns, aRight + 1);
   Result := [];
   var i: integer := 0;
   while (i < columns.Count) and (columns[i].Max < cardinal(aLeft)) do
@@ -4759,12 +4926,6 @@ begin
 end;
 
 procedure TWorksheet.Merge(const aRange: TRange);
-
-  function HasValue(aCell: TCellCT): boolean;
-  begin
-    Result := aCell.Present[@aCell.V] or aCell.IsPresent('F') or aCell.IsPresent('Is');
-  end;
-
 begin
   if (aRange.fTop = aRange.fBottom) and (aRange.fLeft = aRange.fRight) then
     Exit;
@@ -5068,6 +5229,710 @@ begin
     selection.Sqref := cells[i];
     view.Selection.Add(selection);
   end;
+end;
+
+// why Excel or Calcite does not insert (aCount > 0) or delete (aCount < 0) the rows or columns from aFirst, '' when nothing
+// stands in the way
+function TWorksheet.ShiftBlocker(aByRows: boolean; aFirst, aCount: integer): string;
+const
+  cLater = ', which Calcite does not move yet';
+  cPushedOff = 'Microsoft Excel can''t insert new cells because it would push non-empty cells off the end of the ' +
+    'worksheet. These non-empty cells might appear empty but have blank values, some formatting, or a formula. Delete ' +
+    'enough rows or columns to make room for what you want to insert and then try again.';
+  cElements: array[0 .. 9] of string = ('Drawing', 'LegacyDrawing', 'OleObjects', 'Controls', 'ExtLst', 'Scenarios',
+    'DataConsolidate', 'CustomSheetViews', 'CellWatches', 'SmartTags');
+  cWhat: array[0 .. 9] of string = ('drawings (charts, pictures, shapes)', 'notes', 'embedded objects', 'controls',
+    'Excel 2010''s extensions (conditional formats, validation, sparklines)', 'scenarios', 'a data consolidation',
+    'custom views', 'watched cells', 'smart tags');
+begin
+  var sheet: TWorksheetE := Objects(False);
+  var last: integer := aFirst - aCount - 1;
+  var limit: integer := IfThen(aByRows, cMaxRow, cMaxColumn);
+  FindFormulas;
+  for var area: TRange in fArrays do
+  begin
+    var low: integer := IfThen(aByRows, area.fTop, area.fLeft);
+    var high: integer := IfThen(aByRows, area.fBottom, area.fRight);
+    if (aCount > 0) and (aFirst > low) and (aFirst <= high) or
+      (aCount < 0) and (aFirst <= high) and (last >= low) and ((aFirst > low) or (last < high)) then
+      Exit('You can''t change part of an array.');
+  end;
+  if fDataTables.Count > 0 then
+    Exit('a data table' + cLater);
+  if aCount > 0 then // a cell with only a format there is dropped, as Excel drops it
+    for var row: TRowCT in sheet.SheetData.Row do
+      for var cell: TCellCT in row.C do
+        if HasValue(cell) and (aByRows and (integer(row.R) > limit - aCount) or
+          not aByRows and (ColumnOf(cell.R) > limit - aCount)) then
+          Exit(cPushedOff);
+  FindFixedAreas;
+  for var area: TRange in fTables do
+    if IfThen(aByRows, area.fBottom, area.fRight) >= aFirst then
+      Exit('a table (' + CellsAddress(area) + ')' + cLater);
+  for var area: TRange in fPivots do
+    if IfThen(aByRows, area.fBottom, area.fRight) >= aFirst then
+      Exit('a pivot table (' + CellsAddress(area) + ')' + cLater);
+  for var i := 0 to High(cElements) do
+    if sheet.IsPresent(cElements[i]) then
+      Exit(cWhat[i] + cLater);
+  // charts name cells in their series, pivot caches in their source
+  var package: TPackageOoxml := fWorkbook.fPackage;
+  for var relationship: TRelationshipOoxml in package.Relationships(fWorkbook.fWorkbookPart) do
+    if relationship.&Type.EndsWith(cChartsheet) then
+      Exit('charts' + cLater)
+    else if relationship.&Type.EndsWith(cPivotCacheDefinition) then
+    begin
+      var cache: TPivotCacheDefinitionE := package.Part<TPivotCacheDefinitionE>(relationship.Part);
+      if (cache <> nil) and cache.CacheSource.IsPresent('WorksheetSource') and
+        ((cache.CacheSource.WorksheetSource.Name <> '') or AnsiSameText(cache.CacheSource.WorksheetSource.Sheet, fName)) then
+        Exit('the source of a pivot table' + cLater);
+    end;
+  for var other: TWorksheet in fWorkbook.fSheets do
+    for var drawing: TRelationshipOoxml in package.Relationships(other.fPartName) do
+      if drawing.&Type.EndsWith(cDrawing) then
+        for var chart: TRelationshipOoxml in package.Relationships(drawing.Part) do
+          if chart.&Type.EndsWith(cChart) then
+            Exit('charts' + cLater);
+  Result := '';
+end;
+
+// this sheet's formulas through rows or columns of aSheet inserted or deleted (Shift's): each cell's that stays, its place
+// and text then; shared formulas' areas by si; conditional formats' and validation's formulas that change. False with
+// aWhy when one that may name aSheet does not read
+function TWorksheet.PlanFormulas(aSheet: TWorksheet; aByRows: boolean; aFirst, aCount: integer;
+  aMoves: TList<TFormulaMove>; aTexts: TList<TTextMove>; aRefs: TDictionary<cardinal, string>; out aWhy: string): boolean;
+
+  function Changed(const aText, aWhere: string; out aResult: string): boolean;
+  begin
+    Result := True;
+    var why: string;
+    if TWorkbook.ChangedFormula(aText, fName, aSheet.fName, aByRows, aFirst, aCount, aResult, why) then
+      Exit;
+    aResult := aText;
+    if (aSheet = Self) or aText.ToUpper.Contains(aSheet.fName.ToUpper) then
+    begin
+      aWhy := Format('the formula of %s!%s does not read: %s', [fName, aWhere, why]);
+      Result := False;
+    end;
+  end;
+
+  procedure AddText(aRule: TCfRuleCT; aValidation: TDataValidationCT; aIndex: integer; const aText, aWhere: string);
+  begin
+    var move: TTextMove := Default(TTextMove);
+    if not Changed(DecodeText(aText), aWhere, move.Text) then
+      Exit;
+    if move.Text = DecodeText(aText) then
+      Exit;
+    move.Sheet := Self;
+    move.Rule := aRule;
+    move.Validation := aValidation;
+    move.Index := aIndex;
+    aTexts.Add(move);
+  end;
+
+begin
+  Result := False;
+  aWhy := '';
+  var sheet: TWorksheetE := Objects(False);
+  for var row: TRowCT in sheet.SheetData.Row do
+    for var cell: TCellCT in row.C do
+    begin
+      if not cell.IsPresent('F') or (cell.F.T = stcftDataTable) then
+        Continue;
+      if (cell.F.T = stcftShared) and (cell.F.Ref <> '') then
+        aRefs.AddOrSetValue(cell.F.Si, cell.F.Ref);
+      var move: TFormulaMove;
+      move.Cell := cell;
+      move.Row := row.R;
+      move.Column := ColumnOf(cell.R);
+      if not FormulaText(move.Row, move.Column, move.Before) then
+        Continue;
+      if aSheet = Self then
+        if aByRows then
+          move.Row := ShiftedIndex(move.Row, aFirst, aCount, cMaxRow)
+        else
+          move.Column := ShiftedIndex(move.Column, aFirst, aCount, cMaxColumn);
+      if (move.Row = 0) or (move.Column = 0) then
+        Continue;
+      if not Changed(move.Before, cell.R, move.After) then
+        Exit;
+      aMoves.Add(move);
+    end;
+  for var formatting: TConditionalFormattingCT in sheet.ConditionalFormatting do
+    for var rule: TCfRuleCT in formatting.CfRule do
+      for var index := 0 to rule.Formula.Count - 1 do
+      begin
+        AddText(rule, nil, index, rule.Formula[index], formatting.Sqref);
+        if aWhy <> '' then
+          Exit;
+      end;
+  if sheet.IsPresent('DataValidations') then
+    for var validation: TDataValidationCT in sheet.DataValidations.DataValidation do
+    begin
+      if validation.Formula1 <> '' then
+        AddText(nil, validation, 1, validation.Formula1, validation.Sqref);
+      if (aWhy = '') and (validation.Formula2 <> '') then
+        AddText(nil, validation, 2, validation.Formula2, validation.Sqref);
+      if aWhy <> '' then
+        Exit;
+    end;
+  Result := True;
+end;
+
+// a row inserted as Excel does: the format and height of the row above (not hidden), its cells' styles where they differ
+// from what the new row shows anyway; nil when there is nothing to copy
+function TWorksheet.CopiedRow(aSource: TRowCT; aNumber: integer): TRowCT;
+begin
+  Result := TRowCT.Create;
+  Result.R := aNumber;
+  if aSource.CustomFormat then
+  begin
+    Result.S := aSource.S;
+    Result.CustomFormat := True;
+  end;
+  if aSource.CustomHeight then
+  begin
+    Result.Ht := aSource.Ht;
+    Result.CustomHeight := True;
+  end;
+  if aSource.Present[@aSource.Spans] then
+    Result.Spans := aSource.Spans;
+  for var cell: TCellCT in aSource.C do
+  begin
+    var column: integer := ColumnOf(cell.R);
+    var shown: cardinal := ColumnStyle(column);
+    if Result.CustomFormat then
+      shown := Result.S;
+    if cell.S <> shown then
+    begin
+      var added: TCellCT := TCellCT.Create;
+      added.R := CellName(aNumber, column);
+      added.S := cell.S;
+      Result.C.Add(added);
+    end;
+  end;
+  if (Result.C.Count = 0) and not Result.CustomFormat and not Result.CustomHeight then
+    FreeAndNil(Result);
+end;
+
+// the <col> entries moved; a column inserted takes the width and style of the one left of it (not hidden, not a width of 0)
+procedure TWorksheet.ShiftColumnEntries(aFirst, aCount: integer);
+begin
+  var sheet: TWorksheetE := Objects(True);
+  if sheet.Cols.Count = 0 then
+    Exit;
+  var columns: TColCTList := SortedColumns;
+  var last: integer := aFirst - aCount - 1;
+  SplitColumns(columns, aFirst);
+  if aCount < 0 then
+  begin
+    if last < cMaxColumn then
+      SplitColumns(columns, last + 1);
+    for var i := columns.Count - 1 downto 0 do
+      if (integer(columns[i].Min) >= aFirst) and (integer(columns[i].Max) <= last) then
+        columns.Delete(i)
+      else if integer(columns[i].Min) > last then
+      begin
+        columns[i].Min := integer(columns[i].Min) + aCount;
+        columns[i].Max := integer(columns[i].Max) + aCount;
+      end;
+  end
+  else
+  begin
+    var source: integer := -1;
+    for var i := columns.Count - 1 downto 0 do
+      if integer(columns[i].Min) >= aFirst then
+      begin
+        if integer(columns[i].Min) + aCount > cMaxColumn then
+          columns.Delete(i)
+        else
+        begin
+          columns[i].Min := integer(columns[i].Min) + aCount;
+          columns[i].Max := Min(integer(columns[i].Max) + aCount, cMaxColumn);
+        end;
+      end
+      else if integer(columns[i].Max) = aFirst - 1 then
+        source := i;
+    if source >= 0 then
+      if not columns[source].Hidden and (columns[source].Width > 0) then
+        columns[source].Max := integer(columns[source].Max) + aCount
+      else
+      begin
+        var copy: TColCT := TColCT.Create;
+        TXmlite.XmlToObject(TXmlite.ObjectToXml(columns[source]), copy);
+        copy.Min := aFirst;
+        copy.Max := aFirst + aCount - 1;
+        copy.Clear(@copy.Hidden);
+        copy.Clear(@copy.Collapsed);
+        if copy.Width = 0 then
+        begin
+          copy.Clear(@copy.Width);
+          copy.Clear(@copy.CustomWidth);
+        end;
+        if copy.Present[@copy.Width] or (copy.Style <> 0) then
+          columns.Insert(source + 1, copy)
+        else
+          copy.Free;
+      end;
+  end;
+  if columns.Count = 0 then
+    sheet.Cols.Clear;
+end;
+
+// the rows or columns moved, those deleted gone (their values released), new ones as the row above or the column left
+procedure TWorksheet.ShiftCells(aByRows: boolean; aFirst, aCount: integer);
+begin
+  var sheet: TWorksheetE := Objects(True);
+  var rows: TRowCTList := sheet.SheetData.Row;
+  var last: integer := aFirst - aCount - 1;
+  if aByRows then
+  begin
+    var index: integer;
+    FindRow(sheet, aFirst, index);
+    if aCount < 0 then
+      while (index < rows.Count) and (integer(rows[index].R) <= last) do
+      begin
+        for var cell: TCellCT in rows[index].C do
+          RemoveValue(cell);
+        rows.Delete(index);
+      end
+    else
+      for var i := rows.Count - 1 downto index do
+        if integer(rows[i].R) + aCount > cMaxRow then // only formats there (ShiftBlocker)
+          rows.Delete(i);
+    for var i := index to rows.Count - 1 do
+    begin
+      var row: TRowCT := rows[i];
+      row.R := integer(row.R) + aCount;
+      for var cell: TCellCT in row.C do
+        cell.R := CellName(row.R, ColumnOf(cell.R));
+    end;
+    var above: integer;
+    if (aCount > 0) and (aFirst > 1) and FindRow(sheet, aFirst - 1, above) then
+      for var number := aFirst + aCount - 1 downto aFirst do
+      begin
+        var added: TRowCT := CopiedRow(rows[above], number);
+        if added <> nil then
+          rows.Insert(above + 1, added);
+      end;
+    Exit;
+  end;
+  ShiftColumnEntries(aFirst, aCount);
+  for var row: TRowCT in rows do
+  begin
+    var cells: TCellCTList := row.C;
+    var index: integer;
+    FindInRow(row, aFirst, index);
+    if aCount < 0 then
+      while (index < cells.Count) and (ColumnOf(cells[index].R) <= last) do
+      begin
+        RemoveValue(cells[index]);
+        cells.Delete(index);
+      end
+    else
+      for var i := cells.Count - 1 downto index do
+        if ColumnOf(cells[i].R) + aCount > cMaxColumn then
+          cells.Delete(i);
+    for var i := index to cells.Count - 1 do
+      cells[i].R := CellName(row.R, ColumnOf(cells[i].R) + aCount);
+    if (aCount > 0) and (index > 0) and (ColumnOf(cells[index - 1].R) = aFirst - 1) then
+    begin
+      var source: TCellCT := cells[index - 1];
+      var shown: cardinal := ColumnStyle(aFirst);
+      if row.CustomFormat then
+        shown := row.S;
+      if source.S <> shown then
+        for var column := aFirst + aCount - 1 downto aFirst do
+        begin
+          var added: TCellCT := TCellCT.Create;
+          added.R := CellName(row.R, column);
+          added.S := source.S;
+          cells.Insert(index, added);
+        end;
+    end;
+    if row.Present[@row.Spans] then
+      if cells.Count = 0 then
+        row.Clear(@row.Spans)
+      else
+        row.Spans := Format('%d:%d', [ColumnOf(cells[0].R), ColumnOf(cells[cells.Count - 1].R)]);
+  end;
+end;
+
+// what the sheet lists by address, as Excel moves it: merged areas (one left with a cell unmerged), conditional formats and
+// validation (grown by a row or column inserted right after them), hyperlinks, the autofilter (gone with its header row)
+// and its sort, ignored errors, protected ranges, page breaks, frozen panes (never fewer than one row or column), the
+// dimension
+procedure TWorksheet.ShiftLists(aByRows: boolean; aFirst, aCount: integer);
+var
+  sheet: TWorksheetE;
+  last: integer;
+
+  function Sqref(const aText: string; aGrowAfter: boolean = False): string;
+  begin
+    Result := ShiftedSqref(aText, aByRows, aFirst, aCount, aGrowAfter);
+  end;
+
+  function SortKept(aSort: TSortStateCT): boolean;
+  begin
+    var ref: string := Sqref(aSort.Ref);
+    if ref = '' then
+      Exit(False);
+    aSort.Ref := ref;
+    for var i := aSort.SortCondition.Count - 1 downto 0 do
+    begin
+      ref := Sqref(aSort.SortCondition[i].Ref);
+      if ref = '' then
+        aSort.SortCondition.Delete(i)
+      else
+        aSort.SortCondition[i].Ref := ref;
+    end;
+    Result := aSort.SortCondition.Count > 0;
+  end;
+
+  procedure ShiftBreaks(aBreaks: TPageBreakCT; const aName: string);
+  begin
+    for var i := aBreaks.Brk.Count - 1 downto 0 do
+    begin
+      var id: integer := ShiftedIndex(aBreaks.Brk[i].Id, aFirst, aCount, IfThen(aByRows, cMaxRow, cMaxColumn));
+      if id = 0 then
+        aBreaks.Brk.Delete(i)
+      else
+        aBreaks.Brk[i].Id := id;
+    end;
+    if aBreaks.Brk.Count = 0 then
+      sheet.Clear(aName)
+    else
+    begin
+      if aBreaks.Present[@aBreaks.Count] then
+        aBreaks.Count := aBreaks.Brk.Count;
+      if aBreaks.Present[@aBreaks.ManualBreakCount] then
+      begin
+        var manual: integer := 0;
+        for var item: TBreakCT in aBreaks.Brk do
+          if item.Man then
+            Inc(manual);
+        aBreaks.ManualBreakCount := manual;
+      end;
+    end;
+  end;
+
+begin
+  sheet := Objects(True);
+  last := aFirst - aCount - 1;
+  if sheet.IsPresent('MergeCells') then
+  begin
+    var merged: TMergeCellCTList := sheet.MergeCells.MergeCell;
+    for var i := merged.Count - 1 downto 0 do
+    begin
+      var area: TRange := Default(TRange);
+      if ParseAddress(merged[i].Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
+        if ShiftedArea(area, aByRows, aFirst, aCount, False) and ((area.fTop <> area.fBottom) or (area.fLeft <> area.fRight)) then
+          merged[i].Ref := CellsAddress(area)
+        else
+          merged.Delete(i);
+    end;
+    if merged.Count = 0 then
+      sheet.Clear('MergeCells')
+    else if sheet.MergeCells.Present[@sheet.MergeCells.Count] then
+      sheet.MergeCells.Count := merged.Count;
+  end;
+  FreeAndNil(fMerges);
+  for var i := sheet.ConditionalFormatting.Count - 1 downto 0 do
+  begin
+    var ref: string := Sqref(sheet.ConditionalFormatting[i].Sqref, True);
+    if ref = '' then
+      sheet.ConditionalFormatting.Delete(i)
+    else
+      sheet.ConditionalFormatting[i].Sqref := ref;
+  end;
+  if sheet.IsPresent('DataValidations') then
+  begin
+    var validations: TDataValidationCTList := sheet.DataValidations.DataValidation;
+    for var i := validations.Count - 1 downto 0 do
+    begin
+      var ref: string := Sqref(validations[i].Sqref, True);
+      if ref = '' then
+        validations.Delete(i)
+      else
+        validations[i].Sqref := ref;
+    end;
+    if validations.Count = 0 then
+      sheet.Clear('DataValidations')
+    else if sheet.DataValidations.Present[@sheet.DataValidations.Count] then
+      sheet.DataValidations.Count := validations.Count;
+  end;
+  if sheet.IsPresent('Hyperlinks') then
+  begin
+    var links: THyperlinkCTList := sheet.Hyperlinks.Hyperlink;
+    for var i := links.Count - 1 downto 0 do
+    begin
+      var ref: string := Sqref(links[i].Ref);
+      if ref = '' then
+        links.Delete(i)
+      else
+        links[i].Ref := ref;
+    end;
+    if links.Count = 0 then
+      sheet.Clear('Hyperlinks');
+  end;
+  var filterGone: boolean := False;
+  if sheet.IsPresent('AutoFilter') then
+  begin
+    var filter: TAutoFilterCT := sheet.AutoFilter;
+    var area: TRange := Default(TRange);
+    if ParseAddress(filter.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
+    begin
+      var oldLeft: integer := area.fLeft;
+      if aByRows and (aCount < 0) and (aFirst <= area.fTop) and (last >= area.fTop) or
+        not ShiftedArea(area, aByRows, aFirst, aCount, False) then
+      begin
+        sheet.Clear('AutoFilter');
+        filterGone := True;
+      end
+      else
+      begin
+        filter.Ref := CellsAddress(area);
+        if not aByRows then
+          for var i := filter.FilterColumn.Count - 1 downto 0 do
+          begin
+            var column: integer := ShiftedIndex(oldLeft + integer(filter.FilterColumn[i].ColId), aFirst, aCount, cMaxColumn);
+            if column = 0 then
+              filter.FilterColumn.Delete(i)
+            else
+            begin
+              filter.FilterColumn[i].ColId := column - area.fLeft;
+              filter.FilterColumn[i].SetPresent(@filter.FilterColumn[i].ColId);
+            end;
+          end;
+        if filter.IsPresent('SortState') and not SortKept(filter.SortState) then
+          filter.Clear('SortState');
+      end;
+    end;
+  end;
+  if sheet.IsPresent('SortState') and not SortKept(sheet.SortState) then
+    sheet.Clear('SortState');
+  if sheet.IsPresent('IgnoredErrors') then
+  begin
+    var errors: TIgnoredErrorCTList := sheet.IgnoredErrors.IgnoredError;
+    for var i := errors.Count - 1 downto 0 do
+    begin
+      var ref: string := Sqref(errors[i].Sqref);
+      if ref = '' then
+        errors.Delete(i)
+      else
+        errors[i].Sqref := ref;
+    end;
+    if errors.Count = 0 then
+      sheet.Clear('IgnoredErrors');
+  end;
+  if sheet.IsPresent('ProtectedRanges') then
+  begin
+    var ranges: TProtectedRangeCTList := sheet.ProtectedRanges.ProtectedRange;
+    for var i := ranges.Count - 1 downto 0 do
+    begin
+      var ref: string := Sqref(ranges[i].Sqref);
+      if ref = '' then
+        ranges.Delete(i)
+      else
+        ranges[i].Sqref := ref;
+    end;
+    if ranges.Count = 0 then
+      sheet.Clear('ProtectedRanges');
+  end;
+  if aByRows and sheet.IsPresent('RowBreaks') then
+    ShiftBreaks(sheet.RowBreaks, 'RowBreaks');
+  if not aByRows and sheet.IsPresent('ColBreaks') then
+    ShiftBreaks(sheet.ColBreaks, 'ColBreaks');
+  if sheet.IsPresent('SheetViews') then
+    for var view: TSheetViewCT in sheet.SheetViews.SheetView do
+      if view.IsPresent('Pane') and (view.Pane.State in [stpsFrozen, stpsFrozenSplit]) then
+      begin
+        var pane: TPaneCT := view.Pane;
+        var split: integer := Trunc(pane.XSplit);
+        if aByRows then
+          split := Trunc(pane.YSplit);
+        if (split = 0) or (aFirst > split) then
+          Continue;
+        var moved: integer := split + aCount;
+        if aCount < 0 then
+          moved := Max(1, split - (Min(last, split) - aFirst + 1));
+        var top, left, bottom, right: integer;
+        if aByRows then
+        begin
+          pane.YSplit := moved;
+          if ParseAddress(pane.TopLeftCell, top, left, bottom, right) then
+            pane.TopLeftCell := CellName(Max(1, top + moved - split), left);
+        end
+        else
+        begin
+          pane.XSplit := moved;
+          if ParseAddress(pane.TopLeftCell, top, left, bottom, right) then
+            pane.TopLeftCell := CellName(top, Max(1, left + moved - split));
+        end;
+      end;
+  if sheet.IsPresent('Dimension') then
+  begin
+    var area: TRange := Default(TRange);
+    if ParseAddress(sheet.Dimension.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
+      if ShiftedArea(area, aByRows, aFirst, aCount, False) then
+        sheet.Dimension.Ref := CellsAddress(area)
+      else
+        sheet.Dimension.Ref := 'A1';
+  end;
+  if filterGone then // and its hidden name with it
+  begin
+    var workbook: TWorkbookE := fWorkbook.fPackage.EditPart<TWorkbookE>(fWorkbook.fWorkbookPart);
+    var tab: integer := workbook.Sheets.Sheet.IndexOf(SheetEntry);
+    if workbook.IsPresent('DefinedNames') then
+    begin
+      var names: TDefinedNameCTList := workbook.DefinedNames.DefinedName;
+      for var i := names.Count - 1 downto 0 do
+        if (names[i].Name = '_xlnm._FilterDatabase') and names[i].Present[@names[i].LocalSheetId] and
+          (integer(names[i].LocalSheetId) = tab) then
+          names.Delete(i);
+      if names.Count = 0 then
+        workbook.Clear('DefinedNames');
+    end;
+  end;
+end;
+
+// the planned formulas written: a shared formula stays one while its cells still fill from its first cell's text (that cell
+// gone, the next one is first) and it names no #REF! (Excel makes those plain), else each cell gets its own; aShifted: this
+// sheet's rows or columns moved
+procedure TWorksheet.ApplyFormulas(aMoves: TList<TFormulaMove>; aRefs: TDictionary<cardinal, string>; aShifted: boolean;
+  aByRows: boolean; aFirst, aCount: integer);
+begin
+  var groups: TObjectDictionary<cardinal, TList<integer>> := TObjectDictionary<cardinal, TList<integer>>.Create([doOwnsValues]);
+  try
+    for var index := 0 to aMoves.Count - 1 do
+    begin
+      var move: TFormulaMove := aMoves[index];
+      var formula: TCellFormulaCT := move.Cell.F;
+      if formula.T = stcftShared then
+      begin
+        var members: TList<integer>;
+        if not groups.TryGetValue(formula.Si, members) then
+        begin
+          members := TList<integer>.Create;
+          groups.Add(formula.Si, members);
+        end;
+        members.Add(index);
+        Continue;
+      end;
+      if move.After <> move.Before then
+      begin
+        Objects(True);
+        formula.XmlValue := EncodeText(move.After);
+      end;
+      var area: TRange := Default(TRange);
+      if aShifted and (formula.T = stcftArray) and ParseAddress(formula.Ref, area.fTop, area.fLeft, area.fBottom,
+        area.fRight) and ShiftedArea(area, aByRows, aFirst, aCount, False) then
+        formula.Ref := CellsAddress(area);
+    end;
+    for var group: TPair<cardinal, TList<integer>> in groups do
+    begin
+      var members: TList<integer> := group.Value;
+      var changed: boolean := aShifted;
+      for var index: integer in members do
+        changed := changed or (aMoves[index].After <> aMoves[index].Before);
+      if not changed then
+        Continue;
+      Objects(True);
+      var first: TFormulaMove := aMoves[members[0]];
+      var area: TRange := Default(TRange);
+      var ref: string;
+      var shared: boolean := not first.After.Contains('#REF!') and aRefs.TryGetValue(group.Key, ref) and
+        ParseAddress(ref, area.fTop, area.fLeft, area.fBottom, area.fRight) and
+        (not aShifted or ShiftedArea(area, aByRows, aFirst, aCount, False));
+      for var index: integer in members do
+      begin
+        var move: TFormulaMove := aMoves[index];
+        var filled, same, why, unknown: string;
+        shared := shared and ShiftFormula(first.After, TReferenceMap.Fill(move.Row - first.Row, move.Column - first.Column),
+          ffStored, filled, why, unknown) and ShiftFormula(move.After, TReferenceMap.Fill(0, 0), ffStored, same, why,
+          unknown) and (filled = same);
+      end;
+      for var index: integer in members do
+      begin
+        var formula: TCellFormulaCT := aMoves[index].Cell.F;
+        if not shared then
+        begin
+          formula.Clear('T');
+          formula.Clear('Si');
+          formula.Clear('Ref');
+          formula.XmlValue := EncodeText(aMoves[index].After);
+        end
+        else if index = members[0] then
+        begin
+          formula.Ref := CellsAddress(area);
+          formula.XmlValue := EncodeText(first.After);
+        end
+        else
+        begin
+          formula.Clear('Ref');
+          formula.XmlValue := '';
+        end;
+      end;
+    end;
+  finally
+    groups.Free;
+  end;
+end;
+
+// Excel's Insert (aCount rows or columns at aFirst) and Delete (-aCount of them from aFirst): all checked and planned
+// first, so a refusal changes nothing
+procedure TWorksheet.Shift(aByRows: boolean; aFirst, aCount: integer);
+begin
+  var last: integer := aFirst + Abs(aCount) - 1;
+  var what: string := Format('Columns %s:%s', [ColumnName(aFirst), ColumnName(last)]);
+  if aByRows then
+    what := Format('Rows %d:%d', [aFirst, last]);
+  var why: string := ShiftBlocker(aByRows, aFirst, aCount);
+  var moves: TObjectList<TList<TFormulaMove>> := TObjectList<TList<TFormulaMove>>.Create;
+  var refs: TObjectList<TDictionary<cardinal, string>> := TObjectList<TDictionary<cardinal, string>>.Create;
+  var texts: TList<TTextMove> := TList<TTextMove>.Create;
+  try
+    if why = '' then
+      for var sheet: TWorksheet in fWorkbook.fSheets do
+      begin
+        moves.Add(TList<TFormulaMove>.Create);
+        refs.Add(TDictionary<cardinal, string>.Create);
+        if not sheet.PlanFormulas(Self, aByRows, aFirst, aCount, moves.Last, texts, refs.Last, why) then
+          Break;
+      end;
+    if why = '' then
+      fWorkbook.ChangeNames(fName, aByRows, aFirst, aCount, why);
+    if why <> '' then
+    begin
+      var done: string := 'deleted';
+      if aCount > 0 then
+        done := 'inserted';
+      raise EInvalidOpException.CreateFmt('%s of %s not %s: %s', [what, fName, done, why]);
+    end;
+    for var move: TTextMove in texts do
+    begin
+      move.Sheet.Objects(True);
+      if move.Rule <> nil then
+        move.Rule.Formula[move.Index] := EncodeText(move.Text)
+      else if move.Index = 1 then
+        move.Validation.Formula1 := EncodeText(move.Text)
+      else
+        move.Validation.Formula2 := EncodeText(move.Text);
+    end;
+    ShiftCells(aByRows, aFirst, aCount);
+    ShiftLists(aByRows, aFirst, aCount);
+    for var index := 0 to fWorkbook.fSheets.fList.Count - 1 do
+      fWorkbook.fSheets.fList[index].ApplyFormulas(moves[index], refs[index], fWorkbook.fSheets.fList[index] = Self, aByRows,
+        aFirst, aCount);
+  finally
+    texts.Free;
+    refs.Free;
+    moves.Free;
+  end;
+  ForgetFormulas;
+  FreeAndNil(fMerges);
+  fWorkbook.ValueChanged;
+  fWorkbook.FormulaChanged;
 end;
 
 procedure TWorksheet.RemoveValue(aCell: TCellCT);
