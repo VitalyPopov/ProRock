@@ -63,7 +63,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   the autofilter and frozen panes move; formulas on every sheet, defined names, print areas and titles change as Excel
   changes them (a deleted reference becomes `#REF!`); new rows and columns take the format of the row above or the column
   left. Tables, pivot tables and their sources, drawings, charts' series (on every sheet and chart sheet) and notes move as
-  Excel moves them. Refused with nothing changed, as Excel refuses: part of an array formula, cells pushed off the sheet, a
+  Excel moves them. A dynamic array moves with its formula's cell and spills from there as before (gone with that cell);
+  automatic row heights left for Excel to fit again when columns move cells, as Excel fits them. Refused with nothing
+  changed, as Excel refuses: part of a legacy array formula, cells pushed off the sheet, a
   table's header row, part of a pivot table; refused for now: Excel 2010's extensions (its conditional formats, validation,
   sparklines), embedded objects, controls, threaded comments, Excel 2016's chart kinds. Cells shifted within rows or columns
   come later

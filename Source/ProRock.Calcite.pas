@@ -403,6 +403,18 @@ type
       Index: integer;
       Before, After: string;
     end;
+    // a dynamic array's spilled value, lifted while rows or columns move: its place from the formula's cell
+    TSpillValue = record
+      Row, Column: integer;
+      Typed: boolean;
+      T: TCellTypeST;
+      V: string;
+    end;
+    // a dynamic array through rows or columns moved: its area before, its spilled values
+    TSpill = record
+      Area: TRange;
+      Values: TArray<TSpillValue>;
+    end;
   private
     fWorkbook: TWorkbook;
     fXlsx: TWorksheetXlsx;
@@ -411,6 +423,7 @@ type
     fPrepared: boolean;
     // found on the first need: the areas of array formulas and data tables, shared formulas' first cells by si
     fArrays, fDataTables: TList<TRange>;
+    fSpills: TList<TRange>; // those of fArrays that are dynamic arrays (Excel 365's, spilled)
     fShared: TDictionary<cardinal, TCellCT>;
     // found on the first write: the areas of tables, their header and totals rows, pivot tables
     fTables, fTableRows, fPivots: TList<TRange>;
@@ -501,6 +514,9 @@ type
     procedure ShowRows(aTop, aBottom: integer);
     procedure ShiftColumnEntries(aFirst, aCount: integer);
     procedure ShiftCells(aByRows: boolean; aFirst, aCount: integer);
+    function LiftSpills(aByRows: boolean; aFirst, aCount: integer): TArray<TSpill>;
+    procedure PlaceSpills(const aSpills: TArray<TSpill>; aByRows: boolean; aFirst, aCount: integer);
+    procedure FitAgain(aByRows: boolean; aFirst, aCount: integer);
     procedure ShiftLists(aByRows: boolean; aFirst, aCount: integer);
     procedure ApplyFormulas(aMoves: TList<TFormulaMove>; aRefs: TDictionary<cardinal, string>; aShifted: boolean;
       aByRows: boolean; aFirst, aCount: integer);
@@ -632,6 +648,7 @@ type
     function Fail(const aCode, aError: string): boolean;
     procedure Exchange(aOther: TWorkbook);
     procedure FixedAreas(const aSheetPart: string; aTables, aTableRows, aPivots: TList<TRange>);
+    function IsDynamicArray(aCellMetadata: cardinal): boolean;
     function SheetNameError(const aName: string; aExcept: TWorksheet): string;
     function AddSheet(const aName: string): TWorksheet;
 
@@ -738,6 +755,7 @@ const
   cSharedStrings = '/sharedStrings';
   cStyles = '/styles';
   cCalcChain = '/calcChain';
+  cSheetMetadata = '/sheetMetadata';
   cTable = '/table';
   cPivotTable = '/pivotTable';
   cPivotCacheDefinition = '/pivotCacheDefinition';
@@ -2669,6 +2687,11 @@ begin
     (aInner.fRight <= aOuter.fRight);
 end;
 
+function Holds(const aArea: TRange; aRow, aColumn: integer): boolean;
+begin
+  Result := (aRow >= aArea.fTop) and (aRow <= aArea.fBottom) and (aColumn >= aArea.fLeft) and (aColumn <= aArea.fRight);
+end;
+
 function Overlaps(const aLeft, aRight: TRange): boolean;
 begin
   Result := (aLeft.fTop <= aRight.fBottom) and (aRight.fTop <= aLeft.fBottom) and (aLeft.fLeft <= aRight.fRight) and
@@ -4240,6 +4263,7 @@ begin
     Exit;
   fArrays := TList<TRange>.Create;
   fDataTables := TList<TRange>.Create;
+  fSpills := TList<TRange>.Create;
   fShared := TDictionary<cardinal, TCellCT>.Create;
   for var row: TRowCT in Objects(False).SheetData.Row do
     for var cell: TCellCT in row.C do
@@ -4255,7 +4279,11 @@ begin
           if not ParseAddress(cell.F.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
             ParseAddress(cell.R, area.fTop, area.fLeft, area.fBottom, area.fRight);
           if cell.F.T = stcftArray then
-            fArrays.Add(area)
+          begin
+            fArrays.Add(area);
+            if (cell.Cm > 0) and fWorkbook.IsDynamicArray(cell.Cm) then
+              fSpills.Add(area);
+          end
           else
             fDataTables.Add(area);
         end;
@@ -4265,6 +4293,7 @@ procedure TWorksheet.ForgetFormulas;
 begin
   FreeAndNil(fArrays);
   FreeAndNil(fDataTables);
+  FreeAndNil(fSpills);
   FreeAndNil(fShared);
 end;
 
@@ -5311,6 +5340,7 @@ end;
 function TWorksheet.ShiftBlocker(aByRows: boolean; aFirst, aCount: integer): string;
 const
   cLater = ', which Calcite does not move yet';
+  cNotYet = ', which Calcite does not do yet';
   cPushedOff = 'Microsoft Excel can''t insert new cells because it would push non-empty cells off the end of the ' +
     'worksheet. These non-empty cells might appear empty but have blank values, some formatting, or a formula. Delete ' +
     'enough rows or columns to make room for what you want to insert and then try again.';
@@ -5319,6 +5349,15 @@ const
   cWhat: array[0 .. 7] of string = ('embedded objects', 'controls',
     'Excel 2010''s extensions (conditional formats, validation, sparklines)', 'scenarios', 'a data consolidation',
     'custom views', 'watched cells', 'smart tags');
+
+  function IsSpill(const aArea: TRange): boolean;
+  begin
+    for var spill: TRange in fSpills do
+      if (spill.fTop = aArea.fTop) and (spill.fLeft = aArea.fLeft) then
+        Exit(True);
+    Result := False;
+  end;
+
 begin
   var sheet: TWorksheetE := Objects(False);
   var last: integer := aFirst - aCount - 1;
@@ -5328,6 +5367,29 @@ begin
   begin
     var low: integer := IfThen(aByRows, area.fTop, area.fLeft);
     var high: integer := IfThen(aByRows, area.fBottom, area.fRight);
+    if IsSpill(area) then
+    begin // Excel moves the formula's cell and spills it again from there; with that cell it goes whole
+      var moved: integer := ShiftedIndex(low, aFirst, aCount, limit);
+      if moved = 0 then
+        Continue;
+      var anchor: string := CellName(area.fTop, area.fLeft);
+      if moved + high - low > limit then
+        Exit(Format('the dynamic array at %s spilled past the end of the worksheet (Excel shows #SPILL!)', [anchor]) +
+          cNotYet);
+      for var row: TRowCT in sheet.SheetData.Row do
+        for var cell: TCellCT in row.C do
+          if HasValue(cell) and not Holds(area, integer(row.R), ColumnOf(cell.R)) then
+          begin
+            var along: integer := IfThen(aByRows, integer(row.R), ColumnOf(cell.R));
+            var across: integer := IfThen(aByRows, ColumnOf(cell.R), integer(row.R));
+            var place: integer := ShiftedIndex(along, aFirst, aCount, limit);
+            if (place >= moved) and (place <= moved + high - low) and (across >= IfThen(aByRows, area.fLeft, area.fTop)) and
+              (across <= IfThen(aByRows, area.fRight, area.fBottom)) then
+              Exit(Format('cells moved into the spill of the dynamic array at %s (Excel shows #SPILL!)', [anchor]) +
+                cNotYet);
+          end;
+      Continue;
+    end;
     if (aCount > 0) and (aFirst > low) and (aFirst <= high) or
       (aCount < 0) and (aFirst <= high) and (last >= low) and ((aFirst > low) or (last < high)) then
       Exit('You can''t change part of an array.');
@@ -5659,6 +5721,107 @@ begin
       else
         row.Spans := Format('%d:%d', [ColumnOf(cells[0].R), ColumnOf(cells[cells.Count - 1].R)]);
   end;
+end;
+
+// the dynamic arrays' spilled values taken out before rows or columns move (ShiftBlocker let them): Excel spills each again
+// from its formula's cell, the formats stay with the cells
+function TWorksheet.LiftSpills(aByRows: boolean; aFirst, aCount: integer): TArray<TSpill>;
+begin
+  Result := nil;
+  FindFormulas;
+  var rows: TRowCTList := Objects(False).SheetData.Row;
+  for var area: TRange in fSpills do
+  begin
+    var spill: TSpill;
+    spill.Area := area;
+    spill.Values := nil;
+    var index: integer;
+    FindRow(Objects(False), area.fTop, index);
+    while (index < rows.Count) and (integer(rows[index].R) <= area.fBottom) do
+    begin
+      var row: TRowCT := rows[index];
+      for var i := row.C.Count - 1 downto 0 do
+      begin
+        var cell: TCellCT := row.C[i];
+        var column: integer := ColumnOf(cell.R);
+        if (column < area.fLeft) or (column > area.fRight) or (integer(row.R) = area.fTop) and (column = area.fLeft) or
+          not cell.Present[@cell.V] or cell.IsPresent('F') or cell.IsPresent('Is') then
+          Continue;
+        Objects(True);
+        var value: TSpillValue;
+        value.Row := integer(row.R) - area.fTop;
+        value.Column := column - area.fLeft;
+        value.Typed := cell.Present[@cell.T];
+        value.T := cell.T;
+        value.V := cell.V;
+        spill.Values := spill.Values + [value];
+        cell.Clear(@cell.V);
+        cell.Clear(@cell.T);
+        if not cell.Present[@cell.S] and not cell.Present[@cell.Cm] and not cell.Present[@cell.Vm] and
+          ((cell.XmlAttributes = nil) or (cell.XmlAttributes.Count = 0)) then
+          row.C.Delete(i);
+      end;
+      Inc(index);
+    end;
+    Result := Result + [spill];
+  end;
+end;
+
+// the spilled values back, from where the formula's cell went; gone with it
+procedure TWorksheet.PlaceSpills(const aSpills: TArray<TSpill>; aByRows: boolean; aFirst, aCount: integer);
+begin
+  for var spill: TSpill in aSpills do
+  begin
+    var moved: integer;
+    if aByRows then
+      moved := ShiftedIndex(spill.Area.fTop, aFirst, aCount, cMaxRow)
+    else
+      moved := ShiftedIndex(spill.Area.fLeft, aFirst, aCount, cMaxColumn);
+    var top: integer := IfThen(aByRows, moved, spill.Area.fTop);
+    var left: integer := IfThen(aByRows, spill.Area.fLeft, moved);
+    for var value: TSpillValue in spill.Values do
+      if moved = 0 then
+      begin
+        if value.Typed and (value.T = stctS) then
+          fWorkbook.SharedStringReleased;
+      end
+      else
+      begin
+        var cell: TCellCT := CellForStyle(top + value.Row, left + value.Column);
+        cell.V := value.V;
+        cell.SetPresent(@cell.V);
+        if value.Typed then
+        begin
+          cell.T := value.T;
+          cell.SetPresent(@cell.T);
+        end;
+      end;
+  end;
+end;
+
+// Excel fits the rows' automatic heights (ht without customHeight) again when columns move cells or grow a merged area;
+// Calcite drops them, Excel fits them when it opens the file
+procedure TWorksheet.FitAgain(aByRows: boolean; aFirst, aCount: integer);
+begin
+  if aByRows then
+    Exit;
+  var rows: TRowCTList := Objects(False).SheetData.Row;
+  var moved: boolean := False;
+  for var row: TRowCT in rows do
+    if (row.C.Count > 0) and (ColumnOf(row.C[row.C.Count - 1].R) >= aFirst) then
+      moved := True;
+  if not moved and (aCount > 0) then
+    for var area: TRange in FindMerges do
+      if (area.fLeft < aFirst) and (area.fRight >= aFirst) then
+        moved := True;
+  if not moved then
+    Exit;
+  for var row: TRowCT in rows do
+    if row.Present[@row.Ht] and not row.CustomHeight then
+    begin
+      Objects(True);
+      row.Clear(@row.Ht);
+    end;
 end;
 
 // an autofilter's columns through columns inserted or deleted (its first one was aOldLeft, is aLeft): True when the last
@@ -7175,8 +7338,18 @@ begin
       end;
       var area: TRange := Default(TRange);
       if aShifted and (formula.T = stcftArray) and ParseAddress(formula.Ref, area.fTop, area.fLeft, area.fBottom,
-        area.fRight) and ShiftedArea(area, aByRows, aFirst, aCount, False) then
-        formula.Ref := CellsAddress(area);
+        area.fRight) then
+        if (move.Cell.Cm > 0) and fWorkbook.IsDynamicArray(move.Cell.Cm) then
+        begin // spilled again from its cell, as large as before
+          var moved: TRange := area;
+          moved.fTop := move.Row;
+          moved.fLeft := move.Column;
+          moved.fBottom := move.Row + area.fBottom - area.fTop;
+          moved.fRight := move.Column + area.fRight - area.fLeft;
+          formula.Ref := CellsAddress(moved);
+        end
+        else if ShiftedArea(area, aByRows, aFirst, aCount, False) then
+          formula.Ref := CellsAddress(area);
     end;
     for var group: TPair<cardinal, TList<integer>> in groups do
     begin
@@ -7284,7 +7457,10 @@ begin
     end;
     if aCount <> 0 then
     begin
+      FitAgain(aByRows, aFirst, aCount);
+      var spills: TArray<TSpill> := LiftSpills(aByRows, aFirst, aCount);
       ShiftCells(aByRows, aFirst, aCount);
+      PlaceSpills(spills, aByRows, aFirst, aCount);
       ShiftLists(aByRows, aFirst, aCount);
       for var index := 0 to fWorkbook.fSheets.fList.Count - 1 do
         fWorkbook.fSheets.fList[index].ApplyFormulas(moves[index], refs[index], fWorkbook.fSheets.fList[index] = Self,
@@ -7966,6 +8142,25 @@ end;
 
 // a sheet's cells that belong to its tables' and pivot tables' definitions: header and totals rows, pivot tables with their
 // page fields above them
+// a cell's cm (from 1) names Excel 365's dynamic array: its metadata's records of the XLDAPR type
+function TWorkbook.IsDynamicArray(aCellMetadata: cardinal): boolean;
+begin
+  for var relationship: TRelationshipOoxml in fPackage.Relationships(fWorkbookPart) do
+    if relationship.&Type.EndsWith(cSheetMetadata) and not relationship.Part.IsEmpty then
+    begin
+      var metadata: TMetadataE := fPackage.Part<TMetadataE>(relationship.Part);
+      if not metadata.IsPresent('CellMetadata') or not metadata.IsPresent('MetadataTypes') or
+        (aCellMetadata > cardinal(metadata.CellMetadata.Bk.Count)) then
+        Exit(False);
+      var types: TMetadataTypeCTList := metadata.MetadataTypes.MetadataType;
+      for var record_: TMetadataRecordCT in metadata.CellMetadata.Bk[aCellMetadata - 1].Rc do
+        if (record_.T >= 1) and (record_.T <= cardinal(types.Count)) and (types[record_.T - 1].Name = 'XLDAPR') then
+          Exit(True);
+      Exit(False);
+    end;
+  Result := False;
+end;
+
 procedure TWorkbook.FixedAreas(const aSheetPart: string; aTables, aTableRows, aPivots: TList<TRange>);
 begin
   for var relationship: TRelationshipOoxml in fPackage.Relationships(aSheetPart) do
