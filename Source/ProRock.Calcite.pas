@@ -346,6 +346,11 @@ type
   TRangeColumns = TRange.TColumns;
   TRangeRows = TRange.TRows;
 
+  // Calcite's own: a sheet's VML drawing (its notes' boxes), whose <xml> root no schema has; the shapes come in XmlAny
+  [TXmliteAnyElement]
+  [TName('xml')]
+  TVmlDrawing = class(TXmlite);
+
   // the sheet's xlsx objects: Sheet.Xlsx
   TWorksheetXlsx = class
   private
@@ -389,6 +394,14 @@ type
       Part: string;
       Anchor: TXmlite;
       From, &To: Int64;
+    end;
+    // a chart's reference to cells through rows or columns inserted or deleted: its c:f (Index -1), or an extension's
+    // element kept as read (Index in XmlUnknown); the text before and after
+    TChartMove = record
+      Part: string;
+      Reference: TXmlite;
+      Index: integer;
+      Before, After: string;
     end;
   private
     fWorkbook: TWorkbook;
@@ -479,6 +492,11 @@ type
     procedure ShiftPivots(aByRows: boolean; aFirst, aCount: integer);
     function PlanDrawings(aByRows: boolean; out aWhy: string): TList<TAnchorMove>;
     procedure ShiftDrawings(aMoves: TList<TAnchorMove>; aByRows: boolean; aFirst, aCount: integer);
+    function PlanCharts(aByRows: boolean; aFirst, aCount: integer; aMoves: TList<TChartMove>; out aWhy: string): boolean;
+    procedure ShiftCharts(aMoves: TList<TChartMove>; aByRows: boolean; aFirst, aCount: integer);
+    procedure NotesParts(out aComments, aDrawing: string);
+    function NotesBlocker(aByRows: boolean; aFirst, aCount: integer): string;
+    procedure ShiftNotes(aByRows: boolean; aFirst, aCount: integer);
     function CopiedRow(aSource: TRowCT; aNumber: integer): TRowCT;
     procedure ShowRows(aTop, aBottom: integer);
     procedure ShiftColumnEntries(aFirst, aCount: integer);
@@ -698,12 +716,18 @@ type
 implementation
 
 uses System.Math, System.Variants, System.DateUtils, System.TypInfo, System.Character, System.Generics.Defaults,
-  System.Zip, ProRock.Utility, ProRock.Calcite.Utility, ProRock.Xmlite.Schema.Ooxml.DmlMain,
-  ProRock.Xmlite.Schema.Ooxml.DmlSheet;
+  System.Zip, System.RegularExpressions, ProRock.Utility, ProRock.Calcite.Utility, ProRock.Xmlite.Schema.Ooxml.DmlMain,
+  ProRock.Xmlite.Schema.Ooxml.DmlSheet, ProRock.Xmlite.Schema.Ooxml.DmlChart, ProRock.Xmlite.Schema.Ooxml.Vml,
+  ProRock.Xmlite.Schema.Ooxml.VmlExcel;
 
 type
-  {$REGION 'ProRock.Xmlite.Schema.Ooxml.Sml types aliases'}
-  TColorCT = ProRock.Xmlite.Schema.Ooxml.Sml.TColorCT; // DrawingML has one too
+  {$REGION 'ProRock.Xmlite.Schema.Ooxml types aliases'}
+  // DrawingML, its charts and VML have ones of these names too
+  TColorCT = ProRock.Xmlite.Schema.Ooxml.Sml.TColorCT;
+  TFillCT = ProRock.Xmlite.Schema.Ooxml.Sml.TFillCT;
+  TNumFmtCT = ProRock.Xmlite.Schema.Ooxml.Sml.TNumFmtCT;
+  TMarkerCT = ProRock.Xmlite.Schema.Ooxml.DmlSheet.TMarkerCT;
+  TExtensionCT = ProRock.Xmlite.Schema.Ooxml.DmlChart.TExtensionCT;
   {$ENDREGION}
 
 const
@@ -720,6 +744,9 @@ const
   cDrawing = '/drawing';
   cChart = '/chart';
   cChartsheet = '/chartsheet';
+  cChartEx = '/chartEx';
+  cComments = '/comments';
+  cThreadedComment = '/threadedComment';
   cContentTypes = '[Content_Types].xml';
   cSharedStringsType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml';
   cWorksheetType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml';
@@ -5287,9 +5314,9 @@ const
   cPushedOff = 'Microsoft Excel can''t insert new cells because it would push non-empty cells off the end of the ' +
     'worksheet. These non-empty cells might appear empty but have blank values, some formatting, or a formula. Delete ' +
     'enough rows or columns to make room for what you want to insert and then try again.';
-  cElements: array[0 .. 8] of string = ('LegacyDrawing', 'OleObjects', 'Controls', 'ExtLst', 'Scenarios',
+  cElements: array[0 .. 7] of string = ('OleObjects', 'Controls', 'ExtLst', 'Scenarios',
     'DataConsolidate', 'CustomSheetViews', 'CellWatches', 'SmartTags');
-  cWhat: array[0 .. 8] of string = ('notes', 'embedded objects', 'controls',
+  cWhat: array[0 .. 7] of string = ('embedded objects', 'controls',
     'Excel 2010''s extensions (conditional formats, validation, sparklines)', 'scenarios', 'a data consolidation',
     'custom views', 'watched cells', 'smart tags');
 begin
@@ -5321,18 +5348,7 @@ begin
   for var i := 0 to High(cElements) do
     if sheet.IsPresent(cElements[i]) then
       Exit(cWhat[i] + cLater);
-  // charts name cells in their series
-  var package: TPackageOoxml := fWorkbook.fPackage;
-  for var relationship: TRelationshipOoxml in package.Relationships(fWorkbook.fWorkbookPart) do
-    if relationship.&Type.EndsWith(cChartsheet) then
-      Exit('charts' + cLater);
-  for var other: TWorksheet in fWorkbook.fSheets do
-    for var drawing: TRelationshipOoxml in package.Relationships(other.fPartName) do
-      if drawing.&Type.EndsWith(cDrawing) then
-        for var chart: TRelationshipOoxml in package.Relationships(drawing.Part) do
-          if chart.&Type.EndsWith(cChart) then
-            Exit('charts' + cLater);
-  Result := '';
+  Result := NotesBlocker(aByRows, aFirst, aCount);
 end;
 
 // how a formula on aFormulaSheet ('' for a defined name's) changes with rows or columns of aSheet inserted (aCount > 0) or
@@ -6553,6 +6569,582 @@ begin
   end;
 end;
 
+type
+  // a cell a chart's reference names: its cached points are its cells in order
+  TChartCell = record
+    Sheet: string;
+    Row, Column: integer;
+  end;
+
+// the cells of a chart's reference, a range or a bracketed list of them, in order: False for what is not single rows or
+// columns of cells (a name, a 2-D area, #REF!, too many cells)
+function ChartCells(const aText: string; out aCells: TArray<TChartCell>): boolean;
+const
+  cMostCells = 65536;
+begin
+  aCells := nil;
+  var text: string := aText.Trim;
+  if text.StartsWith('(') and text.EndsWith(')') then
+    text := text.Substring(1, text.Length - 2);
+  var parts: TArray<string> := [];
+  var quoted: boolean := False;
+  var start: integer := 0;
+  for var i := 0 to text.Length - 1 do
+    if text.Chars[i] = '''' then
+      quoted := not quoted
+    else if (text.Chars[i] = ',') and not quoted then
+    begin
+      parts := parts + [text.Substring(start, i - start)];
+      start := i + 1;
+    end;
+  parts := parts + [text.Substring(start)];
+  var cells: TList<TChartCell> := TList<TChartCell>.Create;
+  try
+    for var part: string in parts do
+    begin
+      var bang: integer := part.LastIndexOf('!');
+      if bang < 0 then
+        Exit(False);
+      var cell: TChartCell := Default(TChartCell);
+      cell.Sheet := part.Substring(0, bang).Trim;
+      if (cell.Sheet.Length >= 2) and cell.Sheet.StartsWith('''') and cell.Sheet.EndsWith('''') then
+        cell.Sheet := cell.Sheet.Substring(1, cell.Sheet.Length - 2).Replace('''''', '''');
+      var top, left, bottom, right: integer;
+      if not ParseAddress(part.Substring(bang + 1), top, left, bottom, right) or (top <> bottom) and (left <> right) or
+        (cells.Count + (bottom - top + 1) * (right - left + 1) > cMostCells) then
+        Exit(False);
+      for var row := top to bottom do
+        for var column := left to right do
+        begin
+          cell.Row := row;
+          cell.Column := column;
+          cells.Add(cell);
+        end;
+    end;
+    aCells := cells.ToArray;
+    Result := True;
+  finally
+    cells.Free;
+  end;
+end;
+
+// where each cached point of a chart's reference goes when its text changes from aBefore to aAfter through rows or columns
+// of aSheet inserted or deleted: its index then (-1: its cell deleted), aTotal the new reference's cells - as Excel reads
+// them again; False when either text does not list single rows or columns
+function ChartPoints(const aBefore, aAfter, aSheet: string; aByRows: boolean; aFirst, aCount: integer;
+  out aIndexes: TArray<integer>; out aTotal: integer): boolean;
+
+  function Key(const aCell: TChartCell): string;
+  begin
+    Result := Format('%s!%d,%d', [AnsiUpperCase(aCell.Sheet), aCell.Row, aCell.Column]);
+  end;
+
+begin
+  aIndexes := nil;
+  aTotal := 0;
+  var before, after: TArray<TChartCell>;
+  Result := ChartCells(aBefore, before) and ChartCells(aAfter, after);
+  if not Result then
+    Exit;
+  var places: TDictionary<string, integer> := TDictionary<string, integer>.Create;
+  try
+    for var i := 0 to High(after) do
+      places.AddOrSetValue(Key(after[i]), i);
+    var limit: integer := IfThen(aByRows, cMaxRow, cMaxColumn);
+    SetLength(aIndexes, Length(before));
+    for var i := 0 to High(before) do
+    begin
+      var cell: TChartCell := before[i];
+      if AnsiSameText(cell.Sheet, aSheet) then
+        if aByRows then
+          cell.Row := ShiftedIndex(cell.Row, aFirst, aCount, limit)
+        else
+          cell.Column := ShiftedIndex(cell.Column, aFirst, aCount, limit);
+      if (cell.Row = 0) or (cell.Column = 0) or not places.TryGetValue(Key(cell), aIndexes[i]) then
+        aIndexes[i] := -1;
+    end;
+    aTotal := Length(after);
+  finally
+    places.Free;
+  end;
+end;
+
+procedure MoveNumPoints(aData: TNumDataCT; const aIndexes: TArray<integer>; aTotal: integer);
+begin
+  for var i := aData.Pt.Count - 1 downto 0 do
+  begin
+    var point: TNumValCT := aData.Pt[i];
+    if (point.Idx < cardinal(Length(aIndexes))) and (aIndexes[point.Idx] >= 0) then
+      point.Idx := aIndexes[point.Idx]
+    else
+      aData.Pt.Remove(point);
+  end;
+  aData.PtCount.Val := aTotal;
+end;
+
+procedure MoveStrPoints(aData: TStrDataCT; const aIndexes: TArray<integer>; aTotal: integer);
+begin
+  for var i := aData.Pt.Count - 1 downto 0 do
+  begin
+    var point: TStrValCT := aData.Pt[i];
+    if (point.Idx < cardinal(Length(aIndexes))) and (aIndexes[point.Idx] >= 0) then
+      point.Idx := aIndexes[point.Idx]
+    else
+      aData.Pt.Remove(point);
+  end;
+  aData.PtCount.Val := aTotal;
+end;
+
+// a chart's objects that name cells: numRef, strRef and multiLvlStrRef (their c:f), and extensions, whose elements kept as
+// read may name cells too (c15's data labels range, filtered series)
+procedure ChartReferences(aObject: TBasite; aFound: TList<TXmlite>; aSeen: TDictionary<TBasite, boolean>);
+begin
+  if aSeen.ContainsKey(aObject) then
+    Exit;
+  aSeen.Add(aObject, True);
+  if (aObject is TNumRefCT) or (aObject is TStrRefCT) or (aObject is TMultiLvlStrRefCT) or (aObject is TExtensionCT) then
+    aFound.Add(TXmlite(aObject));
+  for var element: TProperty in aObject.Meta.Xmlite.Elements.Values do
+    case element.PropertyType of
+      TPropertyType.ptBasite:
+        begin
+          var child: TBasite := TPropertyBasite(element).ObjectPointer(aObject)^;
+          if child <> nil then
+            ChartReferences(child, aFound, aSeen);
+        end;
+      TPropertyType.ptBasiteList:
+        begin
+          var list: TBasiteList := TPropertyBasiteList(element).ObjectPointer(aObject)^;
+          if list <> nil then
+            for var child: TBasite in list do
+              ChartReferences(child, aFound, aSeen);
+        end;
+    end;
+  if aObject.Meta.Xmlite.IsTXmlite then
+    for var child: TBasite in TXmlite(aObject).XmlAny do
+      ChartReferences(child, aFound, aSeen);
+end;
+
+function ChartFormula(aReference: TXmlite): string;
+begin
+  if aReference is TNumRefCT then
+    Result := TNumRefCT(aReference).F
+  else if aReference is TStrRefCT then
+    Result := TStrRefCT(aReference).F
+  else
+    Result := TMultiLvlStrRefCT(aReference).F;
+end;
+
+function XmlTextDecoded(const aText: string): string;
+begin
+  Result := aText.Replace('&lt;', '<').Replace('&gt;', '>').Replace('&quot;', '"').Replace('&apos;', '''').
+    Replace('&amp;', '&');
+end;
+
+function XmlTextEncoded(const aText: string): string;
+begin
+  Result := aText.Replace('&', '&amp;').Replace('<', '&lt;').Replace('>', '&gt;');
+end;
+
+// an element kept as read with its f and sqref texts (formulas, any prefix) through aMap; False with aWhy when one naming
+// aSheet does not read
+function MappedKeptXml(const aXml, aSheet: string; const aMap: TReferenceMap; out aResult, aWhy: string): boolean;
+begin
+  aResult := '';
+  aWhy := '';
+  var done: integer := 0; // the characters copied
+  for var match: TMatch in TRegEx.Matches(aXml, '<((?:[\w.-]+:)?)(f|sqref)(\s[^>]*)?>([^<]*)</\1\2\s*>') do
+  begin
+    var text: string := XmlTextDecoded(match.Groups[4].Value);
+    var changed, why: string;
+    if not MappedFormula(text, aMap, changed, why) then
+    begin
+      if text.ToUpper.Contains(aSheet.ToUpper) then
+      begin
+        aWhy := Format('%s (%s)', [why, text]);
+        Exit(False);
+      end;
+      Continue;
+    end;
+    if changed = text then
+      Continue;
+    aResult := aResult + aXml.Substring(done, match.Index - 1 - done) + Format('<%s%s%s>%s</%0:s%1:s>',
+      [match.Groups[1].Value, match.Groups[2].Value, match.Groups[3].Value, XmlTextEncoded(changed)]);
+    done := match.Index - 1 + match.Length;
+  end;
+  aResult := aResult + aXml.Substring(done);
+  Result := True;
+end;
+
+// every chart's references to cells (on every sheet and chart sheet) through this sheet's rows or columns inserted or
+// deleted, as a defined name's (absolute ones); False with aWhy for a chart that does not read, or a reference naming the
+// sheet that does not
+function TWorksheet.PlanCharts(aByRows: boolean; aFirst, aCount: integer; aMoves: TList<TChartMove>;
+  out aWhy: string): boolean;
+begin
+  Result := False;
+  aWhy := '';
+  var package: TPackageOoxml := fWorkbook.fPackage;
+  var drawings: TList<string> := TList<string>.Create;
+  var charts: TList<string> := TList<string>.Create;
+  var found: TList<TXmlite> := TList<TXmlite>.Create;
+  var seen: TDictionary<TBasite, boolean> := TDictionary<TBasite, boolean>.Create;
+  try
+    var owners: TList<string> := TList<string>.Create;
+    try
+      for var sheet: TWorksheet in fWorkbook.fSheets do
+        owners.Add(sheet.fPartName);
+      for var relationship: TRelationshipOoxml in package.Relationships(fWorkbook.fWorkbookPart) do
+        if relationship.&Type.EndsWith(cChartsheet) and (relationship.Part <> '') then
+          owners.Add(relationship.Part);
+      for var owner: string in owners do
+        for var relationship: TRelationshipOoxml in package.Relationships(owner) do
+          if relationship.&Type.EndsWith(cDrawing) and (relationship.Part <> '') and not drawings.Contains(relationship.Part) then
+            drawings.Add(relationship.Part);
+    finally
+      owners.Free;
+    end;
+    for var drawing: string in drawings do
+      for var relationship: TRelationshipOoxml in package.Relationships(drawing) do
+        if relationship.&Type.EndsWith(cChartEx) then
+        begin
+          aWhy := 'charts of Excel 2016''s kinds (chartEx), which Calcite does not move yet';
+          Exit;
+        end
+        else if relationship.&Type.EndsWith(cChart) and (relationship.Part <> '') and not charts.Contains(relationship.Part) then
+          charts.Add(relationship.Part);
+    var map: TReferenceMap := SheetMap('', Self, aByRows, aFirst, aCount);
+    for var part: string in charts do
+    begin
+      var chart: TChartSpaceE := package.Part<TChartSpaceE>(part);
+      if chart = nil then
+      begin
+        aWhy := Format('a chart that does not read (%s)', [part]);
+        Exit;
+      end;
+      found.Clear;
+      seen.Clear;
+      ChartReferences(chart, found, seen);
+      for var reference: TXmlite in found do
+        if reference is TExtensionCT then
+        begin
+          for var index := 0 to reference.XmlUnknown.Count - 1 do
+          begin
+            var move: TChartMove := Default(TChartMove);
+            move.Before := reference.XmlUnknown[index].Xml;
+            var why: string;
+            if not MappedKeptXml(move.Before, fName, map, move.After, why) then
+            begin
+              aWhy := Format('a formula of the chart %s does not read: %s', [part, why]);
+              Exit;
+            end;
+            if move.After = move.Before then
+              Continue;
+            move.Part := part;
+            move.Reference := reference;
+            move.Index := index;
+            aMoves.Add(move);
+          end;
+        end
+        else
+        begin
+          var move: TChartMove := Default(TChartMove);
+          move.Before := ChartFormula(reference);
+          var why: string;
+          if not MappedFormula(move.Before, map, move.After, why) then
+          begin
+            if move.Before.ToUpper.Contains(fName.ToUpper) then
+            begin
+              aWhy := Format('the formula %s of the chart %s does not read: %s', [move.Before, part, why]);
+              Exit;
+            end;
+            Continue;
+          end;
+          if move.After = move.Before then
+            Continue;
+          move.Part := part;
+          move.Reference := reference;
+          move.Index := -1;
+          aMoves.Add(move);
+        end;
+    end;
+    Result := True;
+  finally
+    seen.Free;
+    found.Free;
+    charts.Free;
+    drawings.Free;
+  end;
+end;
+
+// the planned chart references written; their cached points follow their cells
+procedure TWorksheet.ShiftCharts(aMoves: TList<TChartMove>; aByRows: boolean; aFirst, aCount: integer);
+begin
+  var package: TPackageOoxml := fWorkbook.fPackage;
+  for var move: TChartMove in aMoves do
+  begin
+    package.EditPart<TChartSpaceE>(move.Part);
+    if move.Index >= 0 then
+    begin
+      var kept: TXmliteUnknown := move.Reference.XmlUnknown[move.Index];
+      kept.Xml := move.After;
+      move.Reference.XmlUnknown[move.Index] := kept;
+      Continue;
+    end;
+    var indexes: TArray<integer>;
+    var total: integer;
+    var points: boolean := ChartPoints(move.Before, move.After, fName, aByRows, aFirst, aCount, indexes, total);
+    if move.Reference is TNumRefCT then
+    begin
+      var reference: TNumRefCT := TNumRefCT(move.Reference);
+      reference.F := move.After;
+      if points and reference.IsPresent('NumCache') then
+        MoveNumPoints(reference.NumCache, indexes, total);
+    end
+    else if move.Reference is TStrRefCT then
+    begin
+      var reference: TStrRefCT := TStrRefCT(move.Reference);
+      reference.F := move.After;
+      if points and reference.IsPresent('StrCache') then
+        MoveStrPoints(reference.StrCache, indexes, total);
+    end
+    else // a multi-level cache's levels are its columns or rows: Excel reads it again
+      TMultiLvlStrRefCT(move.Reference).F := move.After;
+  end;
+end;
+
+// the sheet's notes: its comments part and the VML drawing its legacyDrawing names ('' - none)
+procedure TWorksheet.NotesParts(out aComments, aDrawing: string);
+begin
+  aComments := '';
+  aDrawing := '';
+  var sheet: TWorksheetE := Objects(False);
+  var id: string := '';
+  if sheet.IsPresent('LegacyDrawing') then
+    id := sheet.LegacyDrawing.Id;
+  for var relationship: TRelationshipOoxml in fWorkbook.fPackage.Relationships(fPartName) do
+    if relationship.&Type.EndsWith(cComments) then
+      aComments := relationship.Part
+    else if (id <> '') and (relationship.Id = id) then
+      aDrawing := relationship.Part;
+end;
+
+// a VML note's cell (from 1); False for a shape that is no note
+function NoteCell(aItem: TBasite; out aRow, aColumn: integer): boolean;
+begin
+  Result := False;
+  if not (aItem is TShapeE) or (TShapeE(aItem).ClientData.Count <> 1) then
+    Exit;
+  var data: TClientDataE := TShapeE(aItem).ClientData[0];
+  if (data.ObjectType <> stotNote) or (data.Row.Count <> 1) or (data.Column.Count <> 1) or (data.Anchor.Count <> 1) then
+    Exit;
+  var anchor: string := data.Anchor[0];
+  if Length(anchor.Split([','])) <> 8 then
+    Exit;
+  aRow := data.Row[0] + 1;
+  aColumn := data.Column[0] + 1;
+  Result := True;
+end;
+
+// why the sheet's notes do not move: threaded comments, a VML drawing with more than notes (Forms controls) or one that does
+// not read, a note pushed off the sheet; '' when nothing stands in the way
+function TWorksheet.NotesBlocker(aByRows: boolean; aFirst, aCount: integer): string;
+const
+  cPushedOff = 'Microsoft Excel can''t insert new cells because it would push non-empty cells off the end of the ' +
+    'worksheet. These non-empty cells might appear empty but have blank values, some formatting, or a formula. Delete ' +
+    'enough rows or columns to make room for what you want to insert and then try again.';
+begin
+  Result := '';
+  var package: TPackageOoxml := fWorkbook.fPackage;
+  for var relationship: TRelationshipOoxml in package.Relationships(fPartName) do
+    if relationship.&Type.EndsWith(cThreadedComment) then
+      Exit('threaded comments, which Calcite does not move yet');
+  var commentsPart, drawingPart: string;
+  NotesParts(commentsPart, drawingPart);
+  var limit: integer := IfThen(aByRows, cMaxRow, cMaxColumn);
+  if commentsPart <> '' then
+  begin
+    var comments: TCommentsE := package.Part<TCommentsE>(commentsPart);
+    if comments = nil then
+      Exit(Format('notes that do not read (%s)', [commentsPart]));
+    if aCount > 0 then
+      for var comment: TCommentCT in comments.CommentList.Comment do
+      begin
+        var top, left, bottom, right: integer;
+        if ParseAddress(comment.Ref, top, left, bottom, right) and (IfThen(aByRows, top, left) > limit - aCount) then
+          Exit(cPushedOff);
+      end;
+  end;
+  if drawingPart = '' then
+    Exit;
+  var drawing: TVmlDrawing := package.Part<TVmlDrawing>(drawingPart);
+  if (drawing = nil) or (drawing.XmlUnknown.Count > 0) then
+    Exit(Format('notes whose drawing does not read (%s)', [drawingPart]));
+  for var item: TBasite in drawing.XmlAny do
+  begin
+    var row, column: integer;
+    if not (item is TShapelayoutE) and not (item is TShapetypeE) and not NoteCell(item, row, column) then
+      Exit('shapes other than notes in the sheet''s VML drawing (Forms controls), which Calcite does not move yet');
+  end;
+end;
+
+// a CSS length as Excel writes a VML box's: whole inches in in, else points
+function VmlLength(aEmus: Int64): string;
+const
+  cInch = 914400;
+  cPoint = 12700;
+begin
+  if (aEmus <> 0) and (aEmus mod cInch = 0) then
+    Result := IntToStr(aEmus div cInch) + 'in'
+  else
+    Result := FloatText(aEmus / cPoint, ftDouble) + 'pt';
+end;
+
+// the notes as Excel moves them: each box by as many rows or columns as its cell moved (never above the first; its offsets
+// kept, its place and size on the axis computed again), gone with its cell; the last one gone, its parts go too. A part is
+// edited only when it changes: one that did not read back exactly still saves
+procedure TWorksheet.ShiftNotes(aByRows: boolean; aFirst, aCount: integer);
+const
+  cPixel = 9525;
+begin
+  var commentsPart, drawingPart: string;
+  NotesParts(commentsPart, drawingPart);
+  if (commentsPart = '') and (drawingPart = '') then
+    Exit;
+  var package: TPackageOoxml := fWorkbook.fPackage;
+  var limit: integer := IfThen(aByRows, cMaxRow, cMaxColumn);
+  var notesLeft: boolean := False;
+  if commentsPart <> '' then
+  begin
+    var comments: TCommentsE := package.Part<TCommentsE>(commentsPart);
+    var edited: boolean := False;
+    for var i := comments.CommentList.Comment.Count - 1 downto 0 do
+    begin
+      var comment: TCommentCT := comments.CommentList.Comment[i];
+      var top, left, bottom, right: integer;
+      if not ParseAddress(comment.Ref, top, left, bottom, right) then
+        Continue;
+      var index: integer := IfThen(aByRows, top, left);
+      var moved: integer := ShiftedIndex(index, aFirst, aCount, limit);
+      if moved = index then
+        Continue;
+      if not edited then
+        package.EditPart<TCommentsE>(commentsPart);
+      edited := True;
+      if moved = 0 then
+        comments.CommentList.Comment.Remove(comment)
+      else if aByRows then
+        comment.Ref := CellName(moved, left)
+      else
+        comment.Ref := CellName(top, moved);
+    end;
+    notesLeft := comments.CommentList.Comment.Count > 0;
+  end;
+  if drawingPart <> '' then
+  begin
+    var drawing: TVmlDrawing := package.Part<TVmlDrawing>(drawingPart);
+    var axis: TAxis := TAxis.Create(Self, aByRows);
+    try
+      var edited, removed: boolean;
+      edited := False;
+      removed := False;
+      var shapes: integer := 0;
+      for var i := drawing.XmlAny.Count - 1 downto 0 do
+      begin
+        var row, column: integer;
+        if not NoteCell(drawing.XmlAny[i], row, column) then
+          Continue;
+        var shape: TShapeE := TShapeE(drawing.XmlAny[i]);
+        var data: TClientDataE := shape.ClientData[0];
+        // LeftColumn, LeftOffset, TopRow, TopOffset, RightColumn, RightOffset, BottomRow, BottomOffset (pixels)
+        var text: string := string(data.Anchor[0]);
+        var numbers: TArray<string> := text.Split([',']);
+        var anchor: array[0 .. 7] of integer;
+        for var k := 0 to 7 do
+          anchor[k] := StrToIntDef(numbers[k].Trim, 0);
+        var first: integer := IfThen(aByRows, 2, 0); // the start's index; its offset next, the end's 4 on
+        var index: integer := IfThen(aByRows, row, column);
+        var moved: integer := ShiftedIndex(index, aFirst, aCount, limit);
+        if moved <> 0 then
+          Inc(shapes);
+        if (moved = index) and (anchor[first + 4] < aFirst - 1) then
+          Continue; // all before the change: as it was
+        if not edited then
+          package.EditPart<TVmlDrawing>(drawingPart);
+        edited := True;
+        if moved = 0 then
+        begin
+          drawing.XmlAny.Remove(shape);
+          removed := True;
+          Continue;
+        end;
+        if aByRows then
+          data.Row[0] := moved - 1
+        else
+          data.Column[0] := moved - 1;
+        var by: integer := Max(moved - index, -anchor[first]); // never above the first row or column
+        Inc(anchor[first], by);
+        Inc(anchor[first + 4], by);
+        var spaces: string := text.Substring(0, text.Length - text.TrimLeft.Length);
+        text := spaces + IntToStr(anchor[0]);
+        for var k := 1 to 7 do
+          text := text + ', ' + IntToStr(anchor[k]);
+        data.Anchor[0] := text;
+        var boxStart: Int64 := axis.Start(anchor[first]) +
+          Min(Int64(anchor[first + 1]) * cPixel, axis.Start(anchor[first] + 1) - axis.Start(anchor[first]));
+        var boxEnd: Int64 := axis.Start(anchor[first + 4]) +
+          Min(Int64(anchor[first + 5]) * cPixel, axis.Start(anchor[first + 4] + 1) - axis.Start(anchor[first + 4]));
+        var place: string := 'margin-left';
+        var size: string := 'width';
+        if aByRows then
+        begin
+          place := 'margin-top';
+          size := 'height';
+        end;
+        var style: string := shape.Style;
+        var items: TArray<string> := style.Split([';']);
+        for var k := 0 to High(items) do
+        begin
+          var name: string := items[k].Split([':'])[0].Trim;
+          var lead: string := items[k].Substring(0, items[k].Length - items[k].TrimLeft.Length);
+          if name = place then
+            items[k] := lead + name + ':' + VmlLength(boxStart)
+          else if name = size then
+            items[k] := lead + name + ':' + VmlLength(Max(boxEnd - boxStart, 0));
+        end;
+        shape.Style := string.Join(';', items);
+      end;
+      if removed then // Excel numbers the boxes left from 1
+      begin
+        var z: integer := 0;
+        for var item: TBasite in drawing.XmlAny do
+          if item is TShapeE then
+          begin
+            Inc(z);
+            var style: string := TShapeE(item).Style;
+            var items: TArray<string> := style.Split([';']);
+            for var k := 0 to High(items) do
+              if items[k].Split([':'])[0].Trim = 'z-index' then
+                items[k] := items[k].Substring(0, items[k].Length - items[k].TrimLeft.Length) + 'z-index:' + IntToStr(z);
+            TShapeE(item).Style := string.Join(';', items);
+          end;
+      end;
+      notesLeft := notesLeft or (shapes > 0);
+    finally
+      axis.Free;
+    end;
+  end;
+  if notesLeft then
+    Exit;
+  if commentsPart <> '' then
+    package.RemovePart(fPartName, commentsPart);
+  if drawingPart <> '' then
+  begin
+    package.RemovePart(fPartName, drawingPart);
+    Objects(True).Clear('LegacyDrawing');
+  end;
+end;
+
 // the planned formulas written: a shared formula stays one while its cells still fill from its first cell's text (that cell
 // gone, the next one is first) and it names no #REF! (Excel makes those plain), else each cell gets its own; aShifted: this
 // sheet's rows or columns moved
@@ -6649,6 +7241,7 @@ begin
   var moves: TObjectList<TList<TFormulaMove>> := TObjectList<TList<TFormulaMove>>.Create;
   var refs: TObjectList<TDictionary<cardinal, string>> := TObjectList<TDictionary<cardinal, string>>.Create;
   var texts: TList<TTextMove> := TList<TTextMove>.Create;
+  var charts: TList<TChartMove> := TList<TChartMove>.Create;
   try
     if aByRows and (aCount < 0) then
       KeepTableRows(aFirst, aCount, cleared);
@@ -6660,6 +7253,8 @@ begin
       PlanTables(aByRows, aFirst, aCount);
       anchors := PlanDrawings(aByRows, why);
     end;
+    if (why = '') and (aCount <> 0) then
+      PlanCharts(aByRows, aFirst, aCount, charts, why);
     if (why = '') and (aCount <> 0) then
       for var sheet: TWorksheet in fWorkbook.fSheets do
       begin
@@ -6697,6 +7292,8 @@ begin
       ShiftTables(aByRows, aFirst, aCount);
       ShiftPivots(aByRows, aFirst, aCount);
       ShiftDrawings(anchors, aByRows, aFirst, aCount);
+      ShiftCharts(charts, aByRows, aFirst, aCount);
+      ShiftNotes(aByRows, aFirst, aCount);
     end;
     for var area: TRange in cleared do
       for var row: TRowCT in RowEntries(area.fTop, area.fBottom) do
@@ -6706,6 +7303,7 @@ begin
   finally
     fGone := nil;
     fBodies := nil;
+    charts.Free;
     texts.Free;
     refs.Free;
     moves.Free;

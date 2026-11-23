@@ -62,9 +62,11 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   `Range['B5'].EntireColumn.Delete`): cells, heights, widths, merged areas, conditional formats, data validation, hyperlinks,
   the autofilter and frozen panes move; formulas on every sheet, defined names, print areas and titles change as Excel
   changes them (a deleted reference becomes `#REF!`); new rows and columns take the format of the row above or the column
-  left. Refused with nothing changed, as Excel refuses: part of an array formula, cells pushed off the sheet; refused for
-  now: a table or a pivot table the change would move, a sheet with drawings or notes, a pivot table's source sheet, any
-  workbook with charts. Cells shifted within rows or columns come later
+  left. Tables, pivot tables and their sources, drawings, charts' series (on every sheet and chart sheet) and notes move as
+  Excel moves them. Refused with nothing changed, as Excel refuses: part of an array formula, cells pushed off the sheet, a
+  table's header row, part of a pivot table; refused for now: Excel 2010's extensions (its conditional formats, validation,
+  sparklines), embedded objects, controls, threaded comments, Excel 2016's chart kinds. Cells shifted within rows or columns
+  come later
 - `ProRock.Calcite.Data`: `ExportDataSet(DataSet, Sheet)` writes a TDataSet's visible fields to a sheet - a bold header from
   `DisplayLabel`, each value as its type (null left empty), number formats from the fields (`DisplayFormat`, currency,
   decimals, dates), the columns fitted and the header frozen
@@ -98,6 +100,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 - Namespaces in one unit that refer to each other's global elements or attributes (VML and Office): a member naming one of
   the namespace registered second took its owner's namespace, so it was written with the wrong prefix (Office's `o:lock` in a
   VML shape as `v:lock`). Such members are now bound when their namespace registers; units generated before need no change
+- `[TName]` on a class of no namespace names its element too (a document's own root, as `<xml>` of Excel's VML); it was
+  written by its class name
 - An ordered element (`[TOrdered]`, `[TMixed]`): a child deleted through its list (`Clear`, `Delete`, `Extract`) now leaves
   the order as `Remove` does. Before, it could crash on write or in `InnerText` (mostly on Win64), and a child added next
   could be written in its place; `Clear` tells the element once, so a long list clears as fast as before

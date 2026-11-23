@@ -3130,6 +3130,11 @@ begin
     fName := PChar(Meta.SimplifiedName) + 1
   else
     fName := Meta.SimplifiedName;
+  // [TName('xml')] names a class of no namespace too (a document's own root)
+  if Meta.RttiType <> nil then
+    for var attribute: TCustomAttribute in Meta.RttiType.GetAttributes do
+      if attribute.ClassType = TNameAttribute then
+        fName := TNameAttribute(attribute).CustomName;
   fNamePrefixed := fName;
 end;
 
