@@ -396,6 +396,7 @@ type
     function GetProcessAnyAttribute: boolean;
     function GetProcessAnyElement: boolean;
     procedure SetMixed(aValue: boolean);
+    procedure BindMembers;
   protected
     procedure NamespaceUnregister; override;
     procedure NamespaceRegister(aNamespace: TNamespace; aType: TXmliteComponentType); override;
@@ -507,6 +508,11 @@ type
 
   private
     fNamespaces: TNamespaceList;
+    // a type not registered yet -> the classes of its unit with a member of it: bound again when it registers
+    fPending: TObjectDictionary<TMeta, TList<TMetaBasite>>;
+
+    procedure AddPending(aType: TMeta; aOwner: TMetaBasite);
+    procedure BindPending(aType: TMeta);
   public
     constructor Create; override;
     destructor Destroy; override;
@@ -2477,6 +2483,7 @@ var
   metaBasite: TMetaBasite absolute aMeta;
 begin
   aMeta.Xmlite.NamespaceRegister(Self, aType);
+  TMetaBankXmlite.Instance.BindPending(aMeta);
   if fExactNames and (aType in [xctSimpleType, xctAttribute]) then
     metaType.SetItemNaming(fItemNaming);
   case aType of
@@ -2645,6 +2652,7 @@ begin
     Exit;
   Instance := inherited Create;
   fNamespaces := TNamespaceList.Create;
+  fPending := TObjectDictionary<TMeta, TList<TMetaBasite>>.Create([doOwnsValues]);
 end;
 
 class constructor TMetaBankXmlite.Create;
@@ -2654,8 +2662,35 @@ end;
 
 destructor TMetaBankXmlite.Destroy;
 begin
+  fPending.Free;
   fNamespaces.Free;
   inherited;
+end;
+
+procedure TMetaBankXmlite.AddPending(aType: TMeta; aOwner: TMetaBasite);
+begin
+  var owners: TList<TMetaBasite>;
+  if not fPending.TryGetValue(aType, owners) then
+  begin
+    owners := TList<TMetaBasite>.Create;
+    fPending.Add(aType, owners);
+  end;
+  if not owners.Contains(aOwner) then
+    owners.Add(aOwner);
+end;
+
+procedure TMetaBankXmlite.BindPending(aType: TMeta);
+begin
+  var owners: TList<TMetaBasite>;
+  if not fPending.TryGetValue(aType, owners) then
+    Exit;
+  fPending.ExtractPair(aType);
+  try
+    for var owner: TMetaBasite in owners do
+      owner.Xmlite.BindMembers;
+  finally
+    owners.Free;
+  end;
 end;
 
 function TMetaBankXmlite.ItemCreate(aMeta: TMeta): TMetaExtension;
@@ -2953,9 +2988,19 @@ begin
     Exit;
 
   inherited;
+  BindMembers;
+end;
+
+// the members' namespaces and XML names, again when a type they name registers later (BindPending)
+procedure TMetaBasiteXmlite.BindMembers;
+begin
+  fAttributes.Clear;
+  fElements.Clear;
+  FreeAndNil(fSameName);
+  fTextProperty := nil;
   for var propertyInfo: TProperty in Meta.Properties do
   begin
-    propertyInfo.Xmlite.NamespaceRegister(aNamespace);
+    propertyInfo.Xmlite.NamespaceRegister(Namespace);
 
     var uriedName: TUriedName := TUriedName.Create(propertyInfo.Xmlite.Namespace.Uri, propertyInfo.Xmlite.Name);
     case propertyInfo.PropertyType of
@@ -3136,7 +3181,9 @@ begin
     else if (attribute.ClassType = TNameAttribute) or attribute.ClassType.InheritsFrom(TNamingAttribute) then
       hasOwnName := True;
 
-  // a reference to a global element or attribute belongs to its namespace (an attribute qualified); a local member to its owner
+  // a reference to a global element or attribute belongs to its namespace (an attribute qualified); a local member to its owner.
+  // A class of this unit not registered yet (namespaces that import each other share a unit: VML's o:lock in v:shape) is not
+  // known as either: the owner is bound again when it registers
   if fNamespace = nil then
   begin
     var typeMeta: TMeta := PropertyInfo.Meta;
@@ -3154,7 +3201,10 @@ begin
             fNamespace := typeXmlite.Namespace;
             fQualified := True;
           end;
-      end;
+      end
+    else if (typeXmlite <> nil) and (PropertyInfo.ParentMeta <> nil) and
+      (typeMeta.UnitQualifiedName = PropertyInfo.ParentMeta.UnitQualifiedName) then
+      TMetaBankXmlite.Instance.AddPending(typeMeta, PropertyInfo.ParentMeta);
   end;
 
   if fNamespace = nil then

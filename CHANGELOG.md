@@ -95,9 +95,32 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 #### Fixed
 - `xs:double` and `xs:float` are read and written exactly on every platform: on Win64 a 17-digit value (Excel writes many) could
   read as the next Double, and some were written as text that reads back as another; a Single always gets the nearest value
+- Namespaces in one unit that refer to each other's global elements or attributes (VML and Office): a member naming one of
+  the namespace registered second took its owner's namespace, so it was written with the wrong prefix (Office's `o:lock` in a
+  VML shape as `v:lock`). Such members are now bound when their namespace registers; units generated before need no change
 - An ordered element (`[TOrdered]`, `[TMixed]`): a child deleted through its list (`Clear`, `Delete`, `Extract`) now leaves
   the order as `Remove` does. Before, it could crash on write or in `InnerText` (mostly on Win64), and a child added next
   could be written in its place; `Clear` tells the element once, so a long list clears as fast as before
+
+### ProRocket (generator)
+
+#### Added
+- `--skip-namespace <uri>` (CLI): an imported namespace is not followed and not reported missing - its elements are left out
+  (kept as read in a document), its types are strings. For a schema importing a large one it does not need: VML for Excel
+  without WordprocessingML, which the unit's header names
+
+#### Changed
+- Transitional VML's namespaces get their own unit names: `Ooxml.Vml` (with Office's, they import each other), `Ooxml.VmlExcel`,
+  `Ooxml.VmlWord`, `Ooxml.VmlPowerpoint`. Namespaces that import each other, none of them given, share the unit of the one a
+  given schema imports: from `vml-main.xsd`, WordprocessingML is `Ooxml.Wml`, the same unit as from `wml.xsd` alone
+
+#### Fixed
+- Namespaces sharing one unit no longer declare a Delphi name twice: VML's and Office's `ST_FillType`, WordprocessingML's and
+  its drawing's `CT_TxbxContent` - such a unit did not compile. The second keeps its whole name, `TSTFillTypeST`
+- A group or attribute group of another namespace is read with its own schema's prefixes: its types fell back to `string`
+  (OOXML Math's runs, VML's `v:ext` in Office's shapes)
+- A namespace used only inside nested groups, choices or sequences counts as imported: OOXML Math and WordprocessingML, which
+  import each other that way, come out in one unit and compile
 
 ## [1.7.0] - 2026-11-11
 

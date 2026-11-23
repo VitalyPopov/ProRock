@@ -43,7 +43,8 @@ ProRocketCli.exe -o Generated main.xsd imported.xsd
 ## Command
 
 ```
-ProRocketCli.exe [-o <output folder>] [--strict] [--no-timestamp] [--full-type-names] <file.xsd|file.wsdl> ...
+ProRocketCli.exe [-o <output folder>] [--strict] [--no-timestamp] [--full-type-names] [--skip-namespace <uri>]
+  <file.xsd|file.wsdl> ...
 ```
 
 In PowerShell, give the path to the exe: `.\ProRocketCli.exe ...` in its folder, or the full path from anywhere.
@@ -54,6 +55,7 @@ In PowerShell, give the path to the exe: `.\ProRocketCli.exe ...` in its folder,
 | `--strict` | write nothing if there are problems (see below); exit code 1 |
 | `--no-timestamp` | leave out the `Generated (UTC)` header line: an unchanged schema gives a byte-identical unit |
 | `--full-type-names` | keep the whole XML name in Delphi type names (see "Type names") |
+| `--skip-namespace <uri>` | an import not followed nor reported: its elements kept as read, its types strings; repeatable |
 | `--version` | the version, e.g. `ProRocket Lite CLI 1.7.0` - the generated units need the ProRock release with that number |
 | `-h`, `--help` | usage |
 

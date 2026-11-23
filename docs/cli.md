@@ -24,7 +24,8 @@ search path.
 ## Command
 
 ```
-ProRocketCli.exe [-o <output folder>] [--strict] [--no-timestamp] [--full-type-names] <file.xsd|file.wsdl> ...
+ProRocketCli.exe [-o <output folder>] [--strict] [--no-timestamp] [--full-type-names] [--skip-namespace <uri>]
+  <file.xsd|file.wsdl> ...
 ```
 
 | Option | Meaning |
@@ -33,6 +34,7 @@ ProRocketCli.exe [-o <output folder>] [--strict] [--no-timestamp] [--full-type-n
 | `--strict` | write nothing if there are problems; exit code 1 |
 | `--no-timestamp` | leave out the `Generated (UTC)` header line: an unchanged schema gives a byte-identical unit |
 | `--full-type-names` | keep the whole XML name in Delphi type names ([Type names](generated-code.md#type-names)) |
+| `--skip-namespace <uri>` | an import not followed nor reported: its elements kept as read, its types strings; repeatable |
 | `--version` | the version; the generated units need the ProRock release with that number |
 | `-h`, `--help` | usage |
 
