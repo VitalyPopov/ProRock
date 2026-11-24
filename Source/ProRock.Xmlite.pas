@@ -168,6 +168,8 @@ type
     function PropertyOfClass(aClass: TClass; const aName: string = ''): TProperty;
     function AddElement(aClass: TClass; const aProperty: string): TBasite;
     procedure CopyContent(aSource: TXmlite; aCommon: TMetaBasite; const aUnknownAt: TArray<integer>);
+    // XmlContent node by node, of an object of this class
+    function SameOrder(aOther: TXmlite): boolean;
   protected
     procedure Initialize; override;
     procedure Deinitialize; override;
@@ -219,6 +221,8 @@ type
     procedure Clear; overload; override;
     function IsEmptyOrDefault: boolean; override;
     function HasContent: boolean; override;
+    // with the properties: the name, attributes, declarations, text, xs:any, kept elements and values, the order
+    function SameAs(aOther: TBasite): boolean; override;
   end;
 
   // an object of a class known only at run time: aClass.Create (the constructor is virtual)
@@ -2160,6 +2164,95 @@ begin
   finally
     children.Free;
   end;
+end;
+
+function TXmlite.SameAs(aOther: TBasite): boolean;
+
+  function SameMap(aMap, aOther: TDictionary<string, string>): boolean;
+  begin
+    if aMap.Count <> aOther.Count then
+      Exit(False);
+    for var pair: TPair<string, string> in aMap do
+    begin
+      var value: string;
+      if not aOther.TryGetValue(pair.Key, value) or (value <> pair.Value) then
+        Exit(False);
+    end;
+    Result := True;
+  end;
+
+  function SameUnknown(const aUnknown, aOther: TXmliteUnknown): boolean;
+  begin
+    Result := (aUnknown.Xml = aOther.Xml) and (aUnknown.After = aOther.After) and (aUnknown.AfterCount = aOther.AfterCount) and
+      (aUnknown.Value = aOther.Value) and (Length(aUnknown.Namespaces) = Length(aOther.Namespaces));
+    if Result then
+      for var i := 0 to High(aUnknown.Namespaces) do
+        if (aUnknown.Namespaces[i].Key <> aOther.Namespaces[i].Key) or (aUnknown.Namespaces[i].Value <> aOther.Namespaces[i].Value) then
+          Exit(False);
+  end;
+
+  function Count(aList: TList<TXmliteUnknown>): integer; overload;
+  begin
+    if aList = nil then
+      Result := 0
+    else
+      Result := aList.Count;
+  end;
+
+  function Count(aMap: TDictionary<string, TProperty>): integer; overload;
+  begin
+    if aMap = nil then
+      Result := 0
+    else
+      Result := aMap.Count;
+  end;
+
+begin
+  Result := inherited SameAs(aOther);
+  if not Result or (aOther = Self) then
+    Exit;
+  var other: TXmlite := TXmlite(aOther); // of this class: inherited checked it
+  if (fXmlPrefix <> other.fXmlPrefix) or (fXmlName <> other.fXmlName) or (fXmlText <> other.fXmlText) or
+    (fXmlTextEmpty <> other.fXmlTextEmpty) or not SameMap(fXmlAttributes, other.fXmlAttributes) or
+    not SameMap(fXmlAttributeNamespaces, other.fXmlAttributeNamespaces) or not SameMap(fXmlns, other.fXmlns) or
+    (fXmlAny.Count <> other.fXmlAny.Count) or (Count(fXmlUnknown) <> Count(other.fXmlUnknown)) or
+    (Count(fXmlBadAttributes) <> Count(other.fXmlBadAttributes)) then
+    Exit(False);
+  for var i := 0 to fXmlAny.Count - 1 do
+    if not fXmlAny[i].SameAs(other.fXmlAny[i]) then
+      Exit(False);
+  for var i := 0 to Count(fXmlUnknown) - 1 do
+    if not SameUnknown(fXmlUnknown[i], other.fXmlUnknown[i]) then
+      Exit(False);
+  if fXmlBadAttributes <> nil then
+    for var pair: TPair<string, TProperty> in fXmlBadAttributes do
+    begin
+      var badOf: TProperty;
+      if not other.fXmlBadAttributes.TryGetValue(pair.Key, badOf) or (badOf <> pair.Value) then
+        Exit(False);
+    end;
+  Result := SameOrder(other);
+end;
+
+function TXmlite.SameOrder(aOther: TXmlite): boolean;
+begin
+  var count: integer := 0;
+  if fXmlContent <> nil then
+    count := fXmlContent.Count;
+  if (aOther.fXmlContent = nil) or (aOther.fXmlContent.Count = 0) then
+    Exit(count = 0);
+  if count <> aOther.fXmlContent.Count then
+    Exit(False);
+  for var i := 0 to count - 1 do
+  begin
+    var node: TXmliteNode := fXmlContent[i];
+    var otherNode: TXmliteNode := aOther.fXmlContent[i];
+    if (node.Kind <> otherNode.Kind) or (node.Text <> otherNode.Text) or (node.ElementProperty <> otherNode.ElementProperty) or
+      ((node.Element = nil) <> (otherNode.Element = nil)) or ((node.Element = nil) and (node.Index <> otherNode.Index)) or
+      ((node.Element <> nil) and not node.Element.SameAs(otherNode.Element)) then
+      Exit(False);
+  end;
+  Result := True;
 end;
 
 procedure TXmlite.DoAfterParsing;

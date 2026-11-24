@@ -6,7 +6,8 @@ interface
 
 {$DEFINE PROROCK}
 
-uses System.Classes, System.Rtti, Generics.Collections, System.SysUtils, System.SyncObjs, System.IniFiles, System.Math, System.TypInfo,
+uses System.Classes, System.Rtti, Generics.Collections, System.Generics.Defaults, System.SysUtils, System.SyncObjs, System.IniFiles,
+  System.Math, System.TypInfo,
   ProRock.Utility;
 
 const
@@ -127,6 +128,9 @@ type
     function FindProperty(aField: Pointer; out aProperty: TProperty): boolean; overload;
     function FindProperty(const aName: string; out aProperty: TProperty): boolean; overload;
     function GetPresent(aField: Pointer): boolean;
+    // a present property's values here and in aOther, of this class
+    function SameProperty(aOther: TBasite; aProperty: TProperty): boolean;
+    function PropertyHash(aProperty: TProperty): integer;
   public
     class function ClassParent: TBasiteClass; inline;
     class function Meta: TMetaBasite;
@@ -161,6 +165,14 @@ type
     // a new object of this class with this one's content: copy := Column.Clone<TColCT>
     function Clone: TBasite; overload;
     function Clone<T: TBasite>: T; overload;
+
+    // the same content as the writer writes it: the same class, the same properties present, their values equal (NaN to
+    // NaN). Objects are not equal by Equals: TList.IndexOf and Remove stay by address
+    function SameAs(aOther: TBasite): boolean; virtual;
+    // the present properties' values: equal for objects SameAs gives True for
+    function ContentHash: integer;
+    // for a dictionary keyed by content: TDictionary<TXfCT, integer>.Create(TXfCT.ContentComparer<TXfCT>)
+    class function ContentComparer<T: TBasite>: IEqualityComparer<T>;
     function IsEmptyOrDefault: boolean; virtual;
     function AssignProperty(const aName, aValue: string): boolean; inline;
 
@@ -221,6 +233,8 @@ type
     Delete: procedure(aList: TObject; aIndex: integer);
     Clear: procedure(aList: TObject);
     AddAll: procedure(aTarget, aSource: TObject); // aSource's items added to aTarget, as T (strings too)
+    Equal: function(aList, aOther: TObject): boolean; // the same items in the same order, by T's default comparer
+    Hash: function(aList: TObject): integer;
   end;
 
   // a list of plain values - a repeating element of a simple type: strings, numbers, enumerations (a TList<T>)
@@ -233,6 +247,8 @@ type
     class procedure DoDelete(aList: TObject; aIndex: integer); static;
     class procedure DoClear(aList: TObject); static;
     class procedure DoAddAll(aTarget, aSource: TObject); static;
+    class function DoEqual(aList, aOther: TObject): boolean; static;
+    class function DoHash(aList: TObject): integer; static;
   public
     class function Access: TBasiteValueListAccess; static;
   end;
@@ -313,6 +329,7 @@ type
     function ReadFloat(aObject: TBasite; aFieldData: Pointer): Extended;
     procedure WriteFloat(aObject: TBasite; aFieldData: Pointer; const aValue: Extended);
     function ReadCurrency(aObject: TBasite; aFieldData: Pointer): Currency;
+    function ReadString(aObject: TBasite; aFieldData: Pointer): string; inline;
     procedure WriteCurrency(aObject: TBasite; aFieldData: Pointer; const aValue: Currency);
 
     function GetValue(aObject: TBasite): string;
@@ -332,6 +349,10 @@ type
     function ValueIsDefault(aObject: TBasite): boolean;
     // aSource's value into aTarget (presence aside); a read-only property is left
     procedure CopyValue(aSource, aTarget: TBasite);
+    // the values of two objects of its class equal; floats by value, NaN equal to NaN
+    function SameValue(aObject, aOther: TBasite): boolean;
+    // equal for values SameValue gives True for: 0 and -0 alike, every NaN alike
+    function ValueHash(aObject: TBasite): integer;
   end;
 
   TPropertyClass = class abstract(TProperty)
@@ -393,6 +414,9 @@ type
     procedure ClearList(aParentObject: TBasite);
     // aSource's items added to aTarget's list (created when missing)
     procedure CopyList(aSource, aTarget: TBasite);
+    // the same items in both objects' lists (a list not created is empty)
+    function SameItems(aObject, aOther: TBasite): boolean;
+    function ItemsHash(aObject: TBasite): integer;
   end;
 
   TPropertyExtension = class abstract
@@ -571,7 +595,7 @@ type
 
 implementation
 
-uses System.Types, System.RegularExpressions, System.StrUtils, System.Variants,
+uses System.Types, System.RegularExpressions, System.StrUtils, System.Variants, System.Hash,
   {$IFDEF MSWINDOWS}Winapi.Windows{$ENDIF}{$IFDEF POSIX}Posix.SysMman, Posix.Unistd{$ENDIF};
 
 function IsBasiteValueListClass(aClass: TClass): boolean;
@@ -825,6 +849,106 @@ begin
   if not (Self is T) then
     raise EInvalidCast.CreateFmt('%s is not a %s', [ClassName, T.ClassName]);
   Result := T(Clone);
+end;
+
+function TBasite.SameAs(aOther: TBasite): boolean;
+begin
+  if aOther = Self then
+    Exit(True);
+  if (aOther = nil) or (aOther.ClassType <> ClassType) then
+    Exit(False);
+  for var propertyInfo: TProperty in Meta.Properties do
+  begin
+    var present: boolean := IsPresent(propertyInfo);
+    if (present <> aOther.IsPresent(propertyInfo)) or (present and not SameProperty(aOther, propertyInfo)) then
+      Exit(False);
+  end;
+  Result := True;
+end;
+
+function TBasite.SameProperty(aOther: TBasite; aProperty: TProperty): boolean;
+begin
+  case aProperty.PropertyType of
+    ptData:
+      Result := TPropertyData(aProperty).SameValue(Self, aOther);
+    ptBasite:
+      begin
+        var mine: TBasite := TPropertyBasite(aProperty).ObjectPointer(Self)^;
+        var other: TBasite := TPropertyBasite(aProperty).ObjectPointer(aOther)^;
+        if (mine = nil) or (other = nil) then
+          Result := mine = other
+        else
+          Result := mine.SameAs(other);
+      end;
+    ptBasiteList:
+      begin
+        var mine: TBasiteList := TPropertyBasiteList(aProperty).ObjectPointer(Self)^;
+        var other: TBasiteList := TPropertyBasiteList(aProperty).ObjectPointer(aOther)^;
+        if (mine = nil) or (other = nil) then // a list not created is empty
+          Exit(((mine = nil) or (mine.Count = 0)) and ((other = nil) or (other.Count = 0)));
+        if mine.Count <> other.Count then
+          Exit(False);
+        for var i := 0 to mine.Count - 1 do
+          if not mine[i].SameAs(other[i]) then
+            Exit(False);
+        Result := True;
+      end;
+    ptDataList:
+      Result := TPropertyDataList(aProperty).SameItems(Self, aOther);
+  else
+    Result := True;
+  end;
+end;
+
+function TBasite.ContentHash: integer;
+begin
+  var hashedClass: TClass := ClassType;
+  Result := THashBobJenkins.GetHashValue(hashedClass, SizeOf(hashedClass));
+  for var propertyInfo: TProperty in Meta.Properties do
+    if IsPresent(propertyInfo) then
+    begin
+      var parts: array[0 .. 1] of integer;
+      parts[0] := propertyInfo.fIndex;
+      parts[1] := PropertyHash(propertyInfo);
+      Result := THashBobJenkins.GetHashValue(parts, SizeOf(parts), Result);
+    end;
+end;
+
+function TBasite.PropertyHash(aProperty: TProperty): integer;
+begin
+  Result := 0;
+  case aProperty.PropertyType of
+    ptData:
+      Result := TPropertyData(aProperty).ValueHash(Self);
+    ptBasite:
+      if TPropertyBasite(aProperty).ObjectPointer(Self)^ <> nil then
+        Result := TPropertyBasite(aProperty).ObjectPointer(Self)^.ContentHash;
+    ptBasiteList:
+      if TPropertyBasiteList(aProperty).ObjectPointer(Self)^ <> nil then
+        for var item: TBasite in TPropertyBasiteList(aProperty).ObjectPointer(Self)^ do
+        begin
+          var itemHash: integer := item.ContentHash;
+          Result := THashBobJenkins.GetHashValue(itemHash, SizeOf(itemHash), Result);
+        end;
+    ptDataList:
+      Result := TPropertyDataList(aProperty).ItemsHash(Self);
+  end;
+end;
+
+class function TBasite.ContentComparer<T>: IEqualityComparer<T>;
+begin
+  Result := TEqualityComparer<T>.Construct(
+    function(const aLeft, aRight: T): boolean
+    begin
+      Result := (TObject(aLeft) = TObject(aRight)) or ((TObject(aLeft) <> nil) and aLeft.SameAs(aRight));
+    end,
+    function(const aValue: T): integer
+    begin
+      if TObject(aValue) = nil then
+        Result := 0
+      else
+        Result := aValue.ContentHash;
+    end);
 end;
 
 procedure TBasite.CopyFrom(aSource: TBasite; aCommon: TMetaBasite);
@@ -1256,6 +1380,32 @@ begin
   Result.Delete := DoDelete;
   Result.Clear := DoClear;
   Result.AddAll := DoAddAll;
+  Result.Equal := DoEqual;
+  Result.Hash := DoHash;
+end;
+
+class function TBasiteValueList<T>.DoEqual(aList, aOther: TObject): boolean;
+begin
+  var list: TBasiteValueList<T> := TBasiteValueList<T>(aList);
+  var other: TBasiteValueList<T> := TBasiteValueList<T>(aOther);
+  if list.Count <> other.Count then
+    Exit(False);
+  var comparer: IEqualityComparer<T> := TEqualityComparer<T>.Default;
+  for var i := 0 to list.Count - 1 do
+    if not comparer.Equals(list[i], other[i]) then
+      Exit(False);
+  Result := True;
+end;
+
+class function TBasiteValueList<T>.DoHash(aList: TObject): integer;
+begin
+  var comparer: IEqualityComparer<T> := TEqualityComparer<T>.Default;
+  Result := TBasiteValueList<T>(aList).Count;
+  for var item: T in TBasiteValueList<T>(aList) do
+  begin
+    var itemHash: integer := comparer.GetHashCode(item);
+    Result := THashBobJenkins.GetHashValue(itemHash, SizeOf(itemHash), Result);
+  end;
 end;
 
 class procedure TBasiteValueList<T>.DoAddAll(aTarget, aSource: TObject);
@@ -1632,6 +1782,70 @@ begin
   end;
 end;
 
+function TPropertyData.ReadString(aObject: TBasite; aFieldData: Pointer): string;
+begin
+  if fGetterIsField then
+    Result := PUnicodeString(aFieldData)^
+  else
+    Result := TGetterString(GetterMethod(aObject));
+end;
+
+function TPropertyData.SameValue(aObject, aOther: TBasite): boolean;
+begin
+  var data: Pointer := DataPointer(aObject);
+  var otherData: Pointer := DataPointer(aOther);
+  case fRttiProperty.PropertyType.TypeKind of
+    tkInteger, tkInt64, tkEnumeration:
+      Result := ReadOrdinal(aObject, data) = ReadOrdinal(aOther, otherData);
+    tkFloat:
+      if Meta.fFloatType = ftCurr then
+        Result := ReadCurrency(aObject, data) = ReadCurrency(aOther, otherData)
+      else if (Meta.fFloatType = ftComp) and fGetterIsField then // a Comp through a Win64 Double would lose digits
+        Result := PInt64(data)^ = PInt64(otherData)^
+      else
+      begin
+        var value: Extended := ReadFloat(aObject, data);
+        var other: Extended := ReadFloat(aOther, otherData);
+        Result := (value = other) or (IsNan(value) and IsNan(other));
+      end;
+    tkUString:
+      Result := ReadString(aObject, data) = ReadString(aOther, otherData);
+  else
+    Result := True;
+  end;
+end;
+
+function TPropertyData.ValueHash(aObject: TBasite): integer;
+begin
+  var data: Pointer := DataPointer(aObject);
+  case fRttiProperty.PropertyType.TypeKind of
+    tkInteger, tkInt64, tkEnumeration:
+      begin
+        var value: Int64 := ReadOrdinal(aObject, data);
+        Result := THashBobJenkins.GetHashValue(value, SizeOf(value));
+      end;
+    tkFloat:
+      begin
+        var value: Double;
+        if Meta.fFloatType = ftCurr then
+          value := ReadCurrency(aObject, data)
+        else if (Meta.fFloatType = ftComp) and fGetterIsField then
+          value := PInt64(data)^
+        else
+          value := ReadFloat(aObject, data);
+        if IsNan(value) then
+          value := NaN // one NaN's bits
+        else if value = 0 then
+          value := 0; // -0 too
+        Result := THashBobJenkins.GetHashValue(value, SizeOf(value));
+      end;
+    tkUString:
+      Result := THashBobJenkins.GetHashValue(ReadString(aObject, data));
+  else
+    Result := 0;
+  end;
+end;
+
 procedure TPropertyData.SetDefaultValue(aObject: TBasite);
 begin
   if (aObject = nil) or (fPropertyType <> ptData) or not fRttiProperty.IsWritable then
@@ -1984,6 +2198,24 @@ begin
     Exit;
   CreateList(aTarget);
   fAccess.AddAll(ObjectPointer(aTarget)^, source);
+end;
+
+function TPropertyDataList.SameItems(aObject, aOther: TBasite): boolean;
+begin
+  var list: TObject := ObjectPointer(aObject)^;
+  var other: TObject := ObjectPointer(aOther)^;
+  if (list = nil) or (other = nil) then
+    Result := Count(aObject) = Count(aOther)
+  else
+    Result := fAccess.Equal(list, other);
+end;
+
+function TPropertyDataList.ItemsHash(aObject: TBasite): integer;
+begin
+  if Count(aObject) = 0 then
+    Result := 0
+  else
+    Result := fAccess.Hash(ObjectPointer(aObject)^);
 end;
 
 function TPropertyDataList.Count(aParentObject: TBasite): integer;
