@@ -101,6 +101,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   samples to `Source`: if your project lists the samples' copies, remove them from it
 - The DocumentProperties sample is built on `ProRock.Office.Ooxml`: its `OfficeDocument.pas` is gone; app.xml is still read
   into its generated classes
+- `XmlContent` is read-only (`Count`, `Items[]`, `for in`): `Add<T>`, `AddText` and `Remove` change it, as before. Its items
+  are `TXmliteContentItem` of kinds `xckText`, `xckElement`, `xckKept`; `TXmliteNode`, `TXmliteNodeKind` and `xnk...` stay
+  as deprecated names until 2.0
 
 #### Fixed
 - `xs:double` and `xs:float` are read and written exactly on every platform: on Win64 a 17-digit value (Excel writes many) could

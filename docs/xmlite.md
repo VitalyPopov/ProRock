@@ -117,13 +117,13 @@ lists stay as they are - `p.B[0]` is the first `<b>` - and `XmlContent` refers t
 ```pascal
 Writeln(obs.Text.&Div.InnerText);   // all the text, children included, in document order
 
-for var node in p.XmlContent do
-  if node.IsText then
-    Write(node.Text)
-  else if node.IsElement<TAE> then
-    Write('[', node.Element.InnerText, '](', node.ElementAs<TAE>.Href, ')')
+for var item in p.XmlContent do
+  if item.IsText then
+    Write(item.Text)
+  else if item.IsElement<TAE> then
+    Write('[', item.Element.InnerText, '](', item.ElementAs<TAE>.Href, ')')
   else
-    Write(node.Element.InnerText);   // node.Name: the element's name - b, span
+    Write(item.Element.InnerText);   // item.Name: the element's name - b, span
 ```
 
 Built in code, in the order of the calls:
@@ -137,8 +137,9 @@ p.AddText(': final');
 
 - `XmlText` of a mixed element is its leading text (`cp:keywords`: the whole text); setting it replaces that text.
 - Children added straight to a typed list are written after the ones in `XmlContent`, in the schema's order.
-- Remove a child with `Remove(child)`: it leaves both its list and `XmlContent`. A child deleted through its list only is
-  no longer written, but its node in `XmlContent` refers to a freed object.
+- `XmlContent` is read-only. Remove a child with `Remove(child)`: it leaves both its list and `XmlContent`; one deleted,
+  extracted or cleared through its list leaves `XmlContent` too. A plain value deleted from its list moves the places of
+  the values after it.
 - Inside a mixed element the writer writes no indentation (`Pretty`): it would become a part of the text.
 - `Ordered` and `Mixed` are settings of the class's metadata (`TPE.Meta.Xmlite.Mixed`) - changeable at run time, for every
   object of the class. Units generated before 1.6 have no `[TMixed]`: regenerate them.

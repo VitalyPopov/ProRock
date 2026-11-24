@@ -201,11 +201,11 @@ function TFhirDocument.Narrative(aResource: TResourceCT): string;
     // mixed content (p, td, b...): XmlContent holds its text runs and child elements in document order; whitespace
     // collapses as in HTML
     if aElement.Meta.Xmlite.Ordered then
-      for var node: TXmliteNode in aElement.XmlContent do
-        if node.IsText then
-          aText.Append(TRegEx.Replace(node.Text, '\s+', ' '))
+      for var item: TXmliteContentItem in aElement.XmlContent do
+        if item.IsText then
+          aText.Append(TRegEx.Replace(item.Text, '\s+', ' '))
         else
-          AddChild(node.Element, node.Name)
+          AddChild(item.Element, item.Name)
     else
       // an element that keeps no order (a table, its rows): its children in schema order - a sequence's order - from the
       // class's metadata
