@@ -167,12 +167,19 @@ type
     procedure AddNode(aKind: TXmliteNodeKind; const aText: string; aElement: TBasite; aProperty: TProperty; aIndex: integer);
     function PropertyOfClass(aClass: TClass; const aName: string = ''): TProperty;
     function AddElement(aClass: TClass; const aProperty: string): TBasite;
+    // aProperty of a source's class as this class has it: the same index (an ancestor's come first); False - not
+    // in aCommon; nil gives nil
+    function CommonProperty(aCommon: TMetaBasite; aProperty: TProperty; out aMine: TProperty): boolean;
+    procedure CopyContent(aSource: TXmlite; aCommon: TMetaBasite; const aUnknownAt: TArray<integer>);
   protected
     procedure Initialize; override;
     procedure Deinitialize; override;
     // a child gone from its list leaves XmlContent: no node names a freed object (or a new one at its address)
     procedure ChildRemoved(aChild: TBasite); override;
     procedure ChildrenRemoved(aList: TObject); override;
+    // with the properties: the name, attributes, declarations, text, xs:any, kept elements and values, the order; not
+    // XmlPosition (a copy was not read). From another class only what names its properties too
+    procedure CopyFrom(aSource: TBasite; aCommon: TMetaBasite); override;
 
     procedure DoBeforeSerialization; virtual;
     procedure DoAfterSerialization; virtual;
@@ -2055,6 +2062,116 @@ begin
     fXmlContent.Count := kept;
   finally
     leaving.Free;
+  end;
+end;
+
+procedure TXmlite.CopyFrom(aSource: TBasite; aCommon: TMetaBasite);
+begin
+  inherited;
+  if not (aSource is TXmlite) then
+    Exit;
+  var source: TXmlite := TXmlite(aSource);
+  fXmlPrefix := source.fXmlPrefix;
+  fXmlName := source.fXmlName;
+  fXmlText := source.fXmlText;
+  fXmlTextEmpty := source.fXmlTextEmpty;
+  for var pair: TPair<string, string> in source.fXmlAttributes do
+    fXmlAttributes.AddOrSetValue(pair.Key, pair.Value);
+  for var pair: TPair<string, string> in source.fXmlAttributeNamespaces do
+    fXmlAttributeNamespaces.AddOrSetValue(pair.Key, pair.Value);
+  for var pair: TPair<string, string> in source.fXmlns do
+    fXmlns.AddOrSetValue(pair.Key, pair.Value);
+  for var item: TBasite in source.fXmlAny do
+    fXmlAny.Add(item.Clone);
+  var mine: TProperty;
+  if source.fXmlBadAttributes <> nil then
+    for var pair: TPair<string, TProperty> in source.fXmlBadAttributes do
+      if CommonProperty(aCommon, pair.Value, mine) then
+      begin
+        if fXmlBadAttributes = nil then
+          fXmlBadAttributes := TDictionary<string, TProperty>.Create;
+        fXmlBadAttributes.AddOrSetValue(pair.Key, mine);
+      end;
+
+  // kept elements: their places here, which shift when one is not common (-1: not copied)
+  var unknownAt: TArray<integer> := nil;
+  if source.fXmlUnknown <> nil then
+  begin
+    SetLength(unknownAt, source.fXmlUnknown.Count);
+    for var i := 0 to source.fXmlUnknown.Count - 1 do
+    begin
+      unknownAt[i] := -1;
+      var unknown: TXmliteUnknown := source.fXmlUnknown[i];
+      var after, value: TProperty;
+      if CommonProperty(aCommon, unknown.After, after) and CommonProperty(aCommon, unknown.Value, value) then
+      begin
+        unknown.After := after;
+        unknown.Value := value;
+        unknown.Namespaces := Copy(unknown.Namespaces);
+        unknownAt[i] := XmlUnknown.Add(unknown);
+      end;
+    end;
+  end;
+
+  if (source.fXmlContent <> nil) and (source.fXmlContent.Count > 0) then
+    CopyContent(source, aCommon, unknownAt);
+end;
+
+function TXmlite.CommonProperty(aCommon: TMetaBasite; aProperty: TProperty; out aMine: TProperty): boolean;
+begin
+  aMine := nil;
+  if aProperty = nil then
+    Exit(True);
+  Result := aProperty.Index < aCommon.Properties.Count;
+  if Result then
+    aMine := Meta.Properties[aProperty.Index];
+end;
+
+procedure TXmlite.CopyContent(aSource: TXmlite; aCommon: TMetaBasite; const aUnknownAt: TArray<integer>);
+begin
+  // the source's children -> this object's, which the properties' copy made in the same order
+  var children: TDictionary<TBasite, TBasite> := TDictionary<TBasite, TBasite>.Create(AddressComparer);
+  try
+    for var propertyInfo: TProperty in aCommon.Properties do
+      case propertyInfo.PropertyType of
+        ptBasite:
+          begin
+            var child: TBasite := TPropertyBasite(propertyInfo).ObjectPointer(aSource)^;
+            if child <> nil then
+              children.AddOrSetValue(child, TPropertyBasite(propertyInfo).ObjectPointer(Self)^);
+          end;
+        ptBasiteList:
+          begin
+            var list: TBasiteList := TPropertyBasiteList(propertyInfo).ObjectPointer(aSource)^;
+            if list <> nil then
+              for var i := 0 to list.Count - 1 do
+                children.AddOrSetValue(list[i], TPropertyBasiteList(propertyInfo).ObjectPointer(Self)^[i]);
+          end;
+      end;
+    for var i := 0 to aSource.fXmlAny.Count - 1 do
+      children.AddOrSetValue(aSource.fXmlAny[i], fXmlAny[i]);
+
+    var content: TList<TXmliteNode> := XmlContent;
+    content.Capacity := aSource.fXmlContent.Count;
+    for var node: TXmliteNode in aSource.fXmlContent do
+    begin
+      var mapped: TXmliteNode := node;
+      case node.Kind of
+        xnkElement:
+          if not CommonProperty(aCommon, node.ElementProperty, mapped.ElementProperty) or
+            ((node.Element <> nil) and not children.TryGetValue(node.Element, mapped.Element)) then
+            Continue;
+        xnkUnknown:
+          begin
+            mapped.Index := aUnknownAt[node.Index];
+            if mapped.Index < 0 then
+              Continue;
+          end;
+      end;
+      content.Add(mapped);
+    end;
+  finally
+    children.Free;
   end;
 end;
 
