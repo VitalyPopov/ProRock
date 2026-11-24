@@ -105,7 +105,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   are `TXmliteContentItem` of kinds `xckText`, `xckElement`, `xckKept`; `TXmliteNode`, `TXmliteNodeKind` and `xnk...` stay
   as deprecated names until 2.0
 - Reading XML is about a third faster: an element that declares no namespaces shares its parent's `Xmlns` (the namespaces in
-  scope, for prefixed values; read it, don't change it) instead of a copy of its own. `SameAs` leaves out the declarations
+  scope, for prefixed values) instead of a copy of its own. `Xmlns` is read-only: `Xmlns['x']`, `TryGetValue`, `ContainsKey`,
+  `Count` and `for in` as before; it is no dictionary to change any more. `SameAs` leaves out the declarations
   around an element, as its written XML does: the same font under two producers' roots is the same. A start tag cut short
   inside a document reports where it ends (`the text ends inside <item>`)
 

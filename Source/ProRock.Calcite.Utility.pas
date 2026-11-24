@@ -25,6 +25,7 @@ type
   TTagType = ProRock.Xmlite.Utility.TTagType;
   TUriedName = ProRock.Xmlite.Utility.TUriedName;
   TXmlns = ProRock.Xmlite.Utility.TXmlns;
+  TXmlnsScope = ProRock.Xmlite.Utility.TXmlnsScope;
   TReaderXmlite = ProRock.Xmlite.Utility.TReaderXmlite;
   // generics have no aliases: empty subclasses; a parent's object does not go into a child-typed variable (E2008)
   THashSet<T> = class(ProRock.Xmlite.Utility.THashSet<T>);

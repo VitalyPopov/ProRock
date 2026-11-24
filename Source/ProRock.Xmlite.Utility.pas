@@ -66,23 +66,42 @@ type
     end;
   end;
 
-  TXmlns = class(TDictionary<string, string>) // prefix-URI
+  // the namespaces in scope (prefix -> URI), read only: an element's scope is shared with the elements inside it
+  TXmlns = class
   private
+    fUris: TDictionary<string, string>;
     fDefaultUri: string;
-    fOwners: integer;
     function GetUri(const aPrefix: string): string;
+    function GetCount: integer;
   public
-    constructor Create; reintroduce; overload;
-    constructor Create(const aParentXmlns: TXmlns); overload;
+    constructor Create;
+    destructor Destroy; override;
+
+    function TryGetValue(const aPrefix: string; out aUri: string): boolean;
+    function ContainsKey(const aPrefix: string): boolean;
+    function GetEnumerator: TDictionary<string, string>.TPairEnumerator;
+
+    property Count: integer read GetCount;
+    property DefaultUri: string read fDefaultUri;
+    // a prefix not declared: the default namespace ('xml' is always XML's own)
+    property Uri[const aPrefix: string]: string read GetUri; default;
+  end;
+
+  // the reader's: declarations added while a start tag is read, then shared by its elements
+  TXmlnsScope = class(TXmlns)
+  private
+    fOwners: integer;
+  public
+    constructor Create; overload;
+    constructor Create(aParent: TXmlns); overload;
+
+    procedure Declare(const aPrefix, aUri: string);
+    procedure DeclareDefault(const aUri: string);
+    procedure Undeclare(const aPrefix: string);
 
     // one owner more: each owner calls Release instead of Free, the last one frees it
-    function Share: TXmlns;
+    function Share: TXmlnsScope;
     procedure Release;
-
-    property DefaultUri: string read fDefaultUri;
-    property Uri[const aPrefix: string]: string read GetUri; default;
-
-    procedure Clear; reintroduce;
   end;
 
   TReaderXmlite = class abstract(TReaderBase)
@@ -116,7 +135,7 @@ type
     class function ReadTextNodeContents(var aCursor: PChar): string; static; inline;
     // a text-only element, from after its name to after its end: aText ('' for <a/>), aTagEnd after its start tag
     class function ReadValueNode(var aCursor: PChar; const aNodeName: string; out aText: string; out aTagEnd: PChar): boolean; static;
-    class function ReadXmlns(aCursor: PChar; aXmlns: TXmlns): boolean; static; inline;
+    class function ReadXmlns(aCursor: PChar; aXmlns: TXmlnsScope): boolean; static; inline;
   end;
 
 implementation
@@ -169,47 +188,91 @@ end;
 
 { TXmlns }
 
-procedure TXmlns.Clear;
+constructor TXmlns.Create;
 begin
-  inherited Clear;
-  fDefaultUri := '';
+  inherited Create;
+  fUris := TDictionary<string, string>.Create;
 end;
 
-constructor TXmlns.Create(const aParentXmlns: TXmlns);
+destructor TXmlns.Destroy;
 begin
-  inherited Create(aParentXmlns);
-  fDefaultUri := aParentXmlns.DefaultUri;
-  fOwners := 1;
-end;
-
-function TXmlns.Share: TXmlns;
-begin
-  Inc(fOwners);
-  Result := Self;
-end;
-
-procedure TXmlns.Release;
-begin
-  if Self = nil then
-    Exit;
-  Dec(fOwners);
-  if fOwners <= 0 then
-    Free;
+  fUris.Free;
+  inherited;
 end;
 
 function TXmlns.GetUri(const aPrefix: string): string;
 begin
-  if aPrefix.IsEmpty or not TryGetValue(aPrefix, Result) then
+  if aPrefix.IsEmpty or not fUris.TryGetValue(aPrefix, Result) then
     if aPrefix = TUtility.cXmlPrefix then
       Result := TUtility.cXmlPrefixUri
     else
       Result := fDefaultUri;
 end;
 
-constructor TXmlns.Create;
+function TXmlns.GetCount: integer;
+begin
+  Result := fUris.Count;
+end;
+
+function TXmlns.TryGetValue(const aPrefix: string; out aUri: string): boolean;
+begin
+  Result := fUris.TryGetValue(aPrefix, aUri);
+end;
+
+function TXmlns.ContainsKey(const aPrefix: string): boolean;
+begin
+  Result := fUris.ContainsKey(aPrefix);
+end;
+
+function TXmlns.GetEnumerator: TDictionary<string, string>.TPairEnumerator;
+begin
+  Result := fUris.GetEnumerator;
+end;
+
+{ TXmlnsScope }
+
+constructor TXmlnsScope.Create;
 begin
   inherited Create;
   fOwners := 1;
+end;
+
+constructor TXmlnsScope.Create(aParent: TXmlns);
+begin
+  Create;
+  for var pair: TPair<string, string> in aParent.fUris do
+    fUris.Add(pair.Key, pair.Value);
+  fDefaultUri := aParent.fDefaultUri;
+end;
+
+procedure TXmlnsScope.Declare(const aPrefix, aUri: string);
+begin
+  fUris.AddOrSetValue(aPrefix, aUri);
+end;
+
+procedure TXmlnsScope.DeclareDefault(const aUri: string);
+begin
+  fDefaultUri := aUri;
+end;
+
+procedure TXmlnsScope.Undeclare(const aPrefix: string);
+begin
+  fUris.Remove(aPrefix);
+end;
+
+function TXmlnsScope.Share: TXmlnsScope;
+begin
+  Inc(fOwners);
+  Result := Self;
+end;
+
+procedure TXmlnsScope.Release;
+begin
+  if Self = nil then
+    Exit;
+  Dec(fOwners);
+  if fOwners <= 0 then
+    Free;
 end;
 
 { TReaderXmlite }
@@ -869,7 +932,7 @@ begin
   aCursor^ := aStringEndsAt;
 end;
 
-class function TReaderXmlite.ReadXmlns(aCursor: PChar; aXmlns: TXmlns): boolean;
+class function TReaderXmlite.ReadXmlns(aCursor: PChar; aXmlns: TXmlnsScope): boolean;
 begin
   Result := False;
 
@@ -902,9 +965,9 @@ begin
     var value: string := TReaderXmlite.ReadQuotedValueInPlace(aCursor);
 
     if prefix = 'xmlns' then
-      aXmlns.AddOrSetValue(name, value)
+      aXmlns.Declare(name, value)
     else if prefix.IsEmpty and (name = 'xmlns') then
-      aXmlns.fDefaultUri := value;
+      aXmlns.DeclareDefault(value);
   end;
 
   Result := True;

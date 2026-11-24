@@ -181,7 +181,7 @@ type
     fXmlPrefix, fXmlName: string;
     fXmlAttributes: TDictionary<string, string>;
     fXmlAttributeNamespaces: TDictionary<string, string>;
-    fXmlns: TXmlns;
+    fXmlns: TXmlnsScope;
     fXmlText: string;
     fXmlAny: TBasiteList<TBasite>;
     fXmlUnknown: TList<TXmliteUnknown>; // created with the first one
@@ -296,10 +296,10 @@ type
     // required and written although not present: built in code (a forgotten value shows); a read object writes what it read
     function WritesRequired(aProperty: TProperty): boolean; inline;
 
-    function ReadTagContents(var aCursor: PChar; const aName: string; aXmlns: TXmlns): boolean;
+    function ReadTagContents(var aCursor: PChar; const aName: string; aXmlns: TXmlnsScope): boolean;
     function ReadInPlace(var aXml: string; aIssues: PIssues; const aSource: string = ''): boolean;
 
-    function FromXml(var aXmlCursor: PChar; aXmlns: TXmlns = nil): boolean; overload;
+    function FromXml(var aXmlCursor: PChar; aXmlns: TXmlnsScope = nil): boolean; overload;
     // aScope: the default namespace in scope; aNamespaces: the element declares its namespaces (a root)
     procedure ToXml(aWriter: TWriterXmlite; const aName: string; aScope: TNamespace; aNamespaces: boolean;
       aXmlHeader: boolean = False); overload;
@@ -844,7 +844,7 @@ end;
 
 // the scope a tag reads in: its parent's, shared, when it declares nothing; else a new one with its declarations (False:
 // the start tag is not well-formed)
-function TagScope(aTagStart: PChar; aParent: TXmlns; out aScope: TXmlns): boolean;
+function TagScope(aTagStart: PChar; aParent: TXmlnsScope; out aScope: TXmlnsScope): boolean;
 begin
   if (aParent <> nil) and not TagDeclaresXmlns(aTagStart) then
   begin
@@ -852,13 +852,13 @@ begin
     Exit(True);
   end;
   if aParent = nil then
-    aScope := TXmlns.Create
+    aScope := TXmlnsScope.Create
   else
-    aScope := TXmlns.Create(aParent);
+    aScope := TXmlnsScope.Create(aParent);
   Result := TReaderXmlite.ReadXmlns(aTagStart, aScope);
 end;
 
-function TBasiteHelper.FromXml(var aXmlCursor: PChar; aXmlns: TXmlns): boolean;
+function TBasiteHelper.FromXml(var aXmlCursor: PChar; aXmlns: TXmlnsScope): boolean;
 const
   cWhitespaces = [#32, #9, #$A, #$D];
 begin
@@ -878,7 +878,7 @@ begin
       Exit(ReadFailed(markup, 'a DOCTYPE, comment or processing instruction not closed, or no element after it'));
   end;
 
-  var xmlns: TXmlns;
+  var xmlns: TXmlnsScope;
   var wellFormed: boolean := TagScope(aXmlCursor, aXmlns, xmlns);
 
   if Meta.Xmlite.IsTXmlite then
@@ -1024,7 +1024,7 @@ function TagUri(aTagStart: PChar; const aPrefix: string; aXmlns: TXmlns): string
 begin
   if TagDeclaresXmlns(aTagStart) then
   begin
-    var tagXmlns: TXmlns := TXmlns.Create;
+    var tagXmlns: TXmlnsScope := TXmlnsScope.Create;
     try
       TReaderXmlite.ReadXmlns(aTagStart, tagXmlns);
       if aPrefix.IsEmpty then
@@ -1035,14 +1035,14 @@ begin
       else if tagXmlns.TryGetValue(aPrefix, Result) then
         Exit;
     finally
-      tagXmlns.Free;
+      tagXmlns.Release;
     end;
   end;
 
   Result := aXmlns[aPrefix];
 end;
 
-function TBasiteHelper.ReadTagContents(var aCursor: PChar; const aName: string; aXmlns: TXmlns): boolean;
+function TBasiteHelper.ReadTagContents(var aCursor: PChar; const aName: string; aXmlns: TXmlnsScope): boolean;
 
   // an element at aFragment kept as its text, passed - a well-formed one only
   function KeepFragment(var aFragment: PChar; const aTagFullName: string; aAfter: TProperty; aAfterCount: integer;
@@ -2329,7 +2329,7 @@ end;
 function TXmlite.GetXmlnsInScope: TXmlns;
 begin
   if fXmlns = nil then
-    fXmlns := TXmlns.Create;
+    fXmlns := TXmlnsScope.Create;
   Result := fXmlns;
 end;
 
