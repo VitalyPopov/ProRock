@@ -4,13 +4,10 @@
 
 interface
 
+// an enum's values are named with its type (TNaming.nCamelCase), so a child Utility's alias is enough to use it
+{$SCOPEDENUMS ON}
+
 uses System.Classes, System.SysUtils, System.Generics.Collections, System.Generics.Defaults, System.Math, System.TypInfo;
-
-const
-  cIntegerMaxDiv: array [boolean] of integer = (integer.MaxValue div 10, integer.MaxValue div 16);
-  cIntegerMaxMod: array [boolean] of integer = (integer.MaxValue mod 10, integer.MaxValue mod 16);
-
-  cBasiteWriterDefaultIndent = 2;
 
 type
   // camelCase, PascalCase, snake_case, CAPS_CASE, Title_Case, kebab-case, COBOL-CASE, Train-Case, flatcase, UPPERCASE
@@ -126,6 +123,8 @@ type
   end;
 
   TWriterBase = class(TStreamWriter)
+  public const
+    cDefaultIndent = 2;
   private
     fLevel: cardinal;
     fIndent: cardinal;
@@ -133,9 +132,9 @@ type
     function GetText: string;
 
   public
-    constructor Create(aStream: TStream; aIndent: cardinal = cBasiteWriterDefaultIndent; aWidth: cardinal = 0; aLevel: cardinal = 0);
+    constructor Create(aStream: TStream; aIndent: cardinal = cDefaultIndent; aWidth: cardinal = 0; aLevel: cardinal = 0);
       reintroduce; overload;
-    constructor Create(aIndent: cardinal = cBasiteWriterDefaultIndent; aWidth: cardinal = 0; aLevel: cardinal = 0); overload;
+    constructor Create(aIndent: cardinal = cDefaultIndent; aWidth: cardinal = 0; aLevel: cardinal = 0); overload;
 
     property Indent: cardinal read fIndent write fIndent;
     property Level: cardinal read fLevel;
@@ -151,6 +150,9 @@ type
   end;
 
   TReaderBase = class abstract
+  private const
+    cIntegerMaxDiv: array [boolean] of integer = (integer.MaxValue div 10, integer.MaxValue div 16);
+    cIntegerMaxMod: array [boolean] of integer = (integer.MaxValue mod 10, integer.MaxValue mod 16);
   public
     class function MoveToChar(var aCursor: PChar; aChar: Char): boolean; static; inline;
     class function MoveToChars(var aCursor: PChar; const aChars: TSysCharSet): boolean; static; inline;
@@ -227,7 +229,7 @@ type
     class function FromPascalCase(const aName: string; aNaming: TNaming): string; inline;
     // FromPascalCase that also converts a name without lower-case letters (B -> b). Separate: in older generated units B means <B>
     class function FromPascalCaseExact(const aName: string; aNaming: TNaming): string; static;
-    // GuessNaming that is sure: the style that gives the name back exactly, else nAsIs (FamilyHistoryStatus-list has no style)
+    // GuessNaming that is sure: the style that gives the name back exactly, else TNaming.nAsIs (FamilyHistoryStatus-list has no style)
     class function NamingOf(const aName: string): TNaming; static;
 
     // invariant text as the nearest Single or Double, the same on every platform and Delphi; XML Schema's NaN, INF and -INF
@@ -236,16 +238,14 @@ type
     class function TryFloatFromText(const aText: string; out aValue: Extended): boolean; overload; static;
     // assigned to a Comp otherwise it silently becomes another number
     class function FloatFitsComp(aValue: Extended): boolean; static;
+    // the shortest text that reads back to the same value: 0.1 stays 0.1, 0.79998168889431442 becomes 0.7999816888943144
+    // (FloatToStr stops at 15 - a different Double); aPlain: no exponent, 1E-5 -> 0.00001
+    class function FloatText(aValue: Extended; aFloatType: TFloatType; aPlain: boolean = False): string; static;
+
+    class function GetEnumerationName(aEnumTypeInfo: PTypeInfo; aValue: cardinal): string; overload; static;
+    class function GetEnumerationName(aEnumTypeInfo: PTypeInfo; aValue: cardinal; aNaming: TNaming): string; overload; static;
+    class function SimplifiedGenericName(const aName: string): string; static; inline;
   end;
-
-function GetEnumerationName(aEnumTypeInfo: PTypeInfo; aValue: cardinal): string; overload;
-function GetEnumerationName(aEnumTypeInfo: PTypeInfo; aValue: cardinal; aNaming: TNaming): string; overload;
-
-function SimplifiedGenericName(const aName: string): string; inline;
-
-// the shortest text that reads back to the same value: 0.1 stays 0.1, 0.79998168889431442 becomes 0.7999816888943144
-// (FloatToStr stops at 15 - a different Double); aPlain: no exponent, 1E-5 -> 0.00001
-function FloatText(aValue: Extended; aFloatType: TFloatType; aPlain: boolean = False): string;
 
 implementation
 
@@ -313,7 +313,7 @@ end;
 function TIssues.HasErrors: boolean;
 begin
   for var issue: TIssue in fItems do
-    if issue.Severity = isError then
+    if issue.Severity = TIssueSeverity.isError then
       Exit(True);
   Result := False;
 end;
@@ -1561,13 +1561,6 @@ begin
   end;
 end;
 
-function FloatText(aValue: Extended; aFloatType: TFloatType; aPlain: boolean): string;
-begin
-  Result := ShortestFloatText(aValue, aFloatType);
-  if aPlain then
-    Result := WithoutExponent(Result);
-end;
-
 function EnumerationNameWithoutPrefix(aEnumTypeInfo: PTypeInfo; aValue: cardinal): string;
 begin
   Result := GetEnumName(aEnumTypeInfo, aValue);
@@ -1577,42 +1570,6 @@ begin
     Inc(resultStartsAt);
 
   Result := resultStartsAt;
-end;
-
-function GetEnumerationName(aEnumTypeInfo: PTypeInfo; aValue: cardinal): string;
-begin
-  Result := TUtility.FromPascalCase(EnumerationNameWithoutPrefix(aEnumTypeInfo, aValue), nCamelCase);
-end;
-
-function GetEnumerationName(aEnumTypeInfo: PTypeInfo; aValue: cardinal; aNaming: TNaming): string;
-begin
-  Result := TUtility.FromPascalCaseExact(EnumerationNameWithoutPrefix(aEnumTypeInfo, aValue), aNaming);
-end;
-
-function SimplifiedGenericName(const aName: string): string;
-begin
-  SetString(Result, PChar(aName), Length(aName));
-
-  var openBracket: integer := Result.IndexOf('<');
-  if openBracket < 0 then
-    Exit;
-  var destination: PChar := PChar(Result) + openBracket + 1;
-
-  var source: PChar := PChar(Result) + High(Result);
-  while source^ <> '.' do
-  begin
-    if source = destination then
-      Exit;
-    Dec(source);
-  end;
-  Inc(source);
-
-  repeat
-    destination^ := source^;
-    Inc(source);
-    Inc(destination);
-  until source^ = #0;
-  SetLength(Result, destination - PChar(Result));
 end;
 
 { TNamingAttribute }
@@ -2054,6 +2011,14 @@ begin
   Result := not IsNan(aValue) and (Abs(aValue) < 9223372036854775808.0); // 2^63; infinity is above it
 end;
 
+class function TUtility.FloatText(aValue: Extended; aFloatType: TFloatType; aPlain: boolean): string;
+begin
+  Result := ShortestFloatText(aValue, aFloatType);
+  if aPlain then
+    Result := WithoutExponent(Result);
+end;
+
+
 class function TUtility.FromPascalCase(const aName: string; aNaming: TNaming): string;
 
   function SplitPascalCase(const aName: string): TArray<string>; inline;
@@ -2082,45 +2047,45 @@ class function TUtility.FromPascalCase(const aName: string; aNaming: TNaming): s
 
 begin
   SetString(Result, PChar(aName), Length(aName));
-  if (aNaming = nPascalCase) or Result.IsEmpty then
+  if (aNaming = TNaming.nPascalCase) or Result.IsEmpty then
     Exit;
 
   var inputNaming: TNaming := GuessNaming(Result);
-  if (inputNaming <> nPascalCase) or (inputNaming = nAsIs) then
+  if (inputNaming <> TNaming.nPascalCase) or (inputNaming = TNaming.nAsIs) then
     Exit;
 
   case aNaming of
-    nSnakeCase, nCapsCase, nTitleCase, nKebabCase, nCobolCase, nTrainCase:
+    TNaming.nSnakeCase, TNaming.nCapsCase, TNaming.nTitleCase, TNaming.nKebabCase, TNaming.nCobolCase, TNaming.nTrainCase:
       begin
         var words: TArray<string> := SplitPascalCase(Result);
 
         for var i := 0 to High(words) do
         begin
-          if aNaming in [nCobolCase, nCapsCase] then
+          if aNaming in [TNaming.nCobolCase, TNaming.nCapsCase] then
             words[i] := words[i].ToUpper;
-          if (aNaming in [nSnakeCase, nKebabCase]) and not words[i].IsEmpty then
+          if (aNaming in [TNaming.nSnakeCase, TNaming.nKebabCase]) and not words[i].IsEmpty then
             Inc(words[i][1], 32);
         end;
 
         case aNaming of
-          nSnakeCase, nCapsCase, nTitleCase:
+          TNaming.nSnakeCase, TNaming.nCapsCase, TNaming.nTitleCase:
             Result := string.Join('_', words);
-          nKebabCase, nCobolCase, nTrainCase:
+          TNaming.nKebabCase, TNaming.nCobolCase, TNaming.nTrainCase:
             Result := string.Join('-', words);
         end;
       end;
-    nCamelCase:
+    TNaming.nCamelCase:
       Inc(Result[1], 32);
-    nFlatCase:
+    TNaming.nFlatCase:
       Result := Result.ToLower;
-    nUpperCase:
+    TNaming.nUpperCase:
       Result := Result.ToUpper;
   end;
 end;
 
 class function TUtility.FromPascalCaseExact(const aName: string; aNaming: TNaming): string;
 begin
-  if (GuessNaming(aName) = nUpperCase) and (aNaming in [nCamelCase, nSnakeCase, nKebabCase, nFlatCase]) then
+  if (GuessNaming(aName) = TNaming.nUpperCase) and (aNaming in [TNaming.nCamelCase, TNaming.nSnakeCase, TNaming.nKebabCase, TNaming.nFlatCase]) then
     Result := aName.ToLower
   else
     Result := TUtility.FromPascalCase(aName, aNaming);
@@ -2129,13 +2094,24 @@ end;
 class function TUtility.NamingOf(const aName: string): TNaming;
 begin
   Result := GuessNaming(aName);
-  if (Result <> nAsIs) and (TUtility.FromPascalCase(ToPascalCase(aName), Result) <> aName) then
-    Result := nAsIs;
+  if (Result <> TNaming.nAsIs) and (TUtility.FromPascalCase(ToPascalCase(aName), Result) <> aName) then
+    Result := TNaming.nAsIs;
 end;
+
+class function TUtility.GetEnumerationName(aEnumTypeInfo: PTypeInfo; aValue: cardinal): string;
+begin
+  Result := TUtility.FromPascalCase(EnumerationNameWithoutPrefix(aEnumTypeInfo, aValue), TNaming.nCamelCase);
+end;
+
+class function TUtility.GetEnumerationName(aEnumTypeInfo: PTypeInfo; aValue: cardinal; aNaming: TNaming): string;
+begin
+  Result := TUtility.FromPascalCaseExact(EnumerationNameWithoutPrefix(aEnumTypeInfo, aValue), aNaming);
+end;
+
 
 class function TUtility.GuessNaming(const aName: string): TNaming;
 begin
-  Result := nAsIs;
+  Result := TNaming.nAsIs;
 
   if aName.IsEmpty then
     Exit;
@@ -2174,27 +2150,27 @@ begin
 
   if hasUnderscore then
     if hasUpper and not hasLower then
-      Result := nCapsCase // CAPS_CASE
+      Result := TNaming.nCapsCase // CAPS_CASE
     else if firstCharUpper then
-      Result := nTitleCase // Title_Case
+      Result := TNaming.nTitleCase // Title_Case
     else
-      Result := nSnakeCase // snake_case
+      Result := TNaming.nSnakeCase // snake_case
   else if hasHyphen then
     if hasUpper and not hasLower then
-      Result := nCobolCase // COBOL-CASE
+      Result := TNaming.nCobolCase // COBOL-CASE
     else if firstCharUpper then
-      Result := nTrainCase // Train-Case
+      Result := TNaming.nTrainCase // Train-Case
     else
-      Result := nKebabCase // kebab-case
+      Result := TNaming.nKebabCase // kebab-case
   else if hasUpper and hasLower then
     if firstCharUpper then
-      Result := nPascalCase // PascalCase
+      Result := TNaming.nPascalCase // PascalCase
     else
-      Result := nCamelCase // camelCase
+      Result := TNaming.nCamelCase // camelCase
   else if hasUpper and not hasLower then
-    Result := nUpperCase // UPPERCASE
+    Result := TNaming.nUpperCase // UPPERCASE
   else if hasLower and not hasUpper then
-    Result := nFlatCase; // flatcase
+    Result := TNaming.nFlatCase; // flatcase
 end;
 
 class function TUtility.IsFileError(aError: Exception): boolean;
@@ -2258,6 +2234,33 @@ begin
   Result := '';
 end;
 
+class function TUtility.SimplifiedGenericName(const aName: string): string;
+begin
+  SetString(Result, PChar(aName), Length(aName));
+
+  var openBracket: integer := Result.IndexOf('<');
+  if openBracket < 0 then
+    Exit;
+  var destination: PChar := PChar(Result) + openBracket + 1;
+
+  var source: PChar := PChar(Result) + High(Result);
+  while source^ <> '.' do
+  begin
+    if source = destination then
+      Exit;
+    Dec(source);
+  end;
+  Inc(source);
+
+  repeat
+    destination^ := source^;
+    Inc(source);
+    Inc(destination);
+  until source^ = #0;
+  SetLength(Result, destination - PChar(Result));
+end;
+
+
 class function TUtility.ToPascalCase(const aName: string): string;
 begin
   SetString(Result, PChar(aName), Length(aName)); // for AsIs or PascalCase
@@ -2276,19 +2279,19 @@ begin
 
   var originalNaming: TNaming := GuessNaming(Result);;
   case originalNaming of
-    nSnakeCase, nCapsCase, nTitleCase, nKebabCase, nCobolCase, nTrainCase:
+    TNaming.nSnakeCase, TNaming.nCapsCase, TNaming.nTitleCase, TNaming.nKebabCase, TNaming.nCobolCase, TNaming.nTrainCase:
       begin
         var words: TArray<string>;;
         case originalNaming of
-          nSnakeCase, nCapsCase, nTitleCase:
+          TNaming.nSnakeCase, TNaming.nCapsCase, TNaming.nTitleCase:
             words := Result.Split(['_']);
-          nKebabCase, nCobolCase, nTrainCase:
+          TNaming.nKebabCase, TNaming.nCobolCase, TNaming.nTrainCase:
             words := Result.Split(['-']);
         end;
 
         for var i := 0 to High(words) do
         begin
-          if originalNaming in [nCobolCase, nCapsCase] then
+          if originalNaming in [TNaming.nCobolCase, TNaming.nCapsCase] then
             words[i] := words[i].ToLower;
           if not words[i].IsEmpty then
             words[i][1] := UpCase(words[i][1]);
@@ -2296,9 +2299,9 @@ begin
 
         Result := string.Join('', words);
       end;
-    nCamelCase, nFlatCase:
+    TNaming.nCamelCase, TNaming.nFlatCase:
       Result[1] := UpCase(Result[1]);
-    nUpperCase:
+    TNaming.nUpperCase:
       begin
         Result := Result.ToLower;
         Result[1] := UpCase(Result[1]);

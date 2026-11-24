@@ -7,13 +7,6 @@ interface
 uses System.SysUtils, System.Classes, System.Generics.Collections, System.Zip, System.TypInfo,
   ProRock.Xmlite, ProRock.Xmlite.Schema.CoreProperties;
 
-const
-  {$REGION 'ProRock.Xmlite constants aliases'}
-  isHint = ProRock.Xmlite.isHint;
-  isWarning = ProRock.Xmlite.isWarning;
-  isError = ProRock.Xmlite.isError;
-  {$ENDREGION}
-
 type
   {$REGION 'ProRock.Xmlite types aliases'}
   TIssueSeverity = ProRock.Xmlite.TIssueSeverity;
@@ -372,7 +365,7 @@ end;
 function TPackageOoxml.Fail(const aCode, aError: string): boolean;
 begin
   fError := aError;
-  fIssues.Add(isError, aCode, '', aError);
+  fIssues.Add(TIssueSeverity.isError, aCode, '', aError);
   Result := False;
 end;
 
@@ -382,7 +375,7 @@ begin
   var read: TIssues;
   Result := aXml.FromXmlBytes(aBytes, read);
   for var issue: TIssue in read do
-    if issue.Severity <> isHint then
+    if issue.Severity <> TIssueSeverity.isHint then
     begin
       var named: TIssue := issue;
       if named.Where.IsEmpty then
@@ -530,7 +523,7 @@ begin
   end
   else if part.fClass <> aClass then
   begin
-    fIssues.Add(isError, 'PartClass', name, Format('%s is read as %s already, not as %s', [name, part.fClass.ClassName,
+    fIssues.Add(TIssueSeverity.isError, 'PartClass', name, Format('%s is read as %s already, not as %s', [name, part.fClass.ClassName,
       aClass.ClassName]));
     Exit;
   end;
@@ -584,9 +577,9 @@ begin
   if not HasPart(cContentTypes) or HasPart(Result) then
   begin
     if HasPart(Result) then
-      fIssues.Add(isError, 'PartExists', Result, Format('The package has %s already', [Result]))
+      fIssues.Add(TIssueSeverity.isError, 'PartExists', Result, Format('The package has %s already', [Result]))
     else
-      fIssues.Add(isError, 'NoContentTypes', Result, 'The package has no content types: a part cannot be added');
+      fIssues.Add(TIssueSeverity.isError, 'NoContentTypes', Result, 'The package has no content types: a part cannot be added');
     aXml.Free;
     Exit('');
   end;

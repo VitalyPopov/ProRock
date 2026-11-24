@@ -9,12 +9,9 @@ uses System.Classes, System.SysUtils, System.StrUtils, System.Generics.Collectio
   ProRock.Basite, ProRock.Utility, ProRock.Xmlite.Utility;
 
 const
-  {$REGION 'ProRock.Basite and ProRock.Utility constants aliases'}
+  {$REGION 'ProRock.Basite constants aliases'}
   // re-exported: a generated unit's {$IF} sees only the units of its own uses
   cProRockCodeLevel = ProRock.Basite.cProRockCodeLevel;
-  isHint = ProRock.Utility.isHint;
-  isWarning = ProRock.Utility.isWarning;
-  isError = ProRock.Utility.isError;
   {$ENDREGION}
 
   cXmlDeclaration = '<?xml version="1.0" encoding="UTF-8"?>';
@@ -598,7 +595,7 @@ begin
   if (context = nil) or context.Failed then
     Exit;
   context.Failed := True;
-  context.Issues.Add(isError, 'Malformed', ReadPlace(context, aCursor), aMessage);
+  context.Issues.Add(TIssueSeverity.isError, 'Malformed', ReadPlace(context, aCursor), aMessage);
 end;
 
 // aKey (an element and a name in it): reported once a read under aCode; '' - every time
@@ -662,7 +659,7 @@ function DecodeXml(const aBytes: TBytes; out aXml: string; var aIssues: TIssues;
 begin
   Result := TReaderXmlite.DecodeXml(aBytes, aXml);
   if not Result then
-    aIssues.Add(isError, 'Encoding', aSource, 'the encoding is unknown, or the bytes do not fit it');
+    aIssues.Add(TIssueSeverity.isError, 'Encoding', aSource, 'the encoding is unknown, or the bytes do not fit it');
 end;
 
 function TBasiteHelper.FromXmlBytes(const aXml: TBytes; var aIssues: TIssues): boolean;
@@ -684,7 +681,7 @@ begin
         e.InheritsFrom(EFileNotFoundException) or e.InheritsFrom(EDirectoryNotFoundException) or
         e.InheritsFrom(EPathTooLongException)) then
         raise;
-      aIssues.Add(isError, 'File', aFileName, e.Message);
+      aIssues.Add(TIssueSeverity.isError, 'File', aFileName, e.Message);
       Exit(False);
     end;
   end;
@@ -870,11 +867,11 @@ begin
               if TXmlite(Self).fXmlBadAttributes = nil then
                 TXmlite(Self).fXmlBadAttributes := TDictionary<string, TProperty>.Create;
               TXmlite(Self).fXmlBadAttributes.AddOrSetValue(attributeFullName, propertyData);
-              ReadReport(attributeStart, isWarning, 'BadValue', '', Format('%s=%s of <%s> does not fit its type: kept as read',
+              ReadReport(attributeStart, TIssueSeverity.isWarning, 'BadValue', '', Format('%s=%s of <%s> does not fit its type: kept as read',
                 [attributeFullName, Quoted(attributeValue), objectName]));
             end
             else if uri <> cXsiUri then
-              ReadReport(attributeStart, isHint, 'UnknownAttribute', objectName + ' ' + attributeFullName,
+              ReadReport(attributeStart, TIssueSeverity.isHint, 'UnknownAttribute', objectName + ' ' + attributeFullName,
                 Format('%s of <%s> is not in the schema: kept as read', [attributeFullName, objectName]));
             // its prefix, and for xsi:type the value's (dcterms:W3CDTF) - declared again on write
             if not attributePrefix.IsEmpty and not uri.IsEmpty then
@@ -914,7 +911,7 @@ begin
           if not textProperty.TrySetValue(Self, text) and Meta.Xmlite.IsTXmlite then
           begin
             TXmlite(Self).fXmlText := text; // does not fit its type: kept as it came, written while the property is not present
-            ReadReport(tagStart, isWarning, 'BadValue', '', Format('the text %s of <%s> does not fit its type: kept as read',
+            ReadReport(tagStart, TIssueSeverity.isWarning, 'BadValue', '', Format('the text %s of <%s> does not fit its type: kept as read',
               [Quoted(text), objectName]));
           end;
         end
@@ -1137,7 +1134,7 @@ begin
       aCursor := cursorStart;
       if not KeepFragment(aCursor, tagFullName, lastProperty, lastCount, nil) then
         Exit(ReadFailed(cursorStart, '<' + tagFullName + '> is not well-formed'));
-      ReadReport(cursorStart, isHint, 'UnknownElement', aName + ' ' + tagFullName,
+      ReadReport(cursorStart, TIssueSeverity.isHint, 'UnknownElement', aName + ' ' + tagFullName,
         Format('<%s> in <%s> is not in the schema: kept as read', [tagFullName, aName]));
     end
     else if propertyElement = nil then
@@ -1145,7 +1142,7 @@ begin
       Inc(aCursor);
       if not TReaderXmlite.PassNode(aCursor, tagFullName) then
         Exit(ReadFailed(cursorStart, '<' + tagFullName + '> is not well-formed'));
-      ReadReport(cursorStart, isWarning, 'Skipped', aName + ' ' + tagFullName,
+      ReadReport(cursorStart, TIssueSeverity.isWarning, 'Skipped', aName + ' ' + tagFullName,
         Format('<%s> in <%s> is not in the schema: skipped', [tagFullName, aName]));
     end
     else
@@ -1156,7 +1153,7 @@ begin
         aCursor := cursorStart;
         if not KeepFragment(aCursor, tagFullName, lastProperty, lastCount, nil) then
           Exit(ReadFailed(cursorStart, '<' + tagFullName + '> is not well-formed'));
-        ReadReport(cursorStart, isWarning, 'Repeated', '',
+        ReadReport(cursorStart, TIssueSeverity.isWarning, 'Repeated', '',
           Format('<%s> came again in <%s>, where the schema has it once: kept as read', [tagFullName, aName]));
         Continue;
       end;
@@ -1173,7 +1170,7 @@ begin
             begin
               if not KeepBadValue(cursorStart, tagEnd, text, tagFullName, propertyElement, 1) then
                 Exit(ReadFailed(cursorStart, '<' + tagFullName + '> is not well-formed'));
-              ReadReport(cursorStart, isWarning, 'BadValue', '', Format('<%s>%s does not fit its type: kept as read',
+              ReadReport(cursorStart, TIssueSeverity.isWarning, 'BadValue', '', Format('<%s>%s does not fit its type: kept as read',
                 [tagFullName, Quoted(text)]));
             end
             else if ordered then
@@ -1224,7 +1221,7 @@ begin
             begin
               if not KeepBadValue(cursorStart, tagEnd, text, tagFullName, propertyElement, lastCount) then
                 Exit(ReadFailed(cursorStart, '<' + tagFullName + '> is not well-formed'));
-              ReadReport(cursorStart, isWarning, 'BadValue', '', Format('<%s>%s does not fit its type: kept as read',
+              ReadReport(cursorStart, TIssueSeverity.isWarning, 'BadValue', '', Format('<%s>%s does not fit its type: kept as read',
                 [tagFullName, Quoted(text)]));
             end
             else if ordered then

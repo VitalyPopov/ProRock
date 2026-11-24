@@ -1414,7 +1414,7 @@ begin
       begin
         var floatValue: Extended := ReadFloat(aObject, fieldData);
         if not TryGetAliasForValue(Meta.ValuesAliases, floatValue, Result) then
-          Result := FloatText(floatValue, Meta.fFloatType, Meta.fPlainNumber);
+          Result := TUtility.FloatText(floatValue, Meta.fFloatType, Meta.fPlainNumber);
       end;
     tkUString:
       begin
@@ -1957,7 +1957,7 @@ end;
 constructor TMeta.Create(aRttiType: TRttiType);
 begin
   fRttiType := aRttiType;
-  fSimplifiedName := SimplifiedGenericName(aRttiType.Name);
+  fSimplifiedName := TUtility.SimplifiedGenericName(aRttiType.Name);
   fFullName := fRttiType.QualifiedName;
 
   fUnitQualifiedName := fRttiType.QualifiedName;
@@ -2126,14 +2126,14 @@ begin
     var defaultNames: TArray<string>;
     SetLength(defaultNames, enums.MaxValue - enums.MinValue + 1);
     for var i := enums.MinValue to enums.MaxValue do
-      defaultNames[i - enums.MinValue] := GetEnumerationName(aType, i);
+      defaultNames[i - enums.MinValue] := TUtility.GetEnumerationName(aType, i);
 
     for var attribute: TCustomAttribute in RttiType.GetAttributes do
       if attribute.ClassType.InheritsFrom(TEnumNamingAttribute) then
       begin
         fEnumOwnNaming := True;
         for var i := enums.MinValue to enums.MaxValue do
-          defaultNames[i - enums.MinValue] := GetEnumerationName(aType, i, TEnumNamingAttribute(attribute).Naming);
+          defaultNames[i - enums.MinValue] := TUtility.GetEnumerationName(aType, i, TEnumNamingAttribute(attribute).Naming);
       end;
 
     FillEnumNames(defaultNames);
@@ -2191,7 +2191,7 @@ begin
   var defaultNames: TArray<string>;
   SetLength(defaultNames, enums.MaxValue - enums.MinValue + 1);
   for var i := enums.MinValue to enums.MaxValue do
-    defaultNames[i - enums.MinValue] := GetEnumerationName(RttiType.Handle, i, aNaming);
+    defaultNames[i - enums.MinValue] := TUtility.GetEnumerationName(RttiType.Handle, i, aNaming);
   FillEnumNames(defaultNames);
 end;
 
@@ -2248,7 +2248,7 @@ begin
           floatValue := PExtended(aData)^;
         end;
         if not Alias(floatValue, Result) then
-          Result := FloatText(floatValue, fFloatType, fPlainNumber);
+          Result := TUtility.FloatText(floatValue, fFloatType, fPlainNumber);
       end;
     tkUString:
       if not Alias(PUnicodeString(aData)^, Result) then

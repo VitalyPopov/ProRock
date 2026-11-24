@@ -8,12 +8,6 @@ uses System.SysUtils, System.Classes, System.Generics.Collections, System.UIType
   ProRock.Xmlite, ProRock.Office.Ooxml, ProRock.Xmlite.Schema.Ooxml.Sml, ProRock.Xmlite.Schema.CoreProperties;
 
 const
-  {$REGION 'ProRock.Xmlite constants aliases'}
-  isHint = ProRock.Xmlite.isHint;
-  isWarning = ProRock.Xmlite.isWarning;
-  isError = ProRock.Xmlite.isError;
-  {$ENDREGION}
-
   // Excel's built-in dates: each reader sees them as their own short date, 31.12.2026 or 12/31/2026
   nfShortDate = 'm/d/yyyy';
   nfShortDateTime = 'm/d/yyyy h:mm';
@@ -2406,7 +2400,7 @@ end;
 // a number as Excel's General shows it in a cell: up to 11 characters
 function GeneralText(aNumber: Double): string;
 begin
-  Result := FloatText(aNumber, ftDouble);
+  Result := TUtility.FloatText(aNumber, ftDouble);
   if Result.Length <= 11 then
     Exit;
   var size: Double := Abs(aNumber);
@@ -3139,7 +3133,7 @@ begin
     cvEmpty:
       Result := '';
     cvNumber:
-      Result := FloatText(Double(value), ftDouble);
+      Result := TUtility.FloatText(Double(value), ftDouble);
     cvDate:
       begin
         var date: TDateTime := VarToDateTime(value);
@@ -3194,7 +3188,7 @@ function TRange.GetAsInteger: Int64;
 begin
   var number: Double := GetAsFloat;
   if (number < -9.2233720368547758E18) or (number >= 9.2233720368547758E18) then
-    raise EConvertError.CreateFmt('%s holds %s, beyond an Int64', [Address, FloatText(number, ftDouble)]);
+    raise EConvertError.CreateFmt('%s holds %s, beyond an Int64', [Address, TUtility.FloatText(number, ftDouble)]);
   Result := Round(number);
 end;
 
@@ -3364,11 +3358,11 @@ begin
   end;
   if why <> '' then
   begin
-    fSheet.fWorkbook.fIssues.Add(isError, 'NumberFormat', fSheet.fName + '!' + Address, why + ' - not written');
+    fSheet.fWorkbook.fIssues.Add(TIssueSeverity.isError, 'NumberFormat', fSheet.fName + '!' + Address, why + ' - not written');
     Exit;
   end;
   if local <> '' then
-    fSheet.fWorkbook.fIssues.Add(isWarning, 'NumberFormat', fSheet.fName + '!' + Address, '"' + aValue + '": ' + local
+    fSheet.fWorkbook.fIssues.Add(TIssueSeverity.isWarning, 'NumberFormat', fSheet.fName + '!' + Address, '"' + aValue + '": ' + local
       + ' - written as it is');
   fSheet.Restyle(Self,
     procedure(aXf: TXfCT)
@@ -3524,7 +3518,7 @@ procedure TRange.SetColumnWidth(aValue: Double);
 begin
   if IsNan(aValue) or (aValue < 0) or (aValue > cMaxColumnWidth) then
     raise EArgumentOutOfRangeException.CreateFmt('A column width of %s: Excel''s are 0 to %d characters',
-      [FloatText(aValue, ftDouble), cMaxColumnWidth]);
+      [TUtility.FloatText(aValue, ftDouble), cMaxColumnWidth]);
   for var column: TColCT in fSheet.ColumnEntries(fLeft, fRight) do
   begin
     column.Width := WidthToFile(aValue);
@@ -3567,7 +3561,7 @@ procedure TRange.SetRowHeight(aValue: Double);
 begin
   if IsNan(aValue) or (aValue < 0) or (aValue > cMaxRowHeight) then
     raise EArgumentOutOfRangeException.CreateFmt('A row height of %s: Excel''s are 0 to %s points',
-      [FloatText(aValue, ftDouble), FloatText(cMaxRowHeight, ftDouble)]);
+      [TUtility.FloatText(aValue, ftDouble), TUtility.FloatText(cMaxRowHeight, ftDouble)]);
   for var row: TRowCT in fSheet.RowEntries(fTop, fBottom) do
     if aValue = 0 then
       row.Hidden := True
@@ -3753,7 +3747,7 @@ procedure TRangeFont.SetSize(aValue: Double);
 begin
   if IsNan(aValue) or (aValue < 1) or (aValue > 409) then
     raise EArgumentOutOfRangeException.CreateFmt('A font size of %s: Excel''s are 1 to 409 points',
-      [FloatText(aValue, ftDouble)]);
+      [TUtility.FloatText(aValue, ftDouble)]);
   Change(
     procedure(aFont: TFontCT)
     begin
@@ -4291,7 +4285,7 @@ end;
 // Excel's refusal: the cell keeps its value, the rest is done
 procedure TWorksheet.Refuse(aRow, aColumn: integer; const aCode, aWhy: string);
 begin
-  fWorkbook.fIssues.Add(isError, aCode, fName + '!' + CellName(aRow, aColumn), aWhy + ' - not written');
+  fWorkbook.fIssues.Add(TIssueSeverity.isError, aCode, fName + '!' + CellName(aRow, aColumn), aWhy + ' - not written');
 end;
 
 // on a protected sheet, a cell its style does not unlock
@@ -4411,7 +4405,7 @@ begin
   else
   begin
     if unknown <> '' then
-      fWorkbook.fIssues.Add(isWarning, 'Function', fName + '!' + CellName(aRow, aColumn),
+      fWorkbook.fIssues.Add(TIssueSeverity.isWarning, 'Function', fName + '!' + CellName(aRow, aColumn),
         unknown + ' is not one of Excel''s functions (English)');
     Result := True;
   end;
@@ -4503,7 +4497,7 @@ begin
   if not fLockedWritten and IsLocked(aRow, aColumn) then
   begin
     fLockedWritten := True;
-    fWorkbook.fIssues.Add(isWarning, 'Locked', fName + '!' + CellName(aRow, aColumn),
+    fWorkbook.fIssues.Add(TIssueSeverity.isWarning, 'Locked', fName + '!' + CellName(aRow, aColumn),
       'a locked cell of a protected sheet, written: Excel lets its users change it only unprotected (reported once a sheet)');
   end;
   Result := True;
@@ -4592,7 +4586,7 @@ begin
       end;
     SetStyles(aRange, newStyle, aExisting);
     if failed then
-      fWorkbook.fIssues.Add(isError, 'NoStyles', fName + '!' + aRange.Address,
+      fWorkbook.fIssues.Add(TIssueSeverity.isError, 'NoStyles', fName + '!' + aRange.Address,
         'the workbook has no styles to change - not written');
   finally
     changed.Free;
@@ -5049,7 +5043,7 @@ begin
   if not Result then
   begin
     MergedAt(aRow, aColumn, area);
-    fWorkbook.fIssues.Add(isWarning, 'Merged', fName + '!' + CellName(aRow, aColumn),
+    fWorkbook.fIssues.Add(TIssueSeverity.isWarning, 'Merged', fName + '!' + CellName(aRow, aColumn),
       'covered by the merged area ' + area.Address + ', which shows only ' + CellName(area.fTop, area.fLeft) +
       ' - not written');
   end;
@@ -5097,7 +5091,7 @@ begin
       why := 'a pivot table, which Excel builds again';
   if why <> '' then
   begin
-    fWorkbook.fIssues.Add(isError, 'Merge', fName + '!' + area.Address, 'over ' + why + ' - not merged');
+    fWorkbook.fIssues.Add(TIssueSeverity.isError, 'Merge', fName + '!' + area.Address, 'over ' + why + ' - not merged');
     Exit;
   end;
   var sheet: TWorksheetE := Objects(True);
@@ -5327,7 +5321,7 @@ begin
     why := 'the sheet has panes of its own, which Calcite does not change yet';
   if why <> '' then
   begin
-    fWorkbook.fIssues.Add(isError, 'FreezePanes', fName, why + ' - not changed');
+    fWorkbook.fIssues.Add(TIssueSeverity.isError, 'FreezePanes', fName, why + ' - not changed');
     Exit;
   end;
   if (row = 1) and (column = 1) and not sheet.IsPresent('SheetViews') then
@@ -7228,7 +7222,7 @@ begin
   if (aEmus <> 0) and (aEmus mod cInch = 0) then
     Result := IntToStr(aEmus div cInch) + 'in'
   else
-    Result := FloatText(aEmus / cPoint, ftDouble) + 'pt';
+    Result := TUtility.FloatText(aEmus / cPoint, ftDouble) + 'pt';
 end;
 
 // the notes as Excel moves them: each box by as many rows or columns as its cell moved (never above the first; its offsets
@@ -7579,7 +7573,7 @@ begin
   if IsNan(aValue) or IsInfinite(aValue) then
     Refuse(aRow, aColumn, 'Value', 'Excel holds no NaN or infinity')
   else if Uncovered(aRow, aColumn) and CanWrite(aRow, aColumn, aTarget) then
-    CellForWriting(aRow, aColumn).V := FloatText(aValue, ftDouble);
+    CellForWriting(aRow, aColumn).V := TUtility.FloatText(aValue, ftDouble);
 end;
 
 procedure TWorksheet.WriteDate(aRow, aColumn: integer; aValue: TDateTime; const aTarget: TRange);
@@ -7610,7 +7604,7 @@ begin
   end;
   var cell: TCellCT := CellForWriting(aRow, aColumn);
   cell.S := style;
-  cell.V := FloatText(serial, ftDouble);
+  cell.V := TUtility.FloatText(serial, ftDouble);
 end;
 
 procedure TWorksheet.WriteText(aRow, aColumn: integer; const aValue: string; const aTarget: TRange);
@@ -7875,7 +7869,7 @@ begin
     why := fWorkbook.SheetNameError(aValue, Self);
   if not why.IsEmpty then
   begin
-    fWorkbook.fIssues.Add(isError, 'Rename', fName, why + ' - not renamed');
+    fWorkbook.fIssues.Add(TIssueSeverity.isError, 'Rename', fName, why + ' - not renamed');
     Exit;
   end;
   for var entry: TSheetCT in fWorkbook.fPackage.EditPart<TWorkbookE>(fWorkbook.fWorkbookPart).Sheets.Sheet do
@@ -8135,7 +8129,7 @@ end;
 function TWorkbook.Fail(const aCode, aError: string): boolean;
 begin
   fError := aError;
-  fIssues.Add(isError, aCode, '', aError);
+  fIssues.Add(TIssueSeverity.isError, aCode, '', aError);
   Result := False;
 end;
 
@@ -8360,11 +8354,11 @@ begin
     until SheetNameError(name, nil).IsEmpty;
   end;
   if not why.IsEmpty then
-    fIssues.Add(isError, 'SheetName', aName, why + ' - the sheet is added as ' + name);
+    fIssues.Add(TIssueSeverity.isError, 'SheetName', aName, why + ' - the sheet is added as ' + name);
 
   if not fPackage.HasPart(cContentTypes) then
   begin
-    fIssues.Add(isError, 'NoContentTypes', '', 'The package has no content types: a sheet cannot be added');
+    fIssues.Add(TIssueSeverity.isError, 'NoContentTypes', '', 'The package has no content types: a sheet cannot be added');
     Exit(nil);
   end;
   var folder: string := fWorkbookPart.Substring(0, fWorkbookPart.LastIndexOf('/') + 1);
@@ -9332,7 +9326,7 @@ begin
     raise EArgumentException.CreateFmt('Not a date format Excel would open: "%s" (%s)', [aValue, why]);
   var local: string := LocalNotation(aValue);
   if local <> '' then
-    fIssues.Add(isWarning, 'NumberFormat', '', '"' + aValue + '": ' + local + ' - taken as it is');
+    fIssues.Add(TIssueSeverity.isWarning, 'NumberFormat', '', '"' + aValue + '": ' + local + ' - taken as it is');
   fDateFormats[aIndex] := aValue;
   fDateFormatIds[aIndex] := -2;
 end;
