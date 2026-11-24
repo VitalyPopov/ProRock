@@ -111,6 +111,17 @@ type
   TBasiteClass = class of TBasite;
 
   TProperty = class;
+  TBasite = class;
+
+  // a child's place in the order of an object's children across its properties, kept where a format needs it (XML: a
+  // repeating choice, mixed content); a format adds items of its own kinds
+  TBasiteOrderItem = record
+    Child: TProperty; // nil: an object outside the metadata (xs:any) or a format's own item
+    Element: TBasite; // the child object; nil for a value (Index: its place among Child's values)
+    Format: byte; // 0 - a child; above 0 - the format's own kind, with its Text and Index
+    Text: string;
+    Index: integer;
+  end;
 
   TBasite = class abstract(TPersistent)
   private
@@ -122,6 +133,7 @@ type
     // presence: one bit per TProperty.Index - 0..63 inline, 64 and above in fPresentMore (created with the first one)
     fPresent: UInt64;
     fPresentMore: TArray<UInt64>;
+    fChildOrder: TList<TBasiteOrderItem>; // created by a format with the first item
 
     function GetPresentBit(aIndex: integer): boolean; inline;
     procedure SetPresentBit(aIndex: integer; aPresent: boolean);
@@ -131,6 +143,9 @@ type
     // a present property's values here and in aOther, of this class
     function SameProperty(aOther: TBasite; aProperty: TProperty): boolean;
     function PropertyHash(aProperty: TProperty): integer;
+    function SameChildOrder(aOther: TBasite): boolean;
+    procedure CopyChildOrder(aSource: TBasite; aCommon: TMetaBasite);
+    procedure DropFromChildOrder(aProperty: TProperty);
   public
     class function ClassParent: TBasiteClass; inline;
     class function Meta: TMetaBasite;
@@ -146,9 +161,17 @@ type
     procedure Initialize; virtual;
     procedure Deinitialize; virtual;
     // one of its lists lets go of a child (deleted, extracted, replaced) or of all of them (cleared, aList's items still
-    // there): what keeps the children's order hears it
+    // there): the child's item leaves the order
     procedure ChildRemoved(aChild: TBasite); virtual;
     procedure ChildrenRemoved(aList: TObject); virtual;
+    // the children's order across the properties, nil while none is kept; a format creates it (aCreate) and fills it.
+    // Cleared with the object, a property's items with the property; a list's child leaves with it
+    function ChildOrder(aCreate: boolean = False): TList<TBasiteOrderItem>;
+    // the item's object is still its property's (a single object replaced in code is not): compared, never followed
+    function ChildHeld(const aItem: TBasiteOrderItem): boolean;
+    // aSource's item for this copy of it: an object outside the metadata or a format's own item (Child nil). False - left
+    // out; by default such an object is (only the format knows where its copy is)
+    function CopyOrderItem(aSource: TBasite; var aItem: TBasiteOrderItem): boolean; virtual;
     // a lazy property's getter: creates the object on first access - Result := TPatientE(Lazy(fPatient, TPatientE))
     function Lazy(var aField; aClass: TBasiteClass): TBasite;
     // aSource's content into this object, which has none (new or cleared): aCommon's properties, the class both have
@@ -767,6 +790,21 @@ begin
   fAlias := aAlias;
 end;
 
+// objects by their addresses alone: the order may name a child that is no longer held, so the default comparer (the
+// object's own GetHashCode and Equals) would follow a freed pointer
+function AddressComparer: IEqualityComparer<TBasite>;
+begin
+  Result := TEqualityComparer<TBasite>.Construct(
+    function(const aLeft, aRight: TBasite): boolean
+    begin
+      Result := Pointer(aLeft) = Pointer(aRight);
+    end,
+    function(const aValue: TBasite): integer
+    begin
+      Result := THashBobJenkins.GetHashValue(aValue, SizeOf(aValue));
+    end);
+end;
+
 { TBasite }
 
 function TBasite.AssignProperty(const aName, aValue: string): boolean;
@@ -798,6 +836,8 @@ procedure TBasite.Clear;
 begin
   fPresent := 0;
   fPresentMore := nil;
+  if fChildOrder <> nil then
+    fChildOrder.Clear; // first: the lists' clearing below finds nothing to drop
 
   for var propertyInfo: TProperty in Meta.Properties do
     case propertyInfo.PropertyType of
@@ -862,6 +902,38 @@ begin
     var present: boolean := IsPresent(propertyInfo);
     if (present <> aOther.IsPresent(propertyInfo)) or (present and not SameProperty(aOther, propertyInfo)) then
       Exit(False);
+  end;
+  Result := SameChildOrder(aOther);
+end;
+
+function TBasite.SameChildOrder(aOther: TBasite): boolean;
+begin
+  var count: integer := 0;
+  if fChildOrder <> nil then
+    count := fChildOrder.Count;
+  var otherCount: integer := 0;
+  if aOther.fChildOrder <> nil then
+    otherCount := aOther.fChildOrder.Count;
+  if count <> otherCount then
+    Exit(False);
+  for var i := 0 to count - 1 do
+  begin
+    var item: TBasiteOrderItem := fChildOrder[i];
+    var other: TBasiteOrderItem := aOther.fChildOrder[i];
+    if (item.Child <> other.Child) or (item.Format <> other.Format) or (item.Text <> other.Text) or
+      ((item.Element = nil) <> (other.Element = nil)) then
+      Exit(False);
+    if item.Element = nil then
+    begin
+      if item.Index <> other.Index then
+        Exit(False);
+    end
+    else
+    begin // an object no longer held is not written: two such are alike, and neither is followed
+      var held: boolean := ChildHeld(item);
+      if (held <> aOther.ChildHeld(other)) or (held and not item.Element.SameAs(other.Element)) then
+        Exit(False);
+    end;
   end;
   Result := True;
 end;
@@ -991,6 +1063,81 @@ begin
     if aSource.GetPresentBit(propertyInfo.fIndex) then
       SetPresentBit(propertyInfo.fIndex, True);
   end;
+  if (aSource.fChildOrder <> nil) and (aSource.fChildOrder.Count > 0) then
+    CopyChildOrder(aSource, aCommon);
+end;
+
+procedure TBasite.CopyChildOrder(aSource: TBasite; aCommon: TMetaBasite);
+begin
+  // the source's children -> this object's, which the properties' copy made in the same order
+  var children: TDictionary<TBasite, TBasite> := TDictionary<TBasite, TBasite>.Create(AddressComparer);
+  try
+    for var propertyInfo: TProperty in aCommon.Properties do
+      case propertyInfo.PropertyType of
+        ptBasite:
+          begin
+            var child: TBasite := TPropertyBasite(propertyInfo).ObjectPointer(aSource)^;
+            if child <> nil then
+              children.AddOrSetValue(child, TPropertyBasite(propertyInfo).ObjectPointer(Self)^);
+          end;
+        ptBasiteList:
+          begin
+            var list: TBasiteList := TPropertyBasiteList(propertyInfo).ObjectPointer(aSource)^;
+            if list <> nil then
+            begin
+              var copies: TBasiteList := TPropertyBasiteList(propertyInfo).ObjectPointer(Self)^;
+              var first: integer := copies.Count - list.Count; // the copies came last
+              for var i := 0 to list.Count - 1 do
+                children.AddOrSetValue(list[i], copies[first + i]);
+            end;
+          end;
+      end;
+
+    var order: TList<TBasiteOrderItem> := ChildOrder(True);
+    order.Capacity := order.Count + aSource.fChildOrder.Count;
+    for var item: TBasiteOrderItem in aSource.fChildOrder do
+    begin
+      var copy: TBasiteOrderItem := item;
+      if item.Child = nil then
+      begin
+        if not CopyOrderItem(aSource, copy) then
+          Continue;
+      end
+      else if not Meta.Counterpart(item.Child, copy.Child) or
+        ((item.Element <> nil) and not children.TryGetValue(item.Element, copy.Element)) then
+        Continue;
+      order.Add(copy);
+    end;
+  finally
+    children.Free;
+  end;
+end;
+
+function TBasite.CopyOrderItem(aSource: TBasite; var aItem: TBasiteOrderItem): boolean;
+begin
+  Result := aItem.Element = nil;
+end;
+
+function TBasite.ChildOrder(aCreate: boolean): TList<TBasiteOrderItem>;
+begin
+  if (fChildOrder = nil) and aCreate then
+    fChildOrder := TList<TBasiteOrderItem>.Create;
+  Result := fChildOrder;
+end;
+
+function TBasite.ChildHeld(const aItem: TBasiteOrderItem): boolean;
+begin
+  // a list's or xs:any's child leaves the order with its list (Notify), so only a single object can be stale
+  Result := (aItem.Element = nil) or (aItem.Child = nil) or (aItem.Child.PropertyType <> ptBasite) or
+    (TPropertyBasite(aItem.Child).ObjectPointer(Self)^ = aItem.Element);
+end;
+
+procedure TBasite.DropFromChildOrder(aProperty: TProperty);
+begin
+  if fChildOrder <> nil then
+    for var i := fChildOrder.Count - 1 downto 0 do
+      if fChildOrder[i].Child = aProperty then
+        fChildOrder.Delete(i);
 end;
 
 constructor TBasite.CreateNested(aBreadcrumbs: TSummaryDictionary<TMetaBasite>);
@@ -1047,10 +1194,33 @@ end;
 
 procedure TBasite.ChildRemoved(aChild: TBasite);
 begin
+  if fChildOrder <> nil then
+    for var i := fChildOrder.Count - 1 downto 0 do
+      if fChildOrder[i].Element = aChild then
+        fChildOrder.Delete(i);
 end;
 
+// one pass for a whole list: clearing a long one stays linear
 procedure TBasite.ChildrenRemoved(aList: TObject);
 begin
+  if (fChildOrder = nil) or (fChildOrder.Count = 0) then
+    Exit;
+  var leaving: TDictionary<TBasite, boolean> := TDictionary<TBasite, boolean>.Create(AddressComparer);
+  try
+    for var item: TBasite in TBasiteList(aList) do
+      leaving.AddOrSetValue(item, True);
+    var kept: integer := 0;
+    for var i := 0 to fChildOrder.Count - 1 do
+      if (fChildOrder[i].Element = nil) or not leaving.ContainsKey(fChildOrder[i].Element) then
+      begin
+        if kept < i then
+          fChildOrder[kept] := fChildOrder[i];
+        Inc(kept);
+      end;
+    fChildOrder.Count := kept;
+  finally
+    leaving.Free;
+  end;
 end;
 
 destructor TBasite.Destroy;
@@ -1060,6 +1230,7 @@ begin
   for var propertyInfo in Meta.Properties do
     if propertyInfo.PropertyType in [ptBasite, ptBasiteList, ptDataList] then
       PObject(propertyInfo.DataPointer(Self))^.Free;
+  fChildOrder.Free;
   inherited;
 end;
 
@@ -1242,6 +1413,7 @@ begin
       TPropertyDataList(aProperty).ClearList(Self);
   end;
   SetPresentBit(aProperty.fIndex, False);
+  DropFromChildOrder(aProperty);
 end;
 
 function TBasite.ChosenProperty(const aGroup: string): TProperty;
