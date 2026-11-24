@@ -147,12 +147,20 @@ type
     procedure ChildrenRemoved(aList: TObject); virtual;
     // a lazy property's getter: creates the object on first access - Result := TPatientE(Lazy(fPatient, TPatientE))
     function Lazy(var aField; aClass: TBasiteClass): TBasite;
+    // aSource's content into this object, which has none (new or cleared): aCommon's properties, the class both have
+    procedure CopyFrom(aSource: TBasite; aCommon: TMetaBasite); virtual;
   public
     constructor Create; virtual;
     destructor Destroy; override;
 
     function ClassType: TBasiteClass;
     procedure Clear; overload; virtual;
+    // a copy of aSource's content, presence too, replacing this object's: aSource of this class, an ancestor (its
+    // properties) or a descendant (this class's); another class raises EConvertError
+    procedure Assign(aSource: TPersistent); override;
+    // a new object of this class with this one's content: copy := Column.Clone<TColCT>
+    function Clone: TBasite; overload;
+    function Clone<T: TBasite>: T; overload;
     function IsEmptyOrDefault: boolean; virtual;
     function AssignProperty(const aName, aValue: string): boolean; inline;
 
@@ -212,6 +220,7 @@ type
     Add: function(aList: TObject): Pointer; // a new item (zero, empty), its memory
     Delete: procedure(aList: TObject; aIndex: integer);
     Clear: procedure(aList: TObject);
+    AddAll: procedure(aTarget, aSource: TObject); // aSource's items added to aTarget, as T (strings too)
   end;
 
   // a list of plain values - a repeating element of a simple type: strings, numbers, enumerations (a TList<T>)
@@ -223,6 +232,7 @@ type
     class function DoAdd(aList: TObject): Pointer; static;
     class procedure DoDelete(aList: TObject; aIndex: integer); static;
     class procedure DoClear(aList: TObject); static;
+    class procedure DoAddAll(aTarget, aSource: TObject); static;
   public
     class function Access: TBasiteValueListAccess; static;
   end;
@@ -320,6 +330,8 @@ type
 
     procedure SetDefaultValue(aObject: TBasite);
     function ValueIsDefault(aObject: TBasite): boolean;
+    // aSource's value into aTarget (presence aside); a read-only property is left
+    procedure CopyValue(aSource, aTarget: TBasite);
   end;
 
   TPropertyClass = class abstract(TProperty)
@@ -379,6 +391,8 @@ type
     // as AddText, but text that does not fit the item type gives False, nothing added
     function TryAddText(aParentObject: TBasite; const aText: string): boolean;
     procedure ClearList(aParentObject: TBasite);
+    // aSource's items added to aTarget's list (created when missing)
+    procedure CopyList(aSource, aTarget: TBasite);
   end;
 
   TPropertyExtension = class abstract
@@ -772,6 +786,85 @@ begin
     end;
 end;
 
+procedure TBasite.Assign(aSource: TPersistent);
+begin
+  if aSource = Self then
+    Exit;
+  var common: TMetaBasite := nil;
+  if aSource is TBasite then
+    if InheritsFrom(aSource.ClassType) then
+      common := TBasite(aSource).Meta
+    else if aSource.InheritsFrom(ClassType) then
+      common := Meta;
+  if common = nil then
+  begin
+    inherited; // EConvertError
+    Exit;
+  end;
+  Clear;
+  CopyFrom(TBasite(aSource), common);
+end;
+
+function TBasite.Clone: TBasite;
+begin
+  Result := ClassType.Create;
+  try
+    Result.CopyFrom(Self, Meta);
+  except
+    Result.Free;
+    raise;
+  end;
+end;
+
+function TBasite.Clone<T>: T;
+begin
+  if not (Self is T) then
+    raise EInvalidCast.CreateFmt('%s is not a %s', [ClassName, T.ClassName]);
+  Result := T(Clone);
+end;
+
+procedure TBasite.CopyFrom(aSource: TBasite; aCommon: TMetaBasite);
+begin
+  for var propertyInfo: TProperty in aCommon.Properties do
+  begin
+    case propertyInfo.PropertyType of
+      ptData:
+        TPropertyData(propertyInfo).CopyValue(aSource, Self);
+      ptBasite:
+        begin
+          var source: TBasite := TPropertyBasite(propertyInfo).ObjectPointer(aSource)^;
+          var target: PBasite := TPropertyBasite(propertyInfo).ObjectPointer(Self);
+          // nil: lazy, or not pre-created - stays so; another class: xsi:type
+          if source <> nil then
+            if (target^ <> nil) and (target^.ClassType = source.ClassType) then
+              target^.CopyFrom(source, source.Meta)
+            else
+            begin
+              FreeAndNil(target^);
+              target^ := source.Clone;
+            end;
+        end;
+      ptBasiteList:
+        begin
+          var source: TBasiteList := TPropertyBasiteList(propertyInfo).ObjectPointer(aSource)^;
+          if (source <> nil) and (source.Count > 0) then
+          begin
+            var target: PBasiteList := TPropertyBasiteList(propertyInfo).ObjectPointer(Self);
+            if target^ = nil then
+              target^ := TPropertyBasiteList(propertyInfo).Meta.CreateList(Self);
+            target^.Capacity := target^.Count + source.Count;
+            for var item: TBasite in source do
+              target^.Add(item.Clone);
+          end;
+        end;
+      ptDataList:
+        TPropertyDataList(propertyInfo).CopyList(aSource, Self);
+    end;
+    if aSource.GetPresentBit(propertyInfo.fIndex) then
+      SetPresentBit(propertyInfo.fIndex, True);
+  end;
+end;
+
 constructor TBasite.CreateNested(aBreadcrumbs: TSummaryDictionary<TMetaBasite>);
 begin
   CreateProperties(aBreadcrumbs);
@@ -1158,6 +1251,12 @@ begin
   Result.Add := DoAdd;
   Result.Delete := DoDelete;
   Result.Clear := DoClear;
+  Result.AddAll := DoAddAll;
+end;
+
+class procedure TBasiteValueList<T>.DoAddAll(aTarget, aSource: TObject);
+begin
+  TBasiteValueList<T>(aTarget).AddRange(TBasiteValueList<T>(aSource));
 end;
 
 class function TBasiteValueList<T>.DoAdd(aList: TObject): Pointer;
@@ -1495,6 +1594,38 @@ begin
     Result := ReadOrdinalFieldValue(aFieldData, Meta.fOrdType)
   else
     Result := OrdinalOfType(TGetterInteger(GetterMethod(aObject)), Meta.fOrdType);
+end;
+
+procedure TPropertyData.CopyValue(aSource, aTarget: TBasite);
+begin
+  if not fRttiProperty.IsWritable then
+    Exit;
+
+  var sourceData: Pointer := DataPointer(aSource);
+  var targetData: Pointer := DataPointer(aTarget);
+  case fRttiProperty.PropertyType.TypeKind of
+    tkInteger, tkInt64, tkEnumeration:
+      WriteOrdinal(aTarget, targetData, ReadOrdinal(aSource, sourceData));
+    tkFloat:
+      if fGetterIsField and fSetterIsField then // its bits: Comp and Extended through a Double (Win64) would lose digits
+        Move(sourceData^, targetData^, fRttiProperty.PropertyType.TypeSize)
+      else if Meta.fFloatType = ftCurr then
+        WriteCurrency(aTarget, targetData, ReadCurrency(aSource, sourceData))
+      else
+        WriteFloat(aTarget, targetData, ReadFloat(aSource, sourceData));
+    tkUString:
+      begin
+        var value: string;
+        if fGetterIsField then
+          value := PUnicodeString(sourceData)^
+        else
+          value := TGetterString(GetterMethod(aSource));
+        if fSetterIsField then
+          PUnicodeString(targetData)^ := value
+        else
+          TSetterString(SetterMethod(aTarget))(value);
+      end;
+  end;
 end;
 
 procedure TPropertyData.SetDefaultValue(aObject: TBasite);
@@ -1840,6 +1971,15 @@ procedure TPropertyDataList.ClearList(aParentObject: TBasite);
 begin
   if ObjectPointer(aParentObject)^ <> nil then
     fAccess.Clear(ObjectPointer(aParentObject)^);
+end;
+
+procedure TPropertyDataList.CopyList(aSource, aTarget: TBasite);
+begin
+  var source: TObject := ObjectPointer(aSource)^;
+  if (source = nil) or (fAccess.Count(source) = 0) then
+    Exit;
+  CreateList(aTarget);
+  fAccess.AddAll(ObjectPointer(aTarget)^, source);
 end;
 
 function TPropertyDataList.Count(aParentObject: TBasite): integer;
