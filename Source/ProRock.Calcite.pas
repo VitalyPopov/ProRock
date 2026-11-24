@@ -730,7 +730,7 @@ type
 implementation
 
 uses System.Math, System.Variants, System.DateUtils, System.TypInfo, System.Character, System.Generics.Defaults,
-  System.Zip, System.RegularExpressions, ProRock.Utility, ProRock.Calcite.Utility, ProRock.Xmlite.Schema.Ooxml.DmlMain,
+  System.Zip, System.RegularExpressions, ProRock.Calcite.Utility, ProRock.Xmlite.Schema.Ooxml.DmlMain,
   ProRock.Xmlite.Schema.Ooxml.DmlSheet, ProRock.Xmlite.Schema.Ooxml.DmlChart, ProRock.Xmlite.Schema.Ooxml.Vml,
   ProRock.Xmlite.Schema.Ooxml.VmlExcel;
 
@@ -1570,14 +1570,14 @@ var
     Result := False;
     var moved: string;
     case aMap.PrefixChange(prefix, moved) of
-      pcGone:
+      TPrefixChange.pcGone:
         begin
           builder.Length := prefixAt;
           if aName then
             builder.Append('[0]!');
           Result := True;
         end;
-      pcMoved:
+      TPrefixChange.pcMoved:
         begin
           builder.Length := prefixAt;
           builder.Append(moved).Append('!');
@@ -1592,19 +1592,19 @@ var
     var word: string := Copy(aFormula, i, aEnd - i);
     var row, column: integer;
     var rowFixed, columnFixed: boolean;
-    var kind: TReferenceKind := ReadReference(word, row, column, rowFixed, columnFixed);
+    var kind: TReferenceKind := TUtility.ReadReference(word, row, column, rowFixed, columnFixed);
     var secondEnd: integer := 0;
     var row2: integer := 0;
     var column2: integer := 0;
     var rowFixed2: boolean := False;
     var columnFixed2: boolean := False;
-    if (kind <> rkNone) and (aEnd < last) and (aFormula[aEnd] = ':') and IsWordStart(aFormula[aEnd + 1]) then
+    if (kind <> TReferenceKind.rkNone) and (aEnd < last) and (aFormula[aEnd] = ':') and IsWordStart(aFormula[aEnd + 1]) then
     begin
       secondEnd := ReadWord(aEnd + 1);
-      if ReadReference(Copy(aFormula, aEnd + 1, secondEnd - aEnd - 1), row2, column2, rowFixed2, columnFixed2) <> kind then
+      if TUtility.ReadReference(Copy(aFormula, aEnd + 1, secondEnd - aEnd - 1), row2, column2, rowFixed2, columnFixed2) <> kind then
         secondEnd := 0;
     end;
-    if (kind = rkNone) or ((kind <> rkCell) and (secondEnd = 0)) then
+    if (kind = TReferenceKind.rkNone) or ((kind <> TReferenceKind.rkCell) and (secondEnd = 0)) then
     begin // a number, TRUE, a name
       var isNumber: boolean := CharInSet(word[1], ['0' .. '9', '.']);
       if isNumber then
@@ -1950,7 +1950,7 @@ var
         var row, column: integer;
         var rowFixed, columnFixed: boolean;
         if (next = ':') and (after < last) and IsWordStart(aFormula[after + 1]) and not prefixed and
-          (ReadReference(Copy(aFormula, i, after - i), row, column, rowFixed, columnFixed) <> rkCell) then
+          (TUtility.ReadReference(Copy(aFormula, i, after - i), row, column, rowFixed, columnFixed) <> TReferenceKind.rkCell) then
         begin
           sheetsEnd := ReadWord(after + 1);
           if (sheetsEnd > last) or (aFormula[sheetsEnd] <> '!') then
@@ -2528,7 +2528,7 @@ begin
   end;
   try
     if info.Dates then
-      Result := FormatDateTime(code, SerialToDate(aNumber, False), TFormatSettings.Invariant)
+      Result := FormatDateTime(code, TUtility.SerialToDate(aNumber, False), TFormatSettings.Invariant)
     else if info.Digits then
       Result := FormatFloat(code, aNumber * scale, TFormatSettings.Invariant)
     else if code = '' then
@@ -2926,9 +2926,9 @@ end;
 // A1:C10 for any range, whole columns too: what the file's dimension and refs hold
 function CellsAddress(const aRange: TRange): string;
 begin
-  Result := CellName(aRange.fTop, aRange.fLeft);
+  Result := TUtility.CellName(aRange.fTop, aRange.fLeft);
   if (aRange.fBottom <> aRange.fTop) or (aRange.fRight <> aRange.fLeft) then
-    Result := Result + ':' + CellName(aRange.fBottom, aRange.fRight);
+    Result := Result + ':' + TUtility.CellName(aRange.fBottom, aRange.fRight);
 end;
 
 // FFRRGGBB (or RRGGBB) as BGR
@@ -3000,9 +3000,9 @@ end;
 function ShiftedArea(var aArea: TRange; aByRows: boolean; aFirst, aCount: integer; aGrowAfter: boolean): boolean;
 begin
   if aByRows then
-    Result := ShiftedSpan(aArea.fTop, aArea.fBottom, aFirst, aCount, cMaxRow, aGrowAfter)
+    Result := ShiftedSpan(aArea.fTop, aArea.fBottom, aFirst, aCount, TUtility.cMaxRow, aGrowAfter)
   else
-    Result := ShiftedSpan(aArea.fLeft, aArea.fRight, aFirst, aCount, cMaxColumn, aGrowAfter);
+    Result := ShiftedSpan(aArea.fLeft, aArea.fRight, aFirst, aCount, TUtility.cMaxColumn, aGrowAfter);
 end;
 
 // a list of areas (A1:B5 D7) the same way, those gone dropped: '' when none is left
@@ -3013,7 +3013,7 @@ begin
   begin
     var area: TRange := Default(TRange);
     var text: string := item;
-    if ParseAddress(item, area.fTop, area.fLeft, area.fBottom, area.fRight) then
+    if TUtility.ParseAddress(item, area.fTop, area.fLeft, area.fBottom, area.fRight) then
       if ShiftedArea(area, aByRows, aFirst, aCount, aGrowAfter) then
         text := CellsAddress(area)
       else
@@ -3062,10 +3062,10 @@ end;
 
 function TRange.GetAddress: string;
 begin
-  if (fLeft = 1) and (fRight = cMaxColumn) then // whole rows, the whole sheet too
+  if (fLeft = 1) and (fRight = TUtility.cMaxColumn) then // whole rows, the whole sheet too
     Result := IntToStr(fTop) + ':' + IntToStr(fBottom)
-  else if (fTop = 1) and (fBottom = cMaxRow) then
-    Result := ColumnName(fLeft) + ':' + ColumnName(fRight)
+  else if (fTop = 1) and (fBottom = TUtility.cMaxRow) then
+    Result := TUtility.ColumnName(fLeft) + ':' + TUtility.ColumnName(fRight)
   else
     Result := CellsAddress(Self);
 end;
@@ -3115,7 +3115,7 @@ begin
   for var row := fTop to fBottom do
     for var column := fLeft to fRight do
       if isArray then
-        fSheet.WriteValue(row, column, ArrayItem(aValue, row - fTop, column - fLeft), Self)
+        fSheet.WriteValue(row, column, TUtility.ArrayItem(aValue, row - fTop, column - fLeft), Self)
       else
         fSheet.WriteValue(row, column, aValue, Self);
 end;
@@ -3204,7 +3204,7 @@ begin
     cvEmpty:
       Result := 0;
     cvNumber:
-      Result := SerialToDate(value, fSheet.fWorkbook.Date1904);
+      Result := TUtility.SerialToDate(value, fSheet.fWorkbook.Date1904);
     cvDate:
       Result := VarToDateTime(value);
   else
@@ -3274,14 +3274,14 @@ begin
     for var row := fTop to fBottom do
       for var column := fLeft to fRight do
       begin
-        var item: Variant := ArrayItem(aValue, row - fTop, column - fLeft);
-        if IsNoFormula(item) then
+        var item: Variant := TUtility.ArrayItem(aValue, row - fTop, column - fLeft);
+        if TUtility.IsNoFormula(item) then
           fSheet.ClearContents(fSheet.MakeRange(row, column, row, column))
         else if fSheet.CheckFormula(row, column, item, text) then
           fSheet.WriteFormula(row, column, text, Self);
       end;
   end
-  else if IsNoFormula(aValue) then
+  else if TUtility.IsNoFormula(aValue) then
     ClearContents
   else if fSheet.CheckFormula(fTop, fLeft, aValue, text) then // checked once, moved to each cell as Excel fills
     for var row := fTop to fBottom do
@@ -3316,7 +3316,7 @@ function TRange.GetCurrentArray: TRange;
 begin
   fSheet.FindFormulas;
   if not AreaAt(fSheet.fArrays, fTop, fLeft, Result) then
-    raise EInvalidOpException.CreateFmt('%s!%s is not in an array formula', [fSheet.Name, CellName(fTop, fLeft)]);
+    raise EInvalidOpException.CreateFmt('%s!%s is not in an array formula', [fSheet.Name, TUtility.CellName(fTop, fLeft)]);
 end;
 
 function TRange.GetFormulaArray: string;
@@ -3495,12 +3495,12 @@ end;
 
 function TRange.GetEntireRow: TRange;
 begin
-  Result := fSheet.MakeRange(fTop, 1, fBottom, cMaxColumn);
+  Result := fSheet.MakeRange(fTop, 1, fBottom, TUtility.cMaxColumn);
 end;
 
 function TRange.GetEntireColumn: TRange;
 begin
-  Result := fSheet.MakeRange(1, fLeft, cMaxRow, fRight);
+  Result := fSheet.MakeRange(1, fLeft, TUtility.cMaxRow, fRight);
 end;
 
 function TRange.GetColumnWidth: Double;
@@ -3576,9 +3576,9 @@ end;
 
 function TRange.GetHidden: boolean;
 begin
-  if (fLeft = 1) and (fRight = cMaxColumn) then
+  if (fLeft = 1) and (fRight = TUtility.cMaxColumn) then
     Result := GetRowHeight = 0
-  else if (fTop = 1) and (fBottom = cMaxRow) then
+  else if (fTop = 1) and (fBottom = TUtility.cMaxRow) then
   begin
     var column: TColCT := fSheet.ColumnEntry(fLeft);
     Result := (column <> nil) and column.Hidden;
@@ -3590,7 +3590,7 @@ end;
 
 procedure TRange.SetHidden(aValue: boolean);
 begin
-  if (fLeft = 1) and (fRight = cMaxColumn) then
+  if (fLeft = 1) and (fRight = TUtility.cMaxColumn) then
   begin
     for var row: TRowCT in fSheet.RowEntries(fTop, fBottom) do
       if aValue then
@@ -3598,7 +3598,7 @@ begin
       else
         row.Clear(@row.Hidden);
   end
-  else if (fTop = 1) and (fBottom = cMaxRow) then
+  else if (fTop = 1) and (fBottom = TUtility.cMaxRow) then
   begin
     for var column: TColCT in fSheet.ColumnEntries(fLeft, fRight) do
       if aValue then
@@ -3664,9 +3664,9 @@ end;
 
 procedure TRange.Insert;
 begin
-  if (fLeft = 1) and (fRight = cMaxColumn) then
+  if (fLeft = 1) and (fRight = TUtility.cMaxColumn) then
     fSheet.Shift(True, fTop, RowCount)
-  else if (fTop = 1) and (fBottom = cMaxRow) then
+  else if (fTop = 1) and (fBottom = TUtility.cMaxRow) then
     fSheet.Shift(False, fLeft, ColumnCount)
   else
     raise EInvalidOpException.CreateFmt('Insert takes whole rows or columns, not %s: Range[''%s''].EntireRow.Insert',
@@ -3675,9 +3675,9 @@ end;
 
 procedure TRange.Delete;
 begin
-  if (fLeft = 1) and (fRight = cMaxColumn) then
+  if (fLeft = 1) and (fRight = TUtility.cMaxColumn) then
     fSheet.Shift(True, fTop, -RowCount)
-  else if (fTop = 1) and (fBottom = cMaxRow) then
+  else if (fTop = 1) and (fBottom = TUtility.cMaxRow) then
     fSheet.Shift(False, fLeft, -ColumnCount)
   else
     raise EInvalidOpException.CreateFmt('Delete takes whole rows or columns, not %s: Range[''%s''].EntireRow.Delete',
@@ -4016,8 +4016,8 @@ end;
 function TRange.TColumns.GetItem(aIndex: integer): TRange;
 begin
   var column: integer := fLeft + aIndex - 1;
-  if (column < 1) or (column > cMaxColumn) then
-    raise EArgumentOutOfRangeException.CreateFmt('Column %d from %s is off the sheet', [aIndex, ColumnName(fLeft)]);
+  if (column < 1) or (column > TUtility.cMaxColumn) then
+    raise EArgumentOutOfRangeException.CreateFmt('Column %d from %s is off the sheet', [aIndex, TUtility.ColumnName(fLeft)]);
   Result := fSheet.MakeRange(fTop, column, fBottom, column);
 end;
 
@@ -4025,12 +4025,12 @@ function TRange.TColumns.GetItemByLetters(const aColumns: string): TRange;
 begin
   var text: string := aColumns.Trim;
   var index: integer := 1;
-  var first: integer := ReadColumn(text, index);
+  var first: integer := TUtility.ReadColumn(text, index);
   var last: integer := first;
   if (index <= text.Length) and (text[index] = ':') then
   begin
     Inc(index);
-    last := ReadColumn(text, index);
+    last := TUtility.ReadColumn(text, index);
   end;
   if (first = 0) or (last = 0) or (index <= text.Length) then
     raise EArgumentException.CreateFmt('Not columns: "%s" (B or B:D)', [aColumns]);
@@ -4048,7 +4048,7 @@ end;
 function TRange.TRows.GetItem(aIndex: integer): TRange;
 begin
   var row: integer := fTop + aIndex - 1;
-  if (row < 1) or (row > cMaxRow) then
+  if (row < 1) or (row > TUtility.cMaxRow) then
     raise EArgumentOutOfRangeException.CreateFmt('Row %d from %d is off the sheet', [aIndex, fTop]);
   Result := fSheet.MakeRange(row, fLeft, row, fRight);
 end;
@@ -4057,12 +4057,12 @@ function TRange.TRows.GetItemByNumbers(const aRows: string): TRange;
 begin
   var text: string := aRows.Trim;
   var index: integer := 1;
-  var first: integer := ReadRow(text, index);
+  var first: integer := TUtility.ReadRow(text, index);
   var last: integer := first;
   if (index <= text.Length) and (text[index] = ':') then
   begin
     Inc(index);
-    last := ReadRow(text, index);
+    last := TUtility.ReadRow(text, index);
   end;
   if (first = 0) or (last = 0) or (index <= text.Length) then
     raise EArgumentException.CreateFmt('Not rows: "%s" (5 or 5:7)', [aRows]);
@@ -4138,11 +4138,11 @@ begin
     var column: integer := 0;
     for var cell: TCellCT in row.C do
     begin
-      var cellColumn: integer := ColumnOf(cell.R);
+      var cellColumn: integer := TUtility.ColumnOf(cell.R);
       if cellColumn = 0 then
       begin
         cellColumn := column + 1;
-        cell.R := CellName(rowNumber, cellColumn);
+        cell.R := TUtility.CellName(rowNumber, cellColumn);
       end;
       column := cellColumn;
     end;
@@ -4181,7 +4181,7 @@ begin
   while low <= high do
   begin
     var middle: integer := (low + high) shr 1;
-    var column: integer := ColumnOf(cells[middle].R);
+    var column: integer := TUtility.ColumnOf(cells[middle].R);
     if column = aColumn then
     begin
       aIndex := middle;
@@ -4271,7 +4271,7 @@ begin
     end;
     if fWorkbook.IsDateStyle(aCell.S) then
     begin
-      aValue := VarFromDateTime(SerialToDate(number, fWorkbook.Date1904));
+      aValue := VarFromDateTime(TUtility.SerialToDate(number, fWorkbook.Date1904));
       Result := cvDate;
     end
     else
@@ -4285,7 +4285,7 @@ end;
 // Excel's refusal: the cell keeps its value, the rest is done
 procedure TWorksheet.Refuse(aRow, aColumn: integer; const aCode, aWhy: string);
 begin
-  fWorkbook.fIssues.Add(TIssueSeverity.isError, aCode, fName + '!' + CellName(aRow, aColumn), aWhy + ' - not written');
+  fWorkbook.fIssues.Add(TIssueSeverity.isError, aCode, fName + '!' + TUtility.CellName(aRow, aColumn), aWhy + ' - not written');
 end;
 
 // on a protected sheet, a cell its style does not unlock
@@ -4316,8 +4316,8 @@ begin
         else
         begin
           var area: TRange := MakeRange(0, 0, 0, 0);
-          if not ParseAddress(cell.F.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
-            ParseAddress(cell.R, area.fTop, area.fLeft, area.fBottom, area.fRight);
+          if not TUtility.ParseAddress(cell.F.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
+            TUtility.ParseAddress(cell.R, area.fTop, area.fLeft, area.fBottom, area.fRight);
           if cell.F.T = stcftArray then
           begin
             fArrays.Add(area);
@@ -4364,7 +4364,7 @@ begin
           FindFormulas;
           var first: TCellCT;
           var top, left, bottom, right: integer;
-          if fShared.TryGetValue(cell.F.Si, first) and ParseAddress(first.R, top, left, bottom, right) then
+          if fShared.TryGetValue(cell.F.Si, first) and TUtility.ParseAddress(first.R, top, left, bottom, right) then
           begin
             var why, unknown: string;
             ShiftFormula(DecodeText(first.F.XmlValue), TReferenceMap.Fill(aRow - top, aColumn - left), ffStored, aText, why,
@@ -4398,14 +4398,14 @@ begin
   if text.StartsWith('=') then
     text := text.Substring(1);
   var why, unknown: string;
-  if text.Length + 1 > cMaxFormula then
-    Refuse(aRow, aColumn, 'Formula', Format('%d characters, Excel''s formulas hold up to %d', [text.Length + 1, cMaxFormula]))
+  if text.Length + 1 > TUtility.cMaxFormula then
+    Refuse(aRow, aColumn, 'Formula', Format('%d characters, Excel''s formulas hold up to %d', [text.Length + 1, TUtility.cMaxFormula]))
   else if not ShiftFormula(text, TReferenceMap.Fill(0, 0), ffStored, aText, why, unknown) then
     Refuse(aRow, aColumn, 'Formula', 'not a formula Excel reads: ' + why)
   else
   begin
     if unknown <> '' then
-      fWorkbook.fIssues.Add(TIssueSeverity.isWarning, 'Function', fName + '!' + CellName(aRow, aColumn),
+      fWorkbook.fIssues.Add(TIssueSeverity.isWarning, 'Function', fName + '!' + TUtility.CellName(aRow, aColumn),
         unknown + ' is not one of Excel''s functions (English)');
     Result := True;
   end;
@@ -4421,11 +4421,11 @@ begin
     Exit(True); // no first cell: nothing the others could be read from
   var text: string := DecodeText(first.F.XmlValue);
   var checked, why, unknown: string;
-  if not ParseAddress(first.F.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) or
+  if not TUtility.ParseAddress(first.F.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) or
     not ShiftFormula(text, TReferenceMap.Fill(0, 0), ffStored, checked, why, unknown) then
     Exit(False);
   var top, left, bottom, right: integer;
-  ParseAddress(first.R, top, left, bottom, right);
+  TUtility.ParseAddress(first.R, top, left, bottom, right);
   var sheet: TWorksheetE := Objects(True);
   var rowIndex: integer;
   FindRow(sheet, area.fTop, rowIndex);
@@ -4437,7 +4437,7 @@ begin
       if cell.IsPresent('F') and (cell.F.T = stcftShared) and (cell.F.Si = aIndex) then
       begin
         var moved: string;
-        ShiftFormula(text, TReferenceMap.Fill(integer(row.R) - top, ColumnOf(cell.R) - left), ffStored, moved, why,
+        ShiftFormula(text, TReferenceMap.Fill(integer(row.R) - top, TUtility.ColumnOf(cell.R) - left), ffStored, moved, why,
           unknown);
         cell.F.Clear('T');
         cell.F.Clear('Si');
@@ -4497,7 +4497,7 @@ begin
   if not fLockedWritten and IsLocked(aRow, aColumn) then
   begin
     fLockedWritten := True;
-    fWorkbook.fIssues.Add(TIssueSeverity.isWarning, 'Locked', fName + '!' + CellName(aRow, aColumn),
+    fWorkbook.fIssues.Add(TIssueSeverity.isWarning, 'Locked', fName + '!' + TUtility.CellName(aRow, aColumn),
       'a locked cell of a protected sheet, written: Excel lets its users change it only unprotected (reported once a sheet)');
   end;
   Result := True;
@@ -4531,7 +4531,7 @@ begin
   else
   begin
     Result := TCellCT.Create;
-    Result.R := CellName(aRow, aColumn);
+    Result.R := TUtility.CellName(aRow, aColumn);
     Result.S := style;
     row.C.Insert(cellIndex, Result);
     // spans (optional, a hint for readers) and the sheet's dimension cover the new cell
@@ -4554,7 +4554,7 @@ begin
     if sheet.IsPresent('Dimension') then
     begin
       var top, left, bottom, right: integer;
-      if ParseAddress(sheet.Dimension.Ref, top, left, bottom, right) and
+      if TUtility.ParseAddress(sheet.Dimension.Ref, top, left, bottom, right) and
         ((aRow < top) or (aRow > bottom) or (aColumn < left) or (aColumn > right)) then
         sheet.Dimension.Ref := CellsAddress(MakeRange(Min(top, aRow), Min(left, aColumn), Max(bottom, aRow), Max(right, aColumn)));
     end;
@@ -4597,8 +4597,8 @@ end;
 procedure TWorksheet.SetStyles(const aRange: TRange; const aNewStyle: TFunc<cardinal, cardinal>; aExisting: boolean);
 begin
   var sheet: TWorksheetE := Objects(True);
-  var wholeColumns: boolean := (aRange.fTop = 1) and (aRange.fBottom = cMaxRow);
-  var wholeRows: boolean := (aRange.fLeft = 1) and (aRange.fRight = cMaxColumn);
+  var wholeColumns: boolean := (aRange.fTop = 1) and (aRange.fBottom = TUtility.cMaxRow);
+  var wholeRows: boolean := (aRange.fLeft = 1) and (aRange.fRight = TUtility.cMaxColumn);
   if wholeColumns or wholeRows or aExisting then
   begin
     if aExisting then
@@ -4637,7 +4637,7 @@ begin
         row.S := aNewStyle(row.S); // the whole sheet: a formatted row's empty cells too
       var cellIndex: integer;
       FindInRow(row, aRange.fLeft, cellIndex);
-      while (cellIndex < row.C.Count) and (ColumnOf(row.C[cellIndex].R) <= aRange.fRight) do
+      while (cellIndex < row.C.Count) and (TUtility.ColumnOf(row.C[cellIndex].R) <= aRange.fRight) do
       begin
         row.C[cellIndex].S := aNewStyle(row.C[cellIndex].S);
         Inc(cellIndex);
@@ -4754,12 +4754,12 @@ begin
     end;
   if (beLeft in aEdges) and (aRange.fLeft > 1) then
     Restyle(MakeRange(aRange.fTop, aRange.fLeft - 1, aRange.fBottom, aRange.fLeft - 1), Change([beRight], clear, True), True);
-  if (beRight in aEdges) and (aRange.fRight < cMaxColumn) then
+  if (beRight in aEdges) and (aRange.fRight < TUtility.cMaxColumn) then
     Restyle(MakeRange(aRange.fTop, aRange.fRight + 1, aRange.fBottom, aRange.fRight + 1), Change([beLeft], clear, True),
       True);
   if (beTop in aEdges) and (aRange.fTop > 1) then
     Restyle(MakeRange(aRange.fTop - 1, aRange.fLeft, aRange.fTop - 1, aRange.fRight), Change([beBottom], clear, True), True);
-  if (beBottom in aEdges) and (aRange.fBottom < cMaxRow) then
+  if (beBottom in aEdges) and (aRange.fBottom < TUtility.cMaxRow) then
     Restyle(MakeRange(aRange.fBottom + 1, aRange.fLeft, aRange.fBottom + 1, aRange.fRight), Change([beTop], clear, True),
       True);
 end;
@@ -4775,13 +4775,13 @@ begin
       if aColumn > 1 then
         Result := DrawnSide(fWorkbook.StyleBorder(EffectiveStyle(aRow, aColumn - 1)), beRight);
     beRight:
-      if aColumn < cMaxColumn then
+      if aColumn < TUtility.cMaxColumn then
         Result := DrawnSide(fWorkbook.StyleBorder(EffectiveStyle(aRow, aColumn + 1)), beLeft);
     beTop:
       if aRow > 1 then
         Result := DrawnSide(fWorkbook.StyleBorder(EffectiveStyle(aRow - 1, aColumn)), beBottom);
     beBottom:
-      if aRow < cMaxRow then
+      if aRow < TUtility.cMaxRow then
         Result := DrawnSide(fWorkbook.StyleBorder(EffectiveStyle(aRow + 1, aColumn)), beTop);
   end;
 end;
@@ -4791,8 +4791,8 @@ begin
   Result.fSheet := Self;
   Result.fTop := 1;
   Result.fLeft := 1;
-  Result.fBottom := cMaxRow;
-  Result.fRight := cMaxColumn;
+  Result.fBottom := TUtility.cMaxRow;
+  Result.fRight := TUtility.cMaxColumn;
 end;
 
 function TWorksheet.GetRows: TRangeRows;
@@ -4800,8 +4800,8 @@ begin
   Result.fSheet := Self;
   Result.fTop := 1;
   Result.fLeft := 1;
-  Result.fBottom := cMaxRow;
-  Result.fRight := cMaxColumn;
+  Result.fBottom := TUtility.cMaxRow;
+  Result.fRight := TUtility.cMaxColumn;
 end;
 
 // the width of a column without its own, in characters: Excel's 8.43 unless the sheet says
@@ -4867,7 +4867,7 @@ function TWorksheet.ColumnEntries(aLeft, aRight: integer): TArray<TColCT>;
 begin
   var columns: TColCTList := SortedColumns;
   SplitColumns(columns, aLeft);
-  if aRight < cMaxColumn then
+  if aRight < TUtility.cMaxColumn then
     SplitColumns(columns, aRight + 1);
   Result := [];
   var i: integer := 0;
@@ -4914,7 +4914,7 @@ begin
       var row: TRowCT := rows[rowIndex];
       var cellIndex: integer;
       FindInRow(row, aRange.fLeft, cellIndex);
-      while (cellIndex < row.C.Count) and (ColumnOf(row.C[cellIndex].R) <= aRange.fRight) do
+      while (cellIndex < row.C.Count) and (TUtility.ColumnOf(row.C[cellIndex].R) <= aRange.fRight) do
       begin
         var cell: TCellCT := row.C[cellIndex];
         var value: Variant;
@@ -4961,8 +4961,8 @@ begin
             if font.Name.Count > 0 then
               name := font.Name[0].Val;
           end;
-          var index: integer := ColumnOf(cell.R) - aRange.fLeft;
-          widths[index] := Max(widths[index], TextPixels(text, name, bold) * scale + margin);
+          var index: integer := TUtility.ColumnOf(cell.R) - aRange.fLeft;
+          widths[index] := Max(widths[index], TUtility.TextPixels(text, name, bold) * scale + margin);
         end;
         Inc(cellIndex);
       end;
@@ -5016,7 +5016,7 @@ begin
       for var merged: TMergeCellCT in sheet.MergeCells.MergeCell do
       begin
         var area: TRange := MakeRange(0, 0, 0, 0);
-        if ParseAddress(merged.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
+        if TUtility.ParseAddress(merged.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
           fMerges.Add(area);
       end;
   end;
@@ -5043,8 +5043,8 @@ begin
   if not Result then
   begin
     MergedAt(aRow, aColumn, area);
-    fWorkbook.fIssues.Add(TIssueSeverity.isWarning, 'Merged', fName + '!' + CellName(aRow, aColumn),
-      'covered by the merged area ' + area.Address + ', which shows only ' + CellName(area.fTop, area.fLeft) +
+    fWorkbook.fIssues.Add(TIssueSeverity.isWarning, 'Merged', fName + '!' + TUtility.CellName(aRow, aColumn),
+      'covered by the merged area ' + area.Address + ', which shows only ' + TUtility.CellName(area.fTop, area.fLeft) +
       ' - not written');
   end;
 end;
@@ -5100,7 +5100,7 @@ begin
     for var i := sheet.MergeCells.MergeCell.Count - 1 downto 0 do
     begin
       var old: TRange := MakeRange(0, 0, 0, 0);
-      if ParseAddress(sheet.MergeCells.MergeCell[i].Ref, old.fTop, old.fLeft, old.fBottom, old.fRight) and
+      if TUtility.ParseAddress(sheet.MergeCells.MergeCell[i].Ref, old.fTop, old.fLeft, old.fBottom, old.fRight) and
         Overlaps(old, area) then
         sheet.MergeCells.MergeCell.Delete(i);
     end;
@@ -5115,7 +5115,7 @@ begin
     var cellIndex: integer;
     FindInRow(rows[rowIndex], area.fLeft, cellIndex);
     var cells: TCellCTList := rows[rowIndex].C;
-    while (cellIndex < cells.Count) and (ColumnOf(cells[cellIndex].R) <= area.fRight) do
+    while (cellIndex < cells.Count) and (TUtility.ColumnOf(cells[cellIndex].R) <= area.fRight) do
     begin
       if HasValue(cells[cellIndex]) then
       begin
@@ -5126,10 +5126,10 @@ begin
     end;
     Inc(rowIndex);
   end;
-  if (first <> nil) and (string(first.R) <> CellName(area.fTop, area.fLeft)) then
+  if (first <> nil) and (string(first.R) <> TUtility.CellName(area.fTop, area.fLeft)) then
   begin
     var row, column: integer;
-    ParseAddress(first.R, row, column, row, column);
+    TUtility.ParseAddress(first.R, row, column, row, column);
     var text: string;
     var value: Variant;
     if first.IsPresent('F') then
@@ -5180,7 +5180,7 @@ begin
   for var i := list.Count - 1 downto 0 do
   begin
     var area: TRange := MakeRange(0, 0, 0, 0);
-    if ParseAddress(list[i].Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) and Overlaps(area, aRange) then
+    if TUtility.ParseAddress(list[i].Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) and Overlaps(area, aRange) then
     begin
       Objects(True);
       list.Delete(i);
@@ -5294,11 +5294,11 @@ begin
   if not (pane.State in [stpsFrozen, stpsFrozenSplit]) then
     Exit;
   var top, left, bottom, right: integer;
-  if (pane.TopLeftCell <> '') and ParseAddress(pane.TopLeftCell, top, left, bottom, right) and (top = bottom) and
+  if (pane.TopLeftCell <> '') and TUtility.ParseAddress(pane.TopLeftCell, top, left, bottom, right) and (top = bottom) and
     (left = right) then
-    Result := CellName(top, left)
+    Result := TUtility.CellName(top, left)
   else
-    Result := CellName(Trunc(pane.YSplit) + 1, Trunc(pane.XSplit) + 1);
+    Result := TUtility.CellName(Trunc(pane.YSplit) + 1, Trunc(pane.XSplit) + 1);
 end;
 
 // Excel's frozen pane and its selections, as Excel writes them for one view
@@ -5309,7 +5309,7 @@ begin
   if aValue <> '' then
   begin
     var bottom, right: integer;
-    if not ParseAddress(aValue, row, column, bottom, right) or (row <> bottom) or (column <> right) then
+    if not TUtility.ParseAddress(aValue, row, column, bottom, right) or (row <> bottom) or (column <> right) then
       raise EArgumentException.CreateFmt('FreezePanes takes a cell: "%s"', [aValue]);
   end;
   var sheet: TWorksheetE := Objects(False);
@@ -5341,7 +5341,7 @@ begin
   var pane: TPaneCT := view.Pane;
   pane.XSplit := column - 1;
   pane.YSplit := row - 1;
-  pane.TopLeftCell := CellName(row, column);
+  pane.TopLeftCell := TUtility.CellName(row, column);
   pane.State := stpsFrozen;
   pane.SetPresent(@pane.State);
   // a selection in each pane that scrolls, its first cell: Excel's own
@@ -5350,17 +5350,17 @@ begin
   if row = 1 then
   begin
     panes := [stpTopRight];
-    cells := [CellName(1, column)];
+    cells := [TUtility.CellName(1, column)];
   end
   else if column = 1 then
   begin
     panes := [stpBottomLeft];
-    cells := [CellName(row, 1)];
+    cells := [TUtility.CellName(row, 1)];
   end
   else
   begin
     panes := [stpTopRight, stpBottomLeft, stpBottomRight];
-    cells := [CellName(1, column), CellName(row, 1), CellName(row, column)];
+    cells := [TUtility.CellName(1, column), TUtility.CellName(row, 1), TUtility.CellName(row, column)];
   end;
   pane.ActivePane := panes[High(panes)];
   pane.SetPresent(@pane.ActivePane);
@@ -5401,7 +5401,7 @@ const
 begin
   var sheet: TWorksheetE := Objects(False);
   var last: integer := aFirst - aCount - 1;
-  var limit: integer := IfThen(aByRows, cMaxRow, cMaxColumn);
+  var limit: integer := IfThen(aByRows, TUtility.cMaxRow, TUtility.cMaxColumn);
   FindFormulas;
   for var area: TRange in fArrays do
   begin
@@ -5412,16 +5412,16 @@ begin
       var moved: integer := ShiftedIndex(low, aFirst, aCount, limit);
       if moved = 0 then
         Continue;
-      var anchor: string := CellName(area.fTop, area.fLeft);
+      var anchor: string := TUtility.CellName(area.fTop, area.fLeft);
       if moved + high - low > limit then
         Exit(Format('the dynamic array at %s spilled past the end of the worksheet (Excel shows #SPILL!)', [anchor]) +
           cNotYet);
       for var row: TRowCT in sheet.SheetData.Row do
         for var cell: TCellCT in row.C do
-          if HasValue(cell) and not Holds(area, integer(row.R), ColumnOf(cell.R)) then
+          if HasValue(cell) and not Holds(area, integer(row.R), TUtility.ColumnOf(cell.R)) then
           begin
-            var along: integer := IfThen(aByRows, integer(row.R), ColumnOf(cell.R));
-            var across: integer := IfThen(aByRows, ColumnOf(cell.R), integer(row.R));
+            var along: integer := IfThen(aByRows, integer(row.R), TUtility.ColumnOf(cell.R));
+            var across: integer := IfThen(aByRows, TUtility.ColumnOf(cell.R), integer(row.R));
             var place: integer := ShiftedIndex(along, aFirst, aCount, limit);
             if (place >= moved) and (place <= moved + high - low) and (across >= IfThen(aByRows, area.fLeft, area.fTop)) and
               (across <= IfThen(aByRows, area.fRight, area.fBottom)) then
@@ -5440,7 +5440,7 @@ begin
     for var row: TRowCT in sheet.SheetData.Row do
       for var cell: TCellCT in row.C do
         if HasValue(cell) and (aByRows and (integer(row.R) > limit - aCount) or
-          not aByRows and (ColumnOf(cell.R) > limit - aCount)) then
+          not aByRows and (TUtility.ColumnOf(cell.R) > limit - aCount)) then
           Exit(cPushedOff);
   Result := PivotsBlocker(aByRows, aFirst, aCount);
   if Result = '' then
@@ -5536,9 +5536,9 @@ begin
   Result := False;
   aWhy := '';
   map := aMap;
-  map.OnSheet := (map.Change <> rcSheetDelete) and AnsiSameText(aSheet.fName, map.Sheet);
+  map.OnSheet := (map.Change <> TReferenceChange.rcSheetDelete) and AnsiSameText(aSheet.fName, map.Sheet);
   map.InName := False;
-  var count: integer := IfThen(aMap.Change = rcDelete, -aMap.Count, aMap.Count);
+  var count: integer := IfThen(aMap.Change = TReferenceChange.rcDelete, -aMap.Count, aMap.Count);
   var sheet: TWorksheetE := aSheet.Objects(False);
   for var row: TRowCT in sheet.SheetData.Row do
     for var cell: TCellCT in row.C do
@@ -5550,14 +5550,14 @@ begin
       var move: TWorksheet.TFormulaMove;
       move.Cell := cell;
       move.Row := row.R;
-      move.Column := ColumnOf(cell.R);
+      move.Column := TUtility.ColumnOf(cell.R);
       if not aSheet.FormulaText(move.Row, move.Column, move.Before) then
         Continue;
       if aShifted = aSheet then
         if aMap.ByRows then
-          move.Row := ShiftedIndex(move.Row, aMap.First, count, cMaxRow)
+          move.Row := ShiftedIndex(move.Row, aMap.First, count, TUtility.cMaxRow)
         else
-          move.Column := ShiftedIndex(move.Column, aMap.First, count, cMaxColumn);
+          move.Column := ShiftedIndex(move.Column, aMap.First, count, TUtility.cMaxColumn);
       if (move.Row = 0) or (move.Column = 0) then
         Continue;
       if not Changed(move.Before, cell.R, move.After) then
@@ -5626,14 +5626,14 @@ begin
     Result.Spans := aSource.Spans;
   for var cell: TCellCT in aSource.C do
   begin
-    var column: integer := ColumnOf(cell.R);
+    var column: integer := TUtility.ColumnOf(cell.R);
     var shown: cardinal := ColumnStyle(column);
     if Result.CustomFormat then
       shown := Result.S;
     if cell.S <> shown then
     begin
       var added: TCellCT := TCellCT.Create;
-      added.R := CellName(aNumber, column);
+      added.R := TUtility.CellName(aNumber, column);
       added.S := cell.S;
       Result.C.Add(added);
     end;
@@ -5653,7 +5653,7 @@ begin
   SplitColumns(columns, aFirst);
   if aCount < 0 then
   begin
-    if last < cMaxColumn then
+    if last < TUtility.cMaxColumn then
       SplitColumns(columns, last + 1);
     for var i := columns.Count - 1 downto 0 do
       if (integer(columns[i].Min) >= aFirst) and (integer(columns[i].Max) <= last) then
@@ -5670,12 +5670,12 @@ begin
     for var i := columns.Count - 1 downto 0 do
       if integer(columns[i].Min) >= aFirst then
       begin
-        if integer(columns[i].Min) + aCount > cMaxColumn then
+        if integer(columns[i].Min) + aCount > TUtility.cMaxColumn then
           columns.Delete(i)
         else
         begin
           columns[i].Min := integer(columns[i].Min) + aCount;
-          columns[i].Max := Min(integer(columns[i].Max) + aCount, cMaxColumn);
+          columns[i].Max := Min(integer(columns[i].Max) + aCount, TUtility.cMaxColumn);
         end;
       end
       else if integer(columns[i].Max) = aFirst - 1 then
@@ -5725,14 +5725,14 @@ begin
       end
     else
       for var i := rows.Count - 1 downto index do
-        if integer(rows[i].R) + aCount > cMaxRow then // only formats there (ShiftBlocker)
+        if integer(rows[i].R) + aCount > TUtility.cMaxRow then // only formats there (ShiftBlocker)
           rows.Delete(i);
     for var i := index to rows.Count - 1 do
     begin
       var row: TRowCT := rows[i];
       row.R := integer(row.R) + aCount;
       for var cell: TCellCT in row.C do
-        cell.R := CellName(row.R, ColumnOf(cell.R));
+        cell.R := TUtility.CellName(row.R, TUtility.ColumnOf(cell.R));
     end;
     var above: integer;
     if (aCount > 0) and (aFirst > 1) and FindRow(sheet, aFirst - 1, above) then
@@ -5751,18 +5751,18 @@ begin
     var index: integer;
     FindInRow(row, aFirst, index);
     if aCount < 0 then
-      while (index < cells.Count) and (ColumnOf(cells[index].R) <= last) do
+      while (index < cells.Count) and (TUtility.ColumnOf(cells[index].R) <= last) do
       begin
         RemoveValue(cells[index]);
         cells.Delete(index);
       end
     else
       for var i := cells.Count - 1 downto index do
-        if ColumnOf(cells[i].R) + aCount > cMaxColumn then
+        if TUtility.ColumnOf(cells[i].R) + aCount > TUtility.cMaxColumn then
           cells.Delete(i);
     for var i := index to cells.Count - 1 do
-      cells[i].R := CellName(row.R, ColumnOf(cells[i].R) + aCount);
-    if (aCount > 0) and (index > 0) and (ColumnOf(cells[index - 1].R) = aFirst - 1) then
+      cells[i].R := TUtility.CellName(row.R, TUtility.ColumnOf(cells[i].R) + aCount);
+    if (aCount > 0) and (index > 0) and (TUtility.ColumnOf(cells[index - 1].R) = aFirst - 1) then
     begin
       var source: TCellCT := cells[index - 1];
       var shown: cardinal := ColumnStyle(aFirst);
@@ -5772,7 +5772,7 @@ begin
         for var column := aFirst + aCount - 1 downto aFirst do
         begin
           var added: TCellCT := TCellCT.Create;
-          added.R := CellName(row.R, column);
+          added.R := TUtility.CellName(row.R, column);
           added.S := source.S;
           cells.Insert(index, added);
         end;
@@ -5781,7 +5781,7 @@ begin
       if cells.Count = 0 then
         row.Clear(@row.Spans)
       else
-        row.Spans := Format('%d:%d', [ColumnOf(cells[0].R), ColumnOf(cells[cells.Count - 1].R)]);
+        row.Spans := Format('%d:%d', [TUtility.ColumnOf(cells[0].R), TUtility.ColumnOf(cells[cells.Count - 1].R)]);
   end;
 end;
 
@@ -5805,7 +5805,7 @@ begin
       for var i := row.C.Count - 1 downto 0 do
       begin
         var cell: TCellCT := row.C[i];
-        var column: integer := ColumnOf(cell.R);
+        var column: integer := TUtility.ColumnOf(cell.R);
         if (column < area.fLeft) or (column > area.fRight) or (integer(row.R) = area.fTop) and (column = area.fLeft) or
           not cell.Present[@cell.V] or cell.IsPresent('F') or cell.IsPresent('Is') then
           Continue;
@@ -5836,9 +5836,9 @@ begin
   begin
     var moved: integer;
     if aByRows then
-      moved := ShiftedIndex(spill.Area.fTop, aFirst, aCount, cMaxRow)
+      moved := ShiftedIndex(spill.Area.fTop, aFirst, aCount, TUtility.cMaxRow)
     else
-      moved := ShiftedIndex(spill.Area.fLeft, aFirst, aCount, cMaxColumn);
+      moved := ShiftedIndex(spill.Area.fLeft, aFirst, aCount, TUtility.cMaxColumn);
     var top: integer := IfThen(aByRows, moved, spill.Area.fTop);
     var left: integer := IfThen(aByRows, spill.Area.fLeft, moved);
     for var value: TSpillValue in spill.Values do
@@ -5870,7 +5870,7 @@ begin
   var rows: TRowCTList := Objects(False).SheetData.Row;
   var moved: boolean := False;
   for var row: TRowCT in rows do
-    if (row.C.Count > 0) and (ColumnOf(row.C[row.C.Count - 1].R) >= aFirst) then
+    if (row.C.Count > 0) and (TUtility.ColumnOf(row.C[row.C.Count - 1].R) >= aFirst) then
       moved := True;
   if not moved and (aCount > 0) then
     for var area: TRange in FindMerges do
@@ -5893,7 +5893,7 @@ begin
   var filtered: boolean := aFilter.FilterColumn.Count > 0;
   for var i := aFilter.FilterColumn.Count - 1 downto 0 do
   begin
-    var column: integer := ShiftedIndex(aOldLeft + integer(aFilter.FilterColumn[i].ColId), aFirst, aCount, cMaxColumn);
+    var column: integer := ShiftedIndex(aOldLeft + integer(aFilter.FilterColumn[i].ColId), aFirst, aCount, TUtility.cMaxColumn);
     if column = 0 then
       aFilter.FilterColumn.Delete(i)
     else
@@ -5940,7 +5940,7 @@ var
   begin
     for var i := aBreaks.Brk.Count - 1 downto 0 do
     begin
-      var id: integer := ShiftedIndex(aBreaks.Brk[i].Id, aFirst, aCount, IfThen(aByRows, cMaxRow, cMaxColumn));
+      var id: integer := ShiftedIndex(aBreaks.Brk[i].Id, aFirst, aCount, IfThen(aByRows, TUtility.cMaxRow, TUtility.cMaxColumn));
       if id = 0 then
         aBreaks.Brk.Delete(i)
       else
@@ -5972,7 +5972,7 @@ begin
     for var i := merged.Count - 1 downto 0 do
     begin
       var area: TRange := Default(TRange);
-      if ParseAddress(merged[i].Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
+      if TUtility.ParseAddress(merged[i].Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
         if ShiftedArea(area, aByRows, aFirst, aCount, False) and ((area.fTop <> area.fBottom) or (area.fLeft <> area.fRight)) then
           merged[i].Ref := CellsAddress(area)
         else
@@ -6027,7 +6027,7 @@ begin
   begin
     var filter: TAutoFilterCT := sheet.AutoFilter;
     var area: TRange := Default(TRange);
-    if ParseAddress(filter.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
+    if TUtility.ParseAddress(filter.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
     begin
       var oldLeft: integer := area.fLeft;
       if aByRows and (aCount < 0) and (aFirst <= area.fTop) and (last >= area.fTop) or
@@ -6097,20 +6097,20 @@ begin
         if aByRows then
         begin
           pane.YSplit := moved;
-          if ParseAddress(pane.TopLeftCell, top, left, bottom, right) then
-            pane.TopLeftCell := CellName(Max(1, top + moved - split), left);
+          if TUtility.ParseAddress(pane.TopLeftCell, top, left, bottom, right) then
+            pane.TopLeftCell := TUtility.CellName(Max(1, top + moved - split), left);
         end
         else
         begin
           pane.XSplit := moved;
-          if ParseAddress(pane.TopLeftCell, top, left, bottom, right) then
-            pane.TopLeftCell := CellName(top, Max(1, left + moved - split));
+          if TUtility.ParseAddress(pane.TopLeftCell, top, left, bottom, right) then
+            pane.TopLeftCell := TUtility.CellName(top, Max(1, left + moved - split));
         end;
       end;
   if sheet.IsPresent('Dimension') then
   begin
     var area: TRange := Default(TRange);
-    if ParseAddress(sheet.Dimension.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
+    if TUtility.ParseAddress(sheet.Dimension.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
       if ShiftedArea(area, aByRows, aFirst, aCount, False) then
         sheet.Dimension.Ref := CellsAddress(area)
       else
@@ -6218,7 +6218,7 @@ begin
     fDefault := Trunc(format.DefaultColWidth * cDigitPixels + 0.5) * cPixel;
   for var columns: TColsCT in sheet.Cols do // not SortedColumns: it would add an empty <cols>, which Excel refuses
     for var column: TColCT in columns.Col do
-      for var index := column.Min to Min(column.Max, cMaxColumn) do
+      for var index := column.Min to Min(column.Max, TUtility.cMaxColumn) do
         if column.Hidden then
           fSizes.Add(TPair<integer, Int64>.Create(index, 0))
         else if column.Present[@column.Width] then
@@ -6310,7 +6310,7 @@ begin
     begin
       var table: TTableE := package.Part<TTableE>(relationship.Part);
       var area: TRange := Default(TRange);
-      if (table = nil) or not ParseAddress(table.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
+      if (table = nil) or not TUtility.ParseAddress(table.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
         Exit(Format('a table that does not read (%s)', [relationship.Part]));
       if IfThen(aByRows, area.fBottom, area.fRight) < aFirst then
         Continue;
@@ -6330,7 +6330,7 @@ begin
   if sheet.IsPresent('AutoFilter') and (sheet.AutoFilter.FilterColumn.Count > 0) then
   begin
     var area: TRange := Default(TRange);
-    if ParseAddress(sheet.AutoFilter.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) and Through(area) then
+    if TUtility.ParseAddress(sheet.AutoFilter.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) and Through(area) then
       Exit(Format(cFiltered, ['list', CellsAddress(area)]));
     if SomeFilters(sheet.AutoFilter, area.fLeft) then
       Exit(Format(cFilterDeleted, ['list', CellsAddress(area)]));
@@ -6377,7 +6377,7 @@ begin
     begin
       var table: TTableE := package.Part<TTableE>(relationship.Part);
       var area: TRange := Default(TRange);
-      if (table = nil) or not ParseAddress(table.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) or
+      if (table = nil) or not TUtility.ParseAddress(table.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) or
         (table.HeaderRowCount = 0) then
         Continue;
       var dataTop: integer := area.fTop + integer(table.HeaderRowCount);
@@ -6408,7 +6408,7 @@ begin
     begin
       var table: TTableE := package.Part<TTableE>(relationship.Part);
       var area: TRange := Default(TRange);
-      if not ParseAddress(table.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
+      if not TUtility.ParseAddress(table.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
         Continue;
       var data: TRange := area;
       data.fTop := area.fTop + integer(table.HeaderRowCount);
@@ -6420,7 +6420,7 @@ begin
         fGone := fGone + [string(table.Name)]
       else if not aByRows then
       begin
-        ParseAddress(table.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight);
+        TUtility.ParseAddress(table.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight);
         for var index := 0 to table.TableColumns.TableColumn.Count - 1 do
           if (area.fLeft + index >= aFirst) and (area.fLeft + index <= last) then
             fGone := fGone + [table.Name + '[' + table.TableColumns.TableColumn[index].Name + ']'];
@@ -6493,7 +6493,7 @@ begin
       Continue;
     var table: TTableE := package.EditPart<TTableE>(relationship.Part);
     var old: TRange := Default(TRange);
-    if not ParseAddress(table.Ref, old.fTop, old.fLeft, old.fBottom, old.fRight) then
+    if not TUtility.ParseAddress(table.Ref, old.fTop, old.fLeft, old.fBottom, old.fRight) then
       Continue;
     var area: TRange := old;
     if not ShiftedArea(area, aByRows, aFirst, aCount, False) then
@@ -6619,7 +6619,7 @@ begin
     begin
       var pivot: TPivotTableDefinitionE := package.Part<TPivotTableDefinitionE>(relationship.Part);
       var area: TRange := Default(TRange);
-      if (pivot = nil) or not ParseAddress(pivot.Location.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
+      if (pivot = nil) or not TUtility.ParseAddress(pivot.Location.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
         Continue;
       var whole: TRange := area;
       if pivot.Location.RowPageCount > 0 then // the page fields and a blank row
@@ -6752,7 +6752,7 @@ begin
   if aMoves.Count = 0 then
     Exit;
   last := aFirst - aCount - 1;
-  limit := IfThen(aByRows, cMaxRow, cMaxColumn);
+  limit := IfThen(aByRows, TUtility.cMaxRow, TUtility.cMaxColumn);
   var package: TPackageOoxml := fWorkbook.fPackage;
   axis := TAxis.Create(Self, aByRows);
   try
@@ -6835,7 +6835,7 @@ begin
       if (cell.Sheet.Length >= 2) and cell.Sheet.StartsWith('''') and cell.Sheet.EndsWith('''') then
         cell.Sheet := cell.Sheet.Substring(1, cell.Sheet.Length - 2).Replace('''''', '''');
       var top, left, bottom, right: integer;
-      if not ParseAddress(part.Substring(bang + 1), top, left, bottom, right) or (top <> bottom) and (left <> right) or
+      if not TUtility.ParseAddress(part.Substring(bang + 1), top, left, bottom, right) or (top <> bottom) and (left <> right) or
         (cells.Count + (bottom - top + 1) * (right - left + 1) > cMostCells) then
         Exit(False);
       for var row := top to bottom do
@@ -6875,7 +6875,7 @@ begin
   try
     for var i := 0 to High(after) do
       places.AddOrSetValue(Key(after[i]), i);
-    var limit: integer := IfThen(aByRows, cMaxRow, cMaxColumn);
+    var limit: integer := IfThen(aByRows, TUtility.cMaxRow, TUtility.cMaxColumn);
     SetLength(aIndexes, Length(before));
     for var i := 0 to High(before) do
     begin
@@ -7018,7 +7018,7 @@ begin
     var owners: TList<string> := TList<string>.Create;
     try
       for var sheet: TWorksheet in aSheet.fWorkbook.fSheets do
-        if (sheet <> aSheet) or (aMap.Change <> rcSheetDelete) then
+        if (sheet <> aSheet) or (aMap.Change <> TReferenceChange.rcSheetDelete) then
           owners.Add(sheet.fPartName);
       for var relationship: TRelationshipOoxml in package.Relationships(aSheet.fWorkbook.fWorkbookPart) do
         if relationship.&Type.EndsWith(cChartsheet) and (relationship.Part <> '') then
@@ -7186,7 +7186,7 @@ begin
       Exit('threaded comments, which Calcite does not move yet');
   var commentsPart, drawingPart: string;
   NotesParts(commentsPart, drawingPart);
-  var limit: integer := IfThen(aByRows, cMaxRow, cMaxColumn);
+  var limit: integer := IfThen(aByRows, TUtility.cMaxRow, TUtility.cMaxColumn);
   if commentsPart <> '' then
   begin
     var comments: TCommentsE := package.Part<TCommentsE>(commentsPart);
@@ -7196,7 +7196,7 @@ begin
       for var comment: TCommentCT in comments.CommentList.Comment do
       begin
         var top, left, bottom, right: integer;
-        if ParseAddress(comment.Ref, top, left, bottom, right) and (IfThen(aByRows, top, left) > limit - aCount) then
+        if TUtility.ParseAddress(comment.Ref, top, left, bottom, right) and (IfThen(aByRows, top, left) > limit - aCount) then
           Exit(cPushedOff);
       end;
   end;
@@ -7237,7 +7237,7 @@ begin
   if (commentsPart = '') and (drawingPart = '') then
     Exit;
   var package: TPackageOoxml := fWorkbook.fPackage;
-  var limit: integer := IfThen(aByRows, cMaxRow, cMaxColumn);
+  var limit: integer := IfThen(aByRows, TUtility.cMaxRow, TUtility.cMaxColumn);
   var notesLeft: boolean := False;
   if commentsPart <> '' then
   begin
@@ -7247,7 +7247,7 @@ begin
     begin
       var comment: TCommentCT := comments.CommentList.Comment[i];
       var top, left, bottom, right: integer;
-      if not ParseAddress(comment.Ref, top, left, bottom, right) then
+      if not TUtility.ParseAddress(comment.Ref, top, left, bottom, right) then
         Continue;
       var index: integer := IfThen(aByRows, top, left);
       var moved: integer := ShiftedIndex(index, aFirst, aCount, limit);
@@ -7259,9 +7259,9 @@ begin
       if moved = 0 then
         comments.CommentList.Comment.Remove(comment)
       else if aByRows then
-        comment.Ref := CellName(moved, left)
+        comment.Ref := TUtility.CellName(moved, left)
       else
-        comment.Ref := CellName(top, moved);
+        comment.Ref := TUtility.CellName(top, moved);
     end;
     notesLeft := comments.CommentList.Comment.Count > 0;
   end;
@@ -7399,7 +7399,7 @@ begin
         formula.XmlValue := EncodeText(move.After);
       end;
       var area: TRange := Default(TRange);
-      if aShifted and (formula.T = stcftArray) and ParseAddress(formula.Ref, area.fTop, area.fLeft, area.fBottom,
+      if aShifted and (formula.T = stcftArray) and TUtility.ParseAddress(formula.Ref, area.fTop, area.fLeft, area.fBottom,
         area.fRight) then
         if (move.Cell.Cm > 0) and fWorkbook.IsDynamicArray(move.Cell.Cm) then
         begin // spilled again from its cell, as large as before
@@ -7426,7 +7426,7 @@ begin
       var area: TRange := Default(TRange);
       var ref: string;
       var shared: boolean := not first.After.Contains('#REF!') and aRefs.TryGetValue(group.Key, ref) and
-        ParseAddress(ref, area.fTop, area.fLeft, area.fBottom, area.fRight) and
+        TUtility.ParseAddress(ref, area.fTop, area.fLeft, area.fBottom, area.fRight) and
         (not aShifted or ShiftedArea(area, aByRows, aFirst, aCount, False));
       for var index: integer in members do
       begin
@@ -7468,7 +7468,7 @@ end;
 procedure TWorksheet.Shift(aByRows: boolean; aFirst, aCount: integer);
 begin
   var last: integer := aFirst + Abs(aCount) - 1;
-  var what: string := Format('Columns %s:%s', [ColumnName(aFirst), ColumnName(last)]);
+  var what: string := Format('Columns %s:%s', [TUtility.ColumnName(aFirst), TUtility.ColumnName(last)]);
   if aByRows then
     what := Format('Rows %d:%d', [aFirst, last]);
   var cleared: TList<TRange> := TList<TRange>.Create;
@@ -7527,7 +7527,7 @@ begin
     for var area: TRange in cleared do
       for var row: TRowCT in RowEntries(area.fTop, area.fBottom) do
         for var cell: TCellCT in row.C do
-          if (ColumnOf(cell.R) >= area.fLeft) and (ColumnOf(cell.R) <= area.fRight) then
+          if (TUtility.ColumnOf(cell.R) >= area.fLeft) and (TUtility.ColumnOf(cell.R) <= area.fRight) then
             RemoveValue(cell);
   finally
     fGone := nil;
@@ -7579,7 +7579,7 @@ end;
 procedure TWorksheet.WriteDate(aRow, aColumn: integer; aValue: TDateTime; const aTarget: TRange);
 begin
   var serial: Double;
-  if not DateToSerial(aValue, fWorkbook.Date1904, serial) then
+  if not TUtility.DateToSerial(aValue, fWorkbook.Date1904, serial) then
   begin
     Refuse(aRow, aColumn, 'Value', 'a date before the first one Excel has (' + DateToISO8601(aValue) + ')');
     Exit;
@@ -7609,8 +7609,8 @@ end;
 
 procedure TWorksheet.WriteText(aRow, aColumn: integer; const aValue: string; const aTarget: TRange);
 begin
-  if aValue.Length > cMaxText then
-    Refuse(aRow, aColumn, 'Value', Format('%d characters, Excel''s cells hold up to %d', [aValue.Length, cMaxText]))
+  if aValue.Length > TUtility.cMaxText then
+    Refuse(aRow, aColumn, 'Value', Format('%d characters, Excel''s cells hold up to %d', [aValue.Length, TUtility.cMaxText]))
   else if Uncovered(aRow, aColumn) and CanWrite(aRow, aColumn, aTarget) then
   begin
     var index: integer := fWorkbook.SharedStringIndex(aValue);
@@ -7733,10 +7733,10 @@ begin
     var row: TRowCT := rows[rowIndex];
     var cellIndex: integer;
     FindInRow(row, aRange.fLeft, cellIndex);
-    while (cellIndex < row.C.Count) and (ColumnOf(row.C[cellIndex].R) <= aRange.fRight) do
+    while (cellIndex < row.C.Count) and (TUtility.ColumnOf(row.C[cellIndex].R) <= aRange.fRight) do
     begin
       var cell: TCellCT := row.C[cellIndex];
-      var column: integer := ColumnOf(cell.R);
+      var column: integer := TUtility.ColumnOf(cell.R);
       var hasValue: boolean := cell.Present[@cell.V] or cell.IsPresent('F') or cell.IsPresent('Is');
       var area: TRange;
       if hasValue and MergedAt(row.R, column, area) and not Contains(aRange, area) and
@@ -7780,7 +7780,7 @@ begin
     var cell: TCellCT := move.Cell;
     var area: TRange := MakeRange(0, 0, 0, 0);
     if (move.After = move.Before) or not move.After.Contains('#REF!') or (cell.F.T <> stcftArray) or (cell.Cm = 0) or
-      not fWorkbook.IsDynamicArray(cell.Cm) or not ParseAddress(cell.F.Ref, area.fTop, area.fLeft, area.fBottom,
+      not fWorkbook.IsDynamicArray(cell.Cm) or not TUtility.ParseAddress(cell.F.Ref, area.fTop, area.fLeft, area.fBottom,
       area.fRight) then
       Continue;
     Objects(True);
@@ -7788,7 +7788,7 @@ begin
       for var i := row.C.Count - 1 downto 0 do
       begin
         var spilled: TCellCT := row.C[i];
-        var column: integer := ColumnOf(spilled.R);
+        var column: integer := TUtility.ColumnOf(spilled.R);
         if (spilled = cell) or (column < area.fLeft) or (column > area.fRight) then
           Continue;
         RemoveValue(spilled);
@@ -7813,24 +7813,24 @@ end;
 function TWorksheet.GetRange(const aAddress: string): TRange;
 begin
   var top, left, bottom, right: integer;
-  if not ParseAddress(aAddress, top, left, bottom, right) then
+  if not TUtility.ParseAddress(aAddress, top, left, bottom, right) then
     raise EArgumentException.CreateFmt('Not an address on a sheet: "%s"', [aAddress]);
   Result := MakeRange(top, left, bottom, right);
 end;
 
 function TWorksheet.GetCells(aRow, aColumn: integer): TRange;
 begin
-  if (aRow < 1) or (aRow > cMaxRow) then
-    raise EArgumentOutOfRangeException.CreateFmt('There is no row %d (1 to %d)', [aRow, cMaxRow]);
-  if (aColumn < 1) or (aColumn > cMaxColumn) then
-    raise EArgumentOutOfRangeException.CreateFmt('There is no column %d (1 to %d)', [aColumn, cMaxColumn]);
+  if (aRow < 1) or (aRow > TUtility.cMaxRow) then
+    raise EArgumentOutOfRangeException.CreateFmt('There is no row %d (1 to %d)', [aRow, TUtility.cMaxRow]);
+  if (aColumn < 1) or (aColumn > TUtility.cMaxColumn) then
+    raise EArgumentOutOfRangeException.CreateFmt('There is no column %d (1 to %d)', [aColumn, TUtility.cMaxColumn]);
   Result := MakeRange(aRow, aColumn, aRow, aColumn);
 end;
 
 function TWorksheet.GetCellsByLetters(aRow: integer; const aColumn: string): TRange;
 begin
   var index: integer := 1;
-  var column: integer := ReadColumn(aColumn, index);
+  var column: integer := TUtility.ReadColumn(aColumn, index);
   if (column = 0) or (index <= aColumn.Length) then
     raise EArgumentException.CreateFmt('Not a column: "%s" (A to XFD)', [aColumn]);
   Result := GetCells(aRow, column);
@@ -7847,8 +7847,8 @@ begin
     begin
       top := Min(top, row.R);
       bottom := Max(bottom, row.R);
-      left := Min(left, ColumnOf(row.C.First.R));
-      right := Max(right, ColumnOf(row.C.Last.R));
+      left := Min(left, TUtility.ColumnOf(row.C.First.R));
+      right := Max(right, TUtility.ColumnOf(row.C.Last.R));
     end;
   if bottom = 0 then
     Result := MakeRange(1, 1, 1, 1)
@@ -8251,7 +8251,7 @@ begin
     if relationship.&Type.EndsWith(cTable) then
     begin
       var table: TTableE := fPackage.Part<TTableE>(relationship.Part);
-      if (table <> nil) and ParseAddress(table.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
+      if (table <> nil) and TUtility.ParseAddress(table.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
       begin
         var whole: TRange := area;
         aTables.Add(whole);
@@ -8271,7 +8271,7 @@ begin
     else if relationship.&Type.EndsWith(cPivotTable) then
     begin
       var pivot: TPivotTableDefinitionE := fPackage.Part<TPivotTableDefinitionE>(relationship.Part);
-      if (pivot <> nil) and ParseAddress(pivot.Location.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
+      if (pivot <> nil) and TUtility.ParseAddress(pivot.Location.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
       begin
         if pivot.Location.RowPageCount > 0 then // the page fields and a blank row
           area.fTop := Max(1, area.fTop - integer(pivot.Location.RowPageCount) - 1);
@@ -8322,8 +8322,8 @@ function TWorkbook.SheetNameError(const aName: string; aExcept: TWorksheet): str
 begin
   if aName.IsEmpty then
     Exit('a sheet''s name cannot be empty');
-  if Length(aName) > cMaxSheetName then
-    Exit(Format('a sheet''s name has at most %d characters', [cMaxSheetName]));
+  if Length(aName) > TUtility.cMaxSheetName then
+    Exit(Format('a sheet''s name has at most %d characters', [TUtility.cMaxSheetName]));
   for var c: char in aName do
     if CharInSet(c, ['[', ']', ':', '*', '?', '/', '\']) or (c < ' ') then
       Exit('a sheet''s name cannot have [ ] : * ? / \ or control characters');
@@ -8787,7 +8787,7 @@ begin
     value := ThemeColor(aColor.Theme)
   else if aColor.Present[@aColor.Indexed] then
   begin
-    value := PaletteColor(aColor.Indexed);
+    value := TUtility.PaletteColor(aColor.Indexed);
     var styles: TStyleSheetE := fPackage.Part<TStyleSheetE>(fStylesPart);
     if (aColor.Indexed < cAutomaticIndex) and styles.IsPresent('Colors') and styles.Colors.IsPresent('IndexedColors') and
       (aColor.Indexed < cardinal(styles.Colors.IndexedColors.RgbColor.Count)) then
@@ -8796,7 +8796,7 @@ begin
   else
     Exit(aDefault);
   if aColor.Present[@aColor.Tint] then
-    value := TintedColor(value, aColor.Tint);
+    value := TUtility.TintedColor(value, aColor.Tint);
   Result := value;
 end;
 

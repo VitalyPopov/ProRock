@@ -864,8 +864,8 @@ begin
               if TXmlite(Self).fXmlBadAttributes = nil then
                 TXmlite(Self).fXmlBadAttributes := TDictionary<string, TProperty>.Create;
               TXmlite(Self).fXmlBadAttributes.AddOrSetValue(attributeFullName, propertyData);
-              ReadReport(attributeStart, TIssueSeverity.isWarning, 'BadValue', '', Format('%s=%s of <%s> does not fit its type: kept as read',
-                [attributeFullName, Quoted(attributeValue), objectName]));
+              ReadReport(attributeStart, TIssueSeverity.isWarning, 'BadValue', '',
+                Format('%s=%s of <%s> does not fit its type: kept as read', [attributeFullName, Quoted(attributeValue), objectName]));
             end
             else if uri <> TUtility.cXsiUri then
               ReadReport(attributeStart, TIssueSeverity.isHint, 'UnknownAttribute', objectName + ' ' + attributeFullName,
@@ -1849,7 +1849,8 @@ begin
   // spaces anyway
   if (typeKind in [tkString, tkLString, tkWString, tkUString]) and not aValue.IsEmpty and
     ((aValue.Chars[0] <= ' ') or (aValue.Chars[aValue.Length - 1] <= ' ')) and (aFieldInfo.Xmlite.Namespace <> nil) and
-    (StartsText(TUtility.cOoxmlUriPrefix, aFieldInfo.Xmlite.Namespace.Uri) or StartsText(TUtility.cOoxmlStrictUriPrefix, aFieldInfo.Xmlite.Namespace.Uri)) then
+    (StartsText(TUtility.cOoxmlUriPrefix, aFieldInfo.Xmlite.Namespace.Uri) or
+    StartsText(TUtility.cOoxmlStrictUriPrefix, aFieldInfo.Xmlite.Namespace.Uri)) then
     WriteAttribute('xml:space', 'preserve');
   Write('>');
   AddXmlEscape(aValue);

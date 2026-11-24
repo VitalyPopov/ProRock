@@ -2085,7 +2085,8 @@ end;
 
 class function TUtility.FromPascalCaseExact(const aName: string; aNaming: TNaming): string;
 begin
-  if (GuessNaming(aName) = TNaming.nUpperCase) and (aNaming in [TNaming.nCamelCase, TNaming.nSnakeCase, TNaming.nKebabCase, TNaming.nFlatCase]) then
+  if (GuessNaming(aName) = TNaming.nUpperCase) and
+    (aNaming in [TNaming.nCamelCase, TNaming.nSnakeCase, TNaming.nKebabCase, TNaming.nFlatCase]) then
     Result := aName.ToLower
   else
     Result := TUtility.FromPascalCase(aName, aNaming);

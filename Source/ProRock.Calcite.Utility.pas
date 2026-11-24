@@ -4,37 +4,37 @@
 
 interface
 
-uses System.SysUtils, System.Math, System.Variants;
+{$SCOPEDENUMS ON}
 
-const
-  cMaxSheetName = 31; // UTF-16 units, as Excel counts
-  cMaxRow = 1048576;
-  cMaxColumn = 16384;
-  cMaxText = 32767;
-  cMaxFormula = 8192;
+uses System.SysUtils, System.Math, System.Variants,
+  ProRock.Xmlite.Utility;
 
 type
+  {$REGION 'ProRock.Xmlite.Utility: its types, so a unit names only this Utility'}
+  TNaming = ProRock.Xmlite.Utility.TNaming;
+  TCustomAttributeClass = ProRock.Xmlite.Utility.TCustomAttributeClass;
+  TNamingAttribute = ProRock.Xmlite.Utility.TNamingAttribute;
+  TWriterBase = ProRock.Xmlite.Utility.TWriterBase;
+  TReaderBase = ProRock.Xmlite.Utility.TReaderBase;
+  TIssueSeverity = ProRock.Xmlite.Utility.TIssueSeverity;
+  TIssue = ProRock.Xmlite.Utility.TIssue;
+  TIssueEvent = ProRock.Xmlite.Utility.TIssueEvent;
+  TIssues = ProRock.Xmlite.Utility.TIssues;
+  PIssues = ProRock.Xmlite.Utility.PIssues;
+  TXmliteComponentType = ProRock.Xmlite.Utility.TXmliteComponentType;
+  TTagType = ProRock.Xmlite.Utility.TTagType;
+  TUriedName = ProRock.Xmlite.Utility.TUriedName;
+  TXmlns = ProRock.Xmlite.Utility.TXmlns;
+  TReaderXmlite = ProRock.Xmlite.Utility.TReaderXmlite;
+  // generics have no aliases: empty subclasses; a parent's object does not go into a child-typed variable (E2008)
+  THashSet<T> = class(ProRock.Xmlite.Utility.THashSet<T>);
+  THashedObjectList<T: class> = class(ProRock.Xmlite.Utility.THashedObjectList<T>);
+  TDictObjectList<K; V: class> = class(ProRock.Xmlite.Utility.TDictObjectList<K, V>);
+  TDualDictionary<TKey, TValue> = class(ProRock.Xmlite.Utility.TDualDictionary<TKey, TValue>);
+  TSummaryDictionary<T: class> = class(ProRock.Xmlite.Utility.TSummaryDictionary<T>);
+  {$ENDREGION}
+
   TReferenceKind = (rkNone, rkCell, rkColumn, rkRow);
-
-function ColumnName(aColumn: integer): string;
-function CellName(aRow, aColumn: integer): string;
-// the letters from aIndex on as a column number (0: none, or beyond XFD); aIndex moves past them
-function ReadColumn(const aText: string; var aIndex: integer): integer;
-function ReadRow(const aText: string; var aIndex: integer): integer;
-// a cell's r (B5) -> its column; 0 when it has none
-function ColumnOf(const aReference: string): integer;
-// B5, $B$5, A1:C10, 5:7, B:D
-function ParseAddress(const aAddress: string; out aTop, aLeft, aBottom, aRight: integer): boolean;
-// A1, $A$1, A, $A, 5, $5 (a column and a row count only as one end of A:C or 5:7)
-function ReadReference(const aWord: string; out aRow, aColumn: integer; out aRowFixed, aColumnFixed: boolean): TReferenceKind;
-// a reference's relative parts moved; False off the sheet
-function MoveReference(aKind: TReferenceKind; aRow, aColumn: integer; aRowFixed, aColumnFixed: boolean;
-  aRows, aColumns: integer; out aText: string): boolean;
-
-// a sheet's name as a formula writes it before its !: quoted ('My Sheet', 'A1', 'It''s') when Excel quotes it
-function QuotedSheet(const aName: string): string;
-
-type
   TReferenceChange = (rcFill, rcInsert, rcDelete, rcSheetDelete);
   // what a sheet deleted does to a prefix: nothing, gone with it (#REF!), a 3-D one's end moved inward
   TPrefixChange = (pcSame, pcGone, pcMoved);
@@ -81,36 +81,63 @@ type
     function TableGone(const aTable, aBrackets: string): boolean;
   end;
 
-// the columns a structured reference's brackets name ([Sales], [[#This Row],[Sales]], [[Q1]:[Q3]], [@Sales]), their '
-// escapes undone; # specifiers left out
-function TableColumns(const aBrackets: string): TArray<string>;
+  TUtility = class abstract(ProRock.Xmlite.Utility.TUtility)
+  public const
+    cMaxSheetName = 31; // UTF-16 units, as Excel counts
+    cMaxRow = 1048576;
+    cMaxColumn = 16384;
+    cMaxText = 32767;
+    cMaxFormula = 8192;
+  public
+    class function ColumnName(aColumn: integer): string; static;
+    class function CellName(aRow, aColumn: integer): string; static;
+    // the letters from aIndex on as a column number (0: none, or beyond XFD); aIndex moves past them
+    class function ReadColumn(const aText: string; var aIndex: integer): integer; static;
+    class function ReadRow(const aText: string; var aIndex: integer): integer; static;
+    // a cell's r (B5) -> its column; 0 when it has none
+    class function ColumnOf(const aReference: string): integer; static;
+    // B5, $B$5, A1:C10, 5:7, B:D
+    class function ParseAddress(const aAddress: string; out aTop, aLeft, aBottom, aRight: integer): boolean; static;
+    // A1, $A$1, A, $A, 5, $5 (a column and a row count only as one end of A:C or 5:7)
+    class function ReadReference(const aWord: string; out aRow, aColumn: integer; out aRowFixed, aColumnFixed: boolean): TReferenceKind;
+      static;
+    // a reference's relative parts moved; False off the sheet
+    class function MoveReference(aKind: TReferenceKind; aRow, aColumn: integer; aRowFixed, aColumnFixed: boolean;
+      aRows, aColumns: integer; out aText: string): boolean; static;
 
-// Excel's serial numbers: days from 1899-12-30 as TDateTime, but in the 1900 system the serials before 1900-03-01 count a
-// 1900-02-29 that never was (60 reads as 1900-02-28); a serial below 1 is a time of day
-function SerialToDate(aSerial: Double; a1904: boolean): TDateTime;
-// False before the system's first day (1900-01-01, 1904-01-01); a TDateTime below 1 is a time of day
-function DateToSerial(aDate: TDateTime; a1904: boolean; out aSerial: Double): boolean;
+    // a sheet's name as a formula writes it before its !: quoted ('My Sheet', 'A1', 'It''s') when Excel quotes it
+    class function QuotedSheet(const aName: string): string; static;
+    // the columns a structured reference's brackets name ([Sales], [[#This Row],[Sales]], [[Q1]:[Q3]], [@Sales]), their '
+    // escapes undone; # specifiers left out
+    class function TableColumns(const aBrackets: string): TArray<string>; static;
 
-// a text's width in pixels at size 11, the widest line: ASCII as Excel's AutoFit measures Aptos Narrow (aFont) or Calibri
-// (any other font), the rest estimated
-function TextPixels(const aText, aFont: string; aBold: boolean): Double;
+    // Excel's serial numbers: days from 1899-12-30 as TDateTime, but in the 1900 system the serials before 1900-03-01 count a
+    // 1900-02-29 that never was (60 reads as 1900-02-28); a serial below 1 is a time of day
+    class function SerialToDate(aSerial: Double; a1904: boolean): TDateTime; static;
+    // False before the system's first day (1900-01-01, 1904-01-01); a TDateTime below 1 is a time of day
+    class function DateToSerial(aDate: TDateTime; a1904: boolean; out aSerial: Double): boolean; static;
 
-// colors as Excel's Color (BGR, TColor's order)
-// a tint or shade (-1 darkest, 1 lightest) as Excel applies it: its integer HLS (240 steps), each product truncated
-function TintedColor(aColor: integer; aTint: Double): integer;
-// an indexed color in Excel's default palette: 0-63, 64 the system's text (black), 65 its window (white); others black
-function PaletteColor(aIndex: integer): integer;
+    // a text's width in pixels at size 11, the widest line: ASCII as Excel's AutoFit measures Aptos Narrow (aFont) or Calibri
+    // (any other font), the rest estimated
+    class function TextPixels(const aText, aFont: string; aBold: boolean): Double; static;
 
-// an item of an array for a range, from 0: two dimensions, or one (a row)
-function ArrayItem(const aArray: Variant; aRow, aColumn: integer): Variant;
-// empty, null or '': what clears a cell's formula
-function IsNoFormula(const aValue: Variant): boolean;
+    // colors as Excel's Color (BGR, TColor's order)
+    // a tint or shade (-1 darkest, 1 lightest) as Excel applies it: its integer HLS (240 steps), each product truncated
+    class function TintedColor(aColor: integer; aTint: Double): integer; static;
+    // an indexed color in Excel's default palette: 0-63, 64 the system's text (black), 65 its window (white); others black
+    class function PaletteColor(aIndex: integer): integer; static;
+
+    // an item of an array for a range, from 0: two dimensions, or one (a row)
+    class function ArrayItem(const aArray: Variant; aRow, aColumn: integer): Variant; static;
+    // empty, null or '': what clears a cell's formula
+    class function IsNoFormula(const aValue: Variant): boolean; static;
+  end;
 
 implementation
 
 uses System.Character, System.RegularExpressions;
 
-function ColumnName(aColumn: integer): string;
+class function TUtility.ColumnName(aColumn: integer): string;
 begin
   Result := '';
   while aColumn > 0 do
@@ -120,12 +147,12 @@ begin
   end;
 end;
 
-function CellName(aRow, aColumn: integer): string;
+class function TUtility.CellName(aRow, aColumn: integer): string;
 begin
   Result := ColumnName(aColumn) + IntToStr(aRow);
 end;
 
-function ReadColumn(const aText: string; var aIndex: integer): integer;
+class function TUtility.ReadColumn(const aText: string; var aIndex: integer): integer;
 begin
   Result := 0;
   while aIndex <= aText.Length do
@@ -142,7 +169,7 @@ begin
   end;
 end;
 
-function ReadRow(const aText: string; var aIndex: integer): integer;
+class function TUtility.ReadRow(const aText: string; var aIndex: integer): integer;
 begin
   Result := 0;
   while (aIndex <= aText.Length) and CharInSet(aText[aIndex], ['0' .. '9']) do
@@ -154,13 +181,13 @@ begin
   end;
 end;
 
-function ColumnOf(const aReference: string): integer;
+class function TUtility.ColumnOf(const aReference: string): integer;
 begin
   var index: integer := 1;
   Result := ReadColumn(aReference, index);
 end;
 
-function ParseAddress(const aAddress: string; out aTop, aLeft, aBottom, aRight: integer): boolean;
+class function TUtility.ParseAddress(const aAddress: string; out aTop, aLeft, aBottom, aRight: integer): boolean;
 
   // one end: a cell, a row or a column (0 for the part missing)
   function ReadEnd(const aText: string; out aRow, aColumn: integer): boolean;
@@ -215,9 +242,10 @@ begin
   Result := True;
 end;
 
-function ReadReference(const aWord: string; out aRow, aColumn: integer; out aRowFixed, aColumnFixed: boolean): TReferenceKind;
+class function TUtility.ReadReference(const aWord: string; out aRow, aColumn: integer;
+  out aRowFixed, aColumnFixed: boolean): TReferenceKind;
 begin
-  Result := rkNone;
+  Result := TReferenceKind.rkNone;
   var index: integer := 1;
   aColumnFixed := (index <= aWord.Length) and (aWord[index] = '$');
   if aColumnFixed then
@@ -244,30 +272,30 @@ begin
   if (index <= aWord.Length) or (digits and (aRow = 0)) then
     Exit;
   if letters and digits then
-    Result := rkCell
+    Result := TReferenceKind.rkCell
   else if letters and not aRowFixed then
-    Result := rkColumn
+    Result := TReferenceKind.rkColumn
   else if digits and not aColumnFixed then
-    Result := rkRow;
+    Result := TReferenceKind.rkRow;
 end;
 
-function MoveReference(aKind: TReferenceKind; aRow, aColumn: integer; aRowFixed, aColumnFixed: boolean;
+class function TUtility.MoveReference(aKind: TReferenceKind; aRow, aColumn: integer; aRowFixed, aColumnFixed: boolean;
   aRows, aColumns: integer; out aText: string): boolean;
 begin
-  if not aRowFixed and (aKind in [rkCell, rkRow]) then
+  if not aRowFixed and (aKind in [TReferenceKind.rkCell, TReferenceKind.rkRow]) then
     Inc(aRow, aRows);
-  if not aColumnFixed and (aKind in [rkCell, rkColumn]) then
+  if not aColumnFixed and (aKind in [TReferenceKind.rkCell, TReferenceKind.rkColumn]) then
     Inc(aColumn, aColumns);
-  Result := ((aKind = rkColumn) or ((aRow >= 1) and (aRow <= cMaxRow))) and
-    ((aKind = rkRow) or ((aColumn >= 1) and (aColumn <= cMaxColumn)));
+  Result := ((aKind = TReferenceKind.rkColumn) or ((aRow >= 1) and (aRow <= cMaxRow))) and
+    ((aKind = TReferenceKind.rkRow) or ((aColumn >= 1) and (aColumn <= cMaxColumn)));
   aText := '';
-  if aKind in [rkCell, rkColumn] then
+  if aKind in [TReferenceKind.rkCell, TReferenceKind.rkColumn] then
   begin
     if aColumnFixed then
       aText := '$';
     aText := aText + ColumnName(aColumn);
   end;
-  if aKind in [rkCell, rkRow] then
+  if aKind in [TReferenceKind.rkCell, TReferenceKind.rkRow] then
   begin
     if aRowFixed then
       aText := aText + '$';
@@ -275,7 +303,7 @@ begin
   end;
 end;
 
-function TableColumns(const aBrackets: string): TArray<string>;
+class function TUtility.TableColumns(const aBrackets: string): TArray<string>;
 var
   inner: string;
   i: integer;
@@ -321,7 +349,7 @@ begin
       Inc(i); // , : @ and spaces between them
 end;
 
-function QuotedSheet(const aName: string): string;
+class function TUtility.QuotedSheet(const aName: string): string;
 begin
   var plain: boolean := (aName <> '') and (aName[1].IsLetter or (aName[1] = '_'));
   for var letter: Char in aName do
@@ -329,7 +357,7 @@ begin
   var row, column: integer;
   var rowFixed, columnFixed: boolean;
   // like a cell (A1, XFD5) or R1C1's R, C2, R1C1
-  if plain and ((ReadReference(aName, row, column, rowFixed, columnFixed) = rkCell) or
+  if plain and ((ReadReference(aName, row, column, rowFixed, columnFixed) = TReferenceKind.rkCell) or
     TRegEx.IsMatch(aName, '^([Rr]\d*)?([Cc]\d*)?$')) then
     plain := False;
   if plain then
@@ -341,7 +369,7 @@ end;
 class function TReferenceMap.Fill(aRows, aColumns: integer): TReferenceMap;
 begin
   Result := Default(TReferenceMap);
-  Result.Change := rcFill;
+  Result.Change := TReferenceChange.rcFill;
   Result.Rows := aRows;
   Result.Columns := aColumns;
 end;
@@ -349,7 +377,7 @@ end;
 class function TReferenceMap.Inserted(const aSheet: string; aByRows: boolean; aFirst, aCount: integer): TReferenceMap;
 begin
   Result := Default(TReferenceMap);
-  Result.Change := rcInsert;
+  Result.Change := TReferenceChange.rcInsert;
   Result.Sheet := aSheet;
   Result.ByRows := aByRows;
   Result.First := aFirst;
@@ -359,13 +387,13 @@ end;
 class function TReferenceMap.Deleted(const aSheet: string; aByRows: boolean; aFirst, aCount: integer): TReferenceMap;
 begin
   Result := Inserted(aSheet, aByRows, aFirst, aCount);
-  Result.Change := rcDelete;
+  Result.Change := TReferenceChange.rcDelete;
 end;
 
 class function TReferenceMap.SheetDeleted(const aSheet: string; const aSheets: TArray<string>): TReferenceMap;
 begin
   Result := Default(TReferenceMap);
-  Result.Change := rcSheetDelete;
+  Result.Change := TReferenceChange.rcSheetDelete;
   Result.Sheet := aSheet;
   Result.Sheets := aSheets;
 end;
@@ -380,9 +408,9 @@ end;
 
 function TReferenceMap.Changes(const aPrefix: string): boolean;
 begin
-  if Change = rcFill then
+  if Change = TReferenceChange.rcFill then
     Exit((Rows <> 0) or (Columns <> 0));
-  if Change = rcSheetDelete then
+  if Change = TReferenceChange.rcSheetDelete then
     Exit(False); // the prefix changes: PrefixChange
   if aPrefix = '' then
     Exit(OnSheet);
@@ -403,8 +431,8 @@ function TReferenceMap.PrefixChange(const aPrefix: string; out aText: string): T
 
 begin
   aText := '';
-  Result := pcSame;
-  if (Change <> rcSheetDelete) or (aPrefix = '') then
+  Result := TPrefixChange.pcSame;
+  if (Change <> TReferenceChange.rcSheetDelete) or (aPrefix = '') then
     Exit;
   var name: string := UnquotedPrefix(aPrefix);
   if name.StartsWith('[') then // another workbook's
@@ -413,7 +441,7 @@ begin
   if colon < 0 then
   begin
     if AnsiSameText(name, Sheet) then
-      Result := pcGone;
+      Result := TPrefixChange.pcGone;
     Exit;
   end;
   var first: integer := IndexOf(name.Substring(0, colon));
@@ -422,16 +450,16 @@ begin
   if (first < 0) or (last < 0) or (gone < 0) or ((first <> gone) and (last <> gone)) then
     Exit;
   if first = last then
-    Exit(pcGone);
+    Exit(TPrefixChange.pcGone);
   var step: integer := Sign(last - first);
   if first = gone then
     Inc(first, step)
   else
     Dec(last, step);
-  Result := pcMoved;
+  Result := TPrefixChange.pcMoved;
   if first = last then
-    aText := QuotedSheet(Sheets[first])
-  else if (QuotedSheet(Sheets[first]) = Sheets[first]) and (QuotedSheet(Sheets[last]) = Sheets[last]) then
+    aText := TUtility.QuotedSheet(Sheets[first])
+  else if (TUtility.QuotedSheet(Sheets[first]) = Sheets[first]) and (TUtility.QuotedSheet(Sheets[last]) = Sheets[last]) then
     aText := Sheets[first] + ':' + Sheets[last]
   else
     aText := '''' + (Sheets[first] + ':' + Sheets[last]).Replace('''', '''''') + '''';
@@ -451,7 +479,7 @@ begin
     else if AnsiSameText(gone.Substring(0, bracket), aTable) then
     begin
       if columns = nil then
-        columns := TableColumns(aBrackets);
+        columns := TUtility.TableColumns(aBrackets);
       for var column: string in columns do
         if AnsiSameText(column, gone.Substring(bracket + 1, gone.Length - bracket - 2)) then
           Exit(True);
@@ -472,7 +500,7 @@ var
     Result := True;
     if InName and not aFixed then
       Exit;
-    if Change = rcInsert then
+    if Change = TReferenceChange.rcInsert then
     begin
       if aValue >= First then
         Inc(aValue, Count);
@@ -490,11 +518,11 @@ var
     if InName and (not lowFixed or not highFixed) then
       Exit(MapOne(low, lowFixed) and MapOne(high, highFixed));
     var last: integer := First + Count - 1;
-    if Change = rcInsert then
+    if Change = TReferenceChange.rcInsert then
     begin
       if (low = 1) and (high = limit) then // every row or column stays so
         Exit(True);
-      if ByRows and (aKind = rkCell) then
+      if ByRows and (aKind = TReferenceKind.rkCell) then
         for var body: TTableBody in Bodies do
           if (Min(aColumn, aColumn2) >= body.Left) and (Max(aColumn, aColumn2) <= body.Right) and (low >= body.Top) and
             (low <= body.DataTop) and (high >= body.DataBottom) and (high <= body.Bottom) and
@@ -526,22 +554,22 @@ var
 
   function Text(aKind: TReferenceKind; aRow, aColumn: integer; aRowFixed, aColumnFixed: boolean): string;
   begin
-    MoveReference(aKind, aRow, aColumn, aRowFixed, aColumnFixed, 0, 0, Result);
+    TUtility.MoveReference(aKind, aRow, aColumn, aRowFixed, aColumnFixed, 0, 0, Result);
   end;
 
 begin
   aText := '';
-  if Change = rcFill then
+  if Change = TReferenceChange.rcFill then
   begin
     var moved2: string;
-    Result := MoveReference(aKind, aRow, aColumn, aRowFixed, aColumnFixed, Rows, Columns, aText) and
-      (not aRange or MoveReference(aKind, aRow2, aColumn2, aRowFixed2, aColumnFixed2, Rows, Columns, moved2));
+    Result := TUtility.MoveReference(aKind, aRow, aColumn, aRowFixed, aColumnFixed, Rows, Columns, aText) and
+      (not aRange or TUtility.MoveReference(aKind, aRow2, aColumn2, aRowFixed2, aColumnFixed2, Rows, Columns, moved2));
     if aRange then
       aText := aText + ':' + moved2;
     Exit;
   end;
   Result := True;
-  if (ByRows and (aKind = rkColumn)) or (not ByRows and (aKind = rkRow)) then
+  if (ByRows and (aKind = TReferenceKind.rkColumn)) or (not ByRows and (aKind = TReferenceKind.rkRow)) then
     Exit;
   if not aRange then
   begin
@@ -554,7 +582,7 @@ begin
   var swapped: boolean;
   if ByRows then
   begin
-    limit := cMaxRow;
+    limit := TUtility.cMaxRow;
     swapped := aRow > aRow2;
     low := Min(aRow, aRow2);
     high := Max(aRow, aRow2);
@@ -563,7 +591,7 @@ begin
   end
   else
   begin
-    limit := cMaxColumn;
+    limit := TUtility.cMaxColumn;
     swapped := aColumn > aColumn2;
     low := Min(aColumn, aColumn2);
     high := Max(aColumn, aColumn2);
@@ -598,16 +626,17 @@ begin
   end;
   if not aRange then
     aText := Text(aKind, aRow, aColumn, aRowFixed, aColumnFixed)
-  else if (aKind = rkCell) and (Min(aColumn, aColumn2) = 1) and (Max(aColumn, aColumn2) = cMaxColumn) then
+  else if (aKind = TReferenceKind.rkCell) and (Min(aColumn, aColumn2) = 1) and (Max(aColumn, aColumn2) = TUtility.cMaxColumn) then
     // every column: Excel writes the rows, 5:7
-    aText := Text(rkRow, aRow, 0, aRowFixed, False) + ':' + Text(rkRow, aRow2, 0, aRowFixed2, False)
-  else if (aKind = rkCell) and (Min(aRow, aRow2) = 1) and (Max(aRow, aRow2) = cMaxRow) then
-    aText := Text(rkColumn, 0, aColumn, False, aColumnFixed) + ':' + Text(rkColumn, 0, aColumn2, False, aColumnFixed2)
+    aText := Text(TReferenceKind.rkRow, aRow, 0, aRowFixed, False) + ':' + Text(TReferenceKind.rkRow, aRow2, 0, aRowFixed2, False)
+  else if (aKind = TReferenceKind.rkCell) and (Min(aRow, aRow2) = 1) and (Max(aRow, aRow2) = TUtility.cMaxRow) then
+    aText := Text(TReferenceKind.rkColumn, 0, aColumn, False, aColumnFixed) + ':' +
+      Text(TReferenceKind.rkColumn, 0, aColumn2, False, aColumnFixed2)
   else
     aText := Text(aKind, aRow, aColumn, aRowFixed, aColumnFixed) + ':' + Text(aKind, aRow2, aColumn2, aRowFixed2, aColumnFixed2);
 end;
 
-function SerialToDate(aSerial: Double; a1904: boolean): TDateTime;
+class function TUtility.SerialToDate(aSerial: Double; a1904: boolean): TDateTime;
 begin
   if aSerial < 1 then
     Result := aSerial
@@ -619,7 +648,7 @@ begin
     Result := aSerial;
 end;
 
-function DateToSerial(aDate: TDateTime; a1904: boolean; out aSerial: Double): boolean;
+class function TUtility.DateToSerial(aDate: TDateTime; a1904: boolean; out aSerial: Double): boolean;
 begin
   Result := True;
   if (aDate >= 0) and (aDate < 1) then
@@ -638,7 +667,7 @@ begin
     aSerial := aDate;
 end;
 
-function TextPixels(const aText, aFont: string; aBold: boolean): Double;
+class function TUtility.TextPixels(const aText, aFont: string; aBold: boolean): Double;
 const
   // ' ' to '~', a pixel width each in hex (Excel 365 at 96 dpi, size 11); regular, bold
   cCalibri: array[boolean] of string = (
@@ -687,7 +716,7 @@ begin
   Result := Max(Result, line);
 end;
 
-function TintedColor(aColor: integer; aTint: Double): integer;
+class function TUtility.TintedColor(aColor: integer; aTint: Double): integer;
 const
   cMax = 240;
 
@@ -754,7 +783,7 @@ begin
   Result := r or g shl 8 or b shl 16;
 end;
 
-function PaletteColor(aIndex: integer): integer;
+class function TUtility.PaletteColor(aIndex: integer): integer;
 const
   // Excel's Colors(1..56) = indexes 8-63; 0-7 repeat the first eight
   cPalette: array[0 .. 55] of integer = (
@@ -776,7 +805,7 @@ begin
   end;
 end;
 
-function ArrayItem(const aArray: Variant; aRow, aColumn: integer): Variant;
+class function TUtility.ArrayItem(const aArray: Variant; aRow, aColumn: integer): Variant;
 begin
   if VarArrayDimCount(aArray) = 2 then
     Result := aArray[VarArrayLowBound(aArray, 1) + aRow, VarArrayLowBound(aArray, 2) + aColumn]
@@ -784,7 +813,7 @@ begin
     Result := aArray[VarArrayLowBound(aArray, 1) + aColumn];
 end;
 
-function IsNoFormula(const aValue: Variant): boolean;
+class function TUtility.IsNoFormula(const aValue: Variant): boolean;
 begin
   Result := VarIsEmpty(aValue) or VarIsNull(aValue) or (VarIsStr(aValue) and (string(aValue) = ''));
 end;
