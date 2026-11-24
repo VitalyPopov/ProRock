@@ -179,10 +179,11 @@ end;
 
 function TUriedName.TEqualityComparer.GetHashCode(const aValue: TUriedName): integer;
 begin
+  // the name only: a URI is long and shared by a class's names (hashing it was ~10% of a read); Equals tells URIs apart
 {$IF CompilerVersion >= 35.0} // Delphi 11+
-  Result := THashFNV1a32.GetHashValue(aValue.Uri) xor THashFNV1a32.GetHashValue(aValue.Name);
+  Result := THashFNV1a32.GetHashValue(aValue.Name);
 {$ELSE}
-  Result := THashBobJenkins.GetHashValue(aValue.Uri) xor THashBobJenkins.GetHashValue(aValue.Name);
+  Result := THashBobJenkins.GetHashValue(aValue.Name);
 {$ENDIF}
 end;
 
