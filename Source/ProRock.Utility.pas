@@ -215,7 +215,6 @@ type
     cNameStartChars = ['A' .. 'Z', 'a' .. 'z'];
     cNameChars = cNameStartChars + ['0' .. '9', '-', '_'];
   public
-    class function IsDebugging: boolean; static; inline;
     // a file's or a stream's trouble, an answer for the caller (False and Error); anything else is a bug: raised
     class function IsFileError(aError: Exception): boolean; static;
     class function ExePath: string; static; inline;
@@ -2180,13 +2179,6 @@ begin
   Result := aError.InheritsFrom(EStreamError) or aError.InheritsFrom(EInOutError) or aError.InheritsFrom(EZipException) or
     aError.InheritsFrom(EEncodingError) or aError.InheritsFrom(EOSError) or aError.InheritsFrom(EFileNotFoundException) or
     aError.InheritsFrom(EDirectoryNotFoundException) or aError.InheritsFrom(EPathTooLongException);
-end;
-
-class function TUtility.IsDebugging: boolean;
-begin
-  {$WARN SYMBOL_PLATFORM OFF}
-  Result := DebugHook <> 0;
-  {$WARN SYMBOL_PLATFORM ON}
 end;
 
 class function TUtility.NameAndPrefix(const aFullName: string; out aPrefix, aName: string; aSeparator: Char): boolean;

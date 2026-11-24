@@ -2119,7 +2119,8 @@ begin
   // a string may be empty, and so may an enumeration with an empty item; <amount/> and <code/> otherwise would be written as 0 and
   // the first item
   var textProperty: TPropertyData := Meta.Xmlite.TextProperty;
-  if Assigned(textProperty) and (textProperty.RttiProperty.PropertyType.TypeKind <> tkUString) and not textProperty.TrySetValue(Self, '') then
+  if Assigned(textProperty) and (textProperty.RttiProperty.PropertyType.TypeKind <> tkUString) and
+    not textProperty.TrySetValue(Self, '') then
     fXmlTextEmpty := True;
 end;
 
