@@ -31,8 +31,13 @@ function ReadReference(const aWord: string; out aRow, aColumn: integer; out aRow
 function MoveReference(aKind: TReferenceKind; aRow, aColumn: integer; aRowFixed, aColumnFixed: boolean;
   aRows, aColumns: integer; out aText: string): boolean;
 
+// a sheet's name as a formula writes it before its !: quoted ('My Sheet', 'A1', 'It''s') when Excel quotes it
+function QuotedSheet(const aName: string): string;
+
 type
-  TReferenceChange = (rcFill, rcInsert, rcDelete);
+  TReferenceChange = (rcFill, rcInsert, rcDelete, rcSheetDelete);
+  // what a sheet deleted does to a prefix: nothing, gone with it (#REF!), a 3-D one's end moved inward
+  TPrefixChange = (pcSame, pcGone, pcMoved);
 
   // a table's rows (with its header and totals) and columns, its data rows among them
   TTableBody = record
@@ -43,11 +48,13 @@ type
   // or delete of rows or columns on one sheet moves each reference into it at or past the cut, the absolute parts too (in a
   // defined name the relative parts stay, as Excel keeps them); a range grows or shrinks, one wholly deleted or pushed off
   // the sheet is #REF!, one reaching the last row or column keeps reaching it. 3-D references (Sheet1:Sheet3!A1) and other
-  // workbooks' stay, as in Excel
+  // workbooks' stay, as in Excel. A sheet deleted: what names it is #REF!, a name through it the workbook's ([0]!Total), a
+  // 3-D range's end on it moves inward to the next worksheet
   TReferenceMap = record
     Change: TReferenceChange;
     Rows, Columns: integer; // a fill's offset
-    Sheet: string; // the sheet with rows or columns inserted or deleted
+    Sheet: string; // the sheet with rows or columns inserted or deleted, or the sheet deleted
+    Sheets: TArray<string>; // a sheet deleted: the worksheets in order, it among them (chart sheets end no 3-D range)
     ByRows: boolean;
     First, Count: integer; // from row or column First, Count of them
     OnSheet: boolean; // a reference without a sheet's name is on Sheet: the formula is there
@@ -60,9 +67,12 @@ type
     class function Fill(aRows, aColumns: integer): TReferenceMap; static;
     class function Inserted(const aSheet: string; aByRows: boolean; aFirst, aCount: integer): TReferenceMap; static;
     class function Deleted(const aSheet: string; aByRows: boolean; aFirst, aCount: integer): TReferenceMap; static;
+    class function SheetDeleted(const aSheet: string; const aSheets: TArray<string>): TReferenceMap; static;
     // whether the references after a prefix change: aPrefix as written before its ! (Data, 'My Sheet', [1]Data,
     // Data:Three), '' for none
     function Changes(const aPrefix: string): boolean;
+    // a sheet deleted: what becomes of a prefix (as Changes takes it), aText the moved one (Data:Mid, 'A b:Last')
+    function PrefixChange(const aPrefix: string; out aText: string): TPrefixChange;
     // a reference read by ReadReference, alone or a range's first end with its second (aRange): False for #REF!, aText ''
     // when it stays as written
     function Map(aKind: TReferenceKind; aRow, aColumn: integer; aRowFixed, aColumnFixed, aRange: boolean; aRow2, aColumn2: integer;
@@ -97,6 +107,8 @@ function ArrayItem(const aArray: Variant; aRow, aColumn: integer): Variant;
 function IsNoFormula(const aValue: Variant): boolean;
 
 implementation
+
+uses System.Character, System.RegularExpressions;
 
 function ColumnName(aColumn: integer): string;
 begin
@@ -309,6 +321,23 @@ begin
       Inc(i); // , : @ and spaces between them
 end;
 
+function QuotedSheet(const aName: string): string;
+begin
+  var plain: boolean := (aName <> '') and (aName[1].IsLetter or (aName[1] = '_'));
+  for var letter: Char in aName do
+    plain := plain and (letter.IsLetterOrDigit or CharInSet(letter, ['_', '.']));
+  var row, column: integer;
+  var rowFixed, columnFixed: boolean;
+  // like a cell (A1, XFD5) or R1C1's R, C2, R1C1
+  if plain and ((ReadReference(aName, row, column, rowFixed, columnFixed) = rkCell) or
+    TRegEx.IsMatch(aName, '^([Rr]\d*)?([Cc]\d*)?$')) then
+    plain := False;
+  if plain then
+    Result := aName
+  else
+    Result := '''' + aName.Replace('''', '''''') + '''';
+end;
+
 class function TReferenceMap.Fill(aRows, aColumns: integer): TReferenceMap;
 begin
   Result := Default(TReferenceMap);
@@ -333,17 +362,79 @@ begin
   Result.Change := rcDelete;
 end;
 
+class function TReferenceMap.SheetDeleted(const aSheet: string; const aSheets: TArray<string>): TReferenceMap;
+begin
+  Result := Default(TReferenceMap);
+  Result.Change := rcSheetDelete;
+  Result.Sheet := aSheet;
+  Result.Sheets := aSheets;
+end;
+
+// a prefix's sheet names, its quotes undone
+function UnquotedPrefix(const aPrefix: string): string;
+begin
+  Result := aPrefix;
+  if (Result.Length >= 2) and (Result[1] = '''') and (Result[Result.Length] = '''') then
+    Result := Copy(Result, 2, Result.Length - 2).Replace('''''', '''');
+end;
+
 function TReferenceMap.Changes(const aPrefix: string): boolean;
 begin
   if Change = rcFill then
     Exit((Rows <> 0) or (Columns <> 0));
+  if Change = rcSheetDelete then
+    Exit(False); // the prefix changes: PrefixChange
   if aPrefix = '' then
     Exit(OnSheet);
-  var name: string := aPrefix;
-  if (name.Length >= 2) and (name[1] = '''') and (name[name.Length] = '''') then
-    name := Copy(name, 2, name.Length - 2).Replace('''''', '''');
+  var name: string := UnquotedPrefix(aPrefix);
   // another workbook's or 3-D: a sheet's name has neither [ nor :
   Result := not name.StartsWith('[') and not name.Contains(':') and AnsiSameText(name, Sheet);
+end;
+
+function TReferenceMap.PrefixChange(const aPrefix: string; out aText: string): TPrefixChange;
+
+  function IndexOf(const aName: string): integer;
+  begin
+    for var i := 0 to High(Sheets) do
+      if AnsiSameText(Sheets[i], aName) then
+        Exit(i);
+    Result := -1;
+  end;
+
+begin
+  aText := '';
+  Result := pcSame;
+  if (Change <> rcSheetDelete) or (aPrefix = '') then
+    Exit;
+  var name: string := UnquotedPrefix(aPrefix);
+  if name.StartsWith('[') then // another workbook's
+    Exit;
+  var colon: integer := name.IndexOf(':');
+  if colon < 0 then
+  begin
+    if AnsiSameText(name, Sheet) then
+      Result := pcGone;
+    Exit;
+  end;
+  var first: integer := IndexOf(name.Substring(0, colon));
+  var last: integer := IndexOf(name.Substring(colon + 1));
+  var gone: integer := IndexOf(Sheet);
+  if (first < 0) or (last < 0) or (gone < 0) or ((first <> gone) and (last <> gone)) then
+    Exit;
+  if first = last then
+    Exit(pcGone);
+  var step: integer := Sign(last - first);
+  if first = gone then
+    Inc(first, step)
+  else
+    Dec(last, step);
+  Result := pcMoved;
+  if first = last then
+    aText := QuotedSheet(Sheets[first])
+  else if (QuotedSheet(Sheets[first]) = Sheets[first]) and (QuotedSheet(Sheets[last]) = Sheets[last]) then
+    aText := Sheets[first] + ':' + Sheets[last]
+  else
+    aText := '''' + (Sheets[first] + ':' + Sheets[last]).Replace('''', '''''') + '''';
 end;
 
 function TReferenceMap.TableGone(const aTable, aBrackets: string): boolean;

@@ -69,6 +69,12 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   table's header row, part of a pivot table; refused for now: Excel 2010's extensions (its conditional formats, validation,
   sparklines), embedded objects, controls, threaded comments, Excel 2016's chart kinds. Cells shifted within rows or columns
   come later
+- Calcite's `Sheet.Delete`, as Excel's `Worksheet.Delete`: what names the sheet on the other sheets - formulas, defined
+  names, charts, conditional formats and validation (Excel 2010's too), tables' formulas - becomes `#REF!` as Excel writes it
+  (a 3-D range's end on it moves to the next worksheet, a name of it another sheet uses stays as the workbook's, a dynamic
+  array naming it gives `#REF!` alone); its names, print areas, tables, pivot tables, drawings, notes and the pivot caches
+  only it used go with it; the next visible sheet becomes active. The sheet object is freed. Refused with nothing changed,
+  as Excel refuses: the last visible sheet, a very hidden one; refused for now: a sheet with slicers or timelines
 - `ProRock.Calcite.Data`: `ExportDataSet(DataSet, Sheet)` writes a TDataSet's visible fields to a sheet - a bold header from
   `DisplayLabel`, each value as its type (null left empty), number formats from the fields (`DisplayFormat`, currency,
   decimals, dates), the columns fitted and the header frozen
