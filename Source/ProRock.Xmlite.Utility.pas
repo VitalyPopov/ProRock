@@ -4,21 +4,44 @@
 
 interface
 
+{$SCOPEDENUMS ON}
+
 uses System.Classes, System.SysUtils, System.StrUtils, System.Generics.Collections, System.Generics.Defaults,
   ProRock.Utility;
 
-const
-  // the "xml" prefix is bound to it by definition - documents never declare it (xml:lang, xml:space)
-  cXmlPrefix = 'xml';
-  cXmlPrefixUri = 'http://www.w3.org/XML/1998/namespace';
-  // xsi:type, xsi:nil - the prefix is usual, not fixed: it is declared like any other
-  cXsiPrefix = 'xsi';
-  cXsiUri = 'http://www.w3.org/2001/XMLSchema-instance';
-  // Office's namespaces, transitional and strict
-  cOoxmlUriPrefix = 'http://schemas.openxmlformats.org/';
-  cOoxmlStrictUriPrefix = 'http://purl.oclc.org/ooxml/';
-
 type
+  {$REGION 'ProRock.Utility: its types, so a unit names only this Utility'}
+  TNaming = ProRock.Utility.TNaming;
+  TCustomAttributeClass = ProRock.Utility.TCustomAttributeClass;
+  TNamingAttribute = ProRock.Utility.TNamingAttribute;
+  TWriterBase = ProRock.Utility.TWriterBase;
+  TReaderBase = ProRock.Utility.TReaderBase;
+  TIssueSeverity = ProRock.Utility.TIssueSeverity;
+  TIssue = ProRock.Utility.TIssue;
+  TIssueEvent = ProRock.Utility.TIssueEvent;
+  TIssues = ProRock.Utility.TIssues;
+  PIssues = ProRock.Utility.PIssues;
+  // generics have no aliases: empty subclasses; a parent's object does not go into a child-typed variable (E2008)
+  THashSet<T> = class(ProRock.Utility.THashSet<T>);
+  THashedObjectList<T: class> = class(ProRock.Utility.THashedObjectList<T>);
+  TDictObjectList<K; V: class> = class(ProRock.Utility.TDictObjectList<K, V>);
+  TDualDictionary<TKey, TValue> = class(ProRock.Utility.TDualDictionary<TKey, TValue>);
+  TSummaryDictionary<T: class> = class(ProRock.Utility.TSummaryDictionary<T>);
+  {$ENDREGION}
+
+  TUtility = class abstract(ProRock.Utility.TUtility)
+  public const
+    // the "xml" prefix is bound to it by definition - documents never declare it (xml:lang, xml:space)
+    cXmlPrefix = 'xml';
+    cXmlPrefixUri = 'http://www.w3.org/XML/1998/namespace';
+    // xsi:type, xsi:nil - the prefix is usual, not fixed: it is declared like any other
+    cXsiPrefix = 'xsi';
+    cXsiUri = 'http://www.w3.org/2001/XMLSchema-instance';
+    // Office's namespaces, transitional and strict
+    cOoxmlUriPrefix = 'http://schemas.openxmlformats.org/';
+    cOoxmlStrictUriPrefix = 'http://purl.oclc.org/ooxml/';
+  end;
+
   TXmliteComponentType = (xctUndefined, xctSimpleType, xctComplexType, xctAttribute, xctAttributeGroup, xctElement, xctElementGroup);
   TTagType = (xttNone, xttOpenClose, xttEmpty, xttText);
 
@@ -156,8 +179,8 @@ end;
 function TXmlns.GetUri(const aPrefix: string): string;
 begin
   if aPrefix.IsEmpty or not TryGetValue(aPrefix, Result) then
-    if aPrefix = cXmlPrefix then
-      Result := cXmlPrefixUri
+    if aPrefix = TUtility.cXmlPrefix then
+      Result := TUtility.cXmlPrefixUri
     else
       Result := fDefaultUri;
 end;
@@ -326,7 +349,7 @@ var
       prefix := aName.Substring(0, aName.IndexOf(':'))
     else if not aElement then
       Exit; // an unprefixed attribute is in no namespace
-    if (prefix = cXmlPrefix) or (prefix = 'xmlns') then
+    if (prefix = TUtility.cXmlPrefix) or (prefix = 'xmlns') then
       Exit;
     for var declaration: TDeclaration in declarations do
       if declaration.Prefix = prefix then

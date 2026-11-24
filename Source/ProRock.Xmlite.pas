@@ -6,7 +6,7 @@ interface
 
 uses System.Classes, System.SysUtils, System.StrUtils, System.Generics.Collections, System.Generics.Defaults, System.Rtti, System.Math,
   System.SyncObjs, System.TypInfo,
-  ProRock.Basite, ProRock.Utility, ProRock.Xmlite.Utility;
+  ProRock.Basite, ProRock.Xmlite.Utility;
 
 const
   {$REGION 'ProRock.Basite constants aliases'}
@@ -29,17 +29,14 @@ const
   cDefaultNaming = TNaming.nCamelCase;
 
 type
-  {$REGION 'ProRock.Utility types aliases'}
-  TNaming = ProRock.Utility.TNaming;
-  TIssueSeverity = ProRock.Utility.TIssueSeverity;
-  TIssue = ProRock.Utility.TIssue;
-  TIssueEvent = ProRock.Utility.TIssueEvent;
-  TIssues = ProRock.Utility.TIssues;
-  TNamingAttribute = ProRock.Utility.TNamingAttribute;
-  TWriterBase = ProRock.Utility.TWriterBase;
-  {$ENDREGION}
-
   {$REGION 'ProRock.Xmlite.Utility types aliases'}
+  TNaming = ProRock.Xmlite.Utility.TNaming;
+  TIssueSeverity = ProRock.Xmlite.Utility.TIssueSeverity;
+  TIssue = ProRock.Xmlite.Utility.TIssue;
+  TIssueEvent = ProRock.Xmlite.Utility.TIssueEvent;
+  TIssues = ProRock.Xmlite.Utility.TIssues;
+  TNamingAttribute = ProRock.Xmlite.Utility.TNamingAttribute;
+  TWriterBase = ProRock.Xmlite.Utility.TWriterBase;
   TXmliteComponentType = ProRock.Xmlite.Utility.TXmliteComponentType;
   TUriedName = ProRock.Xmlite.Utility.TUriedName;
   TXmlns = ProRock.Xmlite.Utility.TXmlns;
@@ -870,13 +867,13 @@ begin
               ReadReport(attributeStart, TIssueSeverity.isWarning, 'BadValue', '', Format('%s=%s of <%s> does not fit its type: kept as read',
                 [attributeFullName, Quoted(attributeValue), objectName]));
             end
-            else if uri <> cXsiUri then
+            else if uri <> TUtility.cXsiUri then
               ReadReport(attributeStart, TIssueSeverity.isHint, 'UnknownAttribute', objectName + ' ' + attributeFullName,
                 Format('%s of <%s> is not in the schema: kept as read', [attributeFullName, objectName]));
             // its prefix, and for xsi:type the value's (dcterms:W3CDTF) - declared again on write
             if not attributePrefix.IsEmpty and not uri.IsEmpty then
               TXmlite(Self).XmlAttributeNamespaces.AddOrSetValue(attributePrefix, uri);
-            if (uri = cXsiUri) and (attributeName = 'type') and (attributeValue.IndexOf(':') > 0) then
+            if (uri = TUtility.cXsiUri) and (attributeName = 'type') and (attributeValue.IndexOf(':') > 0) then
             begin
               // declared prefixes only: xmlns[] falls back to the default namespace, for a value that is no QName too
               var valuePrefix: string := attributeValue.Substring(0, attributeValue.IndexOf(':'));
@@ -1100,7 +1097,7 @@ begin
 
     if (propertyElement = nil) and Meta.Xmlite.ProcessAnyElement then
     begin // for xs:any - try to find Namespace-registered element and parse it
-      var metaElement: TMetaBasite := TMetaBank.Xmlite.Namespaces.GetMetaBasite(elementUri, xctElement, tagName);
+      var metaElement: TMetaBasite := TMetaBank.Xmlite.Namespaces.GetMetaBasite(elementUri, TXmliteComponentType.xctElement, tagName);
       if Assigned(metaElement) then
       begin
         var element: TBasite := metaElement.ClassItself.Create;
@@ -1245,36 +1242,36 @@ end;
 // the tag of an element that is written (its parent decided it is present): with content, or empty
 function TBasiteHelper.TagType: TTagType;
 begin
-  Result := xttEmpty;
+  Result := TTagType.xttEmpty;
 
   // simpleContent: text is written whenever the element is (<amount currency="EUR">0</amount> from code), unless it came empty
   var textProperty: TPropertyData := Meta.Xmlite.TextProperty;
   if Assigned(textProperty) and Meta.Xmlite.IsTXmlite and TXmlite(Self).fXmlTextEmpty and not IsPresent(textProperty) then
     textProperty := nil;
   if Assigned(textProperty) and (WritesRequired(textProperty) or IsPresent(textProperty)) then
-    Exit(xttOpenClose);
+    Exit(TTagType.xttOpenClose);
 
   if Meta.Xmlite.ProcessAnyElement and (TXmlite(Self).XmlAny.Count > 0) then
-    Exit(xttOpenClose);
+    Exit(TTagType.xttOpenClose);
 
   if Meta.Xmlite.IsTXmlite and (TXmlite(Self).fXmlUnknown <> nil) and (TXmlite(Self).fXmlUnknown.Count > 0) then
-    Exit(xttOpenClose);
+    Exit(TTagType.xttOpenClose);
 
   // text of mixed content (OOXML cp:keywords: "q3, plan"): read into XmlText, so written back too
   if Meta.Xmlite.IsTXmlite and not TXmlite(Self).XmlText.IsEmpty then
-    Exit(xttOpenClose);
+    Exit(TTagType.xttOpenClose);
 
   if Meta.Xmlite.IsTXmlite and (TXmlite(Self).fXmlContent <> nil) and (TXmlite(Self).fXmlContent.Count > 0) then
-    Exit(xttOpenClose);
+    Exit(TTagType.xttOpenClose);
 
   // the same test as ToXml makes for each child element
   for var propertyInfo: TProperty in Meta.Xmlite.Elements.Values do
     if ((propertyInfo.PropertyType <> ptBasite) or (TPropertyBasite(propertyInfo).ObjectPointer(Self)^ <> nil)) and
       (WritesRequired(propertyInfo) or IsPresent(propertyInfo)) then
-      Exit(xttOpenClose);
+      Exit(TTagType.xttOpenClose);
 
   if Assigned(textProperty) then
-    Exit(xttOpenClose);
+    Exit(TTagType.xttOpenClose);
 end;
 
 procedure TBasiteHelper.ToXml(aWriter: TWriterXmlite; const aName: string; aScope: TNamespace; aNamespaces, aXmlHeader: boolean);
@@ -1457,9 +1454,9 @@ begin
     scope := Meta.Xmlite.Namespace;
 
   case TagType of
-    xttEmpty:
+    TTagType.xttEmpty:
       aWriter.AddTagEmpty(objectName, Self, aNamespaces);
-    xttOpenClose:
+    TTagType.xttOpenClose:
       if Assigned(Meta.Xmlite.TextProperty) then
         if Meta.Xmlite.IsTXmlite and (TXmlite(Self).fXmlTextEmpty or not TXmlite(Self).fXmlText.IsEmpty) and
           not IsPresent(Meta.Xmlite.TextProperty) then
@@ -1697,7 +1694,7 @@ begin
     FillXmlnsList(xmlnsList, prefixed, kept, Self, Meta.Xmlite.Namespace);
 
     for var namespace: TNamespace in xmlnsList.Values do
-      if (namespace <> nil) and (namespace.Uri <> cXmlPrefixUri) then // the xml prefix is bound by definition, never declared
+      if (namespace <> nil) and (namespace.Uri <> TUtility.cXmlPrefixUri) then // the xml prefix is bound by definition, never declared
         if namespace = Meta.Xmlite.Namespace then
         begin
           if not namespace.Uri.IsEmpty then // no namespace: nothing to declare at a root (WriteAttributes undeclares one in scope)
@@ -1717,7 +1714,7 @@ begin
 
     // the kept declarations, unless the prefix is declared already (the element's own names win)
     for var keptPrefix: TPair<string, string> in kept do
-      if not declared.ContainsKey(keptPrefix.Key) and (keptPrefix.Key <> cXmlPrefix) then
+      if not declared.ContainsKey(keptPrefix.Key) and (keptPrefix.Key <> TUtility.cXmlPrefix) then
       begin
         Result := Result + Format(' xmlns:%s="%s"', [keptPrefix.Key, keptPrefix.Value]);
         declared.Add(keptPrefix.Key, keptPrefix.Value);
@@ -1852,7 +1849,7 @@ begin
   // spaces anyway
   if (typeKind in [tkString, tkLString, tkWString, tkUString]) and not aValue.IsEmpty and
     ((aValue.Chars[0] <= ' ') or (aValue.Chars[aValue.Length - 1] <= ' ')) and (aFieldInfo.Xmlite.Namespace <> nil) and
-    (StartsText(cOoxmlUriPrefix, aFieldInfo.Xmlite.Namespace.Uri) or StartsText(cOoxmlStrictUriPrefix, aFieldInfo.Xmlite.Namespace.Uri)) then
+    (StartsText(TUtility.cOoxmlUriPrefix, aFieldInfo.Xmlite.Namespace.Uri) or StartsText(TUtility.cOoxmlStrictUriPrefix, aFieldInfo.Xmlite.Namespace.Uri)) then
     WriteAttribute('xml:space', 'preserve');
   Write('>');
   AddXmlEscape(aValue);
@@ -2444,19 +2441,19 @@ begin
     raise EArgumentException.Create('SetXsiType: a generated complex type class is expected');
 
   var typeMeta: TMetaBasite := TBasiteClass(aType).Meta;
-  if (typeMeta.Xmlite.ComponentType <> xctComplexType) or (typeMeta.Xmlite.Namespace = nil) then
+  if (typeMeta.Xmlite.ComponentType <> TXmliteComponentType.xctComplexType) or (typeMeta.Xmlite.Namespace = nil) then
     raise EArgumentException.CreateFmt('SetXsiType: %s is not a complex type registered in a namespace', [aType.ClassName]);
 
   // XSD: the type must derive from the element's own one - the nearest complex type among the element's ancestors
   var declared: TClass := ClassType;
   while (declared <> nil) and declared.InheritsFrom(TBasite) and
-    (TBasiteClass(declared).Meta.Xmlite.ComponentType <> xctComplexType) do
+    (TBasiteClass(declared).Meta.Xmlite.ComponentType <> TXmliteComponentType.xctComplexType) do
     declared := declared.ClassParent;
   if (declared = nil) or not declared.InheritsFrom(TBasite) or not aType.InheritsFrom(declared) then
     raise EArgumentException.CreateFmt('SetXsiType: %s is not derived from the type of %s', [aType.ClassName, ClassName]);
 
-  fXmlAttributes.AddOrSetValue(cXsiPrefix + ':type', typeMeta.Xmlite.Namespace.Prefix + ':' + typeMeta.Xmlite.Name);
-  fXmlAttributeNamespaces.AddOrSetValue(cXsiPrefix, cXsiUri);
+  fXmlAttributes.AddOrSetValue(TUtility.cXsiPrefix + ':type', typeMeta.Xmlite.Namespace.Prefix + ':' + typeMeta.Xmlite.Name);
+  fXmlAttributeNamespaces.AddOrSetValue(TUtility.cXsiPrefix, TUtility.cXsiUri);
   fXmlAttributeNamespaces.AddOrSetValue(typeMeta.Xmlite.Namespace.Prefix, typeMeta.Xmlite.Namespace.Uri);
 end;
 
@@ -2481,20 +2478,20 @@ var
 begin
   aMeta.Xmlite.NamespaceRegister(Self, aType);
   TMetaBankXmlite.Instance.BindPending(aMeta);
-  if fExactNames and (aType in [xctSimpleType, xctAttribute]) then
+  if fExactNames and (aType in [TXmliteComponentType.xctSimpleType, TXmliteComponentType.xctAttribute]) then
     metaType.SetItemNaming(fItemNaming);
   case aType of
-    xctSimpleType:
+    TXmliteComponentType.xctSimpleType:
       fSimpleTypes.Add(aMeta.Xmlite.Name, metaType);
-    xctComplexType:
+    TXmliteComponentType.xctComplexType:
       fComplexTypes.Add(aMeta.Xmlite.Name, metaBasite);
-    xctAttribute:
+    TXmliteComponentType.xctAttribute:
       fAttributes.Add(aMeta.Xmlite.Name, metaType);
-    xctAttributeGroup:
+    TXmliteComponentType.xctAttributeGroup:
       fAttributeGroups.Add(aMeta.Xmlite.Name, metaBasite);
-    xctElement:
+    TXmliteComponentType.xctElement:
       fElements.Add(aMeta.Xmlite.Name, metaBasite);
-    xctElementGroup:
+    TXmliteComponentType.xctElementGroup:
       fElementGroups.Add(aMeta.Xmlite.Name, metaBasite);
   end;
 
@@ -2579,13 +2576,13 @@ begin
      Exit;
 
   case aType of
-    xctComplexType:
+    TXmliteComponentType.xctComplexType:
       Result := namespace.ComplexTypes[aXmlName];
-    xctAttributeGroup:
+    TXmliteComponentType.xctAttributeGroup:
       Result := namespace.AttributeGroups[aXmlName];
-    xctElement:
+    TXmliteComponentType.xctElement:
       Result := namespace.Elements[aXmlName];
-    xctElementGroup:
+    TXmliteComponentType.xctElementGroup:
       Result := namespace.ElementGroups[aXmlName];
   end;
 end;
@@ -2612,17 +2609,17 @@ begin
 
   var component: TMeta := nil;
   case aType of
-    xctSimpleType:
+    TXmliteComponentType.xctSimpleType:
       component := namespace.SimpleTypes[aXmlName];
-    xctComplexType:
+    TXmliteComponentType.xctComplexType:
       component := namespace.ComplexTypes[aXmlName];
-    xctAttribute:
+    TXmliteComponentType.xctAttribute:
       component := namespace.Attributes[aXmlName];
-    xctAttributeGroup:
+    TXmliteComponentType.xctAttributeGroup:
       component := namespace.AttributeGroups[aXmlName];
-    xctElement:
+    TXmliteComponentType.xctElement:
       component := namespace.Elements[aXmlName];
-    xctElementGroup:
+    TXmliteComponentType.xctElementGroup:
       component := namespace.ElementGroups[aXmlName];
   end;
 
@@ -2747,23 +2744,23 @@ class procedure TMetaBankXmlite.AddComponents(aNamespace: TNamespace; const aSim
   const aAttributeGroups, aElements, aGroups: TArray<TBasiteClass>);
 begin
   for var simpleType: PTypeInfo in aSimpleTypes do
-    aNamespace.Add(TMetaBank.RegisterType(simpleType), xctSimpleType);
+    aNamespace.Add(TMetaBank.RegisterType(simpleType), TXmliteComponentType.xctSimpleType);
 
   // global attributes before the classes: a member typed with one takes its namespace when it registers
   for var attribute: PTypeInfo in aAttributes do
-    aNamespace.Add(TMetaBank.RegisterType(attribute), xctAttribute);
+    aNamespace.Add(TMetaBank.RegisterType(attribute), TXmliteComponentType.xctAttribute);
 
   for var complexType: TBasiteClass in aComplexTypes do
-    aNamespace.Add(complexType.Meta, xctComplexType);
+    aNamespace.Add(complexType.Meta, TXmliteComponentType.xctComplexType);
 
   for var attributeGroup: TBasiteClass in aAttributeGroups do
-    aNamespace.Add(attributeGroup.Meta, xctAttributeGroup);
+    aNamespace.Add(attributeGroup.Meta, TXmliteComponentType.xctAttributeGroup);
 
   for var element: TBasiteClass in aElements do
-    aNamespace.Add(element.Meta, xctElement);
+    aNamespace.Add(element.Meta, TXmliteComponentType.xctElement);
 
   for var elementGroup: TBasiteClass in aGroups do
-    aNamespace.Add(elementGroup.Meta, xctElementGroup);
+    aNamespace.Add(elementGroup.Meta, TXmliteComponentType.xctElementGroup);
 
   Instance.fNamespaces.Add(aNamespace);
 end;
@@ -3062,22 +3059,22 @@ begin
   fName := PChar(Meta.SimplifiedName) + 1 { T };
 
   case aType of
-    xctSimpleType:
+    TXmliteComponentType.xctSimpleType:
       if (fNamespace.fSuffixLengthSimpleType > 0) and fName.EndsWith(fNamespace.fSuffixSimpleType) then
         SetLength(fName, Length(fName) - fNamespace.fSuffixLengthSimpleType);
-    xctComplexType:
+    TXmliteComponentType.xctComplexType:
       if (fNamespace.fSuffixLengthComplexType > 0) and fName.EndsWith(fNamespace.fSuffixComplexType) then
         SetLength(fName, Length(fName) - fNamespace.fSuffixLengthComplexType);
-    xctAttribute:
+    TXmliteComponentType.xctAttribute:
       if (fNamespace.fSuffixLengthAttribute > 0) and fName.EndsWith(fNamespace.fSuffixAttribute) then
         SetLength(fName, Length(fName) - fNamespace.fSuffixLengthAttribute);
-    xctAttributeGroup:
+    TXmliteComponentType.xctAttributeGroup:
       if (fNamespace.fSuffixLengthAttributeGroup > 0) and fName.EndsWith(fNamespace.fSuffixAttributeGroup) then
         SetLength(fName, Length(fName) - fNamespace.fSuffixLengthAttributeGroup);
-    xctElement:
+    TXmliteComponentType.xctElement:
       if (fNamespace.fSuffixLengthElement > 0) and fName.EndsWith(fNamespace.fSuffixElement) then
         SetLength(fName, Length(fName) - fNamespace.fSuffixLengthElement);
-    xctElementGroup:
+    TXmliteComponentType.xctElementGroup:
       if (fNamespace.fSuffixLengthElementGroup > 0) and fName.EndsWith(fNamespace.fSuffixElementGroup) then
         SetLength(fName, Length(fName) - fNamespace.fSuffixLengthElementGroup);
   end;
@@ -3107,22 +3104,22 @@ begin
 
   if fNamespace <> nil then
     case fComponentType of
-      xctSimpleType:
+      TXmliteComponentType.xctSimpleType:
         fNamespace.SimpleTypes.Remove(fName);
-      xctComplexType:
+      TXmliteComponentType.xctComplexType:
         fNamespace.ComplexTypes.Remove(fName);
-      xctAttribute:
+      TXmliteComponentType.xctAttribute:
         fNamespace.Attributes.Remove(fName);
-      xctAttributeGroup:
+      TXmliteComponentType.xctAttributeGroup:
         fNamespace.AttributeGroups.Remove(fName);
-      xctElement:
+      TXmliteComponentType.xctElement:
         fNamespace.Elements.Remove(fName);
-      xctElementGroup:
+      TXmliteComponentType.xctElementGroup:
         fNamespace.ElementGroups.Remove(fName);
     end;
 
   fNamespace := nil;
-  fComponentType := xctUndefined;
+  fComponentType := TXmliteComponentType.xctUndefined;
   if Meta.SimplifiedName[1] = 'T' then
     fName := PChar(Meta.SimplifiedName) + 1
   else
@@ -3196,9 +3193,9 @@ begin
       typeXmlite := typeMeta.Xmlite;
     if (typeXmlite <> nil) and (typeXmlite.Namespace <> nil) then
       case typeXmlite.ComponentType of
-        xctElement:
+        TXmliteComponentType.xctElement:
           fNamespace := typeXmlite.Namespace;
-        xctAttribute:
+        TXmliteComponentType.xctAttribute:
           begin
             fNamespace := typeXmlite.Namespace;
             fQualified := True;
