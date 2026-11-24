@@ -625,8 +625,12 @@ type
     fWorkbookPart, fSharedStringsPart, fStylesPart, fCalcChainPart: string;
     fSheets: TWorksheets;
     fStrings: TDictionary<string, integer>; // shared strings by text, built on the first write
-    fStyleKeys: TDictionary<string, integer>; // cellXfs by content, built on the first need
-    fFontKeys, fFillKeys, fBorderKeys: TDictionary<string, integer>; // fonts, fills, borders by content, the same
+    // cellXfs, fonts, fills, borders by content (the items themselves, by ContentComparer), built on the first need and
+    // dropped when the user takes XmlStyles
+    fStyleKeys: TDictionary<TXfCT, integer>;
+    fFontKeys: TDictionary<TFontCT, integer>;
+    fFillKeys: TDictionary<TFillCT, integer>;
+    fBorderKeys: TDictionary<TBorderCT, integer>;
     fThemePart: string;
     fThemeColors: TArray<integer>; // the theme's 12 in the order styles number them, read on the first need
     fDateStyleIds: TDictionary<UInt64, integer>; // DateStyle's answers: a style and a format, the style with it
@@ -661,7 +665,7 @@ type
     function DateStyle(aStyle: cardinal; aFormat: integer): integer;
     function FormatCode(aStyle: cardinal): string;
     function FormatId(const aCode: string): integer;
-    function ChangedItem<T: TXmlite, constructor>(aItems: TObjectList<T>; var aKeys: TDictionary<string, integer>;
+    function ChangedItem<T: TXmlite, constructor>(aItems: TObjectList<T>; var aKeys: TDictionary<T, integer>;
       aIndex: cardinal; const aChange: TProc<T>): integer;
     function ChangedFont(aFont: cardinal; const aChange: TProc<TFontCT>): integer;
     function ChangedFill(aFill: cardinal; const aChange: TProc<TFillCT>): integer;
@@ -3037,8 +3041,7 @@ begin
   for var i := 0 to aColumns.Count - 1 do
     if (aColumns[i].Min < aAt) and (aColumns[i].Max >= aAt) then
     begin
-      var copy: TColCT := TColCT.Create;
-      TXmlite.XmlToObject(TXmlite.ObjectToXml(aColumns[i]), copy);
+      var copy: TColCT := aColumns[i].Clone<TColCT>;
       copy.Min := aAt;
       aColumns[i].Max := aAt - 1;
       aColumns.Insert(i + 1, copy);
@@ -5685,8 +5688,7 @@ begin
         columns[source].Max := integer(columns[source].Max) + aCount
       else
       begin
-        var copy: TColCT := TColCT.Create;
-        TXmlite.XmlToObject(TXmlite.ObjectToXml(columns[source]), copy);
+        var copy: TColCT := columns[source].Clone<TColCT>;
         copy.Min := aFirst;
         copy.Max := aFirst + aCount - 1;
         copy.Clear(@copy.Hidden);
@@ -8196,10 +8198,10 @@ begin
   Swap<string>(fCalcChainPart, aOther.fCalcChainPart);
   Swap<TWorksheets>(fSheets, aOther.fSheets);
   Swap<TDictionary<string, integer>>(fStrings, aOther.fStrings);
-  Swap<TDictionary<string, integer>>(fStyleKeys, aOther.fStyleKeys);
-  Swap<TDictionary<string, integer>>(fFontKeys, aOther.fFontKeys);
-  Swap<TDictionary<string, integer>>(fFillKeys, aOther.fFillKeys);
-  Swap<TDictionary<string, integer>>(fBorderKeys, aOther.fBorderKeys);
+  Swap<TDictionary<TXfCT, integer>>(fStyleKeys, aOther.fStyleKeys);
+  Swap<TDictionary<TFontCT, integer>>(fFontKeys, aOther.fFontKeys);
+  Swap<TDictionary<TFillCT, integer>>(fFillKeys, aOther.fFillKeys);
+  Swap<TDictionary<TBorderCT, integer>>(fBorderKeys, aOther.fBorderKeys);
   Swap<string>(fThemePart, aOther.fThemePart);
   Swap<TArray<integer>>(fThemeColors, aOther.fThemeColors);
   Swap<TDictionary<UInt64, integer>>(fDateStyleIds, aOther.fDateStyleIds);
@@ -8523,23 +8525,21 @@ begin
     aStyle := 0; // as Excel shows such a cell
   if fStyleKeys = nil then
   begin
-    fStyleKeys := TDictionary<string, integer>.Create;
+    fStyleKeys := TDictionary<TXfCT, integer>.Create(TXfCT.ContentComparer<TXfCT>);
     for var i := 0 to formats.Count - 1 do
-      fStyleKeys.TryAdd(TXmlite.ObjectToXml(formats[i]), i);
+      fStyleKeys.TryAdd(formats[i], i);
   end;
-  // a copy through its XML: everything it has (alignment, protection, extensions) kept
-  var wanted: TXfCT := TXfCT.Create;
+  // everything it has kept: alignment, protection, extensions
+  var wanted: TXfCT := formats[aStyle].Clone<TXfCT>;
   try
-    TXmlite.XmlToObject(TXmlite.ObjectToXml(formats[aStyle]), wanted);
     aChange(wanted);
-    var key: string := TXmlite.ObjectToXml(wanted);
-    if fStyleKeys.TryGetValue(key, Result) then
+    if fStyleKeys.TryGetValue(wanted, Result) then
       Exit;
     styles := fPackage.EditPart<TStyleSheetE>(fStylesPart);
     formats.Add(wanted);
     Result := formats.Count - 1;
+    fStyleKeys.Add(wanted, Result);
     wanted := nil;
-    fStyleKeys.Add(key, Result);
     if styles.CellXfs.Present[@styles.CellXfs.Count] then
       styles.CellXfs.Count := formats.Count;
   finally
@@ -8612,30 +8612,27 @@ end;
 
 // aItems[aIndex] changed by aChange, found by content or added (the keys built on the first need); the caller checks there
 // are items
-function TWorkbook.ChangedItem<T>(aItems: TObjectList<T>; var aKeys: TDictionary<string, integer>; aIndex: cardinal;
+function TWorkbook.ChangedItem<T>(aItems: TObjectList<T>; var aKeys: TDictionary<T, integer>; aIndex: cardinal;
   const aChange: TProc<T>): integer;
 begin
   if aIndex >= cardinal(aItems.Count) then
     aIndex := 0; // as Excel shows such a cell
   if aKeys = nil then
   begin
-    aKeys := TDictionary<string, integer>.Create;
+    aKeys := TDictionary<T, integer>.Create(TXmlite.ContentComparer<T>);
     for var i := 0 to aItems.Count - 1 do
-      aKeys.TryAdd(TXmlite.ObjectToXml(aItems[i]), i);
+      aKeys.TryAdd(aItems[i], i);
   end;
-  // a copy through its XML: everything it has kept
-  var wanted: T := T.Create;
+  var wanted: T := aItems[aIndex].Clone<T>;
   try
-    TXmlite.XmlToObject(TXmlite.ObjectToXml(aItems[aIndex]), wanted);
     aChange(wanted);
-    var key: string := TXmlite.ObjectToXml(wanted);
-    if aKeys.TryGetValue(key, Result) then
+    if aKeys.TryGetValue(wanted, Result) then
       Exit;
     fPackage.EditPart<TStyleSheetE>(fStylesPart);
     aItems.Add(wanted);
     Result := aItems.Count - 1;
+    aKeys.Add(wanted, Result);
     wanted := nil;
-    aKeys.Add(key, Result);
   finally
     wanted.Free;
   end;
