@@ -167,9 +167,6 @@ type
     procedure AddNode(aKind: TXmliteNodeKind; const aText: string; aElement: TBasite; aProperty: TProperty; aIndex: integer);
     function PropertyOfClass(aClass: TClass; const aName: string = ''): TProperty;
     function AddElement(aClass: TClass; const aProperty: string): TBasite;
-    // aProperty of a source's class as this class has it: the same index (an ancestor's come first); False - not
-    // in aCommon; nil gives nil
-    function CommonProperty(aCommon: TMetaBasite; aProperty: TProperty; out aMine: TProperty): boolean;
     procedure CopyContent(aSource: TXmlite; aCommon: TMetaBasite; const aUnknownAt: TArray<integer>);
   protected
     procedure Initialize; override;
@@ -2083,14 +2080,14 @@ begin
     fXmlns.AddOrSetValue(pair.Key, pair.Value);
   for var item: TBasite in source.fXmlAny do
     fXmlAny.Add(item.Clone);
-  var mine: TProperty;
+  var own: TProperty;
   if source.fXmlBadAttributes <> nil then
     for var pair: TPair<string, TProperty> in source.fXmlBadAttributes do
-      if CommonProperty(aCommon, pair.Value, mine) then
+      if Meta.Counterpart(pair.Value, own) then
       begin
         if fXmlBadAttributes = nil then
           fXmlBadAttributes := TDictionary<string, TProperty>.Create;
-        fXmlBadAttributes.AddOrSetValue(pair.Key, mine);
+        fXmlBadAttributes.AddOrSetValue(pair.Key, own);
       end;
 
   // kept elements: their places here, which shift when one is not common (-1: not copied)
@@ -2103,7 +2100,7 @@ begin
       unknownAt[i] := -1;
       var unknown: TXmliteUnknown := source.fXmlUnknown[i];
       var after, value: TProperty;
-      if CommonProperty(aCommon, unknown.After, after) and CommonProperty(aCommon, unknown.Value, value) then
+      if Meta.Counterpart(unknown.After, after) and Meta.Counterpart(unknown.Value, value) then
       begin
         unknown.After := after;
         unknown.Value := value;
@@ -2115,16 +2112,6 @@ begin
 
   if (source.fXmlContent <> nil) and (source.fXmlContent.Count > 0) then
     CopyContent(source, aCommon, unknownAt);
-end;
-
-function TXmlite.CommonProperty(aCommon: TMetaBasite; aProperty: TProperty; out aMine: TProperty): boolean;
-begin
-  aMine := nil;
-  if aProperty = nil then
-    Exit(True);
-  Result := aProperty.Index < aCommon.Properties.Count;
-  if Result then
-    aMine := Meta.Properties[aProperty.Index];
 end;
 
 procedure TXmlite.CopyContent(aSource: TXmlite; aCommon: TMetaBasite; const aUnknownAt: TArray<integer>);
@@ -2158,7 +2145,7 @@ begin
       var mapped: TXmliteNode := node;
       case node.Kind of
         xnkElement:
-          if not CommonProperty(aCommon, node.ElementProperty, mapped.ElementProperty) or
+          if not Meta.Counterpart(node.ElementProperty, mapped.ElementProperty) or
             ((node.Element <> nil) and not children.TryGetValue(node.Element, mapped.Element)) then
             Continue;
         xnkUnknown:

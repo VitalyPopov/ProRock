@@ -498,6 +498,10 @@ type
 
     property ClassItself: TBasiteClass read GetClassItself;
     property Properties: TPropertyList read fProperties;
+
+    // aProperty of a class on this one's line as this class has it (an ancestor's come first, same indexes); False - this
+    // class lacks it; nil gives nil
+    function Counterpart(aProperty: TProperty; out aOwn: TProperty): boolean;
   end;
 
   TMetaBasiteList = class(TMetaClass)
@@ -2185,6 +2189,16 @@ destructor TMetaBasite.Destroy;
 begin
   fProperties.Free;
   inherited;
+end;
+
+function TMetaBasite.Counterpart(aProperty: TProperty; out aOwn: TProperty): boolean;
+begin
+  aOwn := nil;
+  if aProperty = nil then
+    Exit(True);
+  Result := aProperty.Index < fProperties.Count;
+  if Result then
+    aOwn := fProperties[aProperty.Index];
 end;
 
 function TMetaBasite.GetClassItself: TBasiteClass;
