@@ -196,6 +196,7 @@ type
     function ContentCount: integer; inline;
     function ContentItem(aIndex: integer): TXmliteContentItem;
     function GetXmlText: string;
+    function GetXmlnsInScope: TXmlns;
     procedure SetXmlText(const aValue: string);
     // an item at the end of the order; text joins a text item before it (text, CDATA, text)
     procedure AddContent(aKind: TXmliteContentKind; const aText: string; aElement: TBasite; aProperty: TProperty; aIndex: integer);
@@ -221,7 +222,9 @@ type
     procedure DoBeforeParsing; virtual;
     procedure DoAfterParsing; virtual;
   public
-    property Xmlns: TXmlns read fXmlns;
+    // the namespaces in scope here (prefix -> URI), for prefixed values (QNames); shared with the elements inside that
+    // declare none, so read it, don't change it
+    property Xmlns: TXmlns read GetXmlnsInScope;
 
     property XmlPrefix: string read fXmlPrefix write fXmlPrefix;
     property XmlName: string read fXmlName write fXmlName;
@@ -813,6 +816,48 @@ begin
   end;
 end;
 
+// a quick check before reading declarations; a false positive costs only the full read
+function TagDeclaresXmlns(aCursor: PChar): boolean;
+begin
+  var quote: Char := #0;
+  while aCursor^ <> #0 do
+  begin
+    if quote <> #0 then
+    begin
+      if aCursor^ = quote then
+        quote := #0;
+    end
+    else
+      case aCursor^ of
+        '"', '''':
+          quote := aCursor^;
+        '>':
+          Exit(False);
+        'x':
+          if StrLComp(aCursor, 'xmlns', 5) = 0 then
+            Exit(True);
+      end;
+    Inc(aCursor);
+  end;
+  Result := False;
+end;
+
+// the scope a tag reads in: its parent's, shared, when it declares nothing; else a new one with its declarations (False:
+// the start tag is not well-formed)
+function TagScope(aTagStart: PChar; aParent: TXmlns; out aScope: TXmlns): boolean;
+begin
+  if (aParent <> nil) and not TagDeclaresXmlns(aTagStart) then
+  begin
+    aScope := aParent.Share;
+    Exit(True);
+  end;
+  if aParent = nil then
+    aScope := TXmlns.Create
+  else
+    aScope := TXmlns.Create(aParent);
+  Result := TReaderXmlite.ReadXmlns(aTagStart, aScope);
+end;
+
 function TBasiteHelper.FromXml(var aXmlCursor: PChar; aXmlns: TXmlns): boolean;
 const
   cWhitespaces = [#32, #9, #$A, #$D];
@@ -834,15 +879,11 @@ begin
   end;
 
   var xmlns: TXmlns;
-
-  if aXmlns = nil then
-    xmlns := TXmlns.Create
-  else
-    xmlns := TXmlns.Create(aXmlns);
+  var wellFormed: boolean := TagScope(aXmlCursor, aXmlns, xmlns);
 
   if Meta.Xmlite.IsTXmlite then
   begin
-    TXmlite(Self).fXmlns.Free;
+    TXmlite(Self).fXmlns.Release;
     TXmlite(Self).fXmlns := xmlns;
     Inc(gXmlReadPosition);
     TXmlite(Self).fXmlPosition := gXmlReadPosition;
@@ -850,7 +891,7 @@ begin
 
   try
     var tagStart: PChar := aXmlCursor;
-    if not TReaderXmlite.ReadXmlns(aXmlCursor, xmlns) then
+    if not wellFormed then
       Exit(ReadFailed(tagStart, 'the start tag is not well-formed'));
 
     var isEndTag: boolean;
@@ -970,7 +1011,7 @@ begin
 
   finally
     if not Meta.Xmlite.IsTXmlite then
-      xmlns.Free;
+      xmlns.Release;
   end;
 
   if Meta.Xmlite.IsTXmlite then
@@ -979,31 +1020,6 @@ end;
 
 // URI of a tag name: the tag's own xmlns declarations first, then the ones of its context
 function TagUri(aTagStart: PChar; const aPrefix: string; aXmlns: TXmlns): string;
-
-  function TagDeclaresXmlns(aCursor: PChar): boolean; inline;
-  begin // quick check before reading declarations; a false positive costs only the full read below
-    var quote: Char := #0;
-    while aCursor^ <> #0 do
-    begin
-      if quote <> #0 then
-      begin
-        if aCursor^ = quote then
-          quote := #0;
-      end
-      else
-        case aCursor^ of
-          '"', '''':
-            quote := aCursor^;
-          '>':
-            Exit(False);
-          'x':
-            if StrLComp(aCursor, 'xmlns', 5) = 0 then
-              Exit(True);
-        end;
-      Inc(aCursor);
-    end;
-    Result := False;
-  end;
 
 begin
   if TagDeclaresXmlns(aTagStart) then
@@ -2032,7 +2048,7 @@ begin
   fXmlBadAttributes.Free;
   fXmlUnknown.Free;
   fXmlAny.Free;
-  fXmlns.Free;
+  fXmlns.Release;
   fXmlAttributeNamespaces.Free;
   fXmlAttributes.Free;
   inherited;
@@ -2052,8 +2068,10 @@ begin
       fXmlAttributes.AddOrSetValue(pair.Key, pair.Value);
     for var pair: TPair<string, string> in source.fXmlAttributeNamespaces do
       fXmlAttributeNamespaces.AddOrSetValue(pair.Key, pair.Value);
-    for var pair: TPair<string, string> in source.fXmlns do
-      fXmlns.AddOrSetValue(pair.Key, pair.Value);
+    fXmlns.Release;
+    fXmlns := nil;
+    if source.fXmlns <> nil then
+      fXmlns := source.fXmlns.Share;
     for var item: TBasite in source.fXmlAny do
       fXmlAny.Add(item.Clone);
     var own: TProperty;
@@ -2162,7 +2180,7 @@ begin
   var other: TXmlite := TXmlite(aOther); // of this class: inherited checked it
   if (fXmlPrefix <> other.fXmlPrefix) or (fXmlName <> other.fXmlName) or (fXmlText <> other.fXmlText) or
     (fXmlTextEmpty <> other.fXmlTextEmpty) or not SameMap(fXmlAttributes, other.fXmlAttributes) or
-    not SameMap(fXmlAttributeNamespaces, other.fXmlAttributeNamespaces) or not SameMap(fXmlns, other.fXmlns) or
+    not SameMap(fXmlAttributeNamespaces, other.fXmlAttributeNamespaces) or
     (fXmlAny.Count <> other.fXmlAny.Count) or (Count(fXmlUnknown) <> Count(other.fXmlUnknown)) or
     (Count(fXmlBadAttributes) <> Count(other.fXmlBadAttributes)) then
     Exit(False);
@@ -2202,7 +2220,6 @@ begin
   inherited;
   fXmlAttributes := TDictionary<string, string>.Create;
   fXmlAttributeNamespaces := TDictionary<string, string>.Create;
-  fXmlns := TXmlns.Create;
   fXmlAny := TBasiteList<TBasite>.Create;
   fXmlAny.Owner := Self;
 end;
@@ -2306,6 +2323,14 @@ begin
   item.Child := aProperty;
   item.Index := aIndex;
   order.Add(item);
+end;
+
+// created on the first need: an element read takes its scope's
+function TXmlite.GetXmlnsInScope: TXmlns;
+begin
+  if fXmlns = nil then
+    fXmlns := TXmlns.Create;
+  Result := fXmlns;
 end;
 
 function TXmlite.GetXmlText: string;

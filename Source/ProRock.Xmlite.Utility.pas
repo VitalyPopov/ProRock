@@ -69,10 +69,15 @@ type
   TXmlns = class(TDictionary<string, string>) // prefix-URI
   private
     fDefaultUri: string;
+    fOwners: integer;
     function GetUri(const aPrefix: string): string;
   public
     constructor Create; reintroduce; overload;
     constructor Create(const aParentXmlns: TXmlns); overload;
+
+    // one owner more: each owner calls Release instead of Free, the last one frees it
+    function Share: TXmlns;
+    procedure Release;
 
     property DefaultUri: string read fDefaultUri;
     property Uri[const aPrefix: string]: string read GetUri; default;
@@ -174,6 +179,22 @@ constructor TXmlns.Create(const aParentXmlns: TXmlns);
 begin
   inherited Create(aParentXmlns);
   fDefaultUri := aParentXmlns.DefaultUri;
+  fOwners := 1;
+end;
+
+function TXmlns.Share: TXmlns;
+begin
+  Inc(fOwners);
+  Result := Self;
+end;
+
+procedure TXmlns.Release;
+begin
+  if Self = nil then
+    Exit;
+  Dec(fOwners);
+  if fOwners <= 0 then
+    Free;
 end;
 
 function TXmlns.GetUri(const aPrefix: string): string;
@@ -188,6 +209,7 @@ end;
 constructor TXmlns.Create;
 begin
   inherited Create;
+  fOwners := 1;
 end;
 
 { TReaderXmlite }

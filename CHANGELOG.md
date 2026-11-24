@@ -104,6 +104,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 - `XmlContent` is read-only (`Count`, `Items[]`, `for in`): `Add<T>`, `AddText` and `Remove` change it, as before. Its items
   are `TXmliteContentItem` of kinds `xckText`, `xckElement`, `xckKept`; `TXmliteNode`, `TXmliteNodeKind` and `xnk...` stay
   as deprecated names until 2.0
+- Reading XML is about a third faster: an element that declares no namespaces shares its parent's `Xmlns` (the namespaces in
+  scope, for prefixed values; read it, don't change it) instead of a copy of its own. `SameAs` leaves out the declarations
+  around an element, as its written XML does: the same font under two producers' roots is the same. A start tag cut short
+  inside a document reports where it ends (`the text ends inside <item>`)
 
 #### Fixed
 - `xs:double` and `xs:float` are read and written exactly on every platform: on Win64 a 17-digit value (Excel writes many) could
