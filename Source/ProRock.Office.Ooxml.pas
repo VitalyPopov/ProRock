@@ -61,6 +61,7 @@ type
       fExact: boolean; // read without a loss: may be written back
       fChanged: boolean;
       fNew: boolean; // not in the package yet
+      fLeftOut: boolean; // removed: its name is in fRemoved, GetPart's quick lookup passes it by
     public
       destructor Destroy; override;
     end;
@@ -511,17 +512,22 @@ end;
 function TPackageOoxml.GetPart(const aName: string; aClass: TXmliteClass; aEdit: boolean): TXmlite;
 begin
   Result := nil;
-  var name: string := FindPart(aName);
-  if name.IsEmpty then
-    Exit;
+  // a part asked for before by the name the package has: one lookup (Calcite asks for its sheet several times a cell)
+  var name: string := aName;
   var part: TPart;
-  if not fParts.TryGetValue(name, part) then
+  if not fParts.TryGetValue(name, part) or part.fLeftOut then
   begin
-    part := TPart.Create;
-    part.fClass := aClass;
-    fParts.Add(name, part);
-  end
-  else if part.fClass <> aClass then
+    name := FindPart(aName);
+    if name.IsEmpty then
+      Exit;
+    if not fParts.TryGetValue(name, part) then
+    begin
+      part := TPart.Create;
+      part.fClass := aClass;
+      fParts.Add(name, part);
+    end;
+  end;
+  if part.fClass <> aClass then
   begin
     fIssues.Add(TIssueSeverity.isError, 'PartClass', name, Format('%s is read as %s already, not as %s', [name, part.fClass.ClassName,
       aClass.ClassName]));
@@ -641,7 +647,11 @@ begin
   if fParts.TryGetValue(name, part) and part.fNew then
     fParts.Remove(name)
   else
+  begin
     fRemoved.Add(name);
+    if part <> nil then
+      part.fLeftOut := True;
+  end;
 end;
 
 function TPackageOoxml.GetSigned: boolean;

@@ -113,7 +113,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 - Writing XML is more than twice as fast: UTF-8 goes straight into a buffer. `TWriterXmlite` is no longer a `TStreamWriter`:
   `Write`, `WriteLine`, `Flush` and `Text` stay
 - `IsPresent`, `SetPresent` and `Clear` by a property's name in the code (`IsPresent('UnitPrice')`) find it as fast as by its
-  data name; writing cells in Calcite is about 15% faster
+  data name; writing cells in Calcite is about 30% faster
 
 #### Fixed
 - Compiling ProRock.Xmlite gives no hints any more (H2443, an inline function not expanded)
