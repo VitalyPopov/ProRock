@@ -157,6 +157,8 @@ type
       aNamespaces: TDictionary<string, string>): boolean; static;
 
     class function PassNode(var aCursor: PChar; const aNodeName: string): boolean; static; inline;
+    // at '<': the end tag of aName passed, compared where it is (no string made); False - another tag, the cursor stays
+    class function PassEndTag(var aCursor: PChar; const aName: string): boolean; static;
 
     class function ReadName(var aCursor: PChar; out aPrefix, aName, aFullName: string; const aCustomEndChars: TSysCharSet = []): boolean;
      static; inline;
@@ -1171,6 +1173,8 @@ begin
           '>'));
     end;
 
+    if (aCursor[1] = '/') and TReaderXmlite.PassEndTag(aCursor, aName) then
+      Exit(True);
     var cursorStart: PChar := aCursor;
     var isEndTag: boolean;
     var tagFullName, tagName, tagPrefix: string;
@@ -2102,6 +2106,23 @@ begin
   end;
 end;
 
+class function TReaderXmlite.PassEndTag(var aCursor: PChar; const aName: string): boolean;
+begin
+  Result := False;
+  var cursor: PChar := aCursor + 2;
+  for var i := 1 to Length(aName) do
+    if cursor^ <> aName[i] then // the text's #0 differs too
+      Exit
+    else
+      Inc(cursor);
+  while CharInSet(cursor^, [#32, #9, #$A, #$D]) do
+    Inc(cursor);
+  if cursor^ <> '>' then
+    Exit;
+  aCursor := cursor + 1;
+  Result := True;
+end;
+
 class function TReaderXmlite.PassNode(var aCursor: PChar; const aNodeName: string): boolean;
 begin
   Result := False;
@@ -2118,6 +2139,8 @@ begin
         end
         else // regular node or end tag
         begin
+          if (aCursor[1] = '/') and PassEndTag(aCursor, aNodeName) then
+            Exit(True);
           var nestedNodeName: string;
           var isEndTag: boolean;
           if not ReadTagName(aCursor, isEndTag, nestedNodeName) then
