@@ -1902,7 +1902,7 @@ begin
     case aString[i] of
       '<', '>', '&', #13:
         begin
-          Write(Copy(aString, start, i - start));
+          WriteChars(PChar(aString) + start - 1, i - start);
           case aString[i] of
             '<': Write('&lt;');
             '>': Write('&gt;');
@@ -1913,77 +1913,58 @@ begin
           start := i + 1;
         end;
     end;
-  Write(Copy(aString, start, MaxInt));
+  WriteChars(PChar(aString) + start - 1, aString.Length + 1 - start);
 end;
 
 procedure TWriterXmlite.AddXmlEscape(const aString: string);
-
-  function IsHighSurrogate(aChar: PChar): boolean; inline;
-  begin
-    Result := (Ord(aChar^) >= $D800) and (Ord(aChar^) <= $DBFF);
-  end;
-
-  function IsLowSurrogate(aChar: PChar): boolean; inline;
-  begin
-    Result := (Ord(aChar^) >= $DC00) and (Ord(aChar^) <= $DFFF);
-  end;
-
-  function CombineSurrogates(aHighSurrogate, aLowSurrogate: PChar): cardinal; inline;
-  begin
-    Result := (Ord(aHighSurrogate^) - $D800) * $400 + (Ord(aLowSurrogate^) - $DC00) + $10000;
-  end;
-
 begin
+  // the text between the escaped chars in one piece
   var cursor: PChar := PChar(aString);
-
+  var start: PChar := cursor;
   while cursor^ <> #0 do
   begin
-    if IsHighSurrogate(cursor) then
-    begin
-      if IsLowSurrogate(cursor + 1) then
-      begin
-        var codePoint: cardinal := CombineSurrogates(cursor, cursor + 1); // combine surrogate pair and escape as a single code point
-        Write('&#x');
-        Write(codePoint.ToHexString(6));
-        Write(';');
-        Inc(cursor); // skip the low surrogate
-      end
-      { else - a high surrogate without its low one: invalid in XML, dropped }
-    end
-    { a low surrogate without its high one: invalid too, but written by the default branch below }
-    else
-      case cursor^ of
-        #9, #10, #13: // tab and lineend
-          begin
-            Write('&#x');
-            Write(Ord(cursor^).ToHexString(2));
-            Write(';');
+    case cursor^ of
+      #9, #10, #13, '<', '>', '&', '"', '''', #$D800..#$DBFF:
+        begin
+          WriteChars(start, cursor - start);
+          case cursor^ of
+            #9: Write('&#x09;');
+            #10: Write('&#x0A;');
+            #13: Write('&#x0D;');
+            '<': Write('&lt;');
+            '>': Write('&gt;');
+            '&': Write('&amp;');
+            '"': Write('&quot;');
+            '''': Write('&apos;');
+          else // a high surrogate: with its low one, a reference to the code point; alone, invalid in XML and dropped
+            if (Ord(cursor[1]) >= $DC00) and (Ord(cursor[1]) <= $DFFF) then
+            begin
+              var codePoint: cardinal := (Ord(cursor[0]) - $D800) * $400 + (Ord(cursor[1]) - $DC00) + $10000;
+              Write('&#x');
+              Write(codePoint.ToHexString(6));
+              Write(';');
+              Inc(cursor);
+            end;
           end;
-        '<':
-          Write('&lt;');
-        '>':
-          Write('&gt;');
-        '&':
-          Write('&amp;');
-        '"':
-          Write('&quot;');
-        '''':
-          Write('&apos;');
-      else
-        Write(cursor^);
-      end;
-
+          start := cursor + 1;
+        end;
+    end; // a lone low surrogate stays in the text: written as U+FFFD
     Inc(cursor);
   end;
+  WriteChars(start, cursor - start);
 end;
 
 // the value escaped like text (<, &, " and line breaks): FHIR comparator="&lt;=", a kept attribute read with entities
 procedure TWriterXmlite.WriteAttribute(const aName, aValue, aPrefix: string);
 begin
-  if aPrefix.IsEmpty then
-    Write(' %s="', [aName])
-  else
-    Write(' %s:%s="', [aPrefix, aName]);
+  Write(' ');
+  if not aPrefix.IsEmpty then
+  begin
+    Write(aPrefix);
+    Write(':');
+  end;
+  Write(aName);
+  Write('="');
   AddXmlEscape(aValue);
   Write('"');
 end;

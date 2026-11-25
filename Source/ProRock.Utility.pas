@@ -122,24 +122,43 @@ type
     function Decrease(const aItem: T): boolean;
   end;
 
-  TWriterBase = class(TStreamWriter)
+  // writes UTF-8 into its own buffer, given to the stream when full and on Flush or Free
+  TWriterBase = class
   public const
     cDefaultIndent = 2;
+  private const
+    cBufferSize = 65536;
   private
+    fStream: TStream; // nil: everything stays in the buffer, for Text
+    fBuffer: TBytes;
+    fCount: integer;
     fLevel: cardinal;
     fIndent: cardinal;
     fWidth: cardinal;
     function GetText: string;
+    procedure MakeRoom(aBytes: integer);
+    procedure Encode(aChars: PChar; aCount: integer);
 
   public
     constructor Create(aStream: TStream; aIndent: cardinal = cDefaultIndent; aWidth: cardinal = 0; aLevel: cardinal = 0);
-      reintroduce; overload;
+      overload;
     constructor Create(aIndent: cardinal = cDefaultIndent; aWidth: cardinal = 0; aLevel: cardinal = 0); overload;
+    destructor Destroy; override;
 
     property Indent: cardinal read fIndent write fIndent;
     property Level: cardinal read fLevel;
     property Width: cardinal read fWidth; // 0: no limit
-    property Text: string read GetText; // not empty only if BaseStream is TStringStream
+    property Text: string read GetText; // what was written, for a writer created without a stream; '' with one
+
+    // a lone surrogate is written as U+FFFD, as TEncoding.UTF8 writes it
+    procedure WriteChars(aChars: PChar; aCount: integer);
+    procedure Write(aChar: Char); overload; inline;
+    procedure Write(const aText: string); overload; inline;
+    procedure Write(const aChars: array of Char); overload;
+    procedure Write(const aFormat: string; const aArgs: array of const); overload;
+    procedure WriteLine; overload; inline;
+    procedure WriteLine(const aText: string); overload; inline;
+    procedure Flush;
 
     procedure IncLevel; inline;
     procedure DecLevel; inline;
@@ -1833,32 +1852,147 @@ end;
 
 constructor TWriterBase.Create(aStream: TStream; aIndent, aWidth, aLevel: cardinal);
 begin
-  if aStream = nil then
-  begin
-    // UTF-8, as TStreamWriter writes (TStringStream's default is the ANSI code page); the shared instance is not owned
-    inherited Create(TStringStream.Create('', TEncoding.UTF8, False));
-    OwnStream;
-  end
-  else
-    inherited Create(aStream);
-
+  inherited Create;
+  fStream := aStream;
+  SetLength(fBuffer, cBufferSize);
   fIndent := aIndent;
   fWidth := aWidth;
   fLevel := aLevel;
 end;
 
+destructor TWriterBase.Destroy;
+begin
+  Flush;
+  inherited;
+end;
+
+procedure TWriterBase.Flush;
+begin
+  if (fStream = nil) or (fCount = 0) then
+    Exit;
+  fStream.WriteBuffer(fBuffer[0], fCount);
+  fCount := 0;
+end;
+
+procedure TWriterBase.MakeRoom(aBytes: integer);
+begin
+  if fStream <> nil then
+    Flush
+  else
+    SetLength(fBuffer, Max(2 * Length(fBuffer), fCount + aBytes));
+end;
+
+// the room is there: at most 3 bytes a char (a surrogate pair takes 4 for 2)
+procedure TWriterBase.Encode(aChars: PChar; aCount: integer);
+begin
+  var target: PByte := @fBuffer[fCount];
+  var stop: PChar := aChars + aCount;
+  while aChars < stop do
+  begin
+    var code: cardinal := Ord(aChars^);
+    if code < $80 then
+    begin
+      target^ := code;
+      Inc(target);
+    end
+    else if code < $800 then
+    begin
+      target[0] := $C0 or (code shr 6);
+      target[1] := $80 or (code and $3F);
+      Inc(target, 2);
+    end
+    else if (code >= $D800) and (code <= $DBFF) and (aChars + 1 < stop) and (Ord(aChars[1]) >= $DC00) and
+      (Ord(aChars[1]) <= $DFFF) then
+    begin
+      code := (code - $D800) shl 10 + (cardinal(Ord(aChars[1])) - $DC00) + $10000;
+      target[0] := $F0 or (code shr 18);
+      target[1] := $80 or ((code shr 12) and $3F);
+      target[2] := $80 or ((code shr 6) and $3F);
+      target[3] := $80 or (code and $3F);
+      Inc(target, 4);
+      Inc(aChars);
+    end
+    else
+    begin
+      if (code >= $D800) and (code <= $DFFF) then
+        code := $FFFD;
+      target[0] := $E0 or (code shr 12);
+      target[1] := $80 or ((code shr 6) and $3F);
+      target[2] := $80 or (code and $3F);
+      Inc(target, 3);
+    end;
+    Inc(aChars);
+  end;
+  fCount := target - PByte(@fBuffer[0]);
+end;
+
+procedure TWriterBase.WriteChars(aChars: PChar; aCount: integer);
+begin
+  while aCount > 0 do
+  begin
+    var chunk: integer := aCount;
+    if fCount + 3 * chunk > Length(fBuffer) then
+    begin
+      MakeRoom(3 * chunk);
+      chunk := Min(chunk, (Length(fBuffer) - fCount) div 3);
+      if (chunk < aCount) and (Ord(aChars[chunk - 1]) >= $D800) and (Ord(aChars[chunk - 1]) <= $DBFF) then
+        Dec(chunk); // a pair stays in one piece
+    end;
+    Encode(aChars, chunk);
+    Inc(aChars, chunk);
+    Dec(aCount, chunk);
+  end;
+end;
+
+procedure TWriterBase.Write(aChar: Char);
+begin
+  if (Ord(aChar) < $80) and (fCount < Length(fBuffer)) then
+  begin
+    fBuffer[fCount] := Ord(aChar);
+    Inc(fCount);
+  end
+  else
+    WriteChars(@aChar, 1);
+end;
+
+procedure TWriterBase.Write(const aText: string);
+begin
+  WriteChars(PChar(aText), Length(aText));
+end;
+
+procedure TWriterBase.Write(const aChars: array of Char);
+begin
+  if Length(aChars) > 0 then
+    WriteChars(@aChars[0], Length(aChars));
+end;
+
+procedure TWriterBase.Write(const aFormat: string; const aArgs: array of const);
+begin
+  Write(Format(aFormat, aArgs));
+end;
+
+procedure TWriterBase.WriteLine;
+begin
+  WriteChars(#13#10, 2);
+end;
+
+procedure TWriterBase.WriteLine(const aText: string);
+begin
+  Write(aText);
+  WriteLine;
+end;
+
 procedure TWriterBase.FinishLine(const aEndingText: string);
 begin
   Write(aEndingText);
-  Write([#13, #10]);
+  WriteLine;
 end;
 
 function TWriterBase.GetText: string;
 begin
-  if not BaseStream.ClassType.InheritsFrom(TStringStream) then
-    Exit;
-
-  Result := TStringStream(BaseStream).DataString;
+  if fStream <> nil then
+    Exit('');
+  Result := TEncoding.UTF8.GetString(fBuffer, 0, fCount);
 end;
 
 procedure TWriterBase.DecLevel;
