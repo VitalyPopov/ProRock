@@ -2215,27 +2215,16 @@ begin
     Inc(aCursor);
   end;
 
-  var ending: Char := aCursor^;
-  aCursor^ := #0;
-
-  aFullName := nameStart;
-  if separatorPosition <> nil then
+  SetString(aFullName, nameStart, aCursor - nameStart);
+  if separatorPosition = nil then
+    aName := aFullName // one string for both: no prefix
+  else
   begin
-    var prefixStart: PChar := nameStart;
-    nameStart := separatorPosition + 1;
-    separatorPosition^ := #0;
-    aPrefix := prefixStart;
-    separatorPosition^ := ':';
-
-    if nameStart = #0 then
-    begin
-      aCursor^ := ending;
-      Exit; // goal Name turned out to be empty - inform invoker about that through False Result (Prefix/FullName remain defined)
-    end;
+    SetString(aPrefix, nameStart, separatorPosition - nameStart);
+    if separatorPosition + 1 = aCursor then
+      Exit; // a prefix without a name (<a:>): False, aPrefix and aFullName as read
+    SetString(aName, separatorPosition + 1, aCursor - separatorPosition - 1);
   end;
-  aName := nameStart;
-
-  aCursor^ := ending;
 
   Result := True;
 end;

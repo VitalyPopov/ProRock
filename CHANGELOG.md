@@ -129,6 +129,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 - An ordered element (`[TOrdered]`, `[TMixed]`): a child deleted through its list (`Clear`, `Delete`, `Extract`) now leaves
   the order as `Remove` does. Before, it could crash on write or in `InnerText` (mostly on Win64), and a child added next
   could be written in its place; `Clear` tells the element once, so a long list clears as fast as before
+- A tag with a prefix and no name (`<a:>`) fails the read as not well-formed; it was read as an element without a name
 
 ### ProRocket (generator)
 
