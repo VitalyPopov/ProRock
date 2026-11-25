@@ -458,12 +458,14 @@ type
   private
     fParentMeta: TMetaBasite;
     fHashedList: TDictionary<string, TProperty>;
+    fCodeNames: TDictionary<string, TProperty>; // by the name in the code: RTTI's Name builds a string on every call
   public
     constructor Create(aParentMeta: TMetaBasite); reintroduce;
     destructor Destroy; override;
 
     function Add(aProperty: TProperty): integer; reintroduce;
     function Get(const aName: string; var aProperty: TProperty): boolean; inline;
+    function GetByCodeName(const aName: string; var aProperty: TProperty): boolean; inline;
   end;
 
   TMetaExtension = class;
@@ -1316,28 +1318,20 @@ begin
   if (offset <= 0) or (offset >= InstanceSize) then
     Exit(False);
 
-  for var propertyInfo: TProperty in Meta.Properties do
-    if (NativeInt(propertyInfo.fFieldOffset) = offset) and (propertyInfo.PropertyType <> ptNotSupported) then
+  var properties: TPropertyList := Meta.Properties;
+  for var i := 0 to properties.Count - 1 do // by index: for-in creates an enumerator object
+    if (NativeInt(properties[i].fFieldOffset) = offset) and (properties[i].PropertyType <> ptNotSupported) then
     begin
-      aProperty := propertyInfo;
+      aProperty := properties[i];
       Exit(True);
     end;
   Result := False;
 end;
 
+// the name in the code too: a UBL member's key is priceList, the property PriceList
 function TBasite.FindProperty(const aName: string; out aProperty: TProperty): boolean;
 begin
-  Result := Meta.Properties.Get(aName, aProperty);
-  if Result then
-    Exit;
-
-  // the name in the code too: a UBL member's key is priceList, the property PriceList
-  for var propertyInfo: TProperty in Meta.Properties do
-    if propertyInfo.RttiProperty.Name = aName then
-    begin
-      aProperty := propertyInfo;
-      Exit(True);
-    end;
+  Result := Meta.Properties.Get(aName, aProperty) or Meta.Properties.GetByCodeName(aName, aProperty);
 end;
 
 function TBasite.GetPresent(aField: Pointer): boolean;
@@ -2388,6 +2382,7 @@ function TPropertyList.Add(aProperty: TProperty): integer;
 begin
   aProperty.fIndex := Count;
   fHashedList.AddOrSetValue(aProperty.Name, aProperty);
+  fCodeNames.TryAdd(aProperty.RttiProperty.Name, aProperty); // the first one wins, an ancestor's
   Result := inherited Add(aProperty)
 end;
 
@@ -2446,6 +2441,7 @@ begin
   inherited Create;
   fParentMeta := aParentMeta;
   fHashedList := TDictionary<string, TProperty>.Create;
+  fCodeNames := TDictionary<string, TProperty>.Create;
 
   if fParentMeta.ClassItself.InheritsFrom(TBasite) then
     AddProperties(TBasiteClass(fParentMeta.ClassItself), fParentMeta.Naming, True);
@@ -2453,6 +2449,7 @@ end;
 
 destructor TPropertyList.Destroy;
 begin
+  fCodeNames.Free;
   fHashedList.Free;
   inherited;
 end;
@@ -2460,6 +2457,11 @@ end;
 function TPropertyList.Get(const aName: string; var aProperty: TProperty): boolean;
 begin
   Result := fHashedList.TryGetValue(aName, aProperty);
+end;
+
+function TPropertyList.GetByCodeName(const aName: string; var aProperty: TProperty): boolean;
+begin
+  Result := fCodeNames.TryGetValue(aName, aProperty);
 end;
 
 { TMeta }
