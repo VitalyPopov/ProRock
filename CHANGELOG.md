@@ -88,7 +88,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   cell as it was and is listed, the rest is saved
 - `ProRock.Office.Ooxml`, Office files (.xlsx, .docx, .pptx - any OPC package): `TPackageOoxml` opens and saves one with
   nothing lost - a part is read on first use into its generated classes (`Part<T>`, `EditPart<T>`), a part not changed is saved
-  as the same bytes; `Relationships`, `HasPart`, `ContentType`, `AddPart`, `RemovePart`, `Signed`. `Properties`: the core properties Office
+  as the same bytes; `Relationships`, `HasPart`, `ContentType`, `AddPart`, `RemovePart`, `Signed`; `Version` changes when a part's objects read before may be gone. `Properties`: the core properties Office
   shows in File > Info as plain values (dates in UTC, an empty value removes the element); a save that changes something sets
   `Modified`, as Office does
 - Calcite's `Workbook.Properties`: the workbook's title, author, dates and the rest of File > Info, as plain values
@@ -113,7 +113,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 - Writing XML is more than twice as fast: UTF-8 goes straight into a buffer. `TWriterXmlite` is no longer a `TStreamWriter`:
   `Write`, `WriteLine`, `Flush` and `Text` stay
 - `IsPresent`, `SetPresent` and `Clear` by a property's name in the code (`IsPresent('UnitPrice')`) find it as fast as by its
-  data name; writing cells in Calcite is about 30% faster
+  data name; writing cells in Calcite is about a third faster
 
 #### Fixed
 - Compiling ProRock.Xmlite gives no hints any more (H2443, an inline function not expanded)

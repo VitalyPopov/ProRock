@@ -415,6 +415,12 @@ type
     fName: string;
     fPartName: string;
     fPrepared: boolean;
+    // the part's objects as Objects last gave them, valid while the package and its Version are the same (Exchange swaps
+    // packages between workbooks)
+    fObjects: TWorksheetE;
+    fObjectsPackage: TPackageOoxml;
+    fObjectsVersion: cardinal;
+    fObjectsEdited: boolean;
     // found on the first need: the areas of array formulas and data tables, shared formulas' first cells by si
     fArrays, fDataTables: TList<TRange>;
     fSpills: TList<TRange>; // those of fArrays that are dynamic arrays (Excel 365's, spilled)
@@ -4124,10 +4130,18 @@ end;
 
 function TWorksheet.Objects(aEdit: boolean): TWorksheetE;
 begin
+  var package: TPackageOoxml := fWorkbook.fPackage;
+  if (fObjects <> nil) and (fObjectsPackage = package) and (fObjectsVersion = package.Version) and
+    (fObjectsEdited or not aEdit) then
+    Exit(fObjects); // asked for several times a cell: no lookup in the package
   if aEdit then
-    Result := fWorkbook.fPackage.EditPart<TWorksheetE>(fPartName)
+    Result := package.EditPart<TWorksheetE>(fPartName)
   else
-    Result := fWorkbook.fPackage.Part<TWorksheetE>(fPartName);
+    Result := package.Part<TWorksheetE>(fPartName);
+  fObjects := Result;
+  fObjectsPackage := package;
+  fObjectsVersion := package.Version;
+  fObjectsEdited := aEdit;
   if fPrepared then
     Exit;
   fPrepared := True;

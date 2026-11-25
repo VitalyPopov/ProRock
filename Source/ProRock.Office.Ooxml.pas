@@ -72,6 +72,7 @@ type
     fZip: TZipFile; // over fSource; nil - nothing open
     fParts: TObjectDictionary<string, TPart>; // only the parts asked for
     fRemoved: TList<string>; // left out on save
+    fVersion: cardinal;
     fMainType: string; // what the main part's relationship type starts with: Transitional and Strict differ
     fProperties: TCoreProperties;
     fIssues: TIssues;
@@ -124,6 +125,9 @@ type
     property Properties: TCoreProperties read fProperties;
     // the package has a digital signature: it usually covers the core properties, so saving changes breaks it
     property Signed: boolean read GetSigned;
+    // changes when the objects of a part read before may be freed or no longer found (Open, RemovePart): an object kept for
+    // speed is valid only while Version is the same
+    property Version: cardinal read fVersion;
   end;
 
 implementation
@@ -329,6 +333,7 @@ end;
 
 procedure TPackageOoxml.Close;
 begin
+  Inc(fVersion);
   fParts.Clear;
   fRemoved.Clear;
   FreeAndNil(fZip);
@@ -340,6 +345,8 @@ end;
 // everything but Error and Properties: what is open here goes to aOther
 procedure TPackageOoxml.Exchange(aOther: TPackageOoxml);
 begin
+  Inc(fVersion);
+  Inc(aOther.fVersion);
   var name: string := fFileName;
   fFileName := aOther.fFileName;
   aOther.fFileName := name;
@@ -652,6 +659,7 @@ begin
     if part <> nil then
       part.fLeftOut := True;
   end;
+  Inc(fVersion);
 end;
 
 function TPackageOoxml.GetSigned: boolean;
