@@ -1006,13 +1006,14 @@ begin
 end;
 
 function TBasite.ContentHash: integer;
+var
+  parts: array[0 .. 1] of integer; // not an inline var: Delphi 10.3 takes no structured type there
 begin
   var hashedClass: TClass := ClassType;
   Result := THashBobJenkins.GetHashValue(hashedClass, SizeOf(hashedClass));
   for var propertyInfo: TProperty in Meta.Properties do
     if IsPresent(propertyInfo) then
     begin
-      var parts: array[0 .. 1] of integer;
       parts[0] := propertyInfo.fIndex;
       parts[1] := PropertyHash(propertyInfo);
       Result := THashBobJenkins.GetHashValue(parts, SizeOf(parts), Result);
@@ -2105,6 +2106,8 @@ end;
 
 // parsed as for a field, into a buffer of the property's type, then given to the setter
 function TPropertyData.TrySetBySetter(aObject: TBasite; const aValue: string): boolean;
+var
+  buffer: array[0..15] of byte; // the largest value: Extended, 10 bytes on Win32; not inline: 10.3 takes no structured type
 begin
   if fRttiProperty.PropertyType.TypeKind = tkUString then
   begin
@@ -2114,7 +2117,6 @@ begin
     Exit;
   end;
 
-  var buffer: array[0..15] of byte; // the largest value: Extended, 10 bytes on Win32
   Result := Meta.TextToData(aValue, @buffer, fDefault);
   case fRttiProperty.PropertyType.TypeKind of
     tkInteger, tkEnumeration:

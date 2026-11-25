@@ -6462,9 +6462,9 @@ var
   procedure ChangeFormula(aFormula: TTableFormulaCT);
   begin
     var text: string := DecodeText(aFormula.XmlValue);
-    var changed: string := Changed(text);
-    if changed <> text then
-      aFormula.XmlValue := EncodeText(changed);
+    var newText: string := Changed(text); // not `changed`: Delphi 10.3 reads the call as the variable
+    if newText <> text then
+      aFormula.XmlValue := EncodeText(newText);
   end;
 
   procedure WriteName(aRow, aColumn: integer; const aName: string);
@@ -7247,6 +7247,8 @@ end;
 procedure TWorksheet.ShiftNotes(aByRows: boolean; aFirst, aCount: integer);
 const
   cPixel = 9525;
+var
+  anchor: array[0 .. 7] of integer; // not an inline var: Delphi 10.3 takes no structured type there
 begin
   var commentsPart, drawingPart: string;
   NotesParts(commentsPart, drawingPart);
@@ -7300,7 +7302,6 @@ begin
         // LeftColumn, LeftOffset, TopRow, TopOffset, RightColumn, RightOffset, BottomRow, BottomOffset (pixels)
         var text: string := string(data.Anchor[0]);
         var numbers: TArray<string> := text.Split([',']);
-        var anchor: array[0 .. 7] of integer;
         for var k := 0 to 7 do
           anchor[k] := StrToIntDef(numbers[k].Trim, 0);
         var first: integer := IfThen(aByRows, 2, 0); // the start's index; its offset next, the end's 4 on
