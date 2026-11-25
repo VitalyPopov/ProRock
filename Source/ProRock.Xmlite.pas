@@ -496,6 +496,9 @@ type
     property Elements: TDictObjectList<TUriedName, TProperty> read fElements;
     // aFirst or another of its name: the first at or after aLast, the element read before, not read yet; by position, branches unknown
     function ElementOfName(aFirst, aLast: TProperty; aObject: TBasite): TProperty;
+    // by URI and name (an empty URI: unqualified); nil - the class has none
+    function Element(const aUri, aName: string): TProperty;
+    function Attribute(const aUri, aName: string): TPropertyData;
     // the [TXmliteText] property - the element's text content; nil when the element has no simpleContent
     property TextProperty: TPropertyData read fTextProperty;
     property IsTXmlite: boolean read fIsTXmlite;
@@ -632,6 +635,12 @@ type
     Line: integer;
   end;
   PReadIssues = ^TReadIssues;
+
+  // TUriedName's layout, its strings not owned: a key for one lookup without counting references (the caller holds them)
+  TUriedNameView = record
+    Uri, Name: Pointer;
+  end;
+  PUriedName = ^TUriedName;
 
 // the read order of elements (TXmlite.XmlPosition): one counter per thread, so parsing in several threads needs no lock
 threadvar
@@ -962,9 +971,9 @@ begin
         else
           uri := xmlns[attributePrefix];
 
-        var propertyData: TPropertyData := Meta.Xmlite.Attributes[TUriedName.Create(uri, attributeName)];
+        var propertyData: TPropertyData := Meta.Xmlite.Attribute(uri, attributeName);
         if propertyData = nil then
-          propertyData := Meta.Xmlite.Attributes[TUriedName.Create('', attributeName)];
+          propertyData := Meta.Xmlite.Attribute('', attributeName);
         if (propertyData <> nil) and propertyData.TrySetValue(Self, attributeValue) then
           Continue;
 
@@ -1178,11 +1187,11 @@ begin
     var elementUri: string := TagUri(cursorStart, tagPrefix, aXmlns);
 
     // get a property for property defined name, following prefix/uri
-    var propertyElement: TProperty := Meta.Xmlite.Elements[TUriedName.Create(elementUri, tagName)];
+    var propertyElement: TProperty := Meta.Xmlite.Element(elementUri, tagName);
 
     // an unqualified local element (SOAP 1.1 faultcode) belongs to its parent's type, as an unprefixed attribute does
     if (propertyElement = nil) and elementUri.IsEmpty and Assigned(Meta.Xmlite.Namespace) then
-      propertyElement := Meta.Xmlite.Elements[TUriedName.Create(Meta.Xmlite.Namespace.Uri, tagName)];
+      propertyElement := Meta.Xmlite.Element(Meta.Xmlite.Namespace.Uri, tagName);
 
 
     if (propertyElement = nil) and Meta.Xmlite.ProcessAnyElement then
@@ -1205,7 +1214,7 @@ begin
     end;
 
     if propertyElement = nil then // as a fallback - try to find such property without tag
-      propertyElement := Meta.Xmlite.Elements[TUriedName.Create('', tagName)];
+      propertyElement := Meta.Xmlite.Element('', tagName);
 
     // compat 1.3.0, drop in 2.0: matched by name - documents written before 1.3.0 put some elements in the parent's namespace
     if propertyElement = nil then
@@ -3853,6 +3862,22 @@ begin
   while fSameName.TryGetValue(last, next) do
     last := next;
   fSameName.Add(last, aProperty);
+end;
+
+function TMetaBasiteXmlite.Element(const aUri, aName: string): TProperty;
+begin
+  var key: TUriedNameView;
+  key.Uri := Pointer(aUri);
+  key.Name := Pointer(aName);
+  Result := fElements[PUriedName(@key)^];
+end;
+
+function TMetaBasiteXmlite.Attribute(const aUri, aName: string): TPropertyData;
+begin
+  var key: TUriedNameView;
+  key.Uri := Pointer(aUri);
+  key.Name := Pointer(aName);
+  Result := fAttributes[PUriedName(@key)^];
 end;
 
 function TMetaBasiteXmlite.ElementOfName(aFirst, aLast: TProperty; aObject: TBasite): TProperty;
