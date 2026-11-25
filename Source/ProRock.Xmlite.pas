@@ -673,7 +673,7 @@ begin
 end;
 
 // False, for Exit(ReadFailed(...))
-function ReadFailed(aCursor: PChar; const aMessage: string): boolean;
+function ReadFailed(aCursor: PChar; const aMessage: string): boolean; overload;
 begin
   Result := False;
   var context: PReadIssues := gReadIssues;
@@ -683,8 +683,16 @@ begin
   context.Issues.Add(TIssueSeverity.isError, 'Malformed', ReadPlace(context, aCursor), aMessage);
 end;
 
+// the message made only when it is reported: no strings built where the read goes well
+function ReadFailed(aCursor: PChar; const aFormat: string; const aArgs: array of const): boolean; overload;
+begin
+  Result := False;
+  if (gReadIssues <> nil) and not gReadIssues.Failed then
+    ReadFailed(aCursor, Format(aFormat, aArgs));
+end;
+
 // aKey (an element and a name in it): reported once a read under aCode; '' - every time
-procedure ReadReport(aCursor: PChar; aSeverity: TIssueSeverity; const aCode, aKey, aMessage: string);
+procedure ReadReport(aCursor: PChar; aSeverity: TIssueSeverity; const aCode, aKey, aMessage: string); overload;
 begin
   var context: PReadIssues := gReadIssues;
   if context = nil then
@@ -698,6 +706,14 @@ begin
     context.Named.Add(aCode + ' ' + aKey);
   end;
   context.Issues.Add(aSeverity, aCode, ReadPlace(context, aCursor), aMessage);
+end;
+
+// aKeyFormat and aFormat made from aArgs only when reported
+procedure ReadReport(aCursor: PChar; aSeverity: TIssueSeverity; const aCode, aKeyFormat, aFormat: string;
+  const aArgs: array of const); overload;
+begin
+  if gReadIssues <> nil then
+    ReadReport(aCursor, aSeverity, aCode, Format(aKeyFormat, aArgs), Format(aFormat, aArgs));
 end;
 
 function Quoted(const aValue: string): string;
@@ -962,7 +978,7 @@ begin
         var attributeStart: PChar := aXmlCursor;
         var attributePrefix, attributeName, attributeFullName, attributeValue: string;
         if not TReaderXmlite.ReadAttributeName(aXmlCursor, attributePrefix, attributeName, attributeFullName) then
-          Exit(ReadFailed(attributeStart, 'an attribute of <' + objectName + '> is not well-formed'));
+          Exit(ReadFailed(attributeStart, 'an attribute of <%s> is not well-formed', [objectName]));
 
         attributeValue := TReaderXmlite.ReadQuotedValueInPlace(aXmlCursor);
 
@@ -990,12 +1006,12 @@ begin
               if TXmlite(Self).fXmlBadAttributes = nil then
                 TXmlite(Self).fXmlBadAttributes := TDictionary<string, TProperty>.Create;
               TXmlite(Self).fXmlBadAttributes.AddOrSetValue(attributeFullName, propertyData);
-              ReadReport(attributeStart, TIssueSeverity.isWarning, 'BadValue', '',
-                Format('%s=%s of <%s> does not fit its type: kept as read', [attributeFullName, Quoted(attributeValue), objectName]));
+              ReadReport(attributeStart, TIssueSeverity.isWarning, 'BadValue', '', '%s=%s of <%s> does not fit its type: kept as read',
+                [attributeFullName, Quoted(attributeValue), objectName]);
             end
             else if uri <> TUtility.cXsiUri then
-              ReadReport(attributeStart, TIssueSeverity.isHint, 'UnknownAttribute', objectName + ' ' + attributeFullName,
-                Format('%s of <%s> is not in the schema: kept as read', [attributeFullName, objectName]));
+              ReadReport(attributeStart, TIssueSeverity.isHint, 'UnknownAttribute', '%1:s %0:s',
+                '%0:s of <%1:s> is not in the schema: kept as read', [attributeFullName, objectName]);
             // its prefix, and for xsi:type the value's (dcterms:W3CDTF) - declared again on write
             if not attributePrefix.IsEmpty and not uri.IsEmpty then
               TXmlite(Self).XmlAttributeNamespaces.AddOrSetValue(attributePrefix, uri);
@@ -1010,7 +1026,7 @@ begin
           end;
       end
     else if not TReaderXmlite.MoveToVisualChar(aXmlCursor) then
-      Exit(ReadFailed(tagStart, 'the text ends inside <' + objectName + '>'));
+      Exit(ReadFailed(tagStart, 'the text ends inside <%s>', [objectName]));
 
     if (aXmlCursor^ = '/') and (aXmlCursor[1] = '>') then
     begin // empty tag
@@ -1034,19 +1050,19 @@ begin
           if not textProperty.TrySetValue(Self, text) and Meta.Xmlite.IsTXmlite then
           begin
             TXmlite(Self).fXmlText := text; // does not fit its type: kept as it came, written while the property is not present
-            ReadReport(tagStart, TIssueSeverity.isWarning, 'BadValue', '', Format('the text %s of <%s> does not fit its type: kept as read',
-              [Quoted(text), objectName]));
+            ReadReport(tagStart, TIssueSeverity.isWarning, 'BadValue', '', 'the text %s of <%s> does not fit its type: kept as read',
+              [Quoted(text), objectName]);
           end;
         end
         else if Meta.Xmlite.IsTXmlite then
           TXmlite(Self).ReadEmptyText;
         if aXmlCursor^ = #0 then
-          Exit(ReadFailed(tagStart, 'the text ends before </' + objectName + '>'));
+          Exit(ReadFailed(tagStart, 'the text ends before </%s>', [objectName]));
       end
       else if not Meta.Xmlite.Mixed then // mixed content: every text run read in ReadTagContents, whitespace included
       begin
         if not TReaderXmlite.MoveToVisualChar(aXmlCursor) then
-          Exit(ReadFailed(tagStart, 'the text ends before </' + objectName + '>'));
+          Exit(ReadFailed(tagStart, 'the text ends before </%s>', [objectName]));
 
         // CDATA, a comment or a PI may come first; only whitespace around a comment before the first child is no text
         if Meta.Xmlite.IsTXmlite and ((aXmlCursor^ <> '<') or (aXmlCursor[1] = '!') or (aXmlCursor[1] = '?')) then
@@ -1061,9 +1077,9 @@ begin
       Result := ReadTagContents(aXmlCursor, objectName, xmlns);
     end
     else if aXmlCursor^ = #0 then
-      ReadFailed(tagStart, 'the text ends inside <' + objectName + '>')
+      ReadFailed(tagStart, 'the text ends inside <%s>', [objectName])
     else
-      ReadFailed(aXmlCursor, '> or /> expected in <' + objectName + '>');
+      ReadFailed(aXmlCursor, '> or /> expected in <%s>', [objectName]);
 
   finally
     if not Meta.Xmlite.IsTXmlite then
@@ -1156,21 +1172,21 @@ begin
     begin // the text up to the next tag, whitespace included - CDATA as text, comments and processing instructions passed
       var text: string := TReaderXmlite.ReadUnescapeInPlace(aCursor, '<');
       if aCursor^ = #0 then
-        Exit(ReadFailed(aCursor, 'the text ends before </' + aName + '>'));
+        Exit(ReadFailed(aCursor, 'the text ends before </%s>', [aName]));
       if not text.IsEmpty then
         TXmlite(Self).AddContent(xckText, text, nil, nil, 0);
     end;
 
     if not TReaderXmlite.MoveToChar(aCursor, '<') then
-      Exit(ReadFailed(aCursor, 'the text ends before </' + aName + '>'));
+      Exit(ReadFailed(aCursor, 'the text ends before </%s>', [aName]));
 
     // pass comments, CDATA and processing instructions between elements (mixed content's text is not kept)
     while (aCursor[1] = '!') or (aCursor[1] = '?') do
     begin
       var markup: PChar := aCursor;
       if not TReaderXmlite.PassMarkup(aCursor) or not TReaderXmlite.MoveToChar(aCursor, '<') then
-        Exit(ReadFailed(markup, 'a comment, CDATA or processing instruction not closed, or the text ends before </' + aName +
-          '>'));
+        Exit(ReadFailed(markup, 'a comment, CDATA or processing instruction not closed, or the text ends before </%s>',
+          [aName]));
     end;
 
     if (aCursor[1] = '/') and TReaderXmlite.PassEndTag(aCursor, aName) then
@@ -1179,13 +1195,13 @@ begin
     var isEndTag: boolean;
     var tagFullName, tagName, tagPrefix: string;
     if not TReaderXmlite.ReadTagName(aCursor, isEndTag, tagPrefix, tagName, tagFullName) then
-      Exit(ReadFailed(cursorStart, 'a tag expected in <' + aName + '>'));
+      Exit(ReadFailed(cursorStart, 'a tag expected in <%s>', [aName]));
 
     if isEndTag then
       if tagFullName = aName then
         Exit(True)
       else
-        Exit(ReadFailed(cursorStart, Format('</%s> expected, </%s> found', [aName, tagFullName])));
+        Exit(ReadFailed(cursorStart, '</%s> expected, </%s> found', [aName, tagFullName]));
 
     // xmlns declared on the tag itself applies to the tag's own name too (e.g. <AddResponse xmlns="http://tempuri.org/">)
     var elementUri: string := TagUri(cursorStart, tagPrefix, aXmlns);
@@ -1233,17 +1249,17 @@ begin
     begin // not described: kept as its text, to be written back where it was - a well-formed element only
       aCursor := cursorStart;
       if not KeepFragment(aCursor, tagFullName, lastProperty, lastCount, nil) then
-        Exit(ReadFailed(cursorStart, '<' + tagFullName + '> is not well-formed'));
-      ReadReport(cursorStart, TIssueSeverity.isHint, 'UnknownElement', aName + ' ' + tagFullName,
-        Format('<%s> in <%s> is not in the schema: kept as read', [tagFullName, aName]));
+        Exit(ReadFailed(cursorStart, '<%s> is not well-formed', [tagFullName]));
+      ReadReport(cursorStart, TIssueSeverity.isHint, 'UnknownElement', '%1:s %0:s', '<%0:s> in <%1:s> is not in the schema: kept as read',
+        [tagFullName, aName]);
     end
     else if propertyElement = nil then
     begin // no such name in elements list of the object - skip the whole node till it's end
       Inc(aCursor);
       if not TReaderXmlite.PassNode(aCursor, tagFullName) then
-        Exit(ReadFailed(cursorStart, '<' + tagFullName + '> is not well-formed'));
-      ReadReport(cursorStart, TIssueSeverity.isWarning, 'Skipped', aName + ' ' + tagFullName,
-        Format('<%s> in <%s> is not in the schema: skipped', [tagFullName, aName]));
+        Exit(ReadFailed(cursorStart, '<%s> is not well-formed', [tagFullName]));
+      ReadReport(cursorStart, TIssueSeverity.isWarning, 'Skipped', '%1:s %0:s', '<%0:s> in <%1:s> is not in the schema: skipped',
+        [tagFullName, aName]);
     end
     else
     begin
@@ -1252,9 +1268,9 @@ begin
       begin // a single element that came again (the schema has it once): kept as its text, not read over the first
         aCursor := cursorStart;
         if not KeepFragment(aCursor, tagFullName, lastProperty, lastCount, nil) then
-          Exit(ReadFailed(cursorStart, '<' + tagFullName + '> is not well-formed'));
+          Exit(ReadFailed(cursorStart, '<%s> is not well-formed', [tagFullName]));
         ReadReport(cursorStart, TIssueSeverity.isWarning, 'Repeated', '',
-          Format('<%s> came again in <%s>, where the schema has it once: kept as read', [tagFullName, aName]));
+          '<%s> came again in <%s>, where the schema has it once: kept as read', [tagFullName, aName]);
         Continue;
       end;
       lastProperty := propertyElement;
@@ -1265,13 +1281,13 @@ begin
             var text: string;
             var tagEnd: PChar;
             if not TReaderXmlite.ReadValueNode(aCursor, tagFullName, text, tagEnd) then
-              Exit(ReadFailed(cursorStart, '<' + tagFullName + '> is not well-formed'));
+              Exit(ReadFailed(cursorStart, '<%s> is not well-formed', [tagFullName]));
             if not TPropertyData(propertyElement).TrySetValue(Self, text) then
             begin
               if not KeepBadValue(cursorStart, tagEnd, text, tagFullName, propertyElement, 1) then
-                Exit(ReadFailed(cursorStart, '<' + tagFullName + '> is not well-formed'));
-              ReadReport(cursorStart, TIssueSeverity.isWarning, 'BadValue', '', Format('<%s>%s does not fit its type: kept as read',
-                [tagFullName, Quoted(text)]));
+                Exit(ReadFailed(cursorStart, '<%s> is not well-formed', [tagFullName]));
+              ReadReport(cursorStart, TIssueSeverity.isWarning, 'BadValue', '', '<%s>%s does not fit its type: kept as read',
+                [tagFullName, Quoted(text)]);
             end
             else if ordered then
               TXmlite(Self).AddContent(xckElement, '', nil, propertyElement, 0);
@@ -1314,15 +1330,15 @@ begin
             var text: string;
             var tagEnd: PChar;
             if not TReaderXmlite.ReadValueNode(aCursor, tagFullName, text, tagEnd) then
-              Exit(ReadFailed(cursorStart, '<' + tagFullName + '> is not well-formed'));
+              Exit(ReadFailed(cursorStart, '<%s> is not well-formed', [tagFullName]));
             var added: boolean := TPropertyDataList(propertyElement).TryAddText(Self, text);
             lastCount := TPropertyDataList(propertyElement).Count(Self);
             if not added then
             begin
               if not KeepBadValue(cursorStart, tagEnd, text, tagFullName, propertyElement, lastCount) then
-                Exit(ReadFailed(cursorStart, '<' + tagFullName + '> is not well-formed'));
-              ReadReport(cursorStart, TIssueSeverity.isWarning, 'BadValue', '', Format('<%s>%s does not fit its type: kept as read',
-                [tagFullName, Quoted(text)]));
+                Exit(ReadFailed(cursorStart, '<%s> is not well-formed', [tagFullName]));
+              ReadReport(cursorStart, TIssueSeverity.isWarning, 'BadValue', '', '<%s>%s does not fit its type: kept as read',
+                [tagFullName, Quoted(text)]);
             end
             else if ordered then
               TXmlite(Self).AddContent(xckElement, '', nil, propertyElement, lastCount - 1);
