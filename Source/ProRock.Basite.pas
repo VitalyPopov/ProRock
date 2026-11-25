@@ -499,6 +499,10 @@ type
     fPlainNumber: boolean;   // [TPlainNumber], its own or through BaseType
     function GetEnumName(aEnumValue: integer): string;
     procedure FillEnumNames(const aDefaultNames: TArray<string>);
+    // TextToData's steps, apart: a managed local costs every call of its routine, a branch that never runs too
+    function ParseText(const aValue: string; aData: Pointer): boolean;
+    function PreparedText(const aText: string): string;
+    procedure WriteDefault(aData: Pointer; const aDefault: variant);
   public
     constructor Create(aType: PTypeInfo); reintroduce;
     destructor Destroy; override;
@@ -660,6 +664,18 @@ begin
   else
     Result := 0;
   end;
+end;
+
+// what Trim would cut: text without it needs no copy
+function HasOuterWhitespace(const aText: string): boolean; inline;
+begin
+  Result := (aText <> '') and ((PChar(aText)^ <= ' ') or (PChar(aText)[Length(aText) - 1] <= ' '));
+end;
+
+// apart: FormatSettings.Invariant is a record of strings, a managed temporary for its caller
+function TryCurrencyFromText(const aText: string; out aValue: Currency): boolean;
+begin
+  Result := TryStrToCurr(aText, aValue, FormatSettings.Invariant);
 end;
 
 procedure WriteOrdinalFieldValue(aFieldData: Pointer; aOrdType: TOrdType; aValue: Int64); inline;
@@ -2822,92 +2838,104 @@ end;
 
 function TMetaType.TextToData(const aText: string; aData: Pointer; const aDefault: variant): boolean;
 begin
-  Result := True;
-  var value: string := aText;
+  if (fValuesAliases.Count > 0) or ((RttiType.TypeKind <> tkUString) and HasOuterWhitespace(aText)) then
+    Result := ParseText(PreparedText(aText), aData)
+  else
+    Result := ParseText(aText, aData);
+  if not Result then
+    WriteDefault(aData, aDefault);
+end;
+
+function TMetaType.PreparedText(const aText: string): string;
+begin
+  Result := aText;
   if RttiType.TypeKind <> tkUString then
-    value := Trim(value); // xs:whiteSpace collapse: <n> 12 </n> is 12
+    Result := Trim(Result); // xs:whiteSpace collapse: <n> 12 </n> is 12
 
   if fValuesAliases.Count > 0 then
   begin
     var aliasValue: variant;
-    if fValuesAliases.TryGetKeyByValue(value, aliasValue) then
-      value := VarToStr(aliasValue);
+    if fValuesAliases.TryGetKeyByValue(Result, aliasValue) then
+      Result := VarToStr(aliasValue);
   end;
+end;
 
-  // a list item has no default of its own: Null - zero, empty
-  var defaultValue: variant := aDefault;
-  if VarIsNull(defaultValue) then
-    if RttiType.TypeKind = tkUString then
-      defaultValue := ''
-    else
-      defaultValue := 0;
-
+// parsed into the type itself: a value out of its range fails here instead of overflowing on assignment
+function TMetaType.ParseText(const aValue: string; aData: Pointer): boolean;
+begin
+  Result := True;
   case RttiType.TypeKind of
     tkInteger:
       begin
         var ordinalValue: Int64;
-        Result := TryStrToInt64(value, ordinalValue) and OrdinalFitsType(ordinalValue, fOrdType);
-        if not Result then
-          ordinalValue := defaultValue;
-        WriteOrdinalFieldValue(aData, fOrdType, ordinalValue);
+        Result := TryStrToInt64(aValue, ordinalValue) and OrdinalFitsType(ordinalValue, fOrdType);
+        if Result then
+          WriteOrdinalFieldValue(aData, fOrdType, ordinalValue);
       end;
     tkInt64:
       if fUnsigned then
       begin
         var unsignedValue: UInt64;
-        Result := TryStrToUInt64(value, unsignedValue);
-        if not Result then
-          unsignedValue := UInt64(Int64(defaultValue)); // the default holds the bits
-        PInt64(aData)^ := Int64(unsignedValue);
+        Result := TryStrToUInt64(aValue, unsignedValue);
+        if Result then
+          PInt64(aData)^ := Int64(unsignedValue);
       end
       else
-      begin
-        Result := TryStrToInt64(value, PInt64(aData)^);
-        if not Result then
-          PInt64(aData)^ := defaultValue;
-      end;
+        Result := TryStrToInt64(aValue, PInt64(aData)^);
     tkFloat:
-      // parsed into the type itself: a value out of its range fails here instead of overflowing on assignment
       case fFloatType of
         ftSingle:
-          begin
-            Result := TUtility.TryFloatFromText(value, PSingle(aData)^);
-            if not Result then
-              PSingle(aData)^ := defaultValue;
-          end;
+          Result := TUtility.TryFloatFromText(aValue, PSingle(aData)^);
         ftDouble:
-          begin
-            Result := TUtility.TryFloatFromText(value, PDouble(aData)^);
-            if not Result then
-              PDouble(aData)^ := defaultValue;
-          end;
+          Result := TUtility.TryFloatFromText(aValue, PDouble(aData)^);
         ftCurr:
-          begin
-            Result := TryStrToCurr(value, PCurrency(aData)^, FormatSettings.Invariant);
-            if not Result then
-              PCurrency(aData)^ := defaultValue;
-          end;
+          Result := TryCurrencyFromText(aValue, PCurrency(aData)^);
       else
         begin
           var floatValue: Extended;
-          Result := TUtility.TryFloatFromText(value, floatValue) and ((fFloatType <> ftComp) or TUtility.FloatFitsComp(floatValue));
-          if not Result then
-            floatValue := defaultValue;
-          if fFloatType = ftComp then
+          Result := TUtility.TryFloatFromText(aValue, floatValue) and ((fFloatType <> ftComp) or TUtility.FloatFitsComp(floatValue));
+          if Result and (fFloatType = ftComp) then
             PComp(aData)^ := floatValue
-          else
+          else if Result then
             PExtended(aData)^ := floatValue;
         end;
       end;
     tkUString:
-      PUnicodeString(aData)^ := value;
+      PUnicodeString(aData)^ := aValue;
     tkEnumeration:
       begin
-        var enumValue: integer := EnumValueDef(value, -1);
+        var enumValue: integer := EnumValueDef(aValue, -1);
         Result := enumValue >= 0;
-        if not Result then
-          enumValue := defaultValue;
-        WriteOrdinalFieldValue(aData, fOrdType, enumValue);
+        if Result then
+          WriteOrdinalFieldValue(aData, fOrdType, enumValue);
+      end;
+  end;
+end;
+
+// a list item has no default of its own: Null - zero
+procedure TMetaType.WriteDefault(aData: Pointer; const aDefault: variant);
+begin
+  var defaultValue: variant := aDefault;
+  if VarIsNull(defaultValue) then
+    defaultValue := 0;
+
+  case RttiType.TypeKind of
+    tkInteger, tkEnumeration:
+      WriteOrdinalFieldValue(aData, fOrdType, Int64(defaultValue));
+    tkInt64:
+      PInt64(aData)^ := Int64(defaultValue); // UInt64's default holds the bits
+    tkFloat:
+      case fFloatType of
+        ftSingle:
+          PSingle(aData)^ := defaultValue;
+        ftDouble:
+          PDouble(aData)^ := defaultValue;
+        ftCurr:
+          PCurrency(aData)^ := defaultValue;
+        ftComp:
+          PComp(aData)^ := Extended(defaultValue);
+      else
+        PExtended(aData)^ := defaultValue;
       end;
   end;
 end;
