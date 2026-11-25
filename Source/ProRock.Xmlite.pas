@@ -179,11 +179,13 @@ type
 
   private
     fXmlPrefix, fXmlName: string;
+    // these three created on first access through their properties (most elements have none): Xmlite's own reads
+    // use the fields, nil meaning empty - a read through the property would create one for every element
     fXmlAttributes: TDictionary<string, string>;
     fXmlAttributeNamespaces: TDictionary<string, string>;
+    fXmlAny: TBasiteList<TBasite>;
     fXmlns: TXmlnsScope;
     fXmlText: string;
-    fXmlAny: TBasiteList<TBasite>;
     fXmlUnknown: TList<TXmliteUnknown>; // created with the first one
     fXmlBadAttributes: TDictionary<string, TProperty>; // a name in XmlAttributes -> the property it did not fill; with the first one
     fXmlPosition: cardinal;
@@ -192,6 +194,14 @@ type
     function HasBadValue(aProperty: TProperty): boolean;
     procedure ReadEmptyText;
     function GetXmlUnknown: TList<TXmliteUnknown>;
+    function GetXmlAny: TBasiteList<TBasite>;
+    function GetXmlAttributes: TDictionary<string, string>;
+    function GetXmlAttributeNamespaces: TDictionary<string, string>;
+    // nil: empty
+    class function CountOf(aMap: TDictionary<string, string>): integer; overload; static; inline;
+    class function CountOf(aMap: TDictionary<string, TProperty>): integer; overload; static; inline;
+    class function CountOf(aList: TBasiteList<TBasite>): integer; overload; static; inline;
+    class function CountOf(aList: TList<TXmliteUnknown>): integer; overload; static; inline;
     function GetXmlContent: TXmliteContent; inline;
     function ContentCount: integer; inline;
     function ContentItem(aIndex: integer): TXmliteContentItem;
@@ -209,7 +219,6 @@ type
     cOrderText = 1;
     cOrderKept = 2;
   protected
-    procedure Initialize; override;
     procedure Deinitialize; override;
     // xs:any by its place in XmlAny, a kept element by its place in XmlUnknown (both copied before)
     function CopyOrderItem(aSource: TBasite; var aItem: TBasiteOrderItem): boolean; override;
@@ -228,10 +237,10 @@ type
 
     property XmlPrefix: string read fXmlPrefix write fXmlPrefix;
     property XmlName: string read fXmlName write fXmlName;
-    property XmlAny: TBasiteList<TBasite> read fXmlAny;
+    property XmlAny: TBasiteList<TBasite> read GetXmlAny;
     // the element's place in the document it was read from (0 - not read)
     property XmlPosition: cardinal read fXmlPosition;
-    property XmlAttributes: TDictionary<string, string> read fXmlAttributes; // attributes without a property, kept for the round trip
+    property XmlAttributes: TDictionary<string, string> read GetXmlAttributes; // attributes without a property, kept for the round trip
     // elements without a property, kept for the round trip as their text (Clear removes them)
     property XmlUnknown: TList<TXmliteUnknown> read GetXmlUnknown;
     // [TOrdered]/[TMixed]: the children (and text) in document order, written so; children not in it come after. A child
@@ -240,7 +249,7 @@ type
     // the text before the first child element; in mixed content the leading text item of XmlContent
     property XmlText: string read GetXmlText write SetXmlText;
     // prefix -> URI declared again on write: the document's declarations (prefixes appear in values: mc:Ignorable)
-    property XmlAttributeNamespaces: TDictionary<string, string> read fXmlAttributeNamespaces;
+    property XmlAttributeNamespaces: TDictionary<string, string> read GetXmlAttributeNamespaces;
 
     // writes xsi:type: the element holds aType, a complex type derived from its own - Created.SetXsiType(TW3cdtfCT).
     // Raises EArgumentException for any other class
@@ -1296,7 +1305,7 @@ begin
   if Assigned(textProperty) and (WritesRequired(textProperty) or IsPresent(textProperty)) then
     Exit(TTagType.xttOpenClose);
 
-  if Meta.Xmlite.ProcessAnyElement and (TXmlite(Self).XmlAny.Count > 0) then
+  if Meta.Xmlite.ProcessAnyElement and (TXmlite.CountOf(TXmlite(Self).fXmlAny) > 0) then
     Exit(TTagType.xttOpenClose);
 
   if Meta.Xmlite.IsTXmlite and (TXmlite(Self).fXmlUnknown <> nil) and (TXmlite(Self).fXmlUnknown.Count > 0) then
@@ -1450,8 +1459,8 @@ var
                   WriteChild(item, propertyElement);
             end;
         end;
-      if Meta.Xmlite.ProcessAnyElement then
-        for var anyElement: TBasite in TXmlite(Self).XmlAny do
+      if Meta.Xmlite.ProcessAnyElement and (TXmlite(Self).fXmlAny <> nil) then
+        for var anyElement: TBasite in TXmlite(Self).fXmlAny do
           WriteChild(anyElement, nil);
       if unknowns <> nil then
         for var i := 0 to unknowns.Count - 1 do
@@ -1561,8 +1570,8 @@ begin
             WriteUnknown(propertyElement, -1); // after it, or after the items it has now
           end;
 
-          if Meta.Xmlite.IsTXmlite and Meta.Xmlite.ProcessAnyElement then
-            for var anyElement: TBasite in TXmlite(Self).XmlAny do
+          if Meta.Xmlite.IsTXmlite and Meta.Xmlite.ProcessAnyElement and (TXmlite(Self).fXmlAny <> nil) then
+            for var anyElement: TBasite in TXmlite(Self).fXmlAny do
               if anyElement.Meta.Xmlite.Namespace = scope then
                 // the namespace in scope (wsse:UsernameToken in wsse:Security): unprefixed, declared by an ancestor
                 anyElement.ToXml(aWriter, anyElement.Meta.Xmlite.Name, scope, False)
@@ -1671,8 +1680,8 @@ function TBasiteHelper.GetXmlns(aDeclared: TDictionary<string, string>): string;
 
   begin
     aXmlnsList.Add(aObject.Meta.Xmlite.Namespace);
-    if aObject.Meta.Xmlite.IsTXmlite then
-      for var attributeNamespace: TPair<string, string> in TXmlite(aObject).XmlAttributeNamespaces do
+    if aObject.Meta.Xmlite.IsTXmlite and (TXmlite(aObject).fXmlAttributeNamespaces <> nil) then
+      for var attributeNamespace: TPair<string, string> in TXmlite(aObject).fXmlAttributeNamespaces do
         aKept.AddOrSetValue(attributeNamespace.Key, attributeNamespace.Value);
     for var attribute: TPropertyData in aObject.Meta.Xmlite.Attributes.Values do
     begin
@@ -1705,8 +1714,8 @@ function TBasiteHelper.GetXmlns(aDeclared: TDictionary<string, string>): string;
     end;
 
     // xs:any content of the scope's namespace is declared here; of another one, by itself
-    if aObject.Meta.Xmlite.IsTXmlite and aObject.Meta.Xmlite.ProcessAnyElement then
-      for var anyElement: TBasite in TXmlite(aObject).XmlAny do
+    if aObject.Meta.Xmlite.IsTXmlite and aObject.Meta.Xmlite.ProcessAnyElement and (TXmlite(aObject).fXmlAny <> nil) then
+      for var anyElement: TBasite in TXmlite(aObject).fXmlAny do
         if anyElement.Meta.Xmlite.Namespace = aScope then
           FillXmlnsList(aXmlnsList, aPrefixed, aKept, anyElement, aScope);
   end;
@@ -2030,8 +2039,8 @@ begin
       else
         WriteAttribute(attribute.Xmlite.NamePrefixed, ValueText(attribute, attribute.Value[aObject]));
 
-  if aObject.Meta.Xmlite.IsTXmlite then
-    for var attribute: TPair<string, string> in TXmlite(aObject).XmlAttributes do
+  if aObject.Meta.Xmlite.IsTXmlite and (TXmlite(aObject).fXmlAttributes <> nil) then
+    for var attribute: TPair<string, string> in TXmlite(aObject).fXmlAttributes do
     begin
       var badOf: TProperty := nil;
       if TXmlite(aObject).fXmlBadAttributes <> nil then
@@ -2064,16 +2073,19 @@ begin
     fXmlName := source.fXmlName;
     fXmlText := source.fXmlText;
     fXmlTextEmpty := source.fXmlTextEmpty;
-    for var pair: TPair<string, string> in source.fXmlAttributes do
-      fXmlAttributes.AddOrSetValue(pair.Key, pair.Value);
-    for var pair: TPair<string, string> in source.fXmlAttributeNamespaces do
-      fXmlAttributeNamespaces.AddOrSetValue(pair.Key, pair.Value);
+    if CountOf(source.fXmlAttributes) > 0 then
+      for var pair: TPair<string, string> in source.fXmlAttributes do
+        XmlAttributes.AddOrSetValue(pair.Key, pair.Value);
+    if CountOf(source.fXmlAttributeNamespaces) > 0 then
+      for var pair: TPair<string, string> in source.fXmlAttributeNamespaces do
+        XmlAttributeNamespaces.AddOrSetValue(pair.Key, pair.Value);
     fXmlns.Release;
     fXmlns := nil;
     if source.fXmlns <> nil then
       fXmlns := source.fXmlns.Share;
-    for var item: TBasite in source.fXmlAny do
-      fXmlAny.Add(item.Clone);
+    if CountOf(source.fXmlAny) > 0 then
+      for var item: TBasite in source.fXmlAny do
+        XmlAny.Add(item.Clone);
     var own: TProperty;
     if source.fXmlBadAttributes <> nil then
       for var pair: TPair<string, TProperty> in source.fXmlBadAttributes do
@@ -2122,8 +2134,10 @@ begin
       end;
     0: // xs:any: held by XmlAny (its list's Notify), at the same place as its copy
       begin
-        var place: integer := source.fXmlAny.IndexOf(aItem.Element);
-        Result := (place >= 0) and (place < fXmlAny.Count);
+        var place: integer := -1;
+        if source.fXmlAny <> nil then
+          place := source.fXmlAny.IndexOf(aItem.Element);
+        Result := (place >= 0) and (place < CountOf(fXmlAny));
         if Result then
           aItem.Element := fXmlAny[place];
       end;
@@ -2136,8 +2150,10 @@ function TXmlite.SameAs(aOther: TBasite): boolean;
 
   function SameMap(aMap, aOther: TDictionary<string, string>): boolean;
   begin
-    if aMap.Count <> aOther.Count then
+    if CountOf(aMap) <> CountOf(aOther) then
       Exit(False);
+    if aMap = nil then
+      Exit(True);
     for var pair: TPair<string, string> in aMap do
     begin
       var value: string;
@@ -2157,22 +2173,6 @@ function TXmlite.SameAs(aOther: TBasite): boolean;
           Exit(False);
   end;
 
-  function Count(aList: TList<TXmliteUnknown>): integer; overload;
-  begin
-    if aList = nil then
-      Result := 0
-    else
-      Result := aList.Count;
-  end;
-
-  function Count(aMap: TDictionary<string, TProperty>): integer; overload;
-  begin
-    if aMap = nil then
-      Result := 0
-    else
-      Result := aMap.Count;
-  end;
-
 begin
   Result := inherited SameAs(aOther);
   if not Result or (aOther = Self) then
@@ -2181,13 +2181,13 @@ begin
   if (fXmlPrefix <> other.fXmlPrefix) or (fXmlName <> other.fXmlName) or (fXmlText <> other.fXmlText) or
     (fXmlTextEmpty <> other.fXmlTextEmpty) or not SameMap(fXmlAttributes, other.fXmlAttributes) or
     not SameMap(fXmlAttributeNamespaces, other.fXmlAttributeNamespaces) or
-    (fXmlAny.Count <> other.fXmlAny.Count) or (Count(fXmlUnknown) <> Count(other.fXmlUnknown)) or
-    (Count(fXmlBadAttributes) <> Count(other.fXmlBadAttributes)) then
+    (CountOf(fXmlAny) <> CountOf(other.fXmlAny)) or (CountOf(fXmlUnknown) <> CountOf(other.fXmlUnknown)) or
+    (CountOf(fXmlBadAttributes) <> CountOf(other.fXmlBadAttributes)) then
     Exit(False);
-  for var i := 0 to fXmlAny.Count - 1 do
+  for var i := 0 to CountOf(fXmlAny) - 1 do
     if not fXmlAny[i].SameAs(other.fXmlAny[i]) then
       Exit(False);
-  for var i := 0 to Count(fXmlUnknown) - 1 do
+  for var i := 0 to CountOf(fXmlUnknown) - 1 do
     if not SameUnknown(fXmlUnknown[i], other.fXmlUnknown[i]) then
       Exit(False);
   if fXmlBadAttributes <> nil then
@@ -2215,13 +2215,60 @@ procedure TXmlite.DoBeforeSerialization;
 begin
 end;
 
-procedure TXmlite.Initialize;
+function TXmlite.GetXmlAny: TBasiteList<TBasite>;
 begin
-  inherited;
-  fXmlAttributes := TDictionary<string, string>.Create;
-  fXmlAttributeNamespaces := TDictionary<string, string>.Create;
-  fXmlAny := TBasiteList<TBasite>.Create;
-  fXmlAny.Owner := Self;
+  if fXmlAny = nil then
+  begin
+    fXmlAny := TBasiteList<TBasite>.Create;
+    fXmlAny.Owner := Self;
+  end;
+  Result := fXmlAny;
+end;
+
+function TXmlite.GetXmlAttributes: TDictionary<string, string>;
+begin
+  if fXmlAttributes = nil then
+    fXmlAttributes := TDictionary<string, string>.Create;
+  Result := fXmlAttributes;
+end;
+
+function TXmlite.GetXmlAttributeNamespaces: TDictionary<string, string>;
+begin
+  if fXmlAttributeNamespaces = nil then
+    fXmlAttributeNamespaces := TDictionary<string, string>.Create;
+  Result := fXmlAttributeNamespaces;
+end;
+
+class function TXmlite.CountOf(aMap: TDictionary<string, string>): integer;
+begin
+  if aMap = nil then
+    Result := 0
+  else
+    Result := aMap.Count;
+end;
+
+class function TXmlite.CountOf(aMap: TDictionary<string, TProperty>): integer;
+begin
+  if aMap = nil then
+    Result := 0
+  else
+    Result := aMap.Count;
+end;
+
+class function TXmlite.CountOf(aList: TBasiteList<TBasite>): integer;
+begin
+  if aList = nil then
+    Result := 0
+  else
+    Result := aList.Count;
+end;
+
+class function TXmlite.CountOf(aList: TList<TXmliteUnknown>): integer;
+begin
+  if aList = nil then
+    Result := 0
+  else
+    Result := aList.Count;
 end;
 
 procedure TXmlite.Clear;
@@ -2230,9 +2277,12 @@ begin
   fXmlText := '';
   fXmlTextEmpty := False;
   fXmlPosition := 0;
-  fXmlAny.Clear;
-  fXmlAttributes.Clear;
-  fXmlAttributeNamespaces.Clear;
+  if fXmlAny <> nil then
+    fXmlAny.Clear;
+  if fXmlAttributes <> nil then
+    fXmlAttributes.Clear;
+  if fXmlAttributeNamespaces <> nil then
+    fXmlAttributeNamespaces.Clear;
   if fXmlBadAttributes <> nil then
     fXmlBadAttributes.Clear;
   if fXmlUnknown <> nil then
@@ -2453,7 +2503,7 @@ begin
     Exit;
 
   // its item leaves the order with it: through its list's Notify, or Clear of its property
-  if fXmlAny.Remove(aElement) >= 0 then
+  if (fXmlAny <> nil) and (fXmlAny.Remove(aElement) >= 0) then
     Exit;
   for var propertyElement: TProperty in Meta.Xmlite.Elements.Values do
     case propertyElement.PropertyType of
@@ -2540,14 +2590,14 @@ end;
 function TXmlite.IsEmptyOrDefault: boolean;
 begin
   // content kept in xs:any or as not described attributes is content as well
-  Result := inherited and fXmlText.IsEmpty and not fXmlTextEmpty and (fXmlAny.Count = 0) and (fXmlAttributes.Count = 0) and
-    ((fXmlUnknown = nil) or (fXmlUnknown.Count = 0)) and (ContentCount = 0);
+  Result := inherited and fXmlText.IsEmpty and not fXmlTextEmpty and (CountOf(fXmlAny) = 0) and (CountOf(fXmlAttributes) = 0) and
+    (CountOf(fXmlUnknown) = 0) and (ContentCount = 0);
 end;
 
 function TXmlite.HasContent: boolean;
 begin
-  Result := not fXmlText.IsEmpty or fXmlTextEmpty or (fXmlAny.Count > 0) or (fXmlAttributes.Count > 0) or
-    ((fXmlUnknown <> nil) and (fXmlUnknown.Count > 0)) or (ContentCount > 0) or inherited;
+  Result := not fXmlText.IsEmpty or fXmlTextEmpty or (CountOf(fXmlAny) > 0) or (CountOf(fXmlAttributes) > 0) or
+    (CountOf(fXmlUnknown) > 0) or (ContentCount > 0) or inherited;
 end;
 
 { TXmliteContentItem }
@@ -2627,9 +2677,9 @@ begin
   if (declared = nil) or not declared.InheritsFrom(TBasite) or not aType.InheritsFrom(declared) then
     raise EArgumentException.CreateFmt('SetXsiType: %s is not derived from the type of %s', [aType.ClassName, ClassName]);
 
-  fXmlAttributes.AddOrSetValue(TUtility.cXsiPrefix + ':type', typeMeta.Xmlite.Namespace.Prefix + ':' + typeMeta.Xmlite.Name);
-  fXmlAttributeNamespaces.AddOrSetValue(TUtility.cXsiPrefix, TUtility.cXsiUri);
-  fXmlAttributeNamespaces.AddOrSetValue(typeMeta.Xmlite.Namespace.Prefix, typeMeta.Xmlite.Namespace.Uri);
+  XmlAttributes.AddOrSetValue(TUtility.cXsiPrefix + ':type', typeMeta.Xmlite.Namespace.Prefix + ':' + typeMeta.Xmlite.Name);
+  XmlAttributeNamespaces.AddOrSetValue(TUtility.cXsiPrefix, TUtility.cXsiUri);
+  XmlAttributeNamespaces.AddOrSetValue(typeMeta.Xmlite.Namespace.Prefix, typeMeta.Xmlite.Namespace.Uri);
 end;
 
 class function TXmlite.ObjectToXml(aObject: TBasite): string;
