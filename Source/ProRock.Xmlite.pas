@@ -1668,35 +1668,35 @@ function TBasiteHelper.GetXmlns(aDeclared: TDictionary<string, string>): string;
   // aPrefixed: namespaces used with a prefix in this subtree; aScope: the default one; aKept: the declarations kept
   procedure FillXmlnsList(aXmlnsList, aPrefixed: THashedObjectList<TNamespace>; aKept: TDictionary<string, string>; aObject: TBasite;
     aScope: TNamespace);
-
-    procedure AddPropertyDataXmlns(aXmlnsList: THashedObjectList<TNamespace>; aPropertyData: TPropertyData; aObject: TBasite); inline;
-    begin
-      if not aObject.WritesRequired(aPropertyData) and not aObject.IsPresent(aPropertyData) then
-        Exit;
-
-      // the property's own namespace only: its value type's one (xs of xs:string) names nothing in the document
-      aXmlnsList.Add(aPropertyData.Xmlite.Namespace);
-    end;
-
   begin
-    aXmlnsList.Add(aObject.Meta.Xmlite.Namespace);
-    if aObject.Meta.Xmlite.IsTXmlite and (TXmlite(aObject).fXmlAttributeNamespaces <> nil) then
+    // the element's own namespace first: a property of it (or of none) adds nothing, and is not asked whether it is written
+    var meta: TMetaBasiteXmlite := aObject.Meta.Xmlite;
+    var own: TNamespace := meta.Namespace;
+    aXmlnsList.Add(own);
+    if meta.IsTXmlite and (TXmlite(aObject).fXmlAttributeNamespaces <> nil) then
       for var attributeNamespace: TPair<string, string> in TXmlite(aObject).fXmlAttributeNamespaces do
         aKept.AddOrSetValue(attributeNamespace.Key, attributeNamespace.Value);
-    for var attribute: TPropertyData in aObject.Meta.Xmlite.Attributes.Values do
+    for var attribute: TPropertyData in meta.Attributes.Values do
     begin
-      AddPropertyDataXmlns(aXmlnsList, attribute, aObject);
-      if attribute.Xmlite.Qualified and (aObject.WritesRequired(attribute) or aObject.IsPresent(attribute)) then
-        aPrefixed.Add(attribute.Xmlite.Namespace);
+      var namespace: TNamespace := attribute.Xmlite.Namespace;
+      if ((namespace <> own) and (namespace <> nil) or attribute.Xmlite.Qualified) and
+        (aObject.WritesRequired(attribute) or aObject.IsPresent(attribute)) then
+      begin
+        aXmlnsList.Add(namespace);
+        if attribute.Xmlite.Qualified then
+          aPrefixed.Add(namespace);
+      end;
     end;
 
-    for var element: TProperty in aObject.Meta.Xmlite.Elements.Values do
+    for var element: TProperty in meta.Elements.Values do
     begin
-      if element.PropertyType in [ptBasite, ptBasiteList, ptDataList] then
-        aXmlnsList.Add(element.Xmlite.Namespace); // the element's own namespace (its type may be another one's)
+      // the element's own namespace, not its type's (xs of xs:string names nothing): an object's or a list's always, a value's
+      // when written
+      var namespace: TNamespace := element.Xmlite.Namespace;
+      if (namespace <> own) and (namespace <> nil) and ((element.PropertyType in [ptBasite, ptBasiteList, ptDataList]) or
+        (element.PropertyType = ptData) and (aObject.WritesRequired(element) or aObject.IsPresent(element))) then
+        aXmlnsList.Add(namespace);
       case element.PropertyType of
-        ptData:
-          AddPropertyDataXmlns(aXmlnsList, TPropertyData(element), aObject);
         ptBasite:
           begin
             var propertyObject: TBasite := TPropertyBasite(element).ObjectPointer(aObject)^;
@@ -1714,7 +1714,7 @@ function TBasiteHelper.GetXmlns(aDeclared: TDictionary<string, string>): string;
     end;
 
     // xs:any content of the scope's namespace is declared here; of another one, by itself
-    if aObject.Meta.Xmlite.IsTXmlite and aObject.Meta.Xmlite.ProcessAnyElement and (TXmlite(aObject).fXmlAny <> nil) then
+    if meta.IsTXmlite and meta.ProcessAnyElement and (TXmlite(aObject).fXmlAny <> nil) then
       for var anyElement: TBasite in TXmlite(aObject).fXmlAny do
         if anyElement.Meta.Xmlite.Namespace = aScope then
           FillXmlnsList(aXmlnsList, aPrefixed, aKept, anyElement, aScope);

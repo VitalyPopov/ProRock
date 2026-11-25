@@ -109,7 +109,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   `Count` and `for in` as before; it is no dictionary to change any more. `SameAs` leaves out the declarations
   around an element, as its written XML does: the same font under two producers' roots is the same. A start tag cut short
   inside a document reports where it ends (`the text ends inside <item>`)
-- Writing XML is about twice as fast: UTF-8 goes straight into a buffer. `TWriterXmlite` is no longer a `TStreamWriter`:
+- Writing XML is more than twice as fast: UTF-8 goes straight into a buffer. `TWriterXmlite` is no longer a `TStreamWriter`:
   `Write`, `WriteLine`, `Flush` and `Text` stay
 
 #### Fixed
