@@ -340,6 +340,7 @@ type
     TSetterString = procedure(const aValue: string) of object;
   private
     fDefault: variant;
+    fWritable: boolean; // RTTI's IsWritable, asked once
 
     function MethodAddress(aObject: TBasite; aMethod: Pointer): Pointer; inline;
     function GetterMethod(aObject: TBasite): TMethod; inline;
@@ -359,6 +360,8 @@ type
     procedure SetValue(aObject: TBasite; const aValue: string);
     function GetMeta: TMetaType;
     function DefaultFromText(const aText: string): variant;
+    // TrySetValue for a property with a setter: apart, its locals would cost the field path every call
+    function TrySetBySetter(aObject: TBasite; const aValue: string): boolean;
   public
     constructor Create(aParentMeta: TMetaBasite; aProperty: TRttiProperty; aIsInherited: boolean = False;
       aNaming: TNaming = cBasiteDefaultNaming); override;
@@ -1709,6 +1712,7 @@ begin
   inherited;
 
   fMeta := TMetaBank.RegisterType(RttiProperty.PropertyType.Handle);
+  fWritable := fRttiProperty.IsWritable;
 
   var defaultIsDefined: boolean := False;
   for var attribute: TCustomAttribute in aProperty.GetAttributes do
@@ -1940,7 +1944,7 @@ end;
 
 procedure TPropertyData.CopyValue(aSource, aTarget: TBasite);
 begin
-  if not fRttiProperty.IsWritable then
+  if not fWritable then
     Exit;
 
   var sourceData: Pointer := DataPointer(aSource);
@@ -2036,7 +2040,7 @@ end;
 
 procedure TPropertyData.SetDefaultValue(aObject: TBasite);
 begin
-  if (aObject = nil) or (fPropertyType <> ptData) or not fRttiProperty.IsWritable then
+  if (aObject = nil) or (fPropertyType <> ptData) or not fWritable then
     Exit;
 
   var fieldData: Pointer := DataPointer(aObject);
@@ -2076,111 +2080,53 @@ end;
 function TPropertyData.TrySetValue(aObject: TBasite; const aValue: string): boolean;
 begin
   Result := True;
-  if (aObject = nil) or (fPropertyType <> ptData) or not fRttiProperty.IsWritable then
+  if (aObject = nil) or (fPropertyType <> ptData) or not fWritable then
     Exit;
 
-  var fieldData: Pointer := DataPointer(aObject);
-  if fSetterIsField then
+  if not fSetterIsField then
+    Result := TrySetBySetter(aObject, aValue)
+  else
   begin
+    var fieldData: Pointer := DataPointer(aObject);
     if fieldData = nil then
       Exit;
     Result := Meta.TextToData(aValue, fieldData, fDefault);
-    aObject.SetPresentBit(fIndex, Result);
+  end;
+  aObject.SetPresentBit(fIndex, Result);
+end;
+
+// parsed as for a field, into a buffer of the property's type, then given to the setter
+function TPropertyData.TrySetBySetter(aObject: TBasite; const aValue: string): boolean;
+begin
+  if fRttiProperty.PropertyType.TypeKind = tkUString then
+  begin
+    var text: string;
+    Result := Meta.TextToData(aValue, @text, fDefault);
+    TSetterString(SetterMethod(aObject))(text);
     Exit;
   end;
 
-  var value: string := aValue;
-  if fRttiProperty.PropertyType.TypeKind <> tkUString then
-    value := Trim(value); // xs:whiteSpace collapse: <n> 12 </n> is 12
-
-  if Meta.fValuesAliases.Count > 0 then
-  begin
-    var aliasValue: variant;
-    if Meta.fValuesAliases.TryGetKeyByValue(value, aliasValue) then
-      value := VarToStr(aliasValue);
-  end;
-
-  // text that does not fit the type (not a number, out of its range) gives the default
+  var buffer: array[0..15] of byte; // the largest value: Extended, 10 bytes on Win32
+  Result := Meta.TextToData(aValue, @buffer, fDefault);
   case fRttiProperty.PropertyType.TypeKind of
-    tkInteger:
-      begin
-        var ordinalValue: Int64;
-        Result := TryStrToInt64(value, ordinalValue) and OrdinalFitsType(ordinalValue, Meta.fOrdType);
-        if not Result then
-          ordinalValue := fDefault;
-        WriteOrdinal(aObject, fieldData, ordinalValue);
-      end;
+    tkInteger, tkEnumeration:
+      WriteOrdinal(aObject, nil, ReadOrdinalFieldValue(@buffer, Meta.fOrdType));
     tkInt64:
-      if Meta.fUnsigned then
-      begin
-        var unsignedValue: UInt64;
-        Result := TryStrToUInt64(value, unsignedValue);
-        if not Result then
-          unsignedValue := UInt64(Int64(fDefault)); // the default holds the bits
-        WriteOrdinal(aObject, fieldData, Int64(unsignedValue));
-      end
-      else
-      begin
-        var ordinalValue: Int64;
-        Result := TryStrToInt64(value, ordinalValue);
-        if not Result then
-          ordinalValue := fDefault;
-        WriteOrdinal(aObject, fieldData, ordinalValue);
-      end;
+      WriteOrdinal(aObject, nil, PInt64(@buffer)^);
     tkFloat:
-      // parsed into the property's own type: a value out of its range fails here instead of overflowing on assignment
       case Meta.fFloatType of
-        ftSingle:
-          begin
-            var singleValue: Single;
-            Result := TUtility.TryFloatFromText(value, singleValue);
-            if not Result then
-              singleValue := fDefault;
-            WriteFloat(aObject, fieldData, singleValue);
-          end;
-        ftDouble:
-          begin
-            var doubleValue: Double;
-            Result := TUtility.TryFloatFromText(value, doubleValue);
-            if not Result then
-              doubleValue := fDefault;
-            WriteFloat(aObject, fieldData, doubleValue);
-          end;
         ftCurr:
-          begin
-            var currencyValue: Currency;
-            Result := TryStrToCurr(value, currencyValue, FormatSettings.Invariant);
-            if not Result then
-              currencyValue := fDefault;
-            WriteCurrency(aObject, fieldData, currencyValue);
-          end;
+          WriteCurrency(aObject, nil, PCurrency(@buffer)^);
+        ftSingle:
+          WriteFloat(aObject, nil, PSingle(@buffer)^);
+        ftDouble:
+          WriteFloat(aObject, nil, PDouble(@buffer)^);
+        ftComp:
+          WriteFloat(aObject, nil, PComp(@buffer)^);
       else
-        begin
-          var floatValue: Extended;
-          Result := TUtility.TryFloatFromText(value, floatValue) and ((Meta.fFloatType <> ftComp) or TUtility.FloatFitsComp(floatValue));
-          if not Result then
-            floatValue := fDefault;
-          WriteFloat(aObject, fieldData, floatValue);
-        end;
-      end;
-    tkUString:
-      begin
-        if fSetterIsField then
-          PUnicodeString(fieldData)^ := value
-        else
-          TSetterString(SetterMethod(aObject))(value);
-      end;
-    tkEnumeration:
-      begin
-        var enumValue: integer := Meta.EnumValueDef(value, -1);
-        Result := enumValue >= 0;
-        if not Result then
-          enumValue := fDefault;
-        WriteOrdinal(aObject, fieldData, enumValue);
+        WriteFloat(aObject, nil, PExtended(@buffer)^);
       end;
   end;
-
-  aObject.SetPresentBit(fIndex, Result);
 end;
 
 function TPropertyData.ValueIsDefault(aObject: TBasite): boolean;
