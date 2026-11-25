@@ -156,7 +156,7 @@ type
 
   private
     constructor CreateNested(aBreadcrumbs: TSummaryDictionary<TMetaBasite>);
-    procedure CreateProperties(aBreadcrumbs: TSummaryDictionary<TMetaBasite>);
+    procedure CreateProperties(var aBreadcrumbs: TSummaryDictionary<TMetaBasite>);
   protected
     procedure Initialize; virtual;
     procedure Deinitialize; virtual;
@@ -455,6 +455,17 @@ type
   end;
 
   TPropertyList = class(TObjectList<TProperty>)
+  public type
+    // a record: for-in over the inherited one creates an enumerator object every loop (every object read)
+    TEnumerator = record
+    private
+      fList: TPropertyList;
+      fIndex: integer;
+      function GetCurrent: TProperty; inline;
+    public
+      function MoveNext: boolean; inline;
+      property Current: TProperty read GetCurrent;
+    end;
   private
     fParentMeta: TMetaBasite;
     fHashedList: TDictionary<string, TProperty>;
@@ -466,6 +477,7 @@ type
     function Add(aProperty: TProperty): integer; reintroduce;
     function Get(const aName: string; var aProperty: TProperty): boolean; inline;
     function GetByCodeName(const aName: string; var aProperty: TProperty): boolean; inline;
+    function GetEnumerator: TEnumerator; reintroduce; inline;
   end;
 
   TMetaExtension = class;
@@ -1168,7 +1180,8 @@ begin
   Initialize;
 end;
 
-procedure TBasite.CreateProperties(aBreadcrumbs: TSummaryDictionary<TMetaBasite>);
+// aBreadcrumbs nil: made on the first object created with its parent (most classes have none: their objects are lazy)
+procedure TBasite.CreateProperties(var aBreadcrumbs: TSummaryDictionary<TMetaBasite>);
 begin
   for var propertyInfo in Meta.Properties do
     case propertyInfo.PropertyType of
@@ -1177,6 +1190,8 @@ begin
           var propertyBasite: TPropertyBasite := TPropertyBasite(propertyInfo);
           if propertyBasite.fLazy and not propertyBasite.fRequired then // a required one is always written, so it needs its object
             Continue;
+          if aBreadcrumbs = nil then
+            aBreadcrumbs := TSummaryDictionary<TMetaBasite>.Create(Meta);
           if aBreadcrumbs.Increase(propertyBasite.Meta) <= fAutoInitMaxDepth then
             propertyBasite.ObjectPointer(Self)^ := propertyBasite.Meta.ClassItself.CreateNested(aBreadcrumbs);
           aBreadcrumbs.Decrease(propertyBasite.Meta);
@@ -1202,7 +1217,7 @@ end;
 
 constructor TBasite.Create;
 begin
-  var breadcrumbs: TSummaryDictionary<TMetaBasite> := TSummaryDictionary<TMetaBasite>.Create(Meta);
+  var breadcrumbs: TSummaryDictionary<TMetaBasite> := nil;
   CreateProperties(breadcrumbs);
   breadcrumbs.Free;
 
@@ -1318,11 +1333,10 @@ begin
   if (offset <= 0) or (offset >= InstanceSize) then
     Exit(False);
 
-  var properties: TPropertyList := Meta.Properties;
-  for var i := 0 to properties.Count - 1 do // by index: for-in creates an enumerator object
-    if (NativeInt(properties[i].fFieldOffset) = offset) and (properties[i].PropertyType <> ptNotSupported) then
+  for var propertyInfo: TProperty in Meta.Properties do
+    if (NativeInt(propertyInfo.fFieldOffset) = offset) and (propertyInfo.PropertyType <> ptNotSupported) then
     begin
-      aProperty := properties[i];
+      aProperty := propertyInfo;
       Exit(True);
     end;
   Result := False;
@@ -2462,6 +2476,23 @@ end;
 function TPropertyList.GetByCodeName(const aName: string; var aProperty: TProperty): boolean;
 begin
   Result := fCodeNames.TryGetValue(aName, aProperty);
+end;
+
+function TPropertyList.GetEnumerator: TEnumerator;
+begin
+  Result.fList := Self;
+  Result.fIndex := -1;
+end;
+
+function TPropertyList.TEnumerator.GetCurrent: TProperty;
+begin
+  Result := fList.List[fIndex];
+end;
+
+function TPropertyList.TEnumerator.MoveNext: boolean;
+begin
+  Inc(fIndex);
+  Result := fIndex < fList.Count;
 end;
 
 { TMeta }

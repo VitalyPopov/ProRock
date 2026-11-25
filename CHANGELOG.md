@@ -114,6 +114,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   `Write`, `WriteLine`, `Flush` and `Text` stay
 - `IsPresent`, `SetPresent` and `Clear` by a property's name in the code (`IsPresent('UnitPrice')`) find it as fast as by its
   data name; writing cells in Calcite is about a third faster
+- Creating objects, and with it reading, is about 15% faster: no enumerator object for each loop over a class's properties,
+  no bookkeeping for nested objects in a class whose objects are all created on first use
 
 #### Fixed
 - Compiling ProRock.Xmlite gives no hints any more (H2443, an inline function not expanded)
