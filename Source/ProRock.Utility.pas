@@ -152,20 +152,20 @@ type
 
     // a lone surrogate is written as U+FFFD, as TEncoding.UTF8 writes it
     procedure WriteChars(aChars: PChar; aCount: integer);
-    procedure Write(aChar: Char); overload; inline;
-    procedure Write(const aText: string); overload; inline;
+    procedure Write(aChar: Char); overload;
+    procedure Write(const aText: string); overload;
     procedure Write(const aChars: array of Char); overload;
     procedure Write(const aFormat: string; const aArgs: array of const); overload;
-    procedure WriteLine; overload; inline;
-    procedure WriteLine(const aText: string); overload; inline;
+    procedure WriteLine; overload;
+    procedure WriteLine(const aText: string); overload;
     procedure Flush;
 
-    procedure IncLevel; inline;
-    procedure DecLevel; inline;
-    procedure AddIndent; inline;
-    procedure AddLine(const aLine: string); overload; inline;
+    procedure IncLevel;
+    procedure DecLevel;
+    procedure AddIndent;
+    procedure AddLine(const aLine: string); overload;
     procedure AddLine(const aFormat: string; aArgs: array of const); overload;
-    procedure FinishLine(const aEndingText: string = ''); inline;
+    procedure FinishLine(const aEndingText: string = '');
   end;
 
   TReaderBase = class abstract
@@ -179,7 +179,7 @@ type
 
     class function PassQuotes(var aCursor: PChar; aQuoteChar: Char = '"'): boolean; static; inline;
 
-    class function ReadInteger(var aCursor: PChar; aHex: boolean = False): integer; static; inline;
+    class function ReadInteger(var aCursor: PChar; aHex: boolean = False): integer; static;
   end;
 
   TIssueSeverity = (isHint, isWarning, isError); // as the compiler's
@@ -238,13 +238,13 @@ type
     class function IsFileError(aError: Exception): boolean; static;
     class function ExePath: string; static; inline;
 
-    class function GuessNaming(const aName: string): TNaming; static; inline;
+    class function GuessNaming(const aName: string): TNaming; static;
     class function Prefix(const aName: string; aSeparator: Char = ':'): string; static; inline;
-    class function NameAndPrefix(const aFullName: string; out aPrefix, aName: string; aSeparator: Char = ':'): boolean; static; inline;
+    class function NameAndPrefix(const aFullName: string; out aPrefix, aName: string; aSeparator: Char = ':'): boolean; static;
     class function NameWithoutPrefix(const aName: string; aSeparator: Char = ':'): string; static; inline;
-    class function Acronym(const aName: string; aAcronyms: THashSet<string> = nil): string; static; inline;
-    class function ToPascalCase(const aName: string): string; static; inline;
-    class function FromPascalCase(const aName: string; aNaming: TNaming): string; inline;
+    class function Acronym(const aName: string; aAcronyms: THashSet<string> = nil): string; static;
+    class function ToPascalCase(const aName: string): string; static;
+    class function FromPascalCase(const aName: string; aNaming: TNaming): string;
     // FromPascalCase that also converts a name without lower-case letters (B -> b). Separate: in older generated units B means <B>
     class function FromPascalCaseExact(const aName: string; aNaming: TNaming): string; static;
     // GuessNaming that is sure: the style that gives the name back exactly, else TNaming.nAsIs (FamilyHistoryStatus-list has no style)
