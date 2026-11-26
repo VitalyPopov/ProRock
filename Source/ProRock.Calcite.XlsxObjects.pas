@@ -74,6 +74,14 @@ type
     fCleared: TList<TArea>; // the data rows kept, emptied after the move
     fKept: TList<TKeptFormula>;
     procedure ShiftTables;
+    procedure RemoveTable(aSheet: TWorksheetE; const aRelationship: TRelationshipOoxml);
+    function MoveColumns(aTable: TTableE; const aOld: TArea): TArray<integer>;
+    procedure DropTotals(aTable: TTableE; const aOld: TArea);
+    procedure ShiftColumnFormula(aFormula: TTableFormulaCT);
+    function DataRows(aTable: TTableE; const aArea: TArea): TArea;
+    procedure FillRows(aTable: TTableE; const aOld, aArea: TArea);
+    procedure ShiftFilter(aTable: TTableE; const aOld, aArea: TArea);
+    procedure ShiftSort(aTable: TTableE);
     function PlanOthers: string;
     function PlanFormula(const aPart: string; aFormula: TTableFormulaCT): string;
   public
@@ -696,52 +704,8 @@ end;
 // take the calculated columns' formulas), shrunk, gone with all their rows or columns; the totals row deleted, the table
 // keeps none; the autofilter, its columns and sort follow
 procedure TTablesHandler.ShiftTables;
-var
-  sheet: TWorksheetE;
-  last: integer;
-
-  function Changed(const aText: string): string;
-  begin
-    var why: string;
-    var map: TReferenceMap := fMap;
-    map.OnSheet := True;
-    map.InName := False;
-    if not ShiftFormula(aText, map, Result, why) then
-      Result := aText;
-  end;
-
-  procedure ChangeFormula(aFormula: TTableFormulaCT);
-  begin
-    var text: string := DecodeText(aFormula.XmlValue);
-    var newText: string := Changed(text); // not `changed`: Delphi 10.3 reads the call as the variable
-    if newText <> text then
-      aFormula.XmlValue := EncodeText(newText);
-  end;
-
-  procedure WriteName(aRow, aColumn: integer; const aName: string);
-  begin
-    fStore.PutText(aRow, aColumn, aName, True);
-  end;
-
-  procedure Remove(const aRelationship: TRelationshipOoxml);
-  begin
-    if sheet.IsPresent('TableParts') then
-    begin
-      var parts: TTablePartCTList := sheet.TableParts.TablePart;
-      for var i := parts.Count - 1 downto 0 do
-        if parts[i].Id = aRelationship.Id then
-          parts.Delete(i);
-      if parts.Count = 0 then
-        sheet.Clear('TableParts')
-      else
-        sheet.TableParts.Count := parts.Count;
-    end;
-    fBook.Package.RemovePart(fStore.Part, aRelationship.Part);
-  end;
-
 begin
-  sheet := fStore.Objects(True);
-  last := fMap.First - fMap.Delta - 1;
+  var sheet: TWorksheetE := fStore.Objects(True);
   var package: TPackageOoxml := fBook.Package;
   for var relationship: TRelationshipOoxml in package.Relationships(fStore.Part) do
   begin
@@ -754,112 +718,180 @@ begin
     var area: TArea := old;
     if not fMap.MovedArea(area) then
     begin
-      Remove(relationship);
+      RemoveTable(sheet, relationship);
       Continue;
     end;
-    var columns: TTableColumnCTList := table.TableColumns.TableColumn;
-    var added: TArray<integer> := nil; // the new columns' numbers on the sheet
-    if not fMap.ByRows and (fMap.Delta < 0) then
-    begin
-      for var index := columns.Count - 1 downto 0 do
-        if (old.Left + index >= fMap.First) and (old.Left + index <= last) then
-          columns.Delete(index);
-    end
-    else if not fMap.ByRows and (fMap.First > old.Left) and (fMap.First <= old.Right) then
-    begin // Excel's names: the first ColumnN the table does not have
-      var id: cardinal := 0;
-      var names: TStringList := TStringList.Create;
-      try
-        names.CaseSensitive := False;
-        for var column: TTableColumnCT in columns do
-        begin
-          id := Max(id, column.Id);
-          names.Add(column.Name);
-        end;
-        var number: integer := 1;
-        for var index := 0 to fMap.Delta - 1 do
-        begin
-          while names.IndexOf('Column' + IntToStr(number)) >= 0 do
-            Inc(number);
-          var column: TTableColumnCT := TTableColumnCT.Create;
-          Inc(id);
-          column.Id := id;
-          column.Name := 'Column' + IntToStr(number);
-          names.Add(column.Name);
-          columns.Insert(fMap.First - old.Left + index, column);
-          added := added + [fMap.First + index];
-        end;
-      finally
-        names.Free;
-      end;
-    end;
-    table.TableColumns.Count := columns.Count;
-    if fMap.ByRows and (fMap.Delta < 0) and (table.TotalsRowCount > 0) and (old.Bottom >= fMap.First) and (old.Bottom <= last) then
-    begin // the table keeps no totals row then
-      table.Clear(@table.TotalsRowCount);
-      table.TotalsRowShown := False;
-      table.SetPresent(@table.TotalsRowShown);
-      for var column: TTableColumnCT in columns do
-      begin
-        column.Clear(@column.TotalsRowFunction);
-        column.Clear(@column.TotalsRowLabel);
-        column.Clear('TotalsRowFormula');
-      end;
-    end;
-    for var column: TTableColumnCT in columns do
+    var added: TArray<integer> := MoveColumns(table, old);
+    DropTotals(table, old);
+    for var column: TTableColumnCT in table.TableColumns.TableColumn do
     begin
       if column.IsPresent('CalculatedColumnFormula') then
-        ChangeFormula(column.CalculatedColumnFormula);
+        ShiftColumnFormula(column.CalculatedColumnFormula);
       if column.IsPresent('TotalsRowFormula') then
-        ChangeFormula(column.TotalsRowFormula);
+        ShiftColumnFormula(column.TotalsRowFormula);
     end;
     table.Ref := area.CellsAddress;
-    var dataTop: integer := area.Top + integer(table.HeaderRowCount);
-    var dataBottom: integer := area.Bottom - integer(table.TotalsRowCount);
     if table.HeaderRowCount > 0 then
       for var column: integer in added do
-        WriteName(area.Top, column, columns[column - area.Left].Name);
-    if fMap.ByRows and (fMap.Delta > 0) and (fMap.First > old.Top) and (fMap.First <= old.Bottom) then
-      for var index := 0 to columns.Count - 1 do
-        if columns[index].IsPresent('CalculatedColumnFormula') and not columns[index].CalculatedColumnFormula.&Array then
-        begin
-          var text: string := DecodeText(columns[index].CalculatedColumnFormula.XmlValue);
-          for var row := Max(fMap.First, dataTop) to Min(fMap.First + fMap.Delta - 1, dataBottom) do
-          begin
-            var filled, why: string;
-            if ShiftFormula(text, TReferenceMap.Fill(row - dataTop, 0), filled, why) then
-              fStore.PutFormula(row, area.Left + index, filled);
-          end;
-        end;
-    if table.IsPresent('AutoFilter') then
-    begin
-      var filter: TAutoFilterCT := table.AutoFilter;
-      var shown: TArea := area;
-      shown.Bottom := dataBottom;
-      filter.Ref := shown.CellsAddress;
-      if not fMap.ByRows and ShiftFilterColumns(filter, old.Left, area.Left, fMap) then
-        ShowRows(dataTop, dataBottom);
-    end;
-    if table.IsPresent('SortState') then
-    begin
-      var sort: TSortStateCT := table.SortState;
-      var ref: string := fMap.MovedSqref(sort.Ref);
-      if ref <> '' then
+        fStore.PutText(area.Top, column, table.TableColumns.TableColumn[column - area.Left].Name, True);
+    FillRows(table, old, area);
+    ShiftFilter(table, old, area);
+    ShiftSort(table);
+  end;
+end;
+
+// a table wholly deleted: its part and its entry on the sheet
+procedure TTablesHandler.RemoveTable(aSheet: TWorksheetE; const aRelationship: TRelationshipOoxml);
+begin
+  if aSheet.IsPresent('TableParts') then
+  begin
+    var parts: TTablePartCTList := aSheet.TableParts.TablePart;
+    for var i := parts.Count - 1 downto 0 do
+      if parts[i].Id = aRelationship.Id then
+        parts.Delete(i);
+    if parts.Count = 0 then
+      aSheet.Clear('TableParts')
+    else
+      aSheet.TableParts.Count := parts.Count;
+  end;
+  fBook.Package.RemovePart(fStore.Part, aRelationship.Part);
+end;
+
+// the table's columns deleted or inserted inside it; the new columns' numbers on the sheet
+function TTablesHandler.MoveColumns(aTable: TTableE; const aOld: TArea): TArray<integer>;
+begin
+  Result := nil;
+  var columns: TTableColumnCTList := aTable.TableColumns.TableColumn;
+  if not fMap.ByRows and (fMap.Delta < 0) then
+  begin
+    var last: integer := fMap.First - fMap.Delta - 1;
+    for var index := columns.Count - 1 downto 0 do
+      if (aOld.Left + index >= fMap.First) and (aOld.Left + index <= last) then
+        columns.Delete(index);
+  end
+  else if not fMap.ByRows and (fMap.First > aOld.Left) and (fMap.First <= aOld.Right) then
+  begin // Excel's names: the first ColumnN the table does not have
+    var id: cardinal := 0;
+    var names: TStringList := TStringList.Create;
+    try
+      names.CaseSensitive := False;
+      for var column: TTableColumnCT in columns do
       begin
-        sort.Ref := ref;
-        for var i := sort.SortCondition.Count - 1 downto 0 do
-        begin
-          var condition: string := fMap.MovedSqref(sort.SortCondition[i].Ref);
-          if condition = '' then
-            sort.SortCondition.Delete(i)
-          else
-            sort.SortCondition[i].Ref := condition;
-        end;
+        id := Max(id, column.Id);
+        names.Add(column.Name);
       end;
-      if (ref = '') or (sort.SortCondition.Count = 0) then
-        table.Clear('SortState');
+      var number: integer := 1;
+      for var index := 0 to fMap.Delta - 1 do
+      begin
+        while names.IndexOf('Column' + IntToStr(number)) >= 0 do
+          Inc(number);
+        var column: TTableColumnCT := TTableColumnCT.Create;
+        Inc(id);
+        column.Id := id;
+        column.Name := 'Column' + IntToStr(number);
+        names.Add(column.Name);
+        columns.Insert(fMap.First - aOld.Left + index, column);
+        Result := Result + [fMap.First + index];
+      end;
+    finally
+      names.Free;
     end;
   end;
+  aTable.TableColumns.Count := columns.Count;
+end;
+
+// the totals row deleted: the table keeps none
+procedure TTablesHandler.DropTotals(aTable: TTableE; const aOld: TArea);
+begin
+  var last: integer := fMap.First - fMap.Delta - 1;
+  if not fMap.ByRows or (fMap.Delta >= 0) or (aTable.TotalsRowCount = 0) or (aOld.Bottom < fMap.First) or (aOld.Bottom > last) then
+    Exit;
+  aTable.Clear(@aTable.TotalsRowCount);
+  aTable.TotalsRowShown := False;
+  aTable.SetPresent(@aTable.TotalsRowShown);
+  for var column: TTableColumnCT in aTable.TableColumns.TableColumn do
+  begin
+    column.Clear(@column.TotalsRowFunction);
+    column.Clear(@column.TotalsRowLabel);
+    column.Clear('TotalsRowFormula');
+  end;
+end;
+
+// a calculated column's or totals row's formula: on the sheet, kept as written when it does not parse
+procedure TTablesHandler.ShiftColumnFormula(aFormula: TTableFormulaCT);
+begin
+  var text: string := DecodeText(aFormula.XmlValue);
+  var map: TReferenceMap := fMap;
+  map.OnSheet := True;
+  map.InName := False;
+  var shifted, why: string;
+  if ShiftFormula(text, map, shifted, why) and (shifted <> text) then
+    aFormula.XmlValue := EncodeText(shifted);
+end;
+
+// the table's data rows, without its header and totals rows
+function TTablesHandler.DataRows(aTable: TTableE; const aArea: TArea): TArea;
+begin
+  Result := aArea;
+  Result.Top := aArea.Top + integer(aTable.HeaderRowCount);
+  Result.Bottom := aArea.Bottom - integer(aTable.TotalsRowCount);
+end;
+
+// rows inserted inside the table take the calculated columns' formulas
+procedure TTablesHandler.FillRows(aTable: TTableE; const aOld, aArea: TArea);
+begin
+  if not fMap.ByRows or (fMap.Delta <= 0) or (fMap.First <= aOld.Top) or (fMap.First > aOld.Bottom) then
+    Exit;
+  var data: TArea := DataRows(aTable, aArea);
+  var columns: TTableColumnCTList := aTable.TableColumns.TableColumn;
+  for var index := 0 to columns.Count - 1 do
+    if columns[index].IsPresent('CalculatedColumnFormula') and not columns[index].CalculatedColumnFormula.&Array then
+    begin
+      var text: string := DecodeText(columns[index].CalculatedColumnFormula.XmlValue);
+      for var row := Max(fMap.First, data.Top) to Min(fMap.First + fMap.Delta - 1, data.Bottom) do
+      begin
+        var filled, why: string;
+        if ShiftFormula(text, TReferenceMap.Fill(row - data.Top, 0), filled, why) then
+          fStore.PutFormula(row, aArea.Left + index, filled);
+      end;
+    end;
+end;
+
+// the autofilter over the header and data rows, its columns following; rows its gone columns hid shown
+procedure TTablesHandler.ShiftFilter(aTable: TTableE; const aOld, aArea: TArea);
+begin
+  if not aTable.IsPresent('AutoFilter') then
+    Exit;
+  var filter: TAutoFilterCT := aTable.AutoFilter;
+  var data: TArea := DataRows(aTable, aArea);
+  var shown: TArea := aArea;
+  shown.Bottom := data.Bottom;
+  filter.Ref := shown.CellsAddress;
+  if not fMap.ByRows and ShiftFilterColumns(filter, aOld.Left, aArea.Left, fMap) then
+    ShowRows(data.Top, data.Bottom);
+end;
+
+// the sort state and its conditions; gone with its range or its last condition
+procedure TTablesHandler.ShiftSort(aTable: TTableE);
+begin
+  if not aTable.IsPresent('SortState') then
+    Exit;
+  var sort: TSortStateCT := aTable.SortState;
+  var ref: string := fMap.MovedSqref(sort.Ref);
+  if ref <> '' then
+  begin
+    sort.Ref := ref;
+    for var i := sort.SortCondition.Count - 1 downto 0 do
+    begin
+      var condition: string := fMap.MovedSqref(sort.SortCondition[i].Ref);
+      if condition = '' then
+        sort.SortCondition.Delete(i)
+      else
+        sort.SortCondition[i].Ref := condition;
+    end;
+  end;
+  if (ref = '') or (sort.SortCondition.Count = 0) then
+    aTable.Clear('SortState');
 end;
 
 // the tables moved, then the data rows a delete kept emptied
