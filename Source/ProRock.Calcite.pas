@@ -5,7 +5,8 @@
 interface
 
 uses System.SysUtils, System.Classes, System.Generics.Collections, System.UITypes,
-  ProRock.Xmlite, ProRock.Office.Ooxml, ProRock.Xmlite.Schema.Ooxml.Sml, ProRock.Xmlite.Schema.CoreProperties;
+  ProRock.Xmlite, ProRock.Office.Ooxml, ProRock.Xmlite.Schema.Ooxml.Sml, ProRock.Xmlite.Schema.CoreProperties,
+  ProRock.Calcite.Xlsx;
 
 const
   // Excel's built-in dates: each reader sees them as their own short date, 31.12.2026 or 12/31/2026
@@ -640,22 +641,8 @@ type
     fProperties: TWorkbookProperties;
     fDateFormats: array[0 .. 1] of string; // DateFormat, DateTimeFormat
     fDateFormatIds: array[0 .. 1] of integer; // their numFmtIds in this workbook's styles, -2: not found yet
-    fPackage: TPackageOoxml;
-    fWorkbookPart, fSharedStringsPart, fStylesPart, fCalcChainPart: string;
+    fBook: TXlsxBook;
     fSheets: TWorksheets;
-    fStrings: TDictionary<string, integer>; // shared strings by text, built on the first write
-    // cellXfs, fonts, fills, borders by content (the items themselves, by ContentComparer), built on the first need and
-    // dropped when the user takes XmlStyles
-    fStyleKeys: TDictionary<TXfCT, integer>;
-    fFontKeys: TDictionary<TFontCT, integer>;
-    fFillKeys: TDictionary<TFillCT, integer>;
-    fBorderKeys: TDictionary<TBorderCT, integer>;
-    fThemePart: string;
-    fThemeColors: TArray<integer>; // the theme's 12 in the order styles number them, read on the first need
-    fDateStyleIds: TDictionary<UInt64, integer>; // DateStyle's answers: a style and a format, the style with it
-    fDateStyles: TDictionary<cardinal, boolean>;
-    fValuesChanged: boolean;
-    fFormulasWritten: boolean;
     fIssues: TIssues;
 
     // nothing open: Open's own workbook
@@ -668,34 +655,8 @@ type
     function Fail(const aCode, aError: string): boolean;
     procedure Exchange(aOther: TWorkbook);
     procedure FixedAreas(const aSheetPart: string; aTables, aTableRows, aPivots: TList<TRange>);
-    function IsDynamicArray(aCellMetadata: cardinal): boolean;
     function SheetNameError(const aName: string; aExcept: TWorksheet): string;
     function AddSheet(const aName: string): TWorksheet;
-
-    function IsLockedStyle(aStyle: cardinal): boolean;
-    procedure ValueChanged;
-    procedure FormulaChanged;
-    function Date1904: boolean;
-    function SharedString(aIndex: integer): string;
-    function SharedStringIndex(const aText: string): integer;
-    procedure SharedStringReleased;
-    function IsDateStyle(aStyle: cardinal): boolean;
-    function ChangedStyle(aStyle: cardinal; const aChange: TProc<TXfCT>): integer;
-    function DateStyle(aStyle: cardinal; aFormat: integer): integer;
-    function FormatCode(aStyle: cardinal): string;
-    function FormatId(const aCode: string): integer;
-    function ChangedItem<T: TXmlite, constructor>(aItems: TObjectList<T>; var aKeys: TDictionary<T, integer>;
-      aIndex: cardinal; const aChange: TProc<T>): integer;
-    function ChangedFont(aFont: cardinal; const aChange: TProc<TFontCT>): integer;
-    function ChangedFill(aFill: cardinal; const aChange: TProc<TFillCT>): integer;
-    function ChangedBorder(aBorder: cardinal; const aChange: TProc<TBorderCT>): integer;
-    function StyleXf(aStyle: cardinal): TXfCT;
-    function StyleFont(aStyle: cardinal): TFontCT;
-    function StyleFill(aStyle: cardinal): TFillCT;
-    function StyleBorder(aStyle: cardinal): TBorderCT;
-    function BorderAt(aBorder: cardinal): TBorderCT;
-    function ThemeColor(aIndex: cardinal): integer;
-    function ColorOf(aColor: TColorCT; aDefault: TColor): TColor;
 
     function GetXml: TWorkbookE;
     function GetXmlSharedStrings: TSstE;
@@ -759,133 +720,11 @@ type
   {$ENDREGION}
 
 const
-  // relationship types end in these names - Transitional and Strict differ only before them
-  cOfficeDocument = '/officeDocument';
-  cTheme = '/theme';
-  cWorksheet = '/worksheet';
-  cSharedStrings = '/sharedStrings';
-  cStyles = '/styles';
-  cCalcChain = '/calcChain';
-  cSheetMetadata = '/sheetMetadata';
-  cTable = '/table';
-  cPivotTable = '/pivotTable';
-  cPivotCacheDefinition = '/pivotCacheDefinition';
-  cDrawing = '/drawing';
-  cChart = '/chart';
-  cChartsheet = '/chartsheet';
-  cChartEx = '/chartEx';
-  cComments = '/comments';
-  cThreadedComment = '/threadedComment';
-  cSlicer = '/slicer';
-  cTimeline = '/timeline';
-  cContentTypes = '[Content_Types].xml';
-  cSharedStringsType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml';
-  cWorksheetType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml';
 
   // Excel's number format a time of day gets: h:mm:ss
   cTimeFormat = 21;
 
 {$REGION 'xlsx storage: text, built-in formats, date styles, widths, data tables'}
-
-// ST_Xstring: a character XML cannot hold is written as _xHHHH_, and so is an underscore that would read as one
-function DecodeText(const aText: string): string;
-begin
-  if Pos('_x', aText) = 0 then
-    Exit(aText);
-  var builder: TStringBuilder := TStringBuilder.Create(aText.Length);
-  try
-    var i: integer := 1;
-    while i <= aText.Length do
-    begin
-      var code: integer;
-      if (aText[i] = '_') and (i + 6 <= aText.Length) and (aText[i + 1] = 'x') and (aText[i + 6] = '_') and
-        TryStrToInt('$' + Copy(aText, i + 2, 4), code) then
-      begin
-        builder.Append(Char(code));
-        Inc(i, 7);
-      end
-      else
-      begin
-        builder.Append(aText[i]);
-        Inc(i);
-      end;
-    end;
-    Result := builder.ToString;
-  finally
-    builder.Free;
-  end;
-end;
-
-function EncodeText(const aText: string): string;
-begin
-  Result := aText;
-  for var i := aText.Length downto 1 do
-  begin
-    var code: integer := Ord(aText[i]);
-    if ((code < 32) and not (code in [9, 10, 13])) or (code = $FFFE) or (code = $FFFF) then
-      Result := Copy(Result, 1, i - 1) + Format('_x%.4X_', [code]) + Copy(Result, i + 1, MaxInt)
-    else if (code = Ord('_')) and (i + 6 <= aText.Length) and (aText[i + 1] = 'x') and (aText[i + 6] = '_') then
-    begin
-      var hex: integer;
-      if TryStrToInt('$' + Copy(aText, i + 2, 4), hex) then
-        Result := Copy(Result, 1, i - 1) + '_x005F_' + Copy(Result, i + 1, MaxInt);
-    end;
-  end;
-end;
-
-// a shared string or an inline one: plain text, or rich text in runs
-function RichText(aItem: TRstCT): string;
-begin
-  Result := aItem.T;
-  for var run: TREltCT in aItem.R do
-    Result := Result + string(run.T);
-  Result := DecodeText(Result);
-end;
-
-const
-  // Excel's built-in number formats as its NumberFormat names them in English; 14-17 and 22 follow the regional settings
-  // in Excel (these are en-US's), 5-8 the currency's; '' - none
-  cBuiltInFormats: array[0 .. 49] of string = ('General', '0', '0.00', '#,##0', '#,##0.00', '$#,##0_);($#,##0)',
-    '$#,##0_);[Red]($#,##0)', '$#,##0.00_);($#,##0.00)', '$#,##0.00_);[Red]($#,##0.00)', '0%', '0.00%', '0.00E+00', '# ?/?',
-    '# ??/??', 'm/d/yyyy', 'd-mmm-yy', 'd-mmm', 'mmm-yy', 'h:mm AM/PM', 'h:mm:ss AM/PM', 'h:mm', 'h:mm:ss', 'm/d/yyyy h:mm',
-    '', '', '', '', '', '', '', '', '', '', '', '', '', '', '#,##0_);(#,##0)', '#,##0_);[Red](#,##0)',
-    '#,##0.00_);(#,##0.00)', '#,##0.00_);[Red](#,##0.00)', '_(* #,##0_);_(* (#,##0);_(* "-"_);_(@_)',
-    '_($* #,##0_);_($* (#,##0);_($* "-"_);_(@_)', '_(* #,##0.00_);_(* (#,##0.00);_(* "-"??_);_(@_)',
-    '_($* #,##0.00_);_($* (#,##0.00);_($* "-"??_);_(@_)', 'mm:ss', '[h]:mm:ss', 'mm:ss.0', '##0.0E+0', '@');
-
-function BuiltInFormat(aId: cardinal): string;
-begin
-  if (aId <= High(cBuiltInFormats)) and (cBuiltInFormats[aId] <> '') then
-    Result := cBuiltInFormats[aId]
-  else if (aId <= 58) and (Byte(aId) in [32 .. 35]) then // the East Asian times and dates: the locale's
-    Result := 'h:mm:ss'
-  else if (aId <= 58) and (Byte(aId) in [27 .. 31, 36, 50 .. 58]) then
-    Result := 'm/d/yyyy'
-  else
-    Result := 'General';
-end;
-
-// a code written: the built-in id it names, -1 for none (5-8 are the locale's currency, never chosen)
-function BuiltInFormatId(const aShown: string): integer;
-begin
-  if (aShown = '') or SameText(aShown, 'General') then
-    Exit(0);
-  for var id := 1 to High(cBuiltInFormats) do
-    if not (id in [5 .. 8]) and (cBuiltInFormats[id] = aShown) then
-      Exit(id);
-  Result := -1;
-end;
-
-// Excel's built-in date and time formats, and a format code with a date or time code (IsDateCode)
-function IsDateFormat(aId: cardinal; aStyles: TStyleSheetE): boolean;
-begin
-  if aStyles.IsPresent('NumFmts') then
-    for var numberFormat: TNumFmtCT in aStyles.NumFmts.NumFmt do
-      if numberFormat.NumFmtId = aId then
-        Exit(IsDateCode(DecodeText(numberFormat.FormatCode)));
-  // 27-36 and 50-58: the East Asian ones
-  Result := (aId <= 58) and (Byte(aId) in [14 .. 22, 27 .. 36, 45 .. 47, 50 .. 58]);
-end;
 
 const
   // the default font's digit (Calibri or Aptos Narrow 11) in pixels: the unit of Excel's column widths
@@ -959,7 +798,6 @@ end;
 {$REGION 'xlsx storage: fonts, fills, borders, colors'}
 
 const
-  cAutomaticIndex = 64; // indexed: the system's text color, Excel's automatic
   cUnderlines: array[TUnderlineValuesST] of TUnderline = (ulSingle, ulDouble, ulSingleAccounting, ulDoubleAccounting, ulNone);
   cUnderlineValues: array[TUnderline] of TUnderlineValuesST = (stuvNone, stuvSingle, stuvDouble, stuvSingleAccounting,
     stuvDoubleAccounting);
@@ -1134,13 +972,6 @@ begin
   Result := TUtility.CellName(aRange.fTop, aRange.fLeft);
   if (aRange.fBottom <> aRange.fTop) or (aRange.fRight <> aRange.fLeft) then
     Result := Result + ':' + TUtility.CellName(aRange.fBottom, aRange.fRight);
-end;
-
-// FFRRGGBB (or RRGGBB) as BGR
-function RgbValue(const aHex: string): integer;
-begin
-  var value: integer := StrToIntDef('$' + aHex.Substring(Max(0, aHex.Length - 6)), 0);
-  Result := value shr 16 and $FF or value and $FF00 or (value and $FF) shl 16;
 end;
 
 {$ENDREGION}
@@ -1408,7 +1239,7 @@ begin
     cvEmpty:
       Result := 0;
     cvNumber:
-      Result := TUtility.SerialToDate(value, fSheet.fWorkbook.Date1904);
+      Result := TUtility.SerialToDate(value, fSheet.fWorkbook.fBook.Date1904);
     cvDate:
       Result := VarToDateTime(value);
   else
@@ -1540,7 +1371,7 @@ end;
 
 function TRange.GetNumberFormat: string;
 begin
-  Result := fSheet.fWorkbook.FormatCode(fSheet.EffectiveStyle(fTop, fLeft));
+  Result := fSheet.fWorkbook.fBook.FormatCode(fSheet.EffectiveStyle(fTop, fLeft));
 end;
 
 procedure TRange.SetNumberFormat(const aValue: string);
@@ -1556,7 +1387,7 @@ begin
   end
   else
   begin
-    id := fSheet.fWorkbook.FormatId(aValue);
+    id := fSheet.fWorkbook.fBook.FormatId(aValue);
     if id < 0 then
       why := 'the workbook has no styles to add a number format to';
   end;
@@ -1617,7 +1448,7 @@ end;
 
 function TRange.GetHorizontalAlignment: THAlign;
 begin
-  var xf: TXfCT := fSheet.fWorkbook.StyleXf(fSheet.EffectiveStyle(fTop, fLeft));
+  var xf: TXfCT := fSheet.fWorkbook.fBook.StyleXf(fSheet.EffectiveStyle(fTop, fLeft));
   if (xf = nil) or not xf.IsPresent('Alignment') then
     Exit(haGeneral);
   Result := THAlign(Ord(xf.Alignment.Horizontal));
@@ -1639,7 +1470,7 @@ end;
 
 function TRange.GetVerticalAlignment: TVAlign;
 begin
-  var xf: TXfCT := fSheet.fWorkbook.StyleXf(fSheet.EffectiveStyle(fTop, fLeft));
+  var xf: TXfCT := fSheet.fWorkbook.fBook.StyleXf(fSheet.EffectiveStyle(fTop, fLeft));
   if (xf = nil) or not xf.IsPresent('Alignment') then
     Exit(vaBottom);
   Result := TVAlign(Ord(xf.Alignment.Vertical));
@@ -1661,7 +1492,7 @@ end;
 
 function TRange.GetWrapText: boolean;
 begin
-  var xf: TXfCT := fSheet.fWorkbook.StyleXf(fSheet.EffectiveStyle(fTop, fLeft));
+  var xf: TXfCT := fSheet.fWorkbook.fBook.StyleXf(fSheet.EffectiveStyle(fTop, fLeft));
   Result := (xf <> nil) and xf.IsPresent('Alignment') and xf.Alignment.WrapText;
 end;
 
@@ -1897,7 +1728,7 @@ end;
 
 function TRangeFont.GetFlag(aIndex: integer): boolean;
 begin
-  var font: TFontCT := fSheet.fWorkbook.StyleFont(fSheet.EffectiveStyle(fTop, fLeft));
+  var font: TFontCT := fSheet.fWorkbook.fBook.StyleFont(fSheet.EffectiveStyle(fTop, fLeft));
   Result := (font <> nil) and IsOn(FontFlag(font, aIndex));
 end;
 
@@ -1913,7 +1744,7 @@ end;
 function TRangeFont.GetName: string;
 begin
   Result := '';
-  var font: TFontCT := fSheet.fWorkbook.StyleFont(fSheet.EffectiveStyle(fTop, fLeft));
+  var font: TFontCT := fSheet.fWorkbook.fBook.StyleFont(fSheet.EffectiveStyle(fTop, fLeft));
   if (font <> nil) and (font.Name.Count > 0) then
     Result := font.Name[0].Val;
 end;
@@ -1942,7 +1773,7 @@ end;
 function TRangeFont.GetSize: Double;
 begin
   Result := 11;
-  var font: TFontCT := fSheet.fWorkbook.StyleFont(fSheet.EffectiveStyle(fTop, fLeft));
+  var font: TFontCT := fSheet.fWorkbook.fBook.StyleFont(fSheet.EffectiveStyle(fTop, fLeft));
   if (font <> nil) and (font.Sz.Count > 0) then
     Result := font.Sz[0].Val;
 end;
@@ -1965,9 +1796,9 @@ end;
 function TRangeFont.GetColor: TColor;
 begin
   Result := 0;
-  var font: TFontCT := fSheet.fWorkbook.StyleFont(fSheet.EffectiveStyle(fTop, fLeft));
+  var font: TFontCT := fSheet.fWorkbook.fBook.StyleFont(fSheet.EffectiveStyle(fTop, fLeft));
   if (font <> nil) and (font.Color.Count > 0) then
-    Result := fSheet.fWorkbook.ColorOf(font.Color[0], 0);
+    Result := fSheet.fWorkbook.fBook.ColorOf(font.Color[0], 0);
 end;
 
 procedure TRangeFont.SetColor(aValue: TColor);
@@ -1989,7 +1820,7 @@ end;
 function TRangeFont.GetUnderline: TUnderline;
 begin
   Result := ulNone;
-  var font: TFontCT := fSheet.fWorkbook.StyleFont(fSheet.EffectiveStyle(fTop, fLeft));
+  var font: TFontCT := fSheet.fWorkbook.fBook.StyleFont(fSheet.EffectiveStyle(fTop, fLeft));
   if (font <> nil) and (font.U.Count > 0) then
     Result := cUnderlines[font.U[0].Val];
 end;
@@ -2006,7 +1837,7 @@ end;
 function TRangeFont.GetStyle: TFontStyles;
 begin
   Result := [];
-  var font: TFontCT := fSheet.fWorkbook.StyleFont(fSheet.EffectiveStyle(fTop, fLeft));
+  var font: TFontCT := fSheet.fWorkbook.fBook.StyleFont(fSheet.EffectiveStyle(fTop, fLeft));
   if font = nil then
     Exit;
   if IsOn(font.B) then
@@ -2039,7 +1870,7 @@ end;
 function TRangeInterior.GetColor: TColor;
 begin
   Result := clNone;
-  var fill: TFillCT := fSheet.fWorkbook.StyleFill(fSheet.EffectiveStyle(fTop, fLeft));
+  var fill: TFillCT := fSheet.fWorkbook.fBook.StyleFill(fSheet.EffectiveStyle(fTop, fLeft));
   if (fill = nil) or not fill.IsPresent('PatternFill') then
     Exit;
   var pattern: TPatternFillCT := fill.PatternFill;
@@ -2048,12 +1879,12 @@ begin
       ;
     stptbSolid:
       if pattern.IsPresent('FgColor') then
-        Result := fSheet.fWorkbook.ColorOf(pattern.FgColor, 0)
+        Result := fSheet.fWorkbook.fBook.ColorOf(pattern.FgColor, 0)
       else
         Result := 0;
   else // the pattern's background: Excel's Interior.Color
     if pattern.IsPresent('BgColor') then
-      Result := fSheet.fWorkbook.ColorOf(pattern.BgColor, $FFFFFF)
+      Result := fSheet.fWorkbook.fBook.ColorOf(pattern.BgColor, $FFFFFF)
     else
       Result := $FFFFFF;
   end;
@@ -2066,7 +1897,7 @@ begin
   fSheet.Restyle(fSheet.MakeRange(fTop, fLeft, fBottom, fRight),
     procedure(aXf: TXfCT)
     begin
-      var fill: integer := workbook.ChangedFill(aXf.FillId,
+      var fill: integer := workbook.fBook.ChangedFill(aXf.FillId,
         procedure(aFill: TFillCT)
         begin
           aFill.Clear;
@@ -2139,7 +1970,7 @@ begin
   var side: TBorderPrCT := ShownSide(fSheet, fTop, fLeft, fBottom, fRight, fEdges);
   if (side = nil) or not side.IsPresent('Color') then
     Exit(0);
-  Result := fSheet.fWorkbook.ColorOf(side.Color, 0);
+  Result := fSheet.fWorkbook.fBook.ColorOf(side.Color, 0);
 end;
 
 procedure TRangeBorder.SetColor(aValue: TColor);
@@ -2325,7 +2156,7 @@ end;
 
 function TWorksheet.Objects(aEdit: boolean): TWorksheetE;
 begin
-  var package: TPackageOoxml := fWorkbook.fPackage;
+  var package: TPackageOoxml := fWorkbook.fBook.Package;
   if (fObjects <> nil) and (fObjectsPackage = package) and (fObjectsVersion = package.Version) and
     (fObjectsEdited or not aEdit) then
     Exit(fObjects); // asked for several times a cell: no lookup in the package
@@ -2456,7 +2287,7 @@ begin
   case aCell.T of
     stctS:
       begin
-        aValue := fWorkbook.SharedString(StrToIntDef(aCell.V, -1));
+        aValue := fWorkbook.fBook.SharedString(StrToIntDef(aCell.V, -1));
         Result := cvText;
       end;
     stctStr:
@@ -2481,9 +2312,9 @@ begin
       aValue := string(aCell.V);
       Exit(cvText);
     end;
-    if fWorkbook.IsDateStyle(aCell.S) then
+    if fWorkbook.fBook.IsDateStyle(aCell.S) then
     begin
-      aValue := VarFromDateTime(TUtility.SerialToDate(number, fWorkbook.Date1904));
+      aValue := VarFromDateTime(TUtility.SerialToDate(number, fWorkbook.fBook.Date1904));
       Result := cvDate;
     end
     else
@@ -2505,7 +2336,7 @@ function TWorksheet.IsLocked(aRow, aColumn: integer): boolean;
 begin
   var sheet: TWorksheetE := Objects(False);
   Result := sheet.IsPresent('SheetProtection') and sheet.SheetProtection.Sheet and
-    fWorkbook.IsLockedStyle(EffectiveStyle(aRow, aColumn));
+    fWorkbook.fBook.IsLockedStyle(EffectiveStyle(aRow, aColumn));
 end;
 
 // the areas of array formulas and data tables, shared formulas' first cells: found once, again after one of them changes
@@ -2533,7 +2364,7 @@ begin
           if cell.F.T = stcftArray then
           begin
             fArrays.Add(area);
-            if (cell.Cm > 0) and fWorkbook.IsDynamicArray(cell.Cm) then
+            if (cell.Cm > 0) and fWorkbook.fBook.IsDynamicArray(cell.Cm) then
               fSpills.Add(area);
           end
           else
@@ -2658,7 +2489,7 @@ begin
     Inc(rowIndex);
   end;
   ForgetFormulas;
-  fWorkbook.FormulaChanged;
+  fWorkbook.fBook.FormulaChanged;
   Result := True;
 end;
 
@@ -2719,7 +2550,7 @@ function TWorksheet.CellForWriting(aRow, aColumn: integer): TCellCT;
 begin
   Result := CellForStyle(aRow, aColumn);
   RemoveValue(Result);
-  fWorkbook.ValueChanged;
+  fWorkbook.fBook.ValueChanged;
 end;
 
 // the cell as it is, created where Excel expects it (rows in order, cells by column) with the style it shows
@@ -2786,7 +2617,7 @@ begin
       begin
         if not changed.TryGetValue(aStyle, style) then
         begin
-          style := fWorkbook.ChangedStyle(aStyle, aChange);
+          style := fWorkbook.fBook.ChangedStyle(aStyle, aChange);
           changed.Add(aStyle, style);
         end;
         failed := failed or (style < 0);
@@ -2871,7 +2702,7 @@ begin
   Restyle(aRange,
     procedure(aXf: TXfCT)
     begin
-      var font: integer := workbook.ChangedFont(aXf.FontId, aChange);
+      var font: integer := workbook.fBook.ChangedFont(aXf.FontId, aChange);
       if font >= 0 then
       begin
         aXf.FontId := font;
@@ -2920,11 +2751,11 @@ type
         begin
           var drawn: boolean := False;
           for var edge: TBorderEdge in aSides do
-            drawn := drawn or (DrawnSide(workbook.BorderAt(aXf.BorderId), edge) <> nil);
+            drawn := drawn or (DrawnSide(workbook.fBook.BorderAt(aXf.BorderId), edge) <> nil);
           if not drawn then
             Exit;
         end;
-        var border: integer := workbook.ChangedBorder(aXf.BorderId,
+        var border: integer := workbook.fBook.ChangedBorder(aXf.BorderId,
           procedure(aBorder: TBorderCT)
           begin
             for var edge: TBorderEdge in aSides do
@@ -2978,22 +2809,22 @@ end;
 // a cell's side with a line, as Excel reads it: its own, else the neighbour's facing one; nil when neither has one
 function TWorksheet.BorderSide(aRow, aColumn: integer; aEdge: TBorderEdge): TBorderPrCT;
 begin
-  Result := DrawnSide(fWorkbook.StyleBorder(EffectiveStyle(aRow, aColumn)), aEdge);
+  Result := DrawnSide(fWorkbook.fBook.StyleBorder(EffectiveStyle(aRow, aColumn)), aEdge);
   if Result <> nil then
     Exit;
   case aEdge of
     beLeft:
       if aColumn > 1 then
-        Result := DrawnSide(fWorkbook.StyleBorder(EffectiveStyle(aRow, aColumn - 1)), beRight);
+        Result := DrawnSide(fWorkbook.fBook.StyleBorder(EffectiveStyle(aRow, aColumn - 1)), beRight);
     beRight:
       if aColumn < TUtility.cMaxColumn then
-        Result := DrawnSide(fWorkbook.StyleBorder(EffectiveStyle(aRow, aColumn + 1)), beLeft);
+        Result := DrawnSide(fWorkbook.fBook.StyleBorder(EffectiveStyle(aRow, aColumn + 1)), beLeft);
     beTop:
       if aRow > 1 then
-        Result := DrawnSide(fWorkbook.StyleBorder(EffectiveStyle(aRow - 1, aColumn)), beBottom);
+        Result := DrawnSide(fWorkbook.fBook.StyleBorder(EffectiveStyle(aRow - 1, aColumn)), beBottom);
     beBottom:
       if aRow < TUtility.cMaxRow then
-        Result := DrawnSide(fWorkbook.StyleBorder(EffectiveStyle(aRow + 1, aColumn)), beTop);
+        Result := DrawnSide(fWorkbook.fBook.StyleBorder(EffectiveStyle(aRow + 1, aColumn)), beTop);
   end;
 end;
 
@@ -3144,7 +2975,7 @@ begin
               var number: Double;
               if TUtility.TryFloatFromText(string(cell.V).Trim, number) then
               begin
-                var code: string := fWorkbook.FormatCode(cell.S);
+                var code: string := fWorkbook.fBook.FormatCode(cell.S);
                 // the built-in dates show in the reader's own order: measured at their widest, two digits each
                 if (code = 'm/d/yyyy') or (code = 'm/d/yyyy h:mm') then
                   code := StringReplace(StringReplace(code, 'm/d', 'mm/dd', []), ' h:', ' hh:', []);
@@ -3158,7 +2989,7 @@ begin
           var font: TFontCT;
           if not fonts.TryGetValue(cell.S, font) then
           begin
-            font := fWorkbook.StyleFont(cell.S);
+            font := fWorkbook.fBook.StyleFont(cell.S);
             fonts.Add(cell.S, font);
           end;
           var scale: Double := 1;
@@ -3407,7 +3238,7 @@ end;
 // the workbook's <sheet> of this one
 function TWorksheet.SheetEntry: TSheetCT;
 begin
-  for var entry: TSheetCT in fWorkbook.fPackage.Part<TWorkbookE>(fWorkbook.fWorkbookPart).Sheets.Sheet do
+  for var entry: TSheetCT in fWorkbook.fBook.Package.Part<TWorkbookE>(fWorkbook.fBook.WorkbookPart).Sheets.Sheet do
     if entry.Name = fName then
       Exit(entry);
   Result := nil;
@@ -3432,7 +3263,7 @@ const
 begin
   if aValue = GetVisible then
     Exit;
-  var workbook: TWorkbookE := fWorkbook.fPackage.EditPart<TWorkbookE>(fWorkbook.fWorkbookPart);
+  var workbook: TWorkbookE := fWorkbook.fBook.Package.EditPart<TWorkbookE>(fWorkbook.fBook.WorkbookPart);
   var entries: TSheetCTList := workbook.Sheets.Sheet;
   var index: integer := -1;
   var visible: integer := 0;
@@ -4031,7 +3862,7 @@ begin
       if moved = 0 then
       begin
         if value.Typed and (value.T = stctS) then
-          fWorkbook.SharedStringReleased;
+          fWorkbook.fBook.SharedStringReleased;
       end
       else
       begin
@@ -4304,7 +4135,7 @@ begin
   end;
   if filterGone then // and its hidden name with it
   begin
-    var workbook: TWorkbookE := fWorkbook.fPackage.EditPart<TWorkbookE>(fWorkbook.fWorkbookPart);
+    var workbook: TWorkbookE := fWorkbook.fBook.Package.EditPart<TWorkbookE>(fWorkbook.fBook.WorkbookPart);
     var tab: integer := workbook.Sheets.Sheet.IndexOf(SheetEntry);
     if workbook.IsPresent('DefinedNames') then
     begin
@@ -4490,7 +4321,7 @@ var
 
 begin
   last := aFirst - aCount - 1;
-  var package: TPackageOoxml := fWorkbook.fPackage;
+  var package: TPackageOoxml := fWorkbook.fBook.Package;
   for var relationship: TRelationshipOoxml in package.Relationships(fPartName) do
     if relationship.&Type.EndsWith(cTable) then
     begin
@@ -4539,8 +4370,8 @@ begin
         'change the report. If you are trying to insert or delete cells, move the PivotTable and try again.');
   end;
   // a consolidation names its ranges by sheet
-  var package: TPackageOoxml := fWorkbook.fPackage;
-  for var relationship: TRelationshipOoxml in package.Relationships(fWorkbook.fWorkbookPart) do
+  var package: TPackageOoxml := fWorkbook.fBook.Package;
+  for var relationship: TRelationshipOoxml in package.Relationships(fWorkbook.fBook.WorkbookPart) do
     if relationship.&Type.EndsWith(cPivotCacheDefinition) then
     begin
       var cache: TPivotCacheDefinitionE := package.Part<TPivotCacheDefinitionE>(relationship.Part);
@@ -4557,7 +4388,7 @@ end;
 procedure TWorksheet.KeepTableRows(var aFirst, aCount: integer; aCleared: TList<TRange>);
 begin
   var last: integer := aFirst - aCount - 1;
-  var package: TPackageOoxml := fWorkbook.fPackage;
+  var package: TPackageOoxml := fWorkbook.fBook.Package;
   for var relationship: TRelationshipOoxml in package.Relationships(fPartName) do
     if relationship.&Type.EndsWith(cTable) then
     begin
@@ -4588,7 +4419,7 @@ begin
   fGone := nil;
   fBodies := nil;
   var last: integer := aFirst - aCount - 1;
-  var package: TPackageOoxml := fWorkbook.fPackage;
+  var package: TPackageOoxml := fWorkbook.fBook.Package;
   for var relationship: TRelationshipOoxml in package.Relationships(fPartName) do
     if relationship.&Type.EndsWith(cTable) then
     begin
@@ -4640,7 +4471,7 @@ var
   procedure WriteName(aRow, aColumn: integer; const aName: string);
   begin
     var cell: TCellCT := CellForWriting(aRow, aColumn);
-    var index: integer := fWorkbook.SharedStringIndex(aName);
+    var index: integer := fWorkbook.fBook.SharedStringIndex(aName);
     if index >= 0 then
     begin
       cell.T := stctS;
@@ -4666,13 +4497,13 @@ var
       else
         sheet.TableParts.Count := parts.Count;
     end;
-    fWorkbook.fPackage.RemovePart(fPartName, aRelationship.Part);
+    fWorkbook.fBook.Package.RemovePart(fPartName, aRelationship.Part);
   end;
 
 begin
   sheet := Objects(True);
   last := aFirst - aCount - 1;
-  var package: TPackageOoxml := fWorkbook.fPackage;
+  var package: TPackageOoxml := fWorkbook.fBook.Package;
   for var relationship: TRelationshipOoxml in package.Relationships(fPartName) do
   begin
     if not relationship.&Type.EndsWith(cTable) then
@@ -4760,7 +4591,7 @@ begin
             if ShiftFormula(text, TReferenceMap.Fill(row - dataTop, 0), filled, why) then
             begin
               CellForWriting(row, area.fLeft + index).F.XmlValue := EncodeText(filled);
-              fWorkbook.FormulaChanged;
+              fWorkbook.fBook.FormulaChanged;
             end;
           end;
         end;
@@ -4799,7 +4630,7 @@ end;
 // a source deleted whole keeps its ref, as in Excel
 procedure TWorksheet.ShiftPivots(aByRows: boolean; aFirst, aCount: integer);
 begin
-  var package: TPackageOoxml := fWorkbook.fPackage;
+  var package: TPackageOoxml := fWorkbook.fBook.Package;
   for var relationship: TRelationshipOoxml in package.Relationships(fPartName) do
     if relationship.&Type.EndsWith(cPivotTable) then
     begin
@@ -4820,7 +4651,7 @@ begin
       else if ShiftedArea(area, aByRows, aFirst, aCount, False) then
         package.EditPart<TPivotTableDefinitionE>(relationship.Part).Location.Ref := CellsAddress(area);
     end;
-  for var relationship: TRelationshipOoxml in package.Relationships(fWorkbook.fWorkbookPart) do
+  for var relationship: TRelationshipOoxml in package.Relationships(fWorkbook.fBook.WorkbookPart) do
     if relationship.&Type.EndsWith(cPivotCacheDefinition) then
     begin
       var cache: TPivotCacheDefinitionE := package.Part<TPivotCacheDefinitionE>(relationship.Part);
@@ -4841,7 +4672,7 @@ function TWorksheet.PlanDrawings(aByRows: boolean; out aWhy: string): TList<TAnc
 begin
   Result := TList<TAnchorMove>.Create;
   aWhy := '';
-  var package: TPackageOoxml := fWorkbook.fPackage;
+  var package: TPackageOoxml := fWorkbook.fBook.Package;
   var axis: TAxis := nil;
   try
     for var relationship: TRelationshipOoxml in package.Relationships(fPartName) do
@@ -4939,7 +4770,7 @@ begin
     Exit;
   last := aFirst - aCount - 1;
   limit := IfThen(aByRows, TUtility.cMaxRow, TUtility.cMaxColumn);
-  var package: TPackageOoxml := fWorkbook.fPackage;
+  var package: TPackageOoxml := fWorkbook.fBook.Package;
   axis := TAxis.Create(Self, aByRows);
   try
     for var move: TAnchorMove in aMoves do
@@ -5195,7 +5026,7 @@ function PlanCharts(aSheet: TWorksheet; const aMap: TReferenceMap; aMoves: TList
 begin
   Result := False;
   aWhy := '';
-  var package: TPackageOoxml := aSheet.fWorkbook.fPackage;
+  var package: TPackageOoxml := aSheet.fWorkbook.fBook.Package;
   var drawings: TList<string> := TList<string>.Create;
   var charts: TList<string> := TList<string>.Create;
   var found: TList<TXmlite> := TList<TXmlite>.Create;
@@ -5206,7 +5037,7 @@ begin
       for var sheet: TWorksheet in aSheet.fWorkbook.fSheets do
         if (sheet <> aSheet) or (aMap.Change <> TReferenceChange.rcSheetDelete) then
           owners.Add(sheet.fPartName);
-      for var relationship: TRelationshipOoxml in package.Relationships(aSheet.fWorkbook.fWorkbookPart) do
+      for var relationship: TRelationshipOoxml in package.Relationships(aSheet.fWorkbook.fBook.WorkbookPart) do
         if relationship.&Type.EndsWith(cChartsheet) and (relationship.Part <> '') then
           owners.Add(relationship.Part);
       for var owner: string in owners do
@@ -5291,7 +5122,7 @@ end;
 // the planned chart references written; their cached points follow their cells
 procedure TWorksheet.ShiftCharts(aMoves: TList<TChartMove>; aByRows: boolean; aFirst, aCount: integer);
 begin
-  var package: TPackageOoxml := fWorkbook.fPackage;
+  var package: TPackageOoxml := fWorkbook.fBook.Package;
   for var move: TChartMove in aMoves do
   begin
     package.EditPart<TChartSpaceE>(move.Part);
@@ -5333,7 +5164,7 @@ begin
   var id: string := '';
   if sheet.IsPresent('LegacyDrawing') then
     id := sheet.LegacyDrawing.Id;
-  for var relationship: TRelationshipOoxml in fWorkbook.fPackage.Relationships(fPartName) do
+  for var relationship: TRelationshipOoxml in fWorkbook.fBook.Package.Relationships(fPartName) do
     if relationship.&Type.EndsWith(cComments) then
       aComments := relationship.Part
     else if (id <> '') and (relationship.Id = id) then
@@ -5366,7 +5197,7 @@ const
     'enough rows or columns to make room for what you want to insert and then try again.';
 begin
   Result := '';
-  var package: TPackageOoxml := fWorkbook.fPackage;
+  var package: TPackageOoxml := fWorkbook.fBook.Package;
   for var relationship: TRelationshipOoxml in package.Relationships(fPartName) do
     if relationship.&Type.EndsWith(cThreadedComment) then
       Exit('threaded comments, which Calcite does not move yet');
@@ -5424,7 +5255,7 @@ begin
   NotesParts(commentsPart, drawingPart);
   if (commentsPart = '') and (drawingPart = '') then
     Exit;
-  var package: TPackageOoxml := fWorkbook.fPackage;
+  var package: TPackageOoxml := fWorkbook.fBook.Package;
   var limit: integer := IfThen(aByRows, TUtility.cMaxRow, TUtility.cMaxColumn);
   var notesLeft: boolean := False;
   if commentsPart <> '' then
@@ -5588,7 +5419,7 @@ begin
       var area: TRange := Default(TRange);
       if aShifted and (formula.T = stcftArray) and TUtility.ParseAddress(formula.Ref, area.fTop, area.fLeft, area.fBottom,
         area.fRight) then
-        if (move.Cell.Cm > 0) and fWorkbook.IsDynamicArray(move.Cell.Cm) then
+        if (move.Cell.Cm > 0) and fWorkbook.fBook.IsDynamicArray(move.Cell.Cm) then
         begin // spilled again from its cell, as large as before
           var moved: TRange := area;
           moved.fTop := move.Row;
@@ -5656,8 +5487,8 @@ begin
   aWhy := '';
   aChanged := nil;
   var xml: TWorkbookE := nil;
-  if not aBook.fWorkbookPart.IsEmpty then
-    xml := aBook.fPackage.Part<TWorkbookE>(aBook.fWorkbookPart);
+  if not aBook.fBook.WorkbookPart.IsEmpty then
+    xml := aBook.fBook.Package.Part<TWorkbookE>(aBook.fBook.WorkbookPart);
   if (xml = nil) or not xml.IsPresent('DefinedNames') then
     Exit(True);
   var map: TReferenceMap := aMap;
@@ -5687,11 +5518,11 @@ procedure WriteNames(aBook: TWorkbook; const aChanged: TArray<string>);
 begin
   if aChanged = nil then
     Exit;
-  var names: TDefinedNameCTList := aBook.fPackage.Part<TWorkbookE>(aBook.fWorkbookPart).DefinedNames.DefinedName;
+  var names: TDefinedNameCTList := aBook.fBook.Package.Part<TWorkbookE>(aBook.fBook.WorkbookPart).DefinedNames.DefinedName;
   for var index := 0 to names.Count - 1 do
     if aChanged[index] <> DecodeText(names[index].XmlValue) then
     begin
-      names := aBook.fPackage.EditPart<TWorkbookE>(aBook.fWorkbookPart).DefinedNames.DefinedName;
+      names := aBook.fBook.Package.EditPart<TWorkbookE>(aBook.fBook.WorkbookPart).DefinedNames.DefinedName;
       names[index].XmlValue := EncodeText(aChanged[index]);
     end;
 end;
@@ -5793,20 +5624,20 @@ begin
   for var sheet: TWorksheet in fWorkbook.fSheets do // other sheets' shared formulas may be plain now
     sheet.ForgetFormulas;
   FreeAndNil(fMerges);
-  fWorkbook.ValueChanged;
-  fWorkbook.FormulaChanged;
+  fWorkbook.fBook.ValueChanged;
+  fWorkbook.fBook.FormulaChanged;
 end;
 
 procedure TWorksheet.RemoveValue(aCell: TCellCT);
 begin
   if (aCell.T = stctS) and aCell.Present[@aCell.V] then
-    fWorkbook.SharedStringReleased;
+    fWorkbook.fBook.SharedStringReleased;
   if aCell.IsPresent('F') then
   begin
     if aCell.F.T <> stcftNormal then
       ForgetFormulas;
     aCell.Clear('F');
-    fWorkbook.FormulaChanged;
+    fWorkbook.fBook.FormulaChanged;
   end;
   aCell.Clear('Is');
   aCell.Clear(@aCell.V);
@@ -5827,7 +5658,7 @@ end;
 procedure TWorksheet.WriteDate(aRow, aColumn: integer; aValue: TDateTime; const aTarget: TRange);
 begin
   var serial: Double;
-  if not TUtility.DateToSerial(aValue, fWorkbook.Date1904, serial) then
+  if not TUtility.DateToSerial(aValue, fWorkbook.fBook.Date1904, serial) then
   begin
     Refuse(aRow, aColumn, 'Value', 'a date before the first one Excel has (' + DateToISO8601(aValue) + ')');
     Exit;
@@ -5835,13 +5666,13 @@ begin
   if not Uncovered(aRow, aColumn) or not CanWrite(aRow, aColumn, aTarget) then
     Exit;
   var style: integer := EffectiveStyle(aRow, aColumn);
-  if not fWorkbook.IsDateStyle(style) then
+  if not fWorkbook.fBook.IsDateStyle(style) then
   begin
     var numberFormat: integer := cTimeFormat;
     if serial >= 1 then
       numberFormat := fWorkbook.DateFormatId(Ord(Frac(serial) <> 0));
     if numberFormat >= 0 then
-      style := fWorkbook.DateStyle(style, numberFormat)
+      style := fWorkbook.fBook.DateStyle(style, numberFormat)
     else
       style := -1;
     if style < 0 then
@@ -5861,7 +5692,7 @@ begin
     Refuse(aRow, aColumn, 'Value', Format('%d characters, Excel''s cells hold up to %d', [aValue.Length, TUtility.cMaxText]))
   else if Uncovered(aRow, aColumn) and CanWrite(aRow, aColumn, aTarget) then
   begin
-    var index: integer := fWorkbook.SharedStringIndex(aValue);
+    var index: integer := fWorkbook.fBook.SharedStringIndex(aValue);
     if index < 0 then
       Refuse(aRow, aColumn, 'NoSharedStrings', 'the workbook has no shared strings and no content types to add them to')
     else
@@ -5910,7 +5741,7 @@ begin
   if Uncovered(aRow, aColumn) and CanWrite(aRow, aColumn, aTarget) then
   begin
     CellForWriting(aRow, aColumn).F.XmlValue := EncodeText(aText);
-    fWorkbook.FormulaChanged;
+    fWorkbook.fBook.FormulaChanged;
   end;
 end;
 
@@ -5956,7 +5787,7 @@ begin
   formula.Ref := CellsAddress(aRange);
   formula.XmlValue := EncodeText(text);
   ForgetFormulas;
-  fWorkbook.FormulaChanged;
+  fWorkbook.fBook.FormulaChanged;
 end;
 
 // nothing left but its address: Excel keeps a cell with a format, a row with its own settings
@@ -5999,7 +5830,7 @@ begin
       begin
         Objects(True);
         RemoveValue(cell);
-        fWorkbook.ValueChanged;
+        fWorkbook.fBook.ValueChanged;
       end;
       if IsBare(cell, ['S', 'Ph', 'ExtLst']) then
       begin
@@ -6028,7 +5859,7 @@ begin
     var cell: TCellCT := move.Cell;
     var area: TRange := MakeRange(0, 0, 0, 0);
     if (move.After = move.Before) or not move.After.Contains('#REF!') or (cell.F.T <> stcftArray) or (cell.Cm = 0) or
-      not fWorkbook.IsDynamicArray(cell.Cm) or not TUtility.ParseAddress(cell.F.Ref, area.fTop, area.fLeft, area.fBottom,
+      not fWorkbook.fBook.IsDynamicArray(cell.Cm) or not TUtility.ParseAddress(cell.F.Ref, area.fTop, area.fLeft, area.fBottom,
       area.fRight) then
       Continue;
     Objects(True);
@@ -6111,7 +5942,7 @@ begin
   var why: string;
   if not fFresh then
     why := 'only a sheet made here is renamed: in a workbook opened, formulas and other parts may name it'
-  else if fWorkbook.fFormulasWritten then
+  else if fWorkbook.fBook.FormulasWritten then
     why := 'sheets are renamed before formulas are written: a formula may name the sheet'
   else
     why := fWorkbook.SheetNameError(aValue, Self);
@@ -6120,7 +5951,7 @@ begin
     fWorkbook.fIssues.Add(TIssueSeverity.isError, 'Rename', fName, why + ' - not renamed');
     Exit;
   end;
-  for var entry: TSheetCT in fWorkbook.fPackage.EditPart<TWorkbookE>(fWorkbook.fWorkbookPart).Sheets.Sheet do
+  for var entry: TSheetCT in fWorkbook.fBook.Package.EditPart<TWorkbookE>(fWorkbook.fBook.WorkbookPart).Sheets.Sheet do
     if entry.Name = fName then
       entry.Name := aValue;
   fName := aValue;
@@ -6210,14 +6041,14 @@ end;
 
 function TWorkbookXlsx.GetCoreProperties: TCorePropertiesE;
 begin
-  Result := fWorkbook.fPackage.Properties.Xml;
+  Result := fWorkbook.fBook.Package.Properties.Xml;
 end;
 
 { TWorkbookProperties }
 
 function TWorkbookProperties.GetText(aIndex: integer): string;
 begin
-  var core: TCoreProperties := fWorkbook.fPackage.Properties;
+  var core: TCoreProperties := fWorkbook.fBook.Package.Properties;
   case aIndex of
     0: Result := core.Title;
     1: Result := core.Subject;
@@ -6234,7 +6065,7 @@ end;
 
 procedure TWorkbookProperties.SetText(aIndex: integer; const aValue: string);
 begin
-  var core: TCoreProperties := fWorkbook.fPackage.Properties;
+  var core: TCoreProperties := fWorkbook.fBook.Package.Properties;
   case aIndex of
     0: core.Title := aValue;
     1: core.Subject := aValue;
@@ -6252,17 +6083,17 @@ end;
 function TWorkbookProperties.GetDate(aIndex: integer): TDateTime;
 begin
   if aIndex = 0 then
-    Result := fWorkbook.fPackage.Properties.Created
+    Result := fWorkbook.fBook.Package.Properties.Created
   else
-    Result := fWorkbook.fPackage.Properties.Modified;
+    Result := fWorkbook.fBook.Package.Properties.Modified;
 end;
 
 procedure TWorkbookProperties.SetDate(aIndex: integer; aValue: TDateTime);
 begin
   if aIndex = 0 then
-    fWorkbook.fPackage.Properties.Created := aValue
+    fWorkbook.fBook.Package.Properties.Created := aValue
   else
-    fWorkbook.fPackage.Properties.Modified := aValue;
+    fWorkbook.fBook.Package.Properties.Modified := aValue;
 end;
 
 { TWorkbook }
@@ -6270,7 +6101,7 @@ end;
 constructor TWorkbook.CreateClosed;
 begin
   inherited Create;
-  fPackage := TPackageOoxml.Create;
+  fBook := TXlsxBook.Create;
   ForwardIssues;
   fSheets := TWorksheets.Create;
   fSheets.fWorkbook := Self;
@@ -6295,14 +6126,7 @@ begin
   fProperties.Free;
   fXlsx.Free;
   fSheets.Free;
-  fPackage.Free;
-  fStrings.Free;
-  fStyleKeys.Free;
-  fFontKeys.Free;
-  fFillKeys.Free;
-  fBorderKeys.Free;
-  fDateStyleIds.Free;
-  fDateStyles.Free;
+  fBook.Free;
   inherited;
 end;
 
@@ -6316,74 +6140,17 @@ end;
 // the closure holds Self: set again when the package moves to another workbook
 procedure TWorkbook.ForwardIssues;
 begin
-  fPackage.OnIssue :=
+  fBook.Package.OnIssue :=
     procedure(const aIssue: TIssue)
     begin
       fIssues.Add(aIssue);
     end;
 end;
 
-// Excel's new workbook, read as a file would be: Transitional, no theme; styles with fonts, fills and borders (without them
-// Excel refuses the file)
+// Excel's new workbook: Sheet1 and nothing in it
 procedure TWorkbook.NewPackage;
-const
-  cDeclaration = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'#13#10;
-  cPackage = 'http://schemas.openxmlformats.org/package/2006/';
-  cOffice = 'http://schemas.openxmlformats.org/officeDocument/2006/';
-  cMain = 'http://schemas.openxmlformats.org/spreadsheetml/2006/main';
-  cTypes = 'application/vnd.openxmlformats-';
 begin
-  var created: string := FormatDateTime('yyyy"-"mm"-"dd"T"hh":"nn":"ss"Z"', TTimeZone.Local.ToUniversalTime(Now));
-  var parts: TArray<string> := [
-    cContentTypes, '<Types xmlns="' + cPackage + 'content-types">' +
-      '<Default Extension="rels" ContentType="' + cTypes + 'package.relationships+xml"/>' +
-      '<Default Extension="xml" ContentType="application/xml"/>' +
-      '<Override PartName="/xl/workbook.xml" ContentType="' + cTypes + 'officedocument.spreadsheetml.sheet.main+xml"/>' +
-      '<Override PartName="/xl/worksheets/sheet1.xml" ContentType="' + cWorksheetType + '"/>' +
-      '<Override PartName="/xl/styles.xml" ContentType="' + cTypes + 'officedocument.spreadsheetml.styles+xml"/>' +
-      '<Override PartName="/docProps/core.xml" ContentType="' + cTypes + 'package.core-properties+xml"/>' +
-      '<Override PartName="/docProps/app.xml" ContentType="' + cTypes + 'officedocument.extended-properties+xml"/></Types>',
-    '_rels/.rels', '<Relationships xmlns="' + cPackage + 'relationships">' +
-      '<Relationship Id="rId1" Type="' + cOffice + 'relationships/officeDocument" Target="xl/workbook.xml"/>' +
-      '<Relationship Id="rId2" Type="' + cPackage + 'relationships/metadata/core-properties" Target="docProps/core.xml"/>' +
-      '<Relationship Id="rId3" Type="' + cOffice + 'relationships/extended-properties" Target="docProps/app.xml"/>' +
-      '</Relationships>',
-    'docProps/app.xml', '<Properties xmlns="' + cOffice + 'extended-properties"><Application>ProRock Calcite</Application>' +
-      '</Properties>',
-    'docProps/core.xml', '<cp:coreProperties xmlns:cp="' + cPackage + 'metadata/core-properties" ' +
-      'xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" ' +
-      'xmlns:dcmitype="http://purl.org/dc/dcmitype/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">' +
-      '<dcterms:created xsi:type="dcterms:W3CDTF">' + created + '</dcterms:created>' +
-      '<dcterms:modified xsi:type="dcterms:W3CDTF">' + created + '</dcterms:modified></cp:coreProperties>',
-    'xl/workbook.xml', '<workbook xmlns="' + cMain + '" xmlns:r="' + cOffice + 'relationships">' +
-      '<sheets><sheet name="Sheet1" sheetId="1" r:id="rId1"/></sheets></workbook>',
-    'xl/_rels/workbook.xml.rels', '<Relationships xmlns="' + cPackage + 'relationships">' +
-      '<Relationship Id="rId1" Type="' + cOffice + 'relationships/worksheet" Target="worksheets/sheet1.xml"/>' +
-      '<Relationship Id="rId2" Type="' + cOffice + 'relationships/styles" Target="styles.xml"/></Relationships>',
-    'xl/styles.xml', '<styleSheet xmlns="' + cMain + '">' +
-      '<fonts count="1"><font><sz val="11"/><name val="Calibri"/><family val="2"/></font></fonts>' +
-      '<fills count="2"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill></fills>' +
-      '<borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders>' +
-      '<cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>' +
-      '<cellXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/></cellXfs>' +
-      '<cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>',
-    'xl/worksheets/sheet1.xml', '<worksheet xmlns="' + cMain + '"><sheetData/></worksheet>'];
-  var built: TBytesStream := TBytesStream.Create;
-  try
-    var zip: TZipFile := TZipFile.Create;
-    try
-      zip.Open(built, zmWrite);
-      for var i := 0 to High(parts) div 2 do
-        zip.Add(TEncoding.UTF8.GetBytes(cDeclaration + parts[2 * i + 1]), parts[2 * i]);
-      zip.Close;
-    finally
-      zip.Free;
-    end;
-    built.Position := 0;
-    fPackage.Open(built);
-  finally
-    built.Free;
-  end;
+  fBook.New;
   Load;
   fSheets.fList[0].fFresh := True;
 end;
@@ -6413,15 +6180,10 @@ begin
   var opened: TWorkbook := TWorkbook.CreateClosed;
   try
     opened.fIssues.OnIssue := fIssues.OnIssue;
-    var done: boolean;
-    if aStream = nil then
-      done := opened.fPackage.Open(aFileName)
-    else
-      done := opened.fPackage.Open(aStream);
-    if not done then
+    if not opened.fBook.Open(aFileName, aStream) then
     begin
       fIssues := opened.fIssues; // the package's failure among them
-      fError := opened.fPackage.Error;
+      fError := opened.fBook.Package.Error;
       Exit(False);
     end;
     try
@@ -6451,23 +6213,8 @@ end;
 // everything but Error: what is open here goes to aOther
 procedure TWorkbook.Exchange(aOther: TWorkbook);
 begin
-  Swap<TPackageOoxml>(fPackage, aOther.fPackage);
-  Swap<string>(fWorkbookPart, aOther.fWorkbookPart);
-  Swap<string>(fSharedStringsPart, aOther.fSharedStringsPart);
-  Swap<string>(fStylesPart, aOther.fStylesPart);
-  Swap<string>(fCalcChainPart, aOther.fCalcChainPart);
+  Swap<TXlsxBook>(fBook, aOther.fBook);
   Swap<TWorksheets>(fSheets, aOther.fSheets);
-  Swap<TDictionary<string, integer>>(fStrings, aOther.fStrings);
-  Swap<TDictionary<TXfCT, integer>>(fStyleKeys, aOther.fStyleKeys);
-  Swap<TDictionary<TFontCT, integer>>(fFontKeys, aOther.fFontKeys);
-  Swap<TDictionary<TFillCT, integer>>(fFillKeys, aOther.fFillKeys);
-  Swap<TDictionary<TBorderCT, integer>>(fBorderKeys, aOther.fBorderKeys);
-  Swap<string>(fThemePart, aOther.fThemePart);
-  Swap<TArray<integer>>(fThemeColors, aOther.fThemeColors);
-  Swap<TDictionary<UInt64, integer>>(fDateStyleIds, aOther.fDateStyleIds);
-  Swap<TDictionary<cardinal, boolean>>(fDateStyles, aOther.fDateStyles);
-  Swap<boolean>(fValuesChanged, aOther.fValuesChanged);
-  Swap<boolean>(fFormulasWritten, aOther.fFormulasWritten);
   Swap<TIssues>(fIssues, aOther.fIssues);
   for var i := 0 to 1 do
   begin
@@ -6486,33 +6233,15 @@ end;
 
 // a sheet's cells that belong to its tables' and pivot tables' definitions: header and totals rows, pivot tables with their
 // page fields above them
-// a cell's cm (from 1) names Excel 365's dynamic array: its metadata's records of the XLDAPR type
-function TWorkbook.IsDynamicArray(aCellMetadata: cardinal): boolean;
-begin
-  for var relationship: TRelationshipOoxml in fPackage.Relationships(fWorkbookPart) do
-    if relationship.&Type.EndsWith(cSheetMetadata) and not relationship.Part.IsEmpty then
-    begin
-      var metadata: TMetadataE := fPackage.Part<TMetadataE>(relationship.Part);
-      if not metadata.IsPresent('CellMetadata') or not metadata.IsPresent('MetadataTypes') or
-        (aCellMetadata > cardinal(metadata.CellMetadata.Bk.Count)) then
-        Exit(False);
-      var types: TMetadataTypeCTList := metadata.MetadataTypes.MetadataType;
-      for var record_: TMetadataRecordCT in metadata.CellMetadata.Bk[aCellMetadata - 1].Rc do
-        if (record_.T >= 1) and (record_.T <= cardinal(types.Count)) and (types[record_.T - 1].Name = 'XLDAPR') then
-          Exit(True);
-      Exit(False);
-    end;
-  Result := False;
-end;
 
 procedure TWorkbook.FixedAreas(const aSheetPart: string; aTables, aTableRows, aPivots: TList<TRange>);
 begin
-  for var relationship: TRelationshipOoxml in fPackage.Relationships(aSheetPart) do
+  for var relationship: TRelationshipOoxml in fBook.Package.Relationships(aSheetPart) do
   begin
     var area: TRange;
     if relationship.&Type.EndsWith(cTable) then
     begin
-      var table: TTableE := fPackage.Part<TTableE>(relationship.Part);
+      var table: TTableE := fBook.Package.Part<TTableE>(relationship.Part);
       if (table <> nil) and TUtility.ParseAddress(table.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
       begin
         var whole: TRange := area;
@@ -6532,7 +6261,7 @@ begin
     end
     else if relationship.&Type.EndsWith(cPivotTable) then
     begin
-      var pivot: TPivotTableDefinitionE := fPackage.Part<TPivotTableDefinitionE>(relationship.Part);
+      var pivot: TPivotTableDefinitionE := fBook.Package.Part<TPivotTableDefinitionE>(relationship.Part);
       if (pivot <> nil) and TUtility.ParseAddress(pivot.Location.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) then
       begin
         if pivot.Location.RowPageCount > 0 then // the page fields and a blank row
@@ -6544,38 +6273,20 @@ begin
 end;
 
 function TWorkbook.Load: boolean;
+var
+  sheets: TArray<TXlsxSheetEntry>;
 begin
-  // the main part is found, not assumed (xl/workbook.xml in Excel's files)
-  for var relationship: TRelationshipOoxml in fPackage.Relationships('', cOfficeDocument) do
-    fWorkbookPart := relationship.Part;
-  if fWorkbookPart.IsEmpty then
-    Exit(Fail('NotWorkbook', 'Not an Office document: the package names no main part'));
-  var workbook: TWorkbookE := fPackage.Part<TWorkbookE>(fWorkbookPart);
-  var relationships: TArray<TRelationshipOoxml> := fPackage.Relationships(fWorkbookPart);
-  if Length(relationships) = 0 then
-    Exit(Fail('NotWorkbook', Format('%s is not a workbook: it has no relationships', [fWorkbookPart])));
-  for var relationship: TRelationshipOoxml in relationships do
-    if relationship.&Type.EndsWith(cSharedStrings) then
-      fSharedStringsPart := relationship.Part
-    else if relationship.&Type.EndsWith(cStyles) then
-      fStylesPart := relationship.Part
-    else if relationship.&Type.EndsWith(cCalcChain) then
-      fCalcChainPart := relationship.Part
-    else if relationship.&Type.EndsWith(cTheme) then
-      fThemePart := relationship.Part;
-
-  for var sheetEntry: TSheetCT in workbook.Sheets.Sheet do
-    for var relationship: TRelationshipOoxml in relationships do
-      if (relationship.Id = sheetEntry.Id) and relationship.&Type.EndsWith(cWorksheet) then
-      begin
-        if relationship.Part.IsEmpty then
-          Exit(Fail('NoSheetPart', Format('The sheet "%s" has no part (%s)', [sheetEntry.Name, relationship.Target])));
-        var sheet: TWorksheet := TWorksheet.Create;
-        fSheets.fList.Add(sheet);
-        sheet.fWorkbook := Self;
-        sheet.fName := sheetEntry.Name;
-        sheet.fPartName := relationship.Part;
-      end;
+  var code, error: string;
+  if not fBook.Load(sheets, code, error) then
+    Exit(Fail(code, error));
+  for var i := 0 to High(sheets) do
+  begin
+    var sheet: TWorksheet := TWorksheet.Create;
+    fSheets.fList.Add(sheet);
+    sheet.fWorkbook := Self;
+    sheet.fName := sheets[i].Name;
+    sheet.fPartName := sheets[i].Part;
+  end;
   Result := True;
 end;
 
@@ -6594,9 +6305,12 @@ begin
   if AnsiSameText(aName, 'History') then
     Exit('History is reserved by Excel');
   // chart sheets too
-  for var entry: TSheetCT in fPackage.Part<TWorkbookE>(fWorkbookPart).Sheets.Sheet do
-    if AnsiSameText(entry.Name, aName) and ((aExcept = nil) or (entry.Name <> aExcept.fName)) then
-      Exit(Format('the workbook has a sheet "%s" already', [string(entry.Name)]));
+  var except_: string := '';
+  if aExcept <> nil then
+    except_ := aExcept.fName;
+  var taken: string := fBook.SheetNamed(aName, except_);
+  if not taken.IsEmpty then
+    Exit(Format('the workbook has a sheet "%s" already', [taken]));
   Result := '';
 end;
 
@@ -6606,10 +6320,9 @@ begin
   var why: string := '';
   if not name.IsEmpty then
     why := SheetNameError(name, nil);
-  var workbook: TWorkbookE := fPackage.Part<TWorkbookE>(fWorkbookPart);
   if name.IsEmpty or not why.IsEmpty then
   begin
-    var number: integer := workbook.Sheets.Sheet.Count;
+    var number: integer := fBook.SheetCount;
     repeat
       Inc(number);
       name := 'Sheet' + IntToStr(number);
@@ -6618,32 +6331,14 @@ begin
   if not why.IsEmpty then
     fIssues.Add(TIssueSeverity.isError, 'SheetName', aName, why + ' - the sheet is added as ' + name);
 
-  if not fPackage.HasPart(cContentTypes) then
+  if not fBook.CanAddParts then
   begin
     fIssues.Add(TIssueSeverity.isError, 'NoContentTypes', '', 'The package has no content types: a sheet cannot be added');
     Exit(nil);
   end;
-  var folder: string := fWorkbookPart.Substring(0, fWorkbookPart.LastIndexOf('/') + 1);
-  var number: integer := 0;
-  var target: string;
-  repeat
-    Inc(number);
-    target := 'worksheets/sheet' + IntToStr(number) + '.xml';
-  until not fPackage.HasPart(folder + target);
-  var id: string;
-  var partName: string := fPackage.AddPart(fWorkbookPart, cWorksheet, target, cWorksheetType, TWorksheetE.Create, id);
+  var partName: string := fBook.AddSheet(name);
   if partName.IsEmpty then
     Exit(nil);
-
-  workbook := fPackage.EditPart<TWorkbookE>(fWorkbookPart);
-  var sheetId: cardinal := 0;
-  for var entry: TSheetCT in workbook.Sheets.Sheet do
-    if entry.SheetId > sheetId then
-      sheetId := entry.SheetId;
-  var added: TSheetCT := workbook.Sheets.Add<TSheetCT>;
-  added.Name := name;
-  added.SheetId := sheetId + 1;
-  added.Id := id;
 
   Result := TWorksheet.Create;
   fSheets.fList.Add(Result);
@@ -6651,410 +6346,6 @@ begin
   Result.fName := name;
   Result.fPartName := partName;
   Result.fFresh := True;
-end;
-
-// Excel's default: a cell is locked unless its style unlocks it
-function TWorkbook.IsLockedStyle(aStyle: cardinal): boolean;
-begin
-  Result := True;
-  if fStylesPart.IsEmpty then
-    Exit;
-  var styles: TStyleSheetE := fPackage.Part<TStyleSheetE>(fStylesPart);
-  if styles.IsPresent('CellXfs') and (aStyle < cardinal(styles.CellXfs.Xf.Count)) then
-  begin
-    var style: TXfCT := styles.CellXfs.Xf[aStyle];
-    if style.IsPresent('Protection') then
-      Result := style.Protection.Locked;
-  end;
-end;
-
-// formulas' cached results are stale: Excel recalculates when it opens the file
-procedure TWorkbook.ValueChanged;
-begin
-  if fValuesChanged then
-    Exit;
-  fValuesChanged := True;
-  fPackage.EditPart<TWorkbookE>(fWorkbookPart).CalcPr.FullCalcOnLoad := True;
-end;
-
-// the calculation chain is Excel's cache: a stale entry is its repair prompt, a missing one is not calculated, so it goes with
-// any change of a formula and Excel builds a new one
-procedure TWorkbook.FormulaChanged;
-begin
-  fFormulasWritten := True;
-  if fCalcChainPart.IsEmpty then
-    Exit;
-  fPackage.RemovePart(fWorkbookPart, fCalcChainPart);
-  fCalcChainPart := '';
-end;
-
-function TWorkbook.Date1904: boolean;
-begin
-  var workbook: TWorkbookE := fPackage.Part<TWorkbookE>(fWorkbookPart);
-  Result := workbook.IsPresent('WorkbookPr') and workbook.WorkbookPr.Date1904;
-end;
-
-function TWorkbook.SharedString(aIndex: integer): string;
-begin
-  Result := '';
-  if fSharedStringsPart.IsEmpty then
-    Exit;
-  var strings: TSstE := fPackage.Part<TSstE>(fSharedStringsPart);
-  if (aIndex >= 0) and (aIndex < strings.Si.Count) then
-    Result := RichText(strings.Si[aIndex]);
-end;
-
-// found or added, one more use counted; -1 when there are no shared strings and they cannot be added
-function TWorkbook.SharedStringIndex(const aText: string): integer;
-begin
-  if fSharedStringsPart.IsEmpty then
-  begin
-    if not fPackage.HasPart(cContentTypes) then // the caller says why
-      Exit(-1);
-    var added: TSstE := TSstE.Create;
-    var id: string;
-    fSharedStringsPart := fPackage.AddPart(fWorkbookPart, cSharedStrings, 'sharedStrings.xml', cSharedStringsType, added, id);
-    if fSharedStringsPart.IsEmpty then
-      Exit(-1);
-    added.Count := 0;
-    added.UniqueCount := 0;
-    added.SetPresent(@added.Count);
-    added.SetPresent(@added.UniqueCount);
-  end;
-  var strings: TSstE := fPackage.EditPart<TSstE>(fSharedStringsPart);
-  if fStrings = nil then
-  begin
-    fStrings := TDictionary<string, integer>.Create;
-    for var i := 0 to strings.Si.Count - 1 do
-      if strings.Si[i].R.Count = 0 then // plain text only: rich text stays its own
-        fStrings.TryAdd(DecodeText(strings.Si[i].T), i);
-  end;
-  if not fStrings.TryGetValue(aText, Result) then
-  begin
-    var item: TRstCT := TRstCT.Create;
-    item.T := EncodeText(aText);
-    strings.Si.Add(item);
-    Result := strings.Si.Count - 1;
-    fStrings.Add(aText, Result);
-    if strings.Present[@strings.UniqueCount] then
-      strings.UniqueCount := strings.Si.Count;
-  end;
-  if strings.Present[@strings.Count] then
-  begin
-    strings.Count := strings.Count + 1;
-    strings.SetPresent(@strings.Count);
-  end;
-end;
-
-procedure TWorkbook.SharedStringReleased;
-begin
-  if fSharedStringsPart.IsEmpty then
-    Exit;
-  var strings: TSstE := fPackage.EditPart<TSstE>(fSharedStringsPart);
-  if strings.Present[@strings.Count] and (strings.Count > 0) then
-  begin
-    strings.Count := strings.Count - 1;
-    strings.SetPresent(@strings.Count);
-  end;
-end;
-
-function TWorkbook.IsDateStyle(aStyle: cardinal): boolean;
-begin
-  if fStylesPart.IsEmpty then
-    Exit(False);
-  if fDateStyles = nil then
-    fDateStyles := TDictionary<cardinal, boolean>.Create;
-  if fDateStyles.TryGetValue(aStyle, Result) then
-    Exit;
-  var styles: TStyleSheetE := fPackage.Part<TStyleSheetE>(fStylesPart);
-  Result := styles.IsPresent('CellXfs') and (aStyle < cardinal(styles.CellXfs.Xf.Count)) and
-    IsDateFormat(styles.CellXfs.Xf[aStyle].NumFmtId, styles);
-  fDateStyles.Add(aStyle, Result);
-end;
-
-// aStyle changed by aChange, found in cellXfs by content or added; -1 when there are no styles
-function TWorkbook.ChangedStyle(aStyle: cardinal; const aChange: TProc<TXfCT>): integer;
-begin
-  if fStylesPart.IsEmpty then
-    Exit(-1);
-  var styles: TStyleSheetE := fPackage.Part<TStyleSheetE>(fStylesPart);
-  if not styles.IsPresent('CellXfs') or (styles.CellXfs.Xf.Count = 0) then
-    Exit(-1);
-  var formats: TXfCTList := styles.CellXfs.Xf;
-  if aStyle >= cardinal(formats.Count) then
-    aStyle := 0; // as Excel shows such a cell
-  if fStyleKeys = nil then
-  begin
-    fStyleKeys := TDictionary<TXfCT, integer>.Create(TXfCT.ContentComparer<TXfCT>);
-    for var i := 0 to formats.Count - 1 do
-      fStyleKeys.TryAdd(formats[i], i);
-  end;
-  // everything it has kept: alignment, protection, extensions
-  var wanted: TXfCT := formats[aStyle].Clone<TXfCT>;
-  try
-    aChange(wanted);
-    if fStyleKeys.TryGetValue(wanted, Result) then
-      Exit;
-    styles := fPackage.EditPart<TStyleSheetE>(fStylesPart);
-    formats.Add(wanted);
-    Result := formats.Count - 1;
-    fStyleKeys.Add(wanted, Result);
-    wanted := nil;
-    if styles.CellXfs.Present[@styles.CellXfs.Count] then
-      styles.CellXfs.Count := formats.Count;
-  finally
-    wanted.Free;
-  end;
-end;
-
-// aStyle with the number format aFormat; -1 when there are no styles. Asked for each date written: kept
-function TWorkbook.DateStyle(aStyle: cardinal; aFormat: integer): integer;
-begin
-  var key: UInt64 := UInt64(aStyle) shl 32 or cardinal(aFormat);
-  if fDateStyleIds = nil then
-    fDateStyleIds := TDictionary<UInt64, integer>.Create;
-  if fDateStyleIds.TryGetValue(key, Result) then
-    Exit;
-  Result := ChangedStyle(aStyle,
-    procedure(aXf: TXfCT)
-    begin
-      aXf.NumFmtId := aFormat;
-      aXf.ApplyNumberFormat := True;
-    end);
-  fDateStyleIds.Add(key, Result);
-end;
-
-// the style's number format as Excel's NumberFormat names it
-function TWorkbook.FormatCode(aStyle: cardinal): string;
-begin
-  Result := 'General';
-  if fStylesPart.IsEmpty then
-    Exit;
-  var styles: TStyleSheetE := fPackage.Part<TStyleSheetE>(fStylesPart);
-  if not styles.IsPresent('CellXfs') or (aStyle >= cardinal(styles.CellXfs.Xf.Count)) then
-    Exit;
-  var id: cardinal := styles.CellXfs.Xf[aStyle].NumFmtId;
-  if styles.IsPresent('NumFmts') then
-    for var numberFormat: TNumFmtCT in styles.NumFmts.NumFmt do
-      if numberFormat.NumFmtId = id then
-        Exit(ShownFormat(DecodeText(numberFormat.FormatCode)));
-  Result := BuiltInFormat(id);
-end;
-
-// the id of a number format, built-in or in numFmts, added when there is none; -1 when there are no styles
-function TWorkbook.FormatId(const aCode: string): integer;
-begin
-  if fStylesPart.IsEmpty then
-    Exit(-1);
-  var styles: TStyleSheetE := fPackage.Part<TStyleSheetE>(fStylesPart);
-  var shown: string := ShownFormat(aCode);
-  var builtIn: integer := BuiltInFormatId(shown);
-  var last: integer := 163; // custom formats start at 164
-  if styles.IsPresent('NumFmts') then
-    for var numberFormat: TNumFmtCT in styles.NumFmts.NumFmt do
-    begin
-      if integer(numberFormat.NumFmtId) = builtIn then
-        builtIn := -1; // a built-in id given a code of its own
-      if ShownFormat(DecodeText(numberFormat.FormatCode)) = shown then
-        Exit(numberFormat.NumFmtId);
-      last := Max(last, integer(numberFormat.NumFmtId));
-    end;
-  if builtIn >= 0 then
-    Exit(builtIn);
-  styles := fPackage.EditPart<TStyleSheetE>(fStylesPart);
-  var added: TNumFmtCT := TNumFmtCT.Create;
-  added.NumFmtId := last + 1;
-  added.FormatCode := EncodeText(aCode);
-  styles.NumFmts.NumFmt.Add(added);
-  styles.NumFmts.Count := styles.NumFmts.NumFmt.Count;
-  Result := added.NumFmtId;
-end;
-
-// aItems[aIndex] changed by aChange, found by content or added (the keys built on the first need); the caller checks there
-// are items
-function TWorkbook.ChangedItem<T>(aItems: TObjectList<T>; var aKeys: TDictionary<T, integer>; aIndex: cardinal;
-  const aChange: TProc<T>): integer;
-begin
-  if aIndex >= cardinal(aItems.Count) then
-    aIndex := 0; // as Excel shows such a cell
-  if aKeys = nil then
-  begin
-    aKeys := TDictionary<T, integer>.Create(TXmlite.ContentComparer<T>);
-    for var i := 0 to aItems.Count - 1 do
-      aKeys.TryAdd(aItems[i], i);
-  end;
-  var wanted: T := aItems[aIndex].Clone<T>;
-  try
-    aChange(wanted);
-    if aKeys.TryGetValue(wanted, Result) then
-      Exit;
-    fPackage.EditPart<TStyleSheetE>(fStylesPart);
-    aItems.Add(wanted);
-    Result := aItems.Count - 1;
-    aKeys.Add(wanted, Result);
-    wanted := nil;
-  finally
-    wanted.Free;
-  end;
-end;
-
-// -1 when there are no fonts
-function TWorkbook.ChangedFont(aFont: cardinal; const aChange: TProc<TFontCT>): integer;
-begin
-  if fStylesPart.IsEmpty then
-    Exit(-1);
-  var styles: TStyleSheetE := fPackage.Part<TStyleSheetE>(fStylesPart);
-  if not styles.IsPresent('Fonts') or (styles.Fonts.Font.Count = 0) then
-    Exit(-1);
-  Result := ChangedItem<TFontCT>(styles.Fonts.Font, fFontKeys, aFont, aChange);
-  if styles.Fonts.Present[@styles.Fonts.Count] and (styles.Fonts.Count <> cardinal(styles.Fonts.Font.Count)) then
-    styles.Fonts.Count := styles.Fonts.Font.Count;
-end;
-
-// -1 when there are no fills
-function TWorkbook.ChangedFill(aFill: cardinal; const aChange: TProc<TFillCT>): integer;
-begin
-  if fStylesPart.IsEmpty then
-    Exit(-1);
-  var styles: TStyleSheetE := fPackage.Part<TStyleSheetE>(fStylesPart);
-  if not styles.IsPresent('Fills') or (styles.Fills.Fill.Count = 0) then
-    Exit(-1);
-  Result := ChangedItem<TFillCT>(styles.Fills.Fill, fFillKeys, aFill, aChange);
-  if styles.Fills.Present[@styles.Fills.Count] and (styles.Fills.Count <> cardinal(styles.Fills.Fill.Count)) then
-    styles.Fills.Count := styles.Fills.Fill.Count;
-end;
-
-// -1 when there are no borders
-function TWorkbook.ChangedBorder(aBorder: cardinal; const aChange: TProc<TBorderCT>): integer;
-begin
-  if fStylesPart.IsEmpty then
-    Exit(-1);
-  var styles: TStyleSheetE := fPackage.Part<TStyleSheetE>(fStylesPart);
-  if not styles.IsPresent('Borders') or (styles.Borders.Border.Count = 0) then
-    Exit(-1);
-  Result := ChangedItem<TBorderCT>(styles.Borders.Border, fBorderKeys, aBorder, aChange);
-  if styles.Borders.Present[@styles.Borders.Count] and (styles.Borders.Count <> cardinal(styles.Borders.Border.Count)) then
-    styles.Borders.Count := styles.Borders.Border.Count;
-end;
-
-// the style's xf (a style beyond cellXfs shows the first, as in Excel); nil when there is none
-function TWorkbook.StyleXf(aStyle: cardinal): TXfCT;
-begin
-  Result := nil;
-  if fStylesPart.IsEmpty then
-    Exit;
-  var styles: TStyleSheetE := fPackage.Part<TStyleSheetE>(fStylesPart);
-  if not styles.IsPresent('CellXfs') or (styles.CellXfs.Xf.Count = 0) then
-    Exit;
-  if aStyle >= cardinal(styles.CellXfs.Xf.Count) then
-    aStyle := 0;
-  Result := styles.CellXfs.Xf[aStyle];
-end;
-
-// the font a style shows; nil when there is none
-function TWorkbook.StyleFont(aStyle: cardinal): TFontCT;
-begin
-  Result := nil;
-  if fStylesPart.IsEmpty then
-    Exit;
-  var styles: TStyleSheetE := fPackage.Part<TStyleSheetE>(fStylesPart);
-  if not styles.IsPresent('Fonts') or (styles.Fonts.Font.Count = 0) then
-    Exit;
-  var font: cardinal := 0;
-  var xf: TXfCT := StyleXf(aStyle);
-  if xf <> nil then
-    font := xf.FontId;
-  if font >= cardinal(styles.Fonts.Font.Count) then
-    font := 0;
-  Result := styles.Fonts.Font[font];
-end;
-
-// the fill a style shows; nil when there is none
-function TWorkbook.StyleFill(aStyle: cardinal): TFillCT;
-begin
-  Result := nil;
-  var xf: TXfCT := StyleXf(aStyle);
-  if xf = nil then
-    Exit;
-  var styles: TStyleSheetE := fPackage.Part<TStyleSheetE>(fStylesPart);
-  if styles.IsPresent('Fills') and (xf.FillId < cardinal(styles.Fills.Fill.Count)) then
-    Result := styles.Fills.Fill[xf.FillId];
-end;
-
-// the border a style shows; nil when there is none
-function TWorkbook.StyleBorder(aStyle: cardinal): TBorderCT;
-begin
-  Result := nil;
-  var xf: TXfCT := StyleXf(aStyle);
-  if xf <> nil then
-    Result := BorderAt(xf.BorderId);
-end;
-
-function TWorkbook.BorderAt(aBorder: cardinal): TBorderCT;
-begin
-  Result := nil;
-  if fStylesPart.IsEmpty then
-    Exit;
-  var styles: TStyleSheetE := fPackage.Part<TStyleSheetE>(fStylesPart);
-  if styles.IsPresent('Borders') and (aBorder < cardinal(styles.Borders.Border.Count)) then
-    Result := styles.Borders.Border[aBorder];
-end;
-
-// a theme color by its number in styles: 0 lt1 (window), 1 dk1 (text), 2 lt2, 3 dk2, then the accents and the links;
-// without a theme, Excel's current Office one
-function TWorkbook.ThemeColor(aIndex: cardinal): integer;
-const
-  cOffice: array[0 .. 11] of integer = ($FFFFFF, $000000, $E8E8E8, $41280E, $826015, $3271E9, $246B19, $D59E0F, $932BA0,
-    $2EA74E, $867846, $7D6096);
-begin
-  if fThemeColors = nil then
-  begin
-    SetLength(fThemeColors, Length(cOffice));
-    for var i := 0 to High(cOffice) do
-      fThemeColors[i] := cOffice[i];
-    if not fThemePart.IsEmpty then
-    begin
-      var scheme: TColorSchemeCT := fPackage.Part<TThemeE>(fThemePart).ThemeElements.ClrScheme;
-      var colors: TArray<ProRock.Xmlite.Schema.Ooxml.DmlMain.TColorCT> := [scheme.Lt1, scheme.Dk1, scheme.Lt2, scheme.Dk2,
-        scheme.Accent1, scheme.Accent2, scheme.Accent3, scheme.Accent4, scheme.Accent5, scheme.Accent6, scheme.Hlink,
-        scheme.FolHlink];
-      for var i := 0 to High(colors) do
-        if colors[i].IsPresent('SrgbClr') then
-          fThemeColors[i] := RgbValue(colors[i].SrgbClr.Val)
-        else if colors[i].IsPresent('SysClr') then
-          fThemeColors[i] := RgbValue(colors[i].SysClr.LastClr);
-    end;
-  end;
-  if aIndex < cardinal(Length(fThemeColors)) then
-    Result := fThemeColors[aIndex]
-  else
-    Result := 0;
-end;
-
-// a stored color as Excel's Color: rgb, theme or indexed (the file's own palette first), with its tint; aDefault for
-// automatic and none
-function TWorkbook.ColorOf(aColor: TColorCT; aDefault: TColor): TColor;
-begin
-  if (aColor = nil) or aColor.Auto then
-    Exit(aDefault);
-  var value: integer;
-  if aColor.Present[@aColor.Rgb] then
-    value := RgbValue(aColor.Rgb)
-  else if aColor.Present[@aColor.Theme] then
-    value := ThemeColor(aColor.Theme)
-  else if aColor.Present[@aColor.Indexed] then
-  begin
-    value := TUtility.PaletteColor(aColor.Indexed);
-    var styles: TStyleSheetE := fPackage.Part<TStyleSheetE>(fStylesPart);
-    if (aColor.Indexed < cAutomaticIndex) and styles.IsPresent('Colors') and styles.Colors.IsPresent('IndexedColors') and
-      (aColor.Indexed < cardinal(styles.Colors.IndexedColors.RgbColor.Count)) then
-      value := RgbValue(styles.Colors.IndexedColors.RgbColor[aColor.Indexed].Rgb);
-  end
-  else
-    Exit(aDefault);
-  if aColor.Present[@aColor.Tint] then
-    value := TUtility.TintedColor(value, aColor.Tint);
-  Result := value;
 end;
 
 // a part's own relationships part
@@ -7148,7 +6439,7 @@ var
             end;
         Exit;
       end;
-    for var relationship: TRelationshipOoxml in package.Relationships(book.fWorkbookPart, cChartsheet) do
+    for var relationship: TRelationshipOoxml in package.Relationships(book.fBook.WorkbookPart, cChartsheet) do
       if relationship.Id = aEntry.Id then
       begin
         var chartsheet: TChartsheetE := package.Part<TChartsheetE>(relationship.Part);
@@ -7171,12 +6462,12 @@ var
     var reached: TDictionary<string, boolean> := TDictionary<string, boolean>.Create;
     try
       names.Add(fPartName);
-      parents.Add(book.fWorkbookPart);
+      parents.Add(book.fBook.WorkbookPart);
       found.Add(fPartName.ToUpper, True);
       for var cache: string in aCaches do
       begin
         names.Add(cache);
-        parents.Add(book.fWorkbookPart);
+        parents.Add(book.fBook.WorkbookPart);
         found.AddOrSetValue(cache.ToUpper, True);
       end;
       var next: integer := 0;
@@ -7199,7 +6490,7 @@ var
         begin
           for var relationship: TRelationshipOoxml in package.Relationships(queue[next]) do
             if (relationship.Part <> '') and not reached.ContainsKey(relationship.Part.ToUpper) and
-              ((queue[next] <> book.fWorkbookPart) or (relationship.Part <> fPartName) and
+              ((queue[next] <> book.fBook.WorkbookPart) or (relationship.Part <> fPartName) and
               not aCaches.Contains(relationship.Part)) then
             begin
               reached.Add(relationship.Part.ToUpper, True);
@@ -7226,8 +6517,8 @@ var
 
 begin
   book := fWorkbook;
-  package := book.fPackage;
-  var entries: TSheetCTList := package.Part<TWorkbookE>(book.fWorkbookPart).Sheets.Sheet;
+  package := book.fBook.Package;
+  var entries: TSheetCTList := package.Part<TWorkbookE>(book.fBook.WorkbookPart).Sheets.Sheet;
   var entry: TSheetCT := SheetEntry;
   var index: integer := entries.IndexOf(entry);
   why := '';
@@ -7313,7 +6604,7 @@ begin
           written.Append(move.Text).Append(#10);
         for var text: string in names do
           written.Append(text).Append(#10);
-        var xml: TWorkbookE := package.Part<TWorkbookE>(book.fWorkbookPart);
+        var xml: TWorkbookE := package.Part<TWorkbookE>(book.fBook.WorkbookPart);
         if (why = '') and xml.IsPresent('DefinedNames') then
         begin
           var list: TDefinedNameCTList := xml.DefinedNames.DefinedName;
@@ -7337,7 +6628,7 @@ begin
         raise EInvalidOpException.CreateFmt('%s not deleted: %s', [fName, why]);
 
       WriteNames(book, names);
-      var workbook: TWorkbookE := package.EditPart<TWorkbookE>(book.fWorkbookPart);
+      var workbook: TWorkbookE := package.EditPart<TWorkbookE>(book.fBook.WorkbookPart);
       if workbook.IsPresent('DefinedNames') then
       begin // its own go (or the workbook's then), those of the sheets after it count one less
         var list: TDefinedNameCTList := workbook.DefinedNames.DefinedName;
@@ -7378,7 +6669,7 @@ begin
         move.Extension.XmlUnknown[move.Index] := item;
       end;
 
-    var workbook: TWorkbookE := package.EditPart<TWorkbookE>(book.fWorkbookPart);
+    var workbook: TWorkbookE := package.EditPart<TWorkbookE>(book.fBook.WorkbookPart);
 
     // the active sheet deleted: the next visible one (else the one before) active and selected, as Excel does
     var active: integer := -1;
@@ -7433,7 +6724,7 @@ begin
     end;
     if workbook.IsPresent('PivotCaches') then
     begin
-      for var relationship: TRelationshipOoxml in package.Relationships(book.fWorkbookPart, cPivotCacheDefinition) do
+      for var relationship: TRelationshipOoxml in package.Relationships(book.fBook.WorkbookPart, cPivotCacheDefinition) do
         if caches.Contains(relationship.Part) then
           for var i := workbook.PivotCaches.PivotCache.Count - 1 downto 0 do
             if workbook.PivotCaches.PivotCache[i].Id = relationship.Id then
@@ -7445,11 +6736,11 @@ begin
     for var row: TRowCT in Objects(False).SheetData.Row do
       for var cell: TCellCT in row.C do
         if (cell.T = stctS) and cell.Present[@cell.V] then
-          book.SharedStringReleased;
+          book.fBook.SharedStringReleased;
     RemoveParts(caches);
     entries.Delete(index);
-    book.ValueChanged;
-    book.FormulaChanged;
+    book.fBook.ValueChanged;
+    book.fBook.FormulaChanged;
     for var sheet: TWorksheet in others do
       sheet.ForgetFormulas;
   finally
@@ -7466,33 +6757,19 @@ end;
 
 function TWorkbook.GetXml: TWorkbookE;
 begin
-  Result := nil;
-  if not fWorkbookPart.IsEmpty then
-    Result := fPackage.EditPart<TWorkbookE>(fWorkbookPart);
+  Result := fBook.EditWorkbook;
 end;
 
 function TWorkbook.GetXmlSharedStrings: TSstE;
 begin
-  Result := nil;
-  if not fSharedStringsPart.IsEmpty then
-  begin
-    Result := fPackage.EditPart<TSstE>(fSharedStringsPart);
-    FreeAndNil(fStrings); // the user's changes: found again on the next write
-  end;
+  Result := fBook.EditSharedStrings;
 end;
 
 function TWorkbook.GetXmlStyles: TStyleSheetE;
 begin
-  Result := nil;
-  if not fStylesPart.IsEmpty then
+  Result := fBook.EditStyles;
+  if Result <> nil then
   begin
-    Result := fPackage.EditPart<TStyleSheetE>(fStylesPart);
-    FreeAndNil(fStyleKeys);
-    FreeAndNil(fFontKeys);
-    FreeAndNil(fFillKeys);
-    FreeAndNil(fBorderKeys);
-    FreeAndNil(fDateStyleIds);
-    FreeAndNil(fDateStyles);
     fDateFormatIds[0] := -2;
     fDateFormatIds[1] := -2;
   end;
@@ -7500,7 +6777,7 @@ end;
 
 function TWorkbook.GetFileName: string;
 begin
-  Result := fPackage.FileName;
+  Result := fBook.Package.FileName;
 end;
 
 function TWorkbook.GetDateFormat(aIndex: integer): string;
@@ -7526,27 +6803,16 @@ end;
 function TWorkbook.DateFormatId(aIndex: integer): integer;
 begin
   if fDateFormatIds[aIndex] = -2 then
-    fDateFormatIds[aIndex] := FormatId(fDateFormats[aIndex]);
+    fDateFormatIds[aIndex] := fBook.FormatId(fDateFormats[aIndex]);
   Result := fDateFormatIds[aIndex];
 end;
 
 // Excel opens a workbook only under the extension of its kind, and other formats' names would mislead
 function TWorkbook.ExtensionError(const aFileName: string): string;
-const
-  cTypes = 'application/vnd.openxmlformats-';
 begin
   Result := '';
   var extension: string := ExtractFileExt(aFileName).ToLower;
-  var contentType: string := fPackage.ContentType(fWorkbookPart);
-  var kind: string := '';
-  if contentType = cTypes + 'officedocument.spreadsheetml.sheet.main+xml' then
-    kind := '.xlsx'
-  else if contentType = 'application/vnd.ms-excel.sheet.macroEnabled.main+xml' then
-    kind := '.xlsm'
-  else if contentType = cTypes + 'officedocument.spreadsheetml.template.main+xml' then
-    kind := '.xltx'
-  else if contentType = 'application/vnd.ms-excel.template.macroEnabled.main+xml' then
-    kind := '.xltm';
+  var kind: string := fBook.Kind;
   if (extension = '.xlsx') or (extension = '.xlsm') or (extension = '.xltx') or (extension = '.xltm') then
   begin
     if not kind.IsEmpty and (extension <> kind) then
@@ -7558,8 +6824,8 @@ end;
 
 function TWorkbook.Save: boolean;
 begin
-  Result := fPackage.Save;
-  fError := fPackage.Error;
+  Result := fBook.Package.Save;
+  fError := fBook.Package.Error;
 end;
 
 function TWorkbook.SaveAs(const aFileName: string): boolean;
@@ -7567,14 +6833,14 @@ begin
   var error: string := ExtensionError(aFileName);
   if not error.IsEmpty then
     Exit(Fail('Extension', error));
-  Result := fPackage.SaveAs(aFileName);
-  fError := fPackage.Error;
+  Result := fBook.Package.SaveAs(aFileName);
+  fError := fBook.Package.Error;
 end;
 
 function TWorkbook.SaveAs(aStream: TStream): boolean;
 begin
-  Result := fPackage.SaveAs(aStream);
-  fError := fPackage.Error;
+  Result := fBook.Package.SaveAs(aStream);
+  fError := fBook.Package.Error;
 end;
 
 end.
