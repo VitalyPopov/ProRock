@@ -5,7 +5,7 @@
 interface
 
 uses System.SysUtils, System.Classes, System.Generics.Collections, System.UITypes, ProRock.Xmlite, ProRock.Office.Ooxml,
-  ProRock.Xmlite.Schema.Ooxml.Sml, ProRock.Calcite.Utility;
+  ProRock.Xmlite.Schema.Ooxml.Sml, ProRock.Calcite.Utility, ProRock.Calcite.Aspects;
 
 const
   // relationship types end in these names - Transitional and Strict differ only before them
@@ -31,6 +31,11 @@ const
   cSharedStringsType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml';
   cWorksheetType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml';
   cAutomaticIndex = 64; // indexed: the system's text color, Excel's automatic
+  // each style as Excel reads it: LineStyle and Weight
+  cBorderLines: array[TBorderStyleST] of TLineStyle = (lsNone, lsContinuous, lsContinuous, lsDash, lsDot, lsContinuous,
+    lsDouble, lsContinuous, lsDash, lsDashDot, lsDashDot, lsDashDotDot, lsDashDotDot, lsSlantDashDot);
+  cBorderWeights: array[TBorderStyleST] of TBorderWeight = (bwThin, bwThin, bwMedium, bwThin, bwThin, bwThick, bwThick,
+    bwHairline, bwMedium, bwThin, bwMedium, bwThin, bwMedium, bwMedium);
 
 type
   // Calcite's own: a sheet's VML drawing (its notes' boxes), whose <xml> root no schema has; the shapes come in XmlAny
@@ -58,6 +63,7 @@ type
     fDateStyleIds: TDictionary<UInt64, integer>; // DateStyle's answers: a style and a format, the style with it
     fDateStyles: TDictionary<cardinal, boolean>;
     fFormatIds: TDictionary<string, integer>; // FormatId's answers by the code asked for
+    fFormats: TDictionary<cardinal, TCellFormat>; // FormatOf's answers by style
     fValuesChanged: boolean;
     fFormulasWritten: boolean;
 
@@ -65,6 +71,13 @@ type
       aIndex: cardinal; const aChange: TProc<T>): integer;
     function ThemeColor(aIndex: cardinal): integer;
     function StoredFormatId(const aCode: string): integer;
+    function FormatCode(aStyle: cardinal): string;
+    function StyleXf(aStyle: cardinal): TXfCT;
+    function StyleFont(aStyle: cardinal): TFontCT;
+    function StyleFill(aStyle: cardinal): TFillCT;
+    function StyleBorder(aStyle: cardinal): TBorderCT;
+    function ColorOf(aColor: TColorCT; aDefault: TColor): TColor;
+    function ReadFormat(aStyle: cardinal): TCellFormat;
     procedure Forget;
   public
     constructor Create;
@@ -98,17 +111,13 @@ type
     function IsDateStyle(aStyle: cardinal): boolean;
     function ChangedStyle(aStyle: cardinal; const aChange: TProc<TXfCT>): integer;
     function DateStyle(aStyle: cardinal; aFormat: integer): integer;
-    function FormatCode(aStyle: cardinal): string;
     function FormatId(const aCode: string): integer;
     function ChangedFont(aFont: cardinal; const aChange: TProc<TFontCT>): integer;
     function ChangedFill(aFill: cardinal; const aChange: TProc<TFillCT>): integer;
     function ChangedBorder(aBorder: cardinal; const aChange: TProc<TBorderCT>): integer;
-    function StyleXf(aStyle: cardinal): TXfCT;
-    function StyleFont(aStyle: cardinal): TFontCT;
-    function StyleFill(aStyle: cardinal): TFillCT;
-    function StyleBorder(aStyle: cardinal): TBorderCT;
     function BorderAt(aBorder: cardinal): TBorderCT;
-    function ColorOf(aColor: TColorCT; aDefault: TColor): TColor;
+    // a style as Excel reads it (one beyond cellXfs as the first); kept
+    function FormatOf(aStyle: cardinal): TCellFormat;
 
     // the parts handed to the user (Workbook.Xlsx), each nil when the file has none; every cache is dropped (Forget)
     function EditWorkbook: TWorkbookE;
@@ -134,6 +143,10 @@ function EncodeText(const aText: string): string;
 function RichText(aItem: TRstCT): string;
 // FFRRGGBB (or RRGGBB) as BGR
 function RgbValue(const aHex: string): integer;
+// a cell border's side (beLeft, beTop, beBottom, beRight), made when it has none
+function SideOf(aBorder: TBorderCT; aEdge: TBorderEdge): TBorderPrCT;
+// the side with a line; nil when it has none
+function DrawnSide(aBorder: TBorderCT; aEdge: TBorderEdge): TBorderPrCT;
 
 implementation
 
@@ -147,6 +160,47 @@ type
   TFillCT = ProRock.Xmlite.Schema.Ooxml.Sml.TFillCT;
   TNumFmtCT = ProRock.Xmlite.Schema.Ooxml.Sml.TNumFmtCT;
   {$ENDREGION}
+
+const
+  cUnderlines: array[TUnderlineValuesST] of TUnderline = (ulSingle, ulDouble, ulSingleAccounting, ulDoubleAccounting, ulNone);
+
+function IsOn(aList: TBooleanPropertyCTList): boolean;
+begin
+  Result := (aList.Count > 0) and aList[0].Val;
+end;
+
+function SideName(aEdge: TBorderEdge): string;
+begin
+  case aEdge of
+    beLeft: Result := 'Left';
+    beTop: Result := 'Top';
+    beBottom: Result := 'Bottom';
+  else
+    Result := 'Right';
+  end;
+end;
+
+function SideOf(aBorder: TBorderCT; aEdge: TBorderEdge): TBorderPrCT;
+begin
+  case aEdge of
+    beLeft: Result := aBorder.Left;
+    beTop: Result := aBorder.Top;
+    beBottom: Result := aBorder.Bottom;
+  else
+    Result := aBorder.Right;
+  end;
+end;
+
+function DrawnSide(aBorder: TBorderCT; aEdge: TBorderEdge): TBorderPrCT;
+begin
+  Result := nil;
+  if (aBorder <> nil) and aBorder.IsPresent(SideName(aEdge)) then
+  begin
+    Result := SideOf(aBorder, aEdge);
+    if Result.Style = stbsNone then
+      Result := nil;
+  end;
+end;
 
 {$REGION 'xlsx text and built-in formats'}
 
@@ -275,6 +329,7 @@ begin
   fDateStyleIds.Free;
   fDateStyles.Free;
   fFormatIds.Free;
+  fFormats.Free;
   inherited;
 end;
 
@@ -890,6 +945,85 @@ begin
   Result := value;
 end;
 
+function TXlsxBook.FormatOf(aStyle: cardinal): TCellFormat;
+begin
+  if not fStylesPart.IsEmpty then
+  begin
+    var styles: TStyleSheetE := fPackage.Part<TStyleSheetE>(fStylesPart);
+    if not styles.IsPresent('CellXfs') or (aStyle >= cardinal(styles.CellXfs.Xf.Count)) then
+      aStyle := 0;
+  end;
+  if fFormats = nil then
+    fFormats := TDictionary<cardinal, TCellFormat>.Create;
+  if fFormats.TryGetValue(aStyle, Result) then
+    Exit;
+  Result := ReadFormat(aStyle);
+  fFormats.Add(aStyle, Result);
+end;
+
+function TXlsxBook.ReadFormat(aStyle: cardinal): TCellFormat;
+begin
+  Result := Default(TCellFormat);
+  Result.NumberFormat := FormatCode(aStyle);
+  Result.FontSize := 11;
+  Result.VerticalAlignment := vaBottom;
+  var font: TFontCT := StyleFont(aStyle);
+  if font <> nil then
+  begin
+    if font.Name.Count > 0 then
+      Result.FontName := font.Name[0].Val;
+    if font.Sz.Count > 0 then
+      Result.FontSize := font.Sz[0].Val;
+    if font.Color.Count > 0 then
+      Result.FontColor := ColorOf(font.Color[0], 0);
+    Result.Bold := IsOn(font.B);
+    Result.Italic := IsOn(font.I);
+    Result.Strikethrough := IsOn(font.Strike);
+    if font.U.Count > 0 then
+      Result.Underline := cUnderlines[font.U[0].Val];
+  end;
+  Result.FillColor := TColors.SysNone;
+  var fill: TFillCT := StyleFill(aStyle);
+  if (fill <> nil) and fill.IsPresent('PatternFill') then
+  begin
+    var pattern: TPatternFillCT := fill.PatternFill;
+    case pattern.PatternType of
+      stptbNone:
+        ;
+      stptbSolid:
+        if pattern.IsPresent('FgColor') then
+          Result.FillColor := ColorOf(pattern.FgColor, 0)
+        else
+          Result.FillColor := 0;
+    else // the pattern's background: Excel's Interior.Color
+      if pattern.IsPresent('BgColor') then
+        Result.FillColor := ColorOf(pattern.BgColor, $FFFFFF)
+      else
+        Result.FillColor := $FFFFFF;
+    end;
+  end;
+  var xf: TXfCT := StyleXf(aStyle);
+  if (xf <> nil) and xf.IsPresent('Alignment') then
+  begin
+    Result.HorizontalAlignment := THAlign(Ord(xf.Alignment.Horizontal));
+    Result.VerticalAlignment := TVAlign(Ord(xf.Alignment.Vertical));
+    Result.WrapText := xf.Alignment.WrapText;
+  end;
+  var border: TBorderCT := StyleBorder(aStyle);
+  for var side: TCellSide := Low(TCellSide) to High(TCellSide) do
+  begin
+    Result.Borders[side] := cNoLine;
+    var drawn: TBorderPrCT := DrawnSide(border, side);
+    if drawn <> nil then
+    begin
+      Result.Borders[side].LineStyle := cBorderLines[drawn.Style];
+      Result.Borders[side].Weight := cBorderWeights[drawn.Style];
+      if drawn.IsPresent('Color') then
+        Result.Borders[side].Color := ColorOf(drawn.Color, 0);
+    end;
+  end;
+end;
+
 function TXlsxBook.MappedNames(const aMap: TReferenceMap; out aChanged: TArray<string>; out aWhy: string): boolean;
 begin
   aWhy := '';
@@ -945,6 +1079,7 @@ begin
   FreeAndNil(fDateStyleIds);
   FreeAndNil(fDateStyles);
   FreeAndNil(fFormatIds);
+  FreeAndNil(fFormats);
   fThemeColors := nil;
   fValuesChanged := False; // calcPr may be gone: set again on the next write
 end;

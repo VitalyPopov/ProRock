@@ -6,7 +6,7 @@ interface
 
 uses System.SysUtils, System.Classes, System.Generics.Collections, System.UITypes,
   ProRock.Xmlite, ProRock.Office.Ooxml, ProRock.Xmlite.Schema.Ooxml.Sml, ProRock.Xmlite.Schema.CoreProperties,
-  ProRock.Calcite.Xlsx;
+  ProRock.Calcite.Aspects, ProRock.Calcite.Xlsx;
 
 const
   // Excel's built-in dates: each reader sees them as their own short date, 31.12.2026 or 12/31/2026
@@ -22,6 +22,45 @@ const
   fsUnderline = TFontStyle.fsUnderline;
   fsStrikeOut = TFontStyle.fsStrikeOut;
 
+  {$REGION 'ProRock.Calcite.Aspects values aliases'}
+  ulNone = ProRock.Calcite.Aspects.ulNone;
+  ulSingle = ProRock.Calcite.Aspects.ulSingle;
+  ulDouble = ProRock.Calcite.Aspects.ulDouble;
+  ulSingleAccounting = ProRock.Calcite.Aspects.ulSingleAccounting;
+  ulDoubleAccounting = ProRock.Calcite.Aspects.ulDoubleAccounting;
+  haGeneral = ProRock.Calcite.Aspects.haGeneral;
+  haLeft = ProRock.Calcite.Aspects.haLeft;
+  haCenter = ProRock.Calcite.Aspects.haCenter;
+  haRight = ProRock.Calcite.Aspects.haRight;
+  haFill = ProRock.Calcite.Aspects.haFill;
+  haJustify = ProRock.Calcite.Aspects.haJustify;
+  haCenterAcrossSelection = ProRock.Calcite.Aspects.haCenterAcrossSelection;
+  haDistributed = ProRock.Calcite.Aspects.haDistributed;
+  vaTop = ProRock.Calcite.Aspects.vaTop;
+  vaCenter = ProRock.Calcite.Aspects.vaCenter;
+  vaBottom = ProRock.Calcite.Aspects.vaBottom;
+  vaJustify = ProRock.Calcite.Aspects.vaJustify;
+  vaDistributed = ProRock.Calcite.Aspects.vaDistributed;
+  beLeft = ProRock.Calcite.Aspects.beLeft;
+  beTop = ProRock.Calcite.Aspects.beTop;
+  beBottom = ProRock.Calcite.Aspects.beBottom;
+  beRight = ProRock.Calcite.Aspects.beRight;
+  beInsideVertical = ProRock.Calcite.Aspects.beInsideVertical;
+  beInsideHorizontal = ProRock.Calcite.Aspects.beInsideHorizontal;
+  lsNone = ProRock.Calcite.Aspects.lsNone;
+  lsContinuous = ProRock.Calcite.Aspects.lsContinuous;
+  lsDash = ProRock.Calcite.Aspects.lsDash;
+  lsDot = ProRock.Calcite.Aspects.lsDot;
+  lsDashDot = ProRock.Calcite.Aspects.lsDashDot;
+  lsDashDotDot = ProRock.Calcite.Aspects.lsDashDotDot;
+  lsDouble = ProRock.Calcite.Aspects.lsDouble;
+  lsSlantDashDot = ProRock.Calcite.Aspects.lsSlantDashDot;
+  bwHairline = ProRock.Calcite.Aspects.bwHairline;
+  bwThin = ProRock.Calcite.Aspects.bwThin;
+  bwMedium = ProRock.Calcite.Aspects.bwMedium;
+  bwThick = ProRock.Calcite.Aspects.bwThick;
+  {$ENDREGION}
+
 type
   {$REGION 'ProRock.Xmlite types aliases'}
   TIssueSeverity = ProRock.Xmlite.TIssueSeverity;
@@ -36,14 +75,17 @@ type
   // a date is a number in a date format, as in Excel
   TCellValueType = (cvEmpty, cvNumber, cvDate, cvText, cvBoolean, cvError);
 
+  {$REGION 'ProRock.Calcite.Aspects types aliases'}
   // Excel's names: XlUnderlineStyle, XlHAlign, XlVAlign, XlBordersIndex, XlLineStyle, XlBorderWeight
-  TUnderline = (ulNone, ulSingle, ulDouble, ulSingleAccounting, ulDoubleAccounting);
-  THAlign = (haGeneral, haLeft, haCenter, haRight, haFill, haJustify, haCenterAcrossSelection, haDistributed);
-  TVAlign = (vaTop, vaCenter, vaBottom, vaJustify, vaDistributed);
-  TBorderEdge = (beLeft, beTop, beBottom, beRight, beInsideVertical, beInsideHorizontal);
-  TBorderEdges = set of TBorderEdge;
-  TLineStyle = (lsNone, lsContinuous, lsDash, lsDot, lsDashDot, lsDashDotDot, lsDouble, lsSlantDashDot);
-  TBorderWeight = (bwHairline, bwThin, bwMedium, bwThick);
+  TUnderline = ProRock.Calcite.Aspects.TUnderline;
+  THAlign = ProRock.Calcite.Aspects.THAlign;
+  TVAlign = ProRock.Calcite.Aspects.TVAlign;
+  TBorderEdge = ProRock.Calcite.Aspects.TBorderEdge;
+  TBorderEdges = ProRock.Calcite.Aspects.TBorderEdges;
+  TLineStyle = ProRock.Calcite.Aspects.TLineStyle;
+  TBorderWeight = ProRock.Calcite.Aspects.TBorderWeight;
+  {$ENDREGION}
+
   // Excel's XlSheetVisibility: svVeryHidden is shown again only from code
   TSheetVisibility = (svVisible, svHidden, svVeryHidden);
 
@@ -436,6 +478,7 @@ type
     function FindRow(aSheet: TWorksheetE; aRow: integer; out aIndex: integer): boolean;
     function FindCell(aRow, aColumn: integer): TCellCT;
     function EffectiveStyle(aRow, aColumn: integer): cardinal;
+    function FormatAt(aRow, aColumn: integer): TCellFormat;
     function CellValue(aCell: TCellCT; out aValue: Variant): TCellValueType;
     procedure FindFormulas;
     procedure ForgetFormulas;
@@ -481,7 +524,7 @@ type
     procedure SetVisible(aValue: TSheetVisibility);
     procedure RestyleFont(const aRange: TRange; const aChange: TProc<TFontCT>);
     procedure RestyleBorders(const aRange: TRange; aEdges: TBorderEdges; const aChange: TProc<TBorderPrCT>);
-    function BorderSide(aRow, aColumn: integer; aEdge: TBorderEdge): TBorderPrCT;
+    function BorderSide(aRow, aColumn: integer; aEdge: TCellSide): TBorderLine;
     function DefaultWidth: Double;
     function SortedColumns: TColCTList;
     function ColumnStyle(aColumn: integer): cardinal;
@@ -788,14 +831,8 @@ end;
 {$REGION 'xlsx storage: fonts, fills, borders, colors'}
 
 const
-  cUnderlines: array[TUnderlineValuesST] of TUnderline = (ulSingle, ulDouble, ulSingleAccounting, ulDoubleAccounting, ulNone);
   cUnderlineValues: array[TUnderline] of TUnderlineValuesST = (stuvNone, stuvSingle, stuvDouble, stuvSingleAccounting,
     stuvDoubleAccounting);
-  // each style as Excel reads it: LineStyle and Weight
-  cBorderLines: array[TBorderStyleST] of TLineStyle = (lsNone, lsContinuous, lsContinuous, lsDash, lsDot, lsContinuous,
-    lsDouble, lsContinuous, lsDash, lsDashDot, lsDashDot, lsDashDotDot, lsDashDotDot, lsSlantDashDot);
-  cBorderWeights: array[TBorderStyleST] of TBorderWeight = (bwThin, bwThin, bwMedium, bwThin, bwThin, bwThick, bwThick,
-    bwHairline, bwMedium, bwThin, bwMedium, bwThin, bwMedium, bwMedium);
 
 procedure CheckColor(aValue: TColor; aDefault, aNone: boolean);
 begin
@@ -815,11 +852,6 @@ begin
   end
   else
     aColor.Rgb := Format('FF%.2X%.2X%.2X', [aValue and $FF, aValue shr 8 and $FF, aValue shr 16 and $FF]);
-end;
-
-function IsOn(aList: TBooleanPropertyCTList): boolean;
-begin
-  Result := (aList.Count > 0) and aList[0].Val;
 end;
 
 procedure WriteFlag(aList: TBooleanPropertyCTList; aValue: boolean);
@@ -885,44 +917,9 @@ begin
     WriteColor(aSide.Color, clDefault);
 end;
 
-function SideName(aEdge: TBorderEdge): string;
-begin
-  case aEdge of
-    beLeft: Result := 'Left';
-    beTop: Result := 'Top';
-    beBottom: Result := 'Bottom';
-  else
-    Result := 'Right';
-  end;
-end;
-
-// a cell border's side (beLeft, beTop, beBottom, beRight), made when it has none
-function SideOf(aBorder: TBorderCT; aEdge: TBorderEdge): TBorderPrCT;
-begin
-  case aEdge of
-    beLeft: Result := aBorder.Left;
-    beTop: Result := aBorder.Top;
-    beBottom: Result := aBorder.Bottom;
-  else
-    Result := aBorder.Right;
-  end;
-end;
-
-// the side with a line; nil when it has none
-function DrawnSide(aBorder: TBorderCT; aEdge: TBorderEdge): TBorderPrCT;
-begin
-  Result := nil;
-  if (aBorder <> nil) and aBorder.IsPresent(SideName(aEdge)) then
-  begin
-    Result := SideOf(aBorder, aEdge);
-    if Result.Style = stbsNone then
-      Result := nil;
-  end;
-end;
-
 // the side Excel reads for a range's edge: the first cell's, the last column's right, the last row's bottom, the inside
-// ones the first cell's right and bottom; nil when there is no line
-function ShownSide(aSheet: TWorksheet; aTop, aLeft, aBottom, aRight: integer; aEdges: TBorderEdges): TBorderPrCT;
+// ones the first cell's right and bottom
+function ShownSide(aSheet: TWorksheet; aTop, aLeft, aBottom, aRight: integer; aEdges: TBorderEdges): TBorderLine;
 begin
   var edge: TBorderEdge := beLeft;
   for var each: TBorderEdge in aEdges do
@@ -935,12 +932,12 @@ begin
     beRight: Result := aSheet.BorderSide(aTop, aRight, beRight);
     beInsideVertical:
       if aLeft = aRight then
-        Result := nil
+        Result := cNoLine
       else
         Result := aSheet.BorderSide(aTop, aLeft, beRight);
     beInsideHorizontal:
       if aTop = aBottom then
-        Result := nil
+        Result := cNoLine
       else
         Result := aSheet.BorderSide(aTop, aLeft, beBottom);
   else
@@ -1361,7 +1358,7 @@ end;
 
 function TRange.GetNumberFormat: string;
 begin
-  Result := fSheet.fWorkbook.fBook.FormatCode(fSheet.EffectiveStyle(fTop, fLeft));
+  Result := fSheet.FormatAt(fTop, fLeft).NumberFormat;
 end;
 
 procedure TRange.SetNumberFormat(const aValue: string);
@@ -1438,10 +1435,7 @@ end;
 
 function TRange.GetHorizontalAlignment: THAlign;
 begin
-  var xf: TXfCT := fSheet.fWorkbook.fBook.StyleXf(fSheet.EffectiveStyle(fTop, fLeft));
-  if (xf = nil) or not xf.IsPresent('Alignment') then
-    Exit(haGeneral);
-  Result := THAlign(Ord(xf.Alignment.Horizontal));
+  Result := fSheet.FormatAt(fTop, fLeft).HorizontalAlignment;
 end;
 
 procedure TRange.SetHorizontalAlignment(aValue: THAlign);
@@ -1460,10 +1454,7 @@ end;
 
 function TRange.GetVerticalAlignment: TVAlign;
 begin
-  var xf: TXfCT := fSheet.fWorkbook.fBook.StyleXf(fSheet.EffectiveStyle(fTop, fLeft));
-  if (xf = nil) or not xf.IsPresent('Alignment') then
-    Exit(vaBottom);
-  Result := TVAlign(Ord(xf.Alignment.Vertical));
+  Result := fSheet.FormatAt(fTop, fLeft).VerticalAlignment;
 end;
 
 procedure TRange.SetVerticalAlignment(aValue: TVAlign);
@@ -1482,8 +1473,7 @@ end;
 
 function TRange.GetWrapText: boolean;
 begin
-  var xf: TXfCT := fSheet.fWorkbook.fBook.StyleXf(fSheet.EffectiveStyle(fTop, fLeft));
-  Result := (xf <> nil) and xf.IsPresent('Alignment') and xf.Alignment.WrapText;
+  Result := fSheet.FormatAt(fTop, fLeft).WrapText;
 end;
 
 procedure TRange.SetWrapText(aValue: boolean);
@@ -1718,8 +1708,13 @@ end;
 
 function TRangeFont.GetFlag(aIndex: integer): boolean;
 begin
-  var font: TFontCT := fSheet.fWorkbook.fBook.StyleFont(fSheet.EffectiveStyle(fTop, fLeft));
-  Result := (font <> nil) and IsOn(FontFlag(font, aIndex));
+  var format: TCellFormat := fSheet.FormatAt(fTop, fLeft);
+  case aIndex of
+    0: Result := format.Bold;
+    1: Result := format.Italic;
+  else
+    Result := format.Strikethrough;
+  end;
 end;
 
 procedure TRangeFont.SetFlag(aIndex: integer; aValue: boolean);
@@ -1733,10 +1728,7 @@ end;
 
 function TRangeFont.GetName: string;
 begin
-  Result := '';
-  var font: TFontCT := fSheet.fWorkbook.fBook.StyleFont(fSheet.EffectiveStyle(fTop, fLeft));
-  if (font <> nil) and (font.Name.Count > 0) then
-    Result := font.Name[0].Val;
+  Result := fSheet.FormatAt(fTop, fLeft).FontName;
 end;
 
 procedure TRangeFont.SetName(const aValue: string);
@@ -1762,10 +1754,7 @@ end;
 
 function TRangeFont.GetSize: Double;
 begin
-  Result := 11;
-  var font: TFontCT := fSheet.fWorkbook.fBook.StyleFont(fSheet.EffectiveStyle(fTop, fLeft));
-  if (font <> nil) and (font.Sz.Count > 0) then
-    Result := font.Sz[0].Val;
+  Result := fSheet.FormatAt(fTop, fLeft).FontSize;
 end;
 
 procedure TRangeFont.SetSize(aValue: Double);
@@ -1785,10 +1774,7 @@ end;
 
 function TRangeFont.GetColor: TColor;
 begin
-  Result := 0;
-  var font: TFontCT := fSheet.fWorkbook.fBook.StyleFont(fSheet.EffectiveStyle(fTop, fLeft));
-  if (font <> nil) and (font.Color.Count > 0) then
-    Result := fSheet.fWorkbook.fBook.ColorOf(font.Color[0], 0);
+  Result := fSheet.FormatAt(fTop, fLeft).FontColor;
 end;
 
 procedure TRangeFont.SetColor(aValue: TColor);
@@ -1809,10 +1795,7 @@ end;
 
 function TRangeFont.GetUnderline: TUnderline;
 begin
-  Result := ulNone;
-  var font: TFontCT := fSheet.fWorkbook.fBook.StyleFont(fSheet.EffectiveStyle(fTop, fLeft));
-  if (font <> nil) and (font.U.Count > 0) then
-    Result := cUnderlines[font.U[0].Val];
+  Result := fSheet.FormatAt(fTop, fLeft).Underline;
 end;
 
 procedure TRangeFont.SetUnderline(aValue: TUnderline);
@@ -1827,16 +1810,14 @@ end;
 function TRangeFont.GetStyle: TFontStyles;
 begin
   Result := [];
-  var font: TFontCT := fSheet.fWorkbook.fBook.StyleFont(fSheet.EffectiveStyle(fTop, fLeft));
-  if font = nil then
-    Exit;
-  if IsOn(font.B) then
+  var format: TCellFormat := fSheet.FormatAt(fTop, fLeft);
+  if format.Bold then
     Include(Result, fsBold);
-  if IsOn(font.I) then
+  if format.Italic then
     Include(Result, fsItalic);
-  if (font.U.Count > 0) and (cUnderlines[font.U[0].Val] <> ulNone) then
+  if format.Underline <> ulNone then
     Include(Result, fsUnderline);
-  if IsOn(font.Strike) then
+  if format.Strikethrough then
     Include(Result, fsStrikeOut);
 end;
 
@@ -1859,25 +1840,7 @@ end;
 
 function TRangeInterior.GetColor: TColor;
 begin
-  Result := clNone;
-  var fill: TFillCT := fSheet.fWorkbook.fBook.StyleFill(fSheet.EffectiveStyle(fTop, fLeft));
-  if (fill = nil) or not fill.IsPresent('PatternFill') then
-    Exit;
-  var pattern: TPatternFillCT := fill.PatternFill;
-  case pattern.PatternType of
-    stptbNone:
-      ;
-    stptbSolid:
-      if pattern.IsPresent('FgColor') then
-        Result := fSheet.fWorkbook.fBook.ColorOf(pattern.FgColor, 0)
-      else
-        Result := 0;
-  else // the pattern's background: Excel's Interior.Color
-    if pattern.IsPresent('BgColor') then
-      Result := fSheet.fWorkbook.fBook.ColorOf(pattern.BgColor, $FFFFFF)
-    else
-      Result := $FFFFFF;
-  end;
+  Result := fSheet.FormatAt(fTop, fLeft).FillColor;
 end;
 
 procedure TRangeInterior.SetColor(aValue: TColor);
@@ -1917,10 +1880,7 @@ end;
 
 function TRangeBorder.GetLineStyle: TLineStyle;
 begin
-  var side: TBorderPrCT := ShownSide(fSheet, fTop, fLeft, fBottom, fRight, fEdges);
-  if side = nil then
-    Exit(lsNone);
-  Result := cBorderLines[side.Style];
+  Result := ShownSide(fSheet, fTop, fLeft, fBottom, fRight, fEdges).LineStyle;
 end;
 
 procedure TRangeBorder.SetLineStyle(aValue: TLineStyle);
@@ -1934,10 +1894,7 @@ end;
 
 function TRangeBorder.GetWeight: TBorderWeight;
 begin
-  var side: TBorderPrCT := ShownSide(fSheet, fTop, fLeft, fBottom, fRight, fEdges);
-  if side = nil then
-    Exit(bwThin);
-  Result := cBorderWeights[side.Style];
+  Result := ShownSide(fSheet, fTop, fLeft, fBottom, fRight, fEdges).Weight;
 end;
 
 procedure TRangeBorder.SetWeight(aValue: TBorderWeight);
@@ -1957,10 +1914,7 @@ end;
 
 function TRangeBorder.GetColor: TColor;
 begin
-  var side: TBorderPrCT := ShownSide(fSheet, fTop, fLeft, fBottom, fRight, fEdges);
-  if (side = nil) or not side.IsPresent('Color') then
-    Exit(0);
-  Result := fSheet.fWorkbook.fBook.ColorOf(side.Color, 0);
+  Result := ShownSide(fSheet, fTop, fLeft, fBottom, fRight, fEdges).Color;
 end;
 
 procedure TRangeBorder.SetColor(aValue: TColor);
@@ -2257,6 +2211,11 @@ begin
       if (cardinal(aColumn) >= column.Min) and (cardinal(aColumn) <= column.Max) then
         Exit(column.Style);
   Result := 0;
+end;
+
+function TWorksheet.FormatAt(aRow, aColumn: integer): TCellFormat;
+begin
+  Result := fWorkbook.fBook.FormatOf(EffectiveStyle(aRow, aColumn));
 end;
 
 function TWorksheet.CellValue(aCell: TCellCT; out aValue: Variant): TCellValueType;
@@ -2797,24 +2756,24 @@ begin
 end;
 
 // a cell's side with a line, as Excel reads it: its own, else the neighbour's facing one; nil when neither has one
-function TWorksheet.BorderSide(aRow, aColumn: integer; aEdge: TBorderEdge): TBorderPrCT;
+function TWorksheet.BorderSide(aRow, aColumn: integer; aEdge: TCellSide): TBorderLine;
 begin
-  Result := DrawnSide(fWorkbook.fBook.StyleBorder(EffectiveStyle(aRow, aColumn)), aEdge);
-  if Result <> nil then
+  Result := FormatAt(aRow, aColumn).Borders[aEdge];
+  if Result.LineStyle <> lsNone then
     Exit;
   case aEdge of
     beLeft:
       if aColumn > 1 then
-        Result := DrawnSide(fWorkbook.fBook.StyleBorder(EffectiveStyle(aRow, aColumn - 1)), beRight);
+        Result := FormatAt(aRow, aColumn - 1).Borders[beRight];
     beRight:
       if aColumn < TUtility.cMaxColumn then
-        Result := DrawnSide(fWorkbook.fBook.StyleBorder(EffectiveStyle(aRow, aColumn + 1)), beLeft);
+        Result := FormatAt(aRow, aColumn + 1).Borders[beLeft];
     beTop:
       if aRow > 1 then
-        Result := DrawnSide(fWorkbook.fBook.StyleBorder(EffectiveStyle(aRow - 1, aColumn)), beBottom);
+        Result := FormatAt(aRow - 1, aColumn).Borders[beBottom];
     beBottom:
       if aRow < TUtility.cMaxRow then
-        Result := DrawnSide(fWorkbook.fBook.StyleBorder(EffectiveStyle(aRow + 1, aColumn)), beTop);
+        Result := FormatAt(aRow + 1, aColumn).Borders[beTop];
   end;
 end;
 
@@ -2936,72 +2895,54 @@ begin
   var sheet: TWorksheetE := Objects(False);
   var widths: TArray<Double>;
   SetLength(widths, aRange.fRight - aRange.fLeft + 1);
-  var fonts: TDictionary<cardinal, TFontCT> := TDictionary<cardinal, TFontCT>.Create; // each style's, nil: none
-  try
-    var rows: TRowCTList := sheet.SheetData.Row;
-    var rowIndex: integer;
-    FindRow(sheet, aRange.fTop, rowIndex);
-    while (rowIndex < rows.Count) and (rows[rowIndex].R <= cardinal(aRange.fBottom)) do
+  var rows: TRowCTList := sheet.SheetData.Row;
+  var rowIndex: integer;
+  FindRow(sheet, aRange.fTop, rowIndex);
+  while (rowIndex < rows.Count) and (rows[rowIndex].R <= cardinal(aRange.fBottom)) do
+  begin
+    var row: TRowCT := rows[rowIndex];
+    var cellIndex: integer;
+    FindInRow(row, aRange.fLeft, cellIndex);
+    while (cellIndex < row.C.Count) and (TUtility.ColumnOf(row.C[cellIndex].R) <= aRange.fRight) do
     begin
-      var row: TRowCT := rows[rowIndex];
-      var cellIndex: integer;
-      FindInRow(row, aRange.fLeft, cellIndex);
-      while (cellIndex < row.C.Count) and (TUtility.ColumnOf(row.C[cellIndex].R) <= aRange.fRight) do
-      begin
-        var cell: TCellCT := row.C[cellIndex];
-        var value: Variant;
-        var text: string := '';
-        var margin: integer := 0;
-        case CellValue(cell, value) of
-          cvText, cvError:
-            text := value;
-          cvBoolean:
-            if value then
-              text := 'TRUE'
-            else
-              text := 'FALSE';
-          cvNumber, cvDate:
+      var cell: TCellCT := row.C[cellIndex];
+      var value: Variant;
+      var text: string := '';
+      var margin: integer := 0;
+      var format: TCellFormat := fWorkbook.fBook.FormatOf(cell.S);
+      case CellValue(cell, value) of
+        cvText, cvError:
+          text := value;
+        cvBoolean:
+          if value then
+            text := 'TRUE'
+          else
+            text := 'FALSE';
+        cvNumber, cvDate:
+          begin
+            var number: Double;
+            if TUtility.TryFloatFromText(string(cell.V).Trim, number) then
             begin
-              var number: Double;
-              if TUtility.TryFloatFromText(string(cell.V).Trim, number) then
-              begin
-                var code: string := fWorkbook.fBook.FormatCode(cell.S);
-                // the built-in dates show in the reader's own order: measured at their widest, two digits each
-                if (code = 'm/d/yyyy') or (code = 'm/d/yyyy h:mm') then
-                  code := StringReplace(StringReplace(code, 'm/d', 'mm/dd', []), ' h:', ' hh:', []);
-                text := ShownNumber(number, code);
-              end;
-              margin := cDigitPixels; // too narrow, a number shows ####, where text only runs over
+              var code: string := format.NumberFormat;
+              // the built-in dates show in the reader's own order: measured at their widest, two digits each
+              if (code = 'm/d/yyyy') or (code = 'm/d/yyyy h:mm') then
+                code := StringReplace(StringReplace(code, 'm/d', 'mm/dd', []), ' h:', ' hh:', []);
+              text := ShownNumber(number, code);
             end;
-        end;
-        if text <> '' then
-        begin
-          var font: TFontCT;
-          if not fonts.TryGetValue(cell.S, font) then
-          begin
-            font := fWorkbook.fBook.StyleFont(cell.S);
-            fonts.Add(cell.S, font);
+            margin := cDigitPixels; // too narrow, a number shows ####, where text only runs over
           end;
-          var scale: Double := 1;
-          var bold: boolean := False;
-          var name: string := '';
-          if font <> nil then
-          begin
-            if (font.Sz.Count > 0) and (font.Sz[0].Val > 0) then
-              scale := font.Sz[0].Val / 11;
-            bold := (font.B.Count > 0) and font.B[0].Val;
-            if font.Name.Count > 0 then
-              name := font.Name[0].Val;
-          end;
-          var index: integer := TUtility.ColumnOf(cell.R) - aRange.fLeft;
-          widths[index] := Max(widths[index], TUtility.TextPixels(text, name, bold) * scale + margin);
-        end;
-        Inc(cellIndex);
       end;
-      Inc(rowIndex);
+      if text <> '' then
+      begin
+        var scale: Double := 1;
+        if format.FontSize > 0 then
+          scale := format.FontSize / 11;
+        var index: integer := TUtility.ColumnOf(cell.R) - aRange.fLeft;
+        widths[index] := Max(widths[index], TUtility.TextPixels(text, format.FontName, format.Bold) * scale + margin);
+      end;
+      Inc(cellIndex);
     end;
-  finally
-    fonts.Free;
+    Inc(rowIndex);
   end;
   for var i := 0 to High(widths) do
     if widths[i] > 0 then
