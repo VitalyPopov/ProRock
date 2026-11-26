@@ -1729,7 +1729,7 @@ begin
     begin
       var defaultAttribute: TDefaultAttribute := TDefaultAttribute(attribute);
       if VarType(defaultAttribute.DefaultValue) = varBoolean then
-        fDefault := Byte(defaultAttribute.DefaultValue)
+        fDefault := Ord(boolean(defaultAttribute.DefaultValue)) // a Variant's True is -1
       else
         fDefault := defaultAttribute.DefaultValue;
 
