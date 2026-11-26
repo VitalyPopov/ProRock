@@ -104,6 +104,8 @@ type
     cMaxColumn = 16384;
     cMaxText = 32767;
     cMaxFormula = 8192;
+    // the default font's digit (Calibri or Aptos Narrow 11) in pixels: the unit of Excel's column widths
+    cDigitPixels = 7;
   public
     class function ColumnName(aColumn: integer): string; static;
     class function CellName(aRow, aColumn: integer): string; static;
@@ -137,6 +139,8 @@ type
     // a text's width in pixels at size 11, the widest line: ASCII as Excel's AutoFit measures Aptos Narrow (aFont) or Calibri
     // (any other font), the rest estimated
     class function TextPixels(const aText, aFont: string; aBold: boolean): Double; static;
+    // Excel's ColumnWidth (characters) in pixels on the screen: whole pixels, 5 of them padding
+    class function WidthPixels(aCharacters: Double): integer; static;
 
     // colors as Excel's Color (BGR, TColor's order)
     // a tint or shade (-1 darkest, 1 lightest) as Excel applies it: its integer HLS (240 steps), each product truncated
@@ -655,6 +659,13 @@ begin
   end
   else
     aSerial := aDate;
+end;
+
+class function TUtility.WidthPixels(aCharacters: Double): integer;
+begin
+  if aCharacters <= 0 then
+    Exit(0);
+  Result := Trunc(aCharacters * cDigitPixels + 0.5) + 5;
 end;
 
 class function TUtility.TextPixels(const aText, aFont: string; aBold: boolean): Double;
