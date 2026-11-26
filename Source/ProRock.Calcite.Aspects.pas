@@ -62,6 +62,23 @@ type
     Sides: TCellSides;
   end;
 
+  // a row or column as Excel reads it: its size in Excel's units (a column's characters of the default font's digits, a
+  // row's points) and whether it is hidden; a hidden one keeps its size for when it is shown again
+  TAxisFormat = record
+    Size: Double;
+    Hidden: boolean;
+  end;
+
+  // what an axis write changes: axSize the size given, axDefaultSize the sheet's (a row's own height dropped: Excel fits
+  // it), axFitted the size marked as Excel's AutoFit (a column's)
+  TAxisAspect = (axSize, axDefaultSize, axHidden, axFitted);
+  TAxisAspects = set of TAxisAspect;
+
+  TAxisChange = record
+    Aspects: TAxisAspects;
+    Value: TAxisFormat;
+  end;
+
 const
   cBorderAspects = [asLineStyle, asWeight, asBorderColor];
   // the weights Excel draws each line style in

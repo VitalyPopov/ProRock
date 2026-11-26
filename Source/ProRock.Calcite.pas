@@ -276,6 +276,7 @@ type
     procedure SetRowHeight(aValue: Double);
     function GetHidden: boolean;
     procedure SetHidden(aValue: boolean);
+    procedure HiddenAxis(out aByRows: boolean; out aFirst, aLast: integer);
     function GetMergeCells: boolean;
     procedure SetMergeCells(aValue: boolean);
     function GetMergeArea: TRange;
@@ -524,7 +525,10 @@ type
     procedure SetVisible(aValue: TSheetVisibility);
     procedure ApplyBorders(const aRange: TRange; aEdges: TBorderEdges; const aChange: TFormatChange);
     function BorderSide(aRow, aColumn: integer; aEdge: TCellSide): TBorderLine;
-    function DefaultWidth: Double;
+    function AxisDefault(aByRows: boolean): TAxisFormat;
+    function AxisOf(aByRows: boolean; aIndex: integer): TAxisFormat;
+    function AxisEntries(aByRows: boolean): TArray<TPair<integer, TAxisFormat>>;
+    procedure ApplyAxis(aByRows: boolean; aFirst, aLast: integer; const aChange: TAxisChange);
     function SortedColumns: TColCTList;
     function ColumnStyle(aColumn: integer): cardinal;
     function ColumnEntries(aLeft, aRight: integer): TArray<TColCT>;
@@ -766,12 +770,18 @@ const
   cDefaultRowHeight = 15;
   cMaxRowHeight = 409.5;
 
-// Excel's ColumnWidth (characters) as a file stores it, and back: whole pixels, 5 of them padding
-function WidthToFile(aCharacters: Double): Double;
+// Excel's ColumnWidth (characters) in pixels on the screen, and as a file stores it, and back: whole pixels, 5 of them
+// padding
+function WidthPixels(aCharacters: Double): integer;
 begin
   if aCharacters <= 0 then
     Exit(0);
-  Result := Trunc((Trunc(aCharacters * cDigitPixels + 0.5) + 5) / cDigitPixels * 256) / 256;
+  Result := Trunc(aCharacters * cDigitPixels + 0.5) + 5;
+end;
+
+function WidthToFile(aCharacters: Double): Double;
+begin
+  Result := Trunc(WidthPixels(aCharacters) / cDigitPixels * 256) / 256;
 end;
 
 function FileToWidth(aWidth: Double): Double;
@@ -780,6 +790,22 @@ begin
   if pixels <= 0 then
     Exit(0);
   Result := Trunc(pixels / cDigitPixels * 100 + 0.5) / 100;
+end;
+
+function RowAxis(aRow: TRowCT; const aDefault: TAxisFormat): TAxisFormat;
+begin
+  Result.Hidden := aRow.Hidden;
+  if aRow.Present[@aRow.Ht] then
+    Result.Size := aRow.Ht
+  else
+    Result.Size := aDefault.Size;
+end;
+
+// a <col> without a width: Excel's 0
+function ColumnAxis(aColumn: TColCT): TAxisFormat;
+begin
+  Result.Hidden := aColumn.Hidden;
+  Result.Size := FileToWidth(aColumn.Width);
 end;
 
 // the value of a data table's cells, as Excel's Formula shows it: TABLE(row input, column input)
@@ -841,6 +867,13 @@ function FormatChange(aAspects: TAspects): TFormatChange;
 begin
   Result := Default(TFormatChange);
   Result.Aspects := aAspects;
+end;
+
+function AxisChange(aAspects: TAxisAspects; aSize: Double = 0; aHidden: boolean = False): TAxisChange;
+begin
+  Result.Aspects := aAspects;
+  Result.Value.Size := aSize;
+  Result.Value.Hidden := aHidden;
 end;
 
 // the side Excel reads for a range's edge: the first cell's, the last column's right, the last row's bottom, the inside
@@ -1416,14 +1449,14 @@ begin
 end;
 
 function TRange.GetColumnWidth: Double;
+var
+  axis: TAxisFormat;
 begin
-  var column: TColCT := fSheet.ColumnEntry(fLeft);
-  if column = nil then
-    Result := fSheet.DefaultWidth
-  else if column.Hidden then
+  axis := fSheet.AxisOf(False, fLeft);
+  if axis.Hidden then
     Result := 0
-  else // no width: Excel's 0
-    Result := FileToWidth(column.Width);
+  else
+    Result := axis.Size;
 end;
 
 procedure TRange.SetColumnWidth(aValue: Double);
@@ -1431,42 +1464,19 @@ begin
   if IsNan(aValue) or (aValue < 0) or (aValue > cMaxColumnWidth) then
     raise EArgumentOutOfRangeException.CreateFmt('A column width of %s: Excel''s are 0 to %d characters',
       [TUtility.FloatText(aValue, ftDouble), cMaxColumnWidth]);
-  for var column: TColCT in fSheet.ColumnEntries(fLeft, fRight) do
-  begin
-    column.Width := WidthToFile(aValue);
-    column.SetPresent(@column.Width);
-    column.CustomWidth := True;
-    column.Clear(@column.BestFit);
-    if aValue = 0 then
-      column.Hidden := True
-    else
-      column.Clear(@column.Hidden);
-  end;
+  // Excel writes a width of 0 (shown again, the default), where a row keeps its height
+  fSheet.ApplyAxis(False, fLeft, fRight, AxisChange([axSize, axHidden], aValue, aValue = 0));
 end;
 
 function TRange.GetRowHeight: Double;
+var
+  axis: TAxisFormat;
 begin
-  var sheet: TWorksheetE := fSheet.Objects(False);
-  var rowIndex: integer;
-  var row: TRowCT := nil;
-  if fSheet.FindRow(sheet, fTop, rowIndex) then
-    row := sheet.SheetData.Row[rowIndex];
-  var format: TSheetFormatPrCT := nil;
-  if sheet.IsPresent('SheetFormatPr') then
-    format := sheet.SheetFormatPr;
-  if row <> nil then
-  begin
-    if row.Hidden then
-      Exit(0);
-    if row.Present[@row.Ht] then
-      Exit(row.Ht);
-  end
-  else if (format <> nil) and format.ZeroHeight then // rows not listed are hidden
-    Exit(0);
-  if (format <> nil) and format.Present[@format.DefaultRowHeight] then
-    Result := format.DefaultRowHeight
+  axis := fSheet.AxisOf(True, fTop);
+  if axis.Hidden then
+    Result := 0
   else
-    Result := cDefaultRowHeight;
+    Result := axis.Size;
 end;
 
 procedure TRange.SetRowHeight(aValue: Double);
@@ -1474,60 +1484,52 @@ begin
   if IsNan(aValue) or (aValue < 0) or (aValue > cMaxRowHeight) then
     raise EArgumentOutOfRangeException.CreateFmt('A row height of %s: Excel''s are 0 to %s points',
       [TUtility.FloatText(aValue, ftDouble), TUtility.FloatText(cMaxRowHeight, ftDouble)]);
-  for var row: TRowCT in fSheet.RowEntries(fTop, fBottom) do
-    if aValue = 0 then
-      row.Hidden := True
-    else
-    begin
-      row.Ht := aValue;
-      row.SetPresent(@row.Ht);
-      row.CustomHeight := True;
-      row.Clear(@row.Hidden);
-    end;
+  if aValue = 0 then // the height kept for when they are shown again
+    fSheet.ApplyAxis(True, fTop, fBottom, AxisChange([axHidden], 0, True))
+  else
+    fSheet.ApplyAxis(True, fTop, fBottom, AxisChange([axSize, axHidden], aValue, False));
 end;
 
-function TRange.GetHidden: boolean;
+// what Hidden reads and writes: the range's rows when it spans whole rows, else its whole columns
+procedure TRange.HiddenAxis(out aByRows: boolean; out aFirst, aLast: integer);
 begin
-  if (fLeft = 1) and (fRight = TUtility.cMaxColumn) then
-    Result := GetRowHeight = 0
+  aByRows := (fLeft = 1) and (fRight = TUtility.cMaxColumn);
+  if aByRows then
+  begin
+    aFirst := fTop;
+    aLast := fBottom;
+  end
   else if (fTop = 1) and (fBottom = TUtility.cMaxRow) then
   begin
-    var column: TColCT := fSheet.ColumnEntry(fLeft);
-    Result := (column <> nil) and column.Hidden;
+    aFirst := fLeft;
+    aLast := fRight;
   end
   else
     raise EInvalidOpException.CreateFmt('Hidden is for whole rows or columns, not %s: Range[''%s''].EntireRow.Hidden',
       [Address, Address]);
+end;
+
+function TRange.GetHidden: boolean;
+var
+  axis: TAxisFormat;
+begin
+  var byRows: boolean;
+  var first, last: integer;
+  HiddenAxis(byRows, first, last);
+  axis := fSheet.AxisOf(byRows, first);
+  Result := axis.Hidden or (axis.Size = 0);
 end;
 
 procedure TRange.SetHidden(aValue: boolean);
 begin
-  if (fLeft = 1) and (fRight = TUtility.cMaxColumn) then
-  begin
-    for var row: TRowCT in fSheet.RowEntries(fTop, fBottom) do
-      if aValue then
-        row.Hidden := True
-      else
-        row.Clear(@row.Hidden);
-  end
-  else if (fTop = 1) and (fBottom = TUtility.cMaxRow) then
-  begin
-    for var column: TColCT in fSheet.ColumnEntries(fLeft, fRight) do
-      if aValue then
-        column.Hidden := True
-      else
-      begin
-        column.Clear(@column.Hidden);
-        if column.Width = 0 then // hidden by a width of 0: shown at the default one
-        begin
-          column.Width := WidthToFile(fSheet.DefaultWidth);
-          column.Clear(@column.CustomWidth);
-        end;
-      end;
-  end
-  else
-    raise EInvalidOpException.CreateFmt('Hidden is for whole rows or columns, not %s: Range[''%s''].EntireRow.Hidden',
-      [Address, Address]);
+  var byRows: boolean;
+  var first, last: integer;
+  HiddenAxis(byRows, first, last);
+  fSheet.ApplyAxis(byRows, first, last, AxisChange([axHidden], 0, aValue));
+  if not aValue then
+    for var index := first to last do
+      if fSheet.AxisOf(byRows, index).Size = 0 then // hidden by a size of 0: shown at the default one
+        fSheet.ApplyAxis(byRows, index, index, AxisChange([axDefaultSize]));
 end;
 
 procedure TRange.Merge(aAcross: boolean);
@@ -1900,21 +1902,7 @@ end;
 
 procedure TRange.TRows.AutoFit;
 begin
-  var sheet: TWorksheetE := fSheet.Objects(False);
-  var rowIndex: integer;
-  fSheet.FindRow(sheet, fTop, rowIndex);
-  var rows: TRowCTList := sheet.SheetData.Row;
-  while (rowIndex < rows.Count) and (rows[rowIndex].R <= cardinal(fBottom)) do
-  begin
-    var row: TRowCT := rows[rowIndex];
-    if row.Present[@row.Ht] or row.CustomHeight then
-    begin
-      fSheet.Objects(True);
-      row.Clear(@row.Ht);
-      row.Clear(@row.CustomHeight);
-    end;
-    Inc(rowIndex);
-  end;
+  fSheet.ApplyAxis(True, fTop, fBottom, AxisChange([axDefaultSize]));
 end;
 
 { TWorksheetXlsx }
@@ -2611,22 +2599,168 @@ begin
   Result.fRight := TUtility.cMaxColumn;
 end;
 
-// the width of a column without its own, in characters: Excel's 8.43 unless the sheet says
-function TWorksheet.DefaultWidth: Double;
+{$REGION 'the axis table: rows and columns as Excel reads and writes them'}
+
+// rows or columns without an entry of their own: Excel's 15 points or 8.43 characters unless the sheet says; the rows
+// hidden when the sheet hides those it does not list
+function TWorksheet.AxisDefault(aByRows: boolean): TAxisFormat;
+begin
+  Result := Default(TAxisFormat);
+  var sheet: TWorksheetE := Objects(False);
+  var format: TSheetFormatPrCT := nil;
+  if sheet.IsPresent('SheetFormatPr') then
+    format := sheet.SheetFormatPr;
+  if aByRows then
+  begin
+    Result.Size := cDefaultRowHeight;
+    if format <> nil then
+    begin
+      Result.Hidden := format.ZeroHeight;
+      if format.Present[@format.DefaultRowHeight] then
+        Result.Size := format.DefaultRowHeight;
+    end;
+  end
+  else if (format <> nil) and format.Present[@format.DefaultColWidth] then
+    Result.Size := FileToWidth(format.DefaultColWidth)
+  else
+  begin
+    var base: integer := 8;
+    if (format <> nil) and format.Present[@format.BaseColWidth] then
+      base := format.BaseColWidth;
+    // base characters and the padding, in whole multiples of 8 pixels
+    var pixels: integer := (base * cDigitPixels + 5 + 7) div 8 * 8;
+    Result.Size := Trunc((pixels - 5) / cDigitPixels * 100 + 0.5) / 100;
+  end;
+end;
+
+function TWorksheet.AxisOf(aByRows: boolean; aIndex: integer): TAxisFormat;
+begin
+  if aByRows then
+  begin
+    var sheet: TWorksheetE := Objects(False);
+    var rowIndex: integer;
+    if not FindRow(sheet, aIndex, rowIndex) then
+      Result := AxisDefault(True)
+    else
+      Result := RowAxis(sheet.SheetData.Row[rowIndex], AxisDefault(True));
+  end
+  else
+  begin
+    var column: TColCT := ColumnEntry(aIndex);
+    if column = nil then
+      Result := AxisDefault(False)
+    else
+      Result := ColumnAxis(column);
+  end;
+end;
+
+// the rows or columns with an entry of their own, in order
+function TWorksheet.AxisEntries(aByRows: boolean): TArray<TPair<integer, TAxisFormat>>;
+var
+  default: TAxisFormat;
 begin
   var sheet: TWorksheetE := Objects(False);
-  var base: cardinal := 8;
-  if sheet.IsPresent('SheetFormatPr') then
-  begin
-    if sheet.SheetFormatPr.Present[@sheet.SheetFormatPr.DefaultColWidth] then
-      Exit(FileToWidth(sheet.SheetFormatPr.DefaultColWidth));
-    if sheet.SheetFormatPr.Present[@sheet.SheetFormatPr.BaseColWidth] then
-      base := sheet.SheetFormatPr.BaseColWidth;
+  var entries: TList<TPair<integer, TAxisFormat>> := TList<TPair<integer, TAxisFormat>>.Create;
+  try
+    if aByRows then
+    begin
+      default := AxisDefault(True);
+      for var row: TRowCT in sheet.SheetData.Row do
+        entries.Add(TPair<integer, TAxisFormat>.Create(row.R, RowAxis(row, default)));
+    end
+    else
+    begin
+      for var columns: TColsCT in sheet.Cols do // not SortedColumns: it would add an empty <cols>, which Excel refuses
+        for var column: TColCT in columns.Col do
+          for var index := column.Min to Min(column.Max, TUtility.cMaxColumn) do
+            entries.Add(TPair<integer, TAxisFormat>.Create(index, ColumnAxis(column)));
+      entries.Sort(TComparer<TPair<integer, TAxisFormat>>.Construct(
+        function(const aLeft, aRight: TPair<integer, TAxisFormat>): integer
+        begin
+          Result := CompareValue(aLeft.Key, aRight.Key);
+        end));
+    end;
+    Result := entries.ToArray;
+  finally
+    entries.Free;
   end;
-  // base characters and the padding, in whole multiples of 8 pixels
-  var pixels: integer := (integer(base) * cDigitPixels + 5 + 7) div 8 * 8;
-  Result := Trunc((pixels - 5) / cDigitPixels * 100 + 0.5) / 100;
 end;
+
+// aChange written to the rows or columns aFirst..aLast, their entries made where missing (a row's own height dropped
+// only where it has one)
+procedure TWorksheet.ApplyAxis(aByRows: boolean; aFirst, aLast: integer; const aChange: TAxisChange);
+begin
+  var aspects: TAxisAspects := aChange.Aspects;
+  if aByRows and (aspects * [axSize, axHidden] = []) then
+  begin
+    var sheet: TWorksheetE := Objects(False);
+    var rows: TRowCTList := sheet.SheetData.Row;
+    var rowIndex: integer;
+    FindRow(sheet, aFirst, rowIndex);
+    while (rowIndex < rows.Count) and (rows[rowIndex].R <= cardinal(aLast)) do
+    begin
+      var row: TRowCT := rows[rowIndex];
+      if row.Present[@row.Ht] or row.CustomHeight then
+      begin
+        Objects(True);
+        row.Clear(@row.Ht);
+        row.Clear(@row.CustomHeight);
+      end;
+      Inc(rowIndex);
+    end;
+  end
+  else if aByRows then
+    for var row: TRowCT in RowEntries(aFirst, aLast) do
+    begin
+      if axSize in aspects then
+      begin
+        row.Ht := aChange.Value.Size;
+        row.SetPresent(@row.Ht);
+        row.CustomHeight := True;
+      end
+      else if axDefaultSize in aspects then
+      begin
+        row.Clear(@row.Ht);
+        row.Clear(@row.CustomHeight);
+      end;
+      if axHidden in aspects then
+        if aChange.Value.Hidden then
+          row.Hidden := True
+        else
+          row.Clear(@row.Hidden);
+    end
+  else
+  begin
+    var width: Double := 0;
+    if axSize in aspects then
+      width := WidthToFile(aChange.Value.Size)
+    else if axDefaultSize in aspects then
+      width := WidthToFile(AxisDefault(False).Size);
+    for var column: TColCT in ColumnEntries(aFirst, aLast) do
+    begin
+      if aspects * [axSize, axDefaultSize] <> [] then
+      begin
+        column.Width := width;
+        column.SetPresent(@column.Width);
+        if axSize in aspects then
+          column.CustomWidth := True
+        else
+          column.Clear(@column.CustomWidth);
+        if axFitted in aspects then
+          column.BestFit := True
+        else
+          column.Clear(@column.BestFit);
+      end;
+      if axHidden in aspects then
+        if aChange.Value.Hidden then
+          column.Hidden := True
+        else
+          column.Clear(@column.Hidden);
+    end;
+  end;
+end;
+
+{$ENDREGION}
 
 // the column's <col>, nil when it has none
 function TWorksheet.ColumnEntry(aColumn: integer): TColCT;
@@ -2647,8 +2781,6 @@ begin
     Result := column.Style;
 end;
 
-// the <col> entries covering aLeft..aRight exactly, in order: those there split at the ends, the gaps filled with the
-// default width (a <col> without one is hidden)
 // the <col> entries in one <cols> sorted, as Excel writes them (a <cols> added when there is none)
 function TWorksheet.SortedColumns: TColCTList;
 begin
@@ -2670,6 +2802,8 @@ begin
     end));
 end;
 
+// the <col> entries covering aLeft..aRight exactly, in order: those there split at the ends, the gaps filled with the
+// default width (a <col> without one reads 0)
 function TWorksheet.ColumnEntries(aLeft, aRight: integer): TArray<TColCT>;
 begin
   var columns: TColCTList := SortedColumns;
@@ -2696,7 +2830,7 @@ begin
       var added: TColCT := TColCT.Create;
       added.Min := next;
       added.Max := last;
-      added.Width := WidthToFile(DefaultWidth);
+      added.Width := WidthToFile(AxisDefault(False).Size);
       columns.Insert(i, added);
       Inc(i);
       Result := Result + [added];
@@ -2763,17 +2897,11 @@ begin
   for var i := 0 to High(widths) do
     if widths[i] > 0 then
     begin
-      var pixels: integer := Trunc(widths[i] + 0.5) + 2 + 5;
-      var width: Double := Min(Trunc(pixels / cDigitPixels * 256) / 256, WidthToFile(cMaxColumnWidth));
-      var column: TColCT := ColumnEntries(aRange.fLeft + i, aRange.fLeft + i)[0];
-      column.Width := width;
-      column.BestFit := True;
-      column.CustomWidth := True;
-      column.Clear(@column.Hidden);
+      var characters: Double := Min((Trunc(widths[i] + 0.5) + 2) / cDigitPixels, cMaxColumnWidth);
+      ApplyAxis(False, aRange.fLeft + i, aRange.fLeft + i, AxisChange([axSize, axHidden, axFitted], characters, False));
     end;
 end;
 
-// the cell below and right of a frozen pane, '' when there is none
 // the <row> entries of aTop..aBottom, made where missing
 function TWorksheet.RowEntries(aTop, aBottom: integer): TArray<TRowCT>;
 begin
@@ -3072,6 +3200,7 @@ begin
   end;
 end;
 
+// the cell below and right of a frozen pane, '' when there is none
 function TWorksheet.GetFreezePanes: string;
 begin
   Result := '';
@@ -3952,46 +4081,22 @@ constructor TWorksheet.TAxis.Create(aSheet: TWorksheet; aByRows: boolean);
 const
   cPoint = 12700;
   cPixel = 9525;
+
+  function Emus(const aAxis: TAxisFormat): Int64;
+  begin
+    if aAxis.Hidden then
+      Result := 0
+    else if aByRows then
+      Result := Round(aAxis.Size * cPoint)
+    else // pixels as Excel shows the widths in Calibri's or Aptos Narrow's digits (cDigitPixels), as ColumnWidth reads them
+      Result := WidthPixels(aAxis.Size) * cPixel;
+  end;
+
 begin
   fSizes := TList<TPair<integer, Int64>>.Create;
-  var sheet: TWorksheetE := aSheet.Objects(False);
-  var format: TSheetFormatPrCT := nil;
-  if sheet.IsPresent('SheetFormatPr') then
-    format := sheet.SheetFormatPr;
-  if aByRows then
-  begin
-    fDefault := Round(15 * cPoint);
-    if format <> nil then
-      if format.ZeroHeight then
-        fDefault := 0
-      else if format.Present[@format.DefaultRowHeight] then
-        fDefault := Round(format.DefaultRowHeight * cPoint);
-    for var row: TRowCT in sheet.SheetData.Row do
-      if row.Hidden then
-        fSizes.Add(TPair<integer, Int64>.Create(row.R, 0))
-      else if row.Present[@row.Ht] then
-        fSizes.Add(TPair<integer, Int64>.Create(row.R, Round(row.Ht * cPoint)));
-    Exit;
-  end;
-  // pixels as Excel shows the widths in Calibri's or Aptos Narrow's digits (cDigitPixels), as ColumnWidth reads them
-  var base: integer := 8;
-  if (format <> nil) and format.Present[@format.BaseColWidth] then
-    base := format.BaseColWidth;
-  fDefault := (base * cDigitPixels + 5 + 7) div 8 * 8 * cPixel;
-  if (format <> nil) and format.Present[@format.DefaultColWidth] then
-    fDefault := Trunc(format.DefaultColWidth * cDigitPixels + 0.5) * cPixel;
-  for var columns: TColsCT in sheet.Cols do // not SortedColumns: it would add an empty <cols>, which Excel refuses
-    for var column: TColCT in columns.Col do
-      for var index := column.Min to Min(column.Max, TUtility.cMaxColumn) do
-        if column.Hidden then
-          fSizes.Add(TPair<integer, Int64>.Create(index, 0))
-        else if column.Present[@column.Width] then
-          fSizes.Add(TPair<integer, Int64>.Create(index, Trunc(column.Width * cDigitPixels + 0.5) * cPixel));
-  fSizes.Sort(TComparer<TPair<integer, Int64>>.Construct(
-    function(const aLeft, aRight: TPair<integer, Int64>): integer
-    begin
-      Result := CompareValue(aLeft.Key, aRight.Key);
-    end));
+  fDefault := Emus(aSheet.AxisDefault(aByRows));
+  for var entry: TPair<integer, TAxisFormat> in aSheet.AxisEntries(aByRows) do
+    fSizes.Add(TPair<integer, Int64>.Create(entry.Key, Emus(entry.Value)));
 end;
 
 destructor TWorksheet.TAxis.Destroy;
