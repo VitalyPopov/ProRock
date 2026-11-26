@@ -11,23 +11,9 @@ uses System.SysUtils, System.Classes, System.Generics.Collections, ProRock.Xmlit
 type
   TXlsxWalk = class;
 
-  // a worksheet as the walk sees it: its name, its storage, what a sheet delete plans on it
+  // a worksheet as the walk sees it: its name, its storage
   TXlsxWalkSheet = class
   private type
-    // a formula's cell through rows or columns inserted or deleted: where it is then, its text before and after (stored)
-    TFormulaMove = record
-      Cell: TCellCT;
-      Row, Column: integer;
-      Before, After: string;
-    end;
-    // a conditional format's formula (Rule, its Index) or data validation's (Validation, 1 or 2) changed the same way
-    TTextMove = record
-      Sheet: TXlsxWalkSheet;
-      Rule: TCfRuleCT;
-      Validation: TDataValidationCT;
-      Index: integer;
-      Text: string;
-    end;
     // the sheet's rows or columns as drawings place objects on them, in EMUs (12700 a point, 9525 a pixel): where one
     // starts (from 0, as markers count), which one a distance falls in
     TAxis = class
@@ -40,36 +26,21 @@ type
       function Start(aIndex: integer): Int64;
       procedure Find(aPosition: Int64; out aIndex: integer; out aOffset: Int64);
     end;
-    // a chart's reference to cells through rows or columns inserted or deleted: its c:f (Index -1), or an extension's
-    // element kept as read (Index in XmlUnknown); the text before and after
-    TChartMove = record
-      Part: string;
-      Reference: TXmlite;
-      Index: integer;
-      Before, After: string;
-    end;
   private
-    fWalk: TXlsxWalk;
     fBook: TXlsxBook;
     fName: string;
     fStore: TXlsxSheet;
-    procedure ShiftCharts(aMoves: TList<TChartMove>; const aMap: TReferenceMap);
-    procedure ApplyFormulas(aMoves: TList<TFormulaMove>; aRefs: TDictionary<cardinal, string>; aShifted: boolean;
-      const aMap: TReferenceMap);
-    procedure FoldSpills(aMoves: TList<TFormulaMove>);
   public
     constructor Create(aWalk: TXlsxWalk; const aName: string; aStore: TXlsxSheet);
-    // the sheet out of the workbook as Excel deletes it: EInvalidOpException with why when refused, nothing changed
-    procedure DeleteSheet;
   end;
 
-  // one kind of what an insert or delete moves: Plan finds what stands in the way ('' when nothing does) and keeps its
-  // moves, Apply makes them and never refuses
+  // one kind of what an insert, a delete or a sheet delete moves: Plan finds what stands in the way ('' when nothing does)
+  // and keeps its moves, Apply makes them and never refuses
   TXlsxHandler = class
   protected
     fWalk: TXlsxWalk;
     fMap: TReferenceMap; // the walk's, the tables' part filled in
-    // the sheet whose rows or columns move: its book, storage and name
+    // the sheet whose rows or columns move, or which is deleted: its book, storage and name
     fSheet: TXlsxWalkSheet;
     fBook: TXlsxBook;
     fStore: TXlsxSheet;
@@ -79,28 +50,36 @@ type
     constructor Create(aWalk: TXlsxWalk); virtual;
     function Plan: string; virtual;
     procedure Apply; virtual;
+    // the formulas' texts Apply writes, a line each: a name local to a deleted sheet that one names stays
+    procedure Written(aTo: TStringBuilder); virtual;
   end;
 
-  // the workbook's worksheets in order, for one insert or delete
+  // the workbook's worksheets in order, for one insert, delete or sheet delete
   TXlsxWalk = class
   private
     fBook: TXlsxBook;
     fSheets: TObjectList<TXlsxWalkSheet>;
-    fSheet: TXlsxWalkSheet; // the one whose rows or columns move
+    fSheet: TXlsxWalkSheet; // the one whose rows or columns move, or which is deleted
     fMap: TReferenceMap;
+    fHandlers: TObjectList<TXlsxHandler>; // the run's, in the order they plan
+    fDropped: TList<string>; // the parts a sheet delete removes with the sheet's (pivot caches)
+    function Planned: string;
+    function Shift: string;
+    function DeleteSheet: string;
   public
     constructor Create(aBook: TXlsxBook);
     destructor Destroy; override;
     // the next worksheet: its name and its storage (borrowed)
     function Add(const aName: string; aStore: TXlsxSheet): TXlsxWalkSheet;
-    // Excel's Insert and Delete of aMap's rows or columns on aSheet: why when refused, nothing changed then
-    function Shift(aSheet: TXlsxWalkSheet; const aMap: TReferenceMap): string;
+    // Excel's Insert and Delete of aMap's rows or columns on aSheet, or its Delete of aSheet (TReferenceMap.SheetDeleted;
+    // a very hidden or the last visible sheet is the caller's to refuse): why when refused, nothing changed then
+    function Run(aSheet: TXlsxWalkSheet; const aMap: TReferenceMap): string;
   end;
 
 implementation
 
-uses System.Math, System.TypInfo, System.RegularExpressions, ProRock.Calcite.Formulas,
-  ProRock.Xmlite.Schema.Ooxml.DmlSheet, ProRock.Xmlite.Schema.Ooxml.DmlChart,
+uses System.StrUtils, System.Math, System.TypInfo, System.RegularExpressions, System.Generics.Defaults,
+  ProRock.Calcite.Formulas, ProRock.Xmlite.Schema.Ooxml.DmlSheet, ProRock.Xmlite.Schema.Ooxml.DmlChart,
   ProRock.Xmlite.Schema.Ooxml.Vml, ProRock.Xmlite.Schema.Ooxml.VmlExcel;
 
 type
@@ -147,21 +126,39 @@ type
   end;
 
   // the sheet's tables: they fill the walk's map first (the data row a delete keeps, the tables and columns gone, their
-  // bodies)
+  // bodies); a sheet deleted, the other sheets' tables' formulas naming it
   TTablesHandler = class(TXlsxHandler)
+  private type
+    // a formula of a table on another sheet, changed
+    TKeptFormula = record
+      Part: string;
+      Formula: TTableFormulaCT;
+      Text: string;
+    end;
   private
     fCleared: TList<TArea>; // the data rows kept, emptied after the move
+    fKept: TList<TKeptFormula>;
     procedure ShiftTables;
+    function PlanOthers: string;
+    function PlanFormula(const aPart: string; aFormula: TTableFormulaCT): string;
   public
     constructor Create(aWalk: TXlsxWalk); override;
     destructor Destroy; override;
     procedure Complete(var aMap: TReferenceMap);
     function Plan: string; override;
     procedure Apply; override;
+    procedure Written(aTo: TStringBuilder); override;
   end;
 
+  // the sheet's pivot tables and the caches' sources on it; a sheet deleted, the caches only its pivot tables used
   TPivotsHandler = class(TXlsxHandler)
+  private
+    fCaches: TList<string>;
+    procedure PlanCaches;
+    procedure DropCaches;
   public
+    constructor Create(aWalk: TXlsxWalk); override;
+    destructor Destroy; override;
     function Plan: string; override;
     procedure Apply; override;
   end;
@@ -191,22 +188,61 @@ type
     procedure Apply; override;
   end;
 
+  // every chart's references to cells, on every sheet's and chart sheet's drawings (but a deleted sheet's)
   TChartsHandler = class(TXlsxHandler)
+  private type
+    // a chart's reference to cells through the change: its c:f (Index -1), or an extension's element kept as read (Index
+    // in XmlUnknown); the text before and after
+    TChartMove = record
+      Part: string;
+      Reference: TXmlite;
+      Index: integer;
+      Before, After: string;
+    end;
   private
-    fMoves: TList<TXlsxWalkSheet.TChartMove>;
+    fMoves: TList<TChartMove>;
+    function ChartParts(aCharts: TList<string>): string;
+    function PlanChart(const aPart: string; aFound: TList<TXmlite>; aSeen: TDictionary<TBasite, boolean>): string;
   public
     constructor Create(aWalk: TXlsxWalk); override;
     destructor Destroy; override;
     function Plan: string; override;
     procedure Apply; override;
+    procedure Written(aTo: TStringBuilder); override;
   end;
 
-  // every sheet's formulas: the cells', shared formulas' areas, conditional formats' and validation's (the rules')
+  // every sheet's formulas (a deleted sheet's not): the cells', shared formulas' areas, conditional formats' and
+  // validation's (the rules')
   TFormulasHandler = class(TXlsxHandler)
+  private type
+    // a formula's cell through the change: where it is then, its text before and after (stored)
+    TFormulaMove = record
+      Cell: TCellCT;
+      Row, Column: integer;
+      Before, After: string;
+    end;
+    // a conditional format's formula (Rule, its Index) or data validation's (Validation, 1 or 2) changed the same way
+    TTextMove = record
+      Sheet: TXlsxWalkSheet;
+      Rule: TCfRuleCT;
+      Validation: TDataValidationCT;
+      Index: integer;
+      Text: string;
+    end;
   private
-    fMoves: TObjectList<TList<TXlsxWalkSheet.TFormulaMove>>; // each sheet's, in the walk's order
+    fMoves: TObjectList<TList<TFormulaMove>>; // each sheet's, in the walk's order
     fRefs: TObjectList<TDictionary<cardinal, string>>;
-    fRules: TList<TXlsxWalkSheet.TTextMove>;
+    fRules: TList<TTextMove>;
+    function Changed(aSheet: TXlsxWalkSheet; const aMap: TReferenceMap; const aText, aWhere: string;
+      out aResult, aWhy: string): boolean;
+    function PlanSheet(aSheet: TXlsxWalkSheet; aMoves: TList<TFormulaMove>; aRefs: TDictionary<cardinal, string>): string;
+    function PlanRules(aSheet: TXlsxWalkSheet; const aMap: TReferenceMap): string;
+    procedure ApplyOne(aSheet: TXlsxWalkSheet; const aMove: TFormulaMove; aShifted: boolean);
+    procedure ApplyShared(aSheet: TXlsxWalkSheet; aMoves: TList<TFormulaMove>; aSi: cardinal; aMembers: TList<integer>;
+      aRefs: TDictionary<cardinal, string>; aShifted: boolean);
+    procedure ApplySheet(aSheet: TXlsxWalkSheet; aMoves: TList<TFormulaMove>; aRefs: TDictionary<cardinal, string>;
+      aShifted: boolean);
+    procedure FoldSpills(aSheet: TXlsxWalkSheet; aMoves: TList<TFormulaMove>);
   public
     constructor Create(aWalk: TXlsxWalk); override;
     destructor Destroy; override;
@@ -214,6 +250,7 @@ type
     // the rules' formulas: before the lists drop the rules gone with their areas
     procedure ApplyRules;
     procedure Apply; override;
+    procedure Written(aTo: TStringBuilder); override;
   end;
 
   // the defined names, print areas and titles too
@@ -224,6 +261,7 @@ type
   public
     function Plan: string; override;
     procedure Apply; override;
+    procedure Written(aTo: TStringBuilder); override;
   end;
 
   // the sheet's lists by address, one handler each
@@ -282,15 +320,64 @@ type
     procedure Apply; override;
   end;
 
+  // a sheet deleted: the other sheets' extensions kept as read (x14 conditional formats, validation, sparklines), their
+  // formulas and areas naming it; rows and columns do not move them yet
+  TExtensionsHandler = class(TXlsxHandler)
+  private type
+    // an extension's element kept as read (Index in XmlUnknown), changed
+    TKeptMove = record
+      Sheet: TXlsxWalkSheet;
+      Extension: TXmlite;
+      Index: integer;
+      Text: string;
+    end;
+  private
+    fMoves: TList<TKeptMove>;
+  public
+    constructor Create(aWalk: TXlsxWalk); override;
+    destructor Destroy; override;
+    function Plan: string; override;
+    procedure Apply; override;
+    procedure Written(aTo: TStringBuilder); override;
+  end;
+
+  // a sheet deleted, the names local to it: gone, but those another formula names (Data!Total, now [0]!Total), which
+  // Excel keeps as the workbook's; those of the sheets after it count one less. It plans last: it reads every handler's
+  // Written
+  TLocalNamesHandler = class(TXlsxHandler)
+  private
+    fIndex: integer; // the sheet's in the workbook
+    fLifted: TList<integer>;
+  public
+    constructor Create(aWalk: TXlsxWalk); override;
+    destructor Destroy; override;
+    function Plan: string; override;
+    procedure Apply; override;
+  end;
+
+  // a sheet deleted, the sheet itself: slicers and timelines refused; the active tab and the views, its shared strings,
+  // its parts (and the walk's dropped ones), its entry
+  TSheetHandler = class(TXlsxHandler)
+  private
+    fIndex: integer; // the sheet's in the workbook
+    procedure ShowAnother;
+    procedure RemoveParts;
+  public
+    function Plan: string; override;
+    procedure Apply; override;
+  end;
+
 constructor TXlsxWalk.Create(aBook: TXlsxBook);
 begin
   inherited Create;
   fBook := aBook;
   fSheets := TObjectList<TXlsxWalkSheet>.Create;
+  fDropped := TList<string>.Create;
 end;
 
 destructor TXlsxWalk.Destroy;
 begin
+  fDropped.Free;
   fSheets.Free;
   inherited;
 end;
@@ -304,7 +391,6 @@ end;
 constructor TXlsxWalkSheet.Create(aWalk: TXlsxWalk; const aName: string; aStore: TXlsxSheet);
 begin
   inherited Create;
-  fWalk := aWalk;
   fBook := aWalk.fBook;
   fName := aName;
   fStore := aStore;
@@ -326,6 +412,10 @@ begin
 end;
 
 procedure TXlsxHandler.Apply;
+begin
+end;
+
+procedure TXlsxHandler.Written(aTo: TStringBuilder);
 begin
 end;
 
@@ -413,110 +503,6 @@ begin
     if sheet.IsPresent(cElements[i]) then
       Exit(cWhat[i] + cLater);
   Result := '';
-end;
-
-// aSheet's formulas through aMap (rows or columns of aShifted inserted or deleted, or a sheet deleted): each cell's that
-// stays, its place and text then; shared formulas' areas by si; conditional formats' and validation's formulas that change.
-// False with aWhy when one that may name aMap's sheet does not read
-function PlanFormulas(aSheet: TXlsxWalkSheet; const aMap: TReferenceMap; aShifted: TXlsxWalkSheet;
-  aMoves: TList<TXlsxWalkSheet.TFormulaMove>; aTexts: TList<TXlsxWalkSheet.TTextMove>; aRefs: TDictionary<cardinal, string>;
-  out aWhy: string): boolean;
-var
-  map: TReferenceMap;
-
-  function Changed(const aText, aWhere: string; out aResult: string): boolean;
-  begin
-    Result := True;
-    var why: string;
-    if ShiftFormula(aText, map, aResult, why) then
-      Exit;
-    aResult := aText;
-    if (aShifted = aSheet) or aText.ToUpper.Contains(aMap.Sheet.ToUpper) then
-    begin
-      aWhy := Format('the formula of %s!%s does not read: %s', [aSheet.fName, aWhere, why]);
-      Result := False;
-    end;
-  end;
-
-  procedure AddText(aRule: TCfRuleCT; aValidation: TDataValidationCT; aIndex: integer; const aText, aWhere: string);
-  begin
-    var move: TXlsxWalkSheet.TTextMove := Default(TXlsxWalkSheet.TTextMove);
-    if not Changed(DecodeText(aText), aWhere, move.Text) then
-      Exit;
-    if move.Text = DecodeText(aText) then
-      Exit;
-    move.Sheet := aSheet;
-    move.Rule := aRule;
-    move.Validation := aValidation;
-    move.Index := aIndex;
-    aTexts.Add(move);
-  end;
-
-begin
-  Result := False;
-  aWhy := '';
-  map := aMap;
-  map.OnSheet := (map.Change <> TReferenceChange.rcSheetDelete) and AnsiSameText(aSheet.fName, map.Sheet);
-  map.InName := False;
-  var sheet: TWorksheetE := aSheet.fStore.Objects(False);
-  for var row: TRowCT in sheet.SheetData.Row do
-    for var cell: TCellCT in row.C do
-    begin
-      if not cell.IsPresent('F') or (cell.F.T = stcftDataTable) then
-        Continue;
-      if (cell.F.T = stcftShared) and (cell.F.Ref <> '') then
-        aRefs.AddOrSetValue(cell.F.Si, cell.F.Ref);
-      var move: TXlsxWalkSheet.TFormulaMove;
-      move.Cell := cell;
-      move.Row := row.R;
-      move.Column := TUtility.ColumnOf(cell.R);
-      if not aSheet.fStore.FormulaText(move.Row, move.Column, move.Before) then
-        Continue;
-      if aShifted = aSheet then
-        if aMap.ByRows then
-          move.Row := aMap.MovedIndex(move.Row)
-        else
-          move.Column := aMap.MovedIndex(move.Column);
-      if (move.Row = 0) or (move.Column = 0) then
-        Continue;
-      if not Changed(move.Before, cell.R, move.After) then
-        Exit;
-      aMoves.Add(move);
-    end;
-  for var formatting: TConditionalFormattingCT in sheet.ConditionalFormatting do
-    for var rule: TCfRuleCT in formatting.CfRule do
-      for var index := 0 to rule.Formula.Count - 1 do
-      begin
-        AddText(rule, nil, index, rule.Formula[index], formatting.Sqref);
-        if aWhy <> '' then
-          Exit;
-      end;
-  if sheet.IsPresent('DataValidations') then
-    for var validation: TDataValidationCT in sheet.DataValidations.DataValidation do
-    begin
-      if validation.Formula1 <> '' then
-        AddText(nil, validation, 1, validation.Formula1, validation.Sqref);
-      if (aWhy = '') and (validation.Formula2 <> '') then
-        AddText(nil, validation, 2, validation.Formula2, validation.Sqref);
-      if aWhy <> '' then
-        Exit;
-    end;
-  Result := True;
-end;
-
-// the conditional formats' and validation's formulas PlanFormulas changed written
-procedure WriteTexts(aTexts: TList<TXlsxWalkSheet.TTextMove>);
-begin
-  for var move: TXlsxWalkSheet.TTextMove in aTexts do
-  begin
-    move.Sheet.fStore.Objects(True);
-    if move.Rule <> nil then
-      move.Rule.Formula[move.Index] := EncodeText(move.Text)
-    else if move.Index = 1 then
-      move.Validation.Formula1 := EncodeText(move.Text)
-    else
-      move.Validation.Formula2 := EncodeText(move.Text);
-  end;
 end;
 
 // a row inserted as Excel does: the format and height of the row above (not hidden), its cells' styles where they differ
@@ -1246,6 +1232,8 @@ var
   end;
 
 begin
+  if fMap.Change = TReferenceChange.rcSheetDelete then
+    Exit(PlanOthers);
   last := fMap.First - fMap.Delta - 1;
   var package: TPackageOoxml := fBook.Package;
   for var relationship: TRelationshipOoxml in package.Relationships(fStore.Part) do
@@ -1281,9 +1269,14 @@ begin
   Result := '';
 end;
 
-// Excel's refusal of a pivot table cut (its page fields above it count), '' when none is
+// Excel's refusal of a pivot table cut (its page fields above it count), '' when none is; a sheet deleted, its caches
 function TPivotsHandler.Plan: string;
 begin
+  if fMap.Change = TReferenceChange.rcSheetDelete then
+  begin
+    PlanCaches;
+    Exit('');
+  end;
   var last: integer := fMap.First - fMap.Delta - 1;
   for var area: TArea in fStore.Areas(akPivot) do
   begin
@@ -1308,24 +1301,135 @@ begin
   Result := '';
 end;
 
+constructor TPivotsHandler.Create(aWalk: TXlsxWalk);
+begin
+  inherited;
+  fCaches := TList<string>.Create;
+end;
+
+destructor TPivotsHandler.Destroy;
+begin
+  fCaches.Free;
+  inherited;
+end;
+
+// a sheet deleted: the caches only its pivot tables used, in fCaches
+procedure TPivotsHandler.PlanCaches;
+begin
+  var package: TPackageOoxml := fBook.Package;
+  var used: TList<string> := TList<string>.Create(TIStringComparer.Ordinal);
+  try
+    for var sheet: TXlsxWalkSheet in fWalk.fSheets do
+      if sheet <> fSheet then
+        for var pivot: TRelationshipOoxml in package.Relationships(sheet.fStore.Part, cPivotTable) do
+          for var cache: TRelationshipOoxml in package.Relationships(pivot.Part, cPivotCacheDefinition) do
+            used.Add(cache.Part);
+    for var pivot: TRelationshipOoxml in package.Relationships(fStore.Part, cPivotTable) do
+      for var cache: TRelationshipOoxml in package.Relationships(pivot.Part, cPivotCacheDefinition) do
+        if not used.Contains(cache.Part) and not fCaches.Contains(cache.Part) then
+          fCaches.Add(cache.Part);
+  finally
+    used.Free;
+  end;
+end;
+
+// a sheet deleted: its caches out of the workbook's list, their parts to the walk's dropped ones
+procedure TPivotsHandler.DropCaches;
+begin
+  var package: TPackageOoxml := fBook.Package;
+  var workbook: TWorkbookE := package.EditPart<TWorkbookE>(fBook.WorkbookPart);
+  if workbook.IsPresent('PivotCaches') then
+  begin
+    for var relationship: TRelationshipOoxml in package.Relationships(fBook.WorkbookPart, cPivotCacheDefinition) do
+      if fCaches.Contains(relationship.Part) then
+        for var i := workbook.PivotCaches.PivotCache.Count - 1 downto 0 do
+          if workbook.PivotCaches.PivotCache[i].Id = relationship.Id then
+            workbook.PivotCaches.PivotCache.Delete(i);
+    if workbook.PivotCaches.PivotCache.Count = 0 then
+      workbook.Clear('PivotCaches');
+  end;
+  fWalk.fDropped.AddRange(fCaches);
+end;
+
 constructor TTablesHandler.Create(aWalk: TXlsxWalk);
 begin
   inherited;
   fCleared := TList<TArea>.Create;
+  fKept := TList<TKeptFormula>.Create;
 end;
 
 destructor TTablesHandler.Destroy;
 begin
+  fKept.Free;
   fCleared.Free;
   inherited;
 end;
 
+// a sheet deleted: the other sheets' tables' formulas naming it, in fKept; why one does not read, '' when all do
+function TTablesHandler.PlanOthers: string;
+begin
+  var package: TPackageOoxml := fBook.Package;
+  for var sheet: TXlsxWalkSheet in fWalk.fSheets do
+    if sheet <> fSheet then
+      for var relationship: TRelationshipOoxml in package.Relationships(sheet.fStore.Part, cTable) do
+      begin
+        var table: TTableE := package.Part<TTableE>(relationship.Part);
+        if table <> nil then
+          for var column: TTableColumnCT in table.TableColumns.TableColumn do
+          begin
+            Result := '';
+            if column.IsPresent('CalculatedColumnFormula') then
+              Result := PlanFormula(relationship.Part, column.CalculatedColumnFormula);
+            if (Result = '') and column.IsPresent('TotalsRowFormula') then
+              Result := PlanFormula(relationship.Part, column.TotalsRowFormula);
+            if Result <> '' then
+              Exit;
+          end;
+      end;
+  Result := '';
+end;
+
+function TTablesHandler.PlanFormula(const aPart: string; aFormula: TTableFormulaCT): string;
+begin
+  Result := '';
+  var text: string := DecodeText(aFormula.XmlValue);
+  var kept: TKeptFormula := Default(TKeptFormula);
+  var why: string;
+  if not ShiftFormula(text, fMap, kept.Text, why) then
+  begin
+    if ContainsText(text, fName) then
+      Result := Format('a formula of the table %s does not read: %s', [aPart, why]);
+    Exit;
+  end;
+  if kept.Text = text then
+    Exit;
+  kept.Part := aPart;
+  kept.Formula := aFormula;
+  fKept.Add(kept);
+end;
+
+procedure TTablesHandler.Written(aTo: TStringBuilder);
+begin
+  for var kept: TKeptFormula in fKept do
+    aTo.Append(kept.Text).Append(#10);
+end;
+
 // the walk's map without the data row a delete keeps (all the data rows of a table whose header stays deleted: Excel keeps
 // the first of them, emptied, and deletes the rest), with the tables and table columns the change deletes and the tables'
-// bodies, for the formulas naming them
+// bodies, for the formulas naming them; a sheet deleted, all its tables
 procedure TTablesHandler.Complete(var aMap: TReferenceMap);
 begin
   var package: TPackageOoxml := fBook.Package;
+  if aMap.Change = TReferenceChange.rcSheetDelete then
+  begin
+    for var relationship: TRelationshipOoxml in package.Relationships(fStore.Part, cTable) do
+    begin
+      var table: TTableE := package.Part<TTableE>(relationship.Part);
+      if table <> nil then
+        aMap.GoneTables := aMap.GoneTables + [string(table.Name)];
+    end;
+    Exit;
+  end;
   if aMap.ByRows and (aMap.Change = TReferenceChange.rcDelete) then
   begin
     var last: integer := aMap.First - aMap.Delta - 1;
@@ -1559,6 +1663,11 @@ end;
 // the tables moved, then the data rows a delete kept emptied
 procedure TTablesHandler.Apply;
 begin
+  for var kept: TKeptFormula in fKept do
+  begin
+    fBook.Package.EditPart<TTableE>(kept.Part);
+    kept.Formula.XmlValue := EncodeText(kept.Text);
+  end;
   if fMap.Count <> 0 then
     ShiftTables;
   for var area: TArea in fCleared do
@@ -1572,6 +1681,11 @@ end;
 // a source deleted whole keeps its ref, as in Excel
 procedure TPivotsHandler.Apply;
 begin
+  if fMap.Change = TReferenceChange.rcSheetDelete then
+  begin
+    DropCaches;
+    Exit;
+  end;
   var package: TPackageOoxml := fBook.Package;
   for var relationship: TRelationshipOoxml in package.Relationships(fStore.Part) do
     if relationship.&Type.EndsWith(cPivotTable) then
@@ -1831,7 +1945,7 @@ function ChartPoints(const aBefore, aAfter, aSheet: string; const aMap: TReferen
 
   function Key(const aCell: TChartCell): string;
   begin
-    Result := Format('%s!%d,%d', [AnsiUpperCase(aCell.Sheet), aCell.Row, aCell.Column]);
+    Result := Format('%s!%d,%d', [aCell.Sheet, aCell.Row, aCell.Column]);
   end;
 
 begin
@@ -1841,7 +1955,7 @@ begin
   Result := ChartCells(aBefore, before) and ChartCells(aAfter, after);
   if not Result then
     Exit;
-  var places: TDictionary<string, integer> := TDictionary<string, integer>.Create;
+  var places: TDictionary<string, integer> := TDictionary<string, integer>.Create(TIStringComparer.Ordinal);
   try
     for var i := 0 to High(after) do
       places.AddOrSetValue(Key(after[i]), i);
@@ -1953,7 +2067,7 @@ begin
     var changed, why: string;
     if not ShiftFormula(text, aMap, changed, why) then
     begin
-      if text.ToUpper.Contains(aSheet.ToUpper) then
+      if ContainsText(text, aSheet) then
       begin
         aWhy := Format('%s (%s)', [why, text]);
         Exit(False);
@@ -1970,112 +2084,101 @@ begin
   Result := True;
 end;
 
-// every chart's references to cells (on every sheet and chart sheet; but aSheet's when it is deleted) through aMap, aSheet's
-// rows or columns inserted or deleted as a defined name's (absolute ones), or aSheet deleted; False with aWhy for a chart that
-// does not read, or a reference naming the sheet that does not
-function PlanCharts(aSheet: TXlsxWalkSheet; const aMap: TReferenceMap; aMoves: TList<TXlsxWalkSheet.TChartMove>;
-  out aWhy: string): boolean;
+// the charts of every sheet's and chart sheet's drawings (but a deleted sheet's), in aCharts: why one cannot move, '' else
+function TChartsHandler.ChartParts(aCharts: TList<string>): string;
 begin
-  Result := False;
-  aWhy := '';
-  var package: TPackageOoxml := aSheet.fBook.Package;
+  Result := '';
+  var package: TPackageOoxml := fBook.Package;
+  var owners: TList<string> := TList<string>.Create;
   var drawings: TList<string> := TList<string>.Create;
+  try
+    for var sheet: TXlsxWalkSheet in fWalk.fSheets do
+      if (sheet <> fSheet) or (fMap.Change <> TReferenceChange.rcSheetDelete) then
+        owners.Add(sheet.fStore.Part);
+    for var relationship: TRelationshipOoxml in package.Relationships(fBook.WorkbookPart) do
+      if relationship.&Type.EndsWith(cChartsheet) and (relationship.Part <> '') then
+        owners.Add(relationship.Part);
+    for var owner: string in owners do
+      for var relationship: TRelationshipOoxml in package.Relationships(owner) do
+        if relationship.&Type.EndsWith(cDrawing) and (relationship.Part <> '') and not drawings.Contains(relationship.Part) then
+          drawings.Add(relationship.Part);
+    for var drawing: string in drawings do
+      for var relationship: TRelationshipOoxml in package.Relationships(drawing) do
+        if relationship.&Type.EndsWith(cChartEx) then
+          Exit('charts of Excel 2016''s kinds (chartEx), which Calcite does not move yet')
+        else if relationship.&Type.EndsWith(cChart) and (relationship.Part <> '') and not aCharts.Contains(relationship.Part) then
+          aCharts.Add(relationship.Part);
+  finally
+    drawings.Free;
+    owners.Free;
+  end;
+end;
+
+// one chart's references through the map, those that change in fMoves: why it, or a reference naming the sheet, does not
+// read; '' else
+function TChartsHandler.PlanChart(const aPart: string; aFound: TList<TXmlite>; aSeen: TDictionary<TBasite, boolean>): string;
+begin
+  var chart: TChartSpaceE := fBook.Package.Part<TChartSpaceE>(aPart);
+  if chart = nil then
+    Exit(Format('a chart that does not read (%s)', [aPart]));
+  aFound.Clear;
+  aSeen.Clear;
+  ChartReferences(chart, aFound, aSeen);
+  for var reference: TXmlite in aFound do
+  begin
+    var move: TChartMove := Default(TChartMove);
+    move.Part := aPart;
+    move.Reference := reference;
+    move.Index := -1;
+    var why: string := '';
+    if reference is TExtensionCT then
+    begin
+      for var index := 0 to reference.XmlUnknown.Count - 1 do
+      begin
+        move.Before := reference.XmlUnknown[index].Xml;
+        move.Index := index;
+        if not MappedKeptXml(move.Before, fName, fMap, move.After, why) then
+          Exit(Format('a formula of the chart %s does not read: %s', [aPart, why]));
+        if move.After <> move.Before then
+          fMoves.Add(move);
+      end;
+      Continue;
+    end;
+    move.Before := ChartFormula(reference);
+    if not ShiftFormula(move.Before, fMap, move.After, why) then
+    begin
+      if ContainsText(move.Before, fName) then
+        Exit(Format('the formula %s of the chart %s does not read: %s', [move.Before, aPart, why]));
+      Continue;
+    end;
+    if move.After <> move.Before then
+      fMoves.Add(move);
+  end;
+  Result := '';
+end;
+
+function TChartsHandler.Plan: string;
+begin
   var charts: TList<string> := TList<string>.Create;
   var found: TList<TXmlite> := TList<TXmlite>.Create;
   var seen: TDictionary<TBasite, boolean> := TDictionary<TBasite, boolean>.Create;
   try
-    var owners: TList<string> := TList<string>.Create;
-    try
-      for var sheet: TXlsxWalkSheet in aSheet.fWalk.fSheets do
-        if (sheet <> aSheet) or (aMap.Change <> TReferenceChange.rcSheetDelete) then
-          owners.Add(sheet.fStore.Part);
-      for var relationship: TRelationshipOoxml in package.Relationships(aSheet.fBook.WorkbookPart) do
-        if relationship.&Type.EndsWith(cChartsheet) and (relationship.Part <> '') then
-          owners.Add(relationship.Part);
-      for var owner: string in owners do
-        for var relationship: TRelationshipOoxml in package.Relationships(owner) do
-          if relationship.&Type.EndsWith(cDrawing) and (relationship.Part <> '') and not drawings.Contains(relationship.Part) then
-            drawings.Add(relationship.Part);
-    finally
-      owners.Free;
-    end;
-    for var drawing: string in drawings do
-      for var relationship: TRelationshipOoxml in package.Relationships(drawing) do
-        if relationship.&Type.EndsWith(cChartEx) then
-        begin
-          aWhy := 'charts of Excel 2016''s kinds (chartEx), which Calcite does not move yet';
-          Exit;
-        end
-        else if relationship.&Type.EndsWith(cChart) and (relationship.Part <> '') and not charts.Contains(relationship.Part) then
-          charts.Add(relationship.Part);
+    Result := ChartParts(charts);
     for var part: string in charts do
-    begin
-      var chart: TChartSpaceE := package.Part<TChartSpaceE>(part);
-      if chart = nil then
-      begin
-        aWhy := Format('a chart that does not read (%s)', [part]);
-        Exit;
-      end;
-      found.Clear;
-      seen.Clear;
-      ChartReferences(chart, found, seen);
-      for var reference: TXmlite in found do
-        if reference is TExtensionCT then
-        begin
-          for var index := 0 to reference.XmlUnknown.Count - 1 do
-          begin
-            var move: TXlsxWalkSheet.TChartMove := Default(TXlsxWalkSheet.TChartMove);
-            move.Before := reference.XmlUnknown[index].Xml;
-            var why: string;
-            if not MappedKeptXml(move.Before, aSheet.fName, aMap, move.After, why) then
-            begin
-              aWhy := Format('a formula of the chart %s does not read: %s', [part, why]);
-              Exit;
-            end;
-            if move.After = move.Before then
-              Continue;
-            move.Part := part;
-            move.Reference := reference;
-            move.Index := index;
-            aMoves.Add(move);
-          end;
-        end
-        else
-        begin
-          var move: TXlsxWalkSheet.TChartMove := Default(TXlsxWalkSheet.TChartMove);
-          move.Before := ChartFormula(reference);
-          var why: string;
-          if not ShiftFormula(move.Before, aMap, move.After, why) then
-          begin
-            if move.Before.ToUpper.Contains(aSheet.fName.ToUpper) then
-            begin
-              aWhy := Format('the formula %s of the chart %s does not read: %s', [move.Before, part, why]);
-              Exit;
-            end;
-            Continue;
-          end;
-          if move.After = move.Before then
-            Continue;
-          move.Part := part;
-          move.Reference := reference;
-          move.Index := -1;
-          aMoves.Add(move);
-        end;
-    end;
-    Result := True;
+      if Result = '' then
+        Result := PlanChart(part, found, seen);
   finally
     seen.Free;
     found.Free;
     charts.Free;
-    drawings.Free;
   end;
 end;
 
 // the planned chart references written; their cached points follow their cells
-procedure TXlsxWalkSheet.ShiftCharts(aMoves: TList<TChartMove>; const aMap: TReferenceMap);
+procedure TChartsHandler.Apply;
 begin
   var package: TPackageOoxml := fBook.Package;
-  for var move: TChartMove in aMoves do
+  for var move: TChartMove in fMoves do
   begin
     package.EditPart<TChartSpaceE>(move.Part);
     if move.Index >= 0 then
@@ -2087,7 +2190,7 @@ begin
     end;
     var indexes: TArray<integer>;
     var total: integer;
-    var points: boolean := ChartPoints(move.Before, move.After, fName, aMap, indexes, total);
+    var points: boolean := ChartPoints(move.Before, move.After, fName, fMap, indexes, total);
     if move.Reference is TNumRefCT then
     begin
       var reference: TNumRefCT := TNumRefCT(move.Reference);
@@ -2105,6 +2208,12 @@ begin
     else // a multi-level cache's levels are its columns or rows: Excel reads it again
       TMultiLvlStrRefCT(move.Reference).F := move.After;
   end;
+end;
+
+procedure TChartsHandler.Written(aTo: TStringBuilder);
+begin
+  for var move: TChartMove in fMoves do
+    aTo.Append(move.After).Append(#10);
 end;
 
 // the sheet's notes: its comments part and the VML drawing its legacyDrawing names ('' - none)
@@ -2339,101 +2448,10 @@ begin
   end;
 end;
 
-// the planned formulas written: a shared formula stays one while its cells still fill from its first cell's text (that cell
-// gone, the next one is first) and it names no #REF! (Excel makes those plain), else each cell gets its own; aShifted: this
-// sheet's rows or columns moved
-procedure TXlsxWalkSheet.ApplyFormulas(aMoves: TList<TFormulaMove>; aRefs: TDictionary<cardinal, string>; aShifted: boolean;
-  const aMap: TReferenceMap);
-begin
-  var groups: TObjectDictionary<cardinal, TList<integer>> := TObjectDictionary<cardinal, TList<integer>>.Create([doOwnsValues]);
-  try
-    for var index := 0 to aMoves.Count - 1 do
-    begin
-      var move: TFormulaMove := aMoves[index];
-      var formula: TCellFormulaCT := move.Cell.F;
-      if formula.T = stcftShared then
-      begin
-        var members: TList<integer>;
-        if not groups.TryGetValue(formula.Si, members) then
-        begin
-          members := TList<integer>.Create;
-          groups.Add(formula.Si, members);
-        end;
-        members.Add(index);
-        Continue;
-      end;
-      if move.After <> move.Before then
-      begin
-        fStore.Objects(True);
-        formula.XmlValue := EncodeText(move.After);
-      end;
-      var area: TArea;
-      if aShifted and (formula.T = stcftArray) and TArea.TryParse(formula.Ref, area) then
-        if (move.Cell.Cm > 0) and fBook.IsDynamicArray(move.Cell.Cm) then
-        begin // spilled again from its cell, as large as before
-          var moved: TArea := area;
-          moved.Top := move.Row;
-          moved.Left := move.Column;
-          moved.Bottom := move.Row + area.Bottom - area.Top;
-          moved.Right := move.Column + area.Right - area.Left;
-          formula.Ref := moved.CellsAddress;
-        end
-        else if aMap.MovedArea(area) then
-          formula.Ref := area.CellsAddress;
-    end;
-    for var group: TPair<cardinal, TList<integer>> in groups do
-    begin
-      var members: TList<integer> := group.Value;
-      var changed: boolean := aShifted;
-      for var index: integer in members do
-        changed := changed or (aMoves[index].After <> aMoves[index].Before);
-      if not changed then
-        Continue;
-      fStore.Objects(True);
-      var first: TFormulaMove := aMoves[members[0]];
-      var area: TArea;
-      var ref: string;
-      var shared: boolean := not first.After.Contains('#REF!') and aRefs.TryGetValue(group.Key, ref) and
-        TArea.TryParse(ref, area) and
-        (not aShifted or aMap.MovedArea(area));
-      for var index: integer in members do
-      begin
-        var move: TFormulaMove := aMoves[index];
-        var filled, why: string;
-        shared := shared and ShiftFormula(first.After, TReferenceMap.Fill(move.Row - first.Row, move.Column - first.Column),
-          filled, why) and (filled = move.After);
-      end;
-      for var index: integer in members do
-      begin
-        var formula: TCellFormulaCT := aMoves[index].Cell.F;
-        if not shared then
-        begin
-          formula.Clear('T');
-          formula.Clear('Si');
-          formula.Clear('Ref');
-          formula.XmlValue := EncodeText(aMoves[index].After);
-        end
-        else if index = members[0] then
-        begin
-          formula.Ref := area.CellsAddress;
-          formula.XmlValue := EncodeText(first.After);
-        end
-        else
-        begin
-          formula.Clear('Ref');
-          formula.XmlValue := '';
-        end;
-      end;
-    end;
-  finally
-    groups.Free;
-  end;
-end;
-
 constructor TChartsHandler.Create(aWalk: TXlsxWalk);
 begin
   inherited;
-  fMoves := TList<TXlsxWalkSheet.TChartMove>.Create;
+  fMoves := TList<TChartMove>.Create;
 end;
 
 destructor TChartsHandler.Destroy;
@@ -2442,22 +2460,12 @@ begin
   inherited;
 end;
 
-function TChartsHandler.Plan: string;
-begin
-  PlanCharts(fSheet, fMap, fMoves, Result);
-end;
-
-procedure TChartsHandler.Apply;
-begin
-  fSheet.ShiftCharts(fMoves, fMap);
-end;
-
 constructor TFormulasHandler.Create(aWalk: TXlsxWalk);
 begin
   inherited;
-  fMoves := TObjectList<TList<TXlsxWalkSheet.TFormulaMove>>.Create;
+  fMoves := TObjectList<TList<TFormulaMove>>.Create;
   fRefs := TObjectList<TDictionary<cardinal, string>>.Create;
-  fRules := TList<TXlsxWalkSheet.TTextMove>.Create;
+  fRules := TList<TTextMove>.Create;
 end;
 
 destructor TFormulasHandler.Destroy;
@@ -2468,27 +2476,270 @@ begin
   inherited;
 end;
 
+// a formula of aSheet through aMap (the sheet's copy of the walk's), in aResult: False with aWhy when one that may name the
+// changed sheet does not read
+function TFormulasHandler.Changed(aSheet: TXlsxWalkSheet; const aMap: TReferenceMap; const aText, aWhere: string;
+  out aResult, aWhy: string): boolean;
+begin
+  Result := True;
+  aWhy := '';
+  var why: string;
+  if ShiftFormula(aText, aMap, aResult, why) then
+    Exit;
+  aResult := aText;
+  if (aSheet = fSheet) or ContainsText(aText, fMap.Sheet) then
+  begin
+    aWhy := Format('the formula of %s!%s does not read: %s', [aSheet.fName, aWhere, why]);
+    Result := False;
+  end;
+end;
+
+// aSheet's formulas through the walk's map: each cell's that stays, its place and text then; shared formulas' areas by si;
+// then its rules'. Why one that may name the changed sheet does not read, '' when all do
+function TFormulasHandler.PlanSheet(aSheet: TXlsxWalkSheet; aMoves: TList<TFormulaMove>; aRefs: TDictionary<cardinal, string>): string;
+begin
+  Result := '';
+  var map: TReferenceMap := fMap;
+  map.OnSheet := (map.Change <> TReferenceChange.rcSheetDelete) and AnsiSameText(aSheet.fName, map.Sheet);
+  map.InName := False;
+  var sheet: TWorksheetE := aSheet.fStore.Objects(False);
+  for var row: TRowCT in sheet.SheetData.Row do
+    for var cell: TCellCT in row.C do
+    begin
+      if not cell.IsPresent('F') or (cell.F.T = stcftDataTable) then
+        Continue;
+      if (cell.F.T = stcftShared) and (cell.F.Ref <> '') then
+        aRefs.AddOrSetValue(cell.F.Si, cell.F.Ref);
+      var move: TFormulaMove;
+      move.Cell := cell;
+      move.Row := row.R;
+      move.Column := TUtility.ColumnOf(cell.R);
+      if not aSheet.fStore.FormulaText(move.Row, move.Column, move.Before) then
+        Continue;
+      if aSheet = fSheet then
+        if fMap.ByRows then
+          move.Row := fMap.MovedIndex(move.Row)
+        else
+          move.Column := fMap.MovedIndex(move.Column);
+      if (move.Row = 0) or (move.Column = 0) then
+        Continue;
+      if not Changed(aSheet, map, move.Before, cell.R, move.After, Result) then
+        Exit;
+      aMoves.Add(move);
+    end;
+  Result := PlanRules(aSheet, map);
+end;
+
+// aSheet's conditional formats' and validation's formulas that change, in fRules: why one does not read, '' when all do
+function TFormulasHandler.PlanRules(aSheet: TXlsxWalkSheet; const aMap: TReferenceMap): string;
+
+  function Add(aRule: TCfRuleCT; aValidation: TDataValidationCT; aIndex: integer; const aText, aWhere: string): string;
+  begin
+    var move: TTextMove := Default(TTextMove);
+    if Changed(aSheet, aMap, DecodeText(aText), aWhere, move.Text, Result) and (move.Text <> DecodeText(aText)) then
+    begin
+      move.Sheet := aSheet;
+      move.Rule := aRule;
+      move.Validation := aValidation;
+      move.Index := aIndex;
+      fRules.Add(move);
+    end;
+  end;
+
+begin
+  Result := '';
+  var sheet: TWorksheetE := aSheet.fStore.Objects(False);
+  for var formatting: TConditionalFormattingCT in sheet.ConditionalFormatting do
+    for var rule: TCfRuleCT in formatting.CfRule do
+      for var index := 0 to rule.Formula.Count - 1 do
+      begin
+        Result := Add(rule, nil, index, rule.Formula[index], formatting.Sqref);
+        if Result <> '' then
+          Exit;
+      end;
+  if sheet.IsPresent('DataValidations') then
+    for var validation: TDataValidationCT in sheet.DataValidations.DataValidation do
+    begin
+      if validation.Formula1 <> '' then
+        Result := Add(nil, validation, 1, validation.Formula1, validation.Sqref);
+      if (Result = '') and (validation.Formula2 <> '') then
+        Result := Add(nil, validation, 2, validation.Formula2, validation.Sqref);
+      if Result <> '' then
+        Exit;
+    end;
+end;
+
 function TFormulasHandler.Plan: string;
 begin
+  Result := '';
   for var sheet: TXlsxWalkSheet in fWalk.fSheets do
   begin
-    fMoves.Add(TList<TXlsxWalkSheet.TFormulaMove>.Create);
+    fMoves.Add(TList<TFormulaMove>.Create);
     fRefs.Add(TDictionary<cardinal, string>.Create);
-    if not PlanFormulas(sheet, fMap, fSheet, fMoves.Last, fRules, fRefs.Last, Result) then
+    if (sheet <> fSheet) or (fMap.Change <> TReferenceChange.rcSheetDelete) then
+      Result := PlanSheet(sheet, fMoves.Last, fRefs.Last);
+    if Result <> '' then
       Exit;
   end;
-  Result := '';
 end;
 
 procedure TFormulasHandler.ApplyRules;
 begin
-  WriteTexts(fRules);
+  for var move: TTextMove in fRules do
+  begin
+    move.Sheet.fStore.Objects(True);
+    if move.Rule <> nil then
+      move.Rule.Formula[move.Index] := EncodeText(move.Text)
+    else if move.Index = 1 then
+      move.Validation.Formula1 := EncodeText(move.Text)
+    else
+      move.Validation.Formula2 := EncodeText(move.Text);
+  end;
+end;
+
+// a formula of its own written; aShifted (its sheet's rows or columns moved), an array's area too: a dynamic array spilled
+// again from its cell, as large as before
+procedure TFormulasHandler.ApplyOne(aSheet: TXlsxWalkSheet; const aMove: TFormulaMove; aShifted: boolean);
+begin
+  var formula: TCellFormulaCT := aMove.Cell.F;
+  if aMove.After <> aMove.Before then
+  begin
+    aSheet.fStore.Objects(True);
+    formula.XmlValue := EncodeText(aMove.After);
+  end;
+  var area: TArea;
+  if aShifted and (formula.T = stcftArray) and TArea.TryParse(formula.Ref, area) then
+    if (aMove.Cell.Cm > 0) and fBook.IsDynamicArray(aMove.Cell.Cm) then
+    begin
+      var moved: TArea := area;
+      moved.Top := aMove.Row;
+      moved.Left := aMove.Column;
+      moved.Bottom := aMove.Row + area.Bottom - area.Top;
+      moved.Right := aMove.Column + area.Right - area.Left;
+      formula.Ref := moved.CellsAddress;
+    end
+    else if fMap.MovedArea(area) then
+      formula.Ref := area.CellsAddress;
+end;
+
+// a shared formula's cells (aMembers, indexes in aMoves) written: it stays one while they still fill from its first cell's
+// text (that cell gone, the next one is first) and it names no #REF! (Excel makes those plain), else each cell gets its own
+procedure TFormulasHandler.ApplyShared(aSheet: TXlsxWalkSheet; aMoves: TList<TFormulaMove>; aSi: cardinal;
+  aMembers: TList<integer>; aRefs: TDictionary<cardinal, string>; aShifted: boolean);
+begin
+  var changed: boolean := aShifted;
+  for var index: integer in aMembers do
+    changed := changed or (aMoves[index].After <> aMoves[index].Before);
+  if not changed then
+    Exit;
+  aSheet.fStore.Objects(True);
+  var first: TFormulaMove := aMoves[aMembers[0]];
+  var area: TArea;
+  var ref: string;
+  var shared: boolean := not first.After.Contains('#REF!') and aRefs.TryGetValue(aSi, ref) and TArea.TryParse(ref, area) and
+    (not aShifted or fMap.MovedArea(area));
+  for var index: integer in aMembers do
+  begin
+    var move: TFormulaMove := aMoves[index];
+    var filled, why: string;
+    shared := shared and ShiftFormula(first.After, TReferenceMap.Fill(move.Row - first.Row, move.Column - first.Column),
+      filled, why) and (filled = move.After);
+  end;
+  for var index: integer in aMembers do
+  begin
+    var formula: TCellFormulaCT := aMoves[index].Cell.F;
+    if not shared then
+    begin
+      formula.Clear('T');
+      formula.Clear('Si');
+      formula.Clear('Ref');
+      formula.XmlValue := EncodeText(aMoves[index].After);
+    end
+    else if index = aMembers[0] then
+    begin
+      formula.Ref := area.CellsAddress;
+      formula.XmlValue := EncodeText(first.After);
+    end
+    else
+    begin
+      formula.Clear('Ref');
+      formula.XmlValue := '';
+    end;
+  end;
+end;
+
+// aSheet's planned formulas written; aShifted: its rows or columns moved
+procedure TFormulasHandler.ApplySheet(aSheet: TXlsxWalkSheet; aMoves: TList<TFormulaMove>; aRefs: TDictionary<cardinal, string>;
+  aShifted: boolean);
+begin
+  var groups: TObjectDictionary<cardinal, TList<integer>> := TObjectDictionary<cardinal, TList<integer>>.Create([doOwnsValues]);
+  try
+    for var index := 0 to aMoves.Count - 1 do
+      if aMoves[index].Cell.F.T <> stcftShared then
+        ApplyOne(aSheet, aMoves[index], aShifted)
+      else
+      begin
+        var members: TList<integer>;
+        if not groups.TryGetValue(aMoves[index].Cell.F.Si, members) then
+        begin
+          members := TList<integer>.Create;
+          groups.Add(aMoves[index].Cell.F.Si, members);
+        end;
+        members.Add(index);
+      end;
+    for var group: TPair<cardinal, TList<integer>> in groups do
+      ApplyShared(aSheet, aMoves, group.Key, group.Value, aRefs, aShifted);
+  finally
+    groups.Free;
+  end;
+end;
+
+// a dynamic array whose formula now names #REF! gives #REF! alone, as Excel calculates it: its spill folded into its cell
+procedure TFormulasHandler.FoldSpills(aSheet: TXlsxWalkSheet; aMoves: TList<TFormulaMove>);
+begin
+  for var move: TFormulaMove in aMoves do
+  begin
+    var cell: TCellCT := move.Cell;
+    var area: TArea;
+    if (move.After = move.Before) or not move.After.Contains('#REF!') or (cell.F.T <> stcftArray) or (cell.Cm = 0) or
+      not fBook.IsDynamicArray(cell.Cm) or not TArea.TryParse(cell.F.Ref, area) then
+      Continue;
+    aSheet.fStore.Objects(True);
+    for var row: TRowCT in aSheet.fStore.RowEntries(area.Top, area.Bottom) do
+      for var i := row.C.Count - 1 downto 0 do
+      begin
+        var spilled: TCellCT := row.C[i];
+        var column: integer := TUtility.ColumnOf(spilled.R);
+        if (spilled = cell) or (column < area.Left) or (column > area.Right) then
+          Continue;
+        aSheet.fStore.RemoveValue(spilled);
+        if IsBare(spilled, ['S', 'Ph', 'ExtLst']) then
+          row.Remove(spilled);
+      end;
+    cell.F.Ref := cell.R;
+    cell.T := stctE;
+    cell.V := '#REF!';
+  end;
 end;
 
 procedure TFormulasHandler.Apply;
 begin
   for var index := 0 to fWalk.fSheets.Count - 1 do
-    fWalk.fSheets[index].ApplyFormulas(fMoves[index], fRefs[index], fWalk.fSheets[index] = fSheet, fMap);
+  begin
+    var sheet: TXlsxWalkSheet := fWalk.fSheets[index];
+    ApplySheet(sheet, fMoves[index], fRefs[index], sheet = fSheet);
+    if fMap.Change = TReferenceChange.rcSheetDelete then // an insert or a delete folds none yet
+      FoldSpills(sheet, fMoves[index]);
+  end;
+end;
+
+procedure TFormulasHandler.Written(aTo: TStringBuilder);
+begin
+  for var list: TList<TFormulaMove> in fMoves do
+    for var move: TFormulaMove in list do
+      aTo.Append(move.After).Append(#10);
+  for var move: TTextMove in fRules do
+    aTo.Append(move.Text).Append(#10);
 end;
 
 // why one naming the sheet does not read, '' when all do
@@ -2503,68 +2754,90 @@ begin
     fBook.WriteNames(fChanged);
 end;
 
+procedure TNamesHandler.Written(aTo: TStringBuilder);
+begin
+  for var text: string in fChanged do
+    aTo.Append(text).Append(#10);
+end;
+
+function TXlsxWalk.Run(aSheet: TXlsxWalkSheet; const aMap: TReferenceMap): string;
+begin
+  fSheet := aSheet;
+  fMap := aMap;
+  fHandlers := TObjectList<TXlsxHandler>.Create;
+  try
+    if aMap.Change = TReferenceChange.rcSheetDelete then
+      Result := DeleteSheet
+    else
+      Result := Shift;
+  finally
+    FreeAndNil(fHandlers);
+  end;
+end;
+
+// every handler's Plan in order: the first why, '' when none refuses
+function TXlsxWalk.Planned: string;
+begin
+  for var handler: TXlsxHandler in fHandlers do
+  begin
+    Result := handler.Plan;
+    if Result <> '' then
+      Exit;
+  end;
+  Result := '';
+end;
+
 // the tables fill the map, every handler plans in the order of Excel's refusals, then they apply in an order of their own:
 // the names, the rules' formulas, the cells, the lists, the cells' formulas, the objects
-function TXlsxWalk.Shift(aSheet: TXlsxWalkSheet; const aMap: TReferenceMap): string;
+function TXlsxWalk.Shift: string;
 const
   cLists: array[0 .. 10] of TXlsxHandlerClass = (TMergesHandler, TConditionalAreasHandler, TValidationAreasHandler,
     THyperlinksHandler, TAutoFilterHandler, TSortHandler, TIgnoredErrorsHandler, TProtectedRangesHandler,
     TPageBreaksHandler, TPanesHandler, TDimensionHandler);
 begin
   Result := '';
-  fSheet := aSheet;
-  fMap := aMap;
-  var handlers: TObjectList<TXlsxHandler> := TObjectList<TXlsxHandler>.Create;
-  try
-    var cells: TCellsHandler := TCellsHandler.Create(Self);
-    handlers.Add(cells);
-    var pivots: TPivotsHandler := TPivotsHandler.Create(Self);
-    handlers.Add(pivots);
-    var tables: TTablesHandler := TTablesHandler.Create(Self);
-    handlers.Add(tables);
-    handlers.Add(TRefusedElementsHandler.Create(Self));
-    var notes: TNotesHandler := TNotesHandler.Create(Self);
-    handlers.Add(notes);
-    var drawings: TDrawingsHandler := TDrawingsHandler.Create(Self);
-    handlers.Add(drawings);
-    var charts: TChartsHandler := TChartsHandler.Create(Self);
-    handlers.Add(charts);
-    var formulas: TFormulasHandler := TFormulasHandler.Create(Self);
-    handlers.Add(formulas);
-    var names: TNamesHandler := TNamesHandler.Create(Self);
-    handlers.Add(names);
-    var firstList: integer := handlers.Count;
-    for var kind: TXlsxHandlerClass in cLists do
-      handlers.Add(kind.Create(Self));
-    tables.Complete(fMap);
-    for var handler: TXlsxHandler in handlers do
-      handler.fMap := fMap;
-    if fMap.Count <> 0 then
-      for var handler: TXlsxHandler in handlers do
-      begin
-        Result := handler.Plan;
-        if Result <> '' then
-          Exit;
-      end;
-    if fMap.Count <> 0 then
-    begin
-      names.Apply;
-      formulas.ApplyRules;
-      cells.Apply;
-      for var index := firstList to handlers.Count - 1 do
-        handlers[index].Apply;
-      formulas.Apply;
-    end;
-    tables.Apply;
-    if fMap.Count <> 0 then
-    begin
-      pivots.Apply;
-      drawings.Apply;
-      charts.Apply;
-      notes.Apply;
-    end;
-  finally
-    handlers.Free;
+  var cells: TCellsHandler := TCellsHandler.Create(Self);
+  fHandlers.Add(cells);
+  var pivots: TPivotsHandler := TPivotsHandler.Create(Self);
+  fHandlers.Add(pivots);
+  var tables: TTablesHandler := TTablesHandler.Create(Self);
+  fHandlers.Add(tables);
+  fHandlers.Add(TRefusedElementsHandler.Create(Self));
+  var notes: TNotesHandler := TNotesHandler.Create(Self);
+  fHandlers.Add(notes);
+  var drawings: TDrawingsHandler := TDrawingsHandler.Create(Self);
+  fHandlers.Add(drawings);
+  var charts: TChartsHandler := TChartsHandler.Create(Self);
+  fHandlers.Add(charts);
+  var formulas: TFormulasHandler := TFormulasHandler.Create(Self);
+  fHandlers.Add(formulas);
+  var names: TNamesHandler := TNamesHandler.Create(Self);
+  fHandlers.Add(names);
+  var firstList: integer := fHandlers.Count;
+  for var kind: TXlsxHandlerClass in cLists do
+    fHandlers.Add(kind.Create(Self));
+  tables.Complete(fMap);
+  for var handler: TXlsxHandler in fHandlers do
+    handler.fMap := fMap;
+  if fMap.Count <> 0 then
+  begin
+    Result := Planned;
+    if Result <> '' then
+      Exit;
+    names.Apply;
+    formulas.ApplyRules;
+    cells.Apply;
+    for var index := firstList to fHandlers.Count - 1 do
+      fHandlers[index].Apply;
+    formulas.Apply;
+  end;
+  tables.Apply;
+  if fMap.Count <> 0 then
+  begin
+    pivots.Apply;
+    drawings.Apply;
+    charts.Apply;
+    notes.Apply;
   end;
   for var sheet: TXlsxWalkSheet in fSheets do // edited as objects; other sheets' shared formulas may be plain now
     sheet.fStore.Forget;
@@ -2572,32 +2845,167 @@ begin
   fBook.FormulaChanged;
 end;
 
-// a dynamic array whose formula now names #REF! gives #REF! alone, as Excel calculates it: its spill folded into its cell
-procedure TXlsxWalkSheet.FoldSpills(aMoves: TList<TFormulaMove>);
+// the sheet's tables fill the map, every handler plans in the order of Excel's refusals (the local names last: they read
+// what the others write), then they apply: the names, the formulas, the charts, the tables' and extensions' formulas, the
+// caches, the sheet
+function TXlsxWalk.DeleteSheet: string;
 begin
-  for var move: TFormulaMove in aMoves do
+  var deleted: TSheetHandler := TSheetHandler.Create(Self);
+  fHandlers.Add(deleted);
+  var formulas: TFormulasHandler := TFormulasHandler.Create(Self);
+  fHandlers.Add(formulas);
+  var charts: TChartsHandler := TChartsHandler.Create(Self);
+  fHandlers.Add(charts);
+  var names: TNamesHandler := TNamesHandler.Create(Self);
+  fHandlers.Add(names);
+  var extensions: TExtensionsHandler := TExtensionsHandler.Create(Self);
+  fHandlers.Add(extensions);
+  var tables: TTablesHandler := TTablesHandler.Create(Self);
+  fHandlers.Add(tables);
+  var pivots: TPivotsHandler := TPivotsHandler.Create(Self);
+  fHandlers.Add(pivots);
+  var localNames: TLocalNamesHandler := TLocalNamesHandler.Create(Self);
+  fHandlers.Add(localNames);
+  tables.Complete(fMap);
+  for var handler: TXlsxHandler in fHandlers do
+    handler.fMap := fMap;
+  Result := Planned;
+  if Result <> '' then
+    Exit;
+  names.Apply;
+  localNames.Apply;
+  formulas.ApplyRules;
+  formulas.Apply;
+  charts.Apply;
+  tables.Apply;
+  extensions.Apply;
+  pivots.Apply;
+  deleted.Apply;
+  fBook.ValueChanged;
+  fBook.FormulaChanged;
+  for var sheet: TXlsxWalkSheet in fSheets do
+    if sheet <> fSheet then
+      sheet.fStore.Forget;
+end;
+
+constructor TExtensionsHandler.Create(aWalk: TXlsxWalk);
+begin
+  inherited;
+  fMoves := TList<TKeptMove>.Create;
+end;
+
+destructor TExtensionsHandler.Destroy;
+begin
+  fMoves.Free;
+  inherited;
+end;
+
+// why a formula naming the sheet does not read, '' when all do
+function TExtensionsHandler.Plan: string;
+begin
+  for var sheet: TXlsxWalkSheet in fWalk.fSheets do
   begin
-    var cell: TCellCT := move.Cell;
-    var area: TArea;
-    if (move.After = move.Before) or not move.After.Contains('#REF!') or (cell.F.T <> stcftArray) or (cell.Cm = 0) or
-      not fBook.IsDynamicArray(cell.Cm) or not TArea.TryParse(cell.F.Ref, area) then
+    if sheet = fSheet then
       Continue;
-    fStore.Objects(True);
-    for var row: TRowCT in fStore.RowEntries(area.Top, area.Bottom) do
-      for var i := row.C.Count - 1 downto 0 do
+    var objects: TWorksheetE := sheet.fStore.Objects(False);
+    if not objects.IsPresent('ExtLst') then
+      Continue;
+    for var extension: ProRock.Xmlite.Schema.Ooxml.Sml.TExtensionCT in objects.ExtLst.Ext do
+      for var index := 0 to extension.XmlUnknown.Count - 1 do
       begin
-        var spilled: TCellCT := row.C[i];
-        var column: integer := TUtility.ColumnOf(spilled.R);
-        if (spilled = cell) or (column < area.Left) or (column > area.Right) then
+        var move: TKeptMove := Default(TKeptMove);
+        var why: string := '';
+        if not MappedKeptXml(extension.XmlUnknown[index].Xml, fName, fMap, move.Text, why) then
+          Exit(Format('a formula of %s''s extensions does not read: %s', [sheet.fName, why]));
+        if move.Text = extension.XmlUnknown[index].Xml then
           Continue;
-        fStore.RemoveValue(spilled);
-        if IsBare(spilled, ['S', 'Ph', 'ExtLst']) then
-          row.Remove(spilled);
+        move.Sheet := sheet;
+        move.Extension := extension;
+        move.Index := index;
+        fMoves.Add(move);
       end;
-    cell.F.Ref := cell.R;
-    cell.T := stctE;
-    cell.V := '#REF!';
   end;
+  Result := '';
+end;
+
+procedure TExtensionsHandler.Apply;
+begin
+  for var move: TKeptMove in fMoves do
+  begin
+    move.Sheet.fStore.Objects(True);
+    var item: TXmliteUnknown := move.Extension.XmlUnknown[move.Index];
+    item.Xml := move.Text;
+    move.Extension.XmlUnknown[move.Index] := item;
+  end;
+end;
+
+procedure TExtensionsHandler.Written(aTo: TStringBuilder);
+begin
+  for var move: TKeptMove in fMoves do
+    aTo.Append(move.Text).Append(#10);
+end;
+
+constructor TLocalNamesHandler.Create(aWalk: TXlsxWalk);
+begin
+  inherited;
+  fLifted := TList<integer>.Create;
+end;
+
+destructor TLocalNamesHandler.Destroy;
+begin
+  fLifted.Free;
+  inherited;
+end;
+
+// why one a formula names cannot become the workbook's, '' else
+function TLocalNamesHandler.Plan: string;
+begin
+  Result := '';
+  fIndex := fBook.SheetIndex(fName);
+  var xml: TWorkbookE := fBook.Package.Part<TWorkbookE>(fBook.WorkbookPart);
+  if not xml.IsPresent('DefinedNames') then
+    Exit;
+  var workbookNames: TList<string> := TList<string>.Create(TIStringComparer.Ordinal);
+  var written: TStringBuilder := TStringBuilder.Create;
+  try
+    for var handler: TXlsxHandler in fWalk.fHandlers do
+      handler.Written(written);
+    var text: string := written.ToString;
+    var list: TDefinedNameCTList := xml.DefinedNames.DefinedName;
+    for var name: TDefinedNameCT in list do
+      if not name.Present[@name.LocalSheetId] then
+        workbookNames.Add(name.Name);
+    for var i := 0 to list.Count - 1 do
+      if list[i].Present[@list[i].LocalSheetId] and (integer(list[i].LocalSheetId) = fIndex) and
+        not string(list[i].Name).StartsWith('_xlnm.') and
+        TRegEx.IsMatch(text, '\[0\]!' + TRegEx.Escape(list[i].Name) + '(?![\w.?\\])', [roIgnoreCase]) then
+        if workbookNames.Contains(list[i].Name) then
+          Exit(Format('its name %s, which a formula names, and the workbook''s of the same name: Calcite does not know ' +
+            'which Excel keeps', [string(list[i].Name)]))
+        else
+          fLifted.Add(i);
+  finally
+    written.Free;
+    workbookNames.Free;
+  end;
+end;
+
+procedure TLocalNamesHandler.Apply;
+begin
+  var workbook: TWorkbookE := fBook.Package.EditPart<TWorkbookE>(fBook.WorkbookPart);
+  if not workbook.IsPresent('DefinedNames') then
+    Exit;
+  var list: TDefinedNameCTList := workbook.DefinedNames.DefinedName;
+  for var i := list.Count - 1 downto 0 do
+    if fLifted.Contains(i) then
+      list[i].Clear(@list[i].LocalSheetId)
+    else if list[i].Present[@list[i].LocalSheetId] then
+      if integer(list[i].LocalSheetId) = fIndex then
+        list.Delete(i)
+      else if integer(list[i].LocalSheetId) > fIndex then
+        list[i].LocalSheetId := list[i].LocalSheetId - 1;
+  if list.Count = 0 then
+    workbook.Clear('DefinedNames');
 end;
 
 // a part's own relationships part
@@ -2607,371 +3015,127 @@ begin
   Result := aPart.Substring(0, slash + 1) + '_rels/' + aPart.Substring(slash + 1) + '.rels';
 end;
 
-// all checked and planned first, so a refusal changes nothing; then every other sheet's formulas, charts, names, tables'
-// formulas and extensions, the names local to it, the views, its parts
-procedure TXlsxWalkSheet.DeleteSheet;
-const
-  cLastVisible = 'A workbook must contain at least one visible worksheet. To hide, delete, or move the selected sheet(s), ' +
-    'you must first insert a new sheet or unhide a sheet that is already hidden.';
-type
-  // a formula of a table on another sheet (Formula), or of an extension's element kept as read (Index in XmlUnknown), changed
-  TKeptMove = record
-    Part: string;
-    Sheet: TXlsxWalkSheet;
-    Formula: TTableFormulaCT;
-    Extension: TXmlite;
-    Index: integer;
-    Text: string;
-  end;
-var
-  package: TPackageOoxml;
-  map, cellsMap: TReferenceMap;
-  why: string;
-  kept: TList<TKeptMove>;
-
-  procedure PlanTableFormula(aSheet: TXlsxWalkSheet; const aPart: string; aFormula: TTableFormulaCT);
-  begin
-    if why <> '' then
-      Exit;
-    var text: string := DecodeText(aFormula.XmlValue);
-    var move: TKeptMove := Default(TKeptMove);
-    var reason: string;
-    if not ShiftFormula(text, cellsMap, move.Text, reason) then
-    begin
-      if text.ToUpper.Contains(fName.ToUpper) then
-        why := Format('a formula of the table %s does not read: %s', [aPart, reason]);
-      Exit;
-    end;
-    if move.Text = text then
-      Exit;
-    move.Part := aPart;
-    move.Sheet := aSheet;
-    move.Formula := aFormula;
-    kept.Add(move);
-  end;
-
-  procedure PlanExtensions(aSheet: TXlsxWalkSheet);
-  begin
-    var objects: TWorksheetE := aSheet.fStore.Objects(False);
-    if (why <> '') or not objects.IsPresent('ExtLst') then
-      Exit;
-    for var extension: ProRock.Xmlite.Schema.Ooxml.Sml.TExtensionCT in objects.ExtLst.Ext do
-      for var index := 0 to extension.XmlUnknown.Count - 1 do
-      begin
-        var move: TKeptMove := Default(TKeptMove);
-        var reason: string;
-        if not MappedKeptXml(extension.XmlUnknown[index].Xml, fName, cellsMap, move.Text, reason) then
-        begin
-          why := Format('a formula of %s''s extensions does not read: %s', [aSheet.fName, reason]);
-          Exit;
-        end;
-        if move.Text = extension.XmlUnknown[index].Xml then
-          Continue;
-        move.Sheet := aSheet;
-        move.Extension := extension;
-        move.Index := index;
-        kept.Add(move);
-      end;
-  end;
-
-  // the parts only this sheet and the caches dropped lead to: those no other part reaches from the package's root
-  procedure RemoveParts(const aCaches: TList<string>);
-  begin
-    var names: TList<string> := TList<string>.Create;
-    var parents: TList<string> := TList<string>.Create;
-    var found: TDictionary<string, boolean> := TDictionary<string, boolean>.Create;
-    var reached: TDictionary<string, boolean> := TDictionary<string, boolean>.Create;
-    try
-      names.Add(fStore.Part);
-      parents.Add(fBook.WorkbookPart);
-      found.Add(fStore.Part.ToUpper, True);
-      for var cache: string in aCaches do
-      begin
-        names.Add(cache);
-        parents.Add(fBook.WorkbookPart);
-        found.AddOrSetValue(cache.ToUpper, True);
-      end;
-      var next: integer := 0;
-      while next < names.Count do
-      begin
-        for var relationship: TRelationshipOoxml in package.Relationships(names[next]) do
-          if (relationship.Part <> '') and not found.ContainsKey(relationship.Part.ToUpper) then
-          begin
-            found.Add(relationship.Part.ToUpper, True);
-            names.Add(relationship.Part);
-            parents.Add(names[next]);
-          end;
-        Inc(next);
-      end;
-      var queue: TList<string> := TList<string>.Create;
-      try
-        queue.Add('');
-        next := 0;
-        while next < queue.Count do
-        begin
-          for var relationship: TRelationshipOoxml in package.Relationships(queue[next]) do
-            if (relationship.Part <> '') and not reached.ContainsKey(relationship.Part.ToUpper) and
-              ((queue[next] <> fBook.WorkbookPart) or (relationship.Part <> fStore.Part) and
-              not aCaches.Contains(relationship.Part)) then
-            begin
-              reached.Add(relationship.Part.ToUpper, True);
-              queue.Add(relationship.Part);
-            end;
-          Inc(next);
-        end;
-      finally
-        queue.Free;
-      end;
-      for var index := 0 to names.Count - 1 do
-        if not reached.ContainsKey(names[index].ToUpper) then
-        begin
-          package.RemovePart(names[index], RelationshipsOf(names[index]));
-          package.RemovePart(parents[index], names[index]);
-        end;
-    finally
-      reached.Free;
-      found.Free;
-      parents.Free;
-      names.Free;
-    end;
-  end;
-
+function TSheetHandler.Plan: string;
 begin
-  package := fBook.Package;
-  var entries: TSheetCTList := package.Part<TWorkbookE>(fBook.WorkbookPart).Sheets.Sheet;
-  var entry: TSheetCT := fBook.SheetEntry(fName);
-  var index: integer := entries.IndexOf(entry);
-  why := '';
-  var visible: integer := 0;
-  for var i := 0 to entries.Count - 1 do
-    if (i <> index) and (entries[i].State = stssVisible) then
-      Inc(visible);
-  if fBook.SheetStates[index] = svVeryHidden then
-    why := 'a very hidden sheet, which Excel does not delete'
-  else if visible = 0 then
-    why := cLastVisible;
-  for var relationship: TRelationshipOoxml in package.Relationships(fStore.Part) do
-    if (why = '') and (relationship.&Type.EndsWith(cSlicer) or relationship.&Type.EndsWith(cTimeline)) then
-      why := 'slicers or timelines, which Calcite does not remove yet';
-  var sheets: TArray<string> := nil;
-  for var sheet: TXlsxWalkSheet in fWalk.fSheets do
-    sheets := sheets + [sheet.fName];
-  map := TReferenceMap.SheetDeleted(fName, sheets);
-  map.InName := True;
-  for var relationship: TRelationshipOoxml in package.Relationships(fStore.Part, cTable) do
+  fIndex := fBook.SheetIndex(fName);
+  for var relationship: TRelationshipOoxml in fBook.Package.Relationships(fStore.Part) do
+    if relationship.&Type.EndsWith(cSlicer) or relationship.&Type.EndsWith(cTimeline) then
+      Exit('slicers or timelines, which Calcite does not remove yet');
+  Result := '';
+end;
+
+// the active sheet deleted: the next visible one (else the one before) active and selected, as Excel does; the views' tabs
+// after it one less
+procedure TSheetHandler.ShowAnother;
+begin
+  var workbook: TWorkbookE := fBook.Package.EditPart<TWorkbookE>(fBook.WorkbookPart);
+  var entries: TSheetCTList := workbook.Sheets.Sheet;
+  var active: integer := -1;
+  for var i := fIndex + 1 to entries.Count - 1 do
+    if (active < 0) and (entries[i].State = stssVisible) then
+      active := i;
+  for var i := fIndex - 1 downto 0 do
+    if (active < 0) and (entries[i].State = stssVisible) then
+      active := i;
+  if fBook.MoveActiveSheet(fIndex, active) then
   begin
-    var table: TTableE := package.Part<TTableE>(relationship.Part);
-    if table <> nil then
-      map.GoneTables := map.GoneTables + [string(table.Name)];
-  end;
-  cellsMap := map;
-  cellsMap.InName := False;
-
-  var others: TList<TXlsxWalkSheet> := TList<TXlsxWalkSheet>.Create;
-  var moves: TObjectList<TList<TFormulaMove>> := TObjectList<TList<TFormulaMove>>.Create;
-  var refs: TObjectList<TDictionary<cardinal, string>> := TObjectList<TDictionary<cardinal, string>>.Create;
-  var texts: TList<TTextMove> := TList<TTextMove>.Create;
-  var charts: TList<TChartMove> := TList<TChartMove>.Create;
-  var caches: TList<string> := TList<string>.Create;
-  kept := TList<TKeptMove>.Create;
-  try
     for var sheet: TXlsxWalkSheet in fWalk.fSheets do
-      if sheet <> Self then
-        others.Add(sheet);
-    if why = '' then
-      for var sheet: TXlsxWalkSheet in others do
-      begin
-        moves.Add(TList<TFormulaMove>.Create);
-        refs.Add(TDictionary<cardinal, string>.Create);
-        if not PlanFormulas(sheet, map, nil, moves.Last, texts, refs.Last, why) then
-          Break;
-      end;
-    if why = '' then
-      PlanCharts(Self, map, charts, why);
-    var names: TArray<string>;
-    if why = '' then
-      fBook.MappedNames(map, names, why);
-    for var sheet: TXlsxWalkSheet in others do
-    begin
-      PlanExtensions(sheet);
-      for var relationship: TRelationshipOoxml in package.Relationships(sheet.fStore.Part, cTable) do
-      begin
-        var table: TTableE := package.Part<TTableE>(relationship.Part);
-        if table <> nil then
-          for var column: TTableColumnCT in table.TableColumns.TableColumn do
-          begin
-            if column.IsPresent('CalculatedColumnFormula') then
-              PlanTableFormula(sheet, relationship.Part, column.CalculatedColumnFormula);
-            if column.IsPresent('TotalsRowFormula') then
-              PlanTableFormula(sheet, relationship.Part, column.TotalsRowFormula);
-          end;
-      end;
-    end;
-    // its names another formula names (Data!Total, now [0]!Total): Excel keeps them as the workbook's
-    var workbookNames: TList<string> := TList<string>.Create;
-    var lifted: TList<integer> := TList<integer>.Create;
-    try
-      var written: TStringBuilder := TStringBuilder.Create;
-      try
-        for var list: TList<TFormulaMove> in moves do
-          for var move: TFormulaMove in list do
-            written.Append(move.After).Append(#10);
-        for var move: TTextMove in texts do
-          written.Append(move.Text).Append(#10);
-        for var move: TChartMove in charts do
-          written.Append(move.After).Append(#10);
-        for var move: TKeptMove in kept do
-          written.Append(move.Text).Append(#10);
-        for var text: string in names do
-          written.Append(text).Append(#10);
-        var xml: TWorkbookE := package.Part<TWorkbookE>(fBook.WorkbookPart);
-        if (why = '') and xml.IsPresent('DefinedNames') then
-        begin
-          var list: TDefinedNameCTList := xml.DefinedNames.DefinedName;
-          for var name: TDefinedNameCT in list do
-            if not name.Present[@name.LocalSheetId] then
-              workbookNames.Add(AnsiUpperCase(name.Name));
-          for var i := 0 to list.Count - 1 do
-            if list[i].Present[@list[i].LocalSheetId] and (integer(list[i].LocalSheetId) = index) and
-              not string(list[i].Name).StartsWith('_xlnm.') and TRegEx.IsMatch(written.ToString,
-              '\[0\]!' + TRegEx.Escape(list[i].Name) + '(?![\w.?\\])', [roIgnoreCase]) then
-              if workbookNames.Contains(AnsiUpperCase(list[i].Name)) then
-                why := Format('its name %s, which a formula names, and the workbook''s of the same name: Calcite does ' +
-                  'not know which Excel keeps', [string(list[i].Name)])
-              else
-                lifted.Add(i);
-        end;
-      finally
-        written.Free;
-      end;
-      if why <> '' then
-        raise EInvalidOpException.CreateFmt('%s not deleted: %s', [fName, why]);
-
-      fBook.WriteNames(names);
-      var workbook: TWorkbookE := package.EditPart<TWorkbookE>(fBook.WorkbookPart);
-      if workbook.IsPresent('DefinedNames') then
-      begin // its own go (or the workbook's then), those of the sheets after it count one less
-        var list: TDefinedNameCTList := workbook.DefinedNames.DefinedName;
-        for var i := list.Count - 1 downto 0 do
-          if lifted.Contains(i) then
-            list[i].Clear(@list[i].LocalSheetId)
-          else if list[i].Present[@list[i].LocalSheetId] then
-            if integer(list[i].LocalSheetId) = index then
-              list.Delete(i)
-            else if integer(list[i].LocalSheetId) > index then
-              list[i].LocalSheetId := list[i].LocalSheetId - 1;
-        if list.Count = 0 then
-          workbook.Clear('DefinedNames');
-      end;
-    finally
-      lifted.Free;
-      workbookNames.Free;
-    end;
-
-    WriteTexts(texts);
-    for var i := 0 to others.Count - 1 do
-    begin
-      others[i].ApplyFormulas(moves[i], refs[i], False, map);
-      others[i].FoldSpills(moves[i]);
-    end;
-    ShiftCharts(charts, map);
-    for var move: TKeptMove in kept do
-      if move.Formula <> nil then
-      begin
-        package.EditPart<TTableE>(move.Part);
-        move.Formula.XmlValue := EncodeText(move.Text);
-      end
-      else
-      begin
-        move.Sheet.fStore.Objects(True);
-        var item: TXmliteUnknown := move.Extension.XmlUnknown[move.Index];
-        item.Xml := move.Text;
-        move.Extension.XmlUnknown[move.Index] := item;
-      end;
-
-    var workbook: TWorkbookE := package.EditPart<TWorkbookE>(fBook.WorkbookPart);
-
-    // the active sheet deleted: the next visible one (else the one before) active and selected, as Excel does
-    var active: integer := -1;
-    for var i := index + 1 to entries.Count - 1 do
-      if (active < 0) and (entries[i].State = stssVisible) then
-        active := i;
-    for var i := index - 1 downto 0 do
-      if (active < 0) and (entries[i].State = stssVisible) then
-        active := i;
-    if fBook.MoveActiveSheet(index, active) then
-    begin
-      for var sheet: TXlsxWalkSheet in others do
-        if fBook.SheetIndex(sheet.fName) = active then
-          sheet.fStore.SetTabSelected(True);
-      fBook.SetChartTabSelected(active, True);
-    end;
-    if workbook.IsPresent('BookViews') then // the tabs after it one less
-      for var view: TBookViewCT in workbook.BookViews.WorkbookView do
-      begin
-        var tab: integer := view.ActiveTab;
-        if tab > index then
-          Dec(tab);
-        if tab <> integer(view.ActiveTab) then
-        begin
-          view.ActiveTab := tab;
-          view.SetPresent(@view.ActiveTab);
-        end;
-        var first: integer := view.FirstSheet;
-        if first > index then
-          Dec(first);
-        first := Min(first, entries.Count - 2);
-        if first <> integer(view.FirstSheet) then
-        begin
-          view.FirstSheet := first;
-          view.SetPresent(@view.FirstSheet);
-        end;
-      end;
-
-    // the pivot caches only its pivot tables used
-    var used: TList<string> := TList<string>.Create;
-    try
-      for var sheet: TXlsxWalkSheet in others do
-        for var pivot: TRelationshipOoxml in package.Relationships(sheet.fStore.Part, cPivotTable) do
-          for var cache: TRelationshipOoxml in package.Relationships(pivot.Part, cPivotCacheDefinition) do
-            used.Add(cache.Part.ToUpper);
-      for var pivot: TRelationshipOoxml in package.Relationships(fStore.Part, cPivotTable) do
-        for var cache: TRelationshipOoxml in package.Relationships(pivot.Part, cPivotCacheDefinition) do
-          if not used.Contains(cache.Part.ToUpper) and not caches.Contains(cache.Part) then
-            caches.Add(cache.Part);
-    finally
-      used.Free;
-    end;
-    if workbook.IsPresent('PivotCaches') then
-    begin
-      for var relationship: TRelationshipOoxml in package.Relationships(fBook.WorkbookPart, cPivotCacheDefinition) do
-        if caches.Contains(relationship.Part) then
-          for var i := workbook.PivotCaches.PivotCache.Count - 1 downto 0 do
-            if workbook.PivotCaches.PivotCache[i].Id = relationship.Id then
-              workbook.PivotCaches.PivotCache.Delete(i);
-      if workbook.PivotCaches.PivotCache.Count = 0 then
-        workbook.Clear('PivotCaches');
-    end;
-
-    for var row: TRowCT in fStore.Objects(False).SheetData.Row do
-      for var cell: TCellCT in row.C do
-        if (cell.T = stctS) and cell.Present[@cell.V] then
-          fBook.SharedStringReleased;
-    RemoveParts(caches);
-    entries.Delete(index);
-    fBook.ValueChanged;
-    fBook.FormulaChanged;
-    for var sheet: TXlsxWalkSheet in others do
-      sheet.fStore.Forget;
-  finally
-    kept.Free;
-    caches.Free;
-    charts.Free;
-    texts.Free;
-    refs.Free;
-    moves.Free;
-    others.Free;
+      if (sheet <> fSheet) and (fBook.SheetIndex(sheet.fName) = active) then
+        sheet.fStore.SetTabSelected(True);
+    fBook.SetChartTabSelected(active, True);
   end;
+  if workbook.IsPresent('BookViews') then
+    for var view: TBookViewCT in workbook.BookViews.WorkbookView do
+    begin
+      var tab: integer := view.ActiveTab;
+      if tab > fIndex then
+        Dec(tab);
+      if tab <> integer(view.ActiveTab) then
+      begin
+        view.ActiveTab := tab;
+        view.SetPresent(@view.ActiveTab);
+      end;
+      var first: integer := view.FirstSheet;
+      if first > fIndex then
+        Dec(first);
+      first := Min(first, entries.Count - 2);
+      if first <> integer(view.FirstSheet) then
+      begin
+        view.FirstSheet := first;
+        view.SetPresent(@view.FirstSheet);
+      end;
+    end;
+end;
+
+// the parts only the sheet and the walk's dropped ones lead to: those no other part reaches from the package's root
+procedure TSheetHandler.RemoveParts;
+begin
+  var package: TPackageOoxml := fBook.Package;
+  var dropped: TList<string> := fWalk.fDropped;
+  var names: TList<string> := TList<string>.Create;
+  var parents: TList<string> := TList<string>.Create;
+  var found: TDictionary<string, boolean> := TDictionary<string, boolean>.Create(TIStringComparer.Ordinal);
+  var reached: TDictionary<string, boolean> := TDictionary<string, boolean>.Create(TIStringComparer.Ordinal);
+  var queue: TList<string> := TList<string>.Create;
+  try
+    names.Add(fStore.Part);
+    parents.Add(fBook.WorkbookPart);
+    found.Add(fStore.Part, True);
+    for var cache: string in dropped do
+    begin
+      names.Add(cache);
+      parents.Add(fBook.WorkbookPart);
+      found.AddOrSetValue(cache, True);
+    end;
+    var next: integer := 0;
+    while next < names.Count do
+    begin
+      for var relationship: TRelationshipOoxml in package.Relationships(names[next]) do
+        if (relationship.Part <> '') and not found.ContainsKey(relationship.Part) then
+        begin
+          found.Add(relationship.Part, True);
+          names.Add(relationship.Part);
+          parents.Add(names[next]);
+        end;
+      Inc(next);
+    end;
+    queue.Add('');
+    next := 0;
+    while next < queue.Count do
+    begin
+      for var relationship: TRelationshipOoxml in package.Relationships(queue[next]) do
+        if (relationship.Part <> '') and not reached.ContainsKey(relationship.Part) and
+          ((queue[next] <> fBook.WorkbookPart) or (relationship.Part <> fStore.Part) and not dropped.Contains(relationship.Part)) then
+        begin
+          reached.Add(relationship.Part, True);
+          queue.Add(relationship.Part);
+        end;
+      Inc(next);
+    end;
+    for var index := 0 to names.Count - 1 do
+      if not reached.ContainsKey(names[index]) then
+      begin
+        package.RemovePart(names[index], RelationshipsOf(names[index]));
+        package.RemovePart(parents[index], names[index]);
+      end;
+  finally
+    queue.Free;
+    reached.Free;
+    found.Free;
+    parents.Free;
+    names.Free;
+  end;
+end;
+
+procedure TSheetHandler.Apply;
+begin
+  ShowAnother;
+  for var row: TRowCT in fStore.Objects(False).SheetData.Row do
+    for var cell: TCellCT in row.C do
+      if (cell.T = stctS) and cell.Present[@cell.V] then
+        fBook.SharedStringReleased;
+  RemoveParts;
+  fBook.Package.Part<TWorkbookE>(fBook.WorkbookPart).Sheets.Sheet.Delete(fIndex);
 end;
 
 end.

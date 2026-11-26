@@ -2120,7 +2120,7 @@ begin
   var why: string;
   var walk: TXlsxWalk := WalkOf(Self, mine);
   try
-    why := walk.Shift(mine, aMap);
+    why := walk.Run(mine, aMap);
   finally
     walk.Free;
   end;
@@ -2668,16 +2668,38 @@ begin
   Result.fFresh := True;
 end;
 
-// Excel's Delete of the sheet: the backend's walk
+// Excel's Delete of the sheet: a very hidden or the last visible one refused, else the backend's walk
 procedure TWorksheet.Delete;
+const
+  cLastVisible = 'A workbook must contain at least one visible worksheet. To hide, delete, or move the selected sheet(s), ' +
+    'you must first insert a new sheet or unhide a sheet that is already hidden.';
 begin
-  var mine: TXlsxWalkSheet;
-  var walk: TXlsxWalk := WalkOf(Self, mine);
-  try
-    mine.DeleteSheet;
-  finally
-    walk.Free;
+  var states: TArray<TSheetVisibility> := fWorkbook.fBook.SheetStates;
+  var index: integer := fWorkbook.fBook.SheetIndex(fName);
+  var visible: integer := 0;
+  for var i := 0 to High(states) do
+    if (i <> index) and (states[i] = svVisible) then
+      Inc(visible);
+  var why: string := '';
+  if states[index] = svVeryHidden then
+    why := 'a very hidden sheet, which Excel does not delete'
+  else if visible = 0 then
+    why := cLastVisible
+  else
+  begin
+    var names: TArray<string> := nil;
+    for var sheet: TWorksheet in fWorkbook.fSheets do
+      names := names + [sheet.fName];
+    var mine: TXlsxWalkSheet;
+    var walk: TXlsxWalk := WalkOf(Self, mine);
+    try
+      why := walk.Run(mine, TReferenceMap.SheetDeleted(fName, names));
+    finally
+      walk.Free;
+    end;
   end;
+  if why <> '' then
+    raise EInvalidOpException.CreateFmt('%s not deleted: %s', [fName, why]);
   fWorkbook.fSheets.fList.Remove(Self);
 end;
 
