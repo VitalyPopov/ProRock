@@ -209,8 +209,8 @@ type
   end;
 
   // the extensions (extLst): rows or columns moved, the sheet's - those naming cells refuse, those it does not know are kept
-  // or dropped (UnknownExtensions); a sheet deleted, the other sheets' kept as read (x14 conditional formats, validation,
-  // sparklines), their formulas and areas naming it
+  // or dropped (UnknownExtensions); the other sheets' kept as read (x14 conditional formats, validation, sparklines), their
+  // formulas naming the sheet
   TExtensionsHandler = class(TXlsxHandler)
   private type
     // an extension's element kept as read (Index in XmlUnknown), changed
@@ -1252,7 +1252,8 @@ begin
   end;
 end;
 
-// a dynamic array whose formula now names #REF! gives #REF! alone, as Excel calculates it: its spill folded into its cell
+// a dynamic array whose formula now names #REF!: its spill folded into its cell, as Excel calculates it; #REF! its value
+// when the formula is #REF! alone (Data!#REF!), else the value as read - Excel calculates it on open (IFERROR(...,"x"))
 procedure TFormulasHandler.FoldSpills(aSheet: TXlsxWalkSheet; aMoves: TList<TFormulaMove>);
 begin
   for var move: TFormulaMove in aMoves do
@@ -1275,8 +1276,11 @@ begin
           row.Remove(spilled);
       end;
     cell.F.Ref := cell.R;
-    cell.T := stctE;
-    cell.V := '#REF!';
+    if TRegEx.IsMatch(move.After, '^(?:(?:''(?:[^'']|'''')*''|[^''!]+)!)?#REF!$') then
+    begin
+      cell.T := stctE;
+      cell.V := '#REF!';
+    end;
   end;
 end;
 
@@ -1286,8 +1290,7 @@ begin
   begin
     var sheet: TXlsxWalkSheet := fWalk.fSheets[index];
     ApplySheet(sheet, fMoves[index], fRefs[index], sheet = fSheet);
-    if fMap.Change = TReferenceChange.rcSheetDelete then // an insert or a delete folds none yet
-      FoldSpills(sheet, fMoves[index]);
+    FoldSpills(sheet, fMoves[index]);
   end;
 end;
 
@@ -1406,11 +1409,19 @@ begin
     objects.Clear('ExtLst');
 end;
 
-// rows or columns moved: the sheet's own extensions; a sheet deleted: why a formula naming it does not read, '' when all do
+// rows or columns moved, the sheet's own extensions first; then why another sheet's formula naming it does not read, ''
+// when all do
 function TExtensionsHandler.Plan: string;
 begin
   if fMap.Change <> TReferenceChange.rcSheetDelete then
-    Exit(PlanSheet);
+  begin
+    Result := PlanSheet;
+    if Result <> '' then
+      Exit;
+  end;
+  var map: TReferenceMap := fMap; // a reference without a sheet's name is the other sheet's own
+  map.OnSheet := False;
+  map.InName := False;
   for var sheet: TXlsxWalkSheet in fWalk.fSheets do
   begin
     if sheet = fSheet then
@@ -1423,7 +1434,7 @@ begin
       begin
         var move: TKeptMove := Default(TKeptMove);
         var why: string := '';
-        if not MappedKeptXml(extension.XmlUnknown[index].Xml, fName, fMap, move.Text, why) then
+        if not MappedKeptXml(extension.XmlUnknown[index].Xml, fName, map, move.Text, why) then
           Exit(Format('a formula of %s''s extensions does not read: %s', [sheet.fName, why]));
         if move.Text = extension.XmlUnknown[index].Xml then
           Continue;

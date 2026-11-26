@@ -60,10 +60,12 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   a pivot table is refused
 - Calcite's `Insert` and `Delete` of whole rows and columns, as Excel's (`Sheet.Rows['5:7'].Insert`,
   `Range['B5'].EntireColumn.Delete`): cells, heights, widths, merged areas, conditional formats, data validation, hyperlinks,
-  the autofilter and frozen panes move; formulas on every sheet, defined names, print areas and titles change as Excel
+  the autofilter and frozen panes move; formulas on every sheet (tables' calculated columns and totals, Excel 2010's
+  conditional formats and validation on the other sheets too), defined names, print areas and titles change as Excel
   changes them (a deleted reference becomes `#REF!`); new rows and columns take the format of the row above or the column
   left. Tables, pivot tables and their sources, drawings, charts' series (on every sheet and chart sheet) and notes move as
-  Excel moves them. A dynamic array moves with its formula's cell and spills from there as before (gone with that cell);
+  Excel moves them. A dynamic array moves with its formula's cell and spills from there as before (gone with that cell;
+  folded into it when a delete leaves its formula naming `#REF!`, as Excel shows it);
   automatic row heights left for Excel to fit again when columns move cells, as Excel fits them. Refused with nothing
   changed, as Excel refuses: part of a legacy array formula, cells pushed off the sheet, a
   table's header row, part of a pivot table; refused for now: Excel 2010's conditional formats, validation and sparklines,

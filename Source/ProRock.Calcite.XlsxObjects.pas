@@ -465,7 +465,7 @@ begin
     if SomeFilters(sheet.AutoFilter, area.Left) then
       Exit(Format(cFilterDeleted, ['list', area.CellsAddress]));
   end;
-  Result := '';
+  Result := PlanOthers;
 end;
 
 // Excel's refusal of a pivot table cut (its page fields above it count), '' when none is; a sheet deleted, its caches
@@ -564,7 +564,7 @@ begin
   inherited;
 end;
 
-// a sheet deleted: the other sheets' tables' formulas naming it, in fKept; why one does not read, '' when all do
+// the other sheets' tables' formulas naming the sheet, in fKept; why one does not read, '' when all do
 function TTablesHandler.PlanOthers: string;
 begin
   var package: TPackageOoxml := fBook.Package;
@@ -594,7 +594,10 @@ begin
   var text: string := DecodeText(aFormula.XmlValue);
   var kept: TKeptFormula := Default(TKeptFormula);
   var why: string;
-  if not ShiftFormula(text, fMap, kept.Text, why) then
+  var map: TReferenceMap := fMap; // a reference without a sheet's name is the other sheet's own
+  map.OnSheet := False;
+  map.InName := False;
+  if not ShiftFormula(text, map, kept.Text, why) then
   begin
     if ContainsText(text, fName) then
       Result := Format('a formula of the table %s does not read: %s', [aPart, why]);
