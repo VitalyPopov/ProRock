@@ -876,46 +876,8 @@ begin
   Result := -1;
 end;
 
-// Excel's built-in date and time formats, and a format code with day, month, year, hour or second outside quotes
+// Excel's built-in date and time formats, and a format code with a date or time code (IsDateCode)
 function IsDateFormat(aId: cardinal; aStyles: TStyleSheetE): boolean;
-
-  function IsDateCode(const aCode: string): boolean;
-  begin
-    if aCode.StartsWith('General', True) then
-      Exit(False);
-    var i: integer := 1;
-    while i <= aCode.Length do
-    begin
-      case aCode[i] of
-        ';':
-          Exit(False); // the first section decides
-        '"':
-          begin
-            Inc(i);
-            while (i <= aCode.Length) and (aCode[i] <> '"') do
-              Inc(i);
-          end;
-        '\', '_', '*':
-          Inc(i);
-        '[':
-          begin
-            var close: integer := Pos(']', aCode, i);
-            if close = 0 then
-              Exit(False);
-            // elapsed time ([h]:mm) is a time; colors, conditions and locales ([Red], [>0], [$-409]) are not
-            var inside: string := LowerCase(Copy(aCode, i + 1, close - i - 1));
-            if (inside <> '') and ((inside.Trim(['h']) = '') or (inside.Trim(['m']) = '') or (inside.Trim(['s']) = '')) then
-              Exit(True);
-            i := close;
-          end;
-        'y', 'Y', 'm', 'M', 'd', 'D', 'h', 'H', 's', 'S':
-          Exit(True);
-      end;
-      Inc(i);
-    end;
-    Result := False;
-  end;
-
 begin
   if aStyles.IsPresent('NumFmts') then
     for var numberFormat: TNumFmtCT in aStyles.NumFmts.NumFmt do
@@ -7549,8 +7511,7 @@ end;
 procedure TWorkbook.SetDateFormat(aIndex: integer; const aValue: string);
 begin
   var why: string := NumberFormatError(aValue);
-  var sections: TArray<string>;
-  if (why = '') and ((FormatSections(aValue, sections) <> '') or not ScanSection(sections[0]).Dates) then
+  if (why = '') and not IsDateCode(aValue) then
     why := 'no date in it';
   if why <> '' then
     raise EArgumentException.CreateFmt('Not a date format Excel would open: "%s" (%s)', [aValue, why]);

@@ -933,41 +933,6 @@ begin
   Result := True;
 end;
 
-// aFormula's pieces copied into a builder made at the first change
-type
-  TFormulaCopy = record
-    Text: string;
-    Builder: TStringBuilder;
-    Copied: integer; // Text before it is in Builder
-    procedure Start(const aText: string);
-    // Text[aStart .. aFinish - 1] written as aWith
-    procedure Replace(aStart, aFinish: integer; const aWith: string);
-    function Done: string; // the text with the changes
-  end;
-
-procedure TFormulaCopy.Start(const aText: string);
-begin
-  Text := aText;
-  Builder := nil;
-  Copied := 1;
-end;
-
-procedure TFormulaCopy.Replace(aStart, aFinish: integer; const aWith: string);
-begin
-  if Builder = nil then
-    Builder := TStringBuilder.Create(Text.Length + 16);
-  Builder.Append(Text, Copied - 1, aStart - Copied).Append(aWith);
-  Copied := aFinish;
-end;
-
-function TFormulaCopy.Done: string;
-begin
-  if Builder = nil then
-    Exit(Text);
-  Builder.Append(Text, Copied - 1, Text.Length + 1 - Copied);
-  Result := Builder.ToString;
-end;
-
 // whether aText[aStart .. aFinish - 1] is aWord exactly
 function IsExactly(const aText: string; aStart, aFinish: integer; const aWord: string): boolean;
 begin
@@ -1017,7 +982,7 @@ type
   TFormulaGrammar = record
     Text: string;
     Why, Unknown: string;
-    Output: TFormulaCopy;
+    Output: TTextCopy;
     // what comes next: a value (at the start, after an operator, an opening bracket, a comma) or an operator
     ExpectValue: boolean;
     // the value before was a constant (a number, a text, TRUE, an error, an array): no range or intersection with it
@@ -1493,7 +1458,7 @@ function ShiftFormula(const aFormula: string; const aMap: TReferenceMap; out aRe
 var
   scanner: TFormulaScanner;
   token: TFormulaToken;
-  output: TFormulaCopy;
+  output: TTextCopy;
 begin
   scanner := TFormulaScanner.Create(aFormula);
   output.Start(aFormula);
@@ -1548,7 +1513,7 @@ function ShownFormula(const aStored: string): string;
 var
   scanner: TFormulaScanner;
   token: TFormulaToken;
-  output: TFormulaCopy;
+  output: TTextCopy;
 begin
   scanner := TFormulaScanner.Create(aStored);
   output.Start(aStored);

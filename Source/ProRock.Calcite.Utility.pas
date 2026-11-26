@@ -51,6 +51,17 @@ type
     Left, Right, Top, DataTop, DataBottom, Bottom: integer;
   end;
 
+  // a text's pieces copied into a builder made at the first change: Done gives the text itself when nothing changed
+  TTextCopy = record
+    Text: string;
+    Builder: TStringBuilder; // the caller frees it
+    Copied: integer; // Text before it is in Builder
+    procedure Start(const aText: string);
+    // Text[aStart .. aFinish - 1] written as aWith
+    procedure Replace(aStart, aFinish: integer; const aWith: string);
+    function Done: string;
+  end;
+
   // how a formula's references change, as Excel changes them. A fill moves the relative parts of every reference. An insert
   // or delete of rows or columns on one sheet moves each reference into it at or past the cut, the absolute parts too (in a
   // defined name the relative parts stay, as Excel keeps them); a range grows or shrinks, one wholly deleted or pushed off
@@ -837,6 +848,29 @@ end;
 class function TUtility.IsNoFormula(const aValue: Variant): boolean;
 begin
   Result := VarIsEmpty(aValue) or VarIsNull(aValue) or (VarIsStr(aValue) and (string(aValue) = ''));
+end;
+
+procedure TTextCopy.Start(const aText: string);
+begin
+  Text := aText;
+  Builder := nil;
+  Copied := 1;
+end;
+
+procedure TTextCopy.Replace(aStart, aFinish: integer; const aWith: string);
+begin
+  if Builder = nil then
+    Builder := TStringBuilder.Create(Text.Length + 16);
+  Builder.Append(Text, Copied - 1, aStart - Copied).Append(aWith);
+  Copied := aFinish;
+end;
+
+function TTextCopy.Done: string;
+begin
+  if Builder = nil then
+    Exit(Text);
+  Builder.Append(Text, Copied - 1, Text.Length + 1 - Copied);
+  Result := Builder.ToString;
 end;
 
 end.

@@ -11,21 +11,23 @@ type
     Error: string;
   end;
 
-// a number format's sections, split at ; outside quotes, brackets and escapes; why Excel would not open it, '' - it would
-function FormatSections(const aCode: string; out aSections: TArray<string>): string;
-
-// a section of a number format that FormatSections took: digit placeholders, date and time codes, @, General
-function ScanSection(const aSection: string): TFormatSection;
+// a number format's section (from 0): digit placeholders, date and time codes, @, General; Error - why Excel would not open
+// it, or the code's own (a quote not closed) when the section reads; all False past the last section
+function FormatSection(const aCode: string; aIndex: integer): TFormatSection;
 
 // why Excel would not open a file with this number format, '' - it would (each rule found by opening files in Excel)
 function NumberFormatError(const aCode: string): string;
+
+// whether a cell with this number format holds a date or a time: its first section has a date or time code (an era's g and
+// the Buddhist year's b, e too: Excel shows them as dates)
+function IsDateCode(const aCode: string): boolean;
 
 // '' or why a code looks typed in another language's Excel (TT.MM.JJJJ, aaaa-mm-dd, #.##0,00): a file keeps English codes,
 // and Excel takes most of these as written - aaaa a weekday, J a letter shown as it is, 0,00 thousands
 function LocalNotation(const aCode: string): string;
 
 // a code as Excel's NumberFormat shows it: no \ before what is shown as itself anyway ($ - + / ( ) : ! ^ & ' ~ { } < > = and
-// a space, a . in a date's section) - Excel writes dd\.mm\.yyyy for dd.mm.yyyy
+// a space, a . in a date's section) - Excel writes dd\.mm\.yyyy for dd.mm.yyyy; the code itself when nothing goes
 function ShownFormat(const aCode: string): string;
 
 // a number as a number format would show it, close enough for its width: Delphi's FormatFloat and FormatDateTime take
@@ -34,186 +36,350 @@ function ShownNumber(aNumber: Double; const aCode: string): string;
 
 implementation
 
-uses System.SysUtils, System.Math, System.TypInfo, ProRock.Calcite.Utility;
+uses System.SysUtils, System.StrUtils, System.Math, System.TypInfo, ProRock.Calcite.Utility;
 
-function FormatSections(const aCode: string; out aSections: TArray<string>): string;
+type
+  TFormatTokenKind = (tkLiteral, tkQuoted, tkEscaped, tkPadding, tkFill, tkBracket, tkSection, tkDigit, tkPoint, tkComma,
+    tkPercent, tkExponent, tkText, tkGeneral, tkDate, tkCalendar);
+
+  // a code's piece at Start .. Finish - 1 in its section (Section, from 0; a ; ends the one before it): "..." with its quotes,
+  // \x, _x, *x, [...], E with its + or -, B with its 1 or 2, AM/PM and A/P whole; one character otherwise
+  TFormatToken = record
+    Kind: TFormatTokenKind;
+    Start, Finish, Section: integer;
+  end;
+
+  TFormatFailure = (ffNone, ffQuote, ffBracket, ffEnd);
+
+  // a code's pieces in turn, each told by its characters, never by the section's meaning. Nothing managed (a record with a
+  // string is set up and cleared on every call): the caller keeps the code alive while it reads
+  TFormatScanner = record
+  private
+    fText: PChar; // the code's first character
+    fLength, fIndex, fSection: integer;
+    fFailure: TFormatFailure;
+    fFailed: Char; // the \, _ or * at the end
+    function At(aIndex: integer): Char; inline;
+    function Fail(aFailure: TFormatFailure): boolean;
+    function Passed(const aWord: string): boolean;
+    function Closing(aClose: Char): integer;
+  public
+    constructor Create(const aCode: string);
+    // False at the end or when the code reads no further (Error)
+    function Next(out aToken: TFormatToken): boolean;
+    function Error: string; // why reading stopped; '' at the code's end
+  end;
+
+constructor TFormatScanner.Create(const aCode: string);
 begin
-  aSections := [];
-  var start: integer := 1;
-  var i: integer := 1;
-  while i <= aCode.Length do
+  fText := PChar(aCode);
+  fLength := aCode.Length;
+  fIndex := 1;
+  fSection := 0;
+  fFailure := ffNone;
+  fFailed := #0;
+end;
+
+function TFormatScanner.At(aIndex: integer): Char;
+begin
+  Result := fText[aIndex - 1];
+end;
+
+function TFormatScanner.Fail(aFailure: TFormatFailure): boolean;
+begin
+  fFailure := aFailure;
+  fIndex := fLength + 1;
+  Result := False;
+end;
+
+function TFormatScanner.Error: string;
+begin
+  case fFailure of
+    ffQuote:
+      Result := 'a quote not closed';
+    ffBracket:
+      Result := 'a [ not closed';
+    ffEnd:
+      Result := fFailed + ' at the end, with nothing after it';
+  else
+    Result := '';
+  end;
+end;
+
+// whether the code goes on with aWord, in any case: passed when it does
+function TFormatScanner.Passed(const aWord: string): boolean;
+begin
+  Result := fIndex + aWord.Length - 1 <= fLength;
+  for var i := 1 to aWord.Length do
+    Result := Result and (UpCase(At(fIndex + i - 1)) = UpCase(aWord[i]));
+  if Result then
+    Inc(fIndex, aWord.Length);
+end;
+
+// the index of aClose from fIndex on, 0 when there is none
+function TFormatScanner.Closing(aClose: Char): integer;
+begin
+  for var i := fIndex to fLength do
+    if At(i) = aClose then
+      Exit(i);
+  Result := 0;
+end;
+
+// the kind of a piece of one character
+function CharKind(aChar: Char): TFormatTokenKind;
+begin
+  case aChar of
+    '0', '#', '?':
+      Result := tkDigit;
+    '.':
+      Result := tkPoint;
+    ',':
+      Result := tkComma;
+    '%':
+      Result := tkPercent;
+    '@':
+      Result := tkText;
+    'b', 'd', 'D', 'e', 'g', 'G', 'h', 'H', 'm', 'M', 'y', 'Y', 's', 'S': // g: an era
+      Result := tkDate;
+  else
+    Result := tkLiteral;
+  end;
+end;
+
+function TFormatScanner.Next(out aToken: TFormatToken): boolean;
+begin
+  if fIndex > fLength then
+    Exit(False);
+  aToken.Start := fIndex;
+  aToken.Section := fSection;
+  var c: Char := At(fIndex);
+  aToken.Kind := CharKind(c);
+  if CharInSet(c, ['G', 'g']) and Passed('General') then
+    aToken.Kind := tkGeneral
+  else if CharInSet(c, ['A', 'a']) and (Passed('AM/PM') or Passed('A/P')) then
+    aToken.Kind := tkDate
+  else
   begin
-    case aCode[i] of
+    Inc(fIndex);
+    var after: Char := #0;
+    if fIndex <= fLength then
+      after := At(fIndex);
+    case c of
       '"':
         begin
-          i := Pos('"', aCode, i + 1);
-          if i = 0 then
-            Exit('a quote not closed');
+          aToken.Kind := tkQuoted;
+          fIndex := Closing('"') + 1;
+          if fIndex = 1 then
+            Exit(Fail(ffQuote));
         end;
       '[':
         begin
-          i := Pos(']', aCode, i + 1);
-          if i = 0 then
-            Exit('a [ not closed');
+          aToken.Kind := tkBracket;
+          fIndex := Closing(']') + 1;
+          if fIndex = 1 then
+            Exit(Fail(ffBracket));
         end;
       '\', '_', '*':
         begin
-          if i = aCode.Length then
-            Exit(aCode[i] + ' at the end, with nothing after it');
-          Inc(i);
+          if after = #0 then
+          begin
+            fFailed := c;
+            Exit(Fail(ffEnd));
+          end;
+          if c = '\' then
+            aToken.Kind := tkEscaped
+          else if c = '_' then
+            aToken.Kind := tkPadding
+          else
+            aToken.Kind := tkFill;
+          Inc(fIndex);
         end;
       ';':
         begin
-          aSections := aSections + [Copy(aCode, start, i - start)];
-          start := i + 1;
-        end;
-    end;
-    Inc(i);
-  end;
-  aSections := aSections + [Copy(aCode, start, MaxInt)];
-  Result := '';
-end;
-
-function ScanSection(const aSection: string): TFormatSection;
-const
-  cColors: array[0 .. 7] of string = ('black', 'blue', 'cyan', 'green', 'magenta', 'red', 'white', 'yellow');
-begin
-  Result := Default(TFormatSection);
-  var colors: integer := 0;
-  var conditions: integer := 0;
-  var seconds: boolean := False; // the last date code: decimals of seconds may follow
-  var n: integer := aSection.Length;
-  var i: integer := 1;
-  while i <= n do
-  begin
-    var c: char := aSection[i];
-    case c of
-      '"':
-        i := Pos('"', aSection, i + 1);
-      '\', '_', '*':
-        Inc(i);
-      '[':
-        begin
-          var close: integer := Pos(']', aSection, i + 1);
-          var inside: string := LowerCase(Copy(aSection, i + 1, close - i - 1));
-          var number: Double;
-          var color: integer;
-          var named: boolean := False;
-          for var name: string in cColors do
-            named := named or (inside = name);
-          if named or (inside.StartsWith('color') and TryStrToInt(inside.Substring(5), color) and (color >= 1) and
-            (color <= 56)) then
-          begin
-            Inc(colors);
-            if colors > 1 then
-              Result.Error := 'two colors in one section';
-          end
-          else if (inside <> '') and CharInSet(inside[1], ['<', '>', '=']) then
-          begin
-            var operatorLength: integer := 1;
-            if (inside.Length > 1) and CharInSet(inside[2], ['>', '=']) and (inside[1] <> '=') then
-              operatorLength := 2;
-            Inc(conditions);
-            if not TryStrToFloat(inside.Substring(operatorLength).Trim, number, TFormatSettings.Invariant) then
-              Result.Error := 'a condition without a number: [' + inside + ']'
-            else if conditions > 1 then
-              Result.Error := 'two conditions in one section';
-          end
-          else if inside.StartsWith('$') then
-            // a currency or a locale
-          else if (inside <> '') and CharInSet(inside[1], ['h', 'm', 's']) and (inside.Trim([inside[1]]) = '') then
-          begin // elapsed time
-            Result.Dates := True;
-            seconds := inside[1] = 's';
-          end
-          else if inside.StartsWith('dbnum') and TryStrToInt(inside.Substring(5), color) then
-            // East Asian numerals
-          else
-            Result.Error := 'Excel has no [' + inside + ']';
-          i := close;
-        end;
-      '0', '#', '?':
-        begin
-          Result.Digits := True;
-          seconds := False;
-        end;
-      '.':
-        if seconds then
-        begin
-          var zeros: integer := 0;
-          while (i < n) and (aSection[i + 1] = '0') do
-          begin
-            Inc(zeros);
-            Inc(i);
-          end;
-          if zeros > 3 then
-            Result.Error := 'more than three decimals of seconds';
+          aToken.Kind := tkSection;
+          Inc(fSection);
         end;
       'E':
         begin
-          if (i = n) or not CharInSet(aSection[i + 1], ['+', '-']) then
-            Result.Error := 'E without + or - after it'
-          else if (i + 1 = n) or not CharInSet(aSection[i + 2], ['0', '#', '?']) then
-            Result.Error := 'E+ without a digit placeholder after it';
-          Result.Digits := True;
-          Inc(i);
-        end;
-      '@':
-        Result.Text := True;
-      'G', 'g':
-        if SameText(Copy(aSection, i, 7), 'General') then
-        begin
-          Result.General := True;
-          Inc(i, 6);
-        end
-        else
-          Result.Dates := True; // an era
-      'A', 'a':
-        if SameText(Copy(aSection, i, 5), 'AM/PM') then
-        begin
-          Result.Dates := True;
-          Inc(i, 4);
-        end
-        else if SameText(Copy(aSection, i, 3), 'A/P') then
-        begin
-          Result.Dates := True;
-          Inc(i, 2);
+          aToken.Kind := tkExponent;
+          if CharInSet(after, ['+', '-']) then
+            Inc(fIndex);
         end;
       'B':
-        if (i < n) and CharInSet(aSection[i + 1], ['1', '2']) then
-          Inc(i) // a calendar
-        else
-          Result.Error := 'B without 1 or 2 after it';
-      'n', 'N':
-        Result.Error := 'n (minutes are m)';
-      'b', 'd', 'D', 'e', 'h', 'H', 'm', 'M', 'y', 'Y':
         begin
-          Result.Dates := True;
-          seconds := False;
-        end;
-      's', 'S':
-        begin
-          Result.Dates := True;
-          seconds := True;
+          aToken.Kind := tkCalendar;
+          if CharInSet(after, ['1', '2']) then
+            Inc(fIndex);
         end;
     end;
-    if Result.Error <> '' then
-      Exit;
-    Inc(i);
+  end;
+  aToken.Finish := fIndex;
+  Result := True;
+end;
+
+type
+  TFormatBracket = (fbUnknown, fbColor, fbCondition, fbLocale, fbElapsed, fbNumerals);
+
+// what a [...] holds (aInside in lower case, without its brackets)
+function BracketKind(const aInside: string): TFormatBracket;
+const
+  cColors: array[0 .. 7] of string = ('black', 'blue', 'cyan', 'green', 'magenta', 'red', 'white', 'yellow');
+begin
+  var number: integer;
+  if MatchStr(aInside, cColors) or (aInside.StartsWith('color') and TryStrToInt(aInside.Substring(5), number) and
+    (number >= 1) and (number <= 56)) then
+    Result := fbColor
+  else if (aInside <> '') and CharInSet(aInside[1], ['<', '>', '=']) then
+    Result := fbCondition
+  else if aInside.StartsWith('$') then
+    Result := fbLocale // a currency or a locale
+  else if (aInside <> '') and CharInSet(aInside[1], ['h', 'm', 's']) and (aInside.Trim([aInside[1]]) = '') then
+    Result := fbElapsed
+  else if aInside.StartsWith('dbnum') and TryStrToInt(aInside.Substring(5), number) then
+    Result := fbNumerals // East Asian numerals
+  else
+    Result := fbUnknown;
+end;
+
+type
+  // a section's tokens summed up in turn: what it has, the first reason Excel would not open it
+  TFormatSummary = record
+    Section: TFormatSection;
+    Colors, Conditions: integer;
+    Seconds: boolean; // the last date code: decimals of seconds may follow
+    Decimals: boolean; // just after a seconds' point: its zeros follow
+    Zeros: integer;
+    procedure Bracket(const aInside: string);
+    procedure Take(const aCode: string; const aToken: TFormatToken);
+  end;
+
+procedure TFormatSummary.Bracket(const aInside: string);
+begin
+  case BracketKind(aInside) of
+    fbColor:
+      begin
+        Inc(Colors);
+        if Colors > 1 then
+          Section.Error := 'two colors in one section';
+      end;
+    fbCondition:
+      begin
+        var operatorLength: integer := 1;
+        if (aInside.Length > 1) and CharInSet(aInside[2], ['>', '=']) and (aInside[1] <> '=') then
+          operatorLength := 2;
+        Inc(Conditions);
+        var number: Double;
+        if not TryStrToFloat(aInside.Substring(operatorLength).Trim, number, TFormatSettings.Invariant) then
+          Section.Error := 'a condition without a number: [' + aInside + ']'
+        else if Conditions > 1 then
+          Section.Error := 'two conditions in one section';
+      end;
+    fbElapsed:
+      begin
+        Section.Dates := True;
+        Seconds := aInside[1] = 's';
+      end;
+    fbUnknown:
+      Section.Error := 'Excel has no [' + aInside + ']';
   end;
 end;
 
-function NumberFormatError(const aCode: string): string;
+procedure TFormatSummary.Take(const aCode: string; const aToken: TFormatToken);
 begin
-  var sections: TArray<string>;
-  Result := FormatSections(aCode, sections);
-  if Result <> '' then
+  if Section.Error <> '' then
     Exit;
-  if Length(sections) > 4 then
-    Exit('more than four sections');
-  for var i := 0 to High(sections) do
+  var c: Char := aCode[aToken.Start];
+  if Decimals and (aToken.Kind = tkDigit) and (c = '0') then
   begin
-    var section: TFormatSection := ScanSection(sections[i]);
+    Inc(Zeros);
+    if Zeros > 3 then
+      Section.Error := 'more than three decimals of seconds';
+    Exit;
+  end;
+  Decimals := False;
+  case aToken.Kind of
+    tkBracket:
+      Bracket(LowerCase(Copy(aCode, aToken.Start + 1, aToken.Finish - aToken.Start - 2)));
+    tkDigit:
+      begin
+        Section.Digits := True;
+        Seconds := False;
+      end;
+    tkPoint:
+      if Seconds then
+      begin
+        Decimals := True;
+        Zeros := 0;
+      end;
+    tkExponent:
+      begin
+        if aToken.Finish - aToken.Start = 1 then
+          Section.Error := 'E without + or - after it'
+        else if (aToken.Finish > aCode.Length) or not CharInSet(aCode[aToken.Finish], ['0', '#', '?']) then
+          Section.Error := 'E+ without a digit placeholder after it';
+        Section.Digits := True;
+      end;
+    tkText:
+      Section.Text := True;
+    tkGeneral:
+      Section.General := True;
+    tkCalendar:
+      if aToken.Finish - aToken.Start = 1 then
+        Section.Error := 'B without 1 or 2 after it';
+    tkDate:
+      begin
+        Section.Dates := True;
+        case c of
+          's', 'S':
+            Seconds := True;
+          'b', 'd', 'D', 'e', 'h', 'H', 'm', 'M', 'y', 'Y':
+            Seconds := False;
+        end;
+      end;
+    tkLiteral:
+      if CharInSet(c, ['n', 'N']) then
+        Section.Error := 'n (minutes are m)';
+  end;
+end;
+
+function FormatSection(const aCode: string; aIndex: integer): TFormatSection;
+var
+  scanner: TFormatScanner;
+  token: TFormatToken;
+  summary: TFormatSummary;
+begin
+  scanner := TFormatScanner.Create(aCode);
+  summary := Default(TFormatSummary);
+  while scanner.Next(token) do
+    if (token.Section = aIndex) and (token.Kind <> tkSection) then
+      summary.Take(aCode, token);
+  Result := summary.Section;
+  if Result.Error = '' then
+    Result.Error := scanner.Error;
+end;
+
+function NumberFormatError(const aCode: string): string;
+var
+  scanner: TFormatScanner;
+  token: TFormatToken;
+  summaries: array[0 .. 3] of TFormatSummary;
+begin
+  scanner := TFormatScanner.Create(aCode);
+  for var i := Low(summaries) to High(summaries) do
+    summaries[i] := Default(TFormatSummary);
+  var count: integer := 1;
+  while scanner.Next(token) do
+    if token.Kind = tkSection then
+      Inc(count)
+    else if count <= Length(summaries) then
+      summaries[count - 1].Take(aCode, token);
+  if scanner.Error <> '' then
+    Exit(scanner.Error);
+  if count > Length(summaries) then
+    Exit('more than four sections');
+  for var i := 0 to count - 1 do
+  begin
+    var section: TFormatSection := summaries[i].Section;
     if section.Error <> '' then
       Exit(section.Error);
     if section.General and section.Digits then
@@ -224,113 +390,103 @@ begin
       Exit('digits and dates in one section');
     if (i = 3) and (section.Digits or section.Dates) then
       Exit('digits or dates in the fourth section, which is for text');
-    if section.Text and (i < High(sections)) then
+    if section.Text and (i < count - 1) then
       Exit('@ in a section before the last one');
   end;
+  Result := '';
 end;
 
-function LocalNotation(const aCode: string): string;
+function IsDateCode(const aCode: string): boolean;
+begin
+  Result := FormatSection(aCode, 0).Dates;
+end;
+
+// whether a section's codes (without quotes, brackets and escaped characters) look like another language's notation
+function LocalSection(const aCodes: string): boolean;
 const
   cPlaces = ['#', '0', '?'];
   cLetters: array[0 .. 5] of string = ('JJ', 'TT', 'RR', #$0414#$0414, #$041C#$041C, #$0413#$0413); // gg: an era in English
-  cHint = 'it looks like another language''s notation: Excel''s codes are English (yyyy, mm, dd, hh, #,##0.00), each reader '
-    + 'sees them in their own';
 begin
-  Result := '';
-  var sections: TArray<string>;
-  if FormatSections(aCode, sections) <> '' then
-    Exit;
-  for var section: string in sections do
-  begin
-    // the codes alone, without quotes, brackets and escaped characters
-    var codes: string := '';
-    var i: integer := 1;
-    while i <= section.Length do
+  // German, Dutch, French, Polish and Russian date letters; Spanish or Italian aaaa beside a day and a month, with no y
+  for var letters: string in cLetters do
+    if ContainsText(aCodes, letters) then
+      Exit(True);
+  if ContainsText(aCodes, 'AA') and not ContainsText(aCodes, 'Y') and ContainsText(aCodes, 'M') and
+    (ContainsText(aCodes, 'D') or ContainsText(aCodes, 'G')) then
+    Exit(True);
+  // a decimal comma: #.##0,00, or 0,00 with no point
+  var n: integer := aCodes.Length;
+  for var p := 1 to n do
+    if (aCodes[p] = '.') and (p + 4 <= n) and CharInSet(aCodes[p + 1], cPlaces) and CharInSet(aCodes[p + 2], cPlaces) and
+      CharInSet(aCodes[p + 3], cPlaces) and (aCodes[p + 4] = ',') then
+      Exit(True)
+    else if (aCodes[p] = ',') and not aCodes.Contains('.') and (p > 1) and CharInSet(aCodes[p - 1], cPlaces) then
     begin
-      case section[i] of
-        '"':
-          i := Pos('"', section, i + 1);
-        '[':
-          i := Pos(']', section, i + 1);
-        '\', '_', '*':
-          Inc(i);
-      else
-        codes := codes + section[i];
-      end;
-      Inc(i);
+      var places: integer := 0;
+      while (p + places + 1 <= n) and CharInSet(aCodes[p + places + 1], cPlaces) do
+        Inc(places);
+      if (places in [1, 2]) and ((p + places = n) or (aCodes[p + places + 1] <> ',')) then
+        Exit(True);
     end;
+  Result := False;
+end;
 
-    // German, Dutch, French, Polish and Russian date letters; Spanish or Italian aaaa beside a day and a month, with no y
-    var upper: string := codes.ToUpper;
-    for var letters: string in cLetters do
-      if upper.Contains(letters) then
-        Exit(cHint);
-    if upper.Contains('AA') and not upper.Contains('Y') and upper.Contains('M')
-      and (upper.Contains('D') or upper.Contains('G')) then
-      Exit(cHint);
-
-    // a decimal comma: #.##0,00, or 0,00 with no point
-    var n: integer := codes.Length;
-    for var p := 1 to n do
-      if (codes[p] = '.') and (p + 4 <= n) and CharInSet(codes[p + 1], cPlaces) and CharInSet(codes[p + 2], cPlaces)
-        and CharInSet(codes[p + 3], cPlaces) and (codes[p + 4] = ',') then
-        Exit(cHint)
-      else if (codes[p] = ',') and not codes.Contains('.') and (p > 1) and CharInSet(codes[p - 1], cPlaces) then
-      begin
-        var places: integer := 0;
-        while (p + places + 1 <= n) and CharInSet(codes[p + places + 1], cPlaces) do
-          Inc(places);
-        if (places in [1, 2]) and ((p + places = n) or (codes[p + places + 1] <> ',')) then
-          Exit(cHint);
-      end;
-  end;
+function LocalNotation(const aCode: string): string;
+var
+  scanner: TFormatScanner;
+  token: TFormatToken;
+begin
+  var local: boolean := False;
+  var codes: string := '';
+  scanner := TFormatScanner.Create(aCode);
+  while scanner.Next(token) do
+    if token.Kind = tkSection then
+    begin
+      local := local or LocalSection(codes);
+      codes := '';
+    end
+    else if not (token.Kind in [tkQuoted, tkEscaped, tkPadding, tkFill, tkBracket]) then
+      codes := codes + Copy(aCode, token.Start, token.Finish - token.Start);
+  local := local or LocalSection(codes);
+  if local and (scanner.Error = '') then
+    Result := 'it looks like another language''s notation: Excel''s codes are English (yyyy, mm, dd, hh, #,##0.00), each '
+      + 'reader sees them in their own'
+  else
+    Result := '';
 end;
 
 function ShownFormat(const aCode: string): string;
+var
+  scanner: TFormatScanner;
+  token: TFormatToken;
+  summary: TFormatSummary;
+  output: TTextCopy;
 begin
-  var sections: TArray<string>;
-  if FormatSections(aCode, sections) <> '' then
-    Exit(aCode);
-  var builder: TStringBuilder := TStringBuilder.Create;
-  try
-    for var index := 0 to High(sections) do
+  // each section's dates first: a \. stays outside them
+  var dates: TArray<boolean> := [];
+  scanner := TFormatScanner.Create(aCode);
+  summary := Default(TFormatSummary);
+  while scanner.Next(token) do
+    if token.Kind = tkSection then
     begin
-      if index > 0 then
-        builder.Append(';');
-      var section: string := sections[index];
-      var dates: boolean := ScanSection(section).Dates;
-      var i: integer := 1;
-      while i <= section.Length do
-      begin
-        var c: char := section[i];
-        if c = '"' then
-        begin
-          var close: integer := Pos('"', section, i + 1);
-          builder.Append(Copy(section, i, close - i + 1));
-          i := close;
-        end
-        else if c = '[' then
-        begin
-          var close: integer := Pos(']', section, i + 1);
-          builder.Append(Copy(section, i, close - i + 1));
-          i := close;
-        end
-        else if CharInSet(c, ['\', '_', '*']) and (i < section.Length) then
-        begin
-          Inc(i);
-          if (c <> '\') or not (CharInSet(section[i], ['$', '-', '+', '/', '(', ')', ':', '!', '^', '&', '''', '~', '{', '}',
-            '<', '>', '=', ' ']) or (dates and (section[i] = '.'))) then
-            builder.Append(c);
-          builder.Append(section[i]);
-        end
-        else
-          builder.Append(c);
-        Inc(i);
-      end;
-    end;
-    Result := builder.ToString;
+      dates := dates + [summary.Section.Dates];
+      summary := Default(TFormatSummary);
+    end
+    else
+      summary.Take(aCode, token);
+  if scanner.Error <> '' then
+    Exit(aCode);
+  dates := dates + [summary.Section.Dates];
+  scanner := TFormatScanner.Create(aCode);
+  output.Start(aCode);
+  try
+    while scanner.Next(token) do
+      if (token.Kind = tkEscaped) and (CharInSet(aCode[token.Start + 1], ['$', '-', '+', '/', '(', ')', ':', '!', '^', '&',
+        '''', '~', '{', '}', '<', '>', '=', ' ']) or (dates[token.Section] and (aCode[token.Start + 1] = '.'))) then
+        output.Replace(token.Start, token.Start + 1, '');
+    Result := output.Done;
   finally
-    builder.Free;
+    output.Builder.Free;
   end;
 end;
 
@@ -347,120 +503,154 @@ begin
   Result := FormatFloat('0.' + StringOfChar('#', Max(decimals, 0)), aNumber, TFormatSettings.Invariant);
 end;
 
-function ShownNumber(aNumber: Double; const aCode: string): string;
+// a [...] (aBracket with its brackets) as what it shows: a currency's symbol, the elapsed hours, minutes or seconds
+function BracketCode(const aBracket: string; aNumber: Double): string;
 begin
-  var sections: TArray<string>;
-  if FormatSections(aCode, sections) <> '' then
-    Exit(GeneralText(aNumber));
-  var section: string := sections[0];
-  if (aNumber < 0) and (Length(sections) >= 2) then
+  Result := '';
+  var inside: string := LowerCase(Copy(aBracket, 2, aBracket.Length - 2));
+  case BracketKind(inside) of
+    fbLocale:
+      Result := '"' + Copy(aBracket, 3, Pos('-', inside + '-') - 2) + '"';
+    fbElapsed:
+      case inside[1] of
+        'h':
+          Result := '"' + IntToStr(Trunc(aNumber * 24)) + '"';
+        'm':
+          Result := '"' + IntToStr(Trunc(aNumber * 1440)) + '"';
+      else
+        Result := '"' + IntToStr(Trunc(aNumber * 86400)) + '"';
+      end;
+  end;
+end;
+
+// the m's from aStart (their end aEnd) as months, or as minutes (Delphi's n) when seconds are the next code; after hours
+// Delphi takes m as minutes itself. aScanner: past the first m
+function MonthsCode(const aCode: string; aScanner: TFormatScanner; aStart: integer; out aEnd: integer): string;
+var
+  next: TFormatToken;
+begin
+  aEnd := aStart + 1;
+  while (aEnd <= aCode.Length) and CharInSet(aCode[aEnd], ['m', 'M']) do
+    Inc(aEnd);
+  var letter: Char := 'm';
+  while aScanner.Next(next) and (next.Kind <> tkSection) do
+    if (next.Start >= aEnd) and CharInSet(aCode[next.Start], ['a' .. 'z', 'A' .. 'Z', '0']) then
+    begin
+      if CharInSet(aCode[next.Start], ['s', 'S']) then
+        letter := 'n';
+      Break;
+    end;
+  Result := StringOfChar(letter, aEnd - aStart);
+end;
+
+// a section's code (aIndex) as Delphi's FormatFloat or FormatDateTime takes it: literals quoted, padding and fills as a space
+// or nothing, brackets as what they show; aScale - 100 for each %
+function DelphiCode(const aCode: string; aIndex: integer; aNumber: Double; out aScale: Double): string;
+var
+  scanner: TFormatScanner;
+  token: TFormatToken;
+  count: integer; // Result's characters written: it is the buffer
+
+  procedure Grow(aMore: integer);
   begin
-    section := sections[1];
+    if count + aMore > Result.Length then
+      SetLength(Result, 2 * (count + aMore));
+  end;
+
+  procedure Add(const aText: string);
+  begin
+    Grow(aText.Length);
+    if aText <> '' then
+      Move(aText[1], Result[count + 1], aText.Length * SizeOf(Char));
+    Inc(count, aText.Length);
+  end;
+
+  procedure AddChar(aChar: Char);
+  begin
+    Grow(1);
+    Inc(count);
+    Result[count] := aChar;
+  end;
+
+begin
+  aScale := 1;
+  var seconds: boolean := False; // just after s: a point and zeros are its decimals (Delphi's z)
+  var decimals: boolean := False;
+  var written: integer := 0; // the m's before it are written already
+  SetLength(Result, 2 * aCode.Length + 16);
+  count := 0;
+  scanner := TFormatScanner.Create(aCode);
+  while scanner.Next(token) do
+  begin
+    if (token.Section <> aIndex) or (token.Kind = tkSection) then
+      Continue;
+    var c: Char := aCode[token.Start];
+    if decimals and (token.Kind = tkDigit) and (c = '0') then
+    begin
+      AddChar('z');
+      Continue;
+    end;
+    decimals := seconds and (token.Kind = tkPoint);
+    seconds := (token.Kind = tkDate) and CharInSet(c, ['s', 'S']);
+    case token.Kind of
+      tkEscaped:
+        Add('"' + aCode[token.Start + 1] + '"');
+      tkPadding:
+        AddChar(' ');
+      tkFill, tkCalendar:
+        ;
+      tkBracket:
+        Add(BracketCode(Copy(aCode, token.Start, token.Finish - token.Start), aNumber));
+      tkPercent:
+        begin
+          aScale := aScale * 100;
+          Add('"%"');
+        end;
+      tkGeneral:
+        Add('"' + GeneralText(aNumber) + '"');
+    else
+      if (token.Kind = tkDigit) and (c = '?') then
+        AddChar('0')
+      else if (token.Kind = tkDate) and CharInSet(c, ['e', 'b']) then
+        Add('yyyy') // the year: Delphi has no Buddhist one
+      else if (token.Kind = tkDate) and CharInSet(c, ['m', 'M']) then
+      begin
+        if token.Start >= written then
+          Add(MonthsCode(aCode, scanner, token.Start, written));
+      end
+      else
+        for var i := token.Start to token.Finish - 1 do
+          AddChar(aCode[i]);
+    end;
+  end;
+  SetLength(Result, count);
+end;
+
+function ShownNumber(aNumber: Double; const aCode: string): string;
+var
+  scanner: TFormatScanner;
+  token: TFormatToken;
+begin
+  var count: integer := 1;
+  scanner := TFormatScanner.Create(aCode);
+  while scanner.Next(token) do
+    if token.Kind = tkSection then
+      Inc(count);
+  if scanner.Error <> '' then
+    Exit(GeneralText(aNumber));
+  var index: integer := 0;
+  if (aNumber < 0) and (count >= 2) then
+  begin
+    index := 1;
     aNumber := -aNumber;
   end
-  else if (aNumber = 0) and (Length(sections) >= 3) then
-    section := sections[2];
-  var info: TFormatSection := ScanSection(section);
+  else if (aNumber = 0) and (count >= 3) then
+    index := 2;
+  var info: TFormatSection := FormatSection(aCode, index);
   if info.Text then
     Exit(GeneralText(aNumber));
-  // Excel's code -> Delphi's: literals quoted, padding and fills as a space or nothing, brackets as what they show
-  var code: string := '';
-  var scale: Double := 1;
-  var i: integer := 1;
-  while i <= section.Length do
-  begin
-    var c: char := section[i];
-    case c of
-      '"':
-        begin
-          var close: integer := Pos('"', section, i + 1);
-          code := code + Copy(section, i, close - i + 1);
-          i := close;
-        end;
-      '\':
-        begin
-          Inc(i);
-          code := code + '"' + section[i] + '"';
-        end;
-      '_':
-        begin
-          Inc(i);
-          code := code + ' ';
-        end;
-      '*':
-        Inc(i);
-      '[':
-        begin
-          var close: integer := Pos(']', section, i + 1);
-          var inside: string := Copy(section, i + 1, close - i - 1);
-          var unitPerDay: Double := 0;
-          case LowerCase(inside + ' ')[1] of
-            '$':
-              code := code + '"' + Copy(inside, 2, Pos('-', inside + '-') - 2) + '"';
-            'h':
-              unitPerDay := 24;
-            'm':
-              unitPerDay := 1440;
-            's':
-              unitPerDay := 86400;
-          end;
-          if unitPerDay > 0 then
-            code := code + '"' + IntToStr(Trunc(aNumber * unitPerDay)) + '"';
-          i := close;
-        end;
-      '%':
-        begin
-          scale := scale * 100;
-          code := code + '"%"';
-        end;
-      '?':
-        code := code + '0';
-      'G', 'g':
-        if SameText(Copy(section, i, 7), 'General') then
-        begin
-          code := code + '"' + GeneralText(aNumber) + '"';
-          Inc(i, 6);
-        end
-        else
-          code := code + c;
-      'e', 'b', 'B':
-        if info.Dates then
-          code := code + 'yyyy'
-        else
-          code := code + c;
-      's', 'S':
-        begin
-          code := code + c;
-          if (i < section.Length) and (section[i + 1] = '.') then
-          begin // decimals of seconds: Delphi's z
-            code := code + '.';
-            Inc(i);
-            while (i < section.Length) and (section[i + 1] = '0') do
-            begin
-              code := code + 'z';
-              Inc(i);
-            end;
-          end;
-        end;
-      'm', 'M':
-        begin // minutes before seconds (Delphi's n); after hours Delphi takes m as minutes itself
-          var j: integer := i;
-          while (j < section.Length) and CharInSet(section[j + 1], ['m', 'M']) do
-            Inc(j);
-          var k: integer := j + 1;
-          while (k <= section.Length) and not CharInSet(section[k], ['a' .. 'z', 'A' .. 'Z', '0']) do
-            Inc(k);
-          var letter: char := 'm';
-          if (k <= section.Length) and CharInSet(section[k], ['s', 'S']) then
-            letter := 'n';
-          code := code + StringOfChar(letter, j - i + 1);
-          i := j;
-        end;
-    else
-      code := code + c;
-    end;
-    Inc(i);
-  end;
+  var scale: Double;
+  var code: string := DelphiCode(aCode, index, aNumber, scale);
   try
     if info.Dates then
       Result := FormatDateTime(code, TUtility.SerialToDate(aNumber, False), TFormatSettings.Invariant)
