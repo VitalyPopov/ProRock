@@ -1,12 +1,15 @@
 ﻿unit ProRock.Calcite.Aspects;
 
-// Excel's cell formatting, format-neutral: what a style reads as, in the words every backend gives it (internal)
+// Excel's cell values' types and formatting, format-neutral: what a style reads as, in the words every backend gives it (internal)
 
 interface
 
 uses System.UITypes;
 
 type
+  // a date is a number in a date format, as in Excel
+  TCellValueType = (cvEmpty, cvNumber, cvDate, cvText, cvBoolean, cvError);
+
   // Excel's names: XlUnderlineStyle, XlHAlign, XlVAlign, XlBordersIndex, XlLineStyle, XlBorderWeight
   TUnderline = (ulNone, ulSingle, ulDouble, ulSingleAccounting, ulDoubleAccounting);
   THAlign = (haGeneral, haLeft, haCenter, haRight, haFill, haJustify, haCenterAcrossSelection, haDistributed);

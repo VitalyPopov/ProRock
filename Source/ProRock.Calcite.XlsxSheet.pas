@@ -1,13 +1,17 @@
 ﻿unit ProRock.Calcite.XlsxSheet;
 
-// the xlsx backend of a worksheet: its part's cells, rows and columns (internal)
+// the xlsx backend of a worksheet: its part's cells, rows, columns, values and areas (internal)
 
 interface
 
-uses System.SysUtils, System.Generics.Collections, ProRock.Office.Ooxml, ProRock.Xmlite.Schema.Ooxml.Sml,
+uses System.SysUtils, System.Generics.Collections, ProRock.Xmlite, ProRock.Office.Ooxml, ProRock.Xmlite.Schema.Ooxml.Sml,
   ProRock.Calcite.Utility, ProRock.Calcite.Aspects, ProRock.Calcite.Xlsx;
 
 type
+  // the areas Excel writes only by their own rules: array formulas (spills: the dynamic ones), data tables, tables (table
+  // rows: their header and totals rows), pivot tables (with their page fields above), merged areas
+  TAreaKind = (akArray, akSpill, akDataTable, akTable, akTableRow, akPivot, akMerge);
+
   TXlsxSheet = class
   private
     fBook: TXlsxBook;
@@ -19,8 +23,24 @@ type
     fObjectsPackage: TPackageOoxml;
     fObjectsVersion: cardinal;
     fObjectsEdited: boolean;
+    // found on the first need (fFound), until a write here changes them or Forget: the areas by kind, shared formulas'
+    // first cells by si
+    fAreas: array[TAreaKind] of TArray<TArea>;
+    fFound: set of TAreaKind;
+    fShared: TDictionary<cardinal, TCellCT>;
+
+    procedure Find(aKind: TAreaKind);
+    procedure FindFormulas;
+    procedure FindFixedAreas;
+    procedure FindMerges;
+    procedure ForgetFormulas;
+    function CellForValue(aRow, aColumn: integer): TCellCT;
   public
     constructor Create(aBook: TXlsxBook; const aPart: string);
+    destructor Destroy; override;
+
+    // every cache dropped: the objects handed out, or changed outside the backend
+    procedure Forget;
 
     // the part's objects, a missing r filled on the first call
     function Objects(aEdit: boolean): TWorksheetE;
@@ -45,6 +65,36 @@ type
     // from the first cell to the last one; A1 when there are none
     function UsedRange: TArea;
 
+    function Areas(aKind: TAreaKind): TArray<TArea>;
+    function AreaAt(aKind: TAreaKind; aRow, aColumn: integer; out aArea: TArea): boolean;
+    function ValueAt(aRow, aColumn: integer; out aValue: Variant): TCellValueType;
+    function ValueOf(aCell: TCellCT; out aValue: Variant): TCellValueType;
+    // the formula without its =: a shared one's cells the first one's text moved to them, an array formula's and a data
+    // table's cells their first one's
+    function FormulaText(aRow, aColumn: integer; out aText: string): boolean;
+    // a shared formula's cells as plain ones, each its own text (the values Excel calculated stay); False: its text unreadable
+    function Unshare(aIndex: cardinal): boolean;
+    // the value replacing the cell's, the cell created where Excel expects it; what the front let through
+    procedure PutNumber(aRow, aColumn: integer; aValue: Double);
+    // False: no shared strings to add it to, nothing changed (aInline: an inline string then)
+    function PutText(aRow, aColumn: integer; const aValue: string; aInline: boolean = False): boolean;
+    procedure PutBoolean(aRow, aColumn: integer; aValue: boolean);
+    // a date's serial number, aStyle its date format's
+    procedure PutSerial(aRow, aColumn: integer; aSerial: Double; aStyle: cardinal);
+    procedure PutFormula(aRow, aColumn: integer; const aText: string);
+    // the area's array formula, held by its first cell
+    procedure PutArray(const aArea: TArea; const aText: string);
+    // the cell's value as stored (a shared string's count stays), aFrom's gone
+    procedure MoveValue(aFrom: TCellCT; aRow, aColumn: integer);
+    // the first cell with a value, row by row; nil when there is none
+    function FirstValue(const aArea: TArea): TCellCT;
+    // the values of the area gone where aClearable lets them; cells and rows with nothing left of their own go too
+    procedure ClearValues(const aArea: TArea; const aClearable: TFunc<integer, integer, boolean>);
+    procedure RemoveValue(aCell: TCellCT);
+    // the merged areas overlapping aArea gone
+    procedure RemoveMerges(const aArea: TArea);
+    procedure AddMerge(const aArea: TArea);
+
     property Part: string read fPart;
   end;
 
@@ -52,10 +102,13 @@ type
 function FindInRow(aRow: TRowCT; aColumn: integer; out aIndex: integer): boolean;
 // the <col> entry across aAt split there: ...aAt-1 and aAt...
 procedure SplitColumns(aColumns: TColCTList; aAt: cardinal);
+function HasValue(aCell: TCellCT): boolean;
+// nothing left but its address: Excel keeps a cell with a format, a row with its own settings
+function IsBare(aObject: TXmlite; const aProperties: array of string): boolean;
 
 implementation
 
-uses System.Math, System.Generics.Defaults;
+uses System.Math, System.Variants, System.TypInfo, System.Generics.Defaults, ProRock.Calcite.Formulas;
 
 const
   // in points: a sheet's rows without a height of their own and no default in the file
@@ -126,6 +179,32 @@ begin
     end;
 end;
 
+function HasValue(aCell: TCellCT): boolean;
+begin
+  Result := aCell.Present[@aCell.V] or aCell.IsPresent('F') or aCell.IsPresent('Is');
+end;
+
+function IsBare(aObject: TXmlite; const aProperties: array of string): boolean;
+begin
+  if (aObject.XmlAttributes <> nil) and (aObject.XmlAttributes.Count > 0) then
+    Exit(False);
+  for var name: string in aProperties do
+    if aObject.IsPresent(name) then
+      Exit(False);
+  Result := True;
+end;
+
+// the value of a data table's cells, as Excel's Formula shows it: TABLE(row input, column input)
+function TableFormula(aFormula: TCellFormulaCT): string;
+begin
+  if aFormula.Dt2D then
+    Result := Format('TABLE(%s,%s)', [aFormula.R1, aFormula.R2])
+  else if aFormula.Dtr then
+    Result := Format('TABLE(%s,)', [aFormula.R1])
+  else
+    Result := Format('TABLE(,%s)', [aFormula.R1]);
+end;
+
 { TXlsxSheet }
 
 constructor TXlsxSheet.Create(aBook: TXlsxBook; const aPart: string);
@@ -133,6 +212,19 @@ begin
   inherited Create;
   fBook := aBook;
   fPart := aPart;
+end;
+
+destructor TXlsxSheet.Destroy;
+begin
+  fShared.Free;
+  inherited;
+end;
+
+procedure TXlsxSheet.Forget;
+begin
+  fObjects := nil;
+  fFound := [];
+  FreeAndNil(fShared);
 end;
 
 function TXlsxSheet.Objects(aEdit: boolean): TWorksheetE;
@@ -615,5 +707,477 @@ begin
   else
     Result := TArea.Make(top, left, bottom, right);
 end;
+
+{$REGION 'the areas by kind'}
+
+procedure TXlsxSheet.Find(aKind: TAreaKind);
+begin
+  if aKind in fFound then
+    Exit;
+  case aKind of
+    akArray, akSpill, akDataTable:
+      FindFormulas;
+    akTable, akTableRow, akPivot:
+      FindFixedAreas;
+    akMerge:
+      FindMerges;
+  end;
+end;
+
+procedure TXlsxSheet.FindFormulas;
+begin
+  FreeAndNil(fShared);
+  fShared := TDictionary<cardinal, TCellCT>.Create;
+  var arrays: TList<TArea> := TList<TArea>.Create;
+  var spills: TList<TArea> := TList<TArea>.Create;
+  var dataTables: TList<TArea> := TList<TArea>.Create;
+  try
+    for var row: TRowCT in Objects(False).SheetData.Row do
+      for var cell: TCellCT in row.C do
+        if cell.IsPresent('F') and (cell.F.T <> stcftNormal) then
+          if cell.F.T = stcftShared then
+          begin
+            if cell.F.Ref <> '' then // the first cell: its text, the group's area
+              fShared.AddOrSetValue(cell.F.Si, cell);
+          end
+          else
+          begin
+            var area: TArea;
+            if not TArea.TryParse(cell.F.Ref, area) then
+              TArea.TryParse(cell.R, area);
+            if cell.F.T = stcftArray then
+            begin
+              arrays.Add(area);
+              if (cell.Cm > 0) and fBook.IsDynamicArray(cell.Cm) then
+                spills.Add(area);
+            end
+            else
+              dataTables.Add(area);
+          end;
+    fAreas[akArray] := arrays.ToArray;
+    fAreas[akSpill] := spills.ToArray;
+    fAreas[akDataTable] := dataTables.ToArray;
+  finally
+    dataTables.Free;
+    spills.Free;
+    arrays.Free;
+  end;
+  fFound := fFound + [akArray, akSpill, akDataTable];
+end;
+
+// from the tables' and pivot tables' own parts
+procedure TXlsxSheet.FindFixedAreas;
+begin
+  fAreas[akTable] := nil;
+  fAreas[akTableRow] := nil;
+  fAreas[akPivot] := nil;
+  for var relationship: TRelationshipOoxml in fBook.Package.Relationships(fPart) do
+  begin
+    var area: TArea;
+    if relationship.&Type.EndsWith(cTable) then
+    begin
+      var table: TTableE := fBook.Package.Part<TTableE>(relationship.Part);
+      if (table <> nil) and TArea.TryParse(table.Ref, area) then
+      begin
+        var whole: TArea := area;
+        fAreas[akTable] := fAreas[akTable] + [whole];
+        if table.HeaderRowCount > 0 then
+        begin
+          area.Bottom := whole.Top + integer(table.HeaderRowCount) - 1;
+          fAreas[akTableRow] := fAreas[akTableRow] + [area];
+        end;
+        if table.TotalsRowCount > 0 then
+        begin
+          area.Top := whole.Bottom - integer(table.TotalsRowCount) + 1;
+          area.Bottom := whole.Bottom;
+          fAreas[akTableRow] := fAreas[akTableRow] + [area];
+        end;
+      end;
+    end
+    else if relationship.&Type.EndsWith(cPivotTable) then
+    begin
+      var pivot: TPivotTableDefinitionE := fBook.Package.Part<TPivotTableDefinitionE>(relationship.Part);
+      if (pivot <> nil) and TArea.TryParse(pivot.Location.Ref, area) then
+      begin
+        if pivot.Location.RowPageCount > 0 then // the page fields and a blank row
+          area.Top := Max(1, area.Top - integer(pivot.Location.RowPageCount) - 1);
+        fAreas[akPivot] := fAreas[akPivot] + [area];
+      end;
+    end;
+  end;
+  fFound := fFound + [akTable, akTableRow, akPivot];
+end;
+
+procedure TXlsxSheet.FindMerges;
+begin
+  var merges: TList<TArea> := TList<TArea>.Create;
+  try
+    var sheet: TWorksheetE := Objects(False);
+    if sheet.IsPresent('MergeCells') then
+      for var merged: TMergeCellCT in sheet.MergeCells.MergeCell do
+      begin
+        var area: TArea;
+        if TArea.TryParse(merged.Ref, area) then
+          merges.Add(area);
+      end;
+    fAreas[akMerge] := merges.ToArray;
+  finally
+    merges.Free;
+  end;
+  Include(fFound, akMerge);
+end;
+
+procedure TXlsxSheet.ForgetFormulas;
+begin
+  fFound := fFound - [akArray, akSpill, akDataTable];
+  FreeAndNil(fShared);
+end;
+
+function TXlsxSheet.Areas(aKind: TAreaKind): TArray<TArea>;
+begin
+  Find(aKind);
+  Result := fAreas[aKind];
+end;
+
+function TXlsxSheet.AreaAt(aKind: TAreaKind; aRow, aColumn: integer; out aArea: TArea): boolean;
+begin
+  for var area: TArea in Areas(aKind) do
+    if area.Holds(aRow, aColumn) then
+    begin
+      aArea := area;
+      Exit(True);
+    end;
+  Result := False;
+end;
+
+procedure TXlsxSheet.RemoveMerges(const aArea: TArea);
+begin
+  var sheet: TWorksheetE := Objects(False);
+  if not sheet.IsPresent('MergeCells') then
+    Exit;
+  var list: TMergeCellCTList := sheet.MergeCells.MergeCell;
+  for var i := list.Count - 1 downto 0 do
+  begin
+    var area: TArea;
+    if TArea.TryParse(list[i].Ref, area) and area.Overlaps(aArea) then
+    begin
+      Objects(True);
+      list.Delete(i);
+    end;
+  end;
+  if list.Count = 0 then // the schema wants one at least
+    sheet.Clear('MergeCells')
+  else if sheet.MergeCells.Present[@sheet.MergeCells.Count] then
+    sheet.MergeCells.Count := list.Count;
+  Exclude(fFound, akMerge);
+end;
+
+procedure TXlsxSheet.AddMerge(const aArea: TArea);
+begin
+  var sheet: TWorksheetE := Objects(True);
+  var added: TMergeCellCT := TMergeCellCT.Create;
+  added.Ref := aArea.CellsAddress;
+  sheet.MergeCells.MergeCell.Add(added);
+  sheet.MergeCells.Count := sheet.MergeCells.MergeCell.Count;
+  sheet.MergeCells.SetPresent(@sheet.MergeCells.Count);
+  Exclude(fFound, akMerge);
+end;
+
+{$ENDREGION}
+
+{$REGION 'values and formulas'}
+
+function TXlsxSheet.ValueAt(aRow, aColumn: integer; out aValue: Variant): TCellValueType;
+begin
+  Result := ValueOf(FindCell(aRow, aColumn), aValue);
+end;
+
+function TXlsxSheet.ValueOf(aCell: TCellCT; out aValue: Variant): TCellValueType;
+begin
+  aValue := Unassigned;
+  var cell: TCellCT := aCell;
+  if cell = nil then
+    Exit(cvEmpty);
+  var hasValue: boolean := cell.Present[@cell.V];
+  if cell.T = stctInlineStr then
+  begin
+    if not cell.IsPresent('Is') then
+      Exit(cvEmpty);
+    aValue := RichText(cell.&Is);
+    Exit(cvText);
+  end;
+  if not hasValue then
+    Exit(cvEmpty);
+  case cell.T of
+    stctS:
+      begin
+        aValue := fBook.SharedString(StrToIntDef(cell.V, -1));
+        Result := cvText;
+      end;
+    stctStr:
+      begin
+        aValue := DecodeText(cell.V);
+        Result := cvText;
+      end;
+    stctB:
+      begin
+        aValue := (cell.V = '1') or SameText(cell.V, 'true');
+        Result := cvBoolean;
+      end;
+    stctE:
+      begin
+        aValue := string(cell.V);
+        Result := cvError;
+      end;
+  else
+    var number: Double;
+    if not TUtility.TryFloatFromText(string(cell.V).Trim, number) then
+    begin // not a number: shown as it is
+      aValue := string(cell.V);
+      Exit(cvText);
+    end;
+    if fBook.IsDateStyle(cell.S) then
+    begin
+      aValue := VarFromDateTime(TUtility.SerialToDate(number, fBook.Date1904));
+      Result := cvDate;
+    end
+    else
+    begin
+      aValue := number;
+      Result := cvNumber;
+    end;
+  end;
+end;
+
+function TXlsxSheet.FormulaText(aRow, aColumn: integer; out aText: string): boolean;
+begin
+  aText := '';
+  var cell: TCellCT := FindCell(aRow, aColumn);
+  if (cell <> nil) and cell.IsPresent('F') then
+    case cell.F.T of
+      stcftShared:
+        if cell.F.XmlValue <> '' then
+          aText := DecodeText(cell.F.XmlValue)
+        else
+        begin
+          Find(akArray);
+          var first: TCellCT;
+          var at: TArea;
+          if fShared.TryGetValue(cell.F.Si, first) and TArea.TryParse(first.R, at) then
+          begin
+            var why: string;
+            if not ShiftFormula(DecodeText(first.F.XmlValue), TReferenceMap.Fill(aRow - at.Top, aColumn - at.Left), aText, why) then
+              aText := '';
+          end;
+        end;
+      stcftDataTable:
+        aText := TableFormula(cell.F);
+    else
+      aText := DecodeText(cell.F.XmlValue);
+    end;
+  if aText = '' then
+  begin
+    var area: TArea;
+    if (AreaAt(akArray, aRow, aColumn, area) or AreaAt(akDataTable, aRow, aColumn, area)) and
+      ((area.Top <> aRow) or (area.Left <> aColumn)) then
+      FormulaText(area.Top, area.Left, aText);
+  end;
+  Result := aText <> '';
+end;
+
+function TXlsxSheet.Unshare(aIndex: cardinal): boolean;
+begin
+  Find(akArray);
+  var first: TCellCT;
+  var area: TArea;
+  if not fShared.TryGetValue(aIndex, first) then
+    Exit(True); // no first cell: nothing the others could be read from
+  var text: string := DecodeText(first.F.XmlValue);
+  var checked, why, unknown: string;
+  if not TArea.TryParse(first.F.Ref, area) or
+    not StoredFormula(text, checked, why, unknown) then
+    Exit(False);
+  var at: TArea;
+  TArea.TryParse(first.R, at);
+  var sheet: TWorksheetE := Objects(True);
+  var rowIndex: integer;
+  FindRow(sheet, area.Top, rowIndex);
+  var rows: TRowCTList := sheet.SheetData.Row;
+  while (rowIndex < rows.Count) and (rows[rowIndex].R <= cardinal(area.Bottom)) do
+  begin
+    var row: TRowCT := rows[rowIndex];
+    for var cell: TCellCT in row.C do
+      if cell.IsPresent('F') and (cell.F.T = stcftShared) and (cell.F.Si = aIndex) then
+      begin
+        var moved: string;
+        ShiftFormula(text, TReferenceMap.Fill(integer(row.R) - at.Top, TUtility.ColumnOf(cell.R) - at.Left), moved, why);
+        cell.F.Clear('T');
+        cell.F.Clear('Si');
+        cell.F.Clear('Ref');
+        cell.F.XmlValue := EncodeText(moved);
+      end;
+    Inc(rowIndex);
+  end;
+  ForgetFormulas;
+  fBook.FormulaChanged;
+  Result := True;
+end;
+
+procedure TXlsxSheet.RemoveValue(aCell: TCellCT);
+begin
+  if (aCell.T = stctS) and aCell.Present[@aCell.V] then
+    fBook.SharedStringReleased;
+  if aCell.IsPresent('F') then
+  begin
+    if aCell.F.T <> stcftNormal then
+      ForgetFormulas;
+    aCell.Clear('F');
+    fBook.FormulaChanged;
+  end;
+  aCell.Clear('Is');
+  aCell.Clear(@aCell.V);
+  aCell.Clear(@aCell.T);
+  // cell and value metadata (dynamic arrays, rich values) belong to the value
+  aCell.Clear(@aCell.Cm);
+  aCell.Clear(@aCell.Vm);
+end;
+
+function TXlsxSheet.CellForValue(aRow, aColumn: integer): TCellCT;
+begin
+  Result := CellForStyle(aRow, aColumn);
+  RemoveValue(Result);
+  fBook.ValueChanged;
+end;
+
+procedure TXlsxSheet.PutNumber(aRow, aColumn: integer; aValue: Double);
+begin
+  CellForValue(aRow, aColumn).V := TUtility.FloatText(aValue, ftDouble);
+end;
+
+function TXlsxSheet.PutText(aRow, aColumn: integer; const aValue: string; aInline: boolean): boolean;
+begin
+  var index: integer := fBook.SharedStringIndex(aValue);
+  Result := index >= 0;
+  if not Result and not aInline then
+    Exit;
+  var cell: TCellCT := CellForValue(aRow, aColumn);
+  if Result then
+  begin
+    cell.T := stctS;
+    cell.V := IntToStr(index);
+  end
+  else
+  begin
+    cell.T := stctInlineStr;
+    cell.&Is.T := EncodeText(aValue);
+  end;
+end;
+
+procedure TXlsxSheet.PutBoolean(aRow, aColumn: integer; aValue: boolean);
+begin
+  var cell: TCellCT := CellForValue(aRow, aColumn);
+  cell.T := stctB;
+  cell.V := IntToStr(Ord(aValue));
+end;
+
+procedure TXlsxSheet.PutSerial(aRow, aColumn: integer; aSerial: Double; aStyle: cardinal);
+begin
+  var cell: TCellCT := CellForValue(aRow, aColumn);
+  cell.S := aStyle;
+  cell.V := TUtility.FloatText(aSerial, ftDouble);
+end;
+
+procedure TXlsxSheet.PutFormula(aRow, aColumn: integer; const aText: string);
+begin
+  CellForValue(aRow, aColumn).F.XmlValue := EncodeText(aText);
+  fBook.FormulaChanged;
+end;
+
+procedure TXlsxSheet.PutArray(const aArea: TArea; const aText: string);
+begin
+  var formula: TCellFormulaCT := CellForValue(aArea.Top, aArea.Left).F;
+  formula.T := stcftArray;
+  formula.Ref := aArea.CellsAddress;
+  formula.XmlValue := EncodeText(aText);
+  ForgetFormulas;
+  fBook.FormulaChanged;
+end;
+
+procedure TXlsxSheet.MoveValue(aFrom: TCellCT; aRow, aColumn: integer);
+begin
+  var target: TCellCT := CellForValue(aRow, aColumn);
+  target.T := aFrom.T;
+  target.V := aFrom.V;
+  aFrom.Clear(@aFrom.V);
+  aFrom.Clear(@aFrom.T);
+end;
+
+function TXlsxSheet.FirstValue(const aArea: TArea): TCellCT;
+begin
+  var sheet: TWorksheetE := Objects(False);
+  var rowIndex: integer;
+  FindRow(sheet, aArea.Top, rowIndex);
+  var rows: TRowCTList := sheet.SheetData.Row;
+  while (rowIndex < rows.Count) and (rows[rowIndex].R <= cardinal(aArea.Bottom)) do
+  begin
+    var cellIndex: integer;
+    FindInRow(rows[rowIndex], aArea.Left, cellIndex);
+    var cells: TCellCTList := rows[rowIndex].C;
+    while (cellIndex < cells.Count) and (TUtility.ColumnOf(cells[cellIndex].R) <= aArea.Right) do
+    begin
+      if HasValue(cells[cellIndex]) then
+        Exit(cells[cellIndex]);
+      Inc(cellIndex);
+    end;
+    Inc(rowIndex);
+  end;
+  Result := nil;
+end;
+
+procedure TXlsxSheet.ClearValues(const aArea: TArea; const aClearable: TFunc<integer, integer, boolean>);
+begin
+  var sheet: TWorksheetE := Objects(False);
+  var rowIndex: integer;
+  FindRow(sheet, aArea.Top, rowIndex);
+  var rows: TRowCTList := sheet.SheetData.Row;
+  while (rowIndex < rows.Count) and (rows[rowIndex].R <= cardinal(aArea.Bottom)) do
+  begin
+    var row: TRowCT := rows[rowIndex];
+    var cellIndex: integer;
+    FindInRow(row, aArea.Left, cellIndex);
+    while (cellIndex < row.C.Count) and (TUtility.ColumnOf(row.C[cellIndex].R) <= aArea.Right) do
+    begin
+      var cell: TCellCT := row.C[cellIndex];
+      if HasValue(cell) then
+      begin
+        if not aClearable(row.R, TUtility.ColumnOf(cell.R)) then
+        begin
+          Inc(cellIndex);
+          Continue;
+        end;
+        Objects(True);
+        RemoveValue(cell);
+        fBook.ValueChanged;
+      end;
+      if IsBare(cell, ['S', 'Ph', 'ExtLst']) then
+      begin
+        Objects(True);
+        row.Remove(cell);
+      end
+      else
+        Inc(cellIndex);
+    end;
+    if (row.C.Count = 0) and IsBare(row, ['S', 'CustomFormat', 'Ht', 'Hidden', 'CustomHeight', 'OutlineLevel', 'Collapsed',
+      'ThickTop', 'ThickBot', 'Ph', 'ExtLst']) then
+    begin
+      Objects(True);
+      sheet.SheetData.Remove(row);
+    end
+    else
+      Inc(rowIndex);
+  end;
+end;
+
+{$ENDREGION}
 
 end.
