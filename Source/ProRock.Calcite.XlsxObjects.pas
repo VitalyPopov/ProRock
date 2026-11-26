@@ -109,6 +109,9 @@ type
   TNotesHandler = class(TXlsxHandler)
   private
     procedure NotesParts(out aComments, aDrawing: string);
+    function MoveComments(const aPart: string): boolean;
+    function MoveBoxes(const aPart: string): boolean;
+    function MoveBox(aShape: TShapeE; aIndex, aMoved: integer; aAxis: TAxis): boolean;
   public
     function Plan: string; override;
     procedure Apply; override;
@@ -124,6 +127,9 @@ type
     end;
   private
     fMoves: TList<TAnchorMove>;
+    procedure MoveMarker(aMarker: TMarkerCT);
+    procedure Place(aMarker: TMarkerCT; aAxis: TAxis; aPosition: Int64);
+    function Deleted(aMarker: TMarkerCT; aEnd: boolean): boolean;
   public
     constructor Create(aWalk: TXlsxWalk); override;
     destructor Destroy; override;
@@ -1028,51 +1034,11 @@ end;
 // rows or columns are deleted whole; move only (oneCell) - its start with its cell, its size kept; free (absolute) -
 // where it was; xdr:oneCellAnchor's start with its cell
 procedure TDrawingsHandler.Apply;
-var
-  last, limit: integer;
-  axis: TAxis;
-
-  // a marker with its cell: one deleted goes to the start of what follows (its offset as written otherwise)
-  procedure MoveMarker(aMarker: TMarkerCT);
-  begin
-    var index: integer;
-    var offset: Int64;
-    MarkerPlace(aMarker, fMap.ByRows, index, offset);
-    var moved: integer := fMap.MovedIndex(index + 1);
-    if (moved = 0) and (fMap.Delta < 0) then
-      PlaceMarker(aMarker, fMap.ByRows, fMap.First - 1, 0)
-    else if fMap.ByRows then
-      aMarker.Row := IfThen(moved = 0, limit, moved) - 1
-    else
-      aMarker.Col := IfThen(moved = 0, limit, moved) - 1;
-  end;
-
-  // a marker at a distance from the sheet's top or left
-  procedure Place(aMarker: TMarkerCT; aPosition: Int64);
-  begin
-    var index: integer;
-    var offset: Int64;
-    axis.Find(aPosition, index, offset);
-    PlaceMarker(aMarker, fMap.ByRows, index, offset);
-  end;
-
-  // the marker's row or column among the deleted ones (an end: at the start of the one after them too)
-  function Deleted(aMarker: TMarkerCT; aEnd: boolean): boolean;
-  begin
-    var index: integer;
-    var offset: Int64;
-    MarkerPlace(aMarker, fMap.ByRows, index, offset);
-    Inc(index);
-    Result := (fMap.Delta < 0) and ((index >= fMap.First) and (index <= last) or aEnd and (index = last + 1) and (offset = 0));
-  end;
-
 begin
   if fMoves.Count = 0 then
     Exit;
-  last := fMap.First - fMap.Delta - 1;
-  limit := fMap.Limit;
   var package: TPackageOoxml := fBook.Package;
-  axis := TAxis.Create(fSheet, fMap.ByRows);
+  var axis: TAxis := TAxis.Create(fSheet, fMap.ByRows);
   try
     for var move: TAnchorMove in fMoves do
     begin
@@ -1098,18 +1064,53 @@ begin
             var index: integer;
             var offset: Int64;
             MarkerPlace(anchor.From, fMap.ByRows, index, offset);
-            Place(anchor.&To, axis.Start(index) + offset + move.&To - move.From);
+            Place(anchor.&To, axis, axis.Start(index) + offset + move.&To - move.From);
           end;
         steaAbsolute:
           begin
-            Place(anchor.From, move.From);
-            Place(anchor.&To, move.&To);
+            Place(anchor.From, axis, move.From);
+            Place(anchor.&To, axis, move.&To);
           end;
       end;
     end;
   finally
     axis.Free;
   end;
+end;
+
+// a marker with its cell: one deleted goes to the start of what follows (its offset as written otherwise)
+procedure TDrawingsHandler.MoveMarker(aMarker: TMarkerCT);
+begin
+  var index: integer;
+  var offset: Int64;
+  MarkerPlace(aMarker, fMap.ByRows, index, offset);
+  var moved: integer := fMap.MovedIndex(index + 1);
+  if (moved = 0) and (fMap.Delta < 0) then
+    PlaceMarker(aMarker, fMap.ByRows, fMap.First - 1, 0)
+  else if fMap.ByRows then
+    aMarker.Row := IfThen(moved = 0, fMap.Limit, moved) - 1
+  else
+    aMarker.Col := IfThen(moved = 0, fMap.Limit, moved) - 1;
+end;
+
+// a marker at a distance from the sheet's top or left
+procedure TDrawingsHandler.Place(aMarker: TMarkerCT; aAxis: TAxis; aPosition: Int64);
+begin
+  var index: integer;
+  var offset: Int64;
+  aAxis.Find(aPosition, index, offset);
+  PlaceMarker(aMarker, fMap.ByRows, index, offset);
+end;
+
+// the marker's row or column among the deleted ones (an end: at the start of the one after them too)
+function TDrawingsHandler.Deleted(aMarker: TMarkerCT; aEnd: boolean): boolean;
+begin
+  var index: integer;
+  var offset: Int64;
+  MarkerPlace(aMarker, fMap.ByRows, index, offset);
+  Inc(index);
+  var last: integer := fMap.First - fMap.Delta - 1;
+  Result := (fMap.Delta < 0) and ((index >= fMap.First) and (index <= last) or aEnd and (index = last + 1) and (offset = 0));
 end;
 
 type
@@ -1496,142 +1497,53 @@ begin
     Result := TUtility.FloatText(aEmus / cPoint, ftDouble) + 'pt';
 end;
 
+// a VML style with one property's value replaced, its spacing kept; one not there stays out
+function StyleWith(const aStyle, aName, aValue: string): string;
+begin
+  var items: TArray<string> := aStyle.Split([';']);
+  for var k := 0 to High(items) do
+    if items[k].Split([':'])[0].Trim = aName then
+      items[k] := items[k].Substring(0, items[k].Length - items[k].TrimLeft.Length) + aName + ':' + aValue;
+  Result := string.Join(';', items);
+end;
+
+// a note box's edge on the axis: its row's or column's start and its offset in pixels, never past that row or column
+function BoxEdge(aAxis: TAxis; aIndex, aPixels: integer): Int64;
+const
+  cPixel = 9525;
+begin
+  Result := aAxis.Start(aIndex) + Min(Int64(aPixels) * cPixel, aAxis.Start(aIndex + 1) - aAxis.Start(aIndex));
+end;
+
+// Excel numbers the boxes left from 1
+procedure NumberBoxes(aDrawing: TVmlDrawing);
+begin
+  var z: integer := 0;
+  for var item: TBasite in aDrawing.XmlAny do
+    if item is TShapeE then
+    begin
+      Inc(z);
+      TShapeE(item).Style := StyleWith(TShapeE(item).Style, 'z-index', IntToStr(z));
+    end;
+end;
+
 // the notes as Excel moves them: each box by as many rows or columns as its cell moved (never above the first; its offsets
 // kept, its place and size on the axis computed again), gone with its cell; the last one gone, its parts go too. A part is
 // edited only when it changes: one that did not read back exactly still saves
 procedure TNotesHandler.Apply;
-const
-  cPixel = 9525;
-var
-  anchor: array[0 .. 7] of integer; // not an inline var: Delphi 10.3 takes no structured type there
 begin
   var commentsPart, drawingPart: string;
   NotesParts(commentsPart, drawingPart);
   if (commentsPart = '') and (drawingPart = '') then
     Exit;
-  var package: TPackageOoxml := fBook.Package;
   var notesLeft: boolean := False;
   if commentsPart <> '' then
-  begin
-    var comments: TCommentsE := package.Part<TCommentsE>(commentsPart);
-    var edited: boolean := False;
-    for var i := comments.CommentList.Comment.Count - 1 downto 0 do
-    begin
-      var comment: TCommentCT := comments.CommentList.Comment[i];
-      var at: TArea;
-      if not TArea.TryParse(comment.Ref, at) then
-        Continue;
-      var index: integer := IfThen(fMap.ByRows, at.Top, at.Left);
-      var moved: integer := fMap.MovedIndex(index);
-      if moved = index then
-        Continue;
-      if not edited then
-        package.EditPart<TCommentsE>(commentsPart);
-      edited := True;
-      if moved = 0 then
-        comments.CommentList.Comment.Remove(comment)
-      else if fMap.ByRows then
-        comment.Ref := TUtility.CellName(moved, at.Left)
-      else
-        comment.Ref := TUtility.CellName(at.Top, moved);
-    end;
-    notesLeft := comments.CommentList.Comment.Count > 0;
-  end;
+    notesLeft := MoveComments(commentsPart);
   if drawingPart <> '' then
-  begin
-    var drawing: TVmlDrawing := package.Part<TVmlDrawing>(drawingPart);
-    var axis: TAxis := TAxis.Create(fSheet, fMap.ByRows);
-    try
-      var edited, removed: boolean;
-      edited := False;
-      removed := False;
-      var shapes: integer := 0;
-      for var i := drawing.XmlAny.Count - 1 downto 0 do
-      begin
-        var row, column: integer;
-        if not NoteCell(drawing.XmlAny[i], row, column) then
-          Continue;
-        var shape: TShapeE := TShapeE(drawing.XmlAny[i]);
-        var data: TClientDataE := shape.ClientData[0];
-        // LeftColumn, LeftOffset, TopRow, TopOffset, RightColumn, RightOffset, BottomRow, BottomOffset (pixels)
-        var text: string := string(data.Anchor[0]);
-        var numbers: TArray<string> := text.Split([',']);
-        for var k := 0 to 7 do
-          anchor[k] := StrToIntDef(numbers[k].Trim, 0);
-        var first: integer := IfThen(fMap.ByRows, 2, 0); // the start's index; its offset next, the end's 4 on
-        var index: integer := IfThen(fMap.ByRows, row, column);
-        var moved: integer := fMap.MovedIndex(index);
-        if moved <> 0 then
-          Inc(shapes);
-        if (moved = index) and (anchor[first + 4] < fMap.First - 1) then
-          Continue; // all before the change: as it was
-        if not edited then
-          package.EditPart<TVmlDrawing>(drawingPart);
-        edited := True;
-        if moved = 0 then
-        begin
-          drawing.XmlAny.Remove(shape);
-          removed := True;
-          Continue;
-        end;
-        if fMap.ByRows then
-          data.Row[0] := moved - 1
-        else
-          data.Column[0] := moved - 1;
-        var by: integer := Max(moved - index, -anchor[first]); // never above the first row or column
-        Inc(anchor[first], by);
-        Inc(anchor[first + 4], by);
-        var spaces: string := text.Substring(0, text.Length - text.TrimLeft.Length);
-        text := spaces + IntToStr(anchor[0]);
-        for var k := 1 to 7 do
-          text := text + ', ' + IntToStr(anchor[k]);
-        data.Anchor[0] := text;
-        var boxStart: Int64 := axis.Start(anchor[first]) +
-          Min(Int64(anchor[first + 1]) * cPixel, axis.Start(anchor[first] + 1) - axis.Start(anchor[first]));
-        var boxEnd: Int64 := axis.Start(anchor[first + 4]) +
-          Min(Int64(anchor[first + 5]) * cPixel, axis.Start(anchor[first + 4] + 1) - axis.Start(anchor[first + 4]));
-        var place: string := 'margin-left';
-        var size: string := 'width';
-        if fMap.ByRows then
-        begin
-          place := 'margin-top';
-          size := 'height';
-        end;
-        var style: string := shape.Style;
-        var items: TArray<string> := style.Split([';']);
-        for var k := 0 to High(items) do
-        begin
-          var name: string := items[k].Split([':'])[0].Trim;
-          var lead: string := items[k].Substring(0, items[k].Length - items[k].TrimLeft.Length);
-          if name = place then
-            items[k] := lead + name + ':' + VmlLength(boxStart)
-          else if name = size then
-            items[k] := lead + name + ':' + VmlLength(Max(boxEnd - boxStart, 0));
-        end;
-        shape.Style := string.Join(';', items);
-      end;
-      if removed then // Excel numbers the boxes left from 1
-      begin
-        var z: integer := 0;
-        for var item: TBasite in drawing.XmlAny do
-          if item is TShapeE then
-          begin
-            Inc(z);
-            var style: string := TShapeE(item).Style;
-            var items: TArray<string> := style.Split([';']);
-            for var k := 0 to High(items) do
-              if items[k].Split([':'])[0].Trim = 'z-index' then
-                items[k] := items[k].Substring(0, items[k].Length - items[k].TrimLeft.Length) + 'z-index:' + IntToStr(z);
-            TShapeE(item).Style := string.Join(';', items);
-          end;
-      end;
-      notesLeft := notesLeft or (shapes > 0);
-    finally
-      axis.Free;
-    end;
-  end;
+    notesLeft := MoveBoxes(drawingPart) or notesLeft;
   if notesLeft then
     Exit;
+  var package: TPackageOoxml := fBook.Package;
   if commentsPart <> '' then
     package.RemovePart(fStore.Part, commentsPart);
   if drawingPart <> '' then
@@ -1639,6 +1551,109 @@ begin
     package.RemovePart(fStore.Part, drawingPart);
     fStore.Objects(True).Clear('LegacyDrawing');
   end;
+end;
+
+// the notes' cells moved, those deleted gone; whether any is left
+function TNotesHandler.MoveComments(const aPart: string): boolean;
+begin
+  var package: TPackageOoxml := fBook.Package;
+  var comments: TCommentsE := package.Part<TCommentsE>(aPart);
+  var edited: boolean := False;
+  for var i := comments.CommentList.Comment.Count - 1 downto 0 do
+  begin
+    var comment: TCommentCT := comments.CommentList.Comment[i];
+    var at: TArea;
+    if not TArea.TryParse(comment.Ref, at) then
+      Continue;
+    var index: integer := IfThen(fMap.ByRows, at.Top, at.Left);
+    var moved: integer := fMap.MovedIndex(index);
+    if moved = index then
+      Continue;
+    if not edited then
+      package.EditPart<TCommentsE>(aPart);
+    edited := True;
+    if moved = 0 then
+      comments.CommentList.Comment.Remove(comment)
+    else if fMap.ByRows then
+      comment.Ref := TUtility.CellName(moved, at.Left)
+    else
+      comment.Ref := TUtility.CellName(at.Top, moved);
+  end;
+  Result := comments.CommentList.Comment.Count > 0;
+end;
+
+// the notes' boxes moved, those of deleted cells gone; whether any is left
+function TNotesHandler.MoveBoxes(const aPart: string): boolean;
+begin
+  Result := False;
+  var package: TPackageOoxml := fBook.Package;
+  var drawing: TVmlDrawing := package.Part<TVmlDrawing>(aPart);
+  var axis: TAxis := TAxis.Create(fSheet, fMap.ByRows);
+  try
+    var edited: boolean := False;
+    var removed: boolean := False;
+    for var i := drawing.XmlAny.Count - 1 downto 0 do
+    begin
+      var row, column: integer;
+      if not NoteCell(drawing.XmlAny[i], row, column) then
+        Continue;
+      var shape: TShapeE := TShapeE(drawing.XmlAny[i]);
+      var index: integer := IfThen(fMap.ByRows, row, column);
+      var moved: integer := fMap.MovedIndex(index);
+      Result := Result or (moved <> 0);
+      if moved = 0 then
+      begin
+        drawing.XmlAny.Remove(shape);
+        removed := True;
+      end
+      else if not MoveBox(shape, index, moved, axis) then
+        Continue;
+      if not edited then
+        package.EditPart<TVmlDrawing>(aPart);
+      edited := True;
+    end;
+    if removed then
+      NumberBoxes(drawing);
+  finally
+    axis.Free;
+  end;
+end;
+
+// a note's box with its cell, aIndex moved to aMoved: False when it lies wholly before the change, as it was
+function TNotesHandler.MoveBox(aShape: TShapeE; aIndex, aMoved: integer; aAxis: TAxis): boolean;
+var
+  anchor: array[0 .. 7] of integer; // not an inline var: Delphi 10.3 takes no structured type there
+begin
+  var data: TClientDataE := aShape.ClientData[0];
+  // LeftColumn, LeftOffset, TopRow, TopOffset, RightColumn, RightOffset, BottomRow, BottomOffset (pixels)
+  var text: string := string(data.Anchor[0]);
+  var numbers: TArray<string> := text.Split([',']);
+  for var k := 0 to 7 do
+    anchor[k] := StrToIntDef(numbers[k].Trim, 0);
+  var first: integer := IfThen(fMap.ByRows, 2, 0); // the start's index; its offset next, the end's 4 on
+  if (aMoved = aIndex) and (anchor[first + 4] < fMap.First - 1) then
+    Exit(False);
+  Result := True;
+  if fMap.ByRows then
+    data.Row[0] := aMoved - 1
+  else
+    data.Column[0] := aMoved - 1;
+  var by: integer := Max(aMoved - aIndex, -anchor[first]); // never above the first row or column
+  Inc(anchor[first], by);
+  Inc(anchor[first + 4], by);
+  var spaces: string := text.Substring(0, text.Length - text.TrimLeft.Length);
+  text := spaces + IntToStr(anchor[0]);
+  for var k := 1 to 7 do
+    text := text + ', ' + IntToStr(anchor[k]);
+  data.Anchor[0] := text;
+  var boxStart: Int64 := BoxEdge(aAxis, anchor[first], anchor[first + 1]);
+  var boxEnd: Int64 := BoxEdge(aAxis, anchor[first + 4], anchor[first + 5]);
+  if fMap.ByRows then
+    aShape.Style := StyleWith(StyleWith(aShape.Style, 'margin-top', VmlLength(boxStart)), 'height',
+      VmlLength(Max(boxEnd - boxStart, 0)))
+  else
+    aShape.Style := StyleWith(StyleWith(aShape.Style, 'margin-left', VmlLength(boxStart)), 'width',
+      VmlLength(Max(boxEnd - boxStart, 0)));
 end;
 
 constructor TChartsHandler.Create(aWalk: TXlsxWalk);
