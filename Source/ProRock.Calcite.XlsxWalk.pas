@@ -53,6 +53,8 @@ type
     fMap: TReferenceMap;
     fHandlers: TObjectList<TXlsxHandler>; // the run's, in the order they plan
     fDropped: TList<string>; // the parts a sheet delete removes with the sheet's (pivot caches)
+    fUnknownExtensions: TUnknownExtensions;
+    fNotes: TList<string>;
     function Planned: string;
     // the map, the tables' part filled in, to every handler
     procedure Mapped;
@@ -63,6 +65,10 @@ type
     function Add(const aName: string; aStore: TXlsxSheet): TXlsxWalkSheet;
     property Sheets: TObjectList<TXlsxWalkSheet> read fSheets;
     property Dropped: TList<string> read fDropped;
+    // what the run does with an extension it does not know on the sheet it changes
+    property UnknownExtensions: TUnknownExtensions read fUnknownExtensions write fUnknownExtensions;
+    // what the run did that its caller warns of (an extension kept or dropped), once it applied
+    property Notes: TList<string> read fNotes;
   end;
 
   // arrays, spills and data tables in the way, cells pushed off the sheet; then the cells, the rows' and columns' entries,
@@ -202,8 +208,9 @@ type
     procedure Apply; override;
   end;
 
-  // a sheet deleted: the other sheets' extensions kept as read (x14 conditional formats, validation, sparklines), their
-  // formulas and areas naming it; rows and columns do not move them yet
+  // the extensions (extLst): rows or columns moved, the sheet's - those naming cells refuse, those it does not know are kept
+  // or dropped (UnknownExtensions); a sheet deleted, the other sheets' kept as read (x14 conditional formats, validation,
+  // sparklines), their formulas and areas naming it
   TExtensionsHandler = class(TXlsxHandler)
   private type
     // an extension's element kept as read (Index in XmlUnknown), changed
@@ -215,6 +222,9 @@ type
     end;
   private
     fMoves: TList<TKeptMove>;
+    fUnknown: TList<integer>; // the sheet's extensions it does not know, by index in ExtLst.Ext
+    function PlanSheet: string;
+    procedure ApplySheet;
   public
     constructor Create(aWalk: TXlsxWalk); override;
     destructor Destroy; override;
@@ -273,10 +283,12 @@ begin
   fBook := aBook;
   fSheets := TObjectList<TXlsxWalkSheet>.Create;
   fDropped := TList<string>.Create;
+  fNotes := TList<string>.Create;
 end;
 
 destructor TXlsxWalk.Destroy;
 begin
+  fNotes.Free;
   fDropped.Free;
   fSheets.Free;
   inherited;
@@ -1328,17 +1340,77 @@ constructor TExtensionsHandler.Create(aWalk: TXlsxWalk);
 begin
   inherited;
   fMoves := TList<TKeptMove>.Create;
+  fUnknown := TList<integer>.Create;
 end;
 
 destructor TExtensionsHandler.Destroy;
 begin
+  fUnknown.Free;
   fMoves.Free;
   inherited;
 end;
 
-// why a formula naming the sheet does not read, '' when all do
+type
+  // an extension's URI as the walk knows it: Why - refused, '' - it names no cells
+  TKnownExtension = record
+    Uri, Why: string;
+  end;
+
+const
+  cExtensions: array[0 .. 5] of TKnownExtension = (
+    (Uri: '{78C0D931-6437-407d-A8EE-F0AAD7539E65}'; Why: 'Excel 2010''s conditional formats (data bars, icon sets)'),
+    (Uri: '{CCE6A557-97BC-4b89-ADB6-D9C93CAAB3DF}'; Why: 'Excel 2010''s data validation (lists from other sheets)'),
+    (Uri: '{05C60535-1F16-4fd2-B633-F4F36F0B64E0}'; Why: 'sparklines'),
+    (Uri: '{A8765BA9-456A-4dab-B4F3-ACF838C121DE}'; Why: ''), // slicers
+    (Uri: '{3A4CF648-6AED-40f4-86FF-DC5316D8AED3}'; Why: ''), // tables' slicers
+    (Uri: '{7E03D99C-DC04-49d9-9315-930204A7B6E9}'; Why: '')); // timelines
+
+// rows or columns moved: why one of the sheet's extensions naming cells refuses; those it does not know into fUnknown
+function TExtensionsHandler.PlanSheet: string;
+begin
+  Result := '';
+  var objects: TWorksheetE := fStore.Objects(False);
+  if not objects.IsPresent('ExtLst') then
+    Exit;
+  var extensions: ProRock.Xmlite.Schema.Ooxml.Sml.TExtensionCTList := objects.ExtLst.Ext;
+  for var index := 0 to extensions.Count - 1 do
+  begin
+    var known: integer := High(cExtensions);
+    while (known >= 0) and not SameText(cExtensions[known].Uri, extensions[index].Uri) do
+      Dec(known);
+    if known < 0 then
+      fUnknown.Add(index)
+    else if cExtensions[known].Why <> '' then
+      Exit(cExtensions[known].Why + ', which Calcite does not move yet');
+  end;
+end;
+
+// the extensions it does not know kept or dropped, the walk's notes telling which
+procedure TExtensionsHandler.ApplySheet;
+begin
+  if fUnknown.Count = 0 then
+    Exit;
+  var objects: TWorksheetE := fStore.Objects(fWalk.fUnknownExtensions = ueDrop);
+  var extensions: ProRock.Xmlite.Schema.Ooxml.Sml.TExtensionCTList := objects.ExtLst.Ext;
+  for var i := fUnknown.Count - 1 downto 0 do
+    if fWalk.fUnknownExtensions = ueDrop then
+    begin
+      fWalk.fNotes.Add(Format('an extension Calcite does not know (%s) dropped', [extensions[fUnknown[i]].Uri]));
+      extensions.Delete(fUnknown[i]);
+    end
+    else
+      fWalk.fNotes.Add(Format('an extension Calcite does not know (%s) kept as it was: its references may not have moved',
+        [extensions[fUnknown[i]].Uri]));
+  fWalk.fNotes.Reverse;
+  if extensions.Count = 0 then
+    objects.Clear('ExtLst');
+end;
+
+// rows or columns moved: the sheet's own extensions; a sheet deleted: why a formula naming it does not read, '' when all do
 function TExtensionsHandler.Plan: string;
 begin
+  if fMap.Change <> TReferenceChange.rcSheetDelete then
+    Exit(PlanSheet);
   for var sheet: TXlsxWalkSheet in fWalk.fSheets do
   begin
     if sheet = fSheet then
@@ -1366,6 +1438,7 @@ end;
 
 procedure TExtensionsHandler.Apply;
 begin
+  ApplySheet;
   for var move: TKeptMove in fMoves do
   begin
     move.Sheet.fStore.Objects(True);

@@ -203,7 +203,7 @@ const
     (Name: 'Controls'; Handler: nil; Why: 'controls'),
     (Name: 'WebPublishItems'; Handler: nil; Why: 'items published to the web'),
     (Name: 'TableParts'; Handler: TTablesHandler; Why: ''),
-    (Name: 'ExtLst'; Handler: nil; Why: 'Excel 2010''s extensions (conditional formats, validation, sparklines)'));
+    (Name: 'ExtLst'; Handler: TExtensionsHandler; Why: ''));
 
   // the relationship types from the workbook down; a type not here refuses. A handler refuses what it cannot move yet
   // (threaded comments, chartEx); the elements refuse embedded objects and controls before their parts matter
@@ -276,8 +276,8 @@ const
   {$ENDREGION}
 
   // the plan orders: the first why is the refusal; an insert's or delete's lists by address last, they apply in this order
-  cShift: array[0 .. 9] of TXlsxHandlerClass = (TCellsHandler, TPivotsHandler, TTablesHandler, TRefusedElementsHandler,
-    TPartsHandler, TNotesHandler, TDrawingsHandler, TChartsHandler, TFormulasHandler, TNamesHandler);
+  cShift: array[0 .. 10] of TXlsxHandlerClass = (TCellsHandler, TPivotsHandler, TTablesHandler, TRefusedElementsHandler,
+    TExtensionsHandler, TPartsHandler, TNotesHandler, TDrawingsHandler, TChartsHandler, TFormulasHandler, TNamesHandler);
   cLists: array[0 .. 10] of TXlsxHandlerClass = (TMergesHandler, TConditionalAreasHandler, TValidationAreasHandler,
     THyperlinksHandler, TAutoFilterHandler, TSortHandler, TIgnoredErrorsHandler, TProtectedRangesHandler,
     TPageBreaksHandler, TPanesHandler, TDimensionHandler);
@@ -1717,6 +1717,7 @@ begin
     for var index := firstList to fHandlers.Count - 1 do
       fHandlers[index].Apply;
     formulas.Apply;
+    Handler<TExtensionsHandler>.Apply;
   end;
   tables.Apply;
   if fMap.Count <> 0 then

@@ -66,9 +66,11 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   Excel moves them. A dynamic array moves with its formula's cell and spills from there as before (gone with that cell);
   automatic row heights left for Excel to fit again when columns move cells, as Excel fits them. Refused with nothing
   changed, as Excel refuses: part of a legacy array formula, cells pushed off the sheet, a
-  table's header row, part of a pivot table; refused for now: Excel 2010's extensions (its conditional formats, validation,
-  sparklines), embedded objects, controls, threaded comments, Excel 2016's chart kinds. Cells shifted within rows or columns
-  come later
+  table's header row, part of a pivot table; refused for now: Excel 2010's conditional formats, validation and sparklines,
+  embedded objects, controls, threaded comments, Excel 2016's chart kinds, a part of a kind Calcite does not know (cells
+  mapped to XML, named sheet views, real-time data and a shared workbook's revisions among them). An extension Calcite does
+  not know on the sheet is kept as it was or dropped (`Workbook.UnknownExtensions`), a warning in `Issues` either way. Cells
+  shifted within rows or columns come later
 - Calcite's `Sheet.Delete`, as Excel's `Worksheet.Delete`: what names the sheet on the other sheets - formulas, defined
   names, charts, conditional formats and validation (Excel 2010's too), tables' formulas - becomes `#REF!` as Excel writes it
   (a 3-D range's end on it moves to the next worksheet, a name of it another sheet uses stays as the workbook's, a dynamic

@@ -68,6 +68,8 @@ const
   svVisible = ProRock.Calcite.Aspects.svVisible;
   svHidden = ProRock.Calcite.Aspects.svHidden;
   svVeryHidden = ProRock.Calcite.Aspects.svVeryHidden;
+  ueKeep = ProRock.Calcite.Aspects.ueKeep;
+  ueDrop = ProRock.Calcite.Aspects.ueDrop;
   {$ENDREGION}
 
 type
@@ -86,6 +88,8 @@ type
   TCellValueType = ProRock.Calcite.Aspects.TCellValueType;
   // Excel's XlSheetVisibility: svVeryHidden is shown again only from code
   TSheetVisibility = ProRock.Calcite.Aspects.TSheetVisibility;
+  // an extension (extLst) Insert and Delete do not know on the sheet they change: kept as read, or dropped
+  TUnknownExtensions = ProRock.Calcite.Aspects.TUnknownExtensions;
   // Excel's names: XlUnderlineStyle, XlHAlign, XlVAlign, XlBordersIndex, XlLineStyle, XlBorderWeight
   TUnderline = ProRock.Calcite.Aspects.TUnderline;
   THAlign = ProRock.Calcite.Aspects.THAlign;
@@ -573,6 +577,7 @@ type
     fBook: TXlsxBook;
     fSheets: TWorksheets;
     fIssues: TIssues;
+    fUnknownExtensions: TUnknownExtensions;
 
     // nothing open: Open's own workbook
     constructor CreateClosed;
@@ -624,6 +629,9 @@ type
     // every reader. EArgumentException for a code that is no date or one Excel would not open. Kept over Open
     property DateFormat: string index 0 read GetDateFormat write SetDateFormat;
     property DateTimeFormat: string index 1 read GetDateFormat write SetDateFormat;
+    // what Insert and Delete do with an extension they do not know on the sheet they change: ueKeep - kept as read, its
+    // references may not have moved; ueDrop - removed, the file stays valid. A warning tells which. Kept over Open
+    property UnknownExtensions: TUnknownExtensions read fUnknownExtensions write fUnknownExtensions;
   end;
 
 implementation
@@ -2098,6 +2106,7 @@ end;
 function WalkOf(aSheet: TWorksheet; out aMine: TXlsxWalkSheet): TXlsxRun;
 begin
   Result := TXlsxRun.Create(aSheet.fWorkbook.fBook);
+  Result.UnknownExtensions := aSheet.fWorkbook.fUnknownExtensions;
   aMine := nil;
   for var sheet: TWorksheet in aSheet.fWorkbook.fSheets do
     if sheet = aSheet then
@@ -2121,6 +2130,8 @@ begin
   var walk: TXlsxRun := WalkOf(Self, mine);
   try
     why := walk.Run(mine, aMap);
+    for var note: string in walk.Notes do
+      fWorkbook.fIssues.Add(TIssueSeverity.isWarning, 'Extension', fName, note);
   finally
     walk.Free;
   end;

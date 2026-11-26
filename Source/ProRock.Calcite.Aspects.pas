@@ -10,6 +10,7 @@ type
   // a date is a number in a date format, as in Excel
   TCellValueType = (cvEmpty, cvNumber, cvDate, cvText, cvBoolean, cvError);
   TSheetVisibility = (svVisible, svHidden, svVeryHidden);
+  TUnknownExtensions = (ueKeep, ueDrop);
 
   // Excel's names: XlUnderlineStyle, XlHAlign, XlVAlign, XlBordersIndex, XlLineStyle, XlBorderWeight
   TUnderline = (ulNone, ulSingle, ulDouble, ulSingleAccounting, ulDoubleAccounting);
