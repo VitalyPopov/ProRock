@@ -11,7 +11,7 @@ uses System.SysUtils, System.Classes, System.Generics.Collections, ProRock.Xmlit
 type
   TXlsxWalk = class;
 
-  // a worksheet as the walk sees it: its name, its storage, what a move plans on it
+  // a worksheet as the walk sees it: its name, its storage, what a sheet delete plans on it
   TXlsxWalkSheet = class
   private type
     // a formula's cell through rows or columns inserted or deleted: where it is then, its text before and after (stored)
@@ -40,12 +40,6 @@ type
       function Start(aIndex: integer): Int64;
       procedure Find(aPosition: Int64; out aIndex: integer; out aOffset: Int64);
     end;
-    // a drawing's object (xdr:twoCellAnchor or xdr:oneCellAnchor) and where it started and ended on the shifted axis
-    TAnchorMove = record
-      Part: string;
-      Anchor: TXmlite;
-      From, &To: Int64;
-    end;
     // a chart's reference to cells through rows or columns inserted or deleted: its c:f (Index -1), or an extension's
     // element kept as read (Index in XmlUnknown); the text before and after
     TChartMove = record
@@ -54,57 +48,37 @@ type
       Index: integer;
       Before, After: string;
     end;
-    // a dynamic array's spilled value, lifted while rows or columns move: its place from the formula's cell
-    TSpillValue = record
-      Row, Column: integer;
-      Typed: boolean;
-      T: TCellTypeST;
-      V: string;
-    end;
-    // a dynamic array through rows or columns moved: its area before, its spilled values
-    TSpill = record
-      Area: TArea;
-      Values: TArray<TSpillValue>;
-    end;
   private
     fWalk: TXlsxWalk;
     fBook: TXlsxBook;
     fName: string;
     fStore: TXlsxSheet;
-    // while rows or columns are inserted or deleted: the tables (Sales) and table columns (Sales[Q1]) going, each table's
-    // area and data rows (pairs)
-    fGone: TArray<string>;
-    fBodies: TArray<TArea>;
-    function ShiftBlocker(const aMap: TReferenceMap): string;
-    function TablesBlocker(const aMap: TReferenceMap): string;
-    function PivotsBlocker(const aMap: TReferenceMap): string;
-    procedure KeepTableRows(var aMap: TReferenceMap; aCleared: TList<TArea>);
-    procedure PlanTables(const aMap: TReferenceMap);
-    procedure ShiftTables(const aMap: TReferenceMap);
-    procedure ShiftPivots(const aMap: TReferenceMap);
-    function PlanDrawings(const aMap: TReferenceMap; out aWhy: string): TList<TAnchorMove>;
-    procedure ShiftDrawings(aMoves: TList<TAnchorMove>; const aMap: TReferenceMap);
     procedure ShiftCharts(aMoves: TList<TChartMove>; const aMap: TReferenceMap);
-    procedure NotesParts(out aComments, aDrawing: string);
-    function NotesBlocker(const aMap: TReferenceMap): string;
-    procedure ShiftNotes(const aMap: TReferenceMap);
-    function CopiedRow(aSource: TRowCT; aNumber: integer): TRowCT;
-    procedure ShowRows(aTop, aBottom: integer);
-    procedure ShiftColumnEntries(const aMap: TReferenceMap);
-    procedure ShiftCells(const aMap: TReferenceMap);
-    function LiftSpills(const aMap: TReferenceMap): TArray<TSpill>;
-    procedure PlaceSpills(const aSpills: TArray<TSpill>; const aMap: TReferenceMap);
-    procedure FitAgain(const aMap: TReferenceMap);
-    procedure ShiftLists(const aMap: TReferenceMap);
     procedure ApplyFormulas(aMoves: TList<TFormulaMove>; aRefs: TDictionary<cardinal, string>; aShifted: boolean;
       const aMap: TReferenceMap);
     procedure FoldSpills(aMoves: TList<TFormulaMove>);
   public
     constructor Create(aWalk: TXlsxWalk; const aName: string; aStore: TXlsxSheet);
-    // Excel's Insert and Delete of aMap's rows or columns: EInvalidOpException with why when refused, nothing changed
-    procedure Shift(aMap: TReferenceMap);
     // the sheet out of the workbook as Excel deletes it: EInvalidOpException with why when refused, nothing changed
     procedure DeleteSheet;
+  end;
+
+  // one kind of what an insert or delete moves: Plan finds what stands in the way ('' when nothing does) and keeps its
+  // moves, Apply makes them and never refuses
+  TXlsxHandler = class
+  protected
+    fWalk: TXlsxWalk;
+    fMap: TReferenceMap; // the walk's, the tables' part filled in
+    // the sheet whose rows or columns move: its book, storage and name
+    fSheet: TXlsxWalkSheet;
+    fBook: TXlsxBook;
+    fStore: TXlsxSheet;
+    fName: string;
+    procedure ShowRows(aTop, aBottom: integer);
+  public
+    constructor Create(aWalk: TXlsxWalk); virtual;
+    function Plan: string; virtual;
+    procedure Apply; virtual;
   end;
 
   // the workbook's worksheets in order, for one insert or delete
@@ -112,11 +86,15 @@ type
   private
     fBook: TXlsxBook;
     fSheets: TObjectList<TXlsxWalkSheet>;
+    fSheet: TXlsxWalkSheet; // the one whose rows or columns move
+    fMap: TReferenceMap;
   public
     constructor Create(aBook: TXlsxBook);
     destructor Destroy; override;
     // the next worksheet: its name and its storage (borrowed)
     function Add(const aName: string; aStore: TXlsxSheet): TXlsxWalkSheet;
+    // Excel's Insert and Delete of aMap's rows or columns on aSheet: why when refused, nothing changed then
+    function Shift(aSheet: TXlsxWalkSheet; const aMap: TReferenceMap): string;
   end;
 
 implementation
@@ -131,6 +109,178 @@ type
   TMarkerCT = ProRock.Xmlite.Schema.Ooxml.DmlSheet.TMarkerCT;
   TExtensionCT = ProRock.Xmlite.Schema.Ooxml.DmlChart.TExtensionCT;
   {$ENDREGION}
+
+  TXlsxHandlerClass = class of TXlsxHandler;
+
+  // arrays, spills and data tables in the way, cells pushed off the sheet; then the cells, the rows' and columns' entries,
+  // the spills placed again
+  TCellsHandler = class(TXlsxHandler)
+  private type
+    // a dynamic array's spilled value, lifted while rows or columns move: its place from the formula's cell
+    TSpillValue = record
+      Row, Column: integer;
+      Typed: boolean;
+      T: TCellTypeST;
+      V: string;
+    end;
+    // a dynamic array through rows or columns moved: its area before, its spilled values
+    TSpill = record
+      Area: TArea;
+      Values: TArray<TSpillValue>;
+    end;
+  private
+    function CopiedRow(aSource: TRowCT; aNumber: integer): TRowCT;
+    procedure ShiftColumnEntries;
+    procedure ShiftCells;
+    function LiftSpills: TArray<TSpill>;
+    procedure PlaceSpills(const aSpills: TArray<TSpill>);
+    procedure FitAgain;
+  public
+    function Plan: string; override;
+    procedure Apply; override;
+  end;
+
+  // what Calcite does not move yet: a sheet with it is refused whole
+  TRefusedElementsHandler = class(TXlsxHandler)
+  public
+    function Plan: string; override;
+  end;
+
+  // the sheet's tables: they fill the walk's map first (the data row a delete keeps, the tables and columns gone, their
+  // bodies)
+  TTablesHandler = class(TXlsxHandler)
+  private
+    fCleared: TList<TArea>; // the data rows kept, emptied after the move
+    procedure ShiftTables;
+  public
+    constructor Create(aWalk: TXlsxWalk); override;
+    destructor Destroy; override;
+    procedure Complete(var aMap: TReferenceMap);
+    function Plan: string; override;
+    procedure Apply; override;
+  end;
+
+  TPivotsHandler = class(TXlsxHandler)
+  public
+    function Plan: string; override;
+    procedure Apply; override;
+  end;
+
+  TNotesHandler = class(TXlsxHandler)
+  private
+    procedure NotesParts(out aComments, aDrawing: string);
+  public
+    function Plan: string; override;
+    procedure Apply; override;
+  end;
+
+  TDrawingsHandler = class(TXlsxHandler)
+  private type
+    // a drawing's object (xdr:twoCellAnchor or xdr:oneCellAnchor) and where it started and ended on the shifted axis
+    TAnchorMove = record
+      Part: string;
+      Anchor: TXmlite;
+      From, &To: Int64;
+    end;
+  private
+    fMoves: TList<TAnchorMove>;
+  public
+    constructor Create(aWalk: TXlsxWalk); override;
+    destructor Destroy; override;
+    function Plan: string; override;
+    procedure Apply; override;
+  end;
+
+  TChartsHandler = class(TXlsxHandler)
+  private
+    fMoves: TList<TXlsxWalkSheet.TChartMove>;
+  public
+    constructor Create(aWalk: TXlsxWalk); override;
+    destructor Destroy; override;
+    function Plan: string; override;
+    procedure Apply; override;
+  end;
+
+  // every sheet's formulas: the cells', shared formulas' areas, conditional formats' and validation's (the rules')
+  TFormulasHandler = class(TXlsxHandler)
+  private
+    fMoves: TObjectList<TList<TXlsxWalkSheet.TFormulaMove>>; // each sheet's, in the walk's order
+    fRefs: TObjectList<TDictionary<cardinal, string>>;
+    fRules: TList<TXlsxWalkSheet.TTextMove>;
+  public
+    constructor Create(aWalk: TXlsxWalk); override;
+    destructor Destroy; override;
+    function Plan: string; override;
+    // the rules' formulas: before the lists drop the rules gone with their areas
+    procedure ApplyRules;
+    procedure Apply; override;
+  end;
+
+  // the defined names, print areas and titles too
+  TNamesHandler = class(TXlsxHandler)
+  private
+    fMapped: boolean;
+    fChanged: TArray<string>;
+  public
+    function Plan: string; override;
+    procedure Apply; override;
+  end;
+
+  // the sheet's lists by address, one handler each
+  TMergesHandler = class(TXlsxHandler)
+  public
+    procedure Apply; override;
+  end;
+
+  TConditionalAreasHandler = class(TXlsxHandler)
+  public
+    procedure Apply; override;
+  end;
+
+  TValidationAreasHandler = class(TXlsxHandler)
+  public
+    procedure Apply; override;
+  end;
+
+  THyperlinksHandler = class(TXlsxHandler)
+  public
+    procedure Apply; override;
+  end;
+
+  TAutoFilterHandler = class(TXlsxHandler)
+  public
+    procedure Apply; override;
+  end;
+
+  TSortHandler = class(TXlsxHandler)
+  public
+    procedure Apply; override;
+  end;
+
+  TIgnoredErrorsHandler = class(TXlsxHandler)
+  public
+    procedure Apply; override;
+  end;
+
+  TProtectedRangesHandler = class(TXlsxHandler)
+  public
+    procedure Apply; override;
+  end;
+
+  TPageBreaksHandler = class(TXlsxHandler)
+  public
+    procedure Apply; override;
+  end;
+
+  TPanesHandler = class(TXlsxHandler)
+  public
+    procedure Apply; override;
+  end;
+
+  TDimensionHandler = class(TXlsxHandler)
+  public
+    procedure Apply; override;
+  end;
 
 constructor TXlsxWalk.Create(aBook: TXlsxBook);
 begin
@@ -160,19 +310,39 @@ begin
   fStore := aStore;
 end;
 
-// why Excel or Calcite does not insert or delete aMap's rows or columns, '' when nothing stands in the way
-function TXlsxWalkSheet.ShiftBlocker(const aMap: TReferenceMap): string;
+constructor TXlsxHandler.Create(aWalk: TXlsxWalk);
+begin
+  inherited Create;
+  fWalk := aWalk;
+  fSheet := aWalk.fSheet;
+  fBook := fSheet.fBook;
+  fStore := fSheet.fStore;
+  fName := fSheet.fName;
+end;
+
+function TXlsxHandler.Plan: string;
+begin
+  Result := '';
+end;
+
+procedure TXlsxHandler.Apply;
+begin
+end;
+
+procedure TXlsxHandler.ShowRows(aTop, aBottom: integer);
+begin
+  for var row: TRowCT in fStore.RowEntries(aTop, aBottom) do
+    row.Clear(@row.Hidden);
+end;
+
+// why Excel or Calcite does not move the cells so: arrays, spills, data tables, cells pushed off; '' when nothing does
+function TCellsHandler.Plan: string;
 const
   cLater = ', which Calcite does not move yet';
   cNotYet = ', which Calcite does not do yet';
   cPushedOff = 'Microsoft Excel can''t insert new cells because it would push non-empty cells off the end of the ' +
     'worksheet. These non-empty cells might appear empty but have blank values, some formatting, or a formula. Delete ' +
     'enough rows or columns to make room for what you want to insert and then try again.';
-  cElements: array[0 .. 7] of string = ('OleObjects', 'Controls', 'ExtLst', 'Scenarios',
-    'DataConsolidate', 'CustomSheetViews', 'CellWatches', 'SmartTags');
-  cWhat: array[0 .. 7] of string = ('embedded objects', 'controls',
-    'Excel 2010''s extensions (conditional formats, validation, sparklines)', 'scenarios', 'a data consolidation',
-    'custom views', 'watched cells', 'smart tags');
 
   function IsSpill(const aArea: TArea): boolean;
   begin
@@ -184,15 +354,15 @@ const
 
 begin
   var sheet: TWorksheetE := fStore.Objects(False);
-  var last: integer := aMap.First - aMap.Delta - 1;
-  var limit: integer := aMap.Limit;
+  var last: integer := fMap.First - fMap.Delta - 1;
+  var limit: integer := fMap.Limit;
   for var area: TArea in fStore.Areas(akArray) do
   begin
-    var low: integer := IfThen(aMap.ByRows, area.Top, area.Left);
-    var high: integer := IfThen(aMap.ByRows, area.Bottom, area.Right);
+    var low: integer := IfThen(fMap.ByRows, area.Top, area.Left);
+    var high: integer := IfThen(fMap.ByRows, area.Bottom, area.Right);
     if IsSpill(area) then
     begin // Excel moves the formula's cell and spills it again from there; with that cell it goes whole
-      var moved: integer := aMap.MovedIndex(low);
+      var moved: integer := fMap.MovedIndex(low);
       if moved = 0 then
         Continue;
       var anchor: string := TUtility.CellName(area.Top, area.Left);
@@ -203,57 +373,46 @@ begin
         for var cell: TCellCT in row.C do
           if HasValue(cell) and not area.Holds(integer(row.R), TUtility.ColumnOf(cell.R)) then
           begin
-            var along: integer := IfThen(aMap.ByRows, integer(row.R), TUtility.ColumnOf(cell.R));
-            var across: integer := IfThen(aMap.ByRows, TUtility.ColumnOf(cell.R), integer(row.R));
-            var place: integer := aMap.MovedIndex(along);
-            if (place >= moved) and (place <= moved + high - low) and (across >= IfThen(aMap.ByRows, area.Left, area.Top)) and
-              (across <= IfThen(aMap.ByRows, area.Right, area.Bottom)) then
+            var along: integer := IfThen(fMap.ByRows, integer(row.R), TUtility.ColumnOf(cell.R));
+            var across: integer := IfThen(fMap.ByRows, TUtility.ColumnOf(cell.R), integer(row.R));
+            var place: integer := fMap.MovedIndex(along);
+            if (place >= moved) and (place <= moved + high - low) and (across >= IfThen(fMap.ByRows, area.Left, area.Top)) and
+              (across <= IfThen(fMap.ByRows, area.Right, area.Bottom)) then
               Exit(Format('cells moved into the spill of the dynamic array at %s (Excel shows #SPILL!)', [anchor]) +
                 cNotYet);
           end;
       Continue;
     end;
-    if (aMap.Delta > 0) and (aMap.First > low) and (aMap.First <= high) or
-      (aMap.Delta < 0) and (aMap.First <= high) and (last >= low) and ((aMap.First > low) or (last < high)) then
+    if (fMap.Delta > 0) and (fMap.First > low) and (fMap.First <= high) or
+      (fMap.Delta < 0) and (fMap.First <= high) and (last >= low) and ((fMap.First > low) or (last < high)) then
       Exit('You can''t change part of an array.');
   end;
   if Length(fStore.Areas(akDataTable)) > 0 then
     Exit('a data table' + cLater);
-  if aMap.Delta > 0 then // a cell with only a format there is dropped, as Excel drops it
+  if fMap.Delta > 0 then // a cell with only a format there is dropped, as Excel drops it
     for var row: TRowCT in sheet.SheetData.Row do
       for var cell: TCellCT in row.C do
-        if HasValue(cell) and (aMap.ByRows and (integer(row.R) > limit - aMap.Delta) or
-          not aMap.ByRows and (TUtility.ColumnOf(cell.R) > limit - aMap.Delta)) then
+        if HasValue(cell) and (fMap.ByRows and (integer(row.R) > limit - fMap.Delta) or
+          not fMap.ByRows and (TUtility.ColumnOf(cell.R) > limit - fMap.Delta)) then
           Exit(cPushedOff);
-  Result := PivotsBlocker(aMap);
-  if Result = '' then
-    Result := TablesBlocker(aMap);
-  if Result <> '' then
-    Exit;
+  Result := '';
+end;
+
+// a sheet with one of these is refused whole
+function TRefusedElementsHandler.Plan: string;
+const
+  cLater = ', which Calcite does not move yet';
+  cElements: array[0 .. 7] of string = ('OleObjects', 'Controls', 'ExtLst', 'Scenarios',
+    'DataConsolidate', 'CustomSheetViews', 'CellWatches', 'SmartTags');
+  cWhat: array[0 .. 7] of string = ('embedded objects', 'controls',
+    'Excel 2010''s extensions (conditional formats, validation, sparklines)', 'scenarios', 'a data consolidation',
+    'custom views', 'watched cells', 'smart tags');
+begin
+  var sheet: TWorksheetE := fStore.Objects(False);
   for var i := 0 to High(cElements) do
     if sheet.IsPresent(cElements[i]) then
       Exit(cWhat[i] + cLater);
-  Result := NotesBlocker(aMap);
-end;
-
-// aMap (rows or columns of aSheet) with aSheet's tables, for its own formulas (aOnSheet) or a name's: those deleted and
-// their columns (structured references to them become #REF!), the ranges growing with them (PlanTables found them)
-function SheetMap(aSheet: TXlsxWalkSheet; const aMap: TReferenceMap; aOnSheet: boolean = False): TReferenceMap;
-begin
-  Result := aMap;
-  Result.OnSheet := aOnSheet;
-  Result.InName := not aOnSheet;
-  Result.GoneTables := aSheet.fGone;
-  SetLength(Result.Bodies, Length(aSheet.fBodies) div 2);
-  for var i := 0 to High(Result.Bodies) do
-  begin
-    Result.Bodies[i].Left := aSheet.fBodies[2 * i].Left;
-    Result.Bodies[i].Right := aSheet.fBodies[2 * i].Right;
-    Result.Bodies[i].Top := aSheet.fBodies[2 * i].Top;
-    Result.Bodies[i].Bottom := aSheet.fBodies[2 * i].Bottom;
-    Result.Bodies[i].DataTop := aSheet.fBodies[2 * i + 1].Top;
-    Result.Bodies[i].DataBottom := aSheet.fBodies[2 * i + 1].Bottom;
-  end;
+  Result := '';
 end;
 
 // aSheet's formulas through aMap (rows or columns of aShifted inserted or deleted, or a sheet deleted): each cell's that
@@ -360,15 +519,9 @@ begin
   end;
 end;
 
-procedure TXlsxWalkSheet.ShowRows(aTop, aBottom: integer);
-begin
-  for var row: TRowCT in fStore.RowEntries(aTop, aBottom) do
-    row.Clear(@row.Hidden);
-end;
-
 // a row inserted as Excel does: the format and height of the row above (not hidden), its cells' styles where they differ
 // from what the new row shows anyway; nil when there is nothing to copy
-function TXlsxWalkSheet.CopiedRow(aSource: TRowCT; aNumber: integer): TRowCT;
+function TCellsHandler.CopiedRow(aSource: TRowCT; aNumber: integer): TRowCT;
 begin
   Result := TRowCT.Create;
   Result.R := aNumber;
@@ -403,51 +556,51 @@ begin
 end;
 
 // the <col> entries moved; a column inserted takes the width and style of the one left of it (not hidden, not a width of 0)
-procedure TXlsxWalkSheet.ShiftColumnEntries(const aMap: TReferenceMap);
+procedure TCellsHandler.ShiftColumnEntries;
 begin
   var sheet: TWorksheetE := fStore.Objects(True);
   if sheet.Cols.Count = 0 then
     Exit;
   var columns: TColCTList := fStore.SortedColumns;
-  var last: integer := aMap.First - aMap.Delta - 1;
-  SplitColumns(columns, aMap.First);
-  if aMap.Delta < 0 then
+  var last: integer := fMap.First - fMap.Delta - 1;
+  SplitColumns(columns, fMap.First);
+  if fMap.Delta < 0 then
   begin
     if last < TUtility.cMaxColumn then
       SplitColumns(columns, last + 1);
     for var i := columns.Count - 1 downto 0 do
-      if (integer(columns[i].Min) >= aMap.First) and (integer(columns[i].Max) <= last) then
+      if (integer(columns[i].Min) >= fMap.First) and (integer(columns[i].Max) <= last) then
         columns.Delete(i)
       else if integer(columns[i].Min) > last then
       begin
-        columns[i].Min := integer(columns[i].Min) + aMap.Delta;
-        columns[i].Max := integer(columns[i].Max) + aMap.Delta;
+        columns[i].Min := integer(columns[i].Min) + fMap.Delta;
+        columns[i].Max := integer(columns[i].Max) + fMap.Delta;
       end;
   end
   else
   begin
     var source: integer := -1;
     for var i := columns.Count - 1 downto 0 do
-      if integer(columns[i].Min) >= aMap.First then
+      if integer(columns[i].Min) >= fMap.First then
       begin
-        if integer(columns[i].Min) + aMap.Delta > TUtility.cMaxColumn then
+        if integer(columns[i].Min) + fMap.Delta > TUtility.cMaxColumn then
           columns.Delete(i)
         else
         begin
-          columns[i].Min := integer(columns[i].Min) + aMap.Delta;
-          columns[i].Max := Min(integer(columns[i].Max) + aMap.Delta, TUtility.cMaxColumn);
+          columns[i].Min := integer(columns[i].Min) + fMap.Delta;
+          columns[i].Max := Min(integer(columns[i].Max) + fMap.Delta, TUtility.cMaxColumn);
         end;
       end
-      else if integer(columns[i].Max) = aMap.First - 1 then
+      else if integer(columns[i].Max) = fMap.First - 1 then
         source := i;
     if source >= 0 then
       if not columns[source].Hidden and (columns[source].Width > 0) then
-        columns[source].Max := integer(columns[source].Max) + aMap.Delta
+        columns[source].Max := integer(columns[source].Max) + fMap.Delta
       else
       begin
         var copy: TColCT := columns[source].Clone<TColCT>;
-        copy.Min := aMap.First;
-        copy.Max := aMap.First + aMap.Delta - 1;
+        copy.Min := fMap.First;
+        copy.Max := fMap.First + fMap.Delta - 1;
         copy.Clear(@copy.Hidden);
         copy.Clear(@copy.Collapsed);
         if copy.Width = 0 then
@@ -466,16 +619,16 @@ begin
 end;
 
 // the rows or columns moved, those deleted gone (their values released), new ones as the row above or the column left
-procedure TXlsxWalkSheet.ShiftCells(const aMap: TReferenceMap);
+procedure TCellsHandler.ShiftCells;
 begin
   var sheet: TWorksheetE := fStore.Objects(True);
   var rows: TRowCTList := sheet.SheetData.Row;
-  var last: integer := aMap.First - aMap.Delta - 1;
-  if aMap.ByRows then
+  var last: integer := fMap.First - fMap.Delta - 1;
+  if fMap.ByRows then
   begin
     var index: integer;
-    fStore.FindRow(sheet, aMap.First, index);
-    if aMap.Delta < 0 then
+    fStore.FindRow(sheet, fMap.First, index);
+    if fMap.Delta < 0 then
       while (index < rows.Count) and (integer(rows[index].R) <= last) do
       begin
         for var cell: TCellCT in rows[index].C do
@@ -484,18 +637,18 @@ begin
       end
     else
       for var i := rows.Count - 1 downto index do
-        if integer(rows[i].R) + aMap.Delta > TUtility.cMaxRow then // only formats there (ShiftBlocker)
+        if integer(rows[i].R) + fMap.Delta > TUtility.cMaxRow then // only formats there (Plan)
           rows.Delete(i);
     for var i := index to rows.Count - 1 do
     begin
       var row: TRowCT := rows[i];
-      row.R := integer(row.R) + aMap.Delta;
+      row.R := integer(row.R) + fMap.Delta;
       for var cell: TCellCT in row.C do
         cell.R := TUtility.CellName(row.R, TUtility.ColumnOf(cell.R));
     end;
     var above: integer;
-    if (aMap.Delta > 0) and (aMap.First > 1) and fStore.FindRow(sheet, aMap.First - 1, above) then
-      for var number := aMap.First + aMap.Delta - 1 downto aMap.First do
+    if (fMap.Delta > 0) and (fMap.First > 1) and fStore.FindRow(sheet, fMap.First - 1, above) then
+      for var number := fMap.First + fMap.Delta - 1 downto fMap.First do
       begin
         var added: TRowCT := CopiedRow(rows[above], number);
         if added <> nil then
@@ -503,13 +656,13 @@ begin
       end;
     Exit;
   end;
-  ShiftColumnEntries(aMap);
+  ShiftColumnEntries;
   for var row: TRowCT in rows do
   begin
     var cells: TCellCTList := row.C;
     var index: integer;
-    FindInRow(row, aMap.First, index);
-    if aMap.Delta < 0 then
+    FindInRow(row, fMap.First, index);
+    if fMap.Delta < 0 then
       while (index < cells.Count) and (TUtility.ColumnOf(cells[index].R) <= last) do
       begin
         fStore.RemoveValue(cells[index]);
@@ -517,18 +670,18 @@ begin
       end
     else
       for var i := cells.Count - 1 downto index do
-        if TUtility.ColumnOf(cells[i].R) + aMap.Delta > TUtility.cMaxColumn then
+        if TUtility.ColumnOf(cells[i].R) + fMap.Delta > TUtility.cMaxColumn then
           cells.Delete(i);
     for var i := index to cells.Count - 1 do
-      cells[i].R := TUtility.CellName(row.R, TUtility.ColumnOf(cells[i].R) + aMap.Delta);
-    if (aMap.Delta > 0) and (index > 0) and (TUtility.ColumnOf(cells[index - 1].R) = aMap.First - 1) then
+      cells[i].R := TUtility.CellName(row.R, TUtility.ColumnOf(cells[i].R) + fMap.Delta);
+    if (fMap.Delta > 0) and (index > 0) and (TUtility.ColumnOf(cells[index - 1].R) = fMap.First - 1) then
     begin
       var source: TCellCT := cells[index - 1];
-      var shown: cardinal := fStore.ColumnStyle(aMap.First);
+      var shown: cardinal := fStore.ColumnStyle(fMap.First);
       if row.CustomFormat then
         shown := row.S;
       if source.S <> shown then
-        for var column := aMap.First + aMap.Delta - 1 downto aMap.First do
+        for var column := fMap.First + fMap.Delta - 1 downto fMap.First do
         begin
           var added: TCellCT := TCellCT.Create;
           added.R := TUtility.CellName(row.R, column);
@@ -544,9 +697,9 @@ begin
   end;
 end;
 
-// the dynamic arrays' spilled values taken out before rows or columns move (ShiftBlocker let them): Excel spills each again
+// the dynamic arrays' spilled values taken out before rows or columns move (Plan let them): Excel spills each again
 // from its formula's cell, the formats stay with the cells
-function TXlsxWalkSheet.LiftSpills(const aMap: TReferenceMap): TArray<TSpill>;
+function TCellsHandler.LiftSpills: TArray<TSpill>;
 begin
   Result := nil;
   var rows: TRowCTList := fStore.Objects(False).SheetData.Row;
@@ -588,17 +741,17 @@ begin
 end;
 
 // the spilled values back, from where the formula's cell went; gone with it
-procedure TXlsxWalkSheet.PlaceSpills(const aSpills: TArray<TSpill>; const aMap: TReferenceMap);
+procedure TCellsHandler.PlaceSpills(const aSpills: TArray<TSpill>);
 begin
   for var spill: TSpill in aSpills do
   begin
     var moved: integer;
-    if aMap.ByRows then
-      moved := aMap.MovedIndex(spill.Area.Top)
+    if fMap.ByRows then
+      moved := fMap.MovedIndex(spill.Area.Top)
     else
-      moved := aMap.MovedIndex(spill.Area.Left);
-    var top: integer := IfThen(aMap.ByRows, moved, spill.Area.Top);
-    var left: integer := IfThen(aMap.ByRows, spill.Area.Left, moved);
+      moved := fMap.MovedIndex(spill.Area.Left);
+    var top: integer := IfThen(fMap.ByRows, moved, spill.Area.Top);
+    var left: integer := IfThen(fMap.ByRows, spill.Area.Left, moved);
     for var value: TSpillValue in spill.Values do
       if moved = 0 then
       begin
@@ -621,18 +774,18 @@ end;
 
 // Excel fits the rows' automatic heights (ht without customHeight) again when columns move cells or grow a merged area;
 // Calcite drops them, Excel fits them when it opens the file
-procedure TXlsxWalkSheet.FitAgain(const aMap: TReferenceMap);
+procedure TCellsHandler.FitAgain;
 begin
-  if aMap.ByRows then
+  if fMap.ByRows then
     Exit;
   var rows: TRowCTList := fStore.Objects(False).SheetData.Row;
   var moved: boolean := False;
   for var row: TRowCT in rows do
-    if (row.C.Count > 0) and (TUtility.ColumnOf(row.C[row.C.Count - 1].R) >= aMap.First) then
+    if (row.C.Count > 0) and (TUtility.ColumnOf(row.C[row.C.Count - 1].R) >= fMap.First) then
       moved := True;
-  if not moved and (aMap.Delta > 0) then
+  if not moved and (fMap.Delta > 0) then
     for var area: TArea in fStore.Areas(akMerge) do
-      if (area.Left < aMap.First) and (area.Right >= aMap.First) then
+      if (area.Left < fMap.First) and (area.Right >= fMap.First) then
         moved := True;
   if not moved then
     Exit;
@@ -642,6 +795,14 @@ begin
       fStore.Objects(True);
       row.Clear(@row.Ht);
     end;
+end;
+
+procedure TCellsHandler.Apply;
+begin
+  FitAgain;
+  var spills: TArray<TSpill> := LiftSpills;
+  ShiftCells;
+  PlaceSpills(spills);
 end;
 
 // an autofilter's columns through columns inserted or deleted (its first one was aOldLeft, is aLeft): True when the last
@@ -667,38 +828,199 @@ end;
 // validation (grown by a row or column inserted right after them), hyperlinks, the autofilter (gone with its header row)
 // and its sort, ignored errors, protected ranges, page breaks, frozen panes (never fewer than one row or column), the
 // dimension
-procedure TXlsxWalkSheet.ShiftLists(const aMap: TReferenceMap);
+
+// a sort's areas and conditions moved: False when nothing is left
+function SortKept(aSort: TSortStateCT; const aMap: TReferenceMap): boolean;
+begin
+  var ref: string := aMap.MovedSqref(aSort.Ref);
+  if ref = '' then
+    Exit(False);
+  aSort.Ref := ref;
+  for var i := aSort.SortCondition.Count - 1 downto 0 do
+  begin
+    ref := aMap.MovedSqref(aSort.SortCondition[i].Ref);
+    if ref = '' then
+      aSort.SortCondition.Delete(i)
+    else
+      aSort.SortCondition[i].Ref := ref;
+  end;
+  Result := aSort.SortCondition.Count > 0;
+end;
+
+// one left with a cell unmerged
+procedure TMergesHandler.Apply;
+begin
+  var sheet: TWorksheetE := fStore.Objects(True);
+  if sheet.IsPresent('MergeCells') then
+  begin
+    var merged: TMergeCellCTList := sheet.MergeCells.MergeCell;
+    for var i := merged.Count - 1 downto 0 do
+    begin
+      var area: TArea;
+      if TArea.TryParse(merged[i].Ref, area) then
+        if fMap.MovedArea(area) and ((area.Top <> area.Bottom) or (area.Left <> area.Right)) then
+          merged[i].Ref := area.CellsAddress
+        else
+          merged.Delete(i);
+    end;
+    if merged.Count = 0 then
+      sheet.Clear('MergeCells')
+    else if sheet.MergeCells.Present[@sheet.MergeCells.Count] then
+      sheet.MergeCells.Count := merged.Count;
+  end;
+  fStore.Forget; // the merges edited as objects
+end;
+
+// grown by a row or column inserted right after them
+procedure TConditionalAreasHandler.Apply;
+begin
+  var sheet: TWorksheetE := fStore.Objects(True);
+  for var i := sheet.ConditionalFormatting.Count - 1 downto 0 do
+  begin
+    var ref: string := fMap.MovedSqref(sheet.ConditionalFormatting[i].Sqref, True);
+    if ref = '' then
+      sheet.ConditionalFormatting.Delete(i)
+    else
+      sheet.ConditionalFormatting[i].Sqref := ref;
+  end;
+end;
+
+// grown by a row or column inserted right after them
+procedure TValidationAreasHandler.Apply;
+begin
+  var sheet: TWorksheetE := fStore.Objects(True);
+  if not sheet.IsPresent('DataValidations') then
+    Exit;
+  var validations: TDataValidationCTList := sheet.DataValidations.DataValidation;
+  for var i := validations.Count - 1 downto 0 do
+  begin
+    var ref: string := fMap.MovedSqref(validations[i].Sqref, True);
+    if ref = '' then
+      validations.Delete(i)
+    else
+      validations[i].Sqref := ref;
+  end;
+  if validations.Count = 0 then
+    sheet.Clear('DataValidations')
+  else if sheet.DataValidations.Present[@sheet.DataValidations.Count] then
+    sheet.DataValidations.Count := validations.Count;
+end;
+
+procedure THyperlinksHandler.Apply;
+begin
+  var sheet: TWorksheetE := fStore.Objects(True);
+  if not sheet.IsPresent('Hyperlinks') then
+    Exit;
+  var links: THyperlinkCTList := sheet.Hyperlinks.Hyperlink;
+  for var i := links.Count - 1 downto 0 do
+  begin
+    var ref: string := fMap.MovedSqref(links[i].Ref);
+    if ref = '' then
+      links.Delete(i)
+    else
+      links[i].Ref := ref;
+  end;
+  if links.Count = 0 then
+    sheet.Clear('Hyperlinks');
+end;
+
+// gone with its header row, and its hidden name with it; its columns and sort follow
+procedure TAutoFilterHandler.Apply;
+begin
+  var sheet: TWorksheetE := fStore.Objects(True);
+  var last: integer := fMap.First - fMap.Delta - 1;
+  var filterGone: boolean := False;
+  if sheet.IsPresent('AutoFilter') then
+  begin
+    var filter: TAutoFilterCT := sheet.AutoFilter;
+    var area: TArea;
+    if TArea.TryParse(filter.Ref, area) then
+    begin
+      var oldLeft: integer := area.Left;
+      if fMap.ByRows and (fMap.Delta < 0) and (fMap.First <= area.Top) and (last >= area.Top) or
+        not fMap.MovedArea(area) then
+      begin
+        sheet.Clear('AutoFilter');
+        filterGone := True;
+      end
+      else
+      begin
+        filter.Ref := area.CellsAddress;
+        if not fMap.ByRows and ShiftFilterColumns(filter, oldLeft, area.Left, fMap) then
+          ShowRows(area.Top + 1, area.Bottom);
+        if filter.IsPresent('SortState') and not SortKept(filter.SortState, fMap) then
+          filter.Clear('SortState');
+      end;
+    end;
+  end;
+  if not filterGone then
+    Exit;
+  var workbook: TWorkbookE := fBook.Package.EditPart<TWorkbookE>(fBook.WorkbookPart);
+  var tab: integer := workbook.Sheets.Sheet.IndexOf(fBook.SheetEntry(fName));
+  if workbook.IsPresent('DefinedNames') then
+  begin
+    var names: TDefinedNameCTList := workbook.DefinedNames.DefinedName;
+    for var i := names.Count - 1 downto 0 do
+      if (names[i].Name = '_xlnm._FilterDatabase') and names[i].Present[@names[i].LocalSheetId] and
+        (integer(names[i].LocalSheetId) = tab) then
+        names.Delete(i);
+    if names.Count = 0 then
+      workbook.Clear('DefinedNames');
+  end;
+end;
+
+procedure TSortHandler.Apply;
+begin
+  var sheet: TWorksheetE := fStore.Objects(True);
+  if sheet.IsPresent('SortState') and not SortKept(sheet.SortState, fMap) then
+    sheet.Clear('SortState');
+end;
+
+procedure TIgnoredErrorsHandler.Apply;
+begin
+  var sheet: TWorksheetE := fStore.Objects(True);
+  if not sheet.IsPresent('IgnoredErrors') then
+    Exit;
+  var errors: TIgnoredErrorCTList := sheet.IgnoredErrors.IgnoredError;
+  for var i := errors.Count - 1 downto 0 do
+  begin
+    var ref: string := fMap.MovedSqref(errors[i].Sqref);
+    if ref = '' then
+      errors.Delete(i)
+    else
+      errors[i].Sqref := ref;
+  end;
+  if errors.Count = 0 then
+    sheet.Clear('IgnoredErrors');
+end;
+
+procedure TProtectedRangesHandler.Apply;
+begin
+  var sheet: TWorksheetE := fStore.Objects(True);
+  if not sheet.IsPresent('ProtectedRanges') then
+    Exit;
+  var ranges: TProtectedRangeCTList := sheet.ProtectedRanges.ProtectedRange;
+  for var i := ranges.Count - 1 downto 0 do
+  begin
+    var ref: string := fMap.MovedSqref(ranges[i].Sqref);
+    if ref = '' then
+      ranges.Delete(i)
+    else
+      ranges[i].Sqref := ref;
+  end;
+  if ranges.Count = 0 then
+    sheet.Clear('ProtectedRanges');
+end;
+
+procedure TPageBreaksHandler.Apply;
 var
   sheet: TWorksheetE;
-  last: integer;
-
-  function Sqref(const aText: string; aGrowAfter: boolean = False): string;
-  begin
-    Result := aMap.MovedSqref(aText, aGrowAfter);
-  end;
-
-  function SortKept(aSort: TSortStateCT): boolean;
-  begin
-    var ref: string := Sqref(aSort.Ref);
-    if ref = '' then
-      Exit(False);
-    aSort.Ref := ref;
-    for var i := aSort.SortCondition.Count - 1 downto 0 do
-    begin
-      ref := Sqref(aSort.SortCondition[i].Ref);
-      if ref = '' then
-        aSort.SortCondition.Delete(i)
-      else
-        aSort.SortCondition[i].Ref := ref;
-    end;
-    Result := aSort.SortCondition.Count > 0;
-  end;
 
   procedure ShiftBreaks(aBreaks: TPageBreakCT; const aName: string);
   begin
     for var i := aBreaks.Brk.Count - 1 downto 0 do
     begin
-      var id: integer := aMap.MovedIndex(aBreaks.Brk[i].Id);
+      var id: integer := fMap.MovedIndex(aBreaks.Brk[i].Id);
       if id = 0 then
         aBreaks.Brk.Delete(i)
       else
@@ -723,171 +1045,58 @@ var
 
 begin
   sheet := fStore.Objects(True);
-  last := aMap.First - aMap.Delta - 1;
-  if sheet.IsPresent('MergeCells') then
-  begin
-    var merged: TMergeCellCTList := sheet.MergeCells.MergeCell;
-    for var i := merged.Count - 1 downto 0 do
+  if fMap.ByRows and sheet.IsPresent('RowBreaks') then
+    ShiftBreaks(sheet.RowBreaks, 'RowBreaks');
+  if not fMap.ByRows and sheet.IsPresent('ColBreaks') then
+    ShiftBreaks(sheet.ColBreaks, 'ColBreaks');
+end;
+
+// never fewer than one row or column frozen
+procedure TPanesHandler.Apply;
+begin
+  var sheet: TWorksheetE := fStore.Objects(True);
+  if not sheet.IsPresent('SheetViews') then
+    Exit;
+  var last: integer := fMap.First - fMap.Delta - 1;
+  for var view: TSheetViewCT in sheet.SheetViews.SheetView do
+    if view.IsPresent('Pane') and (view.Pane.State in [stpsFrozen, stpsFrozenSplit]) then
     begin
-      var area: TArea;
-      if TArea.TryParse(merged[i].Ref, area) then
-        if aMap.MovedArea(area) and ((area.Top <> area.Bottom) or (area.Left <> area.Right)) then
-          merged[i].Ref := area.CellsAddress
-        else
-          merged.Delete(i);
-    end;
-    if merged.Count = 0 then
-      sheet.Clear('MergeCells')
-    else if sheet.MergeCells.Present[@sheet.MergeCells.Count] then
-      sheet.MergeCells.Count := merged.Count;
-  end;
-  fStore.Forget; // the merges edited as objects
-  for var i := sheet.ConditionalFormatting.Count - 1 downto 0 do
-  begin
-    var ref: string := Sqref(sheet.ConditionalFormatting[i].Sqref, True);
-    if ref = '' then
-      sheet.ConditionalFormatting.Delete(i)
-    else
-      sheet.ConditionalFormatting[i].Sqref := ref;
-  end;
-  if sheet.IsPresent('DataValidations') then
-  begin
-    var validations: TDataValidationCTList := sheet.DataValidations.DataValidation;
-    for var i := validations.Count - 1 downto 0 do
-    begin
-      var ref: string := Sqref(validations[i].Sqref, True);
-      if ref = '' then
-        validations.Delete(i)
-      else
-        validations[i].Sqref := ref;
-    end;
-    if validations.Count = 0 then
-      sheet.Clear('DataValidations')
-    else if sheet.DataValidations.Present[@sheet.DataValidations.Count] then
-      sheet.DataValidations.Count := validations.Count;
-  end;
-  if sheet.IsPresent('Hyperlinks') then
-  begin
-    var links: THyperlinkCTList := sheet.Hyperlinks.Hyperlink;
-    for var i := links.Count - 1 downto 0 do
-    begin
-      var ref: string := Sqref(links[i].Ref);
-      if ref = '' then
-        links.Delete(i)
-      else
-        links[i].Ref := ref;
-    end;
-    if links.Count = 0 then
-      sheet.Clear('Hyperlinks');
-  end;
-  var filterGone: boolean := False;
-  if sheet.IsPresent('AutoFilter') then
-  begin
-    var filter: TAutoFilterCT := sheet.AutoFilter;
-    var area: TArea;
-    if TArea.TryParse(filter.Ref, area) then
-    begin
-      var oldLeft: integer := area.Left;
-      if aMap.ByRows and (aMap.Delta < 0) and (aMap.First <= area.Top) and (last >= area.Top) or
-        not aMap.MovedArea(area) then
+      var pane: TPaneCT := view.Pane;
+      var split: integer := Trunc(pane.XSplit);
+      if fMap.ByRows then
+        split := Trunc(pane.YSplit);
+      if (split = 0) or (fMap.First > split) then
+        Continue;
+      var moved: integer := split + fMap.Delta;
+      if fMap.Delta < 0 then
+        moved := Max(1, split - (Min(last, split) - fMap.First + 1));
+      var at: TArea;
+      if fMap.ByRows then
       begin
-        sheet.Clear('AutoFilter');
-        filterGone := True;
+        pane.YSplit := moved;
+        if TArea.TryParse(pane.TopLeftCell, at) then
+          pane.TopLeftCell := TUtility.CellName(Max(1, at.Top + moved - split), at.Left);
       end
       else
       begin
-        filter.Ref := area.CellsAddress;
-        if not aMap.ByRows and ShiftFilterColumns(filter, oldLeft, area.Left, aMap) then
-          ShowRows(area.Top + 1, area.Bottom);
-        if filter.IsPresent('SortState') and not SortKept(filter.SortState) then
-          filter.Clear('SortState');
+        pane.XSplit := moved;
+        if TArea.TryParse(pane.TopLeftCell, at) then
+          pane.TopLeftCell := TUtility.CellName(at.Top, Max(1, at.Left + moved - split));
       end;
     end;
-  end;
-  if sheet.IsPresent('SortState') and not SortKept(sheet.SortState) then
-    sheet.Clear('SortState');
-  if sheet.IsPresent('IgnoredErrors') then
-  begin
-    var errors: TIgnoredErrorCTList := sheet.IgnoredErrors.IgnoredError;
-    for var i := errors.Count - 1 downto 0 do
-    begin
-      var ref: string := Sqref(errors[i].Sqref);
-      if ref = '' then
-        errors.Delete(i)
-      else
-        errors[i].Sqref := ref;
-    end;
-    if errors.Count = 0 then
-      sheet.Clear('IgnoredErrors');
-  end;
-  if sheet.IsPresent('ProtectedRanges') then
-  begin
-    var ranges: TProtectedRangeCTList := sheet.ProtectedRanges.ProtectedRange;
-    for var i := ranges.Count - 1 downto 0 do
-    begin
-      var ref: string := Sqref(ranges[i].Sqref);
-      if ref = '' then
-        ranges.Delete(i)
-      else
-        ranges[i].Sqref := ref;
-    end;
-    if ranges.Count = 0 then
-      sheet.Clear('ProtectedRanges');
-  end;
-  if aMap.ByRows and sheet.IsPresent('RowBreaks') then
-    ShiftBreaks(sheet.RowBreaks, 'RowBreaks');
-  if not aMap.ByRows and sheet.IsPresent('ColBreaks') then
-    ShiftBreaks(sheet.ColBreaks, 'ColBreaks');
-  if sheet.IsPresent('SheetViews') then
-    for var view: TSheetViewCT in sheet.SheetViews.SheetView do
-      if view.IsPresent('Pane') and (view.Pane.State in [stpsFrozen, stpsFrozenSplit]) then
-      begin
-        var pane: TPaneCT := view.Pane;
-        var split: integer := Trunc(pane.XSplit);
-        if aMap.ByRows then
-          split := Trunc(pane.YSplit);
-        if (split = 0) or (aMap.First > split) then
-          Continue;
-        var moved: integer := split + aMap.Delta;
-        if aMap.Delta < 0 then
-          moved := Max(1, split - (Min(last, split) - aMap.First + 1));
-        var at: TArea;
-        if aMap.ByRows then
-        begin
-          pane.YSplit := moved;
-          if TArea.TryParse(pane.TopLeftCell, at) then
-            pane.TopLeftCell := TUtility.CellName(Max(1, at.Top + moved - split), at.Left);
-        end
-        else
-        begin
-          pane.XSplit := moved;
-          if TArea.TryParse(pane.TopLeftCell, at) then
-            pane.TopLeftCell := TUtility.CellName(at.Top, Max(1, at.Left + moved - split));
-        end;
-      end;
+end;
+
+procedure TDimensionHandler.Apply;
+begin
+  var sheet: TWorksheetE := fStore.Objects(True);
   if sheet.IsPresent('Dimension') then
   begin
     var area: TArea;
     if TArea.TryParse(sheet.Dimension.Ref, area) then
-      if aMap.MovedArea(area) then
+      if fMap.MovedArea(area) then
         sheet.Dimension.Ref := area.CellsAddress
       else
         sheet.Dimension.Ref := 'A1';
-  end;
-  if filterGone then // and its hidden name with it
-  begin
-    var workbook: TWorkbookE := fBook.Package.EditPart<TWorkbookE>(fBook.WorkbookPart);
-    var tab: integer := workbook.Sheets.Sheet.IndexOf(fBook.SheetEntry(fName));
-    if workbook.IsPresent('DefinedNames') then
-    begin
-      var names: TDefinedNameCTList := workbook.DefinedNames.DefinedName;
-      for var i := names.Count - 1 downto 0 do
-        if (names[i].Name = '_xlnm._FilterDatabase') and names[i].Present[@names[i].LocalSheetId] and
-          (integer(names[i].LocalSheetId) = tab) then
-          names.Delete(i);
-      if names.Count = 0 then
-        workbook.Clear('DefinedNames');
-    end;
   end;
 end;
 
@@ -1010,7 +1219,7 @@ begin
 end;
 
 // why Excel or Calcite does not move the sheet's tables (and the sheet's autofilter) so, '' when nothing stands in the way
-function TXlsxWalkSheet.TablesBlocker(const aMap: TReferenceMap): string;
+function TTablesHandler.Plan: string;
 const
   cFiltered = 'a filtered %s (%s): Excel inserts and deletes rows through a filter only partly, which Calcite does not ' +
     'copy - clear the filter first';
@@ -1024,20 +1233,20 @@ var
   begin
     var deleted: integer := 0;
     for var column: TFilterColumnCT in aFilter.FilterColumn do
-      if (aLeft + integer(column.ColId) >= aMap.First) and (aLeft + integer(column.ColId) <= last) then
+      if (aLeft + integer(column.ColId) >= fMap.First) and (aLeft + integer(column.ColId) <= last) then
         Inc(deleted);
-    Result := not aMap.ByRows and (aMap.Delta < 0) and (deleted > 0) and (deleted < aFilter.FilterColumn.Count);
+    Result := not fMap.ByRows and (fMap.Delta < 0) and (deleted > 0) and (deleted < aFilter.FilterColumn.Count);
   end;
 
   // rows passing through it: an insert below its first row, a delete taking any
   function Through(const aArea: TArea): boolean;
   begin
-    Result := aMap.ByRows and ((aMap.Delta > 0) and (aMap.First > aArea.Top) and (aMap.First <= aArea.Bottom) or
-      (aMap.Delta < 0) and (aMap.First <= aArea.Bottom) and (last >= aArea.Top));
+    Result := fMap.ByRows and ((fMap.Delta > 0) and (fMap.First > aArea.Top) and (fMap.First <= aArea.Bottom) or
+      (fMap.Delta < 0) and (fMap.First <= aArea.Bottom) and (last >= aArea.Top));
   end;
 
 begin
-  last := aMap.First - aMap.Delta - 1;
+  last := fMap.First - fMap.Delta - 1;
   var package: TPackageOoxml := fBook.Package;
   for var relationship: TRelationshipOoxml in package.Relationships(fStore.Part) do
     if relationship.&Type.EndsWith(cTable) then
@@ -1046,13 +1255,13 @@ begin
       var area: TArea;
       if (table = nil) or not TArea.TryParse(table.Ref, area) then
         Exit(Format('a table that does not read (%s)', [relationship.Part]));
-      if IfThen(aMap.ByRows, area.Bottom, area.Right) < aMap.First then
+      if IfThen(fMap.ByRows, area.Bottom, area.Right) < fMap.First then
         Continue;
       if table.TableType <> stttWorksheet then
         Exit(Format('a table from a query or an XML map (%s, %s), which Calcite does not move yet', [table.Name,
           area.CellsAddress]));
-      if aMap.ByRows and (aMap.Delta < 0) and (table.HeaderRowCount > 0) and (aMap.First < area.Top + integer(table.HeaderRowCount)) and
-        (last >= area.Top) and ((aMap.First > area.Top) or (last < area.Bottom)) then
+      if fMap.ByRows and (fMap.Delta < 0) and (table.HeaderRowCount > 0) and (fMap.First < area.Top + integer(table.HeaderRowCount)) and
+        (last >= area.Top) and ((fMap.First > area.Top) or (last < area.Bottom)) then
         Exit(Format('the header row of a table (%s, %s): Excel deletes it only with the whole table', [table.Name,
           area.CellsAddress]));
       if table.IsPresent('AutoFilter') and (table.AutoFilter.FilterColumn.Count > 0) and Through(area) then
@@ -1073,15 +1282,15 @@ begin
 end;
 
 // Excel's refusal of a pivot table cut (its page fields above it count), '' when none is
-function TXlsxWalkSheet.PivotsBlocker(const aMap: TReferenceMap): string;
+function TPivotsHandler.Plan: string;
 begin
-  var last: integer := aMap.First - aMap.Delta - 1;
+  var last: integer := fMap.First - fMap.Delta - 1;
   for var area: TArea in fStore.Areas(akPivot) do
   begin
-    var low: integer := IfThen(aMap.ByRows, area.Top, area.Left);
-    var high: integer := IfThen(aMap.ByRows, area.Bottom, area.Right);
-    if (aMap.Delta > 0) and (aMap.First > low) and (aMap.First <= high) or
-      (aMap.Delta < 0) and (aMap.First <= high) and (last >= low) and ((aMap.First > low) or (last < high)) then
+    var low: integer := IfThen(fMap.ByRows, area.Top, area.Left);
+    var high: integer := IfThen(fMap.ByRows, area.Bottom, area.Right);
+    if (fMap.Delta > 0) and (fMap.First > low) and (fMap.First <= high) or
+      (fMap.Delta < 0) and (fMap.First <= high) and (last >= low) and ((fMap.First > low) or (last < high)) then
       Exit('We can''t make this change for the selected cells because it will affect a PivotTable. Use the field list to ' +
         'change the report. If you are trying to insert or delete cells, move the PivotTable and try again.');
   end;
@@ -1099,43 +1308,53 @@ begin
   Result := '';
 end;
 
-// a delete taking all the data rows of a table whose header stays: Excel keeps the first of them, emptied (aCleared), and
-// deletes the rest
-procedure TXlsxWalkSheet.KeepTableRows(var aMap: TReferenceMap; aCleared: TList<TArea>);
+constructor TTablesHandler.Create(aWalk: TXlsxWalk);
 begin
-  var last: integer := aMap.First - aMap.Delta - 1;
-  var package: TPackageOoxml := fBook.Package;
-  for var relationship: TRelationshipOoxml in package.Relationships(fStore.Part) do
-    if relationship.&Type.EndsWith(cTable) then
-    begin
-      var table: TTableE := package.Part<TTableE>(relationship.Part);
-      var area: TArea;
-      if (table = nil) or not TArea.TryParse(table.Ref, area) or
-        (table.HeaderRowCount = 0) then
-        Continue;
-      var dataTop: integer := area.Top + integer(table.HeaderRowCount);
-      var dataBottom: integer := area.Bottom - integer(table.TotalsRowCount);
-      if (dataTop <= dataBottom) and (aMap.First = dataTop) and (last >= dataBottom) then
-      begin
-        area.Top := dataTop;
-        area.Bottom := dataTop;
-        aCleared.Add(area);
-      end;
-    end;
-  if aCleared.Count > 0 then
-  begin
-    Inc(aMap.First);
-    Dec(aMap.Count);
-  end;
+  inherited;
+  fCleared := TList<TArea>.Create;
 end;
 
-// the tables and table columns the change deletes (fGone), for the formulas naming them
-procedure TXlsxWalkSheet.PlanTables(const aMap: TReferenceMap);
+destructor TTablesHandler.Destroy;
 begin
-  fGone := nil;
-  fBodies := nil;
-  var last: integer := aMap.First - aMap.Delta - 1;
+  fCleared.Free;
+  inherited;
+end;
+
+// the walk's map without the data row a delete keeps (all the data rows of a table whose header stays deleted: Excel keeps
+// the first of them, emptied, and deletes the rest), with the tables and table columns the change deletes and the tables'
+// bodies, for the formulas naming them
+procedure TTablesHandler.Complete(var aMap: TReferenceMap);
+begin
   var package: TPackageOoxml := fBook.Package;
+  if aMap.ByRows and (aMap.Change = TReferenceChange.rcDelete) then
+  begin
+    var last: integer := aMap.First - aMap.Delta - 1;
+    for var relationship: TRelationshipOoxml in package.Relationships(fStore.Part) do
+      if relationship.&Type.EndsWith(cTable) then
+      begin
+        var table: TTableE := package.Part<TTableE>(relationship.Part);
+        var area: TArea;
+        if (table = nil) or not TArea.TryParse(table.Ref, area) or
+          (table.HeaderRowCount = 0) then
+          Continue;
+        var dataTop: integer := area.Top + integer(table.HeaderRowCount);
+        var dataBottom: integer := area.Bottom - integer(table.TotalsRowCount);
+        if (dataTop <= dataBottom) and (aMap.First = dataTop) and (last >= dataBottom) then
+        begin
+          area.Top := dataTop;
+          area.Bottom := dataTop;
+          fCleared.Add(area);
+        end;
+      end;
+    if fCleared.Count > 0 then
+    begin
+      Inc(aMap.First);
+      Dec(aMap.Count);
+    end;
+  end;
+  var gone: TArray<string> := nil;
+  var bodies: TArray<TTableBody> := nil;
+  var last: integer := aMap.First - aMap.Delta - 1;
   for var relationship: TRelationshipOoxml in package.Relationships(fStore.Part) do
     if relationship.&Type.EndsWith(cTable) then
     begin
@@ -1143,28 +1362,34 @@ begin
       var area: TArea;
       if not TArea.TryParse(table.Ref, area) then
         Continue;
-      var data: TArea := area;
-      data.Top := area.Top + integer(table.HeaderRowCount);
-      data.Bottom := area.Bottom - integer(table.TotalsRowCount);
-      fBodies := fBodies + [area, data];
+      var body: TTableBody;
+      body.Left := area.Left;
+      body.Right := area.Right;
+      body.Top := area.Top;
+      body.Bottom := area.Bottom;
+      body.DataTop := area.Top + integer(table.HeaderRowCount);
+      body.DataBottom := area.Bottom - integer(table.TotalsRowCount);
+      bodies := bodies + [body];
       if aMap.Delta > 0 then
         Continue;
       if not aMap.MovedArea(area) then
-        fGone := fGone + [string(table.Name)]
+        gone := gone + [string(table.Name)]
       else if not aMap.ByRows then
       begin
         TArea.TryParse(table.Ref, area);
         for var index := 0 to table.TableColumns.TableColumn.Count - 1 do
           if (area.Left + index >= aMap.First) and (area.Left + index <= last) then
-            fGone := fGone + [table.Name + '[' + table.TableColumns.TableColumn[index].Name + ']'];
+            gone := gone + [table.Name + '[' + table.TableColumns.TableColumn[index].Name + ']'];
       end;
     end;
+  aMap.GoneTables := gone;
+  aMap.Bodies := bodies;
 end;
 
 // the sheet's tables as Excel moves them: grown by rows or columns inserted inside (new columns named Column1...; new rows
 // take the calculated columns' formulas), shrunk, gone with all their rows or columns; the totals row deleted, the table
 // keeps none; the autofilter, its columns and sort follow
-procedure TXlsxWalkSheet.ShiftTables(const aMap: TReferenceMap);
+procedure TTablesHandler.ShiftTables;
 var
   sheet: TWorksheetE;
   last: integer;
@@ -1172,7 +1397,10 @@ var
   function Changed(const aText: string): string;
   begin
     var why: string;
-    if not ShiftFormula(aText, SheetMap(Self, aMap, True), Result, why) then
+    var map: TReferenceMap := fMap;
+    map.OnSheet := True;
+    map.InName := False;
+    if not ShiftFormula(aText, map, Result, why) then
       Result := aText;
   end;
 
@@ -1207,7 +1435,7 @@ var
 
 begin
   sheet := fStore.Objects(True);
-  last := aMap.First - aMap.Delta - 1;
+  last := fMap.First - fMap.Delta - 1;
   var package: TPackageOoxml := fBook.Package;
   for var relationship: TRelationshipOoxml in package.Relationships(fStore.Part) do
   begin
@@ -1218,20 +1446,20 @@ begin
     if not TArea.TryParse(table.Ref, old) then
       Continue;
     var area: TArea := old;
-    if not aMap.MovedArea(area) then
+    if not fMap.MovedArea(area) then
     begin
       Remove(relationship);
       Continue;
     end;
     var columns: TTableColumnCTList := table.TableColumns.TableColumn;
     var added: TArray<integer> := nil; // the new columns' numbers on the sheet
-    if not aMap.ByRows and (aMap.Delta < 0) then
+    if not fMap.ByRows and (fMap.Delta < 0) then
     begin
       for var index := columns.Count - 1 downto 0 do
-        if (old.Left + index >= aMap.First) and (old.Left + index <= last) then
+        if (old.Left + index >= fMap.First) and (old.Left + index <= last) then
           columns.Delete(index);
     end
-    else if not aMap.ByRows and (aMap.First > old.Left) and (aMap.First <= old.Right) then
+    else if not fMap.ByRows and (fMap.First > old.Left) and (fMap.First <= old.Right) then
     begin // Excel's names: the first ColumnN the table does not have
       var id: cardinal := 0;
       var names: TStringList := TStringList.Create;
@@ -1243,7 +1471,7 @@ begin
           names.Add(column.Name);
         end;
         var number: integer := 1;
-        for var index := 0 to aMap.Delta - 1 do
+        for var index := 0 to fMap.Delta - 1 do
         begin
           while names.IndexOf('Column' + IntToStr(number)) >= 0 do
             Inc(number);
@@ -1252,15 +1480,15 @@ begin
           column.Id := id;
           column.Name := 'Column' + IntToStr(number);
           names.Add(column.Name);
-          columns.Insert(aMap.First - old.Left + index, column);
-          added := added + [aMap.First + index];
+          columns.Insert(fMap.First - old.Left + index, column);
+          added := added + [fMap.First + index];
         end;
       finally
         names.Free;
       end;
     end;
     table.TableColumns.Count := columns.Count;
-    if aMap.ByRows and (aMap.Delta < 0) and (table.TotalsRowCount > 0) and (old.Bottom >= aMap.First) and (old.Bottom <= last) then
+    if fMap.ByRows and (fMap.Delta < 0) and (table.TotalsRowCount > 0) and (old.Bottom >= fMap.First) and (old.Bottom <= last) then
     begin // the table keeps no totals row then
       table.Clear(@table.TotalsRowCount);
       table.TotalsRowShown := False;
@@ -1285,12 +1513,12 @@ begin
     if table.HeaderRowCount > 0 then
       for var column: integer in added do
         WriteName(area.Top, column, columns[column - area.Left].Name);
-    if aMap.ByRows and (aMap.Delta > 0) and (aMap.First > old.Top) and (aMap.First <= old.Bottom) then
+    if fMap.ByRows and (fMap.Delta > 0) and (fMap.First > old.Top) and (fMap.First <= old.Bottom) then
       for var index := 0 to columns.Count - 1 do
         if columns[index].IsPresent('CalculatedColumnFormula') and not columns[index].CalculatedColumnFormula.&Array then
         begin
           var text: string := DecodeText(columns[index].CalculatedColumnFormula.XmlValue);
-          for var row := Max(aMap.First, dataTop) to Min(aMap.First + aMap.Delta - 1, dataBottom) do
+          for var row := Max(fMap.First, dataTop) to Min(fMap.First + fMap.Delta - 1, dataBottom) do
           begin
             var filled, why: string;
             if ShiftFormula(text, TReferenceMap.Fill(row - dataTop, 0), filled, why) then
@@ -1303,19 +1531,19 @@ begin
       var shown: TArea := area;
       shown.Bottom := dataBottom;
       filter.Ref := shown.CellsAddress;
-      if not aMap.ByRows and ShiftFilterColumns(filter, old.Left, area.Left, aMap) then
+      if not fMap.ByRows and ShiftFilterColumns(filter, old.Left, area.Left, fMap) then
         ShowRows(dataTop, dataBottom);
     end;
     if table.IsPresent('SortState') then
     begin
       var sort: TSortStateCT := table.SortState;
-      var ref: string := aMap.MovedSqref(sort.Ref);
+      var ref: string := fMap.MovedSqref(sort.Ref);
       if ref <> '' then
       begin
         sort.Ref := ref;
         for var i := sort.SortCondition.Count - 1 downto 0 do
         begin
-          var condition: string := aMap.MovedSqref(sort.SortCondition[i].Ref);
+          var condition: string := fMap.MovedSqref(sort.SortCondition[i].Ref);
           if condition = '' then
             sort.SortCondition.Delete(i)
           else
@@ -1328,9 +1556,21 @@ begin
   end;
 end;
 
+// the tables moved, then the data rows a delete kept emptied
+procedure TTablesHandler.Apply;
+begin
+  if fMap.Count <> 0 then
+    ShiftTables;
+  for var area: TArea in fCleared do
+    for var row: TRowCT in fStore.RowEntries(area.Top, area.Bottom) do
+      for var cell: TCellCT in row.C do
+        if (TUtility.ColumnOf(cell.R) >= area.Left) and (TUtility.ColumnOf(cell.R) <= area.Right) then
+          fStore.RemoveValue(cell);
+end;
+
 // pivot tables on the sheet moved (gone when deleted whole) and the caches' sources on it grown or shrunk, as Excel does;
 // a source deleted whole keeps its ref, as in Excel
-procedure TXlsxWalkSheet.ShiftPivots(const aMap: TReferenceMap);
+procedure TPivotsHandler.Apply;
 begin
   var package: TPackageOoxml := fBook.Package;
   for var relationship: TRelationshipOoxml in package.Relationships(fStore.Part) do
@@ -1343,14 +1583,14 @@ begin
       var whole: TArea := area;
       if pivot.Location.RowPageCount > 0 then // the page fields and a blank row
         whole.Top := Max(1, area.Top - integer(pivot.Location.RowPageCount) - 1);
-      if not aMap.MovedArea(whole) then
+      if not fMap.MovedArea(whole) then
       begin
         var folder: integer := relationship.Part.LastIndexOf('/') + 1;
         package.RemovePart(relationship.Part, relationship.Part.Substring(0, folder) + '_rels/' +
           relationship.Part.Substring(folder) + '.rels');
         package.RemovePart(fStore.Part, relationship.Part);
       end
-      else if aMap.MovedArea(area) then
+      else if fMap.MovedArea(area) then
         package.EditPart<TPivotTableDefinitionE>(relationship.Part).Location.Ref := area.CellsAddress;
     end;
   for var relationship: TRelationshipOoxml in package.Relationships(fBook.WorkbookPart) do
@@ -1362,20 +1602,31 @@ begin
       var source: TWorksheetSourceCT := cache.CacheSource.WorksheetSource;
       if (source.Name <> '') or (source.Ref = '') or not AnsiSameText(source.Sheet, fName) or source.Present[@source.Id] then
         Continue;
-      var ref: string := aMap.MovedSqref(source.Ref);
+      var ref: string := fMap.MovedSqref(source.Ref);
       if (ref <> '') and (ref <> source.Ref) then
         package.EditPart<TPivotCacheDefinitionE>(relationship.Part).CacheSource.WorksheetSource.Ref := ref;
     end;
 end;
 
-// the drawings' objects and where they start and end along the shifted axis before the change; aWhy for a drawing that
-// does not read
-function TXlsxWalkSheet.PlanDrawings(const aMap: TReferenceMap; out aWhy: string): TList<TAnchorMove>;
+constructor TDrawingsHandler.Create(aWalk: TXlsxWalk);
 begin
-  Result := TList<TAnchorMove>.Create;
-  aWhy := '';
+  inherited;
+  fMoves := TList<TAnchorMove>.Create;
+end;
+
+destructor TDrawingsHandler.Destroy;
+begin
+  fMoves.Free;
+  inherited;
+end;
+
+// the drawings' objects and where they start and end along the shifted axis before the change (fMoves); why for a
+// drawing that does not read
+function TDrawingsHandler.Plan: string;
+begin
+  Result := '';
   var package: TPackageOoxml := fBook.Package;
-  var axis: TAxis := nil;
+  var axis: TXlsxWalkSheet.TAxis := nil;
   try
     for var relationship: TRelationshipOoxml in package.Relationships(fStore.Part) do
       if relationship.&Type.EndsWith(cDrawing) then
@@ -1383,11 +1634,11 @@ begin
         var drawing: TWsDrE := package.Part<TWsDrE>(relationship.Part);
         if drawing = nil then
         begin
-          aWhy := Format('a drawing that does not read (%s)', [relationship.Part]);
+          Result := Format('a drawing that does not read (%s)', [relationship.Part]);
           Exit;
         end;
         if axis = nil then
-          axis := TAxis.Create(Self, aMap.ByRows);
+          axis := TXlsxWalkSheet.TAxis.Create(fSheet, fMap.ByRows);
         for var anchor: TTwoCellAnchorCT in drawing.TwoCellAnchor do
         begin
           var move: TAnchorMove := Default(TAnchorMove);
@@ -1395,15 +1646,15 @@ begin
           move.Anchor := anchor;
           var fromIndex, toIndex: integer;
           var fromOffset, toOffset: Int64;
-          if not MarkerPlace(anchor.From, aMap.ByRows, fromIndex, fromOffset) or
-            not MarkerPlace(anchor.&To, aMap.ByRows, toIndex, toOffset) then
+          if not MarkerPlace(anchor.From, fMap.ByRows, fromIndex, fromOffset) or
+            not MarkerPlace(anchor.&To, fMap.ByRows, toIndex, toOffset) then
           begin
-            aWhy := Format('a drawing''s object whose place does not read (%s)', [relationship.Part]);
+            Result := Format('a drawing''s object whose place does not read (%s)', [relationship.Part]);
             Exit;
           end;
           move.From := axis.Start(fromIndex) + fromOffset;
           move.&To := axis.Start(toIndex) + toOffset;
-          Result.Add(move);
+          fMoves.Add(move);
         end;
         for var anchor: TOneCellAnchorCT in drawing.OneCellAnchor do
         begin
@@ -1412,12 +1663,12 @@ begin
           move.Anchor := anchor;
           var index: integer;
           var offset: Int64;
-          if not MarkerPlace(anchor.From, aMap.ByRows, index, offset) then
+          if not MarkerPlace(anchor.From, fMap.ByRows, index, offset) then
           begin
-            aWhy := Format('a drawing''s object whose place does not read (%s)', [relationship.Part]);
+            Result := Format('a drawing''s object whose place does not read (%s)', [relationship.Part]);
             Exit;
           end;
-          Result.Add(move);
+          fMoves.Add(move);
         end;
       end;
   finally
@@ -1428,21 +1679,21 @@ end;
 // the drawings' objects as Excel moves them: move and size with cells (twoCell) - each end with its cell, gone when its
 // rows or columns are deleted whole; move only (oneCell) - its start with its cell, its size kept; free (absolute) -
 // where it was; xdr:oneCellAnchor's start with its cell
-procedure TXlsxWalkSheet.ShiftDrawings(aMoves: TList<TAnchorMove>; const aMap: TReferenceMap);
+procedure TDrawingsHandler.Apply;
 var
   last, limit: integer;
-  axis: TAxis;
+  axis: TXlsxWalkSheet.TAxis;
 
   // a marker with its cell: one deleted goes to the start of what follows (its offset as written otherwise)
   procedure MoveMarker(aMarker: TMarkerCT);
   begin
     var index: integer;
     var offset: Int64;
-    MarkerPlace(aMarker, aMap.ByRows, index, offset);
-    var moved: integer := aMap.MovedIndex(index + 1);
-    if (moved = 0) and (aMap.Delta < 0) then
-      PlaceMarker(aMarker, aMap.ByRows, aMap.First - 1, 0)
-    else if aMap.ByRows then
+    MarkerPlace(aMarker, fMap.ByRows, index, offset);
+    var moved: integer := fMap.MovedIndex(index + 1);
+    if (moved = 0) and (fMap.Delta < 0) then
+      PlaceMarker(aMarker, fMap.ByRows, fMap.First - 1, 0)
+    else if fMap.ByRows then
       aMarker.Row := IfThen(moved = 0, limit, moved) - 1
     else
       aMarker.Col := IfThen(moved = 0, limit, moved) - 1;
@@ -1454,7 +1705,7 @@ var
     var index: integer;
     var offset: Int64;
     axis.Find(aPosition, index, offset);
-    PlaceMarker(aMarker, aMap.ByRows, index, offset);
+    PlaceMarker(aMarker, fMap.ByRows, index, offset);
   end;
 
   // the marker's row or column among the deleted ones (an end: at the start of the one after them too)
@@ -1462,20 +1713,20 @@ var
   begin
     var index: integer;
     var offset: Int64;
-    MarkerPlace(aMarker, aMap.ByRows, index, offset);
+    MarkerPlace(aMarker, fMap.ByRows, index, offset);
     Inc(index);
-    Result := (aMap.Delta < 0) and ((index >= aMap.First) and (index <= last) or aEnd and (index = last + 1) and (offset = 0));
+    Result := (fMap.Delta < 0) and ((index >= fMap.First) and (index <= last) or aEnd and (index = last + 1) and (offset = 0));
   end;
 
 begin
-  if aMoves.Count = 0 then
+  if fMoves.Count = 0 then
     Exit;
-  last := aMap.First - aMap.Delta - 1;
-  limit := aMap.Limit;
+  last := fMap.First - fMap.Delta - 1;
+  limit := fMap.Limit;
   var package: TPackageOoxml := fBook.Package;
-  axis := TAxis.Create(Self, aMap.ByRows);
+  axis := TXlsxWalkSheet.TAxis.Create(fSheet, fMap.ByRows);
   try
-    for var move: TAnchorMove in aMoves do
+    for var move: TAnchorMove in fMoves do
     begin
       var drawing: TWsDrE := package.EditPart<TWsDrE>(move.Part);
       if move.Anchor is TOneCellAnchorCT then
@@ -1498,7 +1749,7 @@ begin
             MoveMarker(anchor.From);
             var index: integer;
             var offset: Int64;
-            MarkerPlace(anchor.From, aMap.ByRows, index, offset);
+            MarkerPlace(anchor.From, fMap.ByRows, index, offset);
             Place(anchor.&To, axis.Start(index) + offset + move.&To - move.From);
           end;
         steaAbsolute:
@@ -1857,7 +2108,7 @@ begin
 end;
 
 // the sheet's notes: its comments part and the VML drawing its legacyDrawing names ('' - none)
-procedure TXlsxWalkSheet.NotesParts(out aComments, aDrawing: string);
+procedure TNotesHandler.NotesParts(out aComments, aDrawing: string);
 begin
   aComments := '';
   aDrawing := '';
@@ -1891,7 +2142,7 @@ end;
 
 // why the sheet's notes do not move: threaded comments, a VML drawing with more than notes (Forms controls) or one that does
 // not read, a note pushed off the sheet; '' when nothing stands in the way
-function TXlsxWalkSheet.NotesBlocker(const aMap: TReferenceMap): string;
+function TNotesHandler.Plan: string;
 const
   cPushedOff = 'Microsoft Excel can''t insert new cells because it would push non-empty cells off the end of the ' +
     'worksheet. These non-empty cells might appear empty but have blank values, some formatting, or a formula. Delete ' +
@@ -1904,17 +2155,17 @@ begin
       Exit('threaded comments, which Calcite does not move yet');
   var commentsPart, drawingPart: string;
   NotesParts(commentsPart, drawingPart);
-  var limit: integer := aMap.Limit;
+  var limit: integer := fMap.Limit;
   if commentsPart <> '' then
   begin
     var comments: TCommentsE := package.Part<TCommentsE>(commentsPart);
     if comments = nil then
       Exit(Format('notes that do not read (%s)', [commentsPart]));
-    if aMap.Delta > 0 then
+    if fMap.Delta > 0 then
       for var comment: TCommentCT in comments.CommentList.Comment do
       begin
         var at: TArea;
-        if TArea.TryParse(comment.Ref, at) and (IfThen(aMap.ByRows, at.Top, at.Left) > limit - aMap.Delta) then
+        if TArea.TryParse(comment.Ref, at) and (IfThen(fMap.ByRows, at.Top, at.Left) > limit - fMap.Delta) then
           Exit(cPushedOff);
       end;
   end;
@@ -1946,7 +2197,7 @@ end;
 // the notes as Excel moves them: each box by as many rows or columns as its cell moved (never above the first; its offsets
 // kept, its place and size on the axis computed again), gone with its cell; the last one gone, its parts go too. A part is
 // edited only when it changes: one that did not read back exactly still saves
-procedure TXlsxWalkSheet.ShiftNotes(const aMap: TReferenceMap);
+procedure TNotesHandler.Apply;
 const
   cPixel = 9525;
 var
@@ -1968,8 +2219,8 @@ begin
       var at: TArea;
       if not TArea.TryParse(comment.Ref, at) then
         Continue;
-      var index: integer := IfThen(aMap.ByRows, at.Top, at.Left);
-      var moved: integer := aMap.MovedIndex(index);
+      var index: integer := IfThen(fMap.ByRows, at.Top, at.Left);
+      var moved: integer := fMap.MovedIndex(index);
       if moved = index then
         Continue;
       if not edited then
@@ -1977,7 +2228,7 @@ begin
       edited := True;
       if moved = 0 then
         comments.CommentList.Comment.Remove(comment)
-      else if aMap.ByRows then
+      else if fMap.ByRows then
         comment.Ref := TUtility.CellName(moved, at.Left)
       else
         comment.Ref := TUtility.CellName(at.Top, moved);
@@ -1987,7 +2238,7 @@ begin
   if drawingPart <> '' then
   begin
     var drawing: TVmlDrawing := package.Part<TVmlDrawing>(drawingPart);
-    var axis: TAxis := TAxis.Create(Self, aMap.ByRows);
+    var axis: TXlsxWalkSheet.TAxis := TXlsxWalkSheet.TAxis.Create(fSheet, fMap.ByRows);
     try
       var edited, removed: boolean;
       edited := False;
@@ -2005,12 +2256,12 @@ begin
         var numbers: TArray<string> := text.Split([',']);
         for var k := 0 to 7 do
           anchor[k] := StrToIntDef(numbers[k].Trim, 0);
-        var first: integer := IfThen(aMap.ByRows, 2, 0); // the start's index; its offset next, the end's 4 on
-        var index: integer := IfThen(aMap.ByRows, row, column);
-        var moved: integer := aMap.MovedIndex(index);
+        var first: integer := IfThen(fMap.ByRows, 2, 0); // the start's index; its offset next, the end's 4 on
+        var index: integer := IfThen(fMap.ByRows, row, column);
+        var moved: integer := fMap.MovedIndex(index);
         if moved <> 0 then
           Inc(shapes);
-        if (moved = index) and (anchor[first + 4] < aMap.First - 1) then
+        if (moved = index) and (anchor[first + 4] < fMap.First - 1) then
           Continue; // all before the change: as it was
         if not edited then
           package.EditPart<TVmlDrawing>(drawingPart);
@@ -2021,7 +2272,7 @@ begin
           removed := True;
           Continue;
         end;
-        if aMap.ByRows then
+        if fMap.ByRows then
           data.Row[0] := moved - 1
         else
           data.Column[0] := moved - 1;
@@ -2039,7 +2290,7 @@ begin
           Min(Int64(anchor[first + 5]) * cPixel, axis.Start(anchor[first + 4] + 1) - axis.Start(anchor[first + 4]));
         var place: string := 'margin-left';
         var size: string := 'width';
-        if aMap.ByRows then
+        if fMap.ByRows then
         begin
           place := 'margin-top';
           size := 'height';
@@ -2179,96 +2430,143 @@ begin
   end;
 end;
 
-// every defined name, print areas and titles too, changed as Excel changes references for aMap's rows or columns inserted
-// or deleted. False with aWhy and nothing changed when one naming aMap's sheet does not read
-function ChangeNames(aWalk: TXlsxWalk; const aMap: TReferenceMap; out aWhy: string): boolean;
+constructor TChartsHandler.Create(aWalk: TXlsxWalk);
 begin
-  var map: TReferenceMap := aMap;
-  for var sheet: TXlsxWalkSheet in aWalk.fSheets do
-    if AnsiSameText(sheet.fName, aMap.Sheet) then
-      map := SheetMap(sheet, aMap);
-  var changed: TArray<string>;
-  Result := aWalk.fBook.MappedNames(map, changed, aWhy);
-  if Result then
-    aWalk.fBook.WriteNames(changed);
+  inherited;
+  fMoves := TList<TXlsxWalkSheet.TChartMove>.Create;
 end;
 
-// Excel's Insert and Delete of aMap's rows or columns: all checked and planned first, so a refusal changes nothing
-procedure TXlsxWalkSheet.Shift(aMap: TReferenceMap);
+destructor TChartsHandler.Destroy;
 begin
-  var last: integer := aMap.First + aMap.Count - 1;
-  var what: string := Format('Columns %s:%s', [TUtility.ColumnName(aMap.First), TUtility.ColumnName(last)]);
-  if aMap.ByRows then
-    what := Format('Rows %d:%d', [aMap.First, last]);
-  var cleared: TList<TArea> := TList<TArea>.Create;
-  var anchors: TList<TAnchorMove> := nil;
-  var moves: TObjectList<TList<TFormulaMove>> := TObjectList<TList<TFormulaMove>>.Create;
-  var refs: TObjectList<TDictionary<cardinal, string>> := TObjectList<TDictionary<cardinal, string>>.Create;
-  var texts: TList<TTextMove> := TList<TTextMove>.Create;
-  var charts: TList<TChartMove> := TList<TChartMove>.Create;
-  try
-    if aMap.ByRows and (aMap.Change = TReferenceChange.rcDelete) then
-      KeepTableRows(aMap, cleared);
-    var why: string := '';
-    if aMap.Count <> 0 then
-      why := ShiftBlocker(aMap);
-    if why = '' then
-    begin
-      PlanTables(aMap);
-      anchors := PlanDrawings(aMap, why);
-    end;
-    if (why = '') and (aMap.Count <> 0) then
-      PlanCharts(Self, SheetMap(Self, aMap), charts, why);
-    if (why = '') and (aMap.Count <> 0) then
-      for var sheet: TXlsxWalkSheet in fWalk.fSheets do
-      begin
-        moves.Add(TList<TFormulaMove>.Create);
-        refs.Add(TDictionary<cardinal, string>.Create);
-        if not PlanFormulas(sheet, SheetMap(Self, aMap), Self, moves.Last, texts, refs.Last, why) then
-          Break;
-      end;
-    if (why = '') and (aMap.Count <> 0) then
-      ChangeNames(fWalk, aMap, why);
-    if why <> '' then
-    begin
-      var done: string := 'deleted';
-      if aMap.Change = TReferenceChange.rcInsert then
-        done := 'inserted';
-      raise EInvalidOpException.CreateFmt('%s of %s not %s: %s', [what, fName, done, why]);
-    end;
-    WriteTexts(texts);
-    if aMap.Count <> 0 then
-    begin
-      FitAgain(aMap);
-      var spills: TArray<TSpill> := LiftSpills(aMap);
-      ShiftCells(aMap);
-      PlaceSpills(spills, aMap);
-      ShiftLists(aMap);
-      for var index := 0 to fWalk.fSheets.Count - 1 do
-        fWalk.fSheets[index].ApplyFormulas(moves[index], refs[index], fWalk.fSheets[index] = Self,
-          aMap);
-      ShiftTables(aMap);
-      ShiftPivots(aMap);
-      ShiftDrawings(anchors, aMap);
-      ShiftCharts(charts, aMap);
-      ShiftNotes(aMap);
-    end;
-    for var area: TArea in cleared do
-      for var row: TRowCT in fStore.RowEntries(area.Top, area.Bottom) do
-        for var cell: TCellCT in row.C do
-          if (TUtility.ColumnOf(cell.R) >= area.Left) and (TUtility.ColumnOf(cell.R) <= area.Right) then
-            fStore.RemoveValue(cell);
-  finally
-    fGone := nil;
-    fBodies := nil;
-    charts.Free;
-    texts.Free;
-    refs.Free;
-    moves.Free;
-    anchors.Free;
-    cleared.Free;
+  fMoves.Free;
+  inherited;
+end;
+
+function TChartsHandler.Plan: string;
+begin
+  PlanCharts(fSheet, fMap, fMoves, Result);
+end;
+
+procedure TChartsHandler.Apply;
+begin
+  fSheet.ShiftCharts(fMoves, fMap);
+end;
+
+constructor TFormulasHandler.Create(aWalk: TXlsxWalk);
+begin
+  inherited;
+  fMoves := TObjectList<TList<TXlsxWalkSheet.TFormulaMove>>.Create;
+  fRefs := TObjectList<TDictionary<cardinal, string>>.Create;
+  fRules := TList<TXlsxWalkSheet.TTextMove>.Create;
+end;
+
+destructor TFormulasHandler.Destroy;
+begin
+  fRules.Free;
+  fRefs.Free;
+  fMoves.Free;
+  inherited;
+end;
+
+function TFormulasHandler.Plan: string;
+begin
+  for var sheet: TXlsxWalkSheet in fWalk.fSheets do
+  begin
+    fMoves.Add(TList<TXlsxWalkSheet.TFormulaMove>.Create);
+    fRefs.Add(TDictionary<cardinal, string>.Create);
+    if not PlanFormulas(sheet, fMap, fSheet, fMoves.Last, fRules, fRefs.Last, Result) then
+      Exit;
   end;
-  for var sheet: TXlsxWalkSheet in fWalk.fSheets do // edited as objects; other sheets' shared formulas may be plain now
+  Result := '';
+end;
+
+procedure TFormulasHandler.ApplyRules;
+begin
+  WriteTexts(fRules);
+end;
+
+procedure TFormulasHandler.Apply;
+begin
+  for var index := 0 to fWalk.fSheets.Count - 1 do
+    fWalk.fSheets[index].ApplyFormulas(fMoves[index], fRefs[index], fWalk.fSheets[index] = fSheet, fMap);
+end;
+
+// why one naming the sheet does not read, '' when all do
+function TNamesHandler.Plan: string;
+begin
+  fMapped := fBook.MappedNames(fMap, fChanged, Result);
+end;
+
+procedure TNamesHandler.Apply;
+begin
+  if fMapped then
+    fBook.WriteNames(fChanged);
+end;
+
+// the tables fill the map, every handler plans in the order of Excel's refusals, then they apply in an order of their own:
+// the names, the rules' formulas, the cells, the lists, the cells' formulas, the objects
+function TXlsxWalk.Shift(aSheet: TXlsxWalkSheet; const aMap: TReferenceMap): string;
+const
+  cLists: array[0 .. 10] of TXlsxHandlerClass = (TMergesHandler, TConditionalAreasHandler, TValidationAreasHandler,
+    THyperlinksHandler, TAutoFilterHandler, TSortHandler, TIgnoredErrorsHandler, TProtectedRangesHandler,
+    TPageBreaksHandler, TPanesHandler, TDimensionHandler);
+begin
+  Result := '';
+  fSheet := aSheet;
+  fMap := aMap;
+  var handlers: TObjectList<TXlsxHandler> := TObjectList<TXlsxHandler>.Create;
+  try
+    var cells: TCellsHandler := TCellsHandler.Create(Self);
+    handlers.Add(cells);
+    var pivots: TPivotsHandler := TPivotsHandler.Create(Self);
+    handlers.Add(pivots);
+    var tables: TTablesHandler := TTablesHandler.Create(Self);
+    handlers.Add(tables);
+    handlers.Add(TRefusedElementsHandler.Create(Self));
+    var notes: TNotesHandler := TNotesHandler.Create(Self);
+    handlers.Add(notes);
+    var drawings: TDrawingsHandler := TDrawingsHandler.Create(Self);
+    handlers.Add(drawings);
+    var charts: TChartsHandler := TChartsHandler.Create(Self);
+    handlers.Add(charts);
+    var formulas: TFormulasHandler := TFormulasHandler.Create(Self);
+    handlers.Add(formulas);
+    var names: TNamesHandler := TNamesHandler.Create(Self);
+    handlers.Add(names);
+    var firstList: integer := handlers.Count;
+    for var kind: TXlsxHandlerClass in cLists do
+      handlers.Add(kind.Create(Self));
+    tables.Complete(fMap);
+    for var handler: TXlsxHandler in handlers do
+      handler.fMap := fMap;
+    if fMap.Count <> 0 then
+      for var handler: TXlsxHandler in handlers do
+      begin
+        Result := handler.Plan;
+        if Result <> '' then
+          Exit;
+      end;
+    if fMap.Count <> 0 then
+    begin
+      names.Apply;
+      formulas.ApplyRules;
+      cells.Apply;
+      for var index := firstList to handlers.Count - 1 do
+        handlers[index].Apply;
+      formulas.Apply;
+    end;
+    tables.Apply;
+    if fMap.Count <> 0 then
+    begin
+      pivots.Apply;
+      drawings.Apply;
+      charts.Apply;
+      notes.Apply;
+    end;
+  finally
+    handlers.Free;
+  end;
+  for var sheet: TXlsxWalkSheet in fSheets do // edited as objects; other sheets' shared formulas may be plain now
     sheet.fStore.Forget;
   fBook.ValueChanged;
   fBook.FormulaChanged;

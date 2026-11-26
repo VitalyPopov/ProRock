@@ -2109,13 +2109,23 @@ end;
 // Excel's Insert and Delete of aMap's rows or columns: the backend's walk
 procedure TWorksheet.Shift(const aMap: TReferenceMap);
 begin
+  var last: integer := aMap.First + aMap.Count - 1;
+  var what: string := Format('Columns %s:%s', [TUtility.ColumnName(aMap.First), TUtility.ColumnName(last)]);
+  if aMap.ByRows then
+    what := Format('Rows %d:%d', [aMap.First, last]);
+  var done: string := 'deleted';
+  if aMap.Change = TReferenceChange.rcInsert then
+    done := 'inserted';
   var mine: TXlsxWalkSheet;
+  var why: string;
   var walk: TXlsxWalk := WalkOf(Self, mine);
   try
-    mine.Shift(aMap);
+    why := walk.Shift(mine, aMap);
   finally
     walk.Free;
   end;
+  if why <> '' then
+    raise EInvalidOpException.CreateFmt('%s of %s not %s: %s', [what, fName, done, why]);
 end;
 
 procedure TWorksheet.WriteNumber(aRow, aColumn: integer; aValue: Double; const aTarget: TRange);
