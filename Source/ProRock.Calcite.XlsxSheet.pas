@@ -94,6 +94,13 @@ type
     // the merged areas overlapping aArea gone
     procedure RemoveMerges(const aArea: TArea);
     procedure AddMerge(const aArea: TArea);
+    procedure SetTabSelected(aValue: boolean);
+    // the cell below and right of a frozen pane, '' when there is none
+    function FrozenAt: string;
+    // why Freeze would not do, '' when nothing stands in the way; aKeepOwn: the sheet's own panes stay
+    function PanesBlocker(aKeepOwn: boolean): string;
+    // Excel's frozen pane and its selections, as Excel writes them for one view; 1, 1: none
+    procedure Freeze(aRow, aColumn: integer);
 
     property Part: string read fPart;
   end;
@@ -881,6 +888,107 @@ begin
   sheet.MergeCells.Count := sheet.MergeCells.MergeCell.Count;
   sheet.MergeCells.SetPresent(@sheet.MergeCells.Count);
   Exclude(fFound, akMerge);
+end;
+
+{$ENDREGION}
+
+{$REGION 'the views: the tab, frozen panes'}
+
+procedure TXlsxSheet.SetTabSelected(aValue: boolean);
+begin
+  var sheet: TWorksheetE := Objects(False);
+  if sheet.IsPresent('SheetViews') then
+    for var view: TSheetViewCT in sheet.SheetViews.SheetView do
+      if view.TabSelected <> aValue then
+      begin
+        Objects(True);
+        if aValue then
+          view.TabSelected := True
+        else
+          view.Clear(@view.TabSelected);
+      end;
+end;
+
+function TXlsxSheet.FrozenAt: string;
+begin
+  Result := '';
+  var sheet: TWorksheetE := Objects(False);
+  if not sheet.IsPresent('SheetViews') or (sheet.SheetViews.SheetView.Count = 0) or
+    not sheet.SheetViews.SheetView[0].IsPresent('Pane') then
+    Exit;
+  var pane: TPaneCT := sheet.SheetViews.SheetView[0].Pane;
+  if not (pane.State in [stpsFrozen, stpsFrozenSplit]) then
+    Exit;
+  var at: TArea;
+  if (pane.TopLeftCell <> '') and TArea.TryParse(pane.TopLeftCell, at) and (at.Top = at.Bottom) and (at.Left = at.Right) then
+    Result := TUtility.CellName(at.Top, at.Left)
+  else
+    Result := TUtility.CellName(Trunc(pane.YSplit) + 1, Trunc(pane.XSplit) + 1);
+end;
+
+function TXlsxSheet.PanesBlocker(aKeepOwn: boolean): string;
+begin
+  Result := '';
+  var sheet: TWorksheetE := Objects(False);
+  if sheet.IsPresent('SheetViews') and (sheet.SheetViews.SheetView.Count > 1) then
+    Result := 'the sheet has several views; Calcite freezes panes only with one'
+  else if aKeepOwn and sheet.IsPresent('SheetViews') and (sheet.SheetViews.SheetView.Count = 1) and
+    sheet.SheetViews.SheetView[0].IsPresent('Pane') then
+    Result := 'the sheet has panes of its own, which Calcite does not change yet';
+end;
+
+procedure TXlsxSheet.Freeze(aRow, aColumn: integer);
+begin
+  var sheet: TWorksheetE := Objects(False);
+  if (aRow = 1) and (aColumn = 1) and not sheet.IsPresent('SheetViews') then
+    Exit;
+  sheet := Objects(True);
+  if sheet.SheetViews.SheetView.Count = 0 then
+  begin
+    var added: TSheetViewCT := TSheetViewCT.Create;
+    added.SetPresent(@added.WorkbookViewId);
+    sheet.SheetViews.SheetView.Add(added);
+  end;
+  var view: TSheetViewCT := sheet.SheetViews.SheetView[0];
+  view.Clear('Pane');
+  view.Selection.Clear;
+  if (aRow = 1) and (aColumn = 1) then
+    Exit;
+  var pane: TPaneCT := view.Pane;
+  pane.XSplit := aColumn - 1;
+  pane.YSplit := aRow - 1;
+  pane.TopLeftCell := TUtility.CellName(aRow, aColumn);
+  pane.State := stpsFrozen;
+  pane.SetPresent(@pane.State);
+  // a selection in each pane that scrolls, its first cell: Excel's own
+  var panes: TArray<TPaneST>;
+  var cells: TArray<string>;
+  if aRow = 1 then
+  begin
+    panes := [stpTopRight];
+    cells := [TUtility.CellName(1, aColumn)];
+  end
+  else if aColumn = 1 then
+  begin
+    panes := [stpBottomLeft];
+    cells := [TUtility.CellName(aRow, 1)];
+  end
+  else
+  begin
+    panes := [stpTopRight, stpBottomLeft, stpBottomRight];
+    cells := [TUtility.CellName(1, aColumn), TUtility.CellName(aRow, 1), TUtility.CellName(aRow, aColumn)];
+  end;
+  pane.ActivePane := panes[High(panes)];
+  pane.SetPresent(@pane.ActivePane);
+  for var i := 0 to High(panes) do
+  begin
+    var selection: TSelectionCT := TSelectionCT.Create;
+    selection.Pane := panes[i];
+    selection.SetPresent(@selection.Pane);
+    selection.ActiveCell := cells[i];
+    selection.Sqref := cells[i];
+    view.Selection.Add(selection);
+  end;
 end;
 
 {$ENDREGION}

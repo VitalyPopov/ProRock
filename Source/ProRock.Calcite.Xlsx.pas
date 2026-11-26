@@ -100,6 +100,17 @@ type
     function SheetNamed(const aName, aExcept: string): string;
     // a worksheet part after the others and its entry; its part's name, '' when the package refuses it (an issue says why)
     function AddSheet(const aName: string): string;
+    // the sheet's <sheet>, nil when there is none
+    function SheetEntry(const aName: string): TSheetCT;
+    // from 0, chart sheets counted; -1 when there is none
+    function SheetIndex(const aName: string): integer;
+    // in the workbook's order, chart sheets too
+    function SheetStates: TArray<TSheetVisibility>;
+    procedure SetSheetState(const aName: string; aValue: TSheetVisibility);
+    procedure RenameSheet(const aName, aNewName: string);
+    // the views showing sheet aFrom (the first one without a view: one added) show aTo, their first tab not after it; False
+    // when none showed aFrom
+    function MoveActiveSheet(aFrom, aTo: integer): boolean;
 
     function IsDynamicArray(aCellMetadata: cardinal): boolean;
     function IsLockedStyle(aStyle: cardinal): boolean;
@@ -587,6 +598,71 @@ begin
   added.Name := aName;
   added.SheetId := sheetId + 1;
   added.Id := id;
+end;
+
+function TXlsxBook.SheetEntry(const aName: string): TSheetCT;
+begin
+  for var entry: TSheetCT in fPackage.Part<TWorkbookE>(fWorkbookPart).Sheets.Sheet do
+    if entry.Name = aName then
+      Exit(entry);
+  Result := nil;
+end;
+
+function TXlsxBook.SheetIndex(const aName: string): integer;
+begin
+  Result := fPackage.Part<TWorkbookE>(fWorkbookPart).Sheets.Sheet.IndexOf(SheetEntry(aName));
+end;
+
+function TXlsxBook.SheetStates: TArray<TSheetVisibility>;
+begin
+  var entries: TSheetCTList := fPackage.Part<TWorkbookE>(fWorkbookPart).Sheets.Sheet;
+  SetLength(Result, entries.Count);
+  for var i := 0 to entries.Count - 1 do
+    case entries[i].State of
+      stssHidden: Result[i] := svHidden;
+      stssVeryHidden: Result[i] := svVeryHidden;
+    else
+      Result[i] := svVisible;
+    end;
+end;
+
+procedure TXlsxBook.SetSheetState(const aName: string; aValue: TSheetVisibility);
+const
+  cStates: array[TSheetVisibility] of TSheetStateST = (stssVisible, stssHidden, stssVeryHidden);
+begin
+  for var entry: TSheetCT in fPackage.EditPart<TWorkbookE>(fWorkbookPart).Sheets.Sheet do
+    if entry.Name = aName then
+      if aValue = svVisible then
+        entry.Clear(@entry.State)
+      else
+        entry.State := cStates[aValue];
+end;
+
+procedure TXlsxBook.RenameSheet(const aName, aNewName: string);
+begin
+  for var entry: TSheetCT in fPackage.EditPart<TWorkbookE>(fWorkbookPart).Sheets.Sheet do
+    if entry.Name = aName then
+      entry.Name := aNewName;
+end;
+
+function TXlsxBook.MoveActiveSheet(aFrom, aTo: integer): boolean;
+begin
+  var workbook: TWorkbookE := fPackage.EditPart<TWorkbookE>(fWorkbookPart);
+  if not workbook.IsPresent('BookViews') then
+    if aFrom = 0 then
+      workbook.BookViews.WorkbookView.Add(TBookViewCT.Create)
+    else
+      Exit(False);
+  Result := False;
+  for var view: TBookViewCT in workbook.BookViews.WorkbookView do
+    if integer(view.ActiveTab) = aFrom then
+    begin
+      view.ActiveTab := aTo;
+      view.SetPresent(@view.ActiveTab);
+      if integer(view.FirstSheet) > aTo then
+        view.FirstSheet := aTo;
+      Result := True;
+    end;
 end;
 
 // a cell's cm (from 1) names Excel 365's dynamic array: its metadata's records of the XLDAPR type

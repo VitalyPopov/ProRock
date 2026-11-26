@@ -65,6 +65,9 @@ const
   cvText = ProRock.Calcite.Aspects.cvText;
   cvBoolean = ProRock.Calcite.Aspects.cvBoolean;
   cvError = ProRock.Calcite.Aspects.cvError;
+  svVisible = ProRock.Calcite.Aspects.svVisible;
+  svHidden = ProRock.Calcite.Aspects.svHidden;
+  svVeryHidden = ProRock.Calcite.Aspects.svVeryHidden;
   {$ENDREGION}
 
 type
@@ -81,6 +84,8 @@ type
   {$REGION 'ProRock.Calcite.Aspects types aliases'}
   // a date is a number in a date format, as in Excel
   TCellValueType = ProRock.Calcite.Aspects.TCellValueType;
+  // Excel's XlSheetVisibility: svVeryHidden is shown again only from code
+  TSheetVisibility = ProRock.Calcite.Aspects.TSheetVisibility;
   // Excel's names: XlUnderlineStyle, XlHAlign, XlVAlign, XlBordersIndex, XlLineStyle, XlBorderWeight
   TUnderline = ProRock.Calcite.Aspects.TUnderline;
   THAlign = ProRock.Calcite.Aspects.THAlign;
@@ -90,9 +95,6 @@ type
   TLineStyle = ProRock.Calcite.Aspects.TLineStyle;
   TBorderWeight = ProRock.Calcite.Aspects.TBorderWeight;
   {$ENDREGION}
-
-  // Excel's XlSheetVisibility: svVeryHidden is shown again only from code
-  TSheetVisibility = (svVisible, svHidden, svVeryHidden);
 
   // Excel's Range.Font: read from the first cell, written to every cell
   TRangeFont = record
@@ -2210,112 +2212,57 @@ end;
 // the workbook's <sheet> of this one
 function TWorksheet.SheetEntry: TSheetCT;
 begin
-  for var entry: TSheetCT in fWorkbook.fBook.Package.Part<TWorkbookE>(fWorkbook.fBook.WorkbookPart).Sheets.Sheet do
-    if entry.Name = fName then
-      Exit(entry);
-  Result := nil;
+  Result := fWorkbook.fBook.SheetEntry(fName);
 end;
 
 function TWorksheet.GetVisible: TSheetVisibility;
 begin
-  var entry: TSheetCT := SheetEntry;
-  if entry = nil then
+  var index: integer := fWorkbook.fBook.SheetIndex(fName);
+  if index < 0 then
     Exit(svVisible);
-  case entry.State of
-    stssHidden: Result := svHidden;
-    stssVeryHidden: Result := svVeryHidden;
-  else
-    Result := svVisible;
-  end;
+  Result := fWorkbook.fBook.SheetStates[index];
 end;
 
 procedure TWorksheet.SetVisible(aValue: TSheetVisibility);
-const
-  cStates: array[TSheetVisibility] of TSheetStateST = (stssVisible, stssHidden, stssVeryHidden);
 begin
   if aValue = GetVisible then
     Exit;
-  var workbook: TWorkbookE := fWorkbook.fBook.Package.EditPart<TWorkbookE>(fWorkbook.fBook.WorkbookPart);
-  var entries: TSheetCTList := workbook.Sheets.Sheet;
-  var index: integer := -1;
-  var visible: integer := 0;
-  for var i := 0 to entries.Count - 1 do
-  begin
-    if entries[i].Name = fName then
-      index := i
-    else if entries[i].State = stssVisible then
-      Inc(visible);
-  end;
+  var book: TXlsxBook := fWorkbook.fBook;
+  var index: integer := book.SheetIndex(fName);
   if index < 0 then
     Exit;
+  var states: TArray<TSheetVisibility> := book.SheetStates;
+  var visible: integer := 0;
+  for var i := 0 to High(states) do
+    if (i <> index) and (states[i] = svVisible) then
+      Inc(visible);
   if (aValue <> svVisible) and (visible = 0) then
     raise EInvalidOpException.CreateFmt('%s is the last visible sheet: Excel keeps one at least', [fName]);
-  if aValue = svVisible then
-    entries[index].Clear(@entries[index].State)
-  else
-    entries[index].State := cStates[aValue];
+  book.SetSheetState(fName, aValue);
   if aValue = svVisible then
     Exit;
-  if not workbook.IsPresent('BookViews') then
-    if index = 0 then // the first sheet is active without a view
-      workbook.BookViews.WorkbookView.Add(TBookViewCT.Create)
-    else
-      Exit;
-  // the active sheet hidden: the next visible one (else the one before) active, as Excel does
-  for var view: TBookViewCT in workbook.BookViews.WorkbookView do
-  begin
-    if integer(view.ActiveTab) <> index then
-      Continue;
-    var active: integer := -1;
-    for var i := index + 1 to entries.Count - 1 do
-      if (active < 0) and (entries[i].State = stssVisible) then
-        active := i;
-    for var i := index - 1 downto 0 do
-      if (active < 0) and (entries[i].State = stssVisible) then
-        active := i;
-    view.ActiveTab := active;
-    view.SetPresent(@view.ActiveTab);
-    if integer(view.FirstSheet) > active then
-      view.FirstSheet := active;
-    // the tabs selected: the new active one only
+  // the active sheet hidden: the next visible one (else the one before) active, as Excel does, its tab the one selected
+  var active: integer := -1;
+  for var i := index + 1 to High(states) do
+    if (active < 0) and (states[i] = svVisible) then
+      active := i;
+  for var i := index - 1 downto 0 do
+    if (active < 0) and (states[i] = svVisible) then
+      active := i;
+  if book.MoveActiveSheet(index, active) then
     for var sheet: TWorksheet in fWorkbook.fSheets do
     begin
-      var tab: integer := entries.IndexOf(sheet.SheetEntry);
-      var objects: TWorksheetE := sheet.fStore.Objects(False);
+      var tab: integer := book.SheetIndex(sheet.fName);
       if (tab = index) or (tab = active) then
-        if objects.IsPresent('SheetViews') then
-          for var sheetView: TSheetViewCT in objects.SheetViews.SheetView do
-            if sheetView.TabSelected <> (tab = active) then
-            begin
-              sheet.fStore.Objects(True);
-              if tab = active then
-                sheetView.TabSelected := True
-              else
-                sheetView.Clear(@sheetView.TabSelected);
-            end;
+        sheet.fStore.SetTabSelected(tab = active);
     end;
-  end;
 end;
 
-// the cell below and right of a frozen pane, '' when there is none
 function TWorksheet.GetFreezePanes: string;
 begin
-  Result := '';
-  var sheet: TWorksheetE := fStore.Objects(False);
-  if not sheet.IsPresent('SheetViews') or (sheet.SheetViews.SheetView.Count = 0) or
-    not sheet.SheetViews.SheetView[0].IsPresent('Pane') then
-    Exit;
-  var pane: TPaneCT := sheet.SheetViews.SheetView[0].Pane;
-  if not (pane.State in [stpsFrozen, stpsFrozenSplit]) then
-    Exit;
-  var at: TArea;
-  if (pane.TopLeftCell <> '') and TArea.TryParse(pane.TopLeftCell, at) and (at.Top = at.Bottom) and (at.Left = at.Right) then
-    Result := TUtility.CellName(at.Top, at.Left)
-  else
-    Result := TUtility.CellName(Trunc(pane.YSplit) + 1, Trunc(pane.XSplit) + 1);
+  Result := fStore.FrozenAt;
 end;
 
-// Excel's frozen pane and its selections, as Excel writes them for one view
 procedure TWorksheet.SetFreezePanes(const aValue: string);
 begin
   var row: integer := 1;
@@ -2328,67 +2275,11 @@ begin
     row := at.Top;
     column := at.Left;
   end;
-  var sheet: TWorksheetE := fStore.Objects(False);
-  var why: string := '';
-  if sheet.IsPresent('SheetViews') and (sheet.SheetViews.SheetView.Count > 1) then
-    why := 'the sheet has several views; Calcite freezes panes only with one'
-  else if sheet.IsPresent('SheetViews') and (sheet.SheetViews.SheetView.Count = 1) and
-    sheet.SheetViews.SheetView[0].IsPresent('Pane') and not fFresh then
-    why := 'the sheet has panes of its own, which Calcite does not change yet';
+  var why: string := fStore.PanesBlocker(not fFresh);
   if why <> '' then
-  begin
-    fWorkbook.fIssues.Add(TIssueSeverity.isError, 'FreezePanes', fName, why + ' - not changed');
-    Exit;
-  end;
-  if (row = 1) and (column = 1) and not sheet.IsPresent('SheetViews') then
-    Exit;
-  sheet := fStore.Objects(True);
-  if sheet.SheetViews.SheetView.Count = 0 then
-  begin
-    var added: TSheetViewCT := TSheetViewCT.Create;
-    added.SetPresent(@added.WorkbookViewId);
-    sheet.SheetViews.SheetView.Add(added);
-  end;
-  var view: TSheetViewCT := sheet.SheetViews.SheetView[0];
-  view.Clear('Pane');
-  view.Selection.Clear;
-  if (row = 1) and (column = 1) then
-    Exit;
-  var pane: TPaneCT := view.Pane;
-  pane.XSplit := column - 1;
-  pane.YSplit := row - 1;
-  pane.TopLeftCell := TUtility.CellName(row, column);
-  pane.State := stpsFrozen;
-  pane.SetPresent(@pane.State);
-  // a selection in each pane that scrolls, its first cell: Excel's own
-  var panes: TArray<TPaneST>;
-  var cells: TArray<string>;
-  if row = 1 then
-  begin
-    panes := [stpTopRight];
-    cells := [TUtility.CellName(1, column)];
-  end
-  else if column = 1 then
-  begin
-    panes := [stpBottomLeft];
-    cells := [TUtility.CellName(row, 1)];
-  end
+    fWorkbook.fIssues.Add(TIssueSeverity.isError, 'FreezePanes', fName, why + ' - not changed')
   else
-  begin
-    panes := [stpTopRight, stpBottomLeft, stpBottomRight];
-    cells := [TUtility.CellName(1, column), TUtility.CellName(row, 1), TUtility.CellName(row, column)];
-  end;
-  pane.ActivePane := panes[High(panes)];
-  pane.SetPresent(@pane.ActivePane);
-  for var i := 0 to High(panes) do
-  begin
-    var selection: TSelectionCT := TSelectionCT.Create;
-    selection.Pane := panes[i];
-    selection.SetPresent(@selection.Pane);
-    selection.ActiveCell := cells[i];
-    selection.Sqref := cells[i];
-    view.Selection.Add(selection);
-  end;
+    fStore.Freeze(row, column);
 end;
 
 // why Excel or Calcite does not insert (aCount > 0) or delete (aCount < 0) the rows or columns from aFirst, '' when nothing
@@ -4727,9 +4618,7 @@ begin
     fWorkbook.fIssues.Add(TIssueSeverity.isError, 'Rename', fName, why + ' - not renamed');
     Exit;
   end;
-  for var entry: TSheetCT in fWorkbook.fBook.Package.EditPart<TWorkbookE>(fWorkbook.fBook.WorkbookPart).Sheets.Sheet do
-    if entry.Name = fName then
-      entry.Name := aValue;
+  fWorkbook.fBook.RenameSheet(fName, aValue);
   fName := aValue;
 end;
 
