@@ -1529,8 +1529,8 @@ begin
     for var row := fTop to fBottom do
       for var column := fLeft to fRight do
       begin
-        var moved, why, unknown: string;
-        ShiftFormula(text, TReferenceMap.Fill(row - fTop, column - fLeft), ffStored, moved, why, unknown);
+        var moved, why: string;
+        ShiftFormula(text, TReferenceMap.Fill(row - fTop, column - fLeft), moved, why);
         fSheet.WriteFormula(row, column, moved, Self);
       end;
 end;
@@ -2616,9 +2616,9 @@ begin
           var top, left, bottom, right: integer;
           if fShared.TryGetValue(cell.F.Si, first) and TUtility.ParseAddress(first.R, top, left, bottom, right) then
           begin
-            var why, unknown: string;
-            ShiftFormula(DecodeText(first.F.XmlValue), TReferenceMap.Fill(aRow - top, aColumn - left), ffStored, aText, why,
-              unknown);
+            var why: string;
+            if not ShiftFormula(DecodeText(first.F.XmlValue), TReferenceMap.Fill(aRow - top, aColumn - left), aText, why) then
+              aText := '';
           end;
         end;
       stcftDataTable:
@@ -2650,7 +2650,7 @@ begin
   var why, unknown: string;
   if text.Length + 1 > TUtility.cMaxFormula then
     Refuse(aRow, aColumn, 'Formula', Format('%d characters, Excel''s formulas hold up to %d', [text.Length + 1, TUtility.cMaxFormula]))
-  else if not ShiftFormula(text, TReferenceMap.Fill(0, 0), ffStored, aText, why, unknown) then
+  else if not StoredFormula(text, aText, why, unknown) then
     Refuse(aRow, aColumn, 'Formula', 'not a formula Excel reads: ' + why)
   else
   begin
@@ -2672,7 +2672,7 @@ begin
   var text: string := DecodeText(first.F.XmlValue);
   var checked, why, unknown: string;
   if not TUtility.ParseAddress(first.F.Ref, area.fTop, area.fLeft, area.fBottom, area.fRight) or
-    not ShiftFormula(text, TReferenceMap.Fill(0, 0), ffStored, checked, why, unknown) then
+    not StoredFormula(text, checked, why, unknown) then
     Exit(False);
   var top, left, bottom, right: integer;
   TUtility.ParseAddress(first.R, top, left, bottom, right);
@@ -2687,8 +2687,7 @@ begin
       if cell.IsPresent('F') and (cell.F.T = stcftShared) and (cell.F.Si = aIndex) then
       begin
         var moved: string;
-        ShiftFormula(text, TReferenceMap.Fill(integer(row.R) - top, TUtility.ColumnOf(cell.R) - left), ffStored, moved, why,
-          unknown);
+        ShiftFormula(text, TReferenceMap.Fill(integer(row.R) - top, TUtility.ColumnOf(cell.R) - left), moved, why);
         cell.F.Clear('T');
         cell.F.Clear('Si');
         cell.F.Clear('Ref');
@@ -3734,7 +3733,7 @@ var
   begin
     Result := True;
     var why: string;
-    if MappedFormula(aText, map, aResult, why) then
+    if ShiftFormula(aText, map, aResult, why) then
       Exit;
     aResult := aText;
     if (aShifted = aSheet) or aText.ToUpper.Contains(aMap.Sheet.ToUpper) then
@@ -4664,7 +4663,7 @@ var
   function Changed(const aText: string): string;
   begin
     var why: string;
-    if not MappedFormula(aText, SheetMap(fName, Self, aByRows, aFirst, aCount), Result, why) then
+    if not ShiftFormula(aText, SheetMap(fName, Self, aByRows, aFirst, aCount), Result, why) then
       Result := aText;
   end;
 
@@ -4795,8 +4794,8 @@ begin
           var text: string := DecodeText(columns[index].CalculatedColumnFormula.XmlValue);
           for var row := Max(aFirst, dataTop) to Min(aFirst + aCount - 1, dataBottom) do
           begin
-            var filled, why, unknown: string;
-            if ShiftFormula(text, TReferenceMap.Fill(row - dataTop, 0), ffStored, filled, why, unknown) then
+            var filled, why: string;
+            if ShiftFormula(text, TReferenceMap.Fill(row - dataTop, 0), filled, why) then
             begin
               CellForWriting(row, area.fLeft + index).F.XmlValue := EncodeText(filled);
               fWorkbook.FormulaChanged;
@@ -5207,7 +5206,7 @@ begin
   begin
     var text: string := XmlTextDecoded(match.Groups[4].Value);
     var changed, why: string;
-    if not MappedFormula(text, aMap, changed, why) then
+    if not ShiftFormula(text, aMap, changed, why) then
     begin
       if text.ToUpper.Contains(aSheet.ToUpper) then
       begin
@@ -5301,7 +5300,7 @@ begin
           var move: TWorksheet.TChartMove := Default(TWorksheet.TChartMove);
           move.Before := ChartFormula(reference);
           var why: string;
-          if not MappedFormula(move.Before, aMap, move.After, why) then
+          if not ShiftFormula(move.Before, aMap, move.After, why) then
           begin
             if move.Before.ToUpper.Contains(aSheet.fName.ToUpper) then
             begin
@@ -5657,10 +5656,9 @@ begin
       for var index: integer in members do
       begin
         var move: TFormulaMove := aMoves[index];
-        var filled, same, why, unknown: string;
+        var filled, why: string;
         shared := shared and ShiftFormula(first.After, TReferenceMap.Fill(move.Row - first.Row, move.Column - first.Column),
-          ffStored, filled, why, unknown) and ShiftFormula(move.After, TReferenceMap.Fill(0, 0), ffStored, same, why,
-          unknown) and (filled = same);
+          filled, why) and (filled = move.After);
       end;
       for var index: integer in members do
       begin
@@ -5709,7 +5707,7 @@ begin
   begin
     var text: string := DecodeText(names[index].XmlValue);
     var why: string;
-    if not MappedFormula(text, map, aChanged[index], why) then
+    if not ShiftFormula(text, map, aChanged[index], why) then
     begin // one not naming the sheet stays as it is
       if text.ToUpper.Contains(aMap.Sheet.ToUpper) then
       begin
@@ -7134,7 +7132,7 @@ var
     var text: string := DecodeText(aFormula.XmlValue);
     var move: TKeptMove := Default(TKeptMove);
     var reason: string;
-    if not MappedFormula(text, cellsMap, move.Text, reason) then
+    if not ShiftFormula(text, cellsMap, move.Text, reason) then
     begin
       if text.ToUpper.Contains(fName.ToUpper) then
         why := Format('a formula of the table %s does not read: %s', [aPart, reason]);

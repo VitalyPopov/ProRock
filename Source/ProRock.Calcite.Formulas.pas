@@ -6,19 +6,18 @@ interface
 
 uses ProRock.Calcite.Utility;
 
-type
-  // a formula's text as a file stores it (_xlfn.XLOOKUP, LET's _xlpm.x) or as Excel's Formula shows it (XLOOKUP, x)
-  TFormulaForm = (ffStored, ffShown);
+// Excel's A1 formula text (without the =) as a file stores it. False with aWhy when Excel would not read it: a broken
+// formula makes Excel refuse the whole file, even repaired. Checked: the grammar (values and operators in turn, brackets,
+// arguments, array constants), the number of arguments Excel's own functions take (ROUND(1), SUM()) and a reference where one
+// must stand (ROW(1)); an unknown function or name is Excel's #NAME?, the first unknown function aUnknown (a VBA or add-in one
+// is unknown too). Without its prefix a file Excel refuses (FILTER) or shows #NAME? (XLOOKUP, LET's x): the stored form adds
+// the prefixes, Excel's own functions in upper case
+function StoredFormula(const aFormula: string; out aResult, aWhy, aUnknown: string): boolean;
 
-// Excel's A1 formula text (without the =) in aForm: its references changed by aMap (moved as Excel fills, or for rows or
-// columns inserted or deleted), one off the sheet or deleted becomes #REF!. False with aWhy when Excel would not read it: a
-// broken formula makes Excel refuse the whole file, even repaired. Checked: the grammar (values and operators in turn,
-// brackets, arguments, array constants), the number of arguments Excel's own functions take (ROUND(1), SUM()) and a reference
-// where one must stand (ROW(1)); an unknown function or name is Excel's #NAME?, the first unknown function aUnknown (a VBA or
-// add-in one is unknown too). Without its prefix a file Excel refuses (FILTER) or shows #NAME? (XLOOKUP, LET's x): the stored
-// form adds the prefixes, the shown form drops them
-function ShiftFormula(const aFormula: string; const aMap: TReferenceMap; aForm: TFormulaForm; out aResult, aWhy,
-  aUnknown: string): boolean;
+// a formula's references changed by aMap (moved as Excel fills, or for rows or columns inserted or deleted, or a sheet
+// deleted), one off the sheet or deleted becomes #REF!; the text between them as it was, aResult aFormula itself when nothing
+// changes. Not checked (StoredFormula): False with aWhy (aResult aFormula) only when it does not read as a formula's pieces
+function ShiftFormula(const aFormula: string; const aMap: TReferenceMap; out aResult, aWhy: string): boolean;
 
 // a stored formula as Excel's Formula shows it (prefixes dropped); as it is when it does not read
 function ShownFormula(const aStored: string): string;
@@ -27,14 +26,14 @@ function ShownFormula(const aStored: string): string;
 // deleted from aFirst
 function ShiftMap(const aFormulaSheet, aSheet: string; aByRows: boolean; aFirst, aCount: integer): TReferenceMap;
 
-// a stored formula through aMap, as it was when nothing in it changes; False with aWhy when it does not read
-function MappedFormula(const aFormula: string; const aMap: TReferenceMap; out aResult, aWhy: string): boolean;
-
 implementation
 
-uses System.SysUtils, System.Character, System.Generics.Collections;
+uses System.SysUtils, System.Math, System.Character, System.Generics.Collections;
 
 type
+  // a formula's text as a file stores it (_xlfn.XLOOKUP, LET's _xlpm.x) or as Excel's Formula shows it (XLOOKUP, x)
+  TFormulaForm = (ffStored, ffShown);
+
   // one of Excel's functions: the argument counts it takes (those over Paired come in pairs: SUMIFS 3, 5, 7...; none when
   // Min is over Max: CALL), the prefix a file stores it with (cFunctionPrefixes), the arguments that must be references
   // (r; v - a value too; past its end the last one repeats, or the last two when paired), whether it may give one
@@ -46,6 +45,9 @@ type
   end;
 
 const
+  cErrors: array [0 .. 9] of string = ('#NULL!', '#DIV/0!', '#VALUE!', '#REF!', '#NAME?', '#NUM!', '#N/A', '#GETTING_DATA',
+    '#SPILL!', '#CALC!');
+  cParameterPrefix = '_xlpm.';
   cFunctionPrefixes: array [0 .. 2] of string = ('', '_xlfn.', '_xlfn._xlws.');
   // Excel's functions, made from Excel itself (each count tried, a saved file read): not edited by hand
   cFunctionCount = 518;
@@ -574,15 +576,45 @@ const
   );
   {$ENDREGION}
 
-// Excel's function by its name without a prefix, in any case; -1 when it is none of them
-function FindFunction(const aName: string): integer;
+// aName against aText[aStart .. aFinish - 1] as CompareText orders them: ASCII letters in either case
+function CompareSpan(const aName, aText: string; aStart, aFinish: integer): integer;
+begin
+  var count: integer := aFinish - aStart;
+  for var i := 1 to Min(aName.Length, count) do
+  begin
+    var one: Char := aName[i];
+    var other: Char := aText[aStart + i - 1];
+    if CharInSet(one, ['a' .. 'z']) then
+      one := Char(Ord(one) - 32);
+    if CharInSet(other, ['a' .. 'z']) then
+      other := Char(Ord(other) - 32);
+    if one <> other then
+      Exit(Ord(one) - Ord(other));
+  end;
+  Result := aName.Length - count;
+end;
+
+// whether aText[aStart .. aFinish - 1] begins with aWord, ASCII letters in either case
+function StartsWithWord(const aText: string; aStart, aFinish: integer; const aWord: string): boolean;
+begin
+  Result := (aFinish - aStart >= aWord.Length) and (CompareSpan(aWord, aText, aStart, aStart + aWord.Length) = 0);
+end;
+
+// whether aText[aStart .. aFinish - 1] is aWord, ASCII letters in either case
+function IsWord(const aText: string; aStart, aFinish: integer; const aWord: string): boolean;
+begin
+  Result := (aFinish - aStart = aWord.Length) and (CompareSpan(aWord, aText, aStart, aFinish) = 0);
+end;
+
+// Excel's function by its name without a prefix (aText[aStart .. aFinish - 1]), in any case; -1 when it is none of them
+function FindFunction(const aText: string; aStart, aFinish: integer): integer; overload;
 begin
   var low: integer := 0;
   var high: integer := cFunctionCount - 1;
   while low <= high do
   begin
     Result := (low + high) div 2;
-    var order: integer := CompareText(cFunctions[Result].Name, aName); // ASCII only: no SUMME, no СУММ
+    var order: integer := CompareSpan(cFunctions[Result].Name, aText, aStart, aFinish); // ASCII only: no SUMME, no СУММ
     if order = 0 then
       Exit
     else if order < 0 then
@@ -593,17 +625,326 @@ begin
   Result := -1;
 end;
 
-function ShiftFormula(const aFormula: string; const aMap: TReferenceMap; aForm: TFormulaForm; out aResult, aWhy,
+function FindFunction(const aName: string): integer; overload;
+begin
+  Result := FindFunction(aName, 1, aName.Length + 1);
+end;
+
+function IsFormulaSpace(aChar: Char): boolean;
+begin
+  Result := CharInSet(aChar, [' ', #9, #10, #13]);
+end;
+
+function IsWordStart(aChar: Char): boolean;
+begin
+  Result := aChar.IsLetterOrDigit or CharInSet(aChar, ['_', '\', '$', '.']);
+end;
+
+type
+  TFormulaTokenKind = (fkSpace, fkNumber, fkText, fkLogical, fkError, fkReference, fkName, fkFunction, fkTable, fkOperator,
+    fkOpen, fkClose, fkArrayOpen, fkArrayClose, fkComma, fkSemicolon, fkPercent);
+
+  // a formula's piece at Start .. Finish - 1: a function's name without its (, a table's name with its [...]. A reference, a
+  // name or an error after a prefix (Sheet1!, 'My Sheet'!, [1]Sheet1!, Sheet1:Sheet3!, [1]!) has it at Prefix .. Bang - 1,
+  // its ! at Bang, spaces may stand between the ! and Start; Prefix 0 when it has none
+  TFormulaToken = record
+    Kind: TFormulaTokenKind;
+    Start, Finish, Prefix, Bang: integer;
+    Reference: TReference; // a reference's ends
+    NameFinish: integer; // a table's: where its [ begins (Start for one without its name: [@Sales])
+  end;
+
+  // a formula's pieces in turn, each told by the characters around it, never by the grammar: whether the pieces stand right
+  // and what a name means in its place (LET's parameter) is a walk's. Nothing allocated
+  TFormulaScanner = record
+  private
+    fText: string;
+    fIndex, fLast: integer;
+    function Fail(const aWhy: string): boolean;
+    function WordEnd(aFrom: integer): integer;
+    function ClosingQuote(aFrom: integer): integer;
+    function ClosingBracket(aFrom: integer): integer;
+    function SheetBang(aFrom: integer): integer;
+    function QuotedBang(aFrom: integer; out aBang: integer): boolean;
+    function Prefixed(var aToken: TFormulaToken; aBang: integer): boolean;
+    function ErrorValue(var aToken: TFormulaToken): boolean;
+    function Word(var aToken: TFormulaToken): boolean;
+  public
+    Error: string; // why reading stopped; '' at the formula's end
+    constructor Create(const aFormula: string);
+    // False at the end or when the text reads no further (Error)
+    function Next(out aToken: TFormulaToken): boolean;
+  end;
+
+constructor TFormulaScanner.Create(const aFormula: string);
+begin
+  fText := aFormula;
+  fIndex := 1;
+  fLast := aFormula.Length;
+  Error := '';
+end;
+
+function TFormulaScanner.Fail(const aWhy: string): boolean;
+begin
+  Error := aWhy;
+  fIndex := fLast + 1;
+  Result := False;
+end;
+
+function TFormulaScanner.WordEnd(aFrom: integer): integer;
+begin
+  Result := aFrom;
+  while (Result <= fLast) and (fText[Result].IsLetterOrDigit or CharInSet(fText[Result], ['_', '\', '$', '.', '?'])) do
+    Inc(Result);
+end;
+
+// the closing quote of the one at aFrom (a doubled one is inside), 0 when there is none
+function TFormulaScanner.ClosingQuote(aFrom: integer): integer;
+begin
+  var quote: Char := fText[aFrom];
+  Result := aFrom + 1;
+  while Result <= fLast do
+  begin
+    if fText[Result] = quote then
+    begin
+      if (Result < fLast) and (fText[Result + 1] = quote) then
+        Inc(Result)
+      else
+        Exit;
+    end;
+    Inc(Result);
+  end;
+  Result := 0;
+end;
+
+// the ] closing the [ at aFrom (nested ones inside, ' escaping the character after it), 0 when there is none
+function TFormulaScanner.ClosingBracket(aFrom: integer): integer;
+begin
+  var depth: integer := 0;
+  Result := aFrom;
+  while Result <= fLast do
+  begin
+    case fText[Result] of
+      '''':
+        Inc(Result);
+      '[':
+        Inc(depth);
+      ']':
+        begin
+          Dec(depth);
+          if depth = 0 then
+            Exit;
+        end;
+    end;
+    Inc(Result);
+  end;
+  Result := 0;
+end;
+
+// the ! after a sheet's name that is a word from aFrom (Sheet1!, or Sheet1:Sheet3! - not from a cell: A3:Sheet1!A5 is a
+// range, Excel quotes a sheet named like a cell); 0 when the word names no sheet
+function TFormulaScanner.SheetBang(aFrom: integer): integer;
+var
+  row, column: integer;
+  rowFixed, columnFixed: boolean;
+begin
+  Result := WordEnd(aFrom);
+  if (Result <= fLast) and (fText[Result] = '!') then
+    Exit;
+  if (Result < fLast) and (fText[Result] = ':') and IsWordStart(fText[Result + 1]) and
+    (TUtility.ReadReference(fText, aFrom, Result, row, column, rowFixed, columnFixed) <> TReferenceKind.rkCell) then
+  begin
+    Result := WordEnd(Result + 1);
+    if (Result <= fLast) and (fText[Result] = '!') then
+      Exit;
+  end;
+  Result := 0;
+end;
+
+// a quoted sheet's name at aFrom, its ! (aBang) after it
+function TFormulaScanner.QuotedBang(aFrom: integer; out aBang: integer): boolean;
+begin
+  var close: integer := ClosingQuote(aFrom);
+  if close = 0 then
+    Exit(Fail('a sheet name without its closing quote'));
+  if (close = fLast) or (fText[close + 1] <> '!') then
+    Exit(Fail('a quoted sheet name without ! after it'));
+  aBang := close + 1;
+  Result := True;
+end;
+
+// the piece after a prefix whose ! is at aBang: a reference, a name or an error
+function TFormulaScanner.Prefixed(var aToken: TFormulaToken; aBang: integer): boolean;
+begin
+  aToken.Prefix := aToken.Start;
+  aToken.Bang := aBang;
+  fIndex := aBang + 1;
+  while (fIndex <= fLast) and IsFormulaSpace(fText[fIndex]) do
+    Inc(fIndex);
+  aToken.Start := fIndex;
+  if fIndex > fLast then
+    Exit(Fail('a reference missing'));
+  if fText[fIndex] = '#' then
+    Result := ErrorValue(aToken)
+  else if IsWordStart(fText[fIndex]) then
+    Result := Word(aToken)
+  else
+    Result := Fail('a reference missing');
+  aToken.Finish := fIndex;
+end;
+
+function TFormulaScanner.ErrorValue(var aToken: TFormulaToken): boolean;
+begin
+  for var error: string in cErrors do
+    if StartsWithWord(fText, fIndex, fLast + 1, error) then
+    begin
+      aToken.Kind := fkError;
+      Inc(fIndex, error.Length);
+      Exit(True);
+    end;
+  Result := Fail('an error value Excel does not have');
+end;
+
+// a word: a function's name (its ( next), a table's (its [...] next), a reference alone or a range of two, a number, TRUE or
+// FALSE, a name
+function TFormulaScanner.Word(var aToken: TFormulaToken): boolean;
+begin
+  var after: integer := WordEnd(fIndex);
+  if (after <= fLast) and (fText[after] = '(') then
+    aToken.Kind := fkFunction
+  else if (after <= fLast) and (fText[after] = '[') then
+  begin
+    aToken.Kind := fkTable;
+    aToken.NameFinish := after;
+    var close: integer := ClosingBracket(after);
+    if close = 0 then
+      Exit(Fail('a [ without its ]'));
+    after := close + 1;
+  end
+  else
+  begin
+    var kind: TReferenceKind := TUtility.ReadReference(fText, fIndex, after, aToken.Reference.Row, aToken.Reference.Column,
+      aToken.Reference.RowFixed, aToken.Reference.ColumnFixed);
+    aToken.Reference.Kind := kind;
+    aToken.Reference.Range := False;
+    if (kind <> TReferenceKind.rkNone) and (after < fLast) and (fText[after] = ':') and IsWordStart(fText[after + 1]) then
+    begin
+      var second: integer := WordEnd(after + 1);
+      if TUtility.ReadReference(fText, after + 1, second, aToken.Reference.Row2, aToken.Reference.Column2,
+        aToken.Reference.RowFixed2, aToken.Reference.ColumnFixed2) = kind then
+      begin
+        aToken.Reference.Range := True;
+        after := second;
+      end;
+    end;
+    if (kind <> TReferenceKind.rkNone) and ((kind = TReferenceKind.rkCell) or aToken.Reference.Range) then
+      aToken.Kind := fkReference
+    else if CharInSet(fText[fIndex], ['0' .. '9', '.']) then
+    begin
+      aToken.Kind := fkNumber;
+      // the exponent's sign is no word's: 1.5E+3
+      if CharInSet(fText[after - 1], ['E', 'e']) and (after < fLast) and CharInSet(fText[after], ['+', '-']) and
+        CharInSet(fText[after + 1], ['0' .. '9']) then
+        after := WordEnd(after + 1);
+    end
+    else if IsWord(fText, fIndex, after, 'TRUE') or IsWord(fText, fIndex, after, 'FALSE') then
+      aToken.Kind := fkLogical
+    else
+      aToken.Kind := fkName;
+  end;
+  fIndex := after;
+  Result := True;
+end;
+
+function TFormulaScanner.Next(out aToken: TFormulaToken): boolean;
+begin
+  if fIndex > fLast then
+    Exit(False);
+  aToken.Start := fIndex;
+  aToken.Prefix := 0;
+  aToken.Bang := 0;
+  aToken.NameFinish := 0;
+  var bang: integer;
+  case fText[fIndex] of
+    ' ', #9, #10, #13:
+      begin
+        aToken.Kind := fkSpace;
+        repeat
+          Inc(fIndex);
+        until (fIndex > fLast) or not IsFormulaSpace(fText[fIndex]);
+      end;
+    '"':
+      begin
+        var close: integer := ClosingQuote(fIndex);
+        if close = 0 then
+          Exit(Fail('a text without its closing quote'));
+        aToken.Kind := fkText;
+        fIndex := close + 1;
+      end;
+    '''':
+      Exit(QuotedBang(fIndex, bang) and Prefixed(aToken, bang));
+    '[':
+      begin // another workbook ([1]Sheet1!A1, [1]'My Sheet'!A1, [1]!Total) or a table's columns without its name ([@Sales])
+        var close: integer := ClosingBracket(fIndex);
+        if close = 0 then
+          Exit(Fail('a [ without its ]'));
+        var after: integer := close + 1;
+        if after <= fLast then
+          case fText[after] of
+            '!':
+              Exit(Prefixed(aToken, after));
+            '''':
+              Exit(QuotedBang(after, bang) and Prefixed(aToken, bang));
+          else
+            if IsWordStart(fText[after]) then
+            begin
+              bang := SheetBang(after);
+              if bang > 0 then
+                Exit(Prefixed(aToken, bang));
+            end;
+          end;
+        aToken.Kind := fkTable;
+        aToken.NameFinish := fIndex;
+        fIndex := after;
+      end;
+    '#':
+      if not ErrorValue(aToken) then
+        Exit(False);
+    '(', ')', '{', '}', ',', ';', '%':
+      begin // the kinds fkOpen to fkPercent in this order
+        aToken.Kind := TFormulaTokenKind(Ord(fkOpen) + Pos(fText[fIndex], '(){},;%') - 1);
+        Inc(fIndex);
+      end;
+    '+', '-', '*', '/', '^', '&', '=', ':', '<', '>':
+      begin
+        aToken.Kind := fkOperator;
+        Inc(fIndex);
+        if (fIndex <= fLast) and (((fText[fIndex - 1] = '<') and CharInSet(fText[fIndex], ['>', '='])) or
+          ((fText[fIndex - 1] = '>') and (fText[fIndex] = '='))) then
+          Inc(fIndex);
+      end;
+  else
+    if not IsWordStart(fText[fIndex]) then
+      Exit(Fail('a character no formula has: ' + fText[fIndex]));
+    bang := SheetBang(fIndex);
+    if bang > 0 then
+      Exit(Prefixed(aToken, bang));
+    if not Word(aToken) then
+      Exit(False);
+  end;
+  aToken.Finish := fIndex;
+  Result := True;
+end;
+
+// StoredFormula's check, its references changed by aMap too (until the check is a walk over the scanner's tokens)
+function CheckedFormula(const aFormula: string; const aMap: TReferenceMap; aForm: TFormulaForm; out aResult, aWhy,
   aUnknown: string): boolean;
 const
-  cErrors: array [0 .. 9] of string = ('#NULL!', '#DIV/0!', '#VALUE!', '#REF!', '#NAME?', '#NUM!', '#N/A', '#GETTING_DATA',
-    '#SPILL!', '#CALC!');
   cSpaces = [' ', #9, #10, #13];
   cOperators = ['+', '-', '*', '/', '^', '&', '=', '<', '>', ':'];
   cMaxArguments = 255;
   cUnknown = -1;
   cResult = -2;
-  cParameterPrefix = '_xlpm.';
 var
   builder: TStringBuilder;
   i, last: integer; // last: the formula's length
@@ -637,11 +978,6 @@ var
   begin
     aWhy := aText;
     Result := False;
-  end;
-
-  function IsWordStart(aChar: Char): boolean;
-  begin
-    Result := aChar.IsLetterOrDigit or CharInSet(aChar, ['_', '\', '$', '.']);
   end;
 
   function ReadWord(aFrom: integer): integer; // the index after it
@@ -837,6 +1173,8 @@ var
 
   // a word: a reference alone or as one end of a range (moved, or #REF!), a number, TRUE, a name
   function Word(aEnd: integer): boolean;
+  var
+    reference: TReference;
   begin
     var wasPrefixed: boolean := prefixed;
     var word: string := Copy(aFormula, i, aEnd - i);
@@ -886,12 +1224,21 @@ var
     var moved: string;
     if not wasPrefixed then
       prefix := '';
+    reference.Kind := kind;
+    reference.Row := row;
+    reference.Column := column;
+    reference.RowFixed := rowFixed;
+    reference.ColumnFixed := columnFixed;
+    reference.Range := secondEnd > aEnd;
+    reference.Row2 := row2;
+    reference.Column2 := column2;
+    reference.RowFixed2 := rowFixed2;
+    reference.ColumnFixed2 := columnFixed2;
     if wasPrefixed and PrefixGone(False) then
       builder.Append('#REF!')
     else if not aMap.Changes(prefix) then
       builder.Append(word)
-    else if not aMap.Map(kind, row, column, rowFixed, columnFixed, secondEnd > aEnd, row2, column2, rowFixed2, columnFixed2,
-      moved) then
+    else if not aMap.Map(reference, moved) then
       builder.Append('#REF!')
     else if moved = '' then
       builder.Append(word)
@@ -1323,11 +1670,129 @@ begin
   end;
 end;
 
-function ShownFormula(const aStored: string): string;
+function StoredFormula(const aFormula: string; out aResult, aWhy, aUnknown: string): boolean;
 begin
-  var why, unknown: string;
-  if not ShiftFormula(aStored, TReferenceMap.Fill(0, 0), ffShown, Result, why, unknown) then
-    Result := aStored;
+  Result := CheckedFormula(aFormula, TReferenceMap.Fill(0, 0), ffStored, aResult, aWhy, aUnknown);
+end;
+
+// aFormula's pieces copied into a builder made at the first change
+type
+  TFormulaCopy = record
+    Text: string;
+    Builder: TStringBuilder;
+    Copied: integer; // Text before it is in Builder
+    procedure Start(const aText: string);
+    // Text[aStart .. aFinish - 1] written as aWith
+    procedure Replace(aStart, aFinish: integer; const aWith: string);
+    function Done: string; // the text with the changes
+  end;
+
+procedure TFormulaCopy.Start(const aText: string);
+begin
+  Text := aText;
+  Builder := nil;
+  Copied := 1;
+end;
+
+procedure TFormulaCopy.Replace(aStart, aFinish: integer; const aWith: string);
+begin
+  if Builder = nil then
+    Builder := TStringBuilder.Create(Text.Length + 16);
+  Builder.Append(Text, Copied - 1, aStart - Copied).Append(aWith);
+  Copied := aFinish;
+end;
+
+function TFormulaCopy.Done: string;
+begin
+  if Builder = nil then
+    Exit(Text);
+  Builder.Append(Text, Copied - 1, Text.Length + 1 - Copied);
+  Result := Builder.ToString;
+end;
+
+function ShiftFormula(const aFormula: string; const aMap: TReferenceMap; out aResult, aWhy: string): boolean;
+var
+  scanner: TFormulaScanner;
+  token: TFormulaToken;
+  output: TFormulaCopy;
+begin
+  scanner := TFormulaScanner.Create(aFormula);
+  output.Start(aFormula);
+  try
+    while scanner.Next(token) do
+    begin
+      var change: TPrefixChange := TPrefixChange.pcSame;
+      var prefix: string := '';
+      var moved: string;
+      if (token.Prefix > 0) and (token.Kind in [fkReference, fkName, fkNumber, fkLogical, fkError]) then
+      begin
+        prefix := Copy(aFormula, token.Prefix, token.Bang - token.Prefix);
+        change := aMap.PrefixChange(prefix, moved);
+        if change = TPrefixChange.pcMoved then
+          output.Replace(token.Prefix, token.Bang, moved);
+      end;
+      case token.Kind of
+        fkReference:
+          if change = TPrefixChange.pcGone then
+            output.Replace(token.Prefix, token.Finish, '#REF!')
+          else if not aMap.Changes(prefix) then
+            // stays
+          else if not aMap.Map(token.Reference, moved) then
+            output.Replace(token.Start, token.Finish, '#REF!')
+          else if (moved <> '') and not IsWord(aFormula, token.Start, token.Finish, moved) then
+            output.Replace(token.Start, token.Finish, moved);
+        fkName, fkNumber, fkLogical:
+          if change = TPrefixChange.pcGone then
+            output.Replace(token.Prefix, token.Start, '[0]!'); // the workbook's name then
+        fkError:
+          if change = TPrefixChange.pcGone then
+            output.Replace(token.Prefix, token.Start, '');
+        fkTable:
+          if (token.Prefix = 0) and (token.NameFinish > token.Start) and (aMap.GoneTables <> nil) and
+            aMap.TableGone(Copy(aFormula, token.Start, token.NameFinish - token.Start),
+            Copy(aFormula, token.NameFinish, token.Finish - token.NameFinish)) then
+            output.Replace(token.Start, token.Finish, '#REF!');
+      end;
+    end;
+    aWhy := scanner.Error;
+    Result := aWhy = '';
+    if Result then
+      aResult := output.Done
+    else
+      aResult := aFormula;
+  finally
+    output.Builder.Free;
+  end;
+end;
+
+function ShownFormula(const aStored: string): string;
+var
+  scanner: TFormulaScanner;
+  token: TFormulaToken;
+  output: TFormulaCopy;
+begin
+  scanner := TFormulaScanner.Create(aStored);
+  output.Start(aStored);
+  try
+    while scanner.Next(token) do
+      if (token.Kind in [fkFunction, fkName]) and StartsWithWord(aStored, token.Start, token.Finish, cParameterPrefix) then
+        output.Replace(token.Start, token.Start + cParameterPrefix.Length, '')
+      else if token.Kind = fkFunction then
+      begin // one of Excel's in upper case, without its prefixes; another as it is
+        var start: integer := token.Start;
+        while StartsWithWord(aStored, start, token.Finish, '_xlfn.') or StartsWithWord(aStored, start, token.Finish, '_xlws.') do
+          Inc(start, 6);
+        var index: integer := FindFunction(aStored, start, token.Finish);
+        if (index >= 0) and ((start > token.Start) or
+          not CompareMem(@aStored[start], Pointer(cFunctions[index].Name), (token.Finish - start) * SizeOf(Char))) then
+          output.Replace(token.Start, token.Finish, cFunctions[index].Name);
+      end;
+    if scanner.Error <> '' then
+      Exit(aStored);
+    Result := output.Done;
+  finally
+    output.Builder.Free;
+  end;
 end;
 
 
@@ -1339,17 +1804,6 @@ begin
     Result := TReferenceMap.Inserted(aSheet, aByRows, aFirst, aCount);
   Result.OnSheet := (aFormulaSheet <> '') and AnsiSameText(aFormulaSheet, aSheet);
   Result.InName := aFormulaSheet = '';
-end;
-
-function MappedFormula(const aFormula: string; const aMap: TReferenceMap; out aResult, aWhy: string): boolean;
-begin
-  var unchanged: TReferenceMap := TReferenceMap.Fill(0, 0);
-  unchanged.InName := aMap.InName;
-  var unknown, same: string;
-  Result := ShiftFormula(aFormula, aMap, ffStored, aResult, aWhy, unknown) and
-    ShiftFormula(aFormula, unchanged, ffStored, same, aWhy, unknown);
-  if not Result or (aResult = same) then // the text as it was: prefixes and spaces too
-    aResult := aFormula;
 end;
 
 end.

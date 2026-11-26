@@ -39,6 +39,13 @@ type
   // what a sheet deleted does to a prefix: nothing, gone with it (#REF!), a 3-D one's end moved inward
   TPrefixChange = (pcSame, pcGone, pcMoved);
 
+  // a reference as a formula writes it (TUtility.ReadReference): a cell, a column or a row, alone or a range's two ends
+  TReference = record
+    Kind: TReferenceKind;
+    Row, Column, Row2, Column2: integer;
+    RowFixed, ColumnFixed, RowFixed2, ColumnFixed2, Range: boolean;
+  end;
+
   // a table's rows (with its header and totals) and columns, its data rows among them
   TTableBody = record
     Left, Right, Top, DataTop, DataBottom, Bottom: integer;
@@ -73,10 +80,8 @@ type
     function Changes(const aPrefix: string): boolean;
     // a sheet deleted: what becomes of a prefix (as Changes takes it), aText the moved one (Data:Mid, 'A b:Last')
     function PrefixChange(const aPrefix: string; out aText: string): TPrefixChange;
-    // a reference read by ReadReference, alone or a range's first end with its second (aRange): False for #REF!, aText ''
-    // when it stays as written
-    function Map(aKind: TReferenceKind; aRow, aColumn: integer; aRowFixed, aColumnFixed, aRange: boolean; aRow2, aColumn2: integer;
-      aRowFixed2, aColumnFixed2: boolean; out aText: string): boolean;
+    // a reference: False for #REF!, aText '' when it stays as written
+    function Map(aReference: TReference; out aText: string): boolean;
     // whether Table[...] (aBrackets with its [ and ]) names a table or column gone: Excel writes #REF! for it
     function TableGone(const aTable, aBrackets: string): boolean;
   end;
@@ -91,16 +96,19 @@ type
   public
     class function ColumnName(aColumn: integer): string; static;
     class function CellName(aRow, aColumn: integer): string; static;
-    // the letters from aIndex on as a column number (0: none, or beyond XFD); aIndex moves past them
-    class function ReadColumn(const aText: string; var aIndex: integer): integer; static;
-    class function ReadRow(const aText: string; var aIndex: integer): integer; static;
+    // the letters from aIndex on (up to aFinish) as a column number (0: none, or beyond XFD); aIndex moves past them
+    class function ReadColumn(const aText: string; var aIndex: integer; aFinish: integer = MaxInt): integer; static;
+    class function ReadRow(const aText: string; var aIndex: integer; aFinish: integer = MaxInt): integer; static;
     // a cell's r (B5) -> its column; 0 when it has none
     class function ColumnOf(const aReference: string): integer; static;
     // B5, $B$5, A1:C10, 5:7, B:D
     class function ParseAddress(const aAddress: string; out aTop, aLeft, aBottom, aRight: integer): boolean; static;
     // A1, $A$1, A, $A, 5, $5 (a column and a row count only as one end of A:C or 5:7)
     class function ReadReference(const aWord: string; out aRow, aColumn: integer; out aRowFixed, aColumnFixed: boolean): TReferenceKind;
-      static;
+      overload; static;
+    // the same of aText[aStart .. aFinish - 1]
+    class function ReadReference(const aText: string; aStart, aFinish: integer; out aRow, aColumn: integer;
+      out aRowFixed, aColumnFixed: boolean): TReferenceKind; overload; static;
     // a reference's relative parts moved; False off the sheet
     class function MoveReference(aKind: TReferenceKind; aRow, aColumn: integer; aRowFixed, aColumnFixed: boolean;
       aRows, aColumns: integer; out aText: string): boolean; static;
@@ -152,10 +160,11 @@ begin
   Result := ColumnName(aColumn) + IntToStr(aRow);
 end;
 
-class function TUtility.ReadColumn(const aText: string; var aIndex: integer): integer;
+class function TUtility.ReadColumn(const aText: string; var aIndex: integer; aFinish: integer): integer;
 begin
   Result := 0;
-  while aIndex <= aText.Length do
+  var last: integer := Min(aFinish - 1, aText.Length);
+  while aIndex <= last do
   begin
     var letter: Char := aText[aIndex];
     if CharInSet(letter, ['a' .. 'z']) then
@@ -169,10 +178,11 @@ begin
   end;
 end;
 
-class function TUtility.ReadRow(const aText: string; var aIndex: integer): integer;
+class function TUtility.ReadRow(const aText: string; var aIndex: integer; aFinish: integer): integer;
 begin
   Result := 0;
-  while (aIndex <= aText.Length) and CharInSet(aText[aIndex], ['0' .. '9']) do
+  var last: integer := Min(aFinish - 1, aText.Length);
+  while (aIndex <= last) and CharInSet(aText[aIndex], ['0' .. '9']) do
   begin
     Result := Result * 10 + Ord(aText[aIndex]) - Ord('0');
     if Result > cMaxRow then
@@ -245,13 +255,19 @@ end;
 class function TUtility.ReadReference(const aWord: string; out aRow, aColumn: integer;
   out aRowFixed, aColumnFixed: boolean): TReferenceKind;
 begin
+  Result := ReadReference(aWord, 1, aWord.Length + 1, aRow, aColumn, aRowFixed, aColumnFixed);
+end;
+
+class function TUtility.ReadReference(const aText: string; aStart, aFinish: integer; out aRow, aColumn: integer;
+  out aRowFixed, aColumnFixed: boolean): TReferenceKind;
+begin
   Result := TReferenceKind.rkNone;
-  var index: integer := 1;
-  aColumnFixed := (index <= aWord.Length) and (aWord[index] = '$');
+  var index: integer := aStart;
+  aColumnFixed := (index < aFinish) and (aText[index] = '$');
   if aColumnFixed then
     Inc(index);
   var start: integer := index;
-  aColumn := ReadColumn(aWord, index);
+  aColumn := ReadColumn(aText, index, aFinish);
   var letters: boolean := index > start;
   if letters and (aColumn = 0) then
     Exit;
@@ -262,14 +278,14 @@ begin
   end
   else
   begin
-    aRowFixed := (index <= aWord.Length) and (aWord[index] = '$');
+    aRowFixed := (index < aFinish) and (aText[index] = '$');
     if aRowFixed then
       Inc(index);
   end;
   start := index;
-  aRow := ReadRow(aWord, index);
+  aRow := ReadRow(aText, index, aFinish);
   var digits: boolean := index > start;
-  if (index <= aWord.Length) or (digits and (aRow = 0)) then
+  if (index < aFinish) or (digits and (aRow = 0)) then
     Exit;
   if letters and digits then
     Result := TReferenceKind.rkCell
@@ -488,8 +504,7 @@ begin
   Result := False;
 end;
 
-function TReferenceMap.Map(aKind: TReferenceKind; aRow, aColumn: integer; aRowFixed, aColumnFixed, aRange: boolean;
-  aRow2, aColumn2: integer; aRowFixed2, aColumnFixed2: boolean; out aText: string): boolean;
+function TReferenceMap.Map(aReference: TReference; out aText: string): boolean;
 var
   low, high, limit: integer;
   lowFixed, highFixed: boolean;
@@ -522,10 +537,11 @@ var
     begin
       if (low = 1) and (high = limit) then // every row or column stays so
         Exit(True);
-      if ByRows and (aKind = TReferenceKind.rkCell) then
+      if ByRows and (aReference.Kind = TReferenceKind.rkCell) then
         for var body: TTableBody in Bodies do
-          if (Min(aColumn, aColumn2) >= body.Left) and (Max(aColumn, aColumn2) <= body.Right) and (low >= body.Top) and
-            (low <= body.DataTop) and (high >= body.DataBottom) and (high <= body.Bottom) and
+          if (Min(aReference.Column, aReference.Column2) >= body.Left) and
+            (Max(aReference.Column, aReference.Column2) <= body.Right) and (low >= body.Top) and (low <= body.DataTop) and
+            (high >= body.DataBottom) and (high <= body.Bottom) and
             ((First = body.DataTop) or (First = body.DataBottom + 1) and (First <= body.Bottom)) then
           begin
             high := Min(high + Count, limit);
@@ -562,51 +578,52 @@ begin
   if Change = TReferenceChange.rcFill then
   begin
     var moved2: string;
-    Result := TUtility.MoveReference(aKind, aRow, aColumn, aRowFixed, aColumnFixed, Rows, Columns, aText) and
-      (not aRange or TUtility.MoveReference(aKind, aRow2, aColumn2, aRowFixed2, aColumnFixed2, Rows, Columns, moved2));
-    if aRange then
+    Result := TUtility.MoveReference(aReference.Kind, aReference.Row, aReference.Column, aReference.RowFixed,
+      aReference.ColumnFixed, Rows, Columns, aText) and (not aReference.Range or TUtility.MoveReference(aReference.Kind,
+      aReference.Row2, aReference.Column2, aReference.RowFixed2, aReference.ColumnFixed2, Rows, Columns, moved2));
+    if aReference.Range then
       aText := aText + ':' + moved2;
     Exit;
   end;
   Result := True;
-  if (ByRows and (aKind = TReferenceKind.rkColumn)) or (not ByRows and (aKind = TReferenceKind.rkRow)) then
+  if (ByRows and (aReference.Kind = TReferenceKind.rkColumn)) or (not ByRows and (aReference.Kind = TReferenceKind.rkRow)) then
     Exit;
-  if not aRange then
+  if not aReference.Range then
   begin
-    aRow2 := aRow;
-    aColumn2 := aColumn;
-    aRowFixed2 := aRowFixed;
-    aColumnFixed2 := aColumnFixed;
+    aReference.Row2 := aReference.Row;
+    aReference.Column2 := aReference.Column;
+    aReference.RowFixed2 := aReference.RowFixed;
+    aReference.ColumnFixed2 := aReference.ColumnFixed;
   end;
   // a range written backwards (A5:A1) as low and high
   var swapped: boolean;
   if ByRows then
   begin
     limit := TUtility.cMaxRow;
-    swapped := aRow > aRow2;
-    low := Min(aRow, aRow2);
-    high := Max(aRow, aRow2);
-    lowFixed := (aRowFixed and not swapped) or (aRowFixed2 and swapped);
-    highFixed := (aRowFixed2 and not swapped) or (aRowFixed and swapped);
+    swapped := aReference.Row > aReference.Row2;
+    low := Min(aReference.Row, aReference.Row2);
+    high := Max(aReference.Row, aReference.Row2);
+    lowFixed := (aReference.RowFixed and not swapped) or (aReference.RowFixed2 and swapped);
+    highFixed := (aReference.RowFixed2 and not swapped) or (aReference.RowFixed and swapped);
   end
   else
   begin
     limit := TUtility.cMaxColumn;
-    swapped := aColumn > aColumn2;
-    low := Min(aColumn, aColumn2);
-    high := Max(aColumn, aColumn2);
-    lowFixed := (aColumnFixed and not swapped) or (aColumnFixed2 and swapped);
-    highFixed := (aColumnFixed2 and not swapped) or (aColumnFixed and swapped);
+    swapped := aReference.Column > aReference.Column2;
+    low := Min(aReference.Column, aReference.Column2);
+    high := Max(aReference.Column, aReference.Column2);
+    lowFixed := (aReference.ColumnFixed and not swapped) or (aReference.ColumnFixed2 and swapped);
+    highFixed := (aReference.ColumnFixed2 and not swapped) or (aReference.ColumnFixed and swapped);
   end;
   var oldLow: integer := low;
   var oldHigh: integer := high;
-  if aRange then
+  if aReference.Range then
     Result := MapRange
   else
     Result := MapOne(low, lowFixed);
   if not Result or ((low = oldLow) and (high = oldHigh)) then
     Exit;
-  if not aRange then
+  if not aReference.Range then
     high := low;
   if swapped then
   begin
@@ -616,24 +633,28 @@ begin
   end;
   if ByRows then
   begin
-    aRow := low;
-    aRow2 := high;
+    aReference.Row := low;
+    aReference.Row2 := high;
   end
   else
   begin
-    aColumn := low;
-    aColumn2 := high;
+    aReference.Column := low;
+    aReference.Column2 := high;
   end;
-  if not aRange then
-    aText := Text(aKind, aRow, aColumn, aRowFixed, aColumnFixed)
-  else if (aKind = TReferenceKind.rkCell) and (Min(aColumn, aColumn2) = 1) and (Max(aColumn, aColumn2) = TUtility.cMaxColumn) then
+  if not aReference.Range then
+    aText := Text(aReference.Kind, aReference.Row, aReference.Column, aReference.RowFixed, aReference.ColumnFixed)
+  else if (aReference.Kind = TReferenceKind.rkCell) and (Min(aReference.Column, aReference.Column2) = 1) and
+    (Max(aReference.Column, aReference.Column2) = TUtility.cMaxColumn) then
     // every column: Excel writes the rows, 5:7
-    aText := Text(TReferenceKind.rkRow, aRow, 0, aRowFixed, False) + ':' + Text(TReferenceKind.rkRow, aRow2, 0, aRowFixed2, False)
-  else if (aKind = TReferenceKind.rkCell) and (Min(aRow, aRow2) = 1) and (Max(aRow, aRow2) = TUtility.cMaxRow) then
-    aText := Text(TReferenceKind.rkColumn, 0, aColumn, False, aColumnFixed) + ':' +
-      Text(TReferenceKind.rkColumn, 0, aColumn2, False, aColumnFixed2)
+    aText := Text(TReferenceKind.rkRow, aReference.Row, 0, aReference.RowFixed, False) + ':' +
+      Text(TReferenceKind.rkRow, aReference.Row2, 0, aReference.RowFixed2, False)
+  else if (aReference.Kind = TReferenceKind.rkCell) and (Min(aReference.Row, aReference.Row2) = 1) and
+    (Max(aReference.Row, aReference.Row2) = TUtility.cMaxRow) then
+    aText := Text(TReferenceKind.rkColumn, 0, aReference.Column, False, aReference.ColumnFixed) + ':' +
+      Text(TReferenceKind.rkColumn, 0, aReference.Column2, False, aReference.ColumnFixed2)
   else
-    aText := Text(aKind, aRow, aColumn, aRowFixed, aColumnFixed) + ':' + Text(aKind, aRow2, aColumn2, aRowFixed2, aColumnFixed2);
+    aText := Text(aReference.Kind, aReference.Row, aReference.Column, aReference.RowFixed, aReference.ColumnFixed) + ':' +
+      Text(aReference.Kind, aReference.Row2, aReference.Column2, aReference.RowFixed2, aReference.ColumnFixed2);
 end;
 
 class function TUtility.SerialToDate(aSerial: Double; a1904: boolean): TDateTime;
