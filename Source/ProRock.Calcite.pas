@@ -629,7 +629,7 @@ type
 implementation
 
 uses System.Math, System.Variants, System.DateUtils, System.TypInfo, System.Character, System.Generics.Defaults, System.Zip,
-  ProRock.Calcite.Formulas, ProRock.Calcite.Formats, ProRock.Calcite.XlsxWalk;
+  ProRock.Calcite.Formulas, ProRock.Calcite.Formats, ProRock.Calcite.XlsxWalk, ProRock.Calcite.XlsxObjects;
 
 const
 
@@ -2095,9 +2095,9 @@ begin
 end;
 
 // the workbook's worksheets for a walk, aMine aSheet's
-function WalkOf(aSheet: TWorksheet; out aMine: TXlsxWalkSheet): TXlsxWalk;
+function WalkOf(aSheet: TWorksheet; out aMine: TXlsxWalkSheet): TXlsxRun;
 begin
-  Result := TXlsxWalk.Create(aSheet.fWorkbook.fBook);
+  Result := TXlsxRun.Create(aSheet.fWorkbook.fBook);
   aMine := nil;
   for var sheet: TWorksheet in aSheet.fWorkbook.fSheets do
     if sheet = aSheet then
@@ -2118,7 +2118,7 @@ begin
     done := 'inserted';
   var mine: TXlsxWalkSheet;
   var why: string;
-  var walk: TXlsxWalk := WalkOf(Self, mine);
+  var walk: TXlsxRun := WalkOf(Self, mine);
   try
     why := walk.Run(mine, aMap);
   finally
@@ -2691,7 +2691,7 @@ begin
     for var sheet: TWorksheet in fWorkbook.fSheets do
       names := names + [sheet.fName];
     var mine: TXlsxWalkSheet;
-    var walk: TXlsxWalk := WalkOf(Self, mine);
+    var walk: TXlsxRun := WalkOf(Self, mine);
     try
       why := walk.Run(mine, TReferenceMap.SheetDeleted(fName, names));
     finally
