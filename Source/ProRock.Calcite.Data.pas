@@ -1,6 +1,6 @@
 ﻿unit ProRock.Calcite.Data;
 
-// A TDataSet to an Excel sheet: ExportDataSet(Query, Workbook.Sheets[1])
+// A TDataSet to an Excel sheet: ExportDataSet(Query, Workbook.Worksheets[1])
 
 interface
 

@@ -556,18 +556,31 @@ type
 
   // in the workbook's order, numbered from 1 as in Excel; chart sheets are not listed
   TWorksheets = class
+  public type
+    // for var sheet in Workbook.Worksheets: in the workbook's order
+    TEnumerator = record
+    private
+      fList: TList<TWorksheet>;
+      fIndex: integer;
+
+      function GetCurrent: TWorksheet; inline;
+    public
+      function MoveNext: boolean; inline;
+
+      property Current: TWorksheet read GetCurrent;
+    end;
   private
     fWorkbook: TWorkbook;
     fList: TObjectList<TWorksheet>;
 
+    constructor Create;
     function GetCount: integer;
     function GetItem(aIndex: integer): TWorksheet;
     function GetItemByName(const aName: string): TWorksheet;
   public
-    constructor Create;
     destructor Destroy; override;
 
-    function GetEnumerator: TList<TWorksheet>.TEnumerator;
+    function GetEnumerator: TEnumerator;
     // nil when there is none; case is ignored, as in Excel
     function Find(const aName: string): TWorksheet;
     // at the end; no name: Excel's next SheetN. A name Excel would refuse (more than 31 characters, [ ] : * ? / \, ' at
@@ -728,7 +741,7 @@ type
     property Issues: TIssues read fIssues;
     // each issue as it comes
     property OnIssue: TIssueEvent read fIssues.OnIssue write fIssues.OnIssue;
-    property Sheets: TWorksheets read fSheets;
+    property Worksheets: TWorksheets read fSheets;
     // Excel's File > Info: title, author, dates (Save sets Modified when anything changed); the open file's, after an Open too
     property Properties: TWorkbookProperties read fProperties;
     // what a date written into an unformatted cell gets (a date with a time: DateTimeFormat); 'dd.mm.yyyy' shows so to
@@ -7909,9 +7922,23 @@ begin
   inherited;
 end;
 
-function TWorksheets.GetEnumerator: TList<TWorksheet>.TEnumerator;
+function TWorksheets.GetEnumerator: TEnumerator;
 begin
-  Result := fList.GetEnumerator;
+  Result.fList := fList;
+  Result.fIndex := -1;
+end;
+
+{ TWorksheets.TEnumerator }
+
+function TWorksheets.TEnumerator.GetCurrent: TWorksheet;
+begin
+  Result := fList[fIndex];
+end;
+
+function TWorksheets.TEnumerator.MoveNext: boolean;
+begin
+  Inc(fIndex);
+  Result := fIndex < fList.Count;
 end;
 
 function TWorksheets.Find(const aName: string): TWorksheet;

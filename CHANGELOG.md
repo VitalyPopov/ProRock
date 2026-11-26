@@ -12,7 +12,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 #### Added
 - `ProRock.Calcite`, Excel workbooks (.xlsx), first steps: a workbook opened and saved with nothing lost - a part not changed
   is saved as the same bytes, a changed one from its generated objects (`Workbook.Xlsx.Workbook`, `.Styles`,
-  `.SharedStrings`, `Sheets[1].Xlsx.Worksheet`). `Open` and `Save` return False with the reason in `Error` (a file open in
+  `.SharedStrings`, `Worksheets[1].Xlsx.Worksheet`). `Open` and `Save` return False with the reason in `Error` (a file open in
   Excel, not a workbook), they do not raise. `Open` knows the format by the content, `SaveAs` refuses a name Excel would not
   open: a workbook with macros as .xlsx, a template as .xlsm, another format's .ods or .csv
 - Calcite's cells: `Sheet['B5']`, `Sheet['A1:C10']`, `Sheet.Cells[5, 'B']` (Excel's order, from 1; a range's `LastRow` and
@@ -31,7 +31,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   `LET`'s `_xlpm.x`) are added on write and dropped on read, as Excel's `Formula` shows it. A formula written has no value
   until Excel calculates it, which it does when the file opens
 - Calcite's new workbooks: `TWorkbook.Create` gives one as Excel's own new workbook - `Sheet1`, ready to write and `SaveAs`
-  (`Open` replaces it; a failed `Open` leaves it). `Sheets.Add` adds a sheet at the end, named or Excel's next `SheetN`; a
+  (`Open` replaces it; a failed `Open` leaves it). `Worksheets.Add` adds a sheet at the end, named or Excel's next `SheetN`; a
   name Excel would not open (more than 31 characters, `[ ] : * ? / \`, `'` at either end, taken in any case) is listed in
   `Issues` and the sheet gets the next `SheetN`. A sheet made this way can be renamed until formulas are written
 - Calcite's formatting, as Excel's own properties: `NumberFormat` (`'0.00'`, `'#,##0.00'`, `'dd.mm.yyyy'`; Excel's built-in
