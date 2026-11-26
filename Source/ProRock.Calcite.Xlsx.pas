@@ -30,12 +30,6 @@ const
   cContentTypes = '[Content_Types].xml';
   cSharedStringsType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml';
   cWorksheetType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml';
-  cAutomaticIndex = 64; // indexed: the system's text color, Excel's automatic
-  // each style as Excel reads it: LineStyle and Weight
-  cBorderLines: array[TBorderStyleST] of TLineStyle = (lsNone, lsContinuous, lsContinuous, lsDash, lsDot, lsContinuous,
-    lsDouble, lsContinuous, lsDash, lsDashDot, lsDashDot, lsDashDotDot, lsDashDotDot, lsSlantDashDot);
-  cBorderWeights: array[TBorderStyleST] of TBorderWeight = (bwThin, bwThin, bwMedium, bwThin, bwThin, bwThick, bwThick,
-    bwHairline, bwMedium, bwThin, bwMedium, bwThin, bwMedium, bwMedium);
 
 type
   // Calcite's own: a sheet's VML drawing (its notes' boxes), whose <xml> root no schema has; the shapes come in XmlAny
@@ -67,8 +61,15 @@ type
     fValuesChanged: boolean;
     fFormulasWritten: boolean;
 
-    function ChangedItem<T: TXmlite, constructor>(aItems: TObjectList<T>; var aKeys: TDictionary<T, integer>;
-      aIndex: cardinal; const aChange: TProc<T>): integer;
+    function ItemIndex<T: TXmlite>(aItems: TObjectList<T>; var aKeys: TDictionary<T, integer>; aWanted: T): integer;
+    function XfIndex(aWanted: TXfCT): integer;
+    function HasStyles: boolean;
+    function ChangedAspects(aStyle: cardinal; aAspects: TAspects; aSides: TCellSides; const aFormat: TCellFormat): TAspects;
+    function ChangedFont(aFont: cardinal; aAspects: TAspects; const aFormat: TCellFormat): integer;
+    function ChangedFill(aFill: cardinal; aColor: TColor): integer;
+    function ChangedBorder(aBorder: cardinal; aAspects: TAspects; aSides: TCellSides; const aFormat, aOld: TCellFormat):
+      integer;
+    function BorderAt(aBorder: cardinal): TBorderCT;
     function ThemeColor(aIndex: cardinal): integer;
     function StoredFormatId(const aCode: string): integer;
     function FormatCode(aStyle: cardinal): string;
@@ -109,13 +110,11 @@ type
     function SharedStringIndex(const aText: string): integer;
     procedure SharedStringReleased;
     function IsDateStyle(aStyle: cardinal): boolean;
-    function ChangedStyle(aStyle: cardinal; const aChange: TProc<TXfCT>): integer;
+    // aStyle with aFormat's aspects (a border's on aSides) that differ from its own written, found in cellXfs by content or
+    // added; aStyle itself when none differs; -1 when there are no styles
+    function ChangedStyle(aStyle: cardinal; aAspects: TAspects; aSides: TCellSides; const aFormat: TCellFormat): integer;
     function DateStyle(aStyle: cardinal; aFormat: integer): integer;
     function FormatId(const aCode: string): integer;
-    function ChangedFont(aFont: cardinal; const aChange: TProc<TFontCT>): integer;
-    function ChangedFill(aFill: cardinal; const aChange: TProc<TFillCT>): integer;
-    function ChangedBorder(aBorder: cardinal; const aChange: TProc<TBorderCT>): integer;
-    function BorderAt(aBorder: cardinal): TBorderCT;
     // a style as Excel reads it (one beyond cellXfs as the first); kept
     function FormatOf(aStyle: cardinal): TCellFormat;
 
@@ -143,10 +142,6 @@ function EncodeText(const aText: string): string;
 function RichText(aItem: TRstCT): string;
 // FFRRGGBB (or RRGGBB) as BGR
 function RgbValue(const aHex: string): integer;
-// a cell border's side (beLeft, beTop, beBottom, beRight), made when it has none
-function SideOf(aBorder: TBorderCT; aEdge: TBorderEdge): TBorderPrCT;
-// the side with a line; nil when it has none
-function DrawnSide(aBorder: TBorderCT; aEdge: TBorderEdge): TBorderPrCT;
 
 implementation
 
@@ -162,7 +157,17 @@ type
   {$ENDREGION}
 
 const
+  cAutomaticIndex = 64; // indexed: the system's text color, Excel's automatic
+  // each style as Excel reads it: LineStyle and Weight
+  cBorderLines: array[TBorderStyleST] of TLineStyle = (lsNone, lsContinuous, lsContinuous, lsDash, lsDot, lsContinuous,
+    lsDouble, lsContinuous, lsDash, lsDashDot, lsDashDot, lsDashDotDot, lsDashDotDot, lsSlantDashDot);
+  cBorderWeights: array[TBorderStyleST] of TBorderWeight = (bwThin, bwThin, bwMedium, bwThin, bwThin, bwThick, bwThick,
+    bwHairline, bwMedium, bwThin, bwMedium, bwThin, bwMedium, bwMedium);
   cUnderlines: array[TUnderlineValuesST] of TUnderline = (ulSingle, ulDouble, ulSingleAccounting, ulDoubleAccounting, ulNone);
+  cUnderlineValues: array[TUnderline] of TUnderlineValuesST = (stuvNone, stuvSingle, stuvDouble, stuvSingleAccounting,
+    stuvDoubleAccounting);
+  cFontAspects = [asFontName, asFontSize, asFontColor, asBold, asItalic, asStrikethrough, asUnderline];
+  cAlignmentAspects = [asHorizontalAlignment, asVerticalAlignment, asWrapText];
 
 function IsOn(aList: TBooleanPropertyCTList): boolean;
 begin
@@ -201,6 +206,79 @@ begin
       Result := nil;
   end;
 end;
+
+// clDefault: Excel's automatic
+procedure WriteColor(aColor: TColorCT; aValue: TColor);
+begin
+  aColor.Clear;
+  if aValue = TColors.SysDefault then
+  begin
+    aColor.Indexed := cAutomaticIndex;
+    aColor.SetPresent(@aColor.Indexed);
+  end
+  else
+    aColor.Rgb := Format('FF%.2X%.2X%.2X', [aValue and $FF, aValue shr 8 and $FF, aValue shr 16 and $FF]);
+end;
+
+// aValue against a stored color Excel shows as aShown: automatic (clDefault) is not black
+function ColorDiffers(aColor: TColorCT; aShown, aValue: TColor): boolean;
+begin
+  var automatic: boolean := (aColor = nil) or aColor.Auto or not aColor.Present[@aColor.Rgb] and
+    not aColor.Present[@aColor.Theme] and (not aColor.Present[@aColor.Indexed] or (aColor.Indexed = cAutomaticIndex));
+  if aValue = TColors.SysDefault then
+    Result := not automatic
+  else
+    Result := automatic or (aShown <> aValue);
+end;
+
+procedure WriteFlag(aList: TBooleanPropertyCTList; aValue: boolean);
+begin
+  aList.Clear;
+  if aValue then
+  begin
+    var item: TBooleanPropertyCT := TBooleanPropertyCT.Create;
+    item.Val := True;
+    aList.Add(item);
+  end;
+end;
+
+procedure WriteUnderline(aFont: TFontCT; aValue: TUnderline);
+begin
+  aFont.U.Clear;
+  if aValue = ulNone then
+    Exit;
+  var item: TUnderlinePropertyCT := TUnderlinePropertyCT.Create;
+  item.Val := cUnderlineValues[aValue]; // single, the default, is written as <u/>
+  aFont.U.Add(item);
+end;
+
+// the stored style of a pair Applied left
+function PairStyle(const aLine: TBorderLine): TBorderStyleST;
+begin
+  for var style := Succ(stbsNone) to High(TBorderStyleST) do
+    if (cBorderLines[style] = aLine.LineStyle) and (cBorderWeights[style] = aLine.Weight) then
+      Exit(style);
+  Result := stbsThin;
+end;
+
+// what a side's write changes: aLine its line (style and weight), aColor its color - ColorDiffers' rule, any color on a
+// side with no line
+procedure SideChanges(aBorder: TBorderCT; aSide: TCellSide; aAspects: TAspects; const aOld, aNew: TBorderLine;
+  out aLine, aColor: boolean);
+begin
+  aLine := (aOld.LineStyle <> aNew.LineStyle) or (aNew.LineStyle <> lsNone) and (aOld.Weight <> aNew.Weight);
+  aColor := False;
+  if (aNew.LineStyle = lsNone) or not (asBorderColor in aAspects) then
+    Exit;
+  var drawn: TBorderPrCT := DrawnSide(aBorder, aSide);
+  if drawn = nil then
+    aColor := True
+  else if drawn.IsPresent('Color') then
+    aColor := ColorDiffers(drawn.Color, aOld.Color, aNew.Color)
+  else
+    aColor := ColorDiffers(nil, aOld.Color, aNew.Color);
+end;
+
 
 {$REGION 'xlsx text and built-in formats'}
 
@@ -649,38 +727,137 @@ begin
   fDateStyles.Add(aStyle, Result);
 end;
 
-// aStyle changed by aChange, found in cellXfs by content or added; -1 when there are no styles
-function TXlsxBook.ChangedStyle(aStyle: cardinal; const aChange: TProc<TXfCT>): integer;
+function TXlsxBook.HasStyles: boolean;
 begin
   if fStylesPart.IsEmpty then
-    Exit(-1);
+    Exit(False);
   var styles: TStyleSheetE := fPackage.Part<TStyleSheetE>(fStylesPart);
-  if not styles.IsPresent('CellXfs') or (styles.CellXfs.Xf.Count = 0) then
+  Result := styles.IsPresent('CellXfs') and (styles.CellXfs.Xf.Count > 0);
+end;
+
+function TXlsxBook.ChangedStyle(aStyle: cardinal; aAspects: TAspects; aSides: TCellSides; const aFormat: TCellFormat): integer;
+begin
+  if not HasStyles then
     Exit(-1);
-  var formats: TXfCTList := styles.CellXfs.Xf;
-  if aStyle >= cardinal(formats.Count) then
-    aStyle := 0; // as Excel shows such a cell
-  if fStyleKeys = nil then
-  begin
-    fStyleKeys := TDictionary<TXfCT, integer>.Create(TXfCT.ContentComparer<TXfCT>);
-    for var i := 0 to formats.Count - 1 do
-      fStyleKeys.TryAdd(formats[i], i);
-  end;
-  // everything it has kept: alignment, protection, extensions
-  var wanted: TXfCT := formats[aStyle].Clone<TXfCT>;
+  var changed: TAspects := ChangedAspects(aStyle, aAspects, aSides, aFormat);
+  if changed = [] then
+    Exit(aStyle);
+  // everything it has kept: protection, extensions, the aspects not changed
+  var wanted: TXfCT := StyleXf(aStyle).Clone<TXfCT>;
   try
-    aChange(wanted);
-    if fStyleKeys.TryGetValue(wanted, Result) then
-      Exit;
-    styles := fPackage.EditPart<TStyleSheetE>(fStylesPart);
-    formats.Add(wanted);
-    Result := formats.Count - 1;
-    fStyleKeys.Add(wanted, Result);
-    wanted := nil;
-    if styles.CellXfs.Present[@styles.CellXfs.Count] then
-      styles.CellXfs.Count := formats.Count;
-  finally
+    if changed * cFontAspects <> [] then
+    begin
+      var font: integer := ChangedFont(wanted.FontId, changed, aFormat);
+      if font >= 0 then
+      begin
+        wanted.FontId := font;
+        wanted.ApplyFont := True;
+      end;
+    end;
+    if asFillColor in changed then
+    begin
+      var fill: integer := ChangedFill(wanted.FillId, aFormat.FillColor);
+      if fill >= 0 then
+      begin
+        wanted.FillId := fill;
+        wanted.ApplyFill := True;
+      end;
+    end;
+    if changed * cBorderAspects <> [] then
+    begin
+      var border: integer := ChangedBorder(wanted.BorderId, changed, aSides, aFormat, FormatOf(aStyle));
+      if border >= 0 then
+      begin
+        wanted.BorderId := border;
+        wanted.ApplyBorder := True;
+      end;
+    end;
+    if asNumberFormat in changed then
+    begin
+      wanted.NumFmtId := FormatId(aFormat.NumberFormat);
+      wanted.ApplyNumberFormat := True;
+    end;
+    if changed * cAlignmentAspects <> [] then
+    begin
+      var alignment: TCellAlignmentCT := wanted.Alignment;
+      if asHorizontalAlignment in changed then
+        if aFormat.HorizontalAlignment = haGeneral then
+          alignment.Clear(@alignment.Horizontal)
+        else
+          alignment.Horizontal := THorizontalAlignmentST(Ord(aFormat.HorizontalAlignment));
+      if asVerticalAlignment in changed then
+        if aFormat.VerticalAlignment = vaBottom then
+          alignment.Clear(@alignment.Vertical)
+        else
+          alignment.Vertical := TVerticalAlignmentST(Ord(aFormat.VerticalAlignment));
+      if asWrapText in changed then
+        if aFormat.WrapText then
+          alignment.WrapText := True
+        else
+          alignment.Clear(@alignment.WrapText);
+      if not alignment.HasContent then
+        wanted.Clear('Alignment'); // left with Excel's defaults: none written, as Excel writes none
+      wanted.ApplyAlignment := True;
+    end;
+  except
     wanted.Free;
+    raise;
+  end;
+  Result := XfIndex(wanted);
+end;
+
+// the aspects of aAspects whose value in aFormat is not aStyle's own; a stored color by ColorDiffers, a number format by id
+function TXlsxBook.ChangedAspects(aStyle: cardinal; aAspects: TAspects; aSides: TCellSides; const aFormat: TCellFormat): TAspects;
+begin
+  Result := [];
+  var old: TCellFormat := FormatOf(aStyle);
+  for var aspect: TAspect in aAspects - cBorderAspects do
+  begin
+    var differs: boolean;
+    case aspect of
+      asNumberFormat:
+        differs := FormatId(aFormat.NumberFormat) <> integer(StyleXf(aStyle).NumFmtId);
+      asFontName:
+        differs := not SameText(old.FontName, aFormat.FontName);
+      asFontSize:
+        differs := old.FontSize <> aFormat.FontSize;
+      asFontColor:
+      begin
+        var font: TFontCT := StyleFont(aStyle);
+        var stored: TColorCT := nil;
+        if (font <> nil) and (font.Color.Count > 0) then
+          stored := font.Color[0];
+        differs := ColorDiffers(stored, old.FontColor, aFormat.FontColor);
+      end;
+      asBold:
+        differs := old.Bold <> aFormat.Bold;
+      asItalic:
+        differs := old.Italic <> aFormat.Italic;
+      asStrikethrough:
+        differs := old.Strikethrough <> aFormat.Strikethrough;
+      asUnderline:
+        differs := old.Underline <> aFormat.Underline;
+      asFillColor:
+        differs := old.FillColor <> aFormat.FillColor;
+      asHorizontalAlignment:
+        differs := old.HorizontalAlignment <> aFormat.HorizontalAlignment;
+      asVerticalAlignment:
+        differs := old.VerticalAlignment <> aFormat.VerticalAlignment;
+    else
+      differs := old.WrapText <> aFormat.WrapText;
+    end;
+    if differs then
+      Include(Result, aspect);
+  end;
+  if aAspects * cBorderAspects = [] then
+    Exit;
+  var border: TBorderCT := StyleBorder(aStyle);
+  for var side: TCellSide in aSides do
+  begin
+    var line, color: boolean;
+    SideChanges(border, side, aAspects, old.Borders[side], aFormat.Borders[side], line, color);
+    if line or color then
+      Exit(Result + aAspects * cBorderAspects);
   end;
 end;
 
@@ -692,14 +869,41 @@ begin
     fDateStyleIds := TDictionary<UInt64, integer>.Create;
   if fDateStyleIds.TryGetValue(key, Result) then
     Exit;
-  Result := ChangedStyle(aStyle,
-    procedure(aXf: TXfCT)
-    begin
-      aXf.NumFmtId := aFormat;
-      aXf.ApplyNumberFormat := True;
-    end);
+  Result := -1;
+  if HasStyles then
+  begin
+    var wanted: TXfCT := StyleXf(aStyle).Clone<TXfCT>;
+    wanted.NumFmtId := aFormat;
+    wanted.ApplyNumberFormat := True;
+    Result := XfIndex(wanted);
+  end;
   fDateStyleIds.Add(key, Result);
 end;
+
+// aWanted (owned) found in cellXfs by content or added
+function TXlsxBook.XfIndex(aWanted: TXfCT): integer;
+begin
+  var styles: TStyleSheetE := fPackage.Part<TStyleSheetE>(fStylesPart);
+  var formats: TXfCTList := styles.CellXfs.Xf;
+  if fStyleKeys = nil then
+  begin
+    fStyleKeys := TDictionary<TXfCT, integer>.Create(TXfCT.ContentComparer<TXfCT>);
+    for var i := 0 to formats.Count - 1 do
+      fStyleKeys.TryAdd(formats[i], i);
+  end;
+  if fStyleKeys.TryGetValue(aWanted, Result) then
+  begin
+    aWanted.Free;
+    Exit;
+  end;
+  styles := fPackage.EditPart<TStyleSheetE>(fStylesPart);
+  formats.Add(aWanted);
+  Result := formats.Count - 1;
+  fStyleKeys.Add(aWanted, Result);
+  if styles.CellXfs.Present[@styles.CellXfs.Count] then
+    styles.CellXfs.Count := formats.Count;
+end;
+
 
 // the style's number format as Excel's NumberFormat names it
 function TXlsxBook.FormatCode(aStyle: cardinal): string;
@@ -758,72 +962,138 @@ begin
   Result := added.NumFmtId;
 end;
 
-// aItems[aIndex] changed by aChange, found by content or added (the keys built on the first need); the caller checks there
-// are items
-function TXlsxBook.ChangedItem<T>(aItems: TObjectList<T>; var aKeys: TDictionary<T, integer>; aIndex: cardinal;
-  const aChange: TProc<T>): integer;
+// aWanted (owned) found in aItems by content or added (the keys built on the first need)
+function TXlsxBook.ItemIndex<T>(aItems: TObjectList<T>; var aKeys: TDictionary<T, integer>; aWanted: T): integer;
 begin
-  if aIndex >= cardinal(aItems.Count) then
-    aIndex := 0; // as Excel shows such a cell
   if aKeys = nil then
   begin
     aKeys := TDictionary<T, integer>.Create(TXmlite.ContentComparer<T>);
     for var i := 0 to aItems.Count - 1 do
       aKeys.TryAdd(aItems[i], i);
   end;
-  var wanted: T := aItems[aIndex].Clone<T>;
-  try
-    aChange(wanted);
-    if aKeys.TryGetValue(wanted, Result) then
-      Exit;
-    fPackage.EditPart<TStyleSheetE>(fStylesPart);
-    aItems.Add(wanted);
-    Result := aItems.Count - 1;
-    aKeys.Add(wanted, Result);
-    wanted := nil;
-  finally
-    wanted.Free;
+  if aKeys.TryGetValue(aWanted, Result) then
+  begin
+    aWanted.Free;
+    Exit;
   end;
+  fPackage.EditPart<TStyleSheetE>(fStylesPart);
+  aItems.Add(aWanted);
+  Result := aItems.Count - 1;
+  aKeys.Add(aWanted, Result);
 end;
 
-// -1 when there are no fonts
-function TXlsxBook.ChangedFont(aFont: cardinal; const aChange: TProc<TFontCT>): integer;
+// font aFont (one beyond the fonts as the first) with aAspects of aFormat; -1 when there are no fonts
+function TXlsxBook.ChangedFont(aFont: cardinal; aAspects: TAspects; const aFormat: TCellFormat): integer;
 begin
-  if fStylesPart.IsEmpty then
-    Exit(-1);
   var styles: TStyleSheetE := fPackage.Part<TStyleSheetE>(fStylesPart);
   if not styles.IsPresent('Fonts') or (styles.Fonts.Font.Count = 0) then
     Exit(-1);
-  Result := ChangedItem<TFontCT>(styles.Fonts.Font, fFontKeys, aFont, aChange);
+  if aFont >= cardinal(styles.Fonts.Font.Count) then
+    aFont := 0;
+  var font: TFontCT := styles.Fonts.Font[aFont].Clone<TFontCT>;
+  if asFontName in aAspects then
+  begin
+    font.Name.Clear;
+    var item: TFontNameCT := TFontNameCT.Create;
+    item.Val := aFormat.FontName;
+    font.Name.Add(item);
+    // the old font's: a scheme would show the theme's font instead, as Excel drops it
+    font.Scheme.Clear;
+    font.Charset.Clear;
+    font.Family.Clear;
+  end;
+  if asFontSize in aAspects then
+  begin
+    font.Sz.Clear;
+    var item: TFontSizeCT := TFontSizeCT.Create;
+    item.Val := aFormat.FontSize;
+    font.Sz.Add(item);
+  end;
+  if asFontColor in aAspects then
+  begin
+    font.Color.Clear;
+    if aFormat.FontColor <> TColors.SysDefault then // automatic: no color, as Excel writes it
+    begin
+      var item: TColorCT := TColorCT.Create;
+      WriteColor(item, aFormat.FontColor);
+      font.Color.Add(item);
+    end;
+  end;
+  if asBold in aAspects then
+    WriteFlag(font.B, aFormat.Bold);
+  if asItalic in aAspects then
+    WriteFlag(font.I, aFormat.Italic);
+  if asStrikethrough in aAspects then
+    WriteFlag(font.Strike, aFormat.Strikethrough);
+  if asUnderline in aAspects then
+    WriteUnderline(font, aFormat.Underline);
+  Result := ItemIndex<TFontCT>(styles.Fonts.Font, fFontKeys, font);
   if styles.Fonts.Present[@styles.Fonts.Count] and (styles.Fonts.Count <> cardinal(styles.Fonts.Font.Count)) then
     styles.Fonts.Count := styles.Fonts.Font.Count;
 end;
 
-// -1 when there are no fills
-function TXlsxBook.ChangedFill(aFill: cardinal; const aChange: TProc<TFillCT>): integer;
+// a solid fill of aColor as Excel writes one, or none for clNone; -1 when there are no fills
+function TXlsxBook.ChangedFill(aFill: cardinal; aColor: TColor): integer;
 begin
-  if fStylesPart.IsEmpty then
-    Exit(-1);
   var styles: TStyleSheetE := fPackage.Part<TStyleSheetE>(fStylesPart);
   if not styles.IsPresent('Fills') or (styles.Fills.Fill.Count = 0) then
     Exit(-1);
-  Result := ChangedItem<TFillCT>(styles.Fills.Fill, fFillKeys, aFill, aChange);
+  if aFill >= cardinal(styles.Fills.Fill.Count) then
+    aFill := 0;
+  var fill: TFillCT := styles.Fills.Fill[aFill].Clone<TFillCT>;
+  fill.Clear;
+  var pattern: TPatternFillCT := fill.PatternFill;
+  if aColor = TColors.SysNone then
+  begin
+    pattern.PatternType := stptbNone;
+    pattern.SetPresent(@pattern.PatternType);
+  end
+  else
+  begin
+    pattern.PatternType := stptbSolid;
+    WriteColor(pattern.FgColor, aColor);
+    pattern.BgColor.Indexed := cAutomaticIndex;
+    pattern.BgColor.SetPresent(@pattern.BgColor.Indexed);
+  end;
+  Result := ItemIndex<TFillCT>(styles.Fills.Fill, fFillKeys, fill);
   if styles.Fills.Present[@styles.Fills.Count] and (styles.Fills.Count <> cardinal(styles.Fills.Fill.Count)) then
     styles.Fills.Count := styles.Fills.Fill.Count;
 end;
 
-// -1 when there are no borders
-function TXlsxBook.ChangedBorder(aBorder: cardinal; const aChange: TProc<TBorderCT>): integer;
+// border aBorder (one beyond the borders as the first) with aFormat's sides of aSides that changed; -1 when there are no
+// borders
+function TXlsxBook.ChangedBorder(aBorder: cardinal; aAspects: TAspects; aSides: TCellSides; const aFormat,
+  aOld: TCellFormat): integer;
 begin
-  if fStylesPart.IsEmpty then
-    Exit(-1);
   var styles: TStyleSheetE := fPackage.Part<TStyleSheetE>(fStylesPart);
   if not styles.IsPresent('Borders') or (styles.Borders.Border.Count = 0) then
     Exit(-1);
-  Result := ChangedItem<TBorderCT>(styles.Borders.Border, fBorderKeys, aBorder, aChange);
+  if aBorder >= cardinal(styles.Borders.Border.Count) then
+    aBorder := 0;
+  var old: TBorderCT := styles.Borders.Border[aBorder];
+  var border: TBorderCT := old.Clone<TBorderCT>;
+  for var side: TCellSide in aSides do
+  begin
+    var line, color: boolean;
+    SideChanges(old, side, aAspects, aOld.Borders[side], aFormat.Borders[side], line, color);
+    var written: TBorderPrCT := SideOf(border, side);
+    if line then
+      if aFormat.Borders[side].LineStyle = lsNone then
+        written.Clear
+      else
+      begin
+        written.Style := PairStyle(aFormat.Borders[side]);
+        if not written.IsPresent('Color') then
+          WriteColor(written.Color, TColors.SysDefault);
+      end;
+    if color then
+      WriteColor(written.Color, aFormat.Borders[side].Color);
+  end;
+  Result := ItemIndex<TBorderCT>(styles.Borders.Border, fBorderKeys, border);
   if styles.Borders.Present[@styles.Borders.Count] and (styles.Borders.Count <> cardinal(styles.Borders.Border.Count)) then
     styles.Borders.Count := styles.Borders.Border.Count;
 end;
+
 
 // the style's xf (a style beyond cellXfs shows the first, as in Excel); nil when there is none
 function TXlsxBook.StyleXf(aStyle: cardinal): TXfCT;

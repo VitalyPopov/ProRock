@@ -95,7 +95,7 @@ type
     fSheet: TWorksheet;
     fTop, fLeft, fBottom, fRight: integer;
 
-    procedure Change(const aChange: TProc<TFontCT>);
+    procedure Apply(const aChange: TFormatChange);
     function GetFlag(aIndex: integer): boolean;
     procedure SetFlag(aIndex: integer; aValue: boolean);
     function GetName: string;
@@ -509,7 +509,7 @@ type
     function GetRows: TRangeRows;
     procedure SetName(const aValue: string);
     function CellForStyle(aRow, aColumn: integer): TCellCT;
-    procedure Restyle(const aRange: TRange; const aChange: TProc<TXfCT>; aExisting: boolean = False);
+    procedure ApplyStyle(const aRange: TRange; const aChange: TFormatChange; aExisting: boolean = False);
     procedure SetStyles(const aRange: TRange; const aNewStyle: TFunc<cardinal, cardinal>; aExisting: boolean);
     function FindMerges: TList<TRange>;
     function MergedAt(aRow, aColumn: integer; out aArea: TRange): boolean;
@@ -522,8 +522,7 @@ type
     function SheetEntry: TSheetCT;
     function GetVisible: TSheetVisibility;
     procedure SetVisible(aValue: TSheetVisibility);
-    procedure RestyleFont(const aRange: TRange; const aChange: TProc<TFontCT>);
-    procedure RestyleBorders(const aRange: TRange; aEdges: TBorderEdges; const aChange: TProc<TBorderPrCT>);
+    procedure ApplyBorders(const aRange: TRange; aEdges: TBorderEdges; const aChange: TFormatChange);
     function BorderSide(aRow, aColumn: integer; aEdge: TCellSide): TBorderLine;
     function DefaultWidth: Double;
     function SortedColumns: TColCTList;
@@ -830,10 +829,6 @@ end;
 
 {$REGION 'xlsx storage: fonts, fills, borders, colors'}
 
-const
-  cUnderlineValues: array[TUnderline] of TUnderlineValuesST = (stuvNone, stuvSingle, stuvDouble, stuvSingleAccounting,
-    stuvDoubleAccounting);
-
 procedure CheckColor(aValue: TColor; aDefault, aNone: boolean);
 begin
   if (aValue >= 0) and (aValue <= $FFFFFF) or aDefault and (aValue = clDefault) or aNone and (aValue = clNone) then
@@ -841,80 +836,11 @@ begin
   raise EArgumentException.CreateFmt('Not a color Excel stores: $%.8X (RGB values, $000000 to $FFFFFF)', [aValue]);
 end;
 
-// clDefault: Excel's automatic
-procedure WriteColor(aColor: TColorCT; aValue: TColor);
+// a change of aAspects; their values set after
+function FormatChange(aAspects: TAspects): TFormatChange;
 begin
-  aColor.Clear;
-  if aValue = clDefault then
-  begin
-    aColor.Indexed := cAutomaticIndex;
-    aColor.SetPresent(@aColor.Indexed);
-  end
-  else
-    aColor.Rgb := Format('FF%.2X%.2X%.2X', [aValue and $FF, aValue shr 8 and $FF, aValue shr 16 and $FF]);
-end;
-
-procedure WriteFlag(aList: TBooleanPropertyCTList; aValue: boolean);
-begin
-  aList.Clear;
-  if aValue then
-  begin
-    var item: TBooleanPropertyCT := TBooleanPropertyCT.Create;
-    item.Val := True;
-    aList.Add(item);
-  end;
-end;
-
-// TRangeFont's flags by index: Bold, Italic, Strikethrough
-function FontFlag(aFont: TFontCT; aIndex: integer): TBooleanPropertyCTList;
-begin
-  case aIndex of
-    0: Result := aFont.B;
-    1: Result := aFont.I;
-  else
-    Result := aFont.Strike;
-  end;
-end;
-
-procedure WriteUnderline(aFont: TFontCT; aValue: TUnderline);
-begin
-  aFont.U.Clear;
-  if aValue = ulNone then
-    Exit;
-  var item: TUnderlinePropertyCT := TUnderlinePropertyCT.Create;
-  item.Val := cUnderlineValues[aValue]; // single, the default, is written as <u/>
-  aFont.U.Add(item);
-end;
-
-// the stored style for an Excel pair; False when Excel has none
-function PairStyle(aLine: TLineStyle; aWeight: TBorderWeight; out aStyle: TBorderStyleST): boolean;
-begin
-  for var style := Succ(stbsNone) to High(TBorderStyleST) do
-    if (cBorderLines[style] = aLine) and (cBorderWeights[style] = aWeight) then
-    begin
-      aStyle := style;
-      Exit(True);
-    end;
-  Result := False;
-end;
-
-// a line as Excel draws it: a style without the weight takes its own (thin, double thick, slant medium); the color kept,
-// automatic when there is none; lsNone removes the line
-procedure WriteSide(aSide: TBorderPrCT; aLine: TLineStyle; aWeight: TBorderWeight);
-const
-  cOwnWeights: array[TLineStyle] of TBorderWeight = (bwThin, bwThin, bwThin, bwThin, bwThin, bwThin, bwThick, bwMedium);
-begin
-  if aLine = lsNone then
-  begin
-    aSide.Clear;
-    Exit;
-  end;
-  var style: TBorderStyleST;
-  if not PairStyle(aLine, aWeight, style) then
-    PairStyle(aLine, cOwnWeights[aLine], style);
-  aSide.Style := style;
-  if not aSide.IsPresent('Color') then
-    WriteColor(aSide.Color, clDefault);
+  Result := Default(TFormatChange);
+  Result.Aspects := aAspects;
 end;
 
 // the side Excel reads for a range's edge: the first cell's, the last column's right, the last row's bottom, the inside
@@ -943,14 +869,6 @@ begin
   else
     Result := aSheet.BorderSide(aTop, aLeft, edge);
   end;
-end;
-
-// an alignment left with Excel's defaults is not written, as Excel writes none
-procedure AlignmentChanged(aXf: TXfCT);
-begin
-  if not aXf.Alignment.HasContent then
-    aXf.Clear('Alignment');
-  aXf.ApplyAlignment := True;
 end;
 
 // A1:C10 for any range, whole columns too: what the file's dimension and refs hold
@@ -1362,22 +1280,19 @@ begin
 end;
 
 procedure TRange.SetNumberFormat(const aValue: string);
+var
+  change: TFormatChange;
 begin
   var why: string := NumberFormatError(aValue);
   var local: string := LocalNotation(aValue);
-  var id: integer := -1;
   if why <> '' then
   begin
     why := 'a number format Excel would not open (' + why + ')';
     if local <> '' then
       why := why + '; ' + local;
   end
-  else
-  begin
-    id := fSheet.fWorkbook.fBook.FormatId(aValue);
-    if id < 0 then
-      why := 'the workbook has no styles to add a number format to';
-  end;
+  else if fSheet.fWorkbook.fBook.FormatId(aValue) < 0 then // cached: the style's write finds it there
+    why := 'the workbook has no styles to add a number format to';
   if why <> '' then
   begin
     fSheet.fWorkbook.fIssues.Add(TIssueSeverity.isError, 'NumberFormat', fSheet.fName + '!' + Address, why + ' - not written');
@@ -1386,12 +1301,9 @@ begin
   if local <> '' then
     fSheet.fWorkbook.fIssues.Add(TIssueSeverity.isWarning, 'NumberFormat', fSheet.fName + '!' + Address, '"' + aValue + '": ' + local
       + ' - written as it is');
-  fSheet.Restyle(Self,
-    procedure(aXf: TXfCT)
-    begin
-      aXf.NumFmtId := id;
-      aXf.ApplyNumberFormat := True;
-    end);
+  change := FormatChange([asNumberFormat]);
+  change.Value.NumberFormat := aValue;
+  fSheet.ApplyStyle(Self, change);
 end;
 
 function TRange.GetFont: TRangeFont;
@@ -1422,15 +1334,15 @@ begin
 end;
 
 procedure TRange.BorderAround(aLineStyle: TLineStyle; aWeight: TBorderWeight; aColor: TColor);
+var
+  change: TFormatChange;
 begin
   CheckColor(aColor, True, False);
-  fSheet.RestyleBorders(Self, [beLeft, beTop, beBottom, beRight],
-    procedure(aSide: TBorderPrCT)
-    begin
-      WriteSide(aSide, aLineStyle, aWeight);
-      if aLineStyle <> lsNone then
-        WriteColor(aSide.Color, aColor);
-    end);
+  change := FormatChange(cBorderAspects);
+  change.Line.LineStyle := aLineStyle;
+  change.Line.Weight := aWeight;
+  change.Line.Color := aColor;
+  fSheet.ApplyBorders(Self, [beLeft, beTop, beBottom, beRight], change);
 end;
 
 function TRange.GetHorizontalAlignment: THAlign;
@@ -1439,17 +1351,12 @@ begin
 end;
 
 procedure TRange.SetHorizontalAlignment(aValue: THAlign);
+var
+  change: TFormatChange;
 begin
-  fSheet.Restyle(Self,
-    procedure(aXf: TXfCT)
-    begin
-      var alignment: TCellAlignmentCT := aXf.Alignment;
-      if aValue = haGeneral then
-        alignment.Clear(@alignment.Horizontal)
-      else
-        alignment.Horizontal := THorizontalAlignmentST(Ord(aValue));
-      AlignmentChanged(aXf);
-    end);
+  change := FormatChange([asHorizontalAlignment]);
+  change.Value.HorizontalAlignment := aValue;
+  fSheet.ApplyStyle(Self, change);
 end;
 
 function TRange.GetVerticalAlignment: TVAlign;
@@ -1458,17 +1365,12 @@ begin
 end;
 
 procedure TRange.SetVerticalAlignment(aValue: TVAlign);
+var
+  change: TFormatChange;
 begin
-  fSheet.Restyle(Self,
-    procedure(aXf: TXfCT)
-    begin
-      var alignment: TCellAlignmentCT := aXf.Alignment;
-      if aValue = vaBottom then
-        alignment.Clear(@alignment.Vertical)
-      else
-        alignment.Vertical := TVerticalAlignmentST(Ord(aValue));
-      AlignmentChanged(aXf);
-    end);
+  change := FormatChange([asVerticalAlignment]);
+  change.Value.VerticalAlignment := aValue;
+  fSheet.ApplyStyle(Self, change);
 end;
 
 function TRange.GetWrapText: boolean;
@@ -1477,17 +1379,12 @@ begin
 end;
 
 procedure TRange.SetWrapText(aValue: boolean);
+var
+  change: TFormatChange;
 begin
-  fSheet.Restyle(Self,
-    procedure(aXf: TXfCT)
-    begin
-      var alignment: TCellAlignmentCT := aXf.Alignment;
-      if aValue then
-        alignment.WrapText := True
-      else
-        alignment.Clear(@alignment.WrapText);
-      AlignmentChanged(aXf);
-    end);
+  change := FormatChange([asWrapText]);
+  change.Value.WrapText := aValue;
+  fSheet.ApplyStyle(Self, change);
 end;
 
 function TRange.GetColumns: TColumns;
@@ -1701,9 +1598,9 @@ end;
 
 { TRangeFont }
 
-procedure TRangeFont.Change(const aChange: TProc<TFontCT>);
+procedure TRangeFont.Apply(const aChange: TFormatChange);
 begin
-  fSheet.RestyleFont(fSheet.MakeRange(fTop, fLeft, fBottom, fRight), aChange);
+  fSheet.ApplyStyle(fSheet.MakeRange(fTop, fLeft, fBottom, fRight), aChange);
 end;
 
 function TRangeFont.GetFlag(aIndex: integer): boolean;
@@ -1718,12 +1615,16 @@ begin
 end;
 
 procedure TRangeFont.SetFlag(aIndex: integer; aValue: boolean);
+const
+  cFlags: array[0 .. 2] of TAspect = (asBold, asItalic, asStrikethrough);
+var
+  change: TFormatChange;
 begin
-  Change(
-    procedure(aFont: TFontCT)
-    begin
-      WriteFlag(FontFlag(aFont, aIndex), aValue);
-    end);
+  change := FormatChange([cFlags[aIndex]]);
+  change.Value.Bold := aValue;
+  change.Value.Italic := aValue;
+  change.Value.Strikethrough := aValue;
+  Apply(change);
 end;
 
 function TRangeFont.GetName: string;
@@ -1732,24 +1633,14 @@ begin
 end;
 
 procedure TRangeFont.SetName(const aValue: string);
+var
+  change: TFormatChange;
 begin
-  var name: string := aValue.Trim;
-  if name = '' then
+  change := FormatChange([asFontName]);
+  change.Value.FontName := aValue.Trim;
+  if change.Value.FontName = '' then
     raise EArgumentException.Create('A font needs a name');
-  Change(
-    procedure(aFont: TFontCT)
-    begin
-      if (aFont.Name.Count > 0) and SameText(aFont.Name[0].Val, name) then
-        Exit;
-      aFont.Name.Clear;
-      var item: TFontNameCT := TFontNameCT.Create;
-      item.Val := name;
-      aFont.Name.Add(item);
-      // the old font's: a scheme would show the theme's font instead, as Excel drops it
-      aFont.Scheme.Clear;
-      aFont.Charset.Clear;
-      aFont.Family.Clear;
-    end);
+  Apply(change);
 end;
 
 function TRangeFont.GetSize: Double;
@@ -1758,18 +1649,15 @@ begin
 end;
 
 procedure TRangeFont.SetSize(aValue: Double);
+var
+  change: TFormatChange;
 begin
   if IsNan(aValue) or (aValue < 1) or (aValue > 409) then
     raise EArgumentOutOfRangeException.CreateFmt('A font size of %s: Excel''s are 1 to 409 points',
       [TUtility.FloatText(aValue, ftDouble)]);
-  Change(
-    procedure(aFont: TFontCT)
-    begin
-      aFont.Sz.Clear;
-      var item: TFontSizeCT := TFontSizeCT.Create;
-      item.Val := aValue;
-      aFont.Sz.Add(item);
-    end);
+  change := FormatChange([asFontSize]);
+  change.Value.FontSize := aValue;
+  Apply(change);
 end;
 
 function TRangeFont.GetColor: TColor;
@@ -1778,19 +1666,13 @@ begin
 end;
 
 procedure TRangeFont.SetColor(aValue: TColor);
+var
+  change: TFormatChange;
 begin
   CheckColor(aValue, True, False);
-  Change(
-    procedure(aFont: TFontCT)
-    begin
-      aFont.Color.Clear;
-      if aValue <> clDefault then // automatic: no color, as Excel writes it
-      begin
-        var item: TColorCT := TColorCT.Create;
-        WriteColor(item, aValue);
-        aFont.Color.Add(item);
-      end;
-    end);
+  change := FormatChange([asFontColor]);
+  change.Value.FontColor := aValue;
+  Apply(change);
 end;
 
 function TRangeFont.GetUnderline: TUnderline;
@@ -1799,12 +1681,12 @@ begin
 end;
 
 procedure TRangeFont.SetUnderline(aValue: TUnderline);
+var
+  change: TFormatChange;
 begin
-  Change(
-    procedure(aFont: TFontCT)
-    begin
-      WriteUnderline(aFont, aValue);
-    end);
+  change := FormatChange([asUnderline]);
+  change.Value.Underline := aValue;
+  Apply(change);
 end;
 
 function TRangeFont.GetStyle: TFontStyles;
@@ -1822,18 +1704,16 @@ begin
 end;
 
 procedure TRangeFont.SetStyle(aValue: TFontStyles);
+var
+  change: TFormatChange;
 begin
-  Change(
-    procedure(aFont: TFontCT)
-    begin
-      WriteFlag(aFont.B, fsBold in aValue);
-      WriteFlag(aFont.I, fsItalic in aValue);
-      WriteFlag(aFont.Strike, fsStrikeOut in aValue);
-      if fsUnderline in aValue then
-        WriteUnderline(aFont, ulSingle)
-      else
-        WriteUnderline(aFont, ulNone);
-    end);
+  change := FormatChange([asBold, asItalic, asStrikethrough, asUnderline]);
+  change.Value.Bold := fsBold in aValue;
+  change.Value.Italic := fsItalic in aValue;
+  change.Value.Strikethrough := fsStrikeOut in aValue;
+  if fsUnderline in aValue then
+    change.Value.Underline := ulSingle;
+  Apply(change);
 end;
 
 { TRangeInterior }
@@ -1844,36 +1724,13 @@ begin
 end;
 
 procedure TRangeInterior.SetColor(aValue: TColor);
+var
+  change: TFormatChange;
 begin
   CheckColor(aValue, False, True);
-  var workbook: TWorkbook := fSheet.fWorkbook;
-  fSheet.Restyle(fSheet.MakeRange(fTop, fLeft, fBottom, fRight),
-    procedure(aXf: TXfCT)
-    begin
-      var fill: integer := workbook.fBook.ChangedFill(aXf.FillId,
-        procedure(aFill: TFillCT)
-        begin
-          aFill.Clear;
-          var pattern: TPatternFillCT := aFill.PatternFill;
-          if aValue = clNone then
-          begin
-            pattern.PatternType := stptbNone;
-            pattern.SetPresent(@pattern.PatternType);
-          end
-          else
-          begin // as Excel writes a solid fill
-            pattern.PatternType := stptbSolid;
-            WriteColor(pattern.FgColor, aValue);
-            pattern.BgColor.Indexed := cAutomaticIndex;
-            pattern.BgColor.SetPresent(@pattern.BgColor.Indexed);
-          end;
-        end);
-      if fill >= 0 then
-      begin
-        aXf.FillId := fill;
-        aXf.ApplyFill := True;
-      end;
-    end);
+  change := FormatChange([asFillColor]);
+  change.Value.FillColor := aValue;
+  fSheet.ApplyStyle(fSheet.MakeRange(fTop, fLeft, fBottom, fRight), change);
 end;
 
 { TRangeBorder }
@@ -1884,12 +1741,12 @@ begin
 end;
 
 procedure TRangeBorder.SetLineStyle(aValue: TLineStyle);
+var
+  change: TFormatChange;
 begin
-  fSheet.RestyleBorders(fSheet.MakeRange(fTop, fLeft, fBottom, fRight), fEdges,
-    procedure(aSide: TBorderPrCT)
-    begin
-      WriteSide(aSide, aValue, cBorderWeights[aSide.Style]);
-    end);
+  change := FormatChange([asLineStyle]);
+  change.Line.LineStyle := aValue;
+  fSheet.ApplyBorders(fSheet.MakeRange(fTop, fLeft, fBottom, fRight), fEdges, change);
 end;
 
 function TRangeBorder.GetWeight: TBorderWeight;
@@ -1898,18 +1755,12 @@ begin
 end;
 
 procedure TRangeBorder.SetWeight(aValue: TBorderWeight);
+var
+  change: TFormatChange;
 begin
-  fSheet.RestyleBorders(fSheet.MakeRange(fTop, fLeft, fBottom, fRight), fEdges,
-    procedure(aSide: TBorderPrCT)
-    begin
-      var line: TLineStyle := cBorderLines[aSide.Style];
-      if line = lsNone then
-        line := lsContinuous;
-      var style: TBorderStyleST;
-      if not PairStyle(line, aValue, style) then
-        line := lsContinuous;
-      WriteSide(aSide, line, aValue);
-    end);
+  change := FormatChange([asWeight]);
+  change.Line.Weight := aValue;
+  fSheet.ApplyBorders(fSheet.MakeRange(fTop, fLeft, fBottom, fRight), fEdges, change);
 end;
 
 function TRangeBorder.GetColor: TColor;
@@ -1918,15 +1769,13 @@ begin
 end;
 
 procedure TRangeBorder.SetColor(aValue: TColor);
+var
+  change: TFormatChange;
 begin
   CheckColor(aValue, True, False);
-  fSheet.RestyleBorders(fSheet.MakeRange(fTop, fLeft, fBottom, fRight), fEdges,
-    procedure(aSide: TBorderPrCT)
-    begin
-      if aSide.Style = stbsNone then
-        WriteSide(aSide, lsContinuous, bwThin);
-      WriteColor(aSide.Color, aValue);
-    end);
+  change := FormatChange([asBorderColor]);
+  change.Line.Color := aValue;
+  fSheet.ApplyBorders(fSheet.MakeRange(fTop, fLeft, fBottom, fRight), fEdges, change);
 end;
 
 { TRangeBorders }
@@ -2552,13 +2401,14 @@ begin
   end;
 end;
 
-// each cell of the range given its style changed (one new style for each old one); a whole column's or row's own style
-// too, as Excel formats them: the cells it will have take it. aExisting: only the cells there already
-procedure TWorksheet.Restyle(const aRange: TRange; const aChange: TProc<TXfCT>; aExisting: boolean);
+// aChange written to each cell of the range (one new style for each old one); a whole column's or row's own style too, as
+// Excel formats them: the cells it will have take it. aExisting: only the cells there already
+procedure TWorksheet.ApplyStyle(const aRange: TRange; const aChange: TFormatChange; aExisting: boolean);
 begin
   var changed: TDictionary<cardinal, integer> := TDictionary<cardinal, integer>.Create;
   try
     var failed: boolean := False;
+    var book: TXlsxBook := fWorkbook.fBook;
     var newStyle: TFunc<cardinal, cardinal> :=
       function(aStyle: cardinal): cardinal
       var
@@ -2566,7 +2416,7 @@ begin
       begin
         if not changed.TryGetValue(aStyle, style) then
         begin
-          style := fWorkbook.fBook.ChangedStyle(aStyle, aChange);
+          style := book.ChangedStyle(aStyle, aChange.Aspects, aChange.Sides, Applied(book.FormatOf(aStyle), aChange));
           changed.Add(aStyle, style);
         end;
         failed := failed or (style < 0);
@@ -2584,7 +2434,7 @@ begin
   end;
 end;
 
-// each cell of the range given aNewStyle of its style; whole columns and rows as Restyle says
+// each cell of the range given aNewStyle of its style; whole columns and rows as ApplyStyle says
 procedure TWorksheet.SetStyles(const aRange: TRange; const aNewStyle: TFunc<cardinal, cardinal>; aExisting: boolean);
 begin
   var sheet: TWorksheetE := Objects(True);
@@ -2645,24 +2495,9 @@ begin
       end;
 end;
 
-procedure TWorksheet.RestyleFont(const aRange: TRange; const aChange: TProc<TFontCT>);
-begin
-  var workbook: TWorkbook := fWorkbook;
-  Restyle(aRange,
-    procedure(aXf: TXfCT)
-    begin
-      var font: integer := workbook.fBook.ChangedFont(aXf.FontId, aChange);
-      if font >= 0 then
-      begin
-        aXf.FontId := font;
-        aXf.ApplyFont := True;
-      end;
-    end);
-end;
-
 // aChange for each side the edges give each cell (the inside ones both cells' sides, as Excel writes them), in at most
 // nine areas; the neighbours' sides on the outer edges cleared, as Excel keeps an edge on one cell
-procedure TWorksheet.RestyleBorders(const aRange: TRange; aEdges: TBorderEdges; const aChange: TProc<TBorderPrCT>);
+procedure TWorksheet.ApplyBorders(const aRange: TRange; aEdges: TBorderEdges; const aChange: TFormatChange);
 type
   TBand = record
     First, Last: integer;
@@ -2690,69 +2525,50 @@ type
       end;
   end;
 
-  function Change(aSides: TBorderEdges; const aSide: TProc<TBorderPrCT>; aDrawnOnly: boolean): TProc<TXfCT>;
-  begin
-    var workbook: TWorkbook := fWorkbook;
-    Result :=
-      procedure(aXf: TXfCT)
-      begin
-        if aDrawnOnly then
-        begin
-          var drawn: boolean := False;
-          for var edge: TBorderEdge in aSides do
-            drawn := drawn or (DrawnSide(workbook.fBook.BorderAt(aXf.BorderId), edge) <> nil);
-          if not drawn then
-            Exit;
-        end;
-        var border: integer := workbook.fBook.ChangedBorder(aXf.BorderId,
-          procedure(aBorder: TBorderCT)
-          begin
-            for var edge: TBorderEdge in aSides do
-              aSide(SideOf(aBorder, edge));
-          end);
-        if border >= 0 then
-        begin
-          aXf.BorderId := border;
-          aXf.ApplyBorder := True;
-        end;
-      end;
-  end;
-
+var
+  change, clear: TFormatChange;
 begin
   var rows: TArray<TBand> := Bands(aRange.fTop, aRange.fBottom, beTop in aEdges, beBottom in aEdges,
     beInsideHorizontal in aEdges);
   var columns: TArray<TBand> := Bands(aRange.fLeft, aRange.fRight, beLeft in aEdges, beRight in aEdges,
     beInsideVertical in aEdges);
+  change := aChange;
   for var rowBand: TBand in rows do
     for var columnBand: TBand in columns do
     begin
-      var sides: TBorderEdges := [];
+      change.Sides := [];
       if rowBand.Low then
-        Include(sides, beTop);
+        Include(change.Sides, beTop);
       if rowBand.High then
-        Include(sides, beBottom);
+        Include(change.Sides, beBottom);
       if columnBand.Low then
-        Include(sides, beLeft);
+        Include(change.Sides, beLeft);
       if columnBand.High then
-        Include(sides, beRight);
-      if sides <> [] then
-        Restyle(MakeRange(rowBand.First, columnBand.First, rowBand.Last, columnBand.Last), Change(sides, aChange, False));
+        Include(change.Sides, beRight);
+      if change.Sides <> [] then
+        ApplyStyle(MakeRange(rowBand.First, columnBand.First, rowBand.Last, columnBand.Last), change);
     end;
-  var clear: TProc<TBorderPrCT> :=
-    procedure(aSide: TBorderPrCT)
-    begin
-      aSide.Clear;
-    end;
+  clear := FormatChange([asLineStyle]); // lsNone
   if (beLeft in aEdges) and (aRange.fLeft > 1) then
-    Restyle(MakeRange(aRange.fTop, aRange.fLeft - 1, aRange.fBottom, aRange.fLeft - 1), Change([beRight], clear, True), True);
+  begin
+    clear.Sides := [beRight];
+    ApplyStyle(MakeRange(aRange.fTop, aRange.fLeft - 1, aRange.fBottom, aRange.fLeft - 1), clear, True);
+  end;
   if (beRight in aEdges) and (aRange.fRight < TUtility.cMaxColumn) then
-    Restyle(MakeRange(aRange.fTop, aRange.fRight + 1, aRange.fBottom, aRange.fRight + 1), Change([beLeft], clear, True),
-      True);
+  begin
+    clear.Sides := [beLeft];
+    ApplyStyle(MakeRange(aRange.fTop, aRange.fRight + 1, aRange.fBottom, aRange.fRight + 1), clear, True);
+  end;
   if (beTop in aEdges) and (aRange.fTop > 1) then
-    Restyle(MakeRange(aRange.fTop - 1, aRange.fLeft, aRange.fTop - 1, aRange.fRight), Change([beBottom], clear, True), True);
+  begin
+    clear.Sides := [beBottom];
+    ApplyStyle(MakeRange(aRange.fTop - 1, aRange.fLeft, aRange.fTop - 1, aRange.fRight), clear, True);
+  end;
   if (beBottom in aEdges) and (aRange.fBottom < TUtility.cMaxRow) then
-    Restyle(MakeRange(aRange.fBottom + 1, aRange.fLeft, aRange.fBottom + 1, aRange.fRight), Change([beTop], clear, True),
-      True);
+  begin
+    clear.Sides := [beTop];
+    ApplyStyle(MakeRange(aRange.fBottom + 1, aRange.fLeft, aRange.fBottom + 1, aRange.fRight), clear, True);
+  end;
 end;
 
 // a cell's side with a line, as Excel reads it: its own, else the neighbour's facing one; nil when neither has one
