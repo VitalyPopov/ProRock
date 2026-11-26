@@ -111,7 +111,8 @@ type
     // [Content_Types].xml's for a part: its Override, else the Default of its extension; '' - none
     function ContentType(const aName: string): string;
     // a new part, related from aFrom ('' - the package) with aType (a full URI, or an ending the main part's prefix goes
-    // before) and its content type; its name, aId - the relationship's. '' (aXml freed): no content types, or the name is taken
+    // before) and its content type; its name, aId - the relationship's. '' (aXml freed): no content types, or the name is taken.
+    // A name removed before may be added again
     function AddPart(const aFrom, aType, aTarget, aContentType: string; aXml: TXmlite; out aId: string): string;
     // a part left out on save, with aFrom's relationships to it and its content type
     procedure RemovePart(const aFrom, aName: string);
@@ -596,12 +597,20 @@ begin
     aXml.Free;
     Exit('');
   end;
+  // a name removed before: the new part takes its place, written in the old one's slot when the file has it
+  for var i := fRemoved.Count - 1 downto 0 do
+    if SameText(fRemoved[i], Result) then
+    begin
+      Result := fRemoved[i];
+      fRemoved.Delete(i);
+      fParts.Remove(Result);
+    end;
   var part: TPart := TPart.Create;
   part.fClass := TXmliteClass(aXml.ClassType);
   part.fXml := aXml;
   part.fExact := True;
   part.fChanged := True;
-  part.fNew := True;
+  part.fNew := PartIndex(Result) < 0;
   fParts.Add(Result, part);
 
   var relationshipsName: string := RelationshipsPart(aFrom);
