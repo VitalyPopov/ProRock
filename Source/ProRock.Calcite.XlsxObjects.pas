@@ -7,15 +7,29 @@ interface
 uses ProRock.Calcite.Utility, ProRock.Calcite.XlsxWalk;
 
 type
+  // a worksheet's element (its property's name) or a relationship's type (its last segment) as the walk knows it: Handler
+  // moves the references in it through an insert or delete; nil - none there, or refused with Why
+  TKnownKind = record
+    Name: string;
+    Handler: TXlsxHandlerClass;
+    Why: string;
+  end;
+
   // the walk with its handlers: the orders they plan and apply in
   TXlsxRun = class(TXlsxWalk)
   private
+    function Handler<T: TXlsxHandler>: T;
     function Shift: string;
     function DeleteSheet: string;
   public
     // Excel's Insert and Delete of aMap's rows or columns on aSheet, or its Delete of aSheet (TReferenceMap.SheetDeleted;
     // a very hidden or the last visible sheet is the caller's to refuse): why when refused, nothing changed then
     function Run(aSheet: TXlsxWalkSheet; const aMap: TReferenceMap): string;
+    // what the walk knows, for the coverage test: an insert's or delete's handlers in plan order, every element of
+    // CT_Worksheet, the relationship types
+    class function ShiftOrder: TArray<TXlsxHandlerClass>;
+    class function Elements: TArray<TKnownKind>;
+    class function Parts: TArray<TKnownKind>;
   end;
 
 implementation
@@ -32,8 +46,6 @@ type
   TMarkerCT = ProRock.Xmlite.Schema.Ooxml.DmlSheet.TMarkerCT;
   TExtensionCT = ProRock.Xmlite.Schema.Ooxml.DmlChart.TExtensionCT;
   {$ENDREGION}
-
-  TXlsxHandlerClass = class of TXlsxHandler;
 
   // the sheet's rows or columns as drawings place objects on them, in EMUs (12700 a point, 9525 a pixel): where one
   // starts (from 0, as markers count), which one a distance falls in
@@ -133,6 +145,145 @@ type
     procedure Apply; override;
     procedure Written(aTo: TStringBuilder); override;
   end;
+
+  // the sheet's elements the walk refuses (cElements): a sheet with one is refused whole
+  TRefusedElementsHandler = class(TXlsxHandler)
+  public
+    function Plan: string; override;
+  end;
+
+  // the parts the workbook reaches, by their relationships' types (cParts): one the walk does not know or refuses
+  // refuses the run - an unknown part may name the cells that move
+  TPartsHandler = class(TXlsxHandler)
+  public
+    function Plan: string; override;
+  end;
+
+const
+  cNotYet = ', which Calcite does not move yet';
+
+  {$REGION 'what the walk knows: the elements, the relationship types'}
+  // CT_Worksheet's elements in the schema's order; the coverage test holds the list to the schema
+  cElements: array[0 .. 38] of TKnownKind = (
+    (Name: 'SheetPr'; Handler: nil; Why: ''),
+    (Name: 'Dimension'; Handler: TDimensionHandler; Why: ''),
+    (Name: 'SheetViews'; Handler: TPanesHandler; Why: ''),
+    (Name: 'SheetFormatPr'; Handler: nil; Why: ''),
+    (Name: 'Cols'; Handler: TCellsHandler; Why: ''),
+    (Name: 'SheetData'; Handler: TCellsHandler; Why: ''),
+    (Name: 'SheetCalcPr'; Handler: nil; Why: ''),
+    (Name: 'SheetProtection'; Handler: nil; Why: ''),
+    (Name: 'ProtectedRanges'; Handler: TProtectedRangesHandler; Why: ''),
+    (Name: 'Scenarios'; Handler: nil; Why: 'scenarios'),
+    (Name: 'AutoFilter'; Handler: TAutoFilterHandler; Why: ''),
+    (Name: 'SortState'; Handler: TSortHandler; Why: ''),
+    (Name: 'DataConsolidate'; Handler: nil; Why: 'a data consolidation'),
+    (Name: 'CustomSheetViews'; Handler: nil; Why: 'custom views'),
+    (Name: 'MergeCells'; Handler: TMergesHandler; Why: ''),
+    (Name: 'PhoneticPr'; Handler: nil; Why: ''),
+    (Name: 'ConditionalFormatting'; Handler: TConditionalAreasHandler; Why: ''),
+    (Name: 'DataValidations'; Handler: TValidationAreasHandler; Why: ''),
+    (Name: 'Hyperlinks'; Handler: THyperlinksHandler; Why: ''),
+    (Name: 'PrintOptions'; Handler: nil; Why: ''),
+    (Name: 'PageMargins'; Handler: nil; Why: ''),
+    (Name: 'PageSetup'; Handler: nil; Why: ''),
+    (Name: 'HeaderFooter'; Handler: nil; Why: ''),
+    (Name: 'RowBreaks'; Handler: TPageBreaksHandler; Why: ''),
+    (Name: 'ColBreaks'; Handler: TPageBreaksHandler; Why: ''),
+    (Name: 'CustomProperties'; Handler: nil; Why: ''),
+    (Name: 'CellWatches'; Handler: nil; Why: 'watched cells'),
+    (Name: 'IgnoredErrors'; Handler: TIgnoredErrorsHandler; Why: ''),
+    (Name: 'SmartTags'; Handler: nil; Why: 'smart tags'),
+    (Name: 'Drawing'; Handler: TDrawingsHandler; Why: ''),
+    (Name: 'LegacyDrawing'; Handler: TNotesHandler; Why: ''),
+    (Name: 'LegacyDrawingHF'; Handler: nil; Why: ''),
+    (Name: 'DrawingHF'; Handler: nil; Why: ''),
+    (Name: 'Picture'; Handler: nil; Why: ''),
+    (Name: 'OleObjects'; Handler: nil; Why: 'embedded objects'),
+    (Name: 'Controls'; Handler: nil; Why: 'controls'),
+    (Name: 'WebPublishItems'; Handler: nil; Why: 'items published to the web'),
+    (Name: 'TableParts'; Handler: TTablesHandler; Why: ''),
+    (Name: 'ExtLst'; Handler: nil; Why: 'Excel 2010''s extensions (conditional formats, validation, sparklines)'));
+
+  // the relationship types from the workbook down; a type not here refuses. A handler refuses what it cannot move yet
+  // (threaded comments, chartEx); the elements refuse embedded objects and controls before their parts matter
+  cParts: array[0 .. 63] of TKnownKind = (
+    (Name: 'worksheet'; Handler: TCellsHandler; Why: ''),
+    (Name: 'chartsheet'; Handler: TChartsHandler; Why: ''),
+    (Name: 'sharedStrings'; Handler: nil; Why: ''),
+    (Name: 'styles'; Handler: nil; Why: ''),
+    (Name: 'theme'; Handler: nil; Why: ''),
+    (Name: 'themeOverride'; Handler: nil; Why: ''),
+    (Name: 'calcChain'; Handler: nil; Why: ''), // the book drops it with any formula changed
+    (Name: 'sheetMetadata'; Handler: nil; Why: ''),
+    (Name: 'connections'; Handler: nil; Why: ''),
+    (Name: 'queryTable'; Handler: TTablesHandler; Why: ''),
+    (Name: 'customXml'; Handler: nil; Why: ''),
+    (Name: 'customXmlProps'; Handler: nil; Why: ''),
+    (Name: 'xmlMaps'; Handler: nil; Why: ''),
+    (Name: 'tableSingleCells'; Handler: nil; Why: 'cells mapped to XML'),
+    (Name: 'externalLink'; Handler: nil; Why: ''),
+    (Name: 'externalLinkPath'; Handler: nil; Why: ''),
+    (Name: 'xlPathMissing'; Handler: nil; Why: ''),
+    (Name: 'volatileDependencies'; Handler: nil; Why: 'real-time data (volatile dependencies)'),
+    (Name: 'revisionHeaders'; Handler: nil; Why: 'a shared workbook''s revisions'),
+    (Name: 'usernames'; Handler: nil; Why: ''),
+    (Name: 'person'; Handler: nil; Why: ''),
+    (Name: 'vbaProject'; Handler: nil; Why: ''),
+    (Name: 'attachedToolbars'; Handler: nil; Why: ''),
+    (Name: 'customProperty'; Handler: nil; Why: ''),
+    (Name: 'printerSettings'; Handler: nil; Why: ''),
+    (Name: 'hyperlink'; Handler: nil; Why: ''),
+    (Name: 'image'; Handler: nil; Why: ''),
+    (Name: 'media'; Handler: nil; Why: ''),
+    (Name: 'audio'; Handler: nil; Why: ''),
+    (Name: 'video'; Handler: nil; Why: ''),
+    (Name: 'oleObject'; Handler: nil; Why: ''),
+    (Name: 'package'; Handler: nil; Why: ''),
+    (Name: 'control'; Handler: nil; Why: ''),
+    (Name: 'ctrlProp'; Handler: nil; Why: ''),
+    (Name: 'activeXControlBinary'; Handler: nil; Why: ''),
+    (Name: 'table'; Handler: TTablesHandler; Why: ''),
+    (Name: 'pivotTable'; Handler: TPivotsHandler; Why: ''),
+    (Name: 'pivotCacheDefinition'; Handler: TPivotsHandler; Why: ''),
+    (Name: 'pivotCacheRecords'; Handler: nil; Why: ''),
+    (Name: 'slicer'; Handler: nil; Why: ''),
+    (Name: 'slicerCache'; Handler: nil; Why: ''),
+    (Name: 'timeline'; Handler: nil; Why: ''),
+    (Name: 'timelineCache'; Handler: nil; Why: ''),
+    (Name: 'comments'; Handler: TNotesHandler; Why: ''),
+    (Name: 'vmlDrawing'; Handler: TNotesHandler; Why: ''),
+    (Name: 'threadedComment'; Handler: TNotesHandler; Why: ''),
+    (Name: 'namedSheetView'; Handler: nil; Why: 'named sheet views'),
+    (Name: 'drawing'; Handler: TDrawingsHandler; Why: ''),
+    (Name: 'chart'; Handler: TChartsHandler; Why: ''),
+    (Name: 'chartEx'; Handler: TChartsHandler; Why: ''),
+    (Name: 'chartUserShapes'; Handler: nil; Why: ''),
+    (Name: 'chartStyle'; Handler: nil; Why: ''),
+    (Name: 'chartColorStyle'; Handler: nil; Why: ''),
+    (Name: 'diagramData'; Handler: nil; Why: ''),
+    (Name: 'diagramLayout'; Handler: nil; Why: ''),
+    (Name: 'diagramQuickStyle'; Handler: nil; Why: ''),
+    (Name: 'diagramColors'; Handler: nil; Why: ''),
+    (Name: 'diagramDrawing'; Handler: nil; Why: ''),
+    (Name: 'webextension'; Handler: nil; Why: ''),
+    (Name: 'rdRichValue'; Handler: nil; Why: ''),
+    (Name: 'rdRichValueStructure'; Handler: nil; Why: ''),
+    (Name: 'rdRichValueTypes'; Handler: nil; Why: ''),
+    (Name: 'richStyles'; Handler: nil; Why: ''),
+    (Name: 'rdRichValueWebImage'; Handler: nil; Why: ''));
+
+  {$ENDREGION}
+
+  // the plan orders: the first why is the refusal; an insert's or delete's lists by address last, they apply in this order
+  cShift: array[0 .. 9] of TXlsxHandlerClass = (TCellsHandler, TPivotsHandler, TTablesHandler, TRefusedElementsHandler,
+    TPartsHandler, TNotesHandler, TDrawingsHandler, TChartsHandler, TFormulasHandler, TNamesHandler);
+  cLists: array[0 .. 10] of TXlsxHandlerClass = (TMergesHandler, TConditionalAreasHandler, TValidationAreasHandler,
+    THyperlinksHandler, TAutoFilterHandler, TSortHandler, TIgnoredErrorsHandler, TProtectedRangesHandler,
+    TPageBreaksHandler, TPanesHandler, TDimensionHandler);
+  // the local names last: they read what the others write
+  cDeleteSheet: array[0 .. 8] of TXlsxHandlerClass = (TSheetHandler, TPartsHandler, TFormulasHandler, TChartsHandler,
+    TNamesHandler, TExtensionsHandler, TTablesHandler, TPivotsHandler, TLocalNamesHandler);
 
 // a DrawingML coordinate (ST_Coordinate) in EMUs: a number of them, or a measure with its unit (2.5cm, 1in, 12pt)
 function CoordinateEmus(const aText: string; out aEmus: Int64): boolean;
@@ -1467,6 +1618,59 @@ begin
   inherited;
 end;
 
+function TRefusedElementsHandler.Plan: string;
+begin
+  var sheet: TWorksheetE := fStore.Objects(False);
+  for var known: TKnownKind in cElements do
+    if (known.Why <> '') and sheet.IsPresent(known.Name) then
+      Exit(known.Why + cNotYet);
+  Result := '';
+end;
+
+function TPartsHandler.Plan: string;
+begin
+  Result := '';
+  var package: TPackageOoxml := fBook.Package;
+  var parts: TList<string> := TList<string>.Create;
+  var seen: TDictionary<string, boolean> := TDictionary<string, boolean>.Create;
+  try
+    parts.Add(fBook.WorkbookPart);
+    seen.Add(fBook.WorkbookPart, True);
+    var next: integer := 0;
+    while next < parts.Count do
+    begin
+      for var relationship: TRelationshipOoxml in package.Relationships(parts[next]) do
+      begin
+        var name: string := relationship.&Type.Substring(relationship.&Type.LastIndexOf('/') + 1);
+        var known: integer := High(cParts);
+        while (known >= 0) and (cParts[known].Name <> name) do
+          Dec(known);
+        if known < 0 then
+          Exit(Format('a part of a kind Calcite does not know (%s)', [relationship.&Type]) + cNotYet);
+        if cParts[known].Why <> '' then
+          Exit(cParts[known].Why + cNotYet);
+        if (relationship.Part <> '') and not seen.ContainsKey(relationship.Part) then
+        begin
+          seen.Add(relationship.Part, True);
+          parts.Add(relationship.Part);
+        end;
+      end;
+      Inc(next);
+    end;
+  finally
+    seen.Free;
+    parts.Free;
+  end;
+end;
+
+function TXlsxRun.Handler<T>: T;
+begin
+  for var item: TXlsxHandler in fHandlers do
+    if item is T then
+      Exit(T(item));
+  Result := nil;
+end;
+
 function TXlsxRun.Run(aSheet: TXlsxWalkSheet; const aMap: TReferenceMap): string;
 begin
   fSheet := aSheet;
@@ -1485,32 +1689,21 @@ end;
 // the tables fill the map, every handler plans in the order of Excel's refusals, then they apply in an order of their own:
 // the names, the rules' formulas, the cells, the lists, the cells' formulas, the objects
 function TXlsxRun.Shift: string;
-const
-  cLists: array[0 .. 10] of TXlsxHandlerClass = (TMergesHandler, TConditionalAreasHandler, TValidationAreasHandler,
-    THyperlinksHandler, TAutoFilterHandler, TSortHandler, TIgnoredErrorsHandler, TProtectedRangesHandler,
-    TPageBreaksHandler, TPanesHandler, TDimensionHandler);
 begin
   Result := '';
-  var cells: TCellsHandler := TCellsHandler.Create(Self);
-  fHandlers.Add(cells);
-  var pivots: TPivotsHandler := TPivotsHandler.Create(Self);
-  fHandlers.Add(pivots);
-  var tables: TTablesHandler := TTablesHandler.Create(Self);
-  fHandlers.Add(tables);
-  fHandlers.Add(TRefusedElementsHandler.Create(Self));
-  var notes: TNotesHandler := TNotesHandler.Create(Self);
-  fHandlers.Add(notes);
-  var drawings: TDrawingsHandler := TDrawingsHandler.Create(Self);
-  fHandlers.Add(drawings);
-  var charts: TChartsHandler := TChartsHandler.Create(Self);
-  fHandlers.Add(charts);
-  var formulas: TFormulasHandler := TFormulasHandler.Create(Self);
-  fHandlers.Add(formulas);
-  var names: TNamesHandler := TNamesHandler.Create(Self);
-  fHandlers.Add(names);
+  for var kind: TXlsxHandlerClass in cShift do
+    fHandlers.Add(kind.Create(Self));
   var firstList: integer := fHandlers.Count;
   for var kind: TXlsxHandlerClass in cLists do
     fHandlers.Add(kind.Create(Self));
+  var cells: TCellsHandler := Handler<TCellsHandler>;
+  var pivots: TPivotsHandler := Handler<TPivotsHandler>;
+  var tables: TTablesHandler := Handler<TTablesHandler>;
+  var notes: TNotesHandler := Handler<TNotesHandler>;
+  var drawings: TDrawingsHandler := Handler<TDrawingsHandler>;
+  var charts: TChartsHandler := Handler<TChartsHandler>;
+  var formulas: TFormulasHandler := Handler<TFormulasHandler>;
+  var names: TNamesHandler := Handler<TNamesHandler>;
   tables.Complete(fMap);
   Mapped;
   if fMap.Count <> 0 then
@@ -1544,22 +1737,16 @@ end;
 // caches, the sheet
 function TXlsxRun.DeleteSheet: string;
 begin
-  var deleted: TSheetHandler := TSheetHandler.Create(Self);
-  fHandlers.Add(deleted);
-  var formulas: TFormulasHandler := TFormulasHandler.Create(Self);
-  fHandlers.Add(formulas);
-  var charts: TChartsHandler := TChartsHandler.Create(Self);
-  fHandlers.Add(charts);
-  var names: TNamesHandler := TNamesHandler.Create(Self);
-  fHandlers.Add(names);
-  var extensions: TExtensionsHandler := TExtensionsHandler.Create(Self);
-  fHandlers.Add(extensions);
-  var tables: TTablesHandler := TTablesHandler.Create(Self);
-  fHandlers.Add(tables);
-  var pivots: TPivotsHandler := TPivotsHandler.Create(Self);
-  fHandlers.Add(pivots);
-  var localNames: TLocalNamesHandler := TLocalNamesHandler.Create(Self);
-  fHandlers.Add(localNames);
+  for var kind: TXlsxHandlerClass in cDeleteSheet do
+    fHandlers.Add(kind.Create(Self));
+  var deleted: TSheetHandler := Handler<TSheetHandler>;
+  var formulas: TFormulasHandler := Handler<TFormulasHandler>;
+  var charts: TChartsHandler := Handler<TChartsHandler>;
+  var names: TNamesHandler := Handler<TNamesHandler>;
+  var extensions: TExtensionsHandler := Handler<TExtensionsHandler>;
+  var tables: TTablesHandler := Handler<TTablesHandler>;
+  var pivots: TPivotsHandler := Handler<TPivotsHandler>;
+  var localNames: TLocalNamesHandler := Handler<TLocalNamesHandler>;
   tables.Complete(fMap);
   Mapped;
   Result := Planned;
@@ -1580,4 +1767,31 @@ begin
     if sheet <> fSheet then
       sheet.Store.Forget;
 end;
+
+function KnownKinds(const aKinds: array of TKnownKind): TArray<TKnownKind>;
+begin
+  SetLength(Result, Length(aKinds));
+  for var i := 0 to High(aKinds) do
+    Result[i] := aKinds[i];
+end;
+
+class function TXlsxRun.ShiftOrder: TArray<TXlsxHandlerClass>;
+begin
+  SetLength(Result, Length(cShift) + Length(cLists));
+  for var i := 0 to High(cShift) do
+    Result[i] := cShift[i];
+  for var i := 0 to High(cLists) do
+    Result[Length(cShift) + i] := cLists[i];
+end;
+
+class function TXlsxRun.Elements: TArray<TKnownKind>;
+begin
+  Result := KnownKinds(cElements);
+end;
+
+class function TXlsxRun.Parts: TArray<TKnownKind>;
+begin
+  Result := KnownKinds(cParts);
+end;
+
 end.

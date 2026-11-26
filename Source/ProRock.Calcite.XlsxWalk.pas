@@ -42,6 +42,8 @@ type
     procedure Written(aTo: TStringBuilder); virtual;
   end;
 
+  TXlsxHandlerClass = class of TXlsxHandler;
+
   // the workbook's worksheets in order, for one insert, delete or sheet delete
   TXlsxWalk = class
   protected
@@ -89,12 +91,6 @@ type
   public
     function Plan: string; override;
     procedure Apply; override;
-  end;
-
-  // what Calcite does not move yet: a sheet with it is refused whole
-  TRefusedElementsHandler = class(TXlsxHandler)
-  public
-    function Plan: string; override;
   end;
 
   // every sheet's formulas (a deleted sheet's not): the cells', shared formulas' areas, conditional formats' and
@@ -389,23 +385,6 @@ begin
         if HasValue(cell) and (fMap.ByRows and (integer(row.R) > limit - fMap.Delta) or
           not fMap.ByRows and (TUtility.ColumnOf(cell.R) > limit - fMap.Delta)) then
           Exit(cPushedOff);
-  Result := '';
-end;
-
-// a sheet with one of these is refused whole
-function TRefusedElementsHandler.Plan: string;
-const
-  cLater = ', which Calcite does not move yet';
-  cElements: array[0 .. 7] of string = ('OleObjects', 'Controls', 'ExtLst', 'Scenarios',
-    'DataConsolidate', 'CustomSheetViews', 'CellWatches', 'SmartTags');
-  cWhat: array[0 .. 7] of string = ('embedded objects', 'controls',
-    'Excel 2010''s extensions (conditional formats, validation, sparklines)', 'scenarios', 'a data consolidation',
-    'custom views', 'watched cells', 'smart tags');
-begin
-  var sheet: TWorksheetE := fStore.Objects(False);
-  for var i := 0 to High(cElements) do
-    if sheet.IsPresent(cElements[i]) then
-      Exit(cWhat[i] + cLater);
   Result := '';
 end;
 
