@@ -112,8 +112,6 @@ type
     class function ReadRow(const aText: string; var aIndex: integer; aFinish: integer = MaxInt): integer; static;
     // a cell's r (B5) -> its column; 0 when it has none
     class function ColumnOf(const aReference: string): integer; static;
-    // B5, $B$5, A1:C10, 5:7, B:D
-    class function ParseAddress(const aAddress: string; out aTop, aLeft, aBottom, aRight: integer): boolean; static;
     // A1, $A$1, A, $A, 5, $5 (a column and a row count only as one end of A:C or 5:7)
     class function ReadReference(const aWord: string; out aRow, aColumn: integer; out aRowFixed, aColumnFixed: boolean): TReferenceKind;
       overload; static;
@@ -150,6 +148,21 @@ type
     class function ArrayItem(const aArray: Variant; aRow, aColumn: integer): Variant; static;
     // empty, null or '': what clears a cell's formula
     class function IsNoFormula(const aValue: Variant): boolean; static;
+  end;
+
+  // a rectangle of cells, from 1: a range's, a merged area's, a table's, a ref's
+  TArea = record
+    Top, Left, Bottom, Right: integer;
+    class function Make(aTop, aLeft, aBottom, aRight: integer): TArea; static; inline;
+    // B5, $B$5, A1:C10, 5:7, B:D
+    class function TryParse(const aAddress: string; out aArea: TArea): boolean; static;
+    function Holds(aRow, aColumn: integer): boolean; inline;
+    function Contains(const aInner: TArea): boolean; inline;
+    function Overlaps(const aOther: TArea): boolean; inline;
+    // as Excel shows it: 5:7 for whole rows (the whole sheet too), B:D for whole columns, else A1:C10
+    function Address: string;
+    // A1:C10 for any area, whole columns too: what the file's dimension and refs hold
+    function CellsAddress: string;
   end;
 
 implementation
@@ -206,61 +219,6 @@ class function TUtility.ColumnOf(const aReference: string): integer;
 begin
   var index: integer := 1;
   Result := ReadColumn(aReference, index);
-end;
-
-class function TUtility.ParseAddress(const aAddress: string; out aTop, aLeft, aBottom, aRight: integer): boolean;
-
-  // one end: a cell, a row or a column (0 for the part missing)
-  function ReadEnd(const aText: string; out aRow, aColumn: integer): boolean;
-  begin
-    var index: integer := 1;
-    if (index <= aText.Length) and (aText[index] = '$') then
-      Inc(index);
-    var start: integer := index;
-    aColumn := ReadColumn(aText, index);
-    if (aColumn = 0) and (index > start) then
-      Exit(False); // beyond XFD
-    if (index <= aText.Length) and (aText[index] = '$') then
-      Inc(index);
-    start := index;
-    aRow := ReadRow(aText, index);
-    if (aRow = 0) and (index > start) then
-      Exit(False); // 0 or beyond the last row
-    Result := (index > aText.Length) and ((aRow > 0) or (aColumn > 0));
-  end;
-
-begin
-  Result := False;
-  var ends: TArray<string> := aAddress.Trim.Split([':']);
-  if not (Length(ends) in [1, 2]) then
-    Exit;
-  var row1, column1, row2, column2: integer;
-  if not ReadEnd(ends[0], row1, column1) then
-    Exit;
-  if Length(ends) = 1 then
-  begin
-    if (row1 = 0) or (column1 = 0) then
-      Exit; // a lone 5 or B
-    row2 := row1;
-    column2 := column1;
-  end
-  else if not ReadEnd(ends[1], row2, column2) or ((row1 = 0) <> (row2 = 0)) or ((column1 = 0) <> (column2 = 0)) then
-    Exit;
-  if row1 = 0 then
-  begin // whole columns
-    row1 := 1;
-    row2 := cMaxRow;
-  end;
-  if column1 = 0 then
-  begin // whole rows
-    column1 := 1;
-    column2 := cMaxColumn;
-  end;
-  aTop := Min(row1, row2);
-  aBottom := Max(row1, row2);
-  aLeft := Min(column1, column2);
-  aRight := Max(column1, column2);
-  Result := True;
 end;
 
 class function TUtility.ReadReference(const aWord: string; out aRow, aColumn: integer;
@@ -871,6 +829,101 @@ begin
     Exit(Text);
   Builder.Append(Text, Copied - 1, Text.Length + 1 - Copied);
   Result := Builder.ToString;
+end;
+
+{ TArea }
+
+class function TArea.Make(aTop, aLeft, aBottom, aRight: integer): TArea;
+begin
+  Result.Top := aTop;
+  Result.Left := aLeft;
+  Result.Bottom := aBottom;
+  Result.Right := aRight;
+end;
+
+class function TArea.TryParse(const aAddress: string; out aArea: TArea): boolean;
+
+  // one end: a cell, a row or a column (0 for the part missing)
+  function ReadEnd(const aText: string; out aRow, aColumn: integer): boolean;
+  begin
+    var index: integer := 1;
+    if (index <= aText.Length) and (aText[index] = '$') then
+      Inc(index);
+    var start: integer := index;
+    aColumn := TUtility.ReadColumn(aText, index);
+    if (aColumn = 0) and (index > start) then
+      Exit(False); // beyond XFD
+    if (index <= aText.Length) and (aText[index] = '$') then
+      Inc(index);
+    start := index;
+    aRow := TUtility.ReadRow(aText, index);
+    if (aRow = 0) and (index > start) then
+      Exit(False); // 0 or beyond the last row
+    Result := (index > aText.Length) and ((aRow > 0) or (aColumn > 0));
+  end;
+
+begin
+  Result := False;
+  aArea := Default(TArea); // a failed parse gives an empty area, never what the variable held
+  var ends: TArray<string> := aAddress.Trim.Split([':']);
+  if not (Length(ends) in [1, 2]) then
+    Exit;
+  var row1, column1, row2, column2: integer;
+  if not ReadEnd(ends[0], row1, column1) then
+    Exit;
+  if Length(ends) = 1 then
+  begin
+    if (row1 = 0) or (column1 = 0) then
+      Exit; // a lone 5 or B
+    row2 := row1;
+    column2 := column1;
+  end
+  else if not ReadEnd(ends[1], row2, column2) or ((row1 = 0) <> (row2 = 0)) or ((column1 = 0) <> (column2 = 0)) then
+    Exit;
+  if row1 = 0 then
+  begin // whole columns
+    row1 := 1;
+    row2 := TUtility.cMaxRow;
+  end;
+  if column1 = 0 then
+  begin // whole rows
+    column1 := 1;
+    column2 := TUtility.cMaxColumn;
+  end;
+  aArea := Make(Min(row1, row2), Min(column1, column2), Max(row1, row2), Max(column1, column2));
+  Result := True;
+end;
+
+function TArea.Holds(aRow, aColumn: integer): boolean;
+begin
+  Result := (aRow >= Top) and (aRow <= Bottom) and (aColumn >= Left) and (aColumn <= Right);
+end;
+
+function TArea.Contains(const aInner: TArea): boolean;
+begin
+  Result := (aInner.Top >= Top) and (aInner.Bottom <= Bottom) and (aInner.Left >= Left) and (aInner.Right <= Right);
+end;
+
+function TArea.Overlaps(const aOther: TArea): boolean;
+begin
+  Result := (Top <= aOther.Bottom) and (aOther.Top <= Bottom) and (Left <= aOther.Right) and (aOther.Left <= Right);
+end;
+
+function TArea.Address: string;
+begin
+  if (Left = 1) and (Right = TUtility.cMaxColumn) then
+    Result := IntToStr(Top) + ':' + IntToStr(Bottom)
+  else if (Top = 1) and (Bottom = TUtility.cMaxRow) then
+    Result := TUtility.ColumnName(Left) + ':' + TUtility.ColumnName(Right)
+  else
+    Result := CellsAddress;
+end;
+
+function TArea.CellsAddress: string;
+begin
+  Result := TUtility.CellName(Top, Left);
+  if (Bottom <> Top) or (Right <> Left) then
+    Result := Result + ':' + TUtility.CellName(Bottom, Right);
 end;
 
 end.
