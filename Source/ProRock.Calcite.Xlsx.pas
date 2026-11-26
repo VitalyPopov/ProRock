@@ -111,6 +111,8 @@ type
     // the views showing sheet aFrom (the first one without a view: one added) show aTo, their first tab not after it; False
     // when none showed aFrom
     function MoveActiveSheet(aFrom, aTo: integer): boolean;
+    // the views of the chart sheet at aIndex (workbook order) with their tab selected or not; nothing for a worksheet
+    procedure SetChartTabSelected(aIndex: integer; aValue: boolean);
 
     function IsDynamicArray(aCellMetadata: cardinal): boolean;
     function IsLockedStyle(aStyle: cardinal): boolean;
@@ -662,6 +664,26 @@ begin
       if integer(view.FirstSheet) > aTo then
         view.FirstSheet := aTo;
       Result := True;
+    end;
+end;
+
+procedure TXlsxBook.SetChartTabSelected(aIndex: integer; aValue: boolean);
+begin
+  var entry: TSheetCT := fPackage.Part<TWorkbookE>(fWorkbookPart).Sheets.Sheet[aIndex];
+  for var relationship: TRelationshipOoxml in fPackage.Relationships(fWorkbookPart, cChartsheet) do
+    if relationship.Id = entry.Id then
+    begin
+      var chartsheet: TChartsheetE := fPackage.Part<TChartsheetE>(relationship.Part);
+      if chartsheet <> nil then
+        for var view: TChartsheetViewCT in chartsheet.SheetViews.SheetView do
+          if view.TabSelected <> aValue then
+          begin
+            fPackage.EditPart<TChartsheetE>(relationship.Part);
+            if aValue then
+              view.TabSelected := True
+            else
+              view.Clear(@view.TabSelected);
+          end;
     end;
 end;
 

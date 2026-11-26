@@ -46,6 +46,21 @@ type
     RowFixed, ColumnFixed, RowFixed2, ColumnFixed2, Range: boolean;
   end;
 
+  // a rectangle of cells, from 1: a range's, a merged area's, a table's, a ref's
+  TArea = record
+    Top, Left, Bottom, Right: integer;
+    class function Make(aTop, aLeft, aBottom, aRight: integer): TArea; static; inline;
+    // B5, $B$5, A1:C10, 5:7, B:D
+    class function TryParse(const aAddress: string; out aArea: TArea): boolean; static;
+    function Holds(aRow, aColumn: integer): boolean; inline;
+    function Contains(const aInner: TArea): boolean; inline;
+    function Overlaps(const aOther: TArea): boolean; inline;
+    // as Excel shows it: 5:7 for whole rows (the whole sheet too), B:D for whole columns, else A1:C10
+    function Address: string;
+    // A1:C10 for any area, whole columns too: what the file's dimension and refs hold
+    function CellsAddress: string;
+  end;
+
   // a table's rows (with its header and totals) and columns, its data rows among them
   TTableBody = record
     Left, Right, Top, DataTop, DataBottom, Bottom: integer;
@@ -95,6 +110,19 @@ type
     function Map(aReference: TReference; out aText: string): boolean;
     // whether Table[...] (aBrackets with its [ and ]) names a table or column gone: Excel writes #REF! for it
     function TableGone(const aTable, aBrackets: string): boolean;
+    // rows or columns added (> 0) or taken (< 0); 0 for a fill or a sheet deleted
+    function Delta: integer;
+    // the last row or column along ByRows
+    function Limit: integer;
+    // a span of rows or columns as Excel moves it: one inserted inside grows (aGrowAfter: right after it too, as a format
+    // carries on), a delete shrinks it, the whole sheet's stays and one reaching the last row or column keeps reaching
+    // it; False when nothing is left
+    function MovedSpan(var aLow, aHigh: integer; aGrowAfter: boolean): boolean;
+    // a row or column number the same way: 0 when deleted or pushed off the sheet
+    function MovedIndex(aIndex: integer): integer;
+    function MovedArea(var aArea: TArea; aGrowAfter: boolean = False): boolean;
+    // a list of areas (A1:B5 D7) the same way, those gone dropped: '' when none is left
+    function MovedSqref(const aSqref: string; aGrowAfter: boolean = False): string;
   end;
 
   TUtility = class abstract(ProRock.Xmlite.Utility.TUtility)
@@ -152,21 +180,6 @@ type
     class function ArrayItem(const aArray: Variant; aRow, aColumn: integer): Variant; static;
     // empty, null or '': what clears a cell's formula
     class function IsNoFormula(const aValue: Variant): boolean; static;
-  end;
-
-  // a rectangle of cells, from 1: a range's, a merged area's, a table's, a ref's
-  TArea = record
-    Top, Left, Bottom, Right: integer;
-    class function Make(aTop, aLeft, aBottom, aRight: integer): TArea; static; inline;
-    // B5, $B$5, A1:C10, 5:7, B:D
-    class function TryParse(const aAddress: string; out aArea: TArea): boolean; static;
-    function Holds(aRow, aColumn: integer): boolean; inline;
-    function Contains(const aInner: TArea): boolean; inline;
-    function Overlaps(const aOther: TArea): boolean; inline;
-    // as Excel shows it: 5:7 for whole rows (the whole sheet too), B:D for whole columns, else A1:C10
-    function Address: string;
-    // A1:C10 for any area, whole columns too: what the file's dimension and refs hold
-    function CellsAddress: string;
   end;
 
 implementation
@@ -385,6 +398,108 @@ begin
   Result.Change := TReferenceChange.rcSheetDelete;
   Result.Sheet := aSheet;
   Result.Sheets := aSheets;
+end;
+
+function TReferenceMap.Delta: integer;
+begin
+  case Change of
+    TReferenceChange.rcInsert:
+      Result := Count;
+    TReferenceChange.rcDelete:
+      Result := -Count;
+  else
+    Result := 0;
+  end;
+end;
+
+function TReferenceMap.Limit: integer;
+begin
+  if ByRows then
+    Result := TUtility.cMaxRow
+  else
+    Result := TUtility.cMaxColumn;
+end;
+
+function TReferenceMap.MovedSpan(var aLow, aHigh: integer; aGrowAfter: boolean): boolean;
+begin
+  var count: integer := Delta;
+  var limit: integer := Limit;
+  if count > 0 then
+  begin
+    if (aLow = 1) and (aHigh = limit) then
+      Exit(True);
+    if First <= aLow then
+    begin
+      Inc(aLow, count);
+      Inc(aHigh, count);
+    end
+    else if (First <= aHigh) or aGrowAfter and (First = aHigh + 1) then
+      Inc(aHigh, count);
+    aHigh := Min(aHigh, limit);
+    Exit(aLow <= limit);
+  end;
+  var last: integer := First - count - 1;
+  if last < aLow then
+  begin
+    Inc(aLow, count);
+    Inc(aHigh, count);
+  end
+  else if First <= aHigh then
+  begin
+    var toEnd: boolean := aHigh = limit;
+    var left: integer := aHigh - aLow + 1 - (Min(last, aHigh) - Max(First, aLow) + 1);
+    if left = 0 then
+      Exit(False);
+    aLow := Min(aLow, First);
+    aHigh := aLow + left - 1;
+    if toEnd then
+      aHigh := limit;
+  end;
+  Result := True;
+end;
+
+function TReferenceMap.MovedIndex(aIndex: integer): integer;
+begin
+  Result := aIndex;
+  if aIndex < First then
+    Exit;
+  var count: integer := Delta;
+  if count < 0 then
+  begin
+    if aIndex < First - count then
+      Exit(0);
+  end
+  else if aIndex + count > Limit then
+    Exit(0);
+  Result := aIndex + count;
+end;
+
+function TReferenceMap.MovedArea(var aArea: TArea; aGrowAfter: boolean): boolean;
+begin
+  if ByRows then
+    Result := MovedSpan(aArea.Top, aArea.Bottom, aGrowAfter)
+  else
+    Result := MovedSpan(aArea.Left, aArea.Right, aGrowAfter);
+end;
+
+function TReferenceMap.MovedSqref(const aSqref: string; aGrowAfter: boolean): string;
+begin
+  Result := '';
+  for var item: string in aSqref.Split([' '], TStringSplitOptions.ExcludeEmpty) do
+  begin
+    var area: TArea;
+    var text: string := item;
+    if TArea.TryParse(item, area) then
+      if MovedArea(area, aGrowAfter) then
+        text := area.CellsAddress
+      else
+        text := '';
+    if text <> '' then
+      if Result = '' then
+        Result := text
+      else
+        Result := Result + ' ' + text;
+  end;
 end;
 
 // a prefix's sheet names, its quotes undone
