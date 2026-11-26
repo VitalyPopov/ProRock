@@ -31,9 +31,6 @@ implementation
 uses System.SysUtils, System.Math, System.Character, System.Generics.Collections;
 
 type
-  // a formula's text as a file stores it (_xlfn.XLOOKUP, LET's _xlpm.x) or as Excel's Formula shows it (XLOOKUP, x)
-  TFormulaForm = (ffStored, ffShown);
-
   // one of Excel's functions: the argument counts it takes (those over Paired come in pairs: SUMIFS 3, 5, 7...; none when
   // Min is over Max: CALL), the prefix a file stores it with (cFunctionPrefixes), the arguments that must be references
   // (r; v - a value too; past its end the last one repeats, or the last two when paired), whether it may give one
@@ -936,745 +933,6 @@ begin
   Result := True;
 end;
 
-// StoredFormula's check, its references changed by aMap too (until the check is a walk over the scanner's tokens)
-function CheckedFormula(const aFormula: string; const aMap: TReferenceMap; aForm: TFormulaForm; out aResult, aWhy,
-  aUnknown: string): boolean;
-const
-  cSpaces = [' ', #9, #10, #13];
-  cOperators = ['+', '-', '*', '/', '^', '&', '=', '<', '>', ':'];
-  cMaxArguments = 255;
-  cUnknown = -1;
-  cResult = -2;
-var
-  builder: TStringBuilder;
-  i, last: integer; // last: the formula's length
-  // what comes next: a value (at the start, after an operator, an opening bracket, a comma) or an operator
-  expectValue: boolean;
-  // the value before was a constant (a number, a text, TRUE, an error, an array): no range or intersection with it
-  constant: boolean;
-  spaced: boolean; // spaces after a value: an intersection when another value follows
-  ranged: boolean; // after a : the next value is a reference too
-  arguments: boolean; // just after a function's ( or a comma between its arguments: an argument may be left out
-  prefixed: boolean; // after Sheet1! or [1]: a reference follows
-  prefixStart: integer; // where the prefix being read began: [1]Sheet1! is one; 0 between them
-  prefix: string; // the last one before its ! (Sheet1, 'My Sheet', [1]Sheet1, Sheet1:Sheet3), for aMap
-  prefixAt: integer; // where the builder has it: a sheet deleted rewrites it
-  continued: boolean; // after a table's name: its [...] is the same value
-  tableName: string; // that name, '' when another workbook's
-  tableStart: integer; // where the builder has it
-  called: boolean; // after a function's name: its ( follows
-  calledFunction: integer; // that function: cFunctions' index, cUnknown, cResult (a LAMBDA's result or parameter called)
-  callable: boolean; // just after a LAMBDA's ) or a call's: a ( calls its result, LAMBDA(x,x+1)(5)
-  brackets: string; // what is open: f - a function's (, g - a group's (, { - an array constant
-  commas: TArray<integer>; // a function's commas so far, for each bracket open
-  functions: TArray<integer>; // a function's calledFunction, for each bracket open
-  parameters: TList<string>; // LET's and LAMBDA's parameters in scope (Excel stores them _xlpm.x)
-  scopes: TArray<integer>; // parameters' count at a function's (, for each bracket open: those after it end at its )
-  // a function's argument so far may be a reference (A1, a name, (A1), A1:INDEX(...)), for each bracket open: a constant,
-  // another operator or a call of a function giving a value spoils it, and Excel refuses a file with it where one must stand
-  referenceLike: TArray<boolean>;
-
-  function Fail(const aText: string): boolean;
-  begin
-    aWhy := aText;
-    Result := False;
-  end;
-
-  function ReadWord(aFrom: integer): integer; // the index after it
-  begin
-    Result := aFrom;
-    while (Result <= last) and (aFormula[Result].IsLetterOrDigit or CharInSet(aFormula[Result], ['_', '\', '$', '.', '?'])) do
-      Inc(Result);
-  end;
-
-  function Inside: Char;
-  begin
-    if brackets = '' then
-      Result := #0
-    else
-      Result := brackets[brackets.Length];
-  end;
-
-  // the first character after aFrom's spaces, #0 at the end
-  function NextChar(aFrom: integer): Char;
-  begin
-    while (aFrom <= last) and CharInSet(aFormula[aFrom], cSpaces) do
-      Inc(aFrom);
-    if aFrom > last then
-      Result := #0
-    else
-      Result := aFormula[aFrom];
-  end;
-
-  // a word ending before aEnd declares a parameter: LET's name (each other argument, not its last), LAMBDA's (all but its last)
-  function Declares(aEnd: integer): boolean;
-  begin
-    Result := (Inside = 'f') and arguments and (NextChar(aEnd) = ',') and
-      ((functions[brackets.Length - 1] = cLambdaFunction) or
-      ((functions[brackets.Length - 1] = cLetFunction) and not Odd(commas[brackets.Length - 1])));
-  end;
-
-  // a parameter in scope as declared (Excel shows LAMBDA(Total,TOTAL*2) as LAMBDA(Total,Total*2)), '' when there is none
-  function Declared(const aName: string): string;
-  begin
-    for var index := parameters.Count - 1 downto 0 do
-      if SameText(parameters[index], aName) then
-        Exit(parameters[index]);
-    Result := '';
-  end;
-
-  // the innermost function's argument is no reference: a group's ( ) inside it is part of it, an array constant is not
-  procedure NotAReference;
-  begin
-    for var index := brackets.Length downto 1 do
-      case brackets[index] of
-        'f':
-          begin
-            referenceLike[index - 1] := False;
-            Exit;
-          end;
-        '{':
-          Exit;
-      end;
-  end;
-
-  // the argument ending here (aPosition, from 0) where Excel's function needs a reference: one or Excel refuses the file
-  function CheckReference(aPosition: integer): boolean;
-  begin
-    var top: integer := brackets.Length - 1;
-    Result := True;
-    if functions[top] < 0 then
-      Exit;
-    var known: TExcelFunction := cFunctions[functions[top]];
-    var pattern: string := known.References;
-    if pattern = '' then
-      Exit;
-    var position: integer := aPosition;
-    if position >= pattern.Length then
-    begin // past its end the last one repeats, or the last two when paired
-      var period: integer := 1;
-      if known.Paired < known.Max then
-        period := 2;
-      position := pattern.Length - period + (position - pattern.Length) mod period;
-    end;
-    if (pattern[position + 1] = 'r') and (arguments or not referenceLike[top]) then
-      Result := Fail(Format('%s''s argument %d must be a reference (A1, a name, INDEX(...)), not a value or left out',
-        [known.Name, aPosition + 1]));
-    referenceLike[top] := True;
-  end;
-
-  procedure OpenFunction(aFunction: integer);
-  begin
-    brackets := brackets + 'f';
-    functions[brackets.Length - 1] := aFunction;
-    scopes[brackets.Length - 1] := parameters.Count;
-    referenceLike[brackets.Length - 1] := True;
-    called := False;
-    expectValue := True;
-    arguments := True;
-  end;
-
-  // a function's ): Excel refuses a file where its own one has another number of arguments
-  function CloseFunction: boolean;
-  begin
-    var top: integer := brackets.Length - 1;
-    var count: integer := commas[top] + 1;
-    if (commas[top] = 0) and expectValue then
-      count := 0;
-    parameters.DeleteRange(scopes[top], parameters.Count - scopes[top]);
-    callable := (functions[top] = cLambdaFunction) or (functions[top] = cResult);
-    if functions[top] < 0 then
-      Exit(True);
-    var known: TExcelFunction := cFunctions[functions[top]];
-    if known.Min > known.Max then
-      Exit(Fail(Format('Excel takes %s in no cell''s formula', [known.Name])));
-    if (count >= known.Min) and (count <= known.Max) and ((count <= known.Paired) or not Odd(count - known.Paired)) then
-      Exit((count = 0) or CheckReference(commas[top]));
-    var counts: string := IntToStr(known.Min);
-    if known.Max > known.Min then
-      counts := counts + ' to ' + IntToStr(known.Max);
-    if (known.Min = 1) and (known.Max = 1) then
-      counts := counts + ' argument'
-    else
-      counts := counts + ' arguments';
-    if known.Paired < known.Max then
-      counts := Format('%s, those after %d in pairs', [counts, known.Paired]);
-    Result := Fail(Format('%s takes %s, not %d', [known.Name, counts, count]));
-  end;
-
-  // a quoted text or sheet name: the index of its closing quote (a doubled one is inside), 0 when there is none
-  function ClosingQuote(aQuote: Char): integer;
-  begin
-    Result := i + 1;
-    while Result <= last do
-    begin
-      if aFormula[Result] = aQuote then
-      begin
-        if (Result < last) and (aFormula[Result + 1] = aQuote) then
-          Inc(Result)
-        else
-          Exit;
-      end;
-      Inc(Result);
-    end;
-    Result := 0;
-  end;
-
-  // a value where one may stand: next to another only through spaces, both references (an intersection)
-  function Value(aConstant: boolean): boolean;
-  begin
-    if not expectValue and not (spaced and not constant and not aConstant and (Inside <> '{')) then
-      Exit(Fail('two values without an operator between them'));
-    if (Inside = '{') and not aConstant then
-      Exit(Fail('an array constant holds constants only'));
-    if (ranged or prefixed) and aConstant then
-      Exit(Fail('a reference missing'));
-    if aConstant then
-      NotAReference;
-    expectValue := False;
-    constant := aConstant;
-    spaced := False;
-    ranged := False;
-    arguments := False;
-    prefixed := False;
-    Result := True;
-  end;
-
-  // anything but a value: not right after Sheet1!, a table's name or a :
-  function NotAValue: boolean;
-  begin
-    Result := not prefixed and not continued and not ranged;
-    if not Result then
-      Fail('a reference missing');
-    spaced := False;
-  end;
-
-  // a sheet deleted: the prefix written before the value gone (True; aName - the workbook's then, [0]!Total) or its 3-D
-  // range's end moved
-  function PrefixGone(aName: boolean): boolean;
-  begin
-    Result := False;
-    var moved: string;
-    case aMap.PrefixChange(prefix, moved) of
-      TPrefixChange.pcGone:
-        begin
-          builder.Length := prefixAt;
-          if aName then
-            builder.Append('[0]!');
-          Result := True;
-        end;
-      TPrefixChange.pcMoved:
-        begin
-          builder.Length := prefixAt;
-          builder.Append(moved).Append('!');
-        end;
-    end;
-  end;
-
-  // a word: a reference alone or as one end of a range (moved, or #REF!), a number, TRUE, a name
-  function Word(aEnd: integer): boolean;
-  var
-    reference: TReference;
-  begin
-    var wasPrefixed: boolean := prefixed;
-    var word: string := Copy(aFormula, i, aEnd - i);
-    var row, column: integer;
-    var rowFixed, columnFixed: boolean;
-    var kind: TReferenceKind := TUtility.ReadReference(word, row, column, rowFixed, columnFixed);
-    var secondEnd: integer := 0;
-    var row2: integer := 0;
-    var column2: integer := 0;
-    var rowFixed2: boolean := False;
-    var columnFixed2: boolean := False;
-    if (kind <> TReferenceKind.rkNone) and (aEnd < last) and (aFormula[aEnd] = ':') and IsWordStart(aFormula[aEnd + 1]) then
-    begin
-      secondEnd := ReadWord(aEnd + 1);
-      if TUtility.ReadReference(Copy(aFormula, aEnd + 1, secondEnd - aEnd - 1), row2, column2, rowFixed2, columnFixed2) <> kind then
-        secondEnd := 0;
-    end;
-    if (kind = TReferenceKind.rkNone) or ((kind <> TReferenceKind.rkCell) and (secondEnd = 0)) then
-    begin // a number, TRUE, a name
-      var isNumber: boolean := CharInSet(word[1], ['0' .. '9', '.']);
-      if isNumber then
-      begin // the exponent's sign was not part of the word: 1.5E+3
-        if CharInSet(word[word.Length], ['E', 'e']) and (aEnd < last) and CharInSet(aFormula[aEnd], ['+', '-']) and
-          CharInSet(aFormula[aEnd + 1], ['0' .. '9']) then
-        begin
-          aEnd := ReadWord(aEnd + 1);
-          word := Copy(aFormula, i, aEnd - i);
-        end;
-        var number: Double;
-        if not TUtility.TryFloatFromText(word, number) then
-          Exit(Fail('not a number: ' + word));
-      end;
-      if not Value(isNumber or SameText(word, 'TRUE') or SameText(word, 'FALSE')) then
-        Exit(False);
-      if wasPrefixed then
-        PrefixGone(True);
-      builder.Append(word);
-      i := aEnd;
-      Exit(True);
-    end;
-    if not Value(False) then
-      Exit(False);
-    if secondEnd = 0 then
-      secondEnd := aEnd
-    else
-      word := Copy(aFormula, i, secondEnd - i);
-    var moved: string;
-    if not wasPrefixed then
-      prefix := '';
-    reference.Kind := kind;
-    reference.Row := row;
-    reference.Column := column;
-    reference.RowFixed := rowFixed;
-    reference.ColumnFixed := columnFixed;
-    reference.Range := secondEnd > aEnd;
-    reference.Row2 := row2;
-    reference.Column2 := column2;
-    reference.RowFixed2 := rowFixed2;
-    reference.ColumnFixed2 := columnFixed2;
-    if wasPrefixed and PrefixGone(False) then
-      builder.Append('#REF!')
-    else if not aMap.Changes(prefix) then
-      builder.Append(word)
-    else if not aMap.Map(reference, moved) then
-      builder.Append('#REF!')
-    else if moved = '' then
-      builder.Append(word)
-    else
-      builder.Append(moved);
-    i := secondEnd;
-    Result := True;
-  end;
-
-  function HasPrefix(const aWord, aPrefix: string): boolean;
-  begin
-    Result := SameText(Copy(aWord, 1, aPrefix.Length), aPrefix);
-  end;
-
-  function Unprefixed(const aWord: string): string;
-  begin
-    Result := aWord;
-    if HasPrefix(Result, cParameterPrefix) then
-      Result := Result.Substring(cParameterPrefix.Length);
-  end;
-
-  // LET's or LAMBDA's parameter ending before aEnd, declared or used; called when a ( follows (LET(f,LAMBDA(x,x+1),f(5)))
-  function Parameter(aEnd: integer): boolean;
-  begin
-    var name: string := Unprefixed(Copy(aFormula, i, aEnd - i));
-    var declaring: boolean := Declares(aEnd);
-    if not Value(False) then
-      Exit(False);
-    if declaring then
-      parameters.Add(name)
-    else
-      name := Declared(name);
-    if aForm = ffStored then
-      builder.Append(cParameterPrefix);
-    builder.Append(name);
-    i := aEnd;
-    if (i <= last) and (aFormula[i] = '(') then
-    begin
-      called := True;
-      calledFunction := cResult;
-    end;
-    Result := True;
-  end;
-
-  // a function's name ending before aEnd, its ( next: one of Excel's in aForm, upper case; another as it is
-  function FunctionName(aEnd: integer): boolean;
-  begin
-    if not Value(False) then
-      Exit(False);
-    var word: string := Copy(aFormula, i, aEnd - i);
-    var name: string := word;
-    while HasPrefix(name, '_xlfn.') or HasPrefix(name, '_xlws.') do
-      name := name.Substring(6);
-    calledFunction := FindFunction(name);
-    if calledFunction >= 0 then
-    begin
-      if not cFunctions[calledFunction].ReferenceResult then
-        NotAReference;
-      if aForm = ffStored then
-        builder.Append(cFunctionPrefixes[cFunctions[calledFunction].Prefix]);
-      builder.Append(cFunctions[calledFunction].Name);
-    end
-    else
-    begin
-      calledFunction := cUnknown;
-      if (aUnknown = '') and not HasPrefix(word, '_xl') then // _xludf.: a user's function the file names so
-        aUnknown := word;
-      builder.Append(word);
-    end;
-    called := True;
-    i := aEnd;
-    Result := True;
-  end;
-
-  function Token: boolean;
-  begin
-    Result := False;
-    var letter: Char := aFormula[i];
-    var start: integer := i;
-    var wasCallable: boolean := callable;
-    callable := False;
-    if CharInSet(letter, cSpaces) then
-    begin
-      if not expectValue then
-        spaced := True;
-      builder.Append(letter);
-      Inc(i);
-      Exit(True);
-    end;
-    case letter of
-      '"':
-        begin
-          var close: integer := ClosingQuote(letter);
-          if close = 0 then
-            Exit(Fail('a text without its closing quote'));
-          if not Value(True) then
-            Exit;
-          i := close + 1;
-        end;
-      '''':
-        begin // a sheet name, its ! with it
-          var close: integer := ClosingQuote(letter);
-          if close = 0 then
-            Exit(Fail('a sheet name without its closing quote'));
-          if (close = last) or (aFormula[close + 1] <> '!') then
-            Exit(Fail('a quoted sheet name without ! after it'));
-          if not expectValue and not spaced then
-            Exit(Fail('two values without an operator between them'));
-          prefixed := True;
-          if prefixStart = 0 then
-          begin
-            prefixStart := i;
-            prefixAt := builder.Length;
-          end;
-          prefix := Copy(aFormula, prefixStart, close + 1 - prefixStart);
-          prefixStart := 0;
-          i := close + 2;
-        end;
-      '[':
-        begin // a table's columns (Table1[[#This Row],[Sum]], ' escapes) or another workbook ([1]Sheet1!A1)
-          var close: integer := i;
-          var depth: integer := 0;
-          while close <= last do
-          begin
-            case aFormula[close] of
-              '''':
-                Inc(close);
-              '[':
-                Inc(depth);
-              ']':
-                begin
-                  Dec(depth);
-                  if depth = 0 then
-                    Break;
-                end;
-            end;
-            Inc(close);
-          end;
-          if close > last then
-            Exit(Fail('a [ without its ]'));
-          i := close + 1;
-          if continued then
-          begin
-            continued := False;
-            if (tableName <> '') and aMap.TableGone(tableName, Copy(aFormula, start, i - start)) then
-            begin
-              builder.Length := tableStart;
-              builder.Append('#REF!');
-              Exit(True);
-            end;
-          end
-          else if (i <= last) and (IsWordStart(aFormula[i]) or (aFormula[i] = '''')) then
-          begin // a workbook: its sheet's name follows
-            prefixStart := start;
-            prefixAt := builder.Length;
-          end
-          else if (i <= last) and (aFormula[i] = '!') then
-          begin // a workbook's name: [1]!Total
-            prefixed := True;
-            prefixAt := builder.Length;
-            prefix := Copy(aFormula, start, i - start);
-            Inc(i);
-          end
-          else if not Value(False) then
-            Exit;
-        end;
-      '#':
-        begin
-          var error: string := '';
-          for var index := Low(cErrors) to High(cErrors) do
-            if SameText(Copy(aFormula, i, cErrors[index].Length), cErrors[index]) then
-              error := cErrors[index];
-          if error.IsEmpty then
-            Exit(Fail('an error value Excel does not have'));
-          var wasPrefixed: boolean := prefixed;
-          if not Value(error <> '#REF!') then // Sheet1!#REF! stands for a reference
-            Exit;
-          if wasPrefixed then
-            PrefixGone(False);
-          builder.Append(error);
-          Inc(i, error.Length);
-          Exit(True);
-        end;
-      '(':
-        begin
-          if not NotAValue then
-            Exit;
-          SetLength(commas, brackets.Length + 1);
-          SetLength(functions, brackets.Length + 1);
-          SetLength(scopes, brackets.Length + 1);
-          SetLength(referenceLike, brackets.Length + 1);
-          commas[brackets.Length] := 0;
-          if called then
-            OpenFunction(calledFunction)
-          else if wasCallable and not expectValue then
-            OpenFunction(cResult)
-          else if expectValue and (Inside <> '{') then
-          begin
-            brackets := brackets + 'g';
-            arguments := False;
-          end
-          else
-            Exit(Fail('a ( where an operator should be'));
-          Inc(i);
-        end;
-      ')':
-        begin
-          if not NotAValue then
-            Exit;
-          case Inside of
-            'f':
-              if expectValue and not arguments then
-                Exit(Fail('an operator without the value after it'))
-              else if not CloseFunction then
-                Exit;
-            'g':
-              if expectValue then
-                Exit(Fail('a ( ) without a value inside'));
-          else
-            Exit(Fail('a ) without its opening one'));
-          end;
-          brackets := Copy(brackets, 1, brackets.Length - 1);
-          expectValue := False;
-          constant := False;
-          arguments := False;
-          Inc(i);
-        end;
-      '{':
-        begin
-          if not NotAValue then
-            Exit;
-          if not expectValue or (Inside = '{') then
-            Exit(Fail('a { where it cannot stand'));
-          brackets := brackets + '{';
-          arguments := False;
-          Inc(i);
-        end;
-      '}':
-        begin
-          if not NotAValue then
-            Exit;
-          if Inside <> '{' then
-            Exit(Fail('a } without its opening one'));
-          if expectValue then
-            Exit(Fail('an array constant with a value missing'));
-          brackets := Copy(brackets, 1, brackets.Length - 1);
-          expectValue := True; // the array is the value
-          if not Value(True) then
-            Exit;
-          Inc(i);
-        end;
-      ',':
-        begin
-          if not NotAValue then
-            Exit;
-          case Inside of
-            'f':
-              begin
-                if not CheckReference(commas[brackets.Length - 1]) then
-                  Exit;
-                arguments := True; // an argument may be left out: IF(A1,,2)
-                Inc(commas[brackets.Length - 1]);
-                if commas[brackets.Length - 1] >= cMaxArguments then
-                  Exit(Fail(Format('more than %d arguments to a function', [cMaxArguments])));
-              end;
-            'g', '{':
-              if expectValue then
-                Exit(Fail('a comma without a value before it'));
-          else // a defined name's union: Sheet1!$A:$B,Sheet1!$1:$2
-            if not aMap.InName then
-              Exit(Fail('a comma outside a function''s brackets'))
-            else if expectValue then
-              Exit(Fail('a comma without a value before it'));
-          end;
-          expectValue := True;
-          Inc(i);
-        end;
-      ';':
-        begin
-          if not NotAValue then
-            Exit;
-          if (Inside <> '{') or expectValue then
-            Exit(Fail('a ; outside an array constant''s rows'));
-          expectValue := True;
-          Inc(i);
-        end;
-      '%':
-        begin
-          if not NotAValue then
-            Exit;
-          if expectValue or (Inside = '{') then
-            Exit(Fail('a % without a value before it'));
-          NotAReference;
-          Inc(i);
-        end;
-    else
-      if IsWordStart(letter) then
-      begin
-        var after: integer := ReadWord(i);
-        var next: Char := #0;
-        if after <= last then
-          next := aFormula[after];
-        // a 3-D reference's sheets: Sheet1:Sheet3!A1; not after a sheet's name (Sheet1!A3:Sheet1!A5) or from a cell
-        // (A3:Sheet1!A5: Excel quotes a sheet named like a cell)
-        var sheetsEnd: integer := 0;
-        var row, column: integer;
-        var rowFixed, columnFixed: boolean;
-        if (next = ':') and (after < last) and IsWordStart(aFormula[after + 1]) and not prefixed and
-          (TUtility.ReadReference(Copy(aFormula, i, after - i), row, column, rowFixed, columnFixed) <> TReferenceKind.rkCell) then
-        begin
-          sheetsEnd := ReadWord(after + 1);
-          if (sheetsEnd > last) or (aFormula[sheetsEnd] <> '!') then
-            sheetsEnd := 0;
-        end;
-        if (sheetsEnd > 0) or (next = '!') then
-        begin // a sheet's name
-          if prefixed or (not expectValue and not spaced) then
-            Exit(Fail('two values without an operator between them'));
-          prefixed := True;
-          if prefixStart = 0 then
-          begin
-            prefixStart := i;
-            prefixAt := builder.Length;
-          end;
-          if sheetsEnd > 0 then
-            i := sheetsEnd
-          else
-            i := after;
-          prefix := Copy(aFormula, prefixStart, i - prefixStart);
-          prefixStart := 0;
-          Inc(i);
-        end
-        else if Declares(after) or (Declared(Unprefixed(Copy(aFormula, i, after - i))) <> '') then
-          Exit(Parameter(after))
-        else if next = '(' then
-          Exit(FunctionName(after))
-        else if next = '[' then
-        begin // a table: its [...] follows
-          tableName := '';
-          if not prefixed then
-            tableName := Copy(aFormula, i, after - i);
-          tableStart := builder.Length;
-          if not Value(False) then
-            Exit;
-          continued := True;
-          i := after;
-        end
-        else
-          Exit(Word(after));
-      end
-      else if CharInSet(letter, cOperators) then
-      begin
-        if not NotAValue then
-          Exit;
-        if CharInSet(letter, ['+', '-']) and expectValue then
-        begin // a sign
-          arguments := False;
-          NotAReference;
-          Inc(i);
-        end
-        else if expectValue or (Inside = '{') then
-          Exit(Fail('an operator without the value before it'))
-        else
-        begin
-          if (letter = ':') and constant then
-            Exit(Fail('a range of a constant'));
-          ranged := letter = ':';
-          if not ranged then
-            NotAReference;
-          Inc(i);
-          if ((letter = '<') and (i <= last) and CharInSet(aFormula[i], ['>', '='])) or
-            ((letter = '>') and (i <= last) and (aFormula[i] = '=')) then
-            Inc(i);
-          expectValue := True;
-        end;
-      end
-      else
-        Exit(Fail('a character no formula has: ' + letter));
-    end;
-    builder.Append(aFormula, start - 1, i - start);
-    Result := True;
-  end;
-
-begin
-  aResult := '';
-  aWhy := '';
-  aUnknown := '';
-  last := aFormula.Length;
-  expectValue := True;
-  constant := False;
-  spaced := False;
-  ranged := False;
-  arguments := False;
-  prefixed := False;
-  prefixStart := 0;
-  prefixAt := 0;
-  prefix := '';
-  continued := False;
-  tableName := '';
-  tableStart := 0;
-  called := False;
-  calledFunction := cUnknown;
-  callable := False;
-  brackets := '';
-  parameters := nil;
-  builder := TStringBuilder.Create(last + 16);
-  try
-    parameters := TList<string>.Create;
-    i := 1;
-    while i <= last do
-      if not Token then
-        Exit(False);
-    if Inside = '{' then
-      Exit(Fail('a { without its closing one'));
-    if brackets <> '' then
-      Exit(Fail('a ( without its closing one'));
-    if prefixed or continued or ranged then
-      Exit(Fail('a reference missing'));
-    if expectValue then
-      if aFormula.Trim = '' then
-        Exit(Fail('an empty formula'))
-      else
-        Exit(Fail('an operator without the value after it'));
-    aResult := builder.ToString;
-    Result := True;
-  finally
-    parameters.Free;
-    builder.Free;
-  end;
-end;
-
-function StoredFormula(const aFormula: string; out aResult, aWhy, aUnknown: string): boolean;
-begin
-  Result := CheckedFormula(aFormula, TReferenceMap.Fill(0, 0), ffStored, aResult, aWhy, aUnknown);
-end;
-
 // aFormula's pieces copied into a builder made at the first change
 type
   TFormulaCopy = record
@@ -1708,6 +966,527 @@ begin
     Exit(Text);
   Builder.Append(Text, Copied - 1, Text.Length + 1 - Copied);
   Result := Builder.ToString;
+end;
+
+// whether aText[aStart .. aFinish - 1] is aWord exactly
+function IsExactly(const aText: string; aStart, aFinish: integer; const aWord: string): boolean;
+begin
+  Result := (aFinish - aStart = aWord.Length) and ((aWord = '') or CompareMem(@aText[aStart], Pointer(aWord),
+    aWord.Length * SizeOf(Char)));
+end;
+
+// whether aText[aStart .. aFinish - 1] and aText[aOther .. aOtherFinish - 1] are one word, ASCII letters in either case
+function SameSpans(const aText: string; aStart, aFinish, aOther, aOtherFinish: integer): boolean;
+begin
+  if aFinish - aStart <> aOtherFinish - aOther then
+    Exit(False);
+  for var i := 0 to aFinish - aStart - 1 do
+  begin
+    var one: Char := aText[aStart + i];
+    var other: Char := aText[aOther + i];
+    if (one <> other) and ((Ord(one) xor Ord(other) <> 32) or not CharInSet(Char(Ord(one) or 32), ['a' .. 'z'])) then
+      Exit(False);
+  end;
+  Result := True;
+end;
+
+const
+  cMaxArguments = 255;
+  cUnknown = -1; // a function Excel does not have
+  cResult = -2; // a LAMBDA's result or a parameter called: LAMBDA(x,x+1)(5), f(5)
+  cNoCall = -3;
+
+type
+  // a parameter's name in the formula, without its _xlpm.
+  TFormulaSpan = record
+    Start, Finish: integer;
+  end;
+
+  // a bracket open: a function's ( (f), a group's ( (g), an array constant's { ({)
+  TFormulaOpen = record
+    Kind: Char;
+    Called: integer; // a function's: cFunctions' index, cUnknown, cResult
+    Commas: integer;
+    Scope: integer; // the parameters declared before it: those after it end at its )
+    // its argument so far may be a reference (A1, a name, (A1), A1:INDEX(...)): a constant, another operator or a call of a
+    // function giving a value spoils it, and Excel refuses a file with it where one must stand
+    ReferenceLike: boolean;
+  end;
+
+  // StoredFormula's walk: Excel's grammar over the scanner's tokens, the stored form written (prefixes, Excel's names)
+  TFormulaGrammar = record
+    Text: string;
+    Why, Unknown: string;
+    Output: TFormulaCopy;
+    // what comes next: a value (at the start, after an operator, an opening bracket, a comma) or an operator
+    ExpectValue: boolean;
+    // the value before was a constant (a number, a text, TRUE, an error, an array): no range or intersection with it
+    Constant: boolean;
+    Spaced: boolean; // spaces after a value: an intersection when another value follows
+    Ranged: boolean; // after a : the next value is a reference too
+    Arguments: boolean; // just after a function's ( or a comma between its arguments: an argument may be left out
+    Callable: boolean; // just after a LAMBDA's ) or a call's: a ( calls its result
+    Call: integer; // after a function's name: what its ( opens; cNoCall otherwise
+    Opened: TArray<TFormulaOpen>;
+    Depth: integer;
+    Parameters: TArray<TFormulaSpan>; // LET's and LAMBDA's in scope
+    ParameterCount: integer;
+    procedure Start(const aFormula: string);
+    function Fail(const aWhy: string): boolean;
+    function Inside: Char;
+    function NextChar(aFrom: integer): Char;
+    procedure NotAReference;
+    function Value(aConstant, aPrefixed: boolean): boolean;
+    function NotAValue: boolean;
+    function CheckReference(aPosition: integer): boolean;
+    procedure Push(aKind: Char; aCalled: integer);
+    function CloseFunction: boolean;
+    function Declares(aEnd: integer): boolean;
+    function Declared(aStart, aFinish: integer): integer;
+    function Parameter(const aToken: TFormulaToken; aStart: integer): boolean;
+    function FunctionName(const aToken: TFormulaToken): boolean;
+    function Constants(const aToken: TFormulaToken): boolean;
+    function Bracket(const aToken: TFormulaToken; aWasCallable: boolean): boolean;
+    function Separator(const aToken: TFormulaToken): boolean;
+    function Operator(const aToken: TFormulaToken): boolean;
+    function Token(const aToken: TFormulaToken): boolean;
+    function Ended: boolean;
+  end;
+
+procedure TFormulaGrammar.Start(const aFormula: string);
+begin
+  Text := aFormula;
+  Why := '';
+  Unknown := '';
+  Output.Start(aFormula);
+  ExpectValue := True;
+  Constant := False;
+  Spaced := False;
+  Ranged := False;
+  Arguments := False;
+  Callable := False;
+  Call := cNoCall;
+  Depth := 0;
+  ParameterCount := 0;
+end;
+
+function TFormulaGrammar.Fail(const aWhy: string): boolean;
+begin
+  Why := aWhy;
+  Result := False;
+end;
+
+function TFormulaGrammar.Inside: Char;
+begin
+  if Depth = 0 then
+    Result := #0
+  else
+    Result := Opened[Depth - 1].Kind;
+end;
+
+// the first character from aFrom past spaces, #0 at the end
+function TFormulaGrammar.NextChar(aFrom: integer): Char;
+begin
+  while (aFrom <= Text.Length) and IsFormulaSpace(Text[aFrom]) do
+    Inc(aFrom);
+  if aFrom > Text.Length then
+    Result := #0
+  else
+    Result := Text[aFrom];
+end;
+
+// the innermost function's argument is no reference: a group's ( ) inside it is part of it, an array constant is not
+procedure TFormulaGrammar.NotAReference;
+begin
+  for var index := Depth - 1 downto 0 do
+    case Opened[index].Kind of
+      'f':
+        begin
+          Opened[index].ReferenceLike := False;
+          Exit;
+        end;
+      '{':
+        Exit;
+    end;
+end;
+
+// a value where one may stand: next to another only through spaces, both references (an intersection); aPrefixed - after
+// Sheet1! or [1]!, a reference's place
+function TFormulaGrammar.Value(aConstant, aPrefixed: boolean): boolean;
+begin
+  if not ExpectValue and not (Spaced and not Constant and not aConstant and (Inside <> '{')) then
+    Exit(Fail('two values without an operator between them'));
+  if (Inside = '{') and not aConstant then
+    Exit(Fail('an array constant holds constants only'));
+  if (Ranged or aPrefixed) and aConstant then
+    Exit(Fail('a reference missing'));
+  if aConstant then
+    NotAReference;
+  ExpectValue := False;
+  Constant := aConstant;
+  Spaced := False;
+  Ranged := False;
+  Arguments := False;
+  Result := True;
+end;
+
+// anything but a value: not right after a :
+function TFormulaGrammar.NotAValue: boolean;
+begin
+  Result := not Ranged or Fail('a reference missing');
+  Spaced := False;
+end;
+
+// the argument ending here (aPosition, from 0) where Excel's function needs a reference: one or Excel refuses the file
+function TFormulaGrammar.CheckReference(aPosition: integer): boolean;
+begin
+  Result := True;
+  var called: integer := Opened[Depth - 1].Called;
+  if (called < 0) or (cFunctions[called].References = '') then
+    Exit;
+  var pattern: string := cFunctions[called].References;
+  var position: integer := aPosition;
+  if position >= pattern.Length then
+  begin // past its end the last one repeats, or the last two when paired
+    var period: integer := 1;
+    if cFunctions[called].Paired < cFunctions[called].Max then
+      period := 2;
+    position := pattern.Length - period + (position - pattern.Length) mod period;
+  end;
+  if (pattern[position + 1] = 'r') and (Arguments or not Opened[Depth - 1].ReferenceLike) then
+    Result := Fail(Format('%s''s argument %d must be a reference (A1, a name, INDEX(...)), not a value or left out',
+      [cFunctions[called].Name, aPosition + 1]));
+  Opened[Depth - 1].ReferenceLike := True;
+end;
+
+procedure TFormulaGrammar.Push(aKind: Char; aCalled: integer);
+begin
+  if Depth = Length(Opened) then
+    SetLength(Opened, Max(8, 2 * Depth));
+  Opened[Depth].Kind := aKind;
+  Opened[Depth].Called := aCalled;
+  Opened[Depth].Commas := 0;
+  Opened[Depth].Scope := ParameterCount;
+  Opened[Depth].ReferenceLike := True;
+  Inc(Depth);
+  Call := cNoCall;
+  ExpectValue := True;
+  Arguments := aKind = 'f';
+end;
+
+// a function's ): Excel refuses a file where its own one has another number of arguments
+function TFormulaGrammar.CloseFunction: boolean;
+begin
+  var top: TFormulaOpen := Opened[Depth - 1];
+  var count: integer := top.Commas + 1;
+  if (top.Commas = 0) and ExpectValue then
+    count := 0;
+  ParameterCount := top.Scope;
+  Callable := (top.Called = cLambdaFunction) or (top.Called = cResult);
+  if top.Called < 0 then
+    Exit(True);
+  var known: TExcelFunction := cFunctions[top.Called];
+  if known.Min > known.Max then
+    Exit(Fail(Format('Excel takes %s in no cell''s formula', [known.Name])));
+  if (count >= known.Min) and (count <= known.Max) and ((count <= known.Paired) or not Odd(count - known.Paired)) then
+    Exit((count = 0) or CheckReference(top.Commas));
+  var counts: string := IntToStr(known.Min);
+  if known.Max > known.Min then
+    counts := counts + ' to ' + IntToStr(known.Max);
+  if (known.Min = 1) and (known.Max = 1) then
+    counts := counts + ' argument'
+  else
+    counts := counts + ' arguments';
+  if known.Paired < known.Max then
+    counts := Format('%s, those after %d in pairs', [counts, known.Paired]);
+  Result := Fail(Format('%s takes %s, not %d', [known.Name, counts, count]));
+end;
+
+// a name ending before aEnd declares a parameter: LET's (each other argument, not its last), LAMBDA's (all but its last)
+function TFormulaGrammar.Declares(aEnd: integer): boolean;
+begin
+  Result := (Inside = 'f') and Arguments and (NextChar(aEnd) = ',') and ((Opened[Depth - 1].Called = cLambdaFunction) or
+    ((Opened[Depth - 1].Called = cLetFunction) and not Odd(Opened[Depth - 1].Commas)));
+end;
+
+// the parameter in scope named Text[aStart .. aFinish - 1] in any case (the last declared), -1 when there is none
+function TFormulaGrammar.Declared(aStart, aFinish: integer): integer;
+begin
+  for var index := ParameterCount - 1 downto 0 do
+    if SameSpans(Text, Parameters[index].Start, Parameters[index].Finish, aStart, aFinish) then
+      Exit(index);
+  Result := -1;
+end;
+
+// LET's or LAMBDA's parameter, its name from aStart (past _xlpm.), declared or used, written _xlpm. and as declared
+// (LAMBDA(Total,TOTAL*2) as LAMBDA(Total,Total*2)); called when a function's token
+function TFormulaGrammar.Parameter(const aToken: TFormulaToken; aStart: integer): boolean;
+begin
+  var declaring: boolean := (aToken.Kind = fkName) and Declares(aToken.Finish);
+  if not Value(False, False) then
+    Exit(False);
+  var name: TFormulaSpan;
+  if declaring then
+  begin
+    if ParameterCount = Length(Parameters) then
+      SetLength(Parameters, Max(4, 2 * ParameterCount));
+    name.Start := aStart;
+    name.Finish := aToken.Finish;
+    Parameters[ParameterCount] := name;
+    Inc(ParameterCount);
+  end
+  else
+    name := Parameters[Declared(aStart, aToken.Finish)];
+  var count: integer := name.Finish - name.Start;
+  if (aStart - aToken.Start <> cParameterPrefix.Length) or not IsExactly(Text, aToken.Start, aStart, cParameterPrefix) or
+    (aToken.Finish - aStart <> count) or not CompareMem(@Text[aStart], @Text[name.Start], count * SizeOf(Char)) then
+    Output.Replace(aToken.Start, aToken.Finish, cParameterPrefix + Copy(Text, name.Start, count));
+  if aToken.Kind = fkFunction then
+    Call := cResult;
+  Result := True;
+end;
+
+// a function's name, its ( next: one of Excel's with its prefix, upper case; another as it is
+function TFormulaGrammar.FunctionName(const aToken: TFormulaToken): boolean;
+begin
+  if not Value(False, False) then
+    Exit(False);
+  var start: integer := aToken.Start;
+  while StartsWithWord(Text, start, aToken.Finish, '_xlfn.') or StartsWithWord(Text, start, aToken.Finish, '_xlws.') do
+    Inc(start, 6);
+  Call := FindFunction(Text, start, aToken.Finish);
+  if Call >= 0 then
+  begin
+    if not cFunctions[Call].ReferenceResult then
+      NotAReference;
+    var written: string := cFunctionPrefixes[cFunctions[Call].Prefix] + cFunctions[Call].Name;
+    if not IsExactly(Text, aToken.Start, aToken.Finish, written) then
+      Output.Replace(aToken.Start, aToken.Finish, written);
+  end
+  else
+  begin
+    Call := cUnknown;
+    if (Unknown = '') and not StartsWithWord(Text, aToken.Start, aToken.Finish, '_xl') then // _xludf.: a user's function
+      Unknown := Copy(Text, aToken.Start, aToken.Finish - aToken.Start);
+  end;
+  Result := True;
+end;
+
+// a number, TRUE or FALSE, an error (Excel's in upper case)
+function TFormulaGrammar.Constants(const aToken: TFormulaToken): boolean;
+begin
+  var prefixed: boolean := aToken.Prefix > 0;
+  case aToken.Kind of
+    fkNumber:
+      begin
+        var word: string := Copy(Text, aToken.Start, aToken.Finish - aToken.Start);
+        var number: Double;
+        if not TUtility.TryFloatFromText(word, number) then
+          Exit(Fail('not a number: ' + word));
+        Result := Value(True, prefixed);
+      end;
+    fkLogical:
+      Result := Value(True, prefixed);
+  else
+    var error: integer := High(cErrors);
+    while not IsWord(Text, aToken.Start, aToken.Finish, cErrors[error]) do
+      Dec(error);
+    Result := Value(cErrors[error] <> '#REF!', prefixed); // Sheet1!#REF! stands for a reference
+    if not IsExactly(Text, aToken.Start, aToken.Finish, cErrors[error]) then
+      Output.Replace(aToken.Start, aToken.Finish, cErrors[error]);
+  end;
+end;
+
+// ( ) { }
+function TFormulaGrammar.Bracket(const aToken: TFormulaToken; aWasCallable: boolean): boolean;
+begin
+  if not NotAValue then
+    Exit(False);
+  case aToken.Kind of
+    fkOpen:
+      if Call <> cNoCall then
+        Push('f', Call)
+      else if aWasCallable and not ExpectValue then
+        Push('f', cResult)
+      else if ExpectValue and (Inside <> '{') then
+        Push('g', cNoCall)
+      else
+        Exit(Fail('a ( where an operator should be'));
+    fkClose:
+      begin
+        case Inside of
+          'f':
+            if ExpectValue and not Arguments then
+              Exit(Fail('an operator without the value after it'))
+            else if not CloseFunction then
+              Exit(False);
+          'g':
+            if ExpectValue then
+              Exit(Fail('a ( ) without a value inside'));
+        else
+          Exit(Fail('a ) without its opening one'));
+        end;
+        Dec(Depth);
+        ExpectValue := False;
+        Constant := False;
+        Arguments := False;
+      end;
+    fkArrayOpen:
+      begin
+        if not ExpectValue or (Inside = '{') then
+          Exit(Fail('a { where it cannot stand'));
+        Push('{', cNoCall);
+      end;
+  else
+    if Inside <> '{' then
+      Exit(Fail('a } without its opening one'));
+    if ExpectValue then
+      Exit(Fail('an array constant with a value missing'));
+    Dec(Depth);
+    ExpectValue := True; // the array is the value
+    Exit(Value(True, False));
+  end;
+  Result := True;
+end;
+
+// , ; %
+function TFormulaGrammar.Separator(const aToken: TFormulaToken): boolean;
+begin
+  if not NotAValue then
+    Exit(False);
+  case aToken.Kind of
+    fkComma:
+      case Inside of
+        'f':
+          begin
+            if not CheckReference(Opened[Depth - 1].Commas) then
+              Exit(False);
+            Arguments := True; // an argument may be left out: IF(A1,,2)
+            Inc(Opened[Depth - 1].Commas);
+            if Opened[Depth - 1].Commas >= cMaxArguments then
+              Exit(Fail(Format('more than %d arguments to a function', [cMaxArguments])));
+          end;
+        'g', '{':
+          if ExpectValue then
+            Exit(Fail('a comma without a value before it'));
+      else
+        Exit(Fail('a comma outside a function''s brackets'));
+      end;
+    fkSemicolon:
+      if (Inside <> '{') or ExpectValue then
+        Exit(Fail('a ; outside an array constant''s rows'));
+  else
+    if ExpectValue or (Inside = '{') then
+      Exit(Fail('a % without a value before it'));
+    NotAReference;
+    Exit(True);
+  end;
+  ExpectValue := True;
+  Result := True;
+end;
+
+function TFormulaGrammar.Operator(const aToken: TFormulaToken): boolean;
+begin
+  if not NotAValue then
+    Exit(False);
+  var letter: Char := Text[aToken.Start];
+  if CharInSet(letter, ['+', '-']) and ExpectValue then
+  begin // a sign
+    Arguments := False;
+    NotAReference;
+    Exit(True);
+  end;
+  if ExpectValue or (Inside = '{') then
+    Exit(Fail('an operator without the value before it'));
+  if (letter = ':') and Constant then
+    Exit(Fail('a range of a constant'));
+  Ranged := letter = ':';
+  if not Ranged then
+    NotAReference;
+  ExpectValue := True;
+  Result := True;
+end;
+
+function TFormulaGrammar.Token(const aToken: TFormulaToken): boolean;
+begin
+  var wasCallable: boolean := Callable;
+  Callable := False;
+  case aToken.Kind of
+    fkSpace:
+      begin
+        if not ExpectValue then
+          Spaced := True;
+        Result := True;
+      end;
+    fkText:
+      Result := Value(True, False);
+    fkNumber, fkLogical, fkError:
+      Result := Constants(aToken);
+    fkReference, fkTable:
+      Result := Value(False, False);
+    fkName, fkFunction:
+      begin
+        var start: integer := aToken.Start;
+        if StartsWithWord(Text, start, aToken.Finish, cParameterPrefix) then
+          Inc(start, cParameterPrefix.Length);
+        if (aToken.Prefix = 0) and (((aToken.Kind = fkName) and Declares(aToken.Finish)) or
+          (Declared(start, aToken.Finish) >= 0)) then
+          Result := Parameter(aToken, start)
+        else if aToken.Kind = fkFunction then
+          Result := FunctionName(aToken)
+        else
+          Result := Value(False, False);
+      end;
+    fkOpen, fkClose, fkArrayOpen, fkArrayClose:
+      Result := Bracket(aToken, wasCallable);
+    fkComma, fkSemicolon, fkPercent:
+      Result := Separator(aToken);
+  else
+    Result := Operator(aToken);
+  end;
+end;
+
+// the checks at the formula's end
+function TFormulaGrammar.Ended: boolean;
+begin
+  if Inside = '{' then
+    Exit(Fail('a { without its closing one'));
+  if Depth > 0 then
+    Exit(Fail('a ( without its closing one'));
+  if Ranged then
+    Exit(Fail('a reference missing'));
+  if ExpectValue then
+    if Text.Trim = '' then
+      Exit(Fail('an empty formula'))
+    else
+      Exit(Fail('an operator without the value after it'));
+  Result := True;
+end;
+
+function StoredFormula(const aFormula: string; out aResult, aWhy, aUnknown: string): boolean;
+var
+  scanner: TFormulaScanner;
+  token: TFormulaToken;
+  grammar: TFormulaGrammar;
+begin
+  scanner := TFormulaScanner.Create(aFormula);
+  grammar.Start(aFormula);
+  try
+    Result := True;
+    while Result and scanner.Next(token) do
+      Result := grammar.Token(token);
+    if Result and (scanner.Error <> '') then
+      Result := grammar.Fail(scanner.Error);
+    Result := Result and grammar.Ended;
+    aWhy := grammar.Why;
+    aUnknown := grammar.Unknown;
+    if Result then
+      aResult := grammar.Output.Done
+    else
+      aResult := '';
+  finally
+    grammar.Output.Builder.Free;
+  end;
 end;
 
 function ShiftFormula(const aFormula: string; const aMap: TReferenceMap; out aResult, aWhy: string): boolean;
