@@ -158,7 +158,7 @@ function RgbValue(const aHex: string): integer;
 
 implementation
 
-uses System.Math, System.DateUtils, System.Zip, ProRock.Calcite.Formulas, ProRock.Calcite.Formats,
+uses System.Math, System.DateUtils, System.StrUtils, System.Zip, ProRock.Calcite.Formulas, ProRock.Calcite.Formats,
   ProRock.Xmlite.Schema.Ooxml.DmlMain;
 
 type
@@ -1412,7 +1412,7 @@ begin
     var why: string;
     if not ShiftFormula(text, map, aChanged[index], why) then
     begin // one not naming the sheet stays as it is
-      if text.ToUpper.Contains(aMap.Sheet.ToUpper) then
+      if ContainsText(text, aMap.Sheet) then
       begin
         aWhy := Format('the defined name %s does not read: %s', [names[index].Name, why]);
         Exit(False);

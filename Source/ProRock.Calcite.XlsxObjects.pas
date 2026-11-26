@@ -447,7 +447,7 @@ var
 begin
   if fMap.Change = TReferenceChange.rcSheetDelete then
     Exit(PlanOthers);
-  last := fMap.First - fMap.Delta - 1;
+  last := fMap.Last;
   var package: TPackageOoxml := fBook.Package;
   for var relationship: TRelationshipOoxml in package.Relationships(fStore.Part) do
     if relationship.&Type.EndsWith(cTable) then
@@ -490,7 +490,7 @@ begin
     PlanCaches;
     Exit('');
   end;
-  var last: integer := fMap.First - fMap.Delta - 1;
+  var last: integer := fMap.Last;
   for var area: TArea in fStore.Areas(akPivot) do
   begin
     var low: integer := IfThen(fMap.ByRows, area.Top, area.Left);
@@ -648,7 +648,7 @@ begin
   end;
   if aMap.ByRows and (aMap.Change = TReferenceChange.rcDelete) then
   begin
-    var last: integer := aMap.First - aMap.Delta - 1;
+    var last: integer := aMap.Last;
     for var relationship: TRelationshipOoxml in package.Relationships(fStore.Part) do
       if relationship.&Type.EndsWith(cTable) then
       begin
@@ -674,7 +674,7 @@ begin
   end;
   var gone: TArray<string> := nil;
   var bodies: TArray<TTableBody> := nil;
-  var last: integer := aMap.First - aMap.Delta - 1;
+  var last: integer := aMap.Last;
   for var relationship: TRelationshipOoxml in package.Relationships(fStore.Part) do
     if relationship.&Type.EndsWith(cTable) then
     begin
@@ -770,7 +770,7 @@ begin
   var columns: TTableColumnCTList := aTable.TableColumns.TableColumn;
   if not fMap.ByRows and (fMap.Delta < 0) then
   begin
-    var last: integer := fMap.First - fMap.Delta - 1;
+    var last: integer := fMap.Last;
     for var index := columns.Count - 1 downto 0 do
       if (aOld.Left + index >= fMap.First) and (aOld.Left + index <= last) then
         columns.Delete(index);
@@ -809,7 +809,7 @@ end;
 // the totals row deleted: the table keeps none
 procedure TTablesHandler.DropTotals(aTable: TTableE; const aOld: TArea);
 begin
-  var last: integer := fMap.First - fMap.Delta - 1;
+  var last: integer := fMap.Last;
   if not fMap.ByRows or (fMap.Delta >= 0) or (aTable.TotalsRowCount = 0) or (aOld.Bottom < fMap.First) or (aOld.Bottom > last) then
     Exit;
   aTable.Clear(@aTable.TotalsRowCount);
@@ -1109,7 +1109,7 @@ begin
   var offset: Int64;
   MarkerPlace(aMarker, fMap.ByRows, index, offset);
   Inc(index);
-  var last: integer := fMap.First - fMap.Delta - 1;
+  var last: integer := fMap.Last;
   Result := (fMap.Delta < 0) and ((index >= fMap.First) and (index <= last) or aEnd and (index = last + 1) and (offset = 0));
 end;
 

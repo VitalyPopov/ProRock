@@ -356,7 +356,7 @@ const
 
 begin
   var sheet: TWorksheetE := fStore.Objects(False);
-  var last: integer := fMap.First - fMap.Delta - 1;
+  var last: integer := fMap.Last;
   var limit: integer := fMap.Limit;
   for var area: TArea in fStore.Areas(akArray) do
   begin
@@ -443,7 +443,7 @@ begin
   if sheet.Cols.Count = 0 then
     Exit;
   var columns: TColCTList := fStore.SortedColumns;
-  var last: integer := fMap.First - fMap.Delta - 1;
+  var last: integer := fMap.Last;
   SplitColumns(columns, fMap.First);
   if fMap.Delta < 0 then
   begin
@@ -504,7 +504,7 @@ procedure TCellsHandler.ShiftCells;
 begin
   var sheet: TWorksheetE := fStore.Objects(True);
   var rows: TRowCTList := sheet.SheetData.Row;
-  var last: integer := fMap.First - fMap.Delta - 1;
+  var last: integer := fMap.Last;
   if fMap.ByRows then
   begin
     var index: integer;
@@ -807,7 +807,7 @@ end;
 procedure TAutoFilterHandler.Apply;
 begin
   var sheet: TWorksheetE := fStore.Objects(True);
-  var last: integer := fMap.First - fMap.Delta - 1;
+  var last: integer := fMap.Last;
   var filterGone: boolean := False;
   if sheet.IsPresent('AutoFilter') then
   begin
@@ -936,7 +936,7 @@ begin
   var sheet: TWorksheetE := fStore.Objects(True);
   if not sheet.IsPresent('SheetViews') then
     Exit;
-  var last: integer := fMap.First - fMap.Delta - 1;
+  var last: integer := fMap.Last;
   for var view: TSheetViewCT in sheet.SheetViews.SheetView do
     if view.IsPresent('Pane') and (view.Pane.State in [stpsFrozen, stpsFrozenSplit]) then
     begin

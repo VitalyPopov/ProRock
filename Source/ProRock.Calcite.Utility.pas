@@ -114,6 +114,8 @@ type
     function Delta: integer;
     // the last row or column along ByRows
     function Limit: integer;
+    // a delete: the last row or column deleted
+    function Last: integer;
     // a span of rows or columns as Excel moves it: one inserted inside grows (aGrowAfter: right after it too, as a format
     // carries on), a delete shrinks it, the whole sheet's stays and one reaching the last row or column keeps reaching
     // it; False when nothing is left
@@ -123,6 +125,11 @@ type
     function MovedArea(var aArea: TArea; aGrowAfter: boolean = False): boolean;
     // a list of areas (A1:B5 D7) the same way, those gone dropped: '' when none is left
     function MovedSqref(const aSqref: string; aGrowAfter: boolean = False): string;
+  private
+    function MapFill(const aReference: TReference; out aText: string): boolean;
+    function MovedEnd(var aValue: integer; aFixed: boolean): boolean;
+    function MovedEnds(const aReference: TReference; var aLow, aHigh: integer; aLowFixed, aHighFixed: boolean): boolean;
+    function GrowsWithTable(const aReference: TReference; aLow, aHigh: integer): boolean;
   end;
 
   TUtility = class abstract(ProRock.Xmlite.Utility.TUtility)
@@ -420,13 +427,18 @@ begin
     Result := TUtility.cMaxColumn;
 end;
 
+function TReferenceMap.Last: integer;
+begin
+  Result := First + Count - 1;
+end;
+
 function TReferenceMap.MovedSpan(var aLow, aHigh: integer; aGrowAfter: boolean): boolean;
 begin
   var count: integer := Delta;
-  var limit: integer := Limit;
+  var bound: integer := Limit; // not `limit`: Delphi 10.3 reads the call as the variable
   if count > 0 then
   begin
-    if (aLow = 1) and (aHigh = limit) then
+    if (aLow = 1) and (aHigh = bound) then
       Exit(True);
     if First <= aLow then
     begin
@@ -435,8 +447,8 @@ begin
     end
     else if (First <= aHigh) or aGrowAfter and (First = aHigh + 1) then
       Inc(aHigh, count);
-    aHigh := Min(aHigh, limit);
-    Exit(aLow <= limit);
+    aHigh := Min(aHigh, bound);
+    Exit(aLow <= bound);
   end;
   var last: integer := First - count - 1;
   if last < aLow then
@@ -446,14 +458,14 @@ begin
   end
   else if First <= aHigh then
   begin
-    var toEnd: boolean := aHigh = limit;
+    var toEnd: boolean := aHigh = bound;
     var left: integer := aHigh - aLow + 1 - (Min(last, aHigh) - Max(First, aLow) + 1);
     if left = 0 then
       Exit(False);
     aLow := Min(aLow, First);
     aHigh := aLow + left - 1;
     if toEnd then
-      aHigh := limit;
+      aHigh := bound;
   end;
   Result := True;
 end;
@@ -592,87 +604,35 @@ begin
   Result := False;
 end;
 
+// one end of a reference as written, with its kind's parts
+function EndText(aKind: TReferenceKind; aRow, aColumn: integer; aRowFixed, aColumnFixed: boolean): string;
+begin
+  TUtility.MoveReference(aKind, aRow, aColumn, aRowFixed, aColumnFixed, 0, 0, Result);
+end;
+
+// a reference as Excel writes it: a range over every column as rows (5:7), over every row as columns (B:D)
+function ReferenceText(const aReference: TReference): string;
+begin
+  if not aReference.Range then
+    Result := EndText(aReference.Kind, aReference.Row, aReference.Column, aReference.RowFixed, aReference.ColumnFixed)
+  else if (aReference.Kind = TReferenceKind.rkCell) and (Min(aReference.Column, aReference.Column2) = 1) and
+    (Max(aReference.Column, aReference.Column2) = TUtility.cMaxColumn) then
+    Result := EndText(TReferenceKind.rkRow, aReference.Row, 0, aReference.RowFixed, False) + ':' +
+      EndText(TReferenceKind.rkRow, aReference.Row2, 0, aReference.RowFixed2, False)
+  else if (aReference.Kind = TReferenceKind.rkCell) and (Min(aReference.Row, aReference.Row2) = 1) and
+    (Max(aReference.Row, aReference.Row2) = TUtility.cMaxRow) then
+    Result := EndText(TReferenceKind.rkColumn, 0, aReference.Column, False, aReference.ColumnFixed) + ':' +
+      EndText(TReferenceKind.rkColumn, 0, aReference.Column2, False, aReference.ColumnFixed2)
+  else
+    Result := EndText(aReference.Kind, aReference.Row, aReference.Column, aReference.RowFixed, aReference.ColumnFixed) +
+      ':' + EndText(aReference.Kind, aReference.Row2, aReference.Column2, aReference.RowFixed2, aReference.ColumnFixed2);
+end;
+
 function TReferenceMap.Map(aReference: TReference; out aText: string): boolean;
-var
-  low, high, limit: integer;
-  lowFixed, highFixed: boolean;
-
-  // one end alone: False when it is deleted or pushed off the sheet
-  function MapOne(var aValue: integer; aFixed: boolean): boolean;
-  begin
-    Result := True;
-    if InName and not aFixed then
-      Exit;
-    if Change = TReferenceChange.rcInsert then
-    begin
-      if aValue >= First then
-        Inc(aValue, Count);
-      Result := aValue <= limit;
-    end
-    else if aValue >= First + Count then
-      Dec(aValue, Count)
-    else if aValue >= First then
-      Result := False;
-  end;
-
-  // a range's ends, low <= high
-  function MapRange: boolean;
-  begin
-    if InName and (not lowFixed or not highFixed) then
-      Exit(MapOne(low, lowFixed) and MapOne(high, highFixed));
-    var last: integer := First + Count - 1;
-    if Change = TReferenceChange.rcInsert then
-    begin
-      if (low = 1) and (high = limit) then // every row or column stays so
-        Exit(True);
-      if ByRows and (aReference.Kind = TReferenceKind.rkCell) then
-        for var body: TTableBody in Bodies do
-          if (Min(aReference.Column, aReference.Column2) >= body.Left) and
-            (Max(aReference.Column, aReference.Column2) <= body.Right) and (low >= body.Top) and (low <= body.DataTop) and
-            (high >= body.DataBottom) and (high <= body.Bottom) and
-            ((First = body.DataTop) or (First = body.DataBottom + 1) and (First <= body.Bottom)) then
-          begin
-            high := Min(high + Count, limit);
-            Exit(True);
-          end;
-      if low >= First then
-        Inc(low, Count);
-      if high >= First then
-        high := Min(high + Count, limit);
-      Exit(low <= limit);
-    end;
-    if (low >= First) and (high <= last) then
-      Exit(False);
-    if low > last then
-      Dec(low, Count)
-    else if low >= First then
-      low := First;
-    if high = limit then
-      // reaching the last row or column, it keeps reaching it
-    else if high > last then
-      Dec(high, Count)
-    else if high >= First then
-      high := First - 1;
-    Result := True;
-  end;
-
-  function Text(aKind: TReferenceKind; aRow, aColumn: integer; aRowFixed, aColumnFixed: boolean): string;
-  begin
-    TUtility.MoveReference(aKind, aRow, aColumn, aRowFixed, aColumnFixed, 0, 0, Result);
-  end;
-
 begin
   aText := '';
   if Change = TReferenceChange.rcFill then
-  begin
-    var moved2: string;
-    Result := TUtility.MoveReference(aReference.Kind, aReference.Row, aReference.Column, aReference.RowFixed,
-      aReference.ColumnFixed, Rows, Columns, aText) and (not aReference.Range or TUtility.MoveReference(aReference.Kind,
-      aReference.Row2, aReference.Column2, aReference.RowFixed2, aReference.ColumnFixed2, Rows, Columns, moved2));
-    if aReference.Range then
-      aText := aText + ':' + moved2;
-    Exit;
-  end;
+    Exit(MapFill(aReference, aText));
   Result := True;
   if (ByRows and (aReference.Kind = TReferenceKind.rkColumn)) or (not ByRows and (aReference.Kind = TReferenceKind.rkRow)) then
     Exit;
@@ -684,10 +644,10 @@ begin
     aReference.ColumnFixed2 := aReference.ColumnFixed;
   end;
   // a range written backwards (A5:A1) as low and high
-  var swapped: boolean;
+  var swapped, lowFixed, highFixed: boolean;
+  var low, high: integer;
   if ByRows then
   begin
-    limit := TUtility.cMaxRow;
     swapped := aReference.Row > aReference.Row2;
     low := Min(aReference.Row, aReference.Row2);
     high := Max(aReference.Row, aReference.Row2);
@@ -696,7 +656,6 @@ begin
   end
   else
   begin
-    limit := TUtility.cMaxColumn;
     swapped := aReference.Column > aReference.Column2;
     low := Min(aReference.Column, aReference.Column2);
     high := Max(aReference.Column, aReference.Column2);
@@ -706,9 +665,9 @@ begin
   var oldLow: integer := low;
   var oldHigh: integer := high;
   if aReference.Range then
-    Result := MapRange
+    Result := MovedEnds(aReference, low, high, lowFixed, highFixed)
   else
-    Result := MapOne(low, lowFixed);
+    Result := MovedEnd(low, lowFixed);
   if not Result or ((low = oldLow) and (high = oldHigh)) then
     Exit;
   if not aReference.Range then
@@ -729,20 +688,84 @@ begin
     aReference.Column := low;
     aReference.Column2 := high;
   end;
-  if not aReference.Range then
-    aText := Text(aReference.Kind, aReference.Row, aReference.Column, aReference.RowFixed, aReference.ColumnFixed)
-  else if (aReference.Kind = TReferenceKind.rkCell) and (Min(aReference.Column, aReference.Column2) = 1) and
-    (Max(aReference.Column, aReference.Column2) = TUtility.cMaxColumn) then
-    // every column: Excel writes the rows, 5:7
-    aText := Text(TReferenceKind.rkRow, aReference.Row, 0, aReference.RowFixed, False) + ':' +
-      Text(TReferenceKind.rkRow, aReference.Row2, 0, aReference.RowFixed2, False)
-  else if (aReference.Kind = TReferenceKind.rkCell) and (Min(aReference.Row, aReference.Row2) = 1) and
-    (Max(aReference.Row, aReference.Row2) = TUtility.cMaxRow) then
-    aText := Text(TReferenceKind.rkColumn, 0, aReference.Column, False, aReference.ColumnFixed) + ':' +
-      Text(TReferenceKind.rkColumn, 0, aReference.Column2, False, aReference.ColumnFixed2)
-  else
-    aText := Text(aReference.Kind, aReference.Row, aReference.Column, aReference.RowFixed, aReference.ColumnFixed) + ':' +
-      Text(aReference.Kind, aReference.Row2, aReference.Column2, aReference.RowFixed2, aReference.ColumnFixed2);
+  aText := ReferenceText(aReference);
+end;
+
+function TReferenceMap.MapFill(const aReference: TReference; out aText: string): boolean;
+begin
+  var moved2: string;
+  Result := TUtility.MoveReference(aReference.Kind, aReference.Row, aReference.Column, aReference.RowFixed,
+    aReference.ColumnFixed, Rows, Columns, aText) and (not aReference.Range or TUtility.MoveReference(aReference.Kind,
+    aReference.Row2, aReference.Column2, aReference.RowFixed2, aReference.ColumnFixed2, Rows, Columns, moved2));
+  if aReference.Range then
+    aText := aText + ':' + moved2;
+end;
+
+// one end alone: False when it is deleted or pushed off the sheet
+function TReferenceMap.MovedEnd(var aValue: integer; aFixed: boolean): boolean;
+begin
+  Result := True;
+  if InName and not aFixed then
+    Exit;
+  if Change = TReferenceChange.rcInsert then
+  begin
+    if aValue >= First then
+      Inc(aValue, Count);
+    Result := aValue <= Limit;
+  end
+  else if aValue >= First + Count then
+    Dec(aValue, Count)
+  else if aValue >= First then
+    Result := False;
+end;
+
+// a range's ends, aLow <= aHigh: False when it is wholly deleted or pushed off the sheet
+function TReferenceMap.MovedEnds(const aReference: TReference; var aLow, aHigh: integer; aLowFixed, aHighFixed: boolean): boolean;
+begin
+  if InName and (not aLowFixed or not aHighFixed) then
+    Exit(MovedEnd(aLow, aLowFixed) and MovedEnd(aHigh, aHighFixed));
+  var bound: integer := Limit; // not `limit`: Delphi 10.3 reads the call as the variable
+  if Change = TReferenceChange.rcInsert then
+  begin
+    if (aLow = 1) and (aHigh = bound) then // every row or column stays so
+      Exit(True);
+    if GrowsWithTable(aReference, aLow, aHigh) then
+    begin
+      aHigh := Min(aHigh + Count, bound);
+      Exit(True);
+    end;
+    if aLow >= First then
+      Inc(aLow, Count);
+    if aHigh >= First then
+      aHigh := Min(aHigh + Count, bound);
+    Exit(aLow <= bound);
+  end;
+  if (aLow >= First) and (aHigh <= Last) then
+    Exit(False);
+  if aLow > Last then
+    Dec(aLow, Count)
+  else if aLow >= First then
+    aLow := First;
+  if aHigh = bound then
+    // reaching the last row or column, it keeps reaching it
+  else if aHigh > Last then
+    Dec(aHigh, Count)
+  else if aHigh >= First then
+    aHigh := First - 1;
+  Result := True;
+end;
+
+// a cell range in one of Bodies' columns over all its data rows, rows inserted at its first data row or its totals row
+function TReferenceMap.GrowsWithTable(const aReference: TReference; aLow, aHigh: integer): boolean;
+begin
+  Result := False;
+  if not ByRows or (aReference.Kind <> TReferenceKind.rkCell) then
+    Exit;
+  for var body: TTableBody in Bodies do
+    if (Min(aReference.Column, aReference.Column2) >= body.Left) and (Max(aReference.Column, aReference.Column2) <= body.Right) and
+      (aLow >= body.Top) and (aLow <= body.DataTop) and (aHigh >= body.DataBottom) and (aHigh <= body.Bottom) and
+      ((First = body.DataTop) or (First = body.DataBottom + 1) and (First <= body.Bottom)) then
+      Exit(True);
 end;
 
 class function TUtility.SerialToDate(aSerial: Double; a1904: boolean): TDateTime;
