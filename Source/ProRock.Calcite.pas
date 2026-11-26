@@ -341,11 +341,6 @@ type
   TRangeColumns = TRange.TColumns;
   TRangeRows = TRange.TRows;
 
-  // Calcite's own: a sheet's VML drawing (its notes' boxes), whose <xml> root no schema has; the shapes come in XmlAny
-  [TXmliteAnyElement]
-  [TName('xml')]
-  TVmlDrawing = class(TXmlite);
-
   // the sheet's xlsx objects: Sheet.Xlsx
   TWorksheetXlsx = class
   private
@@ -640,7 +635,6 @@ type
     fXlsx: TWorkbookXlsx;
     fProperties: TWorkbookProperties;
     fDateFormats: array[0 .. 1] of string; // DateFormat, DateTimeFormat
-    fDateFormatIds: array[0 .. 1] of integer; // their numFmtIds in this workbook's styles, -2: not found yet
     fBook: TXlsxBook;
     fSheets: TWorksheets;
     fIssues: TIssues;
@@ -658,14 +652,10 @@ type
     function SheetNameError(const aName: string; aExcept: TWorksheet): string;
     function AddSheet(const aName: string): TWorksheet;
 
-    function GetXml: TWorkbookE;
-    function GetXmlSharedStrings: TSstE;
-    function GetXmlStyles: TStyleSheetE;
     function GetFileName: string;
     function ExtensionError(const aFileName: string): string;
     function GetDateFormat(aIndex: integer): string;
     procedure SetDateFormat(aIndex: integer; const aValue: string);
-    function DateFormatId(aIndex: integer): integer;
   public
     // a new workbook, as Excel's: Sheet1 and nothing in it; Open replaces it
     constructor Create;
@@ -5480,53 +5470,6 @@ begin
   end;
 end;
 
-// every defined name's text through aMap (by the names' index; nil when there are none). False with aWhy when one naming
-// aMap's sheet does not read
-function MappedNames(aBook: TWorkbook; const aMap: TReferenceMap; out aChanged: TArray<string>; out aWhy: string): boolean;
-begin
-  aWhy := '';
-  aChanged := nil;
-  var xml: TWorkbookE := nil;
-  if not aBook.fBook.WorkbookPart.IsEmpty then
-    xml := aBook.fBook.Package.Part<TWorkbookE>(aBook.fBook.WorkbookPart);
-  if (xml = nil) or not xml.IsPresent('DefinedNames') then
-    Exit(True);
-  var map: TReferenceMap := aMap;
-  map.OnSheet := False;
-  map.InName := True;
-  var names: TDefinedNameCTList := xml.DefinedNames.DefinedName;
-  SetLength(aChanged, names.Count);
-  for var index := 0 to names.Count - 1 do
-  begin
-    var text: string := DecodeText(names[index].XmlValue);
-    var why: string;
-    if not ShiftFormula(text, map, aChanged[index], why) then
-    begin // one not naming the sheet stays as it is
-      if text.ToUpper.Contains(aMap.Sheet.ToUpper) then
-      begin
-        aWhy := Format('the defined name %s does not read: %s', [names[index].Name, why]);
-        Exit(False);
-      end;
-      aChanged[index] := text;
-    end;
-  end;
-  Result := True;
-end;
-
-// the names' texts MappedNames gave written, those that changed
-procedure WriteNames(aBook: TWorkbook; const aChanged: TArray<string>);
-begin
-  if aChanged = nil then
-    Exit;
-  var names: TDefinedNameCTList := aBook.fBook.Package.Part<TWorkbookE>(aBook.fBook.WorkbookPart).DefinedNames.DefinedName;
-  for var index := 0 to names.Count - 1 do
-    if aChanged[index] <> DecodeText(names[index].XmlValue) then
-    begin
-      names := aBook.fBook.Package.EditPart<TWorkbookE>(aBook.fBook.WorkbookPart).DefinedNames.DefinedName;
-      names[index].XmlValue := EncodeText(aChanged[index]);
-    end;
-end;
-
 // every defined name, print areas and titles too, changed as Excel changes references for rows or columns of aSheet inserted
 // (aCount > 0) or deleted (aCount < 0) from aFirst. False with aWhy and nothing changed when one naming aSheet does not read
 function ChangeNames(aBook: TWorkbook; const aSheet: string; aByRows: boolean; aFirst, aCount: integer;
@@ -5537,9 +5480,9 @@ begin
     if AnsiSameText(sheet.fName, aSheet) then
       map := SheetMap('', sheet, aByRows, aFirst, aCount);
   var changed: TArray<string>;
-  Result := MappedNames(aBook, map, changed, aWhy);
+  Result := aBook.fBook.MappedNames(map, changed, aWhy);
   if Result then
-    WriteNames(aBook, changed);
+    aBook.fBook.WriteNames(changed);
 end;
 
 // Excel's Insert (aCount rows or columns at aFirst) and Delete (-aCount of them from aFirst): all checked and planned
@@ -5670,7 +5613,7 @@ begin
   begin
     var numberFormat: integer := cTimeFormat;
     if serial >= 1 then
-      numberFormat := fWorkbook.DateFormatId(Ord(Frac(serial) <> 0));
+      numberFormat := fWorkbook.fBook.FormatId(fWorkbook.fDateFormats[Ord(Frac(serial) <> 0)]);
     if numberFormat >= 0 then
       style := fWorkbook.fBook.DateStyle(style, numberFormat)
     else
@@ -6026,17 +5969,17 @@ end;
 
 function TWorkbookXlsx.GetWorkbook: TWorkbookE;
 begin
-  Result := fWorkbook.GetXml;
+  Result := fWorkbook.fBook.EditWorkbook;
 end;
 
 function TWorkbookXlsx.GetSharedStrings: TSstE;
 begin
-  Result := fWorkbook.GetXmlSharedStrings;
+  Result := fWorkbook.fBook.EditSharedStrings;
 end;
 
 function TWorkbookXlsx.GetStyles: TStyleSheetE;
 begin
-  Result := fWorkbook.GetXmlStyles;
+  Result := fWorkbook.fBook.EditStyles;
 end;
 
 function TWorkbookXlsx.GetCoreProperties: TCorePropertiesE;
@@ -6111,8 +6054,6 @@ begin
   fProperties.fWorkbook := Self;
   fDateFormats[0] := nfShortDate;
   fDateFormats[1] := nfShortDateTime;
-  fDateFormatIds[0] := -2;
-  fDateFormatIds[1] := -2;
 end;
 
 constructor TWorkbook.Create;
@@ -6216,11 +6157,6 @@ begin
   Swap<TXlsxBook>(fBook, aOther.fBook);
   Swap<TWorksheets>(fSheets, aOther.fSheets);
   Swap<TIssues>(fIssues, aOther.fIssues);
-  for var i := 0 to 1 do
-  begin
-    fDateFormatIds[i] := -2;
-    aOther.fDateFormatIds[i] := -2;
-  end;
   ForwardIssues;
   aOther.ForwardIssues;
   fSheets.fWorkbook := Self;
@@ -6570,7 +6506,7 @@ begin
       PlanCharts(Self, map, charts, why);
     var names: TArray<string>;
     if why = '' then
-      MappedNames(book, map, names, why);
+      book.fBook.MappedNames(map, names, why);
     for var sheet: TWorksheet in others do
     begin
       PlanExtensions(sheet);
@@ -6627,7 +6563,7 @@ begin
       if why <> '' then
         raise EInvalidOpException.CreateFmt('%s not deleted: %s', [fName, why]);
 
-      WriteNames(book, names);
+      book.fBook.WriteNames(names);
       var workbook: TWorkbookE := package.EditPart<TWorkbookE>(book.fBook.WorkbookPart);
       if workbook.IsPresent('DefinedNames') then
       begin // its own go (or the workbook's then), those of the sheets after it count one less
@@ -6755,26 +6691,6 @@ begin
   book.fSheets.fList.Remove(Self);
 end;
 
-function TWorkbook.GetXml: TWorkbookE;
-begin
-  Result := fBook.EditWorkbook;
-end;
-
-function TWorkbook.GetXmlSharedStrings: TSstE;
-begin
-  Result := fBook.EditSharedStrings;
-end;
-
-function TWorkbook.GetXmlStyles: TStyleSheetE;
-begin
-  Result := fBook.EditStyles;
-  if Result <> nil then
-  begin
-    fDateFormatIds[0] := -2;
-    fDateFormatIds[1] := -2;
-  end;
-end;
-
 function TWorkbook.GetFileName: string;
 begin
   Result := fBook.Package.FileName;
@@ -6796,15 +6712,6 @@ begin
   if local <> '' then
     fIssues.Add(TIssueSeverity.isWarning, 'NumberFormat', '', '"' + aValue + '": ' + local + ' - taken as it is');
   fDateFormats[aIndex] := aValue;
-  fDateFormatIds[aIndex] := -2;
-end;
-
-// the numFmtId of DateFormat (0) or DateTimeFormat (1), added to the styles on the first need; -1: no styles
-function TWorkbook.DateFormatId(aIndex: integer): integer;
-begin
-  if fDateFormatIds[aIndex] = -2 then
-    fDateFormatIds[aIndex] := fBook.FormatId(fDateFormats[aIndex]);
-  Result := fDateFormatIds[aIndex];
 end;
 
 // Excel opens a workbook only under the extension of its kind, and other formats' names would mislead

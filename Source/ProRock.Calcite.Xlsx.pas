@@ -5,7 +5,7 @@
 interface
 
 uses System.SysUtils, System.Classes, System.Generics.Collections, System.UITypes, ProRock.Xmlite, ProRock.Office.Ooxml,
-  ProRock.Xmlite.Schema.Ooxml.Sml;
+  ProRock.Xmlite.Schema.Ooxml.Sml, ProRock.Calcite.Utility;
 
 const
   // relationship types end in these names - Transitional and Strict differ only before them
@@ -33,6 +33,11 @@ const
   cAutomaticIndex = 64; // indexed: the system's text color, Excel's automatic
 
 type
+  // Calcite's own: a sheet's VML drawing (its notes' boxes), whose <xml> root no schema has; the shapes come in XmlAny
+  [TXmliteAnyElement]
+  [TName('xml')]
+  TVmlDrawing = class(TXmlite);
+
   // a worksheet of workbook.xml as Load found it
   TXlsxSheetEntry = record
     Name, Part: string;
@@ -52,12 +57,15 @@ type
     fThemeColors: TArray<integer>; // the theme's 12 in the order styles number them, read on the first need
     fDateStyleIds: TDictionary<UInt64, integer>; // DateStyle's answers: a style and a format, the style with it
     fDateStyles: TDictionary<cardinal, boolean>;
+    fFormatIds: TDictionary<string, integer>; // FormatId's answers by the code asked for
     fValuesChanged: boolean;
     fFormulasWritten: boolean;
 
     function ChangedItem<T: TXmlite, constructor>(aItems: TObjectList<T>; var aKeys: TDictionary<T, integer>;
       aIndex: cardinal; const aChange: TProc<T>): integer;
     function ThemeColor(aIndex: cardinal): integer;
+    function StoredFormatId(const aCode: string): integer;
+    procedure Forget;
   public
     constructor Create;
     destructor Destroy; override;
@@ -102,10 +110,16 @@ type
     function BorderAt(aBorder: cardinal): TBorderCT;
     function ColorOf(aColor: TColorCT; aDefault: TColor): TColor;
 
-    // the parts handed to the user (Workbook.Xlsx), each nil when the file has none; the caches over them are dropped
+    // the parts handed to the user (Workbook.Xlsx), each nil when the file has none; every cache is dropped (Forget)
     function EditWorkbook: TWorkbookE;
     function EditSharedStrings: TSstE;
     function EditStyles: TStyleSheetE;
+
+    // every defined name's text through aMap (by the names' index; nil when there are none). False with aWhy when one naming
+    // aMap's sheet does not read
+    function MappedNames(const aMap: TReferenceMap; out aChanged: TArray<string>; out aWhy: string): boolean;
+    // the names' texts MappedNames gave written, those that changed
+    procedure WriteNames(const aChanged: TArray<string>);
 
     property Package: TPackageOoxml read fPackage;
     property WorkbookPart: string read fWorkbookPart;
@@ -123,7 +137,7 @@ function RgbValue(const aHex: string): integer;
 
 implementation
 
-uses System.Math, System.DateUtils, System.Zip, ProRock.Calcite.Utility, ProRock.Calcite.Formats,
+uses System.Math, System.DateUtils, System.Zip, ProRock.Calcite.Formulas, ProRock.Calcite.Formats,
   ProRock.Xmlite.Schema.Ooxml.DmlMain;
 
 type
@@ -260,6 +274,7 @@ begin
   fBorderKeys.Free;
   fDateStyleIds.Free;
   fDateStyles.Free;
+  fFormatIds.Free;
   inherited;
 end;
 
@@ -648,8 +663,19 @@ begin
   Result := BuiltInFormat(id);
 end;
 
-// the id of a number format, built-in or in numFmts, added when there is none; -1 when there are no styles
+// the id of a number format, built-in or in numFmts, added when there is none; -1 when there are no styles. Asked for each
+// date written: kept
 function TXlsxBook.FormatId(const aCode: string): integer;
+begin
+  if fFormatIds = nil then
+    fFormatIds := TDictionary<string, integer>.Create;
+  if fFormatIds.TryGetValue(aCode, Result) then
+    Exit;
+  Result := StoredFormatId(aCode);
+  fFormatIds.Add(aCode, Result);
+end;
+
+function TXlsxBook.StoredFormatId(const aCode: string): integer;
 begin
   if fStylesPart.IsEmpty then
     Exit(-1);
@@ -864,8 +890,68 @@ begin
   Result := value;
 end;
 
+function TXlsxBook.MappedNames(const aMap: TReferenceMap; out aChanged: TArray<string>; out aWhy: string): boolean;
+begin
+  aWhy := '';
+  aChanged := nil;
+  var xml: TWorkbookE := nil;
+  if not fWorkbookPart.IsEmpty then
+    xml := fPackage.Part<TWorkbookE>(fWorkbookPart);
+  if (xml = nil) or not xml.IsPresent('DefinedNames') then
+    Exit(True);
+  var map: TReferenceMap := aMap;
+  map.OnSheet := False;
+  map.InName := True;
+  var names: TDefinedNameCTList := xml.DefinedNames.DefinedName;
+  SetLength(aChanged, names.Count);
+  for var index := 0 to names.Count - 1 do
+  begin
+    var text: string := DecodeText(names[index].XmlValue);
+    var why: string;
+    if not ShiftFormula(text, map, aChanged[index], why) then
+    begin // one not naming the sheet stays as it is
+      if text.ToUpper.Contains(aMap.Sheet.ToUpper) then
+      begin
+        aWhy := Format('the defined name %s does not read: %s', [names[index].Name, why]);
+        Exit(False);
+      end;
+      aChanged[index] := text;
+    end;
+  end;
+  Result := True;
+end;
+
+procedure TXlsxBook.WriteNames(const aChanged: TArray<string>);
+begin
+  if aChanged = nil then
+    Exit;
+  var names: TDefinedNameCTList := fPackage.Part<TWorkbookE>(fWorkbookPart).DefinedNames.DefinedName;
+  for var index := 0 to names.Count - 1 do
+    if aChanged[index] <> DecodeText(names[index].XmlValue) then
+    begin
+      names := fPackage.EditPart<TWorkbookE>(fWorkbookPart).DefinedNames.DefinedName;
+      names[index].XmlValue := EncodeText(aChanged[index]);
+    end;
+end;
+
+// what is built from the parts: the user may change them now
+procedure TXlsxBook.Forget;
+begin
+  FreeAndNil(fStrings);
+  FreeAndNil(fStyleKeys);
+  FreeAndNil(fFontKeys);
+  FreeAndNil(fFillKeys);
+  FreeAndNil(fBorderKeys);
+  FreeAndNil(fDateStyleIds);
+  FreeAndNil(fDateStyles);
+  FreeAndNil(fFormatIds);
+  fThemeColors := nil;
+  fValuesChanged := False; // calcPr may be gone: set again on the next write
+end;
+
 function TXlsxBook.EditWorkbook: TWorkbookE;
 begin
+  Forget;
   Result := nil;
   if not fWorkbookPart.IsEmpty then
     Result := fPackage.EditPart<TWorkbookE>(fWorkbookPart);
@@ -873,27 +959,18 @@ end;
 
 function TXlsxBook.EditSharedStrings: TSstE;
 begin
+  Forget;
   Result := nil;
   if not fSharedStringsPart.IsEmpty then
-  begin
     Result := fPackage.EditPart<TSstE>(fSharedStringsPart);
-    FreeAndNil(fStrings); // the user's changes: found again on the next write
-  end;
 end;
 
 function TXlsxBook.EditStyles: TStyleSheetE;
 begin
+  Forget;
   Result := nil;
   if not fStylesPart.IsEmpty then
-  begin
     Result := fPackage.EditPart<TStyleSheetE>(fStylesPart);
-    FreeAndNil(fStyleKeys);
-    FreeAndNil(fFontKeys);
-    FreeAndNil(fFillKeys);
-    FreeAndNil(fBorderKeys);
-    FreeAndNil(fDateStyleIds);
-    FreeAndNil(fDateStyles);
-  end;
 end;
 
 end.
