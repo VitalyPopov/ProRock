@@ -6,7 +6,8 @@ program ProRock.Xmlite.EInvoiceSample;
 //
 // XML only: no PDF (a ZUGFeRD or Factur-X file holds its XML inside a PDF), no check of a document against the rules of EN 16931.
 //
-// The schemas: Copyright (C) UN/CEFACT (2016), Copyright (c) OASIS Open 2024 - see THIRD-PARTY-NOTICES.md.
+// The schemas: Copyright (C) UN/CEFACT (2016), Copyright (c) OASIS Open 2024 - see THIRD-PARTY-NOTICES.md; README.md says
+// where to get them.
 // The invoices: from KoSIT's xrechnung-testsuite, Apache License 2.0.
 
 uses

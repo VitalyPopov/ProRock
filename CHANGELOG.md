@@ -105,6 +105,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   classes were left unknown to the reader without a word
 - The SpreadsheetML, DrawingML, package relationships and document properties (core, app, Dublin Core) units moved from the
   samples to `Source`: if your project lists the samples' copies, remove them from it
+- The samples ship no third-party schemas or WSDLs any more, only the units generated from them: each sample's README
+  says where to get the files and the command that generates its units again
 - The DocumentProperties sample is built on `ProRock.Office.Ooxml`: its `OfficeDocument.pas` is gone; app.xml is still read
   into its generated classes
 - `XmlContent` is read-only (`Count`, `Items[]`, `for in`): `Add<T>`, `AddText` and `Remove` change it, as before. Its items

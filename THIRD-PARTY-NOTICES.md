@@ -18,13 +18,14 @@ generated unit carries its generation date in the header. The notices of the ori
 | `ProRock.Xmlite.Schema.Soap12` | WSDL SOAP 1.2 binding, http://schemas.xmlsoap.org/wsdl/soap12/wsdl11soap12.xsd | [IBM and Microsoft, SOAP 1.2 binding](#ibm-and-microsoft-soap-12-binding) |
 
 Samples:
-- `Samples/ProRock.Soapite.Calculator/calculator.wsdl` - the WSDL of the public demo service http://www.dneonline.com/calculator.asmx,
-  included to demonstrate client generation
-- `Samples/ProRock.Soapite.CheckVatService/checkVatService.wsdl` - the WSDL of the EU VIES VAT number validation service
-  (European Commission), https://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl, included to demonstrate client generation
-- `Samples/ProRock.Soapite.WsSecurity/oasis-200401-wss-wssecurity-secext-1.0.xsd` and `...-utility-1.0.xsd` - the OASIS Web
-  Services Security 1.0 schemas, https://docs.oasis-open.org/wss/2004/01/, unmodified, with the units ProRocket generates from
-  them (`ProRock.Xmlite.Schema.WsSecurity`, `.WsSecurityUtility`) - [OASIS](#oasis)
+- `Samples/ProRock.Soapite.Calculator` - units ProRocket generates from the WSDL of the public demo service
+  http://www.dneonline.com/calculator.asmx, to demonstrate client generation; the WSDL is not included
+- `Samples/ProRock.Soapite.CheckVatService` - units ProRocket generates from the WSDL of the EU VIES VAT number validation
+  service (European Commission), https://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl, to demonstrate client
+  generation; the WSDL is not included
+- `Samples/ProRock.Soapite.WsSecurity` - units ProRocket generates from the OASIS Web Services Security 1.0 schemas,
+  https://docs.oasis-open.org/wss/2004/01/ (`ProRock.Xmlite.Schema.WsSecurity`, `.WsSecurityUtility`) - [OASIS](#oasis);
+  the schemas are not included
 - `Source` - units ProRocket generates from schemas of ECMA-376 Part 4, 5th edition (October 2016, Transitional Migration
   Features: `sml.xsd`, `dml-spreadsheetDrawing.xsd`, `dml-main.xsd`, `shared-relationshipReference.xsd`,
   `shared-commonSimpleTypes.xsd`, `shared-documentPropertiesExtended.xsd`, `shared-documentPropertiesVariantTypes.xsd`;
@@ -33,15 +34,15 @@ Samples:
   `ProRock.Xmlite.Schema.Relationships`, `.CoreProperties`) - [Ecma International](#ecma-international) - and from the Dublin
   Core schemas of DCMI (http://dublincore.org/schemas/xmls/qdc/2003/04/02/ `dc.xsd`, `dcterms.xsd`, `dcmitype.xsd`;
   `ProRock.Xmlite.Schema.Dc.Elements`, `.Terms`, `.Types`) - [DCMI](#dcmi). The schemas themselves are not included
-- `Samples/ProRock.Xmlite.Fhir/fhir-single.xsd` and `fhir-xhtml.xsd` - the XML schemas of the HL7® FHIR® R4 standard
-  (version 4.0.1, http://hl7.org/fhir/R4/fhir-all-xsd.zip), unmodified, with the units ProRocket generates from them
-  (`ProRock.Xmlite.Schema.Fhir`, `.Xhtml`) - [HL7](#hl7); `fhir-xhtml.xsd` is HL7's pared-down version of the W3C XHTML
-  schema. `bundle.xml` collects examples of the specification (the Patient example and the Observation examples), CC0
-- `Samples/ProRock.Xmlite.EInvoice` - the UN/CEFACT Cross Industry Invoice schemas D16B, unmodified (`Schemas/cii`; from
-  https://github.com/ConnectingEurope/eInvoicing-EN16931, `cii/schema`), with the units ProRocket generates from them
+- `Samples/ProRock.Xmlite.Fhir` - units ProRocket generates from the XML schemas of the HL7® FHIR® R4 standard (version
+  4.0.1, http://hl7.org/fhir/R4/fhir-all-xsd.zip: `fhir-single.xsd`, `fhir-xhtml.xsd`; `ProRock.Xmlite.Schema.Fhir`,
+  `.Xhtml`) - [HL7](#hl7); `fhir-xhtml.xsd` is HL7's pared-down version of the W3C XHTML schema. The schemas are not
+  included. `bundle.xml` collects examples of the specification (the Patient example and the Observation examples), CC0
+- `Samples/ProRock.Xmlite.EInvoice` - units ProRocket generates from the UN/CEFACT Cross Industry Invoice schemas D16B
+  (https://github.com/ConnectingEurope/eInvoicing-EN16931, `cii/schema`)
   (`ProRock.Xmlite.Schema.CrossIndustryInvoice100`, `.QualifiedDataType100`, `.ReusableAggregateBusinessInformationEntity100`,
-  `.UnqualifiedDataType100`) - [UN/CEFACT](#uncefact); the OASIS UBL 2.4 schemas of the Invoice and the CreditNote, unmodified
-  (`Schemas/ubl`; https://docs.oasis-open.org/ubl/os-UBL-2.4/), with the units generated from them - [OASIS UBL](#oasis-ubl). The UBL
+  `.UnqualifiedDataType100`) - [UN/CEFACT](#uncefact) - and from the OASIS UBL 2.4 schemas of the Invoice and the CreditNote
+  (https://docs.oasis-open.org/ubl/os-UBL-2.4/) - [OASIS UBL](#oasis-ubl); the schemas are not included. The UBL
   package holds copies of the W3C XML Signature schemas (`UBL-xmldsig*`, each with its W3C notice; `ProRock.Xmlite.Schema.Xmldsig`,
   `.Xmldsig11`) - [W3C](#w3c) - and of the ETSI XAdES schemas (`UBL-XAdES*`, which carry no notice of their own;
   `ProRock.Xmlite.Schema.Xades`, `.Xades141`; http://uri.etsi.org/01903/). `invoice-cii.xml` and `invoice-ubl.xml` are `01.12a-INVOICE`

@@ -5,8 +5,9 @@ icon: lucide/flask-conical
 # Samples
 
 In [`Samples`](https://github.com/VitalyPopov/ProRock/tree/main/Samples) of the repository, one group project
-(`ProRock.Samples.groupproj`). The generated units and the source WSDL/XSD files are included, so the samples build without
-running the generator.
+(`ProRock.Samples.groupproj`). The generated units are included, so the samples build without running the generator. The
+schemas and WSDLs they come from are not: each sample's README says where to get them and the command that generates its
+units again.
 
 !!! tip "Your own schemas need the generator"
     It is a free download: [ProRocket Lite](prorocket-lite/index.md).
