@@ -397,6 +397,11 @@ end;
 
 function TPackageOoxml.Open(const aFileName: string): boolean;
 begin
+  if not FileExists(aFileName) then // the RTL says "Cannot create file" for it
+  begin
+    fIssues.Clear;
+    Exit(Fail('File', 'No such file: ' + aFileName));
+  end;
   var stream: TFileStream;
   try
     // others may write it meanwhile: a document open in Office can still be read

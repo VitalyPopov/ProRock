@@ -12,8 +12,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 #### Added
 - `ProRock.Calcite`, Excel workbooks (.xlsx), first steps: a workbook opened and saved with nothing lost - a part not changed
   is saved as the same bytes, a changed one from its generated objects (`Workbook.Xlsx.Workbook`, `.Styles`,
-  `.SharedStrings`, `Worksheets[1].Xlsx.Worksheet`). `Open` and `Save` return False with the reason in `Error` (a file open in
-  Excel, not a workbook), they do not raise. `Open` knows the format by the content, `SaveAs` refuses a name Excel would not
+  `.SharedStrings`, `Worksheets[1].Xlsx.Worksheet`). `Open` and `Save` return False with the reason in `Error` (no such file, a
+  file open in Excel, not a workbook), they do not raise. `Open` knows the format by the content, `SaveAs` refuses a name Excel would not
   open: a workbook with macros as .xlsx, a template as .xlsm, another format's .ods or .csv
 - Calcite's cells: `Sheet['B5']`, `Sheet['A1:C10']`, `Sheet.Cells[5, 'B']` (Excel's order, from 1; a range's `LastRow` and
   `LastColumn`) read and write `Value` (a Variant) or
@@ -52,7 +52,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   range's own (`Range['C1:E5'].Columns[2]` is D1:D5), `EntireRow`, `EntireColumn` - formatted before they hold anything;
   their `Address` is Excel's, `B:D` and `5:7`
 - Calcite's layout, as Excel's own properties: `RowHeight` in points (0 hides), `Rows.AutoFit` (Excel fits the rows when it
-  opens the file), `Hidden` for whole rows and columns (a height or width comes back when shown again), a sheet's `Visible`
+  opens the file; hidden rows shown again, as `Columns.AutoFit` shows hidden columns, as Excel does), `Hidden` for whole
+  rows and columns (a height or width comes back when shown again), a sheet's `Visible`
   (`svHidden`, `svVeryHidden`; the last visible sheet stays, hiding the active one makes the next active). Merged cells:
   `Merge` (across too), `UnMerge`, `MergeCells`, `MergeArea` - the first value kept in the top-left cell, every cell given its
   format, merged areas met joined into one (Excel opens no file with overlapping ones); a value written to a covered cell is

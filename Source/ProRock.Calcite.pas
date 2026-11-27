@@ -207,8 +207,8 @@ type
     public
       // Excel's AutoFit, estimated: each column as wide as its longest shown value in the range's rows, numbers and dates a
       // digit wider (too narrow, Excel shows ####). Calcite measures no fonts: Latin letters, digits and signs exact in
-      // Calibri and Aptos Narrow, other fonts as Calibri, other scripts close. A column with nothing in those rows keeps its
-      // width
+      // Calibri and Aptos Narrow, other fonts as Calibri, other scripts close. A column fitted is shown again, as Excel does;
+      // one with nothing in those rows keeps its width
       procedure AutoFit;
 
       property Count: integer read GetCount;
@@ -229,7 +229,8 @@ type
       function GetItemByNumbers(const aRows: string): TRange;
     public
       // Excel's AutoFit: the rows' own heights dropped, Excel fits them to what they show when it opens the file (RowHeight
-      // reads the default until then)
+      // reads the default until then); hidden rows shown again, as Excel does (on a sheet hiding the rows without
+      // an entry, zeroHeight, those stay hidden)
       procedure AutoFit;
 
       property Count: integer read GetCount;
@@ -296,10 +297,11 @@ type
     // the values gone, as Excel's ClearContents: a cell with a format stays. A merged area touched is cleared whole
     procedure ClearContents;
     // Excel's Insert and Delete of whole rows or columns (Sheet.Rows['5:7'].Insert, Range['B5'].EntireColumn.Delete): cells,
-    // merged areas, conditional formats, validation, hyperlinks, the autofilter and frozen panes move, formulas and names on
-    // every sheet change as in Excel; new rows and columns take the format of the one above or left. EInvalidOpException
-    // with nothing changed where Excel refuses (part of an array formula, cells pushed off the sheet) or for what Calcite
-    // does not move yet (tables, pivot tables, charts, drawings, notes); cells shifted within rows or columns: later
+    // merged areas, conditional formats, validation, hyperlinks, the autofilter, frozen panes, tables, pivot tables, charts,
+    // drawings and notes move, formulas and names on every sheet change as in Excel; new rows and columns take the format of
+    // the one above or left. EInvalidOpException with nothing changed where Excel refuses (part of an array formula, cells
+    // pushed off the sheet) or for what Calcite does not move yet (the issue names it); cells shifted within rows or
+    // columns: later
     procedure Insert;
     procedure Delete;
 
@@ -499,9 +501,9 @@ type
       fList: TList<TWorksheet>;
       fIndex: integer;
 
-      function GetCurrent: TWorksheet; inline;
+      function GetCurrent: TWorksheet;
     public
-      function MoveNext: boolean; inline;
+      function MoveNext: boolean;
 
       property Current: TWorksheet read GetCurrent;
     end;
@@ -580,8 +582,8 @@ type
     fIssues: TIssues;
     fUnknownExtensions: TUnknownExtensions;
 
-    // nothing open: Open's own workbook
-    constructor CreateClosed;
+    // nothing open: Open's own workbook, its issues to aOnIssue as they come
+    constructor CreateClosed(const aOnIssue: TIssueEvent);
     class procedure Swap<T>(var aLeft, aRight: T); static; inline;
     procedure NewPackage;
     procedure ForwardIssues;
@@ -1591,7 +1593,7 @@ end;
 
 procedure TRange.TRows.AutoFit;
 begin
-  fSheet.fStore.ApplyAxis(True, fTop, fBottom, AxisChange([axDefaultSize]));
+  fSheet.fStore.ApplyAxis(True, fTop, fBottom, AxisChange([axDefaultSize, axHidden], 0, False));
 end;
 
 { TWorksheetXlsx }
@@ -2487,9 +2489,10 @@ end;
 
 { TWorkbook }
 
-constructor TWorkbook.CreateClosed;
+constructor TWorkbook.CreateClosed(const aOnIssue: TIssueEvent);
 begin
   inherited Create;
+  fIssues.OnIssue := aOnIssue;
   fBook := TXlsxBook.Create;
   ForwardIssues;
   fSheets := TWorksheets.Create;
@@ -2504,7 +2507,7 @@ end;
 
 constructor TWorkbook.Create;
 begin
-  CreateClosed;
+  CreateClosed(nil);
   NewPackage;
 end;
 
@@ -2564,9 +2567,8 @@ function TWorkbook.Opened(const aFileName: string; aStream: TStream): boolean;
 begin
   // into a workbook of its own first: a failed Open leaves this one as it was, with this Open's issues
   fIssues.Clear;
-  var opened: TWorkbook := TWorkbook.CreateClosed;
+  var opened: TWorkbook := TWorkbook.CreateClosed(fIssues.OnIssue);
   try
-    opened.fIssues.OnIssue := fIssues.OnIssue;
     if not opened.fBook.Open(aFileName, aStream) then
     begin
       fIssues := opened.fIssues; // the package's failure among them

@@ -839,7 +839,7 @@ begin
   for var i := 1 to aText.Length do
   begin
     var c: char := aText[i];
-    var width: Double;
+    var width: Double := 7.5; // other letters
     case c of
       #10:
         begin
@@ -860,8 +860,6 @@ begin
       #$1100 .. #$115F, #$2E80 .. #$A4CF, #$AC00 .. #$D7A3, #$D800 .. #$DBFF, #$F900 .. #$FAFF, #$FE30 .. #$FE4F,
       #$FF00 .. #$FF60, #$FFE0 .. #$FFE6:
         width := 16; // East Asian wide, and the pairs (emoji)
-    else
-      width := 7.5;
     end;
     if aBold then
       width := width * 1.04;

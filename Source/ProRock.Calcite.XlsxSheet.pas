@@ -462,12 +462,15 @@ begin
   end;
 end;
 
-// aChange written to the rows or columns aFirst..aLast, their entries made where missing (a row's own height dropped
-// only where it has one)
+// aChange written to the rows or columns aFirst..aLast, their entries made where missing (a row's own height dropped and a
+// row shown again only where it has an entry: Sheet.Rows makes none) - but rows shown on a sheet hiding the ones without an
+// entry (zeroHeight) get entries; AutoFit there shows only rows with one
 procedure TXlsxSheet.ApplyAxis(aByRows: boolean; aFirst, aLast: integer; const aChange: TAxisChange);
 begin
   var aspects: TAxisAspects := aChange.Aspects;
-  if aByRows and (aspects * [axSize, axHidden] = []) then
+  var entries: boolean := (axSize in aspects) or ((axHidden in aspects) and aChange.Value.Hidden)
+    or ((aspects = [axHidden]) and aByRows and AxisDefault(True).Hidden);
+  if aByRows and not entries then
   begin
     var sheet: TWorksheetE := Objects(False);
     var rows: TRowCTList := sheet.SheetData.Row;
@@ -476,11 +479,16 @@ begin
     while (rowIndex < rows.Count) and (rows[rowIndex].R <= cardinal(aLast)) do
     begin
       var row: TRowCT := rows[rowIndex];
-      if row.Present[@row.Ht] or row.CustomHeight then
+      if (axDefaultSize in aspects) and (row.Present[@row.Ht] or row.CustomHeight) then
       begin
         Objects(True);
         row.Clear(@row.Ht);
         row.Clear(@row.CustomHeight);
+      end;
+      if (axHidden in aspects) and row.Hidden then
+      begin
+        Objects(True);
+        row.Clear(@row.Hidden);
       end;
       Inc(rowIndex);
     end;
