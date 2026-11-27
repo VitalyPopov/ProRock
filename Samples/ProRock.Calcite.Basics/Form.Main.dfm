@@ -448,9 +448,9 @@ object MainForm: TMainForm
   object LogMemo: TMemo
     AlignWithMargins = True
     Left = 8
-    Top = 530
+    Top = 600
     Width = 1064
-    Height = 142
+    Height = 72
     Margins.Left = 8
     Margins.Right = 8
     Margins.Bottom = 8
@@ -464,7 +464,7 @@ object MainForm: TMainForm
     Left = 8
     Top = 158
     Width = 1064
-    Height = 369
+    Height = 439
     Margins.Left = 8
     Margins.Right = 8
     Margins.Bottom = 0

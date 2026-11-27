@@ -28,11 +28,13 @@ units again.
 ## Excel workbook
 
 [`ProRock.Calcite.Basics`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Calcite.Basics) shows
-[Calcite](calcite.md), the Excel library: a tab for each feature - values, formulas, formats, rows and columns, sheets, a
+[Calcite](calcite.md), the Excel library: a tab for each feature - files, values, formulas, formats, rows and columns, sheets, a
 DataSet, open and edit, issues, the workbook's own objects - and a button for each thing it does. Each button writes its
-sheet of one workbook; the grid shows the sheet as Calcite reads it back, the line below it the selected cell's formula,
+sheet of one workbook; the grid shows the sheet as Calcite reads it back, the line above it the selected cell's formula,
 number format and value type. Open in Excel shows a copy in Excel, Save as writes the workbook. Each handler is short and
 starts from the sheet: it is the code to copy, and the [Calcite page](calcite.md) shows it word for word.
+
+![The Calcite sample on its Formats tab: number formats, bold and italic red text, yellow and green fills, a title merged over five columns, a bold header row and a grey row; the line above the grid shows A1's number format #,##0.00](assets/calcite-sample.png)
 
 ```pascal
 // the Write formulas button

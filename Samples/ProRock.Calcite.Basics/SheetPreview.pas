@@ -16,6 +16,9 @@ type
     FontStyle: TFontStyles;
     Align: THAlign;
     Info: string; // B5: number, 0.00, =SUM(A1:A3)
+    Numeric: boolean;
+    Owner: integer; // the column whose text is drawn here: this one, one to the left running over, a merge's first; 0: none
+    SpanLast: integer; // the last column this cell's text may use
   end;
 
   TSheetPreview = class
@@ -26,6 +29,8 @@ type
     fGrid: TStringGrid;
     fCells: TArray<TArray<TShownCell>>;
     procedure DrawCell(Sender: TObject; aCol, aRow: integer; aRect: TRect; aState: TGridDrawState);
+    procedure Spread(aSheet: TWorksheet; aRow: integer);
+    function Width(aFrom, aTo: integer): integer;
     class function ShownText(const aCell: TRange): string; static;
     class function Info(const aCell: TRange): string; static;
   public
@@ -123,10 +128,12 @@ begin
       shown.FontColor := cell.Font.Color;
       shown.FontStyle := cell.Font.Style;
       shown.Align := cell.HorizontalAlignment;
+      shown.Numeric := cell.ValueType in [cvNumber, cvDate];
       shown.Info := Info(cell);
       fCells[row, column] := shown;
       fGrid.Cells[column, row] := shown.Text;
     end;
+    Spread(aSheet, row);
   end;
   fGrid.Invalidate;
 end;
@@ -139,14 +146,63 @@ begin
     Result := '';
 end;
 
+// as Excel shows a row: a merged cell's text over its area, text running on over empty cells to the right
+procedure TSheetPreview.Spread(aSheet: TWorksheet; aRow: integer);
+begin
+  var lastColumn := Length(fCells[aRow]) - 1;
+  for var column := 1 to lastColumn do
+  begin
+    fCells[aRow, column].Owner := IfThen(fCells[aRow, column].Text <> '', column, 0);
+    fCells[aRow, column].SpanLast := column;
+  end;
+  fGrid.Canvas.Font := fGrid.Font;
+  for var column := 1 to lastColumn do
+  begin
+    if fCells[aRow, column].Text = '' then
+      Continue;
+    var last := column;
+    var cell := aSheet.Cells[aRow, column];
+    if cell.MergeCells then
+    begin
+      var area := cell.MergeArea;
+      if (area.Row = aRow) and (area.Column = column) then
+        last := Min(area.LastColumn, lastColumn);
+    end
+    else if not fCells[aRow, column].Numeric and (cell.ValueType in [cvText, cvEmpty]) and not cell.WrapText
+      and (fCells[aRow, column].Align in [haGeneral, haLeft]) then
+    begin
+      fGrid.Canvas.Font.Style := fCells[aRow, column].FontStyle;
+      var needed := fGrid.Canvas.TextWidth(fCells[aRow, column].Text) + 8;
+      while (Width(column, last) < needed) and (last < lastColumn) and (fCells[aRow, last + 1].Text = '')
+        and not aSheet.Cells[aRow, last + 1].MergeCells do
+        Inc(last);
+    end;
+    for var covered := column + 1 to last do
+      fCells[aRow, covered].Owner := column;
+    fCells[aRow, column].SpanLast := last;
+  end;
+end;
+
+// the columns' widths with their grid lines, hidden ones none
+function TSheetPreview.Width(aFrom, aTo: integer): integer;
+begin
+  Result := 0;
+  for var column := aFrom to aTo do
+    Inc(Result, Max(fGrid.ColWidths[column] + fGrid.GridLineWidth, 0));
+end;
+
 procedure TSheetPreview.DrawCell(Sender: TObject; aCol, aRow: integer; aRect: TRect; aState: TGridDrawState);
 var
   shown: TShownCell;
 begin
   if (aCol = 0) or (aRow = 0) or (aRow >= Length(fCells)) or (aCol >= Length(fCells[aRow])) then
     Exit;
-  shown := fCells[aRow, aCol];
   var canvas := fGrid.Canvas;
+  var fill := fCells[aRow, aCol].Fill;
+  var owner := fCells[aRow, aCol].Owner;
+  if owner = 0 then
+    owner := aCol;
+  shown := fCells[aRow, owner];
   if gdSelected in aState then
   begin
     canvas.Brush.Color := clHighlight;
@@ -154,17 +210,21 @@ begin
   end
   else
   begin
-    if (shown.Fill = clNone) or (shown.Fill = clDefault) then
+    if (fill = clNone) or (fill = clDefault) then
       canvas.Brush.Color := clWindow
     else
-      canvas.Brush.Color := shown.Fill;
+      canvas.Brush.Color := fill;
     if shown.FontColor = clDefault then
       canvas.Font.Color := clWindowText
     else
       canvas.Font.Color := shown.FontColor;
   end;
   canvas.Font.Style := shown.FontStyle;
-  canvas.FillRect(aRect);
+  // text running on from the left covers the grid line between, as in Excel
+  var cellRect := aRect;
+  if owner <> aCol then
+    Dec(cellRect.Left, fGrid.GridLineWidth);
+  canvas.FillRect(cellRect);
 
   var flags: cardinal := DT_SINGLELINE or DT_VCENTER or DT_NOPREFIX or DT_END_ELLIPSIS;
   case shown.Align of
@@ -173,12 +233,18 @@ begin
     haRight:
       flags := flags or DT_RIGHT;
     haGeneral: // Excel's General: numbers to the right
-      if (shown.Text <> '') and CharInSet(shown.Text[1], ['0' .. '9', '-']) then
+      if shown.Numeric then
         flags := flags or DT_RIGHT;
   end;
+  // the text over its whole span, this cell's part of it shown
   var textRect := aRect;
+  textRect.Left := aRect.Left - Width(owner, aCol - 1);
+  textRect.Right := aRect.Right + Width(aCol + 1, shown.SpanLast);
   InflateRect(textRect, -4, 0);
+  var saved := SaveDC(canvas.Handle);
+  IntersectClipRect(canvas.Handle, cellRect.Left, cellRect.Top, cellRect.Right, cellRect.Bottom);
   DrawText(canvas.Handle, PChar(shown.Text), Length(shown.Text), textRect, flags);
+  RestoreDC(canvas.Handle, saved);
 end;
 
 end.
