@@ -40,6 +40,7 @@ type
     BordersButton: TButton;
     AlignmentButton: TButton;
     MergeButton: TButton;
+    RangeFormatsButton: TButton;
     RowsTab: TTabSheet;
     FillListButton: TButton;
     InsertRowsButton: TButton;
@@ -96,6 +97,7 @@ type
     procedure BordersButtonClick(Sender: TObject);
     procedure AlignmentButtonClick(Sender: TObject);
     procedure MergeButtonClick(Sender: TObject);
+    procedure RangeFormatsButtonClick(Sender: TObject);
     procedure FillListButtonClick(Sender: TObject);
     procedure InsertRowsButtonClick(Sender: TObject);
     procedure DeleteRowsButtonClick(Sender: TObject);
@@ -161,7 +163,8 @@ begin
       or (Result['A1'].ValueType <> cvEmpty) then
       Result := fWorkbook.Worksheets.Add(aName)
     else
-      Result.Name := aName; // a new workbook's empty Sheet1 becomes the first feature's
+      // a new workbook's empty Sheet1 becomes the first feature's
+      Result.Name := aName;
   end
   else if aEmpty and ((Result.UsedRange.Address <> 'A1') or (Result['A1'].ValueType <> cvEmpty)) then
     Result.UsedRange.EntireRow.Delete;
@@ -250,7 +253,8 @@ procedure TMainForm.ExcelButtonClick(Sender: TObject);
 begin
   // a copy next to the program: a file opened here is never overwritten
   if not fWorkbook.SaveAs(fFolder + 'Calcite sample.xlsx') then
-    Log(fWorkbook.Error) // Excel keeps a file it shows locked: close it there first
+    // Excel keeps a file it shows locked: close it there first
+    Log(fWorkbook.Error)
   else
   begin
     ShowWorkbook;
@@ -310,7 +314,8 @@ begin
     end;
     var sheet := workbook.Worksheets['Prices'];
     for var row := 2 to sheet.UsedRange.LastRow do
-      Log(sheet.Cells[row, 'A'].AsString + ': ' + FloatToStr(sheet.Cells[row, 'B'].AsFloat));
+      Log(sheet.Cells[row, 'A'].AsString + ': ' +
+        FloatToStr(sheet.Cells[row, 'B'].AsFloat));
     Preview(sheet);
   finally
     workbook.Free;
@@ -327,7 +332,8 @@ begin
       Exit;
     end;
     var sheet := workbook.Worksheets[1];
-    sheet['B2'].Value := sheet['B2'].AsFloat + 0.1; // what is not changed is saved as it was
+    // what is not changed is saved as it was
+    sheet['B2'].Value := sheet['B2'].AsFloat + 0.1;
     if workbook.Save then
       Log('Coffee costs ' + FloatToStr(sheet['B2'].AsFloat) + ' now')
     else
@@ -350,7 +356,8 @@ begin
     workbook.Properties.Title := 'Price list';
     workbook.Properties.Creator := 'The ProRock sample';
     if workbook.Save then
-      Log('Title: ' + workbook.Properties.Title + ', modified ' + DateTimeToStr(workbook.Properties.Modified) + ' UTC')
+      Log('Title: ' + workbook.Properties.Title + ', modified ' +
+        DateTimeToStr(workbook.Properties.Modified) + ' UTC')
     else
       Log(workbook.Error);
   finally
@@ -382,7 +389,8 @@ procedure TMainForm.ReadValuesButtonClick(Sender: TObject);
 begin
   var sheet := FeatureSheet('Values');
   for var row := 1 to sheet.UsedRange.LastRow do
-    Log(sheet.Cells[row, 'A'].AsString + ' = ' + sheet.Cells[row, 'B'].AsString);
+    Log(sheet.Cells[row, 'A'].AsString + ' = ' +
+      sheet.Cells[row, 'B'].AsString);
   if sheet['B3'].ValueType = cvDate then
     Log('B3 is a date: ' + DateToStr(sheet['B3'].AsDateTime));
   Preview(sheet);
@@ -393,7 +401,8 @@ begin
   var sheet := FeatureSheet('Values');
   for var row := 1 to 5 do
     for var column := 1 to 5 do
-      sheet.Cells[row, column + 3].Value := row * column; // D1:H5, rows and columns from 1
+      // D1:H5, rows and columns from 1
+      sheet.Cells[row, column + 3].Value := row * column;
   Preview(sheet);
 end;
 
@@ -430,7 +439,8 @@ begin
   sheet['A3'].Value := 30;
   sheet['A4'].Formula := '=SUM(A1:A3)';
   sheet['B1'].Formula := '=A1*2';
-  sheet['C1'].Formula := '=IF(A4>50,"big","small")'; // English names and commas, as Excel's Formula
+  // English names and commas, as Excel's Formula
+  sheet['C1'].Formula := '=IF(A4>50,"big","small")';
   Log('Excel calculates the formulas when it opens the file');
   Preview(sheet);
 end;
@@ -446,7 +456,8 @@ end;
 procedure TMainForm.ArrayFormulaButtonClick(Sender: TObject);
 begin
   var sheet := FeatureSheet('Formulas');
-  sheet['E1:E3'].FormulaArray := '=A1:A3*10'; // one formula over the three cells
+  // one formula over the three cells
+  sheet['E1:E3'].FormulaArray := '=A1:A3*10';
   Log('E2 is in the array ' + sheet['E2'].CurrentArray.Address);
   Preview(sheet);
 end;
@@ -462,7 +473,8 @@ begin
   sheet['A2'].NumberFormat := '0%';
   sheet['A3'].Value := Date;
   sheet['A3'].NumberFormat := 'dd.mm.yyyy';
-  sheet['A4'].NumberFormat := '@'; // text: Excel takes what is typed there as it is
+  // text: Excel takes what is typed there as it is
+  sheet['A4'].NumberFormat := '@';
   sheet['A4'].Value := '2026-11-27';
   Preview(sheet);
 end;
@@ -485,14 +497,16 @@ procedure TMainForm.FillButtonClick(Sender: TObject);
 begin
   var sheet := FeatureSheet('Formats');
   sheet['E1:E3'].Interior.Color := clYellow;
-  sheet['E2'].Interior.Color := RGB(198, 239, 206); // TColor, as Excel's Color
+  // TColor, as Excel's Color
+  sheet['E2'].Interior.Color := RGB(198, 239, 206);
   Preview(sheet);
 end;
 
 procedure TMainForm.BordersButtonClick(Sender: TObject);
 begin
   var sheet := FeatureSheet('Formats');
-  sheet['A6:E8'].Borders.LineStyle := lsContinuous; // every edge, the inside ones too
+  // every edge, the inside ones too
+  sheet['A6:E8'].Borders.LineStyle := lsContinuous;
   sheet['A6:E8'].BorderAround(lsContinuous, bwMedium);
   sheet['A6:E6'].Borders[beBottom].LineStyle := lsDouble;
   Preview(sheet);
@@ -519,6 +533,23 @@ begin
   Preview(sheet);
 end;
 
+procedure TMainForm.RangeFormatsButtonClick(Sender: TObject);
+begin
+  var sheet := FeatureSheet('Formats');
+  sheet['A12:D12'].Value := VarArrayOf(['North', 'South', 'East', 'West']);
+  // one write formats every cell of the range
+  sheet['A12:D12'].Font.Bold := True;
+  sheet['A12:D12'].HorizontalAlignment := haCenter;
+  sheet['A13:D14'].Value := 1250.5;
+  sheet['A13:D14'].NumberFormat := '#,##0.00';
+  // a whole row or column: cells written there later get it too, as in Excel
+  sheet.Rows[15].Interior.Color := clSilver;
+  sheet.Columns['F'].NumberFormat := '0.0%';
+  sheet['F13'].Value := 0.125;
+  sheet['A15'].Value := 'A whole row';
+  Preview(sheet);
+end;
+
 // Rows and columns
 
 procedure TMainForm.FillListButtonClick(Sender: TObject);
@@ -541,8 +572,10 @@ end;
 procedure TMainForm.InsertRowsButtonClick(Sender: TObject);
 begin
   var sheet := FeatureSheet('Rows and columns');
-  sheet.Rows['3:4'].Insert; // formulas follow, as in Excel: the total's SUM grows
-  var total := sheet.Cells[sheet.UsedRange.LastRow, sheet.UsedRange.LastColumn];
+  // formulas follow, as in Excel: the total's SUM grows
+  sheet.Rows['3:4'].Insert;
+  var used := sheet.UsedRange;
+  var total := sheet.Cells[used.LastRow, used.LastColumn];
   Log('The total in ' + total.Address + ': ' + total.Formula);
   Preview(sheet);
 end;
@@ -551,7 +584,8 @@ procedure TMainForm.DeleteRowsButtonClick(Sender: TObject);
 begin
   var sheet := FeatureSheet('Rows and columns');
   sheet.Rows['3:4'].Delete;
-  var total := sheet.Cells[sheet.UsedRange.LastRow, sheet.UsedRange.LastColumn];
+  var used := sheet.UsedRange;
+  var total := sheet.Cells[used.LastRow, used.LastColumn];
   Log('The total in ' + total.Address + ': ' + total.Formula);
   Preview(sheet);
 end;
@@ -561,7 +595,9 @@ begin
   var sheet := FeatureSheet('Rows and columns');
   sheet.Columns['B'].Insert;
   sheet['B1'].Value := 'Inserted';
-  var amount := sheet.Cells[2, sheet.UsedRange.LastColumn]; // the formulas moved right with their cells
+  var used := sheet.UsedRange;
+  // the formulas moved right with their cells
+  var amount := sheet.Cells[2, used.LastColumn];
   Log(amount.Address + ': ' + amount.Formula);
   Preview(sheet);
 end;
@@ -600,7 +636,8 @@ end;
 
 procedure TMainForm.AddSheetButtonClick(Sender: TObject);
 begin
-  var sheet := fWorkbook.Worksheets.Add; // Excel's next name: Sheet2, Sheet3...
+  // Excel's next name: Sheet2, Sheet3...
+  var sheet := fWorkbook.Worksheets.Add;
   sheet['A1'].Value := 'Added as ' + sheet.Name;
   Preview(sheet);
 end;
@@ -645,7 +682,8 @@ end;
 procedure TMainForm.ExportDataSetButtonClick(Sender: TObject);
 begin
   var sheet := FeatureSheet('DataSet', True);
-  var exported := ExportDataSet(fOrders, sheet); // a bold header, a row a record, the columns fitted, the header frozen
+  // a bold header, a row a record, the columns fitted, the header frozen
+  var exported := ExportDataSet(fOrders, sheet);
   Log('Exported to ' + exported.Address);
   Preview(sheet);
 end;
@@ -655,8 +693,10 @@ end;
 procedure TMainForm.RefusedWriteButtonClick(Sender: TObject);
 begin
   var sheet := FeatureSheet('Issues');
-  sheet['A1'].Formula := '=SUM(B1:B3'; // Excel refuses it: the cell keeps its value, an issue tells why
-  Log(fWorkbook.Issues[fWorkbook.Issues.Count - 1].ToString); // Issues: every one since Open, the newest last
+  // a bracket missing: Calcite refuses it, as Excel would; an issue tells why
+  sheet['A1'].Formula := '=SUM(B1:B3';
+  // Issues: every one since Open, the newest last
+  Log(fWorkbook.Issues[fWorkbook.Issues.Count - 1].ToString);
   Preview(sheet);
 end;
 
@@ -675,7 +715,8 @@ begin
   var workbook := TWorkbook.Create;
   try
     if not workbook.Open(fFolder + 'No such file.xlsx') then
-      Log(workbook.Error); // Open and Save answer False and Error, never raise for a file's trouble
+      // Open and Save answer False and Error; they never raise
+      Log(workbook.Error);
   finally
     workbook.Free;
   end;

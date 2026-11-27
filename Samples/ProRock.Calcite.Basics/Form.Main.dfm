@@ -257,6 +257,15 @@ object MainForm: TMainForm
         TabOrder = 5
         OnClick = MergeButtonClick
       end
+      object RangeFormatsButton: TButton
+        Left = 6
+        Top = 40
+        Width = 170
+        Height = 28
+        Caption = 'A range, a row, a column'
+        TabOrder = 6
+        OnClick = RangeFormatsButtonClick
+      end
     end
     object RowsTab: TTabSheet
       Caption = 'Rows and columns'

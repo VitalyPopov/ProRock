@@ -33,6 +33,7 @@ extra_javascript:
 
 markdown_extensions:
   - admonition
+  - pymdownx.details
   - attr_list
   - tables
   - toc:
@@ -53,6 +54,7 @@ nav:
       - Generated code: generated-code.md
   - Using ProRock:
       - XML (Xmlite): xmlite.md
+      - Excel (Calcite): calcite.md
       - SOAP (Soapite): soapite.md
       - Large documents: large-documents.md
       - Hand-written classes: hand-written.md
