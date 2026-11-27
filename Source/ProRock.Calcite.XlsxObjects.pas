@@ -77,6 +77,8 @@ type
     procedure RemoveTable(aSheet: TWorksheetE; const aRelationship: TRelationshipOoxml);
     function MoveColumns(aTable: TTableE; const aOld: TArea): TArray<integer>;
     procedure DropTotals(aTable: TTableE; const aOld: TArea);
+    function QueryOf(const aPart: string; aEdit: boolean; out aQuery: TQueryTableE): boolean;
+    procedure ShiftQueryFields(aTable: TTableE; const aPart: string);
     procedure ShiftColumnFormula(aFormula: TTableFormulaCT);
     function DataRows(aTable: TTableE; const aArea: TArea): TArea;
     procedure FillRows(aTable: TTableE; const aOld, aArea: TArea);
@@ -433,9 +435,11 @@ begin
         Exit(Format('a table that does not read (%s)', [relationship.Part]));
       if IfThen(fMap.ByRows, area.Bottom, area.Right) < fMap.First then
         Continue;
-      if table.TableType <> stttWorksheet then
-        Exit(Format('a table from a query or an XML map (%s, %s), which Calcite does not move yet', [table.Name,
-          area.CellsAddress]));
+      if table.TableType = stttXml then
+        Exit(Format('a table from an XML map (%s, %s), which Calcite does not move yet', [table.Name, area.CellsAddress]));
+      var query: TQueryTableE;
+      if (table.TableType = stttQueryTable) and not QueryOf(relationship.Part, False, query) then
+        Exit(Format('a table''s query that does not read (%s)', [table.Name]));
       if fMap.ByRows and (fMap.Delta < 0) and (table.HeaderRowCount > 0) and (fMap.First < area.Top + integer(table.HeaderRowCount)) and
         (last >= area.Top) and ((fMap.First > area.Top) or (last < area.Bottom)) then
         Exit(Format('the header row of a table (%s, %s): Excel deletes it only with the whole table', [table.Name,
@@ -696,6 +700,8 @@ begin
       Continue;
     end;
     var added: TArray<integer> := MoveColumns(table, old);
+    if not fMap.ByRows and (table.TableType = stttQueryTable) then
+      ShiftQueryFields(table, relationship.Part);
     DropTotals(table, old);
     for var column: TTableColumnCT in table.TableColumns.TableColumn do
     begin
@@ -728,7 +734,10 @@ begin
     else
       aSheet.TableParts.Count := parts.Count;
   end;
-  fBook.Package.RemovePart(fStore.Part, aRelationship.Part);
+  var package: TPackageOoxml := fBook.Package;
+  for var query: TRelationshipOoxml in package.Relationships(aRelationship.Part, cQueryTable) do
+    package.RemovePart(aRelationship.Part, query.Part);
+  package.RemovePart(fStore.Part, aRelationship.Part);
 end;
 
 // the table's columns deleted or inserted inside it; the new columns' numbers on the sheet
@@ -772,6 +781,82 @@ begin
     end;
   end;
   aTable.TableColumns.Count := columns.Count;
+end;
+
+// the query part of a table from a query, nil when it has none; False when one is linked but does not read
+function TTablesHandler.QueryOf(const aPart: string; aEdit: boolean; out aQuery: TQueryTableE): boolean;
+begin
+  aQuery := nil;
+  var package: TPackageOoxml := fBook.Package;
+  for var relationship: TRelationshipOoxml in package.Relationships(aPart, cQueryTable) do
+  begin
+    if aEdit then
+      aQuery := package.EditPart<TQueryTableE>(relationship.Part)
+    else
+      aQuery := package.Part<TQueryTableE>(relationship.Part);
+    Exit(aQuery <> nil);
+  end;
+  Result := True;
+end;
+
+// the query's fields after the table's columns moved, as Excel: a deleted column's field among the deleted fields
+// (by its name), an inserted column a field of its own, not bound to the query, in the columns' order
+procedure TTablesHandler.ShiftQueryFields(aTable: TTableE; const aPart: string);
+begin
+  var query: TQueryTableE;
+  if not QueryOf(aPart, True, query) or (query = nil) or not query.IsPresent('QueryTableRefresh') then
+    Exit;
+  var refresh: TQueryTableRefreshCT := query.QueryTableRefresh;
+  var fields: TQueryTableFieldCTList := refresh.QueryTableFields.QueryTableField;
+  var columns: TTableColumnCTList := aTable.TableColumns.TableColumn;
+  var ids: TList<cardinal> := TList<cardinal>.Create;
+  try
+    for var column: TTableColumnCT in columns do
+      ids.Add(column.Id);
+    var index: integer := 0;
+    while index < fields.Count do
+      if fields[index].Present[@fields[index].TableColumnId] and not ids.Contains(fields[index].TableColumnId) then
+      begin
+        if fields[index].Present[@fields[index].Name] then
+        begin
+          var deleted: TDeletedFieldCT := TDeletedFieldCT.Create;
+          deleted.Name := fields[index].Name;
+          refresh.QueryTableDeletedFields.DeletedField.Add(deleted);
+          refresh.QueryTableDeletedFields.Count := refresh.QueryTableDeletedFields.DeletedField.Count;
+          refresh.QueryTableDeletedFields.SetPresent(@refresh.QueryTableDeletedFields.Count);
+        end;
+        fields.Delete(index);
+      end
+      else
+        Inc(index);
+  finally
+    ids.Free;
+  end;
+  var at: integer := 0; // where the next column's field goes: after the field of the column before it
+  for var column: TTableColumnCT in columns do
+  begin
+    if column.Present[@column.QueryTableFieldId] then
+    begin
+      for var i := 0 to fields.Count - 1 do
+        if fields[i].Present[@fields[i].TableColumnId] and (fields[i].TableColumnId = column.Id) then
+          at := i + 1;
+      Continue;
+    end;
+    var field: TQueryTableFieldCT := TQueryTableFieldCT.Create;
+    field.Id := refresh.NextId;
+    field.DataBound := False;
+    field.SetPresent(@field.DataBound);
+    field.TableColumnId := column.Id;
+    field.SetPresent(@field.TableColumnId);
+    fields.Insert(at, field);
+    Inc(at);
+    column.QueryTableFieldId := field.Id;
+    column.SetPresent(@column.QueryTableFieldId);
+    refresh.NextId := refresh.NextId + 1;
+    refresh.SetPresent(@refresh.NextId);
+  end;
+  refresh.QueryTableFields.Count := fields.Count;
+  refresh.QueryTableFields.SetPresent(@refresh.QueryTableFields.Count);
 end;
 
 // the totals row deleted: the table keeps none

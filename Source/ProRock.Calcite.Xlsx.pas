@@ -17,6 +17,7 @@ const
   cCalcChain = '/calcChain';
   cSheetMetadata = '/sheetMetadata';
   cTable = '/table';
+  cQueryTable = '/queryTable';
   cPivotTable = '/pivotTable';
   cPivotCacheDefinition = '/pivotCacheDefinition';
   cDrawing = '/drawing';
