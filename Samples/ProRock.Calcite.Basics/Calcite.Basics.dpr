@@ -1,4 +1,4 @@
-﻿program ProRock.Calcite.BasicsSample;
+﻿program Calcite.Basics;
 
 // Calcite, Excel workbooks (.xlsx) in plain Delphi: a tab per feature - values, formulas, formats, rows and columns, sheets,
 // a DataSet, issues - and a button per thing it does; each button's handler is the code to copy. The preview shows the sheet

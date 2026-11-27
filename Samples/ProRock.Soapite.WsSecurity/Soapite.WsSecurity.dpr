@@ -1,4 +1,4 @@
-﻿program ProRock.Soapite.WsSecuritySample;
+﻿program Soapite.WsSecurity;
 
 {$APPTYPE CONSOLE}
 
@@ -13,7 +13,7 @@
 // mustUnderstand) - the header travels over the wire all the same.
 // Any other header block works the same way, e.g. the ebMS 3.0 eb:Messaging of AS4: generate ebms-header-3_0-200704.xsd
 // (OASIS) with ProRocket (unit ProRock.Xmlite.Schema.Ebms3) and add a TMessagingE in OnRequestHeader.
-// Usage: ProRock.Soapite.WsSecuritySample [-live]
+// Usage: Soapite.WsSecurity [-live]
 
 uses
   System.SysUtils,

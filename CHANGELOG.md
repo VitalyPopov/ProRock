@@ -109,6 +109,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   samples to `Source`: if your project lists the samples' copies, remove them from it
 - The samples ship no third-party schemas or WSDLs any more, only the units generated from them: each sample's README
   says where to get the files and the command that generates its units again
+- The samples' projects are named without `ProRock.` and `Sample`: `Calcite.Basics`, `Soapite.Calculator` and so on; their
+  folders keep their names
 - The sample `ProRock.Xmlite.Spreadsheet` is gone: `ProRock.Calcite.Basics` shows Excel workbooks now; the SpreadsheetML
   units it read them into are in `Source`
 - The DocumentProperties sample is built on `ProRock.Office.Ooxml`: its `OfficeDocument.pas` is gone; app.xml is still read

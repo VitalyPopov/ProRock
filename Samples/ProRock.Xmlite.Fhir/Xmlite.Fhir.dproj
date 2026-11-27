@@ -1,15 +1,15 @@
-﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-        <ProjectGuid>{55051CDE-E9E1-45B3-A404-EEB851C4BFC2}</ProjectGuid>
+        <ProjectGuid>{3A8793A7-31FE-45E3-AA11-BD78B80314FA}</ProjectGuid>
         <ProjectVersion>20.4</ProjectVersion>
         <FrameworkType>VCL</FrameworkType>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Debug</Config>
         <Platform Condition="'$(Platform)'==''">Win64</Platform>
-        <ProjectName Condition="'$(ProjectName)'==''">ProRock.Xmlite.Basic</ProjectName>
+        <ProjectName Condition="'$(ProjectName)'==''">Xmlite.Fhir</ProjectName>
         <TargetedPlatforms>3</TargetedPlatforms>
         <AppType>Application</AppType>
-        <MainSource>ProRock.Xmlite.Basic.dpr</MainSource>
+        <MainSource>Xmlite.Fhir.dpr</MainSource>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
         <Base>true</Base>
@@ -70,7 +70,7 @@
         <Icon_MainIcon>$(BDS)\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
         <UWP_DelphiLogo44>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png</UWP_DelphiLogo44>
         <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
-        <SanitizedProjectName>ProRock_Xmlite_Basic</SanitizedProjectName>
+        <SanitizedProjectName>Xmlite_Fhir</SanitizedProjectName>
         <DCC_UnitSearchPath>..\..\Source;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
@@ -129,10 +129,12 @@
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
         <DCCReference Include="Form.Main.pas">
-            <Form>FormMain</Form>
+            <Form>MainForm</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="MetaModel.pas"/>
+        <DCCReference Include="FhirDocument.pas"/>
+        <DCCReference Include="ProRock.Xmlite.Schema.Fhir.pas"/>
+        <DCCReference Include="ProRock.Xmlite.Schema.Xhtml.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
@@ -151,7 +153,7 @@
         <BorlandProject>
             <Delphi.Personality>
                 <Source>
-                    <Source Name="MainSource">ProRock.Xmlite.Basic.dpr</Source>
+                    <Source Name="MainSource">Xmlite.Fhir.dpr</Source>
                 </Source>
                 <Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\dcloffice2k370.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
@@ -159,21 +161,21 @@
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="5">
-                <DeployFile LocalName="Win32\Debug\ProRock.Xmlite.Basic.exe" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="Win32\Debug\Xmlite.Fhir.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
-                        <RemoteName>ProRock.Xmlite.Basic.exe</RemoteName>
+                        <RemoteName>Xmlite.Fhir.exe</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="Win64\Debug\ProRock.Xmlite.Basic.exe" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="Win64\Debug\Xmlite.Fhir.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win64">
-                        <RemoteName>ProRock.Xmlite.Basic.exe</RemoteName>
+                        <RemoteName>Xmlite.Fhir.exe</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="Win64\Debug\ProRock.Xmlite.Basic.rsm" Configuration="Debug" Class="DebugSymbols">
+                <DeployFile LocalName="Win64\Debug\Xmlite.Fhir.rsm" Configuration="Debug" Class="DebugSymbols">
                     <Platform Name="Win64">
-                        <RemoteName>ProRock.Xmlite.Basic.rsm</RemoteName>
+                        <RemoteName>Xmlite.Fhir.rsm</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

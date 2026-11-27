@@ -3,34 +3,34 @@
         <ProjectGuid>{3AD531DE-70D2-4549-B199-67095C31E36C}</ProjectGuid>
     </PropertyGroup>
     <ItemGroup>
-        <Projects Include="ProRock.Calcite.Basics\ProRock.Calcite.BasicsSample.dproj">
+        <Projects Include="ProRock.Calcite.Basics\Calcite.Basics.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="ProRock.Xmlite.Basic\ProRock.Xmlite.Basic.dproj">
+        <Projects Include="ProRock.Xmlite.Basic\Xmlite.Basic.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="ProRock.Xmlite.DocumentProperties\ProRock.Xmlite.DocumentPropertiesSample.dproj">
+        <Projects Include="ProRock.Xmlite.DocumentProperties\Xmlite.DocumentProperties.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="ProRock.Xmlite.Fhir\ProRock.Xmlite.FhirSample.dproj">
+        <Projects Include="ProRock.Xmlite.Fhir\Xmlite.Fhir.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="ProRock.Xmlite.EInvoice\ProRock.Xmlite.EInvoiceSample.dproj">
+        <Projects Include="ProRock.Xmlite.EInvoice\Xmlite.EInvoice.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="ProRock.Xmlite.Namespaces\ProRock.Xmlite.Namespaces.dproj">
+        <Projects Include="ProRock.Xmlite.Namespaces\Xmlite.Namespaces.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="ProRock.Soapite.Calculator\ProRock.Soapite.CalculatorSample.dproj">
+        <Projects Include="ProRock.Soapite.Calculator\Soapite.Calculator.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="ProRock.Soapite.CheckVatService\ProRock.Soapite.CheckVatServiceSample.dproj">
+        <Projects Include="ProRock.Soapite.CheckVatService\Soapite.CheckVatService.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="ProRock.Http.ClientCertificate\ProRock.Http.ClientCertificateSample.dproj">
+        <Projects Include="ProRock.Http.ClientCertificate\Http.ClientCertificate.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="ProRock.Soapite.WsSecurity\ProRock.Soapite.WsSecuritySample.dproj">
+        <Projects Include="ProRock.Soapite.WsSecurity\Soapite.WsSecurity.dproj">
             <Dependencies/>
         </Projects>
     </ItemGroup>
@@ -41,104 +41,104 @@
             <Default.Personality/>
         </BorlandProject>
     </ProjectExtensions>
-    <Target Name="ProRock_Calcite_BasicsSample">
-        <MSBuild Projects="ProRock.Calcite.Basics\ProRock.Calcite.BasicsSample.dproj"/>
+    <Target Name="Calcite_Basics">
+        <MSBuild Projects="ProRock.Calcite.Basics\Calcite.Basics.dproj"/>
     </Target>
-    <Target Name="ProRock_Calcite_BasicsSample:Clean">
-        <MSBuild Projects="ProRock.Calcite.Basics\ProRock.Calcite.BasicsSample.dproj" Targets="Clean"/>
+    <Target Name="Calcite_Basics:Clean">
+        <MSBuild Projects="ProRock.Calcite.Basics\Calcite.Basics.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="ProRock_Calcite_BasicsSample:Make">
-        <MSBuild Projects="ProRock.Calcite.Basics\ProRock.Calcite.BasicsSample.dproj" Targets="Make"/>
+    <Target Name="Calcite_Basics:Make">
+        <MSBuild Projects="ProRock.Calcite.Basics\Calcite.Basics.dproj" Targets="Make"/>
     </Target>
-    <Target Name="ProRock_Xmlite_Basic">
-        <MSBuild Projects="ProRock.Xmlite.Basic\ProRock.Xmlite.Basic.dproj"/>
+    <Target Name="Xmlite_Basic">
+        <MSBuild Projects="ProRock.Xmlite.Basic\Xmlite.Basic.dproj"/>
     </Target>
-    <Target Name="ProRock_Xmlite_Basic:Clean">
-        <MSBuild Projects="ProRock.Xmlite.Basic\ProRock.Xmlite.Basic.dproj" Targets="Clean"/>
+    <Target Name="Xmlite_Basic:Clean">
+        <MSBuild Projects="ProRock.Xmlite.Basic\Xmlite.Basic.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="ProRock_Xmlite_Basic:Make">
-        <MSBuild Projects="ProRock.Xmlite.Basic\ProRock.Xmlite.Basic.dproj" Targets="Make"/>
+    <Target Name="Xmlite_Basic:Make">
+        <MSBuild Projects="ProRock.Xmlite.Basic\Xmlite.Basic.dproj" Targets="Make"/>
     </Target>
-    <Target Name="ProRock_Xmlite_Namespaces">
-        <MSBuild Projects="ProRock.Xmlite.Namespaces\ProRock.Xmlite.Namespaces.dproj"/>
+    <Target Name="Xmlite_Namespaces">
+        <MSBuild Projects="ProRock.Xmlite.Namespaces\Xmlite.Namespaces.dproj"/>
     </Target>
-    <Target Name="ProRock_Xmlite_Namespaces:Clean">
-        <MSBuild Projects="ProRock.Xmlite.Namespaces\ProRock.Xmlite.Namespaces.dproj" Targets="Clean"/>
+    <Target Name="Xmlite_Namespaces:Clean">
+        <MSBuild Projects="ProRock.Xmlite.Namespaces\Xmlite.Namespaces.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="ProRock_Xmlite_Namespaces:Make">
-        <MSBuild Projects="ProRock.Xmlite.Namespaces\ProRock.Xmlite.Namespaces.dproj" Targets="Make"/>
+    <Target Name="Xmlite_Namespaces:Make">
+        <MSBuild Projects="ProRock.Xmlite.Namespaces\Xmlite.Namespaces.dproj" Targets="Make"/>
     </Target>
-    <Target Name="ProRock_Soapite_CalculatorSample">
-        <MSBuild Projects="ProRock.Soapite.Calculator\ProRock.Soapite.CalculatorSample.dproj"/>
+    <Target Name="Soapite_Calculator">
+        <MSBuild Projects="ProRock.Soapite.Calculator\Soapite.Calculator.dproj"/>
     </Target>
-    <Target Name="ProRock_Soapite_CalculatorSample:Clean">
-        <MSBuild Projects="ProRock.Soapite.Calculator\ProRock.Soapite.CalculatorSample.dproj" Targets="Clean"/>
+    <Target Name="Soapite_Calculator:Clean">
+        <MSBuild Projects="ProRock.Soapite.Calculator\Soapite.Calculator.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="ProRock_Soapite_CalculatorSample:Make">
-        <MSBuild Projects="ProRock.Soapite.Calculator\ProRock.Soapite.CalculatorSample.dproj" Targets="Make"/>
+    <Target Name="Soapite_Calculator:Make">
+        <MSBuild Projects="ProRock.Soapite.Calculator\Soapite.Calculator.dproj" Targets="Make"/>
     </Target>
-    <Target Name="ProRock_Soapite_CheckVatServiceSample">
-        <MSBuild Projects="ProRock.Soapite.CheckVatService\ProRock.Soapite.CheckVatServiceSample.dproj"/>
+    <Target Name="Soapite_CheckVatService">
+        <MSBuild Projects="ProRock.Soapite.CheckVatService\Soapite.CheckVatService.dproj"/>
     </Target>
-    <Target Name="ProRock_Soapite_CheckVatServiceSample:Clean">
-        <MSBuild Projects="ProRock.Soapite.CheckVatService\ProRock.Soapite.CheckVatServiceSample.dproj" Targets="Clean"/>
+    <Target Name="Soapite_CheckVatService:Clean">
+        <MSBuild Projects="ProRock.Soapite.CheckVatService\Soapite.CheckVatService.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="ProRock_Soapite_CheckVatServiceSample:Make">
-        <MSBuild Projects="ProRock.Soapite.CheckVatService\ProRock.Soapite.CheckVatServiceSample.dproj" Targets="Make"/>
+    <Target Name="Soapite_CheckVatService:Make">
+        <MSBuild Projects="ProRock.Soapite.CheckVatService\Soapite.CheckVatService.dproj" Targets="Make"/>
     </Target>
-    <Target Name="ProRock_Http_ClientCertificateSample">
-        <MSBuild Projects="ProRock.Http.ClientCertificate\ProRock.Http.ClientCertificateSample.dproj"/>
+    <Target Name="Http_ClientCertificate">
+        <MSBuild Projects="ProRock.Http.ClientCertificate\Http.ClientCertificate.dproj"/>
     </Target>
-    <Target Name="ProRock_Http_ClientCertificateSample:Clean">
-        <MSBuild Projects="ProRock.Http.ClientCertificate\ProRock.Http.ClientCertificateSample.dproj" Targets="Clean"/>
+    <Target Name="Http_ClientCertificate:Clean">
+        <MSBuild Projects="ProRock.Http.ClientCertificate\Http.ClientCertificate.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="ProRock_Http_ClientCertificateSample:Make">
-        <MSBuild Projects="ProRock.Http.ClientCertificate\ProRock.Http.ClientCertificateSample.dproj" Targets="Make"/>
+    <Target Name="Http_ClientCertificate:Make">
+        <MSBuild Projects="ProRock.Http.ClientCertificate\Http.ClientCertificate.dproj" Targets="Make"/>
     </Target>
-    <Target Name="ProRock_Soapite_WsSecuritySample">
-        <MSBuild Projects="ProRock.Soapite.WsSecurity\ProRock.Soapite.WsSecuritySample.dproj"/>
+    <Target Name="Soapite_WsSecurity">
+        <MSBuild Projects="ProRock.Soapite.WsSecurity\Soapite.WsSecurity.dproj"/>
     </Target>
-    <Target Name="ProRock_Soapite_WsSecuritySample:Clean">
-        <MSBuild Projects="ProRock.Soapite.WsSecurity\ProRock.Soapite.WsSecuritySample.dproj" Targets="Clean"/>
+    <Target Name="Soapite_WsSecurity:Clean">
+        <MSBuild Projects="ProRock.Soapite.WsSecurity\Soapite.WsSecurity.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="ProRock_Soapite_WsSecuritySample:Make">
-        <MSBuild Projects="ProRock.Soapite.WsSecurity\ProRock.Soapite.WsSecuritySample.dproj" Targets="Make"/>
+    <Target Name="Soapite_WsSecurity:Make">
+        <MSBuild Projects="ProRock.Soapite.WsSecurity\Soapite.WsSecurity.dproj" Targets="Make"/>
     </Target>
-    <Target Name="ProRock_Xmlite_DocumentPropertiesSample">
-        <MSBuild Projects="ProRock.Xmlite.DocumentProperties\ProRock.Xmlite.DocumentPropertiesSample.dproj"/>
+    <Target Name="Xmlite_DocumentProperties">
+        <MSBuild Projects="ProRock.Xmlite.DocumentProperties\Xmlite.DocumentProperties.dproj"/>
     </Target>
-    <Target Name="ProRock_Xmlite_DocumentPropertiesSample:Clean">
-        <MSBuild Projects="ProRock.Xmlite.DocumentProperties\ProRock.Xmlite.DocumentPropertiesSample.dproj" Targets="Clean"/>
+    <Target Name="Xmlite_DocumentProperties:Clean">
+        <MSBuild Projects="ProRock.Xmlite.DocumentProperties\Xmlite.DocumentProperties.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="ProRock_Xmlite_DocumentPropertiesSample:Make">
-        <MSBuild Projects="ProRock.Xmlite.DocumentProperties\ProRock.Xmlite.DocumentPropertiesSample.dproj" Targets="Make"/>
+    <Target Name="Xmlite_DocumentProperties:Make">
+        <MSBuild Projects="ProRock.Xmlite.DocumentProperties\Xmlite.DocumentProperties.dproj" Targets="Make"/>
     </Target>
-    <Target Name="ProRock_Xmlite_EInvoiceSample">
-        <MSBuild Projects="ProRock.Xmlite.EInvoice\ProRock.Xmlite.EInvoiceSample.dproj"/>
+    <Target Name="Xmlite_EInvoice">
+        <MSBuild Projects="ProRock.Xmlite.EInvoice\Xmlite.EInvoice.dproj"/>
     </Target>
-    <Target Name="ProRock_Xmlite_EInvoiceSample:Clean">
-        <MSBuild Projects="ProRock.Xmlite.EInvoice\ProRock.Xmlite.EInvoiceSample.dproj" Targets="Clean"/>
+    <Target Name="Xmlite_EInvoice:Clean">
+        <MSBuild Projects="ProRock.Xmlite.EInvoice\Xmlite.EInvoice.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="ProRock_Xmlite_EInvoiceSample:Make">
-        <MSBuild Projects="ProRock.Xmlite.EInvoice\ProRock.Xmlite.EInvoiceSample.dproj" Targets="Make"/>
+    <Target Name="Xmlite_EInvoice:Make">
+        <MSBuild Projects="ProRock.Xmlite.EInvoice\Xmlite.EInvoice.dproj" Targets="Make"/>
     </Target>
-    <Target Name="ProRock_Xmlite_FhirSample">
-        <MSBuild Projects="ProRock.Xmlite.Fhir\ProRock.Xmlite.FhirSample.dproj"/>
+    <Target Name="Xmlite_Fhir">
+        <MSBuild Projects="ProRock.Xmlite.Fhir\Xmlite.Fhir.dproj"/>
     </Target>
-    <Target Name="ProRock_Xmlite_FhirSample:Clean">
-        <MSBuild Projects="ProRock.Xmlite.Fhir\ProRock.Xmlite.FhirSample.dproj" Targets="Clean"/>
+    <Target Name="Xmlite_Fhir:Clean">
+        <MSBuild Projects="ProRock.Xmlite.Fhir\Xmlite.Fhir.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="ProRock_Xmlite_FhirSample:Make">
-        <MSBuild Projects="ProRock.Xmlite.Fhir\ProRock.Xmlite.FhirSample.dproj" Targets="Make"/>
+    <Target Name="Xmlite_Fhir:Make">
+        <MSBuild Projects="ProRock.Xmlite.Fhir\Xmlite.Fhir.dproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
-        <CallTarget Targets="ProRock_Calcite_BasicsSample;ProRock_Xmlite_Basic;ProRock_Xmlite_Namespaces;ProRock_Soapite_CalculatorSample;ProRock_Soapite_CheckVatServiceSample;ProRock_Http_ClientCertificateSample;ProRock_Soapite_WsSecuritySample;ProRock_Xmlite_DocumentPropertiesSample;ProRock_Xmlite_FhirSample;ProRock_Xmlite_EInvoiceSample"/>
+        <CallTarget Targets="Calcite_Basics;Xmlite_Basic;Xmlite_Namespaces;Soapite_Calculator;Soapite_CheckVatService;Http_ClientCertificate;Soapite_WsSecurity;Xmlite_DocumentProperties;Xmlite_Fhir;Xmlite_EInvoice"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="ProRock_Calcite_BasicsSample:Clean;ProRock_Xmlite_Basic:Clean;ProRock_Xmlite_Namespaces:Clean;ProRock_Soapite_CalculatorSample:Clean;ProRock_Soapite_CheckVatServiceSample:Clean;ProRock_Http_ClientCertificateSample:Clean;ProRock_Soapite_WsSecuritySample:Clean;ProRock_Xmlite_DocumentPropertiesSample:Clean;ProRock_Xmlite_FhirSample:Clean;ProRock_Xmlite_EInvoiceSample:Clean"/>
+        <CallTarget Targets="Calcite_Basics:Clean;Xmlite_Basic:Clean;Xmlite_Namespaces:Clean;Soapite_Calculator:Clean;Soapite_CheckVatService:Clean;Http_ClientCertificate:Clean;Soapite_WsSecurity:Clean;Xmlite_DocumentProperties:Clean;Xmlite_Fhir:Clean;Xmlite_EInvoice:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="ProRock_Calcite_BasicsSample:Make;ProRock_Xmlite_Basic:Make;ProRock_Xmlite_Namespaces:Make;ProRock_Soapite_CalculatorSample:Make;ProRock_Soapite_CheckVatServiceSample:Make;ProRock_Http_ClientCertificateSample:Make;ProRock_Soapite_WsSecuritySample:Make;ProRock_Xmlite_DocumentPropertiesSample:Make;ProRock_Xmlite_FhirSample:Make;ProRock_Xmlite_EInvoiceSample:Make"/>
+        <CallTarget Targets="Calcite_Basics:Make;Xmlite_Basic:Make;Xmlite_Namespaces:Make;Soapite_Calculator:Make;Soapite_CheckVatService:Make;Http_ClientCertificate:Make;Soapite_WsSecurity:Make;Xmlite_DocumentProperties:Make;Xmlite_Fhir:Make;Xmlite_EInvoice:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

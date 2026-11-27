@@ -1,10 +1,10 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-        <ProjectGuid>{8B2E4F61-3C7A-4D95-A1E8-6F0C2B9D7E54}</ProjectGuid>
-        <MainSource>ProRock.Soapite.WsSecuritySample.dpr</MainSource>
+        <ProjectGuid>{3F7C2A91-8D4E-4B6A-9C15-7E2B5D0A4C83}</ProjectGuid>
+        <MainSource>Http.ClientCertificate.dpr</MainSource>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Debug</Config>
-        <ProjectName Condition="'$(ProjectName)'==''">ProRock.Soapite.WsSecuritySample</ProjectName>
+        <ProjectName Condition="'$(ProjectName)'==''">Http.ClientCertificate</ProjectName>
         <TargetedPlatforms>3</TargetedPlatforms>
         <AppType>Console</AppType>
         <FrameworkType>None</FrameworkType>
@@ -52,7 +52,7 @@
         <DCC_N>false</DCC_N>
         <DCC_S>false</DCC_S>
         <DCC_ImageBase>00400000</DCC_ImageBase>
-        <SanitizedProjectName>ProRock_Soapite_WsSecuritySample</SanitizedProjectName>
+        <SanitizedProjectName>Http_ClientCertificate</SanitizedProjectName>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=;CFBundleName=</VerInfo_Keys>
         <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;$(DCC_Namespace)</DCC_Namespace>
@@ -97,10 +97,6 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="ProRock.Xmlite.Schema.WsSecurityUtility.pas"/>
-        <DCCReference Include="ProRock.Xmlite.Schema.WsSecurity.pas"/>
-        <DCCReference Include="..\ProRock.Soapite.Calculator\ProRock.Xmlite.Schema.Calculator.pas"/>
-        <DCCReference Include="..\ProRock.Soapite.Calculator\ProRock.Soapite.Calculator.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
@@ -119,7 +115,7 @@
         <BorlandProject>
             <Delphi.Personality>
                 <Source>
-                    <Source Name="MainSource">ProRock.Soapite.WsSecuritySample.dpr</Source>
+                    <Source Name="MainSource">Http.ClientCertificate.dpr</Source>
                 </Source>
             </Delphi.Personality>
             <Platforms>

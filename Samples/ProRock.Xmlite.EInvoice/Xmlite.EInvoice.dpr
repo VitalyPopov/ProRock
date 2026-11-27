@@ -1,8 +1,8 @@
-program ProRock.Xmlite.EInvoiceSample;
+program Xmlite.EInvoice;
 
 // An electronic invoice under EN 16931 in either of its syntaxes, UN/CEFACT CII (ZUGFeRD, Factur-X, XRechnung) or OASIS UBL
 // (Peppol, XRechnung), read into the classes ProRocket generates from the official schemas, shown in one window, and written back.
-// invoice-cii.xml and invoice-ubl.xml are the same invoice. Usage: ProRock.Xmlite.EInvoiceSample [<file>] - or open / drop a file.
+// invoice-cii.xml and invoice-ubl.xml are the same invoice. Usage: Xmlite.EInvoice [<file>] - or open / drop a file.
 //
 // XML only: no PDF (a ZUGFeRD or Factur-X file holds its XML inside a PDF), no check of a document against the rules of EN 16931.
 //

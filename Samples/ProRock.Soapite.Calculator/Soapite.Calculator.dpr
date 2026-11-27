@@ -1,4 +1,4 @@
-﻿program ProRock.Soapite.CalculatorSample;
+﻿program Soapite.Calculator;
 
 {$APPTYPE CONSOLE}
 

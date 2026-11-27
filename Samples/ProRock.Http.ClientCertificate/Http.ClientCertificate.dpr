@@ -1,4 +1,4 @@
-﻿program ProRock.Http.ClientCertificateSample;
+﻿program Http.ClientCertificate;
 
 {$APPTYPE CONSOLE}
 
@@ -9,7 +9,7 @@
 // The certificate may come from a file (ClientCertificate) or from memory (ClientCertificateData - bytes from a database,
 // a resource, a key vault).
 // Needs Delphi 12 or later (System.Net's client certificate support).
-// Usage: ProRock.Http.ClientCertificateSample [<certificate.p12> <password>]
+// Usage: Http.ClientCertificate [<certificate.p12> <password>]
 // Without arguments: badssl.com-client.p12 next to the exe, password badssl.com - download it from
 // https://badssl.com/certs/badssl.com-client.p12 (badssl.com's public test certificate, not included here)
 

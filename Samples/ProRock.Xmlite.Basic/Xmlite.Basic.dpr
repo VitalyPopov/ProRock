@@ -1,9 +1,9 @@
-program ProRock.Xmlite.Namespaces;
+program Xmlite.Basic;
 
 uses
   Vcl.Forms,
   Form.Main in 'Form.Main.pas' {FormMain},
-  ProRock.Xmlite.Schema.Order in 'ProRock.Xmlite.Schema.Order.pas';
+  MetaModel in 'MetaModel.pas';
 
 {$R *.res}
 
