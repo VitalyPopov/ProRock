@@ -454,6 +454,7 @@ type
     function GetFreezePanes: string;
     procedure SetFreezePanes(const aValue: string);
     procedure Shift(const aMap: TReferenceMap);
+    procedure RefuseChange(const aCode, aMessage: string);
   public
     destructor Destroy; override;
 
@@ -2115,6 +2116,13 @@ begin
       Result.Add(sheet.fName, sheet.fStore);
 end;
 
+// a refused change of the sheet's structure: an Error issue, then raised - the caller's next addresses would be wrong
+procedure TWorksheet.RefuseChange(const aCode, aMessage: string);
+begin
+  fWorkbook.fIssues.Add(TIssueSeverity.isError, aCode, fName, aMessage);
+  raise EInvalidOpException.Create(aMessage);
+end;
+
 // Excel's Insert and Delete of aMap's rows or columns: the backend's walk
 procedure TWorksheet.Shift(const aMap: TReferenceMap);
 begin
@@ -2136,7 +2144,12 @@ begin
     walk.Free;
   end;
   if why <> '' then
-    raise EInvalidOpException.CreateFmt('%s of %s not %s: %s', [what, fName, done, why]);
+  begin
+    var code: string := 'Delete';
+    if aMap.Change = TReferenceChange.rcInsert then
+      code := 'Insert';
+    RefuseChange(code, Format('%s of %s not %s: %s', [what, fName, done, why]));
+  end;
 end;
 
 procedure TWorksheet.WriteNumber(aRow, aColumn: integer; aValue: Double; const aTarget: TRange);
@@ -2710,7 +2723,7 @@ begin
     end;
   end;
   if why <> '' then
-    raise EInvalidOpException.CreateFmt('%s not deleted: %s', [fName, why]);
+    RefuseChange('SheetDelete', Format('%s not deleted: %s', [fName, why]));
   fWorkbook.fSheets.fList.Remove(Self);
 end;
 

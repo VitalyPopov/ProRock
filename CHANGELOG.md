@@ -67,7 +67,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   Excel moves them. A dynamic array moves with its formula's cell and spills from there as before (gone with that cell;
   folded into it when a delete leaves its formula naming `#REF!`, as Excel shows it);
   automatic row heights left for Excel to fit again when columns move cells, as Excel fits them. Refused with nothing
-  changed, as Excel refuses: part of a legacy array formula, cells pushed off the sheet, a
+  changed (`EInvalidOpException`, an Error in `Issues` too), as Excel refuses: part of a legacy array formula, cells pushed off the sheet, a
   table's header row, part of a pivot table; refused for now: Excel 2010's conditional formats, validation and sparklines,
   embedded objects, controls, threaded comments, Excel 2016's chart kinds, a part of a kind Calcite does not know (cells
   mapped to XML, named sheet views, real-time data and a shared workbook's revisions among them). An extension Calcite does
@@ -77,8 +77,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   names, charts, conditional formats and validation (Excel 2010's too), tables' formulas - becomes `#REF!` as Excel writes it
   (a 3-D range's end on it moves to the next worksheet, a name of it another sheet uses stays as the workbook's, a dynamic
   array naming it gives `#REF!` alone); its names, print areas, tables, pivot tables, drawings, notes and the pivot caches
-  only it used go with it; the next visible sheet becomes active. The sheet object is freed. Refused with nothing changed,
-  as Excel refuses: the last visible sheet, a very hidden one; refused for now: a sheet with slicers or timelines
+  only it used go with it; the next visible sheet becomes active. The sheet object is freed. Refused with nothing changed
+  (`EInvalidOpException`, an Error in `Issues` too), as Excel refuses: the last visible sheet, a very hidden one;
+  refused for now: a sheet with slicers or timelines
 - `ProRock.Calcite.Data`: `ExportDataSet(DataSet, Sheet)` writes a TDataSet's visible fields to a sheet - a bold header from
   `DisplayLabel`, each value as its type (null left empty), number formats from the fields (`DisplayFormat`, currency,
   decimals, dates), the columns fitted and the header frozen

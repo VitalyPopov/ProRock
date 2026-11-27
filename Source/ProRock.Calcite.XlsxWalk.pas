@@ -175,6 +175,7 @@ type
 
   TAutoFilterHandler = class(TXlsxHandler)
   public
+    function Plan: string; override;
     procedure Apply; override;
   end;
 
@@ -262,6 +263,9 @@ type
 // an autofilter's columns through columns inserted or deleted (its first one was aOldLeft, is aLeft): True when the last
 // filter went with them - Excel then shows the rows it hid
 function ShiftFilterColumns(aFilter: TAutoFilterCT; aOldLeft, aLeft: integer; const aMap: TReferenceMap): boolean;
+// why an autofilter over aArea does not move through aMap ('' when it does): rows through it while it filters, some of its
+// filtered columns deleted while others stay; aKind and aName name it in the message (table, Sales; list, A1:D9)
+function FilterRefusal(aFilter: TAutoFilterCT; const aArea: TArea; const aKind, aName: string; const aMap: TReferenceMap): string;
 // an element kept as read with its f and sqref texts (formulas, any prefix) through aMap; False with aWhy when one naming
 // aSheet does not read
 function MappedKeptXml(const aXml, aSheet: string; const aMap: TReferenceMap; out aResult, aWhy: string): boolean;
@@ -703,6 +707,26 @@ begin
   Result := filtered and (aFilter.FilterColumn.Count = 0);
 end;
 
+function FilterRefusal(aFilter: TAutoFilterCT; const aArea: TArea; const aKind, aName: string; const aMap: TReferenceMap): string;
+begin
+  Result := '';
+  if aFilter.FilterColumn.Count = 0 then
+    Exit;
+  if aMap.ByRows and ((aMap.Delta > 0) and (aMap.First > aArea.Top) and (aMap.First <= aArea.Bottom) or
+    (aMap.Delta < 0) and (aMap.First <= aArea.Bottom) and (aMap.Last >= aArea.Top)) then
+    Exit(Format('a filtered %s (%s): Excel inserts and deletes rows through a filter only partly, which Calcite does not ' +
+      'copy - clear the filter first', [aKind, aName]));
+  if aMap.ByRows or (aMap.Delta >= 0) then
+    Exit;
+  var deleted: integer := 0;
+  for var column: TFilterColumnCT in aFilter.FilterColumn do
+    if (aArea.Left + integer(column.ColId) >= aMap.First) and (aArea.Left + integer(column.ColId) <= aMap.Last) then
+      Inc(deleted);
+  if (deleted > 0) and (deleted < aFilter.FilterColumn.Count) then
+    Result := Format('a filtered column of a %s (%s) deleted while other filters stay: Excel shows the rows only that ' +
+      'filter hid, which Calcite does not work out - clear the filter first', [aKind, aName]);
+end;
+
 // what the sheet lists by address, as Excel moves it: merged areas (one left with a cell unmerged), conditional formats and
 // validation (grown by a row or column inserted right after them), hyperlinks, the autofilter (gone with its header row)
 // and its sort, ignored errors, protected ranges, page breaks, frozen panes (never fewer than one row or column), the
@@ -801,6 +825,17 @@ begin
   end;
   if links.Count = 0 then
     sheet.Clear('Hyperlinks');
+end;
+
+function TAutoFilterHandler.Plan: string;
+begin
+  Result := '';
+  if fMap.Change = TReferenceChange.rcSheetDelete then
+    Exit;
+  var sheet: TWorksheetE := fStore.Objects(False);
+  var area: TArea;
+  if sheet.IsPresent('AutoFilter') and TArea.TryParse(sheet.AutoFilter.Ref, area) then
+    Result := FilterRefusal(sheet.AutoFilter, area, 'list', area.CellsAddress, fMap);
 end;
 
 // gone with its header row, and its hidden name with it; its columns and sort follow
@@ -1001,7 +1036,7 @@ begin
     var changed, why: string;
     if not ShiftFormula(text, aMap, changed, why) then
     begin
-      if ContainsText(text, aSheet) then
+      if TUtility.MayNameSheet(text, aSheet) then
       begin
         aWhy := Format('%s (%s)', [why, text]);
         Exit(False);
@@ -1045,7 +1080,7 @@ begin
   if ShiftFormula(aText, aMap, aResult, why) then
     Exit;
   aResult := aText;
-  if (aSheet = fSheet) or ContainsText(aText, fMap.Sheet) then
+  if (aSheet = fSheet) or TUtility.MayNameSheet(aText, fMap.Sheet) then
   begin
     aWhy := Format('the formula of %s!%s does not read: %s', [aSheet.fName, aWhere, why]);
     Result := False;
@@ -1395,16 +1430,17 @@ begin
     Exit;
   var objects: TWorksheetE := fStore.Objects(fWalk.fUnknownExtensions = ueDrop);
   var extensions: ProRock.Xmlite.Schema.Ooxml.Sml.TExtensionCTList := objects.ExtLst.Ext;
+  var notes: TArray<string> := nil; // in the sheet's order, after what other sheets noted
   for var i := fUnknown.Count - 1 downto 0 do
     if fWalk.fUnknownExtensions = ueDrop then
     begin
-      fWalk.fNotes.Add(Format('an extension Calcite does not know (%s) dropped', [extensions[fUnknown[i]].Uri]));
+      notes := [Format('an extension Calcite does not know (%s) dropped', [extensions[fUnknown[i]].Uri])] + notes;
       extensions.Delete(fUnknown[i]);
     end
     else
-      fWalk.fNotes.Add(Format('an extension Calcite does not know (%s) kept as it was: its references may not have moved',
-        [extensions[fUnknown[i]].Uri]));
-  fWalk.fNotes.Reverse;
+      notes := [Format('an extension Calcite does not know (%s) kept as it was: its references may not have moved',
+        [extensions[fUnknown[i]].Uri])] + notes;
+  fWalk.fNotes.AddRange(notes);
   if extensions.Count = 0 then
     objects.Clear('ExtLst');
 end;

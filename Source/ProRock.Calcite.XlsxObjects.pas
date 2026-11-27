@@ -417,37 +417,12 @@ begin
   aOffset := (aPosition - start) mod fDefault;
 end;
 
-// why Excel or Calcite does not move the sheet's tables (and the sheet's autofilter) so, '' when nothing stands in the way
+// why Excel or Calcite does not move the sheet's tables so, '' when nothing stands in the way
 function TTablesHandler.Plan: string;
-const
-  cFiltered = 'a filtered %s (%s): Excel inserts and deletes rows through a filter only partly, which Calcite does not ' +
-    'copy - clear the filter first';
-  cFilterDeleted = 'a filtered column of a %s (%s) deleted while other filters stay: Excel shows the rows only that filter ' +
-    'hid, which Calcite does not work out - clear the filter first';
-var
-  last: integer;
-
-  // columns deleted with some of the filtered ones, not all
-  function SomeFilters(aFilter: TAutoFilterCT; aLeft: integer): boolean;
-  begin
-    var deleted: integer := 0;
-    for var column: TFilterColumnCT in aFilter.FilterColumn do
-      if (aLeft + integer(column.ColId) >= fMap.First) and (aLeft + integer(column.ColId) <= last) then
-        Inc(deleted);
-    Result := not fMap.ByRows and (fMap.Delta < 0) and (deleted > 0) and (deleted < aFilter.FilterColumn.Count);
-  end;
-
-  // rows passing through it: an insert below its first row, a delete taking any
-  function Through(const aArea: TArea): boolean;
-  begin
-    Result := fMap.ByRows and ((fMap.Delta > 0) and (fMap.First > aArea.Top) and (fMap.First <= aArea.Bottom) or
-      (fMap.Delta < 0) and (fMap.First <= aArea.Bottom) and (last >= aArea.Top));
-  end;
-
 begin
   if fMap.Change = TReferenceChange.rcSheetDelete then
     Exit(PlanOthers);
-  last := fMap.Last;
+  var last: integer := fMap.Last;
   var package: TPackageOoxml := fBook.Package;
   for var relationship: TRelationshipOoxml in package.Relationships(fStore.Part) do
     if relationship.&Type.EndsWith(cTable) then
@@ -465,20 +440,13 @@ begin
         (last >= area.Top) and ((fMap.First > area.Top) or (last < area.Bottom)) then
         Exit(Format('the header row of a table (%s, %s): Excel deletes it only with the whole table', [table.Name,
           area.CellsAddress]));
-      if table.IsPresent('AutoFilter') and (table.AutoFilter.FilterColumn.Count > 0) and Through(area) then
-        Exit(Format(cFiltered, ['table', table.Name]));
-      if table.IsPresent('AutoFilter') and SomeFilters(table.AutoFilter, area.Left) then
-        Exit(Format(cFilterDeleted, ['table', table.Name]));
+      if table.IsPresent('AutoFilter') then
+      begin
+        var why: string := FilterRefusal(table.AutoFilter, area, 'table', table.Name, fMap);
+        if why <> '' then
+          Exit(why);
+      end;
     end;
-  var sheet: TWorksheetE := fStore.Objects(False);
-  if sheet.IsPresent('AutoFilter') and (sheet.AutoFilter.FilterColumn.Count > 0) then
-  begin
-    var area: TArea;
-    if TArea.TryParse(sheet.AutoFilter.Ref, area) and Through(area) then
-      Exit(Format(cFiltered, ['list', area.CellsAddress]));
-    if SomeFilters(sheet.AutoFilter, area.Left) then
-      Exit(Format(cFilterDeleted, ['list', area.CellsAddress]));
-  end;
   Result := PlanOthers;
 end;
 
@@ -613,7 +581,7 @@ begin
   map.InName := False;
   if not ShiftFormula(text, map, kept.Text, why) then
   begin
-    if ContainsText(text, fName) then
+    if TUtility.MayNameSheet(text, fName) then
       Result := Format('a formula of the table %s does not read: %s', [aPart, why]);
     Exit;
   end;
@@ -680,8 +648,8 @@ begin
     begin
       var table: TTableE := package.Part<TTableE>(relationship.Part);
       var area: TArea;
-      if not TArea.TryParse(table.Ref, area) then
-        Continue;
+      if (table = nil) or not TArea.TryParse(table.Ref, area) then
+        Continue; // the plan refuses it
       var body: TTableBody;
       body.Left := area.Left;
       body.Right := area.Right;
@@ -1341,7 +1309,7 @@ begin
     move.Before := ChartFormula(reference);
     if not ShiftFormula(move.Before, fMap, move.After, why) then
     begin
-      if ContainsText(move.Before, fName) then
+      if TUtility.MayNameSheet(move.Before, fName) then
         Exit(Format('the formula %s of the chart %s does not read: %s', [move.Before, aPart, why]));
       Continue;
     end;
@@ -1737,7 +1705,9 @@ begin
 end;
 
 // the tables fill the map, every handler plans in the order of Excel's refusals, then they apply in an order of their own:
-// the names, the rules' formulas, the cells, the lists, the cells' formulas, the objects
+// the names (written by the plan's index: before the autofilter drops its hidden name), the rules' formulas (before the
+// conditional formats drop rules), the cells (the rows and axis the rest read), the lists, the cells' formulas, the objects.
+// The sheet's caches are forgotten after the lists and after the formulas: no handler counts on another's Forget
 function TXlsxRun.Shift: string;
 begin
   Result := '';
@@ -1766,7 +1736,9 @@ begin
     cells.Apply;
     for var index := firstList to fHandlers.Count - 1 do
       fHandlers[index].Apply;
+    fSheet.Store.Forget;
     formulas.Apply;
+    fSheet.Store.Forget;
     Handler<TExtensionsHandler>.Apply;
   end;
   tables.Apply;

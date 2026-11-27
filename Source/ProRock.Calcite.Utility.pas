@@ -161,6 +161,9 @@ type
 
     // a sheet's name as a formula writes it before its !: quoted ('My Sheet', 'A1', 'It''s') when Excel quotes it
     class function QuotedSheet(const aName: string): string; static;
+    // whether a formula's text may name the sheet: its name as a prefix (before !, : or the closing quote), plain or quoted
+    // ('Bob''s'), in any case; a formula that does not read naming it is refused, not kept
+    class function MayNameSheet(const aText, aSheet: string): boolean; static;
     // the columns a structured reference's brackets name ([Sales], [[#This Row],[Sales]], [[Q1]:[Q3]], [@Sales]), their '
     // escapes undone; # specifiers left out
     class function TableColumns(const aBrackets: string): TArray<string>; static;
@@ -356,6 +359,12 @@ begin
     end
     else
       Inc(i); // , : @ and spaces between them
+end;
+
+class function TUtility.MayNameSheet(const aText, aSheet: string): boolean;
+begin
+  Result := (aSheet <> '') and (TRegEx.IsMatch(aText, '(?<![\w.])' + TRegEx.Escape(aSheet) + '(?=[!:''])', [roIgnoreCase]) or
+    TRegEx.IsMatch(aText, '(?<![\w.])' + TRegEx.Escape(aSheet.Replace('''', '''''')) + '(?=[!:''])', [roIgnoreCase]));
 end;
 
 class function TUtility.QuotedSheet(const aName: string): string;
