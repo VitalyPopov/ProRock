@@ -77,6 +77,11 @@ type
     function Done: string;
   end;
 
+  // a span reaching the sheet's last row or column through a delete, as Excel ends it: a list by address (conditional
+  // formats, validation, hyperlinks, protected ranges) keeps reaching it; a table moves in with its cells; a merged area
+  // moves in when wholly after the delete, keeps reaching it when the delete cuts it
+  TSheetEnd = (sePinned, seMoves, seMerged);
+
   // how a formula's references change, as Excel changes them. A fill moves the relative parts of every reference. An insert
   // or delete of rows or columns on one sheet moves each reference into it at or past the cut, the absolute parts too (in a
   // defined name the relative parts stay, as Excel keeps them); a range grows or shrinks, one wholly deleted or pushed off
@@ -117,14 +122,14 @@ type
     // a delete: the last row or column deleted
     function Last: integer;
     // a span of rows or columns as Excel moves it: one inserted inside grows (aGrowAfter: right after it too, as a format
-    // carries on), a delete shrinks it, the whole sheet's stays and one reaching the last row or column keeps reaching
-    // it; False when nothing is left
-    function MovedSpan(var aLow, aHigh: integer; aGrowAfter: boolean): boolean;
+    // carries on), a delete shrinks it, the whole sheet's stays, one reaching the last row or column ends by aEnd; False
+    // when nothing is left
+    function MovedSpan(var aLow, aHigh: integer; aGrowAfter: boolean; aEnd: TSheetEnd = TSheetEnd.seMerged): boolean;
     // a row or column number the same way: 0 when deleted or pushed off the sheet
     function MovedIndex(aIndex: integer): integer;
-    function MovedArea(var aArea: TArea; aGrowAfter: boolean = False): boolean;
+    function MovedArea(var aArea: TArea; aGrowAfter: boolean = False; aEnd: TSheetEnd = TSheetEnd.seMerged): boolean;
     // a list of areas (A1:B5 D7) the same way, those gone dropped: '' when none is left
-    function MovedSqref(const aSqref: string; aGrowAfter: boolean = False): string;
+    function MovedSqref(const aSqref: string; aGrowAfter: boolean = False; aEnd: TSheetEnd = TSheetEnd.seMerged): string;
   private
     function MapFill(const aReference: TReference; out aText: string): boolean;
     function MovedEnd(var aValue: integer; aFixed: boolean): boolean;
@@ -441,7 +446,7 @@ begin
   Result := First + Count - 1;
 end;
 
-function TReferenceMap.MovedSpan(var aLow, aHigh: integer; aGrowAfter: boolean): boolean;
+function TReferenceMap.MovedSpan(var aLow, aHigh: integer; aGrowAfter: boolean; aEnd: TSheetEnd): boolean;
 begin
   var count: integer := Delta;
   var bound: integer := Limit; // not `limit`: Delphi 10.3 reads the call as the variable
@@ -460,20 +465,21 @@ begin
     Exit(aLow <= bound);
   end;
   var last: integer := First - count - 1;
+  var toEnd: boolean := aHigh = bound;
   if last < aLow then
   begin
     Inc(aLow, count);
-    Inc(aHigh, count);
+    if not toEnd or (aEnd <> TSheetEnd.sePinned) then
+      Inc(aHigh, count);
   end
   else if First <= aHigh then
   begin
-    var toEnd: boolean := aHigh = bound;
     var left: integer := aHigh - aLow + 1 - (Min(last, aHigh) - Max(First, aLow) + 1);
     if left = 0 then
       Exit(False);
     aLow := Min(aLow, First);
     aHigh := aLow + left - 1;
-    if toEnd then
+    if toEnd and (aEnd <> TSheetEnd.seMoves) then
       aHigh := bound;
   end;
   Result := True;
@@ -495,15 +501,15 @@ begin
   Result := aIndex + count;
 end;
 
-function TReferenceMap.MovedArea(var aArea: TArea; aGrowAfter: boolean): boolean;
+function TReferenceMap.MovedArea(var aArea: TArea; aGrowAfter: boolean; aEnd: TSheetEnd): boolean;
 begin
   if ByRows then
-    Result := MovedSpan(aArea.Top, aArea.Bottom, aGrowAfter)
+    Result := MovedSpan(aArea.Top, aArea.Bottom, aGrowAfter, aEnd)
   else
-    Result := MovedSpan(aArea.Left, aArea.Right, aGrowAfter);
+    Result := MovedSpan(aArea.Left, aArea.Right, aGrowAfter, aEnd);
 end;
 
-function TReferenceMap.MovedSqref(const aSqref: string; aGrowAfter: boolean): string;
+function TReferenceMap.MovedSqref(const aSqref: string; aGrowAfter: boolean; aEnd: TSheetEnd): string;
 begin
   Result := '';
   for var item: string in aSqref.Split([' '], TStringSplitOptions.ExcludeEmpty) do
@@ -511,7 +517,7 @@ begin
     var area: TArea;
     var text: string := item;
     if TArea.TryParse(item, area) then
-      if MovedArea(area, aGrowAfter) then
+      if MovedArea(area, aGrowAfter, aEnd) then
         text := area.CellsAddress
       else
         text := '';

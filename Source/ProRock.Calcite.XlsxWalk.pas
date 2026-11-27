@@ -780,7 +780,7 @@ begin
   var sheet: TWorksheetE := fStore.Objects(True);
   for var i := sheet.ConditionalFormatting.Count - 1 downto 0 do
   begin
-    var ref: string := fMap.MovedSqref(sheet.ConditionalFormatting[i].Sqref, True);
+    var ref: string := fMap.MovedSqref(sheet.ConditionalFormatting[i].Sqref, True, TSheetEnd.sePinned);
     if ref = '' then
       sheet.ConditionalFormatting.Delete(i)
     else
@@ -797,7 +797,7 @@ begin
   var validations: TDataValidationCTList := sheet.DataValidations.DataValidation;
   for var i := validations.Count - 1 downto 0 do
   begin
-    var ref: string := fMap.MovedSqref(validations[i].Sqref, True);
+    var ref: string := fMap.MovedSqref(validations[i].Sqref, True, TSheetEnd.sePinned);
     if ref = '' then
       validations.Delete(i)
     else
@@ -817,7 +817,7 @@ begin
   var links: THyperlinkCTList := sheet.Hyperlinks.Hyperlink;
   for var i := links.Count - 1 downto 0 do
   begin
-    var ref: string := fMap.MovedSqref(links[i].Ref);
+    var ref: string := fMap.MovedSqref(links[i].Ref, False, TSheetEnd.sePinned);
     if ref = '' then
       links.Delete(i)
     else
@@ -898,7 +898,7 @@ begin
   var errors: TIgnoredErrorCTList := sheet.IgnoredErrors.IgnoredError;
   for var i := errors.Count - 1 downto 0 do
   begin
-    var ref: string := fMap.MovedSqref(errors[i].Sqref);
+    var ref: string := fMap.MovedSqref(errors[i].Sqref, False, TSheetEnd.sePinned);
     if ref = '' then
       errors.Delete(i)
     else
@@ -916,7 +916,7 @@ begin
   var ranges: TProtectedRangeCTList := sheet.ProtectedRanges.ProtectedRange;
   for var i := ranges.Count - 1 downto 0 do
   begin
-    var ref: string := fMap.MovedSqref(ranges[i].Sqref);
+    var ref: string := fMap.MovedSqref(ranges[i].Sqref, False, TSheetEnd.sePinned);
     if ref = '' then
       ranges.Delete(i)
     else

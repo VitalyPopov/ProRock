@@ -660,7 +660,7 @@ begin
       bodies := bodies + [body];
       if aMap.Delta > 0 then
         Continue;
-      if not aMap.MovedArea(area) then
+      if not aMap.MovedArea(area, False, TSheetEnd.seMoves) then
         gone := gone + [string(table.Name)]
       else if not aMap.ByRows then
       begin
@@ -690,7 +690,7 @@ begin
     if not TArea.TryParse(table.Ref, old) then
       Continue;
     var area: TArea := old;
-    if not fMap.MovedArea(area) then
+    if not fMap.MovedArea(area, False, TSheetEnd.seMoves) then
     begin
       RemoveTable(sheet, relationship);
       Continue;
@@ -851,13 +851,13 @@ begin
   if not aTable.IsPresent('SortState') then
     Exit;
   var sort: TSortStateCT := aTable.SortState;
-  var ref: string := fMap.MovedSqref(sort.Ref);
+  var ref: string := fMap.MovedSqref(sort.Ref, False, TSheetEnd.seMoves);
   if ref <> '' then
   begin
     sort.Ref := ref;
     for var i := sort.SortCondition.Count - 1 downto 0 do
     begin
-      var condition: string := fMap.MovedSqref(sort.SortCondition[i].Ref);
+      var condition: string := fMap.MovedSqref(sort.SortCondition[i].Ref, False, TSheetEnd.seMoves);
       if condition = '' then
         sort.SortCondition.Delete(i)
       else
