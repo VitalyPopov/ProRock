@@ -1,6 +1,7 @@
 ﻿unit ProRock.Calcite;
 
 // Excel workbooks (.xlsx): open, change and save with nothing lost
+// https://prorock.rocks/calcite/
 
 interface
 

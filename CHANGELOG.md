@@ -92,6 +92,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   content not in the schema; these overloads answer instead of raising (a missing file is False too), `OnIssue` hears each
 - Calcite's `Issues` and `OnIssue`: a write Excel would refuse (a part of an array formula, a table's header, NaN) leaves the
   cell as it was and is listed, the rest is saved
+- Sample `ProRock.Calcite.Basics`: Excel workbooks with Calcite - a tab for each feature, a button for each thing, each
+  handler the code to copy ([the Calcite page](https://prorock.rocks/calcite/) shows them word for word)
 - `ProRock.Office.Ooxml`, Office files (.xlsx, .docx, .pptx - any OPC package): `TPackageOoxml` opens and saves one with
   nothing lost - a part is read on first use into its generated classes (`Part<T>`, `EditPart<T>`), a part not changed is saved
   as the same bytes; `Relationships`, `HasPart`, `ContentType`, `AddPart`, `RemovePart`, `Signed`; `Version` changes when a part's objects read before may be gone. `Properties`: the core properties Office
@@ -107,6 +109,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
   samples to `Source`: if your project lists the samples' copies, remove them from it
 - The samples ship no third-party schemas or WSDLs any more, only the units generated from them: each sample's README
   says where to get the files and the command that generates its units again
+- The sample `ProRock.Xmlite.Spreadsheet` is gone: `ProRock.Calcite.Basics` shows Excel workbooks now; the SpreadsheetML
+  units it read them into are in `Source`
 - The DocumentProperties sample is built on `ProRock.Office.Ooxml`: its `OfficeDocument.pas` is gone; app.xml is still read
   into its generated classes
 - `XmlContent` is read-only (`Count`, `Items[]`, `for in`): `Add<T>`, `AddText` and `Remove` change it, as before. Its items

@@ -14,7 +14,7 @@ units again.
 
 | Sample | What it shows |
 |---|---|
-| [`ProRock.Xmlite.Spreadsheet`](#excel-workbook) | an Excel workbook from the official SpreadsheetML schemas (about 23,000 generated lines): sheets, dates, formulas and tables shown, cells edited, written back with everything Excel put in it |
+| [`ProRock.Calcite.Basics`](#excel-workbook) | Excel workbooks with Calcite, no generator and no Excel: values, formulas, formats, rows and columns, sheets, a DataSet export, open-edit-save - a button for each, its handler the code to copy |
 | [`ProRock.Xmlite.EInvoice`](#electronic-invoices) | an electronic invoice under EN 16931 from the official schemas (about 51,000 generated lines): the same window for CII (ZUGFeRD, Factur-X, XRechnung) and UBL (Peppol, XRechnung), written back as it was read |
 | [`ProRock.Xmlite.Fhir`](#fhir-resources) | HL7® FHIR® R4 resources from the official schemas (about 49,000 generated lines): a Bundle listed with each Observation's value, the narrative as text, written back as it was; a Bundle of 1,000 resources timed |
 | [`ProRock.Xmlite.DocumentProperties`](#office-document-properties) | the properties of any Office document: open, edit, save; the sheet or slide titles |
@@ -27,36 +27,26 @@ units again.
 
 ## Excel workbook
 
-[`ProRock.Xmlite.Spreadsheet`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Xmlite.Spreadsheet) opens an
-Excel workbook (.xlsx) into the units ProRocket generates from the SpreadsheetML schemas of ECMA-376 (they ship in `Source`):
-the workbook, its sheets, shared strings, styles and tables, found as Office finds them - through the package's
-relationships. Each sheet is
-shown in a grid: text, numbers, dates (from the cell's style), the formula of the selected cell; the tables with their
-columns. Cells without a formula can be edited. Save writes every part it read back from its objects - with everything
-Excel put in them that the schema does not describe (`extLst`, revision ids, `mc:Ignorable`) - and copies every other part
-as it is. Excel opens the saved file and recalculates its formulas. `demo.xlsx` is an invoice saved by Excel: a Table with
-a calculated column and a total row (`SUBTOTAL(109,Table1[Amount])`).
-
-![The Spreadsheet sample with demo.xlsx open: the invoice sheet in a grid, the table found, and the total row's formula =SUBTOTAL(109,Table1[Amount]) shown for the selected cell](assets/spreadsheet-sample.png)
-
-The quantity of the first line changed from 4 to 5 in the sample and saved - Excel opens the file without a repair prompt,
-with the table as it was, and recalculates the amount and the total:
-
-![Excel with the workbook saved by the sample: the quantity 5, the amount 6,250.00 and the total 11,122.00 recalculated, the table and its total row formula intact](assets/excel-saved.png)
+[`ProRock.Calcite.Basics`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Calcite.Basics) shows
+[Calcite](calcite.md), the Excel library: a tab for each feature - values, formulas, formats, rows and columns, sheets, a
+DataSet, open and edit, issues, the workbook's own objects - and a button for each thing it does. Each button writes its
+sheet of one workbook; the grid shows the sheet as Calcite reads it back, the line below it the selected cell's formula,
+number format and value type. Open in Excel shows a copy in Excel, Save as writes the workbook. Each handler is short and
+starts from the sheet: it is the code to copy, and the [Calcite page](calcite.md) shows it word for word.
 
 ```pascal
-// a cell's text: a shared string by its index, a number as written, a date from its style
-case cell.T of
-  stctS: Result := SharedString(StrToIntDef(cell.V, -1));       // <c r="B3" t="s"><v>4</v></c>
-  stctN: Result := cell.V;                                       // <c r="C6"><v>4</v></c>
-end;
-if cell.F.XmlValue <> '' then                                    // <f>C6*D6</f>
-  Writeln('=', cell.F.XmlValue);
-
-// an edit: Excel recalculates the totals when it opens the file
-cell.V := '5';
-workbook.CalcPr.FullCalcOnLoad := True;
+// the Write formulas button
+var sheet := FeatureSheet('Formulas');
+sheet['A1'].Value := 10;
+sheet['A2'].Value := 20;
+sheet['A3'].Value := 30;
+sheet['A4'].Formula := '=SUM(A1:A3)';
+sheet['B1'].Formula := '=A1*2';
+// English names and commas, as Excel's Formula
+sheet['C1'].Formula := '=IF(A4>50,"big","small")';
 ```
+
+The sample writes `Calcite sample.xlsx` and `Prices.xlsx` next to the program.
 
 ## Electronic invoices
 
