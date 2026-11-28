@@ -4,35 +4,40 @@ icon: lucide/flask-conical
 
 # Samples
 
-In [`Samples`](https://github.com/VitalyPopov/ProRock/tree/main/Samples) of the repository, one group project
-(`ProRock.Samples.groupproj`). The generated units are included, so the samples build without running the generator. The
-schemas and WSDLs they come from are not: each sample's README says where to get them and the command that generates its
-units again.
-
-!!! tip "Your own schemas need the generator"
-    It is a free download: [ProRocket Lite](prorocket-lite/index.md).
+In [Samples](https://github.com/VitalyPopov/ProRock/tree/main/Samples) of the repository, one group project
+(`ProRock.Samples.groupproj`). Every sample builds as it is, without running the generator: the Excel workbook, the Office
+document properties, the client certificate and the hand-written classes need none, the others include their generated units.
 
 | Sample | What it shows |
 |---|---|
-| [`ProRock.Calcite.Basics`](#excel-workbook) | Excel workbooks with Calcite, no generator and no Excel: values, formulas, formats, rows and columns, sheets, a DataSet export, open-edit-save - a button for each, its handler the code to copy |
-| [`ProRock.Xmlite.EInvoice`](#electronic-invoices) | an electronic invoice under EN 16931 from the official schemas (about 51,000 generated lines): the same window for CII (ZUGFeRD, Factur-X, XRechnung) and UBL (Peppol, XRechnung), written back as it was read |
-| [`ProRock.Xmlite.Fhir`](#fhir-resources) | HL7® FHIR® R4 resources from the official schemas (about 49,000 generated lines): a Bundle listed with each Observation's value, the narrative as text, written back as it was; a Bundle of 1,000 resources timed |
-| [`ProRock.Xmlite.DocumentProperties`](#office-document-properties) | the properties of any Office document: open, edit, save; the sheet or slide titles |
-| [`ProRock.Soapite.CheckVatService`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Soapite.CheckVatService) | EU VIES VAT number validation through the generated `TCheckVatService`, with live SOAP Fault handling; `-name:` compares the trader's name too (`checkVatApprox`) and tells an absent match code from VALID with `Present` |
-| [`ProRock.Soapite.WsSecurity`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Soapite.WsSecurity) | a WS-Security UsernameToken (PasswordDigest, Nonce, Timestamp) in the SOAP header, from units generated from the OASIS schemas; offline, or `-live`. Other header blocks work the same way, e.g. the ebMS 3.0 `eb:Messaging` of AS4 |
-| [`ProRock.Http.ClientCertificate`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Http.ClientCertificate) | client certificates (mutual TLS) against the public test server client.badssl.com: HTTP 400 without, 200 with - from a file and from memory |
-| [`ProRock.Soapite.Calculator`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Soapite.Calculator) | a generated client calling a public calculator service (`-soap12` and `-xml` switches) |
-| [`ProRock.Xmlite.Namespaces`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Xmlite.Namespaces) | a generated metamodel from `order.xsd`: parsing, enums, serialization, round trip |
-| [`ProRock.Xmlite.Basic`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Xmlite.Basic) | hand-written models, basic parsing and serialization |
+| [ProRock.Calcite.Basics](#excel-workbook) | Excel workbooks with Calcite, no generator and no Excel: values, formulas, formats, rows and columns, sheets, a DataSet export, open-edit-save - a button for each, its handler the code to copy |
+| [ProRock.Xmlite.EInvoice](#electronic-invoices) | an electronic invoice under EN 16931 from the official schemas (about 51,000 generated lines): the same window for CII (ZUGFeRD, Factur-X, XRechnung) and UBL (Peppol, XRechnung), written back as it was read |
+| [ProRock.Xmlite.Fhir](#fhir-resources) | HL7® FHIR® R4 resources from the official schemas (about 49,000 generated lines): a Bundle listed with each Observation's value, the narrative as text, written back as it was; a Bundle of 1,000 resources timed |
+| [ProRock.Xmlite.DocumentProperties](#office-document-properties) | the properties of any Office document: open, edit, save; the sheet or slide titles |
+| [ProRock.Soapite.CheckVatService](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Soapite.CheckVatService) | EU VIES VAT number validation through the generated `TCheckVatService`, with live SOAP Fault handling; `-name:` compares the trader's name too (`checkVatApprox`) and tells an absent match code from VALID with `Present` |
+| [ProRock.Soapite.WsSecurity](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Soapite.WsSecurity) | a WS-Security UsernameToken (PasswordDigest, Nonce, Timestamp) in the SOAP header, from units generated from the OASIS schemas; offline, or `-live`. Other header blocks work the same way, e.g. the ebMS 3.0 `eb:Messaging` of AS4 |
+| [ProRock.Http.ClientCertificate](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Http.ClientCertificate) | client certificates (mutual TLS) against the public test server client.badssl.com: HTTP 400 without, 200 with - from a file and from memory |
+| [ProRock.Soapite.Calculator](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Soapite.Calculator) | a generated client calling a public calculator service (`-soap12` and `-xml` switches) |
+| [ProRock.Xmlite.Namespaces](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Xmlite.Namespaces) | a generated metamodel from `order.xsd`: parsing, enums, serialization, round trip |
+| [ProRock.Xmlite.Basic](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Xmlite.Basic) | hand-written models, basic parsing and serialization |
+
+!!! tip "Your own schemas need the generator"
+    It is a free download: [ProRocket Lite](prorocket-lite/index.md). The schemas and WSDLs of the samples are not in the
+    repository: each sample's README says where to get them and the command that generates its units again.
 
 ## Excel workbook
 
-[`ProRock.Calcite.Basics`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Calcite.Basics) shows
-[Calcite](calcite.md), the Excel library: a tab for each feature - files, values, formulas, formats, rows and columns, sheets, a
-DataSet, open and edit, issues, the workbook's own objects - and a button for each thing it does. Each button writes its
-sheet of one workbook; the grid shows the sheet as Calcite reads it back, the line above it the selected cell's formula,
-number format and value type. Open in Excel shows a copy in Excel, Save as writes the workbook. Each handler is short and
-starts from the sheet: it is the code to copy, and the [Calcite page](calcite.md) shows it word for word.
+[ProRock.Calcite.Basics](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Calcite.Basics) shows
+[Calcite](calcite.md), the Excel library, with a tab for each feature: files, values, formulas, formats, rows and columns,
+sheets, a DataSet, open and edit, issues, the workbook's own objects.
+
+- Each **button** writes its sheet of one workbook.
+- The **grid** shows the sheet as Calcite reads it back; the line above it, the selected cell's formula, number format and
+  value type.
+- **Open in Excel** shows a copy in Excel, **Save as** writes the workbook.
+
+Each handler is short and starts from the sheet: it is the code to copy, and the [Calcite page](calcite.md) shows it word for
+word.
 
 ![The Calcite sample on its Formats tab: number formats, bold and italic red text, yellow and green fills, a title merged over five columns, a bold header row and a grey row; the line above the grid shows A1's number format #,##0.00](assets/calcite-sample.png)
 
@@ -52,12 +57,19 @@ The sample writes `Calcite sample.xlsx` and `Prices.xlsx` next to the program.
 
 ## Electronic invoices
 
-[`ProRock.Xmlite.EInvoice`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Xmlite.EInvoice) opens an invoice or credit
-note under the European standard EN 16931, which has two syntaxes: UN/CEFACT CII, the XML of ZUGFeRD, Factur-X and one form of XRechnung, and
-OASIS UBL, the XML of Peppol and the other form of XRechnung. Both go into units ProRocket generates from the official schemas (`Schemas`
-in the sample's folder: CII D16B, about 9,000 lines; UBL 2.4, about 42,000 lines), and the root element says which. The window shows the seller and the
-buyer, the lines, the VAT and the totals; Save as writes the file back. `invoice-cii.xml` and `invoice-ubl.xml` are one invoice from KoSIT's
-XRechnung test suite, and show the same in both. Its seller and buyer are placeholders of the test suite.
+[ProRock.Xmlite.EInvoice](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Xmlite.EInvoice) opens an invoice or credit
+note under the European standard EN 16931. The standard has two syntaxes, and the sample reads both:
+
+- **CII** (UN/CEFACT): the XML of ZUGFeRD, Factur-X and one form of XRechnung
+- **UBL** (OASIS): the XML of Peppol and the other form of XRechnung
+
+Both go into units ProRocket generates from the official schemas, in the sample's `Schemas` folder: CII D16B, about 9,000 lines;
+UBL 2.4, about 42,000 lines. The root element says which syntax a file has.
+
+The window shows the seller and the buyer, the lines, the VAT and the totals; **Save as** writes the file back.
+
+`invoice-cii.xml` and `invoice-ubl.xml` are one invoice from KoSIT's XRechnung test suite, so both show the same. Its seller and
+buyer are the test suite's placeholders.
 
 All that differs between the syntaxes is where a field is, so that is all `InvoiceCii.pas` and `InvoiceUbl.pas` hold:
 
@@ -65,25 +77,32 @@ All that differs between the syntaxes is where a field is, so that is all `Invoi
 // CII: rsm:CrossIndustryInvoice
 var settlement := aRoot.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement;
 aInvoice.Currency := settlement.InvoiceCurrencyCode.XmlValue;
-aInvoice.GrandTotal := First(settlement.SpecifiedTradeSettlementHeaderMonetarySummation.GrandTotalAmount);
+aInvoice.GrandTotal :=
+  First(settlement.SpecifiedTradeSettlementHeaderMonetarySummation.GrandTotalAmount);
 
 // UBL: Invoice
 aInvoice.Currency := aRoot.DocumentCurrencyCode.XmlValue;
 aInvoice.GrandTotal := aRoot.LegalMonetaryTotal.TaxInclusiveAmount.XmlValue;
 ```
 
-The sample reads XML: a ZUGFeRD or Factur-X file holds its XML inside a PDF, and taking it out is not part of the sample. Reading is not checking:
-the rules of EN 16931 and XRechnung (Schematron) are not run, and the totals are not added up. Amounts are `Double`, exact up to 15
-significant digits.
+What the sample does not do:
+
+- take the XML out of a PDF: a ZUGFeRD or Factur-X file holds its XML inside one
+- check the invoice: the rules of EN 16931 and XRechnung (Schematron) are not run, and the totals are not added up
+
+Amounts are `Double`, exact up to 15 significant digits.
 
 ## FHIR resources
 
-[`ProRock.Xmlite.Fhir`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Xmlite.Fhir) reads HL7® FHIR® R4
-XML - a Bundle or a single resource - into the units ProRocket generates from the standard's schemas (`fhir-single.xsd`,
-`fhir-xhtml.xsd`): 146 resource types, their data types and the narrative's XHTML, about 49,000 lines. It lists each resource
-with what it is, its value and when; the selected one's narrative is shown as text. Save as writes the file back as it
-was read, and Speed test reads and writes a Bundle of 1,000 resources made of the same entries. `bundle.xml` holds the
-Patient and Observation examples of the specification.
+[ProRock.Xmlite.Fhir](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Xmlite.Fhir) reads HL7® FHIR® R4
+XML, a Bundle or a single resource. Its units are generated from the standard's schemas (`fhir-single.xsd`,
+`fhir-xhtml.xsd`): 146 resource types, their data types and the narrative's XHTML, about 49,000 lines.
+
+- The **list** shows each resource with what it is, its value and when; the selected one's narrative is shown as text.
+- **Save as** writes the file back as it was read.
+- **Speed test** reads and writes a Bundle of 1,000 resources made of the same entries.
+
+`bundle.xml` holds the Patient and Observation examples of the specification.
 
 ![The FHIR sample: a Bundle of the specification's examples, the Patient and each Observation with its value - 51.2 cm, 107 mmHg / 60 mmHg, blue, 185 lbs - the Body Weight narrative below, and a Bundle of 1,003 resources (3.2 MB) read in 154 ms and written in 114 ms](assets/fhir-sample.png)
 
@@ -96,9 +115,11 @@ begin
   var resource := entry.Resource.Chosen;               // the one resource in this entry
   if (resource <> nil) and resource.InheritsFrom(TObservationCT) then
   begin
-    var value := TObservationCT(resource).ValueChosen; // TQuantityCT, TCodeableConceptCT, TStringCT... or nil
+    // TQuantityCT, TCodeableConceptCT, TStringCT... or nil
+    var value := TObservationCT(resource).ValueChosen;
     if (value <> nil) and value.InheritsFrom(TQuantityCT) then
-      Writeln(TQuantityCT(value).Value.Value, ' ', TQuantityCT(value).&Unit.Value); // 185 lbs
+      // 185 lbs
+      Writeln(TQuantityCT(value).Value.Value, ' ', TQuantityCT(value).&Unit.Value);
   end;
 end;
 ```
@@ -110,7 +131,7 @@ Compiling the FHIR unit takes 10-20 seconds on Delphi 13; the program starts in 
 
 ## Office document properties
 
-[`ProRock.Xmlite.DocumentProperties`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Xmlite.DocumentProperties)
+[ProRock.Xmlite.DocumentProperties](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Xmlite.DocumentProperties)
 opens any Office document (.docx, .xlsx, .pptx) and edits the properties Office shows in **File > Info**: title, subject,
 author, keywords, description, category, status. Save writes them back; Excel opens the saved file without a repair prompt
 and shows every value in File > Info.
@@ -118,9 +139,13 @@ and shows every value in File > Info.
 ![The DocumentProperties sample with an .xlsx file open: title, subject, author, keywords, comments and the other core properties, the application and the worksheets](assets/document-properties.png)
 
 An Office document is a zip of XML parts (OPC, ECMA-376 Part 2). The sample opens it with `TPackageOoxml` from
-`ProRock.Office.Ooxml`: a part is read on first use, and a part not changed is saved as the same bytes, in the same order and
-with the same compression. `Properties` are the core properties (`docProps/core.xml`) as plain values - text, and dates in
-UTC; an empty value removes the element, as Office does:
+`ProRock.Office.Ooxml`:
+
+- a part is read on first use
+- a part not changed is saved as the same bytes, in the same order and with the same compression
+
+`Properties` are the core properties (`docProps/core.xml`) as plain values: text, and dates in UTC. An empty value removes the
+element, as Office does:
 
 ```pascal
 var properties: TCoreProperties := fDocument.Properties;
@@ -140,7 +165,8 @@ workbook, the slides of a presentation - is read into the classes generated from
 package's relationships, and `Part<T>` reads it:
 
 ```pascal
-for var relationship: TRelationshipOoxml in fDocument.Relationships('', '/extended-properties') do
+for var relationship: TRelationshipOoxml in
+  fDocument.Relationships('', '/extended-properties') do
   if not relationship.Part.IsEmpty then
     extended := fDocument.Part<TPropertiesE>(relationship.Part);
 ```
@@ -150,7 +176,8 @@ It is shown, not edited (saved as it was). The titles of the parts are a list of
 
 ```xml
 <HeadingPairs><vt:vector size="2" baseType="variant">
-  <vt:variant><vt:lpstr>Worksheets</vt:lpstr></vt:variant><vt:variant><vt:i4>2</vt:i4></vt:variant>
+  <vt:variant><vt:lpstr>Worksheets</vt:lpstr></vt:variant>
+  <vt:variant><vt:i4>2</vt:i4></vt:variant>
 </vt:vector></HeadingPairs>
 <TitlesOfParts><vt:vector size="2" baseType="lpstr">
   <vt:lpstr>Sales</vt:lpstr><vt:lpstr>Costs</vt:lpstr>

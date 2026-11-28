@@ -78,7 +78,7 @@ ProRocketCli.exe -o Generated checkVatService.wsdl
 You get two units:
 
 - `ProRock.Xmlite.Schema.CheckVatService` - the request and response types
-- [`ProRock.Soapite.CheckVatService`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Soapite.CheckVatService) - the client, `TCheckVatService`
+- [ProRock.Soapite.CheckVatService](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Soapite.CheckVatService) - the client, `TCheckVatService`
 
 ### 3. Set up the project
 
@@ -92,7 +92,8 @@ unit to use. Pass the endpoint: the default is the WSDL's `soap:address`, and VI
 ```pascal
 uses ProRock.Soapite.CheckVatService;
 
-var service := TCheckVatService.Create('https://ec.europa.eu/taxation_customs/vies/services/checkVatService');
+var service := TCheckVatService.Create(
+  'https://ec.europa.eu/taxation_customs/vies/services/checkVatService');
 try
   var request := TCheckVatE.Create;
   try
@@ -101,7 +102,8 @@ try
 
     var response: TCheckVatResponseE;
     var error: TSoapiteError;
-    if service.TryCheckVat(request, response, error) then // never raises for service or network failures
+    // never raises for service or network failures
+    if service.TryCheckVat(request, response, error) then
       try
         Writeln(response.Name, ' - valid: ', response.Valid);
       finally
@@ -122,12 +124,13 @@ That's it. Next: [SOAP](soapite.md) for timeouts, authentication and faults.
 ## XML from an XSD { #xml }
 
 Generate the units from the XSD as for SOAP (steps 1 to 3), then parse and write documents through the typed classes. To try it, the
-[`ProRock.Xmlite.Namespaces`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Xmlite.Namespaces) sample
+[ProRock.Xmlite.Namespaces](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Xmlite.Namespaces) sample
 has this `order.xsd` and a document for it (`demo.xml`):
 
 ```pascal
 uses System.SysUtils,
-  ProRock.Xmlite, // FromXmlFile and ToXmlFile (a class helper: visible only where ProRock.Xmlite is in uses)
+  // FromXmlFile and ToXmlFile: a class helper, visible only where this unit is in uses
+  ProRock.Xmlite,
   ProRock.Xmlite.Schema.Order;
 
 var order := TOrderE.Create;

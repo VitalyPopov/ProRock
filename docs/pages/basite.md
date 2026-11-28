@@ -4,12 +4,17 @@ icon: lucide/box
 
 # The core (Basite)
 
-Basite is the object core under [Xmlite](xmlite.md) and [Soapite](soapite.md). It knows nothing about XML: it knows plain Delphi
-objects and their metadata - who owns what, which values are present, which member of a choice is set. Every generated class is a
-`TBasite` underneath.
+Basite is the object core of ProRock: [Xmlite](xmlite.md) is built on it, and [Soapite](soapite.md) and
+[Calcite](calcite.md) on Xmlite. It knows nothing about XML. It knows plain Delphi objects and their metadata:
 
-You never have to touch it: generate, read, write, call. This page is for whoever wants to look under the hood, or to build on
-the same objects - the controls stay simple, the mechanism is there when you want it ([a cockpit, not an engine
+- who owns what
+- which values are present
+- which member of a choice is set
+
+Every generated class is a `TBasite` underneath.
+
+You never have to touch it. This page is for whoever wants to look under the hood, or to build on the same objects: the
+controls stay simple, the mechanism is there when you want it ([a cockpit, not an engine
 room](principles.md#a-cockpit-not-an-engine-room)).
 
 ## What a Basite object is
@@ -67,19 +72,31 @@ end;
 
 ## Presence
 
-Every object remembers which of its properties are present, one bit each: read from a document, set to something other than the
-default, marked by `SetPresent`, or (an object, a list) holding content. That is how an absent optional value stays absent and a
-`0` that was read is written back. The verbs work by address or by name: `Present[@Order.Count]`, `IsPresent('Count')`,
-`SetPresent(...)`, `Clear(...)`, `HasContent`. [Xmlite](xmlite.md#absent-or-default-presence) shows them on XML.
+Every object remembers which of its properties are present, one bit each. A property is present when it is:
+
+- read from a document
+- set to something other than the default
+- marked by `SetPresent`
+- an object or a list holding content
+
+That is how an absent optional value stays absent and a `0` that was read is written back.
+
+The verbs work by address or by name: `Present[@Order.Count]`, `IsPresent('Count')`, `SetPresent(...)`, `Clear(...)`,
+`HasContent`. [Xmlite](xmlite.md#absent-or-default-presence) shows them on XML.
 
 `[TChoice('Group')]` puts properties into a choice group; `Chosen('Group')` returns the present member's object, `ChosenProperty`
 the property itself.
 
 ## MetaBank: the metadata
 
-The first time a class is used, Basite reads its RTTI once into a `TMetaBasite` and keeps it in `TMetaBank`: the properties in
-order, their kinds, defaults, `[TRequired]`, `[TChoice]`, which ones are lazy, the field each one reads and writes directly. Every
-later object of the class finds it in one step, not a search, and no document scans RTTI again. Registration is thread-safe.
+The first time a class is used, Basite reads its RTTI once into a `TMetaBasite` and keeps it in `TMetaBank`:
+
+- the properties in order, their kinds and defaults
+- `[TRequired]`, `[TChoice]`, which ones are lazy
+- the field each one reads and writes directly
+
+Every later object of the class finds it in one step, not a search, and no document scans RTTI again. Registration is
+thread-safe.
 
 The metadata is yours to read too. `Meta` on any class or object gives it, and a property's value can be read and set as text:
 

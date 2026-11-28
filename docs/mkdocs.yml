@@ -41,23 +41,23 @@ markdown_extensions:
       alternate_style: true
 
 nav:
-  - Home: index.md
-  - Start:
-      - How it works: how-it-works.md
+  - Home:
+      - index.md
       - Getting started: getting-started.md
       - Samples: samples.md
-  - Generator:
-      - prorocket-lite/index.md
-      - GUI: gui.md
-      - Command line: cli.md
-      - Generated code: generated-code.md
   - Using ProRock:
-      - XML (Xmlite): xmlite.md
       - Excel (Calcite): calcite.md
       - SOAP (Soapite): soapite.md
+      - XML (Xmlite): xmlite.md
       - Large documents: large-documents.md
       - Hand-written classes: hand-written.md
       - The core (Basite): basite.md
+  - Generator:
+      - prorocket-lite/index.md
+      - How it works: how-it-works.md
+      - GUI: gui.md
+      - Command line: cli.md
+      - Generated code: generated-code.md
   - Reference:
       - Tested schemas: tested-schemas.md
       - XML support: xml-support.md

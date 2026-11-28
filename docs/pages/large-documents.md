@@ -29,8 +29,8 @@ private
   function GetSeller: TPartyCT;
 published
   [TRequired]
-  property Id: TValueCT read fId;                // minOccurs 1: created with the order, written always
-  property Seller: TPartyCT read GetSeller;      // minOccurs 0: created when you touch it
+  property Id: TValueCT read fId;            // minOccurs 1: created with the order
+  property Seller: TPartyCT read GetSeller;  // minOccurs 0: created when you touch it
 end;
 ```
 

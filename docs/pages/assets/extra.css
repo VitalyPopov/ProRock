@@ -25,6 +25,13 @@
   opacity: 1;
 }
 
+/* inline code reads as part of the sentence: the text's colour and a light tint, not a dark box in grey */
+.md-typeset :not(pre) > code {
+  padding: 0 0.25em;
+  color: inherit;
+  background-color: rgba(255, 255, 255, 0.07);
+}
+
 /* a link around inline code: an underline would cross the code box, so the box itself is underlined */
 .md-typeset a:has(> code) {
   text-decoration: none;
@@ -60,6 +67,7 @@
 }
 
 /* sample and unit names in table cells stay on one line instead of breaking mid-word */
+.md-typeset td:first-child > a,
 .md-typeset td > a > code,
 .md-typeset td:first-child > code {
   white-space: nowrap;

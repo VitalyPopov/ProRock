@@ -45,7 +45,8 @@ An XSD describes which elements and attributes a document may have, in which ord
 the sender and the receiver of a document, and what ProRocket Lite generates the Delphi classes from.
 
 ```xml
-<xs:element name="order" type="OrderType"/>   <!-- an element: a name a document can use -->
+<!-- an element: a name a document can use -->
+<xs:element name="order" type="OrderType"/>
 
 <xs:complexType name="OrderType">             <!-- a type: the shape of the content -->
   <xs:sequence>
@@ -160,7 +161,8 @@ Elements declared inside a type (local elements) are in the schema's namespace w
 ```xml
 <o:order xmlns:o="urn:demo:order">
   <o:id>1</o:id>   <!-- qualified -->
-  <id>1</id>       <!-- unqualified: no prefix, and no default namespace may be in scope -->
+  <!-- unqualified: no prefix, and no default namespace may be in scope -->
+  <id>1</id>
 </o:order>
 ```
 

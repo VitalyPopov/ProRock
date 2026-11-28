@@ -4,9 +4,14 @@ icon: lucide/triangle-alert
 
 # Limitations and notes
 
-What to know before relying on it. Which XML and XML Schema constructs are covered, one by one: [XML support](xml-support.md); what
-comes next: [Roadmap](roadmap.md). If your schema doesn't generate or doesn't read right, please
-[open an issue](https://github.com/VitalyPopov/ProRock/issues/new/choose): coverage grows through real-world schemas.
+What to know before relying on it. More in its own places:
+
+- Excel workbooks: [Calcite's current limitations](calcite.md#current-limitations)
+- XML and XML Schema, construct by construct: [XML support](xml-support.md)
+- what comes next: [Roadmap](roadmap.md)
+
+A schema doesn't generate or read right, or a workbook doesn't open or save right? Please
+[open an issue](https://github.com/VitalyPopov/ProRock/issues/new/choose): coverage grows through real-world files.
 
 ## Platform and compatibility
 
@@ -26,10 +31,14 @@ comes next: [Roadmap](roadmap.md). If your schema doesn't generate or doesn't re
 
 ## Writing a document back
 
-A document read and written back keeps what its schema describes: values equal to their default, objects with only defaults, absent
-values staying absent, enumeration texts, element order as in the schema ([presence](xmlite.md#absent-or-default-presence)), the
-elements the schema does not describe, and mixed content with its text and order
-([mixed content](xmlite.md#mixed-content-and-element-order)).
+A document read and written back keeps what its schema describes:
+
+- values equal to their default, and objects with only defaults
+- absent values staying absent ([presence](xmlite.md#absent-or-default-presence))
+- enumeration texts
+- element order as in the schema
+- the elements the schema does not describe
+- mixed content with its text and order ([mixed content](xmlite.md#mixed-content-and-element-order))
 
 A value set in code that equals its default is written only when marked present (`SetPresent`).
 

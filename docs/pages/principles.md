@@ -17,7 +17,8 @@ a choice of 146 resource types; using it is this:
 bundle.FromXml(xml);
 for var entry in bundle.Entry do
   if entry.Resource.Chosen is TObservationCT then
-    Show(TObservationCT(entry.Resource.Chosen).ValueChosen); // a quantity, a code, a text...
+    // a quantity, a code, a text...
+    Show(TObservationCT(entry.Resource.Chosen).ValueChosen);
 ```
 
 The library pays for the complexity, so its user does not.

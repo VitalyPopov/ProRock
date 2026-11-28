@@ -24,8 +24,8 @@ search path.
 ## Command
 
 ```
-ProRocketCli.exe [-o <output folder>] [--strict] [--no-timestamp] [--full-type-names] [--skip-namespace <uri>]
-  <file.xsd|file.wsdl> ...
+ProRocketCli.exe [-o <output folder>] [--strict] [--no-timestamp] [--full-type-names]
+  [--skip-namespace <uri>] <file.xsd|file.wsdl> ...
 ```
 
 | Option | Meaning |

@@ -39,9 +39,11 @@ Using them is the same as with generated classes:
 ```pascal
 var items := TItems.Create;
 try
-  if items.FromXml('<items><item sku="R1"><title>Rocket</title><price>9.5</price></item></items>') then
+  if items.FromXml(
+    '<items><item sku="R1"><title>Rocket</title><price>9.5</price></item></items>') then
     Writeln(items.item[0].sku, ': ', items.item[0].title);  // R1: Rocket
-  Writeln(items.ToXml('items'));                            // the root's name; without it, the class name: <Items>
+  // the root's name; without it, the class name: <Items>
+  Writeln(items.ToXml('items'));
 finally
   items.Free;
 end;
@@ -50,7 +52,7 @@ end;
 !!! warning "Declare the classes in the interface section of a unit"
     ProRock reads them through RTTI. A class declared in a program or an implementation section raises `ENonPublicType` on first use.
 
-The sample [`ProRock.Xmlite.Basic`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Xmlite.Basic) is built this way.
+The sample [ProRock.Xmlite.Basic](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Xmlite.Basic) is built this way.
 
 ## Lazy creation
 

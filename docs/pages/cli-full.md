@@ -43,8 +43,8 @@ ProRocketCli.exe -o Generated main.xsd imported.xsd
 ## Command
 
 ```
-ProRocketCli.exe [-o <output folder>] [--strict] [--no-timestamp] [--full-type-names] [--skip-namespace <uri>]
-  <file.xsd|file.wsdl> ...
+ProRocketCli.exe [-o <output folder>] [--strict] [--no-timestamp] [--full-type-names]
+  [--skip-namespace <uri>] <file.xsd|file.wsdl> ...
 ```
 
 In PowerShell, give the path to the exe: `.\ProRocketCli.exe ...` in its folder, or the full path from anywhere.
@@ -158,19 +158,24 @@ found that way: an include by its file name, an import by its namespace.
 A SOAP client:
 
 ```pascal
-uses ProRock.Soapite.CheckVatService; // request/response types, TSoapiteError, the exceptions
+// ProRock.Soapite.CheckVatService: request/response types, TSoapiteError, the exceptions
+uses ProRock.Soapite.CheckVatService;
   // ProRock.Http: transport settings (timeouts, SetBasicAuth, SetBearerToken, headers)
   // ProRock.Soapite: TSoapiteErrorKind (sekNetwork, sekHttp, sekContent, sekFault)
 
-// pass the real endpoint: the default is the WSDL's soap:address, which may be outdated (e.g. http:// instead of https://)
-var service := TCheckVatService.Create('https://ec.europa.eu/taxation_customs/vies/services/checkVatService');
+// pass the real endpoint: the default is the WSDL's soap:address, which may be outdated
+// (e.g. http:// instead of https://)
+var service := TCheckVatService.Create(
+  'https://ec.europa.eu/taxation_customs/vies/services/checkVatService');
 try
-  THttpTransportNative(service.Transport).ResponseTimeout := 30000; // ms; needs ProRock.Http
+  // ms; needs ProRock.Http
+  THttpTransportNative(service.Transport).ResponseTimeout := 30000;
   var response: TCheckVatResponseE;
   var error: TSoapiteError;
-  if service.TryCheckVat(request, response, error) then // never raises for service or network failures
-    ...                                                 // the response is yours to free
-  else if error.Kind = sekFault then ...                // needs ProRock.Soapite
+  // never raises for service or network failures
+  if service.TryCheckVat(request, response, error) then
+    ...                                    // the response is yours to free
+  else if error.Kind = sekFault then ...   // needs ProRock.Soapite
 finally
   service.Free;
 end;
@@ -179,14 +184,17 @@ end;
 XML from an XSD:
 
 ```pascal
-uses ProRock.Xmlite,                  // XML from an XSD: FromXml and ToXml come from a class helper in ProRock.Xmlite,
-  ProRock.Xmlite.Schema.Order;        // visible only where ProRock.Xmlite is in uses
+// XML from an XSD: FromXml and ToXml come from a class helper in ProRock.Xmlite,
+// visible only where ProRock.Xmlite is in uses
+uses ProRock.Xmlite,
+  ProRock.Xmlite.Schema.Order;
 
 var order := TOrderE.Create;           // the root element's class: <Order> -> TOrderE
 try
   if order.FromXml(xmlText) then ...   // True when the text was parsed
   xmlText := order.ToXml;
-  order.FromXmlFile('order.xml');       // a file in its encoding (BOM, encoding="..." or UTF-8); ToXmlFile writes UTF-8
+  // a file in its encoding (BOM, encoding="..." or UTF-8); ToXmlFile writes UTF-8
+  order.FromXmlFile('order.xml');
 finally
   order.Free;
 end;

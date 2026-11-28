@@ -54,11 +54,12 @@ Both read as `Count = 0`. Xmlite remembers which values the document had, and wr
 their default (`count="0"`, FHIR `gender value="male"`, an Excel fill with only defaults). You can ask, mark and remove:
 
 ```pascal
-if response.Present[@response.TraderNameMatch] then // VIES: in the response, not just the first enum value
+// VIES: in the response, not just the first enum value
+if response.Present[@response.TraderNameMatch] then
   ...
 sheet.Count := 0;               // set in code and equal to the default: not written...
 sheet.SetPresent(@sheet.Count); // ...unless marked present: count="0"
-sheet.Clear('Drawing');         // removes a value or an object: back to its default, and absent
+sheet.Clear('Drawing');         // a value or an object: back to its default, and absent
 ```
 
 - `Present[@Obj.X]` tells exactly what the writer does: present when read, marked, not the default, or (an object) with any

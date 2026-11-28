@@ -31,7 +31,7 @@ empty one and you get `Empty`, with nothing added to the file.
     - `Cells[row, column]`, also `Cells[5, 'B']` as Excel's `Cells(5, "B")` - not the column first as in a `TStringGrid`
     - or an address, as Excel writes it: `sheet['B5']`, `sheet['A1:C10']`
 
-Every example below is one button of the sample [`ProRock.Calcite.Basics`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Calcite.Basics):
+Every example below is one button of the sample [ProRock.Calcite.Basics](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Calcite.Basics):
 click it, see the sheet it wrote, read its handler. In the examples `sheet` is a `TWorksheet` -
 `workbook.Worksheets[1]`, `workbook.Worksheets['Prices']` or `workbook.Worksheets.Find('Prices')` - `Log` is your own
 output (a memo, `Writeln`) and `fFolder` the sample's folder.
@@ -499,7 +499,7 @@ official SpreadsheetML schemas. Calcite reads them back after your change.
     sheet.Xlsx.Worksheet.SheetPr.TabColor.Rgb := 'FFC00000'; // ARGB
     ```
 
-## Not yet
+## Current limitations
 
 Calcite grows by what users need: [open an issue](https://github.com/VitalyPopov/ProRock/issues/new/choose) with what
 you miss, and a file that shows it if you can.

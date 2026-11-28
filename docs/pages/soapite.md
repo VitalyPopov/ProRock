@@ -16,7 +16,8 @@ it is the only unit to use.
 ```pascal
 uses ProRock.Soapite.CheckVatService;
 
-var service := TCheckVatService.Create('https://ec.europa.eu/taxation_customs/vies/services/checkVatService');
+var service := TCheckVatService.Create(
+  'https://ec.europa.eu/taxation_customs/vies/services/checkVatService');
 ```
 
 !!! tip "Pass the real endpoint"
@@ -32,7 +33,8 @@ var service := TCheckVatService.Create('https://ec.europa.eu/taxation_customs/vi
 The response is yours to free.
 
 ```pascal
-uses ProRock.Soapite, ProRock.Soapite.CheckVatService; // ProRock.Soapite: TSoapiteErrorKind
+// ProRock.Soapite: TSoapiteErrorKind
+uses ProRock.Soapite, ProRock.Soapite.CheckVatService;
 
 var response: TCheckVatResponseE;
 var error: TSoapiteError;
@@ -70,25 +72,28 @@ transport.ResponseTimeout := 30000;
 transport.SetBasicAuth('user', 'password');   // HTTP Basic (use https)
 transport.SetBearerToken(token);              // OAuth 2.0 bearer token
 transport.SetHeader('X-API-Key', key);        // any header, e.g. an API key
-transport.UserName := 'DOMAIN\user';          // or answer the server's challenge: Basic, Digest, NTLM, Negotiate
+// or answer the server's challenge: Basic, Digest, NTLM, Negotiate
+transport.UserName := 'DOMAIN\user';
 transport.Password := 'password';
 ```
 
 Client certificates (mutual TLS), Delphi 12 or later:
 
 ```pascal
-transport.ClientCertificate := 'client.pfx';  // a PFX/P12 file (Android: the name of an installed certificate)
-transport.ClientCertificateData := bytes;     // or the bytes of a PFX/P12 or PEM file, from memory (not on Android)
+// a PFX/P12 file (Android: the name of an installed certificate)
+transport.ClientCertificate := 'client.pfx';
+// or the bytes of a PFX/P12 or PEM file, from memory (not on Android)
+transport.ClientCertificateData := bytes;
 transport.ClientCertificatePassword := 'pfx password';
 ```
 
-One of the two, not both. The sample [`ProRock.Http.ClientCertificate`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Http.ClientCertificate) makes the call both ways.
+One of the two, not both. The sample [ProRock.Http.ClientCertificate](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Http.ClientCertificate) makes the call both ways.
 
 ## SOAP headers
 
 Header blocks (WS-Addressing, WS-Security tokens, a service's own headers) are added in `OnRequestHeader` and read in
 `OnResponseHeader`. Header blocks are Xmlite objects, so generate them from their schema like any other type. The sample
-[`ProRock.Soapite.WsSecurity`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Soapite.WsSecurity) adds a WS-Security UsernameToken this way, from units generated from the OASIS schemas.
+[ProRock.Soapite.WsSecurity](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Soapite.WsSecurity) adds a WS-Security UsernameToken this way, from units generated from the OASIS schemas.
 
 ## Logging
 
@@ -117,14 +122,16 @@ begin
   LastRequest := aRequest;          // Method, Url, Headers, Body - the SOAP envelope
   Result.Status := 200;
   Result.Headers := [THttpHeader.Create('Content-Type', 'text/xml; charset=utf-8')];
-  Result.Body := ResponseBody;      // a network failure: raise an exception here, as System.Net does
+  // a network failure: raise an exception here, as System.Net does
+  Result.Body := ResponseBody;
 end;
 ```
 
 ```pascal
 var fake := TFakeTransport.Create;
 fake.ResponseBody := TFile.ReadAllText('checkVatResponse.xml', TEncoding.UTF8);
-service.Transport := fake; // the client owns its transport: the previous one is freed, this one is freed with the client
+// the client owns its transport: the previous one is freed, this one with the client
+service.Transport := fake;
 ```
 
 To change requests on their way out and keep System.Net (signing, for example), derive from `THttpTransportNative` instead:

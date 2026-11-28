@@ -27,3 +27,22 @@ document.addEventListener("click", function (event) {
   document.addEventListener("keydown", onKey);
   document.body.appendChild(overlay);
 });
+
+// the sidebar stays where it was: the theme centres the active page after every load (each click is a full load), so a click in
+// the sidebar remembers its scroll and the theme's one centring call restores it; arriving any other way, the theme centres
+(function () {
+  var key = "prorock-sidebar-scroll";
+  var wrap = document.querySelector(".md-sidebar--primary .md-sidebar__scrollwrap");
+  if (!wrap) return;
+  document.addEventListener("click", function (event) {
+    if (!event.target.closest(".md-sidebar--primary a[href]")) return;
+    try { sessionStorage.setItem(key, String(wrap.scrollTop)); } catch (e) {}
+  });
+  var saved = null;
+  try { saved = sessionStorage.getItem(key); sessionStorage.removeItem(key); } catch (e) {}
+  if (saved === null) return;
+  wrap.scrollTo = function () {
+    delete wrap.scrollTo;
+    wrap.scrollTop = Number(saved);
+  };
+})();

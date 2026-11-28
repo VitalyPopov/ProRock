@@ -4,6 +4,12 @@ icon: lucide/workflow
 
 # How it works
 
+How ProRock works with XML and SOAP: from a schema to Delphi classes.
+
+!!! tip "Excel workbooks work out of the box"
+    [Calcite](calcite.md) needs no schema and no generator: the classes for Excel's own schemas are already generated and part
+    of ProRock's source.
+
 An XML schema (XSD) already says exactly what a document may contain. ProRock turns that description into Delphi classes, and
 from then on you work with objects: no parsing code, no node walking.
 
@@ -67,18 +73,27 @@ var order := TOrderE.Create;
 try
   order.FromXmlFile('order.xml'); // with ProRock.Xmlite in uses
 
-  Writeln(order.Customer, ': ', order.Item[0].Quantity, ' x ', order.Item[0].Title); // Ann: 2 x Rocket
+  // Ann: 2 x Rocket
+  Writeln(order.Customer, ': ', order.Item[0].Quantity, ' x ', order.Item[0].Title);
 
   order.Status := sShipped;
   order.Note := 'Left at the door';
-  Writeln(order.ToXml);
+  Writeln(order.ToXml([woPretty])); // indented; ToXml alone writes one line
 finally
   order.Free;
 end;
 ```
 
 ```xml
-<order xmlns="urn:shop:order" status="shipped"><customer>Ann</customer><item><title>Rocket</title><quantity>2</quantity></item><note>Left at the door</note></order>
+<?xml version="1.0" encoding="UTF-8"?>
+<order xmlns="urn:shop:order" status="shipped">
+  <customer>Ann</customer>
+  <item>
+    <title>Rocket</title>
+    <quantity>2</quantity>
+  </item>
+  <note>Left at the door</note>
+</order>
 ```
 
 That is the whole idea. The real schemas are bigger, not different: all of [FHIR R4](samples.md#fhir-resources) or an
@@ -115,11 +130,4 @@ Nothing to hunt for by hand.
 | **ProRock** | the library the units compile against, pure Delphi source | open source (Apache 2.0): add its `Source` folder to the search path |
 | **Your units** | the generated classes | the code is yours, no strings attached |
 
-Inside the library, three names you will meet: **Xmlite** reads and writes XML through the classes, **Soapite** makes SOAP calls
-on top of it, **Basite** is the object core under both ([The core (Basite)](basite.md)).
-
-## Where next
-
-- Try it: [Getting started](getting-started.md#soap), 5 minutes from a WSDL to a working call
-- See it on real data: [Samples](samples.md)
-- What the generator makes of each schema construct: [Generated code](generated-code.md)
+Try it on your own schema: [from an XSD](getting-started.md#xml) or [from a WSDL](getting-started.md#soap).
