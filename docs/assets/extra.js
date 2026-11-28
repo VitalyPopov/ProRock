@@ -1,18 +1,8 @@
-// the header title goes home, as the (hidden) logo did
+// the header title goes home, as the (hidden) logo did; the line next to it (overrides/partials/header.html) is plain text
 document.addEventListener("click", function (event) {
-  if (!event.target.closest(".md-header__title")) return;
+  if (!event.target.closest(".md-header__title") || event.target.closest(".prorock-tagline")) return;
   var home = document.querySelector(".md-header__button.md-logo");
   if (home) window.location.href = home.href;
-});
-
-// the positioning line next to the site name; the theme replaces the whole topic with the page title on scrolling
-document.addEventListener("DOMContentLoaded", function () {
-  var topic = document.querySelector(".md-header__title .md-header__topic:first-child");
-  if (!topic) return;
-  var tagline = document.createElement("span");
-  tagline.className = "prorock-tagline";
-  tagline.textContent = "When the schema changes, regenerate, don't re-patch.";
-  topic.appendChild(tagline);
 });
 
 // a screenshot linked to itself opens enlarged over the page; a click anywhere or Esc closes it
@@ -36,27 +26,4 @@ document.addEventListener("click", function (event) {
   overlay.addEventListener("click", close);
   document.addEventListener("keydown", onKey);
   document.body.appendChild(overlay);
-});
-
-// the generator's download in the header, on every page: nobody expects a free generator next to a library
-document.addEventListener("DOMContentLoaded", function () {
-  var title = document.querySelector(".md-header__title");
-  var home = document.querySelector(".md-header__button.md-logo");
-  if (!title || !home) return;
-  var link = document.createElement("a");
-  link.className = "prorock-download";
-  link.href = "https://github.com/VitalyPopov/ProRock/releases/latest/download/ProRocket-Lite.zip";
-  link.title = "ProRocket Lite: the free code generator, Windows 64-bit";
-  var icon = document.createElement("img");
-  icon.src = new URL("assets/prorocket.png", home.href).href;
-  icon.alt = "";
-  link.appendChild(icon);
-  link.appendChild(document.createTextNode("Download generator"));
-  title.insertAdjacentElement("afterend", link);
-});
-
-// the name in the header as on Home: Pro + Rock in orange
-document.addEventListener("DOMContentLoaded", function () {
-  var name = document.querySelector(".md-header__title .md-header__topic:first-child .md-ellipsis");
-  if (name) name.innerHTML = name.innerHTML.replace("ProRock", 'Pro<span class="prorock-rock">Rock</span> 🤟');
 });

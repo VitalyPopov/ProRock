@@ -1,10 +1,10 @@
-# The site (docs/ + mkdocs.yml), built with Zensical and published on GitHub Pages
+# The site (docs/ + overrides/ + mkdocs.yml), built with Zensical and published on GitHub Pages
 name: Docs
 
 on:
   push:
     branches: [main]
-    paths: [docs/**, mkdocs.yml, ROADMAP.md, CHANGELOG.md, .github/workflows/docs.yml]
+    paths: [docs/**, overrides/**, mkdocs.yml, ROADMAP.md, CHANGELOG.md, .github/workflows/docs.yml]
   workflow_dispatch:
 
 permissions:

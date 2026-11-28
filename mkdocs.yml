@@ -1,5 +1,5 @@
 site_name: ProRock
-site_description: "Schema-typed XML for Delphi: generate exact classes from XSD and WSDL. When the schema changes, regenerate, don't re-patch."
+site_description: "Excel workbooks (.xlsx), XML and SOAP in plain Delphi objects; a free XSD and WSDL code generator."
 site_url: https://prorock.rocks/
 repo_url: https://github.com/VitalyPopov/ProRock
 repo_name: VitalyPopov/ProRock
@@ -8,16 +8,11 @@ copyright: © 2026 Vitaly Popov. ProRock is licensed under the Apache License 2.
 
 theme:
   name: material
+  custom_dir: overrides # the header drawn whole from the first paint (overrides/partials/header.html)
+  font: false # the system font: nothing to download, so the text does not shift when a web font arrives
   favicon: assets/favicon.svg
-  palette: # dark first: the default for a first visit; the button switches, and the browser remembers the choice
-    - scheme: slate
-      toggle:
-        icon: material/weather-sunny
-        name: Light mode
-    - scheme: default
-      toggle:
-        icon: material/weather-night
-        name: Dark mode
+  palette: # dark only: one theme to keep right (the author 2026-11-28)
+    scheme: slate
   features:
     - navigation.sections
     - navigation.indexes
@@ -35,11 +30,14 @@ markdown_extensions:
   - admonition
   - pymdownx.details
   - attr_list
+  - md_in_html
   - tables
   - toc:
       permalink: "#"
   - pymdownx.highlight
   - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
 
 nav:
   - Home: index.md

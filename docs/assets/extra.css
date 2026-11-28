@@ -35,19 +35,28 @@
   border-bottom-right-radius: 0;
 }
 
-/* the positioning line in the header (extra.js), from tablet width on */
+/* what ProRock is, in the header (overrides/partials/header.html), wide screens; the home's own copy only below them */
 .prorock-tagline {
-  margin-left: 1.4em;
-  font-size: 0.7em;
-  font-style: italic;
-  font-weight: 300;
-  letter-spacing: 0.02em;
+  margin-left: 1.2em;
+  font-size: 0.65em;
+  font-weight: 400;
   opacity: 0.55;
+  cursor: default;
 }
 @media screen and (max-width: 76.1875em) {
   .prorock-tagline {
     display: none;
   }
+}
+@media screen and (min-width: 76.25em) {
+  .md-typeset .hero-second {
+    display: none;
+  }
+}
+
+/* the system font (mkdocs.yml font: false): the theme's own list falls back to Arial on Windows; Segoe UI first, as in our pictures */
+:root {
+  --md-text-font: "Segoe UI", system-ui;
 }
 
 /* sample and unit names in table cells stay on one line instead of breaking mid-word */
@@ -93,28 +102,34 @@
   padding-left: 0.8rem;
 }
 
-/* the download of the generator in the header (extra.js), from tablet width on */
-.prorock-download {
+/* the small Support link next to the repository's stars (overrides/partials/header.html), from tablet width on, as the stars */
+.prorock-support {
   display: flex;
   align-items: center;
-  gap: 0.4em;
+  gap: 0.3em;
   flex-shrink: 0;
-  margin: 0 0.6rem;
-  padding: 0.2rem 0.7rem;
-  border: 1px solid currentcolor;
-  border-radius: 0.4rem;
-  font-size: 0.7rem;
+  margin: 0 0.6rem 0 1.2rem; /* the repository icon brings 0.6rem of its own: Support sits midway */
+  font-size: 0.65rem;
   white-space: nowrap;
-  opacity: 0.85;
+  opacity: 0.75;
 }
-.prorock-download:hover {
+/* the repository block as wide as its text (the theme gives it a fixed 11.7rem), Support midway to the search */
+[dir] .md-header__source { /* as strong as the theme's [dir=ltr] rule */
+  width: auto;
+  margin-left: 0;
+  margin-right: 0.4rem; /* its text ends where the page's content does */
+}
+.md-header__source .md-source__repository {
+  max-width: none; /* the theme's percentage would cut the name in a block sized to it */
+}
+.prorock-support:hover {
   opacity: 1;
 }
-.prorock-download img {
-  height: 1.3em;
+.prorock-support svg {
+  color: #e0607e;
 }
 @media screen and (max-width: 59.9375em) {
-  .prorock-download {
+  .prorock-support {
     display: none;
   }
 }
@@ -277,18 +292,19 @@
   vertical-align: middle;
 }
 
-/* Home: the hero (the message on the left; the minerals and buttons on the right), six claim cards, the ask */
+/* Home: the top (the name and the four minerals in one row, the lines under them), the panes (content tabs), the ask */
 .md-typeset h1.hero-hidden {
   display: none;
 }
 .md-typeset .hero {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-  margin-bottom: 1.5rem;
+  margin: -0.8rem 0 1.2rem; /* the theme's top gap is for a page title; under the big name it looked twice as tall */
 }
-.md-typeset .hero-text {
-  flex: 1 1 0;
+.md-typeset .hero-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 2rem;
 }
 .md-typeset .hero-name,
 .md-typeset .hero-claim {
@@ -297,12 +313,45 @@
 .md-typeset .hero-name {
   font-size: 3.2rem;
   font-weight: 800;
-  line-height: 1.1;
+  line-height: 1;
   letter-spacing: -0.02em;
 }
 .md-typeset .hero-name span,
 .prorock-rock {
   color: #ff7a45;
+}
+/* the headlines on the left, the plain facts on the right, both ending on one line */
+.md-typeset .hero-main {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+}
+.md-typeset .hero-facts {
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 0;
+  text-align: right;
+  font-size: 0.8em;
+  line-height: 1.6;
+  color: var(--md-default-fg-color);
+  opacity: 0.8;
+}
+.md-typeset .hero-main .hero-facts li { /* over the theme's indent of list items */
+  margin: 0;
+  list-style: none;
+}
+/* a check after each fact (Lucide's check): a list of what you get, not more names under the minerals */
+.md-typeset .hero-facts li::after {
+  content: "";
+  display: inline-block;
+  width: 0.9em;
+  height: 0.9em;
+  margin-left: 0.45em;
+  vertical-align: -0.1em;
+  background: #5fbf86;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / contain no-repeat;
 }
 .md-typeset .hero-claim {
   margin-top: 0.6rem;
@@ -310,17 +359,21 @@
   font-weight: 700;
   line-height: 1.25;
 }
-.md-typeset .hero-side {
-  flex: 0 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+.md-typeset .hero-sub {
+  margin: 0.6rem 0 0;
+  font-size: 1.05em;
+}
+.md-typeset .hero-second {
+  margin: 0.4rem 0 0;
+  font-size: 0.85em;
+  color: var(--md-default-fg-color--light);
 }
 .md-typeset .hero-minerals {
   display: flex;
-  gap: 1rem;
+  gap: 0.8rem;
 }
 .md-typeset .hero-minerals a {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -335,96 +388,192 @@
   color: var(--md-accent-fg-color);
 }
 .md-typeset .hero-minerals img {
-  height: 4.6rem;
+  height: 3.4rem;
   width: auto;
 }
 .md-typeset .hero-minerals span {
+  margin-top: -0.4rem; /* the pictures keep a transparent margin below the stone */
   font-size: 0.75em;
   color: var(--md-default-fg-color--light);
 }
-.md-typeset .hero-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+/* NEW on a mineral and on a tab: Rock orange, 1.8 only */
+.md-typeset .hero-minerals em,
+.md-typeset .panes .tabbed-labels > label:first-child:not(:has(> a))::after,
+.md-typeset .panes .tabbed-labels > label:first-child > a::after {
+  padding: 0.05em 0.35em;
+  border-radius: 0.25em;
+  background: #ff7a45;
+  color: #fff;
+  font-size: 0.55rem;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.04em;
 }
-.md-typeset .hero-buttons .md-button {
-  text-align: center;
-}
-/* one filled button per block: the rest are quiet */
-.md-typeset .hero-buttons .md-button:not(.md-button--primary) {
-  padding: 0.1em;
-  border: none;
-  background: none;
-  font-weight: 400;
-  color: var(--md-typeset-a-color);
-}
-.md-typeset .grid-claims {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-auto-rows: 1fr; /* every card as tall as the tallest, not per row */
-  gap: 0.7rem;
-}
-.md-typeset a.claim,
-.md-typeset a.claim:hover {
-  text-decoration: none;
-}
-.md-typeset .claim {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 0.3em;
-  padding: 0.8rem;
-  border: 0.05rem solid var(--md-default-fg-color--lightest);
-  border-radius: 0.5rem;
-  color: var(--md-typeset-color);
-  transition: border-color 0.15s;
-}
-.md-typeset .claim:hover {
-  border-color: var(--md-accent-fg-color);
-  color: var(--md-typeset-color);
-}
-.md-typeset .claim svg {
+.md-typeset .hero-minerals em {
   position: absolute;
-  top: 0.8rem;
-  right: 0.8rem;
-  width: 1.3rem;
-  height: 1.3rem;
-  color: var(--md-accent-fg-color);
-  opacity: 0.65;
+  top: -0.3rem;
+  right: -0.5rem;
 }
-.md-typeset .claim b {
-  padding-right: 1.8rem;
-  font-size: 1.05em;
+/* on the label until the theme's script wraps its text in a link (after the first paint), then on the link */
+.md-typeset .panes .tabbed-labels > label:first-child:not(:has(> a))::after,
+.md-typeset .panes .tabbed-labels > label:first-child > a::after {
+  content: "NEW";
+  margin-left: 0.4em;
+  vertical-align: 0.15em;
 }
-.md-typeset .claim span {
-  font-size: 0.85em;
-  line-height: 1.4;
+/* the panes share one grid cell, so the hidden ones keep their room: the page does not jump between tabs */
+.md-typeset .panes .tabbed-content {
+  display: grid;
+}
+.md-typeset .panes .tabbed-block {
+  display: grid;
+  grid-area: 1 / 1;
+  visibility: hidden;
+}
+.md-typeset .panes .tabbed-set > input:nth-child(1):checked ~ .tabbed-content > :nth-child(1),
+.md-typeset .panes .tabbed-set > input:nth-child(2):checked ~ .tabbed-content > :nth-child(2),
+.md-typeset .panes .tabbed-set > input:nth-child(3):checked ~ .tabbed-content > :nth-child(3) {
+  display: grid; /* over the theme's display: block for the open tab */
+  visibility: visible;
+}
+/* folder tabs: the frame around the panes only; the open tab in the panes' colour and their border, over their top line,
+   its name in its mineral's colour; the closed ones plain */
+.md-typeset .panes {
+  --pane-bg: color-mix(in srgb, var(--md-default-fg-color) 4%, var(--md-default-bg-color)); /* opaque: it hides the line */
+  --pane-line: var(--md-default-fg-color--lightest);
+}
+.md-typeset .panes .tabbed-labels {
+  overflow: visible; /* the open tab reaches over the panes' top line */
+  box-shadow: none;
+}
+.md-typeset .panes .tabbed-labels::before {
+  display: none; /* the theme's sliding line: the open tab's colour and coloured name mark it instead */
+}
+.md-typeset .panes .tabbed-labels > label {
+  position: relative;
+  margin-bottom: -0.05rem;
+  border: 0.05rem solid transparent;
+  border-bottom: none;
+  border-radius: 0.4rem 0.4rem 0 0;
+  font-size: 0.8rem;
   color: var(--md-default-fg-color--light);
 }
-/* the ask mirrors the hero: words on the left, the buttons on the right as wide as the hero's side */
-.md-typeset .ask {
+.md-typeset .panes .tabbed-labels > label:hover {
+  color: var(--md-default-fg-color);
+}
+.md-typeset .panes .tabbed-set > input:nth-child(1):checked ~ .tabbed-labels > :nth-child(1),
+.md-typeset .panes .tabbed-set > input:nth-child(2):checked ~ .tabbed-labels > :nth-child(2),
+.md-typeset .panes .tabbed-set > input:nth-child(3):checked ~ .tabbed-labels > :nth-child(3) {
+  z-index: 1;
+  border-color: var(--pane-line);
+  background: var(--pane-bg);
+}
+/* the open tab's name in its mineral's colour (brand.json mineral_colors); closed ones stay grey */
+.md-typeset .panes .tabbed-set > input:nth-child(1):checked ~ .tabbed-labels > :nth-child(1) {
+  color: #77d9ae;
+}
+.md-typeset .panes .tabbed-set > input:nth-child(2):checked ~ .tabbed-labels > :nth-child(2) {
+  color: #b8dcf5;
+}
+.md-typeset .panes .tabbed-set > input:nth-child(3):checked ~ .tabbed-labels > :nth-child(3) {
+  color: #5ac5ed;
+}
+.md-typeset .panes .tabbed-content {
+  padding: 1rem; /* the same at the top as at the sides: the line and the code start there */
+  border: 0.05rem solid var(--pane-line);
+  border-radius: 0 0.5rem 0.5rem 0.5rem;
+  background: var(--pane-bg);
+}
+/* each pane: its line, its buttons, its list on the left (the list takes the rest); the sample on the right */
+.md-typeset .panes .tabbed-block {
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: auto auto 1fr;
+  column-gap: 1.5rem;
+}
+.md-typeset .panes .tabbed-block > * {
+  grid-column: 1;
+}
+/* the buttons midway between the line and the list; below the list only the panel's padding, as at its sides */
+.md-typeset .panes .tabbed-block > .pane-buttons {
+  margin: 0.65rem 0 0.9rem; /* less above: the line's own leading adds the rest */
+}
+.md-typeset .panes .tabbed-block > ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.md-typeset .panes .tabbed-block > ul > li:last-child {
+  margin-bottom: 0;
+}
+.md-typeset .panes .highlight pre {
+  margin-bottom: 0;
+}
+.md-typeset .panes .tabbed-block > .highlight {
+  grid-column: 2;
+  grid-row: 1 / -1;
+  align-self: start;
+  width: 27.5em; /* the longest sample line, the same in every pane so the text does not reflow between tabs */
+  max-width: 100%;
+}
+.md-typeset .panes .tabbed-block > p:first-child {
+  font-size: 1.1em;
+  margin-top: 0;
+  margin-bottom: 0;
+  font-weight: 600;
+}
+.md-typeset .panes .tabbed-block li {
+  margin-bottom: 0.3em;
+}
+.md-typeset .panes .highlight pre {
+  margin-top: 0;
+}
+.md-typeset .panes .highlight code {
+  font-size: 0.78em;
+}
+.md-typeset .pane-buttons {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 2rem;
-  margin-top: 2.5rem;
+  gap: 0.4rem 0.5rem;
 }
-.md-typeset .ask-text {
-  flex: 1 1 0;
+/* small buttons: Docs filled, the rest outlined */
+.md-typeset .pane-buttons .md-button {
+  padding: 0.3em 1em;
+  font-size: 0.7rem;
 }
-.md-typeset .ask-text h2 {
-  margin: 0 0 0.6rem;
+.md-typeset .pane-buttons .md-button:not(.md-button--primary) {
+  border-color: var(--md-default-fg-color--lighter);
+  color: var(--md-default-fg-color--light);
+  font-weight: 400;
 }
-.md-typeset .ask-text p {
+.md-typeset .pane-buttons .md-button:not(.md-button--primary):hover {
+  border-color: var(--md-accent-fg-color);
+  color: var(--md-accent-fg-color);
+}
+/* the ask: the heading with its buttons in a row on its right, then the words in two short paragraphs */
+.md-typeset .ask {
+  margin-top: 1.6rem;
+}
+.md-typeset .ask-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem 2rem;
+  margin-bottom: 0.8rem;
+}
+.md-typeset .ask-head h2 {
   margin: 0;
 }
+.md-typeset .ask > p {
+  margin: 0 0 0.6em;
+}
 .md-typeset .ask-buttons {
-  flex: 0 0 15.8rem;
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 0.5rem;
 }
 .md-typeset .ask-buttons .md-button {
-  padding: 0.5em 0.4em;
+  padding: 0.4em 1.2em;
   font-size: 0.7rem;
   text-align: center;
 }
@@ -443,39 +592,46 @@
   filter: brightness(1.1);
 }
 @media screen and (max-width: 44.9375em) {
-  .md-typeset .hero {
-    flex-direction: column;
-    align-items: flex-start;
-  }
   .md-typeset .hero-name {
     font-size: min(3.2rem, 13vw);
     white-space: nowrap;
   }
-  .md-typeset .hero-side {
-    align-self: stretch;
-    align-items: center;
+  .md-typeset .hero-minerals {
+    margin: 0 auto;
   }
-  .md-typeset .hero-buttons {
-    align-self: stretch;
+  .md-typeset .hero-main {
+    display: block;
   }
-  .md-typeset .grid-claims {
-    grid-template-columns: 1fr;
+  .md-typeset .hero-main .hero-facts { /* over the theme's display and margin of lists */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 1.2em;
+    margin: 0.6rem 0 0;
+    text-align: left;
   }
-  .md-typeset .ask {
-    flex-direction: column;
-    align-items: stretch;
+  .md-typeset .hero-minerals img {
+    height: min(3.4rem, 16vw);
   }
-  .md-typeset .ask-buttons {
-    flex-basis: auto;
+  .md-typeset .panes .tabbed-labels > label {
+    flex: 1 1 0; /* "Excel" over "(Calcite)": three tabs fit a phone */
+    padding: 0;
+    white-space: normal;
+    text-align: center;
   }
-}
-
-/* the light theme: a very slightly grey page, white cards */
-[data-md-color-scheme="default"] {
-  --md-default-bg-color: #f3f4f6;
-}
-[data-md-color-scheme="default"] .md-typeset .claim {
-  background: #fff;
+  .md-typeset .panes .tabbed-labels > label > a {
+    padding: 0.7em 0.2em 0.5em;
+    font-size: 0.7rem;
+    line-height: 1.3;
+    word-break: normal;
+  }
+  .md-typeset .panes .tabbed-block {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .md-typeset .panes .tabbed-block > .highlight {
+    grid-column: 1;
+    grid-row: auto;
+    width: auto;
+  }
 }
 
 /* the footer: the licence line on the left, "Made with" on the right */
