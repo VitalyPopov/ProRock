@@ -46,6 +46,7 @@ nav:
       - Getting started: getting-started.md
       - Samples: samples.md
   - Using ProRock:
+      - units/index.md
       - Excel (Calcite): calcite.md
       - SOAP (Soapite): soapite.md
       - XML (Xmlite): xmlite.md

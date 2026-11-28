@@ -666,3 +666,26 @@
   padding-top: 1.2em;
   border-top: 1px solid var(--md-default-fg-color--lighter);
 }
+
+/* a line between a page's parts (--- before a part's heading): the gap above the line, the heading right under it */
+.md-typeset hr {
+  margin: 2.4em 0 0;
+  border-bottom-color: var(--md-default-fg-color--lighter);
+}
+.md-typeset hr + h2 {
+  margin-top: 0.8em;
+}
+
+/* the units page: a unit's heading reads as the line for `uses`, set apart from its group's heading */
+.md-typeset h3.uses {
+  font-family: var(--md-code-font-family);
+  font-weight: 600;
+  padding: 0.35em 0.75em;
+  background-color: var(--md-code-bg-color);
+  border-radius: 0.2rem;
+}
+.md-typeset h3.uses::before {
+  content: "uses ";
+  color: var(--md-default-fg-color--light);
+  font-weight: 400;
+}
