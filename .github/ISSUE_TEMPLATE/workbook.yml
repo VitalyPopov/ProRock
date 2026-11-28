@@ -1,0 +1,43 @@
+name: Excel workbook
+description: A workbook that ProRock doesn't open, change or save right
+labels: ["workbook"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you! Real workbooks are how Calcite grows. A made-up file is best: Excel's blank workbook with just the feature
+        that goes wrong. If you attach a real one, strip confidential data first.
+  - type: dropdown
+    id: what
+    attributes:
+      label: What went wrong?
+      options:
+        - Open returns False
+        - Excel says "We found a problem with some content" after Save
+        - Something is lost or changed after Save
+        - A value, formula or format reads wrong
+        - An insert or delete is refused or goes wrong
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: What happened, and what did you expect?
+      description: Workbook.Error or Workbook.Issues, what Excel shows, the cells or parts involved. Attach the workbook.
+    validations:
+      required: true
+  - type: textarea
+    id: code
+    attributes:
+      label: Code
+      description: The few lines that open, change and save it
+      render: pascal
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: Delphi version, platform, ProRock version, and the Excel that made the file
+      placeholder: Delphi 13.1, Win64, ProRock 1.8.0, Excel 365
+    validations:
+      required: true

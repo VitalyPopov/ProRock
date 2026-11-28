@@ -1,5 +1,5 @@
 name: Schema / WSDL support
-description: A schema or WSDL that ProRocket Lite or ProRock doesn't handle correctly
+description: XSD or WSDL that ProRocket Lite or ProRock doesn't handle correctly
 labels: ["schema support"]
 body:
   - type: markdown
