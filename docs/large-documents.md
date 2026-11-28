@@ -11,10 +11,10 @@ create, read, work, write, free. In your own classes you choose: see
 
 | Document | Read | Write | Free | Objects in memory |
 |---|---|---|---|---|
-| a UBL e-invoice of 5 lines (the [sample](samples.md#electronic-invoices)) | 0.44 ms | 0.36 ms | 0.10 ms | 148 |
-| a FHIR R4 Bundle of 1,000 Patients, 1.8 MB | 0.08 s | 0.07 s | 0.03 s | 32,000 |
+| a UBL e-invoice of 5 lines (the [sample](samples.md#electronic-invoices)) | 0.15 ms | 0.13 ms | 0.05 ms | 148 |
+| a FHIR R4 Bundle of 1,000 Patients, 0.8 MB | 36 ms | 26 ms | 15 ms | 32,000 |
 
-Measured with Delphi 13, Win64.
+Measured with Delphi 13, Win64: the medians of five runs.
 
 ## Lazy creation: why it is fast
 
