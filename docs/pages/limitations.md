@@ -26,8 +26,10 @@ A schema doesn't generate or read right, or a workbook doesn't open or save righ
 
 !!! note "Delphi 10.3 compiles large generated units much slower"
     All of FHIR R4 (a unit of about 46,000 lines, 49,000 with the XHTML unit for its narratives) takes about 3 minutes there, against
-    10-20 seconds on Delphi 13. Only 10.3 does this, 10.4 and later do not. Why is not known, and honestly, it is an old Delphi, so
-    there are no plans to investigate. Compile times of the others: [Tested schemas](tested-schemas.md).
+    10-20 seconds on Delphi 13. Only 10.3 does this, 10.4 and later do not.
+
+    Why is not known, and honestly, it is an old Delphi, so there are no plans to investigate. Compile times of the others:
+    [Tested schemas](tested-schemas.md).
 
 ## Writing a document back
 
@@ -58,9 +60,13 @@ A value set in code that equals its default is written only when marked present 
 
 ## Numbers
 
-`xs:decimal`, `xs:float` and `xs:double` are `Double`, written as the shortest text that reads back the same value. A number of up to
-15 significant digits comes back as the same number (`0.1` stays `0.1`; `1.50` is written `1.5`), a longer one as the same Double in
-its shortest text, and digits beyond what a Double holds (about 17) are lost. `xs:integer` is `Int64`, `xs:unsignedLong` is `UInt64`.
+`xs:decimal`, `xs:float` and `xs:double` are `Double`, written as the shortest text that reads back the same value:
+
+- A number of up to 15 significant digits comes back as the same number (`0.1` stays `0.1`; `1.50` is written `1.5`).
+- A longer one comes back as the same Double in its shortest text.
+- Digits beyond what a Double holds (about 17) are lost.
+
+`xs:integer` is `Int64`, `xs:unsignedLong` is `UInt64`.
 
 !!! tip "For money arithmetic, convert to `Currency` before calculating"
     Arithmetic on a `Double` is binary floating point:

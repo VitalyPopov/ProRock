@@ -97,8 +97,10 @@ The CLI does not expand wildcards; list the files, or let the shell do it. In Po
 ### Type names
 
 A type is `T` + its XML name + a suffix for its kind: `CT` a complex type, `ST` a simple type, `AG` an attribute group, `EG` an
-element group, `E` an element. What all the types of one kind share stays out of the name (`CT_Font` -> `TFontCT`), so a new schema
-version can rename types; `--full-type-names` keeps the whole names. The rules: https://prorock.rocks/generated-code/#type-names
+element group, `E` an element.
+
+What all the types of one kind share stays out of the name (`CT_Font` -> `TFontCT`), so a new schema version can rename types;
+`--full-type-names` keeps the whole names. The rules: https://prorock.rocks/generated-code/#type-names
 
 ## Exit codes
 
@@ -150,6 +152,7 @@ MyApp  MyApp.dproj
 
 The CLI never downloads anything. It follows a local relative `schemaLocation` of `xs:include`, `xs:redefine` and
 `xs:import` (`../common/types.xsd`; never a URL or an absolute path), an import only when the schema uses that namespace.
+
 So the main schema alone is often enough when its files lie as they were published. A file you give wins over the one
 found that way: an include by its file name, an import by its namespace.
 

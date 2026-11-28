@@ -4,10 +4,13 @@ icon: lucide/layers
 
 # Large documents
 
-A schema can offer hundreds of members, and a document uses a few. In generated classes objects are created lazily, when your code first
-touches them, not together with their parent, so the members a document does not use cost nothing. How you use the classes is the same:
-create, read, work, write, free. In your own classes you choose: see
-[Hand-written classes](hand-written.md#lazy-creation).
+A schema can offer hundreds of members, and a document uses a few. So in generated classes objects are created lazily:
+
+- when your code first touches them, not together with their parent
+- the members a document does not use cost nothing
+- how you use the classes stays the same: create, read, work, write, free
+
+In your own classes you choose: see [Hand-written classes](hand-written.md#lazy-creation).
 
 | Document | Read | Write | Free | Objects in memory |
 |---|---|---|---|---|

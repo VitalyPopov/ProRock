@@ -144,10 +144,13 @@ An element can be declared as a stand-in for another one, its **head**:
 ```
 
 Wherever the schema allows `dc:any`, a document uses `dc:title` or `dc:creator` instead (`abstract="true"`: the head itself
-never appears). A member without a type of its own
-takes its head's type, so ProRock generates `TTitleE = class(TAnyE)` - in Delphi terms, the members are descendants of the
-head. A property of the head's type holding any member is not supported yet; it is on the [roadmap](roadmap.md) as
-polymorphic content.
+never appears).
+
+A member without a type of its own takes its head's type, so ProRock generates `TTitleE = class(TAnyE)` - in Delphi terms,
+the members are descendants of the head.
+
+A property of the head's type holding any member is not supported yet; it is on the [roadmap](roadmap.md) as polymorphic
+content.
 
 ## Qualified and unqualified local elements
 

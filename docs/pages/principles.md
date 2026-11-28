@@ -60,9 +60,13 @@ well-formed XML fails the read instead of being written back broken.
 
 ## As fast as it can be made
 
-Wherever something can be faster, it is made faster. You do not pay for what you do not touch: objects are created
-lazily, on first access, and a FHIR Bundle of 1,000 resources (3.2 MB) reads in 160 ms ([Large documents](large-documents.md)).
-Parsing works on the text without building a DOM; class metadata is built once, not scanned again for every document.
+Wherever something can be faster, it is made faster:
+
+- You do not pay for what you do not touch: objects are created lazily, on first access, and a FHIR Bundle of
+  1,000 resources (3.2 MB) reads in 160 ms ([Large documents](large-documents.md)).
+- Parsing works on the text without building a DOM.
+- Class metadata is built once, not scanned again for every document.
+
 Measured on real documents, with the numbers published.
 
 ## Reality decides
@@ -73,10 +77,14 @@ Real schemas, real files and real requests set the priorities: FHIR R4, Office's
 
 ## Progressive, in layers
 
-Whatever is built becomes the ground for what comes next. The core, [**Basite**](basite.md), knows nothing about XML: it knows plain
-Delphi objects and their metadata - who owns what, which values are present. XML is one layer on top of it (**Xmlite**),
-SOAP one on top of XML (**Soapite**). So JSON can come as another layer on the same classes, not as a second library
-([roadmap](roadmap.md)) - and what one layer gains, the next ones get.
+Whatever is built becomes the ground for what comes next:
+
+- The core, [**Basite**](basite.md), knows nothing about XML: it knows plain Delphi objects and their metadata - who owns
+  what, which values are present.
+- XML is one layer on top of it (**Xmlite**), Excel (**Calcite**) and SOAP (**Soapite**) are layers on top of XML.
+- So JSON can come as another layer on the same classes, not as a second library ([roadmap](roadmap.md)).
+
+What one layer gains, the next ones get.
 
 The generator stands on the same ground: ProRocket Lite reads every XSD and WSDL through ProRock itself, with classes it
 generated - whatever it needs, the library gets first.

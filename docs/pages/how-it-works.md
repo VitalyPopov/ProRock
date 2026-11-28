@@ -104,9 +104,11 @@ calling the service is a method call ([Getting started](getting-started.md#soap)
 
 ## The objects are yours
 
-The generated classes are plain Delphi objects with explicit ownership. You free what you create. A parent creates and frees
-its children, so the one `order.Free` above frees the items as well. No DOM stays behind them, no interfaces, no reference
-counting.
+The generated classes are plain Delphi objects with explicit ownership:
+
+- You free what you create.
+- A parent creates and frees its children, so the one `order.Free` above frees the items as well.
+- No DOM stays behind them, no interfaces, no reference counting.
 
 Reading and writing back also keep to what the document had: a value that was absent stays absent
 ([details](xmlite.md#absent-or-default-presence)), and parts the schema does not describe

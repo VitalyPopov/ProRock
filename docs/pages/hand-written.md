@@ -56,9 +56,13 @@ The sample [ProRock.Xmlite.Basic](https://github.com/VitalyPopov/ProRock/tree/ma
 
 ## Lazy creation
 
-In your own classes the property says it: an object read from a field is created with its parent, down to
-`TBasite.AutoInitMaxDepth` levels of a type nested in itself; one with a getter is created on first access. Keep a field named `f` +
-the property name - the reader and writer use the field directly - and create the object in the getter with `Lazy`:
+In your own classes the property says it:
+
+- An object read from a field is created with its parent, down to `TBasite.AutoInitMaxDepth` levels of a type nested in itself.
+- One with a getter is created on first access.
+
+Keep a field named `f` + the property name - the reader and writer use the field directly - and create the object in the
+getter with `Lazy`:
 
 ```pascal
 TShipment = class(TXmliteComplexType)
@@ -76,7 +80,10 @@ begin
 end;
 ```
 
-Without the field the class reports it on first use. `[TChoice]` is optional: it only adds the property to a group for
-`Chosen`. `[TRequired]` is independent of both forms: a required object is written always, so it is created with its parent,
-with a getter too. Created with its parent does not mean required: an object from a field without `[TRequired]` is written only when
-it has content.
+Without the field the class reports it on first use.
+
+- `[TChoice]` is optional: it only adds the property to a group for `Chosen`.
+- `[TRequired]` is independent of both forms: a required object is written always, so it is created with its parent, with a
+  getter too.
+- Created with its parent does not mean required: an object from a field without `[TRequired]` is written only when it has
+  content.

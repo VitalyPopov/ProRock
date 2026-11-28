@@ -64,9 +64,11 @@ later Make reuses them quietly, a Build warns again. Units generated before 1.7 
 
 ## Type names
 
-`T` + the XML name + a suffix for its kind: `CT` a complex type, `ST` a simple type, `AG` an attribute group, `EG` an element group,
-`E` an element. What all the types of one kind in a namespace share says nothing about any of them, so it stays out of the Delphi
-name, and the exact XML name is kept in `[TName]`:
+`T` + the XML name + a suffix for its kind: `CT` a complex type, `ST` a simple type, `AG` an attribute group, `EG` an element
+group, `E` an element.
+
+What all the types of one kind in a namespace share says nothing about any of them, so it stays out of the Delphi name, and
+the exact XML name is kept in `[TName]`:
 
 - `CT_Font` -> `TFontCT` where every complex type starts with `CT_`
 - `InvoiceType` -> `TInvoiceCT` where every one ends with `Type`
@@ -85,10 +87,15 @@ The fine print:
 
 ## Member names
 
-Members follow the XML names in Delphi style. The XML names come back from the Delphi names by the schema's own styles, which
-`RegisterNamespace` at the end of the unit states (FHIR: `TNaming.nPascalCase, TNaming.nCamelCase, TNaming.nKebabCase`, for types,
-for the elements and attributes inside them, for enumeration items). `[TEnumNaming]` marks a list named differently; `[TNaming]`,
-`[TName]` and `[TEnumCaption]` appear only where those do not give the exact name.
+Members follow the XML names in Delphi style. The XML names come back from the Delphi names by the schema's own styles,
+which `RegisterNamespace` at the end of the unit states:
+
+- for types
+- for the elements and attributes inside them
+- for enumeration items
+
+FHIR's are `TNaming.nPascalCase, TNaming.nCamelCase, TNaming.nKebabCase`. `[TEnumNaming]` marks a list named differently;
+`[TNaming]`, `[TName]` and `[TEnumCaption]` appear only where those do not give the exact name.
 
 ## When names collide
 

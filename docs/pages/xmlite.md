@@ -110,10 +110,14 @@ up to there.
 <p><b>status</b>: final <span>(Details)</span></p>
 ```
 
-Text between child elements, as in HTML - or a FHIR resource's narrative, which is XHTML. A mixed type (`mixed="true"`) gets
-`[TMixed]`, and its object keeps the text runs and its children in document order in `XmlContent`. A repeating choice
-(`<font>` in Excel styles: `<sz/><color/><name/>` in any order) gets `[TOrdered]`: the same order, without text. The typed
-lists stay as they are - `p.B[0]` is the first `<b>` - and `XmlContent` refers to the same objects:
+Text between child elements, as in HTML - or a FHIR resource's narrative, which is XHTML.
+
+- A mixed type (`mixed="true"`) gets `[TMixed]`: its object keeps the text runs and its children in document order in
+  `XmlContent`.
+- A repeating choice (`<font>` in Excel styles: `<sz/><color/><name/>` in any order) gets `[TOrdered]`: the same order,
+  without text.
+
+The typed lists stay as they are - `p.B[0]` is the first `<b>` - and `XmlContent` refers to the same objects:
 
 ```pascal
 Writeln(obs.Text.&Div.InnerText);   // all the text, children included, in document order
