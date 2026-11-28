@@ -39,10 +39,12 @@ end;
 
 ## Start here
 
-- **[Calcite](https://prorock.rocks/calcite/)**: Excel workbooks, with [samples](https://prorock.rocks/samples/#excel-workbook)
-- **[Getting started](https://prorock.rocks/getting-started/)**: from a WSDL to a working SOAP call in 5 minutes
-- **[ProRocket Lite](https://github.com/VitalyPopov/ProRock/releases/latest/download/ProRocket-Lite.zip)**: download the generator
-- **[prorock.rocks](https://prorock.rocks/)**: the documentation, the samples, the schemas it is tested on
+Visit **[https://prorock.rocks](https://prorock.rocks/)**:
+
+- Getting started
+- The documentation
+- Samples and screenshots
+- The free code generator
 
 ## It is young, and it grows with you
 
