@@ -9,8 +9,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 
 ### Highlights
 
-- Reading and writing XML about twice as fast: a UBL invoice read 0.37 -> 0.15 ms, a FHIR Bundle of 1,000 Patients
-  71 -> 36 ms
+- Reading and writing XML about twice as fast: the FHIR sample's Bundle of 1,003 resources read 274 -> 163 ms and
+  written 282 -> 120 ms, a UBL invoice read 0.37 -> 0.15 ms
 
 ### ProRock (library)
 

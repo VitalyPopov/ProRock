@@ -12,7 +12,7 @@ create, read, work, write, free. In your own classes you choose: see
 | Document | Read | Write | Free | Objects in memory |
 |---|---|---|---|---|
 | a UBL e-invoice of 5 lines (the [sample](samples.md#electronic-invoices)) | 0.15 ms | 0.13 ms | 0.05 ms | 148 |
-| a FHIR R4 Bundle of 1,000 Patients, 0.8 MB | 36 ms | 26 ms | 15 ms | 32,000 |
+| a FHIR R4 Bundle of 1,003 resources, 3.2 MB (the [sample](samples.md#fhir-resources)'s Speed test) | 163 ms | 120 ms | 88 ms | 94,000 |
 
 Measured with Delphi 13, Win64: the medians of five runs.
 

@@ -79,7 +79,7 @@ hide:
     { .pane-buttons }
 
     - Writes back what it read, even what the schema does not describe
-    - An e-invoice reads in 0.15 ms, 1,000 FHIR patients in 36 ms
+    - An e-invoice reads in 0.15 ms, 1,000 FHIR resources (3.2 MB) in 160 ms
     - Proven on FHIR R4, e-invoices, ISO 20022 and Excel's own XML
     - Schema changed? Regenerate: a clean diff, and the compiler shows the rest
 

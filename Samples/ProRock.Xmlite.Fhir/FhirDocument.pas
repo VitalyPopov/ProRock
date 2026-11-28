@@ -259,7 +259,7 @@ begin
     entriesXml.Append('</Bundle>');
 
     var xml: string := entriesXml.ToString;
-    var megabytes: Double := Length(xml) * SizeOf(Char) / 1048576;
+    var megabytes: Double := TEncoding.UTF8.GetByteCount(xml) / 1048576; // as a file holds it
     var bundle: TBundleE := TBundleE.Create;
     try
       var watch: TStopwatch := TStopwatch.StartNew;
@@ -269,7 +269,7 @@ begin
       var written: string := bundle.ToXml;
       var writeMs: Double := watch.Elapsed.TotalMilliseconds;
       Result := Format('A Bundle of %d resources (%.1f MB): read in %.0f ms, written in %.0f ms (%.1f MB)',
-        [bundle.Entry.Count, megabytes, readMs, writeMs, Length(written) * SizeOf(Char) / 1048576]);
+        [bundle.Entry.Count, megabytes, readMs, writeMs, TEncoding.UTF8.GetByteCount(written) / 1048576]);
     finally
       bundle.Free;
     end;

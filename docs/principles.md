@@ -60,7 +60,7 @@ well-formed XML fails the read instead of being written back broken.
 ## As fast as it can be made
 
 Wherever something can be faster, it is made faster. You do not pay for what you do not touch: objects are created
-lazily, on first access, and a FHIR Bundle of 1,000 Patients reads in 36 ms ([Large documents](large-documents.md)).
+lazily, on first access, and a FHIR Bundle of 1,000 resources (3.2 MB) reads in 160 ms ([Large documents](large-documents.md)).
 Parsing works on the text without building a DOM; class metadata is built once, not scanned again for every document.
 Measured on real documents, with the numbers published.
 
