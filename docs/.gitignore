@@ -1,2 +1,4 @@
-roadmap.md
-changelog.md
+# the build, and its copies of ROADMAP.md and CHANGELOG.md
+site/
+pages/roadmap.md
+pages/changelog.md

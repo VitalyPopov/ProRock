@@ -3,7 +3,8 @@ site_description: "Excel workbooks (.xlsx), XML and SOAP in plain Delphi objects
 site_url: https://prorock.rocks/
 repo_url: https://github.com/VitalyPopov/ProRock
 repo_name: VitalyPopov/ProRock
-edit_uri: edit/main/docs/
+edit_uri: edit/main/docs/pages/
+docs_dir: pages # what is published; mkdocs.yml and overrides/ beside it are not
 copyright: © 2026 Vitaly Popov. ProRock is licensed under the Apache License 2.0. ProRocket Lite is a free closed-source tool with its own license.
 
 theme:

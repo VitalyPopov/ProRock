@@ -1,4 +1,4 @@
-# 🤟 ProRock <a href="https://prorock.rocks/"><img align="right" src="docs/assets/minerals-row.webp" alt="Calcite, Soapite, Xmlite and Basite"></a>
+# 🤟 ProRock <a href="https://prorock.rocks/"><img align="right" src="docs/pages/assets/minerals-row.webp" alt="Calcite, Soapite, Xmlite and Basite"></a>
 
 **Excel workbooks and tamed XML in plain Delphi.** Open, change, save: nothing lost. No DOM, no XPath, no namespace juggling.
 
