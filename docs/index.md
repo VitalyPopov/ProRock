@@ -44,7 +44,7 @@ hide:
 
     A ready-to-use SOAP client, generated from the WSDL
 
-    [Docs](soapite/){ .md-button .md-button--primary } [5-minute start](getting-started/){ .md-button } [Free generator](prorocket-lite/){ .md-button }
+    [Docs](soapite/){ .md-button .md-button--primary } [5-minute start](getting-started/#soap){ .md-button } [Free generator](prorocket-lite/){ .md-button }
     { .pane-buttons }
 
     - Every operation is a method, with typed requests, responses and faults

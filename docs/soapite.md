@@ -5,7 +5,7 @@ icon: lucide/send
 # SOAP (Soapite)
 
 A SOAP service as a Delphi class: give the generator the WSDL, and every operation is a method with typed requests, responses and
-faults. SOAP 1.1 and 1.2 are both supported. From a WSDL to a first call: [Getting started](getting-started.md).
+faults. SOAP 1.1 and 1.2 are both supported. From a WSDL to a first call: [Getting started](getting-started.md#soap).
 
 ## The generated client
 

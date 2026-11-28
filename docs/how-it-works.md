@@ -85,7 +85,7 @@ That is the whole idea. The real schemas are bigger, not different: all of [FHIR
 [electronic invoice](samples.md#electronic-invoices) work the same way.
 
 A WSDL goes the same road and gives one more unit: a client class with a method for each operation of the service. From there,
-calling the service is a method call ([Getting started](getting-started.md)).
+calling the service is a method call ([Getting started](getting-started.md#soap)).
 
 ## The objects are yours
 
@@ -120,6 +120,6 @@ on top of it, **Basite** is the object core under both ([The core (Basite)](basi
 
 ## Where next
 
-- Try it: [Getting started](getting-started.md), 5 minutes from a WSDL to a working call
+- Try it: [Getting started](getting-started.md#soap), 5 minutes from a WSDL to a working call
 - See it on real data: [Samples](samples.md)
 - What the generator makes of each schema construct: [Generated code](generated-code.md)

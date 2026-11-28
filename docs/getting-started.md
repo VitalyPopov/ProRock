@@ -2,27 +2,60 @@
 icon: lucide/play
 ---
 
-# Getting started in 5 minutes
+# Getting started
 
-From a WSDL to a working SOAP call: get the library and the generator, generate the units, call the service. The example is the
-EU VIES VAT number service, which is public and needs no account.
+Get ProRock once, then take the path you need: Excel workbooks need nothing more, SOAP and XML start from the free generator.
 
-!!! tip "Working with an AI coding assistant?"
-    It can do these steps too: point it to `CLI.md` in the zip, or to [the same text](cli-full.md) here. In a blind test an AI agent
-    built a working VIES client app from the zip and the documentation alone, asking the developer before running the generator.
-
-## 1. Get ProRock
+## Get ProRock
 
 ProRock is a pure source library: no installation, no design-time packages, no component registration. Clone it at a release
 tag (tags have no `v`) next to your project:
 
 ```
-git clone --branch 1.7.0 https://github.com/VitalyPopov/ProRock ThirdParty\ProRock
+git clone --branch 1.8.0 https://github.com/VitalyPopov/ProRock ThirdParty\ProRock
 ```
 
 or download the source zip of the [latest release](https://github.com/VitalyPopov/ProRock/releases/latest).
 
-## 2. Get ProRocket Lite
+Add `ThirdParty\ProRock\Source` to the project's search path, in the **Base** configuration
+(**Project Options > Delphi Compiler > Search path**). Nothing else to set up.
+
+## Excel workbooks { #excel }
+
+No generator, no Excel installed. Make the workbook in Excel - formulas, charts, pivot tables, print setup - and fill it from
+Delphi: inserted rows move them all, and everything you did not change is saved as it was.
+
+```pascal
+uses ProRock.Calcite;
+
+var book := TWorkbook.Create;
+try
+  if book.Open('Template.xlsx') then
+  begin
+    var sheet := book.Worksheets['Invoice'];
+    sheet.Rows['12:14'].Insert;  // totals move down
+    sheet['B12'].Value := 'Consulting';
+    sheet['D12'].Value := 1200;
+    book.SaveAs('Invoice 1042.xlsx');
+  end;
+finally
+  book.Free;
+end;
+```
+
+Next: [Excel (Calcite)](calcite.md) for values, formulas, formats, sheets and a `TDataSet` in one call, and the
+[Calcite sample](samples.md#excel-workbook) with a button for each.
+
+## SOAP in 5 minutes { #soap }
+
+From a WSDL to a working SOAP call: get the generator, generate the units, call the service. The example is the EU VIES VAT
+number service, which is public and needs no account.
+
+!!! tip "Working with an AI coding assistant?"
+    It can do these steps too: point it to `CLI.md` in the zip, or to [the same text](cli-full.md) here. In a blind test an AI agent
+    built a working VIES client app from the zip and the documentation alone, asking the developer before running the generator.
+
+### 1. Get ProRocket Lite
 
 <a class="md-button md-button--primary prorock-get" href="https://github.com/VitalyPopov/ProRock/releases/latest/download/ProRocket-Lite.zip"><img src="../assets/prorocket.png" alt=""><span>Download ProRocket-Lite.zip<small>free generator, GUI and CLI</small></span></a>
 
@@ -32,7 +65,7 @@ Windows 64-bit. Unzip it into a folder of its own. The SHA-256 checksum is in th
 !!! warning "Windows SmartScreen may warn on the first start"
     The executables are not code-signed yet. Click **More info → Run anyway**.
 
-## 3. Generate the units
+### 2. Generate the units
 
 Save the [VIES WSDL](https://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl) as `checkVatService.wsdl` in your project
 folder. Then either open `ProRocket.Lite.exe`, add the file and click **Generate**, or run the command line there (with the path
@@ -47,12 +80,11 @@ You get two units:
 - `ProRock.Xmlite.Schema.CheckVatService` - the request and response types
 - [`ProRock.Soapite.CheckVatService`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Soapite.CheckVatService) - the client, `TCheckVatService`
 
-## 4. Set up the project
+### 3. Set up the project
 
-Add `ThirdParty\ProRock\Source;Generated` to the project's search path, in the **Base** configuration
-(**Project Options > Delphi Compiler > Search path**). Nothing else to set up.
+Add the `Generated` folder to the search path, next to ProRock's `Source`.
 
-## 5. Call the service
+### 4. Call the service
 
 The client unit re-exports the request and response types, `TSoapiteError` and the exceptions, so for plain calls it is the only
 unit to use. Pass the endpoint: the default is the WSDL's `soap:address`, and VIES still declares `http://` there.
@@ -87,9 +119,9 @@ end;
 
 That's it. Next: [SOAP](soapite.md) for timeouts, authentication and faults.
 
-## The same from an XSD
+## XML from an XSD { #xml }
 
-Generate the units from the XSD the same way, then parse and write documents through the typed classes. To try it, the
+Generate the units from the XSD as for SOAP (steps 1 to 3), then parse and write documents through the typed classes. To try it, the
 [`ProRock.Xmlite.Namespaces`](https://github.com/VitalyPopov/ProRock/tree/main/Samples/ProRock.Xmlite.Namespaces) sample
 has this `order.xsd` and a document for it (`demo.xml`):
 

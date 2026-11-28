@@ -29,7 +29,7 @@ no XPath, no node API: the classes are the schema, and code completion is their 
 up, [XML concepts](xml-concepts.md) explains it in Delphi terms.
 
 Nothing to install either - no packages, no DLLs, no design-time components: add `Source` to the search path and use the
-units. From a WSDL to a working SOAP call takes [5 minutes](getting-started.md).
+units. From a WSDL to a working SOAP call takes [5 minutes](getting-started.md#soap).
 
 ## Hide the mechanism, never the control
 
